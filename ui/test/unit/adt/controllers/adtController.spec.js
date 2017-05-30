@@ -1,7 +1,8 @@
 'use strict';
 
 describe("AdtController", function () {
-    var scope, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService, encounterService, ngDialog, window, messagingService, spinnerService;
+    var scope, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService,
+        encounterService, ngDialog, window, messagingService, spinnerService, configurationService, auditLogService;
 
     beforeEach(function () {
         module('bahmni.adt');
@@ -51,6 +52,10 @@ describe("AdtController", function () {
         visitService.getVisitSummary.and.returnValue(visitServicePromise);
         dispositionService.getDispositionActions.and.returnValue({});
         sessionService.getLoginLocationUuid.and.returnValue("someLocationUuid");
+        configurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
+        configurationService.getConfigurations.and.returnValue(specUtil.simplePromise({enableAuditLog: true}));
+        auditLogService = jasmine.createSpyObj('auditLogService', ['auditLog']);
+        auditLogService.auditLog.and.returnValue(specUtil.simplePromise({}));
     });
 
     var createController = function () {
@@ -75,7 +80,9 @@ describe("AdtController", function () {
             ngDialog: ngDialog,
             $window: window,
             messagingService : messagingService,
-            spinner: spinnerService
+            spinner: spinnerService,
+            configurationService: configurationService,
+            auditLogService: auditLogService
         });
     };
 
@@ -123,6 +130,13 @@ describe("AdtController", function () {
 
         scope.closeCurrentVisitAndStartNewVisit();
 
+        var params = {
+            patientUuid: '123',
+            eventType: 'CLOSE_VISIT',
+            message: 'CLOSE_VISIT_MESSAGE~visitUuid',
+            module: 'adt'
+        };
+
         expect(encounterService.buildEncounter).toHaveBeenCalledWith({
             patientUuid: '123',
             encounterTypeUuid: undefined,
@@ -132,6 +146,8 @@ describe("AdtController", function () {
         });
         expect(visitService.endVisitAndCreateEncounter).toHaveBeenCalledWith("visitUuid", {encounterUuid: 'uuid'});
         expect(ngDialog.close).toHaveBeenCalled();
+        expect(configurationService.getConfigurations).toHaveBeenCalledWith(['enableAuditLog']);
+        expect(auditLogService.auditLog).toHaveBeenCalledWith(params);
     });
 
     it("Should close the confirmation dialog if cancelled", function () {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('visitDocumentService', ['$http', function ($http) {
+    .service('visitDocumentService', ['$http', 'configurationService', 'auditLogService', function ($http, configurationService, auditLogService) {
         var removeVoidedDocuments = function (documents) {
             documents.forEach(function (document) {
                 if (document.voided) {
@@ -11,10 +11,29 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        var logVisit = function (patientUuid, visitUuid) {
+            configurationService.getConfigurations(['enableAuditLog']).then(function (result) {
+                if (result.enableAuditLog) {
+                    var params = {};
+                    params.patientUuid = patientUuid;
+                    params.eventType = Bahmni.Common.AuditLogEventDetails["OPEN_VISIT"].eventType;
+                    params.message = Bahmni.Common.AuditLogEventDetails["OPEN_VISIT"].message + '~' + visitUuid;
+                    params.module = "document upload";
+                    auditLogService.auditLog(params);
+                }
+            });
+        };
+
         this.save = function (visitDocument) {
             var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument";
+            var isNewVisit = !visitDocument.visitUuid;
             removeVoidedDocuments(visitDocument.documents);
-            return $http.post(url, visitDocument);
+            return $http.post(url, visitDocument).then(function (response) {
+                if (isNewVisit) {
+                    logVisit(visitDocument.patientUuid, response.data.visitUuid);
+                }
+                return response;
+            });
         };
         this.saveFile = function (file, patientUuid, encounterTypeName, fileName, fileType) {
             var searchStr = ";base64";

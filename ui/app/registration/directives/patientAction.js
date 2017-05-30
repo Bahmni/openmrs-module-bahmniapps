@@ -3,10 +3,10 @@
 angular.module('bahmni.registration')
     .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams',
         '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService',
-        'messagingService', '$translate', 'offlineService',
+        'messagingService', '$translate', 'offlineService', 'configurationService', 'auditLogService',
         function ($window, $location, $state, spinner, $rootScope, $stateParams,
                   $bahmniCookieStore, appService, visitService, sessionService, encounterService,
-                  messagingService, $translate, offlineService) {
+                  messagingService, $translate, offlineService, configurationService, auditLogService) {
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;
@@ -142,6 +142,19 @@ angular.module('bahmni.registration')
                     return _.isEmpty($rootScope.visitLocation);
                 };
 
+                var logVisit = function (patientUuid, visitUuid) {
+                    configurationService.getConfigurations(['enableAuditLog']).then(function (result) {
+                        if (result.enableAuditLog) {
+                            var params = {};
+                            params.patientUuid = patientUuid;
+                            params.eventType = Bahmni.Common.AuditLogEventDetails["OPEN_VISIT"].eventType;
+                            params.message = Bahmni.Common.AuditLogEventDetails["OPEN_VISIT"].message + '~' + visitUuid;
+                            params.module = "registration";
+                            auditLogService.auditLog(params);
+                        }
+                    });
+                };
+
                 var createVisit = function (patientProfileData, forwardUrl) {
                     if (isEmptyVisitLocation()) {
                         $state.go('patient.edit', {patientUuid: $scope.patient.uuid}).then(function () {
@@ -149,8 +162,8 @@ angular.module('bahmni.registration')
                         });
                         return;
                     }
-                    spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function () {
-                        $rootScope.createAuditLog("open_visit", {name: "patient.openvisit"}, {patientUuid: patientProfileData.patient.uuid}, {});
+                    spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function (response) {
+                        logVisit(patientProfileData.patient.uuid, response.data.uuid);
                         if (forwardUrl) {
                             var updatedForwardUrl = appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patientProfileData.patient.uuid});
                             $window.location.href = updatedForwardUrl;

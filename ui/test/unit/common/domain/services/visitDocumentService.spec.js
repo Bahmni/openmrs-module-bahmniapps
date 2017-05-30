@@ -1,18 +1,21 @@
-"use strict"
+"use strict";
 
 describe("visitDocumentService", function () {
-    var _$http;
-    var _$rootScope;
-    var _provide;
-    var visitDocumentService;
+    var _$http, _provide, visitDocumentService, _configurationService, _auditLogService;
     beforeEach(function() {
         module('bahmni.common.domain');
         module(function($provide) {
             _$http = jasmine.createSpyObj("$http", ['post', 'delete']);
+            _configurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
+            _configurationService.getConfigurations.and.returnValue(specUtil.simplePromise({enableAuditLog: true}));
+            _auditLogService = jasmine.createSpyObj('auditLogService', ['auditLog']);
+            _auditLogService.auditLog.and.returnValue(specUtil.simplePromise({}));
             _provide = $provide;
         });
         inject(function(){
             _provide.value('$http', _$http);
+            _provide.value('configurationService', _configurationService);
+            _provide.value('auditLogService', _auditLogService);
         });
         inject(function(_visitDocumentService_){
             visitDocumentService = _visitDocumentService_;
@@ -73,10 +76,26 @@ describe("visitDocumentService", function () {
                 obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d658e"
             }]
         };
+        _$http.post.and.returnValue(specUtil.respondWithPromise(Q, {data: {}}));
         visitDocumentService.save(visitDocuments);
         expect(_$http.delete).toHaveBeenCalledWith(url, {withCredentials: true});
         expect(_$http.delete.calls.count()).toBe(1);
         expect(_$http.post).toHaveBeenCalledWith(Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument", visitDocuments);
+    });
+
+    it('should log when uploading files for a new visit', function(){
+        var visitDocuments = {documents: [], patientUuid: 'patientUuid'};
+        var params = {
+            patientUuid: 'patientUuid',
+            eventType: 'OPEN_VISIT',
+            message: 'OPEN_VISIT_MESSAGE~visitUuid',
+            module: 'document upload'
+        };
+        _$http.post.and.returnValue(specUtil.createFakePromise({visitUuid: 'visitUuid'}));
+        visitDocumentService.save(visitDocuments);
+        expect(_$http.post).toHaveBeenCalledWith(Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument", visitDocuments);
+        expect(_configurationService.getConfigurations).toHaveBeenCalledWith(['enableAuditLog']);
+        expect(_auditLogService.auditLog).toHaveBeenCalledWith(params);
     });
 
     describe("getFileType", function () {
