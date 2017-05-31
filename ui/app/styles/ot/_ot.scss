@@ -1,79 +1,83 @@
 .ot-header-wrapper {
-  margin-bottom: 140px;
+  margin-bottom: 120px;
 }
-  .ot-secondary-header {
-    height: 55px;
-    background-color: white;
-    box-shadow: 0px 0px 0px;
-    border-bottom: 1px #cccecf solid;
-    .ot-surgical-button {
-      float: right;
-      margin-right: 100px;
-      margin-top: 11px;
-    }
-  }
-  .ot-scheduling-nav {
-    overflow: hidden;
-    margin: 10px 0 0 10px;
-    li {
-      overflow: hidden;
-      border-radius: 5px;
-      margin-right: 10px;
-      display: inline-block;
-      &:last-child {
-        margin: 0;
-      }
-      a {
-        display: inline-block;
-        color: #fff !important;
-        padding: 10px;
-      }
-      &.active {
-        background: rgba(0, 0, 0, 0.2);
-      }
-    }
-  }
 
-  div[ng-app="ot"] {
-    .non-icon-back-btn {
-      padding: 12px 10px;
+.ot-secondary-header {
+  height: 55px;
+  background-color: white;
+  box-shadow: 0px 0px 0px;
+  border-bottom: 1px #cccecf solid;
+  .ot-surgical-button {
+    float: right;
+    margin-right: 10px;
+    margin-top: 11px;
+  }
+}
+
+.ot-scheduling-nav {
+  overflow: hidden;
+  margin: 10px 0 0 10px;
+  li {
+    overflow: hidden;
+    border-radius: 5px;
+    margin-right: 10px;
+    display: inline-block;
+    &:last-child {
+      margin: 0;
+    }
+    a {
+      display: inline-block;
+      color: #fff !important;
+      padding: 10px;
+    }
+    &.active {
+      background: rgba(0, 0, 0, 0.2);
     }
   }
-  .navigation-links-buttons {
-    height: 55px;
+}
+
+div[ng-app="ot"] {
+  .non-icon-back-btn {
+    padding: 12px 10px;
+  }
+}
+
+.navigation-links-buttons {
+  height: 55px;
+  float: right;
+  padding: 10px;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  input {
+    font-size: 15px;
+    border: none;
+    outline: none;
+    background: transparent;
     float: right;
-    padding: 10px;
-    overflow: hidden;
-    width: 100%;
-    box-sizing: border-box;
-    input {
-      font-size: 15px;
-      border: none;
-      outline: none;
+    margin-left: 10px;
+    &:hover {
       background: transparent;
-      float: right;
-      margin-left: 10px;
-      &:hover {
-        background: transparent;
-        opacity: 0.8;
-      }
-      &.ot-nav-save {
-        background: #99c915;
-        border: 1px solid #99c915;
-        color: #fff;
-      }
-      &.ot-nav-back {
-        border: 1px solid #cccecf;
-        color: #000;
-      }
+      opacity: 0.8;
     }
-    span {
-      display: inline-block;
-      padding: 10px 0 0 10px;
-      font-size: 17px;
+    &.ot-nav-save {
+      background: #99c915;
+      border: 1px solid #99c915;
+      color: #fff;
+    }
+    &.ot-nav-back {
+      border: 1px solid #cccecf;
       color: #000;
     }
   }
+  span {
+    display: inline-block;
+    padding: 10px 0 0 10px;
+    font-size: 17px;
+    color: #000;
+  }
+}
+
 .create-surgical-title {
   font-size: 15px;
   text-align: center;
@@ -99,6 +103,7 @@
     }
   }
 }
+
 .new-surgical-appointment {
   display: block;
   overflow: hidden;
@@ -150,7 +155,7 @@
             }
           }
         }
-        .location-block span label{
+        .location-block span label {
           border-radius: 11px;
           background: #e6e6e6;
           color: #6c6c6c;
@@ -196,7 +201,7 @@
           text-align: center;
           border: 0;
         }
-        td{
+        td {
           border: 0;
           position: relative;
           > i {
@@ -261,52 +266,34 @@
 
 .ngdialog.surgical-appointment-dialog {
   padding: 0;
-    .ngdialog-overlay {
-      background: transparent;
+  .ngdialog-overlay {
+    background: transparent;
+  }
+  .ngdialog-content {
+    width: 500px;
+    top: 42px;
+    margin: 10px;
+    left: calc(100% - 510px);
+    height: calc(100% - 53px);
+    margin-bottom: 0;
+    border-radius: 0;
+    background: #eee;
+    box-shadow: -4px 5px 21px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    .appointment-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #484848;
+      margin: 0 0 10px;
     }
-    .ngdialog-content {
-      width: 500px;
-      top: 42px;
-      margin: 10px;
-      left: calc(100% - 510px);
-      height: calc(100% - 53px);
-      margin-bottom: 0;
-      border-radius: 0;
-      background: #eee;
-      box-shadow: -4px 5px 21px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-     .appointment-title {
-       font-size: 14px;
-       font-weight: bold;
-       color: #484848;
-       margin: 0 0 10px;
-     }
-      .appointment-block {
-        p {
-          overflow: hidden;
-          margin-bottom: 10px;
-          label {
-            width: 125px;
-            float: left;
-            text-align: right;
-            margin-right: 10px;
-          }
-          input[type=text] {
-            width: calc(100% - 200px);
-            padding: 10px;
-            border-radius: 3px;
-            position: relative;
-          }
-          > i {
-            right: 85px;
-            position: absolute;
-            top: 57px;
-            color: #cac9c9;
-          }
-          select {
-            height: 35px;
-            padding: 10px;
-            width: 253px;
-          }
+    .appointment-block {
+      p {
+        overflow: hidden;
+        margin-bottom: 10px;
+        label {
+          width: 125px;
+          float: left;
+          text-align: right;
+          margin-right: 10px;
         }
 
         input.add {
@@ -322,13 +309,218 @@
           font-size: 15px;
           margin: 0 65px 0 10px;
         }
-        textarea {
+        input[type=text] {
           width: calc(100% - 200px);
           padding: 10px;
-          box-sizing: border-box;
-          min-height: 80px;
+          border-radius: 3px;
+          position: relative;
+        }
+        > i {
+          right: 85px;
+          position: absolute;
+          top: 57px;
+          color: #cac9c9;
+        }
+        select {
+          height: 35px;
+          padding: 10px;
+          width: 253px;
         }
       }
 
+      input.add {
+        background: #99c915;
+        border: 1px solid #99c915;
+        color: #fff;
+        font-size: 15px;
+        margin-left: -20px;
+      }
+      input.cancel {
+        background: #fff;
+        border: 1px solid #cccecf;
+        color: #000;
+        font-size: 15px;
+        margin-left: 10px;
+      }
+      textarea {
+        width: calc(100% - 200px);
+        padding: 10px;
+        box-sizing: border-box;
+        min-height: 80px;
+      }
     }
+
+  }
+}
+
+.calendar {
+  overflow: auto;
+  height: calc(100vh - 225px);
+  .calendar-location {
+    margin-left: 80px;
+    overflow: hidden;
+    float: left;
+    display: flex;
+    .heading-cell {
+      width: 300px;
+      box-sizing: border-box;
+      text-align: center;
+      float: left;
+      border-bottom: 0.5px solid lightgrey;
+      padding: 10px 0;
+    }
+  }
+  .table-block {
+    clear: left;
+
+    .calendar-time-container {
+      float: left;
+      .calendar-time {
+        width: 80px;
+        height: 120px;
+        box-sizing: border-box;
+        border-right: 0.5px solid lightgrey;
+        padding-right: 5px;
+        text-align: right;
+
+      }
+    }
+
+    .ot-block-container {
+      float: left;
+      position: relative;
+      width: calc(100% - 80px);
+    .ot-block-wrapper {
+      position: absolute;
+      display: flex;
+      left: 0;
+      overflow: auto;
+      padding-bottom: 5px;
+    }
+      .calendar-cell {
+        border-bottom: 0.5px solid lightgrey;
+        border-right: 0.5px solid lightgrey;
+        width: 300px;
+        flex-basis: 80px;
+        height: 120px;
+        box-sizing: border-box;
+      }
+      .ot-block {
+        width: 300px;
+        float: left;
+        position: relative;
+        .surgical-block {
+          width: calc(100% - 10px);
+          border: 0.5px solid #1976D2;
+        }
+      }
+    }
+  }
+}
+.surgical-block {
+  position: absolute;
+  margin: 0 5px;
+  border-radius: 3px;
+  .surgical-block-appointment {
+    border: 1px solid #1976D2;
+    padding: 5px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+    &.expanded {
+      z-index: 1;
+    }
+    button {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 0;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    p {
+      font-size: 12px;
+    }
+    .surgicalblock-patientname {
+      font-weight: 600;
+      color: #000;
+      font-size: 14px;
+    }
+  }
+  .surgicalBlock-surgenName {
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+  }
+}
+.ot-top-button-wrapper {
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 15px;
+  padding: 5px 0;
+  p {
+    display: inline-block;
+  }
+  .calendar-day-navigation {
+    float: left;
+    margin-left: 10px;
+    button {
+      background: #f8f8f8;
+      -webkit-box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+      box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+      padding: 5px 10px;
+      color: #95989a;
+      border: 1px solid #95989a;
+      margin-right: 2px;
+    }
+  }
+  .calender-current-day {
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 175px;
+    text-align: center;
+    bottom: 0;
+    height: 20px;
+    font-weight: 600;
+  }
+  .view-switch {
+    float: right;
+  }
+  button {
+    -webkit-box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    padding: 5px 10px;
+    color: #000;
+    border: 1px solid #95989a;
+    margin-right: 10px;
+    background: #fff;
+    &:hover {
+      background: #ececec;
+      opacity: 1;
+    }
+    &.active {
+      background: #d6d6d6;
+    }
+  }
+}
+.surgical-action-wrapper {
+  text-align: right;
+  padding-top: 15px;
+  button {
+    -webkit-box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    padding: 5px 10px;
+    color: #000;
+    border: 1px solid #95989a;
+    margin-right: 10px;
+    background: #fff;
+  }
 }

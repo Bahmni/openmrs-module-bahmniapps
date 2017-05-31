@@ -1,0 +1,8 @@
+<div ng-class="{'expanded' : toggleHeight }"  ng-style="{ height: toggleHeight? auto : height + 'px', background : backgroundColor }"
+     ng-focus="enableEditOnAppointment()" tabindex="1" ng-click="selectSurgicalAppointment($event)" class="surgical-block-appointment">
+    <button ng-click="toggleHeight =!toggleHeight"><i class="fa" ng-class="{'fa-angle-up' : toggleHeight, 'fa-angle-down': !toggleHeight}" aria-hidden="true"></i></button>
+    <p class="surgicalblock-patientname"> {{patient}} </p>
+    <p ng-if="attributes.procedure"> Procedure - {{attributes.procedure}} </p>
+    <p ng-if="attributes.anaesthetist"> Anaesthetist - {{attributes.anaesthetist}} </p>
+    <p ng-if="surgicalAppointment.notes"> Notes - {{surgicalAppointment.notes}} </p>
+</div>
