@@ -25,7 +25,6 @@ describe("otCalendarController", function () {
         }
     ];
 
-
     locationService.getAllByTag.and.callFake(function () {
         return {data: {results: [{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}]}};
     });
@@ -41,11 +40,6 @@ describe("otCalendarController", function () {
             q = $q;
         });
     });
-
-    afterEach(function () {
-        scope.$apply();
-    });
-
 
     spinner.forPromise.and.returnValue(specUtil.createFakePromise({}));
 
@@ -100,5 +94,25 @@ describe("otCalendarController", function () {
         expect(scope.surgicalBlocksByLocation[1][0]).toEqual(surgicalBlocks[1]);
     });
 
+    it('should set the day view split as integer', function () {
+        createController();
+        expect(scope.dayViewSplit).toEqual(60);
+    });
 
+    it('should set the calendarStartDatetime and calendarEndDattime', function () {
+        createController();
+        expect(scope.calendarStartDatetime).toEqual(new Date('2017-02-19 09:00:00'));
+        expect(scope.calendarEndDatetime).toEqual(new Date('2017-02-19 16:30:00'));
+    });
+
+    it('should disable the edit, delete and actual time buttons when clicked on calendar div', function () {
+        createController();
+        scope.editandDeleteDisabled = false;
+        scope.addActualTimeDisabled = false;
+
+        scope.remove();
+
+        expect(scope.editandDeleteDisabled).toBeTruthy();
+        expect(scope.addActualTimeDisabled).toBeTruthy();
+    });
 });

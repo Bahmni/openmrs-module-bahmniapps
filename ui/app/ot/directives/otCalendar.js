@@ -11,6 +11,6 @@ angular.module('bahmni.ot')
                 dayViewEnd: "=",
                 dayViewSplit: "="
             },
-            templateUrl: "../ot/views/calendar.html"
+            templateUrl: "../ot/views/otCalendar.html"
         };
     }]);
