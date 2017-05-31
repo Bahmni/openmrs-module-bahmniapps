@@ -182,7 +182,7 @@ describe("SurgicalBlockMapper", function () {
                 "uuid": "bde80e15-3f81-11e7-97ea-0800274a5156",
                 "name": "estTimeHours"
             },
-            "value": "1"
+            "value": "0"
         },
         {
             "id": 105,
@@ -257,7 +257,7 @@ describe("SurgicalBlockMapper", function () {
                 "uuid": "bde80e15-3f81-11e7-97ea-0800274a5156",
                 "name": "estTimeHours"
             },
-            "value": "1"
+            "value": 0
         }, "anaesthetist": {
             "id": 105,
             "surgicalAppointmentAttributeType": {
@@ -306,7 +306,7 @@ describe("SurgicalBlockMapper", function () {
                 "uuid": "bde85c99-3f81-11e7-97ea-0800274a5156",
                 "name": "estTimeMinutes"
             },
-            "value": "30"
+            "value": 30
         }, "circulatingNurse": {
             "id": 111,
             "surgicalAppointmentAttributeType": {
@@ -320,7 +320,7 @@ describe("SurgicalBlockMapper", function () {
                 "uuid": "bde8c614-3f81-11e7-97ea-0800274a5156",
                 "name": "cleaningTime"
             },
-            "value": "15"
+            "value": 15
         }
     };
 
