@@ -37,19 +37,22 @@ describe("calendarViewController", function () {
         createController();
         scope.viewDate = new Date(moment('2017-02-01').startOf('day'));
         scope.goToPreviousDate(scope.viewDate);
-        expect(scope.viewDate).toEqual(new Date(moment('2017-01-31').startOf('day')));
+        expect(scope.viewDate).toEqual((moment('2017-01-31').startOf('day')).toDate());
+        expect(state.viewDate).toEqual((moment('2017-01-31').startOf('day')).toDate());
     });
 
     it('should go to the next date on click of right arrow', function () {
         createController();
         scope.viewDate = new Date(moment('2017-02-01').startOf('day'));
         scope.goToNextDate(scope.viewDate);
-        expect(scope.viewDate).toEqual(new Date(moment('2017-02-02').startOf('day')));
+        expect(scope.viewDate).toEqual((moment('2017-02-02').startOf('day')).toDate());
+        expect(state.viewDate).toEqual((moment('2017-02-02').startOf('day')).toDate());
     });
 
     it('should go to the current date on click of today', function () {
         createController();
         scope.goToCurrentDate();
-        expect(scope.viewDate).toEqual(new Date(moment().startOf('day')));
+        expect(scope.viewDate).toEqual((moment().startOf('day')).toDate());
+        expect(state.viewDate).toEqual((moment().startOf('day')).toDate());
     });
 });

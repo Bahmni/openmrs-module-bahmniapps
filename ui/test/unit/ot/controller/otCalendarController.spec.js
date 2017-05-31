@@ -1,10 +1,11 @@
 'use strict';
 
 describe("otCalendarController", function () {
-    var scope, controller, q, spinner;
+    var scope, controller, q, spinner, state;
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
     var spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgicalBlocksInDateRange']);
+    var state = jasmine.createSpyObj('state', ['go']);
 
     var surgicalBlocks = [
         {
@@ -13,7 +14,8 @@ describe("otCalendarController", function () {
             location: {uuid: "uuid1", name: "location1"},
             surgicalAppointments: [],
             startDatetime: "2001-10-04T09:00:00.000+0530",
-            endDatetime: "2001-10-04T21:00:00.000+0530"
+            endDatetime: "2001-10-04T21:00:00.000+0530",
+            uuid: "surgical-block1-uuid"
         },
         {
             id: 61,
@@ -53,7 +55,8 @@ describe("otCalendarController", function () {
             locationService: locationService,
             $q: q,
             spinner: spinner,
-            surgicalAppointmentService: surgicalAppointmentService
+            surgicalAppointmentService: surgicalAppointmentService,
+            $state: state
         });
         scope.$apply();
     };
@@ -71,10 +74,10 @@ describe("otCalendarController", function () {
         var rows = scope.getRowsForCalendar();
 
         expect(rows.length).toEqual(8);
-        expect(rows[0].date).toEqual(new Date('2017-02-19 09:00:00'));
-        expect(rows[1].date).toEqual(new Date('2017-02-19 10:00:00'));
-        expect(rows[2].date).toEqual(new Date('2017-02-19 11:00:00'));
-        expect(rows[7].date).toEqual(new Date('2017-02-19 16:00:00'));
+        expect(rows[0].date).toEqual(moment('2017-02-19 09:00:00').toDate());
+        expect(rows[1].date).toEqual(moment('2017-02-19 10:00:00').toDate());
+        expect(rows[2].date).toEqual(moment('2017-02-19 11:00:00').toDate());
+        expect(rows[7].date).toEqual(moment('2017-02-19 16:00:00').toDate());
     });
 
     it('should fetch the locations with operation theater tag', function () {
@@ -101,8 +104,8 @@ describe("otCalendarController", function () {
 
     it('should set the calendarStartDatetime and calendarEndDattime', function () {
         createController();
-        expect(scope.calendarStartDatetime).toEqual(new Date('2017-02-19 09:00:00'));
-        expect(scope.calendarEndDatetime).toEqual(new Date('2017-02-19 16:30:00'));
+        expect(scope.calendarStartDatetime).toEqual(moment('2017-02-19 09:00:00').toDate());
+        expect(scope.calendarEndDatetime).toEqual(moment('2017-02-19 16:30:00').toDate());
     });
 
     it('should disable the edit, delete and actual time buttons when clicked on calendar div', function () {
@@ -114,5 +117,17 @@ describe("otCalendarController", function () {
 
         expect(scope.editandDeleteDisabled).toBeTruthy();
         expect(scope.addActualTimeDisabled).toBeTruthy();
+    });
+
+    it('should navigate to edit surgical block page on clicking edit button', function () {
+        var event = {
+            stopPropagation: function () {
+            }
+        };
+        createController();
+        scope.surgicalBlockSelected = surgicalBlocks[0];
+        scope.goToEdit(event);
+        expect(state.go).toHaveBeenCalledWith("editSurgicalAppointment",
+            jasmine.objectContaining({surgicalBlockUuid : "surgical-block1-uuid"}));
     });
 });

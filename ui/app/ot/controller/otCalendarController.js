@@ -1,9 +1,11 @@
 angular.module('bahmni.ot')
-    .controller('otCalendarController', ['$scope', '$q', 'spinner', 'locationService', 'surgicalAppointmentService',
-        function ($scope, $q, spinner, locationService, surgicalAppointmentService) {
+    .controller('otCalendarController', ['$scope', '$q', 'spinner', 'locationService', 'surgicalAppointmentService', '$state',
+        function ($scope, $q, spinner, locationService, surgicalAppointmentService, $state) {
             var init = function () {
                 var dayStart = ($scope.dayViewStart || '00:00').split(':');
                 var dayEnd = ($scope.dayViewEnd || '23:59').split(':');
+                $scope.surgicalBlockSelected = {};
+                $scope.surgicalAppointmentSelected = {};
                 $scope.editandDeleteDisabled = true;
                 $scope.addActualTimeDisabled = true;
                 $scope.dayViewSplit = parseInt($scope.dayViewSplit) > 0 ? parseInt($scope.dayViewSplit) : 60;
@@ -53,12 +55,22 @@ angular.module('bahmni.ot')
             $scope.$on("event:surgicalAppointmentSelect", function (event, surgicalAppointment) {
                 $scope.editandDeleteDisabled = false;
                 $scope.addActualTimeDisabled = false;
+                $scope.surgicalBlockSelected = {};
             });
 
             $scope.$on("event:surgicalBlockSelect", function (event, surgicalBlock) {
                 $scope.editandDeleteDisabled = false;
                 $scope.addActualTimeDisabled = true;
+                $scope.surgicalBlockSelected = surgicalBlock;
             });
 
+            $scope.goToEdit = function ($event) {
+                if (Object.keys($scope.surgicalBlockSelected).length != 0) {
+                    var options = {surgicalBlockUuid: $scope.surgicalBlockSelected.uuid};
+                    options['dashboardCachebuster'] = Math.random();
+                    $state.go("editSurgicalAppointment", options);
+                    $event.stopPropagation();
+                }
+            };
             spinner.forPromise(init());
         }]);

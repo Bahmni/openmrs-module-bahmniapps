@@ -3,7 +3,7 @@
      ng-click="selectSurgicalBlock($event)"
      tabindex="1">
 
-<div ng-repeat="surgicalAppointment in surgicalBlock.surgicalAppointments">
+<div ng-repeat="surgicalAppointment in surgicalBlock.surgicalAppointments | orderBy: 'sortWeight'">
     <ot-calendar-surgical-appointment surgical-appointment="surgicalAppointment"
                                       background-color="blockDimensions.color"
                                       height-per-min="blockDimensions.appointmentHeightPerMin"></ot-calendar-surgical-appointment>
