@@ -374,6 +374,7 @@ div[ng-app="ot"] {
       display: flex;
       left: 0;
       overflow: auto;
+      padding-bottom: 5px;
     }
       .calendar-cell {
         border-bottom: 0.5px solid lightgrey;
@@ -440,6 +441,7 @@ div[ng-app="ot"] {
   overflow: hidden;
   position: relative;
   margin-bottom: 15px;
+  padding: 5px 0;
   p {
     display: inline-block;
   }
