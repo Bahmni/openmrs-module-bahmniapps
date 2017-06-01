@@ -73,7 +73,8 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                     navigationLinks: navigationLinks
                 },
                 params: {
-                    dashboardCachebuster: null
+                    dashboardCachebuster: null,
+                    surgicalAppointmentId: null
                 },
                 views: {
                     'content': {

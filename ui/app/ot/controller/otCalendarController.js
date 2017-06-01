@@ -52,21 +52,28 @@ angular.module('bahmni.ot')
                 }
             });
 
-            $scope.$on("event:surgicalAppointmentSelect", function (event, surgicalAppointment) {
+            $scope.$on("event:surgicalAppointmentSelect", function (event, surgicalAppointment, surgicalBlock) {
                 $scope.editandDeleteDisabled = false;
                 $scope.addActualTimeDisabled = false;
-                $scope.surgicalBlockSelected = {};
+                $scope.surgicalAppointmentSelected = surgicalAppointment;
+                $scope.surgicalBlockSelected = surgicalBlock;
             });
 
             $scope.$on("event:surgicalBlockSelect", function (event, surgicalBlock) {
                 $scope.editandDeleteDisabled = false;
                 $scope.addActualTimeDisabled = true;
                 $scope.surgicalBlockSelected = surgicalBlock;
+                $scope.surgicalAppointmentSelected = {};
             });
 
             $scope.goToEdit = function ($event) {
                 if (Object.keys($scope.surgicalBlockSelected).length != 0) {
-                    var options = {surgicalBlockUuid: $scope.surgicalBlockSelected.uuid};
+                    var options = {
+                        surgicalBlockUuid: $scope.surgicalBlockSelected.uuid
+                    };
+                    if (Object.keys($scope.surgicalAppointmentSelected).length != 0) {
+                        options['surgicalAppointmentId'] = $scope.surgicalAppointmentSelected.id;
+                    }
                     options['dashboardCachebuster'] = Math.random();
                     $state.go("editSurgicalAppointment", options);
                     $event.stopPropagation();

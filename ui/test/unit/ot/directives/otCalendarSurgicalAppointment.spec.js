@@ -120,7 +120,9 @@ describe("otCalendarSurgicalAppointment", function () {
             stopPropagation: function () {
             }
         };
+        var surgicalBlock = {uuid: "surgicalBlockUuid"};
         scope.surgicalAppointment = surgicalAppointment;
+        scope.$parent.surgicalBlock =  surgicalBlock;
 
         mockBackend.expectGET('../ot/views/calendarSurgicalAppointment.html').respond("<div>dummy</div>");
         element = $compile(simpleHtml)(scope);
@@ -131,7 +133,7 @@ describe("otCalendarSurgicalAppointment", function () {
         spyOn(compiledElementScope, "$emit");
 
         compiledElementScope.selectSurgicalAppointment(event);
-        expect(compiledElementScope.$emit).toHaveBeenCalledWith("event:surgicalAppointmentSelect", compiledElementScope.surgicalAppointment);
+        expect(compiledElementScope.$emit).toHaveBeenCalledWith("event:surgicalAppointmentSelect", compiledElementScope.surgicalAppointment, surgicalBlock);
     });
 
 });

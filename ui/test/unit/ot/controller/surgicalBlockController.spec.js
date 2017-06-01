@@ -591,4 +591,42 @@ describe("surgicalBlockController", function () {
         expect(scope.surgicalForm.surgicalAppointments[2].id).toBe(2);
         expect(scope.surgicalForm.surgicalAppointments[2].sortWeight).toBe(2);
     });
+
+    it("should open the surgical appointment for edit when appointment id is provided in stateparams", function () {
+        var surgicalBlock = {};
+        surgicalBlock.uuid = "surgicalBlockUuid";
+        surgicalBlock.voided = false;
+        surgicalBlock.surgicalAppointments = [
+            {
+                id: 11,
+                patient: {uuid: "patientUuid"},
+                notes: "need more assistants",
+                sortWeight: 0,
+                surgicalAppointmentAttributes: []
+            },
+            {
+                id: 12,
+                patient: {uuid: "patientUuid"},
+                notes: "need more assistants",
+                sortWeight: 1,
+                surgicalAppointmentAttributes: []
+            }
+        ];
+
+        surgicalAppointmentService.getSurgicalBlockFor.and.returnValue(specUtil.simplePromise({data: surgicalBlock}));
+        stateParams.surgicalBlockUuid = "surgicalBlockUuid";
+        stateParams.surgicalAppointmentId = 11;
+
+        createController();
+
+        expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
+            template: "views/surgicalAppointment.html",
+            controller: "NewSurgicalAppointmentController",
+            closeByDocument: false,
+            className: 'ngdialog-theme-default surgical-appointment-dialog',
+            showClose: true,
+            scope: scope,
+            data: scope.surgicalForm.surgicalAppointments[0]
+        }));
+    });
 });

@@ -25,7 +25,7 @@ angular.module('bahmni.ot')
             };
 
             $scope.selectSurgicalAppointment = function ($event) {
-                $scope.$emit("event:surgicalAppointmentSelect", $scope.surgicalAppointment);
+                $scope.$emit("event:surgicalAppointmentSelect", $scope.surgicalAppointment, $scope.$parent.surgicalBlock);
                 $event.stopPropagation();
             };
             getDataForSurgicalAppointment();

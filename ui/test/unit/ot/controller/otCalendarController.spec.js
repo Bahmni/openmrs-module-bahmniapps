@@ -12,7 +12,7 @@ describe("otCalendarController", function () {
             id: 60,
             provider: {uuid: "providerUuid1", display: "Doctor Strange"},
             location: {uuid: "uuid1", name: "location1"},
-            surgicalAppointments: [],
+            surgicalAppointments: [ {id: 48, surgicalAppointmentAttributes: []}],
             startDatetime: "2001-10-04T09:00:00.000+0530",
             endDatetime: "2001-10-04T21:00:00.000+0530",
             uuid: "surgical-block1-uuid"
@@ -119,7 +119,7 @@ describe("otCalendarController", function () {
         expect(scope.addActualTimeDisabled).toBeTruthy();
     });
 
-    it('should navigate to edit surgical block page on clicking edit button', function () {
+    it('should navigate to edit surgical block page with surgicalBlock details clicking edit button', function () {
         var event = {
             stopPropagation: function () {
             }
@@ -130,4 +130,18 @@ describe("otCalendarController", function () {
         expect(state.go).toHaveBeenCalledWith("editSurgicalAppointment",
             jasmine.objectContaining({surgicalBlockUuid : "surgical-block1-uuid"}));
     });
+
+    it('should navigate to edit surgical block page  with surgical block and appointment details on clicking edit button', function () {
+        var event = {
+            stopPropagation: function () {
+            }
+        };
+        createController();
+        scope.surgicalBlockSelected = surgicalBlocks[0];
+        scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
+        scope.goToEdit(event);
+        expect(state.go).toHaveBeenCalledWith("editSurgicalAppointment",
+            jasmine.objectContaining({surgicalBlockUuid : "surgical-block1-uuid", surgicalAppointmentId : 48}));
+    });
+
 });

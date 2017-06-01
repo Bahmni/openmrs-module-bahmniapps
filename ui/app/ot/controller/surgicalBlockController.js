@@ -15,6 +15,11 @@ angular.module('bahmni.ot')
                     if ($stateParams.surgicalBlockUuid) {
                         return surgicalAppointmentService.getSurgicalBlockFor($stateParams.surgicalBlockUuid).then(function (response) {
                             $scope.surgicalForm = new Bahmni.OT.SurgicalBlockMapper().map(response.data, $scope.attributeTypes, $scope.surgeons);
+                            if ($stateParams.surgicalAppointmentId) {
+                                $scope.editAppointment(_.find($scope.surgicalForm.surgicalAppointments, function (appointment) {
+                                    return appointment.id === $stateParams.surgicalAppointmentId;
+                                }));
+                            }
                             return response;
                         });
                     }
