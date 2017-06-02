@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .directive('otCalendarSurgicalAppointment', [function () {
+    .directive('otCalendarSurgicalAppointment', ['surgicalAppointmentHelper', function (surgicalAppointmentHelper) {
         var link = function ($scope) {
             $scope.attributes = _.reduce($scope.surgicalAppointment.surgicalAppointmentAttributes, function (attributes, attribute) {
                 attributes[attribute.surgicalAppointmentAttributeType.name] = attribute.value;
@@ -10,7 +10,7 @@ angular.module('bahmni.ot')
 
             var getDataForSurgicalAppointment = function () {
                 $scope.height = getHeightForSurgicalAppointment();
-                $scope.patient = $scope.surgicalAppointment.patient.display.split('-')[1] + " ( " + $scope.surgicalAppointment.patient.display.split('-')[0] + " )";
+                $scope.patient = surgicalAppointmentHelper.getPatientDisplayLabel($scope.surgicalAppointment.patient.display);
             };
 
             var getHeightForSurgicalAppointment = function () {

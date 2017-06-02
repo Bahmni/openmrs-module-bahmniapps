@@ -18,6 +18,14 @@ angular.module('bahmni.ot')
             });
         };
 
+        this.updateSurgicalAppointment = function (data) {
+            return $http.post(Bahmni.OT.Constants.updateSurgicalAppointmentUrl, data, {
+                params: {v: "full"},
+                withCredentials: true,
+                headers: {"Accept": "application/json", "Content-Type": "application/json"}
+            });
+        };
+
         this.getSurgicalAppointmentAttributeTypes = function () {
             return $http.get(Bahmni.OT.Constants.surgicalAppointmentAttributeTypeUrl, {
                 method: "GET",
@@ -36,7 +44,10 @@ angular.module('bahmni.ot')
         this.getSurgicalBlocksInDateRange = function (startDatetime, endDatetime) {
             return $http.get(Bahmni.OT.Constants.addSurgicalBlockUrl, {
                 method: "GET",
-                params: {startDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDatetime), endDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDatetime)},
+                params: {
+                    startDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDatetime),
+                    endDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDatetime)
+                },
                 withCredentials: true
             });
         };
