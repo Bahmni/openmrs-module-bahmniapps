@@ -1,8 +1,6 @@
-'use strict';
-
 angular.module('bahmni.ot')
-    .controller('otCalendarController', ['$scope', '$q', 'spinner', 'locationService', 'surgicalAppointmentService', '$state', 'ngDialog',
-        function ($scope, $q, spinner, locationService, surgicalAppointmentService, $state, ngDialog) {
+    .controller('otCalendarController', ['$scope', '$q', 'spinner', 'locationService', 'surgicalAppointmentService', '$state',
+        function ($scope, $q, spinner, locationService, surgicalAppointmentService, $state) {
             var init = function () {
                 var dayStart = ($scope.dayViewStart || '00:00').split(':');
                 var dayEnd = ($scope.dayViewEnd || '23:59').split(':');
@@ -28,8 +26,6 @@ angular.module('bahmni.ot')
             $scope.remove = function () {
                 $scope.editandDeleteDisabled = true;
                 $scope.addActualTimeDisabled = true;
-                $scope.surgicalBlockSelected = {};
-                $scope.surgicalAppointmentSelected = {};
             };
 
             $scope.intervals = function () {
@@ -82,20 +78,6 @@ angular.module('bahmni.ot')
                     $state.go("editSurgicalAppointment", options);
                     $event.stopPropagation();
                 }
-            };
-
-            $scope.addActualTime = function () {
-                ngDialog.open({
-                    template: "views/addActualTimeDialog.html",
-                    closeByDocument: false,
-                    controller: "surgicalAppointmentActualTimeController",
-                    className: 'ngdialog-theme-default ng-dialog-adt-popUp',
-                    showClose: true,
-                    data: {
-                        surgicalBlock: $scope.surgicalBlockSelected,
-                        surgicalAppointment: $scope.surgicalAppointmentSelected
-                    }
-                });
             };
             spinner.forPromise(init());
         }]);

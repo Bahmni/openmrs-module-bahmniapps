@@ -6,7 +6,6 @@ describe("otCalendarController", function () {
     var spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgicalBlocksInDateRange']);
     var state = jasmine.createSpyObj('state', ['go']);
-    var ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
 
     var surgicalBlocks = [
         {
@@ -57,8 +56,7 @@ describe("otCalendarController", function () {
             $q: q,
             spinner: spinner,
             surgicalAppointmentService: surgicalAppointmentService,
-            $state: state,
-            ngDialog: ngDialog
+            $state: state
         });
         scope.$apply();
     };
