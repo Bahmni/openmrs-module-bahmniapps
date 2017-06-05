@@ -28,9 +28,7 @@ angular.module('bahmni.ot')
             };
 
             var getAppointmentDuration = function (surgicalAppointment) {
-                return parseInt(surgicalAppointment.surgicalAppointmentAttributes.cleaningTime.value) +
-                    parseInt(surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value) +
-                    parseInt(surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value) * 60;
+                return surgicalAppointmentHelper.getAppointmentDuration(surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value, surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value, surgicalAppointment.surgicalAppointmentAttributes.cleaningTime.value);
             };
 
             var getAvailableBlockDuration = function () {
