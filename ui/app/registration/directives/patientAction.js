@@ -142,13 +142,14 @@ angular.module('bahmni.registration')
                     return _.isEmpty($rootScope.visitLocation);
                 };
 
-                var logVisit = function (patientUuid, visitUuid) {
+                var log = function (patientUuid, visitUuid, visitType) {
                     configurationService.getConfigurations(['enableAuditLog']).then(function (result) {
                         if (result.enableAuditLog) {
                             var params = {};
                             params.patientUuid = patientUuid;
                             params.eventType = Bahmni.Common.AuditLogEventDetails["OPEN_VISIT"].eventType;
-                            params.message = Bahmni.Common.AuditLogEventDetails["OPEN_VISIT"].message + '~' + visitUuid;
+                            params.message = Bahmni.Common.AuditLogEventDetails["OPEN_VISIT"].message + '~' +
+                                             JSON.stringify({visitUuid: visitUuid, visitType: visitType});
                             params.module = "registration";
                             auditLogService.auditLog(params);
                         }
@@ -163,7 +164,7 @@ angular.module('bahmni.registration')
                         return;
                     }
                     spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function (response) {
-                        logVisit(patientProfileData.patient.uuid, response.data.uuid);
+                        log(patientProfileData.patient.uuid, response.data.uuid, response.data.visitType.display);
                         if (forwardUrl) {
                             var updatedForwardUrl = appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patientProfileData.patient.uuid});
                             $window.location.href = updatedForwardUrl;

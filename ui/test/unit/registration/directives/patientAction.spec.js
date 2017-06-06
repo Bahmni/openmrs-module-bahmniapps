@@ -14,7 +14,7 @@ describe('PatientAction', function () {
         params = {
             patientUuid: 'patientUuid',
             eventType: 'OPEN_VISIT',
-            message: 'OPEN_VISIT_MESSAGE~visitUuid',
+            message: 'OPEN_VISIT_MESSAGE~{"visitUuid":"visitUuid","visitType":"OPD"}',
             module: 'registration'
         };
         var initProvider = function (input) {
@@ -52,7 +52,8 @@ describe('PatientAction', function () {
                 $location = jasmine.createSpyObj('$location', ['path']);
                 visitService = jasmine.createSpyObj('visitService', ['search', 'createVisit']);
                 visitService.search.and.returnValue(specUtil.simplePromise(input.visitSearchResults));
-                visitService.createVisit.and.returnValue(specUtil.simplePromise({data: {uuid: "visitUuid"}}));
+                visitService.createVisit.and.returnValue(specUtil.simplePromise(
+                  {data: {uuid: "visitUuid", visitType: {display: 'OPD'}}}));
                 encounterService = jasmine.createSpyObj('encounterService', ['']);
                 offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
                 offlineService.isOfflineApp.and.callFake(function () {

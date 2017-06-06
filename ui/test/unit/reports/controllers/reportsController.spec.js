@@ -404,7 +404,8 @@ describe("ReportsController", function () {
 
         var params = {};
         params.eventType = Bahmni.Reports.AuditLogEventDetails['RUN_REPORT'].eventType;
-        params.message = Bahmni.Reports.AuditLogEventDetails['RUN_REPORT'].message + "~" + "Vitals" ;
+        params.message = Bahmni.Reports.AuditLogEventDetails['RUN_REPORT'].message + "~" +
+          JSON.stringify({reportName: 'Vitals'});
         params.module = "reports";
 
         expect(mockAuditLogService.auditLog.calls.count()).toBe(1);

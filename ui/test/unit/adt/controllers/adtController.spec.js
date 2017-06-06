@@ -30,15 +30,15 @@ describe("AdtController", function () {
             }, getExtensions: function (a, b) {
                 return {
                     maxPatientsPerBed: 2
-                }
+                };
             },
-            getConfig: function(){
+            getConfig: function () {
             }
         });
 
         rootScope.encounterConfig = {
             getVisitTypes: function () {
-                return [{name : "Current Visit", uuid : "visitUuid"}, {name : "IPD", uuid : "visitUuid"}];
+                return [{name: "Current Visit", uuid: "visitUuid"}, {name: "IPD", uuid: "visitUuid"}];
             }, getAdmissionEncounterTypeUuid: function () {
 
             }, getDischargeEncounterTypeUuid: function () {
@@ -64,7 +64,7 @@ describe("AdtController", function () {
                 then: function () {
                     return {};
                 }
-            }
+            };
         });
 
         controller('AdtController', {
@@ -79,7 +79,7 @@ describe("AdtController", function () {
             visitService: visitService,
             ngDialog: ngDialog,
             $window: window,
-            messagingService : messagingService,
+            messagingService: messagingService,
             spinner: spinnerService,
             configurationService: configurationService,
             auditLogService: auditLogService
@@ -98,13 +98,13 @@ describe("AdtController", function () {
     it("Should not show confirmation dialog if patient's visit type is defaultVisitType", function () {
 
         scope.visitSummary = {"visitType": "IPD"};
-        scope.patient = {uuid : '123'};
+        scope.patient = {uuid: '123'};
         encounterService.create.and.callFake(function () {
             return {
                 success: function (callback) {
                     return callback({});
                 }
-            }
+            };
         });
         createController();
 
@@ -113,7 +113,7 @@ describe("AdtController", function () {
         expect(ngDialog.openConfirm).not.toHaveBeenCalled();
     });
     it("should close the visit and create a new encounter if dialog is confirmed", function () {
-        scope.visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid"};
+        scope.visitSummary = {"visitType": "OPD", "uuid": "visitUuid"};
         scope.patient = {uuid: "123"};
         scope.adtObservations = [];
 
@@ -133,7 +133,7 @@ describe("AdtController", function () {
         var params = {
             patientUuid: '123',
             eventType: 'CLOSE_VISIT',
-            message: 'CLOSE_VISIT_MESSAGE~visitUuid',
+            message: 'CLOSE_VISIT_MESSAGE~{"visitUuid":"visitUuid","visitType":"OPD"}',
             module: 'adt'
         };
 
@@ -152,13 +152,13 @@ describe("AdtController", function () {
 
     it("Should close the confirmation dialog if cancelled", function () {
         scope.visitSummary = {"visitType": "IPD"};
-        scope.patient = {uuid : '123'};
+        scope.patient = {uuid: '123'};
         encounterService.create.and.callFake(function () {
             return {
                 success: function (callback) {
                     return callback({});
                 }
-            }
+            };
         });
         createController();
 
@@ -179,7 +179,7 @@ describe("AdtController", function () {
                 }
             };
         };
-        var stubTwoPromise = function(data) {
+        var stubTwoPromise = function (data) {
             return {
                 then: function (successFn) {
                     successFn({results: data});
@@ -214,7 +214,7 @@ describe("AdtController", function () {
                 }
             };
         };
-        var stubTwoPromise = function(data) {
+        var stubTwoPromise = function (data) {
             return {
                 then: function (successFn) {
                     successFn({results: data});
@@ -242,13 +242,13 @@ describe("AdtController", function () {
 
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function () {
-                return {dashboard : ''};
+                return {dashboard: ''};
             }, getExtensions: function () {
                 return {
                     maxPatientsPerBed: 2
-                }
+                };
             },
-            getConfig: function(){
+            getConfig: function () {
             }
         });
 
@@ -268,13 +268,13 @@ describe("AdtController", function () {
 
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function () {
-                return {dashboard : ''};
+                return {dashboard: ''};
             }, getExtensions: function () {
                 return {
                     maxPatientsPerBed: 2
-                }
+                };
             },
-            getConfig: function(){
+            getConfig: function () {
             }
         });
 
@@ -433,13 +433,13 @@ describe("AdtController", function () {
             encounterService.discharge.and.callFake(function () {
                 return {
                     then: function (callback) {
-                        return callback({data: {}})
+                        return callback({data: {}});
                     }
-                }
+                };
             });
             createController();
 
             scope.discharge();
-        })
+        });
     });
 });

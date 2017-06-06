@@ -11,26 +11,27 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        var logVisit = function (patientUuid, visitUuid) {
+        var log = function (patientUuid, visitUuid, visitType) {
             configurationService.getConfigurations(['enableAuditLog']).then(function (result) {
                 if (result.enableAuditLog) {
                     var params = {};
                     params.patientUuid = patientUuid;
                     params.eventType = Bahmni.Common.AuditLogEventDetails["OPEN_VISIT"].eventType;
-                    params.message = Bahmni.Common.AuditLogEventDetails["OPEN_VISIT"].message + '~' + visitUuid;
+                    params.message = Bahmni.Common.AuditLogEventDetails["OPEN_VISIT"].message + '~' +
+                                     JSON.stringify({visitUuid: visitUuid, visitType: visitType});
                     params.module = "document upload";
                     auditLogService.auditLog(params);
                 }
             });
         };
 
-        this.save = function (visitDocument) {
+        this.save = function (visitDocument, visitType) {
             var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument";
             var isNewVisit = !visitDocument.visitUuid;
             removeVoidedDocuments(visitDocument.documents);
             return $http.post(url, visitDocument).then(function (response) {
                 if (isNewVisit) {
-                    logVisit(visitDocument.patientUuid, response.data.visitUuid);
+                    log(visitDocument.patientUuid, response.data.visitUuid, visitType);
                 }
                 return response;
             });
