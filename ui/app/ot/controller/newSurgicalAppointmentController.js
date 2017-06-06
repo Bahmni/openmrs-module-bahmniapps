@@ -6,7 +6,6 @@ angular.module('bahmni.ot')
             var init = function () {
                 $scope.selectedPatient = $scope.ngDialogData && $scope.ngDialogData.patient;
                 $scope.patient = $scope.ngDialogData && $scope.ngDialogData.patient && ($scope.ngDialogData.patient.value || $scope.ngDialogData.patient.display);
-                $scope.notes = $scope.ngDialogData && $scope.ngDialogData.notes;
                 $scope.otherSurgeons = _.cloneDeep($scope.surgeons);
                 return $q.all([surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
                     $scope.attributeTypes = response[0].data.results;
@@ -42,8 +41,9 @@ angular.module('bahmni.ot')
                     var appointment = {
                         id: $scope.ngDialogData && $scope.ngDialogData.id,
                         patient: $scope.selectedPatient,
-                        notes: $scope.notes,
                         sortWeight: $scope.ngDialogData && $scope.ngDialogData.sortWeight,
+                        actualStartDatetime: $scope.ngDialogData && $scope.ngDialogData.actualStartDatetime,
+                        actualEndDatetime: $scope.ngDialogData && $scope.ngDialogData.actualEndDatetime,
                         surgicalAppointmentAttributes: $scope.attributes
                     };
                     $scope.addSurgicalAppointment(appointment);

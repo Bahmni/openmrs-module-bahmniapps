@@ -25,6 +25,7 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
                 Bahmni.Common.Util.DateUtil.subtractSeconds(calculatedAppointmentEndTime, appointmentDuration * 60);
             $scope.actualEndTime = (surgicalAppointment.actualEndDatetime && moment(surgicalAppointment.actualEndDatetime).toDate())
                 || calculatedAppointmentEndTime;
+            $scope.notes = surgicalAppointment.notes;
         };
 
         $scope.isStartDatetimeBeforeEndDatetime = function (startDate, endDate) {
@@ -44,12 +45,14 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
             surgicalAppointment.actualStartDatetime = $scope.actualStartTime;
             surgicalAppointment.actualEndDatetime = $scope.actualEndTime;
             surgicalAppointment.status = "COMPLETED";
+            surgicalAppointment.notes = $scope.notes;
             surgicalAppointment.surgicalBlock = {uuid: $scope.ngDialogData.surgicalBlock.uuid};
             surgicalAppointment.patient = {uuid: surgicalAppointment.patient.uuid};
             surgicalAppointmentService.updateSurgicalAppointment(surgicalAppointment).then(function (response) {
                 $scope.ngDialogData.surgicalAppointment.actualStartDatetime = response.data.actualStartDatetime;
                 $scope.ngDialogData.surgicalAppointment.actualEndDatetime = response.data.actualEndDatetime;
                 $scope.ngDialogData.surgicalAppointment.status = response.data.status;
+                $scope.ngDialogData.surgicalAppointment.notes = response.data.notes;
                 var message = 'Actual time added to ' + surgicalAppointmentHelper.getPatientDisplayLabel($scope.ngDialogData.surgicalAppointment.patient.display) + ' - ' + $scope.ngDialogData.surgicalBlock.location.name;
                 messagingService.showMessage('info', message);
                 ngDialog.close();

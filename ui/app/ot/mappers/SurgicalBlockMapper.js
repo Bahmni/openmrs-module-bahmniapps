@@ -37,6 +37,8 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             patient: openMrsSurgicalAppointment.patient,
             notes: openMrsSurgicalAppointment.notes,
             sortWeight: openMrsSurgicalAppointment.sortWeight,
+            actualStartDatetime: openMrsSurgicalAppointment.actualStartDatetime,
+            actualEndDatetime: openMrsSurgicalAppointment.actualEndDatetime,
             surgicalAppointmentAttributes: new Bahmni.OT.SurgicalBlockMapper().mapAttributes(surgicalAppointmentAttributes, attributeTypes)
         };
     };
@@ -88,6 +90,8 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             voided: surgicalBlockUI.voided || false,
             startDatetime: surgicalBlockUI.startDatetime,
             endDatetime: surgicalBlockUI.endDatetime,
+            actualStartDatetime: surgicalBlockUI.actualStartDatetime,
+            actualEndDatetime: surgicalBlockUI.actualEndDatetime,
             provider: {uuid: surgicalBlockUI.provider.uuid},
             location: {uuid: surgicalBlockUI.location.uuid},
             surgicalAppointments: _.map(surgicalBlockUI.surgicalAppointments, function (surgicalAppointment) {

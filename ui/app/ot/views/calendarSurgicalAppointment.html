@@ -4,6 +4,6 @@
     <p class="surgicalblock-patientname"> {{patient}} </p>
     <p ng-if="attributes.procedure"> Procedure - {{attributes.procedure}} </p>
     <p ng-if="attributes.anaesthetist"> Anaesthetist - {{attributes.anaesthetist}} </p>
-    <p ng-if="surgicalAppointment.notes"> Notes - {{surgicalAppointment.notes}} </p>
+    <p ng-if="attributes.notes"> Notes - {{attributes.notes}} </p>
     <p ng-if="surgicalAppointment.actualStartDatetime"> Actual Time: {{surgicalAppointment.actualStartDatetime | bahmniTime}} - {{surgicalAppointment.actualEndDatetime | bahmniTime}}</p>
 </div>
