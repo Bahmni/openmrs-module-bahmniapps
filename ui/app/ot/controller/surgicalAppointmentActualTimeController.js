@@ -27,14 +27,29 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
                 || calculatedAppointmentEndTime;
         };
 
+        $scope.isStartDatetimeBeforeEndDatetime = function (startDate, endDate) {
+            if (startDate && endDate) {
+                return startDate < endDate;
+            }
+            return true;
+        };
+
+
         $scope.add = function () {
-            $scope.ngDialogData.surgicalAppointment.actualStartDatetime = $scope.actualStartTime;
-            $scope.ngDialogData.surgicalAppointment.actualEndDatetime = $scope.actualEndTime;
+            if (!$scope.isStartDatetimeBeforeEndDatetime($scope.actualStartTime, $scope.actualEndTime)) {
+                messagingService.showMessage('error', "Actual start time after end time");
+                return;
+            }
             var surgicalAppointment = _.cloneDeep($scope.ngDialogData.surgicalAppointment);
+            surgicalAppointment.actualStartDatetime = $scope.actualStartTime;
+            surgicalAppointment.actualEndDatetime = $scope.actualEndTime;
+            surgicalAppointment.status = "COMPLETED";
             surgicalAppointment.surgicalBlock = {uuid: $scope.ngDialogData.surgicalBlock.uuid};
             surgicalAppointment.patient = {uuid: surgicalAppointment.patient.uuid};
             surgicalAppointmentService.updateSurgicalAppointment(surgicalAppointment).then(function (response) {
-                $scope.ngDialogData.surgicalAppointment = response.data;
+                $scope.ngDialogData.surgicalAppointment.actualStartDatetime = response.data.actualStartDatetime;
+                $scope.ngDialogData.surgicalAppointment.actualEndDatetime = response.data.actualEndDatetime;
+                $scope.ngDialogData.surgicalAppointment.status = response.data.status;
                 var message = 'Actual time added to ' + surgicalAppointmentHelper.getPatientDisplayLabel($scope.ngDialogData.surgicalAppointment.patient.display) + ' - ' + $scope.ngDialogData.surgicalBlock.location.name;
                 messagingService.showMessage('info', message);
                 ngDialog.close();

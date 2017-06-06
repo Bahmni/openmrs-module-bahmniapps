@@ -1,4 +1,4 @@
-<div>
+<form name="surgicalAppointmentForm" ng-submit="add()">
     <p> Patient Name {{ngDialogData.surgicalAppointment.patient.person.display}}</p>
     {{actualStartTime | bahmniDateTime}}
     {{actualEndTime | bahmniDateTime}}
@@ -8,10 +8,11 @@
     <input required type="time" ng-model="actualEndTime"/>
 
     <p>
-        <input type="text">
+        <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}</label>
+        <textarea placeholder="Notes" id="notesID" ng-model="notes" msd-elastic></textarea>
     </p>
     <p>
-    <input type="button" value="Add" ng-click="add()"/>
+    <input type="submit" value="Add"/>
     <input type="button" value="Cancel" ng-click="close()"/>
     </p>
-</div>
+</form>

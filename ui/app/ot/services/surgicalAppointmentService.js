@@ -26,7 +26,7 @@ angular.module('bahmni.ot')
             });
         };
 
-        this.getSurgicalAppointmentAttributeTypes = function () {
+       this.getSurgicalAppointmentAttributeTypes = function () {
             return $http.get(Bahmni.OT.Constants.surgicalAppointmentAttributeTypeUrl, {
                 method: "GET",
                 params: {v: "custom:(uuid,name)"},
@@ -34,8 +34,8 @@ angular.module('bahmni.ot')
             });
         };
 
-        this.getSurgicalBlockFor = function (surgicalBlockUui) {
-            return $http.get(Bahmni.OT.Constants.addSurgicalBlockUrl + "/" + surgicalBlockUui, {
+        this.getSurgicalBlockFor = function (surgicalBlockUuid) {
+            return $http.get(Bahmni.OT.Constants.addSurgicalBlockUrl + "/" + surgicalBlockUuid, {
                 params: {v: "full"},
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
