@@ -30,7 +30,7 @@ angular.module('bahmni.home')
                         var params = {};
                         params.eventType = Bahmni.Common.AuditLogEventDetails[state].eventType;
                         params.message = Bahmni.Common.AuditLogEventDetails[state].message;
-                        params.message = isFailedEvent ? params.message + "~" + $scope.loginInfo.username : params.message;
+                        params.message = isFailedEvent ? params.message + "~" + JSON.stringify({userName: $scope.loginInfo.username}) : params.message;
                         if ($scope.loginInfo.username) {
                             auditLogService.auditLog(params);
                         }

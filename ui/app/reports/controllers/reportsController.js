@@ -81,7 +81,8 @@ angular.module('bahmni.reports')
         var log = function (reportName) {
             var params = {};
             params.eventType = Bahmni.Reports.AuditLogEventDetails['RUN_REPORT'].eventType;
-            params.message = Bahmni.Reports.AuditLogEventDetails['RUN_REPORT'].message + "~" + reportName;
+            params.message = Bahmni.Reports.AuditLogEventDetails['RUN_REPORT'].message + "~" +
+                             JSON.stringify({reportName: reportName});
             params.module = "reports";
             auditLogService.auditLog(params);
         };

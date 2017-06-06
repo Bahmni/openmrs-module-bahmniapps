@@ -369,7 +369,7 @@ angular.module('opd.documentupload')
                     visitDocument = createVisitDocument(visit);
                 }
 
-                return spinner.forPromise(visitDocumentService.save(visitDocument).then(function (response) {
+                return spinner.forPromise(visitDocumentService.save(visitDocument, visit.visitType.display).then(function (response) {
                     return encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (encounterResponse) {
                         var savedVisit = $scope.visits[$scope.visits.indexOf(visit)];
                         if (!savedVisit) {

@@ -83,16 +83,16 @@ describe("visitDocumentService", function () {
         expect(_$http.post).toHaveBeenCalledWith(Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument", visitDocuments);
     });
 
-    it('should log when uploading files for a new visit', function(){
+    it('should log when uploading files for a new visit', function () {
         var visitDocuments = {documents: [], patientUuid: 'patientUuid'};
         var params = {
             patientUuid: 'patientUuid',
             eventType: 'OPEN_VISIT',
-            message: 'OPEN_VISIT_MESSAGE~visitUuid',
+            message: 'OPEN_VISIT_MESSAGE~{"visitUuid":"visitUuid","visitType":"OPD"}',
             module: 'document upload'
         };
         _$http.post.and.returnValue(specUtil.createFakePromise({visitUuid: 'visitUuid'}));
-        visitDocumentService.save(visitDocuments);
+        visitDocumentService.save(visitDocuments, 'OPD');
         expect(_$http.post).toHaveBeenCalledWith(Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument", visitDocuments);
         expect(_configurationService.getConfigurations).toHaveBeenCalledWith(['enableAuditLog']);
         expect(_auditLogService.auditLog).toHaveBeenCalledWith(params);
