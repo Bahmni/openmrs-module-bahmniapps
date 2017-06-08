@@ -38,7 +38,7 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
 
         $scope.add = function () {
             if (!$scope.isStartDatetimeBeforeEndDatetime($scope.actualStartTime, $scope.actualEndTime)) {
-                messagingService.showMessage('error', "Actual start time after end time");
+                messagingService.showMessage('error', "Actual start time should be less than actual end time");
                 return;
             }
             var surgicalAppointment = _.cloneDeep($scope.ngDialogData.surgicalAppointment);
