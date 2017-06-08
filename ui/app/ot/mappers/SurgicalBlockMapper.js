@@ -35,10 +35,9 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             uuid: openMrsSurgicalAppointment.uuid,
             voided: openMrsSurgicalAppointment.voided || false,
             patient: openMrsSurgicalAppointment.patient,
-            notes: openMrsSurgicalAppointment.notes,
             sortWeight: openMrsSurgicalAppointment.sortWeight,
-            actualStartDatetime: openMrsSurgicalAppointment.actualStartDatetime,
-            actualEndDatetime: openMrsSurgicalAppointment.actualEndDatetime,
+            actualStartDatetime: Bahmni.Common.Util.DateUtil.parseServerDateToDate(openMrsSurgicalAppointment.actualStartDatetime),
+            actualEndDatetime: Bahmni.Common.Util.DateUtil.parseServerDateToDate(openMrsSurgicalAppointment.actualEndDatetime),
             surgicalAppointmentAttributes: new Bahmni.OT.SurgicalBlockMapper().mapAttributes(surgicalAppointmentAttributes, attributeTypes)
         };
     };
@@ -77,7 +76,8 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             uuid: surgicalAppointmentUI.uuid,
             voided: surgicalAppointmentUI.voided || false,
             patient: {uuid: surgicalAppointmentUI.patient.uuid},
-            notes: surgicalAppointmentUI.notes,
+            actualStartDatetime : surgicalAppointmentUI.actualStartDatetime,
+            actualEndDatetime: surgicalAppointmentUI.actualEndDatetime,
             sortWeight: surgicalAppointmentUI.sortWeight,
             surgicalAppointmentAttributes: mapSurgicalAppointmentAttributesUIToDomain(surgicalAppointmentUI.surgicalAppointmentAttributes)
         };
@@ -90,8 +90,6 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             voided: surgicalBlockUI.voided || false,
             startDatetime: surgicalBlockUI.startDatetime,
             endDatetime: surgicalBlockUI.endDatetime,
-            actualStartDatetime: surgicalBlockUI.actualStartDatetime,
-            actualEndDatetime: surgicalBlockUI.actualEndDatetime,
             provider: {uuid: surgicalBlockUI.provider.uuid},
             location: {uuid: surgicalBlockUI.location.uuid},
             surgicalAppointments: _.map(surgicalBlockUI.surgicalAppointments, function (surgicalAppointment) {

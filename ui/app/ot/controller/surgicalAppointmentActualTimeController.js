@@ -26,6 +26,7 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
             $scope.actualEndTime = (surgicalAppointment.actualEndDatetime && moment(surgicalAppointment.actualEndDatetime).toDate())
                 || calculatedAppointmentEndTime;
             $scope.notes = surgicalAppointment.notes;
+            $scope.patientDisplayLabel = surgicalAppointmentHelper.getPatientDisplayLabel(surgicalAppointment.patient.display);
         };
 
         $scope.isStartDatetimeBeforeEndDatetime = function (startDate, endDate) {
