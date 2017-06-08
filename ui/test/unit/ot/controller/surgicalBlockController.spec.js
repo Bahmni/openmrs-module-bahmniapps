@@ -547,7 +547,7 @@ describe("surgicalBlockController", function () {
             },
             "value": "surgery on left leg"
         }];
-        surgicalBlock.surgicalAppointments = [{id: 11, patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: attributes}];
+        surgicalBlock.surgicalAppointments = [{id: 11, patient: {uuid: "patientUuid"}, sortWeight: 0, surgicalAppointmentAttributes: attributes}];
 
         surgicalAppointmentService.getSurgicalBlockFor.and.returnValue(specUtil.simplePromise({data: surgicalBlock}));
         stateParams.surgicalBlockUuid = "surgicalBlockUuid";
@@ -567,7 +567,6 @@ describe("surgicalBlockController", function () {
         expect(scope.surgicalForm.surgicalAppointments.length).toBe(1);
         expect(scope.surgicalForm.surgicalAppointments[0].id).toBe(11);
         expect(scope.surgicalForm.surgicalAppointments[0].patient).toEqual({uuid: "patientUuid"});
-        expect(scope.surgicalForm.surgicalAppointments[0].notes).toBe("need more assistants");
         expect(scope.surgicalForm.surgicalAppointments[0].sortWeight).toBe(0);
         expect(_.keys(scope.surgicalForm.surgicalAppointments[0].surgicalAppointmentAttributes).length).toBe(9);
         expect(scope.surgicalForm.surgicalAppointments[0].surgicalAppointmentAttributes.cleaningTime.value).toBe(15);

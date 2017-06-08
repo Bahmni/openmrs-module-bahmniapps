@@ -26,7 +26,7 @@ angular.module('bahmni.ot')
             });
         };
 
-       this.getSurgicalAppointmentAttributeTypes = function () {
+        this.getSurgicalAppointmentAttributeTypes = function () {
             return $http.get(Bahmni.OT.Constants.surgicalAppointmentAttributeTypeUrl, {
                 method: "GET",
                 params: {v: "custom:(uuid,name)"},

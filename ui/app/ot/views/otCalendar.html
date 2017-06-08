@@ -1,4 +1,4 @@
-<div class="calendar" ng-click="remove()">
+<div class="calendar">
     <div class="calendar-location">
         <p class="heading-cell" ng-repeat="location in locations">
             {{location.name}}
@@ -30,7 +30,7 @@
     </div>
 </div>
 <div class="surgical-action-wrapper">
-    <button ng-disabled="addActualTimeDisabled" ng-click="addActualTime()">Add Actual Time</button>
-    <button ng-disabled="editandDeleteDisabled" ng-click="goToEdit($event)">Edit</button>
+    <button ng-disabled="addActualTimeDisabled" ng-mousedown="addActualTime()">Add Actual Time</button>
+    <button ng-disabled="editandDeleteDisabled" ng-mousedown="goToEdit($event)">Edit</button>
     <button ng-disabled="editandDeleteDisabled">Delete</button>
 </div>

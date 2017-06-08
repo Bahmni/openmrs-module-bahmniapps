@@ -34,8 +34,7 @@ describe("surgicalAppointmentActualTimeController", function () {
             endDatetime: "2017-06-06T12:00:00.000+0530",
             surgicalAppointments: [{
                 id: 30,
-                notes: "notes",
-                patient: {uuid: "patientUuid"},
+                patient: {uuid: "patientUuid", display: 'IQ100023 - Test Patient'},
                 surgicalAppointmentAttributes: [{
                     surgicalAppointmentAttributeType: {
                         format: "java.lang.String",
@@ -58,8 +57,7 @@ describe("surgicalAppointmentActualTimeController", function () {
                         value: "15"
                     }],
                 sortWeight: 0
-            }],
-            notes: "notes"
+            }]
         };
         var alreadyCalled;
         spyOn(surgicalAppointmentHelper, "getEstimatedDurationForAppointment").and.callFake(function() {
@@ -71,7 +69,6 @@ describe("surgicalAppointmentActualTimeController", function () {
         createController();
         expect(scope.actualStartTime).toEqual(new Date("Tue Jun 06 2017 10:00:00 GMT+0530 (IST)"));
         expect(scope.actualEndTime).toEqual(new Date("Tue Jun 06 2017 10:45:00 GMT+0530 (IST)"));
-        expect(scope.notes).toEqual("notes");
     });
 
     it("should give the startTime and endTime if they exists in surgical appointment", function () {
@@ -84,8 +81,7 @@ describe("surgicalAppointmentActualTimeController", function () {
                 actualEndDatetime: "2017-06-06T10:45:00.000+0530",
                 actualStartDatetime: "2017-06-06T10:00:00.000+0530",
                 id: 30,
-                notes: "notes updated",
-                patient: {uuid: "patientUuid"},
+                patient: {uuid: "patientUuid", display: 'IQ100023 - Test Patient'},
                 sortWeight: 0
             }]
         };
@@ -99,7 +95,6 @@ describe("surgicalAppointmentActualTimeController", function () {
         createController();
         expect(scope.actualStartTime).toEqual(new Date(scope.ngDialogData.surgicalBlock.surgicalAppointments[0].actualStartDatetime));
         expect(scope.actualEndTime).toEqual(new Date(scope.ngDialogData.surgicalBlock.surgicalAppointments[0].actualEndDatetime));
-        expect(scope.notes).toEqual("notes updated");
     });
 
     it("should add the startTime, endTime and notes for the appointment", function () {
@@ -110,8 +105,7 @@ describe("surgicalAppointmentActualTimeController", function () {
             endDatetime: "2017-06-06T12:00:00.000+0530",
             surgicalAppointments: [{
                 id: 30,
-                notes: "notes",
-                patient: {uuid: "patientUuid"},
+                patient: {uuid: "patientUuid", display: 'IQ100023 - Test Patient'},
                 surgicalAppointmentAttributes: [{
                     surgicalAppointmentAttributeType: {
                         format: "java.lang.String",
@@ -134,8 +128,7 @@ describe("surgicalAppointmentActualTimeController", function () {
                         value: "15"
                     }],
                 sortWeight: 0
-            }],
-            notes: "notes"
+            }]
         };
         var alreadyCalled;
         spyOn(surgicalAppointmentHelper, "getEstimatedDurationForAppointment").and.callFake(function() {
@@ -147,7 +140,6 @@ describe("surgicalAppointmentActualTimeController", function () {
         createController();
         scope.actualStartTime = new Date("Tue Jun 06 2017 10:00:00 GMT+0530 (IST)");
         scope.actualEndTime = new Date("Tue Jun 06 2017 10:45:00 GMT+0530 (IST)");
-        scope.notes = "notes";
     });
 
 });

@@ -76,7 +76,7 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             uuid: surgicalAppointmentUI.uuid,
             voided: surgicalAppointmentUI.voided || false,
             patient: {uuid: surgicalAppointmentUI.patient.uuid},
-            actualStartDatetime : surgicalAppointmentUI.actualStartDatetime,
+            actualStartDatetime: surgicalAppointmentUI.actualStartDatetime,
             actualEndDatetime: surgicalAppointmentUI.actualEndDatetime,
             sortWeight: surgicalAppointmentUI.sortWeight,
             surgicalAppointmentAttributes: mapSurgicalAppointmentAttributesUIToDomain(surgicalAppointmentUI.surgicalAppointmentAttributes)

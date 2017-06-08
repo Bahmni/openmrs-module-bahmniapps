@@ -37,6 +37,11 @@ angular.module('bahmni.ot')
                 $event.stopPropagation();
             };
 
+            $scope.deselectSurgicalBlock = function ($event) {
+                $scope.$emit("event:surgicalBlockDeselect");
+                $event.stopPropagation();
+            };
+
             getViewPropertiesForSurgicalBlock();
         };
         return {

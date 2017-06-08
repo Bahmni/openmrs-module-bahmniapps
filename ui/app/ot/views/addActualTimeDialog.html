@@ -9,10 +9,15 @@
 
     <p>
         <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}</label>
-        <textarea  class="form-horizontal textarea" placeholder="Notes" id="notesID" ng-model="notes" msd-elastic></textarea>
+        <textarea  class="form-horizontal" placeholder="Notes" id="notesID" ng-model="notes" msd-elastic></textarea>
     </p>
     <p>
-    <input type="submit" value="Add"/>
-    <input type="button" value="Cancel" ng-click="close()"/>
+    <!--<input type="submit" value="Add"/>-->
+    <!--<input type="button" value="Cancel" ng-click="close()"/>-->
+
+    <p class="dialog-button-group ipd-button-group">
+        <input type="submit" value="Add" id="modal-revise-button1" class="secondary-button"/>
+        <input type="button" value="Cancel" id="modal-revise-button3" class="secondary-button" ng-click="close()"/>
     </p>
+
 </form>

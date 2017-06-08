@@ -36,7 +36,6 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
             return true;
         };
 
-
         $scope.add = function () {
             if (!$scope.isStartDatetimeBeforeEndDatetime($scope.actualStartTime, $scope.actualEndTime)) {
                 messagingService.showMessage('error', "Actual start time after end time");
