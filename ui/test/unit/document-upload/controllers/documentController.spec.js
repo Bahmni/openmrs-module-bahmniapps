@@ -375,11 +375,11 @@ describe("DocumentController", function () {
             scope.newVisit = newVisit;
             scope.visits = [visit3];
 
-            newVisit.startDatetime = "April 25, 2014";
+            newVisit.startDatetime = "April 23, 2014";
             newVisit.stopDatetime = "";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-            newVisit.startDatetime = "April 26, 2014";
+            newVisit.startDatetime = "April 22, 2014";
             newVisit.stopDatetime = "";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
