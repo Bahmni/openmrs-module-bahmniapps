@@ -525,9 +525,43 @@ div[ng-app="ot"] {
   }
 }
 
-.ot-actual-time-person-display {
-  font-size: 14px;
-  font-weight: bold;
-  color: #484848;
-  margin: 0 0 10px;
+
+.ot-actual-time-form {
+  .ngdialog-content {
+    width: 415px;
+  }
+  .ot-actual-time-person-display {
+    font-size: 14px;
+    font-weight: bold;
+    color: #484848;
+    text-align: center;
+    margin: 0 0 5px;
+  }
+  .ot-actual-time-label {
+    text-align: center;
+    padding: 15px  0px 3px 0px;
+  }
+  .ot-actual-time-input{
+    word-spacing: 1px;
+    font-size: 22px;
+    font-weight: lighter;
+    border-radius: 6px;
+    padding: 0px 10px 0px 30px;
+    margin: 0px auto 0px !important;
+    display: block;
+  }
+  .ot-actual-time-notes {
+    min-height: 100px;
+    min-width: 350px;
+    margin: 0px auto;
+    display: block;
+    border-radius: 6px;
+  }
+
+  .ot-actual-time-buttons {
+    text-align: center;
+    .button {
+      margin: 20px 15px 5px;
+    }
+  }
 }
