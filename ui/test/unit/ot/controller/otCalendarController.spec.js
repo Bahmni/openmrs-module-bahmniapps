@@ -102,21 +102,10 @@ describe("otCalendarController", function () {
         expect(scope.dayViewSplit).toEqual(60);
     });
 
-    it('should set the calendarStartDatetime and calendarEndDattime', function () {
+    it('should set the calendarStartDatetime and calendarEndDatetime', function () {
         createController();
         expect(scope.calendarStartDatetime).toEqual(moment('2017-02-19 09:00:00').toDate());
         expect(scope.calendarEndDatetime).toEqual(moment('2017-02-19 16:30:00').toDate());
-    });
-
-    it('should disable the edit, delete and actual time buttons when clicked on calendar div', function () {
-        createController();
-        scope.editandDeleteDisabled = false;
-        scope.addActualTimeDisabled = false;
-
-        scope.remove();
-
-        expect(scope.editandDeleteDisabled).toBeTruthy();
-        expect(scope.addActualTimeDisabled).toBeTruthy();
     });
 
     it('should navigate to edit surgical block page with surgicalBlock details clicking edit button', function () {

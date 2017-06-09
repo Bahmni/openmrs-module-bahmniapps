@@ -29,6 +29,11 @@ angular.module('bahmni.ot')
                 $event.stopPropagation();
             };
             getDataForSurgicalAppointment();
+
+            $scope.deselectSurgicalAppointment = function ($event) {
+                $scope.$emit("event:surgicalBlockDeselect");
+                $event.stopPropagation();
+            };
         };
         return {
             restrict: 'E',

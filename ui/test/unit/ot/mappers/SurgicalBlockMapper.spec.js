@@ -61,6 +61,10 @@ describe("SurgicalBlockMapper", function () {
         {
             "uuid": "bde9821c-3f81-11e7-97ea-0800274a5156",
             "name": "circulatingNurse"
+        },
+        {
+            "uuid": "bde9821c-3f81-11e7-97ea-0800274a5156",
+            "name": "notes"
         }
     ];
 
@@ -247,6 +251,14 @@ describe("SurgicalBlockMapper", function () {
                 "name": "cleaningTime"
             },
             "value": "15"
+        },
+        {
+            "id": 113,
+            "surgicalAppointmentAttributeType": {
+                "uuid": "bde8c614-3f81-11e7-97ea-0800274a5156",
+                "name": "notes"
+            },
+            "value": "notes"
         }
     ];
 
@@ -321,6 +333,13 @@ describe("SurgicalBlockMapper", function () {
                 "name": "cleaningTime"
             },
             "value": 15
+        }, "notes": {
+            "id": 113,
+            "surgicalAppointmentAttributeType": {
+                "uuid": "bde8c614-3f81-11e7-97ea-0800274a5156",
+                "name": "notes"
+            },
+            "value": "notes"
         }
     };
 
@@ -367,7 +386,7 @@ describe("SurgicalBlockMapper", function () {
         surgicalBlock.endDatetime = "2017-05-25T18:00:00.000+0530";
         surgicalBlock.provider = {uuid: "providerUuid"};
         surgicalBlock.location = {uuid: "locationUuid"};
-        surgicalBlock.surgicalAppointments = [{id: "11", uuid: "appointmentUuid", voided: false, patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: openmrsSurgicalAppointmentAttributes}];
+        surgicalBlock.surgicalAppointments = [{id: "11", uuid: "appointmentUuid", voided: false, patient: {uuid: "patientUuid"}, sortWeight: 0, actualStartDatetime: "2017-05-25T10:00:00.000+0530", actualEndDatetime: "2017-05-25T12:00:00.000+0530", surgicalAppointmentAttributes: openmrsSurgicalAppointmentAttributes}];
 
         var surgicalForm = {};
         surgicalForm.id = 10;
@@ -377,7 +396,7 @@ describe("SurgicalBlockMapper", function () {
         surgicalForm.endDatetime = "Date(Thu May 25 2017 18:00:00 GMT+0530 (IST))";
         surgicalForm.provider = {uuid: "providerUuid"};
         surgicalForm.location = {uuid: "locationUuid"};
-        surgicalForm.surgicalAppointments = [{id: "11", uuid: "appointmentUuid", voided: false, patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes}];
+        surgicalForm.surgicalAppointments = [{id: "11", uuid: "appointmentUuid", voided: false, patient: {uuid: "patientUuid"}, sortWeight: 0, actualStartDatetime: "2017-05-25T10:00:00.000+0530", actualEndDatetime: "2017-05-25T12:00:00.000+0530", surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes}];
 
         var mappedToOpenmrsSurgicalBlock = surgicalBlockMapper.mapSurgicalBlockUIToDomain(surgicalForm);
 
@@ -410,7 +429,7 @@ describe("SurgicalBlockMapper", function () {
         var mappedAttributes = surgicalBlockMapper.mapAttributes(attributes, appointmentAttributeTypes);
 
 
-        expect(_.keys(mappedAttributes).length).toBe(9);
+        expect(_.keys(mappedAttributes).length).toBe(10);
         expect(mappedAttributes.cleaningTime.value).toBe(15);
         expect(mappedAttributes.estTimeMinutes.value).toBe(0);
         expect(mappedAttributes.estTimeHours.value).toBe(0);
@@ -424,6 +443,8 @@ describe("SurgicalBlockMapper", function () {
         expect(mappedAttributes.scrubNurse.surgicalAppointmentAttributeType.name).toBe("scrubNurse");
         expect(mappedAttributes.circulatingNurse.value).toBeUndefined();
         expect(mappedAttributes.circulatingNurse.surgicalAppointmentAttributeType.name).toBe("circulatingNurse");
+        expect(mappedAttributes.notes.value).toBeUndefined();
+        expect(mappedAttributes.notes.surgicalAppointmentAttributeType.name).toBe("notes");
     });
 });
 

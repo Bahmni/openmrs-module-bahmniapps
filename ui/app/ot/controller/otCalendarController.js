@@ -23,11 +23,6 @@ angular.module('bahmni.ot')
                 });
             };
 
-            $scope.remove = function () {
-                $scope.editandDeleteDisabled = true;
-                $scope.addActualTimeDisabled = true;
-            };
-
             $scope.intervals = function () {
                 var dayStart = ($scope.dayViewStart || '00:00').split(':');
                 var dayEnd = ($scope.dayViewEnd || '23:59').split(':');
@@ -63,6 +58,13 @@ angular.module('bahmni.ot')
                 $scope.editandDeleteDisabled = false;
                 $scope.addActualTimeDisabled = true;
                 $scope.surgicalBlockSelected = surgicalBlock;
+                $scope.surgicalAppointmentSelected = {};
+            });
+
+            $scope.$on("event:surgicalBlockDeselect", function (event) {
+                $scope.editandDeleteDisabled = true;
+                $scope.addActualTimeDisabled = true;
+                $scope.surgicalBlockSelected = {};
                 $scope.surgicalAppointmentSelected = {};
             });
 

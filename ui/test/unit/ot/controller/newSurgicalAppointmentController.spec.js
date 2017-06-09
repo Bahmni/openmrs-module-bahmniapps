@@ -47,6 +47,10 @@ describe("newSurgicalAppointmentController", function () {
             {
                 "uuid": "25f0060e-3a1f-11e7-83f8-0800274a5156",
                 "name": "circulatingNurse"
+            },
+            {
+                "uuid": "25f0060e-3a1f-11e7-83f8-0800274a5156",
+                "name": "notes"
             }
         ]
     };
@@ -93,7 +97,8 @@ describe("newSurgicalAppointmentController", function () {
     });
 
     it("should save data in proper format ", function () {
-        scope.ngDialogData = {id: 1, sortWeight: 0, notes: "need more assistants", patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}};
+        scope.ngDialogData = {id: 1, actualStartDatetime: "2017-02-02T09:09:00.0Z", actualEndDatetime: "2017-02-02T10:09:00.0Z",
+            sortWeight: 0, patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}};
         createController();
         scope.addSurgicalAppointment = jasmine.createSpy("addSurgicalAppointment");
         scope.surgicalAppointmentForm = {$valid: true};
@@ -103,8 +108,9 @@ describe("newSurgicalAppointmentController", function () {
         var appointment = {
             id: 1,
             patient: scope.ngDialogData.patient,
-            notes: "need more assistants",
             sortWeight: 0,
+            actualStartDatetime: "2017-02-02T09:09:00.0Z",
+            actualEndDatetime: "2017-02-02T10:09:00.0Z",
             surgicalAppointmentAttributes: {
                 procedure: {
                     surgicalAppointmentAttributeType: {
@@ -159,6 +165,12 @@ describe("newSurgicalAppointmentController", function () {
                         uuid: '25f0060e-3a1f-11e7-83f8-0800274a5156',
                         name: 'circulatingNurse'
                     }
+                },
+                notes: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25f0060e-3a1f-11e7-83f8-0800274a5156',
+                        name: 'notes'
+                    }
                 }
             }
         };
@@ -182,7 +194,7 @@ describe("newSurgicalAppointmentController", function () {
     });
 
     it("should initialize scope variables for appointment with data from the dialogData in edit appointment mode", function () {
-        var ngDialogData = {id: 1, sortWeight: 0, notes: "need more assistants", patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}};
+        var ngDialogData = {id: 1, sortWeight: 0, actualStartDatetime: "2017-02-02T09:09:00.0Z", actualEndDatetime: "2017-02-02T10:09:00.0Z", patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}};
         ngDialogData.surgicalAppointmentAttributes = {surgicalAppointmentAttributeType:{uuid: "25ef8484-3a1f-11e7-83f8-0800274a5156", name: "procedure"}, value: "surgery on left leg"};
         scope.ngDialogData = ngDialogData;
 
@@ -190,7 +202,6 @@ describe("newSurgicalAppointmentController", function () {
 
         expect(scope.attributes).toBe(ngDialogData.surgicalAppointmentAttributes);
         expect(scope.attributeTypes).toBe(attributeTypes.results);
-        expect(scope.notes).toBe("need more assistants");
         expect(scope.selectedPatient).toBe(ngDialogData.patient);
     });
 
@@ -249,6 +260,12 @@ describe("newSurgicalAppointmentController", function () {
                 surgicalAppointmentAttributeType: {
                     uuid: '25f0060e-3a1f-11e7-83f8-0800274a5156',
                     name: 'circulatingNurse'
+                }
+            },
+            notes: {
+                surgicalAppointmentAttributeType: {
+                    uuid: '25f0060e-3a1f-11e7-83f8-0800274a5156',
+                    name: 'notes'
                 }
             }
         };
