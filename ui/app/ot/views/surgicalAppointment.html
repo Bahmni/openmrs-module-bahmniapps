@@ -5,21 +5,25 @@
         <p class="surgeon-block">
             <label class="surgeon-block surgeon-text">{{'OT_PATIENT' | translate}}<sup>*</sup></label>
 
-            <input type="text"
-                   id="patientID"
-                   min-length=2
-                   bahmni-autocomplete
-                   ng-model="patient"
-                   source="search"
-                   response-map="responseMap"
-                   on-select="onSelectPatient"
-                   strict-select="true"
-                   ng-class="{'illegalValue': isInvalid}"
-                   placeholder="{{'OT_ENTER_PATIENT_KEY' | translate }}"
-                   non-blank
-                   ng-disabled="shouldBeDisabled()"
-            />
+            <span ng-if="!isEditMode()">
+                <input type="text"
+                       id="patientID"
+                       min-length=2
+                       bahmni-autocomplete
+                       ng-model="patient"
+                       source="search"
+                       response-map="responseMap"
+                       on-select="onSelectPatient"
+                       strict-select="true"
+                       ng-class="{'illegalValue': isInvalid}"
+                       placeholder="{{'OT_ENTER_PATIENT_KEY' | translate }}"
+                       non-blank
+                />
             <i class="fa fa-search" aria-hidden="true"></i>
+            </span>
+            <span ng-if="isEditMode()" class="patient_name">
+                <a ng-click="goToForwardUrl()">{{patient}}</a>
+            </span>
         </p>
         <p>
             <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}}</label>

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('NewSurgicalAppointmentController', ['$scope', '$q', 'patientService', 'surgicalAppointmentService', 'messagingService', 'ngDialog', 'spinner',
-        function ($scope, $q, patientService, surgicalAppointmentService, messagingService, ngDialog, spinner) {
+    .controller('NewSurgicalAppointmentController', ['$scope', '$q', '$window', 'patientService', 'surgicalAppointmentService', 'messagingService', 'programService', 'appService', 'ngDialog', 'spinner',
+        function ($scope, $q, $window, patientService, surgicalAppointmentService, messagingService, programService, appService, ngDialog, spinner) {
             var init = function () {
                 $scope.selectedPatient = $scope.ngDialogData && $scope.ngDialogData.patient;
                 $scope.patient = $scope.ngDialogData && $scope.ngDialogData.patient && ($scope.ngDialogData.patient.value || $scope.ngDialogData.patient.display);
@@ -12,10 +12,15 @@ angular.module('bahmni.ot')
                     var attributes = {};
                     var mapAttributes = new Bahmni.OT.SurgicalBlockMapper().mapAttributes(attributes, $scope.attributeTypes);
                     $scope.attributes = $scope.ngDialogData && $scope.ngDialogData.surgicalAppointmentAttributes || mapAttributes;
+                    if ($scope.isEditMode()) {
+                        programService.getEnrollmentInfoFor($scope.ngDialogData.patient.uuid, "custom:(uuid,dateEnrolled,program:(uuid),patient:(uuid))").then(function (response) {
+                            $scope.enrollmentInfo = response && response[0];
+                        });
+                    }
                 });
             };
 
-            $scope.shouldBeDisabled = function () {
+            $scope.isEditMode = function () {
                 return $scope.patient && $scope.ngDialogData && $scope.ngDialogData.id;
             };
 
@@ -53,6 +58,22 @@ angular.module('bahmni.ot')
 
             $scope.close = function () {
                 ngDialog.close();
+            };
+
+            $scope.goToForwardUrl = function () {
+                var forwardUrl = appService.getAppDescriptor().getConfigValue('patientDashboardUrl');
+                if (!$scope.enrollmentInfo) {
+                    messagingService.showMessage('error', forwardUrl.message);
+                    return;
+                }
+                var params = {
+                    patientUuid: $scope.enrollmentInfo.patient.uuid,
+                    dateEnrolled: $scope.enrollmentInfo.dateEnrolled,
+                    programUuid: $scope.enrollmentInfo.program.uuid,
+                    enrollment: $scope.enrollmentInfo.uuid
+                };
+                var formattedUrl = appService.getAppDescriptor().formatUrl(forwardUrl.link, params);
+                $window.open(formattedUrl);
             };
 
             spinner.forPromise(init());

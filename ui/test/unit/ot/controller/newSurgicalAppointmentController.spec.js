@@ -1,13 +1,19 @@
 'use strict';
 
 describe("newSurgicalAppointmentController", function () {
-    var scope, controller, q, surgicalAppointmentHelper;
+    var scope, controller, q, surgicalAppointmentHelper, _window, getAppDescriptor;
     q = jasmine.createSpyObj('$q', ['all', 'when']);
     var patientService = jasmine.createSpyObj('patientService', ['search']);
     var spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgeons', 'saveSurgicalBlock', 'getSurgicalAppointmentAttributeTypes']);
+    var programService = jasmine.createSpyObj('programService', ['getEnrollmentInfoFor']);
+    getAppDescriptor = jasmine.createSpyObj('getAppDescriptor', ['getExtensions', 'getConfigValue', 'formatUrl']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    appService.getAppDescriptor.and.returnValue(getAppDescriptor);
+
     var ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
+    _window = jasmine.createSpyObj('$window', ['open', 'location']);
 
 
     var attributeTypes = {
@@ -61,6 +67,13 @@ describe("newSurgicalAppointmentController", function () {
     surgicalAppointmentService.getSurgeons.and.callFake(function () {
         return {data: {results: [{uuid: "uuid1", name: "provider1"}, {uuid: "uuid2", name: "provider2"}]}};
     });
+    var enrollmentInfo = {
+        patient: {uuid: "patientUuid"},
+        dateEnrolled: "06-08-2017",
+        uuid: "enrollmentUuid",
+        program: {uuid: "programUuid"}
+    };
+    programService.getEnrollmentInfoFor.and.returnValue(specUtil.simplePromise([]));
 
     beforeEach(function () {
         module('bahmni.ot');
@@ -75,10 +88,13 @@ describe("newSurgicalAppointmentController", function () {
         controller('NewSurgicalAppointmentController', {
             $scope: scope,
             $q: q,
+            $window: _window,
             spinner: spinner,
             surgicalAppointmentService: surgicalAppointmentService,
             patientService: patientService,
             messagingService: messagingService,
+            programService: programService,
+            appService: appService,
             surgicalAppointmentHelper: surgicalAppointmentHelper,
             ngDialog: ngDialog
         });
@@ -184,7 +200,6 @@ describe("newSurgicalAppointmentController", function () {
         scope.patient = "pa";
         scope.search();
         expect(patientService.search).toHaveBeenCalledWith("pa");
-
     });
 
     it("should close the dialog when clicked on close", function () {
@@ -194,8 +209,22 @@ describe("newSurgicalAppointmentController", function () {
     });
 
     it("should initialize scope variables for appointment with data from the dialogData in edit appointment mode", function () {
-        var ngDialogData = {id: 1, sortWeight: 0, actualStartDatetime: "2017-02-02T09:09:00.0Z", actualEndDatetime: "2017-02-02T10:09:00.0Z", patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}};
-        ngDialogData.surgicalAppointmentAttributes = {surgicalAppointmentAttributeType:{uuid: "25ef8484-3a1f-11e7-83f8-0800274a5156", name: "procedure"}, value: "surgery on left leg"};
+        var ngDialogData = {
+            id: 1,
+            sortWeight: 0,
+            notes: "need more assistants",
+            patient: {
+                uuid: "patientUuid",
+                display: "firstName lastName",
+                person: {given_name: "firstName", family_name: "lastName"}
+            }
+        };
+        ngDialogData.surgicalAppointmentAttributes = {
+            surgicalAppointmentAttributeType: {
+                uuid: "25ef8484-3a1f-11e7-83f8-0800274a5156",
+                name: "procedure"
+            }, value: "surgery on left leg"
+        };
         scope.ngDialogData = ngDialogData;
 
         createController();
@@ -207,7 +236,7 @@ describe("newSurgicalAppointmentController", function () {
 
     it("should only initialize the attributes, attributeTypes, when dialogData is not provided, in create appointment mode", function () {
         var ngDialogData = {};
-        var surgicalAppointmentAttributes ={
+        var surgicalAppointmentAttributes = {
             procedure: {
                 surgicalAppointmentAttributeType: {
                     uuid: '25ef8484-3a1f-11e7-83f8-0800274a5156',
@@ -287,7 +316,7 @@ describe("newSurgicalAppointmentController", function () {
 
         createController();
 
-        expect(scope.shouldBeDisabled()).toBeTruthy();
+        expect(scope.isEditMode()).toBeTruthy();
     });
 
     it("should enable the edit patient name when trying to edit the unsaved surgical appointment", function () {
@@ -298,7 +327,7 @@ describe("newSurgicalAppointmentController", function () {
 
         createController();
 
-        expect(scope.shouldBeDisabled()).toBeFalsy();
+        expect(scope.isEditMode()).toBeFalsy();
     });
 
     it("should deep clone the surgeon for other surgeon", function () {
@@ -310,5 +339,40 @@ describe("newSurgicalAppointmentController", function () {
         scope.otherSurgeons[0].name= "surgeon1 modified";
         expect(scope.surgeons).toEqual([{name: "surgeon1", uuid: "surgeon1Uuid"},{name: "surgeon2", uuid: "surgeon2Uuid"}]);
     });
+
+    it("should open the patient dashboard when user click on patient name in edit mode", function () {
+        getAppDescriptor.getConfigValue.and.returnValue({
+            link : "/bahmni/clinical/#/programs/patient/{{patientUuid}}/dashboard?dateEnrolled={{dateEnrolled}}&programUuid={{programUuid}}&enrollment={{enrollment}}&currentTab=DASHBOARD_TAB_GENERAL_KEY"
+        });
+        getAppDescriptor.formatUrl.and.returnValue("formattedUrl");
+        scope.patient = { uuid: "patientUuid", display: "patient-GAN2020" };
+        scope.ngDialogData = { id: "someId", patient: scope.patient };
+        programService.getEnrollmentInfoFor.and.returnValue(specUtil.simplePromise([enrollmentInfo]));
+        createController();
+
+        scope.goToForwardUrl();
+        expect(scope.enrollmentInfo).toBe(enrollmentInfo);
+        expect(getAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientDashboardUrl');
+        expect(getAppDescriptor.formatUrl).toHaveBeenCalledWith("/bahmni/clinical/#/programs/patient/{{patientUuid}}/dashboard?dateEnrolled={{dateEnrolled}}&programUuid={{programUuid}}&enrollment={{enrollment}}&currentTab=DASHBOARD_TAB_GENERAL_KEY", jasmine.any(Object));
+        expect(_window.open).toHaveBeenCalledWith("formattedUrl");
+    });
+
+    it("should throw error when the forward url configured for the patient is invalid, all the required params are not present on the scope", function () {
+        var forwardUrl = {
+            link : "/bahmni/clinical/#/programs/patient/{{patientUuid}}/dashboard?dateEnrolled={{dateEnrolled}}&programUuid={{programUuid}}&enrollment={{enrollment}}&currentTab=DASHBOARD_TAB_GENERAL_KEY",
+            message: "Configured forward url is invalid"
+        };
+        getAppDescriptor.getConfigValue.and.returnValue(forwardUrl);
+        scope.patient = { uuid: "patientUuid", display: "patient-GAN2020" };
+        scope.ngDialogData = { id: "someId", patient: scope.patient };
+        programService.getEnrollmentInfoFor.and.returnValue(specUtil.simplePromise([]));
+
+        scope.enrollmentInfo = undefined;
+        createController();
+
+        scope.goToForwardUrl();
+        expect(getAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientDashboardUrl');
+        expect(messagingService.showMessage).toHaveBeenCalledWith('error', forwardUrl.message);
+    }); 
 
 });

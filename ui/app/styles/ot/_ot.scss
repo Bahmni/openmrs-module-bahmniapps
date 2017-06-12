@@ -295,7 +295,11 @@ div[ng-app="ot"] {
           text-align: right;
           margin-right: 10px;
         }
-
+        .patient_name {
+          display: inline-block;
+          margin-top: 10px;
+          text-decoration: underline;
+        }
         input.add {
           background: #99c915;
           border: 1px solid #99c915;
