@@ -63,7 +63,7 @@ angular.module('bahmni.ot')
             $scope.goToForwardUrl = function () {
                 var forwardUrl = appService.getAppDescriptor().getConfigValue('patientDashboardUrl');
                 if (!$scope.enrollmentInfo) {
-                    messagingService.showMessage('error', forwardUrl.message);
+                    messagingService.showMessage('error', forwardUrl.errorMessage);
                     return;
                 }
                 var params = {

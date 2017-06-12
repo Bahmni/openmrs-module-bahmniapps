@@ -360,7 +360,7 @@ describe("newSurgicalAppointmentController", function () {
     it("should throw error when the forward url configured for the patient is invalid, all the required params are not present on the scope", function () {
         var forwardUrl = {
             link : "/bahmni/clinical/#/programs/patient/{{patientUuid}}/dashboard?dateEnrolled={{dateEnrolled}}&programUuid={{programUuid}}&enrollment={{enrollment}}&currentTab=DASHBOARD_TAB_GENERAL_KEY",
-            message: "Configured forward url is invalid"
+            errorMessage: "Configured forward url is invalid"
         };
         getAppDescriptor.getConfigValue.and.returnValue(forwardUrl);
         scope.patient = { uuid: "patientUuid", display: "patient-GAN2020" };
@@ -372,7 +372,7 @@ describe("newSurgicalAppointmentController", function () {
 
         scope.goToForwardUrl();
         expect(getAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientDashboardUrl');
-        expect(messagingService.showMessage).toHaveBeenCalledWith('error', forwardUrl.message);
+        expect(messagingService.showMessage).toHaveBeenCalledWith('error', forwardUrl.errorMessage);
     }); 
 
 });
