@@ -56,7 +56,7 @@ angular.module('opd.documentupload')
             };
 
             var isVisitInSameRange = function (newVisitWithoutTime, existingVisit) {
-               return existingVisit.startDatetime <= newVisitWithoutTime.stopDatetime && (newVisitWithoutTime.startDatetime <= existingVisit.stopDatetime || DateUtil.isInvalid(existingVisit.stopDatetime));
+                return existingVisit.startDatetime <= newVisitWithoutTime.stopDatetime && (newVisitWithoutTime.startDatetime <= existingVisit.stopDatetime || DateUtil.isInvalid(existingVisit.stopDatetime));
             };
 
             $scope.isNewVisitDateValid = function () {
