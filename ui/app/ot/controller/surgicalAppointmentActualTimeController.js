@@ -44,7 +44,7 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
             var surgicalAppointment = _.cloneDeep($scope.ngDialogData.surgicalAppointment);
             surgicalAppointment.actualStartDatetime = $scope.actualStartTime;
             surgicalAppointment.actualEndDatetime = $scope.actualEndTime;
-            surgicalAppointment.status = "COMPLETED";
+            surgicalAppointment.status = $scope.actualStartTime && "COMPLETED" || "";
             surgicalAppointment.notes = $scope.notes;
             surgicalAppointment.surgicalBlock = {uuid: $scope.ngDialogData.surgicalBlock.uuid};
             surgicalAppointment.patient = {uuid: surgicalAppointment.patient.uuid};
@@ -57,6 +57,10 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
                 messagingService.showMessage('info', message);
                 ngDialog.close();
             });
+        };
+
+        $scope.isActualTimeRequired = function () {
+            return $scope.actualStartTime || $scope.actualEndTime || $scope.notes;
         };
 
         $scope.close = function () {
