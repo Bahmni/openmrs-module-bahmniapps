@@ -3,17 +3,17 @@
         <section>
             <article class="form-field patient-name-wrapper" ng-if="::patientConfiguration.local()['showNameField']">
                 <div class="field-attribute">
-                    <label for="patientName">{{::patientConfiguration.local()['labelForNameField']}}</label>
+                    <label for="patientName">{{::patientConfiguration.local()['labelForNameField'] | translate}}</label>
                 </div>
                 <div class="field-value" id="patientNameLocal">
                     <input type="text" id="givenNameLocal" ng-model="patient.givenNameLocal" pattern-validate
-                           placeholder="{{::patientConfiguration.local()['placeholderForGivenName']}}" focus-me="true">
+                           placeholder="{{::patientConfiguration.local()['placeholderForGivenName'] | translate}}" focus-me="true">
                     <input ng-show="::showMiddleName" type="text" id="middleNameLocal"
                            ng-model="patient.middleNameLocal"
                            pattern-validate
-                           placeholder="{{::patientConfiguration.local()['placeholderForMiddleName']}}">
+                           placeholder="{{::patientConfiguration.local()['placeholderForMiddleName'] | translate}}">
                     <input type="text" id="familyNameLocal" ng-model="patient.familyNameLocal" pattern-validate
-                           placeholder="{{::patientConfiguration.local()['placeholderForFamilyName']}}">
+                           placeholder="{{::patientConfiguration.local()['placeholderForFamilyName'] | translate}}">
                 </div>
             </article>
             <article class="form-field patient-name-wrapper">
@@ -147,7 +147,7 @@
                  strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
 
         <legend class="registraion_legend" ng-if="patient.extraIdentifiers.length>0">
-            <span class="mylegend">Additional Identifiers</span>
+            <span class="mylegend">{{ ::'REGISTRATION_ADDTIONAL_IDENTIFIERS' | translate}}</span>
         </legend>
 
         <section>
@@ -156,7 +156,7 @@
                 <div ng-if="patient.uuid != undefined">
                     <article ng-repeat="identifier in patient.extraIdentifiers" class="form-field existing-patient">
                         <div class="field-attribute">
-                            <label class="control-label" for="patientID">{{:: identifier.identifierType.name}}
+                            <label class="control-label" for="patientID">{{:: identifier.identifierType.name  | translate }}
                                 <span ng-show=":: identifier.identifierType.required && !identifier.hasIdentifierSources()"
                                       class="asterick">*</span>
                             </label>
@@ -177,7 +177,7 @@
                     <article ng-repeat="identifier in patient.extraIdentifiers"
                              class="form-field existing-patient">
                         <div class="field-attribute">
-                            <label class="control-label" for="patientID">{{:: identifier.identifierType.name}}
+                            <label class="control-label" for="patientID">{{:: identifier.identifierType.name | translate}}
                             <span ng-show="::identifier.identifierType.required && !identifier.hasIdentifierSources()"
                                   class="asterick">*</span>
                             </label>

@@ -16,7 +16,7 @@
                 <section>
                     <article class="form-field existing-patient">
                         <div class="field-attribute">
-                            <label class="control-label" for="patientID">{{:: patient.primaryIdentifier.identifierType.name}}
+                            <label class="control-label" for="patientID">{{:: patient.primaryIdentifier.identifierType.name | translate }}
                                 <span ng-show="::patient.primaryIdentifier.identifierType.required && !patient.primaryIdentifier.hasIdentifierSources()" class="asterick">*</span>
                             </label>
                         </div>
