@@ -142,4 +142,83 @@ describe("surgicalAppointmentActualTimeController", function () {
         scope.actualEndTime = new Date("Tue Jun 06 2017 10:45:00 GMT+0530 (IST)");
     });
 
+    it('should make actual start time and actual end time mandatory when actual start time is filled', function () {
+        scope.ngDialogData = {};
+        scope.ngDialogData.surgicalBlock = {
+            id: 27,
+            startDatetime: "2017-06-06T10:00:00.000+0530",
+            endDatetime: "2017-06-06T12:00:00.000+0530"
+        };
+        scope.ngDialogData.surgicalAppointment = {
+            patient : {
+                display : "EM10000Q - Test Patient"
+            },
+            surgicalAppointmentAttributes: [{
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeMinutes"
+                },
+                value: "30"
+            },
+                {
+                    surgicalAppointmentAttributeType: {
+                        format: "java.lang.String",
+                        name: "estTimeHours"
+                    },
+                    value: "0"
+                },
+                {
+                    surgicalAppointmentAttributeType: {
+                        format: "java.lang.String",
+                        name: "estTimeMinutes"
+                    },
+                    value: "15"
+                }]
+        };
+        createController();
+        scope.actualStartTime = new Date("Tue Jun 06 2017 10:00:00 GMT+0530 (IST)");
+        expect(scope.isActualTimeRequired()).toBeTruthy();
+    });
+
+    it('should make actual start time and actual end time not mandatory when all the fields on the dialog are empty', function () {
+        scope.ngDialogData = {};
+        scope.ngDialogData.surgicalBlock = {
+            id: 27,
+            startDatetime: "2017-06-06T10:00:00.000+0530",
+            endDatetime: "2017-06-06T12:00:00.000+0530"
+        };
+        scope.ngDialogData.surgicalAppointment = {
+            patient : {
+                display : "EM10000Q - Test Patient"
+            },
+            surgicalAppointmentAttributes: [{
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeMinutes"
+                },
+                value: "30"
+            },
+                {
+                    surgicalAppointmentAttributeType: {
+                        format: "java.lang.String",
+                        name: "estTimeHours"
+                    },
+                    value: "0"
+                },
+                {
+                    surgicalAppointmentAttributeType: {
+                        format: "java.lang.String",
+                        name: "estTimeMinutes"
+                    },
+                    value: "15"
+                }]
+        };
+
+        createController();
+        scope.actualStartTime = undefined;
+        scope.actualEndTime = undefined;
+        scope.notes = undefined;
+        expect(scope.isActualTimeRequired()).toBeFalsy();
+    });
+
 });
