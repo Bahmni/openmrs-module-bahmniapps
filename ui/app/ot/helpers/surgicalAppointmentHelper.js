@@ -25,4 +25,11 @@ angular.module('bahmni.ot')
         this.getAppointmentDuration = function (estTimeHours, estTimeMinutes, cleaningTime) {
             return estTimeHours * 60 + parseInt(estTimeMinutes) + parseInt(cleaningTime);
         };
+        
+        this.getAppointmentAttributes = function (surgicalAppointment) {
+           return _.reduce(surgicalAppointment.surgicalAppointmentAttributes, function (attributes, attribute) {
+                attributes[attribute.surgicalAppointmentAttributeType.name] = attribute.value;
+                return attributes;
+            }, {});
+        };
     }]);

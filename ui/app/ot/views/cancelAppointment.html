@@ -1,0 +1,14 @@
+<div class="ot-actual-time-form">
+    <p><b>Do you want to cancel the surgery or postpone it?</b></p>
+    <p>{{appointment.patient}}</p>
+    {{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}} - {{appointment.estTimeHours}} {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} : {{appointment.estTimeMinutes}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}
+    <br>
+    <form>
+        <input type="radio" name="status"  ng-model="appointment.status"  value="POSTPONED"> Postpone<br>
+        <input type="radio" name="status"  ng-model="appointment.status"  value="CANCELLED"> Cancel <br>
+    </form>
+    Reason for Change *
+    <textarea placeholder="enter reason" id="reasonForChange" ng-model="appointment.notes" msd-elastic></textarea>
+    <button type="button" ng-click="confirmCancelAppointment()">Confirm</button>
+    <button type="button" ng-click="closeDialog()">Cancel</button>
+</div>

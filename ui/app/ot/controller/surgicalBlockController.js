@@ -45,6 +45,7 @@ angular.module('bahmni.ot')
 
             $scope.editAppointment = function (surgicalAppointment) {
                 var clone = _.cloneDeep(surgicalAppointment);
+                surgicalAppointment.isBeingEdited = true;
                 $scope.addNewSurgicalAppointment(clone);
             };
 
@@ -80,11 +81,12 @@ angular.module('bahmni.ot')
             var addOrUpdateTheSurgicalAppointment = function (surgicalAppointment) {
                 if (surgicalAppointment.sortWeight >= 0) {
                     var existingAppointment = _.find($scope.surgicalForm.surgicalAppointments, function (appointment) {
-                        return appointment.sortWeight === surgicalAppointment.sortWeight;
+                        return appointment.isBeingEdited;
                     });
                     existingAppointment.notes = surgicalAppointment.notes;
                     existingAppointment.patient = surgicalAppointment.patient;
                     existingAppointment.surgicalAppointmentAttributes = surgicalAppointment.surgicalAppointmentAttributes;
+                    existingAppointment.isBeingEdited = false;
                 } else {
                     surgicalAppointment.sortWeight = $scope.surgicalForm.surgicalAppointments.length;
                     $scope.surgicalForm.surgicalAppointments.push(surgicalAppointment);
@@ -122,6 +124,22 @@ angular.module('bahmni.ot')
                 var options = {};
                 options['dashboardCachebuster'] = Math.random();
                 $state.go("home", options);
+            };
+
+            $scope.cancelAppointment = function (surgicalAppointment) {
+                var clonedAppointment = _.cloneDeep(surgicalAppointment);
+                surgicalAppointment.isBeingEdited = true;
+                ngDialog.open({
+                    template: "views/cancelAppointment.html",
+                    controller: "surgicalBlockViewCancelAppointmentController", 
+                    closeByDocument: false,
+                    showClose: true,
+                    scope: $scope,
+                    data: {
+                     surgicalAppointment: clonedAppointment,
+                     surgicalForm: $scope.surgicalForm
+                    }
+                });
             };
 
             $scope.addNewSurgicalAppointment = function (surgicalAppointment) {

@@ -67,7 +67,7 @@
                         dnd-effect-allowed="move"
                         dnd-dragend="updateSortWeight()"
                     >
-                        <td>
+                        <td ng-disabled="isSurgicalAppointmentCancelled(surgicalAppointment)">
                             <i>
                                 ..
                                 ..
@@ -75,7 +75,7 @@
                                 ..
                                 ..
                             </i>
-                            <div class="surgery-details-wrapper">
+                            <div class="surgery-details-wrapper" ng-class="{'cancelled' : surgicalAppointment.status ==='CANCELLED' }">
                                 <h4>{{getPatientName(surgicalAppointment)}}</h4>
                                 <p>
                                     <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.procedure.value" ><b>{{'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.procedure.value}}, </span>
@@ -91,8 +91,8 @@
                             </div>
                         </td>
                         <td class="appointment-edit">
-                            <a id="edit-appointment" href ng-click="editAppointment(surgicalAppointment)">Edit</a>
-                            <a id="cancel-appointment" href ng-click="">Cancel</a>
+                            <a id="edit-appointment" href ng-click="editAppointment(surgicalAppointment)" ng-hide="surgicalAppointment.status=='POSTPONED' ||surgicalAppointment.status=='CANCELLED'">Edit</a>
+                            <a id="cancel-appointment" href ng-click="cancelAppointment(surgicalAppointment)">Cancel</a>
                         </td>
                     </tr>
                     </tbody>

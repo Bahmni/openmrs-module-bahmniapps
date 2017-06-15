@@ -7,14 +7,14 @@
     </div>
     <div class="table-block">
         <div class="calendar-time-container">
-            <div ng-repeat="row in rows" class="calendar-time">
-                {{row.date | bahmniTime}}
+            <div ng-repeat="row in ::rows" class="calendar-time">
+                {{::row.date | bahmniTime}}
             </div>
         </div>
         <div class="ot-block-container">
             <div class="ot-block-wrapper">
             <div class="ot-block" ng-repeat="(blockIndex, blocks) in surgicalBlocksByLocation">
-                <div ng-repeat="row in rows" class="calendar-cell">
+                <div ng-repeat="row in ::rows" class="calendar-cell">
                 </div>
                 <div ng-repeat="block in blocks">
                     <ot-calendar-surgical-block
@@ -31,6 +31,6 @@
 </div>
 <div class="surgical-action-wrapper">
     <button ng-disabled="addActualTimeDisabled" ng-mousedown="addActualTime()">Add Actual Time</button>
-    <button ng-disabled="editandDeleteDisabled" ng-mousedown="goToEdit($event)">Edit</button>
-    <button ng-disabled="editandDeleteDisabled">Delete</button>
+    <button ng-disabled="editDisabled" ng-mousedown="goToEdit($event)">Edit</button>
+    <button ng-disabled="cancelDisabled" ng-mousedown="cancelAppointment()">Cancel</button>
 </div>
