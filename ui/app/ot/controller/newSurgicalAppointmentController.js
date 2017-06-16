@@ -36,7 +36,7 @@ angular.module('bahmni.ot')
 
             $scope.responseMap = function (data) {
                 return _.map(data, function (patientInfo) {
-                    patientInfo.label = patientInfo.givenName + " " + patientInfo.familyName + " " + "(" + patientInfo.identifier + ")";
+                    patientInfo.label = patientInfo.givenName + " " + patientInfo.familyName + " " + "( " + patientInfo.identifier + " )";
                     return patientInfo;
                 });
             };

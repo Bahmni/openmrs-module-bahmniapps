@@ -386,7 +386,8 @@ describe("SurgicalBlockMapper", function () {
         surgicalBlock.endDatetime = "2017-05-25T18:00:00.000+0530";
         surgicalBlock.provider = {uuid: "providerUuid"};
         surgicalBlock.location = {uuid: "locationUuid"};
-        surgicalBlock.surgicalAppointments = [{id: "11", uuid: "appointmentUuid", voided: false, patient: {uuid: "patientUuid"}, sortWeight: 0, actualStartDatetime: "2017-05-25T10:00:00.000+0530", actualEndDatetime: "2017-05-25T12:00:00.000+0530", surgicalAppointmentAttributes: openmrsSurgicalAppointmentAttributes}];
+        surgicalBlock.surgicalAppointments = [{id: "11", uuid: "appointmentUuid",status: undefined,
+            notes : undefined, voided: false, patient: {uuid: "patientUuid"}, sortWeight: 0, actualStartDatetime: "2017-05-25T10:00:00.000+0530", actualEndDatetime: "2017-05-25T12:00:00.000+0530", surgicalAppointmentAttributes: openmrsSurgicalAppointmentAttributes}];
 
         var surgicalForm = {};
         surgicalForm.id = 10;
@@ -396,7 +397,16 @@ describe("SurgicalBlockMapper", function () {
         surgicalForm.endDatetime = "Date(Thu May 25 2017 18:00:00 GMT+0530 (IST))";
         surgicalForm.provider = {uuid: "providerUuid"};
         surgicalForm.location = {uuid: "locationUuid"};
-        surgicalForm.surgicalAppointments = [{id: "11", uuid: "appointmentUuid", voided: false, patient: {uuid: "patientUuid"}, sortWeight: 0, actualStartDatetime: "2017-05-25T10:00:00.000+0530", actualEndDatetime: "2017-05-25T12:00:00.000+0530", surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes}];
+        surgicalForm.surgicalAppointments = [{
+            id: "11",
+            uuid: "appointmentUuid",
+            voided: false,
+            patient: {uuid: "patientUuid"},
+            sortWeight: 0,
+            actualStartDatetime: "2017-05-25T10:00:00.000+0530",
+            actualEndDatetime: "2017-05-25T12:00:00.000+0530",
+            surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes
+        }];
 
         var mappedToOpenmrsSurgicalBlock = surgicalBlockMapper.mapSurgicalBlockUIToDomain(surgicalForm);
 

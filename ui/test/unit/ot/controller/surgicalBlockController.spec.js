@@ -387,10 +387,10 @@ describe("surgicalBlockController", function () {
         done();
     });
 
-    it("should get the pateint name of surgical appointment", function () {
+    it("should get the patient name of surgical appointment", function () {
         createController();
-        var surgicalAppointment = {id: "12", patient: {uuid: "patientUuid2", display: "Ad hasan"}, notes: "need more assistants and blood", surgicalAppointmentAttributes: defaultSurgicalAppointmentAttributes};
-        expect(scope.getPatientName(surgicalAppointment)).toEqual("Ad hasan");
+        var surgicalAppointment = {id: "12", patient: {uuid: "patientUuid2", display: "I02345 - Ad hasan"}, notes: "need more assistants and blood", surgicalAppointmentAttributes: defaultSurgicalAppointmentAttributes};
+        expect(scope.getPatientName(surgicalAppointment)).toEqual("Ad hasan ( I02345 )");
         surgicalAppointment.patient.value = "Ad hasan Mohammed";
         expect(scope.getPatientName(surgicalAppointment)).toEqual("Ad hasan Mohammed");
 
@@ -421,7 +421,7 @@ describe("surgicalBlockController", function () {
 
     it("should open an ngDialog with data of given surgical appointment for editing the the appointment", function () {
         createController();
-        var surgicalAppointment = {id: "11", patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes};
+        var surgicalAppointment = {id: "11", patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes, isBeingEdited: true};
         scope.editAppointment(surgicalAppointment);
 
         expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
@@ -503,7 +503,7 @@ describe("surgicalBlockController", function () {
         scope.surgicalForm.endDatetime = new Date(2017, 1, 30, 4, 0);
         scope.surgicalForm.provider = {uuid: "providerUuid"};
         scope.surgicalForm.location = {uuid: "locationUuid"};
-        var newSurgicalAppointment = {id: "12", patient: {uuid: "patientUuid2"}, notes: "need more assistants and blood", sortWeight: 1, surgicalAppointmentAttributes: defaultSurgicalAppointmentAttributes};
+        var newSurgicalAppointment = {id: "12", patient: {uuid: "patientUuid2"}, notes: "need more assistants and blood", sortWeight: 1, surgicalAppointmentAttributes: defaultSurgicalAppointmentAttributes, isBeingEdited: true};
 
         scope.surgicalForm.surgicalAppointments = [{id: "11", patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes}, newSurgicalAppointment];
 
@@ -601,6 +601,7 @@ describe("surgicalBlockController", function () {
                 patient: {uuid: "patientUuid"},
                 notes: "need more assistants",
                 sortWeight: 0,
+                status: undefined,
                 surgicalAppointmentAttributes: []
             },
             {
@@ -625,7 +626,7 @@ describe("surgicalBlockController", function () {
             className: 'ngdialog-theme-default surgical-appointment-dialog',
             showClose: true,
             scope: scope,
-            data: scope.surgicalForm.surgicalAppointments[0]
+            data: _.omit(scope.surgicalForm.surgicalAppointments[0], ['isBeingEdited'])
         }));
     });
 });

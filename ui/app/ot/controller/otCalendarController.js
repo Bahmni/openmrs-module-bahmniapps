@@ -50,7 +50,7 @@ angular.module('bahmni.ot')
             });
 
             $scope.$on("event:surgicalAppointmentSelect", function (event, surgicalAppointment, surgicalBlock) {
-                $scope.cancelDisabled = surgicalAppointment.status == 'COMPLETED'; 
+                $scope.cancelDisabled = surgicalAppointment.status == 'COMPLETED';
                 $scope.editDisabled = false;
                 $scope.addActualTimeDisabled = false;
                 $scope.surgicalAppointmentSelected = surgicalAppointment;
@@ -100,7 +100,7 @@ angular.module('bahmni.ot')
                     }
                 });
             };
-            
+
             $scope.cancelAppointment = function () {
                 ngDialog.open({
                     template: "views/cancelAppointment.html",

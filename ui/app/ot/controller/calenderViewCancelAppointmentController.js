@@ -12,7 +12,7 @@ angular.module('bahmni.ot').controller('calenderViewCancelAppointmentController'
             notes: surgicalAppointment.notes,
             status: surgicalAppointment.status
         };
-        
+
         $scope.confirmCancelAppointment = function () {
             surgicalAppointment.notes = $scope.appointment.notes;
             surgicalAppointment.status = $scope.appointment.status;
@@ -31,5 +31,4 @@ angular.module('bahmni.ot').controller('calenderViewCancelAppointmentController'
             surgicalAppointment.sortWeight = null;
             ngDialog.close();
         };
-        
     }]);

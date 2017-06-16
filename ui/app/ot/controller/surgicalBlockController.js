@@ -33,14 +33,14 @@ angular.module('bahmni.ot')
 
             var getAvailableBlockDuration = function () {
                 var blockDuration = Bahmni.Common.Util.DateUtil.diffInMinutes($scope.surgicalForm.startDatetime, $scope.surgicalForm.endDatetime);
-                var appointmentsDuration = _.sumBy($scope.surgicalForm.surgicalAppointments, function (appointment) {
+                var appointmentsDuration = _.sumBy(_.reject($scope.surgicalForm.surgicalAppointments, ['sortWeight', null]), function (appointment) {
                     return getAppointmentDuration(appointment);
                 });
                 return blockDuration - appointmentsDuration;
             };
 
             $scope.getPatientName = function (surgicalAppointment) {
-                return surgicalAppointment.patient.value || surgicalAppointment.patient.display;
+                return surgicalAppointment.patient.value || surgicalAppointmentHelper.getPatientDisplayLabel(surgicalAppointment.patient.display);
             };
 
             $scope.editAppointment = function (surgicalAppointment) {
@@ -69,7 +69,7 @@ angular.module('bahmni.ot')
                     messagingService.showMessage('error', "{{'OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION' | translate}}");
                     return;
                 }
-
+                $scope.updateSortWeight();
                 var surgicalBlock = new Bahmni.OT.SurgicalBlockMapper().mapSurgicalBlockUIToDomain(surgicalForm);
                 spinner.forPromise(surgicalAppointmentService.saveSurgicalBlock(surgicalBlock)).then(function (response) {
                     $scope.surgicalForm = new Bahmni.OT.SurgicalBlockMapper().map(response.data, $scope.attributeTypes, $scope.surgeons);
@@ -103,6 +103,7 @@ angular.module('bahmni.ot')
                 }
                 return getAvailableBlockDuration() >= getAppointmentDuration(surgicalAppointment);
             };
+
             $scope.addSurgicalAppointment = function (surgicalAppointment) {
                 if (canBeFittedInTheSurgicalBlock(surgicalAppointment)) {
                     addOrUpdateTheSurgicalAppointment(surgicalAppointment);
@@ -131,13 +132,13 @@ angular.module('bahmni.ot')
                 surgicalAppointment.isBeingEdited = true;
                 ngDialog.open({
                     template: "views/cancelAppointment.html",
-                    controller: "surgicalBlockViewCancelAppointmentController", 
+                    controller: "surgicalBlockViewCancelAppointmentController",
                     closeByDocument: false,
                     showClose: true,
                     scope: $scope,
                     data: {
-                     surgicalAppointment: clonedAppointment,
-                     surgicalForm: $scope.surgicalForm
+                        surgicalAppointment: clonedAppointment,
+                        surgicalForm: $scope.surgicalForm
                     }
                 });
             };

@@ -1,14 +1,14 @@
-<div class="ot-actual-time-form">
-    <p><b>Do you want to cancel the surgery or postpone it?</b></p>
+<form class="ot-actual-time-form" ng-submit="confirmCancelAppointment()">
+    <p><b>{{'OT_SURGICAL_APPOINTMENT_CANCEL_OR_POSTPONE_A_SURGERY' | translate}}</b></p>
     <p>{{appointment.patient}}</p>
     {{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}} - {{appointment.estTimeHours}} {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} : {{appointment.estTimeMinutes}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}
     <br>
-    <form>
-        <input type="radio" name="status"  ng-model="appointment.status"  value="POSTPONED"> Postpone<br>
-        <input type="radio" name="status"  ng-model="appointment.status"  value="CANCELLED"> Cancel <br>
-    </form>
-    Reason for Change *
-    <textarea placeholder="enter reason" id="reasonForChange" ng-model="appointment.notes" msd-elastic></textarea>
-    <button type="button" ng-click="confirmCancelAppointment()">Confirm</button>
-    <button type="button" ng-click="closeDialog()">Cancel</button>
-</div>
+    <div >
+        <input type="radio" name="status"  ng-model="appointment.status"  value="POSTPONED" required> Postpone<br>
+        <input type="radio" name="status"  ng-model="appointment.status"  value="CANCELLED" required> Cancel <br>
+    </div>
+   {{'OT_SURGICAL_APPOINTMENT_REASON_FOR_CHANGE' | translate}} <sup>*</sup>
+    <textarea required placeholder="enter reason" id="reasonForChange" class="ot-actual-time-notes" ng-model="appointment.notes" msd-elastic></textarea>
+    <input type="submit" value="Confirm"/>
+    <input type="button" ng-click="closeDialog()" value="Cancel"/>
+</form>

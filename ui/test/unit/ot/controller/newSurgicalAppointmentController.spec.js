@@ -108,8 +108,8 @@ describe("newSurgicalAppointmentController", function () {
         var patientsWithDisplayName = scope.responseMap(patients);
 
         expect(patientsWithDisplayName.length).toEqual(2);
-        expect(patientsWithDisplayName[0].label).toEqual("Natsume Hyuga (IQ12345)");
-        expect(patientsWithDisplayName[1].label).toEqual("Sakura Mikan (IQ12346)");
+        expect(patientsWithDisplayName[0].label).toEqual("Natsume Hyuga ( IQ12345 )");
+        expect(patientsWithDisplayName[1].label).toEqual("Sakura Mikan ( IQ12346 )");
     });
 
     it("should save data in proper format ", function () {

@@ -17,7 +17,7 @@ describe("otCalendarSurgicalAppointment", function () {
     var surgicalAppointment =
 
     {
-        "patient": {uuid: "168eed46-dabe-4b7b-a0d6-a8e4ccc02510", display: "IQ100032- Sri Rama"},
+        "patient": {uuid: "168eed46-dabe-4b7b-a0d6-a8e4ccc02510", display: "IQ100032 - Sri Rama"},
         "notes": "notes",
         "surgicalAppointmentAttributes": [{
             surgicalAppointmentAttributeType: {
@@ -111,7 +111,7 @@ describe("otCalendarSurgicalAppointment", function () {
         mockBackend.flush();
         var compiledElementScope = element.isolateScope();
         scope.$digest();
-        expect(compiledElementScope.patient).toEqual(" Sri Rama ( IQ100032 )");
+        expect(compiledElementScope.patient).toEqual("Sri Rama ( IQ100032 )");
     });
 
 
