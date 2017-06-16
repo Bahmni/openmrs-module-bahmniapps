@@ -607,7 +607,7 @@ angular.module('bahmni.clinical')
             };
 
             var putCalculatedDose = function (orderTemplate) {
-                var visitUuid = treatmentConfig.orderSet.calculateDoseOnCurrentVisitValues ? $scope.activeVisit.uuid : undefined;
+                var visitUuid = treatmentConfig.orderSet.calculateDoseOnlyOnCurrentVisitValues ? $scope.activeVisit.uuid : undefined;
                 var calculatedDose = orderSetService.getCalculatedDose(
                     $scope.patient.uuid,
                     orderTemplate.concept.name,
