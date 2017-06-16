@@ -128,13 +128,14 @@ angular.module('bahmni.ot')
             };
 
             $scope.cancelAppointment = function (surgicalAppointment) {
-                var clonedAppointment = _.cloneDeep(surgicalAppointment);
                 surgicalAppointment.isBeingEdited = true;
+                var clonedAppointment = _.cloneDeep(surgicalAppointment);
                 ngDialog.open({
                     template: "views/cancelAppointment.html",
                     controller: "surgicalBlockViewCancelAppointmentController",
                     closeByDocument: false,
                     showClose: true,
+                    className: 'ngdialog-theme-default ng-dialog-adt-popUp',
                     scope: $scope,
                     data: {
                         surgicalAppointment: clonedAppointment,

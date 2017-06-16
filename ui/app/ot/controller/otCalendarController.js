@@ -51,7 +51,7 @@ angular.module('bahmni.ot')
 
             $scope.$on("event:surgicalAppointmentSelect", function (event, surgicalAppointment, surgicalBlock) {
                 $scope.cancelDisabled = surgicalAppointment.status == 'COMPLETED';
-                $scope.editDisabled = false;
+                $scope.editDisabled = surgicalAppointment.status == 'COMPLETED';
                 $scope.addActualTimeDisabled = false;
                 $scope.surgicalAppointmentSelected = surgicalAppointment;
                 $scope.surgicalBlockSelected = surgicalBlock;
@@ -59,7 +59,7 @@ angular.module('bahmni.ot')
 
             $scope.$on("event:surgicalBlockSelect", function (event, surgicalBlock) {
                 $scope.editDisabled = false;
-                $scope.cancelDisabled = false;
+                $scope.cancelDisabled = true;
                 $scope.addActualTimeDisabled = true;
                 $scope.surgicalBlockSelected = surgicalBlock;
                 $scope.surgicalAppointmentSelected = {};
@@ -106,6 +106,7 @@ angular.module('bahmni.ot')
                     template: "views/cancelAppointment.html",
                     closeByDocument: false,
                     controller: "calenderViewCancelAppointmentController",
+                    className: 'ngdialog-theme-default ng-dialog-adt-popUp',
                     showClose: true,
                     data: {
                         surgicalBlock: $scope.surgicalBlockSelected,

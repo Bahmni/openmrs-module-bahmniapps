@@ -629,4 +629,22 @@ describe("surgicalBlockController", function () {
             data: _.omit(scope.surgicalForm.surgicalAppointments[0], ['isBeingEdited'])
         }));
     });
+
+    it('should open an ngDialog with data of given surgical appointment for cancelling an appointment', function () {
+        createController();
+        var surgicalAppointment = {id: "11", patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes};
+        scope.cancelAppointment(surgicalAppointment);
+
+        expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
+            template: "views/cancelAppointment.html",
+            controller: "surgicalBlockViewCancelAppointmentController",
+            closeByDocument: false,
+            showClose: true,
+            className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+            scope: scope,
+            data: { surgicalAppointment: surgicalAppointment, surgicalForm:  scope.surgicalForm}
+        }));
+    });
+
+
 });

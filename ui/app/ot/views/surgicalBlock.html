@@ -22,11 +22,11 @@
                 </p>
                 <p class="location-block">
                     <label>Location<sup>*</sup></label>
-                    <span ng-repeat="location in locations track by location.uuid">
-                        <label class="location-buttons" for="{{location.display}}">
+                    <span ng-repeat="location in ::locations track by location.uuid">
+                        <label class="location-buttons" for="{{::location.display}}">
                             <i ng-if="location.name == surgicalForm.location.name" class="fa fa-check" aria-hidden="true"></i>
                             {{ location.display }}
-                            <input type="radio" id="{{location.display}}" name="location" ng-value="location"
+                            <input type="radio" id="{{::location.display}}" name="location" ng-value="location"
                                    ng-model="surgicalForm.location" required/>
                         </label>
                     </span>
@@ -76,7 +76,7 @@
                                 ..
                             </i>
                             <div class="surgery-details-wrapper" ng-class="{'cancelled' : surgicalAppointment.status ==='CANCELLED' }">
-                                <h4>{{::getPatientName(surgicalAppointment)}}</h4>
+                                <h4>{{getPatientName(surgicalAppointment)}} <i ng-show="surgicalAppointment.status === 'COMPLETED'" class="fa fa-check" aria-hidden="true"></i> </h4>
                                 <p>
                                     <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.procedure.value" ><b>{{'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.procedure.value}}, </span>
                                     <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value >=0 || surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value >= 0"><b> {{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value}} {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} : {{surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}, </span>
@@ -91,8 +91,8 @@
                             </div>
                         </td>
                         <td class="appointment-edit">
-                            <a id="edit-appointment" href ng-click="editAppointment(surgicalAppointment)" ng-hide="surgicalAppointment.status=='POSTPONED' ||surgicalAppointment.status=='CANCELLED'">Edit</a>
-                            <a id="cancel-appointment" href ng-click="cancelAppointment(surgicalAppointment)">Cancel</a>
+                            <a id="edit-appointment" href ng-click="editAppointment(surgicalAppointment)" ng-show="surgicalAppointment.status==''">{{'OT_SURGICAL_APPOINTMENT_EDIT' | translate}}</a>
+                            <a id="cancel-appointment" href ng-click="cancelAppointment(surgicalAppointment)" ng-show="surgicalAppointment.status==''">{{'OT_SURGICAL_APPOINTMENT_CANCEL' | translate}}</a>
                         </td>
                     </tr>
                     </tbody>
