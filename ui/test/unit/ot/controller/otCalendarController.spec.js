@@ -137,11 +137,11 @@ describe("otCalendarController", function () {
             jasmine.objectContaining({surgicalBlockUuid : "surgical-block1-uuid", surgicalAppointmentId : 48}));
     });
 
-    it('should navigate to the cancel appointment dialog box when a cancel Appointment is clicked', function () {
+    iit('should navigate to the cancel appointment dialog box when a cancel Appointment is clicked', function () {
         createController();
         scope.surgicalBlockSelected = surgicalBlocks[0];
         scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
-        scope.cancelAppointment();
+        scope.cancelSurgicalBlockOrSurgicalAppointment();
 
         expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
             template: "views/cancelAppointment.html",

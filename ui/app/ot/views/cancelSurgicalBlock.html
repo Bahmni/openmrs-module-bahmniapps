@@ -1,0 +1,15 @@
+<form class="ot-actual-time-form" ng-submit="confirmCancelSurgicalBlock()">
+    <p><b>{{'OT_SURGICAL_APPOINTMENT_CANCEL_OR_POSTPONE_A_SURGICAL_BLOCK' | translate}}</b></p>
+    <p class="ot-actual-time-label">{{ngDialogData.provider}}</p>
+    <br>
+    <div >
+        <input type="radio" name="status"  ng-model="surgicalBlock.status"  value="POSTPONED" required> {{'OT_SURGICAL_APPOINTMENT_POSTPONE' | translate}}<br>
+        <input type="radio" name="status"  ng-model="surgicalBlock.status"  value="CANCELLED" required> {{'OT_SURGICAL_APPOINTMENT_CANCEL' | translate}}<br>
+    </div>
+    {{'OT_SURGICAL_APPOINTMENT_REASON_FOR_CHANGE' | translate}} <sup>*</sup>
+    <textarea required placeholder="enter reason" id="reasonForChange" class="ot-actual-time-notes" ng-model="surgicalBlock.notes" msd-elastic></textarea>
+    <p class="ot-actual-time-buttons">
+        <input type="submit" value="Confirm"/>
+        <input type="button" ng-click="closeDialog()" value="Cancel"/>
+    </p>
+</form>

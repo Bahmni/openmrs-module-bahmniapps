@@ -127,6 +127,20 @@ angular.module('bahmni.ot')
                 $state.go("home", options);
             };
 
+            $scope.cancelSurgicalBlock = function () {
+                ngDialog.open({
+                    template: "views/cancelSurgicalBlock.html",
+                    closeByDocument: false,
+                    controller: "cancelSurgicalBlockController",
+                    className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+                    showClose: true,
+                    data: {
+                        surgicalBlock:  new Bahmni.OT.SurgicalBlockMapper().mapSurgicalBlockUIToDomain($scope.surgicalForm),
+                        provider: $scope.surgicalForm.provider.person.display
+                    }
+                });
+            };
+
             $scope.cancelAppointment = function (surgicalAppointment) {
                 surgicalAppointment.isBeingEdited = true;
                 var clonedAppointment = _.cloneDeep(surgicalAppointment);

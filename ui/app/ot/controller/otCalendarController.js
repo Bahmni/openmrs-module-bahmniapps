@@ -60,10 +60,18 @@ angular.module('bahmni.ot')
 
             $scope.$on("event:surgicalBlockSelect", function (event, surgicalBlock) {
                 $scope.editDisabled = false;
-                $scope.cancelDisabled = true;
                 $scope.addActualTimeDisabled = true;
                 $scope.surgicalBlockSelected = surgicalBlock;
                 $scope.surgicalAppointmentSelected = {};
+
+                var surgicalBlockWithCompletedAppointments = function () {
+                    return _.find(surgicalBlock.surgicalAppointments, function (appointment) {
+                        return appointment.status === Bahmni.OT.Constants.completed;
+                    });
+                };
+
+                if (!surgicalBlockWithCompletedAppointments())
+                    $scope.cancelDisabled = false;
             });
 
             $scope.$on("event:surgicalBlockDeselect", function (event) {
@@ -102,7 +110,7 @@ angular.module('bahmni.ot')
                 });
             };
 
-            $scope.cancelAppointment = function () {
+            var cancelSurgicalAppointment = function () {
                 ngDialog.open({
                     template: "views/cancelAppointment.html",
                     closeByDocument: false,
@@ -115,5 +123,27 @@ angular.module('bahmni.ot')
                     }
                 });
             };
+
+            var cancelSurgicalBlock = function () {
+                ngDialog.open({
+                    template: "views/cancelSurgicalBlock.html",
+                    closeByDocument: false,
+                    controller: "cancelSurgicalBlockController",
+                    className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+                    showClose: true,
+                    data: {
+                        surgicalBlock: $scope.surgicalBlockSelected,
+                        provider: $scope.surgicalBlockSelected.provider.person.display
+                    }
+                });
+            };
+
+            $scope.cancelSurgicalBlockOrSurgicalAppointment = function () {
+                if (!_.isEmpty($scope.surgicalAppointmentSelected)) {
+                    cancelSurgicalAppointment();
+                }
+                cancelSurgicalBlock();
+            };
+
             spinner.forPromise(init());
         }]);
