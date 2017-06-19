@@ -3,9 +3,9 @@
 describe("otCalendarController", function () {
     var scope, controller, q, spinner, state;
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
-    var spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
+    spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgicalBlocksInDateRange']);
-    var state = jasmine.createSpyObj('state', ['go']);
+    state = jasmine.createSpyObj('state', ['go']);
     var ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
 
     var surgicalBlocks = [
@@ -99,9 +99,11 @@ describe("otCalendarController", function () {
         expect(scope.surgicalBlocksByLocation[1][0]).toEqual(surgicalBlocks[1]);
     });
 
-    it('should set the day view split as integer', function () {
+    iit('should set the day view split as integer', function () {
         createController();
         expect(scope.dayViewSplit).toEqual(60);
+        expect(scope.editDisabled).toBeTruthy();
+        expect(scope.cancelDisabled).toBeTruthy();
     });
 
     it('should set the calendarStartDatetime and calendarEndDatetime', function () {

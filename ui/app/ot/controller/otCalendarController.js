@@ -8,7 +8,8 @@ angular.module('bahmni.ot')
                 var dayEnd = ($scope.dayViewEnd || '23:59').split(':');
                 $scope.surgicalBlockSelected = {};
                 $scope.surgicalAppointmentSelected = {};
-                $scope.editandDeleteDisabled = true;
+                $scope.editDisabled = true;
+                $scope.cancelDisabled = true;
                 $scope.addActualTimeDisabled = true;
                 $scope.dayViewSplit = parseInt($scope.dayViewSplit) > 0 ? parseInt($scope.dayViewSplit) : 60;
                 $scope.calendarStartDatetime = Bahmni.Common.Util.DateUtil.addMinutes($scope.viewDate, (dayStart[0] * 60 + parseInt(dayStart[1])));
@@ -51,7 +52,7 @@ angular.module('bahmni.ot')
 
             $scope.$on("event:surgicalAppointmentSelect", function (event, surgicalAppointment, surgicalBlock) {
                 $scope.cancelDisabled = surgicalAppointment.status == 'COMPLETED';
-                $scope.editDisabled = surgicalAppointment.status == 'COMPLETED';
+                $scope.editDisabled = false;
                 $scope.addActualTimeDisabled = false;
                 $scope.surgicalAppointmentSelected = surgicalAppointment;
                 $scope.surgicalBlockSelected = surgicalBlock;
