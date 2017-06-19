@@ -4,8 +4,8 @@
     {{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}} - {{appointment.estTimeHours}} {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} : {{appointment.estTimeMinutes}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}
     <br>
     <div >
-        <input type="radio" name="status"  ng-model="appointment.status"  value="POSTPONED" required> Postpone<br>
-        <input type="radio" name="status"  ng-model="appointment.status"  value="CANCELLED" required> Cancel <br>
+        <input type="radio" name="status"  ng-model="appointment.status"  value="POSTPONED" required> {{'OT_SURGICAL_APPOINTMENT_POSTPONE' | translate}}<br>
+        <input type="radio" name="status"  ng-model="appointment.status"  value="CANCELLED" required> {{'OT_SURGICAL_APPOINTMENT_CANCEL' | translate}}<br>
     </div>
    {{'OT_SURGICAL_APPOINTMENT_REASON_FOR_CHANGE' | translate}} <sup>*</sup>
     <textarea required placeholder="enter reason" id="reasonForChange" class="ot-actual-time-notes" ng-model="appointment.notes" msd-elastic></textarea>

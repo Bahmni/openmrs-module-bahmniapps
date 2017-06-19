@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ot').controller('calendarViewCancelAppointmentController', [
-    '$scope', 'ngDialog', 'surgicalAppointmentService', 'messagingService', 'surgicalAppointmentHelper',
-    function ($scope, ngDialog, surgicalAppointmentService, messagingService, surgicalAppointmentHelper) {
+    '$scope', '$translate', 'ngDialog', 'surgicalAppointmentService', 'messagingService', 'surgicalAppointmentHelper',
+    function ($scope, $translate, ngDialog, surgicalAppointmentService, messagingService, surgicalAppointmentHelper) {
         var surgicalAppointment = $scope.ngDialogData.surgicalAppointment;
         var attributes = surgicalAppointmentHelper.getAppointmentAttributes(surgicalAppointment);
         $scope.appointment = {
@@ -21,7 +21,14 @@ angular.module('bahmni.ot').controller('calendarViewCancelAppointmentController'
             surgicalAppointment.sortWeight = null;
             surgicalAppointmentService.updateSurgicalAppointment(surgicalAppointment).then(function (response) {
                 surgicalAppointment.patient = response.data.patient;
-                var message = 'Cancelled appointment for ' + surgicalAppointmentHelper.getPatientDisplayLabel($scope.ngDialogData.surgicalAppointment.patient.display) + ' - ' + $scope.ngDialogData.surgicalBlock.location.name;
+                surgicalAppointment.status = response.data.status;
+                var message = '';
+                if (surgicalAppointment.status === Bahmni.OT.Constants.postponed) {
+                    message = $translate.instant("OT_SURGICAL_APPOINTMENT_POSTPONED_MESSAGE");
+                } else if (surgicalAppointment.status === Bahmni.OT.Constants.cancelled) {
+                    message = $translate.instant("OT_SURGICAL_APPOINTMENT_CANCELLED_MESSAGE");
+                }
+                message = message + surgicalAppointmentHelper.getPatientDisplayLabel($scope.ngDialogData.surgicalAppointment.patient.display) + ' - ' + $scope.ngDialogData.surgicalBlock.location.name;
                 messagingService.showMessage('info', message);
                 ngDialog.close();
             });

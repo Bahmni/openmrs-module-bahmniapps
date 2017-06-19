@@ -41,5 +41,8 @@
     "OT_SURGICAL_APPOINTMENT_CANCEL_OR_POSTPONE_A_SURGERY": "Do you want to cancel the surgery or postpone it?",
     "OT_SURGICAL_APPOINTMENT_REASON_FOR_CHANGE": "Reason for Change",
     "OT_SURGICAL_APPOINTMENT_EDIT": "Edit",
-    "OT_SURGICAL_APPOINTMENT_CANCEL": "Cancel"
+    "OT_SURGICAL_APPOINTMENT_CANCEL": "Cancel",
+    "OT_SURGICAL_APPOINTMENT_CANCELLED_MESSAGE": "Cancelled appointment for ",
+    "OT_SURGICAL_APPOINTMENT_POSTPONED_MESSAGE": "Postponed appointment for ",
+    "OT_SURGICAL_APPOINTMENT_POSTPONE": "Postpone"
 }

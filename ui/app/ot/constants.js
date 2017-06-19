@@ -8,6 +8,7 @@ Bahmni.OT.Constants = (function () {
     return {
         cancelled: "CANCELLED",
         postponed: "POSTPONED",
+        completed: "COMPLETED",
         addSurgicalBlockUrl: RESTWS_V1 + "/surgicalBlock",
         updateSurgicalAppointmentUrl: RESTWS_V1 + "/surgicalAppointment",
         surgicalAppointmentAttributeTypeUrl: RESTWS_V1 + "/surgicalAppointmentAttributeType"
