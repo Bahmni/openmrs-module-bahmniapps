@@ -99,7 +99,7 @@ describe("otCalendarController", function () {
         expect(scope.surgicalBlocksByLocation[1][0]).toEqual(surgicalBlocks[1]);
     });
 
-    iit('should set the day view split as integer', function () {
+    it('should set the day view split as integer', function () {
         createController();
         expect(scope.dayViewSplit).toEqual(60);
         expect(scope.editDisabled).toBeTruthy();
