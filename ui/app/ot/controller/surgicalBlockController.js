@@ -33,18 +33,19 @@ angular.module('bahmni.ot')
 
             var getAvailableBlockDuration = function () {
                 var blockDuration = Bahmni.Common.Util.DateUtil.diffInMinutes($scope.surgicalForm.startDatetime, $scope.surgicalForm.endDatetime);
-                var appointmentsDuration = _.sumBy($scope.surgicalForm.surgicalAppointments, function (appointment) {
+                var appointmentsDuration = _.sumBy(_.reject($scope.surgicalForm.surgicalAppointments, ['sortWeight', null]), function (appointment) {
                     return getAppointmentDuration(appointment);
                 });
                 return blockDuration - appointmentsDuration;
             };
 
             $scope.getPatientName = function (surgicalAppointment) {
-                return surgicalAppointment.patient.value || surgicalAppointment.patient.display;
+                return surgicalAppointment.patient.value || surgicalAppointmentHelper.getPatientDisplayLabel(surgicalAppointment.patient.display);
             };
 
             $scope.editAppointment = function (surgicalAppointment) {
                 var clone = _.cloneDeep(surgicalAppointment);
+                surgicalAppointment.isBeingEdited = true;
                 $scope.addNewSurgicalAppointment(clone);
             };
 
@@ -68,7 +69,7 @@ angular.module('bahmni.ot')
                     messagingService.showMessage('error', "{{'OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION' | translate}}");
                     return;
                 }
-
+                $scope.updateSortWeight();
                 var surgicalBlock = new Bahmni.OT.SurgicalBlockMapper().mapSurgicalBlockUIToDomain(surgicalForm);
                 spinner.forPromise(surgicalAppointmentService.saveSurgicalBlock(surgicalBlock)).then(function (response) {
                     $scope.surgicalForm = new Bahmni.OT.SurgicalBlockMapper().map(response.data, $scope.attributeTypes, $scope.surgeons);
@@ -80,11 +81,12 @@ angular.module('bahmni.ot')
             var addOrUpdateTheSurgicalAppointment = function (surgicalAppointment) {
                 if (surgicalAppointment.sortWeight >= 0) {
                     var existingAppointment = _.find($scope.surgicalForm.surgicalAppointments, function (appointment) {
-                        return appointment.sortWeight === surgicalAppointment.sortWeight;
+                        return appointment.isBeingEdited;
                     });
                     existingAppointment.notes = surgicalAppointment.notes;
                     existingAppointment.patient = surgicalAppointment.patient;
                     existingAppointment.surgicalAppointmentAttributes = surgicalAppointment.surgicalAppointmentAttributes;
+                    existingAppointment.isBeingEdited = false;
                 } else {
                     surgicalAppointment.sortWeight = $scope.surgicalForm.surgicalAppointments.length;
                     $scope.surgicalForm.surgicalAppointments.push(surgicalAppointment);
@@ -101,6 +103,7 @@ angular.module('bahmni.ot')
                 }
                 return getAvailableBlockDuration() >= getAppointmentDuration(surgicalAppointment);
             };
+
             $scope.addSurgicalAppointment = function (surgicalAppointment) {
                 if (canBeFittedInTheSurgicalBlock(surgicalAppointment)) {
                     addOrUpdateTheSurgicalAppointment(surgicalAppointment);
@@ -122,6 +125,23 @@ angular.module('bahmni.ot')
                 var options = {};
                 options['dashboardCachebuster'] = Math.random();
                 $state.go("home", options);
+            };
+
+            $scope.cancelAppointment = function (surgicalAppointment) {
+                surgicalAppointment.isBeingEdited = true;
+                var clonedAppointment = _.cloneDeep(surgicalAppointment);
+                ngDialog.open({
+                    template: "views/cancelAppointment.html",
+                    controller: "surgicalBlockViewCancelAppointmentController",
+                    closeByDocument: false,
+                    showClose: true,
+                    className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+                    scope: $scope,
+                    data: {
+                        surgicalAppointment: clonedAppointment,
+                        surgicalForm: $scope.surgicalForm
+                    }
+                });
             };
 
             $scope.addNewSurgicalAppointment = function (surgicalAppointment) {

@@ -32,6 +32,10 @@ angular.module('bahmni.ot')
                         $scope.calendarStartDatetime, $scope.surgicalBlock.startDatetime) * surgicalBlockHeightPerMin;
             };
 
+            $scope.isValidSurgicalAppointment = function (surgicalAppointment) {
+                return surgicalAppointment.status !== Bahmni.OT.Constants.cancelled && surgicalAppointment.status !== Bahmni.OT.Constants.postponed;
+            };
+
             $scope.selectSurgicalBlock = function ($event) {
                 $scope.$emit("event:surgicalBlockSelect", $scope.surgicalBlock);
                 $event.stopPropagation();

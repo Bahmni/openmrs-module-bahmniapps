@@ -220,6 +220,9 @@ div[ng-app="ot"] {
             padding-left: 10px;
             margin-left: 20px;
             border-left: 1px solid #dddddd;
+            .cancelled {
+              background-color: lightgrey;
+            }
           }
           h4 {
             color: #000;

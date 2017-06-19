@@ -38,12 +38,16 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             sortWeight: openMrsSurgicalAppointment.sortWeight,
             actualStartDatetime: Bahmni.Common.Util.DateUtil.parseServerDateToDate(openMrsSurgicalAppointment.actualStartDatetime),
             actualEndDatetime: Bahmni.Common.Util.DateUtil.parseServerDateToDate(openMrsSurgicalAppointment.actualEndDatetime),
+            notes: openMrsSurgicalAppointment.notes,
+            status: openMrsSurgicalAppointment.status,
             surgicalAppointmentAttributes: new Bahmni.OT.SurgicalBlockMapper().mapAttributes(surgicalAppointmentAttributes, attributeTypes)
         };
     };
 
     this.map = function (openMrsSurgicalBlock, attributeTypes, surgeonsList) {
-        var surgicalAppointments = _.map(openMrsSurgicalBlock.surgicalAppointments, function (surgicalAppointment) {
+        var surgicalAppointments = _.filter(openMrsSurgicalBlock.surgicalAppointments, function (surgicalAppointment) {
+            return surgicalAppointment.status !== Bahmni.OT.Constants.cancelled && surgicalAppointment.status !== Bahmni.OT.Constants.postponed;
+        }).map(function (surgicalAppointment) {
             return mapSurgicalAppointment(surgicalAppointment, attributeTypes, surgeonsList);
         });
         return {
@@ -79,6 +83,8 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             actualStartDatetime: surgicalAppointmentUI.actualStartDatetime,
             actualEndDatetime: surgicalAppointmentUI.actualEndDatetime,
             sortWeight: surgicalAppointmentUI.sortWeight,
+            notes: surgicalAppointmentUI.notes,
+            status: surgicalAppointmentUI.status,
             surgicalAppointmentAttributes: mapSurgicalAppointmentAttributesUIToDomain(surgicalAppointmentUI.surgicalAppointmentAttributes)
         };
     };

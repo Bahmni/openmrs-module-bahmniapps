@@ -50,21 +50,24 @@ angular.module('bahmni.ot')
             });
 
             $scope.$on("event:surgicalAppointmentSelect", function (event, surgicalAppointment, surgicalBlock) {
-                $scope.editandDeleteDisabled = false;
+                $scope.cancelDisabled = surgicalAppointment.status == 'COMPLETED';
+                $scope.editDisabled = surgicalAppointment.status == 'COMPLETED';
                 $scope.addActualTimeDisabled = false;
                 $scope.surgicalAppointmentSelected = surgicalAppointment;
                 $scope.surgicalBlockSelected = surgicalBlock;
             });
 
             $scope.$on("event:surgicalBlockSelect", function (event, surgicalBlock) {
-                $scope.editandDeleteDisabled = false;
+                $scope.editDisabled = false;
+                $scope.cancelDisabled = true;
                 $scope.addActualTimeDisabled = true;
                 $scope.surgicalBlockSelected = surgicalBlock;
                 $scope.surgicalAppointmentSelected = {};
             });
 
             $scope.$on("event:surgicalBlockDeselect", function (event) {
-                $scope.editandDeleteDisabled = true;
+                $scope.editDisabled = true;
+                $scope.cancelDisabled = true;
                 $scope.addActualTimeDisabled = true;
                 $scope.surgicalBlockSelected = {};
                 $scope.surgicalAppointmentSelected = {};
@@ -89,6 +92,20 @@ angular.module('bahmni.ot')
                     template: "views/addActualTimeDialog.html",
                     closeByDocument: false,
                     controller: "surgicalAppointmentActualTimeController",
+                    className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+                    showClose: true,
+                    data: {
+                        surgicalBlock: $scope.surgicalBlockSelected,
+                        surgicalAppointment: $scope.surgicalAppointmentSelected
+                    }
+                });
+            };
+
+            $scope.cancelAppointment = function () {
+                ngDialog.open({
+                    template: "views/cancelAppointment.html",
+                    closeByDocument: false,
+                    controller: "calendarViewCancelAppointmentController",
                     className: 'ngdialog-theme-default ng-dialog-adt-popUp',
                     showClose: true,
                     data: {
