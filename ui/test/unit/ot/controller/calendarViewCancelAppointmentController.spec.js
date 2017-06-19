@@ -1,15 +1,17 @@
 'use strict';
 
-describe("calendarViewCancelAppointmentController", function () {
+describe("calendar view cancel appointment controller", function () {
+    var scope, controller;
+    var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['updateSurgicalAppointment']);
+    var ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
+    var surgicalAppointmentHelper = jasmine.createSpyObj('surgicalAppointmentHelper', ['getAppointmentAttributes', 'getPatientDisplayLabel']);
+    var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
 
-    var controller, scope;
-    var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['']);
-    var ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
-    var messagingService = jasmine.createSpyObj('messagingService', ['']);
-    var surgicalAppointmentHelper = jasmine.createSpyObj('surgicalAppointmentHelper', ['']);
+    surgicalAppointmentService.updateSurgicalAppointment.and.callFake(function () {
+        return {data: {results: {}}};
+    });
 
-
-    beforeEach("calendarViewCancelAppointmentController", function () {
+    beforeEach(function () {
         module('bahmni.ot');
         inject(function ($controller, $rootScope) {
             controller = $controller;
@@ -18,22 +20,39 @@ describe("calendarViewCancelAppointmentController", function () {
     });
 
     var createController = function () {
+        scope.ngDialogData = {surgicalBlock: {uuid:"blockUuid", location: {name: "locationName"}}, surgicalAppointment: {status: "CANCELLED", sortWeight: 1, patient: {display: "someName"}}};
         controller('calendarViewCancelAppointmentController', {
             $scope: scope,
+            ngDialog: ngDialog,
             surgicalAppointmentService: surgicalAppointmentService,
             messagingService: messagingService,
-            surgicalAppointmentHelper: surgicalAppointmentHelper,
-            ngDialog: ngDialog
-            
+            surgicalAppointmentHelper: surgicalAppointmentHelper
         });
+        scope.$apply();
     };
-    xit("should cancel an appointment when user clicks on cancel button", function () {
 
+    it("should update the status of the appointment with status", function () {
+        surgicalAppointmentService.updateSurgicalAppointment.and.callFake(function () {
+            return specUtil.simplePromise({data: {patient: {uuid:"someUuid", display: "someName - I012345"}}});
+        });
+        surgicalAppointmentHelper.getAppointmentAttributes.and.callFake(function () {return {};});
+        surgicalAppointmentHelper.getPatientDisplayLabel.and.callFake(function () {return "someName";});
+        createController();
+        scope.confirmCancelAppointment();
+        expect(scope.ngDialogData.surgicalAppointment.sortWeight).toBe(null);
+        expect(scope.ngDialogData.surgicalAppointment.status).toBe("CANCELLED");
+        expect(surgicalAppointmentService.updateSurgicalAppointment).toHaveBeenCalled();
+        expect(messagingService.showMessage).toHaveBeenCalled();
+        expect(ngDialog.close).toHaveBeenCalled();
     });
 
-    xit("should close the dialog when user clicks on cancel button", function () {
-        // scope.ngDialogData =
+    it("should close the dialog when user clicks on close button", function () {
+        createController();
+        scope.closeDialog();
+        expect(ngDialog.close).toHaveBeenCalled();
+        expect(scope.ngDialogData.surgicalAppointment.sortWeight).toBe(null);
     });
+
 
 
 });

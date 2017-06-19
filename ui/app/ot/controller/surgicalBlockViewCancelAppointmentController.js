@@ -15,13 +15,14 @@ angular.module('bahmni.ot').controller('surgicalBlockViewCancelAppointmentContro
             var actualAppointment = _.find($scope.ngDialogData.surgicalForm.surgicalAppointments, function (appointment) {
                 return appointment.isBeingEdited;
             });
+            if (actualAppointment.id == null) {
+                _.remove($scope.ngDialogData.surgicalForm.surgicalAppointments, actualAppointment);
+                ngDialog.close();
+            }
             actualAppointment.status = $scope.appointment.status;
             actualAppointment.notes = $scope.appointment.notes;
             actualAppointment.sortWeight = null;
             actualAppointment.isBeingEdited = null;
-            if (actualAppointment.id == null) {
-                _.remove($scope.ngDialogData.surgicalForm.surgicalAppointments, actualAppointment);
-            }
             ngDialog.close();
         };
 

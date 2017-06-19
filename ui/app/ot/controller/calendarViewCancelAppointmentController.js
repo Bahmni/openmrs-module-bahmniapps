@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.ot').controller('calenderViewCancelAppointmentController', [
+angular.module('bahmni.ot').controller('calendarViewCancelAppointmentController', [
     '$scope', 'ngDialog', 'surgicalAppointmentService', 'messagingService', 'surgicalAppointmentHelper',
     function ($scope, ngDialog, surgicalAppointmentService, messagingService, surgicalAppointmentHelper) {
         var surgicalAppointment = $scope.ngDialogData.surgicalAppointment;

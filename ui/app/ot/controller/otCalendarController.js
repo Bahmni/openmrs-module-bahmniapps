@@ -105,7 +105,7 @@ angular.module('bahmni.ot')
                 ngDialog.open({
                     template: "views/cancelAppointment.html",
                     closeByDocument: false,
-                    controller: "calenderViewCancelAppointmentController",
+                    controller: "calendarViewCancelAppointmentController",
                     className: 'ngdialog-theme-default ng-dialog-adt-popUp',
                     showClose: true,
                     data: {

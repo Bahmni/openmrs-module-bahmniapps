@@ -144,7 +144,7 @@ describe("otCalendarController", function () {
         expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
             template: "views/cancelAppointment.html",
             closeByDocument: false,
-            controller: "calenderViewCancelAppointmentController",
+            controller: "calendarViewCancelAppointmentController",
             className: 'ngdialog-theme-default ng-dialog-adt-popUp',
             showClose: true,
             data: {
