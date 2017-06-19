@@ -7,9 +7,9 @@ angular.module('bahmni.ot')
                 $scope.surgicalForm = {
                     surgicalAppointments: []
                 };
-                var providerUuids = appService.getAppDescriptor().getConfigValue("primarySurgeonsForOT");
+                var providerNamesFromConfig = appService.getAppDescriptor().getConfigValue("primarySurgeonsForOT");
                 return $q.all([surgicalAppointmentService.getSurgeons(), locationService.getAllByTag("Operation Theater"), surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
-                    $scope.surgeons = surgicalAppointmentHelper.filterProvidersByUuid(providerUuids, response[0].data.results);
+                    $scope.surgeons = surgicalAppointmentHelper.filterProvidersByName(providerNamesFromConfig, response[0].data.results);
                     $scope.locations = response[1].data.results;
                     $scope.attributeTypes = response[2].data.results;
                     if ($stateParams.surgicalBlockUuid) {

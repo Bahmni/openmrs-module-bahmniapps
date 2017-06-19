@@ -10,28 +10,28 @@ describe('surgicalAppointmentHelper', function () {
         }]);
     });
 
-    it('should filter the providers by uuids', function () {
-        var providerUuids = ["uuid1", "uuid2", "uuid5"];
-        var providers = [{uuid: "uuid1", name: "Provider1"}, {uuid: "uuid2", name: "Provider2"},
-            {uuid: "uuid3", name: "Provider3"}, {uuid: "uuid4", name: "Provider4"}, {uuid: "uuid5", name: "Provider5"}];
-        var filteredProviders = surgicalAppointmentHelper.filterProvidersByUuid(providerUuids, providers);
+    it('should filter the providers by name', function () {
+        var providerNames = ["Provider1", "Provider2", "Provider5"];
+        var providers = [{uuid: "uuid1", person: { display: "Provider1"}}, {uuid: "uuid2", person: { display: "Provider2"}},
+            {uuid: "uuid3", person: { display: "Provider3" }}, {uuid: "uuid4",  person: {display: "Provider4"}}, {uuid: "uuid5", person: { display: "Provider5"}}];
+        var filteredProviders = surgicalAppointmentHelper.filterProvidersByName(providerNames, providers);
 
         expect(filteredProviders.length).toEqual(3);
-        expect(filteredProviders[0]).toEqual({uuid: "uuid1", name: "Provider1"});
-        expect(filteredProviders[1]).toEqual({uuid: "uuid2", name: "Provider2"});
-        expect(filteredProviders[2]).toEqual({uuid: "uuid5", name: "Provider5"});
+        expect(filteredProviders[0]).toEqual({uuid: "uuid1", person: {display: "Provider1"}});
+        expect(filteredProviders[1]).toEqual({uuid: "uuid2", person: {display: "Provider2"}});
+        expect(filteredProviders[2]).toEqual({uuid: "uuid5", person: {display: "Provider5" }});
     });
 
-    it('should sort  providers by the uuids from the config', function () {
-        var providerUuids = ["uuid5", "uuid1", "uuid2"];
-        var providers = [{uuid: "uuid1", name: "Provider1"}, {uuid: "uuid2", name: "Provider2"},
-            {uuid: "uuid3", name: "Provider3"}, {uuid: "uuid4", name: "Provider4"}, {uuid: "uuid5", name: "Provider5"}];
-        var filteredProviders = surgicalAppointmentHelper.filterProvidersByUuid(providerUuids, providers);
+    it('should sort  providers by the name from the config', function () {
+        var providerNames = ["Provider5", "Provider1", "Provider2"];
+        var providers = [{uuid: "uuid1", person: { display: "Provider1"}}, {uuid: "uuid2", person: { display: "Provider2"}},
+            {uuid: "uuid3", person: { display: "Provider3" }}, {uuid: "uuid4",  person: {provider: "Provider4"}}, {uuid: "uuid5", person: { display: "Provider5"}}];
+        var filteredProviders = surgicalAppointmentHelper.filterProvidersByName(providerNames, providers);
 
         expect(filteredProviders.length).toEqual(3);
-        expect(filteredProviders[0]).toEqual({uuid: "uuid5", name: "Provider5"});
-        expect(filteredProviders[1]).toEqual({uuid: "uuid1", name: "Provider1"});
-        expect(filteredProviders[2]).toEqual({uuid: "uuid2", name: "Provider2"});
+        expect(filteredProviders[0]).toEqual({uuid: "uuid5", person: {display: "Provider5" }});
+        expect(filteredProviders[1]).toEqual({uuid: "uuid1", person: {display: "Provider1"}});
+        expect(filteredProviders[2]).toEqual({uuid: "uuid2", person: {display: "Provider2"}});
     });
 
     it('should get the duration in minutes', function () {

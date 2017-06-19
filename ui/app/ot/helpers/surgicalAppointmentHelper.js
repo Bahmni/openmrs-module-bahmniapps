@@ -2,10 +2,10 @@
 
 angular.module('bahmni.ot')
     .service('surgicalAppointmentHelper', [function () {
-        this.filterProvidersByUuid = function (providerUuids, providers) {
-            return _.map(providerUuids, function (providerUuid) {
+        this.filterProvidersByName = function (providerNames, providers) {
+            return _.map(providerNames, function (providerName) {
                 return _.find(providers, function (provider) {
-                    return providerUuid === provider.uuid;
+                    return providerName === provider.person.display;
                 });
             });
         };

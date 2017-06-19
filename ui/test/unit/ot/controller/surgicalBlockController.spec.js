@@ -198,7 +198,7 @@ describe("surgicalBlockController", function () {
 
     appDescriptor.getConfigValue.and.callFake(function (value) {
         if (value == 'primarySurgeonsForOT') {
-            return ["uuid1", "uuid2"];
+            return ["provider1", "provider2"];
         }
         return value;
     });
@@ -242,7 +242,7 @@ describe("surgicalBlockController", function () {
             }
         ]}};
 
-    var surgeonList = {data: {results: [{uuid: "uuid1", name: "provider1"}, {uuid: "uuid2", name: "provider2"}]}};
+    var surgeonList = {data: {results: [{uuid: "uuid1", person: {display: "provider1"}}, {uuid: "uuid2", person: {display: "provider2"}}]}};
     surgicalAppointmentService.getSurgeons.and.callFake(function () {
         return surgeonList;
     });
@@ -554,7 +554,7 @@ describe("surgicalBlockController", function () {
 
         createController();
 
-        expect(scope.surgeons).toEqual([{uuid: "uuid1", name: "provider1"}, {uuid: "uuid2", name: "provider2"}]);
+        expect(scope.surgeons).toEqual([{uuid: "uuid1", person: {display: "provider1"}}, {uuid: "uuid2", person: {display: "provider2"}}]);
         expect(scope.locations).toEqual([{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}]);
         expect(scope.attributeTypes).toEqual(appointmentAttributeTypes.data.results);
         expect(scope.surgicalForm).not.toBeUndefined();
