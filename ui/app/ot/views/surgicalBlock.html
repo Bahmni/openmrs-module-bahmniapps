@@ -45,7 +45,7 @@
                 </p>
             </div>
         </div>
-        <button class="ot-cancel-appoinment" ng-disabled="!surgicalForm.id" ng-mousedown="cancelSurgicalBlock()">{{'OT_CANCEL_BLOCK' | translate}}</button>
+        <button class="ot-cancel-appoinment" ng-disabled="cancelDisabled()" ng-mousedown="cancelSurgicalBlock()">{{'OT_CANCEL_BLOCK' | translate}}</button>
     </section>
 
     <section class="new-surgical-appointment-step2">
@@ -67,8 +67,9 @@
                         dnd-moved="surgicalForm.surgicalAppointments.splice($index, 1)"
                         dnd-effect-allowed="move"
                         dnd-dragend="updateSortWeight()"
+                        ng-class="{'grey-background': surgicalAppointment.status === 'CANCELLED'}"
                     >
-                        <td ng-class="{'grey-background': surgicalAppointment.status === 'CANCELLED'}">
+                        <td>
                             <i>
                                 ..
                                 ..

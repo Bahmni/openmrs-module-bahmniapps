@@ -646,5 +646,17 @@ describe("surgicalBlockController", function () {
         }));
     });
 
+    it('should disable the cancel block button when surgical block has completed appointments', function () {
+        createController();
+        scope.surgicalForm = {id: 1, surgicalAppointments: [ {id:1, status: 'COMPLETED'}, {id:2, status:'CANCELLED'}]};
 
+        expect(scope.cancelDisabled()).toEqual({id:1, status: 'COMPLETED'});
+    });
+
+    it('should disable the cancel block button when surgical block is not saved', function () {
+        createController();
+        scope.surgicalForm = {surgicalAppointments: [ {id:1, status: 'COMPLETED'}, {id:2, status:'CANCELLED'}]};
+
+        expect(scope.cancelDisabled()).toBeTruthy();
+    });
 });

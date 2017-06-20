@@ -158,6 +158,15 @@ angular.module('bahmni.ot')
                 });
             };
 
+            $scope.cancelDisabled = function () {
+                var surgicalBlockWithCompletedAppointments = function () {
+                    return _.find($scope.surgicalForm.surgicalAppointments, function (appointment) {
+                        return appointment.status === Bahmni.OT.Constants.completed;
+                    });
+                };
+                return !$scope.surgicalForm.id || surgicalBlockWithCompletedAppointments();
+            };
+
             $scope.addNewSurgicalAppointment = function (surgicalAppointment) {
                 ngDialog.open({
                     template: "views/surgicalAppointment.html",
