@@ -3,7 +3,6 @@
         <p class="heading-cell" ng-repeat="location in locations">
             {{location.name}}
         </p>
-
     </div>
     <div class="table-block">
         <div class="calendar-time-container">
@@ -16,7 +15,7 @@
             <div class="ot-block" ng-repeat="(blockIndex, blocks) in surgicalBlocksByLocation">
                 <div ng-repeat="row in ::rows" class="calendar-cell">
                 </div>
-                <div ng-repeat="block in blocks">
+                <div ng-repeat="block in blocks | surgicalBlockFilter:filterParams">
                     <ot-calendar-surgical-block
                             surgical-block="block" ng-if="!block.voided"
                             calendar-start-datetime="::calendarStartDatetime"

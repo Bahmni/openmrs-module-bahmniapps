@@ -9,7 +9,8 @@ angular.module('bahmni.ot')
                 viewDate: "=",
                 dayViewStart: "=",
                 dayViewEnd: "=",
-                dayViewSplit: "="
+                dayViewSplit: "=",
+                filterParams: "="
             },
             templateUrl: "../ot/views/otCalendar.html"
         };

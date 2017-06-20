@@ -18,7 +18,7 @@ describe('surgicalAppointmentService', function () {
     it('should retrieve providers', function (done) {
         var data = {results: [{answers: [{displayString: "sample name"}, {displayString: "sample name2"}, {displayString: "sample name3"}]}]};
         var surgeonsConcept = "FSTG, Name (s) of Surgeon 1";
-        var params = {v: 'custom:(id,uuid,person:(uuid,display))'};
+        var params = {v: 'custom:(id,uuid,person:(uuid,display),attributes:(attributeType:(display),value))'};
 
         mockHttp.get.and.returnValue(specUtil.respondWith(data));
 

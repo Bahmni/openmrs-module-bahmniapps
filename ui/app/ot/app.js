@@ -34,8 +34,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                         controller: 'calendarViewController'
                     },
                     'additional-header': {
-                        templateUrl: 'views/header.html',
-                        controller: 'OTHeaderController'
+                        templateUrl: 'views/header.html'
                     }
                 },
                 resolve: {
@@ -58,8 +57,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                         controller: 'surgicalBlockController'
                     },
                     'additional-header': {
-                        templateUrl: 'views/header.html',
-                        controller: 'OTHeaderController'
+                        templateUrl: 'views/header.html'
                     }
                 },
                 resolve: {
@@ -82,8 +80,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                         controller: 'surgicalBlockController'
                     },
                     'additional-header': {
-                        templateUrl: 'views/header.html',
-                        controller: 'OTHeaderController'
+                        templateUrl: 'views/header.html'
                     }
                 },
                 resolve: {

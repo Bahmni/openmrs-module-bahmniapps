@@ -5,7 +5,7 @@ angular.module('bahmni.ot')
         this.getSurgeons = function () {
             return $http.get(Bahmni.Common.Constants.providerUrl, {
                 method: "GET",
-                params: {v: "custom:(id,uuid,person:(uuid,display))"},
+                params: {v: "custom:(id,uuid,person:(uuid,display),attributes:(attributeType:(display),value))"},
                 withCredentials: true
             });
         };
