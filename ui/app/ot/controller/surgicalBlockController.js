@@ -135,7 +135,7 @@ angular.module('bahmni.ot')
                     className: 'ngdialog-theme-default ng-dialog-adt-popUp',
                     showClose: true,
                     data: {
-                        surgicalBlock:  new Bahmni.OT.SurgicalBlockMapper().mapSurgicalBlockUIToDomain($scope.surgicalForm),
+                        surgicalBlock: new Bahmni.OT.SurgicalBlockMapper().mapSurgicalBlockUIToDomain($scope.surgicalForm),
                         provider: $scope.surgicalForm.provider.person.display
                     }
                 });

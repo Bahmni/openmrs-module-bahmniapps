@@ -70,8 +70,9 @@ angular.module('bahmni.ot')
                     });
                 };
 
-                if (!surgicalBlockWithCompletedAppointments())
+                if (!surgicalBlockWithCompletedAppointments()) {
                     $scope.cancelDisabled = false;
+                }
             });
 
             $scope.$on("event:surgicalBlockDeselect", function (event) {
@@ -141,8 +142,9 @@ angular.module('bahmni.ot')
             $scope.cancelSurgicalBlockOrSurgicalAppointment = function () {
                 if (!_.isEmpty($scope.surgicalAppointmentSelected)) {
                     cancelSurgicalAppointment();
+                } else {
+                    cancelSurgicalBlock();
                 }
-                cancelSurgicalBlock();
             };
 
             spinner.forPromise(init());

@@ -137,7 +137,7 @@ describe("otCalendarController", function () {
             jasmine.objectContaining({surgicalBlockUuid : "surgical-block1-uuid", surgicalAppointmentId : 48}));
     });
 
-    iit('should navigate to the cancel appointment dialog box when a cancel Appointment is clicked', function () {
+    it('should navigate to the cancel appointment dialog box when a cancel Appointment is clicked', function () {
         createController();
         scope.surgicalBlockSelected = surgicalBlocks[0];
         scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
@@ -152,6 +152,26 @@ describe("otCalendarController", function () {
             data: {
                 surgicalBlock: scope.surgicalBlockSelected,
                 surgicalAppointment: scope.surgicalAppointmentSelected
+            }
+        }));
+    });
+
+    it('should navigate to the cancel block dialog box when a cancel block is clicked', function () {
+        createController();
+        scope.surgicalBlockSelected = surgicalBlocks[0];
+        scope.surgicalBlockSelected.provider = {person: {display:"something"}};
+        // scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
+        scope.cancelSurgicalBlockOrSurgicalAppointment();
+
+        expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
+            template: "views/cancelSurgicalBlock.html",
+            closeByDocument: false,
+            controller: "cancelSurgicalBlockController",
+            className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+            showClose: true,
+            data: {
+                surgicalBlock: scope.surgicalBlockSelected,
+                provider: scope.surgicalBlockSelected.provider.person.display
             }
         }));
     });

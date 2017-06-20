@@ -1,12 +1,13 @@
 'use strict';
 
-xdescribe("otCalendarController", function () {
+describe("cancelSurgicalBlockController", function () {
     var scope, controller, translate;
-    var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
     var spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
-    var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgicalBlocksInDateRange']);
+    var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['saveSurgicalBlock', 'getSurgicalBlocksInDateRange']);
     var state = jasmine.createSpyObj('state', ['go']);
-    var ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
+    var ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
+    var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+    translate = jasmine.createSpyObj('$translate', ['instant']);
 
     var surgicalBlocks = [
         {
@@ -28,47 +29,65 @@ xdescribe("otCalendarController", function () {
         }
     ];
 
-    locationService.getAllByTag.and.callFake(function () {
-        return {data: {results: [{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}]}};
-    });
     surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
         return {data: {results: surgicalBlocks}};
     });
 
     beforeEach(function () {
         module('bahmni.ot');
-        inject(function ($controller, $rootScope, $q, $translate) {
+        inject(function ($controller, $rootScope) {
             controller = $controller;
             scope = $rootScope.$new();
-            translate = $translate;
-            q = $q;
         });
     });
 
-    spinner.forPromise.and.returnValue(specUtil.createFakePromise({}));
-
     var createController = function () {
-        scope.dayViewStart = '09:00';
-        scope.dayViewEnd = '16:30';
-        scope.dayViewSplit = '60';
-        scope.viewDate = moment('2017-02-19').toDate();
-        controller('otCalendarController', {
+        controller('cancelSurgicalBlockController', {
             $scope: scope,
-            locationService: locationService,
-            $q: q,
-            translate: translate,
-            surgicalAppointmentService: surgicalAppointmentService,
             $state: state,
-            ngDialog: ngDialog
+            $translate: translate,
+            ngDialog: ngDialog,
+            surgicalAppointmentService: surgicalAppointmentService,
+            messagingService: messagingService
         });
-        scope.$apply();
     };
 
-    xit("should calculate the no. of intervals for the calendar", function () {
+    it("should save status with cancelled when user cancelled a surgical block", function () {
+        surgicalAppointmentService.saveSurgicalBlock.and.returnValue(specUtil.simplePromise({data:{provider: {person: { display:"something"}}}}));
+        messagingService.showMessage.and.returnValue({});
+        translate.instant.and.returnValue('Cancelled surgeries for Surgeon Dr.');
+        scope.ngDialogData = {surgicalBlock: {id:32, surgicalAppointments: [{id:32,status:"COMPLETED", patient: {uuid:1}}, {id:33, patient: {uuid:2}}], provider: {uuid: 1}, location: {uuid:2}, status: "CANCELLED"}};
+        scope.surgicalBlockSelected = {provider: {person: {display: "something"}}};
+        scope.surgicalBlock = {status: "CANCELLED"};
         createController();
+        scope.confirmCancelSurgicalBlock();
+        expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'Cancelled surgeries for Surgeon Dr.something' );
+        expect(translate.instant).toHaveBeenCalledWith("OT_SURGICAL_BLOCK_CANCELLED_MESSAGE")
+        expect(ngDialog.close).toHaveBeenCalled();
+        expect(state.go).toHaveBeenCalled();
+    });
 
-        var intervals = scope.intervals();
-        expect(intervals).toEqual(8);
+    it("should save status with postponed when user postponed a surgical block", function () {
+        surgicalAppointmentService.saveSurgicalBlock.and.returnValue(specUtil.simplePromise({data:{provider: {person: { display:"something"}}}}));
+        messagingService.showMessage.and.returnValue({});
+        translate.instant.and.returnValue('Postponed surgeries for Surgeon Dr.');
+        scope.ngDialogData = {surgicalBlock: {id:32, surgicalAppointments: [{id:32,status:"COMPLETED", patient: {uuid:1}}, {id:33, patient: {uuid:2}}], provider: {uuid: 1}, location: {uuid:2}, status: "CANCELLED"}};
+        scope.surgicalBlockSelected = {provider: {person: {display: "something"}}};
+        scope.surgicalBlock = {status: "POSTPONED"};
+        createController();
+        scope.confirmCancelSurgicalBlock();
+        expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'Postponed surgeries for Surgeon Dr.something' );
+        expect(translate.instant).toHaveBeenCalledWith("OT_SURGICAL_BLOCK_POSTPONED_MESSAGE")
+        expect(ngDialog.close).toHaveBeenCalled();
+        expect(state.go).toHaveBeenCalled();
+    });
+
+    it("should close the dialog when user clicks on the cancel button", function () {
+        scope.ngDialogData = {surgicalBlock: {id:32}};
+        scope.surgicalBlockSelected = {provider: {person: {display: "name"}}};
+        createController();
+        scope.closeDialog();
+        expect(ngDialog.close).toHaveBeenCalled();
     });
 
 });
