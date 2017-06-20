@@ -52,7 +52,6 @@ describe("calendar view cancel appointment controller", function () {
         createController();
         scope.closeDialog();
         expect(ngDialog.close).toHaveBeenCalled();
-        expect(scope.ngDialogData.surgicalAppointment.sortWeight).toBe(null);
     });
 
 

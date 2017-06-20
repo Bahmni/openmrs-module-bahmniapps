@@ -18,14 +18,14 @@
     "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
     "OT_SAVE_FAILURE_MESSAGE_KEY": "An error occured with the server. Information not saved",
-    "OT_ENTER_MANDATORY_FIELDS": "Please enter all mandatory fields",
+    "OT_ENTER_MANDATORY_FIELDS": "Please enter mandatory fields",
     "OT_SAVE_SUCCESS_MESSAGE_KEY" : "Saved",
     "OT_ADD_SURGERY_KEY": "Add Surgery",
     "OT_ENTER_PATIENT_KEY": "Enter Patient ID/ Name",
     "OT_PATIENT": "Patient",
     "OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION": "Total time of surgeries exceeds blocked time",
     "OT_SURGICAL_APPOINTMENT_PROCEDURE": "Procedure(s)",
-    "OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME": "Estimated time",
+    "OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME": "Est time",
     "OT_SURGICAL_APPOINTMENT_HOURS": "hr(s)",
     "OT_SURGICAL_APPOINTMENT_MINUTES": "min(s)",
     "OT_SURGICAL_APPOINTMENT_CLEANING_TIME": "Cleaning time",
@@ -46,8 +46,10 @@
     "OT_SURGICAL_APPOINTMENT_POSTPONED_MESSAGE": "Postponed appointment for ",
     "OT_SURGICAL_APPOINTMENT_POSTPONE": "Postpone",
     "OT_SURGICAL_APPOINTMENT_CANCEL_OR_POSTPONE_A_SURGICAL_BLOCK": "Do you want cancel or postpone the block?",
-    "OT_SURGICAL_APPOINTMENT_CANCEL_OR_POSTPONE_A_SURGICAL_BLOCK_CHANGE_EFFECT": "Do you want cancel or postpone the block?",
     "OT_SURGICAL_BLOCK_CANCELLED_MESSAGE": "Cancelled surgeries for Dr.",
-    "OT_SURGICAL_BLOCK_POSTPONED_MESSAGE": "Postponed surgeries for Dr."
+    "OT_SURGICAL_BLOCK_POSTPONED_MESSAGE": "Postponed surgeries for Dr.",
+    "OT_SURGICAL_BLOCK_CANCEL_ALL_SURGERIES_MESSAGE": "This change will affect all surgeries of the block",
+    "OT_CANCEL_BLOCK": "Cancel Block"
+
 
 }

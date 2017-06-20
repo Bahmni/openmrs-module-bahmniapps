@@ -186,6 +186,18 @@ div[ng-app="ot"] {
           }
         }
       }
+      .ot-cancel-appoinment {
+        border: 0;
+        outline: 0;
+        background: #f70909;
+        color: #fff;
+        margin-left: 120px;
+        box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+        &:hover {
+          background: #f70909;
+          opacity: 0.8;
+        }
+      }
     }
     &.new-surgical-appointment-step2 {
       float: left;
@@ -250,6 +262,9 @@ div[ng-app="ot"] {
            display: block;
            min-height: 100px;
          }
+      }
+      .grey-background {
+        background-color: #e6e6e6;
       }
     }
   }
@@ -572,6 +587,64 @@ div[ng-app="ot"] {
     text-align: center;
     .button {
       margin: 20px 15px 5px;
+    }
+  }
+}
+.ot-cancel-dialog-form {
+  p {
+    padding: 0 10px;
+  }
+
+  .ot-cancel-dialog-label {
+    margin-bottom: 15px;
+  }
+  .ot-cancel-dialog-actions {
+    text-align: center;
+    label {
+      display: inline-block;
+      position: relative;
+      padding: 5px 10px;
+      border: 1px solid #aaa;
+      background: #fff;
+      margin: 0 5px 0 0;
+      border-radius: 3px;
+      color: #111111;
+      font-weight: normal;
+      cursor: pointer;
+      box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+      &:hover, &.selected {
+        background: #d6d6d6;
+      }
+      input {
+        opacity: 0;
+        position: absolute;
+        margin: auto;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        cursor: pointer;
+      }
+    }
+  }
+  .ot-cancel-dialog-notes {
+    min-height: 100px;
+    width: 100%;
+    display: block;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+  .ot-cancel-dialog-buttons {
+    text-align: center;
+    input {
+      border: 0;
+      outline: 0;
+      background: #f70909;
+      color: #fff;
+      box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+      &:hover {
+        background: #f70909;
+        opacity: 0.8;
+      }
     }
   }
 }

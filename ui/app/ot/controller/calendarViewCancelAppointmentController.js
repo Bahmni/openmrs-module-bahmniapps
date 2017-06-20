@@ -35,7 +35,6 @@ angular.module('bahmni.ot').controller('calendarViewCancelAppointmentController'
         };
 
         $scope.closeDialog = function () {
-            surgicalAppointment.sortWeight = null;
             ngDialog.close();
         };
     }]);

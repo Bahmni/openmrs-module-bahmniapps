@@ -56,38 +56,42 @@ describe("cancelSurgicalBlockController", function () {
         surgicalAppointmentService.saveSurgicalBlock.and.returnValue(specUtil.simplePromise({data:{provider: {person: { display:"something"}}}}));
         messagingService.showMessage.and.returnValue({});
         translate.instant.and.returnValue('Cancelled surgeries for Surgeon Dr.');
-        scope.ngDialogData = {surgicalBlock: {id:32, surgicalAppointments: [{id:32,status:"COMPLETED", patient: {uuid:1}}, {id:33, patient: {uuid:2}}], provider: {uuid: 1}, location: {uuid:2}, status: "CANCELLED"}};
+        scope.ngDialogData = {surgicalBlock: {id:32, surgicalAppointments: [{id:32,status:"POSTPONED", notes: "Patient not available", patient: {uuid:1}}, {id:33, patient: {uuid:2}}], provider: {uuid: 1}, location: {uuid:2}, status: "CANCELLED"}};
         scope.surgicalBlockSelected = {provider: {person: {display: "something"}}};
-        scope.surgicalBlock = {status: "CANCELLED"};
+        scope.surgicalBlock = {status: "CANCELLED", notes: "Cancelled as Surgeon on leave"};
         createController();
         scope.confirmCancelSurgicalBlock();
         expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'Cancelled surgeries for Surgeon Dr.something' );
-        expect(translate.instant).toHaveBeenCalledWith("OT_SURGICAL_BLOCK_CANCELLED_MESSAGE")
+        expect(translate.instant).toHaveBeenCalledWith("OT_SURGICAL_BLOCK_CANCELLED_MESSAGE");
         expect(ngDialog.close).toHaveBeenCalled();
         expect(state.go).toHaveBeenCalled();
+        expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[0].status).toEqual("POSTPONED");
+        expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[0].notes).toEqual("Patient not available");
+        expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[1].status).toEqual("CANCELLED");
+        expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[1].notes).toEqual("Cancelled as Surgeon on leave");
+        expect(scope.ngDialogData.surgicalBlock.voidReason).toEqual("Cancelled as Surgeon on leave");
+        expect(scope.ngDialogData.surgicalBlock.voided).toBeTruthy();
     });
 
     it("should save status with postponed when user postponed a surgical block", function () {
         surgicalAppointmentService.saveSurgicalBlock.and.returnValue(specUtil.simplePromise({data:{provider: {person: { display:"something"}}}}));
         messagingService.showMessage.and.returnValue({});
         translate.instant.and.returnValue('Postponed surgeries for Surgeon Dr.');
-        scope.ngDialogData = {surgicalBlock: {id:32, surgicalAppointments: [{id:32,status:"COMPLETED", patient: {uuid:1}}, {id:33, patient: {uuid:2}}], provider: {uuid: 1}, location: {uuid:2}, status: "CANCELLED"}};
+        scope.ngDialogData = {surgicalBlock: {id:32, surgicalAppointments: [{id:32, status:"CANCELLED", notes: "Patient not available", patient: {uuid:1}}, {id:33, patient: {uuid:2}}], provider: {uuid: 1}, location: {uuid:2}, status: "CANCELLED"}};
         scope.surgicalBlockSelected = {provider: {person: {display: "something"}}};
-        scope.surgicalBlock = {status: "POSTPONED"};
+        scope.surgicalBlock = {status: "POSTPONED", notes: "Postponed as previous surgery extended"};
         createController();
         scope.confirmCancelSurgicalBlock();
         expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'Postponed surgeries for Surgeon Dr.something' );
-        expect(translate.instant).toHaveBeenCalledWith("OT_SURGICAL_BLOCK_POSTPONED_MESSAGE")
+        expect(translate.instant).toHaveBeenCalledWith("OT_SURGICAL_BLOCK_POSTPONED_MESSAGE");
         expect(ngDialog.close).toHaveBeenCalled();
         expect(state.go).toHaveBeenCalled();
-    });
-
-    it("should close the dialog when user clicks on the cancel button", function () {
-        scope.ngDialogData = {surgicalBlock: {id:32}};
-        scope.surgicalBlockSelected = {provider: {person: {display: "name"}}};
-        createController();
-        scope.closeDialog();
-        expect(ngDialog.close).toHaveBeenCalled();
+        expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[0].status).toEqual("CANCELLED");
+        expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[0].notes).toEqual("Patient not available");
+        expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[1].status).toEqual("POSTPONED");
+        expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[1].notes).toEqual("Postponed as previous surgery extended");
+        expect(scope.ngDialogData.surgicalBlock.voidReason).toEqual("Postponed as previous surgery extended");
+        expect(scope.ngDialogData.surgicalBlock.voided).toBeTruthy();
     });
 
 });
