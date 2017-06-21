@@ -22,8 +22,8 @@ describe('surgicalAppointmentHelper', function () {
         expect(filteredProviders[2]).toEqual({uuid: "uuid5", person: {display: "Provider5" }});
     });
 
-    it('should sort  providers by the name from the config', function () {
-        var providerNames = ["Provider5", "Provider1", "Provider2"];
+    it('should remove the not existed provider names from the list', function () {
+        var providerNames = ["Provider5", "Provider1", "Provider2", "Non Existed Name"];
         var providers = [{uuid: "uuid1", person: { display: "Provider1"}}, {uuid: "uuid2", person: { display: "Provider2"}},
             {uuid: "uuid3", person: { display: "Provider3" }}, {uuid: "uuid4",  person: {provider: "Provider4"}}, {uuid: "uuid5", person: { display: "Provider5"}}];
         var filteredProviders = surgicalAppointmentHelper.filterProvidersByName(providerNames, providers);
