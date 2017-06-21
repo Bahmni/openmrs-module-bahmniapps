@@ -128,7 +128,7 @@ describe("calendarViewController", function () {
                     "attributeType": {
                         "display": "otCalendarColor"
                     },
-                    "value": "#e6ffff"
+                    "value": "90"
                 }
             ]
         },
@@ -140,7 +140,7 @@ describe("calendarViewController", function () {
                 "attributes": []
             }];
 
-        var mappedSurgeons = [{name: "Bat Man", uuid: "batmanUuid", "Bat Man": false, otCalendarColor: "#e6ffff"}, {name: "Spider Man", uuid: "spidermanUuid", "Spider Man": false, otCalendarColor: undefined}];
+        var mappedSurgeons = [{name: "Bat Man", uuid: "batmanUuid", "Bat Man": false, otCalendarColor: "hsl(90, 100%, 90%)"}, {name: "Spider Man", uuid: "spidermanUuid", "Spider Man": false, otCalendarColor: "hsl(0, 100%, 90%)"}];
         state.filterParams = undefined;
         createController();
         expect(scope.filters.locations).toEqual({"location1": true, "location2": true});
@@ -163,7 +163,7 @@ describe("calendarViewController", function () {
                     "attributeType": {
                         "display": "otCalendarColor"
                     },
-                    "value": "#e6ffff"
+                    "value": "90"
                 }
             ]
         },
@@ -174,7 +174,7 @@ describe("calendarViewController", function () {
                 },
                 "attributes": []
             }];
-        var mappedSurgeons = [{name: "Bat Man", uuid: "batmanUuid", "Bat Man": false, otCalendarColor: "#e6ffff"}, {name: "Spider Man", uuid: "spidermanUuid", "Spider Man": false, otCalendarColor: undefined}];
+        var mappedSurgeons = [{name: "Bat Man", uuid: "batmanUuid", "Bat Man": false, otCalendarColor: "hsl(90, 100%, 90%)"}, {name: "Spider Man", uuid: "spidermanUuid", "Spider Man": false, otCalendarColor: "hsl(0, 100%, 90%)"}];
 
         state.filterParams = {locations: {"location1": true, "location2": false}, providers: [{uuid: "providerUuid1"}],
             patient: {uuid: "patientUuid2", value: "firstName2 lastName2", identifier: "IQ10002"},

@@ -13,10 +13,10 @@ angular.module('bahmni.ot')
                         uuid: surgeon.uuid
                     };
                     newVar[surgeon.person.display] = false;
-                    var otCalendarAttribute = _.find(surgeon.attributes, function (attribute) {
+                    var otCalendarColorAttribute = _.find(surgeon.attributes, function (attribute) {
                         return attribute.attributeType.display === 'otCalendarColor';
                     });
-                    newVar.otCalendarColor = otCalendarAttribute && otCalendarAttribute.value;
+                    newVar.otCalendarColor = getBackGroundHUEColorFor(otCalendarColorAttribute);
                     return newVar;
                 });
                 $scope.filters.statusList = [];
@@ -33,6 +33,11 @@ angular.module('bahmni.ot')
                     $scope.applyFilters();
                     return $scope.locations;
                 });
+            };
+
+            var getBackGroundHUEColorFor = function (otCalendarColorAttribute) {
+                var hue = otCalendarColorAttribute ? otCalendarColorAttribute.value.toString() : "0";
+                return "hsl(" + hue + ", 100%, 90%)";
             };
 
             $scope.applyFilters = function () {
