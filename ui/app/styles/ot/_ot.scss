@@ -524,12 +524,6 @@ div[ng-app="ot"] {
       }
     }
   }
-
-  .location {
-    sup {
-        color: #f70909;
-    }
-  }
 }.surgical-block {
   position: absolute;
   margin: 0 5px;
@@ -739,6 +733,11 @@ div[ng-app="ot"] {
         background: #f70909;
         opacity: 0.8;
       }
+    }
+  }
+  .location {
+    sup {
+      color: #f70909;
     }
   }
 }
