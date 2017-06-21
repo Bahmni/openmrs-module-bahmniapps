@@ -93,8 +93,8 @@
                             </div>
                         </td>
                         <td class="appointment-edit">
-                            <a id="edit-appointment" href ng-click="editAppointment(surgicalAppointment)" ng-show="!surgicalAppointment.status || surgicalAppointment.status === 'COMPLETED'">{{'OT_SURGICAL_APPOINTMENT_EDIT' | translate}}</a>
-                            <a id="cancel-appointment" href ng-click="cancelAppointment(surgicalAppointment)" ng-show="!surgicalAppointment.status">{{'OT_SURGICAL_APPOINTMENT_CANCEL' | translate}}</a>
+                            <a id="edit-appointment" href ng-click="editAppointment(surgicalAppointment)" ng-show="surgicalAppointment.status === 'SCHEDULED' || surgicalAppointment.status === 'COMPLETED'">{{'OT_SURGICAL_APPOINTMENT_EDIT' | translate}}</a>
+                            <a id="cancel-appointment" href ng-click="cancelAppointment(surgicalAppointment)" ng-show="surgicalAppointment.status === 'SCHEDULED'">{{'OT_SURGICAL_APPOINTMENT_CANCEL' | translate}}</a>
                         </td>
                     </tr>
                     </tbody>

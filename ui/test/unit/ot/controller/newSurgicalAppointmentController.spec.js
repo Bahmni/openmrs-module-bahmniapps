@@ -113,7 +113,7 @@ describe("newSurgicalAppointmentController", function () {
     });
 
     it("should save data in proper format ", function () {
-        scope.ngDialogData = {id: 1, actualStartDatetime: "2017-02-02T09:09:00.0Z", actualEndDatetime: "2017-02-02T10:09:00.0Z",
+        scope.ngDialogData = {id: 1, actualStartDatetime: "2017-02-02T09:09:00.0Z", actualEndDatetime: "2017-02-02T10:09:00.0Z", status: "COMPLETED",
             sortWeight: 0, patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}};
         createController();
         scope.addSurgicalAppointment = jasmine.createSpy("addSurgicalAppointment");
@@ -127,6 +127,7 @@ describe("newSurgicalAppointmentController", function () {
             sortWeight: 0,
             actualStartDatetime: "2017-02-02T09:09:00.0Z",
             actualEndDatetime: "2017-02-02T10:09:00.0Z",
+            status: "COMPLETED",
             surgicalAppointmentAttributes: {
                 procedure: {
                     surgicalAppointmentAttributeType: {
@@ -373,6 +374,91 @@ describe("newSurgicalAppointmentController", function () {
         scope.goToForwardUrl();
         expect(getAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientDashboardUrl');
         expect(messagingService.showMessage).toHaveBeenCalledWith('error', forwardUrl.errorMessage);
-    }); 
+    });
+
+    it("should set appointment status to scheduled by default", function () {
+        scope.ngDialogData = {id: 1,
+            sortWeight: 0,
+            patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}};
+        createController();
+        scope.addSurgicalAppointment = jasmine.createSpy("addSurgicalAppointment");
+        scope.surgicalAppointmentForm = {$valid: true};
+
+        scope.createAppointmentAndAdd();
+
+        var appointment = {
+            id: 1,
+            patient: scope.ngDialogData.patient,
+            sortWeight: 0,
+            status: "SCHEDULED",
+            actualStartDatetime: undefined,
+            actualEndDatetime: undefined,
+            surgicalAppointmentAttributes: {
+                procedure: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25ef8484-3a1f-11e7-83f8-0800274a5156',
+                        name: 'procedure'
+                    }
+                },
+                cleaningTime: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25efb2ef-3a1f-11e7-83f8-0800274a5156',
+                        name: 'cleaningTime'
+                    }, value: 15
+                },
+                estTimeMinutes: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25efa512-3a1f-11e7-83f8-0800274a5156',
+                        name: 'estTimeMinutes'
+                    }, value: 0
+                },
+                estTimeHours: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25ef9562-3a1f-11e7-83f8-0800274a5156',
+                        name: 'estTimeHours'
+                    }, value: 0
+                },
+                otherSurgeon: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25efd013-3a1f-11e7-83f8-0800274a5156',
+                        name: 'otherSurgeon'
+                    }
+                },
+                surgicalAssistant: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25efdf1b-3a1f-11e7-83f8-0800274a5156',
+                        name: 'surgicalAssistant'
+                    }
+                },
+                anaesthetist: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25efec33-3a1f-11e7-83f8-0800274a5156',
+                        name: 'anaesthetist'
+                    }
+                },
+                scrubNurse: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25eff89a-3a1f-11e7-83f8-0800274a5156',
+                        name: 'scrubNurse'
+                    }
+                },
+                circulatingNurse: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25f0060e-3a1f-11e7-83f8-0800274a5156',
+                        name: 'circulatingNurse'
+                    }
+                },
+                notes: {
+                    surgicalAppointmentAttributeType: {
+                        uuid: '25f0060e-3a1f-11e7-83f8-0800274a5156',
+                        name: 'notes'
+                    }
+                }
+            }
+        };
+
+        expect(scope.addSurgicalAppointment).toHaveBeenCalledWith(appointment);
+        expect(q.when).toHaveBeenCalled();
+    });
 
 });

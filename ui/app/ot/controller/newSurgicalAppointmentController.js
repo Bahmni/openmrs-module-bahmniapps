@@ -49,6 +49,7 @@ angular.module('bahmni.ot')
                         sortWeight: $scope.ngDialogData && $scope.ngDialogData.sortWeight,
                         actualStartDatetime: $scope.ngDialogData && $scope.ngDialogData.actualStartDatetime,
                         actualEndDatetime: $scope.ngDialogData && $scope.ngDialogData.actualEndDatetime,
+                        status: $scope.ngDialogData && $scope.ngDialogData.status || Bahmni.OT.Constants.scheduled,
                         surgicalAppointmentAttributes: $scope.attributes
                     };
                     $scope.addSurgicalAppointment(appointment);
