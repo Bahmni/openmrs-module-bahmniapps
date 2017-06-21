@@ -46,7 +46,8 @@ angular.module('bahmni.ot')
                 method: "GET",
                 params: {
                     startDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDatetime),
-                    endDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDatetime)
+                    endDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDatetime),
+                    v: "full"
                 },
                 withCredentials: true
             });

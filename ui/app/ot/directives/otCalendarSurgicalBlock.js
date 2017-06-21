@@ -19,7 +19,17 @@ angular.module('bahmni.ot')
             };
 
             var getColorForProvider = function () {
-                return $scope.surgicalBlock.provider.attributes[0] ? $scope.surgicalBlock.provider.attributes[0].display.split(":")[1] : "#FFF";
+                var otCalendarColorAttribute = _.find($scope.surgicalBlock.provider.attributes, function (attribute) {
+                    return attribute.attributeType.display === 'otCalendarColor';
+                });
+
+                var hue = otCalendarColorAttribute ? otCalendarColorAttribute.value.toString() : "0";
+                var backgroundColor = "hsl(" + hue + ", 100%, 90%)";
+                var borderColor = "hsl(" + hue + ",100%, 60%)";
+                return {
+                    backgroundColor: backgroundColor,
+                    borderColor: borderColor
+                };
             };
 
             var getHeightForSurgicalBlock = function () {

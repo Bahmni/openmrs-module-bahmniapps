@@ -39,7 +39,32 @@ describe("otCalendarSurgicalBlock", function () {
         mockBackend.flush();
         var compiledElementScope = element.isolateScope();
         scope.$digest();
-        expect(compiledElementScope.blockDimensions).toEqual( {height : 1200, top : 0, color : '#FFF', appointmentHeightPerMin : 3.93 });
+        expect(compiledElementScope.blockDimensions).toEqual( {height : 1200, top : 0, color : {backgroundColor : 'hsl(0, 100%, 90%)', borderColor : 'hsl(0,100%, 60%)' }, appointmentHeightPerMin : 3.93 });
+    });
+
+    it("should set the color from the config", function () {
+        var surgicalBlock =
+        {
+            id: 60,
+            provider: {uuid: "providerUuid1", display: "Doctor Strange", attributes: [ {attributeType: {display: "otCalendarColor"}, value: "260"}]},
+            location: {uuid: "3353ccb2-3086-11e7-b60e-0800274a5156", name: "location1"},
+            person: {display: "Doctor Strange"},
+            surgicalAppointments: [],
+            startDatetime: "2017-05-24T09:00:00.000+0530",
+            endDatetime: "2017-05-24T14:00:00.000+0530"
+        };
+        scope.surgicalBlock = surgicalBlock;
+        scope.calendarStartDatetime = new Date(moment('2017-05-24 09:00:00'));
+        scope.calendarEndDatetime = new Date(moment('2017-05-24 16:00:00'));
+        scope.dayViewSplit = 30;
+
+        mockBackend.expectGET('../ot/views/calendarSurgicalBlock.html').respond("<div>dummy</div>");
+        element = $compile(simpleHtml)(scope);
+        scope.$digest();
+        mockBackend.flush();
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+        expect(compiledElementScope.blockDimensions).toEqual({height : 1200, top : 0, color : {backgroundColor : 'hsl(260, 100%, 90%)', borderColor : 'hsl(260,100%, 60%)' }, appointmentHeightPerMin : 3.93 });
     });
 
     it("should emit an event when surgical block is selected", function() {
