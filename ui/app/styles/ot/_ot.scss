@@ -541,6 +541,9 @@ div[ng-app="ot"] {
     position: relative;
     overflow: hidden;
     border-radius: 3px;
+    &.hide-surgical-appointment {
+      visibility: hidden;
+    }
     &.expanded {
       z-index: 1;
     }
@@ -738,8 +741,8 @@ div[ng-app="ot"] {
       }
     }
   }
-  .calander-container {
-    overflow: hidden;
-    background: #fff;
-  }
+}
+.calendar-container {
+  overflow: hidden;
+  background: #fff;
 }

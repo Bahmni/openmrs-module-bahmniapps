@@ -65,7 +65,8 @@ angular.module('bahmni.ot')
                 surgicalBlock: "=",
                 calendarStartDatetime: "=",
                 calendarEndDatetime: "=",
-                dayViewSplit: "="
+                dayViewSplit: "=",
+                filterParams: "="
             },
             templateUrl: "../ot/views/calendarSurgicalBlock.html"
         };

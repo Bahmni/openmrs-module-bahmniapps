@@ -3,7 +3,7 @@
 describe("otCalendarSurgicalBlock", function () {
     var simpleHtml = '<ot-calendar-surgical-block surgical-block="surgicalBlock"' +
         ' grid-offset="gridOffset" calendar-start-datetime="calendarStartDatetime"' +
-        ' calendar-end-datetime="calendarEndDatetime" day-view-split="dayViewSplit" ></ot-calendar-surgical-block>';
+        ' calendar-end-datetime="calendarEndDatetime" day-view-split="dayViewSplit" filter-params="filterParams"></ot-calendar-surgical-block>';
     var $compile, element, mockBackend, scope;
 
     beforeEach(module('ngHtml2JsPreprocessor'));

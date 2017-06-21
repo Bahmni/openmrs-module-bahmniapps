@@ -8,6 +8,26 @@ angular.module('bahmni.ot')
                 return attributes;
             }, {});
 
+            var hasAppointmentStatusInFilteredStatusList = function () {
+                if (_.isEmpty($scope.filterParams.statusList)) {
+                    return true;
+                }
+                return _.find($scope.filterParams.statusList, function (selectedStatus) {
+                    return selectedStatus.name === $scope.surgicalAppointment.status;
+                });
+            };
+
+            var hasAppointmentIsOfTheFilteredPatient = function () {
+                if (_.isEmpty($scope.filterParams.patient)) {
+                    return true;
+                }
+                return $scope.surgicalAppointment.patient.uuid === $scope.filterParams.patient.uuid;
+            };
+
+            $scope.canTheSurgicalAppointmentBeShown = function () {
+                return hasAppointmentIsOfTheFilteredPatient() && hasAppointmentStatusInFilteredStatusList();
+            };
+
             var getDataForSurgicalAppointment = function () {
                 $scope.height = getHeightForSurgicalAppointment();
                 $scope.patient = surgicalAppointmentHelper.getPatientDisplayLabel($scope.surgicalAppointment.patient.display);
@@ -41,7 +61,8 @@ angular.module('bahmni.ot')
             scope: {
                 surgicalAppointment: "=",
                 heightPerMin: "=",
-                backgroundColor: "="
+                backgroundColor: "=",
+                filterParams: "="
 
             },
             templateUrl: "../ot/views/calendarSurgicalAppointment.html"
