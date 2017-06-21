@@ -8,7 +8,7 @@
         <label for="postpone-button" ng-class="{'selected' : appointment.status === 'POSTPONED'}"><input type="radio" name="status" id="postpone-button" ng-model="appointment.status"  value="POSTPONED" required/> {{'OT_SURGICAL_APPOINTMENT_POSTPONE' | translate}}</label>
         <label for="cancel-button"ng-class="{'selected' : appointment.status === 'CANCELLED'}"><input type="radio" name="status" id="cancel-button" ng-model="appointment.status"  value="CANCELLED" required/> {{'OT_SURGICAL_APPOINTMENT_CANCEL' | translate}}</label>
     </p>
-   {{'OT_SURGICAL_APPOINTMENT_REASON_FOR_CHANGE' | translate}} <sup>*</sup>
+   <p class="location">{{'OT_SURGICAL_APPOINTMENT_REASON_FOR_CHANGE' | translate}} <sup>*</sup></p>
     <textarea required placeholder="enter reason" id="reasonForChange" class="ot-cancel-dialog-notes" ng-model="appointment.notes" msd-elastic></textarea>
     <p class="ot-cancel-dialog-buttons">
         <input type="submit" value="Confirm"/>

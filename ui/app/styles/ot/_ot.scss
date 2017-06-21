@@ -524,8 +524,13 @@ div[ng-app="ot"] {
       }
     }
   }
-}
-.surgical-block {
+
+  .location {
+    sup {
+        color: #f70909;
+    }
+  }
+}.surgical-block {
   position: absolute;
   margin: 0 5px;
   border-radius: 3px;
