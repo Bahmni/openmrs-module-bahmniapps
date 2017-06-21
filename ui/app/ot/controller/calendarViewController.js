@@ -5,7 +5,7 @@ angular.module('bahmni.ot')
         function ($scope, $rootScope, $state, appService, patientService, locationService) {
             var init = function () {
                 $scope.filterParams = $state.filterParams;
-                $scope.filters = {'locations': {"OT 1": true, "OT 2": true, "OT 3": true}};
+                $scope.filters = {};
                 $scope.filters.providers = [];
                 $scope.surgeonList = _.map($rootScope.surgeons, function (surgeon) {
                     var newVar = {
@@ -23,7 +23,13 @@ angular.module('bahmni.ot')
                 $scope.appointmentStatusList = [{name: "SCHEDULED"}, {name: "COMPLETED"}];
                 return locationService.getAllByTag('Operation Theater').then(function (response) {
                     $scope.locations = response.data.results;
+                    var locations = {};
+                    _.each($scope.locations, function (location) {
+                        locations[location.name] = true;
+                    });
+                    $scope.filters.locations = locations;
                     $scope.filters = $scope.filterParams || $scope.filters;
+                    $scope.patient = $scope.filters.patient && $scope.filters.patient.value;
                     $scope.applyFilters();
                     return $scope.locations;
                 });

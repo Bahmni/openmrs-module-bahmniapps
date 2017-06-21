@@ -108,8 +108,8 @@ describe("calendarViewController", function () {
     it('Should apply all the filters', function () {
 
         createController();
-        scope.filters = {locations: {"OT 1": true, "OT 2": false, "OT 3": false}, providers: [{uuid: "providerUuid1"}],
-            patient: {uuid: "patientUuid2", label: "firstName2 lastName2", identifier: "IQ10002"},
+        scope.filters = {locations: {"location1": true, "location2": false}, providers: [{uuid: "providerUuid1"}],
+            patient: {uuid: "patientUuid2", value: "firstName2 lastName2", identifier: "IQ10002"},
             statusList: [{name: "COMPLETED"}]
         };
         scope.applyFilters();
@@ -143,12 +143,13 @@ describe("calendarViewController", function () {
         var mappedSurgeons = [{name: "Bat Man", uuid: "batmanUuid", "Bat Man": false, otCalendarColor: "#e6ffff"}, {name: "Spider Man", uuid: "spidermanUuid", "Spider Man": false, otCalendarColor: undefined}];
         state.filterParams = undefined;
         createController();
-        expect(scope.filters.locations).toEqual({"OT 1": true, "OT 2": true, "OT 3": true});
+        expect(scope.filters.locations).toEqual({"location1": true, "location2": true});
         expect(scope.filters.providers).toEqual([]);
         expect(scope.filters.statusList).toEqual([]);
         expect(scope.appointmentStatusList).toEqual([{name: "SCHEDULED"}, {name: "COMPLETED"}]);
         expect(scope.locations).toEqual([{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}]);
         expect(scope.surgeonList).toEqual(mappedSurgeons);
+        expect(scope.patient).toBeUndefined();
     });
 
     it('Should initialize the filter data from stateParams if present', function () {
@@ -175,18 +176,19 @@ describe("calendarViewController", function () {
             }];
         var mappedSurgeons = [{name: "Bat Man", uuid: "batmanUuid", "Bat Man": false, otCalendarColor: "#e6ffff"}, {name: "Spider Man", uuid: "spidermanUuid", "Spider Man": false, otCalendarColor: undefined}];
 
-        state.filterParams = {locations: {"OT 1": true, "OT 2": false, "OT 3": false}, providers: [{uuid: "providerUuid1"}],
-            patient: {uuid: "patientUuid2", label: "firstName2 lastName2", identifier: "IQ10002"},
+        state.filterParams = {locations: {"location1": true, "location2": false}, providers: [{uuid: "providerUuid1"}],
+            patient: {uuid: "patientUuid2", value: "firstName2 lastName2", identifier: "IQ10002"},
             statusList: [{name: "COMPLETED"}]
         };
         createController();
         expect(scope.filters).toEqual(state.filterParams);
-        expect(scope.filters.locations).toEqual({"OT 1": true, "OT 2": false, "OT 3": false});
+        expect(scope.filters.locations).toEqual({"location1": true, "location2": false});
         expect(scope.filters.providers).toEqual([{uuid: "providerUuid1"}]);
         expect(scope.filters.statusList).toEqual([{name: "COMPLETED"}]);
-        expect(scope.filters.patient).toEqual({uuid: "patientUuid2", label: "firstName2 lastName2", identifier: "IQ10002"});
+        expect(scope.filters.patient).toEqual({uuid: "patientUuid2", value: "firstName2 lastName2", identifier: "IQ10002"});
         expect(scope.appointmentStatusList).toEqual([{name: "SCHEDULED"}, {name: "COMPLETED"}]);
         expect(scope.locations).toEqual([{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}]);
         expect(scope.surgeonList).toEqual(mappedSurgeons);
+        expect(scope.patient).toEqual("firstName2 lastName2");
     });
 });
