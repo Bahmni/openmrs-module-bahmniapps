@@ -2,7 +2,7 @@
 
 describe("AdtController", function () {
     var scope, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService,
-        encounterService, ngDialog, window, messagingService, spinnerService, configurationService, auditLogService;
+        encounterService, ngDialog, window, messagingService, spinnerService, auditLogService;
 
     beforeEach(function () {
         module('bahmni.adt');
@@ -17,7 +17,7 @@ describe("AdtController", function () {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
         dispositionService = jasmine.createSpyObj('dispositionService', ['getDispositionActions']);
-        visitService = jasmine.createSpyObj('visitService', ['getVisitSummary','endVisit', 'endVisitAndCreateEncounter']);
+        visitService = jasmine.createSpyObj('visitService', ['getVisitSummary', 'endVisit', 'endVisitAndCreateEncounter']);
         encounterService = jasmine.createSpyObj('encounterService', ['create', 'discharge', 'buildEncounter']);
         ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
@@ -52,10 +52,8 @@ describe("AdtController", function () {
         visitService.getVisitSummary.and.returnValue(visitServicePromise);
         dispositionService.getDispositionActions.and.returnValue({});
         sessionService.getLoginLocationUuid.and.returnValue("someLocationUuid");
-        configurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
-        configurationService.getConfigurations.and.returnValue(specUtil.simplePromise({enableAuditLog: true}));
-        auditLogService = jasmine.createSpyObj('auditLogService', ['auditLog']);
-        auditLogService.auditLog.and.returnValue(specUtil.simplePromise({}));
+        auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
+        auditLogService.log.and.returnValue(specUtil.simplePromise({}));
     });
 
     var createController = function () {
@@ -81,7 +79,6 @@ describe("AdtController", function () {
             $window: window,
             messagingService: messagingService,
             spinner: spinnerService,
-            configurationService: configurationService,
             auditLogService: auditLogService
         });
     };
@@ -96,7 +93,6 @@ describe("AdtController", function () {
     });
 
     it("Should not show confirmation dialog if patient's visit type is defaultVisitType", function () {
-
         scope.visitSummary = {"visitType": "IPD"};
         scope.patient = {uuid: '123'};
         encounterService.create.and.callFake(function () {
@@ -112,31 +108,21 @@ describe("AdtController", function () {
 
         expect(ngDialog.openConfirm).not.toHaveBeenCalled();
     });
+
     it("should close the visit and create a new encounter if dialog is confirmed", function () {
-        scope.visitSummary = {"visitType": "OPD", "uuid": "visitUuid"};
-        scope.patient = {uuid: "123"};
+        scope.visitSummary = {visitType: "OPD", uuid: "visitUuid"};
+        scope.patient = {uuid: '123'};
         scope.adtObservations = [];
 
-        var stubPromise = function (data) {
-            return {
-                success: function (successFn) {
-                    successFn({results: data});
-                }
-            };
-        };
-        visitService.endVisitAndCreateEncounter.and.callFake(stubPromise);
-        encounterService.buildEncounter.and.returnValue({encounterUuid: 'uuid'});
+        var encounterResponse = {patientUuid: '123', encounterUuid: 'uuid', encounterType: 'ADMISSION'};
+        visitService.endVisitAndCreateEncounter.and.returnValue(specUtil.createFakePromise(encounterResponse));
+        encounterService.buildEncounter.and.returnValue(encounterResponse);
         createController();
 
         scope.closeCurrentVisitAndStartNewVisit();
 
-        var params = {
-            patientUuid: '123',
-            eventType: 'CLOSE_VISIT',
-            message: 'CLOSE_VISIT_MESSAGE~{"visitUuid":"visitUuid","visitType":"OPD"}',
-            module: 'adt'
-        };
-
+        var messageParamsForVisit = {visitUuid: scope.visitSummary.uuid, visitType: scope.visitSummary.visitType};
+        var messageParamsForEncounter = {encounterUuid: encounterResponse.encounterUuid, encounterType: encounterResponse.encounterType};
         expect(encounterService.buildEncounter).toHaveBeenCalledWith({
             patientUuid: '123',
             encounterTypeUuid: undefined,
@@ -144,10 +130,11 @@ describe("AdtController", function () {
             observations: [],
             locationUuid: 'someLocationUuid'
         });
-        expect(visitService.endVisitAndCreateEncounter).toHaveBeenCalledWith("visitUuid", {encounterUuid: 'uuid'});
+
+        expect(visitService.endVisitAndCreateEncounter).toHaveBeenCalledWith("visitUuid", encounterResponse);
         expect(ngDialog.close).toHaveBeenCalled();
-        expect(configurationService.getConfigurations).toHaveBeenCalledWith(['enableAuditLog']);
-        expect(auditLogService.auditLog).toHaveBeenCalledWith(params);
+        expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'CLOSE_VISIT', messageParamsForVisit, 'MODULE_LABEL_INPATIENT_KEY');
+        expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'EDIT_ENCOUNTER', messageParamsForEncounter, 'MODULE_LABEL_INPATIENT_KEY');
     });
 
     it("Should close the confirmation dialog if cancelled", function () {
@@ -195,7 +182,7 @@ describe("AdtController", function () {
         expect(encounterService.create).toHaveBeenCalledWith({
             patientUuid: '123',
             encounterTypeUuid: undefined,
-            visitTypeUuid: "visitUuid",
+            visitTypeUuid: 'visitUuid',
             observations: [],
             locationUuid: 'someLocationUuid'
         });
@@ -428,18 +415,25 @@ describe("AdtController", function () {
     });
 
     describe('Discharge', function () {
-        it('should discharge patient', function () {
+        it('should discharge patient and log the encounter when audit log is enabled', function () {
             scope.patient = {uuid: "patient Uuid"};
+            var encounterResponse = {
+                patientUuid: scope.patient.uuid,
+                encounterUuid: 'encounterUuid',
+                encounterType: 'DISCHARGE'
+            };
             encounterService.discharge.and.callFake(function () {
                 return {
                     then: function (callback) {
-                        return callback({data: {}});
+                        return callback({data: encounterResponse});
                     }
                 };
             });
             createController();
 
             scope.discharge();
+            var messageParams = {encounterUuid: encounterResponse.encounterUuid, encounterType: encounterResponse.encounterType};
+            expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'EDIT_ENCOUNTER', messageParams, 'MODULE_LABEL_INPATIENT_KEY');
         });
     });
 });

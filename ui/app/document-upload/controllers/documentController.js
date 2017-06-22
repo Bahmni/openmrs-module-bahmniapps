@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll', '$translate', 'messagingService',
-        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService, $anchorScroll, $translate, messagingService) {
+    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService',
+        'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll',
+        '$translate', 'messagingService',
+        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService,
+                  $rootScope, $http, $q, $timeout, sessionService, $anchorScroll, $translate, messagingService) {
             var encounterTypeUuid;
             var topLevelConceptUuid;
             var customVisitParams = Bahmni.DocumentUpload.Constants.visitRepresentation;
@@ -351,8 +354,7 @@ angular.module('opd.documentupload')
                 if (isExistingVisit(visit) || $scope.isNewVisitDateValid()) {
                     visitDocument = createVisitDocument(visit);
                 }
-
-                return spinner.forPromise(visitDocumentService.save(visitDocument, visit.visitType.display).then(function (response) {
+                return spinner.forPromise(visitDocumentService.save(visitDocument).then(function (response) {
                     return encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (encounterResponse) {
                         var savedVisit = $scope.visits[$scope.visits.indexOf(visit)];
                         if (!savedVisit) {

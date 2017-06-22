@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'offlineService', 'configurationService', 'auditLogService',
-        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, offlineService, configurationService, auditLogService) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'offlineService', 'auditLogService',
+        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, offlineService, auditLogService) {
             var redirectUrl = $location.search()['from'];
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
@@ -21,21 +21,15 @@ angular.module('bahmni.home')
 
             var findLanguageByLocale = function (localeCode) {
                 return _.find(localeLanguages, function (localeLanguage) {
-                    return localeLanguage.code == localeCode; });
+                    return localeLanguage.code == localeCode;
+                });
             };
 
-            var logAuditForLoginAttempts = function (state, isFailedEvent) {
-                configurationService.getConfigurations(['enableAuditLog']).then(function (result) {
-                    if (result.enableAuditLog) {
-                        var params = {};
-                        params.eventType = Bahmni.Common.AuditLogEventDetails[state].eventType;
-                        params.message = Bahmni.Common.AuditLogEventDetails[state].message;
-                        params.message = isFailedEvent ? params.message + "~" + JSON.stringify({userName: $scope.loginInfo.username}) : params.message;
-                        if ($scope.loginInfo.username) {
-                            auditLogService.auditLog(params);
-                        }
-                    }
-                });
+            var logAuditForLoginAttempts = function (eventType, isFailedEvent) {
+                if ($scope.loginInfo.username) {
+                    var messageParams = isFailedEvent ? {userName: $scope.loginInfo.username} : undefined;
+                    auditLogService.log(undefined, eventType, messageParams, 'login');
+                }
             };
 
             var promise = localeService.allowedLocalesList();
@@ -70,8 +64,7 @@ angular.module('bahmni.home')
                         var localeLanguage = findLanguageByLocale(locale);
                         if (_.isUndefined(localeLanguage)) {
                             $scope.locales.push({"code": locale, "nativeName": locale});
-                        }
-                        else {
+                        } else {
                             $scope.locales.push(localeLanguage);
                         }
                     });
