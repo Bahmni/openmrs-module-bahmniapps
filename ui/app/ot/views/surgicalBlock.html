@@ -7,8 +7,10 @@
     </p>
 </div>
 <div class="new-surgical-appointment" >
-    <p class="new-surgical-appointment-note">You can block operation theatre time for a Surgeon and can arrange multiple surgical appointments into this block.</p>
-    <section class="new-surgical-appointment-step1">
+    <p class="new-surgical-appointment-note">
+        <i class="fa fa-info-circle"></i>
+        You can block operation theatre time for a Surgeon and can arrange multiple surgical appointments into this block.
+    </p>    <section class="new-surgical-appointment-step1">
         <div class="create-surgical-form">
             <h4 class="create-surgical-title">{{'CREATE_SURGICAL_BLOCK' | translate}}</h4>
             <div class="appointment-block">
@@ -67,7 +69,10 @@
                         dnd-moved="surgicalForm.surgicalAppointments.splice($index, 1)"
                         dnd-effect-allowed="move"
                         dnd-dragend="updateSortWeight()"
-                        ng-class="{'grey-background': surgicalAppointment.status === 'CANCELLED'}"
+                        ng-class="{
+                        'cancelled': surgicalAppointment.status === 'CANCELLED' || surgicalAppointment.status === 'POSTPONED',
+                        'unsaved': surgicalAppointment.id === undefined
+                        }"
                     >
                         <td>
                             <i>

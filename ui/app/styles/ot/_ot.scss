@@ -9,6 +9,7 @@
   border-bottom: 1px #cccecf solid;
   .ot-surgical-button {
     float: right;
+    font-size: 14px;
     margin-right: 10px;
     margin-top: 11px;
     background: #99C915;
@@ -52,7 +53,7 @@ div[ng-app="ot"] {
   width: 100%;
   box-sizing: border-box;
   input {
-    font-size: 15px;
+    font-size: 14px;
     border: none;
     outline: none;
     background: transparent;
@@ -111,10 +112,12 @@ div[ng-app="ot"] {
   overflow: hidden;
   p.new-surgical-appointment-note{
     font-size: 13px;
-    padding-left: 35px;
-    padding-bottom: 10px;
-    color: #CCC;
+    color: #00529B;
+    background-color: #BDE5F8;
     font-family: sans-serif;
+    margin: 10px auto;
+    padding:12px;
+    width: 676px;
   }
   > section {
     padding: 10px;
@@ -122,6 +125,9 @@ div[ng-app="ot"] {
     &.new-surgical-appointment-step1 {
       float: left;
       width: 500px;
+      .create-surgical-title {
+        margin-bottom: 30px;
+      }
       .create-surgical-form {
         P {
           overflow: hidden;
@@ -202,7 +208,7 @@ div[ng-app="ot"] {
     &.new-surgical-appointment-step2 {
       float: left;
       width: calc(100% - 501px);
-      min-height: 275px;
+      min-height: 336px;
       border-left: 1px solid #cccecf;
       .create-surgical-title {
         margin-bottom: 35px;
@@ -262,10 +268,18 @@ div[ng-app="ot"] {
            display: block;
            min-height: 100px;
          }
+        .appointment-edit {
+          text-align: center;
+          a {
+            margin: 0 25px;
+          }
+        }
       }
-      .grey-background {
-        background-color: #ccc;
-        opacity: 0.5;
+      .cancelled {
+        opacity: 0.3;
+      }
+      .unsaved .surgery-details-wrapper {
+        opacity: 0.3;
       }
     }
   }
@@ -688,6 +702,7 @@ div[ng-app="ot"] {
   }
   .ot-cancel-dialog-actions {
     text-align: center;
+    margin-bottom: 10px;
     label {
       display: inline-block;
       position: relative;
