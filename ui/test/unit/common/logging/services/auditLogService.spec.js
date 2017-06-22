@@ -39,12 +39,15 @@ describe('auditLogService', function () {
     });
 
     var translate = jasmine.createSpyObj('$translate', ['instant']);
+    var mockConfigurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
+    mockConfigurationService.getConfigurations.and.returnValue(specUtil.simplePromise({enableAuditLog: true}));
 
     beforeEach(function () {
         module('bahmni.common.logging');
         module(function ($provide) {
             $provide.value('$http', mockHttp);
             $provide.value('$translate', translate);
+            $provide.value('configurationService', mockConfigurationService);
         });
 
         inject(['auditLogService', function (auditLogServiceInjected) {
@@ -92,8 +95,13 @@ describe('auditLogService', function () {
     });
 
     it("should post logs", function (done) {
-        var params = {patientUuid: "patient Uuid", message: 'message', eventType: "eventType"};
-        auditLogService.auditLog(params).then(function (response) {
+        var params = {
+            patientUuid: "patient Uuid",
+            message: 'RUN_REPORT_MESSAGE~{"reportName":"Visit report"}',
+            eventType: 'RUN_REPORT',
+            module: 'MODULE_LABEL_REPORTS_KEY'
+        };
+        auditLogService.log('patient Uuid', 'RUN_REPORT', {reportName: 'Visit report'}, 'MODULE_LABEL_REPORTS_KEY').then(function (response) {
             done();
         });
         expect(mockHttp.post).toHaveBeenCalled();

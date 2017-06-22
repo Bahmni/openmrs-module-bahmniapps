@@ -454,7 +454,7 @@ describe("DocumentController", function () {
             visitDocumentService.save.and.returnValue(visitDocumentServiceSavePromise);
             scope.save(visit1);
 
-            expect(visitDocumentService.save).toHaveBeenCalledWith(visitDocument, 'OPD');
+            expect(visitDocumentService.save).toHaveBeenCalledWith(visitDocument);
 
         });
 
@@ -472,7 +472,7 @@ describe("DocumentController", function () {
 
             scope.save(visit1);
 
-            expect(visitDocumentService.save).toHaveBeenCalledWith(visitDocument, 'OPD');
+            expect(visitDocumentService.save).toHaveBeenCalledWith(visitDocument);
 
         });
 

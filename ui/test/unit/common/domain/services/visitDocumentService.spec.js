@@ -1,23 +1,26 @@
 "use strict";
 
 describe("visitDocumentService", function () {
-    var _$http, _provide, visitDocumentService, _configurationService, _auditLogService;
-    beforeEach(function() {
+    var _$http, _provide, visitDocumentService, _auditLogService, _configurations;
+    beforeEach(function () {
         module('bahmni.common.domain');
-        module(function($provide) {
+        module(function ($provide) {
             _$http = jasmine.createSpyObj("$http", ['post', 'delete']);
-            _configurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
-            _configurationService.getConfigurations.and.returnValue(specUtil.simplePromise({enableAuditLog: true}));
-            _auditLogService = jasmine.createSpyObj('auditLogService', ['auditLog']);
-            _auditLogService.auditLog.and.returnValue(specUtil.simplePromise({}));
+            _auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
+            _auditLogService.log.and.returnValue(specUtil.simplePromise({}));
+            var encounterConfig = jasmine.createSpyObj("encounterConfig", ["getVisitTypeByUuid", "getEncounterTypeByUuid"]);
+            encounterConfig.getVisitTypeByUuid.and.returnValue({name: "OPD"});
+            encounterConfig.getEncounterTypeByUuid.and.returnValue({name: "Patient Document"});
+            _configurations = jasmine.createSpyObj("configurations", ["encounterConfig"]);
+            _configurations.encounterConfig.and.returnValue(encounterConfig);
             _provide = $provide;
         });
-        inject(function(){
+        inject(function () {
             _provide.value('$http', _$http);
-            _provide.value('configurationService', _configurationService);
             _provide.value('auditLogService', _auditLogService);
+            _provide.value('configurations', _configurations);
         });
-        inject(function(_visitDocumentService_){
+        inject(function (_visitDocumentService_) {
             visitDocumentService = _visitDocumentService_;
         });
     });
@@ -28,7 +31,7 @@ describe("visitDocumentService", function () {
         var encounterTypeName = "test-encounter-name";
         var fileName = "test-file.jpeg";
         var fileType = "image";
-        var data =  {url : fileName};
+        var data = {url: fileName};
         _$http.post.and.returnValue(specUtil.respondWithPromise(Q, {data: data}));
         visitDocumentService.saveFile(file, patientUuid, encounterTypeName, fileName, fileType).then(function (response) {
             expect(response.data.url).toEqual(fileName);
@@ -41,7 +44,7 @@ describe("visitDocumentService", function () {
         var encounterTypeName = "test-encounter-name";
         var fileName = "test-file.mp4";
         var fileType = "video";
-        var data =  {url : fileName};
+        var data = {url: fileName};
         _$http.post.and.returnValue(specUtil.respondWithPromise(Q, {data: data}));
         visitDocumentService.saveFile(file, patientUuid, encounterTypeName, fileName, fileType).then(function (response) {
             expect(response.data.url).toEqual(fileName);
@@ -54,7 +57,7 @@ describe("visitDocumentService", function () {
         var encounterTypeName = "test-encounter-name";
         var fileName = "test-file.csv";
         var fileType = "data";
-        var data =  {error:{message:"The file type is not supported. Supported types are image/video/pdf"}};
+        var data = {error: {message: "The file type is not supported. Supported types are image/video/pdf"}};
         _$http.post.and.returnValue(specUtil.respondWithPromise(Q, {data: data}));
         visitDocumentService.saveFile(file, patientUuid, encounterTypeName, fileName, fileType).then(function (response) {
             expect(response.data.error.message).toEqual(data.error.message);
@@ -83,19 +86,14 @@ describe("visitDocumentService", function () {
         expect(_$http.post).toHaveBeenCalledWith(Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument", visitDocuments);
     });
 
-    it('should log when uploading files for a new visit', function () {
+    it('should log when uploading files for a new visit and encounter', function () {
         var visitDocuments = {documents: [], patientUuid: 'patientUuid'};
-        var params = {
-            patientUuid: 'patientUuid',
-            eventType: 'OPEN_VISIT',
-            message: 'OPEN_VISIT_MESSAGE~{"visitUuid":"visitUuid","visitType":"OPD"}',
-            module: 'document upload'
-        };
-        _$http.post.and.returnValue(specUtil.createFakePromise({visitUuid: 'visitUuid'}));
-        visitDocumentService.save(visitDocuments, 'OPD');
+        var visitDocumentResponse = {visitUuid: 'visitUuid', encounterUuid: "encounterUuid"};
+        _$http.post.and.returnValue(specUtil.createFakePromise(visitDocumentResponse));
+        visitDocumentService.save(visitDocuments);
         expect(_$http.post).toHaveBeenCalledWith(Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument", visitDocuments);
-        expect(_configurationService.getConfigurations).toHaveBeenCalledWith(['enableAuditLog']);
-        expect(_auditLogService.auditLog).toHaveBeenCalledWith(params);
+        expect(_auditLogService.log).toHaveBeenCalledWith(visitDocuments.patientUuid, 'OPEN_VISIT', {visitUuid: visitDocumentResponse.visitUuid, visitType: "OPD"}, "Patient Document");
+        expect(_auditLogService.log).toHaveBeenCalledWith(visitDocuments.patientUuid, 'EDIT_ENCOUNTER', {encounterUuid: visitDocumentResponse.encounterUuid, encounterType: "Patient Document"}, "Patient Document");
     });
 
     describe("getFileType", function () {

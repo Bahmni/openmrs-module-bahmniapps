@@ -37,6 +37,7 @@
                 <th>{{ 'USERNAME' | translate }}</th>
                 <th>{{ 'PATIENT_ID' | translate }}</th>
                 <th>{{ 'MESSAGE' | translate }}</th>
+                <th>{{ 'MODULE' | translate }}</th>
             </tr>
             </thead>
             <tbody ng-repeat="log in logs">
@@ -47,6 +48,7 @@
                 <td>{{:: log.userId | translate }}</td>
                 <td>{{:: log.patientId | translate }}</td>
                 <td>{{:: log.displayMessage}}</td>
+                <td>{{:: log.module | translate}}</td>
             </tr>
             </tbody>
         </table>
