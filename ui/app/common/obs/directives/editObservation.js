@@ -1,22 +1,23 @@
 'use strict';
 
 angular.module('bahmni.common.obs')
-    .directive('editObservation', ['$q', 'spinner', '$state', '$rootScope', 'ngDialog', 'messagingService', 'encounterService', 'configurations', 'contextChangeHandler', function ($q, spinner, $state, $rootScope, ngDialog, messagingService, encounterService, configurations, contextChangeHandler) {
+    .directive('editObservation', ['$q', 'spinner', '$state', '$rootScope', 'ngDialog', 'messagingService',
+        'encounterService', 'configurations', 'contextChangeHandler', 'auditLogService',
+        function ($q, spinner, $state, $rootScope, ngDialog, messagingService, encounterService, configurations,
+                  contextChangeHandler, auditLogService) {
         var controller = function ($scope) {
             var ObservationUtil = Bahmni.Common.Obs.ObservationUtil;
             var findEditableObs = function (observations) {
                 return _.find(observations, function (obs) {
                     return obs.uuid === $scope.observation.uuid;
-                });
+                    });
             };
-
             var shouldEditSpecificObservation = function () {
                 return $scope.observation.uuid ? true : false;
             };
             var contextChange = function () {
                 return contextChangeHandler.execute();
             };
-
             var init = function () {
                 var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
                     configurations.consultationNoteConcept(), configurations.labOrderNotesConcept());
@@ -87,7 +88,9 @@ angular.module('bahmni.common.obs')
                 $scope.encounter.orders = addOrdersToEncounter();
                 $scope.encounter.extensions = {};
                 var createPromise = encounterService.create($scope.encounter);
-                spinner.forPromise(createPromise).then(function () {
+                spinner.forPromise(createPromise).then(function (savedResponse) {
+                    var messageParams = {encounterUuid: savedResponse.data.encounterUuid, encounterType: savedResponse.data.encounterType};
+                    auditLogService.log($scope.patient.uuid, "EDIT_ENCOUNTER", messageParams, "MODULE_LABEL_CLINICAL_KEY");
                     $rootScope.hasVisitedConsultation = false;
                     $state.go($state.current, {}, {reload: true});
                     ngDialog.close();

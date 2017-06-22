@@ -1,6 +1,6 @@
 'use strict';
 angular.module('bahmni.common.logging')
-    .service('auditLogService', ['$http', '$translate', function ($http, $translate) {
+    .service('auditLogService', ['$http', '$translate', 'configurationService', function ($http, $translate, configurationService) {
         var DateUtil = Bahmni.Common.Util.DateUtil;
 
         var convertToLocalDate = function (date) {
@@ -22,10 +22,20 @@ angular.module('bahmni.common.logging')
             });
         };
 
-        this.auditLog = function (params) {
-            return $http.post(Bahmni.Common.Constants.auditLogUrl,
-                       params,
-                       {withCredentials: true}
-            );
+        this.log = function (patientUuid, eventType, messageParams, module) {
+            return configurationService.getConfigurations(['enableAuditLog']).then(function (result) {
+                if (result.enableAuditLog) {
+                    var params = {};
+                    params.patientUuid = patientUuid;
+                    params.eventType = Bahmni.Common.AuditLogEventDetails[eventType].eventType;
+                    params.message = Bahmni.Common.AuditLogEventDetails[eventType].message;
+                    params.message = messageParams ? params.message + '~' + JSON.stringify(messageParams) : params.message;
+                    params.module = module;
+                    return $http.post(Bahmni.Common.Constants.auditLogUrl,
+                params,
+                {withCredentials: true}
+              );
+                }
+            });
         };
     }]);

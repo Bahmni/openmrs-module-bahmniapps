@@ -95,9 +95,9 @@ angular
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
     }]).run(['$rootScope', '$templateCache', 'offlineService', 'schedulerService', '$bahmniCookieStore',
-        'locationService', 'messagingService', 'auditLogService', 'configurationService',
+        'locationService', 'messagingService', 'auditLogService',
         function ($rootScope, $templateCache, offlineService, schedulerService, $bahmniCookieStore, locationService,
-              messagingService, auditLogService, configurationService) {
+              messagingService, auditLogService) {
             var getStates = function (toState, fromState) {
                 var states = [];
                 if (fromState === "newpatient" && (toState === "patient.edit" || toState === "patient.visit")) {
@@ -105,15 +105,6 @@ angular
                 }
                 states.push(toState);
                 return states;
-            };
-
-            var log = function (state, toParams) {
-                var params = {};
-                params.eventType = Bahmni.Registration.AuditLogEventDetails[state].eventType;
-                params.message = Bahmni.Registration.AuditLogEventDetails[state].message;
-                params.patientUuid = toParams.patientUuid;
-                params.module = "registration";
-                auditLogService.auditLog(params);
             };
 
             var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
@@ -131,13 +122,9 @@ angular
             });
 
             $rootScope.createAuditLog = function (event, toState, toParams, fromState) {
-                configurationService.getConfigurations(['enableAuditLog']).then(function (result) {
-                    if (result.enableAuditLog) {
-                        var states = getStates(toState.name, fromState.name);
-                        states.forEach(function (state) {
-                            log(state, toParams);
-                        });
-                    }
+                var states = getStates(toState.name, fromState.name);
+                states.forEach(function (state) {
+                    auditLogService.log(toParams.patientUuid, Bahmni.Registration.StateNameEvenTypeMap[state], undefined, "MODULE_LABEL_REGISTRATION_KEY");
                 });
             };
 
