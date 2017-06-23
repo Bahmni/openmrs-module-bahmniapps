@@ -18,13 +18,6 @@ angular.module('bahmni.ot')
                 });
             };
 
-            $scope.removeFreeTextItem = function () {
-                var value = $("input.input").val();
-                if (_.isEmpty($scope.search(value))) {
-                    $("input.input").val("");
-                }
-            };
-
             $scope.search = function (query) {
                 var matchingAnswers = [];
                 var unselectedValues = _.xorBy($scope.inputItems, $scope.selectedValues, $scope.keyProperty);
@@ -45,7 +38,7 @@ angular.module('bahmni.ot')
                 displayProperty: "=",
                 keyProperty: "=",
                 placeholder: "=",
-                loadOnEmpty: "=",
+                loadOnDownArrow: "=",
                 autoCompleteMinLength: "="
             },
             templateUrl: "../ot/views/multiSelectAutocomplete.html"

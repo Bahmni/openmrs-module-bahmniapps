@@ -3,7 +3,7 @@
 </div>
 <div class="ot-filter-section">
     <div class="ot-filter-items location-block">
-        <h4>Operation Theatre</h4>
+        <h4>{{'OT_OPERATION_THEATRE_LABEL' | translate}}</h4>
         <p ng-repeat="location in locations track by location.uuid">
             <span>{{ location.display }}</span>
             <label class="location-buttons" for="{{location.display}}">
@@ -12,14 +12,14 @@
         </p>
     </div>
     <div class="ot-filter-items surgeon-block">
-        <h4>Surgeon</h4>
+        <h4>{{'SURGEON' | translate}}</h4>
         <multi-select-autocomplete
                 input-items="surgeonList"
                 selected-values="filters.providers"
                 display-property="'name'"
                 key-property="'uuid'"
                 placeholder="'Enter Surgeon Name'"
-                load-on-empty="false"
+                load-on-down-arrow="false"
                 auto-complete-min-length="1"></multi-select-autocomplete>
     </div>
     <div class="ot-filter-items patient-block">
@@ -34,19 +34,19 @@
         </p>
     </div>
     <div class="ot-filter-items status-block">
-        <h4>Appointment Status</h4>
+        <h4>{{'OT_APPOINTMENT_STATUS' | translate}}</h4>
         <multi-select-autocomplete
                 input-items="appointmentStatusList"
                 selected-values="filters.statusList"
                 display-property="'name'"
                 key-property="'name'"
                 placeholder="'Enter Appointment Status'"
-                load-on-empty="true"
-                auto-complete-min-length="0"></multi-select-autocomplete>
+                load-on-down-arrow="false"
+                auto-complete-min-length="1"></multi-select-autocomplete>
     </div>
     <div class="surgical-action-wrapper">
-        <button ng-click="applyFilters()">Apply Filter</button>
-        <button ng-click="clearFilters()">Clear</button>
+        <button ng-click="applyFilters()">{{'OT_APPLY_FILTERS' | translate}}</button>
+        <button ng-click="clearFilters()">{{'OT_CLEAR_FILTERS' | translate}}</button>
     </div>
 </div>
 

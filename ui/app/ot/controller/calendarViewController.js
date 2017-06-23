@@ -16,7 +16,7 @@ angular.module('bahmni.ot')
                     var otCalendarColorAttribute = _.find(surgeon.attributes, function (attribute) {
                         return attribute.attributeType.display === 'otCalendarColor';
                     });
-                    newVar.otCalendarColor = getBackGroundHUEColorFor(otCalendarColorAttribute);
+                    newVar.otCalendarColor = getBackGroundHSLColorFor(otCalendarColorAttribute);
                     return newVar;
                 });
                 $scope.filters.statusList = [];
@@ -35,7 +35,7 @@ angular.module('bahmni.ot')
                 });
             };
 
-            var getBackGroundHUEColorFor = function (otCalendarColorAttribute) {
+            var getBackGroundHSLColorFor = function (otCalendarColorAttribute) {
                 var hue = otCalendarColorAttribute ? otCalendarColorAttribute.value.toString() : "0";
                 return "hsl(" + hue + ", 100%, 90%)";
             };
@@ -51,7 +51,14 @@ angular.module('bahmni.ot')
                 $scope.filters.statusList = [];
                 $scope.patient = "";
                 $scope.filters.patient = null;
+                removeFreeTextItem();
+
                 $scope.applyFilters();
+            };
+
+            var removeFreeTextItem = function () {
+                $("input.input")[0].value = "";
+                $("input.input")[1].value = "";
             };
 
             $scope.search = function () {

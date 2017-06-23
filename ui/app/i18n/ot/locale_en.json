@@ -5,7 +5,7 @@
     "ADD_SURGERY_STEP": "Step 2 - Add surgery",
     "SURGERY_DETAILS": "Surgery details",
     "ACTION": "Action",
-    "SURGEON": "Surgeon Dr.",
+    "SURGEON": "Surgeon",
     "LOCATION": "Location",
     "START_TIME": "Start Time",
     "END_TIME": "End Time",
@@ -29,7 +29,7 @@
     "OT_SURGICAL_APPOINTMENT_HOURS": "hr(s)",
     "OT_SURGICAL_APPOINTMENT_MINUTES": "min(s)",
     "OT_SURGICAL_APPOINTMENT_CLEANING_TIME": "Cleaning time",
-    "OT_SURGICAL_APPOINTMENT_OTHER_SURGEON": "Other Surgeon  Dr.",
+    "OT_SURGICAL_APPOINTMENT_OTHER_SURGEON": "Other Surgeon",
     "OT_SURGICAL_APPOINTMENT_SURGICAL_ASSISTANT": "Surgical Assistant",
     "OT_SURGICAL_APPOINTMENT_ANAESTHETIST": "Anaesthetist",
     "OT_SURGICAL_APPOINTMENT_SCRUB_NURSE": "Scrub Nurse",
@@ -50,7 +50,9 @@
     "OT_SURGICAL_BLOCK_CANCELLED_MESSAGE": "Cancelled surgeries for Dr.",
     "OT_SURGICAL_BLOCK_POSTPONED_MESSAGE": "Postponed surgeries for Dr.",
     "OT_SURGICAL_BLOCK_CANCEL_ALL_SURGERIES_MESSAGE": "This change will affect all surgeries of the block",
-    "OT_CANCEL_BLOCK": "Cancel Block"
-
-
+    "OT_CANCEL_BLOCK": "Cancel Block",
+    "OT_OPERATION_THEATRE_LABEL": "Operation Theatre",
+    "OT_APPOINTMENT_STATUS": "Appointment Status",
+    "OT_APPLY_FILTERS": "Apply Filter",
+    "OT_CLEAR_FILTERS": "Clear"
 }
