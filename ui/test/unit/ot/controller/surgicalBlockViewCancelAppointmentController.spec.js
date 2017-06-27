@@ -14,7 +14,7 @@ describe("surgical block view cancel appointment controller", function () {
 
     var createController = function () {
         scope.ngDialogData = {surgicalBlock: {uuid:"blockUuid", location: {name: "locationName"}}};
-        scope.ngDialogData.surgicalAppointment ={status: "CANCELLED", notes: "notes", sortWeight: 1, patient: {display: "someName"}, surgicalAppointmentAttributes: {estTimeHours: 1, estTimeMinutes: 30 }, isBeingEdited: true};
+        scope.ngDialogData.surgicalAppointment ={status: "CANCELLED", notes: "notes", sortWeight: 1, patient: {display: "EG100649M - Albert Hassan"}, surgicalAppointmentAttributes: {estTimeHours: {value: 1}, estTimeMinutes: {value: 30} }, isBeingEdited: true};
         scope.ngDialogData.surgicalForm ={surgicalAppointments: [scope.ngDialogData.surgicalAppointment] };
         controller('surgicalBlockViewCancelAppointmentController', {
             $scope: scope,
@@ -22,6 +22,15 @@ describe("surgical block view cancel appointment controller", function () {
         });
         scope.$apply();
     };
+
+    it("should update the status of the appointment with status for saved appointment", function () {
+        createController();
+        expect(scope.appointment.patient).toEqual("Albert Hassan ( EG100649M )");
+        expect(scope.appointment.notes).toEqual("notes");
+        expect(scope.appointment.status).toEqual("CANCELLED");
+        expect(scope.appointment.estTimeHours).toEqual(1);
+        expect(scope.appointment.estTimeMinutes).toEqual(30);
+    });
 
     it("should update the status of the appointment with status for saved appointment", function () {
         createController();
