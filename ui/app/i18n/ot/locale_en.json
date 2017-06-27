@@ -54,5 +54,7 @@
     "OT_OPERATION_THEATRE_LABEL": "Operation Theatre",
     "OT_APPOINTMENT_STATUS": "Appointment Status",
     "OT_APPLY_FILTERS": "Apply Filter",
-    "OT_CLEAR_FILTERS": "Clear"
+    "OT_CLEAR_FILTERS": "Clear",
+    "OT_SURGICAL_BLOCK_POSTPONE_BLOCK": "Postpone Block",
+    "OT_SURGICAL_BLOCK_CANCEL_BLOCK": "Cancel Block"
 }
