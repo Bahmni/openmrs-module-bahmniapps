@@ -152,7 +152,7 @@ describe("calendarViewController", function () {
         expect(scope.filters.locations).toEqual({"location1": true, "location2": true});
         expect(scope.filters.providers).toEqual([]);
         expect(scope.filters.statusList).toEqual([]);
-        expect(scope.appointmentStatusList).toEqual([{name: "SCHEDULED"}, {name: "COMPLETED"}]);
+        expect(scope.appointmentStatusList).toEqual([{name: "SCHEDULED"}, {name: "COMPLETED"}, {name: "POSTPONED"}, {name: "CANCELLED"}]);
         expect(scope.locations).toEqual([{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}]);
         expect(scope.surgeonList).toEqual(mappedSurgeons);
         expect(scope.patient).toBeUndefined();
@@ -192,7 +192,7 @@ describe("calendarViewController", function () {
         expect(scope.filters.providers).toEqual([{uuid: "providerUuid1"}]);
         expect(scope.filters.statusList).toEqual([{name: "COMPLETED"}]);
         expect(scope.filters.patient).toEqual({uuid: "patientUuid2", value: "firstName2 lastName2", identifier: "IQ10002"});
-        expect(scope.appointmentStatusList).toEqual([{name: "SCHEDULED"}, {name: "COMPLETED"}]);
+        expect(scope.appointmentStatusList).toEqual([{name: "SCHEDULED"}, {name: "COMPLETED"},  {name: "POSTPONED"}, {name: "CANCELLED"}]);
         expect(scope.locations).toEqual([{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}]);
         expect(scope.surgeonList).toEqual(mappedSurgeons);
         expect(scope.patient).toEqual("firstName2 lastName2");

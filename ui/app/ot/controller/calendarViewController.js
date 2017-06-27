@@ -7,6 +7,8 @@ angular.module('bahmni.ot')
                 $scope.filterParams = $state.filterParams;
                 $scope.filters = {};
                 $scope.filters.providers = [];
+                $scope.view = 'Calendar';
+                $scope.weekOrDay = 'day';
                 $scope.surgeonList = _.map($rootScope.surgeons, function (surgeon) {
                     var newVar = {
                         name: surgeon.person.display,
@@ -20,7 +22,8 @@ angular.module('bahmni.ot')
                     return newVar;
                 });
                 $scope.filters.statusList = [];
-                $scope.appointmentStatusList = [{name: "SCHEDULED"}, {name: "COMPLETED"}];
+                $scope.appointmentStatusList = [{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed},
+                    {name: Bahmni.OT.Constants.postponed}, {name: Bahmni.OT.Constants.cancelled}];
                 return locationService.getAllByTag('Operation Theater').then(function (response) {
                     $scope.locations = response.data.results;
                     var locations = {};
@@ -98,11 +101,28 @@ angular.module('bahmni.ot')
             $scope.goToCurrentDate = function () {
                 $scope.viewDate = new Date(moment().startOf('day'));
                 $state.viewDate = $scope.viewDate;
+                $scope.weekOrDay = 'day';
             };
 
             $scope.goToNextDate = function (date) {
                 $scope.viewDate = Bahmni.Common.Util.DateUtil.addDays(date, 1);
                 $state.viewDate = $scope.viewDate;
+            };
+
+            $scope.goToCurrentWeek = function () {
+                $scope.weekStartDate = new Date(moment().startOf('week'));
+                $scope.weekEndDate = new Date(moment().endOf('week').endOf('day'));
+                $scope.weekOrDay = 'week';
+            };
+
+            $scope.goToNextWeek = function () {
+                $scope.weekStartDate = Bahmni.Common.Util.DateUtil.addDays($scope.weekStartDate, 7);
+                $scope.weekEndDate = Bahmni.Common.Util.DateUtil.addDays($scope.weekEndDate, 7);
+            };
+
+            $scope.goToPreviousWeek = function () {
+                $scope.weekStartDate = Bahmni.Common.Util.DateUtil.subtractDays($scope.weekStartDate, 7);
+                $scope.weekEndDate = Bahmni.Common.Util.DateUtil.subtractDays($scope.weekEndDate, 7);
             };
 
             init();

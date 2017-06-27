@@ -15,10 +15,13 @@ angular.module('bahmni.ot')
                     if ($stateParams.surgicalBlockUuid) {
                         return surgicalAppointmentService.getSurgicalBlockFor($stateParams.surgicalBlockUuid).then(function (response) {
                             $scope.surgicalForm = new Bahmni.OT.SurgicalBlockMapper().map(response.data, $scope.attributeTypes, $scope.surgeons);
-                            if ($stateParams.surgicalAppointmentId) {
-                                $scope.editAppointment(_.find($scope.surgicalForm.surgicalAppointments, function (appointment) {
-                                    return appointment.id === $stateParams.surgicalAppointmentId;
-                                }));
+                            $scope.surgicalForm.surgicalAppointments = surgicalAppointmentHelper.filterSurgicalAppointmentsByStatus(
+                                $scope.surgicalForm.surgicalAppointments, [Bahmni.OT.Constants.scheduled, Bahmni.OT.Constants.completed]);
+                            var selectedSurgicalAppointment = _.find($scope.surgicalForm.surgicalAppointments, function (appointment) {
+                                return appointment.id === $stateParams.surgicalAppointmentId;
+                            });
+                            if (selectedSurgicalAppointment) {
+                                $scope.editAppointment(selectedSurgicalAppointment);
                             }
                             return response;
                         });
@@ -73,6 +76,8 @@ angular.module('bahmni.ot')
                 var surgicalBlock = new Bahmni.OT.SurgicalBlockMapper().mapSurgicalBlockUIToDomain(surgicalForm);
                 spinner.forPromise(surgicalAppointmentService.saveSurgicalBlock(surgicalBlock)).then(function (response) {
                     $scope.surgicalForm = new Bahmni.OT.SurgicalBlockMapper().map(response.data, $scope.attributeTypes, $scope.surgeons);
+                    $scope.surgicalForm.surgicalAppointments = surgicalAppointmentHelper.filterSurgicalAppointmentsByStatus(
+                        $scope.surgicalForm.surgicalAppointments, [Bahmni.OT.Constants.scheduled, Bahmni.OT.Constants.completed]);
                     messagingService.showMessage('info', "{{'OT_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
                     $state.go('editSurgicalAppointment', {surgicalBlockUuid: response.data.uuid});
                 });

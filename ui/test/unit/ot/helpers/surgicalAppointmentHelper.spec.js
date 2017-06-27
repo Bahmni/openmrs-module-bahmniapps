@@ -58,4 +58,94 @@ describe('surgicalAppointmentHelper', function () {
 
         expect(appointmentDuration).toEqual(105);
     });
+
+    it('should give all surgical appointments by status when the status list provided is empty or undefined', function () {
+        var surgicalAppointments = [{
+            "id": 107,
+            "patient": {
+                "uuid": "2848a63a-b273-4d9d-8e10-1ad3e39ab1a6",
+                "display": "IQ100079F - XKHRQKVNNJKC UHNTLIXSNERE"
+            },
+            "actualStartDatetime": null,
+            "actualEndDatetime": null,
+            "status": "POSTPONED",
+            "notes": "not ready",
+            "sortWeight": 0,
+            "surgicalAppointmentAttributes": []
+        }, {
+            "id": 106,
+            "patient": {
+                "uuid": "9b41d661-df96-4815-aea1-ecc8278dd220",
+                "display": "IQ100072F - QXHTPLJYKLTF JVMSGICIQZVB"
+            },
+            "actualStartDatetime": "2017-06-22T09:15:00.000+0530",
+            "actualEndDatetime": "2017-06-22T10:00:00.000+0530",
+            "status": "COMPLETED",
+            "notes": null,
+            "sortWeight": 0,
+            "surgicalAppointmentAttributes": []
+        }, {
+            "id": 108,
+            "patient": {
+                "uuid": "0c58967c-a415-48c8-9830-adcaa94b9d4f",
+                "display": "IQ100074F - CUYCTOEPHJDP OCECDYHMGPSO"
+            },
+            "actualStartDatetime": null,
+            "actualEndDatetime": null,
+            "status": "CANCELLED",
+            "notes": "Mistake",
+            "sortWeight": null,
+            "surgicalAppointmentAttributes": []
+        }];
+
+        var filteredAppointments = surgicalAppointmentHelper.filterSurgicalAppointmentsByStatus(surgicalAppointments);
+        var filteredAppointmentsWithEmptyStatusList = surgicalAppointmentHelper.filterSurgicalAppointmentsByStatus(surgicalAppointments, []);
+        expect(filteredAppointments).toEqual(surgicalAppointments);
+        expect(filteredAppointmentsWithEmptyStatusList).toEqual(surgicalAppointments);
+    });
+
+
+    it('should filter appointments by the status list', function () {
+        var surgicalAppointments = [{
+            "id": 107,
+            "patient": {
+                "uuid": "2848a63a-b273-4d9d-8e10-1ad3e39ab1a6",
+                "display": "IQ100079F - XKHRQKVNNJKC UHNTLIXSNERE"
+            },
+            "actualStartDatetime": null,
+            "actualEndDatetime": null,
+            "status": "POSTPONED",
+            "notes": "not ready",
+            "sortWeight": 0,
+            "surgicalAppointmentAttributes": []
+        }, {
+            "id": 106,
+            "patient": {
+                "uuid": "9b41d661-df96-4815-aea1-ecc8278dd220",
+                "display": "IQ100072F - QXHTPLJYKLTF JVMSGICIQZVB"
+            },
+            "actualStartDatetime": "2017-06-22T09:15:00.000+0530",
+            "actualEndDatetime": "2017-06-22T10:00:00.000+0530",
+            "status": "COMPLETED",
+            "notes": null,
+            "sortWeight": 0,
+            "surgicalAppointmentAttributes": []
+        }, {
+            "id": 108,
+            "patient": {
+                "uuid": "0c58967c-a415-48c8-9830-adcaa94b9d4f",
+                "display": "IQ100074F - CUYCTOEPHJDP OCECDYHMGPSO"
+            },
+            "actualStartDatetime": null,
+            "actualEndDatetime": null,
+            "status": "CANCELLED",
+            "notes": "Mistake",
+            "sortWeight": null,
+            "surgicalAppointmentAttributes": []
+        }];
+
+        var filteredAppointments = surgicalAppointmentHelper.filterSurgicalAppointmentsByStatus(surgicalAppointments, ["COMPLETED"]);
+        expect(filteredAppointments.length).toEqual(1);
+        expect(filteredAppointments[0].id).toEqual(106);
+    });
 });

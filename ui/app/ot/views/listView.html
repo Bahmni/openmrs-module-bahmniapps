@@ -1,0 +1,113 @@
+<div style="overflow: auto">
+    <table>
+        <thead>
+        <tr>
+            <th>
+                Date
+            </th>
+            <th>
+                Patient
+            </th>
+            <th>
+                Start Time
+            </th>
+            <th>
+                Time Est.
+            </th>
+            <th>
+                Actual Time
+            </th>
+            <th ng-click="sortAppointmentsBy('surgicalBlock.location.name')">
+                OT#
+            </th>
+            <th>
+                Procedures
+            </th>
+            <th>
+                Notes
+            </th>
+            <th>
+                Surgeon
+            </th>
+            <th>
+                Other Surgeon
+            </th>
+            <th>
+                Surgical Assistant
+            </th>
+            <th>
+                Anaesthetist
+            </th>
+            <th>
+                Scrub Nurse
+            </th>
+            <th>
+                Circulating Nurse
+            </th>
+            <th>
+               Status Change Notes
+            </th>
+            <th>
+                Status
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="appointment in surgicalAppointmentList">
+            <td>
+                {{appointment.derivedAttributes.expectedStartDate | bahmniDate}}
+            </td>
+            <td>
+                {{appointment.patient.display}}
+            </td>
+            <td>
+                {{appointment.derivedAttributes.expectedStartTime | bahmniTime}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.estTimeHours.value}} {{'OT_SURGICAL_APPOINTMENT_HOURS' |
+                translate}} : {{appointment.surgicalAppointmentAttributes.estTimeMinutes.value}}
+                {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}
+                + {{appointment.surgicalAppointmentAttributes.cleaningTime.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' |
+                translate}}
+            </td>
+            <td>
+                {{appointment.actualStartDatetime | bahmniTime}} - {{appointment.actualEndDatetime | bahmniTime}}
+            </td>
+            <td>
+                {{appointment.surgicalBlock.location.name}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.procedure.value}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.notes.value}}
+            </td>
+            <td>
+                {{appointment.surgicalBlock.provider.person.display}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.otherSurgeon.value.person.display}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.surgicalAssistant.value}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.anaesthetist.value}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.scrubNurse.value}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.circulatingNurse.value}}
+            </td>
+            <td>
+                {{appointment.notes}}
+            </td>
+            <td>
+                {{appointment.status}}
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>

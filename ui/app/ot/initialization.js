@@ -1,13 +1,14 @@
 'use strict';
 
-angular.module('bahmni.ot').factory('initialization', ['$rootScope', 'surgicalAppointmentHelper', 'appService', 'surgicalAppointmentService', 'authenticator', 'spinner',
-    function ($rootScope, surgicalAppointmentHelper, appService, surgicalAppointmentService, authenticator, spinner) {
+angular.module('bahmni.ot').factory('initialization', ['$rootScope', '$q', 'surgicalAppointmentHelper', 'appService', 'surgicalAppointmentService', 'authenticator', 'spinner',
+    function ($rootScope, $q, surgicalAppointmentHelper, appService, surgicalAppointmentService, authenticator, spinner) {
         var initApp = function () {
             return appService.initApp('ot', {'app': true, 'extension': true}).then(function (data) {
                 var providerNames = data.getConfigValue("primarySurgeonsForOT");
-                return surgicalAppointmentService.getSurgeons().then(function (response) {
-                    $rootScope.surgeons = surgicalAppointmentHelper.filterProvidersByName(providerNames, response.data.results);
-                    return $rootScope.surgeons;
+                return $q.all([surgicalAppointmentService.getSurgeons(), surgicalAppointmentService.getSurgicalAppointmentAttributeTypes()]).then(function (response) {
+                    $rootScope.surgeons = surgicalAppointmentHelper.filterProvidersByName(providerNames, response[0].data.results);
+                    $rootScope.attributeTypes = response[1].data.results;
+                    return response;
                 });
             });
         };

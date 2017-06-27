@@ -547,7 +547,7 @@ describe("surgicalBlockController", function () {
             },
             "value": "surgery on left leg"
         }];
-        surgicalBlock.surgicalAppointments = [{id: 11, patient: {uuid: "patientUuid"}, sortWeight: 0, surgicalAppointmentAttributes: attributes}];
+        surgicalBlock.surgicalAppointments = [{id: 11, status: "SCHEDULED", patient: {uuid: "patientUuid"}, sortWeight: 0, surgicalAppointmentAttributes: attributes}];
 
         surgicalAppointmentService.getSurgicalBlockFor.and.returnValue(specUtil.simplePromise({data: surgicalBlock}));
         stateParams.surgicalBlockUuid = "surgicalBlockUuid";
@@ -601,7 +601,7 @@ describe("surgicalBlockController", function () {
                 patient: {uuid: "patientUuid"},
                 notes: "need more assistants",
                 sortWeight: 0,
-                status: undefined,
+                status: "SCHEDULED",
                 surgicalAppointmentAttributes: []
             },
             {
@@ -632,7 +632,7 @@ describe("surgicalBlockController", function () {
 
     it('should open an ngDialog with data of given surgical appointment for cancelling an appointment', function () {
         createController();
-        var surgicalAppointment = {id: "11", patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes};
+        var surgicalAppointment = {id: "11", patient: {uuid: "patientUuid"}, status: "SCHEDULED", notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes};
         scope.cancelAppointment(surgicalAppointment);
 
         expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({

@@ -39,7 +39,7 @@ describe("surgicalBlockFilter", function () {
 
     beforeEach(module('bahmni.ot'));
     beforeEach(inject(function($filter) {
-        surgicalBlockFilter = $filter('surgicalBlockFilter');
+        surgicalBlockFilter = $filter('surgicalBlock');
     }));
 
     it("Should not filter the blocks, when no filters were given", function() {

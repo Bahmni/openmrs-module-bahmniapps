@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .filter('surgicalBlockFilter', [function () {
+    .filter('surgicalBlock', [function () {
         var filterByLocation = function (surgicalBlocks, filters) {
             var blocksFilteredByLocation = [];
             _.forEach(surgicalBlocks, function (block) {

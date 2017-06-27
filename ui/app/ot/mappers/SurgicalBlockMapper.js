@@ -45,9 +45,7 @@ Bahmni.OT.SurgicalBlockMapper = function () {
     };
 
     this.map = function (openMrsSurgicalBlock, attributeTypes, surgeonsList) {
-        var surgicalAppointments = _.filter(openMrsSurgicalBlock.surgicalAppointments, function (surgicalAppointment) {
-            return surgicalAppointment.status !== Bahmni.OT.Constants.cancelled && surgicalAppointment.status !== Bahmni.OT.Constants.postponed;
-        }).map(function (surgicalAppointment) {
+        var surgicalAppointments = _.map(openMrsSurgicalBlock.surgicalAppointments, function (surgicalAppointment) {
             return mapSurgicalAppointment(surgicalAppointment, attributeTypes, surgeonsList);
         });
         return {
