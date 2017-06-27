@@ -97,6 +97,12 @@ describe("calendarViewController", function () {
     });
 
     it('Should clear all the filters', function () {
+        var fake = document.createElement("input");
+        var fake1 = document.createElement("input");
+        fake.setAttribute("class", "input");
+        fake1.setAttribute("class", "input");
+        document.body.appendChild(fake);
+        document.body.appendChild(fake1);
         createController();
         scope.clearFilters();
         expect(scope.filters.providers).toEqual([]);
