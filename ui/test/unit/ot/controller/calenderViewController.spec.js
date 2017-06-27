@@ -97,12 +97,12 @@ describe("calendarViewController", function () {
     });
 
     it('Should clear all the filters', function () {
-        var fake = document.createElement("input");
-        var fake1 = document.createElement("input");
-        fake.setAttribute("class", "input");
-        fake1.setAttribute("class", "input");
-        document.body.appendChild(fake);
-        document.body.appendChild(fake1);
+        var fakeSurgeonInput = document.createElement("input");
+        var fakeStatusInput = document.createElement("input");
+        fakeSurgeonInput.setAttribute("class", "input");
+        fakeStatusInput.setAttribute("class", "input");
+        document.body.appendChild(fakeSurgeonInput);
+        document.body.appendChild(fakeStatusInput);
         createController();
         scope.clearFilters();
         expect(scope.filters.providers).toEqual([]);
