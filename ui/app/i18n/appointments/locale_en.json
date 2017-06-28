@@ -1,2 +1,9 @@
 {
+  "APPOINTMENTS_MANAGE": "Manage Appointments",
+  "APPOINTMENTS_ADMIN": "Admin",
+
+  "SERVICE_SAVE": "Save",
+  "SERVICE_ADD_NEW": "Add New Service",
+  "MESSAGE_DIALOG_OPTION_COPY": "Copy Error",
+  "MESSAGE_DIALOG_OPTION_OKAY": "OK"
 }

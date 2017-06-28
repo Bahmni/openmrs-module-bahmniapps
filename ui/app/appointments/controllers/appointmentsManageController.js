@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsAdminController', ['$scope', '$translate',
-        function ($scope, $translate) {
+    .controller('AppointmentsManageController', ['$scope',
+        function ($scope) {
             var init = function () {
             };
             return init();
