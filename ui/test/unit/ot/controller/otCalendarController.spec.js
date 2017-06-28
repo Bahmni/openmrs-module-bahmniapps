@@ -5,7 +5,6 @@ describe("otCalendarController", function () {
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
     spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgicalBlocksInDateRange']);
-    state = jasmine.createSpyObj('state', ['go']);
     var ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
 
     var surgicalBlocks = [
@@ -56,9 +55,8 @@ describe("otCalendarController", function () {
             locationService: locationService,
             $q: q,
             spinner: spinner,
-            surgicalAppointmentService: surgicalAppointmentService,
-            $state: state,
-            ngDialog: ngDialog
+            surgicalAppointmentService: surgicalAppointmentService
+
         });
         scope.$apply();
     };
@@ -111,69 +109,4 @@ describe("otCalendarController", function () {
         expect(scope.calendarStartDatetime).toEqual(moment('2017-02-19 09:00:00').toDate());
         expect(scope.calendarEndDatetime).toEqual(moment('2017-02-19 16:30:00').toDate());
     });
-
-    it('should navigate to edit surgical block page with surgicalBlock details clicking edit button', function () {
-        var event = {
-            stopPropagation: function () {
-            }
-        };
-        createController();
-        scope.surgicalBlockSelected = surgicalBlocks[0];
-        scope.goToEdit(event);
-        expect(state.go).toHaveBeenCalledWith("editSurgicalAppointment",
-            jasmine.objectContaining({surgicalBlockUuid : "surgical-block1-uuid"}));
-    });
-
-    it('should navigate to edit surgical block page  with surgical block and appointment details on clicking edit button', function () {
-        var event = {
-            stopPropagation: function () {
-            }
-        };
-        createController();
-        scope.surgicalBlockSelected = surgicalBlocks[0];
-        scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
-        scope.goToEdit(event);
-        expect(state.go).toHaveBeenCalledWith("editSurgicalAppointment",
-            jasmine.objectContaining({surgicalBlockUuid : "surgical-block1-uuid", surgicalAppointmentId : 48}));
-    });
-
-    it('should navigate to the cancel appointment dialog box when a cancel Appointment is clicked', function () {
-        createController();
-        scope.surgicalBlockSelected = surgicalBlocks[0];
-        scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
-        scope.cancelSurgicalBlockOrSurgicalAppointment();
-
-        expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
-            template: "views/cancelAppointment.html",
-            closeByDocument: false,
-            controller: "calendarViewCancelAppointmentController",
-            className: 'ngdialog-theme-default ng-dialog-adt-popUp',
-            showClose: true,
-            data: {
-                surgicalBlock: scope.surgicalBlockSelected,
-                surgicalAppointment: scope.surgicalAppointmentSelected
-            }
-        }));
-    });
-
-    it('should navigate to the cancel block dialog box when a cancel block is clicked', function () {
-        createController();
-        scope.surgicalBlockSelected = surgicalBlocks[0];
-        scope.surgicalBlockSelected.provider = {person: {display:"something"}};
-        // scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
-        scope.cancelSurgicalBlockOrSurgicalAppointment();
-
-        expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
-            template: "views/cancelSurgicalBlock.html",
-            closeByDocument: false,
-            controller: "cancelSurgicalBlockController",
-            className: 'ngdialog-theme-default ng-dialog-adt-popUp',
-            showClose: true,
-            data: {
-                surgicalBlock: scope.surgicalBlockSelected,
-                provider: scope.surgicalBlockSelected.provider.person.display
-            }
-        }));
-    });
-
 });

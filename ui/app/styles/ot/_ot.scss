@@ -790,8 +790,13 @@ div[ng-app="ot"] {
 }
 .list-view-table-wrapper {
   overflow: auto;
-  table tr {
-    white-space: nowrap;
+  table {
+    tr {
+      white-space: nowrap;
+    }
+    .list-view-notes {
+      white-space: normal;
+    }
   }
 }
 .list-view-print-btn {

@@ -221,22 +221,22 @@ describe('listViewController', function () {
     });
 
 
-    it("should sort the appointments by start date and by the location", function () {
+    it("should sort the appointments by start date and by the location and by start time", function () {
         scope.viewDate = moment('2017-02-22').toDate();
         scope.filterParams = {
             providers: [],
             locations: {"OT 1": true, "OT 2": true, "OT 3": true},
-            patient: {},
+            patient: null,
             statusList: []
         };
         createController();
         expect(scope.surgicalAppointmentList.length).toEqual(6);
-        expect(scope.surgicalAppointmentList[0].id).toEqual(107);
-        expect(scope.surgicalAppointmentList[1].id).toEqual(106);
-        expect(scope.surgicalAppointmentList[2].id).toEqual(108);
-        expect(scope.surgicalAppointmentList[3].id).toEqual(105);
-        expect(scope.surgicalAppointmentList[4].id).toEqual(96);
-        expect(scope.surgicalAppointmentList[5].id).toEqual(104);
+        expect(scope.surgicalAppointmentList[0].id).toEqual(104);
+        expect(scope.surgicalAppointmentList[1].id).toEqual(105);
+        expect(scope.surgicalAppointmentList[2].id).toEqual(96);
+        expect(scope.surgicalAppointmentList[3].id).toEqual(107);
+        expect(scope.surgicalAppointmentList[4].id).toEqual(106);
+        expect(scope.surgicalAppointmentList[5].id).toEqual(108);
     });
 
     it("should set the derived attributes for appointments", function () {

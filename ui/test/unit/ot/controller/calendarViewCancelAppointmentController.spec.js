@@ -35,7 +35,7 @@ describe("calendar view cancel appointment controller", function () {
 
     it("should update the status of the appointment with status", function () {
         surgicalAppointmentService.updateSurgicalAppointment.and.callFake(function () {
-            return specUtil.simplePromise({data: {patient: {uuid:"someUuid", display: "someName - I012345"}, status: 'CANCELLED'}});
+            return specUtil.simplePromise({data: {patient: {uuid:"someUuid", display: "someName - I012345"}, status: 'CANCELLED', sortWeight : null}});
         });
         surgicalAppointmentHelper.getAppointmentAttributes.and.callFake(function () {return {};});
         surgicalAppointmentHelper.getPatientDisplayLabel.and.callFake(function () {return "someName";});

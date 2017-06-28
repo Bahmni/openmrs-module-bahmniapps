@@ -1,14 +1,19 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('calendarViewController', ['$scope', '$rootScope', '$state', 'appService', 'patientService', 'locationService',
-        function ($scope, $rootScope, $state, appService, patientService, locationService) {
+    .controller('calendarViewController', ['$scope', '$rootScope', '$state', 'appService', 'patientService', 'locationService', 'ngDialog',
+        function ($scope, $rootScope, $state, appService, patientService, locationService, ngDialog) {
             var init = function () {
                 $scope.filterParams = $state.filterParams;
                 $scope.filters = {};
                 $scope.filters.providers = [];
                 $scope.view = 'Calendar';
                 $scope.weekOrDay = 'day';
+                $scope.surgicalBlockSelected = {};
+                $scope.surgicalAppointmentSelected = {};
+                $scope.editDisabled = true;
+                $scope.cancelDisabled = true;
+                $scope.addActualTimeDisabled = true;
                 $scope.surgeonList = _.map($rootScope.surgeons, function (surgeon) {
                     var newVar = {
                         name: surgeon.person.display,
@@ -125,5 +130,101 @@ angular.module('bahmni.ot')
                 $scope.weekEndDate = Bahmni.Common.Util.DateUtil.subtractDays($scope.weekEndDate, 7);
             };
 
+            $scope.$on("event:surgicalAppointmentSelect", function (event, surgicalAppointment, surgicalBlock) {
+                $scope.cancelDisabled = !(surgicalAppointment.status === Bahmni.OT.Constants.scheduled);
+                $scope.editDisabled = !((surgicalAppointment.status === Bahmni.OT.Constants.scheduled) || (surgicalAppointment.status === Bahmni.OT.Constants.completed));
+                $scope.addActualTimeDisabled = !((surgicalAppointment.status === Bahmni.OT.Constants.scheduled) || (surgicalAppointment.status === Bahmni.OT.Constants.completed));
+                $scope.surgicalAppointmentSelected = surgicalAppointment;
+                $scope.surgicalBlockSelected = surgicalBlock;
+            });
+
+            $scope.$on("event:surgicalBlockSelect", function (event, surgicalBlock) {
+                $scope.editDisabled = false;
+                $scope.addActualTimeDisabled = true;
+                $scope.surgicalBlockSelected = surgicalBlock;
+                $scope.surgicalAppointmentSelected = {};
+
+                var surgicalBlockWithCompletedAppointments = function () {
+                    return _.find(surgicalBlock.surgicalAppointments, function (appointment) {
+                        return appointment.status === Bahmni.OT.Constants.completed;
+                    });
+                };
+
+                if (!surgicalBlockWithCompletedAppointments()) {
+                    $scope.cancelDisabled = false;
+                }
+            });
+
+            $scope.$on("event:surgicalBlockDeselect", function (event) {
+                $scope.editDisabled = true;
+                $scope.cancelDisabled = true;
+                $scope.addActualTimeDisabled = true;
+                $scope.surgicalBlockSelected = {};
+                $scope.surgicalAppointmentSelected = {};
+            });
+
+            $scope.goToEdit = function ($event) {
+                if (Object.keys($scope.surgicalBlockSelected).length != 0) {
+                    var options = {
+                        surgicalBlockUuid: $scope.surgicalBlockSelected.uuid
+                    };
+                    if (Object.keys($scope.surgicalAppointmentSelected).length != 0) {
+                        options['surgicalAppointmentId'] = $scope.surgicalAppointmentSelected.id;
+                    }
+                    options['dashboardCachebuster'] = Math.random();
+                    $state.go("editSurgicalAppointment", options);
+                    $event.stopPropagation();
+                }
+            };
+
+            $scope.addActualTime = function () {
+                ngDialog.open({
+                    template: "views/addActualTimeDialog.html",
+                    closeByDocument: false,
+                    controller: "surgicalAppointmentActualTimeController",
+                    className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+                    showClose: true,
+                    data: {
+                        surgicalBlock: $scope.surgicalBlockSelected,
+                        surgicalAppointment: $scope.surgicalAppointmentSelected
+                    }
+                });
+            };
+
+            var cancelSurgicalAppointment = function () {
+                ngDialog.open({
+                    template: "views/cancelAppointment.html",
+                    closeByDocument: false,
+                    controller: "calendarViewCancelAppointmentController",
+                    className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+                    showClose: true,
+                    data: {
+                        surgicalBlock: $scope.surgicalBlockSelected,
+                        surgicalAppointment: $scope.surgicalAppointmentSelected
+                    }
+                });
+            };
+
+            var cancelSurgicalBlock = function () {
+                ngDialog.open({
+                    template: "views/cancelSurgicalBlock.html",
+                    closeByDocument: false,
+                    controller: "cancelSurgicalBlockController",
+                    className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+                    showClose: true,
+                    data: {
+                        surgicalBlock: $scope.surgicalBlockSelected,
+                        provider: $scope.surgicalBlockSelected.provider.person.display
+                    }
+                });
+            };
+
+            $scope.cancelSurgicalBlockOrSurgicalAppointment = function () {
+                if (!_.isEmpty($scope.surgicalAppointmentSelected)) {
+                    cancelSurgicalAppointment();
+                } else {
+                    cancelSurgicalBlock();
+                }
+            };
             init();
         }]);

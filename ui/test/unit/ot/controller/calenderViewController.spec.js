@@ -8,6 +8,7 @@ describe("calendarViewController", function () {
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    var ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
     appService.getAppDescriptor.and.returnValue(appDescriptor);
 
     appDescriptor.getConfigValue.and.callFake(function (value) {
@@ -37,9 +38,30 @@ describe("calendarViewController", function () {
             $state: state,
             appService: appService,
             patientService: patientService,
-            locationService: locationService
+            locationService: locationService,
+            ngDialog: ngDialog
         });
     };
+
+    var surgicalBlocks = [
+        {
+            id: 60,
+            provider: {uuid: "providerUuid1", display: "Doctor Strange"},
+            location: {uuid: "uuid1", name: "location1"},
+            surgicalAppointments: [ {id: 48, surgicalAppointmentAttributes: []}],
+            startDatetime: "2001-10-04T09:00:00.000+0530",
+            endDatetime: "2001-10-04T21:00:00.000+0530",
+            uuid: "surgical-block1-uuid"
+        },
+        {
+            id: 61,
+            provider: {uuid: "providerUuid2", display: "Doctor Malhotra"},
+            location: {uuid: "uuid2", name: "location2"},
+            surgicalAppointments: [],
+            startDatetime: "2001-10-04T09:00:00.000+0530",
+            endDatetime: "2001-10-04T21:00:00.000+0530"
+        }
+    ];
 
     it('should go to the previous date on click of left arrow', function () {
         createController();
@@ -196,5 +218,69 @@ describe("calendarViewController", function () {
         expect(scope.locations).toEqual([{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}]);
         expect(scope.surgeonList).toEqual(mappedSurgeons);
         expect(scope.patient).toEqual("firstName2 lastName2");
+    });
+
+    it('should navigate to edit surgical block page with surgicalBlock details clicking edit button', function () {
+        var event = {
+            stopPropagation: function () {
+            }
+        };
+        createController();
+        scope.surgicalBlockSelected = surgicalBlocks[0];
+        scope.goToEdit(event);
+        expect(state.go).toHaveBeenCalledWith("editSurgicalAppointment",
+            jasmine.objectContaining({surgicalBlockUuid : "surgical-block1-uuid"}));
+    });
+
+    it('should navigate to edit surgical block page  with surgical block and appointment details on clicking edit button', function () {
+        var event = {
+            stopPropagation: function () {
+            }
+        };
+        createController();
+        scope.surgicalBlockSelected = surgicalBlocks[0];
+        scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
+        scope.goToEdit(event);
+        expect(state.go).toHaveBeenCalledWith("editSurgicalAppointment",
+            jasmine.objectContaining({surgicalBlockUuid : "surgical-block1-uuid", surgicalAppointmentId : 48}));
+    });
+
+    it('should navigate to the cancel appointment dialog box when a cancel Appointment is clicked', function () {
+        createController();
+        scope.surgicalBlockSelected = surgicalBlocks[0];
+        scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
+        scope.cancelSurgicalBlockOrSurgicalAppointment();
+
+        expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
+            template: "views/cancelAppointment.html",
+            closeByDocument: false,
+            controller: "calendarViewCancelAppointmentController",
+            className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+            showClose: true,
+            data: {
+                surgicalBlock: scope.surgicalBlockSelected,
+                surgicalAppointment: scope.surgicalAppointmentSelected
+            }
+        }));
+    });
+
+    it('should navigate to the cancel block dialog box when a cancel block is clicked', function () {
+        createController();
+        scope.surgicalBlockSelected = surgicalBlocks[0];
+        scope.surgicalBlockSelected.provider = {person: {display:"something"}};
+        // scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
+        scope.cancelSurgicalBlockOrSurgicalAppointment();
+
+        expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
+            template: "views/cancelSurgicalBlock.html",
+            closeByDocument: false,
+            controller: "cancelSurgicalBlockController",
+            className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+            showClose: true,
+            data: {
+                surgicalBlock: scope.surgicalBlockSelected,
+                provider: scope.surgicalBlockSelected.provider.person.display
+            }
+        }));
     });
 });

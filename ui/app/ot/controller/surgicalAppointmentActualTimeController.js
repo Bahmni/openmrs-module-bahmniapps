@@ -41,13 +41,14 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
                 messagingService.showMessage('error', "Actual start time should be less than actual end time");
                 return;
             }
-            var surgicalAppointment = _.cloneDeep($scope.ngDialogData.surgicalAppointment);
+            var surgicalAppointment = {};
+            surgicalAppointment.id = $scope.ngDialogData.surgicalAppointment.id;
             surgicalAppointment.actualStartDatetime = $scope.actualStartTime;
             surgicalAppointment.actualEndDatetime = $scope.actualEndTime;
             surgicalAppointment.status = $scope.actualStartTime && Bahmni.OT.Constants.completed || Bahmni.OT.Constants.scheduled;
             surgicalAppointment.notes = $scope.notes;
             surgicalAppointment.surgicalBlock = {uuid: $scope.ngDialogData.surgicalBlock.uuid};
-            surgicalAppointment.patient = {uuid: surgicalAppointment.patient.uuid};
+            surgicalAppointment.patient = {uuid: $scope.ngDialogData.surgicalAppointment.patient.uuid};
             surgicalAppointmentService.updateSurgicalAppointment(surgicalAppointment).then(function (response) {
                 $scope.ngDialogData.surgicalAppointment.actualStartDatetime = response.data.actualStartDatetime;
                 $scope.ngDialogData.surgicalAppointment.actualEndDatetime = response.data.actualEndDatetime;

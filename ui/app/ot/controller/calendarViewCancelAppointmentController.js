@@ -3,29 +3,33 @@
 angular.module('bahmni.ot').controller('calendarViewCancelAppointmentController', [
     '$scope', '$translate', 'ngDialog', 'surgicalAppointmentService', 'messagingService', 'surgicalAppointmentHelper',
     function ($scope, $translate, ngDialog, surgicalAppointmentService, messagingService, surgicalAppointmentHelper) {
-        var surgicalAppointment = $scope.ngDialogData.surgicalAppointment;
-        var attributes = surgicalAppointmentHelper.getAppointmentAttributes(surgicalAppointment);
+        var ngDialogSurgicalAppointment = $scope.ngDialogData.surgicalAppointment;
+        var attributes = surgicalAppointmentHelper.getAppointmentAttributes(ngDialogSurgicalAppointment);
         $scope.appointment = {
             estTimeHours: attributes.estTimeHours,
             estTimeMinutes: attributes.estTimeMinutes,
-            patient: surgicalAppointmentHelper.getPatientDisplayLabel(surgicalAppointment.patient.display),
-            notes: surgicalAppointment.notes,
-            status: surgicalAppointment.status
+            patient: surgicalAppointmentHelper.getPatientDisplayLabel(ngDialogSurgicalAppointment.patient.display),
+            notes: ngDialogSurgicalAppointment.notes,
+            status: ngDialogSurgicalAppointment.status
         };
 
         $scope.confirmCancelAppointment = function () {
+            var surgicalAppointment = {};
+            surgicalAppointment.id = $scope.ngDialogData.surgicalAppointment.id;
             surgicalAppointment.notes = $scope.appointment.notes;
             surgicalAppointment.status = $scope.appointment.status;
             surgicalAppointment.surgicalBlock = {uuid: $scope.ngDialogData.surgicalBlock.uuid};
-            surgicalAppointment.patient = {uuid: surgicalAppointment.patient.uuid};
+            surgicalAppointment.patient = {uuid: ngDialogSurgicalAppointment.patient.uuid};
             surgicalAppointment.sortWeight = null;
             surgicalAppointmentService.updateSurgicalAppointment(surgicalAppointment).then(function (response) {
-                surgicalAppointment.patient = response.data.patient;
-                surgicalAppointment.status = response.data.status;
+                ngDialogSurgicalAppointment.patient = response.data.patient;
+                ngDialogSurgicalAppointment.status = response.data.status;
+                ngDialogSurgicalAppointment.notes = response.data.notes;
+                ngDialogSurgicalAppointment.sortWeight = response.data.sortWeight;
                 var message = '';
-                if (surgicalAppointment.status === Bahmni.OT.Constants.postponed) {
+                if (ngDialogSurgicalAppointment.status === Bahmni.OT.Constants.postponed) {
                     message = $translate.instant("OT_SURGICAL_APPOINTMENT_POSTPONED_MESSAGE");
-                } else if (surgicalAppointment.status === Bahmni.OT.Constants.cancelled) {
+                } else if (ngDialogSurgicalAppointment.status === Bahmni.OT.Constants.cancelled) {
                     message = $translate.instant("OT_SURGICAL_APPOINTMENT_CANCELLED_MESSAGE");
                 }
                 message = message + surgicalAppointmentHelper.getPatientDisplayLabel($scope.ngDialogData.surgicalAppointment.patient.display) + ' - ' + $scope.ngDialogData.surgicalBlock.location.name;

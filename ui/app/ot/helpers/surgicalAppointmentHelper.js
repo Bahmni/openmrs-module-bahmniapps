@@ -43,4 +43,13 @@ angular.module('bahmni.ot')
                 return appointmentStatusList.indexOf(appointment.status) >= 0;
             });
         };
+
+        this.filterSurgicalAppointmentsByPatient = function (surgicalAppointments, patient) {
+            if (!patient) {
+                return surgicalAppointments;
+            }
+            return _.filter(surgicalAppointments, function (appointment) {
+                return appointment.patient.uuid === patient.uuid;
+            });
+        };
     }]);

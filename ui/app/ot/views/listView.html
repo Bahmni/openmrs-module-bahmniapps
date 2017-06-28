@@ -3,11 +3,18 @@
     <table>
         <thead>
         <tr>
-            <th>
-                Date
+            <th ng-click="sortSurgicalAppointmentsBy('derivedAttributes.expectedStartDate')">
+                 Date
+                <span ng-if="sortColumn == 'derivedAttributes.expectedStartDate'">
+                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
+                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
+                </span>
             </th>
             <th>
-                Patient
+                Identifier
+            </th>
+            <th>
+                Patient Name
             </th>
             <th>
                 Start Time
@@ -18,11 +25,19 @@
             <th>
                 Actual Time
             </th>
-            <th ng-click="sortAppointmentsBy('surgicalBlock.location.name')">
+            <th ng-click="sortSurgicalAppointmentsBy('surgicalBlock.location.name')">
                 OT#
+                <span ng-if="sortColumn == 'surgicalBlock.location.name'">
+                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
+                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
+                </span>
             </th>
-            <th>
+            <th ng-click="sortSurgicalAppointmentsBy('surgicalAppointmentAttributes.procedure.value')">
                 Procedures
+                <span ng-if="sortColumn == 'surgicalAppointmentAttributes.procedure.value'">
+                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
+                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
+                </span>
             </th>
             <th>
                 Notes
@@ -54,12 +69,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="appointment in surgicalAppointmentList">
+        <tr ng-repeat="appointment in surgicalAppointmentList" ng-click="selectSurgicalAppointment($event, appointment)"
+            ng-blur="deselectSurgicalAppointment($event)" tabindex="1">
             <td>
                 {{appointment.derivedAttributes.expectedStartDate | bahmniDate}}
             </td>
             <td>
-                {{appointment.patient.display}}
+                {{appointment.derivedAttributes.patientIdentifier}}
+            </td>
+            <td>
+                {{appointment.derivedAttributes.patientName}}
             </td>
             <td>
                 {{appointment.derivedAttributes.expectedStartTime | bahmniTime}}
@@ -101,13 +120,12 @@
             <td>
                 {{appointment.surgicalAppointmentAttributes.circulatingNurse.value}}
             </td>
-            <td>
+            <td class="list-view-notes">
                 {{appointment.notes}}
             </td>
             <td>
                 {{appointment.status}}
             </td>
-
         </tr>
         </tbody>
     </table>
