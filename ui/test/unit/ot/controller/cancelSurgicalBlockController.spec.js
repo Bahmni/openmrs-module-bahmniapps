@@ -56,7 +56,7 @@ describe("cancelSurgicalBlockController", function () {
         surgicalAppointmentService.saveSurgicalBlock.and.returnValue(specUtil.simplePromise({data:{provider: {person: { display:"something"}}}}));
         messagingService.showMessage.and.returnValue({});
         translate.instant.and.returnValue('Cancelled surgeries for Surgeon Dr.');
-        scope.ngDialogData = {surgicalBlock: {id:32, surgicalAppointments: [{id:32,status:"POSTPONED", notes: "Patient not available", patient: {uuid:1}}, {id:33, patient: {uuid:2}}], provider: {uuid: 1}, location: {uuid:2}, status: "CANCELLED"}};
+        scope.ngDialogData = {surgicalBlock: {id:32, surgicalAppointments: [{id:32,status:"POSTPONED", notes: "Patient not available", patient: {uuid:1}}, {id:33, status: "SCHEDULED", patient: {uuid:2}}], provider: {uuid: 1}, location: {uuid:2}, status: "CANCELLED"}};
         scope.surgicalBlockSelected = {provider: {person: {display: "something"}}};
         scope.surgicalBlock = {status: "CANCELLED", notes: "Cancelled as Surgeon on leave"};
         createController();
@@ -77,7 +77,7 @@ describe("cancelSurgicalBlockController", function () {
         surgicalAppointmentService.saveSurgicalBlock.and.returnValue(specUtil.simplePromise({data:{provider: {person: { display:"something"}}}}));
         messagingService.showMessage.and.returnValue({});
         translate.instant.and.returnValue('Postponed surgeries for Surgeon Dr.');
-        scope.ngDialogData = {surgicalBlock: {id:32, surgicalAppointments: [{id:32, status:"CANCELLED", notes: "Patient not available", patient: {uuid:1}}, {id:33, patient: {uuid:2}}], provider: {uuid: 1}, location: {uuid:2}, status: "CANCELLED"}};
+        scope.ngDialogData = {surgicalBlock: {id:32, surgicalAppointments: [{id:32, status:"CANCELLED", notes: "Patient not available", patient: {uuid:1}}, {id:33, status: "SCHEDULED", patient: {uuid:2}}], provider: {uuid: 1}, location: {uuid:2}, status: "CANCELLED"}};
         scope.surgicalBlockSelected = {provider: {person: {display: "something"}}};
         scope.surgicalBlock = {status: "POSTPONED", notes: "Postponed as previous surgery extended"};
         createController();

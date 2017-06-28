@@ -7,7 +7,7 @@ angular.module('bahmni.ot').controller('cancelSurgicalBlockController', [
 
         $scope.confirmCancelSurgicalBlock = function () {
             _.forEach(surgicalBlock.surgicalAppointments, function (appointment) {
-                if (!appointment.status) {
+                if (appointment.status === 'SCHEDULED') {
                     appointment.status = $scope.surgicalBlock.status;
                     appointment.notes = $scope.surgicalBlock.notes;
                     appointment.sortWeight = null;
