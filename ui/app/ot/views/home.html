@@ -1,5 +1,7 @@
 <div class="patient-info-fixed-postion-container ot-secondary-header">
-    <button class="back-btn dashboard-link ot-surgical-button" ng-click="goToNewSurgicalAppointment()">{{'NEW_SURGICAL_BLOCK' | translate}}</button>
+    <button class="back-btn dashboard-link ot-surgical-button" ng-click="goToNewSurgicalAppointment()">
+        {{'NEW_SURGICAL_BLOCK' | translate}}
+    </button>
 </div>
 <div class="ot-filter-section">
     <div class="ot-filter-items location-block">
@@ -7,7 +9,8 @@
         <p ng-repeat="location in locations track by location.uuid">
             <span>{{ location.display }}</span>
             <label class="location-buttons" for="{{location.display}}">
-                <input type="checkbox" id="{{location.display}}" name="location" ng-model="filters.locations[location.name]" required/>
+                <input type="checkbox" id="{{location.display}}" name="location"
+                       ng-model="filters.locations[location.name]" required/>
             </label>
         </p>
     </div>
@@ -71,23 +74,31 @@
     </p>
 
 
-    <p ng-show="view === 'List View'">
-        <input type="radio" name="weekOrDay" id="week-button" ng-model="weekOrDay"  value="week" ng-click="goToCurrentWeek()" required/> Week </input>
-        <input type="radio" name="weekOrDay" id="day-button" ng-model="weekOrDay"  value="day" ng-click="goToCurrentDate()" required/> Day </input>
+    <p ng-show="view === 'List View'" class="day-btn-container">
+        <input type="radio" name="weekOrDay" id="week-button" ng-model="weekOrDay" value="week"
+               ng-click="goToCurrentWeek()" required/>
+        <label for="week-button">Week</label>
+        <input type="radio" name="weekOrDay" id="day-button" ng-model="weekOrDay" value="day"
+               ng-click="goToCurrentDate()" required/>
+        <label for="day-button">Day</label>
     </p>
-    <p style="left: 600px; position: relative" >
-       <input type="radio" name="view" id="calendar-button" ng-model="view"  value="Calendar" ng-click="weekOrDay='day'" required/> Calendar </input>
-        <input type="radio" name="view" id="list-view-button" ng-model="view"  value="List View" required/> List View</input>
+    <p class="calendar-btn-container">
+        <input type="radio" name="view" id="calendar-button" ng-model="view" value="Calendar"
+               ng-click="weekOrDay='day'" required/>
+        <label for="calendar-button">Calendar</label>
+
+        <input type="radio" name="view" id="list-view-button" ng-model="view" value="List View" required/>
+        <label for="list-view-button">List View</label>
     </p>
 </div>
 
 <div class="calander-container">
     <ot-calendar ng-if="view === 'Calendar'"
-            view-date="viewDate"
-            day-view-start="calendarConfig.dayViewStart"
-            day-view-end="calendarConfig.dayViewEnd"
-            day-view-split="calendarConfig.dayViewSplit"
-            filter-params="filterParams">
+                 view-date="viewDate"
+                 day-view-start="calendarConfig.dayViewStart"
+                 day-view-end="calendarConfig.dayViewEnd"
+                 day-view-split="calendarConfig.dayViewSplit"
+                 filter-params="filterParams">
     </ot-calendar>
 
     <list-view ng-if="view === 'List View'"

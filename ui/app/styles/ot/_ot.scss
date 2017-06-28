@@ -110,13 +110,13 @@ div[ng-app="ot"] {
 .new-surgical-appointment {
   display: block;
   overflow: hidden;
-  p.new-surgical-appointment-note{
+  p.new-surgical-appointment-note {
     font-size: 13px;
     color: #00529B;
     background-color: #BDE5F8;
     font-family: sans-serif;
     margin: 10px auto;
-    padding:12px;
+    padding: 12px;
     width: 676px;
   }
   > section {
@@ -264,10 +264,10 @@ div[ng-app="ot"] {
           display: none;
         }
         .dndPlaceholder {
-           background-color: rgba(146, 221, 81, 0.11);
-           display: block;
-           min-height: 100px;
-         }
+          background-color: rgba(146, 221, 81, 0.11);
+          display: block;
+          min-height: 100px;
+        }
         .appointment-edit {
           text-align: center;
           a {
@@ -391,6 +391,7 @@ div[ng-app="ot"] {
 
   }
 }
+
 .ot-filter-section {
   float: left;
   width: 300px;
@@ -518,13 +519,13 @@ div[ng-app="ot"] {
       float: left;
       position: relative;
       width: calc(100% - 80px);
-    .ot-block-wrapper {
-      position: absolute;
-      display: flex;
-      left: 0;
-      overflow: auto;
-      padding-bottom: 5px;
-    }
+      .ot-block-wrapper {
+        position: absolute;
+        display: flex;
+        left: 0;
+        overflow: auto;
+        padding-bottom: 5px;
+      }
       .calendar-cell {
         border-bottom: 0.5px solid lightgrey;
         border-right: 0.5px solid lightgrey;
@@ -544,7 +545,9 @@ div[ng-app="ot"] {
       }
     }
   }
-}.surgical-block {
+}
+
+.surgical-block {
   position: absolute;
   margin: 0 5px;
   border-radius: 3px;
@@ -588,6 +591,7 @@ div[ng-app="ot"] {
     left: 3px;
   }
 }
+
 .ot-top-button-wrapper {
   overflow: hidden;
   position: relative;
@@ -602,8 +606,8 @@ div[ng-app="ot"] {
     button {
       background: #fff;
       opacity: 1;
-      -webkit-box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
-      box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+      -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
       padding: 5px 10px;
       color: #000;
       border: 1px solid #95989a;
@@ -622,34 +626,48 @@ div[ng-app="ot"] {
     height: 20px;
     font-weight: 600;
   }
-  .view-switch {
-    float: right;
-  }
-  button {
-    -webkit-box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
-    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
-    padding: 5px 10px;
-    color: #000;
-    border: 1px solid #95989a;
-    margin-right: 10px;
-    background: #fff;
-    &:hover {
-      background: #ececec;
-      opacity: 1;
+  .calendar-btn-container, .day-btn-container {
+    label {
+      -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+      padding: 6px 10px;
+      color: #000;
+      border: 1px solid #95989a;
+      margin-right: 0;
+      display: inline-block;
+      background: #fff;
+      border-radius: 3px;
+      &:hover {
+        background: #ececec;
+        opacity: 1;
+      }
     }
-    &.active {
+    input:checked + label {
       background: #d6d6d6;
     }
+    input {
+      visibility: hidden;
+      width: 0;
+      height: 0;
+    }
+  }
+  .calendar-btn-container {
+    float: right;
+    padding-right: 10px;
+  }
+  .day-btn-container {
+    float: left;
   }
 }
+
 .surgical-action-wrapper {
   float: right;
   clear: both;
   text-align: right;
   padding-top: 15px;
   button {
-    -webkit-box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
-    box-shadow: 0 0 3px 0 rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
     padding: 5px 10px;
     color: #000;
     border: 1px solid #95989a;
@@ -657,7 +675,6 @@ div[ng-app="ot"] {
     background: #fff;
   }
 }
-
 
 .ot-actual-time-form {
   .ngdialog-content {
@@ -672,9 +689,9 @@ div[ng-app="ot"] {
   }
   .ot-actual-time-label {
     text-align: center;
-    padding: 15px  0px 3px 0px;
+    padding: 15px 0px 3px 0px;
   }
-  .ot-actual-time-input{
+  .ot-actual-time-input {
     word-spacing: 1px;
     font-size: 22px;
     font-weight: lighter;
@@ -698,6 +715,7 @@ div[ng-app="ot"] {
     }
   }
 }
+
 .ot-cancel-dialog-form {
   p {
     padding: 0 10px;
@@ -762,6 +780,7 @@ div[ng-app="ot"] {
     }
   }
 }
+
 .calendar-container {
   overflow: hidden;
   background: #fff;
