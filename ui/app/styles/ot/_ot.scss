@@ -602,7 +602,7 @@ div[ng-app="ot"] {
   }
   .calendar-day-navigation {
     float: left;
-    margin-left: 10px;
+    margin: 0 10px;
     button {
       background: #fff;
       opacity: 1;
@@ -644,6 +644,9 @@ div[ng-app="ot"] {
     }
     input:checked + label {
       background: #d6d6d6;
+    }
+    input[value = "List View"]:checked + label{
+      margin-right: 50px;
     }
     input {
       visibility: hidden;
@@ -784,4 +787,27 @@ div[ng-app="ot"] {
 .calendar-container {
   overflow: hidden;
   background: #fff;
+}
+.list-view-table-wrapper {
+  overflow: auto;
+  table tr {
+    white-space: nowrap;
+  }
+}
+.list-view-print-btn {
+  position: fixed;
+  right: 9px;
+  top: 117px;
+  z-index: 99999;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+  padding: 6px 10px;
+  color: #000;
+  border: 1px solid #95989a;
+  margin-right: 0;
+  display: inline-block;
+  background: #fff;
+  &:hover {
+    background: #ececec;
+    opacity: 1;
+  }
 }
