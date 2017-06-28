@@ -5,8 +5,8 @@ angular
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', '$compileProvider',
         function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-            $urlRouterProvider.otherwise('/appointments/manage');
-            $urlRouterProvider.when('/appointments', '/appointments/manage');
+            $urlRouterProvider.otherwise('/home/manage');
+            $urlRouterProvider.when('/home', '/home/manage');
         // @if DEBUG='production'
             $compileProvider.debugInfoEnabled(false);
         // @endif
@@ -15,8 +15,8 @@ angular
             $compileProvider.debugInfoEnabled(true);
         // @endif
             $stateProvider
-            .state('appointments', {
-                url: '/appointments',
+            .state('home', {
+                url: '/home',
                 abstract: true,
                 views: {
                     'additional-header': {
@@ -28,21 +28,32 @@ angular
                         '<div ui-view="content" class="opd-content-wrapper"></div>' +
                         '</div>'
                     }
+                },
+                data: {
+                    backLinks: []
                 }
-            }).state('appointments.manage', {
-                url: '/manage?args',
+            }).state('home.manage', {
+                url: '/manage',
                 views: {
                     'content': {
                         templateUrl: 'views/manageAppointments.html',
-                        controller: 'ManageAppointmentsController'
+                        controller: 'AppointmentsManageController'
                     }
                 }
-            }).state('appointments.admin', {
-                url: '/admin?args',
+            }).state('home.admin', {
+                url: '/admin',
                 views: {
                     'content': {
                         templateUrl: 'views/appointmentsAdmin.html',
                         controller: 'AppointmentsAdminController'
+                    }
+                }
+            }).state('home.service', {
+                url: '/service',
+                views: {
+                    'content': {
+                        templateUrl: 'views/appointmentsService.html',
+                        controller: 'AppointmentsServiceController'
                     }
                 }
             });
