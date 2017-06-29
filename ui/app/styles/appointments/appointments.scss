@@ -10,7 +10,7 @@
 
 /*------ Base layout style-------*/
 
-.add-service-wrapper, .service-admin-wrapper  {
+.add-service-wrapper, .service-admin-wrapper {
   border: 1px solid #ddd;
   border-radius: 3px;
   margin: 0 10px;
@@ -56,6 +56,33 @@
 .service-admin-content {
   clear: both;
   border-top: 1px solid #ddd;
+  padding: 10px 10px 0;
+  overflow: auto;
+  height: calc(100% - 69px);
+  table {
+    border-color: #0a0a0a;
+    .service-disc-tablecell {
+      min-width: 310px;
+    }
+    th, td {
+      text-align: center;
+      border-color: #bbb;
+      color: #313131;
+      font-size: 13px;
+      &:first-child {
+        text-align: left;
+      }
+    }
+    th {
+      background: #EBEBEB;
+    }
+    td {
+      a {
+        display: inline-block;
+        margin: 0 5px;
+      }
+    }
+  }
 }
 
 /*-------service Creation page style--------*/
