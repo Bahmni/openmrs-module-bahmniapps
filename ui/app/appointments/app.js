@@ -49,7 +49,7 @@ angular
                     }
                 }
             }).state('home.service', {
-                url: '/service',
+                url: '/service/:uuid',
                 views: {
                     'content': {
                         templateUrl: 'views/appointmentsService.html',
