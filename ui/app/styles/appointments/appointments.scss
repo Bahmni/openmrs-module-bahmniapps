@@ -57,3 +57,22 @@
   clear: both;
   border-top: 1px solid #ddd;
 }
+
+/*-------service Creation page style--------*/
+
+.add-service-content {
+  height: calc(100% - 48px);
+  overflow-y: auto;
+  .add-service, .add-availablity {
+    width: 50%;
+    float: left;
+    height: 100%;
+  }
+  form {
+    p {
+      select {
+        float: none;
+      }
+    }
+  }
+}

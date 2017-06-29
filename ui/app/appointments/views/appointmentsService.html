@@ -1,6 +1,76 @@
 <div class="add-service-wrapper">
-    <div class="service-title"><h2>services</h2><button class="service-save-btn">{{::'SERVICE_SAVE'  | translate }}</button></div>
+    <div class="service-title">
+        <h2>services</h2>
+        <button class="service-save-btn">{{::'SERVICE_SAVE'  | translate }}</button>
+    </div>
     <section class="add-service-content">
+        <div class="add-service">
+            <h3>Add new Service</h3>
+            <form class="create-service">
+                <p>
+                    <label>Service Name<i>*</i></label>
+                    <input type="text"/>
+                </p>
+                <p>
+                    <label>Description</label>
+                    <textarea></textarea>
+                </p>
+                <p>
+                    <label>Duration</label> <input type="number"/>
+                    <label>Max Load</label><input type="number">
+                    <label>Start Time</label> <input type="time"/>
+                    <label>End Time</label><input type="time">
+                </p>
+                <p>
+                    <label>Speciality</label>
+                    <select>
+                        <option>option1</option>
+                    </select>
+                </p>
+                <p>
+                    <label>Location</label>
+                    <select>
+                        <option>option1</option>
+                    </select>
+                </p>
+                <p>
+                    <label>Label Colour</label>
+                    <select>
+                        <option>option1</option>
+                    </select>
+                </p>
+            </form>
+            <p><label>Add Service Appoinment Type</label> <input type="checkbox"></p>
+            <div class="create-service-type">
+                <p>
+                    <label>Add new type</label><input type="number">
+                    <label>Duration</label> <input type="text"/>
+                    <button>Add</button>
+                </p>
+                <p>
+                    <span>servicetype1 <a>X</a></span>
+                </p>
+            </div>
 
+        </div>
+        <div class="add-availablity">
+            <h3>Service Availablity</h3>
+            <p><label>Add Service Availability</label> <input type="checkbox"></p>
+            <ul>
+                <li>
+                    <label>Start Time</label> <input type="time"/>
+                    <label>End Time</label><input type="time">
+                    <label>Max Load</label><input type="number">
+                    <label>Mo</label> <input type="checkbox">
+                    <label>Tu</label> <input type="checkbox">
+                    <label>We</label> <input type="checkbox">
+                    <label>Th</label> <input type="checkbox">
+                    <label>Fr</label> <input type="checkbox">
+                    <label>Sa</label> <input type="checkbox">
+                    <label>Su</label> <input type="checkbox">
+                    <button>Add</button>
+                </li>
+            </ul>
+        </div>
     </section>
 </div>
