@@ -1,7 +1,7 @@
 <div class="add-service-wrapper">
     <div class="service-title">
         <h2>services</h2>
-        <button class="service-save-btn">{{::'SERVICE_SAVE'  | translate }}</button>
+        <button type="submit" ng-click="save()" class="service-save-btn">{{::'SERVICE_SAVE'  | translate }}</button>
     </div>
     <section class="add-service-content">
         <div class="add-service">
@@ -12,13 +12,14 @@
                     <input type="text"/>
                 </p>
                 <p>
-                    <label>Description</label>
+                <label>Description</label>
                     <textarea></textarea>
                 </p>
                 <p>
                     <label>Duration</label> <input type="number"/>
                     <label>Max Load</label><input type="number">
                     <label>Start Time</label> <input type="time"/>
+
                     <label>End Time</label><input type="time">
                 </p>
                 <p>
@@ -39,7 +40,7 @@
                         <option>option1</option>
                     </select>
                 </p>
-            </form>
+        </form>
             <p><label>Add Service Appoinment Type</label> <input type="checkbox"></p>
             <div class="create-service-type">
                 <p>
