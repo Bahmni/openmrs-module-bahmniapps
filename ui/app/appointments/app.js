@@ -40,6 +40,22 @@ angular
                         controller: 'AppointmentsManageController'
                     }
                 }
+            }).state('home.manage.summary', {
+                url: '/summary',
+                views: {
+                    'summary': {
+                        templateUrl: 'views/summary.html',
+                        controller: 'AppointmentsManageController'
+                    }
+                }
+            }).state('home.manage.appointments', {
+                url: '/appointments',
+                views: {
+                    'content': {
+                        templateUrl: 'views/appointments.html',
+                        controller: 'AppointmentsManageController'
+                    }
+                }
             }).state('home.admin', {
                 url: '/admin',
                 views: {

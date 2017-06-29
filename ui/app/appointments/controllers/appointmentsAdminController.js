@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsAdminController', ['$scope', '$translate', '$location',
-        function ($scope, $translate, $location) {
-            $scope.openServiceView = function (uuid) {
+    .controller('AppointmentsAdminController', ['$scope', '$location',
+        function ($scope, $location) {
+            $scope.openService = function (uuid) {
                 if (!uuid) {
                     uuid = "new";
                 }
