@@ -31,7 +31,6 @@ angular.module('bahmni.ot')
                                 estTimeHours, estTimeMinutes, cleaningTime
                             );
 
-                            mappedAppointment.derivedAttributes.expectedStartDatetime = blockStartDatetime;
                             mappedAppointment.derivedAttributes.expectedStartDate = moment(blockStartDatetime).startOf('day').toDate();
                             mappedAppointment.derivedAttributes.patientIdentifier = mappedAppointment.patient.display.split(' - ')[0];
                             mappedAppointment.derivedAttributes.patientName = mappedAppointment.patient.display.split(' - ')[1];

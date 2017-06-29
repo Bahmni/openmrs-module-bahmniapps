@@ -248,6 +248,10 @@ describe('listViewController', function () {
         };
         createController();
         expect(scope.surgicalAppointmentList.length).toEqual(1);
+        expect(scope.surgicalAppointmentList[0].derivedAttributes.expectedStartTime).toEqual(moment("2017-06-22T09:00:00.000+0530").toDate());
+        expect(scope.surgicalAppointmentList[0].derivedAttributes.expectedStartDate).toEqual(moment("2017-06-22T00:00:00.000+0530").toDate());
+        expect(scope.surgicalAppointmentList[0].derivedAttributes.patientIdentifier).toEqual("EG100137M");
+        expect(scope.surgicalAppointmentList[0].status).toEqual("SCHEDULED");
     });
 
 
