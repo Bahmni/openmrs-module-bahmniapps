@@ -10,8 +10,9 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
         $urlRouterProvider.otherwise('/home');
 
         var homeBackLink = {type: "link", name: "Home", value: "../home/", accessKey: "h", icon: "fa-home"};
-        var otSchedulingLink = {type: "state", name: "OT Scheduling", value: "home", accessKey: "b"};
-        var navigationLinks = [otSchedulingLink];
+        var otSchedulingLink = {type: "state", name: "OT Scheduling", value: "otScheduling", accessKey: "b"};
+        var queuesLink = {type: "state", name: "Queues", value: "home", accessKey: "b"};
+        var navigationLinks = [queuesLink, otSchedulingLink];
 
         // @if DEBUG='production'
         $compileProvider.debugInfoEnabled(false);
@@ -24,6 +25,25 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
         $stateProvider
             .state('home', {
                 url: '/home',
+                data: {
+                    homeBackLink: homeBackLink,
+                    navigationLinks: navigationLinks
+                },
+                views: {
+                    'additional-header': {
+                        templateUrl: 'views/header.html'
+                    },
+                    'content': {
+                        templateUrl: '../common/patient-search/views/patientsList.html',
+                        controller: 'PatientsListController'
+                    }
+                },
+                resolve: {
+                    initialization: 'initialization'
+                }
+            })
+            .state('otScheduling', {
+                url: '/otScheduling',
                 data: {
                     homeBackLink: homeBackLink,
                     navigationLinks: navigationLinks

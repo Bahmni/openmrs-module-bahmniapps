@@ -398,9 +398,9 @@ describe("surgicalBlockController", function () {
 
     it("should go to home page", function () {
         createController();
-        scope.goToHome();
+        scope.gotoCalendarPage();
 
-        expect(state.go).toHaveBeenCalledWith('home', jasmine.any(Object));
+        expect(state.go).toHaveBeenCalledWith('otScheduling', jasmine.any(Object));
     });
 
     it("should open an ngDialog with data of given surgical appointment", function () {

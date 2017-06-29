@@ -64,7 +64,7 @@ describe("cancelSurgicalBlockController", function () {
         expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'Cancelled surgeries for Surgeon Dr.something' );
         expect(translate.instant).toHaveBeenCalledWith("OT_SURGICAL_BLOCK_CANCELLED_MESSAGE");
         expect(ngDialog.close).toHaveBeenCalled();
-        expect(state.go).toHaveBeenCalled();
+        expect(state.go).toHaveBeenCalledWith("otScheduling", jasmine.any(Object));
         expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[0].status).toEqual("POSTPONED");
         expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[0].notes).toEqual("Patient not available");
         expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[1].status).toEqual("CANCELLED");
@@ -85,7 +85,7 @@ describe("cancelSurgicalBlockController", function () {
         expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'Postponed surgeries for Surgeon Dr.something' );
         expect(translate.instant).toHaveBeenCalledWith("OT_SURGICAL_BLOCK_POSTPONED_MESSAGE");
         expect(ngDialog.close).toHaveBeenCalled();
-        expect(state.go).toHaveBeenCalled();
+        expect(state.go).toHaveBeenCalledWith("otScheduling", jasmine.any(Object));
         expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[0].status).toEqual("CANCELLED");
         expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[0].notes).toEqual("Patient not available");
         expect(scope.ngDialogData.surgicalBlock.surgicalAppointments[1].status).toEqual("POSTPONED");

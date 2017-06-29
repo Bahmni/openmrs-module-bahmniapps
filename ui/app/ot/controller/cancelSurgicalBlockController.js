@@ -31,7 +31,7 @@ angular.module('bahmni.ot').controller('cancelSurgicalBlockController', [
                 ngDialog.close();
                 var options = {};
                 options['dashboardCachebuster'] = Math.random();
-                $state.go("home", options);
+                $state.go("otScheduling", options);
             });
         };
     }]);

@@ -126,10 +126,10 @@ angular.module('bahmni.ot')
                 });
             };
 
-            $scope.goToHome = function () {
+            $scope.gotoCalendarPage = function () {
                 var options = {};
                 options['dashboardCachebuster'] = Math.random();
-                $state.go("home", options);
+                $state.go("otScheduling", options);
             };
 
             $scope.cancelSurgicalBlock = function () {

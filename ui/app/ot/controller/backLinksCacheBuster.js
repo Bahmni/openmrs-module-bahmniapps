@@ -6,7 +6,7 @@ angular.module('bahmni.ot')
             $scope.navigationLinks = $state.current.data.navigationLinks;
             $scope.homeBackLink = $state.current.data.homeBackLink;
             $scope.isCurrentState = function (link) {
-                if ($state.current.name === "home") {
+                if ($state.current.name === link.value) {
                     return true;
                 }
             };
