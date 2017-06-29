@@ -7,6 +7,11 @@ describe('listViewController', function () {
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgicalBlocksInDateRange']);
     state = jasmine.createSpyObj('state', ['go']);
     var ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
+    var printer = jasmine.createSpyObj('printer', ['print']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    appService.getAppDescriptor.and.returnValue(appDescriptor);
+
     beforeEach(function () {
         module('bahmni.ot');
         inject(function ($controller, $rootScope, $q) {
@@ -25,8 +30,10 @@ describe('listViewController', function () {
             $q: q,
             spinner: spinner,
             surgicalAppointmentService: surgicalAppointmentService,
+            appService: appService,
             $state: state,
-            ngDialog: ngDialog
+            ngDialog: ngDialog,
+            printer: printer
         });
         scope.$apply();
         rootScope.surgeons = [{
@@ -252,5 +259,40 @@ describe('listViewController', function () {
         expect(scope.surgicalAppointmentList[0].derivedAttributes.expectedStartDate).toEqual(moment("2017-06-22T00:00:00.000+0530").toDate());
         expect(scope.surgicalAppointmentList[0].derivedAttributes.patientIdentifier).toEqual("EG100137M");
         expect(scope.surgicalAppointmentList[0].status).toEqual("SCHEDULED");
+    });
+    it("should print the page with the surgical appointment list", function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value == 'printListViewTemplateUrl') {
+                return "/bahmni_config/openmrs/apps/ot/printListView.html";
+            }
+            return value;
+        });
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": false, "OT 3": false},
+            patient: {uuid: "2300015f-95a3-4d47-933d-a81138ad0aa6"},
+            statusList: []
+        };
+        createController();
+        scope.printPage();
+        expect(printer.print).toHaveBeenCalledWith("/bahmni_config/openmrs/apps/ot/printListView.html", {surgicalAppointmentList: scope.surgicalAppointmentList});
+    });
+
+    it('should print the page with the default list view when configuration template url is not there', function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value == 'printListViewTemplateUrl') {
+                return '';
+            }
+            return value;
+        });
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": false, "OT 3": false},
+            patient: {uuid: "2300015f-95a3-4d47-933d-a81138ad0aa6"},
+            statusList: []
+        };
+        createController();
+        scope.printPage();
+        expect(printer.print).toHaveBeenCalledWith("views/listView.html", {surgicalAppointmentList: scope.surgicalAppointmentList});
     });
 });

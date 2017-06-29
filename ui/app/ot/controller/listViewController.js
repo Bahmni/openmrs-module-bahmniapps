@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('listViewController', ['$scope', '$rootScope', '$q', 'spinner', 'surgicalAppointmentService', 'surgicalAppointmentHelper', 'surgicalBlockFilter',
-        function ($scope, $rootScope, $q, spinner, surgicalAppointmentService, surgicalAppointmentHelper, surgicalBlockFilter) {
+    .controller('listViewController', ['$scope', '$rootScope', '$q', 'spinner', 'surgicalAppointmentService', 'appService', 'surgicalAppointmentHelper', 'surgicalBlockFilter', 'printer',
+        function ($scope, $rootScope, $q, spinner, surgicalAppointmentService, appService, surgicalAppointmentHelper, surgicalBlockFilter, printer) {
             var startDatetime = moment($scope.viewDate).toDate();
             var surgicalBlockMapper = new Bahmni.OT.SurgicalBlockMapper();
             var endDatetime = moment(startDatetime).endOf('day').toDate();
@@ -79,6 +79,10 @@ angular.module('bahmni.ot')
 
             $scope.isCurrentDateinWeekView = function (appointmentDate) {
                 return _.isEqual(moment().startOf('day').toDate(), appointmentDate) && $scope.weekOrDay === 'week';
+            };
+            $scope.printPage = function () {
+                var printTemplateUrl = appService.getAppDescriptor().getConfigValue("printListViewTemplateUrl") || 'views/listView.html';
+                printer.print(printTemplateUrl, {surgicalAppointmentList: $scope.surgicalAppointmentList});
             };
 
             $scope.sortSurgicalAppointmentsBy = function (sortColumn) {
