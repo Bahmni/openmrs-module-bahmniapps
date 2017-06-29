@@ -24,8 +24,8 @@ angular
                         controller: 'AppointmentsHeaderController'
                     },
                     'mainContent': {
-                        template: '<div class="opd-wrapper">' +
-                        '<div ui-view="content" class="opd-content-wrapper"></div>' +
+                        template: '<div class="opd-wrapper appointments-page-wrapper">' +
+                        '<div ui-view="content" class="opd-content-wrapper appointments-content-wrapper"></div>' +
                         '</div>'
                     }
                 },
