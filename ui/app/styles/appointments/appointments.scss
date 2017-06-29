@@ -94,12 +94,30 @@
     width: 50%;
     float: left;
     height: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
   }
-  form {
-    p {
-      select {
-        float: none;
+  .add-service {
+    form {
+      p {
+        label{
+          display: inline-block;
+          min-width: 115px;
+        }
+        select {
+          float: none;
+        }
       }
+    }
+  }
+  .add-availablity {
+    padding-right: 0;
+    h3, > p, ul {
+      padding-left: 10px;
+    }
+    ul {
+      min-height: 350px;
+      border-left: 1px solid #95989A;
     }
   }
 }
