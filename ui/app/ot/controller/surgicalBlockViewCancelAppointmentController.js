@@ -6,7 +6,7 @@ angular.module('bahmni.ot').controller('surgicalBlockViewCancelAppointmentContro
         $scope.appointment = {
             estTimeHours: surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value,
             estTimeMinutes: surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value,
-            patient: surgicalAppointmentHelper.getPatientDisplayLabel(surgicalAppointment.patient.display),
+            patient: surgicalAppointment.patient.label || surgicalAppointmentHelper.getPatientDisplayLabel(surgicalAppointment.patient.display),
             notes: surgicalAppointment.notes,
             status: surgicalAppointment.status
         };
