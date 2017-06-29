@@ -3,105 +3,9 @@
     <table>
         <thead>
         <tr>
-            <th ng-click="sortSurgicalAppointmentsBy('derivedAttributes.expectedStartDate')">
-                 Date
-                <span ng-if="sortColumn == 'derivedAttributes.expectedStartDate'">
-                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
-                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
-                </span>
-            </th>
-            <th ng-click="sortSurgicalAppointmentsBy('derivedAttributes.patientIdentifier')">
-                Identifier
-                <span ng-if="sortColumn == 'derivedAttributes.patientIdentifier'">
-                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
-                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
-                </span>
-            </th>
-            <th ng-click="sortSurgicalAppointmentsBy('derivedAttributes.patientName')">
-                Patient Name
-                <span ng-if="sortColumn == 'derivedAttributes.patientName'">
-                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
-                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
-                </span>
-            </th>
-            <th ng-click="sortSurgicalAppointmentsBy('derivedAttributes.expectedStartTime')">
-                Start Time
-                <span ng-if="sortColumn == 'derivedAttributes.expectedStartTime'">
-                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
-                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
-                </span>
-            </th>
-            <th>
-                Est. Time
-            </th>
-            <th>
-                Actual Time
-            </th>
-            <th ng-click="sortSurgicalAppointmentsBy('surgicalBlock.location.name')">
-                OT#
-                <span ng-if="sortColumn == 'surgicalBlock.location.name'">
-                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
-                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
-                </span>
-            </th>
-            <th ng-click="sortSurgicalAppointmentsBy('surgicalAppointmentAttributes.procedure.value')">
-                Procedures
-                <span ng-if="sortColumn == 'surgicalAppointmentAttributes.procedure.value'">
-                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
-                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
-                </span>
-            </th>
-            <th>
-                Notes
-            </th>
-            <th ng-click="sortSurgicalAppointmentsBy('surgicalBlock.provider.person.display')">
-                Surgeon
-                <span ng-if="sortColumn == 'surgicalBlock.provider.person.display'">
-                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
-                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
-                </span>
-            </th>
-            <th ng-click="sortSurgicalAppointmentsBy('surgicalAppointmentAttributes.otherSurgeon.value.person.display')">
-                Other Surgeon
-                <span ng-if="sortColumn == 'surgicalAppointmentAttributes.otherSurgeon.value.person.display'">
-                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
-                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
-                </span>
-            </th>
-            <th ng-click="sortSurgicalAppointmentsBy('surgicalAppointmentAttributes.surgicalAssistant.value')">
-                Surgical Assistant
-                <span ng-if="sortColumn == 'surgicalAppointmentAttributes.surgicalAssistant.value'">
-                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
-                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
-                </span>
-            </th>
-            <th ng-click="sortSurgicalAppointmentsBy('surgicalAppointmentAttributes.anaesthetist.value')">
-                Anaesthetist
-                <span ng-if="sortColumn == 'surgicalAppointmentAttributes.anaesthetist.value'">
-                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
-                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
-                </span>
-            </th>
-            <th ng-click="sortSurgicalAppointmentsBy('surgicalAppointmentAttributes.scrubNurse.value')">
-                Scrub Nurse
-                <span ng-if="sortColumn == 'surgicalAppointmentAttributes.scrubNurse.value'">
-                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
-                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
-                </span>
-            </th>
-            <th ng-click="sortSurgicalAppointmentsBy('surgicalAppointmentAttributes.circulatingNurse.value')">
-                Circulating Nurse
-                <span ng-if="sortColumn == 'surgicalAppointmentAttributes.circulatingNurse.value'">
-                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
-                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
-                </span>
-            </th>
-            <th>
-               Status Change Notes
-            </th>
-            <th ng-click="sortSurgicalAppointmentsBy('status')">
-                Status
-                <span ng-if="sortColumn == 'status'">
+            <th ng-repeat="info in tableInfo" ng-click="info.sortInfo && sortSurgicalAppointmentsBy(info.sortInfo)">
+                {{ info.heading }}
+                <span ng-if="sortColumn == info.sortInfo">
                         <i class="fa fa-caret-up" ng-show="reverseSort"></i>
                         <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
                 </span>
@@ -110,7 +14,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="appointment in surgicalAppointmentList" ng-click="selectSurgicalAppointment($event, appointment)"
-            ng-blur="deselectSurgicalAppointment($event)" tabindex="1">
+            ng-blur="deselectSurgicalAppointment($event)" tabindex="1" ng-class="{'current-date': isCurrentDateinWeekView(appointment.derivedAttributes.expectedStartDate)}">
             <td>
                 {{appointment.derivedAttributes.expectedStartDate | bahmniDate}}
             </td>

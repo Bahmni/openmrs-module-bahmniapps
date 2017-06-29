@@ -6,11 +6,29 @@ angular.module('bahmni.ot')
             var startDatetime = moment($scope.viewDate).toDate();
             var surgicalBlockMapper = new Bahmni.OT.SurgicalBlockMapper();
             var endDatetime = moment(startDatetime).endOf('day').toDate();
+            $scope.tableInfo = [{heading: 'Date', sortInfo: 'derivedAttributes.expectedStartDate'},
+                {heading: 'Identifier', sortInfo: 'derivedAttributes.patientIdentifier'},
+                {heading: 'Patient Name', sortInfo: 'derivedAttributes.patientName'},
+                {heading: 'Start Time', sortInfo: 'derivedAttributes.expectedStartTime'},
+                {heading: 'Time Est.', sortInfo: 'derivedAttributes.duration'},
+                {heading: 'Actual Time', sortInfo: 'actualStartDatetime'},
+                {heading: 'OT#', sortInfo: 'surgicalBlock.location.name'},
+                {heading: 'Procedures', sortInfo: 'surgicalAppointmentAttributes.procedure.value'},
+                {heading: 'Notes', sortInfo: 'surgicalAppointmentAttributes.notes.value'},
+                {heading: 'Surgeon', sortInfo: 'surgicalBlock.provider.person.display'},
+                {heading: 'Other Surgeon', sortInfo: 'surgicalAppointmentAttributes.otherSurgeon.value.person.display'},
+                {heading: 'Surgical Assistant', sortInfo: 'surgicalAppointmentAttributes.surgicalAssistant.value'},
+                {heading: 'Anaesthetist', sortInfo: 'surgicalAppointmentAttributes.anaesthetist.value'},
+                {heading: 'Scrub Nurse', sortInfo: 'surgicalAppointmentAttributes.scrubNurse.value'},
+                {heading: 'Circulating Nurse', sortInfo: 'surgicalAppointmentAttributes.circulatingNurse.value'},
+                {heading: 'Status Change Notes', sortInfo: 'notes'},
+                {heading: 'Status', sortInfo: 'status'}];
             var init = function (startDatetime, endDatetime) {
                 $scope.addActualTimeDisabled = true;
                 $scope.editDisabled = true;
                 $scope.cancelDisabled = true;
                 $scope.reverseSort = false;
+                $scope.sortColumn = "";
                 return $q.all([surgicalAppointmentService.getSurgicalBlocksInDateRange(startDatetime, endDatetime)]).then(function (response) {
                     var surgicalBlocks = response[0].data.results;
                     var mappedSurgicalBlocks = _.map(surgicalBlocks, function (surgicalBlock) {
@@ -59,11 +77,20 @@ angular.module('bahmni.ot')
                 });
             };
 
+            $scope.isCurrentDateinWeekView = function (appointmentDate) {
+                return _.isEqual(moment().startOf('day').toDate(), appointmentDate) && $scope.weekOrDay === 'week';
+            };
+
             $scope.sortSurgicalAppointmentsBy = function (sortColumn) {
-                $scope.surgicalAppointmentList = _.sortBy($scope.surgicalAppointmentList, [sortColumn]);
+                var emptyObjects = _.filter($scope.surgicalAppointmentList, function (appointment) {
+                    return !_.property(sortColumn)(appointment);
+                });
+                var nonEmptyObjects = _.difference($scope.surgicalAppointmentList, emptyObjects);
+                var sortedNonEmptyObjects = _.sortBy(nonEmptyObjects, sortColumn);
                 if ($scope.reverseSort) {
-                    $scope.surgicalAppointmentList.reverse();
+                    sortedNonEmptyObjects.reverse();
                 }
+                $scope.surgicalAppointmentList = sortedNonEmptyObjects.concat(emptyObjects);
                 $scope.sortColumn = sortColumn;
                 $scope.reverseSort = !$scope.reverseSort;
             };

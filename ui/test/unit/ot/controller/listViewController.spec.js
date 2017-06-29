@@ -253,7 +253,4 @@ describe('listViewController', function () {
         expect(scope.surgicalAppointmentList[0].derivedAttributes.patientIdentifier).toEqual("EG100137M");
         expect(scope.surgicalAppointmentList[0].status).toEqual("SCHEDULED");
     });
-
-
-
 });
