@@ -1,26 +1,28 @@
+/*------ page style-------*/
+
 .opd-wrapper.appointments-page-wrapper {
   min-height: auto;
+  padding: 65px 0 0;
   .appointments-content-wrapper {
     max-width: 100%;
   }
 }
 
-.add-service-wrapper {
+/*------ Base layout style-------*/
+
+.add-service-wrapper, .service-admin-wrapper  {
   border: 1px solid #ddd;
   border-radius: 3px;
   margin: 0 10px;
   overflow: hidden;
-  .add-service-btn {
-    float: right;
-  }
+  height: calc(100vh - 78px);
   .service-title {
     font-family: OpenSans, Arial, sans-serif;
     padding: 10px;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin: 0 0 10px;
     font-size: 16px;
     clear: both;
-    background: #669999;
+    background: #446565;
     position: relative;
     border-radius: 2px 2px 0 0;
     h2 {
@@ -30,5 +32,28 @@
       font-size: 16px;
     }
   }
+  .add-service-btn, .service-save-btn {
+    float: right;
+    background: #99C915;
+    border: none;
+    outline: none;
+    color: #fff;
+  }
+  .add-service-btn {
+    margin: 0 10px 10px 0;
+  }
+  .service-save-btn {
+    position: absolute;
+    right: 5px;
+    top: 4px;
+    font-size: 14px;
+    padding: 5px 20px;
+  }
 }
 
+/*-------service admin page style--------*/
+
+.service-admin-content {
+  clear: both;
+  border-top: 1px solid #ddd;
+}
