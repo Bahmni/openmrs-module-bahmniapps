@@ -1,0 +1,34 @@
+.opd-wrapper.appointments-page-wrapper {
+  min-height: auto;
+  .appointments-content-wrapper {
+    max-width: 100%;
+  }
+}
+
+.add-service-wrapper {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin: 0 10px;
+  overflow: hidden;
+  .add-service-btn {
+    float: right;
+  }
+  .service-title {
+    font-family: OpenSans, Arial, sans-serif;
+    padding: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    clear: both;
+    background: #669999;
+    position: relative;
+    border-radius: 2px 2px 0 0;
+    h2 {
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      font-size: 16px;
+    }
+  }
+}
+
