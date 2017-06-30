@@ -114,7 +114,8 @@ describe("newSurgicalAppointmentController", function () {
 
     it("should save data in proper format ", function () {
         scope.ngDialogData = {id: 1, actualStartDatetime: "2017-02-02T09:09:00.0Z", actualEndDatetime: "2017-02-02T10:09:00.0Z", status: "COMPLETED",
-            sortWeight: 0, patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}};
+            sortWeight: 0, patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}},
+            notes: "notes for appointment", uuid: "surgicalAppointment uuid", voided: false};
         createController();
         scope.addSurgicalAppointment = jasmine.createSpy("addSurgicalAppointment");
         scope.surgicalAppointmentForm = {$valid: true};
@@ -128,6 +129,9 @@ describe("newSurgicalAppointmentController", function () {
             actualStartDatetime: "2017-02-02T09:09:00.0Z",
             actualEndDatetime: "2017-02-02T10:09:00.0Z",
             status: "COMPLETED",
+            notes: "notes for appointment",
+            uuid: "surgicalAppointment uuid",
+            voided: false,
             surgicalAppointmentAttributes: {
                 procedure: {
                     surgicalAppointmentAttributeType: {
@@ -379,7 +383,8 @@ describe("newSurgicalAppointmentController", function () {
     it("should set appointment status to scheduled by default", function () {
         scope.ngDialogData = {id: 1,
             sortWeight: 0,
-            patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}};
+            patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}},
+            notes: "notes for appointment", uuid: "surgicalAppointment uuid", voided: false };
         createController();
         scope.addSurgicalAppointment = jasmine.createSpy("addSurgicalAppointment");
         scope.surgicalAppointmentForm = {$valid: true};
@@ -393,7 +398,10 @@ describe("newSurgicalAppointmentController", function () {
             status: "SCHEDULED",
             actualStartDatetime: undefined,
             actualEndDatetime: undefined,
-            surgicalAppointmentAttributes: {
+            notes: "notes for appointment",
+            uuid: "surgicalAppointment uuid",
+            voided: false,
+          surgicalAppointmentAttributes: {
                 procedure: {
                     surgicalAppointmentAttributeType: {
                         uuid: '25ef8484-3a1f-11e7-83f8-0800274a5156',

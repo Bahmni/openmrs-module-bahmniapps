@@ -71,7 +71,7 @@
                         dnd-dragend="updateSortWeight()"
                         ng-class="{
                         'cancelled': surgicalAppointment.status === 'CANCELLED' || surgicalAppointment.status === 'POSTPONED',
-                        'unsaved': surgicalAppointment.id === undefined
+                        'unsaved': surgicalAppointment.id === undefined || surgicalAppointment.isDirty
                         }"
                     >
                         <td>

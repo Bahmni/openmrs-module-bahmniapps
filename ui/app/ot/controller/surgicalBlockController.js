@@ -109,8 +109,22 @@ angular.module('bahmni.ot')
                 return getAvailableBlockDuration() >= getAppointmentDuration(surgicalAppointment);
             };
 
+            var checkIfSurgicalAppointmentIsDirty = function (surgicalAppointment) {
+                if (!surgicalAppointment.id) {
+                    return;
+                }
+                var savedSurgicalAppointment = _.find($scope.surgicalForm.surgicalAppointments, function (appointment) {
+                    return appointment.id === surgicalAppointment.id;
+                });
+                delete savedSurgicalAppointment.$$hashKey;
+                delete savedSurgicalAppointment.isDirty;
+                surgicalAppointment.isBeingEdited = savedSurgicalAppointment.isBeingEdited;
+                _.isEqual(savedSurgicalAppointment, surgicalAppointment) ? savedSurgicalAppointment.isDirty = false : savedSurgicalAppointment.isDirty = true;
+            };
+
             $scope.addSurgicalAppointment = function (surgicalAppointment) {
                 if (canBeFittedInTheSurgicalBlock(surgicalAppointment)) {
+                    checkIfSurgicalAppointmentIsDirty(surgicalAppointment);
                     addOrUpdateTheSurgicalAppointment(surgicalAppointment);
                     ngDialog.close();
                 }

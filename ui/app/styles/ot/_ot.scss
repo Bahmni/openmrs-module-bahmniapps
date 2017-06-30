@@ -272,7 +272,7 @@ div[ng-app="ot"] {
     input:checked + label {
       background: #d6d6d6;
     }
-    input[value = "List View"]:checked + label{
+    input[value = "List View"]:checked + label {
       margin-right: 50px;
     }
     input {
@@ -289,8 +289,6 @@ div[ng-app="ot"] {
     float: left;
   }
 }
-
-
 
 .ot-actual-time-form {
   .ngdialog-content {
@@ -401,8 +399,10 @@ div[ng-app="ot"] {
   overflow: hidden;
   background: #fff;
 }
+
 .list-view-table-wrapper {
   overflow: auto;
+  height: calc(100vh - 200px);
   table {
     tr {
       white-space: nowrap;
@@ -415,6 +415,7 @@ div[ng-app="ot"] {
     }
   }
 }
+
 .list-view-print-btn {
   position: fixed;
   right: 9px;

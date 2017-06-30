@@ -50,6 +50,9 @@ angular.module('bahmni.ot')
                         actualStartDatetime: $scope.ngDialogData && $scope.ngDialogData.actualStartDatetime,
                         actualEndDatetime: $scope.ngDialogData && $scope.ngDialogData.actualEndDatetime,
                         status: $scope.ngDialogData && $scope.ngDialogData.status || Bahmni.OT.Constants.scheduled,
+                        notes: $scope.ngDialogData && $scope.ngDialogData.notes,
+                        uuid: $scope.ngDialogData && $scope.ngDialogData.uuid,
+                        voided: $scope.ngDialogData && $scope.ngDialogData.voided,
                         surgicalAppointmentAttributes: $scope.attributes
                     };
                     $scope.addSurgicalAppointment(appointment);

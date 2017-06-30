@@ -484,7 +484,7 @@ describe("surgicalBlockController", function () {
         scope.surgicalForm.provider = {uuid: "providerUuid"};
         scope.surgicalForm.location = {uuid: "locationUuid"};
         scope.surgicalForm.surgicalAppointments = [{id: "11", patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes}];
-        var newSurgicalAppointment = {id: "12", patient: {uuid: "patientUuid2"}, notes: "need more assistants and blood", surgicalAppointmentAttributes: defaultSurgicalAppointmentAttributes};
+        var newSurgicalAppointment = {id: undefined, patient: {uuid: "patientUuid2"}, notes: "need more assistants and blood", surgicalAppointmentAttributes: defaultSurgicalAppointmentAttributes};
 
         scope.addSurgicalAppointment(newSurgicalAppointment);
 
@@ -516,6 +516,7 @@ describe("surgicalBlockController", function () {
         expect(scope.surgicalForm.surgicalAppointments.length).toEqual(2);
         expect(scope.surgicalForm.surgicalAppointments[1]).toBe(newSurgicalAppointment);
         expect(scope.surgicalForm.surgicalAppointments[1].sortWeight).toEqual(1);
+        expect(scope.surgicalForm.surgicalAppointments[1].isDirty).toBeTruthy();
         expect(scope.surgicalForm.surgicalAppointments[1].notes).toEqual("assistants are not needed");
         expect(scope.surgicalForm.surgicalAppointments[1].surgicalAppointmentAttributes.procedure.value).toEqual("surgery on left leg");
         expect(scope.surgicalForm.surgicalAppointments[1].surgicalAppointmentAttributes.estTimeMinutes.value).toEqual("30");
