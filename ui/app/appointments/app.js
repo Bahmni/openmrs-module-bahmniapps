@@ -5,8 +5,8 @@ angular
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', '$compileProvider',
         function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-            $urlRouterProvider.otherwise('/home/manage');
-            $urlRouterProvider.when('/home', '/home/manage');
+            $urlRouterProvider.otherwise('/home/manage/summary');
+            $urlRouterProvider.when('/home/manage', '/home/manage/summary');
         // @if DEBUG='production'
             $compileProvider.debugInfoEnabled(false);
         // @endif
@@ -31,6 +31,11 @@ angular
                 },
                 data: {
                     backLinks: []
+                },
+                resolve: {
+                    initializeConfig: function (initialization, $stateParams) {
+                        return initialization($stateParams.appName);
+                    }
                 }
             }).state('home.manage', {
                 url: '/manage',
@@ -43,17 +48,29 @@ angular
             }).state('home.manage.summary', {
                 url: '/summary',
                 views: {
-                    'summary': {
-                        templateUrl: 'views/summary.html',
-                        controller: 'AppointmentsManageController'
+                    'content@manage': {
+                        templateUrl: 'views/summary.html'
                     }
                 }
             }).state('home.manage.appointments', {
                 url: '/appointments',
                 views: {
-                    'content': {
-                        templateUrl: 'views/appointments.html',
-                        controller: 'AppointmentsManageController'
+                    'content@manage': {
+                        templateUrl: 'views/allAppointments.html'
+                    }
+                }
+            }).state('home.manage.appointments.new', {
+                url: '/new',
+                views: {
+                    'content@appointment': {
+                        templateUrl: 'views/newAppointment.html'
+                    }
+                }
+            }).state('home.manage.appointments.edit', {
+                url: '/:uuid',
+                views: {
+                    'content@appointment': {
+                        templateUrl: 'views/editAppointment.html'
                     }
                 }
             }).state('home.admin', {
