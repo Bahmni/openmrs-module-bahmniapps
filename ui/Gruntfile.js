@@ -202,7 +202,8 @@ module.exports = function (grunt) {
                 '<%= yeoman.app %>/admin/**/*.html',
                 '<%= yeoman.app %>/registration/**/*.html',
                 '<%= yeoman.app %>/document-upload/**/*.html',
-                '<%= yeoman.app %>/reports/**/*.html'
+                '<%= yeoman.app %>/reports/**/*.html',
+                '<%= yeoman.app %>/appointments/**/*.html'
             ],
             css: '<%= yeoman.app %>/styles/**/*.css',
             options: {
@@ -274,7 +275,8 @@ module.exports = function (grunt) {
                             'admin/**/*.html',
                             'reports/**/*.html',
                             'registration/**/*.html',
-                            'document-upload/**/*.html'
+                            'document-upload/**/*.html',
+                            'appointments/**/*.html'
                         ],
                         dest: '<%= yeoman.dist %>'
                     }
@@ -379,6 +381,12 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
+                        src: ['appointments.*.js'],
+                        dest: '<%= yeoman.dist %>/appointments/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
                         src: ['patients.min.*.css'],
                         dest: '<%= yeoman.dist %>/patients/'
                     },
@@ -430,6 +438,12 @@ module.exports = function (grunt) {
                         cwd: '<%= yeoman.dist %>',
                         src: ['document-upload.*.css'],
                         dest: '<%= yeoman.dist %>/document-upload/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['appointments.*.css'],
+                        dest: '<%= yeoman.dist %>/appointments/'
                     }
                 ]
             }
@@ -479,7 +493,8 @@ module.exports = function (grunt) {
                     '<%= yeoman.dist %>/home.min.js': '<%= yeoman.dist %>/home.min.js',
                     '<%= yeoman.dist %>/orders.min.js': '<%= yeoman.dist %>/orders.min.js',
                     '<%= yeoman.dist %>/reports.min.js': '<%= yeoman.dist %>/reports.min.js',
-                    '<%= yeoman.dist %>/clinical.min.js': '<%= yeoman.dist %>/clinical.min.js'
+                    '<%= yeoman.dist %>/clinical.min.js': '<%= yeoman.dist %>/clinical.min.js',
+                    '<%= yeoman.dist %>/appointments.min.js': '<%= yeoman.dist %>/appointments.min.js'
                 }
             },
             web: {

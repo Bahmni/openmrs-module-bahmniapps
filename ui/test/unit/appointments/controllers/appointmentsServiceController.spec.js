@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe("AppointmentsServiceController", function () {
+describe("AppointmentsServiceController", function () {
     var appointsServiceController, scope, appointmentsServiceService;
 
     beforeEach(function () {

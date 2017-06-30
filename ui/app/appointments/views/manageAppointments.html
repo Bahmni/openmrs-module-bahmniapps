@@ -1,17 +1,15 @@
 <div >
-    <!--<h2 class="section-title">Summary</h2>-->
-    <!--<h2 class="section-title">Appointments List</h2>-->
-    <ul>
-        <li>
-            <a ng-click="goTo('/home/summary')">Summary</a>
-        </li>
-        <li>
-            <a ng-click="goTo('/home/appointments')" >Appointments</a>
-        </li>
-    </ul>
-    <button type="submit" ng-click="save()" class="service-save-btn">{{::'ADD_NEW_APPOINTMENT'  | translate }}</button>
-    <section>
-        <div ui-view="summary"></div>
-    </section>
+    <div>
+        <header style="display: inline">
+            <span>
+                <a ng-href="#/home/manage/summary">{{ ::'SUMMARY' | translate}}</a>
+            </span>
+            <span>
+                <a ng-href="#/home/manage/appointments">{{ ::'APPOINTMENTS' | translate}}</a>
+            </span>
+        </header>
+        <button style="display:inline;"><a ng-href="#/home/manage/appointments/new">{{::'ADD_NEW_APPOINTMENT' | translate }}</a></button>
+    </div>
 
+    <div ui-view="content@manage"></div>
 </div>

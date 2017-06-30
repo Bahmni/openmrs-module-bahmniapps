@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe('AppointmentsServiceService', function () {
+describe('AppointmentsServiceService', function () {
     var appointmentsServiceService, mockHttp;
     mockHttp = jasmine.createSpyObj('$http', ['get', 'post']);
     mockHttp.get.and.callFake(function (params) {
