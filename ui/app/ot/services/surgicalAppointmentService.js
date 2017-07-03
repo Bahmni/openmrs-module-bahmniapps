@@ -41,12 +41,13 @@ angular.module('bahmni.ot')
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
         };
-        this.getSurgicalBlocksInDateRange = function (startDatetime, endDatetime) {
+        this.getSurgicalBlocksInDateRange = function (startDatetime, endDatetime, includeVoided) {
             return $http.get(Bahmni.OT.Constants.addSurgicalBlockUrl, {
                 method: "GET",
                 params: {
                     startDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDatetime),
                     endDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDatetime),
+                    includeVoided: includeVoided || false,
                     v: "custom:(id," +
                     "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
                     "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,patient:(uuid,display)," +

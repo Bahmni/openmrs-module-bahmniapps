@@ -23,6 +23,7 @@ describe('listViewController', function () {
     });
 
     var createController = function () {
+        spyOn(scope, "$emit");
         controller('listViewController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -101,6 +102,209 @@ describe('listViewController', function () {
         ];
     };
 
+      var surgicalAppointmentsForOT2Block = [{
+          "id": 105,
+          "patient": {"uuid": "3ee5efbf-1267-43af-943d-d1ee8ced9285", "display": "EG100145M - Al Padas e"},
+          "actualStartDatetime": "2017-06-22T08:54:00.000+0530",
+          "actualEndDatetime": "2017-06-22T09:54:00.000+0530",
+          "status": "POSTPONED",
+          "notes": "psofdkjfsdfslfskfjsf",
+          "sortWeight": null,
+          "surgicalAppointmentAttributes": [{
+              surgicalAppointmentAttributeType: {
+                  format: "java.lang.String",
+                  name: "estTimeMinutes"
+              },
+              value: "30"
+          },
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "estTimeHours"
+                  },
+                  value: "0"
+              },
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "cleaningTime"
+                  },
+                  value: "15"
+              }
+          ]
+      }, {
+          "id": 96,
+          "patient": {
+              "uuid": "168eed46-dabe-4b7b-a0d6-a8e4ccc02510",
+              "display": "EG100104M - Al Padjhjvj hjhj hjjhhjhj"
+          },
+          "actualStartDatetime": "2017-06-22T10:00:00.000+0530",
+          "actualEndDatetime": "2017-06-22T11:30:00.000+0530",
+          "status": "POSTPONED",
+          "notes": "postpone appointment",
+          "sortWeight": null,
+          "surgicalAppointmentAttributes": [
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "estTimeMinutes"
+                  },
+                  value: "0"
+              },
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "estTimeHours"
+                  },
+                  value: "1"
+              },
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "cleaningTime"
+                  },
+                  value: "15"
+              }
+          ]
+      }];
+
+      var surgicalAppointmentsForOT1Block = [{
+          "id": 104,
+          "patient": {"uuid": "2300015f-95a3-4d47-933d-a81138ad0aa6", "display": "EG100137M - Al Pad Hassan"},
+          "actualStartDatetime": "2017-06-22T09:00:00.000+0530",
+          "actualEndDatetime": "2017-06-22T13:00:00.000+0530",
+          "status": "SCHEDULED",
+          "notes": null,
+          "sortWeight": 0,
+          "surgicalAppointmentAttributes": [
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "estTimeMinutes"
+                  },
+                  value: "30"
+              },
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "estTimeHours"
+                  },
+                  value: "1"
+              },
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "cleaningTime"
+                  },
+                  value: "15"
+              }
+          ]
+      }];
+
+      var surgicalAppointmentsForOT3Block = [{
+          "id": 107,
+          "patient": {
+              "uuid": "2848a63a-b273-4d9d-8e10-1ad3e39ab1a6",
+              "display": "IQ100079F - XKHRQKVNNJKC UHNTLIXSNERE"
+          },
+          "actualStartDatetime": "2017-06-22T08:30:00.000+0530",
+          "actualEndDatetime": "2017-06-22T09:30:00.000+0530",
+          "status": "POSTPONED",
+          "notes": "not ready",
+          "sortWeight": 0,
+          "surgicalAppointmentAttributes": [
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "estTimeMinutes"
+                  },
+                  value: "30"
+              },
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "estTimeHours"
+                  },
+                  value: "0"
+              },
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "cleaningTime"
+                  },
+                  value: "15"
+              }
+          ]
+      }, {
+          "id": 106,
+          "patient": {
+              "uuid": "9b41d661-df96-4815-aea1-ecc8278dd220",
+              "display": "IQ100072F - QXHTPLJYKLTF JVMSGICIQZVB"
+          },
+          "actualStartDatetime": "2017-06-22T09:45:00.000+0530",
+          "actualEndDatetime": "2017-06-22T13:00:00.000+0530",
+          "status": "COMPLETED",
+          "notes": null,
+          "sortWeight": 0,
+          "surgicalAppointmentAttributes": [
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "estTimeMinutes"
+                  },
+                  value: "30"
+              },
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "estTimeHours"
+                  },
+                  value: "2"
+              },
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "cleaningTime"
+                  },
+                  value: "15"
+              }
+          ]
+      }, {
+          "id": 108,
+          "patient": {
+              "uuid": "0c58967c-a415-48c8-9830-adcaa94b9d4f",
+              "display": "IQ100074F - CUYCTOEPHJDP OCECDYHMGPSO"
+          },
+          "actualStartDatetime": "2017-06-22T14:30:00.000+0530",
+          "actualEndDatetime": "2017-06-22T16:30:00.000+0530",
+          "status": "CANCELLED",
+          "notes": "Mistake",
+          "sortWeight": null,
+          "surgicalAppointmentAttributes": [
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "estTimeMinutes"
+                  },
+                  value: "30"
+              },
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "estTimeHours"
+                  },
+                  value: "1"
+              },
+              {
+                  surgicalAppointmentAttributeType: {
+                      format: "java.lang.String",
+                      name: "cleaningTime"
+                  },
+                  value: "0"
+              }
+          ]
+      }];
+
 
 
        var results = [{
@@ -117,28 +321,7 @@ describe('listViewController', function () {
            "location": {"uuid": "3353e310-3086-11e7-b60e-0800274a5156", "name": "OT 2"},
            "startDatetime": "2017-06-22T08:54:00.000+0530",
            "endDatetime": "2017-06-22T16:54:00.000+0530",
-           "surgicalAppointments": [{
-               "id": 105,
-               "patient": {"uuid": "3ee5efbf-1267-43af-943d-d1ee8ced9285", "display": "EG100145M - Al Padas e"},
-               "actualStartDatetime": null,
-               "actualEndDatetime": null,
-               "status": "POSTPONED",
-               "notes": "psofdkjfsdfslfskfjsf",
-               "sortWeight": null,
-               "surgicalAppointmentAttributes": []
-           }, {
-               "id": 96,
-               "patient": {
-                   "uuid": "168eed46-dabe-4b7b-a0d6-a8e4ccc02510",
-                   "display": "EG100104M - Al Padjhjvj hjhj hjjhhjhj"
-               },
-               "actualStartDatetime": null,
-               "actualEndDatetime": null,
-               "status": "POSTPONED",
-               "notes": "postpone appointment",
-               "sortWeight": null,
-               "surgicalAppointmentAttributes": []
-           }],
+           "surgicalAppointments": surgicalAppointmentsForOT2Block,
            "uuid": "7a6e123e-a824-4512-b50b-5c49bfbe71de"
        }, {
            "id": 119,
@@ -162,16 +345,7 @@ describe('listViewController', function () {
            "location": {"uuid": "3353ccb2-3086-11e7-b60e-0800274a5156", "name": "OT 1"},
            "startDatetime": "2017-06-22T09:00:00.000+0530",
            "endDatetime": "2017-06-22T10:00:00.000+0530",
-           "surgicalAppointments": [{
-               "id": 104,
-               "patient": {"uuid": "2300015f-95a3-4d47-933d-a81138ad0aa6", "display": "EG100137M - Al Pad Hassan"},
-               "actualStartDatetime": null,
-               "actualEndDatetime": null,
-               "status": "SCHEDULED",
-               "notes": null,
-               "sortWeight": 0,
-               "surgicalAppointmentAttributes": []
-           }],
+           "surgicalAppointments": surgicalAppointmentsForOT1Block,
            "uuid": "524cdff6-812c-4b54-ae9e-d3f1c1f00eb9"
        }, {
            "id": 120,
@@ -183,43 +357,7 @@ describe('listViewController', function () {
            "location": {"uuid": "3353f1c1-3086-11e7-b60e-0800274a5156", "name": "OT 3"},
            "startDatetime": "2017-06-22T08:30:00.000+0530",
            "endDatetime": "2017-06-22T17:00:00.000+0530",
-           "surgicalAppointments": [{
-               "id": 107,
-               "patient": {
-                   "uuid": "2848a63a-b273-4d9d-8e10-1ad3e39ab1a6",
-                   "display": "IQ100079F - XKHRQKVNNJKC UHNTLIXSNERE"
-               },
-               "actualStartDatetime": null,
-               "actualEndDatetime": null,
-               "status": "POSTPONED",
-               "notes": "not ready",
-               "sortWeight": 0,
-               "surgicalAppointmentAttributes": []
-           }, {
-               "id": 106,
-               "patient": {
-                   "uuid": "9b41d661-df96-4815-aea1-ecc8278dd220",
-                   "display": "IQ100072F - QXHTPLJYKLTF JVMSGICIQZVB"
-               },
-               "actualStartDatetime": "2017-06-22T09:15:00.000+0530",
-               "actualEndDatetime": "2017-06-22T10:00:00.000+0530",
-               "status": "COMPLETED",
-               "notes": null,
-               "sortWeight": 0,
-               "surgicalAppointmentAttributes": []
-           }, {
-               "id": 108,
-               "patient": {
-                   "uuid": "0c58967c-a415-48c8-9830-adcaa94b9d4f",
-                   "display": "IQ100074F - CUYCTOEPHJDP OCECDYHMGPSO"
-               },
-               "actualStartDatetime": null,
-               "actualEndDatetime": null,
-               "status": "CANCELLED",
-               "notes": "Mistake",
-               "sortWeight": null,
-               "surgicalAppointmentAttributes": []
-           }],
+           "surgicalAppointments": surgicalAppointmentsForOT3Block,
            "uuid": "c9bd5e83-62f7-4e03-a7b4-fd056c4dd67e"
        }];
 
@@ -237,6 +375,7 @@ describe('listViewController', function () {
             statusList: []
         };
         createController();
+        expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(jasmine.any(Date), jasmine.any(Date), true);
         expect(scope.surgicalAppointmentList.length).toEqual(6);
         expect(scope.surgicalAppointmentList[0].id).toEqual(104);
         expect(scope.surgicalAppointmentList[1].id).toEqual(105);
@@ -260,6 +399,7 @@ describe('listViewController', function () {
         expect(scope.surgicalAppointmentList[0].derivedAttributes.patientIdentifier).toEqual("EG100137M");
         expect(scope.surgicalAppointmentList[0].status).toEqual("SCHEDULED");
     });
+    
     it("should print the page with the surgical appointment list", function () {
         appDescriptor.getConfigValue.and.callFake(function (value) {
             if (value == 'printListViewTemplateUrl') {
@@ -294,5 +434,124 @@ describe('listViewController', function () {
         createController();
         scope.printPage();
         expect(printer.print).toHaveBeenCalledWith("views/listView.html", {surgicalAppointmentList: scope.surgicalAppointmentList});
+
+    it("should sort appointments by the sort column", function () {
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        createController();
+        scope.sortSurgicalAppointmentsBy('derivedAttributes.patientIdentifier');
+        expect(scope.sortColumn).toEqual('derivedAttributes.patientIdentifier');
+        expect(scope.surgicalAppointmentList.length).toEqual(6);
+        expect(scope.surgicalAppointmentList[0].id).toEqual(96);
+        expect(scope.surgicalAppointmentList[1].id).toEqual(104);
+        expect(scope.surgicalAppointmentList[2].id).toEqual(105);
+        expect(scope.surgicalAppointmentList[3].id).toEqual(106);
+        expect(scope.surgicalAppointmentList[4].id).toEqual(108);
+        expect(scope.surgicalAppointmentList[5].id).toEqual(107);
+
+        scope.sortSurgicalAppointmentsBy('status');
+        expect(scope.sortColumn).toEqual('status');
+        expect(scope.surgicalAppointmentList.length).toEqual(6);
+        expect(scope.surgicalAppointmentList[0].id).toEqual(104);
+        expect(scope.surgicalAppointmentList[1].id).toEqual(107);
+        expect(scope.surgicalAppointmentList[2].id).toEqual(105);
+        expect(scope.surgicalAppointmentList[3].id).toEqual(96);
+        expect(scope.surgicalAppointmentList[4].id).toEqual(106);
+        expect(scope.surgicalAppointmentList[5].id).toEqual(108);
+
+        scope.sortSurgicalAppointmentsBy('derivedAttributes.duration');
+        expect(scope.sortColumn).toEqual('derivedAttributes.duration');
+        expect(scope.surgicalAppointmentList.length).toEqual(6);
+        expect(scope.surgicalAppointmentList[0].id).toEqual(107);
+        expect(scope.surgicalAppointmentList[1].id).toEqual(105);
+        expect(scope.surgicalAppointmentList[2].id).toEqual(96);
+        expect(scope.surgicalAppointmentList[3].id).toEqual(108);
+        expect(scope.surgicalAppointmentList[4].id).toEqual(104);
+        expect(scope.surgicalAppointmentList[5].id).toEqual(106);
+
+        scope.sortSurgicalAppointmentsBy('derivedAttributes.expectedStartTime');
+        expect(scope.sortColumn).toEqual('derivedAttributes.expectedStartTime');
+        expect(scope.surgicalAppointmentList.length).toEqual(6);
+        expect(scope.surgicalAppointmentList[0].id).toEqual(104);
+        expect(scope.surgicalAppointmentList[1].id).toEqual(106);
+        expect(scope.surgicalAppointmentList[2].id).toEqual(107);
+        expect(scope.surgicalAppointmentList[3].id).toEqual(105);
+        expect(scope.surgicalAppointmentList[4].id).toEqual(96);
+        expect(scope.surgicalAppointmentList[5].id).toEqual(108);
+
+        scope.sortSurgicalAppointmentsBy('actualStartDatetime');
+        expect(scope.sortColumn).toEqual('actualStartDatetime');
+        expect(scope.surgicalAppointmentList.length).toEqual(6);
+        expect(scope.surgicalAppointmentList[0].id).toEqual(107);
+        expect(scope.surgicalAppointmentList[1].id).toEqual(105);
+        expect(scope.surgicalAppointmentList[2].id).toEqual(104);
+        expect(scope.surgicalAppointmentList[3].id).toEqual(106);
+        expect(scope.surgicalAppointmentList[4].id).toEqual(96);
+        expect(scope.surgicalAppointmentList[5].id).toEqual(108);
+    });
+
+    it("should reverse sort appointments if sorted on the same column consecutively", function () {
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        createController();
+        scope.sortSurgicalAppointmentsBy('derivedAttributes.patientIdentifier');
+        expect(scope.reverseSort).toEqual(true);
+        expect(scope.surgicalAppointmentList.length).toEqual(6);
+        expect(scope.surgicalAppointmentList[0].id).toEqual(96);
+        expect(scope.surgicalAppointmentList[1].id).toEqual(104);
+        expect(scope.surgicalAppointmentList[2].id).toEqual(105);
+        expect(scope.surgicalAppointmentList[3].id).toEqual(106);
+        expect(scope.surgicalAppointmentList[4].id).toEqual(108);
+        expect(scope.surgicalAppointmentList[5].id).toEqual(107);
+
+        scope.sortSurgicalAppointmentsBy('derivedAttributes.patientIdentifier');
+        expect(scope.reverseSort).toEqual(false);
+        expect(scope.surgicalAppointmentList.length).toEqual(6);
+        expect(scope.surgicalAppointmentList[0].id).toEqual(107);
+        expect(scope.surgicalAppointmentList[1].id).toEqual(108);
+        expect(scope.surgicalAppointmentList[2].id).toEqual(106);
+        expect(scope.surgicalAppointmentList[3].id).toEqual(105);
+        expect(scope.surgicalAppointmentList[4].id).toEqual(104);
+        expect(scope.surgicalAppointmentList[5].id).toEqual(96);
+    });
+
+    it("should emit an event when surgical appointment is selected in list view", function () {
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+
+        var event = {
+            stopPropagation: function () {
+            }
+        };
+        var surgicalBlock = {uuid: "surgicalBlockUuid"};
+        var appointment = surgicalAppointmentsForOT2Block[0];
+        appointment.surgicalBlock =  results[0];
+        createController();
+        scope.selectSurgicalAppointment(event, appointment);
+        expect(scope.$emit).toHaveBeenCalledWith("event:surgicalAppointmentSelect", appointment, appointment.surgicalBlock);
+    });
+
+    it("should emit an event when surgical appointment is deselected in list view", function () {
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        var event = {
+            stopPropagation: function () {
+            }
+        };
+        createController();
+        scope.deselectSurgicalAppointment(event);
+        expect(scope.$emit).toHaveBeenCalledWith("event:surgicalBlockDeselect");
     });
 });

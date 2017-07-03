@@ -71,7 +71,7 @@ describe('surgicalAppointmentService', function () {
         expect(mockHttp.get.calls.mostRecent().args[1].headers).toEqual({"Accept": "application/json", "Content-Type": "application/json"});
     });
 
-    it('should get the surgical blocks in the geiven date range with custom representation', function (done) {
+    it('should get the surgical blocks in the given date range with custom representation', function (done) {
         var data = {id: 1, uuid: "surgicalBlockUuid", location:{uuid: "locationUuid", name: "OT1"}, provider: {uuid: "providerUuid", person: {given_name: "Given name", family_name: "Last name"},
             startDatetime: "2039-08-26T12:00:00.000+0530", endDatetime: "2039-08-26T15:00:00.000+0530", surgicalAppointments: []}};
         var startDatetime = "2039-08-26T12:00:00.000+0530";
@@ -86,7 +86,7 @@ describe('surgicalAppointmentService', function () {
 
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/surgicalBlock");
-        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({ startDatetime : '2039-08-26T12:00:00.000', endDatetime : '2039-08-26T15:00:00.000',v: "custom:(id," +
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({ startDatetime : '2039-08-26T12:00:00.000', endDatetime : '2039-08-26T15:00:00.000',includeVoided: false, v: "custom:(id," +
         "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
         "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,patient:(uuid,display)," +
         "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,surgicalAppointmentAttributes),uuid)"});

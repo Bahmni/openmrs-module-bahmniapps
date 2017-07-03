@@ -21,15 +21,15 @@ angular.module('bahmni.ot')
                 {heading: 'Anaesthetist', sortInfo: 'surgicalAppointmentAttributes.anaesthetist.value'},
                 {heading: 'Scrub Nurse', sortInfo: 'surgicalAppointmentAttributes.scrubNurse.value'},
                 {heading: 'Circulating Nurse', sortInfo: 'surgicalAppointmentAttributes.circulatingNurse.value'},
-                {heading: 'Status Change Notes', sortInfo: 'notes'},
-                {heading: 'Status', sortInfo: 'status'}];
+                {heading: 'Status', sortInfo: 'status'},
+                {heading: 'Status Change Notes', sortInfo: 'notes'}];
             var init = function (startDatetime, endDatetime) {
                 $scope.addActualTimeDisabled = true;
                 $scope.editDisabled = true;
                 $scope.cancelDisabled = true;
                 $scope.reverseSort = false;
                 $scope.sortColumn = "";
-                return $q.all([surgicalAppointmentService.getSurgicalBlocksInDateRange(startDatetime, endDatetime)]).then(function (response) {
+                return $q.all([surgicalAppointmentService.getSurgicalBlocksInDateRange(startDatetime, endDatetime, true)]).then(function (response) {
                     var surgicalBlocks = response[0].data.results;
                     var mappedSurgicalBlocks = _.map(surgicalBlocks, function (surgicalBlock) {
                         return surgicalBlockMapper.map(surgicalBlock, $rootScope.attributeTypes, $rootScope.surgeons);
@@ -44,7 +44,6 @@ angular.module('bahmni.ot')
                             var estTimeHours = mappedAppointment.surgicalAppointmentAttributes['estTimeHours'] && mappedAppointment.surgicalAppointmentAttributes['estTimeHours'].value;
                             var estTimeMinutes = mappedAppointment.surgicalAppointmentAttributes['estTimeMinutes'] && mappedAppointment.surgicalAppointmentAttributes['estTimeMinutes'].value;
                             var cleaningTime = mappedAppointment.surgicalAppointmentAttributes['cleaningTime'] && mappedAppointment.surgicalAppointmentAttributes['cleaningTime'].value;
-
                             mappedAppointment.derivedAttributes.duration = surgicalAppointmentHelper.getAppointmentDuration(
                                 estTimeHours, estTimeMinutes, cleaningTime
                             );

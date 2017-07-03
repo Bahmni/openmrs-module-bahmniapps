@@ -283,4 +283,30 @@ describe("calendarViewController", function () {
             }
         }));
     });
+
+    it('should go to the current week on click of week', function () {
+        createController();
+        scope.goToCurrentWeek();
+        expect(scope.weekOrDay).toEqual('week');
+        expect(scope.weekStartDate).toEqual(new Date(moment().startOf('week')));
+        expect(scope.weekEndDate).toEqual(new Date(moment().endOf('week').endOf('day')));
+    });
+
+    it('should go to next week on click of right arrow in week view', function() {
+       createController();
+       scope.weekStartDate = new Date(moment().startOf('week'));
+       scope.weekEndDate = new Date(moment().endOf('week').endOf('day'));
+       scope.goToNextWeek();
+       expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().startOf('week')), 7));
+       expect(scope.weekEndDate ).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().endOf('week').endOf('day')), 7));
+    });
+
+    it('should go to previous week on click of left arrow in week view', function() {
+       createController();
+       scope.weekStartDate = new Date(moment().startOf('week'));
+       scope.weekEndDate = new Date(moment().endOf('week').endOf('day'));
+       scope.goToPreviousWeek();
+       expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().startOf('week')), 7));
+       expect(scope.weekEndDate ).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().endOf('week').endOf('day')), 7));
+    });
 });

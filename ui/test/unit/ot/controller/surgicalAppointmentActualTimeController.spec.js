@@ -52,7 +52,7 @@ describe("surgicalAppointmentActualTimeController", function () {
                     {
                         surgicalAppointmentAttributeType: {
                             format: "java.lang.String",
-                            name: "estTimeMinutes"
+                            name: "cleaningTime"
                         },
                         value: "15"
                     }],
@@ -123,7 +123,7 @@ describe("surgicalAppointmentActualTimeController", function () {
                     {
                         surgicalAppointmentAttributeType: {
                             format: "java.lang.String",
-                            name: "estTimeMinutes"
+                            name: "cleaningTime"
                         },
                         value: "15"
                     }],
@@ -170,7 +170,7 @@ describe("surgicalAppointmentActualTimeController", function () {
                 {
                     surgicalAppointmentAttributeType: {
                         format: "java.lang.String",
-                        name: "estTimeMinutes"
+                        name: "cleaningTime"
                     },
                     value: "15"
                 }]
@@ -208,7 +208,7 @@ describe("surgicalAppointmentActualTimeController", function () {
                 {
                     surgicalAppointmentAttributeType: {
                         format: "java.lang.String",
-                        name: "estTimeMinutes"
+                        name: "CleaningTime"
                     },
                     value: "15"
                 }]
