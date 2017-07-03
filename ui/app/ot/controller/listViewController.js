@@ -23,6 +23,53 @@ angular.module('bahmni.ot')
                 {heading: 'Circulating Nurse', sortInfo: 'surgicalAppointmentAttributes.circulatingNurse.value'},
                 {heading: 'Status', sortInfo: 'status'},
                 {heading: 'Status Change Notes', sortInfo: 'notes'}];
+
+            var filterSurgicalBlocksAndMapAppointmentsForDisplay = function (surgicalBlocks) {
+                var clonedSurgicalBlocks = _.cloneDeep(surgicalBlocks);
+                var filteredSurgicalBlocks = surgicalBlockFilter(clonedSurgicalBlocks, $scope.filterParams);
+                var mappedSurgicalBlocks = _.map(filteredSurgicalBlocks, function (surgicalBlock) {
+                    return surgicalBlockMapper.map(surgicalBlock, $rootScope.attributeTypes, $rootScope.surgeons);
+                });
+                mappedSurgicalBlocks = _.map(mappedSurgicalBlocks, function (surgicalBlock) {
+                    var blockStartDatetime = surgicalBlock.startDatetime;
+                    surgicalBlock.surgicalAppointments = _.map(surgicalBlock.surgicalAppointments, function (appointment) {
+                        var mappedAppointment = _.cloneDeep(appointment);
+                        mappedAppointment.surgicalBlock = surgicalBlock;
+                        mappedAppointment.derivedAttributes = {};
+
+                        var estTimeHours = mappedAppointment.surgicalAppointmentAttributes['estTimeHours'] && mappedAppointment.surgicalAppointmentAttributes['estTimeHours'].value;
+                        var estTimeMinutes = mappedAppointment.surgicalAppointmentAttributes['estTimeMinutes'] && mappedAppointment.surgicalAppointmentAttributes['estTimeMinutes'].value;
+                        var cleaningTime = mappedAppointment.surgicalAppointmentAttributes['cleaningTime'] && mappedAppointment.surgicalAppointmentAttributes['cleaningTime'].value;
+
+                        mappedAppointment.derivedAttributes.duration = surgicalAppointmentHelper.getAppointmentDuration(
+                            estTimeHours, estTimeMinutes, cleaningTime
+                        );
+                        mappedAppointment.derivedAttributes.expectedStartDate = moment(blockStartDatetime).startOf('day').toDate();
+                        mappedAppointment.derivedAttributes.patientIdentifier = mappedAppointment.patient.display.split(' - ')[0];
+                        mappedAppointment.derivedAttributes.patientName = mappedAppointment.patient.display.split(' - ')[1];
+                        if (mappedAppointment.status === Bahmni.OT.Constants.completed || mappedAppointment.status === Bahmni.OT.Constants.scheduled) {
+                            mappedAppointment.derivedAttributes.expectedStartTime = blockStartDatetime;
+                            blockStartDatetime = Bahmni.Common.Util.DateUtil.addMinutes(blockStartDatetime, mappedAppointment.derivedAttributes.duration);
+                        }
+                        return mappedAppointment;
+                    });
+                    return surgicalBlock;
+                });
+
+                var surgicalAppointmentList = _.reduce(mappedSurgicalBlocks, function (surgicalAppointmentList, block) {
+                    return surgicalAppointmentList.concat(block.surgicalAppointments);
+                }, []);
+
+                var filteredSurgicalAppointmentsByStatus = surgicalAppointmentHelper.filterSurgicalAppointmentsByStatus(
+                    surgicalAppointmentList, _.map($scope.filterParams.statusList, function (status) {
+                        return status.name;
+                    }));
+
+                var filteredSurgicalAppointmentsByPatient = surgicalAppointmentHelper.filterSurgicalAppointmentsByPatient(
+                    filteredSurgicalAppointmentsByStatus, $scope.filterParams.patient);
+                $scope.surgicalAppointmentList = _.sortBy(filteredSurgicalAppointmentsByPatient, ["derivedAttributes.expectedStartDate", "surgicalBlock.location.name", "derivedAttributes.expectedStartDatetime"]);
+            };
+
             var init = function (startDatetime, endDatetime) {
                 $scope.addActualTimeDisabled = true;
                 $scope.editDisabled = true;
@@ -30,49 +77,8 @@ angular.module('bahmni.ot')
                 $scope.reverseSort = false;
                 $scope.sortColumn = "";
                 return $q.all([surgicalAppointmentService.getSurgicalBlocksInDateRange(startDatetime, endDatetime, true)]).then(function (response) {
-                    var surgicalBlocks = response[0].data.results;
-                    var mappedSurgicalBlocks = _.map(surgicalBlocks, function (surgicalBlock) {
-                        return surgicalBlockMapper.map(surgicalBlock, $rootScope.attributeTypes, $rootScope.surgeons);
-                    });
-                    mappedSurgicalBlocks = _.map(mappedSurgicalBlocks, function (surgicalBlock) {
-                        var blockStartDatetime = surgicalBlock.startDatetime;
-                        surgicalBlock.surgicalAppointments = _.map(surgicalBlock.surgicalAppointments, function (appointment) {
-                            var mappedAppointment = _.cloneDeep(appointment);
-                            mappedAppointment.surgicalBlock = surgicalBlock;
-                            mappedAppointment.derivedAttributes = {};
-
-                            var estTimeHours = mappedAppointment.surgicalAppointmentAttributes['estTimeHours'] && mappedAppointment.surgicalAppointmentAttributes['estTimeHours'].value;
-                            var estTimeMinutes = mappedAppointment.surgicalAppointmentAttributes['estTimeMinutes'] && mappedAppointment.surgicalAppointmentAttributes['estTimeMinutes'].value;
-                            var cleaningTime = mappedAppointment.surgicalAppointmentAttributes['cleaningTime'] && mappedAppointment.surgicalAppointmentAttributes['cleaningTime'].value;
-                            mappedAppointment.derivedAttributes.duration = surgicalAppointmentHelper.getAppointmentDuration(
-                                estTimeHours, estTimeMinutes, cleaningTime
-                            );
-
-                            mappedAppointment.derivedAttributes.expectedStartDate = moment(blockStartDatetime).startOf('day').toDate();
-                            mappedAppointment.derivedAttributes.patientIdentifier = mappedAppointment.patient.display.split(' - ')[0];
-                            mappedAppointment.derivedAttributes.patientName = mappedAppointment.patient.display.split(' - ')[1];
-                            if (mappedAppointment.status === Bahmni.OT.Constants.completed || mappedAppointment.status === Bahmni.OT.Constants.scheduled) {
-                                mappedAppointment.derivedAttributes.expectedStartTime = blockStartDatetime;
-                                blockStartDatetime = Bahmni.Common.Util.DateUtil.addMinutes(blockStartDatetime, mappedAppointment.derivedAttributes.duration);
-                            }
-                            return mappedAppointment;
-                        });
-                        return surgicalBlock;
-                    });
-
-                    var filteredSurgicalBlocks = surgicalBlockFilter(mappedSurgicalBlocks, $scope.filterParams);
-                    var surgicalAppointmentList = _.reduce(filteredSurgicalBlocks, function (surgicalAppointmentList, block) {
-                        return surgicalAppointmentList.concat(block.surgicalAppointments);
-                    }, []);
-
-                    var filteredSurgicalAppointmentsByStatus = surgicalAppointmentHelper.filterSurgicalAppointmentsByStatus(
-                        surgicalAppointmentList, _.map($scope.filterParams.statusList, function (status) {
-                            return status.name;
-                        }));
-
-                    var filteredSurgicalAppointmentsByPatient = surgicalAppointmentHelper.filterSurgicalAppointmentsByPatient(
-                        filteredSurgicalAppointmentsByStatus, $scope.filterParams.patient);
-                    $scope.surgicalAppointmentList = _.sortBy(filteredSurgicalAppointmentsByPatient, ["derivedAttributes.expectedStartDate", "surgicalBlock.location.name", "derivedAttributes.expectedStartDatetime"]);
+                    $scope.surgicalBlocks = response[0].data.results;
+                    filterSurgicalBlocksAndMapAppointmentsForDisplay($scope.surgicalBlocks);
                 });
             };
 
@@ -126,7 +132,7 @@ angular.module('bahmni.ot')
 
             $scope.$watch("filterParams", function (oldValue, newValue) {
                 if (oldValue !== newValue) {
-                    spinner.forPromise(init(startDatetime, endDatetime));
+                    filterSurgicalBlocksAndMapAppointmentsForDisplay($scope.surgicalBlocks);
                 }
             });
 
