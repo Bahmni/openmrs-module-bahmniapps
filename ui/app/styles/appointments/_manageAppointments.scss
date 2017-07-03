@@ -1,7 +1,46 @@
-.add-app-btn {
-  float: right;
-  background: #99C915;
-  border: none;
-  outline: none;
-  color: #fff;
+/*---- page and nav style ----*/
+
+.add-app-wrapper {
+  header {
+    border-bottom: 1px solid #95989A;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 10px;
+    nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      a {
+        display: inline-block;
+        padding: 10px;
+        margin-left: 20px;
+        border-radius: 3px 3px 0 0;
+        color: #000;
+        border: 1px solid transparent;
+        border-bottom: none;
+        font-size: 12px;
+        outline: none;
+        font-family: "OpenSansBold";
+        &.active {
+          color: #27AE60;
+          background: #F7F7F7;
+          border-color: #95989A;
+        }
+      }
+    }
+    .add-app-btn {
+      float: right;
+      background: #99C915;
+      border: none;
+      outline: none;
+      color: #fff;
+      padding: 10px;
+      border-radius: 3px;
+      margin: 0 10px 10px 0;
+      font-size: 13px;
+    }
+  }
 }
+
+/*----- list view styles -----*/
+
