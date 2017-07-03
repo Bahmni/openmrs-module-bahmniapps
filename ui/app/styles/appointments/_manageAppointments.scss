@@ -5,7 +5,7 @@
     border-bottom: 1px solid #95989A;
     position: relative;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     nav {
       position: absolute;
       bottom: 0;
@@ -42,5 +42,75 @@
   }
 }
 
+.appointment-btn-container {
+  padding: 0 10px 20px;
+  a {
+    padding: 8px 10px;
+    border: 1px solid #95989A;
+    border-radius: 3px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    display: inline-block;
+    color: #000;
+    margin-left: 10px;
+    &.active {
+      background: #E2E2E2;
+    }
+    i {
+      color: #00ACC3;
+    }
+    &.app-filter-btn {
+      padding: 5px 10px;
+    }
+  }
+  .app-filter-btn-wrapper {
+    display: inline-block;
+    padding-right: 30px;
+    margin-right: 15px;
+    border-right: 1px solid #95989A;
+    a {
+      margin: 0;
+    }
+  }
+}
+
+/*----- create new appointment styles -----*/
+
+.create-new-app-container {
+  position: absolute;
+  width: 300px;
+  background: #fff;
+  height: 100%;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
 /*----- list view styles -----*/
 
+.app-list-view {
+ table {
+   th {
+     background: #C7C0C0;
+     color: #222222;
+     border-color: #C7C0C0;
+     text-align: center;
+     padding: 10px;
+   }
+   tbody {
+     tr {
+       &:nth-child(even) {
+         background: #F2F1F1;
+       }
+       td {
+         text-align: center;
+         border-right: none;
+         border-left: none;
+         padding: 10px;
+         input[type=checkbox] {
+           float: left;
+           margin-top: 2px;
+         }
+       }
+     }
+   }
+ }
+}
