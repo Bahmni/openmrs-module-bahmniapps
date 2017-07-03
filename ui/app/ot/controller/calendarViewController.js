@@ -23,7 +23,7 @@ angular.module('bahmni.ot')
                 $state.view = $scope.view;
                 $scope.weekOrDay = $state.weekOrDay || 'day';
                 $state.weekOrDay = $scope.weekOrDay;
-                if($scope.weekOrDay == 'week') {
+                if ($scope.weekOrDay == 'week') {
                     $scope.weekStartDate = $state.weekStartDate || new Date(moment().startOf('week'));
                     $state.weekStartDate = $scope.weekStartDate;
                     $scope.weekEndDate = $state.weekEndDate || new Date(moment().endOf('week').endOf('day'));
@@ -59,7 +59,7 @@ angular.module('bahmni.ot')
                 });
             };
 
-            $scope.calendarView = function() {
+            $scope.calendarView = function () {
                 $scope.weekOrDay = 'day';
                 $state.weekOrDay = $scope.weekOrDay;
                 $scope.view = 'Calendar';

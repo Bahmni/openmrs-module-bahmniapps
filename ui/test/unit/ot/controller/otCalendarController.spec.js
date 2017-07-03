@@ -91,7 +91,7 @@ describe("otCalendarController", function () {
 
     it('should group the surgical blocks by the location', function () {
         createController();
-        expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalled();
+        expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(scope.viewDate, moment(scope.viewDate).endOf('day'));
         expect(scope.surgicalBlocksByLocation.length).toEqual(2);
         expect(scope.surgicalBlocksByLocation[0][0]).toEqual(surgicalBlocks[0]);
         expect(scope.surgicalBlocksByLocation[1][0]).toEqual(surgicalBlocks[1]);

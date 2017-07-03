@@ -15,15 +15,18 @@ angular.module('bahmni.ot')
                 $scope.calendarStartDatetime = Bahmni.Common.Util.DateUtil.addMinutes($scope.viewDate, (dayStart[0] * 60 + parseInt(dayStart[1])));
                 $scope.calendarEndDatetime = Bahmni.Common.Util.DateUtil.addMinutes($scope.viewDate, (dayEnd[0] * 60 + parseInt(dayEnd[1])));
                 $scope.rows = $scope.getRowsForCalendar();
-                return $q.all([locationService.getAllByTag('Operation Theater'), surgicalAppointmentService.getSurgicalBlocksInDateRange($scope.calendarStartDatetime, $scope.calendarEndDatetime)]).then(function (response) {
-                    $scope.locations = response[0].data.results;
+                var blocksStartDatetime = $scope.viewDate;
+                var blocksEndDatetime = moment($scope.viewDate).endOf('day');
+                return $q.all([locationService.getAllByTag('Operation Theater'),
+                    surgicalAppointmentService.getSurgicalBlocksInDateRange(blocksStartDatetime, blocksEndDatetime)]).then(function (response) {
+                        $scope.locations = response[0].data.results;
 
-                    $scope.surgicalBlocksByLocation = _.map($scope.locations, function (location) {
-                        return _.filter(response[1].data.results, function (surgicalBlock) {
-                            return surgicalBlock.location.uuid === location.uuid;
+                        $scope.surgicalBlocksByLocation = _.map($scope.locations, function (location) {
+                            return _.filter(response[1].data.results, function (surgicalBlock) {
+                                return surgicalBlock.location.uuid === location.uuid;
+                            });
                         });
                     });
-                });
             };
 
             $scope.intervals = function () {
