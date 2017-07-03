@@ -268,7 +268,6 @@ describe("calendarViewController", function () {
         createController();
         scope.surgicalBlockSelected = surgicalBlocks[0];
         scope.surgicalBlockSelected.provider = {person: {display:"something"}};
-        // scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
         scope.cancelSurgicalBlockOrSurgicalAppointment();
 
         expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
@@ -288,8 +287,11 @@ describe("calendarViewController", function () {
         createController();
         scope.goToCurrentWeek();
         expect(scope.weekOrDay).toEqual('week');
+        expect(state.weekOrDay).toEqual('week');
         expect(scope.weekStartDate).toEqual(new Date(moment().startOf('week')));
+        expect(state.weekStartDate).toEqual(new Date(moment().startOf('week')));
         expect(scope.weekEndDate).toEqual(new Date(moment().endOf('week').endOf('day')));
+        expect(state.weekEndDate).toEqual(new Date(moment().endOf('week').endOf('day')));
     });
 
     it('should go to next week on click of right arrow in week view', function() {
@@ -298,7 +300,9 @@ describe("calendarViewController", function () {
        scope.weekEndDate = new Date(moment().endOf('week').endOf('day'));
        scope.goToNextWeek();
        expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().startOf('week')), 7));
+       expect(state.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().startOf('week')), 7));
        expect(scope.weekEndDate ).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().endOf('week').endOf('day')), 7));
+       expect(state.weekEndDate ).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().endOf('week').endOf('day')), 7));
     });
 
     it('should go to previous week on click of left arrow in week view', function() {
@@ -307,6 +311,42 @@ describe("calendarViewController", function () {
        scope.weekEndDate = new Date(moment().endOf('week').endOf('day'));
        scope.goToPreviousWeek();
        expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().startOf('week')), 7));
+       expect(state.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().startOf('week')), 7));
        expect(scope.weekEndDate ).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().endOf('week').endOf('day')), 7));
+       expect(state.weekEndDate ).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().endOf('week').endOf('day')), 7));
+    });
+
+    it('should set scope params to state params if state params are present', function () {
+        state.view = 'List View';
+        state.weekOrDay = 'week';
+        state.weekStartDate = new Date(moment('2017-02-01').startOf('week'));
+        state.weekEndDate = new Date(moment('2017-02-01').endOf('week').endOf('day'));
+        var filters = {locations: {"location1": true, "location2": false, "location3": true},
+            providers: [{uuid: "providerUuid1"}],
+            patient: {uuid: "patientUuid2", value: "firstName2 lastName2", identifier: "IQ10002"},
+            statusList: [{name: "COMPLETED"}]
+        };
+        state.filterParams = filters;
+        state.viewDate = new Date(moment('2017-02-01').startOf('day'));
+        createController();
+        expect(scope.view).toEqual('List View');
+        expect(scope.weekOrDay).toEqual('week');
+        expect(scope.weekStartDate).toEqual(new Date(moment('2017-02-01').startOf('week')));
+        expect(scope.weekEndDate).toEqual(new Date(moment('2017-02-01').endOf('week').endOf('day')));
+        expect(scope.filters).toEqual(filters);
+        expect(scope.viewDate).toEqual(new Date(moment('2017-02-01').startOf('day')));
+    });
+
+    it('should go to calendar view on click of calendar button', function () {
+       createController();
+       scope.calendarView();
+       expect(scope.weekOrDay).toEqual('day');
+       expect(scope.view).toEqual('Calendar');
+    });
+
+    it('should go to list view on click of list view button', function () {
+        createController();
+        scope.listView();
+        expect(scope.view).toEqual('List View');
     });
 });
