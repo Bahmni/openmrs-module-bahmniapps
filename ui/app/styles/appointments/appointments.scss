@@ -1,3 +1,12 @@
+.bahmni-appointments .opd-header-wrapper header ul li a.back-btn-noIcon {
+  padding: 5px 10px !important;
+  margin: 15px 10px 0 !important;
+  border-radius: 3px;
+  &.active {
+    background: rgba(0,0,0,0.5);
+    font-family: OpenSans;
+  }
+}
 /*------ page style-------*/
 
 .opd-wrapper.appointments-page-wrapper {
