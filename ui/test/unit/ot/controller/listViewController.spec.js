@@ -399,7 +399,7 @@ describe('listViewController', function () {
         expect(scope.surgicalAppointmentList[0].derivedAttributes.patientIdentifier).toEqual("EG100137M");
         expect(scope.surgicalAppointmentList[0].status).toEqual("SCHEDULED");
     });
-    
+
     it("should print the page with the surgical appointment list", function () {
         appDescriptor.getConfigValue.and.callFake(function (value) {
             if (value == 'printListViewTemplateUrl') {

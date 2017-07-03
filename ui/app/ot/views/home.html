@@ -84,10 +84,10 @@
     </p>
     <p class="calendar-btn-container">
         <input type="radio" name="view" id="calendar-button" ng-model="view" value="Calendar"
-               ng-click="weekOrDay='day'" required/>
+               ng-click="calendarView()" required/>
         <label for="calendar-button">Calendar</label>
 
-        <input type="radio" name="view" id="list-view-button" ng-model="view" value="List View" required/>
+        <input type="radio" name="view" id="list-view-button" ng-model="view" value="List View" ng-click="listView()" required/>
         <label for="list-view-button">List View</label>
     </p>
 </div>

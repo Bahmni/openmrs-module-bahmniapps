@@ -15,8 +15,16 @@ angular.module('bahmni.ot')
                 $scope.filterParams = $state.filterParams;
                 $scope.filters = {};
                 $scope.filters.providers = [];
-                $scope.view = 'Calendar';
-                $scope.weekOrDay = 'day';
+                $scope.view = $state.view || 'Calendar';
+                $state.view = $scope.view;
+                $scope.weekOrDay = $state.weekOrDay || 'day';
+                $state.weekOrDay = $scope.weekOrDay;
+                if($scope.weekOrDay == 'week') {
+                    $scope.weekStartDate = $state.weekStartDate || new Date(moment().startOf('week'));
+                    $state.weekStartDate = $scope.weekStartDate;
+                    $scope.weekEndDate = $state.weekEndDate || new Date(moment().endOf('week').endOf('day'));
+                    $state.weekEndDate = $scope.weekEndDate;
+                }
                 $scope.surgicalBlockSelected = {};
                 $scope.surgicalAppointmentSelected = {};
                 $scope.editDisabled = true;
@@ -45,6 +53,18 @@ angular.module('bahmni.ot')
                     $scope.applyFilters();
                     return $scope.locations;
                 });
+            };
+
+            $scope.calendarView = function() {
+                $scope.weekOrDay = 'day';
+                $state.weekOrDay = $scope.weekOrDay;
+                $scope.view = 'Calendar';
+                $state.view = $scope.view;
+            };
+
+            $scope.listView = function () {
+                $scope.view = 'List View';
+                $state.view = $scope.view;
             };
 
             var getBackGroundHSLColorFor = function (otCalendarColorAttribute) {
@@ -111,6 +131,7 @@ angular.module('bahmni.ot')
                 $scope.viewDate = new Date(moment().startOf('day'));
                 $state.viewDate = $scope.viewDate;
                 $scope.weekOrDay = 'day';
+                $state.weekOrDay = $scope.weekOrDay;
             };
 
             $scope.goToNextDate = function (date) {
@@ -120,18 +141,25 @@ angular.module('bahmni.ot')
 
             $scope.goToCurrentWeek = function () {
                 $scope.weekStartDate = new Date(moment().startOf('week'));
+                $state.weekStartDate = $scope.weekStartDate;
                 $scope.weekEndDate = new Date(moment().endOf('week').endOf('day'));
+                $state.weekEndDate = $scope.weekEndDate;
                 $scope.weekOrDay = 'week';
+                $state.weekOrDay = $scope.weekOrDay;
             };
 
             $scope.goToNextWeek = function () {
                 $scope.weekStartDate = Bahmni.Common.Util.DateUtil.addDays($scope.weekStartDate, 7);
                 $scope.weekEndDate = Bahmni.Common.Util.DateUtil.addDays($scope.weekEndDate, 7);
+                $state.weekStartDate = $scope.weekStartDate;
+                $state.weekEndDate = $scope.weekEndDate;
             };
 
             $scope.goToPreviousWeek = function () {
                 $scope.weekStartDate = Bahmni.Common.Util.DateUtil.subtractDays($scope.weekStartDate, 7);
                 $scope.weekEndDate = Bahmni.Common.Util.DateUtil.subtractDays($scope.weekEndDate, 7);
+                $state.weekStartDate = $scope.weekStartDate;
+                $state.weekEndDate = $scope.weekEndDate;
             };
 
             $scope.$on("event:surgicalAppointmentSelect", function (event, surgicalAppointment, surgicalBlock) {
