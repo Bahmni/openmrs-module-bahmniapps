@@ -3,6 +3,14 @@
 angular.module('bahmni.ot')
     .controller('calendarViewController', ['$scope', '$rootScope', '$state', 'appService', 'patientService', 'locationService', 'ngDialog',
         function ($scope, $rootScope, $state, appService, patientService, locationService, ngDialog) {
+            var addLocationsForFilters = function () {
+                var locations = {};
+                _.each($scope.locations, function (location) {
+                    locations[location.name] = true;
+                });
+                $scope.filters.locations = locations;
+            };
+
             var init = function () {
                 $scope.filterParams = $state.filterParams;
                 $scope.filters = {};
@@ -31,11 +39,7 @@ angular.module('bahmni.ot')
                     {name: Bahmni.OT.Constants.postponed}, {name: Bahmni.OT.Constants.cancelled}];
                 return locationService.getAllByTag('Operation Theater').then(function (response) {
                     $scope.locations = response.data.results;
-                    var locations = {};
-                    _.each($scope.locations, function (location) {
-                        locations[location.name] = true;
-                    });
-                    $scope.filters.locations = locations;
+                    addLocationsForFilters();
                     $scope.filters = $scope.filterParams || $scope.filters;
                     $scope.patient = $scope.filters.patient && $scope.filters.patient.value;
                     $scope.applyFilters();
@@ -54,7 +58,7 @@ angular.module('bahmni.ot')
             };
 
             $scope.clearFilters = function () {
-                $scope.filters.locations = {"OT 1": true, "OT 2": true, "OT 3": true};
+                addLocationsForFilters();
                 $scope.filters.providers = [];
                 $scope.filters.statusList = [];
                 $scope.patient = "";
