@@ -434,6 +434,7 @@ describe('listViewController', function () {
         createController();
         scope.printPage();
         expect(printer.print).toHaveBeenCalledWith("views/listView.html", {surgicalAppointmentList: scope.surgicalAppointmentList});
+    });
 
     it("should sort appointments by the sort column", function () {
         scope.filterParams = {
@@ -554,4 +555,5 @@ describe('listViewController', function () {
         scope.deselectSurgicalAppointment(event);
         expect(scope.$emit).toHaveBeenCalledWith("event:surgicalBlockDeselect");
     });
+
 });
