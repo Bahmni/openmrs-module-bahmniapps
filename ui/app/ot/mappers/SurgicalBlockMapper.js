@@ -65,7 +65,7 @@ Bahmni.OT.SurgicalBlockMapper = function () {
         var otherSurgeon = attributes['otherSurgeon'];
         otherSurgeon.value = otherSurgeon.value && otherSurgeon.value.id;
         return _.values(attributes).filter(function (attribute) {
-            return !_.isUndefined(attribute.value);
+            return !_.isUndefined(attribute.value) && !_.isNull(attribute.value);
         }).map(function (attribute) {
             attribute.value = attribute.value.toString();
             return attribute;
