@@ -47,7 +47,7 @@ angular.module('bahmni.ot')
                 params: {
                     startDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDatetime),
                     endDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDatetime),
-                    includeVoided: includeVoided || false,
+                    // includeVoided: includeVoided || false,
                     v: "custom:(id," +
                     "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
                     "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,patient:(uuid,display)," +
