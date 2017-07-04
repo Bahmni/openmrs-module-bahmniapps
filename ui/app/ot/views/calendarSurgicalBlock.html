@@ -1,5 +1,6 @@
 <div ng-style="{top : blockDimensions.top + 'px', background : blockDimensions.color.backgroundColor, borderColor : blockDimensions.color.borderColor, height: blockDimensions.height + 'px'}"
      class="calendar-cell surgical-block"
+     ng-class="{'exceed': surgicalBlockExceedsCalendar()}"
      ng-click="selectSurgicalBlock($event)"
      ng-blur="deselectSurgicalBlock($event)"
      tabindex="1">

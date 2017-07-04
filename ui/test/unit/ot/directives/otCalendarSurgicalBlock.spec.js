@@ -150,5 +150,37 @@ describe("otCalendarSurgicalBlock", function () {
         expect(compiledElementScope.surgicalBlock.surgicalAppointments[1].derivedAttributes.duration).toEqual(105);
         expect(compiledElementScope.surgicalBlock.surgicalAppointments[1].derivedAttributes.expectedStartDatetime).toEqual(new Date("Wed May 24 2017 11:16:00 GMT+0530 (IST)"));
         expect(compiledElementScope.surgicalBlock.surgicalAppointments[1].derivedAttributes.expectedEndDatetime).toEqual(new Date("Wed May 24 2017 13:01:00 GMT+0530 (IST)"));
-    })
+    });
+
+    it('should return false if block end time does not exceed the calendar end time', function () {
+        scope.surgicalBlock = surgicalBlock;
+        scope.calendarStartDatetime = new Date(moment('2017-05-24 09:00:00'));
+        scope.calendarEndDatetime = new Date(moment('2017-05-24 16:00:00'));
+        scope.dayViewSplit = 30;
+
+        mockBackend.expectGET('../ot/views/calendarSurgicalBlock.html').respond("<div>dummy</div>");
+        element = $compile(simpleHtml)(scope);
+        scope.$digest();
+        mockBackend.flush();
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+        expect(compiledElementScope.surgicalBlockExceedsCalendar()).toBeFalsy();
+        compiledElementScope.calendarEndDatetime = new Date(moment('2017-05-24 14:00:00'));
+        expect(compiledElementScope.surgicalBlockExceedsCalendar()).toBeFalsy();
+    });
+
+    it('should return true if block end time exceeds the calendar end time', function () {
+        scope.surgicalBlock = surgicalBlock;
+        scope.calendarStartDatetime = new Date(moment('2017-05-24 09:00:00'));
+        scope.calendarEndDatetime = new Date(moment('2017-05-24 13:59:59'));
+        scope.dayViewSplit = 30;
+
+        mockBackend.expectGET('../ot/views/calendarSurgicalBlock.html').respond("<div>dummy</div>");
+        element = $compile(simpleHtml)(scope);
+        scope.$digest();
+        mockBackend.flush();
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+        expect(compiledElementScope.surgicalBlockExceedsCalendar()).toBeTruthy();
+    });
 });

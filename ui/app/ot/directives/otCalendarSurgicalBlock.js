@@ -73,6 +73,10 @@ angular.module('bahmni.ot')
                 $event.stopPropagation();
             };
 
+            $scope.surgicalBlockExceedsCalendar = function () {
+                return moment($scope.surgicalBlock.endDatetime).toDate() > $scope.calendarEndDatetime;
+            };
+
             getViewPropertiesForSurgicalBlock();
             calculateEstimatedAppointmentDuration();
         };
