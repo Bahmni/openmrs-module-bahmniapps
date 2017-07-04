@@ -87,7 +87,13 @@ angular.module('bahmni.ot')
             };
             $scope.printPage = function () {
                 var printTemplateUrl = appService.getAppDescriptor().getConfigValue("printListViewTemplateUrl") || 'views/listView.html';
-                printer.print(printTemplateUrl, {surgicalAppointmentList: $scope.surgicalAppointmentList});
+                printer.print(printTemplateUrl, {
+                    surgicalAppointmentList: $scope.surgicalAppointmentList,
+                    weekStartDate: $scope.weekStartDate,
+                    weekEndDate: $scope.weekEndDate,
+                    viewDate: $scope.viewDate,
+                    weekOrDay: $scope.weekOrDay
+                });
             };
 
             $scope.sortSurgicalAppointmentsBy = function (sortColumn) {
