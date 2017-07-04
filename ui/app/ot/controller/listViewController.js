@@ -92,7 +92,8 @@ angular.module('bahmni.ot')
                     weekStartDate: $scope.weekStartDate,
                     weekEndDate: $scope.weekEndDate,
                     viewDate: $scope.viewDate,
-                    weekOrDay: $scope.weekOrDay
+                    weekOrDay: $scope.weekOrDay,
+                    isCurrentDate: $scope.isCurrentDateinWeekView
                 });
             };
 
