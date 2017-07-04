@@ -415,7 +415,12 @@ describe('listViewController', function () {
         };
         createController();
         scope.printPage();
-        expect(printer.print).toHaveBeenCalledWith("/bahmni_config/openmrs/apps/ot/printListView.html", {surgicalAppointmentList: scope.surgicalAppointmentList});
+        expect(printer.print).toHaveBeenCalledWith("/bahmni_config/openmrs/apps/ot/printListView.html",
+            {surgicalAppointmentList: scope.surgicalAppointmentList,
+            weekStartDate: scope.weekStartDate,
+            weekEndDate: scope.weekEndDate,
+            viewDate: scope.viewDate,
+            weekOrDay: scope.weekOrDay});
     });
 
     it('should print the page with the default list view when configuration template url is not there', function () {
@@ -433,7 +438,12 @@ describe('listViewController', function () {
         };
         createController();
         scope.printPage();
-        expect(printer.print).toHaveBeenCalledWith("views/listView.html", {surgicalAppointmentList: scope.surgicalAppointmentList});
+        expect(printer.print).toHaveBeenCalledWith("views/listView.html",
+            {surgicalAppointmentList: scope.surgicalAppointmentList,
+                weekStartDate: scope.weekStartDate,
+                weekEndDate: scope.weekEndDate,
+                viewDate: scope.viewDate,
+                weekOrDay: scope.weekOrDay});
     });
 
     it("should sort appointments by the sort column", function () {
