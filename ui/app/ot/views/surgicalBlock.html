@@ -37,7 +37,7 @@
                     <span class="start-time">
                         <label>Start Date-time<sup>*</sup></label>
                         <input type="datetime-local" ng-model="surgicalForm.startDatetime" required
-                               ng-class="{'illegalValue' : !isStartDatetimeBeforeEndDatetime(surgicalForm.startDatetime, surgicalForm.endDatetime)}">
+                               ng-class="{'illegalValue' : !isStartDatetimeBeforeEndDatetime(surgicalForm.startDatetime, surgicalForm.endDatetime)}" ng-change="changeInStartDateTime()">
                     </span>
                     <span class="start-time">
                         <label>End Date-time<sup>*</sup></label>

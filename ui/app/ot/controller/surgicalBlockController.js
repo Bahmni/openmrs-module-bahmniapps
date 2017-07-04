@@ -197,5 +197,14 @@ angular.module('bahmni.ot')
                     data: surgicalAppointment
                 });
             };
+
+            $scope.changeInStartDateTime = function () {
+                if (_.isUndefined($scope.surgicalForm.endDatetime)) {
+                    var calendarConfig = appService.getAppDescriptor().getConfigValue("calendarView");
+                    var dayViewEnd = (calendarConfig.dayViewEnd || Bahmni.OT.Constants.defaultCalendarEndTime).split(':');
+                    $scope.surgicalForm.endDatetime = Bahmni.Common.Util.DateUtil.addMinutes(moment($scope.surgicalForm.startDatetime).startOf('day').toDate(), (dayViewEnd[0] * 60 + parseInt(dayViewEnd[1])));
+                }
+            };
+
             spinner.forPromise(init());
         }]);

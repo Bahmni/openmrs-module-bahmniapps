@@ -200,6 +200,9 @@ describe("surgicalBlockController", function () {
         if (value == 'primarySurgeonsForOT') {
             return ["provider1", "provider2"];
         }
+        if (value == 'calendarView') {
+            return {dayViewStart: '08:00', dayViewEnd: '18:00', dayViewSplit: '60'}
+        }
         return value;
     });
 
@@ -660,4 +663,20 @@ describe("surgicalBlockController", function () {
 
         expect(scope.cancelDisabled()).toBeTruthy();
     });
+
+    it('should populate end date if start date is entered and end date is undefined', function () {
+        createController();
+        scope.surgicalForm.startDatetime = new Date("Mon Jul 03 2017 09:00:00 GMT+0530 (IST)");
+        scope.surgicalForm.endDatetime = undefined;
+        scope.changeInStartDateTime();
+        expect(scope.surgicalForm.endDatetime).toEqual(new Date("Mon Jul 03 2017 18:00:00 GMT+0530 (IST)"));
+    });
+
+    it('should not populate end date if start date is entered and end date in already present', function () {
+        createController();
+        scope.surgicalForm.endDatetime = new Date("Mon Jul 03 2017 15:00:00 GMT+0530 (IST)");
+        scope.surgicalForm.startDatetime = new Date("Mon Jul 03 2017 09:00:00 GMT+0530 (IST)");
+        scope.changeInStartDateTime();
+        expect(scope.surgicalForm.endDatetime).toEqual(new Date("Mon Jul 03 2017 15:00:00 GMT+0530 (IST)"));
+    })
 });

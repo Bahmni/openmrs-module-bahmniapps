@@ -12,7 +12,9 @@ Bahmni.OT.Constants = (function () {
         scheduled: "SCHEDULED",
         addSurgicalBlockUrl: RESTWS_V1 + "/surgicalBlock",
         updateSurgicalAppointmentUrl: RESTWS_V1 + "/surgicalAppointment",
-        surgicalAppointmentAttributeTypeUrl: RESTWS_V1 + "/surgicalAppointmentAttributeType"
+        surgicalAppointmentAttributeTypeUrl: RESTWS_V1 + "/surgicalAppointmentAttributeType",
+        defaultCalendarEndTime: '23:59',
+        defaultCalendarStartTime: '00:00'
     };
 })();
 

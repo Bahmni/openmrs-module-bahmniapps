@@ -4,8 +4,8 @@ angular.module('bahmni.ot')
     .controller('otCalendarController', ['$scope', '$q', 'spinner', 'locationService', 'surgicalAppointmentService',
         function ($scope, $q, spinner, locationService, surgicalAppointmentService) {
             var init = function () {
-                var dayStart = ($scope.dayViewStart || '00:00').split(':');
-                var dayEnd = ($scope.dayViewEnd || '23:59').split(':');
+                var dayStart = ($scope.dayViewStart || Bahmni.OT.Constants.defaultCalendarStartTime).split(':');
+                var dayEnd = ($scope.dayViewEnd || Bahmni.OT.Constants.defaultCalendarEndTime).split(':');
                 $scope.surgicalBlockSelected = {};
                 $scope.surgicalAppointmentSelected = {};
                 $scope.editDisabled = true;
