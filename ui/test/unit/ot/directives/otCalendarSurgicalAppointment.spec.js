@@ -55,7 +55,10 @@ describe("otCalendarSurgicalAppointment", function () {
                         name: "circulatingNurse"
                     }, value: "cir"
 
-                }]
+                }],
+                 "derivedAttributes": {
+                    duration: 136
+                }
             };
         scope.filterParams = {
             providers: [],

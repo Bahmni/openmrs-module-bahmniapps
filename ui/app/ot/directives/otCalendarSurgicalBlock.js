@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .directive('otCalendarSurgicalBlock', [function () {
+    .directive('otCalendarSurgicalBlock', ['surgicalAppointmentHelper', function (surgicalAppointmentHelper) {
         var link = function ($scope) {
             var gridCellHeight = 120;
             var heightForSurgeonName = 21;
@@ -42,6 +42,23 @@ angular.module('bahmni.ot')
                         $scope.calendarStartDatetime, $scope.surgicalBlock.startDatetime) * surgicalBlockHeightPerMin;
             };
 
+            var calculateEstimatedAppointmentDuration = function () {
+                var surgicalAppointments = _.filter($scope.surgicalBlock.surgicalAppointments, function (surgicalAppointment) {
+                    return $scope.isValidSurgicalAppointment(surgicalAppointment);
+                });
+                surgicalAppointments = _.sortBy(surgicalAppointments, ['sortWeight']);
+                var nextAppointmentStartDatetime = moment($scope.surgicalBlock.startDatetime).toDate();
+                $scope.surgicalBlock.surgicalAppointments = _.map(surgicalAppointments, function (surgicalAppointment) {
+                    surgicalAppointment.derivedAttributes = {};
+                    surgicalAppointment.derivedAttributes.duration = surgicalAppointmentHelper.getEstimatedDurationForAppointment(surgicalAppointment);
+                    surgicalAppointment.derivedAttributes.expectedStartDatetime = nextAppointmentStartDatetime;
+                    surgicalAppointment.derivedAttributes.expectedEndDatetime = Bahmni.Common.Util.DateUtil.addMinutes(nextAppointmentStartDatetime,
+                        surgicalAppointment.derivedAttributes.duration);
+                    nextAppointmentStartDatetime = surgicalAppointment.derivedAttributes.expectedEndDatetime;
+                    return surgicalAppointment;
+                });
+            };
+
             $scope.isValidSurgicalAppointment = function (surgicalAppointment) {
                 return surgicalAppointment.status !== Bahmni.OT.Constants.cancelled && surgicalAppointment.status !== Bahmni.OT.Constants.postponed;
             };
@@ -57,6 +74,7 @@ angular.module('bahmni.ot')
             };
 
             getViewPropertiesForSurgicalBlock();
+            calculateEstimatedAppointmentDuration();
         };
         return {
             restrict: 'E',
