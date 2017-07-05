@@ -1,6 +1,5 @@
 .calendar {
-  overflow: hidden;
-  overflow-x:auto;
+  overflow: auto;
   height: calc(100vh - 205px);
   background: #fff;
   .calendar-location {
@@ -30,10 +29,6 @@
     }
   }
   .table-block {
-    overflow: hidden;
-    overflow-y: auto;
-    clear: left;
-    height: 100%;
     .ot-block-container {
       float: left;
       position: relative;
