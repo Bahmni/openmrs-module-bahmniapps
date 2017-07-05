@@ -8,4 +8,11 @@ angular.module('bahmni.appointments')
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 });
             };
+
+            this.getAllServices = function(){
+                return $http.get(Bahmni.Common.Constants.appointmentServiceUrl + "/all", {
+                    withCredentials: true,
+                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                });
+            }
         }]);

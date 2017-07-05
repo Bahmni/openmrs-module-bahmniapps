@@ -24,4 +24,12 @@ describe('AppointmentsServiceService', function () {
         appointmentsServiceService.save();
         expect(mockHttp.post).toHaveBeenCalled();
     });
+
+    it('should get all services data', function () {
+        appointmentsServiceService.getAllServices();
+        expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Common.Constants.appointmentServiceUrl + "/all", {
+            withCredentials: true,
+            headers: {"Accept": "application/json", "Content-Type": "application/json"}
+        });
+    });
 });
