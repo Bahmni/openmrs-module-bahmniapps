@@ -1,77 +1,99 @@
 <div class="add-service-wrapper">
+    <form class="create-service" ng-submit="save()" id="create-service-form" name="createServiceForm">
     <div class="service-title">
-        <h2>services</h2>
-        <button type="submit" ng-click="save()" class="service-save-btn">{{::'SERVICE_SAVE'  | translate }}</button>
+        <h2>Services</h2>
+        <button type="submit" class="service-save-btn">{{::'SERVICE_SAVE'  | translate }}</button>
     </div>
     <section class="add-service-content">
         <div class="add-service">
             <h3>Add new Service</h3>
-            <form class="create-service">
                 <p>
-                    <label>Service Name<i>*</i></label>
-                    <input type="text"/>
+                    <label for="name">
+                        {{'APPOINTMENT_SERVICE_NAME_KEY' | translate}}<span class="asterick">*</span>
+                    </label>
+                    <input placeholder="{{ ::'PLACEHOLDER_SERVICE_NAME' | translate }}" id="name" type="text" ng-model="service.name" required/>
                 </p>
                 <p>
-                <label>Description</label>
-                    <textarea></textarea>
+                    <label for="description">
+                        {{'APPOINTMENT_SERVICE_DESCRIPTION_KEY' | translate}}
+                    </label>
+                    <textarea placeholder="{{ ::'PLACEHOLDER_SERVICE_DESCRIPTION' | translate }}" id="description" ng-model="service.description"></textarea>
                 </p>
                 <p>
-                    <label>Duration</label> <input type="number"/>
-                    <label>Max Load</label><input type="number">
-                    <label>Start Time</label> <input type="time"/>
-
-                    <label>End Time</label><input type="time">
+                    <label for="duration">
+                        {{'APPOINTMENT_SERVICE_DURATION_KEY' | translate}}
+                    </label><input placeholder="{{ ::'PLACEHOLDER_SERVICE_DURATION' | translate }}" id="duration" type="number" min="0" ng-model="service.durationMins"/>
+                    <label for="max-load">
+                        {{'APPOINTMENT_SERVICE_MAX_LOAD_KEY' | translate}}
+                    </label><input placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load" type="number" min="0" ng-model="service.maxAppointmentsLimit">
+                    <label for="start-time">
+                        {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
+                    </label> <input id="start-time" type="time" ng-model="service.startTime" dependent-model="service.startTime" time-validator/>
+                    <label for="end-time">
+                        {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
+                    </label> <input id="end-time" type="time" name="endTime" ng-model="service.endTime" dependent-model="service.startTime" time-validator/>
+                    <p class="caution" ng-show="createServiceForm.endTime.$error.timeSequence">
+                        <i class="fa fa-exclamation-circle small"></i>
+                        <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
+                    </p>
                 </p>
                 <p>
-                    <label>Speciality</label>
-                    <select>
-                        <option>option1</option>
+                    <label for="speciality">
+                        {{'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate}}
+                    </label>
+                    <select id="speciality" ng-model="service.specialityUuid"
+                            ng-options="item.uuid as item.name for item in specialities | orderBy:'name'">
+                        <option value="">{{ ::'PLACEHOLDER_SERVICE_SPECIALITY' | translate}} </option>
                     </select>
                 </p>
                 <p>
-                    <label>Location</label>
-                    <select>
-                        <option>option1</option>
+                    <label for="location">
+                        {{'APPOINTMENT_SERVICE_LOCATION_KEY' | translate}}
+                    </label>
+                    <select id="location" ng-model="service.locationUuid"
+                            ng-options="item.uuid as item.display for item in locations | orderBy:'display'">
+                            <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}} </option>
                     </select>
                 </p>
                 <p>
-                    <label>Label Colour</label>
-                    <select>
+                    <label for="label-color">Label Colour</label>
+                    <select id="label-color">
                         <option>option1</option>
                     </select>
                 </p>
-        </form>
-            <p><label>Add Service Appoinment Type</label> <input type="checkbox"></p>
-            <div class="create-service-type">
-                <p>
-                    <label>Add new type</label><input type="number">
-                    <label>Duration</label> <input type="text"/>
-                    <button>Add</button>
-                </p>
-                <p>
-                    <span>servicetype1 <a>X</a></span>
-                </p>
-            </div>
-
+                <p><label>Add Service Appointment Type</label> <input type="checkbox" ng-model="isTypeEnabled"></p>
+                <fieldset ng-disabled="!isTypeEnabled" class="create-service-type">
+                    <p>
+                        <label>Add new type</label><input type="number">
+                        <label>Duration</label> <input type="text"/>
+                        <button>Add</button>
+                    </p>
+                    <p>
+                        <span>servicetype1 <a>X</a></span>
+                    </p>
+                </fieldset>
         </div>
-        <div class="add-availablity">
+        <div class="add-availability">
             <h3>Service Availablity</h3>
-            <p><label>Add Service Availability</label> <input type="checkbox"></p>
-            <ul>
-                <li>
-                    <label>Start Time</label> <input type="time"/>
-                    <label>End Time</label><input type="time">
-                    <label>Max Load</label><input type="number">
-                    <label>Mo</label> <input type="checkbox">
-                    <label>Tu</label> <input type="checkbox">
-                    <label>We</label> <input type="checkbox">
-                    <label>Th</label> <input type="checkbox">
-                    <label>Fr</label> <input type="checkbox">
-                    <label>Sa</label> <input type="checkbox">
-                    <label>Su</label> <input type="checkbox">
-                    <button>Add</button>
-                </li>
-            </ul>
+            <p><label>Add Service Availability</label> <input type="checkbox" ng-model="isAvailabilityEnabled"></p>
+            <fieldset ng-disabled="!isAvailabilityEnabled">
+                <ul>
+                    <li>
+                        <label>Start Time</label> <input type="time"/>
+                        <label>End Time</label><input type="time">
+                        <label>Max Load</label><input type="number">
+                        <label>Mo</label> <input type="checkbox">
+                        <label>Tu</label> <input type="checkbox">
+                        <label>We</label> <input type="checkbox">
+                        <label>Th</label> <input type="checkbox">
+                        <label>Fr</label> <input type="checkbox">
+                        <label>Sa</label> <input type="checkbox">
+                        <label>Su</label> <input type="checkbox">
+                        <button>Add</button>
+                    </li>
+                </ul>
+            </fieldset>
         </div>
     </section>
+    </form>
 </div>

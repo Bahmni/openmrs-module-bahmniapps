@@ -41,7 +41,7 @@ angular
                 url: '/manage',
                 views: {
                     'content': {
-                        templateUrl: 'views/manageAppointments.html',
+                        templateUrl: 'views/appointmentsManage.html',
                         controller: 'AppointmentsManageController'
                     }
                 }
@@ -63,14 +63,14 @@ angular
                 url: '/new',
                 views: {
                     'content@appointment': {
-                        templateUrl: 'views/newAppointment.html'
+                        templateUrl: 'views/appointmentsManageNew.html'
                     }
                 }
             }).state('home.manage.appointments.edit', {
                 url: '/:uuid',
                 views: {
                     'content@appointment': {
-                        templateUrl: 'views/editAppointment.html'
+                        templateUrl: 'views/appointmentsManageEdit.html'
                     }
                 }
             }).state('home.admin', {
