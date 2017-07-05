@@ -1,27 +1,40 @@
 'use strict';
 
 describe("AppointmentsAdminController", function () {
-    var appointmentsAdminController, location, scope;
+    var controller, location, scope, appointmentsServiceService, spinnerService;
 
     beforeEach(function () {
         module('bahmni.appointments');
         inject(function($controller, $rootScope, $location) {
             scope = $rootScope.$new();
             location = $location;
-            appointmentsAdminController = $controller('AppointmentsAdminController', {
-                    $scope: scope,
-                    $location: location
-                }
-            );
+            controller = $controller;
+            appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['getAllServices']);
+
+            spinnerService = jasmine.createSpyObj('spinnerService', ['forPromise']);
         })});
 
-    it('should navigate to add new service page', function () {
-        scope.openService();
-        expect(location.url()).toBe('/home/service/new');
-    });
+    var createController = function () {
+        spinnerService.forPromise.and.callFake(function () {
+            return {
+                then: function () {
+                    return {};
+                }
+            };
+        });
 
-    it('should navigate to edit existing service', function () {
-        scope.openService('service_uuid');
-        expect(location.url()).toBe('/home/service/service_uuid');
+        controller('AppointmentsAdminController', {
+            $scope: scope,
+            $location: location,
+            appointmentsServiceService: appointmentsServiceService,
+            spinner: spinnerService
+        });
+    };
+
+    it('should get all existing services', function () {
+        var response = [{name: "cardio", description: "cardiology", speciality: {name: "General", uuid: "someuid"}}];
+        appointmentsServiceService.getAllServices.and.returnValue(specUtil.simplePromise({data: response}));
+        createController();
+        expect(scope.appointmentServices).toEqual(response);
     });
 });

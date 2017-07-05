@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe("AppointmentsHeaderController", function () {
+describe("AppointmentsHeaderController", function () {
     var controller, state, scope, appService, appDescriptor;
 
     appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
