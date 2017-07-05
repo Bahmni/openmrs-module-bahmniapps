@@ -19,6 +19,10 @@ angular.module('bahmni.ot').controller('cancelSurgicalBlockController', [
             surgicalBlock.provider = {uuid: surgicalBlock.provider.uuid};
             surgicalBlock.location = {uuid: surgicalBlock.location.uuid};
 
+            surgicalBlock.surgicalAppointments = _.map(surgicalBlock.surgicalAppointments, function (appointment) {
+                return _.omit(appointment, ['derivedAttributes']);
+            });
+
             surgicalAppointmentService.saveSurgicalBlock(surgicalBlock).then(function (response) {
                 var message = '';
                 if ($scope.surgicalBlock.status === Bahmni.OT.Constants.postponed) {
