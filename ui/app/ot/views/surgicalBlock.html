@@ -75,13 +75,8 @@
                         }"
                     >
                         <td>
-                            <i>
-                                ..
-                                ..
-                                ..
-                                ..
-                                ..
-                            </i>
+                            <i class="fa fa-arrows-v" aria-hidden="true"></i>
+
                             <div class="surgery-details-wrapper" ng-class="{'cancelled' : surgicalAppointment.status === 'CANCELLED'}">
                                 <h4>{{getPatientName(surgicalAppointment)}} <i ng-show="surgicalAppointment.status === 'COMPLETED'" class="fa fa-check" aria-hidden="true"></i> </h4>
                                 <p>

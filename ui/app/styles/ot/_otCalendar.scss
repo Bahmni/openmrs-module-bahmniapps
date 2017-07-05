@@ -1,5 +1,6 @@
 .calendar {
-  overflow: auto;
+  overflow: hidden;
+  overflow-x:auto;
   height: calc(100vh - 205px);
   background: #fff;
   .calendar-location {
@@ -16,22 +17,23 @@
       padding: 10px 0;
     }
   }
-  .table-block {
+  .calendar-time-container {
+    float: left;
     clear: left;
-
-    .calendar-time-container {
-      float: left;
-      .calendar-time {
-        width: 80px;
-        height: 120px;
-        box-sizing: border-box;
-        border-right: 0.5px solid lightgrey;
-        padding-right: 5px;
-        text-align: right;
-
-      }
+    .calendar-time {
+      width: 80px;
+      height: 120px;
+      box-sizing: border-box;
+      border-right: 0.5px solid lightgrey;
+      padding-right: 5px;
+      text-align: right;
     }
-
+  }
+  .table-block {
+    overflow: hidden;
+    overflow-y: auto;
+    clear: left;
+    height: 100%;
     .ot-block-container {
       float: left;
       position: relative;
@@ -60,6 +62,10 @@
         .surgical-block {
           width: calc(100% - 10px);
           border: 0.5px solid #1976D2;
+          &:focus {
+            outline: 1px #1976D2;
+            border-color: #1976D2 !important;
+          }
         }
       }
     }
@@ -170,6 +176,7 @@
     background: #fff;
   }
 }
+
 .surgical-block {
   position: absolute;
   margin: 0 5px;
@@ -181,6 +188,10 @@
     position: relative;
     overflow: hidden;
     border-radius: 3px;
+    &:focus {
+      outline: 1px #1976D2;
+      border-color: #1976D2 !important;
+    }
     &.hide-surgical-appointment {
       visibility: hidden;
     }
