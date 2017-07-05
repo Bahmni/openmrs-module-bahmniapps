@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsAdminController', ['$scope', '$location',
-        function ($scope, $location) {
+    .controller('AppointmentsAdminController', ['$scope', '$location','appointmentsServiceService', 'spinner',
+        function ($scope, $location, appointmentsServiceService, spinner) {
             $scope.openService = function (uuid) {
                 if (!uuid) {
                     uuid = "new";
@@ -12,6 +12,9 @@ angular.module('bahmni.appointments')
             };
 
             var init = function () {
+                return appointmentsServiceService.getAllServices().then(function(response){
+                    $scope.appointmentServices = response.data;
+                });
             };
-            return init();
+            return spinner.forPromise(init());
         }]);
