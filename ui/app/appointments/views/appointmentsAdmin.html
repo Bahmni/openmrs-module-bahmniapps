@@ -5,21 +5,21 @@
         <table>
             <thead>
             <tr>
-                <th>Service Name</th>
-                <th>Location</th>
-                <th>Speciality</th>
-                <th>Duration (min)</th>
-                <th>Description</th>
-                <th>Action</th>
+                <th>{{::'APPOINTMENT_SERVICE_NAME_KEY' | translate }}</th>
+                <th>{{::'APPOINTMENT_SERVICE_LOCATION_KEY' | translate }}</th>
+                <th>{{::'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate }}</th>
+                <th>{{::'APPOINTMENT_SERVICE_DURATION_KEY' | translate }}</th>
+                <th>{{::'APPOINTMENT_SERVICE_DESCRIPTION_KEY' | translate }}</th>
+                <th>{{::'APPOINTMENT_SERVICE_ACTION_KEY' | translate }}</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Loren Ipsum</td>
-                <td>Loren Ipsum</td>
-                <td>Loren Ipsum</td>
-                <td>Loren Ipsum</td>
-                <td class="service-disc-tablecell">Loren Ipsum</td>
+            <tr ng-repeat="service in ::appointmentServices">
+                <td>{{service.name}}</td>
+                <td>{{service.location.name}}</td>
+                <td>{{service.speciality.name}}</td>
+                <td>{{service.duration}}</td>
+                <td class="service-disc-tablecell">{{service.description}}</td>
                 <td><a ng-click="openServiceView()">edit</a><a href="#">delete</a> </td>
             </tr>
             </tbody>
