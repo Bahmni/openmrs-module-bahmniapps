@@ -10,13 +10,14 @@ angular.module('bahmni.appointments')
             $scope.save = function () {
                 var service = Bahmni.Appointments.Service.create($scope.service);
                 appointmentsServiceService.save(service).then(function () {
-                    messagingService.showMessage("info", "APPOINTMENT_SERVICE_LABEL_SAVED");
+                    messagingService.showMessage('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
+                    $scope.showConfirmationPopUp = false;
                 });
             };
 
             var getAppointmentLocations = function () {
                 var deferrable = $q.defer();
-                locationService.getAllByTag("Appointment Location").then(
+                locationService.getAllByTag('Appointment Location').then(
                     function (response) {
                         $scope.locations = response.data.results;
                         deferrable.resolve($scope.locations);

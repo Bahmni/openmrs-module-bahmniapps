@@ -1,6 +1,6 @@
 <div class="service-admin-wrapper">
-    <div class="service-title"><h2>services</h2></div>
-    <button ng-click="openService()" class="add-service-btn">{{::'SERVICE_ADD_NEW' | translate }}</button>
+    <div class="service-title"><h2>{{ ::'SERVICES' | translate}}</h2></div>
+    <button ng-click="openService()" class="add-service-btn">{{::'APPOINTMENT_SERVICE_ADD_NEW' | translate }}</button>
     <section class="service-admin-content">
         <table>
             <thead>
@@ -20,7 +20,7 @@
                 <td>{{service.speciality.name}}</td>
                 <td>{{service.duration}}</td>
                 <td class="service-disc-tablecell">{{service.description}}</td>
-                <td><a ng-click="openServiceView()">edit</a><a href="#">delete</a> </td>
+                <td><a>{{ ::'APPOINTMENT_SERVICE_EDIT_ACTION' | translate}}</a><a>{{ ::'APPOINTMENT_SERVICE_DELETE_ACTION' | translate}}</a> </td>
             </tr>
             </tbody>
         </table>
