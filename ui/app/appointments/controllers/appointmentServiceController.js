@@ -1,18 +1,31 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsServiceController', ['$scope', '$q', 'spinner', '$window', '$state', '$translate',
+    .controller('AppointmentServiceController', ['$scope', '$q', 'spinner', '$window', '$state', '$translate',
         'appointmentsServiceService', 'locationService', 'messagingService', 'specialityService', 'ngDialog',
         function ($scope, $q, spinner, $window, $state, $translate, appointmentsServiceService, locationService,
                   messagingService, specialityService, ngDialog) {
             $scope.showConfirmationPopUp = true;
             $scope.service = $scope.service || {};
             $scope.save = function () {
+                if ($scope.createServiceForm.$invalid) {
+                    messagingService.showMessage('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
+                    return;
+                }
                 var service = Bahmni.Appointments.Service.create($scope.service);
                 appointmentsServiceService.save(service).then(function () {
                     messagingService.showMessage('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
                     $scope.showConfirmationPopUp = false;
+                    $state.go('home.admin.service');
                 });
+            };
+
+            $scope.validateServiceName = function () {
+                $scope.createServiceForm.name.$setValidity('uniqueServiceName', isServiceNameUnique($scope.service.name));
+            };
+
+            var isServiceNameUnique = function (serviceName) {
+                return !_.find($scope.services, {name: serviceName});
             };
 
             var getAppointmentLocations = function () {
@@ -51,8 +64,18 @@ angular.module('bahmni.appointments')
                 return deferrable.promise;
             };
 
+            var getAllServices = function () {
+                var deferrable = $q.defer();
+                appointmentsServiceService.getAllServices().then(
+                    function (response) {
+                        $scope.services = response.data;
+                        deferrable.resolve($scope.services);
+                    });
+                return deferrable.promise;
+            };
+
             var init = function () {
-                return spinner.forPromise(getAppointmentLocations(), getAllSpecialities());
+                return spinner.forPromise(getAppointmentLocations(), getAllSpecialities(), getAllServices());
             };
 
             $scope.continueWithoutSaving = function () {

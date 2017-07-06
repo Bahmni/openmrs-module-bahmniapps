@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsAdminController', ['$scope', '$location', 'appointmentsServiceService', 'spinner',
-        function ($scope, $location, appointmentsServiceService, spinner) {
-            $scope.openService = function (uuid) {
+    .controller('AllAppointmentServicesController', ['$scope', '$state', '$location', 'spinner',
+        'appointmentsServiceService',
+        function ($scope, $state, $location, spinner, appointmentsServiceService) {
+            $scope.createService = function (uuid) {
                 if (!uuid) {
-                    uuid = "new";
+                    uuid = 'new';
                 }
-                var url = "/home/service/" + uuid;
-                $location.url(url);
+                $state.go('home.admin.service.edit', {uuid: uuid});
             };
 
             var init = function () {

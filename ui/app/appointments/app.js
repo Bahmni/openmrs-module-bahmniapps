@@ -49,7 +49,7 @@ angular
                 url: '/summary',
                 views: {
                     'content@manage': {
-                        templateUrl: 'views/summary.html'
+                        templateUrl: 'views/appointmentsSummary.html'
                     }
                 }
             }).state('home.manage.appointments', {
@@ -75,18 +75,26 @@ angular
                 }
             }).state('home.admin', {
                 url: '/admin',
+                abstract: true,
                 views: {
                     'content': {
-                        templateUrl: 'views/appointmentsAdmin.html',
-                        controller: 'AppointmentsAdminController'
+                        templateUrl: 'views/appointmentsAdmin.html'
                     }
                 }
-            }).state('home.service', {
-                url: '/service/:uuid',
+            }).state('home.admin.service', {
+                url: '/service',
                 views: {
-                    'content': {
-                        templateUrl: 'views/appointmentsService.html',
-                        controller: 'AppointmentsServiceController'
+                    'content@admin': {
+                        templateUrl: 'views/allAppointmentServices.html',
+                        controller: 'AllAppointmentServicesController'
+                    }
+                }
+            }).state('home.admin.service.edit', {
+                url: '/:uuid',
+                views: {
+                    'content@admin': {
+                        templateUrl: 'views/appointmentService.html',
+                        controller: 'AppointmentServiceController'
                     }
                 }
             });

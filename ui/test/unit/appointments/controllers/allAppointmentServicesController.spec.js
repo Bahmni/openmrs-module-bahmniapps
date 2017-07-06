@@ -1,6 +1,6 @@
 'use strict';
 
-describe("AppointmentsAdminController", function () {
+describe("AllAppointmentServicesController", function () {
     var controller, location, scope, appointmentsServiceService, spinnerService;
 
     beforeEach(function () {
@@ -23,7 +23,7 @@ describe("AppointmentsAdminController", function () {
             };
         });
 
-        controller('AppointmentsAdminController', {
+        controller('AllAppointmentServicesController', {
             $scope: scope,
             $location: location,
             appointmentsServiceService: appointmentsServiceService,
