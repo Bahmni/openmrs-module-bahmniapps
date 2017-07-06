@@ -67,7 +67,7 @@
                         <option>option1</option>
                     </select>
                 </p>
-                <div>
+                <div class="switch-wrapper">
                     <span>Add Service Appointment Type</span>
                     <label class="switch">
                         <input type="checkbox" ng-model="isTypeEnabled">
@@ -87,7 +87,7 @@
             </div>
             <div class="add-availability">
                 <h3>Service Availablity</h3>
-                <div>
+                <div class="switch-wrapper">
                     <span>Add Service Availability</span>
                     <label class="switch">
                         <input type="checkbox" ng-model="isAvailabilityEnabled">
@@ -96,17 +96,49 @@
                 </div>
                 <fieldset ng-disabled="!isAvailabilityEnabled">
                     <ul>
-                        <li>
-                            <label>Start Time</label> <input type="time"/>
-                            <label>End Time</label><input type="time">
-                            <label>Max Load</label><input type="number">
-                            <label>Mo</label> <input type="checkbox">
-                            <label>Tu</label> <input type="checkbox">
-                            <label>We</label> <input type="checkbox">
-                            <label>Th</label> <input type="checkbox">
-                            <label>Fr</label> <input type="checkbox">
-                            <label>Sa</label> <input type="checkbox">
-                            <label>Su</label> <input type="checkbox">
+                        <li class="service-availability-wrapper">
+                            <label>
+                                <span>Start Time</span><br />
+                                <input type="time"/>
+                            </label>
+                            <label>
+                                <span>End Time</span><br />
+                                <input type="time">
+                            </label>
+                            <label>
+                                <span>Max Load</span><br />
+                                <input type="number">
+                            </label>
+                            <p class="service-ava-days">
+                                <label for="monday">
+                                    <span>Mo</span>
+                                    <input id="monday" type="checkbox">
+                                </label>
+                                <label for="tuesday">
+                                    <span>Tu</span>
+                                    <input id="tuesday" type="checkbox">
+                                </label>
+                                <label for="wednesday">
+                                    <span>We</span>
+                                    <input id="wednesday" type="checkbox">
+                                </label>
+                                <label for="thursday">
+                                    <span>Th</span>
+                                    <input id="thursday" type="checkbox">
+                                </label>
+                                <label for="friday">
+                                    <span>Fr</span>
+                                    <input id="friday" type="checkbox">
+                                </label>
+                                <label for="saturday">
+                                    <span>Sa</span>
+                                    <input id="saturday" type="checkbox">
+                                </label>
+                                <label for="sunday">
+                                    <span>Su</span>
+                                    <input id="sunday" type="checkbox">
+                                </label>
+                            </p>
                             <button>Add</button>
                         </li>
                     </ul>
