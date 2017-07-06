@@ -11,8 +11,12 @@
                     <label for="name">
                         {{'APPOINTMENT_SERVICE_NAME_KEY' | translate}}<span class="asterick">*</span>
                     </label>
-                    <input placeholder="{{ ::'PLACEHOLDER_SERVICE_NAME' | translate }}" id="name" type="text"
-                           ng-model="service.name" required/>
+                    <input placeholder="{{ ::'PLACEHOLDER_SERVICE_NAME' | translate }}" id="name" name="name" type="text"
+                      ng-change="validateServiceName(service.name)" ng-model="service.name" required/>
+                </p>
+                <p class="caution" ng-show="createServiceForm.name.$error.uniqueServiceName">
+                    <i class="fa fa-exclamation-circle small"></i>
+                    <span> {{'DUPLICATE_SERVICE_NAME_ERROR_MESSAGE' | translate}} </span>
                 </p>
                 <p>
                     <label for="description">

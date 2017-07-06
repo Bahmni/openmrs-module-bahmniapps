@@ -39,7 +39,7 @@ describe("AppointmentsHeaderController", function () {
             accessKey: 'M'
         }, {
             text: 'APPOINTMENTS_ADMIN',
-            state: 'home.admin',
+            state: 'home.admin.service',
             accessKey: 'A'
         }];
         expect(appService.getAppDescriptor).toHaveBeenCalled();
