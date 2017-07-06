@@ -1,0 +1,77 @@
+/*-------service admin page style--------*/
+
+.service-admin-content {
+  clear: both;
+  border-top: 1px solid #95989A;
+  padding: 10px 10px 0;
+  overflow: auto;
+  height: calc(100% - 95px);
+  table {
+    border-color: #0a0a0a;
+    .service-disc-tablecell {
+      min-width: 310px;
+    }
+    th, td {
+      text-align: center;
+      border-color: #95989A;
+      color: #313131;
+      font-size: 13px;
+      &:first-child {
+        text-align: left;
+      }
+    }
+    th {
+      background: #EBEBEB;
+    }
+    td {
+      a {
+        display: inline-block;
+        margin: 0 5px;
+      }
+    }
+  }
+}
+
+/*-------service Creation page style--------*/
+
+.add-service-content {
+  overflow-y: auto;
+  height: calc(100vh - 123px);
+  .add-service, .add-availability {
+    width: 50%;
+    float: left;
+    height: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+  .add-service {
+    p {
+      padding: 0;
+      margin-bottom: 10px;
+      label {
+        display: inline-block;
+        min-width: 115px;
+      }
+      input {
+        display: inline-block;
+        width: calc(80% - 115px);
+        padding: 5px 10px;
+        box-sizing: border-box;
+      }
+      select {
+        float: none;
+      }
+    }
+
+  }
+  .add-availability {
+    padding-right: 0;
+    h3, > p, ul {
+      padding-left: 10px;
+    }
+    ul {
+      min-height: 350px;
+      border-left: 1px solid #95989A;
+    }
+  }
+}
