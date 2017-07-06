@@ -3,9 +3,10 @@ describe("surgicalAppointmentActualTimeController", function () {
 
     var controller, scope;
     var ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
-    var messagingService = jasmine.createSpyObj('messagingService', ['']);
-    var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgeons', 'saveSurgicalBlock', 'getSurgicalAppointmentAttributeTypes', 'getSurgicalBlockFor']);
+    var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+    var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgeons', 'saveSurgicalBlock', 'getSurgicalAppointmentAttributeTypes', 'getSurgicalBlockFor', 'updateSurgicalAppointment']);
     var surgicalAppointmentHelper = jasmine.createSpyObj('surgicalAppointmentHelper', ['getEstimatedDurationForAppointment']);
+
 
     beforeEach(function () {
         module('bahmni.ot');
@@ -60,7 +61,7 @@ describe("surgicalAppointmentActualTimeController", function () {
             }]
         };
         var alreadyCalled;
-        spyOn(surgicalAppointmentHelper, "getEstimatedDurationForAppointment").and.callFake(function() {
+        spyOn(surgicalAppointmentHelper, "getEstimatedDurationForAppointment").and.callFake(function () {
             if (alreadyCalled) return 45;
             alreadyCalled = true;
             return 45;
@@ -86,7 +87,7 @@ describe("surgicalAppointmentActualTimeController", function () {
             }]
         };
         var alreadyCalled;
-        spyOn(surgicalAppointmentHelper, "getEstimatedDurationForAppointment").and.callFake(function() {
+        spyOn(surgicalAppointmentHelper, "getEstimatedDurationForAppointment").and.callFake(function () {
             if (alreadyCalled) return 45;
             alreadyCalled = true;
             return 45;
@@ -131,7 +132,7 @@ describe("surgicalAppointmentActualTimeController", function () {
             }]
         };
         var alreadyCalled;
-        spyOn(surgicalAppointmentHelper, "getEstimatedDurationForAppointment").and.callFake(function() {
+        spyOn(surgicalAppointmentHelper, "getEstimatedDurationForAppointment").and.callFake(function () {
             if (alreadyCalled) return 45;
             alreadyCalled = true;
             return 45;
@@ -150,8 +151,8 @@ describe("surgicalAppointmentActualTimeController", function () {
             endDatetime: "2017-06-06T12:00:00.000+0530"
         };
         scope.ngDialogData.surgicalAppointment = {
-            patient : {
-                display : "EM10000Q - Test Patient"
+            patient: {
+                display: "EM10000Q - Test Patient"
             },
             surgicalAppointmentAttributes: [{
                 surgicalAppointmentAttributeType: {
@@ -188,8 +189,8 @@ describe("surgicalAppointmentActualTimeController", function () {
             endDatetime: "2017-06-06T12:00:00.000+0530"
         };
         scope.ngDialogData.surgicalAppointment = {
-            patient : {
-                display : "EM10000Q - Test Patient"
+            patient: {
+                display: "EM10000Q - Test Patient"
             },
             surgicalAppointmentAttributes: [{
                 surgicalAppointmentAttributeType: {
@@ -221,4 +222,105 @@ describe("surgicalAppointmentActualTimeController", function () {
         expect(scope.isActualTimeRequired()).toBeFalsy();
     });
 
+    it('should add the appointment for update', function () {
+        scope.ngDialogData = {};
+        scope.ngDialogData.surgicalBlock = {
+            id: 27,
+            startDatetime: "2017-06-06T10:00:00.000+0530",
+            endDatetime: "2017-06-06T12:00:00.000+0530",
+            location: {
+                name: "OT 1"
+            }
+        };
+        scope.ngDialogData.surgicalAppointment = {
+            patient: {
+                display: "EM10000Q - Test Patient"
+            },
+            sortWeight: 1,
+            surgicalAppointmentAttributes: [{
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeMinutes"
+                },
+                value: "30"
+            },
+                {
+                    surgicalAppointmentAttributeType: {
+                        format: "java.lang.String",
+                        name: "estTimeHours"
+                    },
+                    value: "0"
+                },
+                {
+                    surgicalAppointmentAttributeType: {
+                        format: "java.lang.String",
+                        name: "CleaningTime"
+                    },
+                    value: "15"
+                }]
+        };
+
+        var appointmentForSave = {
+            id: undefined,
+            actualStartDatetime: new Date('Tue Jun 06 2017 10:00:00 GMT+0530 (IST)'),
+            actualEndDatetime: new Date('Tue Jun 06 2017 11:00:00 GMT+0530 (IST)'),
+            status: 'COMPLETED',
+            notes: undefined,
+            surgicalBlock: {uuid: undefined},
+            patient: {uuid: undefined},
+            sortWeight: 1
+        };
+        surgicalAppointmentService.updateSurgicalAppointment.and.returnValue(specUtil.simplePromise({data: scope.ngDialogData.surgicalAppointment}));
+        createController();
+        scope.actualStartTime = new Date("2017-06-06T10:00:00.000+0530");
+        scope.actualEndTime = new Date("2017-06-06T11:00:00.000+0530");
+        scope.add();
+        expect(surgicalAppointmentService.updateSurgicalAppointment).toHaveBeenCalledWith(appointmentForSave);
+        expect(messagingService.showMessage).toHaveBeenCalledWith('info', "Actual time added to Test Patient ( EM10000Q ) - OT 1");
+        expect(ngDialog.close).toHaveBeenCalled();
+    });
+
+    it('should throw error message when actual start time is greater than actual endtime', function () {
+        scope.ngDialogData = {};
+        scope.ngDialogData.surgicalBlock = {
+            id: 27,
+            startDatetime: "2017-06-06T10:00:00.000+0530",
+            endDatetime: "2017-06-06T12:00:00.000+0530",
+            location: {
+                name: "OT 1"
+            }
+        };
+        scope.ngDialogData.surgicalAppointment = {
+            patient: {
+                display: "EM10000Q - Test Patient"
+            },
+            sortWeight: 1,
+            surgicalAppointmentAttributes: [{
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeMinutes"
+                },
+                value: "30"
+            },
+                {
+                    surgicalAppointmentAttributeType: {
+                        format: "java.lang.String",
+                        name: "estTimeHours"
+                    },
+                    value: "0"
+                },
+                {
+                    surgicalAppointmentAttributeType: {
+                        format: "java.lang.String",
+                        name: "CleaningTime"
+                    },
+                    value: "15"
+                }]
+        };
+        createController();
+        scope.actualStartTime = new Date("2017-06-06T10:00:00.000+0530");
+        scope.actualEndTime = new Date("2017-06-06T10:00:00.000+0530");
+        scope.add();
+        expect(messagingService.showMessage).toHaveBeenCalledWith('error', "Actual start time should be less than actual end time");
+    });
 });

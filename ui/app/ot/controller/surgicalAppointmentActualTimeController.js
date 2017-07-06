@@ -49,6 +49,7 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
             surgicalAppointment.notes = $scope.notes;
             surgicalAppointment.surgicalBlock = {uuid: $scope.ngDialogData.surgicalBlock.uuid};
             surgicalAppointment.patient = {uuid: $scope.ngDialogData.surgicalAppointment.patient.uuid};
+            surgicalAppointment.sortWeight = $scope.ngDialogData.surgicalAppointment.sortWeight;
             surgicalAppointmentService.updateSurgicalAppointment(surgicalAppointment).then(function (response) {
                 $scope.ngDialogData.surgicalAppointment.actualStartDatetime = response.data.actualStartDatetime;
                 $scope.ngDialogData.surgicalAppointment.actualEndDatetime = response.data.actualEndDatetime;
