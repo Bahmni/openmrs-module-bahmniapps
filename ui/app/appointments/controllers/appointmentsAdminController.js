@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsAdminController', ['$scope', '$location','appointmentsServiceService', 'spinner',
+    .controller('AppointmentsAdminController', ['$scope', '$location', 'appointmentsServiceService', 'spinner',
         function ($scope, $location, appointmentsServiceService, spinner) {
             $scope.openService = function (uuid) {
                 if (!uuid) {
@@ -12,7 +12,7 @@ angular.module('bahmni.appointments')
             };
 
             var init = function () {
-                return appointmentsServiceService.getAllServices().then(function(response){
+                return appointmentsServiceService.getAllServices().then(function (response) {
                     $scope.appointmentServices = response.data;
                 });
             };
