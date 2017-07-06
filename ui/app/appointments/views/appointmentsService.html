@@ -21,15 +21,15 @@
                     <textarea placeholder="{{ ::'PLACEHOLDER_SERVICE_DESCRIPTION' | translate }}" id="description"
                               ng-model="service.description"></textarea>
                 </p>
-                <p>
+                <p class="duration-wrapper">
                     <label for="duration">
                         {{'APPOINTMENT_SERVICE_DURATION_KEY' | translate}}
-                    </label><input placeholder="{{ ::'PLACEHOLDER_SERVICE_DURATION' | translate }}" id="duration"
+                    </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_DURATION' | translate }}" id="duration"
                                    type="number" min="0" ng-model="service.durationMins"/>
                     <label for="max-load">
                         {{'APPOINTMENT_SERVICE_MAX_LOAD_KEY' | translate}}
-                    </label><input placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
-                                   type="number" min="0" ng-model="service.maxAppointmentsLimit">
+                    </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
+                                   type="number" min="0" ng-model="service.maxAppointmentsLimit"><br />
                     <label for="start-time">
                         {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
                     </label> <input id="start-time" type="time" ng-model="service.startTime"
@@ -77,7 +77,7 @@
                 <fieldset ng-disabled="!isTypeEnabled" class="create-service-type">
                     <p>
                         <label>Add new type</label><input type="number">
-                        <label>Duration</label> <input type="text"/>
+                        <label class="duration-label">Duration</label> <input  placeholder="Min" class="duration-box" type="text"/>
                         <button>Add</button>
                     </p>
                     <p>
