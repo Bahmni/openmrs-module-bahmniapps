@@ -10,10 +10,10 @@ angular.module('bahmni.appointments')
                 });
             };
 
-            this.getAllServices = function(){
+            this.getAllServices = function () {
                 return $http.get(Bahmni.Common.Constants.appointmentServiceUrl + "/all", {
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 });
-            }
+            };
         }]);
