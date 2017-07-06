@@ -68,6 +68,7 @@
         border-radius: 5px;
         border-color: #c3c6ca;
         font-size: 13px;
+        color: #656161;
       }
       textarea {
         min-height: 50px;
@@ -105,6 +106,37 @@
     ul {
       min-height: 350px;
       border-left: 1px solid #95989A;
+    }
+  }
+}
+
+/*------ service availability styles -----*/
+
+.service-availability-wrapper {
+  background: #FCFCFC;
+  padding: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  width: 99%;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #C9CCCE;
+  > label, p {
+    display: inline-block;
+    float: left;
+  }
+  p {
+    margin-right: 1%;
+    label {
+      display: inline-block;
+      float: left;
+      cursor: pointer;
+      input[type = checkbox] {
+        visibility: hidden;
+        width: 0;
+        height: 0;
+        padding: 0;
+      }
     }
   }
 }
