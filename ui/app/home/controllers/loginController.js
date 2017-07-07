@@ -41,6 +41,7 @@ angular.module('bahmni.home')
 
             localeService.getLoginText().then(function (response) {
                 $scope.logo = response.data.loginPage.logo;
+                $scope.bottomBanner = response.data.loginPage.bottomBanner;
                 $scope.headerText = response.data.loginPage.showHeaderText;
                 $scope.titleText = response.data.loginPage.showTitleText;
                 $scope.helpLink = response.data.helpLink.url;
