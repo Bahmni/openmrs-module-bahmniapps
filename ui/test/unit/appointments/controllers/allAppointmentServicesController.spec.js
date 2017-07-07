@@ -1,7 +1,7 @@
 'use strict';
 
 describe("AllAppointmentServicesController", function () {
-    var controller, location, scope, appointmentsServiceService, spinnerService;
+    var controller, location, scope, appointmentsServiceService, spinnerService, appService, appDescriptor;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -10,7 +10,10 @@ describe("AllAppointmentServicesController", function () {
             location = $location;
             controller = $controller;
             appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['getAllServices']);
-
+            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            appDescriptor.getConfigValue.and.returnValue(true);
             spinnerService = jasmine.createSpyObj('spinnerService', ['forPromise']);
         })});
 
@@ -27,7 +30,8 @@ describe("AllAppointmentServicesController", function () {
             $scope: scope,
             $location: location,
             appointmentsServiceService: appointmentsServiceService,
-            spinner: spinnerService
+            spinner: spinnerService,
+            appService: appService
         });
     };
 
@@ -35,6 +39,7 @@ describe("AllAppointmentServicesController", function () {
         var response = [{name: "cardio", description: "cardiology", speciality: {name: "General", uuid: "someuid"}}];
         appointmentsServiceService.getAllServices.and.returnValue(specUtil.simplePromise({data: response}));
         createController();
+        expect(scope.enableSpecialities).toBe(true);
         expect(scope.appointmentServices).toEqual(response);
     });
 });

@@ -7,7 +7,7 @@
             <tr>
                 <th>{{::'APPOINTMENT_SERVICE_NAME_KEY' | translate }}</th>
                 <th>{{::'APPOINTMENT_SERVICE_LOCATION_KEY' | translate }}</th>
-                <th>{{::'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate }}</th>
+                <th ng-show="enableSpecialities">{{::'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate }}</th>
                 <th>{{::'APPOINTMENT_SERVICE_DURATION_KEY' | translate }}</th>
                 <th>{{::'APPOINTMENT_SERVICE_DESCRIPTION_KEY' | translate }}</th>
                 <th>{{::'APPOINTMENT_SERVICE_ACTION_KEY' | translate }}</th>
@@ -17,7 +17,7 @@
             <tr ng-repeat="service in ::appointmentServices">
                 <td>{{service.name}}</td>
                 <td>{{service.location.name}}</td>
-                <td>{{service.speciality.name}}</td>
+                <td ng-show="enableSpecialities">{{service.speciality.name}}</td>
                 <td>{{service.duration}}</td>
                 <td class="service-disc-tablecell">{{service.description}}</td>
                 <td><a>{{ ::'APPOINTMENT_SERVICE_EDIT_ACTION' | translate}}</a><a>{{ ::'APPOINTMENT_SERVICE_DELETE_ACTION' | translate}}</a> </td>

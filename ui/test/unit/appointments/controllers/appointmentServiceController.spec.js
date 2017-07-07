@@ -2,7 +2,7 @@
 
 describe("AppointmentServiceController", function () {
     var controller, scope, q, state, appointmentsServiceService, locationService, messagingService,
-        locations, specialityService, specialities, ngDialog, appointmentServices;
+        locations, specialityService, specialities, ngDialog, appointmentServices, appService, appDescriptor;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -31,6 +31,10 @@ describe("AppointmentServiceController", function () {
         specialityService.getAllSpecialities.and.returnValue(specUtil.simplePromise({data: specialities}));
         ngDialog = jasmine.createSpyObj('ngDialog', ['close', 'openConfirm']);
         state = jasmine.createSpyObj('$state', ['go']);
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
+        appDescriptor.getConfigValue.and.returnValue(true);
     });
 
     var createController = function () {
@@ -42,7 +46,8 @@ describe("AppointmentServiceController", function () {
             locationService: locationService,
             messagingService: messagingService,
             specialityService: specialityService,
-            ngDialog: ngDialog
+            ngDialog: ngDialog,
+            appService: appService
         }
       );
     };
@@ -67,7 +72,16 @@ describe("AppointmentServiceController", function () {
             expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'MESSAGE_GET_LOCATIONS_ERROR');
         });
 
-        it('should fetch all specialities on initialization', function () {
+        it('should not fetch specialities if not configured', function () {
+            appDescriptor.getConfigValue.and.returnValue(false);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            expect(scope.specialities).toBeUndefined();
+            createController();
+            expect(specialityService.getAllSpecialities).not.toHaveBeenCalled();
+            expect(scope.specialities).toBeUndefined();
+        });
+
+        it('should fetch all specialities on initialization if configured', function () {
             expect(scope.specialities).toBeUndefined();
             createController();
             expect(specialityService.getAllSpecialities).toHaveBeenCalled();
