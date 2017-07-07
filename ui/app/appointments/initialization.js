@@ -8,7 +8,7 @@ angular.module('bahmni.appointments').factory('initialization',
                     return configurations.load([]);
                 };
                 var initApp = function () {
-                    return appService.initApp(appName || 'appointments', {'app': true, 'extension': true }, null, ["appointments"]);
+                    return appService.initApp(appName || 'appointments', {'app': true, 'extension': true});
                 };
 
                 return spinner.forPromise(authenticator.authenticateUser()
