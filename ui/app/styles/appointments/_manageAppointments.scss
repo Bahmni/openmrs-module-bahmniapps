@@ -77,9 +77,9 @@
 
 .create-new-app-container {
   position: absolute;
-  width: 300px;
+  width: 400px;
   background: #fff;
-  height: 100%;
+  height: calc(100vh - 52px);
   right: 0;
   top: 52px;
   z-index: 10;
