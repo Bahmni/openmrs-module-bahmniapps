@@ -8,8 +8,9 @@ describe("newSurgicalAppointmentController", function () {
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgeons', 'saveSurgicalBlock', 'getSurgicalAppointmentAttributeTypes']);
     var programService = jasmine.createSpyObj('programService', ['getEnrollmentInfoFor']);
-    getAppDescriptor = jasmine.createSpyObj('getAppDescriptor', ['getExtensions', 'getConfigValue', 'formatUrl']);
+    var getAppDescriptor = jasmine.createSpyObj('getAppDescriptor', ['getExtensions', 'getConfigValue', 'formatUrl']);
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    var queryService = jasmine.createSpyObj('queryService', ['getResponseFromQuery']);
     appService.getAppDescriptor.and.returnValue(getAppDescriptor);
 
     var ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
@@ -93,6 +94,7 @@ describe("newSurgicalAppointmentController", function () {
             surgicalAppointmentService: surgicalAppointmentService,
             patientService: patientService,
             messagingService: messagingService,
+            queryService: queryService,
             programService: programService,
             appService: appService,
             surgicalAppointmentHelper: surgicalAppointmentHelper,
@@ -467,6 +469,39 @@ describe("newSurgicalAppointmentController", function () {
 
         expect(scope.addSurgicalAppointment).toHaveBeenCalledWith(appointment);
         expect(q.when).toHaveBeenCalled();
+    });
+
+    it('should pull procedures,estimated hours and estimated minutes', function () {
+        getAppDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value == 'printListViewTemplateUrl') {
+                return '';
+            }
+            return value;
+        });
+        createController();
+        queryService.getResponseFromQuery.and.returnValue(specUtil.simplePromise({data: [{'all_procedures': "maxilofacial", 'esthrs': "1", 'estmins': "30"}]}));
+        var data = {uuid: "patientUuid1"};
+        scope.onSelectPatient(data);
+        expect(queryService.getResponseFromQuery).toHaveBeenCalledWith({ patientUuid : data.uuid, q : 'procedureSQLGlobalProperty', v : 'full' });
+        expect(scope.attributes.procedure.value).toEqual("maxilofacial");
+        expect(scope.attributes.estTimeHours.value).toEqual(1);
+        expect(scope.attributes.estTimeMinutes.value).toEqual(30);
+
+        queryService.getResponseFromQuery.and.returnValue(specUtil.simplePromise({data: []}));
+        var data = {uuid: "patientUuid2"};
+        scope.onSelectPatient(data);
+        expect(queryService.getResponseFromQuery).toHaveBeenCalledWith({ patientUuid : data.uuid, q : 'procedureSQLGlobalProperty', v : 'full' });
+        expect(scope.attributes.procedure.value).toEqual("");
+        expect(scope.attributes.estTimeHours.value).toEqual(0);
+        expect(scope.attributes.estTimeMinutes.value).toEqual(0);
+
+        queryService.getResponseFromQuery.and.returnValue(specUtil.simplePromise({data: [{'all_procedures': "surgery1 on left hand + surgery2 on right leg", 'esthrs': "2", 'estmins': "75"}]}));
+        var data = {uuid: "patientUuid3"};
+        scope.onSelectPatient(data);
+        expect(queryService.getResponseFromQuery).toHaveBeenCalledWith({ patientUuid : data.uuid, q : 'procedureSQLGlobalProperty', v : 'full' });
+        expect(scope.attributes.procedure.value).toEqual("surgery1 on left hand + surgery2 on right leg");
+        expect(scope.attributes.estTimeHours.value).toEqual(3);
+        expect(scope.attributes.estTimeMinutes.value).toEqual(15);
     });
 
 });

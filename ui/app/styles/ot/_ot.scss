@@ -168,6 +168,9 @@ div[ng-app="ot"] {
         padding: 10px;
         box-sizing: border-box;
         min-height: 80px;
+        .text-section {
+          overflow: auto !important;
+        }
       }
     }
 

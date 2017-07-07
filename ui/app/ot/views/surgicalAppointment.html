@@ -26,7 +26,7 @@
         </p>
         <p>
             <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}}</label>
-            <input type="text" id="procedureID" ng-model="attributes.procedure.value">
+            <textarea class="text-section" id="procedureID" ng-model="attributes.procedure.value" msd-elastic> </textarea>
         </p>
 
         <p>
@@ -69,7 +69,7 @@
         </p>
         <p>
             <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}</label>
-            <textarea placeholder="enter your notes" id="notesID" ng-model="attributes.notes.value" msd-elastic></textarea>
+            <textarea class="text-section" placeholder="enter your notes" id="notesID" ng-model="attributes.notes.value" msd-elastic></textarea>
         </p>
         <p style="text-align:right; overflow: visible;">
             <input type="submit" class="add" value="Add"/>

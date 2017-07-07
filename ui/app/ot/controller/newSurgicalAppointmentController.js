@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('NewSurgicalAppointmentController', ['$scope', '$q', '$window', 'patientService', 'surgicalAppointmentService', 'messagingService', 'programService', 'appService', 'ngDialog', 'spinner',
-        function ($scope, $q, $window, patientService, surgicalAppointmentService, messagingService, programService, appService, ngDialog, spinner) {
+    .controller('NewSurgicalAppointmentController', ['$scope', '$q', '$window', 'patientService', 'surgicalAppointmentService', 'messagingService', 'programService', 'appService', 'ngDialog', 'spinner', 'queryService',
+        function ($scope, $q, $window, patientService, surgicalAppointmentService, messagingService, programService, appService, ngDialog, spinner, queryService) {
             var init = function () {
                 $scope.selectedPatient = $scope.ngDialogData && $scope.ngDialogData.patient;
                 $scope.patient = $scope.ngDialogData && $scope.ngDialogData.patient && ($scope.ngDialogData.patient.value || $scope.ngDialogData.patient.display);
@@ -32,6 +32,28 @@ angular.module('bahmni.ot')
 
             $scope.onSelectPatient = function (data) {
                 $scope.selectedPatient = data;
+                var sqlGlobalProperty = appService.getAppDescriptor().getConfigValue('procedureSQLGlobalProperty');
+                if (!sqlGlobalProperty) {
+                    return;
+                }
+                var params = {
+                    patientUuid: data.uuid,
+                    q: sqlGlobalProperty,
+                    v: "full"
+                };
+                spinner.forPromise(queryService.getResponseFromQuery(params).then(function (response) {
+                    if (response.data.length) {
+                        $scope.attributes.procedure.value = response.data[0]['all_procedures'];
+                        var estHrs = response.data[0]['esthrs'];
+                        var estMins = response.data[0]['estmins'];
+                        $scope.attributes.estTimeHours.value = estHrs ? Math.floor(parseInt(estHrs) + estMins / 60) : 0;
+                        $scope.attributes.estTimeMinutes.value = estMins ? parseInt(estMins) % 60 : 0;
+                    } else {
+                        $scope.attributes.procedure.value = "";
+                        $scope.attributes.estTimeHours.value = 0;
+                        $scope.attributes.estTimeMinutes.value = 0;
+                    }
+                }));
             };
 
             $scope.responseMap = function (data) {
