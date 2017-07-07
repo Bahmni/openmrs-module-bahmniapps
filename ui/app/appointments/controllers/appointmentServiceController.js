@@ -3,10 +3,12 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentServiceController', ['$scope', '$q', 'spinner', '$window', '$state', '$translate',
         'appointmentsServiceService', 'locationService', 'messagingService', 'specialityService', 'ngDialog',
+        'appService',
         function ($scope, $q, spinner, $window, $state, $translate, appointmentsServiceService, locationService,
-                  messagingService, specialityService, ngDialog) {
+                  messagingService, specialityService, ngDialog, appService) {
             $scope.showConfirmationPopUp = true;
             $scope.service = $scope.service || {};
+            $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.save = function () {
                 if ($scope.createServiceForm.$invalid) {
                     messagingService.showMessage('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
@@ -75,7 +77,12 @@ angular.module('bahmni.appointments')
             };
 
             var init = function () {
-                return spinner.forPromise(getAppointmentLocations(), getAllSpecialities(), getAllServices());
+                var promises = [];
+                promises.push(getAppointmentLocations(), getAllServices());
+                if ($scope.enableSpecialities) {
+                    promises.push(getAllSpecialities());
+                }
+                return spinner.forPromise($q.all(promises));
             };
 
             $scope.continueWithoutSaving = function () {

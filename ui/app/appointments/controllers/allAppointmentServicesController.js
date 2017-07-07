@@ -2,8 +2,9 @@
 
 angular.module('bahmni.appointments')
     .controller('AllAppointmentServicesController', ['$scope', '$state', '$location', 'spinner',
-        'appointmentsServiceService',
-        function ($scope, $state, $location, spinner, appointmentsServiceService) {
+        'appointmentsServiceService', 'appService',
+        function ($scope, $state, $location, spinner, appointmentsServiceService, appService) {
+            $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.createService = function (uuid) {
                 if (!uuid) {
                     uuid = 'new';
