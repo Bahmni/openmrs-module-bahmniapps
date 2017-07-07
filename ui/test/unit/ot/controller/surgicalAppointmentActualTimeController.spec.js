@@ -262,6 +262,7 @@ describe("surgicalAppointmentActualTimeController", function () {
 
         var appointmentForSave = {
             id: undefined,
+            uuid: undefined,
             actualStartDatetime: new Date('Tue Jun 06 2017 10:00:00 GMT+0530 (IST)'),
             actualEndDatetime: new Date('Tue Jun 06 2017 11:00:00 GMT+0530 (IST)'),
             status: 'COMPLETED',

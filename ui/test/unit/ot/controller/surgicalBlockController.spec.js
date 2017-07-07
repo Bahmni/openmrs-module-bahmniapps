@@ -187,7 +187,7 @@ describe("surgicalBlockController", function () {
     var q = jasmine.createSpyObj('$q', ['all']);
     var state = jasmine.createSpyObj('$state', ['go']);
     var spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
-    var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgeons', 'saveSurgicalBlock', 'getSurgicalAppointmentAttributeTypes', 'getSurgicalBlockFor']);
+    var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgeons', 'saveSurgicalBlock', 'getSurgicalAppointmentAttributeTypes', 'getSurgicalBlockFor', 'updateSurgicalBlock']);
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
 
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -357,8 +357,6 @@ describe("surgicalBlockController", function () {
 
     it("should save a valid surgical form", function (done) {
         var surgicalBlock = {};
-        surgicalBlock.id = 10;
-        surgicalBlock.uuid = "surgicalBlockUuid";
         surgicalBlock.voided = false;
         surgicalBlock.startDatetime = new Date(2017, 1, 29, 2, 11);
         surgicalBlock.endDatetime = new Date(2017, 1, 30, 3, 11);
@@ -374,7 +372,6 @@ describe("surgicalBlockController", function () {
         scope.createSurgicalBlockForm = {};
         scope.createSurgicalBlockForm.$valid = true;
         scope.surgicalForm = {};
-        scope.surgicalForm.id = 10;
         scope.surgicalForm.startDatetime = new Date(2017, 1, 29, 2, 11);
         scope.surgicalForm.endDatetime = new Date(2017, 1, 30, 3, 11);
         scope.surgicalForm.provider = {uuid: "providerUuid"};
@@ -384,7 +381,44 @@ describe("surgicalBlockController", function () {
         scope.save(scope.surgicalForm);
 
         expect(surgicalAppointmentService.saveSurgicalBlock).toHaveBeenCalled();
-        expect(surgicalAppointmentService.saveSurgicalBlock).toHaveBeenCalledWith(jasmine.objectContaining({id:10, voided: false, provider: surgicalBlock.provider, location: surgicalBlock.location}));
+        expect(surgicalAppointmentService.saveSurgicalBlock).toHaveBeenCalledWith(jasmine.objectContaining({voided: false, provider: surgicalBlock.provider, location: surgicalBlock.location}));
+        expect(messagingService.showMessage).toHaveBeenCalledWith('info', "{{'OT_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
+        expect(state.go).toHaveBeenCalledWith('editSurgicalAppointment', {surgicalBlockUuid: surgicalBlock.uuid});
+        done();
+    });
+
+
+    it("should update a valid surgical form", function (done) {
+        var surgicalBlock = {};
+        surgicalBlock.id = 10;
+        surgicalBlock.uuid = "surgicalBlockUuid";
+        surgicalBlock.voided = false;
+        surgicalBlock.startDatetime = new Date(2017, 1, 29, 2, 11);
+        surgicalBlock.endDatetime = new Date(2017, 1, 30, 3, 11);
+        surgicalBlock.provider = {uuid: "providerUuid"};
+        surgicalBlock.location = {uuid: "locationUuid"};
+        surgicalBlock.surgicalAppointments = [{id: "11", patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: openmrsSurgicalAppointmentAttributes}];
+
+        surgicalAppointmentService.updateSurgicalBlock.and.returnValue(specUtil.simplePromise({data: surgicalBlock}));
+        spinner.forPromise.and.returnValue(specUtil.simplePromise({data: surgicalBlock}));
+
+        createController();
+
+        scope.createSurgicalBlockForm = {};
+        scope.createSurgicalBlockForm.$valid = true;
+        scope.surgicalForm = {};
+        scope.surgicalForm.id = 10;
+        scope.surgicalForm.uuid = "someUuid";
+        scope.surgicalForm.startDatetime = new Date(2017, 1, 29, 2, 11);
+        scope.surgicalForm.endDatetime = new Date(2017, 1, 30, 3, 11);
+        scope.surgicalForm.provider = {uuid: "providerUuid"};
+        scope.surgicalForm.location = {uuid: "locationUuid"};
+        scope.surgicalForm.surgicalAppointments = [{id: "11", patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes}];
+
+        scope.save(scope.surgicalForm);
+
+        expect(surgicalAppointmentService.updateSurgicalBlock).toHaveBeenCalled();
+        expect(surgicalAppointmentService.updateSurgicalBlock).toHaveBeenCalledWith(jasmine.objectContaining({id:10, voided: false, provider: surgicalBlock.provider, location: surgicalBlock.location}));
         expect(messagingService.showMessage).toHaveBeenCalledWith('info', "{{'OT_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
         expect(state.go).toHaveBeenCalledWith('editSurgicalAppointment', {surgicalBlockUuid: surgicalBlock.uuid});
         done();

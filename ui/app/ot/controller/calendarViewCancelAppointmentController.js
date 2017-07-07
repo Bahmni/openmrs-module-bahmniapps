@@ -16,6 +16,7 @@ angular.module('bahmni.ot').controller('calendarViewCancelAppointmentController'
         $scope.confirmCancelAppointment = function () {
             var surgicalAppointment = {};
             surgicalAppointment.id = $scope.ngDialogData.surgicalAppointment.id;
+            surgicalAppointment.uuid = $scope.ngDialogData.surgicalAppointment.uuid;
             surgicalAppointment.notes = $scope.appointment.notes;
             surgicalAppointment.status = $scope.appointment.status;
             surgicalAppointment.surgicalBlock = {uuid: $scope.ngDialogData.surgicalBlock.uuid};

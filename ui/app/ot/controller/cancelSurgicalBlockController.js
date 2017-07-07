@@ -23,7 +23,7 @@ angular.module('bahmni.ot').controller('cancelSurgicalBlockController', [
                 return _.omit(appointment, ['derivedAttributes']);
             });
 
-            surgicalAppointmentService.saveSurgicalBlock(surgicalBlock).then(function (response) {
+            surgicalAppointmentService.updateSurgicalBlock(surgicalBlock).then(function (response) {
                 var message = '';
                 if ($scope.surgicalBlock.status === Bahmni.OT.Constants.postponed) {
                     message = $translate.instant("OT_SURGICAL_BLOCK_POSTPONED_MESSAGE");

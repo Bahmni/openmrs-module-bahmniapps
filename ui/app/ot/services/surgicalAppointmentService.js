@@ -18,8 +18,16 @@ angular.module('bahmni.ot')
             });
         };
 
+        this.updateSurgicalBlock = function (data) {
+            return $http.post(Bahmni.OT.Constants.addSurgicalBlockUrl + '/' + data.uuid, data, {
+                params: {v: "full"},
+                withCredentials: true,
+                headers: {"Accept": "application/json", "Content-Type": "application/json"}
+            });
+        };
+
         this.updateSurgicalAppointment = function (data) {
-            return $http.post(Bahmni.OT.Constants.updateSurgicalAppointmentUrl, data, {
+            return $http.post(Bahmni.OT.Constants.updateSurgicalAppointmentUrl + "/" + data.uuid, data, {
                 params: {v: "full"},
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
@@ -41,6 +49,7 @@ angular.module('bahmni.ot')
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             });
         };
+
         this.getSurgicalBlocksInDateRange = function (startDatetime, endDatetime, includeVoided) {
             return $http.get(Bahmni.OT.Constants.addSurgicalBlockUrl, {
                 method: "GET",
@@ -48,10 +57,10 @@ angular.module('bahmni.ot')
                     startDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDatetime),
                     endDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDatetime),
                     includeVoided: includeVoided || false,
-                    v: "custom:(id," +
+                    v: "custom:(id,uuid," +
                     "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
-                    "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,patient:(uuid,display)," +
-                    "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,surgicalAppointmentAttributes),uuid)"
+                    "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display)," +
+                    "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,surgicalAppointmentAttributes))"
                 },
                 withCredentials: true
             });

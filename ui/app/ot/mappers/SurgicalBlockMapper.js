@@ -14,6 +14,7 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             var attributeName = attribute.surgicalAppointmentAttributeType.name;
             mappedAttributes[attributeName] = {
                 id: attribute.id,
+                uuid: attribute.uuid,
                 value: attribute.value,
                 surgicalAppointmentAttributeType: {
                     uuid: attribute.surgicalAppointmentAttributeType.uuid,

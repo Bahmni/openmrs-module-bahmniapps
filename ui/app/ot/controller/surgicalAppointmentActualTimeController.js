@@ -43,6 +43,7 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
             }
             var surgicalAppointment = {};
             surgicalAppointment.id = $scope.ngDialogData.surgicalAppointment.id;
+            surgicalAppointment.uuid = $scope.ngDialogData.surgicalAppointment.uuid;
             surgicalAppointment.actualStartDatetime = $scope.actualStartTime;
             surgicalAppointment.actualEndDatetime = $scope.actualEndTime;
             surgicalAppointment.status = $scope.actualStartTime && Bahmni.OT.Constants.completed || Bahmni.OT.Constants.scheduled;

@@ -86,11 +86,31 @@ describe('surgicalAppointmentService', function () {
 
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/surgicalBlock");
-        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({ startDatetime : '2039-08-26T12:00:00.000', endDatetime : '2039-08-26T15:00:00.000',includeVoided: false, v: "custom:(id," +
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({ startDatetime : '2039-08-26T12:00:00.000', endDatetime : '2039-08-26T15:00:00.000',includeVoided: false, v: "custom:(id,uuid," +
         "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
-        "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,patient:(uuid,display)," +
-        "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,surgicalAppointmentAttributes),uuid)"});
+        "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display)," +
+        "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,surgicalAppointmentAttributes))"});
         expect(mockHttp.get.calls.mostRecent().args[1].withCredentials).toBeTruthy();
-    })
+    });
+
+    it('should update the saved surgical Block', function (done) {
+        var data = {results: [{answers: [{displayString: "sample name"}, {displayString: "sample name2"}, {displayString: "sample name3"}]}]};
+        var headers = {"Accept": "application/json", "Content-Type": "application/json"};
+        var params = {v: 'full'};
+        var surgicalBlock = {uuid: "someUuid", location : {uuid: "123"}, provider : {uuid: "234"}, endDatetime : "2017-09-09T11:30:00Z", startDatetime : "2017-09-09T12:30:00Z"};
+
+        mockHttp.post.and.returnValue(specUtil.respondWith(data));
+
+        surgicalAppointmentService.updateSurgicalBlock(surgicalBlock).then(function (response) {
+            expect(response).toEqual(data);
+            done();
+        });
+        expect(mockHttp.post).toHaveBeenCalled();
+        expect(mockHttp.post.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/surgicalBlock/someUuid");
+        expect(mockHttp.post.calls.mostRecent().args[1]).toEqual(surgicalBlock);
+        expect(mockHttp.post.calls.mostRecent().args[2].params).toEqual(params);
+        expect(mockHttp.post.calls.mostRecent().args[2].withCredentials).toBeTruthy();
+        expect(mockHttp.post.calls.mostRecent().args[2].headers).toEqual(headers);
+    });
 
 });

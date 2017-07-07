@@ -74,7 +74,8 @@ angular.module('bahmni.ot')
                 }
                 $scope.updateSortWeight();
                 var surgicalBlock = new Bahmni.OT.SurgicalBlockMapper().mapSurgicalBlockUIToDomain(surgicalForm);
-                spinner.forPromise(surgicalAppointmentService.saveSurgicalBlock(surgicalBlock)).then(function (response) {
+                var saveOrupdateSurgicalBlock = _.isEmpty(surgicalBlock.uuid) ? surgicalAppointmentService.saveSurgicalBlock : surgicalAppointmentService.updateSurgicalBlock;
+                spinner.forPromise(saveOrupdateSurgicalBlock(surgicalBlock)).then(function (response) {
                     $scope.surgicalForm = new Bahmni.OT.SurgicalBlockMapper().map(response.data, $scope.attributeTypes, $scope.surgeons);
                     $scope.surgicalForm.surgicalAppointments = surgicalAppointmentHelper.filterSurgicalAppointmentsByStatus(
                         $scope.surgicalForm.surgicalAppointments, [Bahmni.OT.Constants.scheduled, Bahmni.OT.Constants.completed]);
