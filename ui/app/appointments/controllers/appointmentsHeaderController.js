@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsHeaderController', ['$scope', 'appService', '$state',
-        function ($scope, appService, $state) {
+    .controller('AppointmentsHeaderController', ['$scope', '$state', 'appService',
+        function ($scope, $state, appService) {
             var setBackLinks = function () {
                 var backLinks = [{label: "Home", url: "../home/", accessKey: "h", icon: "fa-home"}];
 
-                var isAdminUser = true;                 // TODO:permissions for admin
-
-                backLinks.push({text: "APPOINTMENTS_MANAGE", state: "home.manage", accessKey: "m"});
-                if (isAdminUser) {
-                    backLinks.push({text: "APPOINTMENTS_ADMIN", state: "home.admin", accessKey: "a"});
+                // TODO:permissions for admin
+                backLinks.push({text: "APPOINTMENTS_MANAGE", state: "home.manage", accessKey: "M"});
+                var enableAdminPage = appService.getAppDescriptor().getExtensionById('bahmni.appointments.admin', true);
+                if (enableAdminPage) {
+                    backLinks.push({text: "APPOINTMENTS_ADMIN", state: "home.admin.service", accessKey: "A"});
                 }
                 $state.get('home').data.backLinks = backLinks;
             };

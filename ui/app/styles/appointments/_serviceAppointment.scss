@@ -1,0 +1,162 @@
+/*-------service admin page style--------*/
+
+.service-admin-content {
+  clear: both;
+  border-top: 1px solid #95989A;
+  padding: 10px 10px 0;
+  overflow: auto;
+  height: calc(100% - 95px);
+  table {
+    border-color: #0a0a0a;
+    .service-disc-tablecell {
+      min-width: 310px;
+    }
+    th, td {
+      text-align: center;
+      border-color: #95989A;
+      color: #313131;
+      font-size: 13px;
+      &:first-child {
+        text-align: left;
+      }
+    }
+    th {
+      background: #EBEBEB;
+    }
+    td {
+      a {
+        display: inline-block;
+        margin: 0 5px;
+      }
+    }
+  }
+}
+
+/*-------service Creation page style--------*/
+
+.add-service-content {
+  overflow-y: auto;
+  height: calc(100vh - 123px);
+  .add-service, .add-availability {
+    width: 45%;
+    float: left;
+    height: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+  .add-availability {
+    width: 55%;
+  }
+  .add-service {
+    p {
+      padding: 0;
+      margin-bottom: 15px;
+      label {
+        display: inline-block;
+        min-width: 103px;
+        font-size: 14px;
+        text-align: right;
+        color: #656161;
+        margin-right: 10px;
+
+      }
+      input, textarea, select {
+        display: inline-block;
+        width: 300px;
+        padding: 8px 10px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        border-color: #c3c6ca;
+        font-size: 13px;
+        color: #656161;
+      }
+      textarea {
+        min-height: 50px;
+      }
+      select {
+        float: none;
+        height: 36px;
+      }
+      &.duration-wrapper {
+        input {
+          width: 90px;
+          margin-left: 0;
+        }
+      }
+    }
+    .create-service-type {
+      input[type = number] {
+        width: 25%;
+      }
+      .duration-label {
+        min-width: 10%;
+      }
+      .duration-box {
+        width: 10%;
+        margin-right: 1%;
+      }
+    }
+    .newly-added-service-wrapper {
+      overflow: auto;
+      max-height: 100px;
+      .newly-added-service {
+        display: block;
+        background: #FCFCFC;
+        padding: 10px;
+        overflow: hidden;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+        width: 300px;
+        margin-left: 112px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        border: 1px solid #C9CCCE;
+        margin-bottom: 10px;
+        i {
+          float: right;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .add-availability {
+    padding-right: 0;
+    h3, > p, ul {
+      padding-left: 10px;
+    }
+    ul {
+      min-height: 350px;
+      border-left: 1px solid #95989A;
+    }
+  }
+}
+
+/*------ service availability styles -----*/
+
+.service-availability-wrapper {
+  background: #FCFCFC;
+  padding: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  width: 99%;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #C9CCCE;
+  > label, p {
+    display: inline-block;
+    float: left;
+  }
+  p {
+    margin-right: 1%;
+    label {
+      display: inline-block;
+      float: left;
+      cursor: pointer;
+      input[type = checkbox] {
+        visibility: hidden;
+        width: 0;
+        height: 0;
+        padding: 0;
+      }
+    }
+  }
+}

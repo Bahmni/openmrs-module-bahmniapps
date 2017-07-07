@@ -1,0 +1,153 @@
+<div class="add-service-wrapper">
+    <form class="create-service" ng-submit="save()" id="create-service-form" name="createServiceForm">
+    <div class="service-title">
+        <h2>{{ ::'SERVICES' | translate}}</h2>
+        <button type="submit" class="service-save-btn">{{::'APPOINTMENT_SERVICE_SAVE'  | translate }}</button>
+    </div>
+    <section class="add-service-content">
+        <div class="add-service">
+            <h3>{{ ::'APPOINTMENT_SERVICE_ADD_NEW' | translate}}</h3>
+                <p>
+                    <label for="name">
+                        {{'APPOINTMENT_SERVICE_NAME_KEY' | translate}}<span class="asterick">*</span>
+                    </label>
+                    <input placeholder="{{ ::'PLACEHOLDER_SERVICE_NAME' | translate }}" id="name" name="name" type="text"
+                      ng-change="validateServiceName(service.name)" ng-model="service.name" required/>
+                </p>
+                <p class="caution" ng-show="createServiceForm.name.$error.uniqueServiceName">
+                    <i class="fa fa-exclamation-circle small"></i>
+                    <span> {{'DUPLICATE_SERVICE_NAME_ERROR_MESSAGE' | translate}} </span>
+                </p>
+                <p>
+                    <label for="description">
+                        {{'APPOINTMENT_SERVICE_DESCRIPTION_KEY' | translate}}
+                    </label>
+                    <textarea placeholder="{{ ::'PLACEHOLDER_SERVICE_DESCRIPTION' | translate }}" id="description"
+                              ng-model="service.description"></textarea>
+                </p>
+                <p class="duration-wrapper">
+                    <label for="duration">
+                        {{'APPOINTMENT_SERVICE_DURATION_KEY' | translate}}
+                    </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_DURATION' | translate }}" id="duration"
+                                   type="number" min="0" ng-model="service.durationMins"/>
+                    <label for="max-load">
+                        {{'APPOINTMENT_SERVICE_MAX_LOAD_KEY' | translate}}
+                    </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
+                                   type="number" min="0" ng-model="service.maxAppointmentsLimit"><br />
+                    <label for="start-time">
+                        {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
+                    </label> <input id="start-time" type="time" ng-model="service.startTime"
+                                    dependent-model="service.startTime" time-validator/>
+                    <label for="end-time">
+                        {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
+                    </label> <input id="end-time" type="time" name="endTime" ng-model="service.endTime"
+                                    dependent-model="service.startTime" time-validator/>
+                <p class="caution" ng-show="createServiceForm.endTime.$error.timeSequence">
+                    <i class="fa fa-exclamation-circle small"></i>
+                    <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
+                </p>
+                </p>
+                <p ng-show="enableSpecialities">
+                    <label for="speciality">
+                        {{'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate}}
+                    </label>
+                    <select id="speciality" ng-model="service.specialityUuid"
+                            ng-options="item.uuid as item.name for item in specialities | orderBy:'name'">
+                        <option value="">{{ ::'PLACEHOLDER_SERVICE_SPECIALITY' | translate}}</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="location">
+                        {{'APPOINTMENT_SERVICE_LOCATION_KEY' | translate}}
+                    </label>
+                    <select id="location" ng-model="service.locationUuid"
+                            ng-options="item.uuid as item.display for item in locations | orderBy:'display'">
+                        <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="label-color">Label Colour</label>
+                    <select id="label-color">
+                        <option>option1</option>
+                    </select>
+                </p>
+                <div class="switch-wrapper">
+                    <span>Add Service Appointment Type</span>
+                    <label class="switch">
+                        <input type="checkbox" ng-model="isTypeEnabled">
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+                <fieldset ng-disabled="!isTypeEnabled" class="create-service-type">
+                    <p>
+                        <label>Add new type</label><input type="number">
+                        <label class="duration-label">Duration</label> <input  placeholder="Min" class="duration-box" type="text"/>
+                        <button>Add</button>
+                    </p>
+                    <p class="newly-added-service-wrapper">
+                        <span class="newly-added-service">servicetype1 <i class="fa fa-times" aria-hidden="true"></i></span>
+                    </p>
+                </fieldset>
+            </div>
+            <div class="add-availability">
+                <h3>Service Availablity</h3>
+                <div class="switch-wrapper">
+                    <span>Add Service Availability</span>
+                    <label class="switch">
+                        <input type="checkbox" ng-model="isAvailabilityEnabled">
+                        <div class="slider round"></div>
+                    </label>
+                </div>
+                <fieldset ng-disabled="!isAvailabilityEnabled">
+                    <ul>
+                        <li class="service-availability-wrapper">
+                            <label>
+                                <span>Start Time</span><br />
+                                <input type="time"/>
+                            </label>
+                            <label>
+                                <span>End Time</span><br />
+                                <input type="time">
+                            </label>
+                            <label>
+                                <span>Max Load</span><br />
+                                <input type="number">
+                            </label>
+                            <p class="service-ava-days">
+                                <label for="monday">
+                                    <span>Mo</span>
+                                    <input id="monday" type="checkbox">
+                                </label>
+                                <label for="tuesday">
+                                    <span>Tu</span>
+                                    <input id="tuesday" type="checkbox">
+                                </label>
+                                <label for="wednesday">
+                                    <span>We</span>
+                                    <input id="wednesday" type="checkbox">
+                                </label>
+                                <label for="thursday">
+                                    <span>Th</span>
+                                    <input id="thursday" type="checkbox">
+                                </label>
+                                <label for="friday">
+                                    <span>Fr</span>
+                                    <input id="friday" type="checkbox">
+                                </label>
+                                <label for="saturday">
+                                    <span>Sa</span>
+                                    <input id="saturday" type="checkbox">
+                                </label>
+                                <label for="sunday">
+                                    <span>Su</span>
+                                    <input id="sunday" type="checkbox">
+                                </label>
+                            </p>
+                            <button>Add</button>
+                        </li>
+                    </ul>
+                </fieldset>
+            </div>
+        </section>
+    </form>
+</div>
