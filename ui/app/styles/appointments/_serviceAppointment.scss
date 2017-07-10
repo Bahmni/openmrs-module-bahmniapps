@@ -161,9 +161,14 @@
     }
     button {
       @extend .serviceButton;
-      float: right;
       font-size: 12px;
       padding: 5px;
+      right: 5px;
+      position: absolute;
+      margin: auto;
+      top: 0;
+      bottom: 0;
+      height: 25px;
     }
     .disabled {
       opacity: 0.5;
@@ -179,13 +184,14 @@
 
 .service-availability-wrapper {
   background: #FCFCFC;
-  padding: 10px;
+  padding: 7px 5px;
   overflow: hidden;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
   width: 99%;
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid #C9CCCE;
+  position: relative;
   > label {
     display: inline-block;
     float: left;
@@ -194,13 +200,15 @@
     input {
       padding: 5px 0 5px 10px;
       margin: 0;
+      border-radius: 3px;
       &.max-load {
-        width: 50px;
+        width: 35px;
       }
     }
   }
-  p {
+  p.service-ava-days {
     float: left;
+    margin-top: 3px;
     label {
       display: inline-block;
       float: left;
@@ -210,12 +218,17 @@
       margin: 2px;
       border: 1px solid #808080;
       font-size: 12px;
-      input[type = checkbox] {
-        visibility: hidden;
-        width: 0;
-        height: 0;
-        padding: 0;
-        margin: 0;
+    }
+    input[type = checkbox] {
+      visibility: hidden;
+      width: 0;
+      height: 0;
+      padding: 0;
+      margin: 0;
+      &:checked + label {
+        background: #27AE60;
+        border-color: #27AE60;
+        color: #fff;
       }
     }
   }
