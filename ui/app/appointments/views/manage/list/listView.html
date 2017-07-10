@@ -1,0 +1,27 @@
+<table>
+    <thead>
+    <tr>
+        <th>{{::'APPOINTMENT_ID' | translate}}</th>
+        <th>{{::'PATIENT ' |translate}}</th>
+        <th>{{::'DATE' |translate}}</th>
+        <th>{{::'TIME' |translate}}</th>
+        <th>{{::'PROVIDER' |translate}}</th>
+        <th>{{::'SERVICE' |translate}}</th>
+        <th>{{::'LOCATION' |translate}}</th>
+        <th>{{::'STATUS' |translate}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><input type="checkbox"><a ng-href="#/home/manage/appointments/12384710">12</a></td>
+        <td>Test Patient (GAN20178)</td>
+        <td>01/01/2017</td>
+        <td>09:00AM</td>
+        <td>Dr. Superman</td>
+        <td>Ortho</td>
+        <td>OPD-1</td>
+        <td>Scheduled</td>
+    </tr>
+    </tbody>
+</table>
+<div ui-view="content@appointment"></div>
