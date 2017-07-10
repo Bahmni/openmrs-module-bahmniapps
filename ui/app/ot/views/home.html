@@ -1,5 +1,5 @@
 <div class="patient-info-fixed-postion-container ot-secondary-header">
-    <button class="back-btn dashboard-link ot-surgical-button" ng-click="goToNewSurgicalAppointment()">
+    <button class="back-btn dashboard-link ot-surgical-button" show-if-privilege="app:ot:write" ng-click="goToNewSurgicalAppointment()">
         {{'NEW_SURGICAL_BLOCK' | translate}}
     </button>
 </div>
@@ -111,7 +111,7 @@
 
 </div>
 <div class="surgical-action-wrapper">
-    <button ng-disabled="addActualTimeDisabled" ng-mousedown="addActualTime()">Add Actual Time</button>
-    <button ng-disabled="editDisabled" ng-mousedown="goToEdit($event)">Edit</button>
-    <button ng-disabled="cancelDisabled" ng-mousedown="cancelSurgicalBlockOrSurgicalAppointment()">Cancel</button>
+    <button  show-if-privilege="app:ot:write" ng-disabled="addActualTimeDisabled" ng-mousedown="addActualTime()">Add Actual Time</button>
+    <button  show-if-privilege="app:ot:write" ng-disabled="editDisabled" ng-mousedown="goToEdit($event)">Edit</button>
+    <button  show-if-privilege="app:ot:write" ng-disabled="cancelDisabled" ng-mousedown="cancelSurgicalBlockOrSurgicalAppointment()">Cancel</button>
 </div>

@@ -1,9 +1,9 @@
 <form name="createSurgicalBlockForm">
 <div class="patient-info-fixed-postion-container ot-secondary-header">
     <p class="navigation-links-buttons">
-        <span class="add-new-appointment">{{'ADD_NEW_SURGICAL_BLOCK' | translate}}</span>
-        <input type="button" value="{{'DISCARD' | translate}}" class="ot-nav-back" ng-confirm-click="gotoCalendarPage()"/>
-        <input type="submit" value="{{'SAVE' | translate}}" ng-click="save(surgicalForm)" class="ot-nav-save"/>
+        <span class="add-new-appointment"  show-if-privilege="app:ot:write">{{'ADD_NEW_SURGICAL_BLOCK' | translate}}</span>
+        <input show-if-privilege="app:ot:write"  type="button" value="{{'DISCARD' | translate}}" class="ot-nav-back" ng-confirm-click="gotoCalendarPage()"/>
+        <input show-if-privilege="app:ot:write" type="submit" value="{{'SAVE' | translate}}" ng-click="save(surgicalForm)" class="ot-nav-save"/>
     </p>
 </div>
 <div class="new-surgical-appointment" >
@@ -47,12 +47,12 @@
                 </p>
             </div>
         </div>
-        <button class="ot-cancel-appoinment" ng-disabled="cancelDisabled()" ng-mousedown="cancelSurgicalBlock()">{{'OT_CANCEL_BLOCK' | translate}}</button>
+        <button show-if-privilege="app:ot:write" class="ot-cancel-appoinment" ng-disabled="cancelDisabled()" ng-mousedown="cancelSurgicalBlock()">{{'OT_CANCEL_BLOCK' | translate}}</button>
     </section>
 
     <section class="new-surgical-appointment-step2">
                 <h4 class="create-surgical-title">{{'ADD_SURGERY_STEP' | translate}}
-                    <button ng-disabled="!isFormValid()" ng-click="addNewSurgicalAppointment()">
+                    <button  show-if-privilege="app:ot:write" ng-disabled="!isFormValid()" ng-click="addNewSurgicalAppointment()">
                         {{'OT_ADD_SURGERY_KEY' | translate}}
                     </button>
                 </h4>
@@ -93,8 +93,8 @@
                             </div>
                         </td>
                         <td class="appointment-edit">
-                            <a id="edit-appointment" href ng-click="editAppointment(surgicalAppointment)" ng-show="surgicalAppointment.status === 'SCHEDULED' || surgicalAppointment.status === 'COMPLETED'">{{'OT_SURGICAL_APPOINTMENT_EDIT' | translate}}</a>
-                            <a id="cancel-appointment" href ng-click="cancelAppointment(surgicalAppointment)" ng-show="surgicalAppointment.status === 'SCHEDULED'">{{'OT_SURGICAL_APPOINTMENT_CANCEL' | translate}}</a>
+                            <a id="edit-appointment" href   show-if-privilege="app:ot:write"  ng-click="editAppointment(surgicalAppointment)" ng-show="surgicalAppointment.status === 'SCHEDULED' || surgicalAppointment.status === 'COMPLETED'">{{'OT_SURGICAL_APPOINTMENT_EDIT' | translate}}</a>
+                            <a id="cancel-appointment" href  show-if-privilege="app:ot:write" ng-click="cancelAppointment(surgicalAppointment)" ng-show="surgicalAppointment.status === 'SCHEDULED'">{{'OT_SURGICAL_APPOINTMENT_CANCEL' | translate}}</a>
                         </td>
                     </tr>
                     </tbody>
