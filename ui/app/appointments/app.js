@@ -41,7 +41,7 @@ angular
                 url: '/manage',
                 views: {
                     'content': {
-                        templateUrl: 'views/appointmentsManage.html',
+                        templateUrl: 'views/manage/appointmentsManage.html',
                         controller: 'AppointmentsManageController'
                     }
                 }
@@ -49,28 +49,58 @@ angular
                 url: '/summary',
                 views: {
                     'content@manage': {
-                        templateUrl: 'views/appointmentsSummary.html'
+                        templateUrl: 'views/manage/appointmentsSummary.html'
                     }
                 }
             }).state('home.manage.appointments', {
                 url: '/appointments',
                 views: {
                     'content@manage': {
-                        templateUrl: 'views/allAppointments.html'
+                        templateUrl: 'views/manage/allAppointments.html',
+                        controller: 'AllAppointmentsController'
                     }
                 }
-            }).state('home.manage.appointments.new', {
+            }).state('home.manage.appointments.calendar', {
+                url: '/calendar',
+                views: {
+                    'content@viewAppointments': {
+                        templateUrl: 'views/manage/calendar/calendarView.html',
+                        controller: 'AppointmentsCalendarViewController'
+                    }
+                }
+            }).state('home.manage.appointments.calendar.new', {
                 url: '/new',
                 views: {
                     'content@appointment': {
-                        templateUrl: 'views/appointmentsManageNew.html'
+                        templateUrl: 'views/manage/newAppointment.html'
                     }
                 }
-            }).state('home.manage.appointments.edit', {
+            }).state('home.manage.appointments.calendar.edit', {
                 url: '/:uuid',
                 views: {
                     'content@appointment': {
-                        templateUrl: 'views/appointmentsManageEdit.html'
+                        templateUrl: 'views/manage/editAppointment.html'
+                    }
+                }
+            }).state('home.manage.appointments.list', {
+                url: '/list',
+                views: {
+                    'content@viewAppointments': {
+                        templateUrl: 'views/manage/list/listView.html'
+                    }
+                }
+            }).state('home.manage.appointments.list.new', {
+                url: '/new',
+                views: {
+                    'content@appointment': {
+                        templateUrl: 'views/manage/newAppointment.html'
+                    }
+                }
+            }).state('home.manage.appointments.list.edit', {
+                url: '/:uuid',
+                views: {
+                    'content@appointment': {
+                        templateUrl: 'views/manage/editAppointment.html'
                     }
                 }
             }).state('home.admin', {
@@ -78,14 +108,14 @@ angular
                 abstract: true,
                 views: {
                     'content': {
-                        templateUrl: 'views/appointmentsAdmin.html'
+                        templateUrl: 'views/admin/appointmentsAdmin.html'
                     }
                 }
             }).state('home.admin.service', {
                 url: '/service',
                 views: {
                     'content@admin': {
-                        templateUrl: 'views/allAppointmentServices.html',
+                        templateUrl: 'views/admin/allAppointmentServices.html',
                         controller: 'AllAppointmentServicesController'
                     }
                 }
@@ -93,7 +123,7 @@ angular
                 url: '/:uuid',
                 views: {
                     'content@admin': {
-                        templateUrl: 'views/appointmentService.html',
+                        templateUrl: 'views/admin/appointmentService.html',
                         controller: 'AppointmentServiceController'
                     }
                 }

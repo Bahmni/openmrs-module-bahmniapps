@@ -10,6 +10,9 @@
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
         <!-- build:css appointments.min.css -->
         <link rel="stylesheet" href="../styles/clinical.css"/>
+        <link rel="stylesheet" href="../components/fullcalendar/dist/fullcalendar.min.css"/>
+        <link rel="stylesheet" href="../components/fullcalendar-scheduler/dist/scheduler.min.css"/>
+
         <!-- endbuild -->
     </head>
     <body>
@@ -104,17 +107,26 @@
         <script src="../common/logging/exceptionHandler.js"></script>
         <script src="../common/logging/services/loggingService.js"></script>
 
+        <script  src="../components/angular-ui-calendar/src/calendar.js"></script>
+        <script  src="../components/fullcalendar/dist/fullcalendar.min.js"></script>
+        <script  src="../components/fullcalendar-scheduler/dist/scheduler.min.js"></script>
+
         <script src="init.js"></script>
         <script src="initialization.js"></script>
         <script src="constants.js"></script>
         <script src="models/service.js"></script>
         <script src="directives/timeValidator.js"></script>
+        <script src="directives/dayCalendar.js"></script>
         <script src="services/appointmentsServiceService.js"></script>
         <script src="services/specialityService.js"></script>
+        <script src="controllers/appointmentsHeaderController.js"></script>
         <script src="controllers/appointmentsManageController.js"></script>
         <script src="controllers/allAppointmentServicesController.js"></script>
-        <script src="controllers/appointmentsHeaderController.js"></script>
         <script src="controllers/appointmentServiceController.js"></script>
+        <script src="controllers/appointmentsDayCalendarController.js"></script>
+        <script src="controllers/allAppointmentServicesController.js"></script>
+        <script src="controllers/allAppointmentsController.js" ></script>
+        <script src="controllers/appointmentsCalendarViewController.js" ></script>
         <script src="app.js"></script>
 
         <!-- endbuild -->
