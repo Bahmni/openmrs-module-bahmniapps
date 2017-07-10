@@ -191,4 +191,13 @@ describe('surgicalAppointmentHelper', function () {
         expect(filteredAppointments.length).toEqual(1);
         expect(filteredAppointments[0].id).toEqual(108);
     });
+    
+    it('should calculate the duration of the appointment when some fields are empty', function () {
+        var estTimInHours = "";
+        var estTimInMinutes = "";
+        var cleaningTime = "";
+        var appointmentDuration = surgicalAppointmentHelper.getAppointmentDuration(estTimInHours, estTimInMinutes, cleaningTime);
+
+        expect(appointmentDuration).toEqual(0);
+    })
 });

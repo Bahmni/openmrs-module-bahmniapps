@@ -210,7 +210,7 @@ describe("SurgicalBlockMapper", function () {
                 "uuid": "bde92009-3f81-11e7-97ea-0800274a5156",
                 "name": "surgicalAssistant"
             },
-            "value": "surgicalAssistant"
+            "value": ""
         },
         {
             "id": 108,
@@ -297,7 +297,7 @@ describe("SurgicalBlockMapper", function () {
                 "uuid": "bde92009-3f81-11e7-97ea-0800274a5156",
                 "name": "surgicalAssistant"
             },
-            "value": "surgicalAssistant"
+            "value": null
         }, "procedure": {
             "id": 108,
             "surgicalAppointmentAttributeType": {
