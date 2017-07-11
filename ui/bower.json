@@ -62,6 +62,7 @@
     "angular": "1.4.9",
     "d3": "~3.4.13",
     "jquery": "1.9.1",
-    "angular-translate": "2.7.2"
+    "angular-translate": "2.7.2",
+    "moment": "2.18.1"
   }
 }
