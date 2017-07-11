@@ -349,4 +349,31 @@ describe("calendarViewController", function () {
         scope.listView();
         expect(scope.view).toEqual('List View');
     });
+
+    it("should select the completed, scheduled appointment status when patient is selected on Calendar view and no statusList is empty", function () {
+        createController();
+        var data = {};
+        scope.view = 'Calendar';
+        scope.filters = {statusList: []};
+        scope.onSelectPatient(data);
+        expect(scope.filters.statusList).toEqual([ { name : 'SCHEDULED' }, { name : 'COMPLETED' } ]);
+    });
+
+    it("should not change the filter status list when some status filters are applied on selection of patient ", function () {
+        createController();
+        var data = {};
+        scope.view = 'Calendar';
+        scope.filters = {statusList: [{name: 'SCHEDULED'}]};
+        scope.onSelectPatient(data);
+        expect(scope.filters.statusList).toEqual([{name: 'SCHEDULED'}]);
+    });
+
+    it("should not change the filter status list on patient select in  list view ", function () {
+        createController();
+        var data = {};
+        scope.view = 'List View';
+        scope.filters = {statusList: []};
+        scope.onSelectPatient(data);
+        expect(scope.filters.statusList).toEqual([]);
+    });
 });

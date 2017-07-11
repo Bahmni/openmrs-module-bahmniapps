@@ -23,7 +23,7 @@ angular.module('bahmni.ot')
                 $state.view = $scope.view;
                 $scope.weekOrDay = $state.weekOrDay || 'day';
                 $state.weekOrDay = $scope.weekOrDay;
-                if ($scope.weekOrDay == 'week') {
+                if ($scope.weekOrDay === 'week') {
                     $scope.weekStartDate = $state.weekStartDate || new Date(moment().startOf('week'));
                     $state.weekStartDate = $scope.weekStartDate;
                     $scope.weekEndDate = $state.weekEndDate || new Date(moment().endOf('week').endOf('day'));
@@ -105,6 +105,11 @@ angular.module('bahmni.ot')
 
             $scope.onSelectPatient = function (data) {
                 $scope.filters.patient = data;
+                if ($scope.view === 'Calendar') {
+                    if (_.isEmpty($scope.filters.statusList)) {
+                        $scope.filters.statusList = [{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed}];
+                    }
+                }
             };
 
             $scope.clearThePatientFilter = function () {
@@ -198,11 +203,11 @@ angular.module('bahmni.ot')
             });
 
             $scope.goToEdit = function ($event) {
-                if (Object.keys($scope.surgicalBlockSelected).length != 0) {
+                if (Object.keys($scope.surgicalBlockSelected).length !== 0) {
                     var options = {
                         surgicalBlockUuid: $scope.surgicalBlockSelected.uuid
                     };
-                    if (Object.keys($scope.surgicalAppointmentSelected).length != 0) {
+                    if (Object.keys($scope.surgicalAppointmentSelected).length !== 0) {
                         options['surgicalAppointmentId'] = $scope.surgicalAppointmentSelected.id;
                     }
                     options['dashboardCachebuster'] = Math.random();
