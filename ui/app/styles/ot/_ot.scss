@@ -364,12 +364,17 @@ div[ng-app="ot"] {
   table {
     tr {
       white-space: nowrap;
+      &:focus {
+        outline: none;
+        background: #B3E5FC ;
+        border: 1px solid #0277BD ;
+      }
     }
     .list-view-notes {
       white-space: normal;
     }
     .current-date {
-      background: #f0f5f5;
+      background: #f0f5f5 ;
     }
   }
 }
