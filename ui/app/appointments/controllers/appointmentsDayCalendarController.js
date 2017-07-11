@@ -4,8 +4,6 @@ angular.module('bahmni.appointments')
     .controller('AppointmentsDayCalendarController', ['$scope', 'uiCalendarConfig',
         function ($scope, uiCalendarConfig) {
             var init = function () {
-
-
                 $scope.changeTo = 'Hungarian';
 
                 /* event source that contains custom events on the scope */
@@ -51,7 +49,6 @@ angular.module('bahmni.appointments')
                     alert("startTime is " + start + " endTime is " + end + ' for ' + resource.title);
                 };
 
-
                 /* config object */
                 $scope.uiConfig = {
                     calendar: {
@@ -70,7 +67,7 @@ angular.module('bahmni.appointments')
                         groupByResource: true,
                         selectable: true,
                         select: $scope.createAppointment,
-                        slotDuration : '00:10:00',
+                        slotDuration: '00:10:00',
                         eventLimit: true,
                         allDaySlot: false,
                         eventClick: $scope.alertOnEventClick,

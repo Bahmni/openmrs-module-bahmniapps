@@ -3,7 +3,6 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentsCalendarViewController', ['$scope', '$location',
         function ($scope, $location) {
-
             var init = function () {
                 var date = new Date();
                 var d = date.getDate();
@@ -18,13 +17,7 @@ angular.module('bahmni.appointments')
                         {id: 'Ashraf', title: 'Dr Ashraf', eventColor: 'grey'},
                         {id: 'Safia', title: 'Dr Safia', eventColor: 'green'},
                         {id: 'Firoz', title: 'Dr Firoz', eventColor: 'brown'},
-                        {id: '1', title: '[No Provider] Ortho', eventColor: 'grey'},
-                        {id: '11', title: '[No Provider] Dental', eventColor: 'grey'},
-                        {id: '12', title: '[No Provider] Maxilo facial', eventColor: 'grey'},
-                        {id: '13', title: '[No Provider] Surgical oncology‎', eventColor: 'grey'},
-                        {id: '14', title: '[No Provider] Orthopedics', eventColor: 'grey'},
-                        {id: '15', title: '[No Provider] Neurosurgery', eventColor: 'grey'},
-                        {id: '21', title: '[No Provider] Cardiac', eventColor: 'grey'}
+                        {id: '1', title: '[No Provider]', eventColor: 'grey'}
                     ],
                     events: [
                         {
@@ -35,7 +28,14 @@ angular.module('bahmni.appointments')
                             allDay: false,
                             color: 'red'
                         },
-                        {id: 999, title: 'patient 2', start: new Date(y, m, d, 9, 0),  end: new Date(y, m, d, 9, 10), resourceId: 'Ali', allDay: false},
+                        {
+                            id: 999,
+                            title: 'patient 2',
+                            start: new Date(y, m, d, 9, 0),
+                            end: new Date(y, m, d, 9, 10),
+                            resourceId: 'Ali',
+                            allDay: false
+                        },
                         {
                             id: 999,
                             title: 'patient 3',
@@ -78,7 +78,7 @@ angular.module('bahmni.appointments')
                             id: 999,
                             title: 'patient 17',
                             start: new Date(y, m, d, 14, 0),
-                            resourceId: 'Bilal',
+                            resourceId: '1',
                             allDay: false
                         },
                         {
@@ -124,7 +124,7 @@ angular.module('bahmni.appointments')
                             id: 999,
                             title: 'patient ',
                             start: new Date(y, m, d, 15, 0),
-                            resourceId: 'Ashraf',
+                            resourceId: '1',
                             allDay: false
                         },
 
@@ -154,7 +154,7 @@ angular.module('bahmni.appointments')
                             id: 999,
                             title: 'patient ',
                             start: new Date(y, m, d, 15, 0),
-                            resourceId: 'Safia',
+                            resourceId: '1',
                             allDay: false
                         },
 
@@ -179,7 +179,7 @@ angular.module('bahmni.appointments')
                             title: 'patient ',
                             start: new Date(y, m, d, 7, 0),
                             end: new Date(y, m, d, 17, 0),
-                            resourceId: 'Sana',
+                            resourceId: '1',
                             allDay: false
                         }
                     ]
