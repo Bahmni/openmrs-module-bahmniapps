@@ -1,7 +1,9 @@
 {
     "NEW_SURGICAL_BLOCK": "New Surgical Block",
     "ADD_NEW_SURGICAL_BLOCK": "Add new surgical block",
+    "EDIT_SURGICAL_BLOCK": "Edit surgical block",
     "CREATE_SURGICAL_BLOCK": "Step 1 - Create surgical block",
+    "SURGICAL_BLOCK_BANNER": "You can block operation theatre time for a Surgeon and can arrange multiple surgical appointments into this block.",
     "ADD_SURGERY_STEP": "Step 2 - Add surgery",
     "SURGERY_DETAILS": "Surgery details",
     "ACTION": "Action",

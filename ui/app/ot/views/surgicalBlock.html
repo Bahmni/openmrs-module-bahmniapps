@@ -1,7 +1,8 @@
 <form name="createSurgicalBlockForm">
 <div class="patient-info-fixed-postion-container ot-secondary-header">
     <p class="navigation-links-buttons">
-        <span class="add-new-appointment"  show-if-privilege="app:ot:write">{{'ADD_NEW_SURGICAL_BLOCK' | translate}}</span>
+        <span class="add-new-appointment" ng-hide="surgicalForm.id">{{'ADD_NEW_SURGICAL_BLOCK' | translate}}</span>
+        <span class="add-new-appointment" ng-show="surgicalForm.id">{{'EDIT_SURGICAL_BLOCK' | translate}}</span>
         <input show-if-privilege="app:ot:write"  type="button" value="{{'DISCARD' | translate}}" class="ot-nav-back" ng-confirm-click="gotoCalendarPage()"/>
         <input show-if-privilege="app:ot:write" type="submit" value="{{'SAVE' | translate}}" ng-click="save(surgicalForm)" class="ot-nav-save"/>
     </p>
@@ -9,7 +10,7 @@
 <div class="new-surgical-appointment" >
     <p class="new-surgical-appointment-note">
         <i class="fa fa-info-circle"></i>
-        You can block operation theatre time for a Surgeon and can arrange multiple surgical appointments into this block.
+        {{'SURGICAL_BLOCK_BANNER' | translate}}
     </p>    <section class="new-surgical-appointment-step1">
         <div class="create-surgical-form">
             <h4 class="create-surgical-title">{{'CREATE_SURGICAL_BLOCK' | translate}}</h4>
