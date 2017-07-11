@@ -23,6 +23,7 @@ angular.module('bahmni.ot').controller('surgicalBlockViewCancelAppointmentContro
             actualAppointment.notes = $scope.appointment.notes;
             actualAppointment.sortWeight = null;
             actualAppointment.isBeingEdited = null;
+            $scope.ngDialogData.updateAvailableBlockDurationFn();
             ngDialog.close();
         };
 

@@ -13,6 +13,7 @@ describe("surgical block view cancel appointment controller", function () {
         scope.ngDialogData = {surgicalBlock: {uuid:"blockUuid", location: {name: "locationName"}}};
         scope.ngDialogData.surgicalAppointment ={status: "CANCELLED", notes: "notes", sortWeight: 1, surgicalAppointmentAttributes: {estTimeHours: {value: 1}, estTimeMinutes: {value: 30} }, isBeingEdited: true};
         scope.ngDialogData.surgicalForm ={surgicalAppointments: [scope.ngDialogData.surgicalAppointment] };
+        scope.ngDialogData.updateAvailableBlockDurationFn = jasmine.createSpy();
     });
 
     var createController = function () {
@@ -52,6 +53,7 @@ describe("surgical block view cancel appointment controller", function () {
         expect(scope.ngDialogData.surgicalAppointment.status).toBe("CANCELLED");
         expect(scope.ngDialogData.surgicalAppointment.isBeingEdited).toBe(null);
         expect(scope.ngDialogData.surgicalAppointment.notes).toBe("notes");
+        expect(scope.ngDialogData.updateAvailableBlockDurationFn).toHaveBeenCalled();
         expect(ngDialog.close).toHaveBeenCalled();
     });
     
@@ -65,6 +67,7 @@ describe("surgical block view cancel appointment controller", function () {
         expect(scope.ngDialogData.surgicalAppointment.isBeingEdited).toBe(null);
         expect(scope.ngDialogData.surgicalAppointment.notes).toBe("notes");
         expect(scope.ngDialogData.surgicalForm.surgicalAppointments.length).toBe(1);
+        expect(scope.ngDialogData.updateAvailableBlockDurationFn).toHaveBeenCalled();
         expect(ngDialog.close).toHaveBeenCalled();
     });
 

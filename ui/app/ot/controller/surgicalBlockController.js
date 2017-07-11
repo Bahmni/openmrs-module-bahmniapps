@@ -23,6 +23,7 @@ angular.module('bahmni.ot')
                             if (selectedSurgicalAppointment) {
                                 $scope.editAppointment(selectedSurgicalAppointment);
                             }
+                            getAvailableBlockDurationInHoursAndMinutesFormat();
                             return response;
                         });
                     }
@@ -123,10 +124,16 @@ angular.module('bahmni.ot')
                 _.isEqual(savedSurgicalAppointment, surgicalAppointment) ? savedSurgicalAppointment.isDirty = false : savedSurgicalAppointment.isDirty = true;
             };
 
+            var getAvailableBlockDurationInHoursAndMinutesFormat = function () {
+                var availableBlockDuration = getAvailableBlockDuration();
+                $scope.availableBlockDuration = Math.floor(availableBlockDuration / 60) + " hr " + availableBlockDuration % 60 + " mins";
+            };
+
             $scope.addSurgicalAppointment = function (surgicalAppointment) {
                 if (canBeFittedInTheSurgicalBlock(surgicalAppointment)) {
                     checkIfSurgicalAppointmentIsDirty(surgicalAppointment);
                     addOrUpdateTheSurgicalAppointment(surgicalAppointment);
+                    getAvailableBlockDurationInHoursAndMinutesFormat();
                     ngDialog.close();
                 }
                 else {
@@ -173,7 +180,8 @@ angular.module('bahmni.ot')
                     scope: $scope,
                     data: {
                         surgicalAppointment: clonedAppointment,
-                        surgicalForm: $scope.surgicalForm
+                        surgicalForm: $scope.surgicalForm,
+                        updateAvailableBlockDurationFn: getAvailableBlockDurationInHoursAndMinutesFormat
                     }
                 });
             };

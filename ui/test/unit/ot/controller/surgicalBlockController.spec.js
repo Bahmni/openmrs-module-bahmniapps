@@ -528,6 +528,7 @@ describe("surgicalBlockController", function () {
         expect(scope.surgicalForm.surgicalAppointments.length).toEqual(2);
         expect(scope.surgicalForm.surgicalAppointments[1]).toBe(newSurgicalAppointment);
         expect(scope.surgicalForm.surgicalAppointments[1].sortWeight).toEqual(1);
+        expect(scope.availableBlockDuration).toEqual("0 hr 30 mins");
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
@@ -558,6 +559,7 @@ describe("surgicalBlockController", function () {
         expect(scope.surgicalForm.surgicalAppointments[1].surgicalAppointmentAttributes.procedure.value).toEqual("surgery on left leg");
         expect(scope.surgicalForm.surgicalAppointments[1].surgicalAppointmentAttributes.estTimeMinutes.value).toEqual("30");
         expect(scope.surgicalForm.surgicalAppointments[1].surgicalAppointmentAttributes.estTimeHours.value).toEqual("0");
+        expect(scope.availableBlockDuration).toEqual("0 hr 30 mins");
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
@@ -680,7 +682,7 @@ describe("surgicalBlockController", function () {
             showClose: true,
             className: 'ngdialog-theme-default ng-dialog-adt-popUp',
             scope: scope,
-            data: { surgicalAppointment: surgicalAppointment, surgicalForm:  scope.surgicalForm}
+            data: { surgicalAppointment: surgicalAppointment, surgicalForm:  scope.surgicalForm, updateAvailableBlockDurationFn: jasmine.any(Function)}
         }));
     });
 
