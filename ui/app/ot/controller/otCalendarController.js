@@ -1,8 +1,13 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('otCalendarController', ['$scope', '$q', 'spinner', 'locationService', 'surgicalAppointmentService',
-        function ($scope, $q, spinner, locationService, surgicalAppointmentService) {
+    .controller('otCalendarController', ['$scope', '$q', '$interval', 'spinner', 'locationService', 'surgicalAppointmentService',
+        function ($scope, $q, $interval, spinner, locationService, surgicalAppointmentService) {
+            var updateCurrentDayTimeline = function () {
+                $scope.currentTimeLineHeight = heightPerMin * Bahmni.Common.Util.DateUtil.diffInMinutes($scope.calendarStartDatetime, new Date());
+            };
+            var heightPerMin = 120 / $scope.dayViewSplit;
+
             var init = function () {
                 var dayStart = ($scope.dayViewStart || Bahmni.OT.Constants.defaultCalendarStartTime).split(':');
                 var dayEnd = ($scope.dayViewEnd || Bahmni.OT.Constants.defaultCalendarEndTime).split(':');
@@ -14,6 +19,7 @@ angular.module('bahmni.ot')
                 $scope.dayViewSplit = parseInt($scope.dayViewSplit) > 0 ? parseInt($scope.dayViewSplit) : 60;
                 $scope.calendarStartDatetime = Bahmni.Common.Util.DateUtil.addMinutes($scope.viewDate, (dayStart[0] * 60 + parseInt(dayStart[1])));
                 $scope.calendarEndDatetime = Bahmni.Common.Util.DateUtil.addMinutes($scope.viewDate, (dayEnd[0] * 60 + parseInt(dayEnd[1])));
+                updateCurrentDayTimeline();
                 $scope.rows = $scope.getRowsForCalendar();
                 var blocksStartDatetime = $scope.viewDate;
                 var blocksEndDatetime = moment($scope.viewDate).endOf('day');
@@ -46,6 +52,16 @@ angular.module('bahmni.ot')
                 }
                 return rows;
             };
+
+            $scope.shouldDisplayCurrentTimeLine = function () {
+                return moment().isBefore($scope.calendarEndDatetime) && moment().isAfter($scope.calendarStartDatetime);
+            };
+
+            var timer = $interval(updateCurrentDayTimeline, 3000000);
+
+            $scope.$on('$destroy', function () {
+                $interval.cancel(timer);
+            });
 
             $scope.$watch("viewDate", function (oldValue, newValue) {
                 if (oldValue.getTime() !== newValue.getTime()) {

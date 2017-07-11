@@ -62,6 +62,15 @@
           }
         }
       }
+      .current-day-line {
+        color: #f00;
+        background: #f00;
+        width: 300px;
+        height: 2px;
+        float: left;
+        box-sizing: border-box;
+        position: relative;
+      }
     }
   }
 }
