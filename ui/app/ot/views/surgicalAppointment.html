@@ -3,7 +3,7 @@
     <h4 class="appointment-title" ng-show="ngDialogData.sortWeight >= 0 ">{{'EDIT_SURGICAL_APPOINTMENT' | translate}}</h4>
     <div class="appointment-block">
         <p class="surgeon-block">
-            <label class="surgeon-block surgeon-text">{{'OT_PATIENT' | translate}}<sup>*</sup></label>
+            <label class="surgeon-block surgeon-text">{{'OT_PATIENT' | translate}} <span class="asterick">*</span></label>
             <span ng-hide="isEditMode()">
                 <input type="text"
                        id="patientID"
