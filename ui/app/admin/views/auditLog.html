@@ -4,24 +4,25 @@
             <p>Filters</p>
         </header>
         <article id="startFrom">
-            <p>
-                <label for="startFrom">Start From </label>
-                <input id="startDate" type="date" ng-model="startDate" max="{{::maxDate}}">
-                <input id="startTime" type="time" ng-model="startDate">
-            </p>
-            <p>
-                <label for="username">Username </label>
-                <input type="text" id="username" ng-model="username" placeholder="Enter Username">
-            </p>
-            <p>
-                <label for="patientId">Patient ID </label>
-                <input type="text" id="patientId" ng-model="patientId" placeholder="Enter Patient ID">
-            </p>
-            <button class="button" type="button" ng-click="runReport()"><i class="fa fa-filter" aria-hidden="true"></i>
-                Filter
-            </button>
+          <form>
+              <p>
+                  <label for="startFrom">Start From </label>
+                  <input id="startDate" type="date" ng-model="startDate" max="{{::maxDate}}">
+                  <input id="startTime" type="time" ng-model="startDate">
+              </p>
+              <p>
+                  <label for="username">Username </label>
+                  <input type="text" id="username" ng-model="username" placeholder="Enter Username">
+              </p>
+              <p>
+                  <label for="patientId">Patient ID </label>
+                  <input type="text" id="patientId" ng-model="patientId" placeholder="Enter Patient ID">
+              </p>
+              <button class="button" type="submit" ng-click="runReport()"><i class="fa fa-filter" aria-hidden="true"></i>
+                  Filter
+              </button>
+          </form>
         </article>
-
     </div>
     <div class="audit-log-table">
         <header>
