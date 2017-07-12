@@ -62,7 +62,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                 }
             })
             .state('newSurgicalAppointment', {
-                url: '/appointment/new',
+                url: '/surgicalblock/new',
                 data: {
                     homeBackLink: homeBackLink,
                     navigationLinks: navigationLinks
@@ -85,7 +85,7 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                 }
             })
             .state('editSurgicalAppointment', {
-                url: '/appointment/:surgicalBlockUuid/edit',
+                url: '/surgicalblock/:surgicalBlockUuid/edit',
                 data: {
                     homeBackLink: homeBackLink,
                     navigationLinks: navigationLinks
