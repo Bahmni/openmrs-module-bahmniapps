@@ -47,8 +47,7 @@ angular.module('bahmni.ot')
                     return newVar;
                 });
                 $scope.filters.statusList = [];
-                $scope.appointmentStatusList = [{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed},
-                    {name: Bahmni.OT.Constants.postponed}, {name: Bahmni.OT.Constants.cancelled}];
+                $scope.appointmentStatusList = [{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed}];
                 return locationService.getAllByTag('Operation Theater').then(function (response) {
                     $scope.locations = response.data.results;
                     addLocationsForFilters();
@@ -266,4 +265,20 @@ angular.module('bahmni.ot')
                 }
             };
             init();
+
+            $scope.$watch('view', function (newValue, oldValue) {
+                if (oldValue !== newValue) {
+                    if (newValue === 'Calendar') {
+                        $scope.appointmentStatusList = [{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed}];
+                        $scope.filters.statusList = _.filter($scope.filters.statusList, function (status) {
+                            return status.name === Bahmni.OT.Constants.scheduled || status.name === Bahmni.OT.Constants.completed;
+                        });
+                    }
+                    if (newValue === 'List View') {
+                        $scope.appointmentStatusList = [{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed},
+                            {name: Bahmni.OT.Constants.postponed}, {name: Bahmni.OT.Constants.cancelled}];
+                    }
+                    $scope.applyFilters();
+                }
+            });
         }]);

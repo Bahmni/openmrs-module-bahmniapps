@@ -174,7 +174,7 @@ describe("calendarViewController", function () {
         expect(scope.filters.locations).toEqual({"location1": true, "location2": true});
         expect(scope.filters.providers).toEqual([]);
         expect(scope.filters.statusList).toEqual([]);
-        expect(scope.appointmentStatusList).toEqual([{name: "SCHEDULED"}, {name: "COMPLETED"}, {name: "POSTPONED"}, {name: "CANCELLED"}]);
+        expect(scope.appointmentStatusList).toEqual([{name: "SCHEDULED"}, {name: "COMPLETED"}]);
         expect(scope.locations).toEqual([{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}]);
         expect(scope.surgeonList).toEqual(mappedSurgeons);
         expect(scope.patient).toBeUndefined();
@@ -214,7 +214,7 @@ describe("calendarViewController", function () {
         expect(scope.filters.providers).toEqual([{uuid: "providerUuid1"}]);
         expect(scope.filters.statusList).toEqual([{name: "COMPLETED"}]);
         expect(scope.filters.patient).toEqual({uuid: "patientUuid2", value: "firstName2 lastName2", identifier: "IQ10002"});
-        expect(scope.appointmentStatusList).toEqual([{name: "SCHEDULED"}, {name: "COMPLETED"},  {name: "POSTPONED"}, {name: "CANCELLED"}]);
+        expect(scope.appointmentStatusList).toEqual([{name: "SCHEDULED"}, {name: "COMPLETED"}]);
         expect(scope.locations).toEqual([{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}]);
         expect(scope.surgeonList).toEqual(mappedSurgeons);
         expect(scope.patient).toEqual("firstName2 lastName2");
@@ -375,5 +375,32 @@ describe("calendarViewController", function () {
         scope.filters = {statusList: []};
         scope.onSelectPatient(data);
         expect(scope.filters.statusList).toEqual([]);
+    });
+
+    it("should fire $watch when the view is changed to Calendar", function () {
+        createController();
+        scope.view = undefined;
+        scope.filters = {statusList: [{name: Bahmni.OT.Constants.completed}, {name: Bahmni.OT.Constants.cancelled}]};
+        scope.$digest();
+        spyOn(scope, 'applyFilters');
+        scope.view = 'Calendar';
+        scope.$digest();
+        expect(scope.applyFilters).toHaveBeenCalled();
+        expect(scope.appointmentStatusList).toEqual([{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed} ]);
+        expect(scope.filters.statusList).toEqual([{name: Bahmni.OT.Constants.completed}]);
+    });
+
+    it("should fire $watch when the view is changed to List View", function () {
+        createController();
+        scope.view = undefined;
+        scope.filters = {statusList: [{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed}, {name: Bahmni.OT.Constants.cancelled}]};
+        scope.$digest();
+        spyOn(scope, 'applyFilters');
+        scope.view = 'List View';
+        scope.$digest();
+        expect(scope.applyFilters).toHaveBeenCalled();
+        expect(scope.appointmentStatusList).toEqual([{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed},
+            {name: Bahmni.OT.Constants.postponed}, {name: Bahmni.OT.Constants.cancelled}]);
+        expect(scope.filters.statusList).toEqual([{name: Bahmni.OT.Constants.scheduled},{name: Bahmni.OT.Constants.completed}, {name: Bahmni.OT.Constants.cancelled}]);
     });
 });
