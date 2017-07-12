@@ -144,26 +144,32 @@ describe("AppointmentServiceController", function () {
         });
 
         it('should save all appointment service details', function () {
+            var startDateTime = new Date('Thu Jan 01 1970 09:45:00 GMT+0530 (IST)');
+            var endDateTime = new Date('Thu Jan 01 1970 18:30:00 GMT+0530 (IST)');
             scope.service = {
                 name: 'Chemotherapy',
                 description: 'For cancer',
-                startTime: 'Thu Jan 01 1970 09:45:00 GMT+0530 (IST)',
-                endTime: 'Thu Jan 01 1970 18:30:00 GMT+0530 (IST)'
+                startTime: startDateTime,
+                endTime: endDateTime
             };
             var service = Bahmni.Appointments.Service.create(scope.service);
             scope.save();
-            expect(service.startTime).toBe('09:45:00');
-            expect(service.endTime).toBe('18:30:00');
+            var DateUtil = Bahmni.Common.Util.DateUtil;
+            var timeFormat = 'HH:mm:ss';
+            expect(service.startTime).toBe(DateUtil.getDateTimeInSpecifiedFormat(startDateTime, timeFormat));
+            expect(service.endTime).toBe(DateUtil.getDateTimeInSpecifiedFormat(endDateTime, timeFormat));
             expect(appointmentsServiceService.save).toHaveBeenCalledWith(service);
             expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
         });
 
         it('should go to service list page after save', function () {
+            var startDateTime = new Date('Thu Jan 01 1970 09:45:00 GMT+0530 (IST)');
+            var endDateTime = new Date('Thu Jan 01 1970 18:30:00 GMT+0530 (IST)');
             scope.service = {
                 name: 'Chemotherapy',
                 description: 'For cancer',
-                startTime: 'Thu Jan 01 1970 09:45:00 GMT+0530 (IST)',
-                endTime: 'Thu Jan 01 1970 18:30:00 GMT+0530 (IST)'
+                startTime: startDateTime,
+                endTime: endDateTime
             };
             var service = Bahmni.Appointments.Service.create(scope.service);
             scope.save();
