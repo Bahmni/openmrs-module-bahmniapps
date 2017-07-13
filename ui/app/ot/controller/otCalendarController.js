@@ -68,6 +68,5 @@ angular.module('bahmni.ot')
                     spinner.forPromise(init());
                 }
             });
-
             spinner.forPromise(init());
         }]);

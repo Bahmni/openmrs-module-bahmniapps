@@ -1,10 +1,13 @@
-<div class="calendar">
+<div on-Scroll class="calendar">
+    <p class="calendar-overflow-hiding"></p>
+    <!-- Please dont remove or alter the below class name -->
     <div class="calendar-location">
         <p class="heading-cell" ng-repeat="location in locations">
             {{location.name}}
         </p>
     </div>
     <div class="table-block">
+        <!-- Please dont remove or alter the below class name -->
         <div class="calendar-time-container">
             <div ng-repeat="row in ::rows" class="calendar-time">
                 {{::row.date | bahmniTime}}

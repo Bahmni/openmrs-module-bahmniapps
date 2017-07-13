@@ -2,11 +2,24 @@
   overflow: auto;
   height: calc(100vh - 205px);
   background: #fff;
+  position: relative;
+  .calendar-overflow-hiding {
+    width: 80px;
+    height: 36px;
+    position: fixed;
+    top: 157px;
+    left: 300px;
+    background: #FFF;
+    z-index: 999;
+  }
   .calendar-location {
-    margin-left: 80px;
+    padding-left: 80px;
     overflow: hidden;
     float: left;
     display: flex;
+    position: absolute;
+    z-index: 20;
+    background: #fff;
     .heading-cell {
       width: 300px;
       box-sizing: border-box;
@@ -19,6 +32,11 @@
   .calendar-time-container {
     float: left;
     clear: left;
+    position: absolute;
+    top: 36px;
+    background: #fff;
+    z-index: 19;
+
     .calendar-time {
       width: 80px;
       height: 120px;
@@ -36,9 +54,10 @@
       .ot-block-wrapper {
         position: absolute;
         display: flex;
-        left: 0;
+        left: 80px;
         overflow: auto;
         padding-bottom: 5px;
+        top: 36px;
       }
       .calendar-cell {
         border-bottom: 0.5px solid lightgrey;
@@ -70,6 +89,7 @@
         float: left;
         box-sizing: border-box;
         position: relative;
+        left: 80px;
       }
     }
   }
