@@ -206,7 +206,7 @@ describe("AppointmentServiceController", function () {
             };
             scope.$broadcast("$stateChangeStart");
             expect(ngDialog.openConfirm).toHaveBeenCalledWith({
-                template: 'views/appointmentServiceSaveConfirmation.html',
+                template: 'views/admin/appointmentServiceSaveConfirmation.html',
                 scope: scope,
                 closeByEscape: true
             });
