@@ -12,7 +12,8 @@
         <link rel="stylesheet" href="../styles/clinical.css"/>
         <link rel="stylesheet" href="../components/fullcalendar/dist/fullcalendar.min.css"/>
         <link rel="stylesheet" href="../components/fullcalendar-scheduler/dist/scheduler.min.css"/>
-
+        <!--  // TODO: Remove this stylesheet and ngweekdaySelector dependency in bower.json-->
+        <link rel="stylesheet" href="../components/ng-weekday-selector/ngWeekdaySelector.css">
         <!-- endbuild -->
     </head>
     <body>
@@ -114,9 +115,11 @@
         <script src="init.js"></script>
         <script src="initialization.js"></script>
         <script src="constants.js"></script>
-        <script src="models/service.js"></script>
+        <script src="models/appointmentService.js"></script>
+        <script src="models/appointmentServiceViewModel.js"></script>
         <script src="directives/timeValidator.js"></script>
         <script src="directives/dayCalendar.js"></script>
+        <script src="directives/weekdaySelector.js"></script>
         <script src="services/appointmentsServiceService.js"></script>
         <script src="services/specialityService.js"></script>
         <script src="controllers/appointmentsHeaderController.js"></script>

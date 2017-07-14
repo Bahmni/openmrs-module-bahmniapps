@@ -32,27 +32,28 @@
                     </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_DURATION' | translate }}" id="duration"
                                     type="number" min="0" ng-model="service.durationMins"/>
                 </p>
-                <p class="time-wrapper">
-                    <label for="start-time">
-                        {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
-                    </label> <input id="start-time" type="time" ng-model="service.startTime"
-                                    dependent-model="service.startTime" time-validator/>
-                    <label class="end-time" for="end-time">
-                        {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
-                    </label> <input id="end-time" type="time" name="endTime" ng-model="service.endTime"
-                                    dependent-model="service.startTime" time-validator/>
-                <p class="caution" ng-show="createServiceForm.endTime.$error.timeSequence">
-                    <i class="fa fa-exclamation-circle small"></i>
-                    <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
-                </p>
-                </p>
-                <p>
-                    <label class="max-load" for="max-load">
-                        {{'APPOINTMENT_SERVICE_MAX_LOAD_KEY' | translate}}
-                    </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
-                                    type="number" min="0" ng-model="service.maxAppointmentsLimit">
-                </p>
-                <p>
+                <fieldset ng-disabled="isAvailabilityEnabled" ng-class="{'disabled': isAvailabilityEnabled}">
+                    <p class="time-wrapper">
+                        <label for="start-time">
+                            {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
+                        </label> <input id="start-time" type="time" ng-model="service.startTime"
+                                        dependent-model="service.startTime" time-validator/>
+                        <label class="end-time" for="end-time">
+                            {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
+                        </label> <input id="end-time" type="time" name="endTime" ng-model="service.endTime"
+                                        dependent-model="service.startTime" time-validator/>
+                        <p class="caution" ng-show="createServiceForm.endTime.$error.timeSequence">
+                            <i class="fa fa-exclamation-circle small"></i>
+                            <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
+                        </p>
+                    </p>
+                    <p>
+                        <label class="max-load" for="max-load">
+                            {{'APPOINTMENT_SERVICE_MAX_LOAD_KEY' | translate}}
+                        </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
+                                        type="number" min="0" ng-model="service.maxAppointmentsLimit">
+                    </p>
+                </fieldset>
                 <p ng-show="enableSpecialities">
                     <label for="speciality">
                         {{'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate}}
@@ -78,7 +79,7 @@
                     </select>
                 </p>
                 <div class="switch-wrapper">
-                    <span>Add Service Appointment Type</span>
+                    <span>{{'APPOINTMENT_SERVICE_TYPE_ADD_NEW' | translate}}</span>
                     <label class="switch">
                         <input type="checkbox" ng-model="isTypeEnabled">
                         <div class="slider round"></div>
@@ -98,62 +99,31 @@
                 </fieldset>
             </div>
             <div class="add-availability">
-                <h3>Service Availablity</h3>
+                <h3>{{'APPOINTMENT_SERVICE_AVAILABILITY' | translate}}</h3>
                 <div class="switch-wrapper">
-                    <span>Add Service Availability</span>
+                    <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_ADD_NEW' | translate}}</span>
                     <label class="switch">
                         <input type="checkbox" ng-model="isAvailabilityEnabled">
                         <div class="slider round"></div>
                     </label>
                 </div>
                 <fieldset ng-disabled="!isAvailabilityEnabled" ng-class="{'disabled': !isAvailabilityEnabled}">
-                    <ul>
-                        <li class="service-availability-wrapper">
-                            <label>
-                                <span>Start Time</span>
-                                <input type="time"/>
-                            </label>
-                            <label>
-                                <span>End Time</span>
-                                <input type="time">
-                            </label>
-                            <label>
-                                <span>Max Load</span>
-                                <input class="max-load" type="number">
-                            </label>
-                            <p class="service-ava-days">
-                                <input id="monday" type="checkbox">
-                                <label for="monday" tabindex="0">
-                                    <span>Mo</span>
-                                </label>
-                                <input id="tuesday" type="checkbox">
-                                <label for="tuesday" tabindex="0">
-                                    <span>Tu</span>
-                                </label>
-                                <input id="wednesday" type="checkbox">
-                                <label for="wednesday" tabindex="0">
-                                    <span>We</span>
-                                </label>
-                                <input id="thursday" type="checkbox">
-                                <label for="thursday" tabindex="0">
-                                    <span>Th</span>
-                                </label>
-                                <input id="friday" type="checkbox">
-                                <label for="friday" tabindex="0">
-                                    <span>Fr</span>
-                                </label>
-                                <input id="saturday" type="checkbox">
-                                <label for="saturday" tabindex="0">
-                                    <span>Sa</span>
-                                </label>
-                                <input id="sunday" type="checkbox">
-                                <label for="sunday" tabindex="0">
-                                    <span>Su</span>
-                                </label>
-                            </p>
-                            <button>Add</button>
-                        </li>
-                    </ul>
+                    <div ng-repeat="availability in service.weeklyAvailability">
+                        <ul>
+                            <li class="service-availability-wrapper">
+                                <div ng-include src="'views/admin/serviceAvailability.html'"></div>
+                                <button type="button" ng-click="deleteAvailability($index)">
+                                    <i class="fa fa-remove"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="service-availability-wrapper">
+                        <div ng-include src="'views/admin/serviceAvailability.html'"></div>
+                        <button type="button" ng-disabled="!isValidAvailability()" ng-click="addAvailability()">
+                            {{'ADD_AVAILABILITY' |translate}}
+                        </button>
+                    </div>
                 </fieldset>
             </div>
         </section>

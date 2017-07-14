@@ -152,7 +152,7 @@ describe("AppointmentServiceController", function () {
                 startTime: startDateTime,
                 endTime: endDateTime
             };
-            var service = Bahmni.Appointments.Service.create(scope.service);
+            var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
             scope.save();
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var timeFormat = 'HH:mm:ss';
@@ -171,7 +171,7 @@ describe("AppointmentServiceController", function () {
                 startTime: startDateTime,
                 endTime: endDateTime
             };
-            var service = Bahmni.Appointments.Service.create(scope.service);
+            var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
             scope.save();
             expect(appointmentsServiceService.save).toHaveBeenCalledWith(service);
             expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
