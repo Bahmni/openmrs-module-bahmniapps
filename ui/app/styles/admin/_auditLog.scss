@@ -38,6 +38,7 @@
     }
   }
 }
+
 .audit-log-filter {
   article {
     padding: 10px;
@@ -59,6 +60,7 @@
     }
   }
 }
+
 .audit-log-table-buttons {
   text-align: center;
   margin: 10px 0;
@@ -66,8 +68,13 @@
     float: none;
   }
 }
+
+.audit-log-created-at {
+  width: 12rem;
+}
+
 #auditLogTable {
-  tr{
+  tr {
     border-left: 0;
     border-right: 0;
     th, td {
