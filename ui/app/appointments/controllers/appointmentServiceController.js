@@ -7,14 +7,17 @@ angular.module('bahmni.appointments')
         function ($scope, $q, spinner, $window, $state, $translate, appointmentsServiceService, locationService,
                   messagingService, specialityService, ngDialog, appService) {
             $scope.showConfirmationPopUp = true;
-            $scope.service = $scope.service || {};
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
+            $scope.startOfWeek = 2;
+            $scope.availability = {};
+            $scope.isAvailabilityEnabled = false;
+            $scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse({});
             $scope.save = function () {
                 if ($scope.createServiceForm.$invalid) {
                     messagingService.showMessage('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
                     return;
                 }
-                var service = Bahmni.Appointments.Service.create($scope.service);
+                var service = Bahmni.Appointments.AppointmentService.createFromUIObject($scope.service);
                 appointmentsServiceService.save(service).then(function () {
                     messagingService.showMessage('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
                     $scope.showConfirmationPopUp = false;
@@ -24,6 +27,20 @@ angular.module('bahmni.appointments')
 
             $scope.validateServiceName = function () {
                 $scope.createServiceForm.name.$setValidity('uniqueServiceName', isServiceNameUnique($scope.service.name));
+            };
+
+            $scope.addAvailability = function () {
+                $scope.service.weeklyAvailability = $scope.service.weeklyAvailability || [];
+                $scope.service.weeklyAvailability.push($scope.availability);
+                $scope.availability = {};
+            };
+
+            $scope.isValidAvailability = function () {
+                return $scope.availability.startTime && $scope.availability.endTime && _.find($scope.availability.days, {isSelected: true});
+            };
+
+            $scope.deleteAvailability = function (index) {
+                $scope.service.weeklyAvailability.splice(index, 1);
             };
 
             var isServiceNameUnique = function (serviceName) {
