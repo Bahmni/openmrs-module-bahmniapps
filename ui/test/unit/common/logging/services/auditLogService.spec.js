@@ -87,11 +87,11 @@ describe('auditLogService', function () {
             expect(log3.dateCreated).toBe(DateUtil.getDateTimeInSpecifiedFormat(
                 DateUtil.parseLongDateToServerFormat(1490267211000), 'MMMM Do, YYYY [at] h:mm:ss A'));
 
+            expect(mockHttp.get).toHaveBeenCalled();
+            expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/auditlog");
+            expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual(params);
             done();
         });
-        expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/auditlog");
-        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual(params);
     });
 
     it("should post logs", function (done) {
@@ -102,9 +102,9 @@ describe('auditLogService', function () {
             module: 'MODULE_LABEL_REPORTS_KEY'
         };
         auditLogService.log('patient Uuid', 'RUN_REPORT', {reportName: 'Visit report'}, 'MODULE_LABEL_REPORTS_KEY').then(function (response) {
+            expect(mockHttp.post).toHaveBeenCalled();
+            expect(mockHttp.post.calls.mostRecent().args[1]).toEqual(params);
             done();
         });
-        expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.calls.mostRecent().args[1]).toEqual(params);
     });
 });
