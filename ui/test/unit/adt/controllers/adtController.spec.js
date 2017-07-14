@@ -53,7 +53,7 @@ describe("AdtController", function () {
         dispositionService.getDispositionActions.and.returnValue({});
         sessionService.getLoginLocationUuid.and.returnValue("someLocationUuid");
         auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
-        auditLogService.log.and.returnValue(specUtil.simplePromise({}));
+        auditLogService.log.and.returnValue(specUtil.createFakePromise({}));
     });
 
     var createController = function () {
@@ -114,6 +114,7 @@ describe("AdtController", function () {
         scope.patient = {uuid: '123'};
         scope.adtObservations = [];
 
+        visitService.getVisitSummary.and.returnValue(specUtil.createFakePromise({visitType: "OPD", uuid: "visitUuid"}));
         var encounterResponse = {patientUuid: '123', encounterUuid: 'uuid', encounterType: 'ADMISSION'};
         visitService.endVisitAndCreateEncounter.and.returnValue(specUtil.createFakePromise(encounterResponse));
         encounterService.buildEncounter.and.returnValue(encounterResponse);
@@ -135,6 +136,7 @@ describe("AdtController", function () {
         expect(ngDialog.close).toHaveBeenCalled();
         expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'CLOSE_VISIT', messageParamsForVisit, 'MODULE_LABEL_INPATIENT_KEY');
         expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'EDIT_ENCOUNTER', messageParamsForEncounter, 'MODULE_LABEL_INPATIENT_KEY');
+        expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, 'OPEN_VISIT', messageParamsForVisit, 'MODULE_LABEL_INPATIENT_KEY');
     });
 
     it("Should close the confirmation dialog if cancelled", function () {
