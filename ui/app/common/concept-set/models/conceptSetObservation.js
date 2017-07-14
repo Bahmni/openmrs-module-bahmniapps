@@ -215,6 +215,19 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.conceptUIConfig.buttonRadio;
     },
 
+    isLocationRef: function() {
+        return this.isComplex() && this.concept.handler === "LocationObsHandler";
+    },
+
+    isProviderRef: function() {
+        return this.isComplex() && this.concept.handler === "ProviderObsHandler";
+    },
+
+    isComplex: function() {
+        return this.concept.dataType === "Complex";
+
+    },
+
     getControlType: function () {
         if (this.hidden) {
             return "hidden";
@@ -243,6 +256,15 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (this.isDatetime()) {
             return "datetime";
         }
+        
+        if (this.isLocationRef()) {
+           return "text";     
+        }
+
+        if (this.isProviderRef()) {
+            return "text";
+        }
+        
         return "unknown";
     },
 
