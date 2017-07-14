@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('visitDocumentService', ['$http', 'auditLogService', 'configurations', function ($http, auditLogService, configurations) {
+    .service('visitDocumentService', ['$http', 'auditLogService', 'configurations', '$q', function ($http, auditLogService, configurations, $q) {
         var removeVoidedDocuments = function (documents) {
             documents.forEach(function (document) {
                 if (document.voided) {
@@ -18,14 +18,18 @@ angular.module('bahmni.common.domain')
             var visitTypeName = configurations.encounterConfig().getVisitTypeByUuid(visitDocument.visitTypeUuid)['name'];
             var encounterTypeName = configurations.encounterConfig().getEncounterTypeByUuid(visitDocument.encounterTypeUuid)['name'];
             return $http.post(url, visitDocument).then(function (response) {
-                var messageParams;
-                if (isNewVisit) {
-                    messageParams = {visitUuid: response.data.visitUuid, visitType: visitTypeName};
-                    auditLogService.log(visitDocument.patientUuid, "OPEN_VISIT", messageParams, encounterTypeName);
-                }
-                messageParams = {encounterUuid: response.data.encounterUuid, encounterType: encounterTypeName};
-                auditLogService.log(visitDocument.patientUuid, "EDIT_ENCOUNTER", messageParams, encounterTypeName);
-                return response;
+                var promise = isNewVisit ? auditLogService.log(visitDocument.patientUuid, "OPEN_VISIT",
+                    {visitUuid: response.data.visitUuid, visitType: visitTypeName}, encounterTypeName) : $q.when();
+                return promise.then(function () {
+                    return auditLogService.log(visitDocument.patientUuid, "EDIT_ENCOUNTER",
+                        {
+                            encounterUuid: response.data.encounterUuid,
+                            encounterType: encounterTypeName
+                        }, encounterTypeName).then(function () {
+                            return response;
+                        }
+                    );
+                });
             });
         };
 

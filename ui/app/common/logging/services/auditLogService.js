@@ -31,10 +31,7 @@ angular.module('bahmni.common.logging')
                     params.message = Bahmni.Common.AuditLogEventDetails[eventType].message;
                     params.message = messageParams ? params.message + '~' + JSON.stringify(messageParams) : params.message;
                     params.module = module;
-                    return $http.post(Bahmni.Common.Constants.auditLogUrl,
-                params,
-                {withCredentials: true}
-              );
+                    return $http.post(Bahmni.Common.Constants.auditLogUrl, params, {withCredentials: true});
                 }
             });
         };
