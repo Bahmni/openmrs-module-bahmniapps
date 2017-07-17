@@ -32,7 +32,7 @@
                     </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_DURATION' | translate }}" id="duration"
                                     type="number" min="0" ng-model="service.durationMins"/>
                 </p>
-                <fieldset ng-disabled="isAvailabilityEnabled" ng-class="{'disabled': isAvailabilityEnabled}">
+                <fieldset ng-hide="hasWeeklyAvailability()">
                     <p class="time-wrapper">
                         <label for="start-time">
                             {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
@@ -102,29 +102,23 @@
                 <h3>{{'APPOINTMENT_SERVICE_AVAILABILITY' | translate}}</h3>
                 <div class="switch-wrapper">
                     <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_ADD_NEW' | translate}}</span>
-                    <label class="switch">
-                        <input type="checkbox" ng-model="isAvailabilityEnabled">
-                        <div class="slider round"></div>
-                    </label>
                 </div>
-                <fieldset ng-disabled="!isAvailabilityEnabled" ng-class="{'disabled': !isAvailabilityEnabled}">
-                    <div ng-repeat="availability in service.weeklyAvailability">
-                        <ul>
-                            <li class="service-availability-wrapper">
-                                <div ng-include src="'views/admin/serviceAvailability.html'"></div>
-                                <button type="button" ng-click="deleteAvailability($index)">
-                                    <i class="fa fa-remove"></i>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="service-availability-wrapper">
-                        <div ng-include src="'views/admin/serviceAvailability.html'"></div>
-                        <button type="button" ng-disabled="!isValidAvailability()" ng-click="addAvailability()">
-                            {{'ADD_AVAILABILITY' |translate}}
-                        </button>
-                    </div>
-                </fieldset>
+                <div ng-repeat="availability in service.weeklyAvailability">
+                    <ul>
+                        <li class="service-availability-wrapper">
+                            <div ng-include src="'views/admin/appointmentServiceAvailability.html'"></div>
+                            <button type="button" ng-click="deleteAvailability($index)">
+                                <i class="fa fa-remove"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="service-availability-wrapper">
+                    <div ng-include src="'views/admin/appointmentServiceAvailability.html'"></div>
+                    <button type="button" ng-disabled="!isValidAvailability()" ng-click="addAvailability()">
+                        {{'ADD_AVAILABILITY' |translate}}
+                    </button>
+                </div>
             </div>
         </section>
     </form>
