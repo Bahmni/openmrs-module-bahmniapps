@@ -26,11 +26,7 @@ angular.module('bahmni.clinical').factory('initialization',
                 };
 
                 var checkPrivilege = function () {
-                    if (appService.hasPrivilegeOf("app:clinical")) {
-                        return $q.when(true);
-                    }
-                    messagingService.showMessage("error", Bahmni.Clinical.Constants.errorMessages.privilegeRequired);
-                    return $q.reject();
+                    return appService.checkPrivilege("app:clinical");
                 };
 
                 var initApp = function () {

@@ -22,8 +22,7 @@ Bahmni.Clinical.Constants = (function () {
         discontinuingAndOrderingSameDrug: "Discontinuing and ordering the same drug is not allowed. Instead, use edit",
         incompleteForm: "Please click on Add or Clear to continue",
         invalidItems: "Highlighted items in New Prescription section are incomplete. Please edit or remove them to continue",
-        conceptNotNumeric: "Concept ':conceptName''s datatype is not Numeric. At :placeErrorAccurred.",
-        privilegeRequired: "User is logged in but doesn't have the relevant privilege [Privileges required: app:clinical]"
+        conceptNotNumeric: "Concept ':conceptName''s datatype is not Numeric. At :placeErrorAccurred."
     };
     var bacteriologyConstants = {
         otherSampleType: "Other",
