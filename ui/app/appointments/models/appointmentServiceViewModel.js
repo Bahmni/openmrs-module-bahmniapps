@@ -10,9 +10,6 @@ Bahmni.Appointments.AppointmentServiceViewModel = (function () {
             return time ? new Date('1970-01-01 ' + time) : undefined;
         };
 
-        var parse = function (availabilities) {
-            return undefined;
-        };
         var service = new Service({
             name: serviceDetails.name,
             description: serviceDetails.description,
@@ -22,7 +19,7 @@ Bahmni.Appointments.AppointmentServiceViewModel = (function () {
             endTime: getDateTime(serviceDetails.endTime),
             specialityUuid: serviceDetails.specialityUuid,
             locationUuid: serviceDetails.locationUuid,
-            weeklyAvailability: parse(serviceDetails.weeklyAvailability)
+            weeklyAvailability: serviceDetails.weeklyAvailability || []
         });
         return service;
     };
