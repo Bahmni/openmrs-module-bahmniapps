@@ -33,47 +33,31 @@ angular.module('bahmni.appointments')
         }];
 
         var template = '<div ng-repeat="id in weekDaysIds" ng-class="{\'disabled\': ngDisabled === true}">' +
-            '<div class="day-circle day-0" ng-class="{\'is-selected\': ngModel[id].isSelected}" ng-click="onDayClicked(id)">{{constDays[id].name.substring(0,2)}}</div>' +
+            '<div id="day-{{id}}" class="day-circle" ng-class="{\'is-selected\': ngModel[id].isSelected}" ng-click="onDayClicked(id)">{{constDays[id].name.substring(0,2)}}</div>' +
             '</div>';
 
         var link = function (scope) {
             var init = function () {
-                if (!scope.weekStartsIndex) {
-                    scope.weekStartsIndex = 0;
-                }
-                if (scope.ngDisabled === undefined || scope.ngDisabled === null) {
-                    scope.ngDisabled = false;
-                }
                 scope.constDays = constDays;
-                scope.weekDaysIds = _.map(constDays, 'id');
+                scope.weekStartsIndex = scope.weekStartsIndex || 1;
+                scope.weekDaysIds = _.map(scope.constDays, 'id');
+                scope.ngDisabled = scope.ngDisabled || false;
+                initDays();
+                arrangeIdsInOrder();
+            };
+
+            var arrangeIdsInOrder = function () {
                 scope.weekDaysIds = _.map(scope.weekDaysIds, function (id) {
-                    return (id + scope.weekStartsIndex) % 7;
+                    return (id + scope.weekStartsIndex - 1) % 7;
                 });
-                initDaysSelected();
-                initControl();
             };
 
-            var initDaysSelected = function () {
-                if (!scope.ngModel) {
-                    scope.ngModel = [];
-                    scope.ngModel = angular.copy(constDays);
-                }
-            };
-
-            var initControl = function () {
-                if (scope.control) {
-                    scope.control.toggleDayByIndex = function (dayIndex) {
-                        if (scope.ngModel) {
-                            scope.ngModel[dayIndex].isSelected = !scope.ngModel[dayIndex].isSelected;
-                        } else {
-                            console.log('Error, no model to toggle for!');
-                        }
-                    };
-                }
+            var initDays = function () {
+                scope.ngModel = scope.ngModel || angular.copy(scope.constDays);
             };
 
             scope.onDayClicked = function (dayIndex) {
-                initDaysSelected();
+                initDays();
                 if (!scope.ngDisabled) {
                     scope.ngModel[dayIndex].isSelected = !scope.ngModel[dayIndex].isSelected;
                     if (typeof scope.ngChange === 'function') {

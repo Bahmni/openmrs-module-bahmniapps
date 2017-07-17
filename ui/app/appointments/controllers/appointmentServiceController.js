@@ -8,9 +8,8 @@ angular.module('bahmni.appointments')
                   messagingService, specialityService, ngDialog, appService) {
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
-            $scope.startOfWeek = 2;
+            $scope.startOfWeek = appService.getAppDescriptor().getConfigValue('startOfWeek');
             $scope.availability = {};
-            $scope.isAvailabilityEnabled = false;
             $scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse({});
             $scope.save = function () {
                 if ($scope.createServiceForm.$invalid) {
@@ -25,13 +24,23 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            $scope.hasWeeklyAvailability = function () {
+                return ($scope.service.weeklyAvailability.length > 0);
+            };
+
             $scope.validateServiceName = function () {
                 $scope.createServiceForm.name.$setValidity('uniqueServiceName', isServiceNameUnique($scope.service.name));
             };
 
+            var clearServiceAvailability = function () {
+                $scope.service.startTime = undefined;
+                $scope.service.endTime = undefined;
+                $scope.service.maxAppointmentsLimit = undefined;
+            };
+
             $scope.addAvailability = function () {
-                $scope.service.weeklyAvailability = $scope.service.weeklyAvailability || [];
                 $scope.service.weeklyAvailability.push($scope.availability);
+                clearServiceAvailability();
                 $scope.availability = {};
             };
 
@@ -121,13 +130,16 @@ angular.module('bahmni.appointments')
                 });
             };
 
-            var isFormFilled = function () {
-                return !_.every(_.values($scope.service), function (value) { return !value; });
+            var isAtLeastOneValueIsSet = function () {
+                var values = _.values($scope.service);
+                return _.every(values, function (value) {
+                    return !value || !(_.isArray(value) && _.isEmpty(value));
+                });
             };
 
             var cleanUpListenerStateChangeStart = $scope.$on('$stateChangeStart',
                 function (event, toState, toParams, fromState, fromParams) {
-                    if (isFormFilled() && $scope.showConfirmationPopUp) {
+                    if (isAtLeastOneValueIsSet() && $scope.showConfirmationPopUp) {
                         event.preventDefault();
                         ngDialog.close();
                         $scope.toStateConfig = {toState: toState, toParams: toParams};
