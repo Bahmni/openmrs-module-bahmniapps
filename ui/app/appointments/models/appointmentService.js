@@ -9,7 +9,7 @@ Bahmni.Appointments.AppointmentService = (function () {
     Service.createFromUIObject = function (serviceDetails) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var getTime = function (dateTime) {
-            return dateUtil.getDateTimeInSpecifiedFormat(dateTime, timeFormat);
+            return dateTime ? dateUtil.getDateTimeInSpecifiedFormat(dateTime, timeFormat) : undefined;
         };
         var constructAvailabilityPerDay = function (result, availability) {
             return result.concat(availability.days.filter(function (day) {
@@ -26,8 +26,8 @@ Bahmni.Appointments.AppointmentService = (function () {
             description: serviceDetails.description,
             durationMins: serviceDetails.durationMins,
             maxAppointmentsLimit: serviceDetails.maxAppointmentsLimit,
-            startTime: serviceDetails.startTime ? getTime(serviceDetails.startTime) : undefined,
-            endTime: serviceDetails.endTime ? getTime(serviceDetails.endTime) : undefined,
+            startTime: getTime(serviceDetails.startTime),
+            endTime: getTime(serviceDetails.endTime),
             specialityUuid: serviceDetails.specialityUuid,
             locationUuid: serviceDetails.locationUuid,
             weeklyAvailability: parse(serviceDetails.weeklyAvailability)

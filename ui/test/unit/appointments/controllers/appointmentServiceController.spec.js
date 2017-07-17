@@ -144,20 +144,19 @@ describe("AppointmentServiceController", function () {
         });
 
         it('should save all appointment service details', function () {
-            var startDateTime = new Date('Thu Jan 01 1970 09:45:00 GMT+0530 (IST)');
-            var endDateTime = new Date('Thu Jan 01 1970 18:30:00 GMT+0530 (IST)');
             scope.service = {
                 name: 'Chemotherapy',
                 description: 'For cancer',
-                startTime: startDateTime,
-                endTime: endDateTime
+                startTime: new Date().toString(),
+                endTime: new Date().toString(),
+                weeklyAvailability: [{
+                    startTime: new Date().toString(),
+                    endTime: new Date().toString(),
+                    days: [{name: 'MONDAY', isSelected: true}]
+                }]
             };
             var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
             scope.save();
-            var DateUtil = Bahmni.Common.Util.DateUtil;
-            var timeFormat = 'HH:mm:ss';
-            expect(service.startTime).toBe(DateUtil.getDateTimeInSpecifiedFormat(startDateTime, timeFormat));
-            expect(service.endTime).toBe(DateUtil.getDateTimeInSpecifiedFormat(endDateTime, timeFormat));
             expect(appointmentsServiceService.save).toHaveBeenCalledWith(service);
             expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
         });
@@ -194,7 +193,7 @@ describe("AppointmentServiceController", function () {
         });
 
         it('should not open confirmation dialog if form is empty', function () {
-            scope.service = {};
+            scope.service = {weeklyAvailability: []};
             scope.$broadcast("$stateChangeStart");
             expect(ngDialog.openConfirm).not.toHaveBeenCalled();
         });
@@ -229,5 +228,91 @@ describe("AppointmentServiceController", function () {
             expect(state.go).toHaveBeenCalledWith(toState, toParams);
             expect(ngDialog.close).toHaveBeenCalled();
         });
+    });
+
+    describe('validateAvailability', function () {
+        beforeEach(function () {
+            createController();
+        });
+        it('should return true if all fields are valid', function () {
+            scope.availability = {
+                startTime: new Date().toString(),
+                endTime: new Date().toString(),
+                days: [{name: 'MONDAY', isSelected: true}]
+            };
+            expect(scope.isValidAvailability()).toBeTruthy();
+        });
+
+        it('should return false if all fields are invalid', function () {
+            expect(scope.availability).toEqual({});
+            expect(scope.isValidAvailability()).toBeFalsy();
+        });
+
+        it('should return false if startTime is not filled', function () {
+            scope.availability = {
+                startTime: undefined,
+                endTime: new Date().toString(),
+                days: [{name: 'MONDAY', isSelected: true}]
+            };
+            expect(scope.isValidAvailability()).toBeFalsy();
+        });
+
+        it('should return false if startTime is not filled', function () {
+            scope.availability = {
+                startTime: new Date().toString(),
+                endTime: undefined,
+                days: [{name: 'MONDAY', isSelected: true}]
+            };
+            expect(scope.isValidAvailability()).toBeFalsy();
+        });
+
+        it('should return false if not even one day is selected', function () {
+            scope.availability = {
+                startTime: new Date().toString(),
+                endTime: new Date().toString(),
+                days: [{name: 'MONDAY', isSelected: false}]
+            };
+            expect(scope.isValidAvailability()).toBeFalsy();
+        });
+    });
+
+    it('should add availability to weeklyAvailability list', function () {
+        createController();
+        var availability = {
+            startTime: new Date().toString(),
+            endTime: new Date().toString(),
+            days: [{name: 'MONDAY', isSelected: true}]
+        };
+        scope.availability = availability;
+        expect(scope.service.weeklyAvailability).toEqual([]);
+        scope.addAvailability();
+        expect(scope.service.startTime).toBeUndefined();
+        expect(scope.service.endTime).toBeUndefined();
+        expect(scope.service.maxAppointmentsLimit).toBeUndefined();
+        expect(scope.service.weeklyAvailability.length).toBe(1);
+        expect(scope.service.weeklyAvailability[0]).toEqual(availability);
+        expect(scope.availability).toEqual({});
+    });
+
+    it('should delete availability from weeklyAvailability list by index', function () {
+        createController();
+        var availability1 = {
+            startTime: new Date().toString(),
+            endTime: new Date().toString(),
+            days: [{name: 'MONDAY', isSelected: true}]
+        };
+        var availability2 = {
+            startTime: new Date().toString(),
+            endTime: new Date().toString(),
+            days: [{name: 'TUESDAY', isSelected: true}]
+        };
+        scope.availability = availability1;
+        scope.addAvailability();
+        scope.availability = availability2;
+        scope.addAvailability();
+        expect(scope.service.weeklyAvailability.length).toBe(2);
+        scope.deleteAvailability(0);
+        expect(scope.service.weeklyAvailability.length).toBe(1);
+        expect(scope.service.weeklyAvailability[0]).toEqual(availability2);
     });
 });
