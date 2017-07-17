@@ -31,10 +31,14 @@ angular.module('bahmni.orders')
             });
         };
 
+        var checkPrivilege = function () {
+            return appService.checkPrivilege("app:radiologyOrders");
+        };
+
         var initApp = function () {
             return appService.initApp('orders', {'app': true, 'extension': true });
         };
 
-        return spinner.forPromise(initApp().then(getConfigs()).then(orderTypeService.loadAll()));
+        return spinner.forPromise(initApp().then(checkPrivilege).then(getConfigs()).then(orderTypeService.loadAll()));
     }
 ]);
