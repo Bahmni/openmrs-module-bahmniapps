@@ -39,6 +39,12 @@ angular.module('opd.documentupload').factory('initialization',
                 return deferrable;
             };
 
+            var checkPrivilege = function () {
+                return appService.checkPrivilege("app:document-upload").catch(function () {
+                    return initializationPromise.reject();
+                });
+            };
+
             var initApp = function () {
                 return appService.initApp('documentUpload', {'app': true, 'extension': true}, $rootScope.appConfig.encounterType);
             };
@@ -47,7 +53,7 @@ angular.module('opd.documentupload').factory('initialization',
                 $location.path("/error");
             });
 
-            authenticator.authenticateUser().then(initApp).then(getConsultationConfigs).then(validate).then(function () {
+            authenticator.authenticateUser().then(initApp).then(checkPrivilege).then(getConsultationConfigs).then(validate).then(function () {
                 initializationPromise.resolve();
             });
 
