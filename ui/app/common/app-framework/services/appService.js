@@ -179,6 +179,10 @@ angular.module('bahmni.common.appFramework')
                 return this.appName;
             };
 
+            this.hasPrivilegeOf = function (privilegeName) {
+                return _.some(currentUser.privileges, {name: privilegeName});
+            };
+
             this.initApp = function (appName, options, extensionFileSuffix, configPages) {
                 this.appName = appName;
                 var appLoader = $q.defer();
