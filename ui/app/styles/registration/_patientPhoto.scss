@@ -39,7 +39,11 @@
     background-image: image-url("photo.png");
   }
   .upload-btn.btn{
-    background-image: image-url("paperclip.png");
+    text-align: center;
+    padding: 0;
+    background: #dddddd;
+    font-size: 17px;
+    width: 43px;
   }
 }
 
