@@ -72,7 +72,8 @@ angular
                 url: '/new',
                 views: {
                     'content@appointment': {
-                        templateUrl: 'views/manage/newAppointment.html'
+                        templateUrl: 'views/manage/newAppointment.html',
+                        controller: 'AppointmentsCreateController'
                     }
                 }
             }).state('home.manage.appointments.calendar.edit', {
