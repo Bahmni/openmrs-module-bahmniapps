@@ -106,18 +106,12 @@
                 <div ng-repeat="availability in service.weeklyAvailability">
                     <ul>
                         <li class="service-availability-wrapper">
-                            <div ng-include src="'views/admin/appointmentServiceAvailability.html'"></div>
-                            <button type="button" ng-click="deleteAvailability($index)">
-                                <i class="fa fa-remove"></i>
-                            </button>
+                            <service-availability availability="availability" availability-list="service.weeklyAvailability" state="2"></service-availability>
                         </li>
                     </ul>
                 </div>
                 <div class="service-availability-wrapper">
-                    <div ng-include src="'views/admin/appointmentServiceAvailability.html'"></div>
-                    <button type="button" ng-disabled="!isValidAvailability()" ng-click="addAvailability()">
-                        {{'ADD_AVAILABILITY' |translate}}
-                    </button>
+                    <service-availability availability-list="service.weeklyAvailability" on-add-availability="clearAvailabilityOnService()" state="0"></service-availability>
                 </div>
             </div>
         </section>
