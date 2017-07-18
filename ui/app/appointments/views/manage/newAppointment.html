@@ -1,9 +1,117 @@
 <div class="create-new-app-container">
     <a href="#/home/manage/appointments/list">close</a>
-    <form>
-        <p>
-            <label></label>
-            <input type="text">
-        </p>
+    <form ng-submit="save()" id="create-appointment-form" name="createAppointmentForm">
+        <div>
+            <h2>{{ ::'ADD_NEW_APPOINTMENT' | translate}}</h2>
+        </div>
+        <section id = "addNewAppointment">
+            <div>
+                <p>
+                    <label>{{'APPOINTMENT_CREATE_PATIENT_NAME' | translate}}<sup>*</sup></label>
+
+                    <input type="text"
+                           id="patientID"
+                           min-length=3
+                           bahmni-autocomplete
+                           ng-model="patient"
+                           source="search"
+                           response-map="responseMap"
+                           on-select="onSelectPatient"
+                           strict-select="true"
+                           ng-class="{'illegalValue': isInvalid}"
+                           placeholder="{{'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT' | translate }}"
+                           non-blank
+                           ng-disabled="shouldBeDisabled()"
+                    />
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </p>
+
+                <p ng-show="true">
+                <p>
+                    <label for="speciality">
+                        {{'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate}}
+                    </label>
+                    <select id="speciality" ng-model="service.specialityUuid"
+                            ng-options="item.uuid as item.name for item in specialities | orderBy:'name'">
+                        <option value="">{{ ::'PLACEHOLDER_SERVICE_SPECIALITY' | translate}}
+                        </option>
+                    </select>
+                </p>
+                </p>
+                <br/><br/>
+                <p>
+                    <label for="service">
+                        {{'APPOINTMENT_SERVICE' | translate}}
+                    </label>
+                    <select id="service" ng-model="service.serviceUuid"
+                            ng-options="item.uuid as item.name for item in services | orderBy:'name'">
+                        <option value="">{{ ::'PLACEHOLDER_SERVICE' | translate}}
+                        </option>
+                    </select>
+                </p>
+
+                <br/><br/>
+                <p>
+                    <label for="location">
+                        {{'APPOINTMENT_SERVICE_LOCATION_KEY' | translate}}
+                    </label>
+                    <select id="location" ng-model="service.locationUuid"
+                            ng-options="item.uuid as item.display for item in locations | orderBy:'display'">
+                        <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}
+                        </option>
+                    </select>
+                </p>
+                <br/><br/>
+                <p>
+                    <label for="provider">
+                        {{'APPOINTMENT_PROVIDER' | translate}}
+                    </label>
+                    <select id="provider" ng-model="service.locationUuid"
+                            ng-options="item.uuid as item.display for item in provider | orderBy:'display'">
+                        <option value="">{{ ::'PLACEHOLDER_CREATE_PROVIDER' | translate}}</option>
+                    </select>
+                </p>
+                <br/><br/>
+                <p>
+                    <label for="date">
+                        {{'APPOINTMENT_DATE' | translate}}
+                    </label>
+                    <input id="date" type="date" ng-model="appointment.date"/>
+                </p>
+                <p>
+                    <label for="start-time">
+                        {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
+                    </label>
+                    <input type="text"
+                           id="start-time"
+                           min-length=3
+                           bahmni-autocomplete
+                           ng-model="startTime"
+                           source="startTimeSource"
+                           response-map="responseMap"
+                           on-select="onSelectPatient"
+                           strict-select="true"
+                           ng-class="{'illegalValue': isInvalid}"
+                           placeholder="{{'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT' | translate }}"
+                           non-blank "
+                    /><label class="end-time" for="end-time">
+                        {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
+                    </label> <input id="end-time" type="time" name="endTime" ng-model="service.endTime"
+                                    dependent-model="service.startTime" time-validator/> {{ appointment.startTime }}
+                <p class="caution" ng-show="createServiceForm.endTime.$error.timeSequence">
+                    <i class="fa fa-exclamation-circle small"></i>
+                    <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
+                </p>
+                <p>
+                    <label for="notes">
+                        {{'APPOINTMENT_CREATE_NOTES' | translate}}
+                    </label>
+                    <textarea placeholder="{{ ::'PLACEHOLDER_CREATE_NOTES' | translate }}" id="notes"
+                              ng-model="appointment.notes"></textarea>
+                </p>
+            </div>
+        </section>
+        <button type="submit" class="service-save-btn">{{::'APPOINTMENT_SAVE' | translate }}
+        </button>
     </form>
 </div>

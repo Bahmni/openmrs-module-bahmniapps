@@ -1,11 +1,16 @@
 {
-  "APPOINTMENTS_MANAGE": "Manage Appointments",
-  "APPOINTMENTS_ADMIN": "Admin",
+  "APPOINTMENT_MANAGE": "Manage Appointments",
+  "APPOINTMENT_ADMIN": "Admin",
+  "APPOINTMENT_PROVIDER": "Provider",
   "SUMMARY": "Summary",
   "APPOINTMENT_LIST": "Appointments List",
   "CALENDAR_VIEW": "Calendar",
   "LIST_VIEW": "List view",
   "SERVICES": "Services",
+  "APPOINTMENT_DATE": "Date",
+  "APPOINTMENT_SAVE": "Save",
+  "APPOINTMENT_SERVICE": "Service",
+  "PLACEHOLDER_SERVICE": "Select a service",
   "APPOINTMENT_SERVICE_SAVE": "Save",
   "APPOINTMENT_SERVICE_ADD_NEW": "Add New Service",
   "APPOINTMENT_SERVICE_ACTION_KEY": "Action",
@@ -43,5 +48,11 @@
   "MESSAGE_DIALOG_OPTION_COPY": "Copy Error",
   "MESSAGE_DIALOG_OPTION_OKAY": "Ok",
   "MESSAGE_GET_LOCATIONS_ERROR": "Failed to load appointment locations",
-  "MESSAGE_GET_SPECIALITIES_ERROR": "Failed to get specialities"
+  "MESSAGE_GET_SPECIALITIES_ERROR": "Failed to get specialities",
+  "APPOINTMENT_CREATE_SEARCH_PATIENT": "Patient Search",
+  "PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT": "Patient name or id",
+  "APPOINTMENT_CREATE_PATIENT_NAME": "Patient",
+  "APPOINTMENT_CREATE_NOTES": "Notes",
+  "PLACEHOLDER_CREATE_NOTES": "Appointment Notes",
+  "PLACEHOLDER_CREATE_PROVIDER": "Select a provider"
 }
