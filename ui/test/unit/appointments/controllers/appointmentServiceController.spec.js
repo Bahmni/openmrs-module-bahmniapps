@@ -276,43 +276,4 @@ describe("AppointmentServiceController", function () {
         });
     });
 
-    it('should add availability to weeklyAvailability list', function () {
-        createController();
-        var availability = {
-            startTime: new Date().toString(),
-            endTime: new Date().toString(),
-            days: [{name: 'MONDAY', isSelected: true}]
-        };
-        scope.availability = availability;
-        expect(scope.service.weeklyAvailability).toEqual([]);
-        scope.addAvailability();
-        expect(scope.service.startTime).toBeUndefined();
-        expect(scope.service.endTime).toBeUndefined();
-        expect(scope.service.maxAppointmentsLimit).toBeUndefined();
-        expect(scope.service.weeklyAvailability.length).toBe(1);
-        expect(scope.service.weeklyAvailability[0]).toEqual(availability);
-        expect(scope.availability).toEqual({});
-    });
-
-    it('should delete availability from weeklyAvailability list by index', function () {
-        createController();
-        var availability1 = {
-            startTime: new Date().toString(),
-            endTime: new Date().toString(),
-            days: [{name: 'MONDAY', isSelected: true}]
-        };
-        var availability2 = {
-            startTime: new Date().toString(),
-            endTime: new Date().toString(),
-            days: [{name: 'TUESDAY', isSelected: true}]
-        };
-        scope.availability = availability1;
-        scope.addAvailability();
-        scope.availability = availability2;
-        scope.addAvailability();
-        expect(scope.service.weeklyAvailability.length).toBe(2);
-        scope.deleteAvailability(0);
-        expect(scope.service.weeklyAvailability.length).toBe(1);
-        expect(scope.service.weeklyAvailability[0]).toEqual(availability2);
-    });
 });

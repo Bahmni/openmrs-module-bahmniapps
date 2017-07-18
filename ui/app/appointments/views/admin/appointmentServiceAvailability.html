@@ -1,14 +1,40 @@
-<label>
-    <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_START_TIME_KEY' | translate}}</span>
-    <input type="time" ng-model="availability.startTime"/>
-</label>
-<label>
-    <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_END_TIME_KEY' | translate}}</span>
-    <input type="time" ng-model="availability.endTime">
-</label>
-<label>
-    <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_MAX_LOAD_KEY' | translate}}</span>
-    <input class="max-load" type="number" min="0" ng-model="availability.maxAppointmentsLimit">
-</label>
-<weekday-selector class="service-ava-days"
-                  ng-model="availability.days" week-starts-index="startOfWeek"></weekday-selector>
+<fieldset ng-disabled="isReadOnly()" ng-class="{'disabled': isReadOnly()}">
+    <label>
+        <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_START_TIME_KEY' | translate}}</span>
+        <input type="time" ng-model="availability.startTime"/>
+    </label>
+    <label>
+        <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_END_TIME_KEY' | translate}}</span>
+        <input type="time" ng-model="availability.endTime">
+    </label>
+    <label>
+        <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_MAX_LOAD_KEY' | translate}}</span>
+        <input class="max-load" type="number" min="0" ng-model="availability.maxAppointmentsLimit">
+    </label>
+    <weekday-selector class="service-ava-days"
+                      ng-model="availability.days" week-starts-index="startOfWeek" ng-disabled="isReadOnly()"></weekday-selector>
+</fieldset>
+
+<button type="button" ng-disabled="!isValid()" ng-click="add()" ng-if="isNew()">
+    {{'ADD_AVAILABILITY' |translate}}
+</button>
+
+<div ng-if="isEdit()">
+    <button style="float: left; position: relative;" type="button" ng-disabled="!isValid()" ng-click="update()">
+        <i class="fa fa-check"></i>
+    </button>
+    <button style="float: left; position: relative;" type="button" ng-disabled="!isValid()" ng-click="cancel()">
+        <i class="fa fa-times"></i>
+    </button>
+</div>
+
+<div ng-if="isReadOnly()">
+    <button style="float: left; position: relative;" type="button" ng-click="enableEdit()">
+        <i class="fa fa-edit"></i>
+    </button>
+    <button style="float: left; position: relative;" type="button" ng-click="delete()">
+        <i class="fa fa-trash-o"></i>
+    </button>
+</div>
+
+
