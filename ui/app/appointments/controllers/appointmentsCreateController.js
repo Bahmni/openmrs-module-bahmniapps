@@ -49,14 +49,14 @@ angular.module('bahmni.appointments')
             };
 
             $scope.startTimeSource = function () {
-                return $q(function(resolve) {
+                return $q(function (resolve) {
                     resolve(["11:00 am", " 12:00 am"]);
                 });
             };
 
             $scope.startTimeResponseMap = function (data) {
                 return _.map(data, function (time) {
-                   return time;
+                    return time;
                 });
             };
 
