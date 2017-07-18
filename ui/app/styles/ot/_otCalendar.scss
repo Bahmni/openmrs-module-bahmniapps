@@ -25,8 +25,9 @@
       box-sizing: border-box;
       text-align: center;
       float: left;
-      border-bottom: 0.5px solid lightgrey;
+      border-bottom: .5px solid lightgrey;
       padding: 10px 0;
+      font-family: OpenSansSemiBold;
     }
   }
   .calendar-time-container {
@@ -41,9 +42,10 @@
       width: 80px;
       height: 120px;
       box-sizing: border-box;
-      border-right: 0.5px solid lightgrey;
+      border-right: .5px solid lightgrey;
       padding-right: 5px;
       text-align: right;
+      font-family: OpenSansSemiBold;
     }
   }
   .table-block {
