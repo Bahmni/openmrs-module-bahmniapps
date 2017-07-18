@@ -30,6 +30,7 @@
   "PLACEHOLDER_SERVICE_SPECIALITY": "Select a speciality",
   "APPOINTMENT_SERVICE_LOCATION_KEY": "Location",
   "PLACEHOLDER_SERVICE_LOCATION": "Select a location",
+  "APPOINTMENT_SERVICE_TYPE": "Service Appointment Type",
   "APPOINTMENT_SERVICE_TYPE_ADD_NEW": "Add Service Appointment Type",
   "APPOINTMENT_SERVICE_AVAILABILITY": "Service Availability",
   "APPOINTMENT_SERVICE_AVAILABILITY_ADD_NEW": "Add Service Availability",
@@ -54,5 +55,6 @@
   "APPOINTMENT_CREATE_PATIENT_NAME": "Patient",
   "APPOINTMENT_CREATE_NOTES": "Notes",
   "PLACEHOLDER_CREATE_NOTES": "Appointment Notes",
-  "PLACEHOLDER_CREATE_PROVIDER": "Select a provider"
+  "PLACEHOLDER_CREATE_PROVIDER": "Select a provider",
+  "PLACEHOLDER_APPOINTMENT_TIME_FORMAT": "hh:mm am/pm"
 }

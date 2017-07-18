@@ -48,6 +48,19 @@
                         <option value="">{{ ::'PLACEHOLDER_SERVICE' | translate}}
                         </option>
                     </select>
+                    <span>22 out of 50 slots booked.</span>
+                </p>
+
+                <br/><br/>
+                <p>
+                    <label for="serviceType">
+                        {{'APPOINTMENT_SERVICE_TYPE' | translate}}
+                    </label>
+                    <select id="serviceType" ng-model="service.serviceUuid"
+                            ng-options="item.uuid as item.name for item in services | orderBy:'name'">
+                        <option value="">{{ ::'PLACEHOLDER_SERVICE' | translate}}
+                        </option>
+                    </select>
                 </p>
 
                 <br/><br/>
@@ -79,28 +92,39 @@
                     <input id="date" type="date" ng-model="appointment.date"/>
                 </p>
                 <p>
-                    <label for="start-time">
+                    <label for="startTimeID">
                         {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
                     </label>
                     <input type="text"
-                           id="start-time"
-                           min-length=3
+                           id="startTimeID"
+                           min-length=1
                            bahmni-autocomplete
                            ng-model="startTime"
                            source="startTimeSource"
-                           response-map="responseMap"
+                           response-map="startTimeResponseMap"
                            on-select="onSelectPatient"
-                           strict-select="true"
                            ng-class="{'illegalValue': isInvalid}"
-                           placeholder="{{'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT' | translate }}"
-                           non-blank "
-                    /><label class="end-time" for="end-time">
-                        {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
-                    </label> <input id="end-time" type="time" name="endTime" ng-model="service.endTime"
-                                    dependent-model="service.startTime" time-validator/> {{ appointment.startTime }}
-                <p class="caution" ng-show="createServiceForm.endTime.$error.timeSequence">
-                    <i class="fa fa-exclamation-circle small"></i>
-                    <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
+                           placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
+                           non-blank
+                           ng-disabled='false'/>
+                    <span>start time error placeholder</span>
+
+                    <label for="endTimeID">
+                        {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
+                    </label>
+                    <input type="text"
+                           id="endTimeID"
+                           min-length=1
+                           bahmni-autocomplete
+                           ng-model="endTime"
+                           source="startTimeSource"
+                           response-map="startTimeResponseMap"
+                           on-select="onSelectPatient"
+                           ng-class="{'illegalValue': isInvalid}"
+                           placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
+                           non-blank
+                           ng-disabled='false'/>
+                    <span>end time error placeholder</span>
                 </p>
                 <p>
                     <label for="notes">
