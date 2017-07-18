@@ -9,7 +9,6 @@ angular.module('bahmni.appointments')
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.startOfWeek = appService.getAppDescriptor().getConfigValue('startOfWeek');
-            $scope.availability = {};
             $scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse({});
             $scope.save = function () {
                 if ($scope.createServiceForm.$invalid) {
@@ -32,24 +31,10 @@ angular.module('bahmni.appointments')
                 $scope.createServiceForm.name.$setValidity('uniqueServiceName', isServiceNameUnique($scope.service.name));
             };
 
-            var clearServiceAvailability = function () {
-                $scope.service.startTime = undefined;
-                $scope.service.endTime = undefined;
-                $scope.service.maxAppointmentsLimit = undefined;
-            };
-
-            $scope.addAvailability = function () {
-                $scope.service.weeklyAvailability.push($scope.availability);
-                clearServiceAvailability();
-                $scope.availability = {};
-            };
-
-            $scope.isValidAvailability = function () {
-                return $scope.availability.startTime && $scope.availability.endTime && _.find($scope.availability.days, {isSelected: true});
-            };
-
-            $scope.deleteAvailability = function (index) {
-                $scope.service.weeklyAvailability.splice(index, 1);
+            $scope.clearAvailabilityOnService = function () {
+                delete $scope.service.startTime;
+                delete $scope.service.endTime;
+                delete $scope.service.maxAppointmentsLimit;
             };
 
             var isServiceNameUnique = function (serviceName) {
