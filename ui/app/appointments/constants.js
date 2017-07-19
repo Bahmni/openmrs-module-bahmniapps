@@ -4,11 +4,10 @@ var Bahmni = Bahmni || {};
 Bahmni.Appointments = Bahmni.Appointments || {};
 
 Bahmni.Appointments.Constants = (function () {
-    var hostURL = Bahmni.Common.Constants.hostURL + Bahmni.Common.Constants.RESTWS_V1;
+    var appointmentServiceURL = Bahmni.Common.Constants.hostURL + Bahmni.Common.Constants.RESTWS_V1;
     return {
-        createServiceUrl: hostURL + '/appointmentService',
-        getAllSpecialitiesUrl: hostURL + '/speciality/all',
-        createAppointmentUrl: hostURL
+        createServiceUrl: appointmentServiceURL + '/appointmentService',
+        getAllSpecialitiesUrl: appointmentServiceURL + '/speciality/all'
     };
 })();
 
