@@ -699,7 +699,13 @@ table.drug-order-table td.drug {
       padding:3px 10px 0;
       box-sizing: border-box;
       .btn-download{
-        padding: 6px 9px 7px;
+        padding: 5px 10px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        color: #88af28;
+        font-size: 12px;
+        margin-bottom: 7px;
       }
     }
     .tree-list-item{
@@ -726,6 +732,32 @@ table.drug-order-table td.drug {
       .provider{
         float: none;
         clear: both;
+      }
+    }
+    .obs-video-thumb-container {
+      position: relative;
+      clear: both;
+      .obs-play-btn {
+        background: transparent;
+        color: rgb(169,169,169);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        outline: none;
+        border: none;
+        width: 83px;
+        height: 50px;
+        padding: 0;
+        i {
+          font-size: 50px;
+          padding: 0;
+        }
+      }
+      img {
+        max-width: 100%;
       }
     }
   }

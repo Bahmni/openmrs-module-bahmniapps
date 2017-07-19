@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.obs')
-    .directive('showObservation', function () {
+    .directive('showObservation', ['ngDialog', function (ngDialog) {
         var controller = function ($scope, $rootScope, $filter) {
             $scope.toggle = function (observation) {
                 observation.showDetails = !observation.showDetails;
@@ -20,6 +20,17 @@ angular.module('bahmni.common.obs')
                 }
                 return $filter(filterName)(observation.observationDateTime);
             };
+            $scope.openVideoInPopup = function (observation) {
+                ngDialog.open({
+                    template: "../common/obs/views/showVideo.html",
+                    closeByDocument: false,
+                    className: 'ngdialog-theme-default',
+                    showClose: true,
+                    data: {
+                        observation: observation
+                    }
+                });
+            };
         };
         return {
             restrict: 'E',
@@ -33,4 +44,4 @@ angular.module('bahmni.common.obs')
             controller: controller,
             template: '<ng-include src="\'../common/obs/views/showObservation.html\'" />'
         };
-    });
+    }]);
