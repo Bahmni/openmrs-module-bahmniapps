@@ -48,14 +48,14 @@
   overflow-y: auto;
   height: calc(100vh - 123px);
   .add-service, .add-availability {
-    width: 45%;
+    width: 500px;
     float: left;
     height: 100%;
     padding: 0 10px;
     box-sizing: border-box;
   }
   .add-availability {
-    width: 55%;
+    width: calc(100% - 500px);
   }
   .add-service {
     p {
@@ -100,13 +100,13 @@
     }
     .create-service-type {
       input[type = number] {
-        width: 25%;
+        width: 120px;
       }
       .duration-label {
         min-width: 10%;
       }
       .duration-box {
-        width: 10%;
+        width: 47px;
         margin-right: 1%;
       }
       button {
@@ -159,22 +159,24 @@
       min-height: 350px;
       border-left: 1px solid #95989A;
     }
-    button {
-      @extend .serviceButton;
-      font-size: 12px;
-      padding: 5px;
+    .app-ava-btn-container {
       right: 5px;
       position: absolute;
       margin: auto;
       top: 0;
       bottom: 0;
       height: 25px;
-    }
-    .disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      input, label, button {
+      button {
+        @extend .serviceButton;
+        font-size: 12px;
+        padding: 5px;
+      }
+      .disabled {
+        opacity: 0.5;
         cursor: not-allowed;
+        input, label, button {
+          cursor: not-allowed;
+        }
       }
     }
   }
@@ -192,7 +194,7 @@
   border-radius: 5px;
   border: 1px solid #C9CCCE;
   position: relative;
-  fieldset > label {
+  fieldset label {
     display: inline-block;
     float: left;
     font-size: 12px;
@@ -206,23 +208,33 @@
       }
     }
   }
-  p.service-ava-days {
-    float: left;
-    margin-top: 3px;
-    span {
-      display: inline-block;
+  .weekday-selector-wrapper {
+    p.service-ava-days {
       float: left;
-      cursor: pointer;
-      padding: 1px 2px;
-      background: #fff;
-      margin: 2px;
-      border: 1px solid #808080;
-      font-size: 12px;
-      &.is-selected {
-        background: #27AE60;
-        border-color: #27AE60;
-        color: #fff;
+      span {
+        float: left;
+        cursor: pointer;
+        padding: 2px;
+        background: #fff;
+        margin: 2px;
+        border: 1px solid #808080;
+        font-size: 12px;
+        border-radius: 100px;
+        width: 20px;
+        text-align: center;
+        height: 20px;
+        line-height: 19px;
+        &.is-selected {
+          background: #27AE60;
+          border-color: #27AE60;
+          color: #fff;
+        }
       }
+    }
+    @media all and (max-width: 1300px) {
+      clear: left;
+      padding-top: 10px;
+      overflow: hidden;
     }
   }
 }
