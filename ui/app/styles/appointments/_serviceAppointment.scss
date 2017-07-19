@@ -1,7 +1,7 @@
 /*------- mixins ------*/
 
 .serviceButton {
-  border:1px solid #95989A;
+  border: 1px solid #95989A;
   background: #FAFAFA;
   padding: 8px 10px;
   color: #808080;
@@ -192,7 +192,7 @@
   border-radius: 5px;
   border: 1px solid #C9CCCE;
   position: relative;
-  > label {
+  fieldset > label {
     display: inline-block;
     float: left;
     font-size: 12px;
@@ -209,7 +209,7 @@
   p.service-ava-days {
     float: left;
     margin-top: 3px;
-    label {
+    span {
       display: inline-block;
       float: left;
       cursor: pointer;
@@ -218,14 +218,7 @@
       margin: 2px;
       border: 1px solid #808080;
       font-size: 12px;
-    }
-    input[type = checkbox] {
-      visibility: hidden;
-      width: 0;
-      height: 0;
-      padding: 0;
-      margin: 0;
-      &:checked + label {
+      &.is-selected {
         background: #27AE60;
         border-color: #27AE60;
         color: #fff;

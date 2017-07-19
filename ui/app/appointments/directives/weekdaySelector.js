@@ -5,36 +5,43 @@ angular.module('bahmni.appointments')
         var constDays = [{
             id: 0,
             name: 'SUNDAY',
+            displayName: 'Su',
             isSelected: false
         }, {
             id: 1,
             name: 'MONDAY',
+            displayName: 'Mo',
             isSelected: false
         }, {
             id: 2,
             name: 'TUESDAY',
+            displayName: 'Tu',
             isSelected: false
         }, {
             id: 3,
             name: 'WEDNESDAY',
+            displayName: 'We',
             isSelected: false
         }, {
             id: 4,
             name: 'THURSDAY',
+            displayName: 'Th',
             isSelected: false
         }, {
             id: 5,
             name: 'FRIDAY',
+            displayName: 'Fr',
             isSelected: false
         }, {
             id: 6,
             name: 'SATURDAY',
+            displayName: 'Sa',
             isSelected: false
         }];
 
-        var template = '<div ng-repeat="id in weekDaysIds" ng-class="{\'disabled\': ngDisabled === true}">' +
-            '<div id="day-{{id}}" class="day-circle" ng-class="{\'is-selected\': ngModel[id].isSelected}" ng-click="onDayClicked(id)">{{constDays[id].name.substring(0,2)}}</div>' +
-            '</div>';
+        var template = '<p class="service-ava-days" ng-repeat="id in weekDaysIds" ng-class="{\'disabled\': ngDisabled === true}">' +
+            '<span id="day-{{id}}" class="day-circle" ng-class="{\'is-selected\': ngModel[id].isSelected}" ng-click="onDayClicked(id)">{{constDays[id].displayName}}</span>' +
+            '</p>';
 
         var link = function (scope) {
             var init = function () {
