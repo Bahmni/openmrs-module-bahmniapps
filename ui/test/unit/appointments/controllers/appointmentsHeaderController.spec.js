@@ -34,11 +34,11 @@ describe("AppointmentsHeaderController", function () {
             accessKey: 'h',
             icon: 'fa-home'
         }, {
-            text: 'APPOINTMENT_MANAGE',
+            text: 'APPOINTMENTS_MANAGE',
             state: 'home.manage',
             accessKey: 'M'
         }, {
-            text: 'APPOINTMENT_ADMIN',
+            text: 'APPOINTMENTS_ADMIN',
             state: 'home.admin.service',
             accessKey: 'A'
         }];
@@ -57,7 +57,7 @@ describe("AppointmentsHeaderController", function () {
             accessKey: 'h',
             icon: 'fa-home'
         }, {
-            text: 'APPOINTMENT_MANAGE',
+            text: 'APPOINTMENTS_MANAGE',
             state: 'home.manage',
             accessKey: 'M'
         }];
