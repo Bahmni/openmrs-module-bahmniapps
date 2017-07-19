@@ -7,6 +7,7 @@
         <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_END_TIME_KEY' | translate}}</span>
         <input type="time" ng-model="availability.endTime">
     </label>
+    <div class="weekday-selector-wrapper">
     <label class="ava-input-fields">
         <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_MAX_LOAD_KEY' | translate}}</span>
         <input class="max-load" type="number" min="0" ng-model="availability.maxAppointmentsLimit">
@@ -14,15 +15,16 @@
     <weekday-selector class="service-ava-days"
                       ng-model="availability.days" week-starts-index="startOfWeek"
                       ng-disabled="isReadOnly()"></weekday-selector>
+    </div>
 </fieldset>
 
+<p class="app-ava-btn-container">
 <button type="button" ng-disabled="!isValid()" ng-click="add()" ng-if="isNew()">
     {{'ADD_AVAILABILITY' |translate}}
 </button>
-
-<p ng-if="isEdit()">
-    <button>
-    " type="button" ng-disabled="!isValid()" ng-click="update()">
+</p>
+<p class="app-ava-btn-container" ng-if="isEdit()">
+    <button type="button" ng-disabled="!isValid()" ng-click="update()">
     <i class="fa fa-check"></i>
     </button>
     <button type="button" ng-disabled="!isValid()" ng-click="cancel()">
@@ -30,7 +32,7 @@
     </button>
 </p>
 
-<p ng-if="isReadOnly()">
+<p class="app-ava-btn-container" ng-if="isReadOnly()">
     <button type="button" ng-click="enableEdit()">
         <i class="fa fa-edit"></i>
     </button>
