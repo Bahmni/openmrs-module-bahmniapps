@@ -24,19 +24,19 @@
 </button>
 </p>
 <p class="app-ava-btn-container" ng-if="isEdit()">
-    <button type="button" ng-disabled="!isValid()" ng-click="update()">
+    <button class="update-ava" type="button" ng-disabled="!isValid()" ng-click="update()">
     <i class="fa fa-check"></i>
     </button>
-    <button type="button" ng-disabled="!isValid()" ng-click="cancel()">
+    <button class="cancel-ava" type="button" ng-disabled="!isValid()" ng-click="cancel()">
         <i class="fa fa-times"></i>
     </button>
 </p>
 
 <p class="app-ava-btn-container" ng-if="isReadOnly()">
-    <button type="button" ng-click="enableEdit()">
-        <i class="fa fa-edit"></i>
+    <button class="edit-ava" type="button" ng-click="enableEdit()">
+        <i class="fa fa-pencil" aria-hidden="true"></i>
     </button>
-    <button type="button" ng-click="delete()">
+    <button class="delete-ava" type="button" ng-click="delete()">
         <i class="fa fa-trash-o"></i>
     </button>
 </p>
