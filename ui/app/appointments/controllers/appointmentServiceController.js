@@ -8,7 +8,6 @@ angular.module('bahmni.appointments')
                   messagingService, specialityService, ngDialog, appService) {
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
-            $scope.startOfWeek = appService.getAppDescriptor().getConfigValue('startOfWeek');
             $scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse({});
             $scope.save = function () {
                 if ($scope.createServiceForm.$invalid) {

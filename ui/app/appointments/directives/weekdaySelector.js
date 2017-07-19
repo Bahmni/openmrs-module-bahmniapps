@@ -39,24 +39,22 @@ angular.module('bahmni.appointments')
             isSelected: false
         }];
 
-        var template = '<p class="service-ava-days" ng-repeat="id in weekDaysIds" ng-class="{\'disabled\': ngDisabled === true}">' +
-            '<span id="day-{{id}}" class="day-circle" ng-class="{\'is-selected\': ngModel[id].isSelected}" ng-click="onDayClicked(id)">{{constDays[id].displayName}}</span>' +
-            '</p>';
+        var template = "<p class='service-ava-days' ng-class='{\"disabled\": ngDisabled===true}'>" +
+            "<span id='day-0' ng-class='{\"is-selected\": ngModel[(0 + weekStartsIndex -1)%7].isSelected}' ng-click='onDayClicked((0 + weekStartsIndex -1)%7)'>{{constDays[(0 + weekStartsIndex -1)%7].displayName}}</span>" +
+            "<span id='day-1' ng-class='{\"is-selected\": ngModel[(1 + weekStartsIndex -1)%7].isSelected}' ng-click='onDayClicked((1 + weekStartsIndex -1)%7)'>{{constDays[(1 + weekStartsIndex -1)%7].displayName}}</span>" +
+            "<span id='day-2' ng-class='{\"is-selected\": ngModel[(2 + weekStartsIndex -1)%7].isSelected}' ng-click='onDayClicked((2 + weekStartsIndex -1)%7)'>{{constDays[(2 + weekStartsIndex -1)%7].displayName}}</span>" +
+            "<span id='day-3' ng-class='{\"is-selected\": ngModel[(3 + weekStartsIndex -1)%7].isSelected}' ng-click='onDayClicked((3 + weekStartsIndex -1)%7)'>{{constDays[(3 + weekStartsIndex -1)%7].displayName}}</span>" +
+            "<span id='day-4' ng-class='{\"is-selected\": ngModel[(4 + weekStartsIndex -1)%7].isSelected}' ng-click='onDayClicked((4 + weekStartsIndex -1)%7)'>{{constDays[(4 + weekStartsIndex -1)%7].displayName}}</span>" +
+            "<span id='day-5' ng-class='{\"is-selected\": ngModel[(5 + weekStartsIndex -1)%7].isSelected}' ng-click='onDayClicked((5 + weekStartsIndex -1)%7)'>{{constDays[(5 + weekStartsIndex -1)%7].displayName}}</span>" +
+            "<span id='day-6' ng-class='{\"is-selected\": ngModel[(6 + weekStartsIndex -1)%7].isSelected}' ng-click='onDayClicked((6 + weekStartsIndex -1)%7)'>{{constDays[(6 + weekStartsIndex -1)%7].displayName}}</span>" +
+            "</p>";
 
         var link = function (scope) {
             var init = function () {
                 scope.constDays = constDays;
                 scope.weekStartsIndex = scope.weekStartsIndex || 1;
-                scope.weekDaysIds = _.map(scope.constDays, 'id');
                 scope.ngDisabled = scope.ngDisabled || false;
                 initDays();
-                arrangeIdsInOrder();
-            };
-
-            var arrangeIdsInOrder = function () {
-                scope.weekDaysIds = _.map(scope.weekDaysIds, function (id) {
-                    return (id + scope.weekStartsIndex - 1) % 7;
-                });
             };
 
             var initDays = function () {
@@ -82,8 +80,7 @@ angular.module('bahmni.appointments')
                 ngModel: '=?',
                 ngChange: '&',
                 weekStartsIndex: '=',
-                ngDisabled: '=?',
-                control: '=?'
+                ngDisabled: '=?'
             },
             link: link,
             template: template
