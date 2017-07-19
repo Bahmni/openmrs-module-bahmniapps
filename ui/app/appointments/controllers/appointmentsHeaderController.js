@@ -7,10 +7,10 @@ angular.module('bahmni.appointments')
                 var backLinks = [{label: "Home", url: "../home/", accessKey: "h", icon: "fa-home"}];
 
                 // TODO:permissions for admin
-                backLinks.push({text: "APPOINTMENT_MANAGE", state: "home.manage", accessKey: "M"});
+                backLinks.push({text: "APPOINTMENTS_MANAGE", state: "home.manage", accessKey: "M"});
                 var enableAdminPage = appService.getAppDescriptor().getExtensionById('bahmni.appointments.admin', true);
                 if (enableAdminPage) {
-                    backLinks.push({text: "APPOINTMENT_ADMIN", state: "home.admin.service", accessKey: "A"});
+                    backLinks.push({text: "APPOINTMENTS_ADMIN", state: "home.admin.service", accessKey: "A"});
                 }
                 $state.get('home').data.backLinks = backLinks;
             };
