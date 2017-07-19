@@ -39,25 +39,6 @@ describe('WeekdaySelector', function () {
         expect(compiledElementScope.weekStartsIndex).toBe(1);
     });
 
-    it('should initialize weekDaysIds with constDays Ids', function () {
-        var element = createElement();
-        var compiledElementScope = element.isolateScope();
-
-        expect(compiledElementScope.constDays.length).toBe(7);
-        expect(compiledElementScope.weekDaysIds.length).toBe(7);
-        expect(compiledElementScope.weekDaysIds[2]).toBe(compiledElementScope.constDays[2].id);
-    });
-
-    it('should arrange the order of weekDaysIds based on weekStartsIndex', function () {
-        scope.startOfWeek = 3;
-        var element = createElement();
-        var compiledElementScope = element.isolateScope();
-
-        expect(compiledElementScope.weekStartsIndex).toBe(3);
-        expect(compiledElementScope.weekDaysIds.length).toBe(7);
-        expect(compiledElementScope.weekDaysIds).toEqual([ 2, 3, 4, 5, 6, 0, 1 ]);
-    });
-
     it('should display first two letters of day name', function () {
         var element = createElement();
         expect($(element).find('#day-0').text()).toEqual('SU');
@@ -76,15 +57,11 @@ describe('WeekdaySelector', function () {
     });
 
     it('should call function provided to ngChange when data is changed', function () {
-        scope.changed = false;
-        scope.toggleChanged = function () {
-            scope.changed = !scope.changed;
-        };
+        scope.toggleChanged = jasmine.createSpy('toggleChanged');
         var element = createElement();
 
-        expect(scope.changed).toBeFalsy();
         var sunDay = $(element).find('#day-0');
         sunDay.click();
-        expect(scope.changed).toBeTruthy();
+        expect(scope.toggleChanged).toHaveBeenCalled();
     });
 });
