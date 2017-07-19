@@ -104,20 +104,20 @@
                 <div class="switch-wrapper">
                     <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_ADD_NEW' | translate}}</span>
                 </div>
-                <div ng-repeat="availability in service.weeklyAvailability">
-                    <ul>
-                        <li class="service-availability-wrapper">
-                            <service-availability availability="availability"
-                                                  availability-list="service.weeklyAvailability"
-                                                  state="2"></service-availability>
-                        </li>
-                    </ul>
-                </div>
-                <div class="service-availability-wrapper">
-                    <service-availability availability-list="service.weeklyAvailability"
-                                          on-add-availability="clearAvailabilityOnService()"
-                                          state="0"></service-availability>
-                </div>
+                <ul>
+
+                    <li class="service-availability-wrapper" ng-repeat="availability in service.weeklyAvailability">
+                        <service-availability availability="availability"
+                                              availability-list="service.weeklyAvailability"
+                                              state="2"></service-availability>
+                    </li>
+
+                    <li class="service-availability-wrapper">
+                        <service-availability availability-list="service.weeklyAvailability"
+                                              on-add-availability="clearAvailabilityOnService()"
+                                              state="0"></service-availability>
+                    </li>
+                </ul>
             </div>
         </section>
     </form>
