@@ -42,10 +42,10 @@
                             {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
                         </label> <input id="end-time" type="time" name="endTime" ng-model="service.endTime"
                                         dependent-model="service.startTime" time-validator/>
-                        <p class="caution" ng-show="createServiceForm.endTime.$error.timeSequence">
-                            <i class="fa fa-exclamation-circle small"></i>
-                            <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
-                        </p>
+                    <p class="caution" ng-show="createServiceForm.endTime.$error.timeSequence">
+                        <i class="fa fa-exclamation-circle small"></i>
+                        <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
+                    </p>
                     </p>
                     <p>
                         <label class="max-load" for="max-load">
@@ -85,7 +85,8 @@
                         <div class="slider round"></div>
                     </label>
                 </div>
-                <fieldset ng-disabled="!isTypeEnabled" ng-class="{'disabled': !isTypeEnabled}" class="create-service-type">
+                <fieldset ng-disabled="!isTypeEnabled" ng-class="{'disabled': !isTypeEnabled}"
+                          class="create-service-type">
                     <p>
                         <label>Add new type</label><input type="number">
                         <label class="duration-label">Duration</label> <input placeholder="Min" class="duration-box"
@@ -106,12 +107,16 @@
                 <div ng-repeat="availability in service.weeklyAvailability">
                     <ul>
                         <li class="service-availability-wrapper">
-                            <service-availability availability="availability" availability-list="service.weeklyAvailability" state="2"></service-availability>
+                            <service-availability availability="availability"
+                                                  availability-list="service.weeklyAvailability"
+                                                  state="2"></service-availability>
                         </li>
                     </ul>
                 </div>
                 <div class="service-availability-wrapper">
-                    <service-availability availability-list="service.weeklyAvailability" on-add-availability="clearAvailabilityOnService()" state="0"></service-availability>
+                    <service-availability availability-list="service.weeklyAvailability"
+                                          on-add-availability="clearAvailabilityOnService()"
+                                          state="0"></service-availability>
                 </div>
             </div>
         </section>
