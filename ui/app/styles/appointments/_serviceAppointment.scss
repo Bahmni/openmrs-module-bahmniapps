@@ -170,6 +170,20 @@
         @extend .serviceButton;
         font-size: 12px;
         padding: 5px;
+        i {
+          padding: 0;
+          line-height: 1;
+          font-size: 12px;
+        }
+        &.edit-ava {
+          color: #1976D2;
+        }
+        &.update-ava {
+          color: #388E3C;
+        }
+        &.delete-ava, &.cancel-ava {
+          color: #BF360C;
+        }
       }
       .disabled {
         opacity: 0.5;
@@ -194,6 +208,7 @@
   border-radius: 5px;
   border: 1px solid #C9CCCE;
   position: relative;
+  margin-bottom: 10px;
   fieldset label {
     display: inline-block;
     float: left;
