@@ -27,11 +27,13 @@
                             filter-params="filterParams"
                     ></ot-calendar-surgical-block>
                 </div>
+                <hr class="current-day-line"
+                    ng-if="shouldDisplayCurrentTimeLine()"
+                    ng-style = "{top : currentTimeLineHeight + 'px'}">
             </div>
+
             </div>
-            <hr ng-repeat="location in locations" class="current-day-line"
-                ng-if="shouldDisplayCurrentTimeLine()"
-                ng-style = "{top : currentTimeLineHeight + 'px'}">
+
         </div>
     </div>
 </div>

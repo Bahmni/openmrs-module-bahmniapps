@@ -96,7 +96,12 @@
     }
   }
   .pdf-link {
-    display: none;
+    text-align: right;
+    display: block;
+    margin-right: 10px;
+    i {
+      font-size: 16px;
+    }
     @media screen and (max-width: 1024px) {
       display: block;
       float: right;
