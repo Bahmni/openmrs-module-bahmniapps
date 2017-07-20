@@ -47,7 +47,7 @@
                         <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
                     </p>
                     </p>
-                    <p>
+                    <p ng-class="{'disabled': oneServiceTypeSelected}">
                         <label class="max-load" for="max-load">
                             {{'APPOINTMENT_SERVICE_MAX_LOAD_KEY' | translate}}
                         </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
@@ -78,26 +78,30 @@
                         <option>option1</option>
                     </select>
                 </p>
-                <div class="switch-wrapper">
-                    <span>{{'APPOINTMENT_SERVICE_TYPE_ADD_NEW' | translate}}</span>
-                    <label class="switch">
-                        <input type="checkbox" ng-model="isTypeEnabled">
-                        <div class="slider round"></div>
-                    </label>
+                <div ng-if="enableServiceTypes">
+                    <div class="switch-wrapper">
+                        <span>{{'ADD_SERVICE_APPOINTMENT_TYPE' | translate}}</span>
+                    </div>
+                    <fieldset class="create-service-type">
+                        <p>
+                            <label>{{'ADD_NEW_TYPE'| translate}}</label>
+                            <input placeholder="{{ ::'PLACEHOLDER_SERVICE_TYPE_NAME' | translate }}" type="text"
+                                   ng-model="serviceType.name" id="serviceTypeName" name="serviceTypeName">
+                            <p class="caution" ng-show="createServiceForm.serviceTypeName.$error.uniqueServiceTypeName">
+                                <i class="fa fa-exclamation-circle small"></i>
+                              <span>{{'DUPLICATE_SERVICE_APPOINTMENT_TYPE_ERROR_MESSAGE' | translate}}</span>
+                            </p>
+                            <label class="duration-label">{{'APPOINTMENT_SERVICE_DURATION_KEY' | translate}}</label>
+                            <input placeholder="{{ 'PLACEHOLDER_SERVICE_DURATION' | translate }}" class="duration-box"
+                                   type="number" ng-model="serviceType.duration" min="0"/>
+                            <button type="button" ng-disabled="!serviceType.name" ng-click="addServiceType(serviceType)"> {{ 'ADD' | translate }} </button>
+                        </p>
+                        <p class="newly-added-service-wrapper">
+                        <span class="newly-added-service" ng-repeat="type in service.serviceTypes">
+                            {{type.name}} {{type.duration}}<i class="fa fa-times" aria-hidden="true"></i></span>
+                        </p>
+                    </fieldset>
                 </div>
-                <fieldset ng-disabled="!isTypeEnabled" ng-class="{'disabled': !isTypeEnabled}"
-                          class="create-service-type">
-                    <p>
-                        <label>Add new type</label><input type="number">
-                        <label class="duration-label">Duration</label> <input placeholder="Min" class="duration-box"
-                                                                              type="text"/>
-                        <button>Add</button>
-                    </p>
-                    <p class="newly-added-service-wrapper">
-                        <span class="newly-added-service">servicetype1 <i class="fa fa-times"
-                                                                          aria-hidden="true"></i></span>
-                    </p>
-                </fieldset>
             </div>
             <div class="add-availability">
                 <h3>{{'APPOINTMENT_SERVICE_AVAILABILITY' | translate}}</h3>

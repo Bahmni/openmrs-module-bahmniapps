@@ -43,5 +43,10 @@
   "MESSAGE_DIALOG_OPTION_COPY": "Copy Error",
   "MESSAGE_DIALOG_OPTION_OKAY": "Ok",
   "MESSAGE_GET_LOCATIONS_ERROR": "Failed to load appointment locations",
-  "MESSAGE_GET_SPECIALITIES_ERROR": "Failed to get specialities"
+  "MESSAGE_GET_SPECIALITIES_ERROR": "Failed to get specialities",
+  "ADD_SERVICE_APPOINTMENT_TYPE": "Add Service Appointment Type",
+  "ADD_NEW_TYPE": "Add new type",
+  "PLACEHOLDER_SERVICE_TYPE_NAME": "Enter a service type name",
+  "ADD": "Add",
+  "DUPLICATE_SERVICE_APPOINTMENT_TYPE_ERROR_MESSAGE": "Service appointment type already exists."
 }

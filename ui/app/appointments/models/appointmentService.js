@@ -30,7 +30,8 @@ Bahmni.Appointments.AppointmentService = (function () {
             endTime: getTime(serviceDetails.endTime),
             specialityUuid: serviceDetails.specialityUuid,
             locationUuid: serviceDetails.locationUuid,
-            weeklyAvailability: parse(serviceDetails.weeklyAvailability)
+            weeklyAvailability: parse(serviceDetails.weeklyAvailability),
+            serviceTypes: serviceDetails.serviceTypes || []
         });
         return service;
     };

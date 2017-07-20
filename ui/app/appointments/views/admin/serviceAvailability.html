@@ -1,0 +1,14 @@
+<label>
+    <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_START_TIME_KEY' | translate}}</span>
+    <input type="time" ng-model="availability.startTime"/>
+</label>
+<label>
+    <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_END_TIME_KEY' | translate}}</span>
+    <input type="time" ng-model="availability.endTime">
+</label>
+<label ng-class="{'disabled': oneServiceTypeSelected}">
+    <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_MAX_LOAD_KEY' | translate}}</span>
+    <input class="max-load" type="number" min="0" ng-model="availability.maxAppointmentsLimit">
+</label>
+<weekday-selector ng-disabled="!isAvailabilityEnabled" class="service-ava-days"
+                  ng-model="availability.days" week-starts-index="startOfWeek"></weekday-selector>
