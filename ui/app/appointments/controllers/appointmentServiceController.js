@@ -40,7 +40,12 @@ angular.module('bahmni.appointments')
             };
 
             var isServiceNameUnique = function (serviceName) {
-                return !_.find($scope.services, {name: serviceName});
+                if (!serviceName) {
+                    return true;
+                }
+                return !$scope.services.some(function (service) {
+                    return service.name.toLowerCase() === serviceName.toLowerCase();
+                });
             };
 
             var getAppointmentLocations = function () {
@@ -118,10 +123,7 @@ angular.module('bahmni.appointments')
             };
 
             var isAtLeastOneValueIsSet = function () {
-                var values = _.values($scope.service);
-                return _.every(values, function (value) {
-                    return !value || !(_.isArray(value) && _.isEmpty(value));
-                });
+                return _.values($scope.service).some(function (value) { return _.isArray(value) ? !_.isEmpty(value) : value; });
             };
 
             var cleanUpListenerStateChangeStart = $scope.$on('$stateChangeStart',
