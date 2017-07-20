@@ -41,9 +41,9 @@ describe('WeekdaySelector', function () {
 
     it('should display first two letters of day name', function () {
         var element = createElement();
-        expect($(element).find('#day-0').text()).toEqual('SU');
-        expect($(element).find('#day-1').text()).toEqual('MO');
-        expect($(element).find('#day-6').text()).toEqual('SA');
+        expect($(element).find('#day-0').text()).toEqual('Su');
+        expect($(element).find('#day-1').text()).toEqual('Mo');
+        expect($(element).find('#day-6').text()).toEqual('Sa');
     });
 
     it('should toggle isSelected of a day when clicked', function () {
