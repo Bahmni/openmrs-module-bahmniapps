@@ -27,17 +27,17 @@
                 </article>
                 <article class="fl" ng-if="::addressSearchConfig.show">
                     <label for="name"><strong>{{::addressSearchConfig.label}}</strong></label>
-                    <input tabindex="4" type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="{{::addressSearchConfig.placeholder}}">
+                    <input tabindex="6" type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="{{::addressSearchConfig.placeholder}}">
                 </article>
 
                 <article class="fl" ng-show="::programAttributesSearchConfig.show">
                     <label for="name"><strong>{{ ::programAttributesSearchConfig.label | translate}}</strong></label>
-                    <input tabindex="4" type="text" id="programAttribute" ng-model="searchParameters.programAttributeFieldValue" placeholder="{{ ::programAttributesSearchConfig.placeholder}}">
+                    <input tabindex="7" type="text" id="programAttribute" ng-model="searchParameters.programAttributeFieldValue" placeholder="{{ ::programAttributesSearchConfig.placeholder}}">
                 </article>
 
                 <article class="fl">
                     <div class="reg-srch-btn">
-                        <button tabindex="7" type="submit" ng-disabled="disableSearchButton()">{{ ::'REGISTRATION_LABEL_SEARCH' | translate}}</button>
+                        <button tabindex="8" type="submit" ng-disabled="disableSearchButton()">{{ ::'REGISTRATION_LABEL_SEARCH' | translate}}</button>
                     </div>
                 </article>
             </form>
@@ -71,7 +71,7 @@
             <tbody>
             <tr ng-repeat="result in results">
                 <td>
-                    <a tabindex="{{ :: 7 + $index + 1 }}" ng-if="::(searchActions.length > 0)" ng-click="forPatient(result).doExtensionAction(searchActions[0])">
+                    <a tabindex="{{ :: 8 + $index + 1 }}" ng-if="::(searchActions.length > 0)" ng-click="forPatient(result).doExtensionAction(searchActions[0])">
                         {{::result.identifier || 'Not Assigned'}}
                     </a>
                 </td>
