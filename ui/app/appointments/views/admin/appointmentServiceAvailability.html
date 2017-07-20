@@ -1,4 +1,4 @@
-<fieldset ng-disabled="isReadOnly()" ng-class="{'disabled': isReadOnly()}">
+<fieldset ng-disabled="isReadOnly()" ng-class="{'disabled unsaved': isReadOnly()}">
     <label class="ava-input-fields">
         <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_START_TIME_KEY' | translate}}</span>
         <input type="time" ng-model="availability.startTime"/>
