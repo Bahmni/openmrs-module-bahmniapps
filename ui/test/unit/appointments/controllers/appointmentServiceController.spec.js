@@ -117,13 +117,20 @@ describe("AppointmentServiceController", function () {
         });
         it('should validate to true if service name is unique', function () {
             scope.service = {name: 'Cardiology'};
-            scope.services = {name: 'Endocrinology'};
+            scope.services = [{name: 'Endocrinology'}];
             scope.validateServiceName();
             expect(name.$setValidity).toHaveBeenCalledWith('uniqueServiceName', true);
         });
 
         it('should validate to false if service name is already exists', function () {
             scope.service = {name: 'Cardiology'};
+            scope.services = [{name: 'Cardiology'}];
+            scope.validateServiceName();
+            expect(name.$setValidity).toHaveBeenCalledWith('uniqueServiceName', false);
+        });
+
+        it('should validate to false if case insensitive service name is exists', function () {
+            scope.service = {name: 'CArdIolOgy'};
             scope.services = [{name: 'Cardiology'}];
             scope.validateServiceName();
             expect(name.$setValidity).toHaveBeenCalledWith('uniqueServiceName', false);
