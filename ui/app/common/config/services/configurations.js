@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.config')
     .service('configurations', ['configurationService', function (configurationService) {
-
         this.configs = {};
 
         this.load = function (configNames) {
@@ -16,11 +15,9 @@ angular.module('bahmni.common.config')
             return this.configs.dosageInstructionConfig || [];
         };
 
-
         this.stoppedOrderReasonConfig = function () {
             return this.configs.stoppedOrderReasonConfig || [];
         };
-
 
         this.dosageFrequencyConfig = function () {
             return this.configs.dosageFrequencyConfig || [];
@@ -50,36 +47,35 @@ angular.module('bahmni.common.config')
             return angular.extend(new EncounterConfig(), this.configs.encounterConfig || []);
         };
 
-        this.patientAttributesConfig = function() {
+        this.patientAttributesConfig = function () {
             return this.configs.patientAttributesConfig.results;
         };
 
-        this.identifierSourceConfig = function() {
-            return this.configs.identifierSourceConfig;
+        this.identifierTypesConfig = function () {
+            return this.configs.identifierTypesConfig;
         };
 
-        this.genderMap = function() {
+        this.genderMap = function () {
             return this.configs.genderMap;
         };
 
-        this.addressLevels = function() {
+        this.addressLevels = function () {
             return this.configs.addressLevels;
         };
 
-        this.relationshipTypes = function() {
+        this.relationshipTypes = function () {
             return this.configs.relationshipTypeConfig.results || [];
         };
 
-        this.relationshipTypeMap = function() {
+        this.relationshipTypeMap = function () {
             return this.configs.relationshipTypeMap || {};
         };
 
-        this.loginLocationToVisitTypeMapping = function() {
+        this.loginLocationToVisitTypeMapping = function () {
             return this.configs.loginLocationToVisitTypeMapping || {};
         };
 
         this.defaultEncounterType = function () {
             return this.configs.defaultEncounterType;
         };
-
     }]);

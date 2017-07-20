@@ -3,17 +3,19 @@
 angular.module('bahmni.common.uiHelper')
     .directive('toggle', function () {
         var link = function ($scope, element) {
-            //$scope.$watch("toggle", function (value) {
-            //    if(value!= undefined) {
-            //        $(element).toggleClass('active', value)
-            //    }
-            //});
-            $scope.toggle && $(element).addClass('active',$scope.toggle);
+            $scope.toggle = $scope.toggle === undefined ? false : $scope.toggle;
             $(element).click(function () {
                 $scope.$apply(function () {
-                    $scope.toggle = !$scope.toggle
-                    $(element).toggleClass('active', $scope.toggle)
+                    $scope.toggle = !$scope.toggle;
                 });
+            });
+
+            $scope.$watch('toggle', function () {
+                $(element).toggleClass('active', $scope.toggle);
+            });
+
+            $scope.$on("$destroy", function () {
+                element.off('click');
             });
         };
 
@@ -22,5 +24,5 @@ angular.module('bahmni.common.uiHelper')
                 toggle: "="
             },
             link: link
-        }
+        };
     });

@@ -1,21 +1,22 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'Preferences', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q', 'offlineService',
-        function($scope, $rootScope, $state, patientService, preferences, patientModel, spinner, appService, messagingService, ngDialog, $q, offlineService) {
+    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q', 'offlineService',
+        function ($scope, $rootScope, $state, patientService, patient, spinner, appService, messagingService, ngDialog, $q, offlineService) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.actions = {};
+            var errorMessage;
             var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
             $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
+            $scope.disablePhotoCapture = appService.getAppDescriptor().getConfigValue("disablePhotoCapture");
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
-            $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
+            $scope.today = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime(dateUtil.now());
 
-            var getPersonAttributeTypes = function() {
+            var getPersonAttributeTypes = function () {
                 return $rootScope.patientConfiguration.attributeTypes;
             };
 
-            var prepopulateDefaultsInFields = function() {
-
+            var prepopulateDefaultsInFields = function () {
                 var personAttributeTypes = getPersonAttributeTypes();
                 var patientInformation = appService.getAppDescriptor().getConfigValue("patientInformation");
                 if (!patientInformation || !patientInformation.defaults) {
@@ -24,26 +25,29 @@ angular.module('bahmni.registration')
                 var defaults = patientInformation.defaults;
                 var defaultVariableNames = _.keys(defaults);
 
-                var hasDefaultAnswer = function(personAttributeType) {
+                var hasDefaultAnswer = function (personAttributeType) {
                     return _.includes(defaultVariableNames, personAttributeType.name);
                 };
 
-                var isConcept = function(personAttributeType) {
+                var isConcept = function (personAttributeType) {
                     return personAttributeType.format === "org.openmrs.Concept";
                 };
 
-                var setDefaultAnswer = function(personAttributeType) {
+                var setDefaultAnswer = function (personAttributeType) {
                     $scope.patient[personAttributeType.name] = defaults[personAttributeType.name];
                 };
 
-                var setDefaultConcept = function(personAttributeType) {
+                var setDefaultConcept = function (personAttributeType) {
                     var defaultAnswer = defaults[personAttributeType.name];
-                    var isDefaultAnswer = function(answer) {
-                        return answer.description === defaultAnswer;
+                    var isDefaultAnswer = function (answer) {
+                        return answer.fullySpecifiedName === defaultAnswer;
                     };
 
-                    _.chain(personAttributeType.answers).filter(isDefaultAnswer).each(function(answer) {
-                        $scope.patient[personAttributeType.name] = answer.conceptId;
+                    _.chain(personAttributeType.answers).filter(isDefaultAnswer).each(function (answer) {
+                        $scope.patient[personAttributeType.name] = {
+                            conceptUuid: answer.conceptId,
+                            value: answer.fullySpecifiedName
+                        };
                     }).value();
                 };
 
@@ -52,47 +56,30 @@ angular.module('bahmni.registration')
                     .each(setDefaultAnswer).filter(isConcept).each(setDefaultConcept).value();
             };
 
-            var getPatientAttributeSections = function(){
-                return $rootScope.patientConfiguration && $rootScope.patientConfiguration.getPatientAttributesSections();
-            };
-
-            var buildSectionVisibilityMap = function() {
-                $scope.sectionVisibilityMap = {};
-                var patientAttributeSections = getPatientAttributeSections();
-                var shouldShowSection = function(key) {
-                    return _.some(patientAttributeSections[key].attributes, function(attribute) {
+            var expandSectionsWithDefaultValue = function () {
+                angular.forEach($rootScope.patientConfiguration && $rootScope.patientConfiguration.getPatientAttributesSections(), function (section) {
+                    var notNullAttribute = _.find(section && section.attributes, function (attribute) {
                         return $scope.patient[attribute.name] !== undefined;
                     });
-                };
-                _.chain(patientAttributeSections)
-                    .keys()
-                    .filter(shouldShowSection)
-                    .each(function(key) {
-                        $scope.sectionVisibilityMap[key] = true;
-                    }).value();
+                    section.expand = section.expanded || (notNullAttribute ? true : false);
+                });
             };
 
-            var init = function() {
-                $scope.patient = patientModel.create();
-                $scope.identifierSources = $rootScope.patientConfiguration.identifierSources;
-                var identifierPrefix = _.find($scope.identifierSources, {
-                    prefix: preferences.identifierPrefix
-                });
-                $scope.patient.identifierPrefix = identifierPrefix || $scope.identifierSources[0];
-                $scope.patient.hasOldIdentifier = preferences.hasOldIdentifier;
+            var init = function () {
+                $scope.patient = patient.create();
                 prepopulateDefaultsInFields();
-                buildSectionVisibilityMap();
-
+                expandSectionsWithDefaultValue();
+                $scope.patientLoaded = true;
             };
 
             init();
 
-            var prepopulateFields = function() {
+            var prepopulateFields = function () {
                 var fieldsToPopulate = appService.getAppDescriptor().getConfigValue("prepopulateFields");
                 if (fieldsToPopulate) {
-                    _.each(fieldsToPopulate, function(field) {
-                        var addressLevel = _.find($scope.addressLevels, function(level) {
-                            return level.name == field;
+                    _.each(fieldsToPopulate, function (field) {
+                        var addressLevel = _.find($scope.addressLevels, function (level) {
+                            return level.name === field;
                         });
                         if (addressLevel) {
                             $scope.patient.address[addressLevel.addressField] = $rootScope.loggedInLocation[addressLevel.addressField];
@@ -102,25 +89,25 @@ angular.module('bahmni.registration')
             };
             prepopulateFields();
 
-            var addNewRelationships = function() {
-                var newRelationships = _.filter($scope.patient.newlyAddedRelationships, function(relationship) {
+            var addNewRelationships = function () {
+                var newRelationships = _.filter($scope.patient.newlyAddedRelationships, function (relationship) {
                     return relationship.relationshipType && relationship.relationshipType.uuid;
                 });
-                newRelationships = _.each(newRelationships, function(relationship) {
+                newRelationships = _.each(newRelationships, function (relationship) {
                     delete relationship.patientIdentifier;
                     delete relationship.content;
                     delete relationship.providerName;
                 });
-                $scope.patient.relationships = $scope.patient.relationships.concat(newRelationships);
+                $scope.patient.relationships = newRelationships;
             };
 
-            var getConfirmationViaNgDialog = function(config) {
+            var getConfirmationViaNgDialog = function (config) {
                 var ngDialogLocalScope = config.scope.$new();
-                ngDialogLocalScope.yes = function() {
+                ngDialogLocalScope.yes = function () {
                     ngDialog.close();
                     config.yesCallback();
                 };
-                ngDialogLocalScope.no = function() {
+                ngDialogLocalScope.no = function () {
                     ngDialog.close();
                 };
                 ngDialog.open({
@@ -130,11 +117,7 @@ angular.module('bahmni.registration')
                 });
             };
 
-            var setPreferences = function() {
-                preferences.identifierPrefix = $scope.patient.identifierPrefix ? $scope.patient.identifierPrefix.prefix : "";
-            };
-
-            var copyPatientProfileDataToScope = function(response) {
+            var copyPatientProfileDataToScope = function (response) {
                 var patientProfileData = response.data;
                 $scope.patient.uuid = patientProfileData.patient.uuid;
                 $scope.patient.name = patientProfileData.patient.person.names[0].display;
@@ -144,96 +127,66 @@ angular.module('bahmni.registration')
                 $scope.actions.followUpAction(patientProfileData);
             };
 
-            var createPatientAndSetIdentifier = function(sourceName, nextIdentifierToBe) {
-                return patientService.setLatestIdentifier(sourceName, nextIdentifierToBe)
-                    .then(function() {
-                        return patientService.create($scope.patient);
-                    })
-                    .then(copyPatientProfileDataToScope);
-            };
-
-            var createPatientWithGeneratedIdentifier = function() {
-                return patientService.generateIdentifier($scope.patient)
-                    .then(function(response) {
-                        $scope.patient.identifier = response.data;
-                        return patientService.create($scope.patient);
-                    })
-                    .then(copyPatientProfileDataToScope);
-            };
-
-            var createPatientWithOutIdentifierSource = function() {
-                return patientService.create($scope.patient).then(copyPatientProfileDataToScope);
-            };
-
-            var createPatientWithGivenIdentifier = function() {
-                var sourceName = $scope.patient.identifierPrefix.prefix;
-                var givenIdentifier = parseInt($scope.patient.registrationNumber);
-                var nextIdentifierToBe = parseInt($scope.patient.registrationNumber) + 1;
-                return patientService.getLatestIdentifier($scope.patient.identifierPrefix.prefix).then(function(response) {
-                    var latestIdentifier = response.data;
-                    var sizeOfTheJump = givenIdentifier - latestIdentifier;
-                    if (sizeOfTheJump === 0) {
-                        return createPatientAndSetIdentifier(sourceName, nextIdentifierToBe);
-                    } else if (sizeOfTheJump > 0) {
-                        return getConfirmationViaNgDialog({
+            var createPatient = function (jumpAccepted) {
+                return patientService.create($scope.patient, jumpAccepted).then(function (response) {
+                    copyPatientProfileDataToScope(response);
+                }, function (response) {
+                    if (response.status === 412) {
+                        var data = _.map(response.data, function (data) {
+                            return {
+                                sizeOfTheJump: data.sizeOfJump,
+                                identifierName: _.find($rootScope.patientConfiguration.identifierTypes, {uuid: data.identifierType}).name
+                            };
+                        });
+                        getConfirmationViaNgDialog({
                             template: 'views/customIdentifierConfirmation.html',
-                            data: {
-                                sizeOfTheJump: sizeOfTheJump
-                            },
+                            data: data,
                             scope: $scope,
-                            yesCallback: function() {
-                                return createPatientAndSetIdentifier(sourceName, nextIdentifierToBe);
+                            yesCallback: function () {
+                                return createPatient(true);
                             }
                         });
-                    } else {
-                        return patientService.create($scope.patient).then(copyPatientProfileDataToScope);
+                    }
+                    if (response.isIdentifierDuplicate) {
+                        errorMessage = response.message;
                     }
                 });
             };
 
-            var createPromise = function() {
+            var createPromise = function () {
                 var deferred = $q.defer();
-                var resolved = function () {
+                createPatient().finally(function () {
                     return deferred.resolve({});
-                };
-
-                setPreferences();
-                addNewRelationships();
-                var errMsg = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
-                if (errMsg) {
-                    messagingService.showMessage('error', errMsg);
-                    deferred.reject();
-                } else {
-                    if (!$scope.hasIdentifierSources()) {
-                        createPatientWithOutIdentifierSource().finally(resolved);
-                    } else if (!$scope.patient.hasOldIdentifier) {
-                        createPatientWithGeneratedIdentifier().finally(resolved);
-                    } else {
-                        createPatientWithGivenIdentifier().finally(resolved);
-                    }
-                }
+                });
                 return deferred.promise;
             };
 
-
-            $scope.isOffline = function(){
+            $scope.isOffline = function () {
                 return offlineService.isOfflineApp();
             };
 
-            $scope.create = function() {
-                return spinner.forPromise(createPromise());
+            $scope.create = function () {
+                addNewRelationships();
+                var errorMessages = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
+                if (errorMessages.length > 0) {
+                    errorMessages.forEach(function (errorMessage) {
+                        messagingService.showMessage('error', errorMessage);
+                    });
+                    return $q.when({});
+                }
+                return spinner.forPromise(createPromise()).then(function (response) {
+                    if (errorMessage) {
+                        messagingService.showMessage("error", errorMessage);
+                        errorMessage = undefined;
+                    }
+                });
             };
 
-            $scope.afterSave = function() {
+            $scope.afterSave = function () {
                 messagingService.showMessage("info", "REGISTRATION_LABEL_SAVED");
                 $state.go("patient.edit", {
                     patientUuid: $scope.patient.uuid
                 });
             };
-
-            $scope.hasIdentifierSources = function() {
-                return $scope.identifierSources.length > 0;
-            };
-
         }
     ]);

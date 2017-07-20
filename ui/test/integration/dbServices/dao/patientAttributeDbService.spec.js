@@ -28,7 +28,6 @@ describe('patientAttributeDbService tests', function () {
         var personAttributeTypeJSON = JSON.parse(readFixtures('patientAttributeType.json'));
         schemaBuilder.connect().then(function (db) {
             return patientAttributeDbService.insertAttributeTypes(db, personAttributeTypeJSON.data.results).then(function () {
-                var attributeTypeTable = db.getSchema().table('patient_attribute_type');
                 return patientAttributeDbService.getAttributeTypes(db).then(function (attributeTypeMap) {
                     return patientDbService.insertPatientData(db, patientJson).then(function (uuid) {
                         var patient = patientJson.patient;
@@ -37,22 +36,22 @@ describe('patientAttributeDbService tests', function () {
                                 var uuid = 'e34992ca-894f-4344-b4b3-54a4aa1e5558';
                                 patientDbService.getPatientByUuid(db, uuid).then(function(result){
                                     expect(_.some(result.patient.person.attributes, function(attribute){
-                                       return attribute.attributeType.display === 'caste' && attribute.value === 'hindu';
+                                       return attribute.attributeType.uuid === 'c1f4239f-3f10-11e4-adec-0800271c1b75' && attribute.value === 'hindu';
                                     })).toBeTruthy();
                                     expect(_.some(result.patient.person.attributes, function(attribute){
-                                       return attribute.attributeType.display === 'class' && attribute.value.display === 'General';
+                                       return attribute.attributeType.uuid === 'c1f455e7-3f10-11e4-adec-0800271c1b75' && attribute.value === 'General';
                                     })).toBeTruthy();
                                     expect(_.some(result.patient.person.attributes, function(attribute){
-                                       return attribute.attributeType.display === 'education' && attribute.value.display === '6th to 9th';
+                                       return attribute.attributeType.uuid === 'c1f4a004-3f10-11e4-adec-0800271c1b75' && attribute.value === '6th to 9th';
                                     })).toBeTruthy();
                                     expect(_.some(result.patient.person.attributes, function(attribute){
-                                       return attribute.attributeType.display === 'landHolding' && attribute.value === 23;
+                                       return attribute.attributeType.uuid === '3dfdc176-17fd-42b1-b5be-c7e25b78b602' && attribute.value === 23;
                                     })).toBeTruthy();
                                     expect(_.some(result.patient.person.attributes, function(attribute){
-                                       return attribute.attributeType.display === 'debt' && attribute.value === "21";
+                                       return attribute.attributeType.uuid === 'fb3c00b1-81c8-40fe-89e8-6b3344688a13' && attribute.value === "21";
                                     })).toBeTruthy();
                                     expect(_.some(result.patient.person.attributes, function(attribute){
-                                       return attribute.attributeType.display === 'isUrban' && attribute.value === true;
+                                       return attribute.attributeType.uuid === '9234695b-0f68-4970-aeb7-3b32d4a2b346' && attribute.value === true;
                                     })).toBeTruthy();
                                     done();
                                 });
@@ -64,5 +63,36 @@ describe('patientAttributeDbService tests', function () {
         });
     });
 
+    it("Should delete existing attribute types before inserting new attribute types", function(done){
+        var schemaBuilder = lf.schema.create('BahmniTest', 1);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttributeType);
+        jasmine.getFixtures().fixturesPath = 'base/test/data';
+        var personAttributeTypeJSON = JSON.parse(readFixtures('patientAttributeType.json'));
+        schemaBuilder.connect().then(function (db) {
+            var attributeType = {
+                "name": "spouse name",
+                "uuid": "a10fe690-1c44-4ba8-a244-8fe51f8861f7",
+                "format": "java.lang.String"
+            };
+            var personAttributeTypeJsonBefore = JSON.parse(readFixtures('patientAttributeType.json'));
+            personAttributeTypeJsonBefore.data.results.push(attributeType);
+            return patientAttributeDbService.insertAttributeTypes(db, personAttributeTypeJsonBefore.data.results).then(function () {
+                return patientAttributeDbService.insertAttributeTypes(db, personAttributeTypeJSON.data.results).then(function () {
+                    return patientAttributeDbService.getAttributeTypes(db).then(function (attributeTypeMap) {
+                        expect(_.some(attributeTypeMap, function(attributeType){
+                            return attributeType.uuid === "35e98d04-3981-4257-a593-fadd81bfc109";
+                        })).toBeTruthy();
+                        expect(_.some(attributeTypeMap, function(attributeType){
+                            return attributeType.uuid === 'a10fe690-1c44-4ba8-a244-8fe51f8861f7';
+                        })).toBeFalsy();
+                        done();
+                    });
+                });
+            });
+        });
+        });
 
-});
+
+    });

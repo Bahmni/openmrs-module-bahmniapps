@@ -1,11 +1,12 @@
 <div class="selectedOrderNoteContainer">
     <span>Enter notes for - {{ngDialogData.concept.displayName || ngDialogData.concept.shortName || ngDialogData.concept.name}}</span>
-    <textarea ng-model="orderNoteText" focus-on="true" rows="4" ng-disabled="ngDialogData.uuid">{{ngDialogData.previousNote}}</textarea>
+
+    <textarea ng-model="$parent.orderNoteText" focus-on="true" rows="4" ng-disabled="ngDialogData.uuid">{{ngDialogData.previousNote}}</textarea>
+    <button ng-click="appendPrintNotes(ngDialogData)" class="fl btn-group" ng-show="isPrintShown(ngDialogData.uuid)">{{ 'CLINICAL_ORDER_RADIOLOGY_NEED_PRINT_BUTTON' | translate}}</button>
     <div class="btn-group fr">
         <span ng-if="ngDialogData.uuid">
             Can't edit the notes after saving.
         </span>
         <button ng-click="setEditedFlag(ngDialogData, orderNoteText)" ng-if="!ngDialogData.uuid">OK</button>
-        <!-- <button ng-click="closePopup()">Cancel</button> -->
     </div>
 </div>

@@ -1,0 +1,5 @@
+<section id="{{(section | titleTranslate).toValidId()}}"
+         ng-if="section.isDataAvailable"
+         ng-include="::section.viewName"
+         class="dashboard-section"
+         ng-class="{'visible-print': section.showOnlyInPrint}"></section>

@@ -1,7 +1,7 @@
 <div class="reg-body-wrapper visit-patient-page">
     <div class="non-printable" xmlns="http://www.w3.org/1999/html">
         <div>
-            <form name="myForm" ng-init="disableFormSubmitOnEnter()" class="visit-patient" ng-submit="submit()">
+            <form name="myForm" ng-init="disableFormSubmitOnEnter()" class="visit-patient" single-submit="submit()">
                 <div class="box-container">
 
                     <legend class="registraion_legend first-registraion_legend">
@@ -10,10 +10,10 @@
                     <section>
                         <div class="form-field fl">
                             <div class="field-attribute">
-                                <label for="patientId">{{ ::'REGISTRATION_LABEL_PATIENT_IDENTIFIER' | translate}} : </label>
+                                <label for="patientId">{{ ::patient.primaryIdentifier.identifierType.name }} : </label>
                             </div>
                             <div class="field-value">
-                                <label class="control-label"><strong>{{::patient.identifier}}</strong></label>
+                                <label class="control-label"><strong>{{::patient.primaryIdentifier.identifier}}</strong></label>
                             </div>
                         </div>
                         <div class="form-field photocontainer-spacing clearfix">
@@ -33,15 +33,15 @@
                                 <span class="mylegend" ng-if="::!conceptSet.options.translationKey">{{::conceptSet.label}}</span>
                             </div>
                             <div ng-if="::conceptSet.options.showLatest" class="clearfix">
-                                <article class="fl">
+                                <article class="fl obs-section-form">
                                     <concept-set concept-set-name="::conceptSet.options.conceptName" required="::conceptSet.options.required" patient="patient" observations="observations"
                                                  obs-scope="::conceptSet.options.scope" show-title="false" concept-set-focused="::$index === 0"></concept-set>
                                 </article>
-                                <article class="obs-section fr">
+                                <article class="obs-section fr" id="observationSection">
                                     <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'REGISTRATON_LATEST_KEY'"></bahmni-observation>
                                 </article>
                             </div>
-                            <article class="fl" ng-if="::!conceptSet.options.showLatest">
+                            <article ng-if="::!conceptSet.options.showLatest"  class="clearfix" ng-class="{'noShowLatest' : !conceptSet.options.showLatest}">
                                 <concept-set concept-set-name="::conceptSet.options.conceptName" required="::conceptSet.options.required" patient="patient" observations="observations"
                                              obs-scope="::conceptSet.options.scope" show-title="false" concept-set-focused="::$index === 0"></concept-set>
                             </article>

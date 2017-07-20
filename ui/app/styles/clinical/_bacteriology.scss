@@ -21,7 +21,7 @@
     margin: 5px 0 5px 5px;
   }
   .box{
-    margin: 10px;
+    margin: 10px 0;
     border: none;
     border-radius: 0;
     .additionalAttributes{
@@ -55,6 +55,17 @@
     }
     .fa{
       margin-right: 10px;
+    }
+  }
+  .disableBacteriologyInRetroMode{
+    label{
+      pointer-events: none;
+    }
+    button, input, textarea {
+      pointer-events: none;
+      background: $lightestGray;
+      border: $lightGray 1px solid;
+      color: #999;
     }
   }
 }
@@ -103,10 +114,10 @@
       tr{
         th{
           width:155px;
-          border: 1px solid #DDD;
+          border: 1px solid $lighterGray;
         }
         td{
-          border: 1px solid #DDD;
+          border: 1px solid $lighterGray;
         }
       }
     }
@@ -122,7 +133,7 @@
     font-family: openSansBold;
   }
   .hierarchy ul li ul li ul li .tree-list-item {
-    background: #DDDDDD;
+    background: $lighterGray;
     font-family: openSansSemiBold !important;
   }
   .hierarchy ul li ul li ul li ul li .tree-list-item {

@@ -3,17 +3,28 @@
 describe("ManageProgramController", function () {
 
     var scope, messageService, i = 0, programService, _provide, deferred, q, _spinner,
-        retrospectiveEntryService, listOfPrograms, programAttributeTypes, allPrograms;
+        retrospectiveEntryService, listOfPatientPrograms, programAttributeTypes, allPrograms,
+        controller, rootScope, confirmBox;
+
+    var setUp = function () {
+        return controller('ManageProgramController', {
+            $scope: scope,
+            $rootScope: rootScope,
+            q: q,
+            confirmBox: confirmBox
+        });
+    };
+
     beforeEach(module('bahmni.common.uicontrols.programmanagment'));
 
     beforeEach(module(function ($provide) {
         _provide = $provide;
         programService = jasmine.createSpyObj('programService', ['getPatientPrograms', 'getAllPrograms',
-           'deletePatientState', 'getProgramAttributeTypes', 'updatePatientProgram']);
+            'deletePatientState', 'getProgramAttributeTypes', 'updatePatientProgram']);
 
         programService.getPatientPrograms.and.callFake(function () {
             deferred = q.defer();
-            deferred.resolve(listOfPrograms);
+            deferred.resolve(listOfPatientPrograms);
             return deferred.promise;
         });
 
@@ -25,23 +36,23 @@ describe("ManageProgramController", function () {
 
         programService.deletePatientState.and.callFake(function () {
             deferred = q.defer();
-            deferred.resolve({data: {results: listOfPrograms}});
+            deferred.resolve({data: {results: listOfPatientPrograms}});
             return deferred.promise;
         });
 
-        programService.getProgramAttributeTypes.and.callFake(function() {
+        programService.getProgramAttributeTypes.and.callFake(function () {
             deferred = q.defer();
             deferred.resolve(programAttributeTypes);
             return deferred.promise;
         });
 
-        programService.updatePatientProgram.and.callFake(function() {
+        programService.updatePatientProgram.and.callFake(function () {
             deferred = q.defer();
-            deferred.resolve({data: {results: listOfPrograms}});
+            deferred.resolve({data: {results: listOfPatientPrograms}});
             return deferred.promise;
         });
 
-
+        confirmBox = jasmine.createSpy('confirmBox');
 
         _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         messageService = jasmine.createSpyObj('messageService', ['showMessage']);
@@ -54,25 +65,26 @@ describe("ManageProgramController", function () {
         $provide.value('$stateParams', {configName: "default"});
     }));
 
-
     beforeEach(inject(function ($controller, $rootScope, $q) {
+        controller = $controller;
+        rootScope = $rootScope;
         scope = $rootScope.$new();
         scope.patient = {uuid: "some uuid"};
         q = $q;
     }));
 
-    beforeEach(function(){
-       listOfPrograms = {
+    beforeEach(function () {
+        listOfPatientPrograms = {
 
-            "activePrograms":[{
+            "activePrograms": [{
                 "display": "program",
                 "dateEnrolled": "2015-07-25T18:29:59.000+0000",
                 "dateCompleted": null,
                 "outcome": null,
-                "patient":{"uuid":"ad95e200-6196-4438-a078-16ad0506a473"},
+                "patient": {"uuid": "ad95e200-6196-4438-a078-16ad0506a473"},
                 "states": [
                     {
-                        state:{ uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
+                        state: {uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
                         startDate: "2015-07-01",
                         endDate: "2015-07-15"
                     },
@@ -239,11 +251,11 @@ describe("ManageProgramController", function () {
                         "states": [{
                             "uuid": "8227f47f-3f10-11e4-adec-0800271c1b75",
                             "display": "All_Tests_and_Panels",
-                            "retired":false
-                        },{
+                            "retired": false
+                        }, {
                             "uuid": "8227f47f-3f10-11e4-adec-0800271c1590",
                             "display": "VAT_Tests_and_Panels",
-                            "retired":false
+                            "retired": false
 
                         }],
                         "links": [
@@ -263,17 +275,7 @@ describe("ManageProgramController", function () {
             }
         ];
 
-    })
-
-    var setUp = function () {
-        inject(function ($controller, $rootScope, $q) {
-            $controller('ManageProgramController', {
-                $scope: scope,
-                $rootScope: $rootScope,
-                q: $q
-            });
-        });
-    };
+    });
 
     it("should update active programs list", function () {
         scope.$apply(setUp);
@@ -285,27 +287,26 @@ describe("ManageProgramController", function () {
         expect(scope.patientProgramAttributes).toEqual({});
     });
 
-
-    it("should return true if patient has enrolled to SomePrograms", function() {
+    it("should return true if patient has enrolled to SomePrograms", function () {
         scope.$apply(setUp);
         expect(scope.hasPatientEnrolledToSomePrograms()).toBeTruthy();
     });
 
-    it("should return true if patient had enrolled in any past programs", function() {
+    it("should return true if patient had enrolled in any past programs", function () {
         scope.$apply(setUp);
         expect(scope.hasPatientAnyPastPrograms()).toBeTruthy();
     });
 
-    describe('get maximum allowed program enrollment date for edit flow',function(){
-        it("Should return minimum start date of states",function(){
+    describe('get maximum allowed program enrollment date for edit flow', function () {
+        it("Should return minimum start date of states", function () {
             scope.$apply(setUp);
-            var maxDate =  scope.getMaxAllowedDate(listOfPrograms.activePrograms[0].states);
+            var maxDate = scope.getMaxAllowedDate(listOfPatientPrograms.activePrograms[0].states);
             expect(maxDate).toEqual('2015-07-01')
         });
 
-        it("Should return current date when there are no states",function(){
+        it("Should return current date when there are no states", function () {
             scope.$apply(setUp);
-            var maxDate =  scope.getMaxAllowedDate([]);
+            var maxDate = scope.getMaxAllowedDate([]);
             expect(maxDate).toEqual(Bahmni.Common.Util.DateUtil.getDateWithoutTime(new Date()));
         });
     });
@@ -314,23 +315,21 @@ describe("ManageProgramController", function () {
 
         it("should remove latest program state", function () {
             scope.$apply(setUp);
-            scope.removePatientState(listOfPrograms.activePrograms[0]);
-            expect(programService.deletePatientState).toHaveBeenCalledWith(listOfPrograms.activePrograms[0].uuid, listOfPrograms.activePrograms[0].states[1].uuid);
+            scope.removePatientState(listOfPatientPrograms.activePrograms[0]);
+            expect(programService.deletePatientState).toHaveBeenCalledWith(listOfPatientPrograms.activePrograms[0].uuid, listOfPatientPrograms.activePrograms[0].states[1].uuid);
         });
 
         it("should be able to remove program state when it is the active state", function () {
             scope.$apply(setUp);
-            expect(scope.canRemovePatientState(listOfPrograms.activePrograms[0].states[1])).toBeTruthy();
+            expect(scope.canRemovePatientState(listOfPatientPrograms.activePrograms[0].states[1])).toBeTruthy();
         });
     });
-
-
 
     describe("update attributes", function () {
         it("should save program attributes", function () {
             scope.$apply(setUp);
-            var programToBeUpdated = listOfPrograms.activePrograms[0];
-            programToBeUpdated.patientProgramAttributes = {"locationName":"Loc1"};
+            var programToBeUpdated = listOfPatientPrograms.activePrograms[0];
+            programToBeUpdated.patientProgramAttributes = {"locationName": "Loc1"};
 
             scope.updatePatientProgram(programToBeUpdated);
 
@@ -339,47 +338,111 @@ describe("ManageProgramController", function () {
 
     });
 
+    describe("updatePatientProgram", function () {
+        it("should assign the initial state successfully", function () {
+            scope.$apply(setUp);
+            var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
+            patientProgramToBeUpdated.states = []; //making sure there are no states assigned
 
-    describe("transition state", function () {
+            var newStateUuid = '8917ab09-52b4-4573-aefa-7f6e7bdf6d61';
+            patientProgramToBeUpdated.selectedState = {uuid: newStateUuid};
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
+                return '2015-07-19';
+            });
+
+            scope.updatePatientProgram(patientProgramToBeUpdated);
+
+            scope.$digest();
+            expect(patientProgramToBeUpdated.states.length).toBe(1);
+            expect(patientProgramToBeUpdated.states[0].startDate).toBe(Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat("2015-07-19"));
+            expect(patientProgramToBeUpdated.states[0].state.uuid).toBe(newStateUuid);
+            expect(messageService.showMessage).toHaveBeenCalledWith("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
+
+        });
+
+        it("should update patient program without any state if not provided", function () {
+            scope.$apply(setUp);
+            var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
+            patientProgramToBeUpdated.states = []; //making sure there are no states assigned
+
+            patientProgramToBeUpdated.selectedState = undefined;
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
+                return '2015-07-19';
+            });
+
+            scope.updatePatientProgram(patientProgramToBeUpdated);
+
+            scope.$digest();
+            expect(patientProgramToBeUpdated.states.length).toBe(0);
+            expect(messageService.showMessage).toHaveBeenCalledWith("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
+
+        });
+
         it("should validate if state to be transited is starting after the current running state", function () {
             scope.$apply(setUp);
-            var programToBeUpdated = listOfPrograms.activePrograms[0];
-            var newStateUuid = '1317ab09-52b4-4573-aefa-7f6e7bdf6d61';
-            scope.programEdited={selectedState : {uuid: newStateUuid}};
-            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function(){
-                    return '2015-07-12';
+            var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
+            var newStateUuid = '8917ab09-52b4-4573-aefa-7f6e7bdf6d61';
+            patientProgramToBeUpdated.selectedState = {uuid: newStateUuid};
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
+                return '2015-07-12';
             });
 
-            scope.updatePatientProgram(programToBeUpdated);
+            scope.updatePatientProgram(patientProgramToBeUpdated);
 
-            expect(messageService.showMessage).toHaveBeenCalledWith("error", "State cannot be started earlier than current state (15 Jul 15)");
+            expect(messageService.showMessage)
+                .toHaveBeenCalledWith("error", "PROGRAM_MANAGEMENT_STATE_CANT_START_BEFORE_KEY (15 Jul 15)");
         });
 
-        it("should transit from one state to another successfully", function(){
+        it("should transit from one state to another successfully only if different state is selected", function () {
             scope.$apply(setUp);
-            var programToBeUpdated = listOfPrograms.activePrograms[0];
-            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function(){
-                    return '2015-07-19';
+            var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
+                return '2015-07-19';
 
             });
-            var newStateUuid = '1317ab09-52b4-4573-aefa-7f6e7bdf6d61';
-            scope.programEdited={selectedState : {uuid: newStateUuid}};
+            var newStateUuid = '8417ab09-52b4-4573-aefa-7f6e7bdf6d61';
+            expect(patientProgramToBeUpdated.states.length).toBe(2);
+            patientProgramToBeUpdated.selectedState = {uuid: newStateUuid};
 
-            expect(programToBeUpdated.states.length).toBe(2);
-            scope.updatePatientProgram(programToBeUpdated);
+            scope.updatePatientProgram(patientProgramToBeUpdated);
+
             scope.$digest();
-            expect(programService.updatePatientProgram).toHaveBeenCalledWith(programToBeUpdated, programAttributeTypes, null);
-            expect(programToBeUpdated.states.length).toBe(3);
-            expect(programToBeUpdated.states[2].startDate).toBe(Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat("2015-07-19"));
-            expect(programToBeUpdated.states[2].state.uuid).toBe(newStateUuid);
-            expect(messageService.showMessage).toHaveBeenCalledWith("info", "Saved");
+            expect(programService.updatePatientProgram).toHaveBeenCalledWith(patientProgramToBeUpdated,
+                programAttributeTypes, null);
+            expect(patientProgramToBeUpdated.states.length).toBe(3);
+            expect(patientProgramToBeUpdated.states[2].startDate).toBe(Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat("2015-07-19"));
+            expect(patientProgramToBeUpdated.states[2].state.uuid).toBe(newStateUuid);
+            expect(messageService.showMessage).toHaveBeenCalledWith("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
         });
 
-        it("should show failure message on any server error with state transition", function(){
+        it("should not add transition to the state which is already active", function () {
             scope.$apply(setUp);
-            var programToBeUpdated = listOfPrograms.activePrograms[0];
-            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function(){
-                    return '2015-07-19';
+            var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
+                return '2015-07-19';
+
+            });
+            var currentActiveStateUuid = '1317ab09-52b4-4573-aefa-7f6e7bdf6d61';
+            expect(patientProgramToBeUpdated.states.length).toBe(2);
+            patientProgramToBeUpdated.selectedState = {uuid: currentActiveStateUuid};
+
+            scope.updatePatientProgram(patientProgramToBeUpdated);
+
+            scope.$digest();
+            expect(programService.updatePatientProgram).toHaveBeenCalledWith(patientProgramToBeUpdated,
+                programAttributeTypes, null);
+            expect(patientProgramToBeUpdated.states.length).toBe(2);
+            expect(patientProgramToBeUpdated.states[1].startDate)
+                .toBe("2015-07-15");
+            expect(patientProgramToBeUpdated.states[1].state.uuid).toBe(currentActiveStateUuid);
+            expect(messageService.showMessage).toHaveBeenCalledWith("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
+        });
+
+        it("should show failure message on any server error with state transition", function () {
+            scope.$apply(setUp);
+            var patientProgramToBeUpdated = listOfPatientPrograms.activePrograms[0];
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
+                return '2015-07-19';
 
             });
             programService.updatePatientProgram.and.callFake(function () {
@@ -388,9 +451,8 @@ describe("ManageProgramController", function () {
                 return deferred.promise;
             });
 
-            scope.programEdited={selectedState : {uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'}};
-
-            scope.updatePatientProgram(programToBeUpdated);
+            patientProgramToBeUpdated.selectedState = {uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'};
+            scope.updatePatientProgram(patientProgramToBeUpdated);
             scope.$digest();
             expect(messageService.showMessage).toHaveBeenCalledWith("error", "Failed to Save");
         });
@@ -398,59 +460,39 @@ describe("ManageProgramController", function () {
 
     });
 
-    describe("end program", function(){
+    describe("end program", function () {
 
-        it("should validate if program is ending before the current running state", function(){
+        it("should validate if program is ending before the current running state", function () {
             scope.$apply(setUp);
-            var programToBeUpdated = listOfPrograms.activePrograms[0];
-            programToBeUpdated.outcomeData={uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'};
+            var programToBeUpdated = listOfPatientPrograms.activePrograms[0];
+            programToBeUpdated.outcomeData = {uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'};
 
-            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function(){
-                    return '2015-07-12';
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
+                return '2015-07-12';
             });
 
             scope.updatePatientProgram(programToBeUpdated);
 
-            expect(messageService.showMessage).toHaveBeenCalledWith("error", "Program cannot be ended earlier than current state (15 Jul 15)");
+            expect(messageService.showMessage).toHaveBeenCalledWith("error", "PROGRAM_MANAGEMENT_PROGRAM_CANT_END_BEFORE_KEY (15 Jul 15)");
         });
 
-        it('should end a program successfully', function(){
+        it('should end a program successfully', function () {
             scope.$apply(setUp);
-            var programToBeUpdated = listOfPrograms.activePrograms[0];
-            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function(){
-                    return '2015-07-19';
+            var programToBeUpdated = listOfPatientPrograms.activePrograms[0];
+            retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
+                return '2015-07-19';
             });
             programToBeUpdated.outcomeData = {uuid: 'outcome-uuid'};
 
             scope.updatePatientProgram(programToBeUpdated);
             scope.$digest();
 
-            expect(messageService.showMessage).toHaveBeenCalledWith("info", "Saved");
+            expect(messageService.showMessage).toHaveBeenCalledWith("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
         });
     });
 
-    describe('getWorkflowStatesWithoutCurrent', function(){
-        it('should fetch states of the program excluding current patient state', function(){
-            scope.$apply(setUp);
-            var patientProgram = listOfPrograms.activePrograms[0];
-
-            var states = scope.getWorkflowStatesWithoutCurrent(patientProgram);
-
-            expect(states.length).toBe(1);
-        });
-        it('should fetch all states of the program if patient is currently stateless', function(){
-            scope.$apply(setUp);
-            var patientProgram = listOfPrograms.activePrograms[0];
-            patientProgram.states =[];
-
-            var states = scope.getWorkflowStatesWithoutCurrent(patientProgram);
-
-            expect(states.length).toBe(2);
-        })
-    });
-
-    describe('Should get states',function(){
-        it('Of un retired workflow',function(){
+    describe('Should get states', function () {
+        it('Of un retired workflow', function () {
             scope.$apply(setUp);
             scope.setWorkflowStates(allPrograms[0]);
 
@@ -458,13 +500,40 @@ describe("ManageProgramController", function () {
         })
     });
 
-    describe('get workflows',function(){
-        it('should get unretired workflows for patient program',function(){
+    describe('get workflows', function () {
+        it('should get unretired workflows for patient program', function () {
             scope.$apply(setUp);
 
             expect(scope.activePrograms[0].program.allWorkflows.length).toBe(1);
         });
     });
 
+    describe('delete Program', function () {
+        it('confirmBox delete action should delete program', function (done) {
+            scope.$apply(setUp);
 
+            programService.updatePatientProgram.and.returnValue(specUtil.respondWith());
+            confirmBox.and.callFake(function (config) {
+                config.scope.delete(function () {
+                    expect(listOfPatientPrograms.activePrograms[0].voided).toBe(true);
+                    done();
+                });
+            });
+
+            scope.confirmDeletion(listOfPatientPrograms.activePrograms[0]);
+        });
+        it('confirmBox cancel action should not delete the program', function (done) {
+            scope.$apply(setUp);
+
+            confirmBox.and.callFake(function (config) {
+                config.scope.cancel(function () {
+                    expect(listOfPatientPrograms.activePrograms[0].voided).toBeFalsy();
+                    expect(listOfPatientPrograms.activePrograms[0].deleting).toBeFalsy();
+                    done();
+                });
+            });
+
+            scope.confirmDeletion(listOfPatientPrograms.activePrograms[0]);
+        });
+    });
 });

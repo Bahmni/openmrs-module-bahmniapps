@@ -1,12 +1,12 @@
 <html>
 <head>
-    <link rel="stylesheet" href="../styles/clinicalPrint.css" media="all"/>
+    <link rel="stylesheet" href="../styles/clinicalPrint.css" media="print"/>
 </head>
 <body>
-    <div class="print-wrapper">
+    <div class="print-wrapper print-patient-summary">
         <div class="print-header">
             <h1>
-                <img ng-if="visitTabConfig.getPrintConfigForCurrentTab().logo" class="logo" src="{{visitTabConfig.getPrintConfigForCurrentTab().logo}}" alt="logo">
+                <img ng-if="visitTabConfig.getPrintConfigForCurrentTab().logo" class="logo" ng-src="{{visitTabConfig.getPrintConfigForCurrentTab().logo}}" alt="logo">
                 {{visitTabConfig.getPrintConfigForCurrentTab().title}}</h1>
             <h2>{{visitTabConfig.getPrintConfigForCurrentTab().header}}</h2>
         </div>

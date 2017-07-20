@@ -79,6 +79,24 @@ describe('addressHierarchyService', function () {
             expect(mockHttp.get.calls.mostRecent().args[1].params.addressField).toBe(fieldName);
             expect(results).toBe(resultList);
         }]));
+
+        it('Should parse the searchString for Chrome app, if searchString contains parenthesis', inject(['addressHierarchyService', function (addressHierarchyService) {
+            mockofflineService.isOfflineApp.and.returnValue(true);
+            mockofflineService.isAndroidApp.and.returnValue(false);
+            var query = "Barisal Sadar (kotwali)";
+            var parsedQuery = "Barisal Sadar \\(kotwali\\)";
+            var params = {parentUuid : undefined, limit : 20 };
+            params.searchString = parsedQuery;
+            var fieldName = "Village";
+            params.addressField = fieldName;
+
+            var results = addressHierarchyService.search(fieldName, query);
+
+            expect(mockofflineDbService.searchAddress.calls.count()).toBe(1);
+            expect(mockofflineDbService.searchAddress).toHaveBeenCalledWith(params);
+
+            expect(results).toBe(resultList);
+        }]));
     });
     describe("getAddressDataResults", function(){
         it("should map address field to value and label for fields with parent", inject([ 'addressHierarchyService', function(addressHierarchyService){

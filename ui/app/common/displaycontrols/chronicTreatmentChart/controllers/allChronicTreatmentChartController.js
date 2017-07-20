@@ -5,5 +5,5 @@ angular.module('bahmni.common.displaycontrol.chronicTreatmentChart')
             $scope.patient = $scope.ngDialogData.patient;
             $scope.enrollment = $scope.ngDialogData.enrollment;
             $scope.section = $scope.ngDialogData.section;
-            $scope.config = $scope.ngDialogData.section ? $scope.ngDialogData.section.allObservationDetails : {};
+            $scope.config = $scope.ngDialogData.section ? $scope.ngDialogData.section.expandedViewConfig : {};
         }]);

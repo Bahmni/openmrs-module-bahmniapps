@@ -1,8 +1,7 @@
 'use strict';
 
-Bahmni.Common.Domain.PatientProgramMapper = function(){
-    this.map = function(patientProgram, programAttributeTypes, dateCompleted) {
-
+Bahmni.Common.Domain.PatientProgramMapper = function () {
+    this.map = function (patientProgram, programAttributeTypes, dateCompleted) {
         var attributeFormatter = new Bahmni.Common.Domain.AttributeFormatter();
         return {
             dateEnrolled: moment(patientProgram.dateEnrolled).format(Bahmni.Common.Constants.ServerDateTimeFormat),
@@ -10,8 +9,9 @@ Bahmni.Common.Domain.PatientProgramMapper = function(){
             uuid: patientProgram.uuid,
             dateCompleted: dateCompleted ? moment(dateCompleted).format(Bahmni.Common.Constants.ServerDateTimeFormat) : null,
             outcome: patientProgram.outcomeData ? patientProgram.outcomeData.uuid : null,
-            attributes: attributeFormatter.getMrsAttributesForUpdate(patientProgram.patientProgramAttributes, programAttributeTypes, patientProgram.attributes)
-        }
-    }
-
+            attributes: attributeFormatter.getMrsAttributesForUpdate(patientProgram.patientProgramAttributes, programAttributeTypes, patientProgram.attributes),
+            voided: !!patientProgram.voided,
+            voidReason: patientProgram.voidReason
+        };
+    };
 };

@@ -1,11 +1,10 @@
 'use strict';
 
-Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept) {
-
+Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, consultationNoteConcept, labOrderNoteConcept, followUpConditionConcept) {
     var filterPreviousOrderOfRevisedOrders = function (orders) {
         return _.filter(orders, function (drugOrder) {
             return !_.some(orders, function (otherDrugOrder) {
-                return otherDrugOrder.action === Bahmni.Clinical.Constants.orderActions.revise && otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid
+                return otherDrugOrder.action === Bahmni.Clinical.Constants.orderActions.revise && otherDrugOrder.encounterUuid === drugOrder.encounterUuid && otherDrugOrder.previousOrderUuid === drugOrder.uuid;
             });
         });
     };
@@ -14,11 +13,11 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         var encounterUuid = encounterTransaction.encounterUuid;
         var specialObservationConceptUuids = [consultationNoteConcept.uuid, labOrderNoteConcept.uuid];
         var investigations = encounterTransaction.orders.filter(function (order) {
-            return !order.voided
+            return !order.voided;
         });
         var labResults = new Bahmni.LabResultsMapper().map(encounterTransaction);
         var nonVoidedDrugOrders = encounterTransaction.drugOrders.filter(function (order) {
-            return !order.voided && order.action != Bahmni.Clinical.Constants.orderActions.discontinue;
+            return !order.voided && order.action !== Bahmni.Clinical.Constants.orderActions.discontinue;
         });
         nonVoidedDrugOrders = filterPreviousOrderOfRevisedOrders(nonVoidedDrugOrders);
         var treatmentDrugs = nonVoidedDrugOrders.map(function (drugOrder) {
@@ -33,20 +32,23 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         });
 
         var orders = encounterTransaction.orders.filter(function (order) {
-            return order.action != Bahmni.Clinical.Constants.orderActions.discontinue && !order.dateStopped;
+            return order.action !== Bahmni.Clinical.Constants.orderActions.discontinue && !order.dateStopped;
         });
 
         var mdrtbSpecimen = encounterTransaction.extensions.mdrtbSpecimen && encounterTransaction.extensions.mdrtbSpecimen.map(function (specimen) {
-                if (specimen.sample) {
-                    specimen.sample.additionalAttributes = specimen.sample.additionalAttributes ? new Bahmni.Common.Obs.ObservationMapper().map([specimen.sample.additionalAttributes], {}) : [];
-                }
-                if (specimen.report) {
-                    specimen.report.results = specimen.report.results ? new Bahmni.Common.Obs.ObservationMapper().map([specimen.report.results], {}) : [];
-                }
+            if (specimen.sample) {
+                specimen.sample.additionalAttributes = specimen.sample.additionalAttributes ? new Bahmni.Common.Obs.ObservationMapper().map([specimen.sample.additionalAttributes], {}) : [];
+            }
+            if (specimen.report) {
+                specimen.report.results = specimen.report.results ? new Bahmni.Common.Obs.ObservationMapper().map([specimen.report.results], {}) : [];
+            }
 
-                return new Bahmni.Clinical.Specimen(specimen);
-            });
+            return new Bahmni.Clinical.Specimen(specimen);
+        });
 
+        var followUpConditions = _.filter(encounterTransaction.observations, function (observation) {
+            return _.get(followUpConditionConcept, 'uuid') == _.get(observation, 'concept.uuid');
+        });
 
         return {
             visitUuid: encounterTransaction.visitUuid,
@@ -55,6 +57,7 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             investigations: investigations,
             treatmentDrugs: treatmentDrugs,
             newlyAddedDiagnoses: [],
+            newlyAddedSpecimens: [],
             labResults: labResults,
             consultationNote: consultationNote || emptyObservation(consultationNoteConcept),
             labOrderNote: labOrderNote || emptyObservation(labOrderNoteConcept),
@@ -66,7 +69,8 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
             visitType: encounterTransaction.visitType,
             providers: encounterTransaction.providers,
             locationUuid: encounterTransaction.locationUuid,
-            extensions: {mdrtbSpecimen: mdrtbSpecimen}
+            extensions: {mdrtbSpecimen: mdrtbSpecimen},
+            followUpConditions: followUpConditions
         };
     };
 
@@ -86,6 +90,4 @@ Bahmni.ConsultationMapper = function (dosageFrequencies, dosageInstructions, con
         }
         return observation;
     };
-
-
 };

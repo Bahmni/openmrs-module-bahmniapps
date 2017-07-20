@@ -5,5 +5,4 @@ angular.module('bahmni.common.appFramework')
         this.loadConfig = function (url) {
             return $http.get(url, {withCredentials: true});
         };
-
     }]);

@@ -79,11 +79,11 @@ describe("ConceptSetSection", function () {
                 "title": "Vitals",
                 "name": "vitals",
                 "isObservation": true,
-                "dashboardParams": {
+                "dashboardConfig": {
                     "conceptNames": ["Vitals", "Second Vitals"],
                     "numberOfVisits": 2
                 },
-                "allObservationDetails": {
+                "expandedViewConfig": {
                     "conceptNames": ["Height", "Weight", "BMI", "BMI STATUS"],
                     "numberOfVisits": 2,
                     "pivotTable": {
@@ -128,8 +128,7 @@ describe("ConceptSetSection", function () {
             var conceptSetSection = new ConceptSetSection(noDefaultConfig, new Bahmni.Auth.User({}), {}, observations, conceptSet);
             expect(conceptSetSection.isAdded).toBe(false);
         });
-    })
-
+    });
 
     describe("isOpen", function () {
         it("should be true if conceptSet observations has value", function () {
@@ -166,7 +165,16 @@ describe("ConceptSetSection", function () {
             ];
             var conceptSetSection = new ConceptSetSection(extensions, new Bahmni.Auth.User({}), {}, observations, conceptSet);
             expect(conceptSetSection.canToggle()).toBe(true);
-        })
+        });
+
+        it("should return true if conceptSet observations has value 0", function () {
+            var observations = [
+                {concept: {name: "vitals"}, value: 0}
+            ];
+            var conceptSetSection = new ConceptSetSection(extensions, new Bahmni.Auth.User({}), {}, observations, conceptSet);
+            expect(conceptSetSection.canToggle()).toBe(false);
+        });
+
     });
 
     describe("toggleDisplay", function () {

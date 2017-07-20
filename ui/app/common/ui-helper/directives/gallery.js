@@ -2,7 +2,6 @@
 
 angular.module('bahmni.common.uiHelper')
     .directive('bmGallery', ['$location', '$rootScope', '$compile', function ($location, $rootScope, $compile) {
-
         var controller = function ($scope) {
             $scope.albums = [];
             $scope.imagePosition = {
@@ -14,7 +13,7 @@ angular.module('bahmni.common.uiHelper')
                 return {
                     src: Bahmni.Common.Constants.documentsPath + '/' + record.imageObservation.value,
                     title: record.concept.name,
-                    desc: record.imageObservation.comment,
+                    commentOnUpload: record.comment || record.imageObservation.comment,
                     date: record.imageObservation.observationDateTime,
                     uuid: record.imageObservation.uuid,
                     providerName: provider ? provider.name : null
@@ -32,13 +31,14 @@ angular.module('bahmni.common.uiHelper')
                     newAlbum.tag = tag;
                     newAlbum.images = [image];
                     $scope.albums.splice(tagOrder, 0, newAlbum);
-                }else{
-                    matchedAlbum.images.push(image);
+                } else {
+                    var index = image.imageIndex ? image.imageIndex : matchedAlbum.images.length;
+                    matchedAlbum.images.splice(index, 0, image);
                 }
                 return $scope.albums[0].images.length - 1;
             };
 
-            var getMatchingAlbum = function(tag) {
+            var getMatchingAlbum = function (tag) {
                 return _.find($scope.albums, function (album) {
                     return album.tag == tag;
                 });
@@ -47,7 +47,7 @@ angular.module('bahmni.common.uiHelper')
             this.removeImage = function (image, tag, index) {
                 var matchedAlbum = getMatchingAlbum(tag);
 
-                if(matchedAlbum)  {
+                if (matchedAlbum) {
                     if (matchedAlbum.images) {
                         matchedAlbum.images.splice(index, 1);
                     }
@@ -68,9 +68,9 @@ angular.module('bahmni.common.uiHelper')
             controller: controller,
             scope: {
                 patient: "=",
-                accessImpression: "="
+                accessImpression: "=?"
             }
-        }
+        };
     }])
     .directive('bmGalleryItem', function () {
         var link = function ($scope, element, attrs, imageGalleryController) {
@@ -79,7 +79,9 @@ angular.module('bahmni.common.uiHelper')
                 title: $scope.image.concept ? $scope.image.concept.name : "",
                 date: $scope.image.obsDatetime,
                 uuid: $scope.image.obsUuid,
-                providerName: $scope.image.provider ? $scope.image.provider.name : ""
+                providerName: $scope.image.provider ? $scope.image.provider.name : "",
+                imageIndex: $scope.image.imageIndex,
+                commentOnUpload: $scope.image.comment
             };
             imageGalleryController.addImage(image, $scope.visitUuid, $scope.visitOrder);
 
@@ -155,7 +157,7 @@ angular.module('bahmni.common.uiHelper')
                 list: "="
             },
             require: '^bmGallery'
-        }
+        };
     })
     .directive("bmLazyImageObservationGalleryItems", function () {
         var link = function (scope, elem, attrs, imageGalleryController) {
@@ -179,5 +181,5 @@ angular.module('bahmni.common.uiHelper')
                 currentObservation: "=?index"
             },
             require: '^bmGallery'
-        }
+        };
     });

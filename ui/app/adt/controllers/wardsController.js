@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('WardsController', ['$scope', '$rootScope', '$window', '$document', 'spinner', 'WardService',
+    .controller('WardsController', ['$scope', '$rootScope', '$window', '$document', 'spinner', 'wardService',
         function ($scope, $rootScope, $window, $document, spinner, wardService) {
             $scope.wards = null;
 
@@ -15,5 +15,4 @@ angular.module('bahmni.adt')
                 });
             };
             spinner.forPromise(init());
-
         }]);

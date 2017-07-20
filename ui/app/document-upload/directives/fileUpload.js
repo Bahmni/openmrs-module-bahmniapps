@@ -2,15 +2,16 @@
 
 angular.module('opd.documentupload')
     .directive('fileUpload', [function () {
-
         var link = function (scope, element) {
             element.bind("change", function () {
-                var file = element[0].files[0];
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    scope.onSelect()(event.target.result, scope.visit);
-                };
-                reader.readAsDataURL(file);
+                var files = element[0].files;
+                angular.forEach(files, function (file, index) {
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        scope.onSelect()(event.target.result, scope.visit, file.name, file.type);
+                    };
+                    reader.readAsDataURL(file);
+                });
             });
         };
 
@@ -18,8 +19,8 @@ angular.module('opd.documentupload')
             restrict: 'A',
             scope: {
                 'visit': '=',
-                'onSelect':'&'
+                'onSelect': '&'
             },
             link: link
-        }
+        };
     }]);

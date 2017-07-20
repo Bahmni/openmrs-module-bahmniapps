@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .directive('wardList',[function () {
+    .directive('wardList', [function () {
         return {
             restrict: 'E',
             controller: 'WardListController',
             scope: {
-               ward:"="
+                ward: "="
             },
             templateUrl: "../adt/views/wardList.html"
         };

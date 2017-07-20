@@ -2,9 +2,7 @@
 
 angular.module('bahmni.clinical')
     .directive('diseaseTemplate', function () {
-
         var controller = function ($scope) {
-
             $scope.dateTimeDisplayConfig = function (obsTemplate) {
                 var showDate = false;
                 var showTime = false;
@@ -21,7 +19,7 @@ angular.module('bahmni.clinical')
                 return {
                     showDate: showDate,
                     showTime: showTime
-                }
+                };
             };
 
             $scope.isIntakeTemplate = function (obsTemplate) {
@@ -39,7 +37,8 @@ angular.module('bahmni.clinical')
                 config: "=",
                 patient: "=",
                 showDateTimeForIntake: "=",
-                showTimeForProgress: "="
+                showTimeForProgress: "=",
+                sectionId: "="
             },
             templateUrl: "dashboard/views/diseaseTemplate.html"
         };

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('investigationResults', ['LabOrderResultService', 'spinner', function (labOrderResultService, spinner) {
+    .directive('investigationResults', ['labOrderResultService', 'spinner', function (labOrderResultService, spinner) {
         var controller = function ($scope) {
             var defaultParams = {
                 showTable: true,
@@ -17,17 +17,23 @@ angular.module('bahmni.clinical')
                 initialAccessionCount: $scope.params.initialAccessionCount,
                 latestAccessionCount: $scope.params.latestAccessionCount
             };
-            spinner.forPromise(labOrderResultService.getAllForPatient(params)
+            $scope.initialization = labOrderResultService.getAllForPatient(params)
                 .then(function (results) {
                     $scope.investigationResults = results;
-                }));
+                });
         };
+
+        var link = function ($scope, element) {
+            spinner.forPromise($scope.initialization, element);
+        };
+
         return {
             restrict: 'E',
             controller: controller,
+            link: link,
+            templateUrl: "displaycontrols/investigationresults/views/investigationResults.html",
             scope: {
                 params: "="
-            },
-            templateUrl: "displaycontrols/investigationresults/views/investigationResults.html"
+            }
         };
     }]);

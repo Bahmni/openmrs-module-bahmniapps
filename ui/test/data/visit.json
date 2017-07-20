@@ -1,0 +1,84 @@
+{
+  "uuid": "de5d8f4b-cb75-4eff-8637-fd0efc0fb9ad",
+  "display": "field ? - 04/26/2016 05:36 PM",
+  "patient": {
+    "uuid": "d07ddb7e-fd8d-4e06-bc44-3bb17507d955",
+    "display": "BDH200237 - test encounter",
+    "links": [
+      {
+        "rel": "self",
+        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/patient/d07ddb7e-fd8d-4e06-bc44-3bb17507d955"
+      }
+    ]
+  },
+  "visitType": {
+    "uuid": "84048d14-8792-11e5-ade6-005056b07f03",
+    "display": "field",
+    "links": [
+      {
+        "rel": "self",
+        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/visittype/84048d14-8792-11e5-ade6-005056b07f03"
+      }
+    ]
+  },
+  "indication": null,
+  "location": null,
+  "startDatetime": "2016-04-26T17:36:18.000+0530",
+  "stopDatetime": null,
+  "encounters": [
+    {
+      "uuid": "a28e2e96-c90c-4f12-92d3-b1e71ad5a7ea",
+      "display": "FIELD 04/26/2016",
+      "links": [
+        {
+          "rel": "self",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/encounter/a28e2e96-c90c-4f12-92d3-b1e71ad5a7ea"
+        }
+      ]
+    },
+    {
+      "uuid": "1c5c237a-dc6e-4f4f-bcff-c761c1ae5972",
+      "display": "FIELD 04/26/2016",
+      "links": [
+        {
+          "rel": "self",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/encounter/a28e2e96-c90c-4f12-92d3-b1e71ad5a7ea"
+        }
+      ]
+    },
+    {
+      "uuid": "fed19763-aa50-41c7-9e16-9a4934c0a215",
+      "display": "REG 04/26/2016",
+      "links": [
+        {
+          "rel": "self",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/encounter/fed19763-aa50-41c7-9e16-9a4934c0a215"
+        }
+      ]
+    }
+  ],
+  "attributes": [
+    {
+      "uuid": "77dc47c6-d9f1-4d8b-95c0-0d4051ea19ae",
+      "display": "Visit Status: OPD",
+      "links": [
+        {
+          "rel": "self",
+          "uri": "NEED-TO-CONFIGURE/ws/rest/v1/visit/de5d8f4b-cb75-4eff-8637-fd0efc0fb9ad/attribute/77dc47c6-d9f1-4d8b-95c0-0d4051ea19ae"
+        }
+      ]
+    }
+  ],
+  "voided": false,
+  "links": [
+    {
+      "rel": "self",
+      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/visit/de5d8f4b-cb75-4eff-8637-fd0efc0fb9ad"
+    },
+    {
+      "rel": "full",
+      "uri": "NEED-TO-CONFIGURE/ws/rest/v1/visit/de5d8f4b-cb75-4eff-8637-fd0efc0fb9ad?v=full"
+    }
+  ],
+  "resourceVersion": "1.9"
+}

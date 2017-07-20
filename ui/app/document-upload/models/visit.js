@@ -10,8 +10,8 @@ Bahmni.DocumentUpload.Visit = function () {
     this.files = [];
     var androidDateFormat = "YYYY-MM-DD hh:mm:ss";
 
-    this._sortSavedFiles = function(savedFiles) {
-        savedFiles.sort(function(file1,file2){
+    this._sortSavedFiles = function (savedFiles) {
+        savedFiles.sort(function (file1, file2) {
             return file1.id - file2.id;
         });
         return savedFiles;
@@ -36,29 +36,30 @@ Bahmni.DocumentUpload.Visit = function () {
                                 visitUuid: encounter.visit.uuid,
                                 encounterUuid: encounter.uuid,
                                 provider: providerMapper.map(encounter.provider),
-                                concept: {uuid: observation.concept.uuid, editableName: conceptName, name: conceptName}
+                                concept: {uuid: observation.concept.uuid, editableName: conceptName, name: conceptName},
+                                comment: member.comment
                             }));
-                        })
+                        });
                     }
-                })
+                });
             }
         });
         this.files = this._sortSavedFiles(savedFiles);
         this.assignImageIndex();
     };
 
-    this.assignImageIndex = function(){
-        var imageIndex = this.getNoOfImages() -1;
-          this.files.map(function(file){
-              if(!(file.encodedValue.indexOf(".pdf") > 0)){
-                  file.imageIndex = imageIndex;
-                  imageIndex--;
-              }
-              return file;
-          })
+    this.assignImageIndex = function () {
+        var imageIndex = this.getNoOfImages() - 1;
+        this.files.map(function (file) {
+            if (!(file.encodedValue.indexOf(".pdf") > 0)) {
+                file.imageIndex = imageIndex;
+                imageIndex--;
+            }
+            return file;
+        });
     };
 
-    this.getNoOfImages = function(){
+    this.getNoOfImages = function () {
         var imageFiles = _.filter(this.files, function (file) {
             return !(file.encodedValue.indexOf(".pdf") > 0);
         });
@@ -66,7 +67,7 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.isNew = function () {
-        return this.uuid == null;
+        return this.uuid === null;
     };
 
     this.hasFiles = function () {
@@ -74,22 +75,22 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.startDate = function () {
-        if(!this.isNew()) {
+        if (!this.isNew()) {
             return moment(this.startDatetime).toDate();
         }
         return this.parseDate(this.startDatetime);
     };
 
     this.endDate = function () {
-       return this.stopDatetime ? this.parseDate(this.stopDatetime) : undefined;
+        return this.stopDatetime ? this.parseDate(this.stopDatetime) : undefined;
     };
 
     this.parseDate = function (date) {
-        if(date instanceof Date) {
+        if (date instanceof Date) {
             return date;
         }
         var dateFormat = (date && date.indexOf('-') !== -1) ? androidDateFormat : Bahmni.Common.Constants.dateFormat;
-        return  moment(date, dateFormat).toDate();
+        return moment(date, dateFormat).toDate();
     };
 
     this.addFile = function (file) {
@@ -97,7 +98,7 @@ Bahmni.DocumentUpload.Visit = function () {
         var alreadyPresent = this.files.filter(function (img) {
             return img.encodedValue === file;
         });
-        if (alreadyPresent.length == 0) {
+        if (alreadyPresent.length === 0) {
             savedImage = new DocumentImage({"encodedValue": file, "new": true});
             this.files.push(savedImage);
         }
@@ -107,19 +108,19 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.markAsUpdated = function () {
-        this.changed = this.files.some(function(file) { return file.changed || !file.obsUuid || file.voided; });
+        this.changed = this.files.some(function (file) { return file.changed || !file.obsUuid || file.voided; });
     };
 
-    this.isSaved = function(file){
+    this.isSaved = function (file) {
         return file.obsUuid ? true : false;
     };
-    
-    this.removeFile = function(file){
-       if(this.isSaved(file)){
-           this.toggleVoidingOfFile(file);
-       }else{
-           this.removeNewAddedFile(file);
-       }
+
+    this.removeFile = function (file) {
+        if (this.isSaved(file)) {
+            this.toggleVoidingOfFile(file);
+        } else {
+            this.removeNewAddedFile(file);
+        }
     };
 
     this.removeNewAddedFile = function (file) {
@@ -134,7 +135,7 @@ Bahmni.DocumentUpload.Visit = function () {
         this.markAsUpdated();
     };
 
-    this.hasErrors = function(){
+    this.hasErrors = function () {
         var imageHasError = _.find(this.files, function (file) {
             return !file.voided && (!file.concept || !file.concept.editableName || !file.concept.uuid);
         });
@@ -142,7 +143,7 @@ Bahmni.DocumentUpload.Visit = function () {
         return imageHasError ? true : false;
     };
 
-    this.hasVisitType = function(){
+    this.hasVisitType = function () {
         return this.visitType && this.visitType.uuid ? true : false;
-    }
+    };
 };

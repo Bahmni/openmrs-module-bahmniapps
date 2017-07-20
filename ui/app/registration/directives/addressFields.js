@@ -9,31 +9,37 @@ angular.module('bahmni.registration')
             scope: {
                 address: '=',
                 addressLevels: '=',
-                fieldValidation: '='
+                fieldValidation: '=',
+                strictAutocompleteFromLevel: '='
             }
         };
     })
-    .controller('AddressFieldsDirectiveController', function ($scope, addressHierarchyService) {
+    .controller('AddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', function ($scope, addressHierarchyService) {
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
         $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelsCloneInDescendingOrder, 2);
         var addressLevelsNamesInDescendingOrder = addressLevelsCloneInDescendingOrder.map(function (addressLevel) {
             return addressLevel.addressField;
         });
-        var autocompletedFields = [];
+
         $scope.addressFieldSelected = function (fieldName) {
             return function (addressFieldItem) {
                 var parentFields = addressLevelsNamesInDescendingOrder.slice(addressLevelsNamesInDescendingOrder.indexOf(fieldName) + 1);
+                $scope.selectedValue[fieldName] = addressFieldItem.addressField.name;
                 var parent = addressFieldItem.addressField.parent;
                 parentFields.forEach(function (parentField) {
                     if (!parent) {
                         return;
                     }
                     $scope.address[parentField] = parent.name;
+                    $scope.selectedValue[parentField] = parent.name;
                     parent = parent.parent;
                 });
-                autocompletedFields = [];
-                autocompletedFields.push(fieldName);
-                autocompletedFields = autocompletedFields.concat(parentFields);
+            };
+        };
+
+        $scope.removeAutoCompleteEntry = function (fieldName) {
+            return function () {
+                $scope.selectedValue[fieldName] = null;
             };
         };
 
@@ -46,11 +52,33 @@ angular.module('bahmni.registration')
         $scope.getAddressDataResults = addressHierarchyService.getAddressDataResults;
 
         $scope.clearFields = function (fieldName) {
-            if(_.includes(autocompletedFields, fieldName)) {
-                var childFields = autocompletedFields.slice(0, autocompletedFields.indexOf(fieldName));
-                childFields.forEach(function (childField) {
-                    $scope.address[childField] = "";
-                });
-            }
+            var childFields = addressLevelsNamesInDescendingOrder.slice(0, addressLevelsNamesInDescendingOrder.indexOf(fieldName));
+            childFields.forEach(function (childField) {
+                if (!_.isEmpty($scope.selectedValue[childField])) {
+                    $scope.address[childField] = null;
+                    $scope.selectedValue[childField] = null;
+                }
+            });
         };
-    });
+        var init = function () {
+            $scope.addressLevels.reverse();
+            var isStrictEntry = false;
+            _.each($scope.addressLevels, function (addressLevel) {
+                addressLevel.isStrictEntry = $scope.strictAutocompleteFromLevel == addressLevel.addressField || isStrictEntry;
+                isStrictEntry = addressLevel.isStrictEntry;
+            });
+            $scope.addressLevels.reverse();
+
+            // wait for address to be resolved in edit patient scenario
+            var addressWatch = $scope.$watch('address', function (newValue) {
+                if (newValue !== undefined) {
+                    $scope.selectedValue = _.mapValues($scope.address, function (value, key) {
+                        var addressLevel = _.find($scope.addressLevels, {addressField: key});
+                        return addressLevel && addressLevel.isStrictEntry ? value : null;
+                    });
+                    addressWatch();
+                }
+            });
+        };
+        init();
+    }]);

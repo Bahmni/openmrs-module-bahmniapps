@@ -22,7 +22,7 @@ describe('LocationService', function () {
     it('should get locations for the offline app', function(done){
 
         var locationUuids = {
-            "value": {
+            "data": {
                 "results": ["location1", "location2"]
             }
         };
@@ -32,26 +32,7 @@ describe('LocationService', function () {
 
         locationService.getAllByTag().then(function (response) {
             expect(response.data.results.length).toEqual(2);
-            expect(response.data).toEqual(locationUuids.value);
-            done();
-        });
-    });
-
-    it('should get selected location for subsequent logins for the offline app', function(done){
-
-        var loginInformation = {
-            "currentLocation" : {
-                "value": {
-                    "results": ["location2"]
-                }
-            }
-        };
-
-        offlineService.getItem.and.returnValue(loginInformation);
-
-        locationService.getAllByTag().then(function (response) {
-            expect(response.data.results.length).toEqual(1);
-            expect(response.data.results[0]).toEqual(loginInformation.currentLocation);
+            expect(response.data).toEqual(locationUuids.data);
             done();
         });
     });

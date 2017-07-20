@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('bahmni.common.logging')
-.config(function($provide){
-    $provide.decorator("$exceptionHandler", function($delegate, $injector, $window, $log){
-        var logError = function(exception, cause) {
+.config(['$provide', function ($provide) {
+    $provide.decorator("$exceptionHandler", function ($delegate, $injector, $window, $log) {
+        var logError = function (exception, cause) {
             try {
                 var messagingService = $injector.get('messagingService');
+                var loggingService = $injector.get('loggingService');
                 var errorMessage = exception.toString();
                 var stackTrace = printStackTrace({ e: exception });
                 var errorDetails = {
@@ -14,14 +15,9 @@ angular.module('bahmni.common.logging')
                     errorUrl: $window.location.href,
                     errorMessage: errorMessage,
                     stackTrace: stackTrace,
-                    cause: ( cause || "" )
+                    cause: (cause || "")
                 };
-                $.ajax({
-                    type: "POST",
-                    url: "/log",
-                    contentType: "application/json",
-                    data: angular.toJson(errorDetails)
-                });
+                loggingService.log(errorDetails);
                 messagingService.showMessage('error', errorMessage);
                 exposeException(errorDetails);
             } catch (loggingError) {
@@ -30,14 +26,14 @@ angular.module('bahmni.common.logging')
             }
         };
 
-        var exposeException = function(exceptionDetails) {
+        var exposeException = function (exceptionDetails) {
             window.angular_exception = window.angular_exception || [];
             window.angular_exception.push(exceptionDetails);
         };
 
-        return function(exception, cause){
+        return function (exception, cause) {
             $delegate(exception, cause);
             logError(exception, cause);
         };
     });
-});
+}]);

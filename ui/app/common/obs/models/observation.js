@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Common.Obs.Observation = (function () {
-
     var Observation = function (obs, conceptConfig) {
         angular.extend(this, obs);
         this.concept = obs.concept;
@@ -17,6 +16,9 @@ Bahmni.Common.Obs.Observation = (function () {
         isImageConcept: function () {
             return this.concept.conceptClass === "Image";
         },
+        isVideoConcept: function () {
+            return this.concept.conceptClass === "Video";
+        },
 
         hasPDFAsValue: function () {
             return (this.value.indexOf(".pdf") > 0);
@@ -24,11 +26,10 @@ Bahmni.Common.Obs.Observation = (function () {
 
         getDisplayValue: function () {
             var value;
-            if (this.type === "Boolean") {
-                return this.value === true ? "Yes" : "No";
+            if (this.type === "Boolean" || this.concept && this.concept.dataType === "Boolean") {
+                return this.value === true ? "OBS_BOOLEAN_YES_KEY" : "OBS_BOOLEAN_NO_KEY";
             }
-            if (this.type === "Datetime") {
-
+            if (this.type === "Datetime" || this.concept && this.concept.dataType === "Datetime") {
                 var date = Bahmni.Common.Util.DateUtil.parseDatetime(this.value);
                 return date != null ? Bahmni.Common.Util.DateUtil.formatDateWithTime(date) : "";
             }
@@ -38,11 +39,11 @@ Bahmni.Common.Obs.Observation = (function () {
                     return value;
                 }
             }
-            if (this.type === "Date") {
+            if (this.type === "Date" || this.concept && this.concept.dataType === "Date") {
                 return this.value ? Bahmni.Common.Util.DateUtil.formatDateWithoutTime(this.value) : "";
             }
             value = this.value;
-            var displayValue = value && (value.shortName || value.name || value);
+            var displayValue = value && (value.shortName || (value.name && (value.name.name || value.name)) || value);
             if (this.duration) {
                 displayValue = displayValue + " " + this.getDurationDisplayValue();
             }
@@ -55,8 +56,6 @@ Bahmni.Common.Obs.Observation = (function () {
         }
     };
 
-
     return Observation;
-
 })();
 

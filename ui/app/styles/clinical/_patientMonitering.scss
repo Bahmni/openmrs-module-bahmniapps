@@ -1,0 +1,166 @@
+.dashboard-monitoring-section{
+  margin-bottom: 10px;
+}
+.patient-monitering-schedule-details{
+  margin: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  box-shadow: 1px 1px 1px 2px rgba(0, 0, 0, 0.2);
+  li{
+    width:33%;
+    float: left;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    color: #000;
+    font-size: 13px;
+    span{
+      font-family: $primaryBoldFont;
+    }
+  }
+}
+.patient-monitering-table{
+  .legends{
+    margin:0 10px 10px;
+    padding: 10px;
+    display: table;
+    width:auto;
+    float: right;
+    border: 1px solid $darkerGrey;
+    font-family: $OpenSansFont;
+    span{
+      padding:0 5px;
+      font-size: 12px;
+      &.monitoring-legends{
+        padding-left: 25px;
+        position:relative;
+        &:before{
+          content: "";
+          position: absolute;
+          width: 15px;
+          height: 15px;
+          background: #9a9a9a;
+          left: 5px;
+          top: 1px;
+          padding: 1px 3px;
+          box-sizing: border-box;
+        }
+        &--yellow:before{
+          background: #f0f078;
+        }
+        &--green:before{
+          background: #9ed016;
+        }
+        &--purple:before{
+          background: #9551b2;
+        }
+        &--stop:before{
+          background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOElEQVQoU2PclBH4nwEH8JuxnpERlwKQJEgOqwKYJMhgDAXIkhgK0CVRFGCThCvAJQlWACLweRUAlpUs7330CvMAAAAASUVORK5CYII=) repeat !important;
+        }
+      }
+
+    }
+  }
+  .monitoring-table-wrap{
+    width: auto;
+    position: relative;
+    clear: both;
+    overflow: hidden;
+    border: 1px solid $darkerGrey;
+    margin: 0 10px 10px;
+    padding: 2px 2px 2px 4px;
+  }
+  .monitoring-table-scroll {
+    width: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-left:298px;
+    table {
+      border-spacing: 2px;
+      border-collapse: separate;
+      tr {
+        border-bottom: 0;
+        height:37px;
+        th{
+          text-align: center;
+        }
+        td, th {
+          border: 0;
+          padding: 10px;
+          height: 17px;
+          &.monitoring-fixed-column{
+            position:absolute;
+            left:0;
+            width:300px;
+            box-sizing: border-box;
+            height:37px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            left:4px;
+          }
+        }
+        th {
+          font-family: $OpenSansFont;
+          background: #d6d6d6;
+          &.current-month {
+            background: #9a9a9a;
+            color: $white;
+          }
+        }
+        td,th {
+          &.monitoring-results {
+            background: #efefef;
+            span{
+              display:none;
+            }
+            &--green {
+              background: #9ed016;
+            }
+            &--purple {
+              background: #9551b2;
+            }
+            &--yellow {
+              background: #f0f078;
+            }
+            &--yellowCurrent{
+              background: #d9d966;
+            }
+            &--purpleCurrent{
+              background:#713b88;
+            }
+            &--greenCurrent{
+              background:#7fa80e;
+            }
+            &--greyCurrent{
+              background: #9a9a9a;
+            }
+            &--yellowStop{
+              background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAPUlEQVQoU2M8ciTmPwMO0Nz0moERlwKQZG2dKHYFMEmQwRgmIEtiKECXRFGATRKuAJckWIG7m/t/kGtxAQAp2CsR0sWrOwAAAABJRU5ErkJggg==) repeat !important;
+              color: #fff;
+            }
+            &--purpleStop{
+              background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOElEQVQoU2PMtm74z4ADTD3awMiISwFIEiSHVQFMEmQwhgJkSQwF6JIoCrBJwhXgkgQrABH4vAoAngYrDAH5sToAAAAASUVORK5CYII=) repeat !important;
+              color: #fff;
+            }
+            &--greenStop{
+              background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOElEQVQoU2OsWSzwnwEHaIn9wMiISwFIEiSHVQFMEmQwhgJkSQwF6JIoCrBJwhXgkgQrABH4vAoAwYsrS3K3BQIAAAAASUVORK5CYII=) repeat !important;
+              color: #fff;
+            }
+            &--greyStop{
+              background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAPUlEQVQoU2M8cuTIfwYcoLmpmYERlwKQZG1dLXYFMEmQwRgmIEtiKECXRFGATRKuAJckWIG7m/t/kGtxAQCYvy3pTwtVHgAAAABJRU5ErkJggg==) repeat !important;
+              color: #fff;
+            }
+          }
+          &.monitoring-resultsCurrent{
+            background: #9a9a9a !important;
+            color: #fff;
+          }
+          &.monitoring-resultsStop{
+            background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOElEQVQoU2PclBH4nwEH8JuxnpERlwKQJEgOqwKYJMhgDAXIkhgK0CVRFGCThCvAJQlWACLweRUAlpUs7330CvMAAAAASUVORK5CYII=) repeat !important;
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}

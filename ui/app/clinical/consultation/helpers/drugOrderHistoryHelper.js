@@ -2,15 +2,13 @@
 
 angular.module('bahmni.clinical')
     .service('drugOrderHistoryHelper', [function () {
-
         this.getInactiveDrugsFromPastVisit = function (activeAndScheduledDrugs, previousVisitDrugs) {
             var inactivePreviousVisitDrugs = [];
             _.each(previousVisitDrugs, function (previousVisitDrug) {
                 var presentInActiveAndScheduledDrugs = _.find(activeAndScheduledDrugs, function (activeAndScheduledDrug) {
-                    if(activeAndScheduledDrug.drug && previousVisitDrug.drug) {
-                        return activeAndScheduledDrug.drug.uuid == previousVisitDrug.drug.uuid;
-                    }
-                    else if(activeAndScheduledDrug.drugNonCoded && previousVisitDrug.drugNonCoded){
+                    if (activeAndScheduledDrug.drug && previousVisitDrug.drug) {
+                        return activeAndScheduledDrug.drug.uuid === previousVisitDrug.drug.uuid;
+                    } else if (activeAndScheduledDrug.drugNonCoded && previousVisitDrug.drugNonCoded) {
                         return activeAndScheduledDrug.drugNonCoded === previousVisitDrug.drugNonCoded;
                     }
                     return false;
@@ -32,10 +30,9 @@ angular.module('bahmni.clinical')
 
             sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.scheduled));
             sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(partitionedDrugOrders.active));
-            if(!showOnlyActive){
+            if (!showOnlyActive) {
                 sortedDrugOrders.push(drugOrderUtil.sortDrugOrders(this.getInactiveDrugsFromPastVisit(activeAndScheduledDrugOrders, previousVisitDrugOrders)));
             }
             return _.flatten(sortedDrugOrders);
         };
-
     }]);

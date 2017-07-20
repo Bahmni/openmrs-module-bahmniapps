@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('patientContext', ['$state', '$translate', '$sce', 'patientService', 'spinner', 'appService',  function ($state, $translate, $sce, patientService, spinner, appService) {
+    .directive('patientContext', ['$state', '$translate', '$sce', 'patientService', 'spinner', 'appService', function ($state, $translate, $sce, patientService, spinner, appService) {
         var controller = function ($scope, $rootScope) {
             var patientContextConfig = appService.getAppDescriptor().getConfigValue('patientContext') || {};
-            spinner.forPromise(patientService.getPatientContext($scope.patient.uuid, $state.params.enrollment, patientContextConfig.personAttributes, patientContextConfig.programAttributes)).then(function (response) {
+            $scope.initPromise = patientService.getPatientContext($scope.patient.uuid, $state.params.enrollment, patientContextConfig.personAttributes, patientContextConfig.programAttributes, patientContextConfig.additionalPatientIdentifiers);
+
+            $scope.initPromise.then(function (response) {
                 $scope.patientContext = response.data;
                 var programAttributes = $scope.patientContext.programAttributes;
                 var personAttributes = $scope.patientContext.personAttributes;
@@ -23,15 +25,22 @@ angular.module('bahmni.clinical')
                     }
                 }
 
-                $scope.patientContext.image = Bahmni.Common.Constants.patientImageUrl + $scope.patientContext.uuid + ".jpeg";
+                $scope.showNameAndImage = $scope.showNameAndImage !== undefined ? $scope.showNameAndImage : true;
+                if ($scope.showNameAndImage) {
+                    $scope.patientContext.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + $scope.patientContext.uuid;
+                }
                 $scope.patientContext.gender = $rootScope.genderMap[$scope.patientContext.gender];
             });
+        };
+
+        var link = function ($scope, element) {
+            spinner.forPromise($scope.initPromise, element);
         };
 
         var convertBooleanValuesToEnglish = function (attributes) {
             var booleanMap = {'true': 'Yes', 'false': 'No'};
             _.forEach(attributes, function (value) {
-                    value.value = booleanMap[value.value] ? booleanMap[value.value] : value.value;
+                value.value = booleanMap[value.value] ? booleanMap[value.value] : value.value;
             });
         };
 
@@ -39,8 +48,10 @@ angular.module('bahmni.clinical')
             restrict: 'E',
             templateUrl: "displaycontrols/patientContext/views/patientContext.html",
             scope: {
-                patient: "="
+                patient: "=",
+                showNameAndImage: "=?"
             },
-            controller: controller
+            controller: controller,
+            link: link
         };
     }]);

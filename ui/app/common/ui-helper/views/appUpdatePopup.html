@@ -1,0 +1,6 @@
+<div>
+    <span> App requires an update </span>
+    <span ng-if="!isAndroid">Please download the app from <a target="_blank"
+                                          ng-href="{{::ngDialogData.latestChromeAppUrl}}">link</a></span>
+    <button ng-if="isAndroid" ng-click="update(ngDialogData.latestAndroidAppUrl)">Update</button>
+</div>

@@ -18,7 +18,7 @@ angular.module('bahmni.common.uiHelper')
                 this.createTimeout('info', 4000);
             }
 
-            var index = _.findIndex(this.messages[level], function(msg) {
+            var index = _.findIndex(this.messages[level], function (msg) {
                 return msg.value == messageObject.value;
             });
 
@@ -36,5 +36,10 @@ angular.module('bahmni.common.uiHelper')
 
         this.hideMessages = function (level) {
             self.messages[level].length = 0;
-        }
+        };
+
+        this.clearAll = function () {
+            self.messages["error"] = [];
+            self.messages["info"] = [];
+        };
     }]);

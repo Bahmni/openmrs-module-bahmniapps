@@ -52,6 +52,7 @@
         <script src="../components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
         <script src="../components/angular-translate-storage-local/angular-translate-storage-local.min.js"></script>
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
+        <script src="../lib/angular-workers/dist/angular-workers.js"></script>
 
         <!-- build:js document-upload.min.js -->
         <script src="../common/route-errorhandler/init.js"></script>
@@ -59,6 +60,7 @@
 
         <script src="../common/offline/init.js"></script>
         <script src="../common/offline/offlineService.js"></script>
+        <script src="../common/models/init.js"></script>
 
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>
@@ -87,6 +89,12 @@
         <script src="../common/domain/init.js"></script>
 
         <!-- Mujir/Vikash - to remove -->
+        <script src="../common/logging/init.js"></script>
+        <script src="../common/logging/exceptionHandler.js"></script>
+        <script src="../common/logging/services/loggingService.js"></script>
+        <script src="../common/domain/services/configurationService.js"></script>
+        <script src="../common/logging/services/auditLogService.js"></script>
+
         <script src="../common/domain/models/retrospectiveEntry.js"></script>
         <script src="../common/domain/services/retrospectiveEntryService.js"></script>
 
@@ -97,6 +105,7 @@
         <script src="../common/domain/encounterConfig.js"></script>
         <script src="../common/domain/services/visitDocumentService.js"></script>
         <script src="../common/domain/mappers/providerMapper.js"></script>
+
 
         <script src="../common/gallery/init.js"></script>
         <script src="../common/gallery/directives/galleryPane.js"></script>
@@ -119,6 +128,7 @@
         <script src="../common/ui-helper/filters/reverse.js"></script>
         <script src="../common/ui-helper/filters/dateFilters.js"></script>
         <script src="../common/ui-helper/spinner.js"></script>
+        <script src="../common/ui-helper/printer.js"></script>
         <script src="../common/ui-helper/directives.js"></script>
         <script src="../common/ui-helper/directives/bahmniAutocomplete.js"></script>
         <script src="../common/ui-helper/directives/focusOn.js"></script>
@@ -128,9 +138,8 @@
         <script src="../common/ui-helper/directives/backLinks.js"></script>
         <script src="../common/ui-helper/controllers/messageController.js"></script>
         <script src="../common/ui-helper/services/messagingService.js"></script>
-
-        <script src="../common/logging/init.js"></script>
-        <script src="../common/logging/exceptionHandler.js"></script>
+        <script src="../common/ui-helper/directives/fallbackSrc.js"></script>
+        <script src="../common/ui-helper/directives/toggle.js"></script>
 
         <script src="../common/i18n/init.js"></script>
         <script src="../common/i18n/bahmni-translate.js"></script>
@@ -141,6 +150,7 @@
 
         <script src="app.js"></script>
         <script src="init.js"></script>
+        <script src="../common/models/auditLogEventDetails.js"></script>
         <script src="initialization.js"></script>
         <script src="constants.js"></script>
         <script src="models/visit.js"></script>

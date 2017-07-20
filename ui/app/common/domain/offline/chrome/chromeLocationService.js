@@ -4,12 +4,16 @@ angular.module('bahmni.common.domain')
     .factory('locationService', ['$bahmniCookieStore', 'offlineService', 'offlineDbService', '$q',
         function ($bahmniCookieStore, offlineService, offlineDbService, $q) {
             var getAllByTag = function (tags) {
-                if (offlineService.getItem('LoginInformation') != null) {
+                if (offlineService.getItem('LoginInformation') != null && !offlineService.getItem("allowMultipleLoginLocation")) {
                     var obj = {"data": {"results": [offlineService.getItem('LoginInformation').currentLocation]}};
                     return $q.when(obj);
                 }
                 return offlineDbService.getReferenceData('LoginLocations').then(function (loginLocations) {
-                    return {"data": loginLocations.value};
+                    if (!loginLocations) {
+                        var msg = offlineService.getItem("networkError") || "Offline data not set up";
+                        return $q.reject(msg);
+                    }
+                    return loginLocations;
                 });
             };
 
@@ -24,10 +28,14 @@ angular.module('bahmni.common.domain')
                 return getByUuid(cookie.uuid);
             };
 
+            var getVisitLocation = function (locationUuid) {
+                return $q.when({});
+            };
+
             return {
                 getAllByTag: getAllByTag,
                 getLoggedInLocation: getLoggedInLocation,
-                getByUuid: getByUuid
+                getByUuid: getByUuid,
+                getVisitLocation: getVisitLocation
             };
-
         }]);

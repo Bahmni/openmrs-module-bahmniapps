@@ -1,22 +1,22 @@
 'use strict';
 
 angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.i18n', 'bahmni.common.uiHelper', 'bahmni.common.util',
-        'bahmni.common.appFramework', 'bahmni.common.logging', 'bahmni.common.routeErrorHandler', 'pascalprecht.translate', 'ngCookies', 'bahmni.common.offline',
-          'bahmni.common.models'])
+    'bahmni.common.appFramework', 'bahmni.common.logging', 'bahmni.common.routeErrorHandler', 'pascalprecht.translate', 'ngCookies', 'bahmni.common.offline',
+    'bahmni.common.models'])
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', '$compileProvider',
         function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
-        $urlRouterProvider.otherwise('/dashboard');
+            $urlRouterProvider.otherwise('/dashboard');
 
-        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
+            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
 
         // @if DEBUG='production'
-        $compileProvider.debugInfoEnabled(false);
+            $compileProvider.debugInfoEnabled(false);
         // @endif
 
         // @if DEBUG='development'
-        $compileProvider.debugInfoEnabled(true);
+            $compileProvider.debugInfoEnabled(true);
         // @endif
-        $stateProvider
+            $stateProvider
             .state('dashboard',
                 {
                     url: '/dashboard',
@@ -27,56 +27,54 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                         offlineDb: function (offlineDbInitialization) {
                             return offlineDbInitialization();
                         },
-                        initialize: function (initialization, offlineConfigInitialization) {
-                            return initialization(offlineConfigInitialization);
+                        initialize: function (initialization, offlineDb) {
+                            return initialization(offlineDb);
                         },
-                        offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
-                            return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
-                        },
-                        offlineConfigInitialization: function(offlineConfigInitialization, offlineSyncInitialization){
-                            return offlineConfigInitialization(offlineSyncInitialization)
-                        },
-                        offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                            return offlineReferenceDataInitialization(offlineDb, true);
+                        webWorker: function (schedulerService, initialize) {
+                            return schedulerService.sync();
                         }
                     }
+                }).state('changePassword', {
+                    url: '/changePassword',
+                    templateUrl: 'views/changePassword.html',
+                    controller: 'ChangePasswordController'
                 }).state('login',
-            {
-                url: '/login?showLoginMessage',
-                templateUrl: 'views/login.html',
-                controller: 'LoginController',
+                {
+                    url: '/login?showLoginMessage',
+                    templateUrl: 'views/login.html',
+                    controller: 'LoginController',
+                    resolve: {
+                        offlineDb: function (offlineDbInitialization) {
+                            return offlineDbInitialization();
+                        },
+                        initialData: function (loginInitialization, offlineDb) {
+                            return loginInitialization();
+                        },
+                        webWorker: function (schedulerService, initialData) {
+                            return schedulerService.stopSync();
+                        }
+                    }
+                })
+            .state('errorLog', {
+                url: '/errorLog',
+                controller: 'ErrorLogController',
+                templateUrl: 'views/errorLog.html',
+                data: {
+                    backLinks: [
+                        {label: "Home", state: "dashboard", accessKey: "h", icon: "fa-home"}
+                    ]
+                },
                 resolve: {
-                    initialData: function(loginInitialization, offlineReferenceDataInitialization){
-                        return loginInitialization(offlineReferenceDataInitialization)
-                    },
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
-                    },
-                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                        return offlineReferenceDataInitialization(offlineDb, false);
                     }
-                }
-            }).state('offline',
-            {
-                url: '/',
-                templateUrl: '../index.html'
-            }).state('device',
-            {
-                url: "/device/:deviceType",
-                controller: function ($stateParams, $rootScope, $state, offlineService) {
-                    if ($stateParams.deviceType === 'chrome-app' || $stateParams.deviceType === 'android') {
-                        offlineService.setAppPlatform($stateParams.deviceType);
-                    }
-                    $rootScope.loginDevice = $stateParams.deviceType;
-                    $state.go('login');
                 }
             });
-        $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-        $bahmniTranslateProvider.init({app: 'home', shouldMerge: true});
-
-    }]).run(function ($rootScope, $templateCache) {
-    //Disable caching view template partials
-    $rootScope.$on('$viewContentLoaded', function () {
-        $templateCache.removeAll();
-    });
-});
+            $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
+            $bahmniTranslateProvider.init({app: 'home', shouldMerge: true});
+        }]).run(['$rootScope', '$templateCache', function ($rootScope, $templateCache) {
+        // Disable caching view template partials
+            $rootScope.$on('$viewContentLoaded', function () {
+                $templateCache.removeAll();
+            });
+        }]);

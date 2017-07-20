@@ -19,16 +19,68 @@ describe('EventLogService', function () {
     it('should make a call to get events log for catchment number', function () {
         var newVar = {uuid: 'uuid', object: '/openmrs/patient/111234'};
         mockHttp.get.and.callFake(function () {
-            return specUtil.respondWith([newVar]);
+            return specUtil.respondWith({"events":[newVar], "pendingEventsCount":1});
         });
 
-        eventLogService.getEventsFor(111).then(function (data) {
-            expect(data.length).toBe(1);
-            expect(data[0]).toBe(newVar);
+        eventLogService.getEventsFor('transactionalData',{ filters: [111]}).then(function (data) {
+            expect(data["events"].length).toBe(1);
+            expect(data["events"][0]).toBe(newVar);
+            expect(data["pendingEventsCount"]).toBe(1);
         });
 
-        expect(mockHttp.get).toHaveBeenCalledWith('/event-log-service/rest/eventlog/getevents', {
-            params: {filterBy: 111, uuid: undefined}
+        expect(mockHttp.get).toHaveBeenCalledWith('/event-log-service/rest/eventlog/events', {
+            params: {filterBy: [111], uuid: undefined}
+        });
+    });
+
+    it('should make a call to get offline-concepts for catchment number', function () {
+        var newVar = {uuid: 'uuid', object: '/openmrs/concept/111234'};
+        mockHttp.get.and.callFake(function () {
+            return specUtil.respondWith({"events":[newVar], "pendingEventsCount":1});
+        });
+
+        eventLogService.getEventsFor('offline-concepts',{ filters: []}).then(function (data) {
+            expect(data["events"].length).toBe(1);
+            expect(data["events"][0]).toBe(newVar);
+            expect(data["pendingEventsCount"]).toBe(1);
+        });
+
+        expect(mockHttp.get).toHaveBeenCalledWith('/event-log-service/rest/eventlog/concepts', {
+            params: {filterBy: [], uuid: undefined}
+        });
+    });
+
+    it('should make a call to get AddressHierarchy for catchment number', function () {
+        var newVar = {uuid: 'uuid', object: '/openmrs/addressHierarchy/111234'};
+        mockHttp.get.and.callFake(function () {
+            return specUtil.respondWith({"events":[newVar], "pendingEventsCount":1});
+        });
+
+        eventLogService.getEventsFor('addressHierarchy',{ filters: []}).then(function (data) {
+            expect(data["events"].length).toBe(1);
+            expect(data["events"][0]).toBe(newVar);
+            expect(data["pendingEventsCount"]).toBe(1)
+        });
+
+        expect(mockHttp.get).toHaveBeenCalledWith('/event-log-service/rest/eventlog/getAddressHierarchyEvents', {
+            params: {filterBy: [], uuid: undefined}
+        });
+    });
+
+    it('should make a call to get ParentAddressHierarchy for catchment number', function () {
+        var newVar = {uuid: 'uuid', object: '/openmrs/addressHierarchy/111234'};
+        mockHttp.get.and.callFake(function () {
+            return specUtil.respondWith({"events":[newVar], "pendingEventsCount":1});
+        });
+
+        eventLogService.getEventsFor('parentAddressHierarchy',{ filters: []}).then(function (data) {
+            expect(data["events"].length).toBe(1);
+            expect(data["events"][0]).toBe(newVar);
+            expect(data["pendingEventsCount"]).toBe(1);
+        });
+
+        expect(mockHttp.get).toHaveBeenCalledWith('/event-log-service/rest/eventlog/getAddressHierarchyEvents', {
+            params: {filterBy: [], uuid: undefined}
         });
     });
 
@@ -86,41 +138,18 @@ describe('EventLogService', function () {
         });
     });
 
-    it('should make a call to get parent address hierarchy entries for login location', function (done) {
-        var result = [
-            {
-                "addressHierarchyEntryId": 16165,
-                "name": "Gazipur",
-                "levelId": 2,
-                "addressHierarchyLevel": {
-                    "levelId": 2,
-                    "name": "Zilla",
-                    "parentLevelId": 1,
-                    "addressField": "COUNTY_DISTRICT",
-                    "required": true,
-                    "uuid": "c25a3285-7d55-11e5-acdf-90fba67c4298",
-                    "id": 2
-                },
-                "parentId": 14332,
-                "userGeneratedId": "3033",
-                "uuid": "f9cbb04a-8656-43e1-893c-e969f9ecf41a"
-            }
-        ];
-        var params =  ['f9cbb04a-8656-43e1-893c-e969f9ecf41a'];
+    it('should call event log filter URL to get filters for all categories for the given login  location, address and provider ', function () {
+        var newVar = [{category:"addressHierarchy" , filters:[]}, {category:"transactionalData" , filters:["123", "456"]}, {category:"offline-concepts" , filters:[]}];
         mockHttp.get.and.callFake(function () {
-            return specUtil.respondWith(result);
+            return specUtil.respondWith(newVar);
         });
 
-        eventLogService.getParentAddressHierarchyEntriesForLoginLocation(params).then(function (data) {
-            expect(data.length).toBe(1);
-            expect(data).toBe(result);
-            done();
+        eventLogService.getFilterForCategoryAndLoginLocation("providerUuid", "addressUuid", "loginLocationUuid").then(function (data) {
+            expect(data).toBe(newVar);
         });
 
-        expect(mockHttp.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/addressHierarchy', {
-            method : 'GET',
-            params: {"uuids" : params},
-            withCredentials : true
-        });
+        expect(mockHttp.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/eventlog/filter/markers/providerUuid/addressUuid/loginLocationUuid", {method: "GET", withCredentials: true});
     });
+
+
 });

@@ -2,44 +2,41 @@
 
 angular.module('bahmni.common.offline')
     .service('offlineMarkerDbService', [function () {
-        var db;
-
-        var init = function (_db) {
-            db = _db;
+        var getMarkers = function (db, markerTable, markerName) {
+            return db.select()
+                .from(markerTable)
+                .where(markerTable.markerName.eq(markerName)).exec();
         };
 
-        var getMarkers = function (markerTable) {
-            return db.select().from(markerTable).exec();
-        };
-
-        var insertOrUpdateMarker = function (markerTable, row) {
+        var insertOrUpdateMarker = function (db, markerTable, row) {
             return db.insertOrReplace().into(markerTable).values([row]).exec();
         };
 
-        var insertMarker = function (eventUuid, catchmentNumber) {
+        var insertMarker = function (db, markerName, eventUuid, filters) {
             var markerTable = db.getSchema().table('event_log_marker');
 
-            var row = markerTable.createRow({
+            var marker = {
+                markerName: markerName,
                 lastReadEventUuid: eventUuid,
-                catchmentNumber: catchmentNumber,
+                filters: filters,
                 lastReadTime: new Date()
-            });
+            };
+            var row = markerTable.createRow(marker);
 
-            return insertOrUpdateMarker(markerTable, row).then(function () {
-                return eventUuid;
+            return insertOrUpdateMarker(db, markerTable, row).then(function () {
+                return marker;
             });
         };
 
-        var getMarker = function () {
+        var getMarker = function (db, markerName) {
             var markerTable = db.getSchema().table('event_log_marker');
-            return getMarkers(markerTable).then(function (markers) {
-                return markers[0]
-            })
+            return getMarkers(db, markerTable, markerName).then(function (markers) {
+                return markers[0];
+            });
         };
 
         return {
-            init: init,
             insertMarker: insertMarker,
             getMarker: getMarker
-        }
+        };
     }]);

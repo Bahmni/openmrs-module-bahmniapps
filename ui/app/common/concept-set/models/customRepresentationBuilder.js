@@ -1,8 +1,8 @@
 'use strict';
 
 Bahmni.ConceptSet.CustomRepresentationBuilder = {
-	build: function(fields, childPropertyName, numberOfLevels) {
-		var childPropertyRep = childPropertyName + ':{{entity_fileds}}';
+    build: function (fields, childPropertyName, numberOfLevels) {
+        var childPropertyRep = childPropertyName + ':{{entity_fileds}}';
         var singleEntityString = "(" + fields.concat(childPropertyRep).join(',') + ")";
         var customRepresentation = singleEntityString;
         for (var i = 0; i < numberOfLevels; i++) {
@@ -10,5 +10,5 @@ Bahmni.ConceptSet.CustomRepresentationBuilder = {
         }
         customRepresentation = customRepresentation.replace("," + childPropertyRep, '');
         return customRepresentation;
-	}
+    }
 };

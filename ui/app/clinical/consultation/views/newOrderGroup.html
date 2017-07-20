@@ -1,0 +1,11 @@
+<div class="drugOrderHistorySectionContainer clearfix" ng-if="treatments.length > 0">
+    <section class="dashboard-section">
+        <drug-orders-section config="config"
+                             patient-uuid="null"
+                             treatment-config="null"
+                             enrollment="null"
+                             drug-orders="treatments"
+                             is-order-set="true">
+        </drug-orders-section>
+    </section>
+</div>

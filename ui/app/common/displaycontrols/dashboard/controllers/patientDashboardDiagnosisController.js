@@ -3,7 +3,7 @@
 angular.module('bahmni.common.displaycontrol.dashboard')
     .controller('PatientDashboardDiagnosisController', ['$scope', 'ngDialog',
         function ($scope, ngDialog) {
-            $scope.section =  $scope.dashboard.getSectionByType("diagnosis") || {};
+            $scope.section = $scope.dashboard.getSectionByType("diagnosis") || {};
 
             $scope.openSummaryDialog = function () {
                 ngDialog.open({
@@ -12,8 +12,9 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     scope: $scope
                 });
             };
-            $scope.$on('ngDialog.closing', function () {
+            var cleanUpListener = $scope.$on('ngDialog.closing', function () {
                 $("body").removeClass('ngdialog-open');
             });
 
+            $scope.$on("$destroy", cleanUpListener);
         }]);

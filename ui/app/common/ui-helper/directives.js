@@ -4,7 +4,7 @@ angular.module('bahmni.common.uiHelper')
     .directive('nonBlank', function () {
         return function ($scope, element, attrs) {
             var addNonBlankAttrs = function () {
-                    element.attr({'required': 'required'});
+                element.attr({'required': 'required'});
             };
 
             var removeNonBlankAttrs = function () {
@@ -18,7 +18,7 @@ angular.module('bahmni.common.uiHelper')
             $scope.$watch(attrs.nonBlank, function (value) {
                 return value ? addNonBlankAttrs() : removeNonBlankAttrs();
             });
-        }
+        };
     })
     .directive('datepicker', function () {
         var link = function ($scope, element, attrs, ngModel) {
@@ -43,9 +43,9 @@ angular.module('bahmni.common.uiHelper')
         return {
             require: 'ngModel',
             link: link
-        }
+        };
     })
-    .directive('myAutocomplete', function ($parse) {
+    .directive('myAutocomplete', ['$parse', function ($parse) {
         var link = function (scope, element, attrs, ngModelCtrl) {
             var ngModel = $parse(attrs.ngModel);
             var source = scope.source();
@@ -87,19 +87,19 @@ angular.module('bahmni.common.uiHelper')
                 responseMap: '&',
                 onSelect: '&'
             }
-        }
-    })
-    .directive('bmForm', function () {
+        };
+    }])
+    .directive('bmForm', ['$timeout', function ($timeout) {
         var link = function (scope, elem, attrs) {
-            setTimeout(function () {
+            $timeout(function () {
                 $(elem).unbind('submit').submit(function (e) {
                     var formScope = scope.$parent;
                     var formName = attrs.name;
                     e.preventDefault();
-                    if(scope.autofillable) {
+                    if (scope.autofillable) {
                         $(elem).find('input').trigger('change');
                     }
-                    if(formScope[formName].$valid) {
+                    if (formScope[formName].$valid) {
                         formScope.$apply(attrs.ngSubmit);
                         $(elem).removeClass('submitted-with-error');
                     } else {
@@ -112,29 +112,29 @@ angular.module('bahmni.common.uiHelper')
             link: link,
             require: 'form',
             scope: {
-               autofillable: "=" 
+                autofillable: "="
             }
         };
-    })
-    .directive('patternValidate', function ($timeout) {
+    }])
+    .directive('patternValidate', ['$timeout', function ($timeout) {
         return function ($scope, element, attrs) {
             var addPatternToElement = function () {
-                if($scope.fieldValidation && $scope.fieldValidation[attrs.id]){
+                if ($scope.fieldValidation && $scope.fieldValidation[attrs.id]) {
                     element.attr({"pattern": $scope.fieldValidation[attrs.id].pattern, "title": $scope.fieldValidation[attrs.id].errorMessage, "type": "text"});
                 }
             };
 
             $timeout(addPatternToElement);
-        }
-    })
-    .directive('validateOn', function(){
-        var link = function(scope, element, attrs, ngModelCtrl){
+        };
+    }])
+    .directive('validateOn', function () {
+        var link = function (scope, element, attrs, ngModelCtrl) {
             var validationMessage = attrs.validationMessage || 'Please enter a valid detail';
 
             var setValidity = function (value) {
-                var valid = value? true: false;
+                var valid = value ? true : false;
                 ngModelCtrl.$setValidity('blank', valid);
-                element[0].setCustomValidity(!valid ?  validationMessage: '');
+                element[0].setCustomValidity(!valid ? validationMessage : '');
             };
             scope.$watch(attrs.validateOn, setValidity, true);
         };
@@ -142,6 +142,5 @@ angular.module('bahmni.common.uiHelper')
         return {
             link: link,
             require: 'ngModel'
-        }
-
+        };
     });

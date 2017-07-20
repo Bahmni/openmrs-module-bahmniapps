@@ -2,8 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.pivottable')
     .service('pivotTableService', ['$http', function ($http) {
-
-        this.getPivotTableFor = function (patientUuid, diseaseSummaryConfig, visitUuid, startDate, endDate){
+        this.getPivotTableFor = function (patientUuid, diseaseSummaryConfig, visitUuid, startDate, endDate) {
             return $http.get(Bahmni.Common.Constants.diseaseSummaryPivotUrl, {
                 params: {
                     patientUuid: patientUuid,
@@ -19,6 +18,5 @@ angular.module('bahmni.common.displaycontrol.pivottable')
                     endDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate)
                 }
             });
-        }
-
+        };
     }]);

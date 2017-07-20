@@ -1,4 +1,4 @@
-describe("BedManagementService", function() {
+describe("bedManagementService", function() {
     var bedLayouts = [
             {bedId: 1,
              bedNumber: "I1",
@@ -23,13 +23,13 @@ describe("BedManagementService", function() {
 
     beforeEach(module('bahmni.adt'));
 
-    beforeEach(inject(['BedManagementService', function (bedManagementServiceInjected) {
-    	BedManagementService = bedManagementServiceInjected
+    beforeEach(inject(['bedManagementService', function (bedManagementServiceInjected) {
+	bedManagementService = bedManagementServiceInjected
     }]));
 
 	describe("createLayoutGrid", function(){
 		it("should create grid layout", function(){
-            expect(BedManagementService.createLayoutGrid(bedLayouts).length).toBe(2);
+            expect(bedManagementService.createLayoutGrid(bedLayouts).length).toBe(2);
         });
     });
 });

@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('documentupload', ['ui.router', 'bahmni.common.config', 'opd.documentupload', 'bahmni.common.patient', 
+angular.module('documentupload', ['ui.router', 'bahmni.common.config', 'opd.documentupload', 'bahmni.common.patient',
     'authentication', 'bahmni.common.appFramework', 'ngDialog', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.i18n',
     'bahmni.common.uiHelper', 'ngSanitize', 'bahmni.common.patientSearch', 'bahmni.common.util', 'bahmni.common.routeErrorHandler', 'pascalprecht.translate', 'ngCookies', 'bahmni.common.offline']);
-angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider',  '$compileProvider',
-        function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider , $compileProvider) {
+angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
+    function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
         $urlRouterProvider.otherwise('/search');
         var patientSearchBackLink = {label: "", state: "search", accessKey: "p", id: "patients-link", icon: "fa-users"};
         var homeBackLink = {label: "", url: "../home/", accessKey: "h", icon: "fa-home"};
@@ -17,38 +17,38 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
         $compileProvider.debugInfoEnabled(true);
         // @endif
         $stateProvider.state('search', {
-                url:'/search',
-                data: {
-                    backLinks: [homeBackLink]
+            url: '/search',
+            data: {
+                backLinks: [homeBackLink]
+            },
+            views: {
+                'content': {
+                    templateUrl: '../common/patient-search/views/patientsList.html',
+                    controller: 'PatientsListController'
                 },
-                views: {
-                    'content': {
-                        templateUrl: '../common/patient-search/views/patientsList.html',
-                        controller: 'PatientsListController'
-                    },
-                    'additional-header': { 
-                        templateUrl: '../common/ui-helper/header.html' 
-                    }
-                },
-                resolve: {
-                    initialization: 'initialization'
+                'additional-header': {
+                    templateUrl: '../common/ui-helper/header.html'
                 }
-            })
+            },
+            resolve: {
+                initialization: 'initialization'
+            }
+        })
             .state('upload', {
                 url: '/patient/:patientUuid/document',
                 data: {
-                    backLinks: [homeBackLink,patientSearchBackLink]
+                    backLinks: [homeBackLink, patientSearchBackLink]
                 },
                 views: {
-                    'header':{
-                        templateUrl:'views/patientHeader.html'
+                    'header': {
+                        templateUrl: 'views/patientHeader.html'
                     },
                     'content': {
                         templateUrl: 'views/documentUpload.html',
                         controller: 'DocumentController'
                     },
                     'additional-header': {
-                        template: '<patient-summary patient="patient"/>' 
+                        template: '<patient-summary patient="patient"/>'
                     }
                 },
                 resolve: {
@@ -64,8 +64,8 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
                 }
             });
 
-            $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
-            $bahmniTranslateProvider.init({app: 'document-upload', shouldMerge: true});
+        $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
+        $bahmniTranslateProvider.init({app: 'document-upload', shouldMerge: true});
     }]).run(['backlinkService', function (backlinkService) {
         FastClick.attach(document.body);
 

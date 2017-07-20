@@ -12,18 +12,17 @@
         this.yAxisUnit = yAxisUnit;
         this.referenceChartValues = asMatrix(this.csvString);
         this.header = this.referenceChartValues.shift();
-        this.ageColumnIndex = _.findIndex(this.header, function(columnName){
-            return columnName.toLowerCase() == Bahmni.Clinical.Constants.concepts.age.toLowerCase();
+        this.ageColumnIndex = _.findIndex(this.header, function (columnName) {
+            return columnName.toLowerCase() === Bahmni.Clinical.Constants.concepts.age.toLowerCase();
         });
-        this.genderColumnIndex = _.findIndex(this.header, function(columnName){
-            return columnName.toLowerCase() == Bahmni.Clinical.Constants.gender.toLowerCase();
+        this.genderColumnIndex = _.findIndex(this.header, function (columnName) {
+            return columnName.toLowerCase() === Bahmni.Clinical.Constants.gender.toLowerCase();
         });
 
         var maxNoOfMonths = ageInMonths + monthBuffer;
         this.referenceChartValues = _.filter(this.referenceChartValues, function (value) {
             return (value[that.genderColumnIndex] === gender) && (maxNoOfMonths === undefined || value[that.ageColumnIndex] <= maxNoOfMonths);
         });
-
     };
 
     var asMatrix = function (csvString) {
@@ -45,7 +44,7 @@
     Bahmni.Clinical.ObservationGraphReference.prototype.createObservationGraphReferenceLines = function () {
         var that = this;
         var headersToBeExcluded = function (column, index) {
-            return index == that.genderColumnIndex || index == that.ageColumnIndex;
+            return index === that.genderColumnIndex || index === that.ageColumnIndex;
         };
 
         var newObservationGraphLine = function (columnName) {
@@ -64,11 +63,11 @@
     };
 
     Bahmni.Clinical.ObservationGraphReference.prototype.validate = function () {
-        if(this.ageColumnIndex == -1){
-            throw new Error("Age column is not defined in reference lines csv: "+ this.config.getReferenceDataFileName())
+        if (this.ageColumnIndex === -1) {
+            throw new Error("Age column is not defined in reference lines csv: " + this.config.getReferenceDataFileName());
         }
-        if(this.genderColumnIndex == -1){
-            throw new Error("Gender column is not defined in reference lines csv: "+ this.config.getReferenceDataFileName())
+        if (this.genderColumnIndex === -1) {
+            throw new Error("Gender column is not defined in reference lines csv: " + this.config.getReferenceDataFileName());
         }
     };
 })();

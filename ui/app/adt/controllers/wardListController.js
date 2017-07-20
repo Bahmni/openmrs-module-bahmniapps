@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('bahmni.adt')
-    .controller('WardListController', ['$scope', 'QueryService', 'spinner', '$q', '$window', '$stateParams', 'appService', '$rootScope',
+    .controller('WardListController', ['$scope', 'queryService', 'spinner', '$q', '$window', '$stateParams', 'appService', '$rootScope',
         function ($scope, queryService, spinner, $q, $window, $stateParams, appService, $rootScope) {
-
             $scope.gotoPatientDashboard = function (patientUuid, visitUuid) {
                 var options = $.extend({}, $stateParams);
                 $.extend(options, {patientUuid: patientUuid, visitUuid: visitUuid || null});

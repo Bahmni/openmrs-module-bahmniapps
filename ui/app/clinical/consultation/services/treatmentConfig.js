@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('treatmentConfig',
-    ['TreatmentService', 'spinner', 'configurationService', 'appService', 'DrugService', '$q', '$translate',
-        function (treatmentService, spinner, configurationService, appService, drugService, $q, $translate) {
-
+    ['treatmentService', 'spinner', 'configurationService', 'appService', '$q', '$translate',
+        function (treatmentService, spinner, configurationService, appService, $q, $translate) {
             var getConfigFromServer = function (baseTreatmentConfig) {
                 return treatmentService.getConfig().then(function (result) {
                     var config = angular.extend(baseTreatmentConfig, result.data);
@@ -13,8 +12,9 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                         {name: "Month(s)", factor: 30}
                     ];
                     config.frequencies = _(config.frequencies)
-                        .sortBy({'name':'Immediately'})
-                        .sortBy({'name':'SOS'})
+                        .reverse()
+                        .sortBy({'name': 'Immediately'})
+                        .sortBy({'name': 'SOS'})
                         .reverse()
                         .value();
                     return config;
@@ -45,31 +45,31 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                         return drugOrderOptions.allowNonCodedDrugs;
                     },
                     getDoseUnits: function () {
-                        return drugOrderOptions.doseUnits
+                        return drugOrderOptions.doseUnits;
                     },
                     getRoutes: function () {
-                        return drugOrderOptions.routes
+                        return drugOrderOptions.routes;
                     },
                     getDurationUnits: function () {
-                        return drugOrderOptions.durationUnits
+                        return drugOrderOptions.durationUnits;
                     },
                     getDosingInstructions: function () {
-                        return drugOrderOptions.dosingInstructions
+                        return drugOrderOptions.dosingInstructions;
                     },
                     getDispensingUnits: function () {
-                        return drugOrderOptions.dispensingUnits
+                        return drugOrderOptions.dispensingUnits;
                     },
                     getFrequencies: function () {
-                        return drugOrderOptions.frequencies
+                        return drugOrderOptions.frequencies;
                     },
                     getDosePlaceHolder: function () {
-                        return drugOrderOptions.dosePlaceHolder
+                        return drugOrderOptions.dosePlaceHolder;
                     },
                     getDoseFractions: function () {
                         return drugOrderOptions.doseFractions;
                     },
                     isHiddenField: function (fieldName) {
-                        return _.includes(drugOrderOptions.hiddenFields, fieldName)
+                        return _.includes(drugOrderOptions.hiddenFields, fieldName);
                     },
                     isDropDown: function () {
                         return drugOrderOptions.isDropDown && drugOrderOptions.drugConceptSet;
@@ -98,7 +98,7 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                         var labelKey = drugOrderOptions.labels[field];
                         var labelValue = $translate.instant(labelKey);
                         if (labelValue === labelKey) {
-                            labelValue = $translate.instant(defaultKey)
+                            labelValue = $translate.instant(defaultKey);
                         }
                         return labelValue;
                     },
@@ -113,6 +113,7 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                     var allTabConfigs = medicationJson.tabConfig || {};
                     var tabConfig = allTabConfigs[tabConfigName] || {};
                     tabConfig.inputOptionsConfig = tabConfig.inputOptionsConfig || {};
+                    tabConfig.orderSet = tabConfig.orderSet || {};
                     var showDoseFractions = tabConfig.inputOptionsConfig.showDoseFractions;
                     tabConfig.inputOptionsConfig.showDoseFractions = showDoseFractions ? showDoseFractions : false;
                     tabConfig.drugOrderHistoryConfig = tabConfig.drugOrderHistoryConfig || {};

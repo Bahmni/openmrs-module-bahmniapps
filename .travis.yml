@@ -1,0 +1,30 @@
+language: node_js
+node_js: "6"
+
+before_install:
+  - if [[ `npm -v` == 3.10.8 ]]; then npm i -g npm@3.10.7; fi
+  - npm --version
+  - npm config set spin false
+
+  # https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3 # give xvfb some time to start
+
+install:
+  - npm install -g bower
+  - npm install -g grunt-cli
+  - gem install compass
+  - cd ui && npm install
+  - cat npm-debug.log || true
+  - bower install
+
+script: grunt bundle && grunt uglify-and-rename && grunt web
+
+cache:
+  directories:
+  - ui/node_modules
+  - ui/app/components
+
+notifications:
+  email: false

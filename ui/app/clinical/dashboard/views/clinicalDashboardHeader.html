@@ -4,12 +4,13 @@
 
         <div class="opd-header-bottom tabs">
             <bm-back-links></bm-back-links>
+            <recent-patients ng-if="enablePatientSearch()"></recent-patients>
             <a show-if-privilege="app:adt" ng-click= "displayConfirmationDialog($event)" class="back-btn"  ng-href="../adt/#/patient/{{patient.uuid}}/visit/{{consultation.visitUuid}}/"
                title="Go to IPD dashboard">
                 <i class="fa fa-bed fa-white"></i>
             </a>
             <a class="back-btn-link" id="dashboard-link" accesskey="d" ng-click="gotoPatientDashboard()" title="Back to {{patient.name}} Dashboard">
-                <img ng-src="{{patient.image}}" onerror="this.onerror=null;this.src='../images/blank-user.gif';">
+                <img class="patient-image" ng-src="{{::patient.image}}" fallback-src="../images/blank-user.gif">
               <span class="patient-info">
                 <span class="patient-name" >{{patient.name}} </span>
                 <span class="patient-id">{{patient.identifier}}</span>
@@ -26,7 +27,21 @@
             <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel, 'hide-ipad': availableBoards }">
                 <i class="fa fa-bars fa-white fa-large"></i>
             </button>
+            <div class="fr">
+                <div ng-if="isOfflineApp" class="offline-sync fl" ng-controller="AppUpdateController">
+                    <button class="btn" ng-if="isUpdateAvailable()" ng-click="update()">Update</button>
+                </div>
 
+                <div class="fr offlin-sync-wrapper" ng-controller="PatientListHeaderController">
+                    <button class="btn fl  offline-sync" ng-click="sync()" ng-show="isOfflineApp && !isSyncing">
+                        {{::'HEADER_LABEL_SYNC_KEY' | translate}}
+                    </button>
+                    <button class="btn fl offline-sync offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
+                        <!-- <i class="fa fa-refresh"></i> -->
+                        <img src="../images/sync.gif" />
+                    </button>
+                </div>
+            </div>
             <button class="confirm save-consultation" ng-show="availableBoards" single-click="save()" accesskey="{{'SAVE_ACCESS_KEY' | translate}}" ng-class="{'hideSaveText':availableBoards.length > 6}">
                 <i class="fa fa-save"></i>
                 <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
@@ -45,40 +60,64 @@
                title="Go to IPD Dashboard">
                 <i class="fa fa-bed fa-white"></i>
             </a>
+            <div class="desktop-menu fl">
+                <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()">
+                    <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.visibleTabs"
+                        ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentTab(dashboard) && !dashboard.displayByDefault}">
+                    <span class="close" ng-click="closeDashboard(dashboard)">
+                       <span class="close-icon">x</span>
+                    </span>
+                        <a ng-click="showDashboard(dashboard)" ng-click="closeAllDialogs()">{{dashboard | titleTranslate}} </a>
 
-            <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()">
-                <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.visibleTabs"
-                    ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentTab(dashboard) && !dashboard.displayByDefault}">
-                <span class="close" ng-click="closeDashboard(dashboard)">
-                   <span class="close-icon">x</span>
-                </span>
-                    <a ng-click="showDashboard(dashboard)" ng-click="closeAllDialogs()">{{dashboard | titleTranslate}} </a>
+                    </li>
+                    <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true"
+                        ng-show="clinicalDashboardConfig.getUnOpenedTabs().length > 0">
+                        <a id="addDashboardButton" bm-pop-over-trigger>+</a>
 
-                </li>
-                <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true"
-                    ng-show="clinicalDashboardConfig.getUnOpenedTabs().length > 0">
-                    <a id="addDashboardButton" bm-pop-over-trigger>+</a>
-
-                    <div class="tab-submenu" bm-pop-over-target>
-                        <ul>
-                            <li ng-repeat="dashboard in clinicalDashboardConfig.getUnOpenedTabs()">
-                                <a class="submenu-item unOpenedDashboard" ng-click="closeAllDialogs();showDashboard(dashboard);">{{dashboard | titleTranslate}} </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-
+                        <div class="tab-submenu" bm-pop-over-target>
+                            <ul>
+                                <li ng-repeat="dashboard in clinicalDashboardConfig.getUnOpenedTabs()">
+                                    <a class="submenu-item unOpenedDashboard" ng-click="closeAllDialogs();showDashboard(dashboard);">{{dashboard | titleTranslate}} </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="clinical-header mobile-menu fl">
+                <a id="MobileDashboardButton" class="mobile-menu-icon" ng-click="toggleDashboardMenu()">
+                    <i class="fa fa-bars fa-white fa-small"></i>
+                    <span>Dashboard</span>
+                </a>
+                <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()" ng-show="showDashboardMenu">
+                    <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.tabs"
+                        ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentTab(dashboard) && !dashboard.displayByDefault}">
+                        <a ng-click="showDashboard(dashboard)">{{dashboard | titleTranslate}} </a>
+                    </li>
+                </ul>
+            </div>
             <div class="dashboard-header-right-wrapper">
-                <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group" ng-click="printDashboard()"
+                <div ng-if="::clinicalDashboardConfig.quickPrints" class="fl print-list-wrapper" toggle="togglePrintList">
+                    <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group"
+                            accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}" ng-bind-html="'CLINICAL_PRINT_TRANSLATION_KEY'|translate">
+                        <i class="fa fa-print"></i>
+                    </button>
+                    <ul>
+                        <li accesskey="{{::tab.printing.shortcutKey}}" ng-repeat="tab in ::printList" ng-click="::printDashboard(tab)">
+                            <span ng-bind-html="::(tab.printing.label || tab.printing.header)"></span>
+                        </li>
+                    </ul>
+                </div>
+                <button ng-if="::!clinicalDashboardConfig.quickPrints" class="dialog-button-group print" ng-click="printDashboard()"
                         accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}" ng-bind-html="'CLINICAL_PRINT_TRANSLATION_KEY'|translate">
                     <i class="fa fa-print"></i>
 
                 </button>
                 <div class="dashboard-date-picker" ng-controller="PatientListHeaderController">
-                    <div class="retro-date-widget-wrapper">
-                        <div class="retro-date-widget-header">
-                            <button ng-click="popUpHandler()">{{ getTitle() }}</button>
+                    <div class="retro-date-widget-wrapper fr">
+                        <div class="retro-date-widget-header fr">
+                            <button ng-click="popUpHandler()" show-if-privilege="{{retrospectivePrivilege}},{{onBehalfOfPrivilege}},{{locationPickerPrivilege}}" ng-if="getTitle()">{{ getTitle() }}</button>
+
                         </div>
                     </div>
                 </div>
@@ -89,6 +128,19 @@
                     accesskey="{{'CONSULTATION_SHORTCUT_KEY' | translate}}"
                     ng-bind-html="'CONSULTATION_TAB_KEY' | translate">
                  </a>
+
+                <div class="fl offlin-sync-wrap" ng-controller="PatientListHeaderController">
+                     <div ng-if="isOfflineApp" class="offline-sync fl" ng-controller="AppUpdateController">
+                        <button class="btn" ng-if="isUpdateAvailable()" ng-click="update()">Update</button>
+                     </div>
+                    <button class="btn fl  offline-sync" ng-click="sync()" ng-show="isOfflineApp && !isSyncing">
+                      {{::'HEADER_LABEL_SYNC_KEY' | translate}}
+                    </button>
+                    <button class="btn fl offline-sync offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
+                      <!-- <i class="fa fa-refresh"></i> -->
+                      <img src="../images/sync.gif" />
+                    </button>
+                </div>
                 <a class="btn--right btn--success " title="Open in new window"
                    ng-if="visitHistory.activeVisit || retrospectiveEntry"
                    ng-click="openConsultationInNewTab()"><i class="fa fa-external-link"></i></a>

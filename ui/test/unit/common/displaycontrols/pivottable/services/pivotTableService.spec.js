@@ -2,7 +2,6 @@
 
 describe("PivotTableService", function () {
     var diseaseSummaryConfig, _$http;
-    var pivotTableService;
 
     beforeEach(module('bahmni.common.displaycontrol.pivottable'));
     beforeEach(module('bahmni.common.appFramework'));

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('treatmentData', ['TreatmentService', 'appService', 'spinner', '$stateParams','$q','treatmentConfig', function (treatmentService, appService, spinner, $stateParams,$q, treatmentConfig) {
+    .directive('treatmentData', ['treatmentService', 'appService', 'spinner', '$stateParams', '$q', 'treatmentConfig', function (treatmentService, appService, spinner, $stateParams, $q, treatmentConfig) {
         var controller = function ($scope) {
             var Constants = Bahmni.Clinical.Constants;
             var defaultParams = {
@@ -23,8 +23,8 @@ angular.module('bahmni.clinical')
                 if (programConfig.showDetailsWithinDateRange) {
                     startDate = $stateParams.dateEnrolled;
                     endDate = $stateParams.dateCompleted;
-                    if(startDate || endDate){
-                        $scope.params.showOtherActive=false;
+                    if (startDate || endDate) {
+                        $scope.params.showOtherActive = false;
                     }
                     getEffectiveOrdersOnly = true;
                 }
@@ -64,11 +64,16 @@ angular.module('bahmni.clinical')
                     });
             };
 
-            spinner.forPromise(init());
+            $scope.initialization = init();
         };
+        var link = function ($scope, element) {
+            spinner.forPromise($scope.initialization, element);
+        };
+
         return {
             restrict: 'E',
             controller: controller,
+            link: link,
             scope: {
                 params: "=",
                 visitSummary: "=?"

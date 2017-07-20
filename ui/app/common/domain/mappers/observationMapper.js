@@ -13,6 +13,6 @@ Bahmni.Common.Domain.ObservationMapper = function () {
             observationDateTime: openMrsObs.obsDatetime,
             orderUuid: openMrsObs.orderUuid,
             groupMembers: groupMembers.map(this.map)
-        }
+        };
     };
 };

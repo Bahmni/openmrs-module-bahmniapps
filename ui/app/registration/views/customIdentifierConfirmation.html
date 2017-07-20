@@ -1,11 +1,14 @@
-<div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label">
-    <div class="drug-details">
-        <p ng-bind-html="::'REGISTRATION_CONTENT_ENTERING_ID' | translate:'{sizeOfTheJump : ngDialogData.sizeOfTheJump}'"></p>
+<div class="registration-dialog-wrap" aria-labelledby="dialog-label">
+    <div class="registration-dialog-message clearfix">
+        <p ng-bind-html="::'REGISTRATION_CONTENT_ENTERING_ID' | translate "></p>
+        <p ng-repeat="identifier in ::ngDialogData">
+            {{:: identifier.identifierName}} - skipping <strong>{{:: identifier.sizeOfTheJump | number}}</strong> IDs
+        </p>
     </div>
 
     <div class="dialog-button-group">
         <button id="modal-refill-button" class="secondary-button" ng-click="yes()" >{{::'REGISTRATION_LABEL_YES' | translate}}</button>
-        <button id="modal-revise-button" class="secondary-button" ng-click="no()" focus-on="{{true}}">{{ ::'REGISTRATION_LABEL_NO' | translate}}</button>
+        <button id="modal-revise-button" class="secondary-button fr" ng-click="no()" focus-on="{{true}}">{{ ::'REGISTRATION_LABEL_NO' | translate}}</button>
     </div>
 </div>
 

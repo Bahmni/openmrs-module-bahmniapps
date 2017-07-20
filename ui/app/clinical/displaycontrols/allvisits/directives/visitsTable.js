@@ -1,9 +1,12 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$bahmniCookieStore', '$rootScope', 'clinicalAppConfigService', 'messagingService', 'retrospectiveEntryService', 'visitFormService',
-        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $bahmniCookieStore, $rootScope, clinicalAppConfigService, messagingService, retrospectiveEntryService, visitFormService) {
+    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q',
+        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q) {
             var controller = function ($scope) {
+                var emitNoDataPresentEvent = function () {
+                    $scope.$emit("no-data-present-event");
+                };
                 $scope.openVisit = function (visit) {
                     if ($scope.$parent.closeThisDialog) {
                         $scope.$parent.closeThisDialog("closing modal");
@@ -37,7 +40,7 @@ angular.module('bahmni.clinical')
                     var obsArrayFiltered = [];
                     for (var ob in observation) {
                         if (_.includes(observationTemplateArray, observation[ob].concept.display)) {
-                            obsArrayFiltered.push(observation[ob])
+                            obsArrayFiltered.push(observation[ob]);
                         }
                     }
                     return obsArrayFiltered;
@@ -54,17 +57,15 @@ angular.module('bahmni.clinical')
                     });
                 };
 
-                $scope.getDisplayName = function(data){
+                $scope.getDisplayName = function (data) {
                     var concept = data.concept;
                     var displayName = data.concept.displayString;
-                    if(concept.names && concept.names.length === 1 && concept.names[0].name != ""){
+                    if (concept.names && concept.names.length === 1 && concept.names[0].name !== "") {
                         displayName = concept.names[0].name;
-                    }
-                    else if(concept.names && concept.names.length === 2){
+                    } else if (concept.names && concept.names.length === 2) {
                         displayName = _.find(concept.names, {conceptNameType: "SHORT"}).name;
                     }
-                    return displayName ;
-
+                    return displayName;
                 };
 
                 $scope.getProviderDisplayName = function (encounter) {
@@ -75,50 +76,36 @@ angular.module('bahmni.clinical')
                     return patientVisitHistoryService.getVisitHistory($scope.patientUuid);
                 };
 
-                var getAllObservationTemplates = function () {
-                    return conceptSetService.getConcept({
-                        name: "All Observation Templates",
-                        v: "custom:(setMembers:(display))"
-                    })
+                var init = function () {
+                    return $q.all([getVisits()]).then(function (results) {
+                        $scope.visits = results[0].visits;
+                        $scope.patient = {uuid: $scope.patientUuid};
+                        if (!$scope.hasVisits()) emitNoDataPresentEvent();
+                    });
                 };
 
-                var obsFormData = function () {
-                    return visitFormService.formData($scope.patientUuid, $scope.params.maximumNoOfVisits);
-                };
+                $scope.initialization = init();
 
-            $scope.hasVisits = function () {
-                return $scope.visits && $scope.visits.length > 0;
+                $scope.params = angular.extend(
+                    {
+                        maximumNoOfVisits: 4,
+                        title: "Visits"
+                    }, $scope.params);
+
+                $scope.noVisitsMessage = "No Visits for this patient.";
+            };
+            var link = function ($scope, element) {
+                spinner.forPromise($scope.initialization, element);
             };
 
-            var getVisits = function () {
-                return patientVisitHistoryService.getVisitHistory($scope.patientUuid);
+            return {
+                restrict: 'E',
+                link: link,
+                controller: controller,
+                templateUrl: "displaycontrols/allvisits/views/visitsTable.html",
+                scope: {
+                    params: "=",
+                    patientUuid: "="
+                }
             };
-
-            var init = function () {
-                return $q.all([getVisits()]).then(function (results) {
-                    $scope.visits = results[0].visits;
-                    $scope.patient = {uuid: $scope.patientUuid};
-                });
-            };
-
-
-            spinner.forPromise(init());
-
-            $scope.params = angular.extend(
-                {
-                    maximumNoOfVisits: 4,
-                    title: "Visits"
-                }, $scope.params);
-
-            $scope.noVisitsMessage = "No Visits for this patient.";
-        };
-        return {
-            restrict: 'E',
-            controller: controller,
-            templateUrl: "displaycontrols/allvisits/views/visitsTable.html",
-            scope: {
-                params: "=",
-                patientUuid: "="
-            }
-        };
-    }]);
+        }]);

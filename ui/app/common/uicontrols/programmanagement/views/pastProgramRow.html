@@ -1,8 +1,11 @@
-<div class="program-tile">
-    <div class="programName cursor-pointer" toggle="program.isOpen">
-        <i class="fa fa-caret-right" ng-hide="program.isOpen"></i>
-        <i class="fa fa-caret-down" ng-show="program.isOpen"></i>
-        {{::program.display}}
+<div class="program-tile" ng-if="!patientProgram.deleting">
+    <div class="button-group">
+        <input type="button" ng-click="toggleDelete(patientProgram)" value="Delete" class="button"/>
+    </div>
+    <div class="programName cursor-pointer" toggle="patientProgram.isOpen">
+        <i class="fa fa-caret-right" ng-hide="patientProgram.isOpen"></i>
+        <i class="fa fa-caret-down" ng-show="patientProgram.isOpen"></i>
+        {{::patientProgram.display}}
     </div>
     <div class="form">
         <div class="form-field">
@@ -11,7 +14,7 @@
             </div>
             <div class="field-value">
                 <span>
-                    {{::program.outcome.display}}
+                    {{::patientProgram.outcome.display}}
                 </span>
             </div>
         </div>
@@ -21,7 +24,7 @@
             </div>
             <div class="field-value">
                 <span>
-                    {{::program.dateEnrolled | bahmniDate}}
+                    {{::patientProgram.dateEnrolled | bahmniDate}}
                 </span>
             </div>
         </div>
@@ -31,23 +34,23 @@
             </div>
             <div class="field-value">
                 <span>
-                    {{::program.dateCompleted | bahmniDate}}
+                    {{::patientProgram.dateCompleted | bahmniDate}}
                 </span>
             </div>
         </div>
     </div>
-    <div ng-if="program.isOpen" class="form">
-        <program-attributes patient-program="program" program-attribute-types="programAttributeTypes"></program-attributes>
-        <div class="program-timeline-container" ng-if="program.states.length!=0 && program.isOpen">
+    <div ng-if="patientProgram.isOpen" class="form">
+        <program-attributes patient-program="patientProgram" program-attribute-types="programAttributeTypes"></program-attributes>
+        <div class="program-timeline-container" ng-if="patientProgram.states.length!=0 && patientProgram.isOpen">
             <div class="program-timeline">
-                <timeline program="program"></timeline>
+                <timeline program="patientProgram"></timeline>
             </div>
         </div>
     </div>
-    <div class="state-list" ng-show="program.isOpen && hasProgramWorkflowStates(program)">
+    <div class="state-list" ng-show="patientProgram.isOpen && hasProgramWorkflowStates(patientProgram)">
         <table>
             <tbody>
-            <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated':true"
+            <tr ng-repeat="state in patientProgram.states| orderBy:'auditInfo.dateCreated':true"
                 ng-if="state.voided != true">
                 <td>{{state.state.concept.display}}</td>
                 <td ng-if="state.endDate">{{::state.startDate | bahmniDate}} {{::'PROGRAM_MANAGEMENT_TO_KEY' |
@@ -63,17 +66,18 @@
             </tbody>
         </table>
     </div>
-    <a ng-show="program.isOpen"
+    <a ng-show="patientProgram.isOpen"
        class="back-btn dashboard-link" id="dashboard-link"
        ui-sref="patient.dashboard.show({
                patientUuid: patient.uuid,
-               programUuid: program.program.uuid,
+               programUuid: patientProgram.program.uuid,
                conceptSetGroupName: 'observations',
-               dateEnrolled: program.fromDate,
-               dateCompleted: program.toDate,
-               enrollment : program.uuid})">
+               dateEnrolled: patientProgram.fromDate,
+               dateCompleted: patientProgram.toDate,
+               enrollment : patientProgram.uuid})">
         <span class="proggram-dashboard-text">
             <span class="patient-name" >{{::patientProgram.display}} Dashboard</span>
         </span>
     </a>
 </div>
+<ng-include src="'../common/uicontrols/programmanagement/views/deleteProgram.html'" ></ng-include>

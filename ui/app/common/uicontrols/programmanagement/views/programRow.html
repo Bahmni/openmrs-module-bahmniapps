@@ -1,8 +1,10 @@
-<div class="program-tile">
+<div class="program-tile" ng-if="!patientProgram.deleting">
     <form class="form-field clearfix" ng-submit="updatePatientProgram(patientProgram)">
         <div class="button-group">
-            <input type="button" ng-click="toggleEdit(patientProgram)" value="Edit"  class="button" />
-            <input type="submit" ng-show="patientProgram.editing" value="Save" class="button" />
+            <input type="button" ng-click="toggleDelete(patientProgram)" value="Delete" class="button" id="delete_btn"/>
+            <input type="button" ng-click="toggleEdit(patientProgram)" ng-show="!patientProgram.editing" value="Edit" class="button"/>
+            <input type="button" ng-click="cancelChange(patientProgram)" ng-show="patientProgram.editing" value="Cancel" class="button"/>
+            <input type="submit" ng-show="patientProgram.editing" value="Save" class="button"/>
         </div>
 
         <div class="programName">
@@ -12,24 +14,27 @@
         <div class="ProgramEnrollInfo clearfix">
             <div class="form-field">
                 <div class="field-attribute">
-                    <label>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} : <span class="asterick" ng-show="patientProgram.editing">*</span></label>
+                    <label>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} : <span class="asterick"
+                                                                                         ng-show="patientProgram.editing">*</span></label>
                 </div>
                 <div class="field-value" ng-show="!patientProgram.editing">
                     <span>
                         {{::patientProgram.dateEnrolled | bahmniDate}}
                     </span>
                 </div>
-                <div class="field-value" ng-show="patientProgram.editing">
+                <!--keep it as ng-if. Don't change it to ng-show.-->
+                <div class="field-value" ng-if="patientProgram.editing">
                     <input type="date" max="{{getMaxAllowedDate(patientProgram.states)}}"
                            ng-model="patientProgram.dateEnrolled" ng-required="true">
                 </div>
 
             </div>
-            <program-attributes patient-program="patientProgram" program-attribute-types = "programAttributeTypes"></program-attributes>
+            <program-attributes patient-program="patientProgram"
+                                program-attribute-types="programAttributeTypes"></program-attributes>
         </div>
 
         <div class="program-action-container clearfix">
-            <div ng-if="::hasProgramWorkflowStates(patientProgram)" ng-init="workflowStatesWithoutCurrentState = getWorkflowStatesWithoutCurrent(patientProgram)">
+            <div ng-if="::hasProgramWorkflowStates(patientProgram)">
                 <div class="form-field program-state-container">
                     <div class="field-attribute">
                         <label>
@@ -41,8 +46,8 @@
                     </div>
 
                     <div class="field-value" ng-show="patientProgram.editing">
-                        <select ng-model="programEdited.selectedState"
-                                ng-options="state.concept.display for state in workflowStatesWithoutCurrentState track by state.uuid">
+                        <select ng-model="patientProgram.selectedState"
+                                ng-options="state.concept.display for state in ::getStates(patientProgram.program) track by state.uuid">
                             <option value="">{{::'PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY' | translate}}</option>
                         </select>
                     </div>
@@ -70,12 +75,21 @@
     <div class="state-list">
         <table>
             <tbody>
-            <tr ng-repeat="state in patientProgram.states| orderBy:'auditInfo.dateCreated':true" ng-if="state.voided != true">
+            <tr ng-repeat="state in patientProgram.states| orderBy:'auditInfo.dateCreated':true"
+                ng-if="state.voided != true">
                 <td>{{state.state.concept.display}}</td>
-                <td ng-if="state.endDate">{{state.startDate | bahmniDate}} {{::'PROGRAM_MANAGEMENT_TO_KEY' | translate}} {{state.endDate | bahmniDate}}</td>
-                <td ng-if="!state.endDate">{{::'PROGRAM_MANAGEMENT_STARTED_ON_KEY' | translate}} {{::state.startDate | bahmniDate}}</td>
-                <td>{{::'PROGRAM_MANAGEMENT_BY_KEY' | translate}} {{::state.auditInfo.creator.display}} {{::'PROGRAM_MANAGEMENT_ON_KEY' | translate}} {{state.auditInfo.dateCreated | bahmniDate}}</td>
-                <td><i ng-class="{'fa fa-remove': !state.endDate}" ng-confirm-click="removePatientState(patientProgram)" confirm-message="{{'PROGRAM_MANAGEMENT_DO_YOU_WANT_TO_REMOVE_KEY' | translate}}'{{state.state.concept.display}}'" ng-if="canRemovePatientState(state)" class="fa fa-remove"></i></td>
+                <td ng-if="state.endDate">{{state.startDate | bahmniDate}} {{::'PROGRAM_MANAGEMENT_TO_KEY' | translate}}
+                    {{state.endDate | bahmniDate}}
+                </td>
+                <td ng-if="!state.endDate">{{::'PROGRAM_MANAGEMENT_STARTED_ON_KEY' | translate}} {{::state.startDate |
+                    bahmniDate}}
+                </td>
+                <td>{{::'PROGRAM_MANAGEMENT_BY_KEY' | translate}} {{::state.auditInfo.creator.display}}
+                    {{::'PROGRAM_MANAGEMENT_ON_KEY' | translate}} {{state.auditInfo.dateCreated | bahmniDate}}
+                </td>
+                <td><i ng-class="{'fa fa-remove': !state.endDate}" ng-confirm-click="removePatientState(patientProgram)"
+                       confirm-message="{{'PROGRAM_MANAGEMENT_DO_YOU_WANT_TO_REMOVE_KEY' | translate}}'{{state.state.concept.display}}'"
+                       ng-if="canRemovePatientState(state)" class="fa fa-remove"></i></td>
             </tr>
             </tbody>
         </table>
@@ -89,8 +103,8 @@
                                dateEnrolled: patientProgram.fromDate,
                                dateCompleted: patientProgram.toDate})">
         <span class="proggram-dashboard-text">
-            <span class="patient-name" >{{::patientProgram.display}} Dashboard</span>
+            <span class="patient-name">{{::patientProgram.display}} Dashboard</span>
         </span>
     </a>
-
 </div>
+<ng-include src="'../common/uicontrols/programmanagement/views/deleteProgram.html'" ></ng-include>

@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .directive('providerDirective', function() {
-        var template = '<span>'+
-                            '<span ng-if="creatorName != providerName">{{::creatorName}} on behalf of </span>' +
+    .directive('providerDirective', function () {
+        var template = '<span>' +
+                            '<span ng-if=":: creatorName && providerName && (creatorName != providerName)">{{::creatorName}} on behalf of </span>' +
                             '{{::providerName}}' +
-                            '<span ng-if="providerDate"> {{::providerDate | bahmniTime}} </span>' +
+                            '<span ng-if=":: providerDate"> {{::providerDate | bahmniTime}} </span>' +
                         '</span>';
 
         return {
@@ -14,8 +14,8 @@ angular.module('bahmni.common.uiHelper')
             scope: {
                 creatorName: "@",
                 providerName: "@",
-                providerDate: "="
+                providerDate: "=?"
             },
             template: template
-        }
+        };
     });

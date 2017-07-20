@@ -12,7 +12,7 @@ angular.module('bahmni.common.offline')
         var insertAddressHierarchy = function (addressHierarchy) {
             return insertAddressHierarchyLevel(addressHierarchy.addressHierarchyLevel).then(function () {
                 return insertAddressHierarchyEntry(addressHierarchy);
-            })
+            });
         };
 
         var insertAddressHierarchyEntry = function (entry) {
@@ -49,15 +49,15 @@ angular.module('bahmni.common.offline')
             });
         };
 
-        var search = function(params){
+        var search = function (params) {
             var addressHierarchyLevelTable = db.getSchema().table('address_hierarchy_level');
             var addressHierarchyEntryTable = db.getSchema().table('address_hierarchy_entry');
             addressFields = Bahmni.Common.Offline.AddressFields;
             var addressHierarchyField;
             var level;
 
-            for(var i in addressFields){
-                if(addressFields[i] === params.addressField){
+            for (var i in addressFields) {
+                if (addressFields[i] === params.addressField) {
                     addressHierarchyField = i;
                 }
             }
@@ -65,84 +65,87 @@ angular.module('bahmni.common.offline')
                 .from(addressHierarchyLevelTable)
                 .where(addressHierarchyLevelTable.addressField.eq(addressHierarchyField)).exec()
                 .then(function (result) {
-                    level =  result[0];
-                    if(params.parentUuid != null) {
+                    level = result[0];
+                    if (level != null) {
+                        if (params.parentUuid != null) {
+                            return db.select()
+                                .from(addressHierarchyEntryTable)
+                                .where(addressHierarchyEntryTable.uuid.eq(params.parentUuid))
+                                .exec()
+                                .then(function (result) {
+                                    var parent = result[0] != null ? result[0] : null;
+                                    if (parent != null) {
+                                        return db.select()
+                                            .from(addressHierarchyEntryTable)
+                                            .where(lf.op.and(
+                                                addressHierarchyEntryTable.levelId.eq(level.addressHierarchyLevelId),
+                                                addressHierarchyEntryTable.parentId.eq(parent.id),
+                                                addressHierarchyEntryTable.name.match(new RegExp(params.searchString, 'i')
+                                                )))
+                                            .limit(params.limit).exec()
+                                            .then(
+                                                function (result) {
+                                                    return getAddresses(result).then(function (response) {
+                                                        return {data: response};
+                                                    });
+                                                });
+                                    }
+                                });
+                        }
                         return db.select()
                             .from(addressHierarchyEntryTable)
-                            .where(addressHierarchyEntryTable.uuid.eq(params.parentUuid))
-                            .exec()
-                            .then(function(result){
-                                var parent = result[0] != null ? result[0] : null;
-                                if(parent != null){
-                                    return db.select()
-                                        .from(addressHierarchyEntryTable)
-                                        .where(lf.op.and(
-                                            addressHierarchyEntryTable.levelId.eq(level.addressHierarchyLevelId),
-                                            addressHierarchyEntryTable.parentId.eq(parent.id),
-                                            addressHierarchyEntryTable.name.match(new RegExp(params.searchString, 'i')
-                                            )))
-                                        .limit(params.limit).exec()
-                                        .then(
-                                        function(result){
-                                            return getAddresses(result).then(function(response){
-                                                return {data :response};
-                                            })
-                                        });
-                                }
-                            });
+                            .where(lf.op.and(
+                                addressHierarchyEntryTable.levelId.eq(level.addressHierarchyLevelId),
+                                addressHierarchyEntryTable.name.match(new RegExp(params.searchString, 'i')
+                                )))
+                            .limit(params.limit).exec()
+                            .then(
+                                function (result) {
+                                    return getAddresses(result).then(function (response) {
+                                        return {data: response};
+                                    });
+                                });
                     }
-                    return db.select()
-                        .from(addressHierarchyEntryTable)
-                        .where(lf.op.and(
-                            addressHierarchyEntryTable.levelId.eq(level.addressHierarchyLevelId),
-                            addressHierarchyEntryTable.name.match(new RegExp(params.searchString, 'i')
-                            )))
-                        .limit(params.limit).exec()
-                        .then(
-                        function(result){
-                            return getAddresses(result).then(function(response){
-                                return {data :response};
-                            })
-                        });
+                    return {data: []};
                 });
         };
 
-        var getAddresses = function(addressHierarchyEntries){
+        var getAddresses = function (addressHierarchyEntries) {
             var addressHierarchyModelPromises = [];
-            _.each(addressHierarchyEntries, function(entry){
+            _.each(addressHierarchyEntries, function (entry) {
                 addressHierarchyModelPromises.push(getAddressesAndParents(entry));
             });
-            return $q.all(addressHierarchyModelPromises).then(function(results){
+            return $q.all(addressHierarchyModelPromises).then(function (results) {
                 return results;
             });
         };
 
-        var getAddressesAndParents = function(entry) {
+        var getAddressesAndParents = function (entry) {
             var modelMap = {};
             modelMap.name = entry.name;
             modelMap.uuid = entry.uuid;
             modelMap.userGeneratedId = entry.userGeneratedId;
-            if(entry.parentId != null){
-                return getParentAddressById(entry.parentId).then(function(result){
+            if (entry.parentId != null) {
+                return getParentAddressById(entry.parentId).then(function (result) {
                     modelMap.parent = result;
                     return modelMap;
                 });
-            }else {
+            } else {
                 var addressPromise = $q.defer();
                 addressPromise.resolve(modelMap);
                 return addressPromise.promise;
             }
         };
 
-        var getParentAddressById = function(id){
+        var getParentAddressById = function (id) {
             var addressHierarchyEntryTable = db.getSchema().table('address_hierarchy_entry');
-            return  db.select()
+            return db.select()
                 .from(addressHierarchyEntryTable)
                 .where(addressHierarchyEntryTable.id.eq(id))
                 .exec()
-                .then(function(result){
+                .then(function (result) {
                     var parent = result[0] != null ? result[0] : null;
-                    if(parent != null) {
+                    if (parent != null) {
                         return getAddressesAndParents(parent);
                     }
                 });
@@ -153,5 +156,5 @@ angular.module('bahmni.common.offline')
             insertAddressHierarchy: insertAddressHierarchy,
             search: search,
             getParentAddressById: getParentAddressById
-        }
+        };
     }]);

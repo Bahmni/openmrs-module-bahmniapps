@@ -2,11 +2,10 @@
 
 angular.module('bahmni.common.domain')
     .service('observationsService', ['$http', function ($http) {
-
         this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList, filterObsWithOrders, patientProgramUuid) {
             var params = {concept: conceptNames};
             if (obsIgnoreList) {
-                params.obsIgnoreList = obsIgnoreList
+                params.obsIgnoreList = obsIgnoreList;
             }
             if (filterObsWithOrders != null) {
                 params.filterObsWithOrders = filterObsWithOrders;
@@ -27,9 +26,16 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.getByUuid = function(observationUuid){
+        this.getByUuid = function (observationUuid) {
             return $http.get(Bahmni.Common.Constants.observationsUrl, {
                 params: {observationUuid: observationUuid},
+                withCredentials: true
+            });
+        };
+
+        this.getRevisedObsByUuid = function (observationUuid) {
+            return $http.get(Bahmni.Common.Constants.observationsUrl, {
+                params: {observationUuid: observationUuid, revision: "latest"},
                 withCredentials: true
             });
         };
@@ -41,7 +47,7 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.fetchForPatientProgram = function(patientProgramUuid, conceptNames, scope) {
+        this.fetchForPatientProgram = function (patientProgramUuid, conceptNames, scope) {
             return $http.get(Bahmni.Common.Constants.observationsUrl, {
                 params: {patientProgramUuid: patientProgramUuid, concept: conceptNames, scope: scope},
                 withCredentials: true
@@ -57,13 +63,14 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.getObsInFlowSheet = function (patientUuid, conceptSet, groupByConcept, conceptNames,
+        this.getObsInFlowSheet = function (patientUuid, conceptSet, groupByConcept, orderByConcept, conceptNames,
                                            numberOfVisits, initialCount, latestCount, groovyExtension,
                                            startDate, endDate, patientProgramUuid) {
             var params = {
                 patientUuid: patientUuid,
                 conceptSet: conceptSet,
                 groupByConcept: groupByConcept,
+                orderByConcept: orderByConcept,
                 conceptNames: conceptNames,
                 numberOfVisits: numberOfVisits,
                 initialCount: initialCount,
@@ -77,6 +84,5 @@ angular.module('bahmni.common.domain')
                 params: params,
                 withCredentials: true
             });
-        }
-
+        };
     }]);

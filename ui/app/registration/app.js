@@ -7,19 +7,20 @@ angular
         'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.pivottable', 'RecursionHelper', 'ngSanitize',
         'bahmni.common.uiHelper', 'bahmni.common.domain', 'ngDialog', 'pascalprecht.translate', 'ngCookies',
         'monospaced.elastic', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint', 'bahmni.common.attributeTypes',
-          'bahmni.common.models'])
-    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider','$compileProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
+        'bahmni.common.models', 'bahmni.common.uicontrols',
+        'bahmni.common.displaycontrol.diagnosis'])
+    .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', '$compileProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/search');
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|blob|chrome-extension):/);
 
         // @if DEBUG='production'
-                $compileProvider.debugInfoEnabled(false);
+        $compileProvider.debugInfoEnabled(false);
         // @endif
 
         // @if DEBUG='development'
-                $compileProvider.debugInfoEnabled(true);
+        $compileProvider.debugInfoEnabled(true);
         // @endif
 
         $stateProvider
@@ -34,17 +35,8 @@ angular
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialize: function (initialization, offlineSyncInitialization) {
-                        return initialization(offlineSyncInitialization);
-                    },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
-                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
-                    },
-                    offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
-                        return offlineRegistrationInitialization(offlineDb);
-                    },
-                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                        return offlineReferenceDataInitialization(offlineDb, true);
+                    initialize: function (initialization, offlineDb) {
+                        return initialization(offlineDb);
                     }
                 }
             })
@@ -58,17 +50,8 @@ angular
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialize: function (initialization, offlineSyncInitialization) {
-                        return initialization(offlineSyncInitialization);
-                    },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
-                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
-                    },
-                    offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
-                        return offlineRegistrationInitialization(offlineDb);
-                    },
-                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                        return offlineReferenceDataInitialization(offlineDb, true);
+                    initialize: function (initialization, offlineDb) {
+                        return initialization(offlineDb);
                     }
                 }
             })
@@ -82,17 +65,8 @@ angular
                     offlineDb: function (offlineDbInitialization) {
                         return offlineDbInitialization();
                     },
-                    initialize: function (initialization, offlineSyncInitialization) {
-                        return initialization(offlineSyncInitialization);
-                    },
-                    offlineSyncInitialization: function (offlineSyncInitialization, offlineDb, offlineReferenceDataInitialization) {
-                        return offlineSyncInitialization(offlineDb, offlineReferenceDataInitialization);
-                    },
-                    offlineRegistrationInitialization: function (offlineRegistrationInitialization, offlineDb) {
-                        return offlineRegistrationInitialization(offlineDb);
-                    },
-                    offlineReferenceDataInitialization: function(offlineReferenceDataInitialization, offlineDb){
-                        return offlineReferenceDataInitialization(offlineDb, false);
+                    initialize: function (initialization, offlineDb) {
+                        return initialization(offlineDb);
                     }
                 }
             })
@@ -120,10 +94,40 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(function ($rootScope, $templateCache) {
-    //Disable caching view template partials
-    $rootScope.$on('$viewContentLoaded', function () {
-            $templateCache.removeAll();
+    }]).run(['$rootScope', '$templateCache', 'offlineService', 'schedulerService', '$bahmniCookieStore',
+        'locationService', 'messagingService', 'auditLogService',
+        function ($rootScope, $templateCache, offlineService, schedulerService, $bahmniCookieStore, locationService,
+              messagingService, auditLogService) {
+            var getStates = function (toState, fromState) {
+                var states = [];
+                if (fromState === "newpatient" && (toState === "patient.edit" || toState === "patient.visit")) {
+                    states.push("newpatient.save");
+                }
+                states.push(toState);
+                return states;
+            };
+
+            var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
+            locationService.getVisitLocation(loginLocationUuid).then(function (response) {
+                if (response.data) {
+                    $rootScope.visitLocation = response.data.uuid;
+                }
+            });
+            if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
+                schedulerService.sync();
+            }
+
+            $rootScope.$on('$stateChangeStart', function () {
+                messagingService.hideMessages("error");
+            });
+
+            $rootScope.createAuditLog = function (event, toState, toParams, fromState) {
+                var states = getStates(toState.name, fromState.name);
+                states.forEach(function (state) {
+                    auditLogService.log(toParams.patientUuid, Bahmni.Registration.StateNameEvenTypeMap[state], undefined, "MODULE_LABEL_REGISTRATION_KEY");
+                });
+            };
+
+            $rootScope.$on('$stateChangeSuccess', $rootScope.createAuditLog);
         }
-    )
-});
+    ]);

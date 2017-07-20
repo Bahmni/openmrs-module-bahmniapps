@@ -21,7 +21,7 @@ describe("DiseaseTemplate", function () {
         expect(diseaseTemplate.obsTemplates[1].encounters[0].encounterDateTime).toBe('1412159286000');
         expect(diseaseTemplate.obsTemplates[1].encounters[0].observations.length).toBe(1);
         expect(diseaseTemplate.obsTemplates[1].encounters[0].observations[0].uuid).toBe('0f4dc38f-4588-49d9-a62c-ac045ddafa61');
-    })
+    });
 
     it("should map grid observations values as comma seperated values", function() {
         var diseaseTemplateJson = {"concept": {"name": "Gynacology", "shortName" : "GYN"}, "observationTemplates": gridTypeDiseaseTemplate};

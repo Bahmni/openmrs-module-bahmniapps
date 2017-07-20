@@ -1,10 +1,14 @@
 'use strict';
 
 describe('patientService', function () {
-    var rootScope, mockBackend, patientService;
+    var rootScope, mockBackend, patientService, sessionService;
 
     beforeEach(function () {
         module('bahmni.common.patient');
+        module(function($provide) {
+            sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
+            $provide.value('sessionService', sessionService);
+        });
 
         inject(function (_$rootScope_, _patientService_, $httpBackend) {
             rootScope = _$rootScope_;
@@ -19,10 +23,11 @@ describe('patientService', function () {
             var programUuid = 'programUuid';
             var personAttributes = [];
             var programAttributes = [];
+            var patientIdentifiers = [];
             var results = {};
             mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/patientcontext?patientUuid=patientUuid&programUuid=programUuid').respond({results: results});
 
-            patientService.getPatientContext(patientUuid, programUuid, personAttributes, programAttributes).then(function (response) {
+            patientService.getPatientContext(patientUuid, programUuid, personAttributes, programAttributes, patientIdentifiers).then(function (response) {
                 expect(response.data.results).toEqual(results);
             });
 

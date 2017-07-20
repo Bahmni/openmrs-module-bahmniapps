@@ -1,0 +1,20 @@
+<div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label">
+	<span class="ngdialog-start"></span>
+
+	<span class="ngdialog-close"></span>
+
+	<div class="dialog-button-group">
+		<button id="modal-revise-button" class="secondary-button" ng-click="refillDrug(ngDialogData.drugOrder)"
+				focus-on="popupActive" ng-focus="toggleTabIndexWithinModal($event)">
+			Refill Drug
+		</button>
+		<button id="modal-refill-button" class="secondary-button" ng-click="refillOrderSet(ngDialogData.drugOrder)"
+				ng-focus="toggleTabIndexWithinModal($event)">
+			Refill OrderSet
+		</button>
+	</div>
+
+	<span class="ngdialog-end"></span>
+</div>
+
+

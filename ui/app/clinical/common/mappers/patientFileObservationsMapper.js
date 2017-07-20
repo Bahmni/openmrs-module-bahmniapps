@@ -19,10 +19,11 @@ Bahmni.Clinical.PatientFileObservationsMapper = function () {
                         visitUuid: visitUuid,
                         provider: providerMapper.map(encounter.provider),
                         visitStartDate: encounter.visit.startDatetime,
-                        visitStopDate: encounter.visit.stopDatetime
+                        visitStopDate: encounter.visit.stopDatetime,
+                        comment: member.comment
                     });
-                })
-            })
+                });
+            });
         });
         patientFileRecords.sort(function (record1, record2) {
             return record1.imageObservation.observationDateTime !== record2.imageObservation.observationDateTime ?

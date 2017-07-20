@@ -2,12 +2,11 @@
 
 angular.module('bahmni.common.offline')
     .service('patientDbService', function () {
-
         var getPatientByUuid = function (db, uuid) {
             var p = db.getSchema().table('patient');
             return db.select(p.patientJson.as('patient'))
                 .from(p)
-                .where(p.uuid.eq(uuid)).exec()
+                .where(lf.op.and(p.uuid.eq(uuid), p.voided.eq(false))).exec()
                 .then(function (result) {
                     return result[0];
                 });
@@ -15,19 +14,17 @@ angular.module('bahmni.common.offline')
 
         var insertPatientData = function (db, patientData) {
             var patient = patientData.patient;
-            var patientTable, patientIdentifier, person;
+            var patientTable, person;
             patientTable = db.getSchema().table('patient');
             person = patient.person;
-            var personName = person.names[0];
-
-            patientIdentifier = patient.identifiers[0].identifier;
+            var personName = person.names[0] || person.preferredName;
             var row = patientTable.createRow({
-                'identifier': patientIdentifier,
                 'uuid': patient.uuid,
                 'givenName': personName.givenName,
                 'middleName': personName.middleName,
                 'familyName': personName.familyName,
                 'gender': person.gender,
+                'voided': patient.voided || false,
                 'birthdate': new Date(person.birthdate),
                 'dateCreated': new Date(patient.person.auditInfo.dateCreated),
                 'patientJson': patient
@@ -40,5 +37,5 @@ angular.module('bahmni.common.offline')
         return {
             getPatientByUuid: getPatientByUuid,
             insertPatientData: insertPatientData
-        }
+        };
     });

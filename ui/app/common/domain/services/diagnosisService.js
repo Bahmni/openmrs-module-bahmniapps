@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('diagnosisService', ['$http','$rootScope', function ($http, $rootScope) {
+    .service('diagnosisService', ['$http', '$rootScope', function ($http, $rootScope) {
         var self = this;
         this.getAllFor = function (searchTerm) {
             var url = Bahmni.Common.Constants.emrapiConceptUrl;
@@ -13,18 +13,18 @@ angular.module('bahmni.common.domain')
         this.getDiagnoses = function (patientUuid, visitUuid) {
             var url = Bahmni.Common.Constants.bahmniDiagnosisUrl;
             return $http.get(url, {
-                params: { patientUuid: patientUuid , visitUuid: visitUuid}
+                params: { patientUuid: patientUuid, visitUuid: visitUuid}
             });
         };
 
-        this.deleteDiagnosis = function(obsUuid){
+        this.deleteDiagnosis = function (obsUuid) {
             var url = Bahmni.Common.Constants.bahmniDeleteDiagnosisUrl;
             return $http.get(url, {
-                params : {obsUuid : obsUuid}
+                params: {obsUuid: obsUuid}
             });
         };
 
-        this.getDiagnosisConceptSet = function(){
+        this.getDiagnosisConceptSet = function () {
             return $http.get(Bahmni.Common.Constants.conceptUrl, {
                 method: "GET",
                 params: {
@@ -45,16 +45,15 @@ angular.module('bahmni.common.domain')
                 return {
                     "pastDiagnoses": pastDiagnoses,
                     "savedDiagnosesFromCurrentEncounter": savedDiagnosesFromCurrentEncounter
-                }
+                };
             });
         };
 
-        this.populateDiagnosisInformation = function(patientUuid, consultation) {
+        this.populateDiagnosisInformation = function (patientUuid, consultation) {
             return this.getPastAndCurrentDiagnoses(patientUuid, consultation.encounterUuid).then(function (diagnosis) {
                 consultation.pastDiagnoses = diagnosis.pastDiagnoses;
                 consultation.savedDiagnosesFromCurrentEncounter = diagnosis.savedDiagnosesFromCurrentEncounter;
                 return consultation;
-            })
-        }
-
+            });
+        };
     }]);

@@ -12,8 +12,7 @@ Bahmni.Clinical.OrderObservationsMapper.prototype.map = function (observations, 
                 angular.forEach(observation.groupMembers, function (obs) {
                     if (obs.concept.name === Bahmni.Clinical.Constants.commentConceptName) {
                         additionalObs.push(obs);
-                    }
-                    else {
+                    } else {
                         testObservation.push(obs);
                     }
                 });
@@ -28,7 +27,7 @@ Bahmni.Clinical.OrderObservationsMapper.prototype.map = function (observations, 
                 if (order.uuid === observation.orderUuid) {
                     makeCommentsAsAdditionalObs(observation);
                     obs.push(observation);
-                } else if (observation.orderUuid == null && observation.groupMembers.length > 0) {
+                } else if (observation.orderUuid === null && observation.groupMembers.length > 0) {
                     getObservationForOrderIfExist(observation.groupMembers, order, obs);
                 }
             });

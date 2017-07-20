@@ -12,7 +12,6 @@ angular.module('bahmni.common.conceptSet')
             init();
         };
 
-
         return {
             restrict: 'E',
             controller: controller,
@@ -21,5 +20,5 @@ angular.module('bahmni.common.conceptSet')
                 patientUuid: "=",
                 conceptNames: "="
             }
-        }
+        };
     });

@@ -1,7 +1,7 @@
 <form novalidate>
-    <div ng-show="::showEmptyConceptSetMessage" class="placeholder-text">{{::conceptSetName}} concept not found.</div>
+    <div ng-if="::showEmptyConceptSetMessage" class="placeholder-text">{{::conceptSetName}} concept not found.</div>
 
-    <concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="patient"
+    <concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="::patient"
              observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"
              show-title="::showTitleValue" collapse-inner-sections="collapseInnerSections"
              ng-if="!rootObservation.hidden" concept-set-name="::conceptSetName" hide-abnormal-button="hideAbnormalButton">

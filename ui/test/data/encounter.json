@@ -1,0 +1,430 @@
+{
+  "bahmniDiagnoses": [],
+  "observations": [
+    {
+      "visitUuid": "47a706a2-c0e6-4e40-ae31-4a3535be2ace",
+      "encounterDateTime": 1461303380000,
+      "visitStartDateTime": null,
+      "targetObsRelation": null,
+      "groupMembers": [
+        {
+          "encounterDateTime": 1461303380000,
+          "visitStartDateTime": null,
+          "targetObsRelation": null,
+          "groupMembers": [],
+          "providers": [
+            {
+              "uuid": "6a5d9c71-bb71-47ad-abed-bda86637f1b7",
+              "name": "Arman Vuiyan",
+              "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+            }
+          ],
+          "isAbnormal": null,
+          "duration": null,
+          "type": "Coded",
+          "encounterUuid": "1c5c237a-dc6e-4f4f-bcff-c761c1ae5972",
+          "obsGroupUuid": "b5c88093-769d-4c21-9249-d88598e30627",
+          "creatorName": "Arman Vuiyan",
+          "conceptSortWeight": 2,
+          "parentConceptUuid": null,
+          "hiNormal": null,
+          "lowNormal": null,
+          "unknown": false,
+          "valueAsString": "General Treatment",
+          "uuid": "d37c6b78-0a4a-476e-976a-bae46e6da4e3",
+          "voided": false,
+          "voidReason": null,
+          "concept": {
+            "uuid": "9cf90c85-cf30-400a-a5c4-7545b09c175c",
+            "name": "Treatment Given",
+            "dataType": "Coded",
+            "shortName": "Treatment Given",
+            "conceptClass": "Question",
+            "hiNormal": null,
+            "lowNormal": null,
+            "set": false,
+            "mappings": []
+          },
+          "conceptUuid": "9cf90c85-cf30-400a-a5c4-7545b09c175c",
+          "observationDateTime": "2016-04-22T11:06:31.000+0530",
+          "orderUuid": null,
+          "abnormal": null,
+          "conceptNameToDisplay": "Treatment Given",
+          "value": {
+            "uuid": "4564a35f-c3de-401b-a929-c44571805ad6",
+            "name": "General Treatment",
+            "dataType": "N/A",
+            "shortName": "General Treatment",
+            "conceptClass": "Misc",
+            "hiNormal": null,
+            "lowNormal": null,
+            "set": false,
+            "mappings": []
+          },
+          "comment": null
+        },
+        {
+          "encounterDateTime": 1461303380000,
+          "visitStartDateTime": null,
+          "targetObsRelation": null,
+          "groupMembers": [],
+          "providers": [
+            {
+              "uuid": "6a5d9c71-bb71-47ad-abed-bda86637f1b7",
+              "name": "Arman Vuiyan",
+              "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+            }
+          ],
+          "isAbnormal": null,
+          "duration": null,
+          "type": "Coded",
+          "encounterUuid": "1c5c237a-dc6e-4f4f-bcff-c761c1ae5972",
+          "obsGroupUuid": "b5c88093-769d-4c21-9249-d88598e30627",
+          "creatorName": "Arman Vuiyan",
+          "conceptSortWeight": 2,
+          "parentConceptUuid": null,
+          "hiNormal": null,
+          "lowNormal": null,
+          "unknown": false,
+          "valueAsString": "Antibiotics given",
+          "uuid": "ecd591d2-d290-46ca-84df-1b9ff07047f3",
+          "voided": false,
+          "voidReason": null,
+          "concept": {
+            "uuid": "9cf90c85-cf30-400a-a5c4-7545b09c175c",
+            "name": "Treatment Given",
+            "dataType": "Coded",
+            "shortName": "Treatment Given",
+            "conceptClass": "Question",
+            "hiNormal": null,
+            "lowNormal": null,
+            "set": false,
+            "mappings": []
+          },
+          "conceptUuid": "9cf90c85-cf30-400a-a5c4-7545b09c175c",
+          "observationDateTime": "2016-04-22T11:06:20.000+0530",
+          "orderUuid": null,
+          "abnormal": null,
+          "conceptNameToDisplay": "Treatment Given",
+          "value": {
+            "uuid": "81e249fa-00f5-458a-9065-ef4a7aab6d33",
+            "name": "Antibiotics given",
+            "dataType": "N/A",
+            "shortName": "Antibiotics given",
+            "conceptClass": "Misc",
+            "hiNormal": null,
+            "lowNormal": null,
+            "set": false,
+            "mappings": []
+          },
+          "comment": null
+        },
+        {
+          "encounterDateTime": 1461303380000,
+          "visitStartDateTime": null,
+          "targetObsRelation": null,
+          "groupMembers": [],
+          "providers": [
+            {
+              "uuid": "6a5d9c71-bb71-47ad-abed-bda86637f1b7",
+              "name": "Arman Vuiyan",
+              "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+            }
+          ],
+          "isAbnormal": null,
+          "duration": null,
+          "type": "Coded",
+          "encounterUuid": "1c5c237a-dc6e-4f4f-bcff-c761c1ae5972",
+          "obsGroupUuid": "b5c88093-769d-4c21-9249-d88598e30627",
+          "creatorName": "Arman Vuiyan",
+          "conceptSortWeight": 2,
+          "parentConceptUuid": null,
+          "hiNormal": null,
+          "lowNormal": null,
+          "unknown": false,
+          "valueAsString": "Advice given",
+          "uuid": "793ba22b-b603-4404-ad48-8c681d435985",
+          "voided": false,
+          "voidReason": null,
+          "concept": {
+            "uuid": "9cf90c85-cf30-400a-a5c4-7545b09c175c",
+            "name": "Treatment Given",
+            "dataType": "Coded",
+            "shortName": "Treatment Given",
+            "conceptClass": "Question",
+            "hiNormal": null,
+            "lowNormal": null,
+            "set": false,
+            "mappings": []
+          },
+          "conceptUuid": "9cf90c85-cf30-400a-a5c4-7545b09c175c",
+          "observationDateTime": "2016-04-22T11:06:20.000+0530",
+          "orderUuid": null,
+          "abnormal": null,
+          "conceptNameToDisplay": "Treatment Given",
+          "value": {
+            "uuid": "041893c4-6146-477b-9520-71e4810e1db5",
+            "name": "Advice given",
+            "dataType": "N/A",
+            "shortName": "Advice given",
+            "conceptClass": "Misc",
+            "hiNormal": null,
+            "lowNormal": null,
+            "set": false,
+            "mappings": []
+          },
+          "comment": null
+        },
+        {
+          "encounterDateTime": 1461303380000,
+          "visitStartDateTime": null,
+          "targetObsRelation": null,
+          "groupMembers": [],
+          "providers": [
+            {
+              "uuid": "6a5d9c71-bb71-47ad-abed-bda86637f1b7",
+              "name": "Arman Vuiyan",
+              "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+            }
+          ],
+          "isAbnormal": null,
+          "duration": null,
+          "type": "Boolean",
+          "encounterUuid": "1c5c237a-dc6e-4f4f-bcff-c761c1ae5972",
+          "obsGroupUuid": "b5c88093-769d-4c21-9249-d88598e30627",
+          "creatorName": "Arman Vuiyan",
+          "conceptSortWeight": 3,
+          "parentConceptUuid": null,
+          "hiNormal": null,
+          "lowNormal": null,
+          "unknown": false,
+          "valueAsString": "No",
+          "uuid": "ff25f28c-de7e-441b-87f3-55005618c13b",
+          "voided": false,
+          "voidReason": null,
+          "concept": {
+            "uuid": "29d66b96-e705-413e-b2d8-2463a5254030",
+            "name": "Has the child been ( 6-23 Months) provided (4 Or 4+ Food Group)",
+            "dataType": "Boolean",
+            "shortName": "Has the child been ( 6-23 Months) Provided (4 Or 4+ Food Group)",
+            "conceptClass": "Question",
+            "hiNormal": null,
+            "lowNormal": null,
+            "set": false,
+            "mappings": []
+          },
+          "conceptUuid": "29d66b96-e705-413e-b2d8-2463a5254030",
+          "observationDateTime": "2016-04-22T11:06:20.000+0530",
+          "orderUuid": null,
+          "abnormal": null,
+          "conceptNameToDisplay": "Has the child been ( 6-23 Months) Provided (4 Or 4+ Food Group)",
+          "value": false,
+          "comment": null
+        },
+        {
+          "encounterDateTime": 1461303380000,
+          "visitStartDateTime": null,
+          "targetObsRelation": null,
+          "groupMembers": [],
+          "providers": [
+            {
+              "uuid": "6a5d9c71-bb71-47ad-abed-bda86637f1b7",
+              "name": "Arman Vuiyan",
+              "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+            }
+          ],
+          "isAbnormal": null,
+          "duration": null,
+          "type": "Boolean",
+          "encounterUuid": "1c5c237a-dc6e-4f4f-bcff-c761c1ae5972",
+          "obsGroupUuid": "b5c88093-769d-4c21-9249-d88598e30627",
+          "creatorName": "Arman Vuiyan",
+          "conceptSortWeight": 4,
+          "parentConceptUuid": null,
+          "hiNormal": null,
+          "lowNormal": null,
+          "unknown": false,
+          "valueAsString": "Yes",
+          "uuid": "813189fb-f213-4d83-a18e-c75494b47b43",
+          "voided": false,
+          "voidReason": null,
+          "concept": {
+            "uuid": "0990928a-0e77-4277-ab78-9666f854e9b2",
+            "name": "Is The Child (Under 6 Months) On Exclusive Breast Feeding?",
+            "dataType": "Boolean",
+            "shortName": "Is The Child (Under 6 Months) On Exclusive Breast Feeding?",
+            "conceptClass": "Question",
+            "hiNormal": null,
+            "lowNormal": null,
+            "set": false,
+            "mappings": []
+          },
+          "conceptUuid": "0990928a-0e77-4277-ab78-9666f854e9b2",
+          "observationDateTime": "2016-04-22T11:06:20.000+0530",
+          "orderUuid": null,
+          "abnormal": null,
+          "conceptNameToDisplay": "Is The Child (Under 6 Months) On Exclusive Breast Feeding?",
+          "value": true,
+          "comment": null
+        },
+        {
+          "encounterDateTime": 1461303380000,
+          "visitStartDateTime": null,
+          "targetObsRelation": null,
+          "groupMembers": [
+            {
+              "encounterDateTime": 1461303380000,
+              "visitStartDateTime": null,
+              "targetObsRelation": null,
+              "groupMembers": [],
+              "providers": [
+                {
+                  "uuid": "6a5d9c71-bb71-47ad-abed-bda86637f1b7",
+                  "name": "Arman Vuiyan",
+                  "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+                }
+              ],
+              "isAbnormal": null,
+              "duration": null,
+              "type": "Boolean",
+              "encounterUuid": "1c5c237a-dc6e-4f4f-bcff-c761c1ae5972",
+              "obsGroupUuid": "b5c88093-769d-4c21-9249-d88598e30627",
+              "creatorName": "Arman Vuiyan",
+              "conceptSortWeight": 4,
+              "parentConceptUuid": null,
+              "hiNormal": null,
+              "lowNormal": null,
+              "unknown": false,
+              "valueAsString": "Yes",
+              "uuid": "111189fb-f213-4d83-a18e-c75494b47b43",
+              "voided": false,
+              "voidReason": null,
+              "concept": {
+                "uuid": "7c861e47-6afc-4a76-8e64-c1aee3f12764",
+                "name": "Oral antibiotics given",
+                "dataType": "Boolean"
+              },
+              "label": "Oral antibiotics given",
+              "conceptUuid": "7c861e47-6afc-4a76-8e64-c1aee3f12764",
+              "observationDateTime": "2016-04-22T11:06:20.000+0530",
+              "orderUuid": null,
+              "abnormal": null,
+              "conceptNameToDisplay": "Oral antibiotics given",
+              "value": true,
+              "comment": null
+            }
+          ],
+          "providers": [
+            {
+              "uuid": "6a5d9c71-bb71-47ad-abed-bda86637f1b7",
+              "name": "Arman Vuiyan",
+              "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+            }
+          ],
+          "isAbnormal": null,
+          "duration": null,
+          "type": null,
+          "encounterUuid": "1c5c237a-dc6e-4f4f-bcff-c761c1ae5972",
+          "obsGroupUuid": null,
+          "creatorName": "Arman Vuiyan",
+          "conceptSortWeight": 1,
+          "parentConceptUuid": null,
+          "hiNormal": null,
+          "lowNormal": null,
+          "unknown": false,
+          "valueAsString": "Yes",
+          "uuid": "b5c88093-769d-4c21-9249-d88598e30444",
+          "voided": false,
+          "voidReason": null,
+          "concept": {
+            "uuid": "c3dc86c1-f58f-4ea7-b83d-ec428b943ccc",
+            "name": "Pneumonia Information",
+            "dataType": "N/A",
+            "shortName": "Pneumonia Information",
+            "conceptClass": "ConvSet",
+            "hiNormal": null,
+            "lowNormal": null,
+            "set": true,
+            "mappings": []
+          },
+          "conceptUuid": "c3dc86c1-f58f-4ea7-b83d-ec428b943c30",
+          "observationDateTime": "2016-04-22T11:06:20.000+0530",
+          "orderUuid": null,
+          "abnormal": null,
+          "conceptNameToDisplay": "Oral antibiotics given",
+          "value": true,
+          "comment": null
+        }
+      ],
+      "providers": [
+        {
+          "uuid": "6a5d9c71-bb71-47ad-abed-bda86637f1b7",
+          "name": "Arman Vuiyan",
+          "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+        }
+      ],
+      "isAbnormal": null,
+      "duration": null,
+      "type": null,
+      "encounterUuid": "1c5c237a-dc6e-4f4f-bcff-c761c1ae5972",
+      "obsGroupUuid": null,
+      "creatorName": "Arman Vuiyan",
+      "conceptSortWeight": 1,
+      "parentConceptUuid": null,
+      "hiNormal": null,
+      "lowNormal": null,
+      "unknown": false,
+      "valueAsString": "Advice given, true, false, Antibiotics given, General Treatment",
+      "uuid": "b5c88093-769d-4c21-9249-d88598e30627",
+      "voided": false,
+      "voidReason": null,
+      "concept": {
+        "uuid": "c3dc86c1-f58f-4ea7-b83d-ec428b943c30",
+        "name": "Child Health",
+        "dataType": "N/A",
+        "shortName": "Child Health",
+        "conceptClass": "ConvSet",
+        "hiNormal": null,
+        "lowNormal": null,
+        "set": true,
+        "mappings": []
+      },
+      "conceptUuid": "c3dc86c1-f58f-4ea7-b83d-ec428b943c30",
+      "observationDateTime": "2016-04-22T11:06:20.000+0530",
+      "orderUuid": null,
+      "abnormal": null,
+      "conceptNameToDisplay": "Child Health",
+      "value": "Advice given, true, false, Antibiotics given, General Treatment",
+      "comment": null
+    }
+  ],
+  "accessionNotes": [],
+  "encounterType": "FIELD",
+  "visitType": null,
+  "patientId": "BDH201258",
+  "reason": null,
+  "orders": [],
+  "providers": [
+    {
+      "uuid": "6a5d9c71-bb71-47ad-abed-bda86637f1b7",
+      "name": "Arman Vuiyan",
+      "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+    }
+  ],
+  "drugOrders": [],
+  "patientProgramUuid": null,
+  "encounterDateTime": "2016-04-22T11:06:20.000+0530",
+  "patientUuid": "e34992ca-894f-4344-b4b3-54a4aa1e5558",
+  "visitUuid": "47a706a2-c0e6-4e40-ae31-4a3535be2ace",
+  "associatedToPatientProgram": false,
+  "encounterUuid": "1c5c237a-dc6e-4f4f-bcff-c761c1ae5972",
+  "visitTypeUuid": "84048d14-8792-11e5-ade6-005056b07f03",
+  "encounterTypeUuid": "84386a70-8792-11e5-ade6-005056b07f03",
+  "locationUuid": "6f8dca71-1f5a-4cb4-8bb2-f52b317af202",
+  "disposition": null,
+  "locationName": "Chandaiya CC - Kaliganj (10005345)",
+  "context": {},
+  "extensions": {
+    "mdrtbSpecimen": []
+  }
+}

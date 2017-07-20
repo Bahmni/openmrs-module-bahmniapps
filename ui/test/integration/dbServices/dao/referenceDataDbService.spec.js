@@ -13,8 +13,8 @@ describe('referenceDataDbService tests', function () {
 
     it("insert referenceData and get from lovefield database", function(done){
         var schemaBuilder = lf.schema.create('BahmniReferenceData', 1);
-        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.ReferenceData);
-        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.LoginLocations);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.MetaDataSchemaDefinitions.ReferenceData);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.MetaDataSchemaDefinitions.LoginLocations);
         jasmine.getFixtures().fixturesPath = 'base/test/data';
         var locationsJson = JSON.parse(readFixtures('loginLocations.json'));
         var referenceDataKey = "LoginLocations";
@@ -25,7 +25,7 @@ describe('referenceDataDbService tests', function () {
                     referenceDataDbService.getReferenceData(referenceDataKey).then(function(result) {
                         expect(result.etag).toBe(eTag);
                         expect(result.key).toBe(referenceDataKey);
-                        expect(result.value).toBe(locationsJson);
+                        expect(result.data).toBe(locationsJson);
                         done();
                     });
             });

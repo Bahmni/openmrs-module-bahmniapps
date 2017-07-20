@@ -2,5 +2,5 @@
 
 /* exported defaults */
 var defaults = {
-    maxAutocompleteResults : 20
+    maxAutocompleteResults: 20
 };

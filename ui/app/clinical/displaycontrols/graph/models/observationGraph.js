@@ -13,8 +13,8 @@
         _.each(observations, function (obs) {
             obs.concept.name = _.find(conceptNamesFromConfig, function (configConceptName) {
                 return configConceptName.toLowerCase() === obs.concept.name.toLowerCase();
-            })
-        })
+            });
+        });
     };
 
     var createObservationPoint = function (config, obs, xAxisValues) {
@@ -66,16 +66,16 @@
                 xValue = matchingObservation ? matchingObservation.value : undefined;
             }
 
-            if (xValue != undefined) {
+            if (xValue !== undefined) {
                 var line = findMatchingLine(lines, yAxisObs);
                 var observationPoint = createObservationPoint(config, yAxisObs, xValue);
                 line.addPoint(observationPoint);
             }
         });
 
-        if (referenceLines != undefined) {
+        if (referenceLines !== undefined) {
             lines = lines.concat(referenceLines);
-            var referenceLinesYAxisConcepts = _.map(referenceLines,'name');
+            var referenceLinesYAxisConcepts = _.map(referenceLines, 'name');
             config.yAxisConcepts = config.yAxisConcepts.concat(referenceLinesYAxisConcepts);
         }
 

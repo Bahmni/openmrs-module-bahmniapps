@@ -20,11 +20,13 @@ describe("patientVisitHistoryService", function() {
     }]));
 
 	describe("getVisits", function(){
-		it("should fetch visits for a patient", function(){
-			patientVisitHistoryService.getVisitHistory("1234").then(function(result) {
+		it("should fetch visits for a patient", function(done){
+			patientVisitHistoryService.getVisitHistory("1234", "visitLocationUuid").then(function(result) {
                 expect(visitService.search).toHaveBeenCalled();
                 expect(visitService.search.calls.mostRecent().args[0].patient).toBe("1234");
                 expect(result.visits.length).toBe(2);
+                expect(result.activeVisit.uuid).toBe("eb396098-c11c-4276-971a-4c3d1137ac7e");
+                done();
             });
         });
 	});

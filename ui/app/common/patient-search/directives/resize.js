@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.patientSearch')
-.directive('resize', function ($window) {
-    var controller = function($scope) {
+.directive('resize', ['$window', function ($window) {
+    var controller = function ($scope) {
         $scope.storeWindowDimensions = function () {
             var windowWidth = window.innerWidth;
             var windowHeight = window.innerHeight;
@@ -12,7 +12,7 @@ angular.module('bahmni.common.patientSearch')
             $scope.tilesToLoad = Math.ceil($scope.tilesToFit * Bahmni.Common.PatientSearch.Constants.tileLoadRatio);
         };
 
-        var updateVisibleResults = function() {
+        var updateVisibleResults = function () {
             $scope.visibleResults = $scope.searchResults.slice(0, $scope.tilesToLoad);
         };
 
@@ -29,7 +29,7 @@ angular.module('bahmni.common.patientSearch')
 
         $scope.$watch('searchResults', updateVisibleResults);
         $scope.$watch('tilesToFit', updateVisibleResults);
-    }
+    };
 
     var link = function ($scope) {
         $scope.storeWindowDimensions();
@@ -52,4 +52,4 @@ angular.module('bahmni.common.patientSearch')
         template: '<div ng-transclude infinite-scroll="loadMore()">' +
                   '</div>'
     };
-});
+}]);

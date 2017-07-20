@@ -13,13 +13,6 @@
 }
 
 form .form-field{
-  .field-value input[type="text"]{
-    &#familyNameLocal ,&#familyName{
-      @media (max-width : 990px) {
-        clear: both;
-      }
-    }
-  }
   @media (max-width : 768px) {
     .field-value {
       @media (max-width : 580px) {
@@ -28,6 +21,9 @@ form .form-field{
       input{
         float: none !important;
         display: block;
+      }
+      input[type="checkbox"]{
+        float: left !important;
       }
     }
     .field-attribute {
@@ -52,18 +48,11 @@ form .form-field{
     @media (max-width : 990px) {
       width: auto !important;
     }
-    @media (max-width : 768px){
-      width:17em !important;
-    }
-  }
-  &.form-field-gender{
-    //margin-top: 5px;
   }
 }
 
 section.form-field-inline{
   @include clearfix();
-  //margin-bottom: 2px;
   @media (max-width : 768px){
     margin-bottom: 0;
   }
@@ -79,6 +68,9 @@ section.form-field-inline{
           width: 17em;
           @media (max-width : 990px) {
             text-align: left;
+          }
+          @media (max-width : 768px) {
+            text-align: right;
           }
           @media (max-width : 580px) {
             text-align: left;
@@ -131,12 +123,19 @@ section.form-field-inline{
   }
   .patient-name-wrapper{
     @include clearfix();
-    //margin-bottom: 2px;
     input[type="text"]{
       margin-right: 5px;
     }
     label#casteSameAsLastNameCheckLabel{
       width: auto;
+    }
+    .patient-name span{
+      @include clearfix();
+      float:left;
+      @media (max-width : 768px) {
+        display:block;
+        float:none;
+      }
     }
   }
 }
@@ -147,7 +146,7 @@ section.form-field-inline{
       margin: 5px 5px 0px 0px;
       .add-on{
         min-width: 0;
-        background-color: #eee!important;
+        background-color: $lightestGray!important;
         height: 19px;
 
       }
@@ -208,7 +207,7 @@ section.form-field-inline{
 }
 
 .selectGender{
-  border: 1px solid #DDD;
+  border: 1px solid $lighterGray;
   border-radius: 5px;
   ul{
     li{
@@ -216,14 +215,14 @@ section.form-field-inline{
       a{
         padding: 5px 20px;
         display: block;
-        border-right: 1px #ddd solid;
+        border-right: 1px $lighterGray solid;
         color: #363463;
         &:hover ,&:active{
-          background: #EEEEEE;
+          background: $lightestGray;
         }
         &:focus{
-          outline: 2px solid #007FFF;
-          background: #EEEEEE;
+          outline: 2px solid $clinicalFormFocus;
+          background: $lightestGray;
         }
       }
       &:last-child a{
@@ -266,15 +265,33 @@ section.form-field-inline{
       }
     }
   }
-  #registrationNumber{
-    margin-right: 10px;
-    &.registrationNumber-Mobile{
-      width: 11em;
-      margin-right: 0;
+  .field-value.field-value-has-identifier{
+    @media (max-width : 990px) {
+      clear:both;
+      float:none;
+      width: auto;
+      display: table;
+    }
+    #registrationNumber{
       @media (max-width : 990px) {
+        width: 10.8em;
+        float:right !important;
         min-width: initial;
       }
+      @media (max-width : 800px) {
+        width:9.8em;
+      }
+      @media (max-width : 768px) {
+        width: 10.8em;
+      }
+      @media screen and (max-width: 580px) {
+        float:none !important;
+        width: 12.5em;
+      }
     }
+  }
+  #registrationNumber{
+    margin-right: 10px;
   }
 }
 
@@ -284,11 +301,18 @@ section.form-field-inline{
     @media (max-width : 990px) {
       text-align: left;
     }
+    @media (max-width : 768px) {
+      text-align: right;
+    }
   }
 }
 
 .oldId-wrapper{
   float: left;
+}
+
+.registration-dialog-message{
+  padding: 15px 0 10px;
 }
 
 

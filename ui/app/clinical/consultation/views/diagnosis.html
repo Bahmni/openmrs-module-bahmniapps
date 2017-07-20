@@ -15,18 +15,18 @@
                             <div class="col col1">
                                 <input ng-model="diagnosis.codedAnswer.name" type="text" name="name" id="name-{{$index}}"
                                        bahmni-autocomplete source="getDiagnosis"
-                                       response-map="cleanOutDiagnosisList" on-select="getAddNewDiagnosisMethod($index)"
+                                       response-map="cleanOutDiagnosisList" on-select="getAddNewDiagnosisMethod(diagnosis)"
                                        ng-class="{
-                                            illegalValue: diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid &&
-                                                !diagnosis.isNonCodedAnswer && allowOnlyCodedDiagnosis,
+                                            illegalValue: (diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid &&
+                                                !diagnosis.isNonCodedAnswer && allowOnlyCodedDiagnosis) || diagnosis.invalid,
                                             active: diagnosis.isNonCodedAnswer
                                        }"
-                                       ng-change="clearEmptyRows($index); diagnosis.clearCodedAnswerUuid();">
+                                       ng-change="restEmptyRowsToOne($index); diagnosis.clearCodedAnswerUuid(); checkInvalidDiagnoses()">
 
                                 <span ng-if="!allowOnlyCodedDiagnosis">
                                     <button type="button" ng-model="diagnosis.isNonCodedAnswer"
                                             class="small-btn accept-btn" id="accept-button-{{$index}}"
-                                            ng-click="diagnosis.setAsNonCodedAnswer() && clearEmptyRows($index)"
+                                            ng-click="diagnosis.setAsNonCodedAnswer() && restEmptyRowsToOne($index)"
                                             ng-class="{
                                                 illegalValue: diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer,
                                                 active: diagnosis.isNonCodedAnswer
@@ -51,7 +51,7 @@
                                                options='diagnosisStatus'/>
                             </div>
                             <div class="col col5">
-                                <button type="button" class="small-btn row-remover" ng-click="removeObservation($index)"
+                                <button type="button" class="small-btn row-remover" ng-click="removeObservation($index); checkInvalidDiagnoses()"
                                         ng-show="diagnosis.codedAnswer.name">
                                     <span class="fa fa-remove"></span>
                                 </button>
@@ -82,21 +82,30 @@
                         </div>
                     </div>
                 </div>
-                
-                <div class="table history-diagnosis section-grid" ng-if="consultation.pastDiagnoses.length > 0">
-                    <div class="row table-header">
-                      <div class="col col1"><span>Past Diagnosis</span></div>
-                      <div class="col col2"><span>Initial</span></div>
-                      <div class="col col3"><span>Current</span></div>
-                    </div>
-                    <div ng-repeat="diagnosis in consultation.pastDiagnoses | primaryDiagnosisFirst" class="table-body">
 
-                        <div class="row diagnosis-row" ng-if="!diagnosis.voided" >
-                            <ng-include src="'consultation/views/diagnosisRow.html'" />
+                <div class="table history-diagnosis past-diagnosis section-grid"
+                     ng-if="consultation.pastDiagnoses.length > 0">
+                    <div class="row table-header" toggle="toggles.expandPastDiagnoses">
+                        <div class="col col1">
+                          <span>
+                              <i class="fa fa-caret-down" ng-show="toggles.expandPastDiagnoses"></i>
+                              <i class="fa fa-caret-right" ng-hide="toggles.expandPastDiagnoses"></i>
+                              Past Diagnosis
+                          </span>
+                        </div>
+                        <div class="col col2"><span>Initial</span></div>
+                        <div class="col col3"><span>Current</span></div>
+                    </div>
+                    <div ng-show="toggles.expandPastDiagnoses"
+                         ng-repeat="diagnosis in consultation.pastDiagnoses | primaryDiagnosisFirst"
+                         class="table-body">
+                        <div class="row diagnosis-row" ng-if="!diagnosis.voided">
+                            <ng-include src="'consultation/views/diagnosisRow.html'"/>
                         </div>
                     </div>
                 </div>
 
+                <ng-include ng-if="!hideConditions" src="'consultation/views/conditions.html'"/>
             </div>
         </div>
     </fieldset>

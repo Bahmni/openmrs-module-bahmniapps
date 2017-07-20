@@ -1,9 +1,13 @@
+'use strict';
+
 angular.module('bahmni.common.displaycontrol.programs')
-    .directive('programs', ['programService', '$state',
-        function (programService, $state) {
-            'use strict';
+    .directive('programs', ['programService', '$state', 'spinner',
+        function (programService, $state, spinner) {
             var controller = function ($scope) {
-                programService.getPatientPrograms($scope.patient.uuid, true, $state.params.enrollment).then(function (patientPrograms) {
+                $scope.initialization = programService.getPatientPrograms($scope.patient.uuid, true, $state.params.enrollment).then(function (patientPrograms) {
+                    if (_.isEmpty(patientPrograms.activePrograms) && _.isEmpty(patientPrograms.endedPrograms)) {
+                        $scope.$emit("no-data-present-event");
+                    }
                     $scope.activePrograms = patientPrograms.activePrograms;
                     $scope.pastPrograms = patientPrograms.endedPrograms;
                 });
@@ -25,23 +29,20 @@ angular.module('bahmni.common.displaycontrol.programs')
                 $scope.getAttributeValue = function (attribute) {
                     if (isDateFormat(attribute.attributeType.format)) {
                         return Bahmni.Common.Util.DateUtil.formatDateWithoutTime(attribute.value);
-                    }
-                    else if (isCodedConceptFormat(attribute.attributeType.format)) {
+                    } else if (isCodedConceptFormat(attribute.attributeType.format)) {
                         var mrsAnswer = attribute.value;
                         var displayName = mrsAnswer.display;
                         if (mrsAnswer.names && mrsAnswer.names.length == 2) {
                             if (mrsAnswer.name.conceptNameType == 'FULLY_SPECIFIED') {
                                 if (mrsAnswer.names[0].display == displayName) {
                                     displayName = mrsAnswer.names[1].display;
-                                }
-                                else {
+                                } else {
                                     displayName = mrsAnswer.names[0].display;
                                 }
                             }
                         }
                         return displayName;
-                    }
-                    else {
+                    } else {
                         return attribute.value;
                     }
                 };
@@ -52,12 +53,18 @@ angular.module('bahmni.common.displaycontrol.programs')
                     return format == "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype";
                 };
             };
+
+            var link = function ($scope, element) {
+                spinner.forPromise($scope.initialization, element);
+            };
+
             return {
                 restrict: 'E',
+                link: link,
                 controller: controller,
                 templateUrl: "../common/displaycontrols/programs/views/programs.html",
                 scope: {
                     patient: "="
                 }
-            }
+            };
         }]);

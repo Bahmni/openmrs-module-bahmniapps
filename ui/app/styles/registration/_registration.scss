@@ -23,15 +23,15 @@ body{
       article{
         width: 42%;
         margin-left: 0;
-        @media (max-width : 768px){
-          width: 100%;
+        @media (max-width : 950px){
+          width: 100% !important;
         }
         &.obs-section{
-          width: 40%;
-          margin-left: 8.375%;
+          width: 30% !important;
+          margin-left: 3%;
           float: right;
-          @media (max-width : 768px){
-            width: 100%;
+          @media (max-width : 950px){
+            width: 100% !important;
             margin:15px auto;
           }
         }
@@ -70,9 +70,36 @@ body{
     }
     &.visit-patient-page{
       .observation-section{
+        .field-value-buttonSelectType{
+          max-width:55%;
+          width:auto;
+          .multi-select-button-group button{
+            width:185px;
+            text-align: center;
+            padding-left: 10px;
+            padding-right: 10px;
+            @media screen and (max-width: 1024px){
+              width:175px;
+            }
+          }
+          @media screen and (max-width: 1060px){
+            max-width:48%;
+          }
+          @media (max-width : 650px){
+            max-width:40%;
+          }
+        }
         article{
-          min-width: 42%;
-          width: auto;
+          width: 60%;
+          @media (max-width : 1024px){
+            width:63%;
+          }
+          &.noShowLatest{
+            width:100%;
+            .field-value-buttonSelectType {
+              width: 66%;
+            }
+          }
         }
       }
     }
@@ -86,16 +113,14 @@ body{
       .testUnderPanel{
         width: 40%;
         display: inline-block;
+        label{
+          margin-top:0;
+        }
       }
     }
   }
 }
 
-.reg-body-wrapper{
-  .autocomplete{
-    width: 220px;
-  }
-}
 
 .additional-attribute{
   &.active{
@@ -145,8 +170,33 @@ body{
     }
   }
 }
-
-
-
-
+.reg-body-wrapper{
+  .form-field .field-value .autocomplete {
+    width: 296px;
+    input.concept-name.ui-autocomplete-input{
+      float: left;
+      min-width: 197px;
+      margin-right: 15px;
+      box-sizing: border-box;
+      @media (max-width : 768px){
+        float: left !important;
+      }
+      @media (max-width : 650px){
+        float:none !important;
+      }
+    }
+    @media (max-width : 650px){
+      width:218px;
+    }
+  }
+  .form-field .field-value .autocomplete .accept-btn{
+    margin-top: 6px;
+  }
+}
+.comment-toggle {
+  margin-top:4px;
+}
+.split-button {
+  margin: 2px 0;
+}
 

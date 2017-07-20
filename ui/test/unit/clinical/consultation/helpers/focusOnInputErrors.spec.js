@@ -27,37 +27,9 @@ describe('focusOnInputErrors', function () {
     }));
 
     it('should focus only on the first errored element', function () {
-        spyOn(element.children()[1], 'focus');
+        spyOn($.fn, 'focus');
         scope.$parent.$broadcast("event:errorsOnForm");
         timeout.flush();
-        expect(element.children()[1].focus).toHaveBeenCalled();
+        expect($.fn.focus).toHaveBeenCalled();
     });
-
-    it('should not focus on the second errored element', function () {
-        spyOn(element.children()[2], 'focus');
-        scope.$parent.$broadcast("event:errorsOnForm");
-        timeout.flush();
-        expect(element.children()[2].focus).not.toHaveBeenCalled();
-
-    });
-
-    it('should not focus on an element if not errored', function () {
-        spyOn(element.children()[0], 'focus');
-        scope.$parent.$broadcast("event:errorsOnForm");
-        timeout.flush();
-        expect(element.children()[0].focus).not.toHaveBeenCalled();
-    });
-
-    it('should focus only on the div with button for invalid coded answers', function () {
-        simpleHtml = '<concept-set-group patient="patient" consultation="consultation" observations="consultation.observations" focus-on-input-errors>' +
-            '<input value="" >' +
-            '<div class="illegalValue"><button-select></button-select> </div>'
-        '</concept-set-group>';
-        element = compile(simpleHtml)(scope);
-        spyOn(element.children()[1], 'focus');
-        scope.$parent.$broadcast("event:errorsOnForm");
-        timeout.flush();
-        expect(element.children()[1].focus).toHaveBeenCalled();
-    });
-
 });

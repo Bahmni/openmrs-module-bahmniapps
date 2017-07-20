@@ -1,0 +1,69 @@
+ecmaFeatures:
+  modules: true
+  jsx: true
+
+env:
+  amd: true
+  browser: true
+  es6: true
+  jquery: true
+  node: true
+
+extends:
+  - semistandard
+  - angular
+
+globals:
+  AndroidConfigDbService: false
+  AndroidOfflineService: false
+  Bahmni: true
+  CryptoJS: false
+  EncounterConfig: true
+  FastClick: false
+  Modernizr: false
+  _: false
+  angular: false
+  c3: false
+  d3: false
+  defaults: true
+  describe: false
+  expect: false
+  it: false
+  keyboardJS: false
+  lf: false
+  moment: false
+  purl: false
+  window: false
+
+rules:
+  angular/controller-as: off
+  angular/di: [error, array]
+  indent: [error, 4]
+  quotes: off
+
+  # The following are set to 'warn' level until they can be fixed
+  # They're sorted in ascending order of the number of issues
+  brace-style: warn
+  angular/no-private-call: warn
+  angular/no-services: warn
+  angular/typecheck-object: warn
+  angular/typecheck-function: warn
+  angular/document-service: warn
+  no-redeclare: warn
+  operator-linebreak: warn
+  angular/controller-as-route: warn
+  object-property-newline: warn
+  no-useless-escape: warn
+  angular/on-watch: warn
+  no-unused-vars: warn
+  no-undef: warn
+  one-var: warn
+  angular/log: warn
+  angular/window-service: warn
+  standard/object-curly-even-spacing: warn
+  no-unneeded-ternary: warn
+  angular/angularelement: warn
+  angular/json-functions: warn
+  angular/no-service-method: warn
+  angular/definedundefined: warn
+  eqeqeq: [warn, smart]

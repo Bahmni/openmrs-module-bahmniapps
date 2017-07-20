@@ -18,32 +18,32 @@ angular.module('bahmni.clinical')
             $scope.consultation.consultationNote.observationDateTime = null;
         };
 
-        var groupedObservations = function(){
-            var groupedObservationsArray = [];
-            $scope.consultation.observations.forEach(function(observation){
-                var temp =[];
-                temp[0]=observation;
-                var observationsByGroup={
-                    "conceptSetName": observation.concept.shortName || observation.concept.name,
-                    "groupMembers": new Bahmni.ConceptSet.ObservationMapper().getObservationsForView(temp, conceptSetUiConfigService.getConfig())
-                };
-                if(observationsByGroup.groupMembers.length){
-                    groupedObservationsArray.push(observationsByGroup);
+        var groupObservations = function () {
+            var allObservations = $scope.consultation.observations;
+            allObservations = _.filter(allObservations, function (obs) {
+                if (obs.concept.name === 'Dispensed') {
+                    return false;
                 }
+                if ($scope.followUpConditionConcept && obs.concept.uuid === $scope.followUpConditionConcept.uuid) {
+                    return false;
+                }
+                return true;
             });
-            return groupedObservationsArray;
-        };
-        $scope.groupedObservations = groupedObservations();
-        $scope.disposition = $scope.consultation.disposition;
-        $scope.toggle = function (item) {
-            item.show = !item.show
+            return new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService).groupObservations(allObservations);
         };
 
-        $scope.isConsultationTabEmpty = function(){
+        $scope.groupedObservations = groupObservations();
+        $scope.disposition = $scope.consultation.disposition;
+        $scope.toggle = function (item) {
+            item.show = !item.show;
+        };
+
+        $scope.isConsultationTabEmpty = function () {
             if (_.isEmpty($scope.consultation.newlyAddedDiagnoses) && _.isEmpty($scope.groupedObservations) &&
+                _.isEmpty($scope.consultation.newlyAddedSpecimens) && _.isEmpty($scope.consultation.consultationNote.value) &&
                 _.isEmpty($scope.consultation.investigations) && _.isEmpty($scope.consultation.disposition) &&
                 _.isEmpty($scope.consultation.treatmentDrugs) && _.isEmpty($scope.consultation.newlyAddedTreatments) &&
-                _.isEmpty($scope.consultation.discontinuedDrugs) && _.isEmpty($scope.consultation.savedDiagnosesFromCurrentEncounter)){
+                _.isEmpty($scope.consultation.discontinuedDrugs) && _.isEmpty($scope.consultation.savedDiagnosesFromCurrentEncounter)) {
                 return true;
             }
             return false;

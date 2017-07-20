@@ -13,6 +13,9 @@
             padding: 10px;
             margin: 10px;
             width: 96%;
+            @media screen and (max-width: 1024px){
+                width:94%;
+            }
         }
     }
     .observation {
@@ -33,4 +36,21 @@
             padding: 0;
         }
     }
+}
+
+.disposition {
+button.toggle{
+    .fa-minus-circle{
+        display: none !important;
+    }
+    &.active{
+        background: none !important;
+        .fa-minus-circle{
+            display: block !important;
+        }
+        .fa-plus-circle{
+            display: none !important;
+        }
+    }
+}
 }

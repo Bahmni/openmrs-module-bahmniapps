@@ -397,6 +397,7 @@ describe('programService', function () {
                 uuid: '82325788-3f10-11e4-adec-0800271c1b75',
                 sortWeight: 3,
                 name: 'locationName',
+                fullySpecifiedName: 'locationName',
                 description: 'Location of the patient program',
                 format: 'java.lang.String',
                 answers: [],
@@ -406,6 +407,7 @@ describe('programService', function () {
                 uuid: '82325788-3f10-11es-adec-0800271c1b75',
                 sortWeight: 3,
                 name: 'mandatory',
+                fullySpecifiedName: 'mandatory',
                 description: 'Is the program mandatory',
                 format: 'java.lang.Boolean',
                 answers: [],
@@ -602,10 +604,10 @@ describe('programService', function () {
             "attributes": attributes,
             "states": [],
             "outcome": null,
-            "dateCompleted": "2016-01-12T05:30:00+0530",
-            "dateEnrolled": "2016-01-01T00:00:00+0530",
-            "uuid": "Some UUID"
-
+            "dateCompleted": moment("2016-01-12T05:30:00+0530").format('YYYY-MM-DDTHH:mm:ssZZ'),
+            "dateEnrolled": moment("2016-01-01T00:00:00").format('YYYY-MM-DDTHH:mm:ssZZ'),
+            "uuid": "Some UUID",
+            "voided" : false
         };
 
         mockBackend.whenPOST(Bahmni.Common.Constants.programEnrollPatientUrl + '/Some UUID').respond(function (method, url, data, headers) {

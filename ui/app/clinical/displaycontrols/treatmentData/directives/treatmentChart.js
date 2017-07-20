@@ -2,8 +2,6 @@
 
 angular.module('bahmni.clinical')
     .directive('treatmentChart', function () {
-
-
         var controller = function ($scope) {
             $scope.atLeastOneDrugForDay = function (day) {
                 var atLeastOneDrugForDay = false;
@@ -15,11 +13,10 @@ angular.module('bahmni.clinical')
                 return atLeastOneDrugForDay;
             };
 
-            $scope.getVisitStopDateTime = function(){
+            $scope.getVisitStopDateTime = function () {
                 return $scope.visitSummary.stopDateTime || Bahmni.Common.Util.DateUtil.now();
             };
         };
-
 
         return {
             templateUrl: "displaycontrols/treatmentData/views/treatmentChart.html",

@@ -57,20 +57,6 @@ describe("Visits Table display control", function () {
         });
     };
 
-    var beforeEachExecute = function(){
-        mockConceptSetService(allObsTemplateData);
-        mockVisitFormService(formDataObj);
-        mockPatientVisitHistoryService({});
-        var simpleHtml = '<visits-table params="params" patient-uuid="patientUuid" ></visits-table>';
-        var element = $compile(simpleHtml)(scope);
-        scope.$digest();
-        mockBackend.flush();
-        var compiledElementScope = element.isolateScope();
-        scope.$digest();
-
-        return compiledElementScope;
-    };
-
 
     it("should show visit tables", function () {
         element = angular.element('<visits-table></visits-table>');

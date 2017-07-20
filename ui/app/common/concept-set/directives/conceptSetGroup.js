@@ -1,20 +1,28 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .controller('ConceptSetGroupController', ['$scope', 'appService', 'contextChangeHandler', 'spinner',
-        'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig', 'messagingService',
-        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams', '$element',
-        function ($scope, appService, contextChangeHandler, spinner, conceptSetService, $rootScope, sessionService,
-                  encounterService, treatmentConfig, messagingService, retrospectiveEntryService, userService,
-                  conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams, $element) {
-
+    .controller('ConceptSetGroupController', ['$scope', 'contextChangeHandler', 'spinner', 'messagingService',
+        'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig',
+        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams', '$translate',
+        function ($scope, contextChangeHandler, spinner, messagingService, conceptSetService, $rootScope, sessionService,
+                  encounterService, treatmentConfig, retrospectiveEntryService, userService,
+                  conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams, $translate) {
             var conceptSetUIConfig = conceptSetUiConfigService.getConfig();
+            var init = function () {
+                $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler($scope.allTemplates);
+                contextChangeHandler.add($scope.validationHandler.validate);
+            };
+            $scope.toggleSideBar = function () {
+                $rootScope.showLeftpanelToggle = !$rootScope.showLeftpanelToggle;
+            };
+            $scope.showLeftpanelToggle = function () {
+                return $rootScope.showLeftpanelToggle;
+            };
+
             $scope.togglePref = function (conceptSet, conceptName) {
                 $rootScope.currentUser.toggleFavoriteObsTemplate(conceptName);
                 spinner.forPromise(userService.savePreferences());
             };
-
-            $scope.validationHandler = new Bahmni.ConceptSet.ConceptSetGroupValidationHandler($scope.conceptSets);
 
             $scope.getNormalized = function (conceptName) {
                 return conceptName.replace(/['\.\s\(\)\/,\\]+/g, "_");
@@ -30,7 +38,7 @@ angular.module('bahmni.common.conceptSet')
                     $scope.$broadcast('event:showPrevious' + conceptSetName);
                 });
             };
-            $scope.isInEditEncounterMode = function(){
+            $scope.isInEditEncounterMode = function () {
                 return $stateParams.encounterUuid !== undefined && $stateParams.encounterUuid !== 'active';
             };
 
@@ -66,10 +74,71 @@ angular.module('bahmni.common.conceptSet')
                 }));
             };
 
-            $scope.clone = function(index) {
+            $scope.canRemove = function (index) {
+                var observations = $scope.allTemplates[index].observations;
+                if (observations === undefined || _.isEmpty(observations)) {
+                    return true;
+                }
+                return observations[0].uuid === undefined;
+            };
+
+            $scope.clone = function (index) {
                 var clonedObj = $scope.allTemplates[index].clone();
                 $scope.allTemplates.splice(index + 1, 0, clonedObj);
                 $.scrollTo('#concept-set-' + (index + 1), 200, {offset: {top: -400}});
+            };
+
+            $scope.clonePanelConceptSet = function (conceptSet) {
+                var index = _.findIndex($scope.allTemplates, conceptSet);
+                messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY", {label: $scope.allTemplates[index].label}));
+                $scope.clone(index);
+                $scope.showLeftPanelConceptSet($scope.allTemplates[index + 1]);
+            };
+
+            $scope.isClonedSection = function (conceptSetTemplate, allTemplates) {
+                if (allTemplates) {
+                    var index = allTemplates.indexOf(conceptSetTemplate);
+                    return (index > 0) ? allTemplates[index].label == allTemplates[index - 1].label : false;
+                }
+                return false;
+            };
+
+            $scope.isLastClonedSection = function (conceptSetTemplate) {
+                var index = _.findIndex($scope.allTemplates, conceptSetTemplate);
+                if ($scope.allTemplates) {
+                    if (index == $scope.allTemplates.length - 1 || $scope.allTemplates[index].label != $scope.allTemplates[index + 1].label) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+
+            $scope.remove = function (index) {
+                var label = $scope.allTemplates[index].label;
+                var currentTemplate = $scope.allTemplates[index];
+                var anotherTemplate = _.find($scope.allTemplates, function (template) {
+                    return template.label == currentTemplate.label && template !== currentTemplate;
+                });
+                if (anotherTemplate) {
+                    $scope.allTemplates.splice(index, 1);
+                }
+                else {
+                    var clonedObj = $scope.allTemplates[index].clone();
+                    $scope.allTemplates[index] = clonedObj;
+                    $scope.allTemplates[index].isAdded = false;
+                    $scope.allTemplates[index].isOpen = false;
+                    $scope.allTemplates[index].klass = "";
+                    $scope.allTemplates[index].isLoaded = false;
+                }
+                $scope.leftPanelConceptSet = "";
+                messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_REMOVED_SUCCESS_KEY", {label: label}));
+            };
+
+            $scope.openActiveForm = function (conceptSet) {
+                if (conceptSet && conceptSet.klass == 'active' && conceptSet != $scope.leftPanelConceptSet) {
+                    $scope.showLeftPanelConceptSet(conceptSet);
+                }
+                return conceptSet.klass;
             };
 
             var copyValues = function (existingObservations, modifiedObservations) {
@@ -82,13 +151,43 @@ angular.module('bahmni.common.conceptSet')
                 });
             };
 
-            contextChangeHandler.add($scope.validationHandler.validate);
+            var collapseExistingActiveSection = function (section) {
+                if (section) {
+                    section.klass = "";
+                    section.isOpen = false;
+                    section.isLoaded = false;
+                }
+            };
+
+            $scope.showLeftPanelConceptSet = function (selectedConceptSet) {
+                collapseExistingActiveSection($scope.leftPanelConceptSet);
+                $scope.leftPanelConceptSet = selectedConceptSet;
+                $scope.leftPanelConceptSet.isOpen = true;
+                $scope.leftPanelConceptSet.isLoaded = true;
+                $scope.leftPanelConceptSet.klass = "active";
+                $scope.leftPanelConceptSet.atLeastOneValueIsSet = selectedConceptSet.hasSomeValue();
+                $scope.leftPanelConceptSet.isAdded = true;
+                $scope.consultation.lastvisited = selectedConceptSet.id || selectedConceptSet.formUuid;
+                $(window).scrollTop(0);
+            };
+
+            $scope.focusOnErrors = function () {
+                var errorMessage = $scope.leftPanelConceptSet.errorMessage ? $scope.leftPanelConceptSet.errorMessage : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
+                messagingService.showMessage('error', errorMessage);
+                $scope.$parent.$parent.$broadcast("event:errorsOnForm");
+            };
+
+            $scope.isFormTemplate = function (data) {
+                return data.formUuid;
+            };
+
+            init();
         }])
     .directive('conceptSetGroup', function () {
         return {
             restrict: 'EA',
             scope: {
-                conceptSetGroupExtensionId: "=",
+                conceptSetGroupExtensionId: "=?",
                 observations: "=",
                 allTemplates: "=",
                 context: "=",
@@ -99,5 +198,5 @@ angular.module('bahmni.common.conceptSet')
             },
             controller: 'ConceptSetGroupController',
             templateUrl: '../common/concept-set/views/conceptSetGroup.html'
-        }
+        };
     });

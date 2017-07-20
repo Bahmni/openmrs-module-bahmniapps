@@ -1,82 +1,88 @@
-<div class="program-enrollment-container">
-    <div class="select-program-container form">
-        <a href="javascript:void(0)" class="section-title" toggle="allPrograms.showProgramSection">
-            <i class="fa fa-minus-square" ng-show="!allPrograms.showProgramSection"></i>
-            <i class="fa fa-plus-square" ng-show="allPrograms.showProgramSection"></i>
-            {{'PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY' | translate}}
-        </a>
+<div id="programEnrollmentContainer">
+    <div class="program-enrollment-container">
+        <div class="select-program-container form">
+            <a href="javascript:void(0)" class="section-title" toggle="allPrograms.showProgramSection">
+                <i class="fa fa-minus-square" ng-show="!allPrograms.showProgramSection"></i>
+                <i class="fa fa-plus-square" ng-show="allPrograms.showProgramSection"></i>
+                {{'PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY' | translate}}
+            </a>
 
-        <form class="select-program-option form-field clearfix" single-submit="enrollPatient()"
-              ng-show="!allPrograms.showProgramSection">
+            <form class="select-program-option form-field clearfix" single-submit="enrollPatient()"
+                  ng-show="!allPrograms.showProgramSection">
 
-            <article class="fl">
-                <div class="field-attribute">
-                    <label >{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM' | translate}} : </label>
-                </div>
-                <div class="field-value">
-                    <select ng-model="programSelected" ng-options="program.name for program in allPrograms"
-                            data-ng-change="setWorkflowStates(programSelected)">
-                        <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_PROGRAM_KEY' | translate}}</option>
-                    </select>
-                </div>
-            </article>
-
-            <article class="fl">
-                <div ng-if="hasStates(programSelected)">
+                <article class="fl">
                     <div class="field-attribute">
-                        <label> {{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate }} : </label>
+                        <label>{{'PROGRAM_MANAGEMENT_LABEL_PROGRAM' | translate}} : </label>
                     </div>
                     <div class="field-value">
-                        <select ng-model="$parent.workflowStateSelected"
-                                ng-options="state.concept.display for state in programWorkflowStates">
-                            <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY' | translate}}</option>
+                        <select ng-model="programSelected" ng-options="program.name for program in allPrograms"
+                                data-ng-change="setWorkflowStates(programSelected)">
+                            <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_PROGRAM_KEY' | translate}}</option>
                         </select>
                     </div>
-                </div>
-            </article>
+                </article>
 
-            <article class="fl">
-                <div class="field-attribute">
-                    <label>
-                        {{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} :
-                        <span class="asterick">*</span>
-                    </label>
-                </div>
-                <div class="field-value">
-                    <input type="date" max="{{today}}" ng-model="programEnrollmentDate" ng-required="true">
-                </div>
-            </article>
+                <article class="fl">
+                    <div ng-if="hasStates(programSelected)">
+                        <div class="field-attribute">
+                            <label> {{'PROGRAM_MANAGEMENT_LABEL_PROGRAM_STATE' | translate }} : </label>
+                        </div>
+                        <div class="field-value">
+                            <select ng-model="$parent.workflowStateSelected"
+                                    ng-options="state.concept.display for state in programWorkflowStates">
+                                <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY' | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </article>
 
-            <article class="fl" ng-repeat="attribute in programAttributeTypes">
-                <attribute-types target-model="patientProgramAttributes" attribute="attribute" is-form="true"></attribute-types>
-            </article>
+                <article class="fl">
+                    <div class="field-attribute">
+                        <label>
+                            {{'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}} :
+                            <span class="asterick">*</span>
+                        </label>
+                    </div>
+                    <div class="field-value">
+                        <input type="date" max="{{today}}" ng-model="programEnrollmentDate" ng-required="true">
+                    </div>
+                </article>
 
-            <input class="fr" type="submit" value="{{'PROGRAM_MANAGEMENT_ENROLL_KEY' | translate}}"/>
-        </form>
-    </div>
+                <article class="fl" ng-repeat="attribute in programAttributeTypes">
+                    <attribute-types target-model="patientProgramAttributes" attribute="attribute"
+                                     is-form="true"></attribute-types>
+                </article>
 
-    <div class="active-program-container clearfix" id="activePrograms" ng-show="hasPatientEnrolledToSomePrograms()">
-        <h2 class="program-title">
-            {{'PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY' | translate}}
-        </h2>
-        <div ng-if="hasPatientEnrolledToSomePrograms()">
-            <section class="active-program-tiles program-tiles"
-                     ng-repeat="patientProgram in activePrograms"
-                     ng-show="activePrograms.showProgramSection">
-                <ng-include src="'../common/uicontrols/programmanagement/views/programRow.html'" ng-init="active=true"></ng-include>
-            </section>
+                <input class="fr" type="submit" value="{{'PROGRAM_MANAGEMENT_ENROLL_KEY' | translate}}"/>
+            </form>
         </div>
-    </div>
 
-    <div class="inactive-program-container" ng-show="hasPatientAnyPastPrograms()">
-        <h2 class="program-title">
-            {{'PROGRAM_MANAGEMENT_PAST_PROGRAM_KEY' | translate}}
-        </h2>
+        <div class="active-program-container clearfix" id="activePrograms" ng-show="hasPatientEnrolledToSomePrograms()">
+            <h2 class="program-title">
+                {{'PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY' | translate}}
+            </h2>
+            <div ng-if="hasPatientEnrolledToSomePrograms()">
+                <section class="active-program-tiles program-tiles"
+                         ng-repeat="patientProgram in activePrograms"
+                         ng-show="activePrograms.showProgramSection">
+                    <ng-include src="'../common/uicontrols/programmanagement/views/programRow.html'"
+                                ng-init="active=true"></ng-include>
+                </section>
+            </div>
+        </div>
 
-        <div ng-if="hasPatientAnyPastPrograms()">
-            <section ng-repeat="program in endedPrograms" class="inactive-program-tiles program-tiles" ng-show="endedPrograms.showProgramSection">
-                <ng-include src="'../common/uicontrols/programmanagement/views/pastProgramRow.html'" ng-init="active=false"></ng-include>
-            </section>
+        <div class="inactive-program-container" ng-show="hasPatientAnyPastPrograms()">
+            <h2 class="program-title">
+                {{'PROGRAM_MANAGEMENT_PAST_PROGRAM_KEY' | translate}}
+            </h2>
+
+            <div ng-if="hasPatientAnyPastPrograms()">
+                <section ng-repeat="patientProgram in endedPrograms" class="inactive-program-tiles program-tiles"
+                         ng-show="endedPrograms.showProgramSection">
+                    <ng-include src="'../common/uicontrols/programmanagement/views/pastProgramRow.html'"
+                                ng-init="active=false"></ng-include>
+                </section>
+            </div>
         </div>
     </div>
 </div>

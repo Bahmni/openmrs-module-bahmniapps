@@ -2,31 +2,31 @@
 
 angular.module('bahmni.registration')
     .service('offlinePatientServiceStrategy', ['$http', '$q', 'offlineSearchDbService', 'offlineDbService', function ($http, $q, offlineSearchDbService, offlineDbService) {
-
         var search = function (config) {
-            console.log("chrome")
-            return offlineSearchDbService.search(config.params)
+            return offlineSearchDbService.search(config.params);
         };
 
-        var getByUuid = function(uuid) {
-            console.log("chrome")
+        var getByUuid = function (uuid) {
             return offlineDbService.getPatientByUuid(uuid);
         };
 
-        var create = function(data) {
-            console.log("chrome")
-            return offlineDbService.createPatient(data, "POST");
+        var create = function (data) {
+            return offlineDbService.createPatient(data);
         };
 
-        var deletePatientData = function(patientUuid) {
-            console.log("chrome")
+        var deletePatientData = function (patientUuid) {
             return offlineDbService.deletePatientData(patientUuid);
+        };
+
+        var getAttributeTypes = function () {
+            return offlineDbService.getAttributeTypes();
         };
 
         return {
             search: search,
             get: getByUuid,
             create: create,
-            deletePatientData: deletePatientData
-        }
+            deletePatientData: deletePatientData,
+            getAttributeTypes: getAttributeTypes
+        };
     }]);

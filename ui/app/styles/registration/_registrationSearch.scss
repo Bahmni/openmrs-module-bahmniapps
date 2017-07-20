@@ -32,12 +32,12 @@
         margin-right:5px;
         padding: 5px 10px;
         min-width: 40%;
-        margin-left: 5px;
       }
       select{
         width:80px;
         min-width:80px;
         height: 32px;
+        padding: 0 10px !important;
       }
     }
     .search-seperator-r{
@@ -83,6 +83,7 @@
   overflow-x: auto;
   table{
     margin-top: 20px;
+    font-size: 0.7rem;
     tr{
       border: none;
     }

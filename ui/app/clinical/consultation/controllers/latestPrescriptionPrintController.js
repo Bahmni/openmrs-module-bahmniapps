@@ -9,7 +9,7 @@ angular.module('bahmni.clinical')
             };
 
             if ($scope.visitHistory.activeVisit) {
-                print($scope.visitHistory.activeVisit.startDatetime, $scope.visitHistory.activeVisit.uuid)
+                print($scope.visitHistory.activeVisit.startDatetime, $scope.visitHistory.activeVisit.uuid);
             } else {
                 messagingService.showMessage("error", "No Active visit found for this patient.");
             }

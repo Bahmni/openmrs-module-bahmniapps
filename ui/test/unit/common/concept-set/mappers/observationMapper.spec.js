@@ -11,7 +11,9 @@ describe("ConceptSetObservationMapper", function() {
             answers: answers,
             "uuid": name + "_uuid"
         }
-    }
+    };
+    var mapper = new Bahmni.ConceptSet.ObservationMapper();
+
     var savedObs = function() {
         var diabetesConcept = buildConcept("Diabetes", [], []);
         var hivConcept = buildConcept("HIV", [], []);
@@ -46,11 +48,10 @@ describe("ConceptSetObservationMapper", function() {
             "comment": null,
             "voided": false
         }];
-    }
+    };
 
     it("should map observation tree", function() {
         var rootConcept = savedObs()[0].concept;
-        var mapper = new Bahmni.ConceptSet.ObservationMapper();
         var mappedObs = mapper.map(savedObs(), rootConcept, {});
 
         expect(mappedObs.label).toEqual("Vitals");
@@ -59,7 +60,6 @@ describe("ConceptSetObservationMapper", function() {
 
     it("should map multiSelect Obs", function() {
         var rootConcept = savedObs()[0].concept;
-        var mapper = new Bahmni.ConceptSet.ObservationMapper();
         var mappedObs = mapper.map(savedObs(), rootConcept, {"Comorbidity": {multiSelect: true}});
 
         expect(mappedObs.groupMembers.length).toBe(4);
@@ -96,7 +96,6 @@ describe("ConceptSetObservationMapper", function() {
         }];
 
         var rootConcept = obs[0].concept;
-        var mapper = new Bahmni.ConceptSet.ObservationMapper();
         var mappedObs = mapper.map(obs, rootConcept);
 
         expect(mappedObs.groupMembers.length).toBe(2);
@@ -163,7 +162,6 @@ describe("ConceptSetObservationMapper", function() {
         }];
 
         var rootConcept = obs[0].concept;
-        var mapper = new Bahmni.ConceptSet.ObservationMapper();
         var mappedObs = mapper.map(obs, rootConcept, {"DST Result": {isTabular: true}});
 
         expect(mappedObs.groupMembers.length).toBe(4);
@@ -175,5 +173,30 @@ describe("ConceptSetObservationMapper", function() {
         expect(mappedObs.groupMembers[2].label).toEqual("DST Result");
         expect(mappedObs.groupMembers[3].label).toEqual("DST Result");
     });
+
+    it("should get observations for view", function () {
+        var obs = mapper.getObservationsForView(savedObs(), {});
+
+        expect(obs.length).toBe(3);
+        expect(obs[0].value).toBe("90");
+        expect(obs[0].label).toBe("Systolic");
+
+        expect(obs[1].value).toEqual("Diabetes");
+        expect(obs[1].label).toBe("Comorbidity");
+
+        expect(obs[2].value).toEqual("HyperTension");
+        expect(obs[2].label).toBe("Comorbidity");
+    });
+
+    it("should get observations for view when grid config is there", function () {
+        var savedObservations = savedObs();
+        savedObservations[0].concept.name = "Vitals";
+        var obs = mapper.getObservationsForView(savedObservations, {"Vitals": {grid: true}});
+
+        expect(obs.length).toBe(1);
+        expect(obs[0].value).toBe("90, Diabetes, HyperTension");
+        expect(obs[0].label).toBe("Vitals");
+
+    })
 
 });

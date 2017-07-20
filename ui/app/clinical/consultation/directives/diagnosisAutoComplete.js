@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('diagnosisAutoComplete', function ($parse) {
+    .directive('diagnosisAutoComplete', ['$parse', function ($parse) {
         var link = function (scope, element, attrs) {
             var ngModel = $parse(attrs.ngModel);
             var source = scope.source();
@@ -44,5 +44,5 @@ angular.module('bahmni.clinical')
                 onSelect: '&',
                 index: '='
             }
-        }
-    });
+        };
+    }]);

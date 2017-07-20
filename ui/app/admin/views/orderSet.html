@@ -1,0 +1,108 @@
+<div ng-controller="OrderSetController">
+    <section class="section-grid orderSet-container">
+        <h2 class="section-title">Order Set Details</h2>
+
+        <form single-submit="save()" class="orderSet-form form clearfix">
+            <section class="new-orderSet-wrapper clearfix">
+                <div class="row">
+                    <div class="col col1 form-field">
+                        <div class="field-attribute">
+                            <label>Name <span class="asterick">*</span></label>
+                        </div>
+                        <div class="field-value">
+                            <input type="text" ng-model="orderSet.name" required>
+                        </div>
+                    </div>
+                    <div class="col col2 form-field">
+                        <div class="field-attribute">
+                            <label>Description <span class="asterick">*</span>
+                            </label>
+                        </div>
+                        <div class="field-value">
+                            <input type="text" ng-model="orderSet.description" required>
+                        </div>
+                    </div>
+                    <div class="col col3 form-field">
+                        <div class="field-attribute">
+                            <label>Operator <span class="asterick">*</span>
+                            </label>
+                        </div>
+                        <div class="field-value">
+                            <select ng-model="orderSet.operator" ng-options="operator for operator in operators"
+                                    required></select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="orderSetMember-wrapper">
+
+                <input type="button" ng-click="addOrderSetMembers()" value="Add New Members"
+                       class="button add-more-btn btn-small fr">
+
+                <fieldset>
+                    <legend class="mylegend">
+                        <span> Order Set Members</span>
+                    </legend>
+                    <div ng-repeat="orderSetMember in orderSet.orderSetMembers" ng-if="!(orderSetMember.voided || orderSetMember.retired)"  class="primary-section-grid clearfix">
+                        <div class="row">
+                            <div class="clearfix order-drug-option" ng-class="{'column-container' : orderSetMember.concept.uuid}">
+                                <div class="col col1 form-field">
+                                    <div class="field-attribute">
+                                        <label>Order Type <span class="asterick">*</span></label>
+                                    </div>
+                                    <div class="field-value">
+                                        <select ng-model="orderSetMember.orderType.uuid"
+                                                ng-change="clearTemplateAndConcept(orderSetMember)"
+                                                ng-options="orderType.uuid as orderType.display for orderType in orderTypes"
+                                                required></select>
+                                    </div>
+                                </div>
+                                <div class="col col2 form-field">
+                                    <div class="field-attribute">
+                                        <label>Concept Name<span class="asterick">*</span></label>
+                                    </div>
+                                    <div class="field-value">
+                                        <input class="enter-concept"
+                                               type="text"
+                                               name="conceptSet"
+                                               ng-model="orderSetMember.concept.display"
+                                               bahmni-autocomplete
+                                               strict-select="true"
+                                               is-invalid="conceptNameInvalid"
+                                               source="getConcepts(orderSetMember)"
+                                               on-select="onSelect"
+                                               ng-change="onChange(orderSetMember)"
+                                               ng-trim="false"
+                                               required
+                                               placeholder="Enter a concept name"/>
+                                    </div>
+                                </div>
+                                <div class="col col3 form-field">
+                                    <div class="col col4 form-field">
+                                        <input class="fl remove-orderSet" type="button" ng-click="remove(orderSetMember)" value="X" tabindex="-1">
+                                    </div>
+                                </div>
+                                <div class="action-container fr">
+                                    <span class="button" ng-click="moveUp(orderSetMember)">
+                                        <i class="fa fa-arrow-circle-up"></i>
+                                    </span>
+                                    <span class="button" ng-click="moveDown(orderSetMember)">
+                                        <i class="fa fa-arrow-circle-down"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div ng-if="orderSetMember.concept.uuid" class="treatment-page">
+                                <ng-include src="'views/orderTemplate.html'"></ng-include>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="submit-btn-container clearfix">
+                <button type="submit" class="secondary-button fr" accesskey="s"><u>S</u>ave</button>
+                <button type="reset" class="button fr" accesskey="c"><u>C</u>ancel</button>
+            </div>
+        </form>
+    </section>
+</div>

@@ -2,8 +2,6 @@
 
 describe("TreamentService", function () {
     var _$http;
-    var treatmentService;
-    var appService;
 
     beforeEach(module('bahmni.clinical'));
     
@@ -23,8 +21,8 @@ describe("TreamentService", function () {
     }));
 
 
-    beforeEach(inject(['TreatmentService', function (TreatmentService) {
-        this.treatmentService = TreatmentService;
+    beforeEach(inject(['treatmentService', function (treatmentService) {
+        this.treatmentService = treatmentService;
     }]));
 
     describe("treatment Service", function () {

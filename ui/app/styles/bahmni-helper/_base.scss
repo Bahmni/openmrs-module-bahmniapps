@@ -1,3 +1,21 @@
+/*doc
+---
+title: Basic Headings
+name: Basic_headings
+category: Components - Headings
+---
+```html_example
+<h1>Sample Header1</h1>
+<h2>Sample Header2</h2>
+<h3>Sample Header3</h3>
+<h4>Sample Header4</h4>
+<h5>Sample Header5</h5>
+<h6>Sample Header6</h6>
+```
+
+*/
+
+
 html,body{
   height:100%;
 }
@@ -48,7 +66,7 @@ ul.list {
     list-style: circle;
     margin: 0 0 5px 30px;
     ul li {
-      color: #666;
+      color: $mediumGray;
     }
   }
 }
@@ -74,12 +92,6 @@ a {
   border-radius: 5px;
 }
 
-/*pre {
-  font-size: 16px;
-  padding: 10px;
-  background: rgb(253, 252, 223);
-}*/
-
 table {
   margin: 0 auto;
 }
@@ -88,11 +100,11 @@ i {
   &.link {
     font-size: 0.7em;
   }
-  
+
   &.small {
     font-size: 1.2em;
   }
-  
+
   &.medium {
     font-size: 2em;
   }
@@ -167,27 +179,27 @@ table {
 
   th, td {
     padding: 5px 10px;
-    border: 1px solid #DDD;
+    border: 1px solid $lighterGray;
   }
-  
+
   tr {
     border: 1px solid $bodyBackground;
   }
-  
+
   tr:nth-child(even) {
     background: $focus;
   }
-  
+
   tr:nth-child(odd) {
     background: white;
   }
-  
+
   tr.hover{
     background: lighten(desaturate($link, 20%), 20%);
     color: white;
     cursor: pointer;
   }
-  
+
   tr.selected{
     background: $link;
     color: white;
@@ -196,9 +208,9 @@ table {
       color: white
     }
   }
-  
+
   thead th {
-    border-bottom: 1px solid #DDD;
+    border-bottom: 1px solid $lighterGray;
     background: $lighterGrey;
     width: auto;
     text-align: left;
@@ -250,7 +262,7 @@ table {
 
 .highlighted {
   background-color: $highlight;
-  color: $white; 
+  color: $white;
   padding: 5px;
   margin: 5px
  }
@@ -272,7 +284,7 @@ table {
 }
 
 .infoMsgRetrospectiveModeEnabled{
-  border: 1px #ccc solid;
+  border: 1px $lightGray solid;
   display: inline-block;
   padding: 10px;
   margin-bottom: 15px;
@@ -280,7 +292,7 @@ table {
   margin: 0 auto 10px;
   width: 98%;
   text-align: center;
-  background-color: #EEE;
+  background-color: $lightestGray;
   color: #FF1004;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
   position: relative;
@@ -323,4 +335,8 @@ table {
   @media (max-width : 768px){
     display: block !important;
   }
+}
+
+.wrap-on-line-break {
+  white-space: pre-line;
 }

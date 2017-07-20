@@ -1,54 +1,49 @@
 'use strict';
 
 angular.module('bahmni.common.offline')
-    .service('referenceDataDbService',['patientAttributeDbService', 'locationDbService',
+    .service('referenceDataDbService', ['patientAttributeDbService', 'locationDbService',
         function (patientAttributeDbService, locationDbService) {
+            var db, metaDataDb;
 
-        var db;
-
-        var getReferenceData = function (referenceDataKey) {
-            var referenceData = db.getSchema().table('reference_data');
-            return db.select()
+            var getReferenceData = function (referenceDataKey) {
+                var referenceData = metaDataDb.getSchema().table('reference_data');
+                return metaDataDb.select()
                 .from(referenceData)
                 .where(referenceData.key.eq(referenceDataKey)).exec()
                 .then(function (result) {
                     return result[0];
                 });
-        };
+            };
 
-        var insertReferenceData = function(referenceDataKey, data, eTag){
-            var referenceData = db.getSchema().table('reference_data');
-            var promise;
+            var insertReferenceData = function (referenceDataKey, data, eTag) {
+                var referenceData = metaDataDb.getSchema().table('reference_data');
 
-            var row = referenceData.createRow({
-                key: referenceDataKey,
-                value: data,
-                etag: eTag
-            });
+                var row = referenceData.createRow({
+                    key: referenceDataKey,
+                    data: data,
+                    etag: eTag
+                });
 
-            return db.insertOrReplace().into(referenceData).values([row]).exec().then(function () {
-                switch (referenceDataKey) {
+                return metaDataDb.insertOrReplace().into(referenceData).values([row]).exec().then(function () {
+                    switch (referenceDataKey) {
                     case 'PersonAttributeType':
                         return patientAttributeDbService.insertAttributeTypes(db, data.results);
-                        break;
                     case 'LoginLocations':
-                        return locationDbService.insertLocations(db, data.results);
-                        break;
+                        return locationDbService.insertLocations(metaDataDb, data.results);
                     default :
                         return;
-                        break;
-                }
-            });
-        };
+                    }
+                });
+            };
 
-        var init = function (_db) {
-            db = _db;
-        };
+            var init = function (_metadatadb, _db) {
+                metaDataDb = _metadatadb;
+                db = _db;
+            };
 
-
-        return {
-            init: init,
-            getReferenceData: getReferenceData,
-            insertReferenceData: insertReferenceData
-        }
-    }]);
+            return {
+                init: init,
+                getReferenceData: getReferenceData,
+                insertReferenceData: insertReferenceData
+            };
+        }]);

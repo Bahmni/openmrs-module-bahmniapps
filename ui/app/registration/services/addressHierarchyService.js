@@ -3,54 +3,57 @@
 angular.module('bahmni.registration')
     .factory('addressHierarchyService', ['$http', 'offlineService', 'offlineDbService', 'androidDbService',
         function ($http, offlineService, offlineDbService, androidDbService) {
-        var search = function(fieldName, query, parentUuid){
+            var parseSearchString = function (searchString) {
+                searchString = searchString.replace(new RegExp("\\(", "g"), "\\(");
+                searchString = searchString.replace(new RegExp("\\)", "g"), "\\)");
+                return searchString;
+            };
 
-            var params =  {searchString: query, addressField: fieldName ,parentUuid: parentUuid, limit: defaults.maxAutocompleteResults};
-            if(offlineService.isOfflineApp()){
-                if(offlineService.isAndroidApp()){
-                    return androidDbService.searchAddress(params);
-                }else{
-                    return offlineDbService.searchAddress(params);
+            var search = function (fieldName, query, parentUuid) {
+                var params = {searchString: query, addressField: fieldName, parentUuid: parentUuid, limit: defaults.maxAutocompleteResults};
+                if (offlineService.isOfflineApp()) {
+                    if (offlineService.isAndroidApp()) {
+                        return androidDbService.searchAddress(params);
+                    } else {
+                        params.searchString = parseSearchString(query);
+                        return offlineDbService.searchAddress(params);
+                    }
                 }
+                var url = Bahmni.Registration.Constants.openmrsUrl + "/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form";
 
-            }
-            var url = Bahmni.Registration.Constants.openmrsUrl + "/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form";
+                return $http.get(url, {
+                    method: "GET",
+                    params: params,
+                    withCredentials: true
+                });
+            };
 
-            return $http.get(url, {
-                method: "GET",
-                params: params,
-                withCredentials: true
-            });
-        };
-
-        var getNextAvailableParentName = function (addressField) {
-            var parent = addressField.parent;
-            while (parent) {
-                if (parent.name) {
-                    return parent.name;
+            var getNextAvailableParentName = function (addressField) {
+                var parent = addressField.parent;
+                while (parent) {
+                    if (parent.name) {
+                        return parent.name;
+                    } else {
+                        parent = parent.parent;
+                    }
                 }
-                else {
-                    parent = parent.parent;
-                }
-            }
-            return "";
-        };
+                return "";
+            };
 
-        var getAddressDataResults = function (data) {
-            return data.data.map(function (addressField) {
-                var parentName = getNextAvailableParentName(addressField);
-                return {
-                    'value': addressField.name,
-                    'label': addressField.name + ( parentName ? ", " + parentName : "" ),
-                    addressField: addressField
-                };
-            });
-        };
+            var getAddressDataResults = function (data) {
+                return data.data ? data.data.map(function (addressField) {
+                    var parentName = getNextAvailableParentName(addressField);
+                    return {
+                        'value': addressField.name,
+                        'label': addressField.name + (parentName ? ", " + parentName : ""),
+                        addressField: addressField
+                    };
+                }) : [];
+            };
 
-
-        return{
-            search : search,
-            getNextAvailableParentName: getNextAvailableParentName,
-            getAddressDataResults: getAddressDataResults
-        };
-    }]);
+            return {
+                search: search,
+                getNextAvailableParentName: getNextAvailableParentName,
+                getAddressDataResults: getAddressDataResults
+            };
+        }]);

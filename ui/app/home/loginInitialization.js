@@ -4,15 +4,17 @@ angular.module('bahmni.home')
     .factory('loginInitialization', ['$rootScope', '$q', 'locationService', 'spinner', 'messagingService',
         function ($rootScope, $q, locationService, spinner, messagingService) {
             var init = function () {
-
                 var deferrable = $q.defer();
                 locationService.getAllByTag("Login Location").then(
                     function (response) {
-                        deferrable.resolve({locations: response.data.results})
+                        deferrable.resolve({locations: response.data.results});
                     },
-                    function () {
+                    function (response) {
                         deferrable.reject();
-                        messagingService.showMessage('error', 'Unable to fetch locations. Please reload the page.');
+                        if (response.status) {
+                            response = 'MESSAGE_START_OPENMRS';
+                        }
+                        messagingService.showMessage('error', response);
                     }
                 );
                 return deferrable.promise;
@@ -20,6 +22,6 @@ angular.module('bahmni.home')
 
             return function () {
                 return spinner.forPromise(init());
-            }
+            };
         }
     ]);

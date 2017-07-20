@@ -4,8 +4,18 @@ describe("DrugSchedule", function () {
     var DrugOrder = Bahmni.Clinical.DrugOrder;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
-    var createDrugOrder = function (name, startDate, endDate) {
-        return DrugOrder.create({drug: {name: name, uuid: "foo"}, effectiveStartDate: startDate, effectiveStopDate: endDate});
+    var createDrugOrder = function (name, startDate, endDate, conceptDrugName) {
+        return DrugOrder.create(
+            {
+                drug: {
+                    name: name,
+                    uuid: "foo"
+                },
+                concept: {name: conceptDrugName},
+                effectiveStartDate: startDate,
+                effectiveStopDate: endDate
+            }
+        );
     };
 
     var createStoppedDrugOrder = function (name, startDate, endDate) {
@@ -125,6 +135,26 @@ describe("DrugSchedule", function () {
             expect(drugs[1].name).toBe('Amoxy');
             expect(drugs[1].orders.length).toBe(1);
         });
+
+        it("should display the concept if drug not provided", function () {
+            var fromDate = DateUtil.parse('2014-04-10T15:52:59.000+0530');
+            var toDate = DateUtil.parse('2014-04-15T16:52:59.000+0530');
+            var isoniazidConceptDurgOrder = createDrugOrder(null, '2014-04-13T15:52:59.000+0530', '2014-04-15T15:52:59.000+0530', 'Isoniazid');
+            var rifampicinConceptDrugOrder = createDrugOrder(null, '2014-04-10T15:52:59.000+0530', '2014-04-12T15:52:59.000+0530', 'Rifampicin');
+            var drugSchedule = new DrugSchedule(fromDate, toDate, [isoniazidConceptDurgOrder, rifampicinConceptDrugOrder]);
+            var drugs = drugSchedule.getDrugs();
+
+            expect(drugs.length).toBe(2);
+            expect(drugs[0].name).toBe('Isoniazid');
+            expect(drugs[0].orders.length).toBe(1);
+            expect(drugs[0].isActiveOnDate(DateUtil.parse('2014-04-12'))).toBe(false);
+            expect(drugs[0].isActiveOnDate(DateUtil.parse('2014-04-13'))).toBe(true);
+            expect(drugs[0].isActiveOnDate(DateUtil.parse('2014-04-14'))).toBe(true);
+            expect(drugs[0].isActiveOnDate(DateUtil.parse('2014-04-15'))).toBe(true);
+
+            expect(drugs[1].name).toBe('Rifampicin');
+            expect(drugs[1].orders.length).toBe(1);
+        })
     });
 
     describe("Drug", function() {

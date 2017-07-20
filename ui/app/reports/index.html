@@ -5,6 +5,9 @@
         <title>Reports</title>
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
         <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
         <!-- build:css reports.min.css -->
         <link rel="stylesheet" href="../styles/clinical.css"/>
         <!-- endbuild -->
@@ -13,9 +16,7 @@
         <div ng-app="bahmni.reports" class="bahmni-reports">
             <div ui-view="additional-header"></div>
             <div ng-include src="'../common/ui-helper/messages.html'"></div>
-             <div class="opd-wrapper">
-                <div ui-view="content" class="opd-content-wrapper"></div>
-            </div>
+            <div ui-view="mainContent"></div>
         </div>
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../components/jquery/jquery.min.js"></script>
@@ -24,6 +25,7 @@
         <script src="../lib/modernizr.custom.80690.js"></script>
         
         <script src="../components/angular/angular.min.js"></script>
+        <script src="../components/ng-tags-input/ng-tags-input.min.js"></script>
         <script src="../components/angular-sanitize/angular-sanitize.min.js"></script>
         <script src="../components/moment/min/moment.min.js"></script>
         <script src="../components/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
@@ -41,6 +43,8 @@
         <script src="../components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
         <script src="../components/angular-translate-storage-local/angular-translate-storage-local.min.js"></script>
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
+        <script src="../components/ngDialog/js/ngDialog.min.js"></script>
+        <script src="../lib/angular-workers/dist/angular-workers.js"></script>
 
         <!-- build:js reports.min.js -->
         <script src="../common/constants.js"></script>
@@ -52,9 +56,11 @@
         <script src="../common/util/httpErrorInterceptor.js"></script>
         <script src="../common/util/modernizr.tests.js"></script>
         <script src="../common/util/iosLabelFix.js"></script>
+        <script src="../common/util/dateTimeFormatter.js"></script>
 
         <script src="../common/offline/init.js"></script>
         <script src="../common/offline/offlineService.js"></script>
+        <script src="../common/models/init.js"></script>
 
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>
@@ -71,6 +77,9 @@
         <script src="../common/config/init.js"></script>
         <script src="../common/config/services/configurations.js"></script>
         <script src="../common/config/directives/showIfPrivilege.js"></script>
+
+        <script src="../common/concept-set/init.js"></script>
+        <script src="../common/concept-set/services/conceptService.js"></script>
 
         <script src="../common/domain/init.js"></script>
         <script src="../common/domain/models/retrospectiveEntry.js"></script>
@@ -128,11 +137,19 @@
         <script src="../common/constants.js"></script>
         <script src="../common/debugUiRouter.js"></script>
 
+        <script src="../common/logging/init.js"></script>
+        <script src="../common/logging/exceptionHandler.js"></script>
+        <script src="../common/logging/services/loggingService.js"></script>
+        <script src="../common/logging/services/auditLogService.js"></script>
+        <script src="../common/models/auditLogEventDetails.js"></script>
+
         <script src="init.js"></script>
         <script src="initialization.js"></script>
         <script src="services/reportService.js"></script>
-        <script src="controllers/dashboardController.js"></script>
-        
+        <script src="controllers/reportsController.js"></script>
+        <script src="controllers/myReportsController.js"></script>
+        <script src="controllers/dashboardHeaderController.js"></script>
+
         <script src="app.js"></script>
 
         <!-- endbuild -->

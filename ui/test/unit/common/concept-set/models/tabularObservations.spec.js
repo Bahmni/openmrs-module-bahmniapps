@@ -1,13 +1,14 @@
 'use strict';
 
 describe("Tabular Observations", function() {
+    var isValid = jasmine.createSpy();
+
     it("should have rows", function() {
         var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {});
         expect(tabularObservations.label).toEqual("DST Result");
         expect(tabularObservations.concept).not.toBeNull();
         expect(tabularObservations.rows.length).toBe(2);
         expect(tabularObservations.isFormElement()).toBeFalsy();
-        expect(tabularObservations.isValid()).toBeTruthy();
         expect(tabularObservations.getControlType()).toBe("tabular");
     });
 
@@ -51,12 +52,11 @@ describe("Tabular Observations", function() {
     });
 
     it("atLeastOneValueSet, should return false if obsGroups has value", function() {
-        var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {"DST Result":{"allowAddMore": true}});
+        var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroupWithoutValue, parentObs, {"DST Result":{"allowAddMore": true}});
         expect(tabularObservations.atLeastOneValueSet()).toBeFalsy();
     });
 
     it("atLeastOneValueSet, should return true if obsGroups has value", function() {
-        obsGroups[0].value = "something";
         var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {"DST Result":{"allowAddMore": true}});
         expect(tabularObservations.atLeastOneValueSet()).toBeTruthy();
     });
@@ -68,16 +68,40 @@ describe("Tabular Observations", function() {
         expect(tabularObservations.rows.length).toEqual(newObj.rows.length);
     });
 
+    it("should validate all observations", function () {
+        var tabularObservations = new Bahmni.ConceptSet.TabularObservations(obsGroups, parentObs, {});
+        isValid.and.returnValue(true);
+        tabularObservations.isValid(true, true);
+        expect(isValid.calls.count()).toEqual(4);
+    });
+
     var obsGroups = [{
         concept: {name:"DST Result", shortName: "DST"},
         label: "DST Result",
         groupMembers: [{
             concept: {shortName: "Drugs"},
-            value: "Drug1"
+            value: "Drug1",
+            isValid : isValid,
+            atLeastOneValueSet : function() {
+                return (this.value != undefined);
+            }
         }, {
             concept: {shortName: "Concentration"},
-            value: "500mg"
+            value: "500mg",
+            isValid : isValid,
+            atLeastOneValueSet : function() {
+                return (this.value != undefined);
+            }
         }],
+        atLeastOneValueSet : function() {
+            if (this.groupMembers && this.groupMembers.length > 0) {
+                return this.groupMembers.some(function (groupMember) {
+                    return groupMember.atLeastOneValueSet();
+                })
+            } else {
+                return this.value;
+            }
+        },
         cloneNew: function() {
             return {concept: {shortName: "DST"}, label: "DST Result", groupMembers: [{concept: {shortName: "Drugs"}}, {concept: {shortName: "Concentration"}}]}
         }
@@ -86,11 +110,58 @@ describe("Tabular Observations", function() {
         label: "DST Result",
         groupMembers: [{
             concept: {shortName: "Drugs"},
-            value: "Drug2"
+            value: "Drug2",
+            isValid : isValid,
+            atLeastOneValueSet : function() {
+                return (this.value != undefined);
+            }
         }, {
             concept: {shortName: "Concentration"},
-            value: "100mg"
+            value: "100mg",
+            isValid : isValid,
+            atLeastOneValueSet : function() {
+                return (this.value != undefined);
+            }
         }],
+        atLeastOneValueSet : function() {
+            if (this.groupMembers && this.groupMembers.length > 0) {
+                return this.groupMembers.some(function (groupMember) {
+                    return groupMember.atLeastOneValueSet();
+                })
+            } else {
+                return this.value;
+            }
+        },
+        cloneNew: function() {
+            return {concept: {shortName: "DST"}, label: "DST Result", groupMembers: [{concept: {shortName: "Drugs"}}, {concept: {shortName: "Concentration"}}]}
+        }
+    }];
+
+    var obsGroupWithoutValue = [{
+        concept: {shortName: "DST"},
+        label: "DST Result",
+        groupMembers: [{
+            concept: {shortName: "Drugs"},
+            isValid : isValid,
+            atLeastOneValueSet : function() {
+                return (this.value != undefined);
+            }
+        }, {
+            concept: {shortName: "Concentration"},
+            isValid : isValid,
+            atLeastOneValueSet : function() {
+                return (this.value != undefined);
+            }
+        }],
+        atLeastOneValueSet : function() {
+            if (this.groupMembers && this.groupMembers.length > 0) {
+                return this.groupMembers.some(function (groupMember) {
+                    return groupMember.atLeastOneValueSet();
+                })
+            } else {
+                return this.value;
+            }
+        },
         cloneNew: function() {
             return {concept: {shortName: "DST"}, label: "DST Result", groupMembers: [{concept: {shortName: "Drugs"}}, {concept: {shortName: "Concentration"}}]}
         }

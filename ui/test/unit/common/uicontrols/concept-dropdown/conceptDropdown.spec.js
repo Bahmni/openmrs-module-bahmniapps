@@ -6,7 +6,7 @@ describe('conceptDropdown', function () {
         module("bahmni.common.uicontrols");
         module('ngHtml2JsPreprocessor');
         module(function ($provide) {
-            conceptService = jasmine.createSpyObj('conceptService', ['getConceptByQuestion', 'getAnswers']);
+            conceptService = jasmine.createSpyObj('conceptService', ['getAnswersForConceptName', 'getAnswers']);
             $provide.value('conceptService', conceptService);
         });
 
@@ -22,7 +22,7 @@ describe('conceptDropdown', function () {
             '<concept-dropdown ' +
             'on-change="handleUpdate" ' +
             'model="observation.value" ' +
-            'coded-concept-name="observation.conceptUIConfig.answersConceptName" ' +
+            'answers-concept-name="observation.conceptUIConfig.answersConceptName" ' +
             'default-concept="observation.concept" ' +
             'on-invalid-class="\'illegalValue\'" ' +
             'is-valid="observation.isValid(atLeastOneValueIsSet,conceptSetRequired)"' +
@@ -35,7 +35,7 @@ describe('conceptDropdown', function () {
     it("should load answers with given conceptName", function () {
         scope.observation = {
             conceptUIConfig: {
-                answersConceptName: 'answersConcept'
+                answersConceptName: 'answersConceptFromConfig'
             }
         };
 
@@ -44,12 +44,12 @@ describe('conceptDropdown', function () {
             {uuid: "uuid2", name: 'name2'}
         ];
         var response = specUtil.respondWithPromise($q, data);
-        conceptService.getConceptByQuestion.and.returnValue(response);
+        conceptService.getAnswersForConceptName.and.returnValue(response);
 
         var element = generateElement();
 
-        expect(conceptService.getConceptByQuestion).toHaveBeenCalledWith({
-            codedConceptName: 'answersConcept'
+        expect(conceptService.getAnswersForConceptName).toHaveBeenCalledWith({
+            answersConceptName: 'answersConceptFromConfig'
         });
 
         var compiledElementScope = element.isolateScope();
@@ -133,7 +133,7 @@ describe('conceptDropdown', function () {
             {uuid: "uuid2", name: 'name2'}
         ];
         var response = specUtil.respondWithPromise($q, data);
-        conceptService.getConceptByQuestion.and.returnValue(response);
+        conceptService.getAnswersForConceptName.and.returnValue(response);
 
         var element = generateElement();
         var compiledElementScope = element.isolateScope();

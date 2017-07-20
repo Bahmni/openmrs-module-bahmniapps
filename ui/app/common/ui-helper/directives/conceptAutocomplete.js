@@ -3,11 +3,11 @@
 
     var constructSearchResult = function (concept, searchString) {
         var matchingName = null;
-        var conceptName = concept.displayString || concept.name;
-        if (_.lowerCase(conceptName).indexOf(_.lowerCase(searchString)) != 0) {
+        var conceptName = concept.name;
+        if (!_.includes(_.toLower(conceptName), _.toLower(searchString))) {
             var synonyms = _.map(concept.names, 'name');
             matchingName = _.find(synonyms, function (name) {
-                return (name !== conceptName) && name.search(new RegExp(searchString, "i")) !== -1
+                return (name !== conceptName) && name.search(new RegExp(searchString, "i")) !== -1;
             });
         }
         return {
@@ -16,15 +16,17 @@
             concept: concept,
             uuid: concept.uuid,
             name: conceptName
-        }
+        };
     };
 
     var searchWithDefaultConcept = function (searchMethod, request, response) {
-        var searchTerm = _.lowerCase(request.term.trim());
+        var searchTerm = _.toLower(request.term.trim());
         var isMatching = function (answer) {
-            var answerName = _.lowerCase(answer.displayString);
-            var defaultConceptName = _.lowerCase(request.defaultConcept.name);
-            return _.includes(answerName, searchTerm) && (answerName !== defaultConceptName);
+            var conceptNameFound = _.find(answer.names, function (name) {
+                return _.includes(_.toLower(name.name), searchTerm);
+            });
+            var conceptDrugNameFound = _.includes(_.toLower(answer.name), searchTerm);
+            return conceptNameFound || conceptDrugNameFound;
         };
         var responseMap = _.partial(constructSearchResult, _, searchTerm);
 
@@ -52,7 +54,7 @@
                 if (!scope.strictSelect) {
                     return;
                 }
-                if (_.isEmpty(searchTerm) || searchTerm === previousValue) {
+                if (!scope.illegalValue && (_.isEmpty(searchTerm) || searchTerm === previousValue)) {
                     element.removeClass('illegalValue');
                     return;
                 }
@@ -64,14 +66,13 @@
                 minLength: minLength,
                 source: function (request, response) {
                     var searchMethod;
-                    if (!scope.codedConceptName && scope.defaultConcept) {
+                    if (!scope.answersConceptName && scope.defaultConcept) {
                         searchMethod = _.partial(conceptService.getAnswers, scope.defaultConcept);
-                        request.defaultConcept = scope.defaultConcept;
                         searchWithDefaultConcept(searchMethod, request, response);
                     } else {
-                        searchMethod = _.partial(conceptService.getConceptByQuestion, {
+                        searchMethod = _.partial(conceptService.getAnswersForConceptName, {
                             term: request.term,
-                            codedConceptName: scope.codedConceptName
+                            answersConceptName: scope.answersConceptName
                         });
                         searchWithGivenConcept(searchMethod, request, response);
                     }
@@ -97,9 +98,15 @@
                 }
             });
 
-            $(element).on('blur', function () {
+            var blurHandler = function () {
                 var searchTerm = $.trim(element.val());
                 validator(searchTerm);
+            };
+
+            element.on('blur', blurHandler);
+
+            scope.$on("$destroy", function () {
+                element.off('blur', blurHandler);
             });
         };
 
@@ -107,14 +114,15 @@
             link: link,
             require: 'ngModel',
             scope: {
+                illegalValue: '=',
                 defaultConcept: '=',
-                codedConceptName: '=',
+                answersConceptName: '=',
                 minLength: '=',
                 blurOnSelect: '=',
                 strictSelect: '=?',
                 previousValue: '='
             }
-        }
+        };
     };
 
     conceptAutocomplete.$inject = toBeInjected;

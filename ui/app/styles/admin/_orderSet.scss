@@ -1,0 +1,163 @@
+.orderSet-dashboard-container{
+  .section-title-wrapper{
+    padding: 5px 10px 1px;
+  }
+  table.orderSet-list{
+    border: 0;
+    tr{
+      border: 0;
+      border-bottom: 1px solid $lighterGray;
+      th{
+        text-align: left;
+        border: 0;
+        border-bottom: 1px solid $lighterGray;
+        font-weight: 700;
+        background: $lighterGray;
+        color: #363463;
+        padding: 8px;
+      }
+      &:nth-child(even),&:nth-child(odd){
+        background:#fff!important;
+        padding:4px 8px;
+      }
+      td{
+        border: 0;
+        display: block;
+        a{
+          display: block;
+          padding-right: 15px;
+          padding-bottom: 5px;
+          font-size: 16px;
+          &:hover{
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+  }
+}
+.orderSet-container{
+  .orderSet-form{
+    //padding: 0 20px 20px;
+    .new-orderSet-wrapper{
+      //padding: 20px 0;
+    }
+    .form-field{
+      float: left;
+      input[type="text"]{
+        padding: 2px 10px;
+      }
+      .field-attribute label{
+        width: auto;
+      }
+      textarea.order-set-additionalInstructions{
+        width: 770px;
+      }
+    }
+    .submit-btn-container{
+      margin: 0 20px 20px 20px;
+      button[type="submit"]{
+        margin-left:10px;
+        background: linear-gradient(to bottom, $bahmniPrimaryBtnColor, $bahmniPrimaryBtnColorHover );
+        background-color: $bahmniPrimaryBtnColorHover ;
+        border:$bahmniPrimaryBtnColorHover  1px solid;
+        &:hover {
+          background: #8eb82a ;
+          border-color: #779b23 ;
+        }
+      }
+    }
+
+  }
+  .orderSetMember-wrapper{
+    .primary-section-grid{
+      margin-bottom: 15px;
+    }
+    .add-more-btn{
+      margin: 0 0 20px;
+    }
+    fieldset{
+      margin-bottom: 10px;
+      .form-field{
+        .field-attribute label{
+          width: auto;
+          float:left;
+          &.primaryDrug-text{
+            margin-right: 5px;
+          }
+        }
+        .field-value{
+          input[type="checkbox"]{
+            margin-top: 10px;
+          }
+        }
+      }
+      .remove-orderSet{
+        margin-left: 30px;
+      }
+      legend{
+        background: $lightestGray !important;
+        font-size: 14px;
+        width: 99.8%;
+        line-height: 16px;
+        margin-bottom: 20px;
+        padding: 3px 0;
+        border-radius: 3px;
+        border: 1px solid $lightGray;
+        display: block;
+        span {
+          display: inline-block;
+          padding: 2px 10px;
+          font-weight: bold;
+        }
+      }
+    }
+    .row{
+      float: left;
+      width: 100%;
+      .order-drug-option{
+        padding: 5px 5px 0 10px;
+        &.column-container{
+          background: #F9F7F7;
+        }
+      }
+      .col{
+        padding-right: 13px;
+      }
+      .col4{
+        padding-right: 0;
+      }
+    }
+    .edit-drug-order{
+      padding: 10px 15px;
+      .form-field .field-value{
+        margin-right: 15px;
+        input[type="number"]{
+          padding: 2px 10px;
+        }
+      }
+    }
+  }
+}
+
+.orderSetMember-wrapper ,.new-orderSet-wrapper{
+  overflow: hidden;
+  margin: 20px 20px 10px;
+  .row{
+    float: left;
+    width: 100%;
+    .column-container{
+      background: #F9F7F7;
+    }
+    .col{
+      padding-right: 13px;
+    }
+    .col4{
+      padding-right: 0;
+    }
+  }
+}
+
+
+

@@ -1,0 +1,16 @@
+<div class="appointment-container">
+    <div class="appointment-btn-container">
+        <span class="app-filter-btn-wrapper"><a class="app-filter-btn"><i class="fa fa-filter" aria-hidden="true"></i> Filter</a></span>
+        <!---TODO: move all the logic to controller --->
+        <a ng-class="{'active': currentTab === 'list'}" ng-click="navigateTo('list')">
+            {{::'LIST_VIEW' | translate}}
+        </a>
+        <a ng-class="{'active': currentTab === 'calendar'}" ng-click="navigateTo('calendar')">
+            {{::'CALENDAR_VIEW' | translate}}
+        </a>
+        <a class="add-app-btn" ng-href="#/home/manage/appointments/{{currentTab}}/new">{{::'ADD_NEW_APPOINTMENT' | translate }}</a>
+    </div>
+
+    <div ui-view="content@viewAppointments"></div>
+
+</div>

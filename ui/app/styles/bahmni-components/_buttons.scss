@@ -2,17 +2,136 @@
 ---
 title: Buttons
 name: button
-category: Bahmni styleGuide
+category: Layout - Button
 ---
 
 Button styles can be applied to any element. Typically you'll want to
 use either a `<button>` or an `<a>` element:
 
 ```html_example
-<button class="back-btn">Back Button</button>
+<button>Button</button>
+<button class="confirm">Confirm</button>
+<button class="cancel">Cancel</button>
+<button class="back-btn">Back</button>
+<button  disabled="disabled">Disabled</button>
+<button class="arrow-button">Accept</button>
 ```
 
 */
+
+
+
+/*doc
+---
+title: Buttons With Icon
+name: button_icon
+category: Layout - Button
+---
+
+
+```html_example
+ <button  type="button" class="icon-button exchange-btn">
+     <i class="fa fa-exchange"></i>
+ </button>
+
+ <button type="button" class="small-btn row-remover">
+     <span class="fa fa-remove"></span>
+ </button>
+
+ <span class="favourite-concept-set">
+     <label class="add-fav">
+       <input type="checkbox">
+       <i class="fa fa-thumb-tack"></i></label>
+ </span>
+
+<button class="add-more-concept-set add-more-btn btn-small">
+    <i class="fa fa-plus"></i>
+    ADD MORE
+</button>
+
+ <button type="button" class="comment-toggle">
+     <i class="fa fa-file-o">
+       <i class="fa fa-plus-circle"></i>
+       <i class="fa fa-minus-circle"></i>
+    </i>
+</button>
+
+<button>
+     <i class="fa fa-edit"></i>
+ </button>
+```
+
+*/
+
+
+
+/*doc
+---
+title: Button Groups
+name: button_groups
+category: Layout - Button
+---
+
+
+```html_example
+<div class="multi-select-button-group">
+  <button type="button" class="grid-row-element">
+  <i class="fa fa-ok"></i>
+      Multi
+  </button>
+  <button type="button" class="grid-row-element active">
+      <i class="fa fa-ok"></i>
+      Select
+  </button>
+  <button type="button" class="grid-row-element">
+    <i class="fa fa-ok"></i>
+     Button
+  </button>
+  <button type="button" class="grid-row-element">
+    <i class="fa fa-ok"></i>
+     Group
+  </button>
+</div>
+```
+
+*/
+
+
+
+/*doc
+---
+title: Button Groups with same width
+name: button_group_same_width
+category: Layout - Button
+---
+
+
+```html_example
+<div class="field-value-buttonSelectType">
+  <div class="multi-select-button-group">
+    <button type="button" class="grid-row-element">
+    <i class="fa fa-ok"></i>
+        Multi
+    </button>
+    <button type="button" class="grid-row-element active">
+        <i class="fa fa-ok"></i>
+        Select
+    </button>
+    <button type="button" class="grid-row-element">
+      <i class="fa fa-ok"></i>
+       Button
+    </button>
+    <button type="button" class="grid-row-element">
+      <i class="fa fa-ok"></i>
+       Group
+    </button>
+  </div>
+</div>
+```
+
+
+*/
+
 
 
 
@@ -68,9 +187,9 @@ use either a `<button>` or an `<a>` element:
   }
 
   &.disabled, &:disabled {
-    background: #EEE;
-    border: #CCC 1px solid;
-    color: #333;
+    background: $lightestGray;
+    border: $lightGray 1px solid;
+    color: $darkGray;
     cursor: default;
   }
 
@@ -99,7 +218,7 @@ use either a `<button>` or an `<a>` element:
     margin-left: -10px;
     background: darken($success, 10%);
     color: white;
-    border-color: #BBB;
+    border-color: $primarySectionGridBorder;
     height: 68px;
 
     span {
@@ -130,28 +249,28 @@ use either a `<button>` or an `<a>` element:
       right: -18px;
       border-bottom: 34px solid transparent;
       border-top: 33px solid transparent;
-      border-left: 18px solid #BBB;
+      border-left: 18px solid $primarySectionGridBorder;
       position: absolute;
     }
 
     &.disabled {
-      background: #EEE;
-      border: #CCC 1px solid;
-      color: #CCC;
+      background: $lightestGray;
+      border: $lightGray 1px solid;
+      color: $lightGray;
       cursor: default;
 
       .arrow-button {
-        border-left: 18px solid #eee;
+        border-left: 18px solid $lightestGray;
       }
 
       .arrow-border-button {
-        border-left: 18px solid #ccc;
+        border-left: 18px solid $lightGray;
       }
     }
   }
 }
 
-.button, button, input[type="submit"], input[type="button"], input[type="submit"], a.button {
+.button, button, input[type="submit"], input[type="button"],input[type="reset"], input[type="submit"], a.button {
   @include button;
 
   &.task {
@@ -185,13 +304,6 @@ use either a `<button>` or an `<a>` element:
     margin-right: 10px;
   }
 
-  &.proceed {
-    @include button($error, darken($error, 8%), white);
-    max-width: 250px;
-    min-width: 0;
-    margin-right: 10px;
-  }
-
   &.no-color {
     @include button();
   }
@@ -213,7 +325,7 @@ a.back-btn, button.back-btn {
     text-decoration: none;
     z-index: 1;
     margin: 6px 6px 0 0px;
-    color: $white;  
+    color: $white;
     border-left: 0;
     float: left;
     font-size: 16px;
@@ -247,7 +359,7 @@ a.back-btn, button.back-btn {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            display: inline-block;
+            display: block;
             @media screen and (max-width: 1024px) {
               width: 75px;
             }
@@ -255,20 +367,19 @@ a.back-btn, button.back-btn {
       }
 }
 
-ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn { 
+ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn {
     padding: 4px 10px 5px 10px;
     border: 1px solid darken($bahmniSecondaryColor, 15%);
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
 
     i {
-        // padding: 0 5px 0 0;
-        // &.fa-circle-arrow-left {
-        //   margin-left: -5px;
-        // }
       font-size: 30px;
       line-height: 1;
       margin: 0;
       padding: 0;
+      @media screen and(max-width:470px){
+        font-size: 22px;
+      }
     }
     &.dashboard-link {
       padding:6px 8px 5px;
@@ -288,15 +399,17 @@ ul li a.back-btn, ul li a.back-btn:hover, button.back-btn, a.back-btn {
           }
       }
     }
+  @media screen and(max-width:470px){
+    padding: 4px 5px 5px;
+  }
 }
 button.back-btn {
     box-shadow: none;
     line-height: 1.1em;
-    //float: none;
 }
 .back-btn-link {
     @include clearfix();
-    padding: 6px 8px 5px;
+    padding: 5px 8px 5px;
     border: 1px solid darken($bahmniSecondaryColor, 15%);
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
     margin-top: 6px;
@@ -315,7 +428,7 @@ button.back-btn {
         border-radius: 100%;
         float: left;
         margin-right: 5px;
-        
+
     }
      .patient-info {
           float: left;
@@ -333,6 +446,7 @@ button.back-btn {
             overflow: hidden;
             text-overflow: ellipsis;
             display: inline-block;
+            height:15px;
             @media screen and (max-width: 1024px) {
               width: 75px;
             }
@@ -341,49 +455,47 @@ button.back-btn {
 }
 /* multi select */
 .multi-select-button-group {
-    //max-width: 1200px;
-    //overflow: auto;
-    //box-sizing: border-box;
-    //min-width: 700px;
-    button {
-        /* width: 200px; temp changes - removed equal spacing */
-        float: left;
-        margin: 0 2px 2px 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-align: left;
-        height: 32px !important;
-      &.grid-row-element{
-        font-size: 12px;
-        padding-left: 15px;
-        padding-right: 15px;
-        .fa-ok{
-          display: none;
-          padding-top: 0;
-          padding-bottom: 0;
-          font-size: 14px;
-          line-height: inherit;
-        }
-        &.active{
-          color: #457FAC;
-          padding-left: 3px;
-          .fa-ok {
-            display: inline-block;
-          }
+  div.btn-tooltip-wrapper{
+    position: relative;
+  }
+  button {
+    float: left;
+    margin: 0 2px 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    height: 32px !important;
+    &.grid-row-element{
+      font-size: 12px;
+      padding-left: 15px;
+      padding-right: 15px;
+      .fa-ok{
+        display: none;
+        padding-top: 0;
+        padding-bottom: 0;
+        font-size: 14px;
+        line-height: inherit;
+      }
+      &.active{
+        color: $bahmniTertiaryColor;
+        padding-left: 3px;
+        .fa-ok {
+          display: inline-block;
         }
       }
     }
-    button:focus, a:focus, .btn:focus {
-      border: 2px solid $clinicalFormFocus;
-      outline:0;
-    }
+  }
+  button:focus, a:focus, .btn:focus {
+    border: 2px solid $clinicalFormFocus;
+    outline:0;
+  }
 }
 .illegalValue .multi-select-button-group { width: auto; }
 
-.secondary-button, 
-.secondary-button:hover, 
-input[type="submit"].secondary-button, 
+.secondary-button,
+.secondary-button:hover,
+input[type="submit"].secondary-button,
 input[type="submit"].secondary-button:hover  {
     background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
     color: $white;
@@ -398,8 +510,7 @@ input[type="submit"].secondary-button:hover  {
 .comment-toggle {
   padding: 5px;
   @media (max-width: 1024px) {
-    margin: 7px 10px 0 10px;
-    //float: left;
+    margin: 5px 0 0 10px;
   }
   .fa-file-text-o {
     display: none;
@@ -451,18 +562,17 @@ input[type="submit"].secondary-button:hover  {
 /* Add Favourite button */
 
 .add-fav {
-  display: inline-block;
-  padding: 4px;
   cursor: pointer;
-  border: 1px solid #ccc;
-  background: linear-gradient(to bottom, #fff, #ddd) #ddd;
-  position: relative;
-  transition: all .5s ease;
-  border-radius: 4px;
-  box-shadow: inset 0 -1px 1px #eee;
-  
-  &:hover {
-    background: linear-gradient(to bottom, #fff, $lightGray) #ddd;
+  color:#fff;
+  margin-left: 12px;
+  float: left;
+  @media screen and (max-width: 1024px){
+    margin-left: 21px;
+  }
+  .fa-thumb-tack{
+    font-size: 18px;
+    padding: 0;
+    width:auto;
   }
 
   .fa-star-empty {
@@ -473,16 +583,24 @@ input[type="submit"].secondary-button:hover  {
     padding: 0;
   }
 
-  input[type="checkbox"] { 
+  input[type="checkbox"] {
     position: absolute;
     opacity: 0;
     & + .fa-thumb-tack {
-      color: $mediumGray;
+      //color: $mediumGray;
       cursor: pointer;
+      &:hover{
+        opacity:0.5;
+      }
     }
     &:checked + .fa-thumb-tack {
       color: orange;
-      text-shadow: 1px 1px 1px white;
+      display: block;
+      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      -o-transform: rotate(45deg);
+      transform: rotate(45deg);
     }
   }
 }
@@ -490,7 +608,7 @@ input[type="submit"].secondary-button:hover  {
 /* split button - seperate scss file */
 
 
-.refill-btn, .stop-drug-btn { padding: 10px!important; font-family: $primaryBoldFont; color: #666; }
+.refill-btn, .stop-drug-btn { padding: 10px!important; font-family: $primaryBoldFont; color: $mediumGray; }
 .refill-btn .fa-play { font-size: 1em!important; }
 
 .btn-small {
@@ -503,17 +621,14 @@ input[type="submit"].secondary-button:hover  {
   .btn--left, .btn--right {
     float: left;
   }
-  .btn--right {
-    margin-left: -3px;
-  }
 }
-
 
 button.toggle{
   .fa-angle-up{
     display: none;
   }
   &.active{
+    background: none !important;
     .fa-angle-up{
       display: block;
     }
@@ -531,6 +646,7 @@ button.toggle{
   }
   &.active{
     button.toggle{
+      background: none !important;
       .fa-angle-up{
         display: block;
       }
@@ -538,5 +654,36 @@ button.toggle{
         display: none;
       }
     }
+  }
+}
+
+
+.toggle-buttons{
+  .show-after-active{
+    display: none;
+  }
+  &.active {
+    .show-before-active {
+      display: none;
+    }
+    .show-after-active {
+      display: inline-block;
+    }
+  }
+}
+button.btn--add{
+  background: linear-gradient(to bottom, #A1D030, #88af28);
+  background-color: #88af28;
+  border: #88af28 1px solid;
+  color: $white;
+  font-size: 13px !important;
+  padding: 7px !important;
+  margin-left:20px;
+  .fa-plus{
+    color: $white;
+    padding: 0;
+    font-size: 16px;
+    display: inline-block;
+    padding-right: 5px;
   }
 }

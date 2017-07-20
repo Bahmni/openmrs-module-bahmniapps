@@ -76,7 +76,7 @@
                 <div class="table-body">
                     <div class="row diagnosis-row"
                          ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst">
-                        <div class="view-past row-click" toggle="diagnosis.showComment">
+                        <div class="view-past row-click">
                             <div class="col col1">
                                 <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">{{diagnosis.getDisplayName()}}</span>
                             </div>
@@ -103,10 +103,10 @@
                             <div class="col col4">
                                 <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments"
-                                        ng-click="diagnosis.showComment = !diagnosis.showComment"
+                                        toggle="diagnosis.showComment"
                                         ng-class="{'has-notes': diagnosis.comments}">
-                                    <i class="fa fa-plus-circle" ng-hide="diagnosis.showComment"></i>
-                                    <i class="fa fa-minus-circle" ng-show="diagnosis.showComment"></i>
+                                    <i class="fa fa-plus-circle"></i>
+                                    <i class="fa fa-minus-circle"></i>
                                 </button>
                             </div>
                         </div>
@@ -190,7 +190,7 @@
                     </thead>
 
                     <tbody>
-                    <tr class="row-click" toggle="observation.showComment"
+                    <tr class="row-click"
                         ng-repeat-start="observation in observationGroup.groupMembers"
                         ng-class="{true: 'is-abnormal'}[observation.abnormalObs.value]">
                         <td class="name">
@@ -198,6 +198,9 @@
                         </td>
                         <td class="value has-toggle-btn" data-ng-switch="observation.concept.conceptClass">
                             <img data-ng-switch-when="Image" ng-src="{{observation.value|thumbnail}}" width="100">
+                            <span data-ng-switch-when="Unknown" class="obs-value">
+                                {{::(observation.concept.shortName || observation.concept.name)}}
+                            </span>
                             <span data-ng-switch-default class="obs-value"><pre class="chief-notes">{{observation | observationValue}} {{observation.concept.units}}</pre></span>
 
                             <div class="footer-note">
@@ -209,7 +212,7 @@
                             </div>
                         </td>
                         <td class="toggle-btn">
-                            <button class="toggle fr" ng-if="observation.comment"
+                            <button class="toggle fr" ng-if="observation.comment" toggle="observation.showComment"
                                     ng-class="{'has-notes': observation.comment}">
                                 <i class="fa fa-plus-circle" ng-hide="observation.showComment"></i>
                                 <i class="fa fa-minus-circle" ng-show="observation.showComment"></i>
@@ -239,21 +242,21 @@
             </div>
             <ng-include src="'consultation/views/labResults.html'" ng-init="labResults=consultation.labResults"/>
         </section>
-        <section class="block disposition section-grid" ng-if="disposition.code && !disposition.voided">
+        <section class="block disposition section-grid" ng-if="consultation.disposition.code && !consultation.disposition.voided">
             <h2 class="section-title">Disposition</h2>
             <ul class="block-content">
-                <li ng-click="toggle(disposition)">
+                <li>
                     <div class="expander-row row-click">
-                        <span class="disposition-state">{{disposition.conceptName}} <span>on</span> {{disposition.dispositionDateTime | bahmniDateTime }}</span>
-                        <button class="toggle fr" ng-class="{'has-notes': disposition.additionalObs[0].value}">
-                            <i class="fa fa-plus-circle" ng-hide="disposition.show"></i>
-                            <i class="fa fa-minus-circle" ng-show="disposition.show"></i>
+                        <span class="disposition-state">{{consultation.disposition.conceptName}} <span ng-if="consultation.disposition.dispositionDateTime">on</span> {{consultation.disposition.dispositionDateTime | bahmniDateTime }}</span>
+                        <button class="toggle fr" ng-class="{'has-notes': consultation.disposition.additionalObs[0].value}" toggle="disposition.show">
+                            <i class="fa fa-plus-circle"></i>
+                            <i class="fa fa-minus-circle"></i>
                         </button>
                     </div>
                     <div>
                         <div ng-if="disposition.show" class="inline-notes notes" ng-class="{'print-notes': note.value}">
                             <p class="left">
-                                <strong>Disposition Notes: </strong>{{disposition.additionalObs[0].value}}
+                                <strong>Disposition Notes: </strong>{{consultation.disposition.additionalObs[0].value}}
                             </p>
                         </div>
                     </div>

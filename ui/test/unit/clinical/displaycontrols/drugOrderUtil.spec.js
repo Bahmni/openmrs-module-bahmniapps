@@ -130,7 +130,6 @@ describe("DrugOrderUtil", function () {
         });
 
         it("Same date and time objects should be ordered by order number", function () {
-            var date = new Date();
             var treatment1 = sampleTreatment("drug.uuid1", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
             var treatment2 = sampleTreatment("drug.uuid2", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
             var treatment3 = sampleTreatment("drug.uuid3", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
@@ -159,7 +158,6 @@ describe("DrugOrderUtil", function () {
         });
 
         it("Same date and time objects should be ordered by order number asc", function () {
-            var date = new Date();
             var treatment1 = sampleTreatment("drug.uuid1", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
             var treatment2 = sampleTreatment("drug.uuid2", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);
             var treatment3 = sampleTreatment("drug.uuid3", "instructions", 1, "doseUnits", "frequency", "route", undefined, new Date(), 3, "Day(s)", "addn2", true);

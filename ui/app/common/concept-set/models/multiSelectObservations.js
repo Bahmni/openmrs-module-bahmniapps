@@ -1,42 +1,41 @@
 'use strict';
 
-Bahmni.ConceptSet.MultiSelectObservations = function(conceptSetConfig) {
+Bahmni.ConceptSet.MultiSelectObservations = function (conceptSetConfig) {
     var self = this;
     this.multiSelectObservationsMap = {};
 
-    this.map = function(memberOfCollection) {
-        memberOfCollection.forEach(function(member) {
-            if(isMultiSelectable(member.concept, conceptSetConfig)) {
+    this.map = function (memberOfCollection) {
+        memberOfCollection.forEach(function (member) {
+            if (isMultiSelectable(member.concept, conceptSetConfig)) {
                 add(member.concept, member, memberOfCollection);
             }
         });
         insertMultiSelectObsInExistingOrder(memberOfCollection);
     };
 
-    var isMultiSelectable = function(concept, conceptSetConfig) {
+    var isMultiSelectable = function (concept, conceptSetConfig) {
         return conceptSetConfig[concept.name] && conceptSetConfig[concept.name].multiSelect;
     };
 
-    var insertMultiSelectObsInExistingOrder = function(memberOfCollection) {
-        getAll().forEach(function(multiObs){
-            var index = _.findIndex(memberOfCollection, function(member){
+    var insertMultiSelectObsInExistingOrder = function (memberOfCollection) {
+        getAll().forEach(function (multiObs) {
+            var index = _.findIndex(memberOfCollection, function (member) {
                 return member.concept.name === multiObs.concept.name;
             });
             memberOfCollection.splice(index, 0, multiObs);
         });
     };
 
-    var add = function(concept, obs, memberOfCollection) {
-        var concept_name = concept.name.name || concept.name;
-        self.multiSelectObservationsMap[concept_name] = self.multiSelectObservationsMap[concept_name] ||  new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
-        self.multiSelectObservationsMap[concept_name].add(obs);
+    var add = function (concept, obs, memberOfCollection) {
+        var conceptName = concept.name.name || concept.name;
+        self.multiSelectObservationsMap[conceptName] = self.multiSelectObservationsMap[conceptName] || new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
+        self.multiSelectObservationsMap[conceptName].add(obs);
     };
 
-    var getAll = function() {
+    var getAll = function () {
         return _.values(self.multiSelectObservationsMap);
     };
 };
-
 
 Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection, conceptSetConfig) {
     var self = this;
@@ -48,25 +47,28 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     this.groupMembers = [];
     this.provider = null;
     this.observationDateTime = "";
+    this.conceptUIConfig = conceptSetConfig[this.concept.name] || {};
 
-    this.possibleAnswers = self.concept.answers.map(function(answer) {
+    this.possibleAnswers = self.concept.answers.map(function (answer) {
         var cloned = _.cloneDeep(answer);
-        if(answer.name.name) {
+        if (answer.name.name) {
             cloned.name = answer.name.name;
         }
         return cloned;
     });
 
-    this.getPossibleAnswers = function() {
+    this.getPossibleAnswers = function () {
         return this.possibleAnswers;
     };
 
-    this.cloneNew = function() {
-        return new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
+    this.cloneNew = function () {
+        var clone = new Bahmni.ConceptSet.MultiSelectObservation(concept, memberOfCollection, conceptSetConfig);
+        clone.disabled = this.disabled;
+        return clone;
     };
 
-    this.add = function(obs){
-        if(obs.value) {
+    this.add = function (obs) {
+        if (obs.value) {
             self.selectedObs[obs.value.name] = obs;
 
             if (!self.provider) {
@@ -80,7 +82,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         obs.hidden = true;
     };
 
-    this.isComputedAndEditable = function() {
+    this.isComputedAndEditable = function () {
         return this.concept.conceptClass === "Computed/Editable";
     };
 
@@ -88,7 +90,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         return self.selectedObs[answer.name] && !self.selectedObs[answer.name].voided;
     };
 
-    this.toggleSelection = function(answer) {
+    this.toggleSelection = function (answer) {
         if (self.hasValueOf(answer)) {
             unselectAnswer(answer);
         } else {
@@ -96,42 +98,46 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         }
     };
 
-    this.isFormElement = function(){
+    this.isFormElement = function () {
         return true;
     };
 
-    this.getControlType = function(){
+    this.getControlType = function () {
+        var conceptConfig = this.getConceptUIConfig();
+        if (this.isCoded() && conceptConfig.autocomplete == true && conceptConfig.multiSelect == true) { return "autocompleteMultiSelect"; } else if (conceptConfig.autocomplete == true) {
+            return "autocomplete";
+        }
         return "buttonselect";
     };
 
-    this.atLeastOneValueSet = function() {
-        var obsValue = _.filter(this.selectedObs, function(obs){
+    this.atLeastOneValueSet = function () {
+        var obsValue = _.filter(this.selectedObs, function (obs) {
             return obs.value;
         });
         return !_.isEmpty(obsValue);
     };
 
-    this.hasValue = function() {
+    this.hasValue = function () {
         return !_.isEmpty(this.selectedObs);
     };
 
-    this.hasNonVoidedValue = function() {
+    this.hasNonVoidedValue = function () {
         var hasNonVoidedValue = false;
-        if(this.hasValue()) {
+        if (this.hasValue()) {
             angular.forEach(this.selectedObs, function (obs) {
-                if(!obs.voided) {
+                if (!obs.voided) {
                     hasNonVoidedValue = true;
                 }
             });
         }
         return hasNonVoidedValue;
-    }
+    };
 
     this.isValid = function (checkRequiredFields, conceptSetRequired) {
-        if(this.error) {
+        if (this.error) {
             return false;
         }
-        if(checkRequiredFields) {
+        if (checkRequiredFields) {
             if (conceptSetRequired && this.isRequired() && !this.hasNonVoidedValue()) {
                 return false;
             }
@@ -142,39 +148,40 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         return true;
     };
 
-    this.canHaveComment = function() {
+    this.canHaveComment = function () {
         return false;
     };
 
-    this.getConceptUIConfig = function() {
-        return conceptSetConfig[this.concept.name] || {};
+    this.getConceptUIConfig = function () {
+        return this.conceptUIConfig || {};
     };
 
-    this.canAddMore = function() {
+    this.canAddMore = function () {
         return this.getConceptUIConfig().allowAddMore == true;
     };
 
     this.isRequired = function () {
-        return this.getConceptUIConfig().required;
+        this.disabled = this.disabled ? this.disabled : false;
+        return this.getConceptUIConfig().required === true && this.disabled === false;
     };
 
-    var createObsFrom = function(answer) {
+    var createObsFrom = function (answer) {
         var obs = newObservation(concept, answer, conceptSetConfig);
         memberOfCollection.push(obs);
         return obs;
     };
 
-    var removeObsFrom = function(answer) {
+    var removeObsFrom = function (answer) {
         var obs = newObservation(concept, answer, conceptSetConfig);
-        _.remove(memberOfCollection, function(member) {
-            if(member.value){
+        _.remove(memberOfCollection, function (member) {
+            if (member.value) {
                 return obs.value.displayString == member.value.displayString;
             }
             return false;
         });
     };
 
-    this.selectAnswer =  function(answer) {
+    this.selectAnswer = function (answer) {
         var obs = self.selectedObs[answer.name];
         if (obs) {
             obs.value = answer;
@@ -185,17 +192,15 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         }
     };
 
-    var unselectAnswer = function(answer) {
+    var unselectAnswer = function (answer) {
         var obs = self.selectedObs[answer.name];
-        if(obs && obs.uuid) {
+        if (obs && obs.uuid) {
             obs.value = null;
             obs.voided = true;
         } else {
             removeObsFrom(answer);
             delete self.selectedObs[answer.name];
-
         }
-
     };
 
     var newObservation = function (concept, value, conceptSetConfig) {
@@ -203,14 +208,14 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
         return new Bahmni.ConceptSet.Observation(observation, {value: value}, conceptSetConfig, []);
     };
 
-    var buildObservation = function(concept) {
+    var buildObservation = function (concept) {
         return { concept: concept, units: concept.units, label: concept.shortName || concept.name, possibleAnswers: self.concept.answers, groupMembers: [], comment: null};
     };
 
-    this.getValues = function(){
+    this.getValues = function () {
         var values = [];
-        _.values(self.selectedObs).forEach(function(obs){
-            if(obs.value) {
+        _.values(self.selectedObs).forEach(function (obs) {
+            if (obs.value) {
                 values.push(obs.value.shortName || obs.value.name);
             }
         });
@@ -226,7 +231,7 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     };
 
     this._isDateTimeDataType = function () {
-        return "Datetime" === this.getDataTypeName();
+        return this.getDataTypeName() === "Datetime";
     };
 
     this.isNumeric = function () {
@@ -240,5 +245,4 @@ Bahmni.ConceptSet.MultiSelectObservation = function (concept, memberOfCollection
     this.isCoded = function () {
         return this.getDataTypeName() === "Coded";
     };
-
 };

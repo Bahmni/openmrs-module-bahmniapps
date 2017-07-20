@@ -1,0 +1,62 @@
+.error-log-wrapper{
+  table{
+    table-layout: fixed;
+    tr{
+      background: #fff;
+    }
+    th{
+      &:nth-child(1){
+        width: 20%;
+      }
+      &:nth-child(2){
+        width: 10%;
+      }
+      &:nth-child(3){
+        width: 10%;
+      }
+    }
+    td{
+      word-wrap: break-word;
+      .stackTrace{
+        overflow: hidden;
+        max-height: 30px;
+        &.stackTraceMore{
+          overflow: auto;
+          padding-bottom: 15px;
+          max-height: 900px;
+          -webkit-transition: max-height 1.5s ease-in-out;
+          -moz-transition: max-height 1.5s ease-in-out;
+          transition: max-height 1.5s ease-in-out;
+        }
+      }
+      .read-wrap{
+        background: #fff;
+        padding: 9px 0 5px;
+        .read-wrap-ellipse{
+          display: block;
+          text-align: center;
+        }
+      }
+      button.readButton{
+        padding: 2px 10px 3px;
+        background: #fff;
+        font-size: 12px;
+        margin-top: -14px;
+        &:hover{
+          background: #DDD;
+        }
+        .more{
+          display:none;
+        }
+        &.active{
+          .more{
+            display:block;
+          }
+          .less{
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

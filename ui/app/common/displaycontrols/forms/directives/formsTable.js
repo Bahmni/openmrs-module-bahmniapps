@@ -10,11 +10,11 @@ angular.module('bahmni.common.displaycontrol.forms')
                     return conceptSetService.getConcept({
                         name: "All Observation Templates",
                         v: "custom:(setMembers:(display))"
-                    })
+                    });
                 };
 
                 var obsFormData = function () {
-                    return visitFormService.formData($scope.patient.uuid, $scope.section.dashboardParams.maximumNoOfVisits, $scope.section.formGroup, $state.params.enrollment);
+                    return visitFormService.formData($scope.patient.uuid, $scope.section.dashboardConfig.maximumNoOfVisits, $scope.section.formGroup, $state.params.enrollment);
                 };
 
                 var filterFormData = function (formData) {
@@ -35,6 +35,8 @@ angular.module('bahmni.common.displaycontrol.forms')
                 };
 
                 var init = function () {
+                    $scope.noFormFoundMessage = "No Form found for this patient";
+                    $scope.isFormFound = false;
                     return $q.all([getAllObservationTemplates(), obsFormData()]).then(function (results) {
                         $scope.observationTemplates = results[0].data.results[0].setMembers;
                         var sortedFormDataByDate = sortedFormDataByLatestDate(results[1].data.results);
@@ -42,6 +44,11 @@ angular.module('bahmni.common.displaycontrol.forms')
                             $scope.formData = filterFormData(sortedFormDataByDate);
                         } else {
                             $scope.formData = sortedFormDataByDate;
+                        }
+
+                        if ($scope.formData.length == 0) {
+                            $scope.isFormFound = true;
+                            $scope.$emit("no-data-present-event");
                         }
                     });
                 };
@@ -51,23 +58,21 @@ angular.module('bahmni.common.displaycontrol.forms')
                     var displayName = data.concept.displayString;
                     if (concept.names && concept.names.length === 1 && concept.names[0].name != "") {
                         displayName = concept.names[0].name;
-                    }
-                    else if (concept.names && concept.names.length === 2) {
+                    } else if (concept.names && concept.names.length === 2) {
                         var shortName = _.find(concept.names, {conceptNameType: "SHORT"});
                         displayName = shortName && shortName.name ? shortName.name : displayName;
                     }
                     return displayName;
-
                 };
 
-                spinner.forPromise(init());
+                $scope.initialization = init();
 
                 $scope.getEditObsData = function (observation) {
                     return {
                         observation: observation,
                         conceptSetName: observation.concept.displayString,
                         conceptDisplayName: $scope.getDisplayName(observation)
-                    }
+                    };
                 };
                 $scope.shouldPromptBeforeClose = true;
 
@@ -92,9 +97,14 @@ angular.module('bahmni.common.displaycontrol.forms')
                 };
             };
 
+            var link = function ($scope, element) {
+                spinner.forPromise($scope.initialization, element);
+            };
+
             return {
                 restrict: 'E',
                 controller: controller,
+                link: link,
                 templateUrl: "../common/displaycontrols/forms/views/formsTable.html",
                 scope: {
                     section: "=",

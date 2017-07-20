@@ -25,7 +25,6 @@ describe('OrdersMapper', function () {
                 "dateCreated": "2014-03-24T14:38:13.000+0530",
                 "endDate": "2014-04-04T14:38:15.000+0530",
                 "uuid": "2e107fbb-a6f2-4320-bb6d-c62a7928bd11",
-                "doseStrength": null,
                 "dosageForm": "Tablet",
                 "dateChanged": null,
                 "notes": "notes for asprin. Spelling is wrong.",
@@ -149,7 +148,6 @@ describe('OrdersMapper', function () {
     it("should sort tests", function () {
         var firstTestOrder = createOrder("Test1", "2014-03-24T14:38:13.000+0530");
         var secondTestOrder = createOrder("Test2", "2014-03-24T14:38:13.000+0530");
-        var thirdTestOrder = createOrder("Test3", "2014-03-25T14:38:13.000+0530");
         var allTestsAndPanelsConcept = {setMembers:[{name:{name:"Test2"}}, {name:{name:"Test1"}}]};
         var encounterTransactions = [
             {providers: [sampleProvider()], orders: [firstTestOrder, secondTestOrder], observations: []}

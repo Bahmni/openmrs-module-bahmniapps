@@ -15,7 +15,7 @@
     left: auto;
   }
 }
-.capture-photo-btn{
+.capture-photo-btn, .upload-photo-btn {
   position:absolute;
   top:0px;
   left:-56px;
@@ -28,9 +28,22 @@
     left: -58px;
   }
   .btn{
-    background: image-url("photo.png") 2px 3px no-repeat;
     width:40px;
     height:40px;
+    display: block;
+    margin-bottom: 5px;
+    background-position: 2px 3px;
+    background-repeat: no-repeat;
+  }
+  .camera-btn.btn{
+    background-image: image-url("photo.png");
+  }
+  .upload-btn.btn{
+    text-align: center;
+    padding: 0;
+    background: #dddddd;
+    font-size: 17px;
+    width: 43px;
   }
 }
 
@@ -50,7 +63,22 @@
 video{
   display:block;
 }
-.photoCaptureDialog{
+
+.photoCaptureDialog, .photoUploadDialog {
+  .photo-canvas-container{
+    canvas{
+      border:2px solid $white;
+      height:167px;
+      width:175px;
+      background: $lightestGray;
+    }
+  }
+  .row-clear{
+    @include clearfix();
+  }
+}
+
+.photoCaptureDialog {
   .photo-video-container{
     position:relative;
     width:229px;
@@ -77,12 +105,6 @@ video{
     width:188px;
     margin-top:6px;
     margin-left:30px !important;
-    canvas{
-      border:2px solid $white;
-      height:167px;
-      width:175px;
-      background: $lightestGray;
-    }
   }
   .take-photo-btn{
     margin:10px 54px 5px 54px
@@ -90,10 +112,13 @@ video{
   .confirmImage{
     margin:10px 5px 5px 55px;
   }
-  .row-clear{
-    @include clearfix();
-  }
+}
 
+.photoUploadDialog {
+  text-align: center;
+  .fileUpload, .photo-canvas-container, .confirmImage {
+    margin: 10px 5px 5px 5px;
+  }
 }
 
 .non-printable{

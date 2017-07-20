@@ -145,8 +145,26 @@
         }
       }
 
-
     }
 
   }
+}
+
+.medications-orderset-list{
+  .drug-details{
+    margin-bottom: 5px;
+  }
+  .inpage .tabs{
+    .tab{
+      .tab-label{
+        background: white;
+        border-bottom-width: 0;
+        padding-bottom: 11px;
+      }
+    }
+    .inpage-tab-panel{
+      display: inline !important;
+    }
+  }
+
 }

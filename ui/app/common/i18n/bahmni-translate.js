@@ -1,8 +1,20 @@
 'use strict';
 
-angular.module('bahmni.common.i18n',['pascalprecht.translate'])
-    .provider('$bahmniTranslate', $bahmniTranslateProvider).
-    filter('titleTranslate', ['$translate', function ($translate) {
+angular.module('bahmni.common.i18n', ['pascalprecht.translate'])
+    .provider('$bahmniTranslate', ['$translateProvider', function ($translateProvider) {
+        this.init = function (options) {
+            var preferredLanguage = window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
+            $translateProvider.useLoader('mergeLocaleFilesService', options);
+            $translateProvider.useSanitizeValueStrategy('escaped');
+            $translateProvider.preferredLanguage(preferredLanguage);
+            $translateProvider.useLocalStorage();
+        };
+        this.$get = [function () {
+            return $translateProvider;
+        }];
+    }
+    ])
+    .filter('titleTranslate', ['$translate', function ($translate) {
         return function (input) {
             if (!input) {
                 return input;
@@ -22,21 +34,6 @@ angular.module('bahmni.common.i18n',['pascalprecht.translate'])
             if (input.display) {
                 return input.display;
             }
-            return null;
-        }
+            return $translate.instant(input);
+        };
     }]);
-
-function $bahmniTranslateProvider($translateProvider){
-    this.init = function(options){
-        var preferredLanguage = window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
-        $translateProvider.useLoader('mergeLocaleFilesService', options);
-        $translateProvider.useSanitizeValueStrategy('escaped');
-        $translateProvider.preferredLanguage(preferredLanguage);
-        $translateProvider.useLocalStorage();
-    };
-    this.$get = [function () {
-        return $translateProvider;
-    }];
-}
-
-$bahmniTranslateProvider.$inject = ['$translateProvider'];

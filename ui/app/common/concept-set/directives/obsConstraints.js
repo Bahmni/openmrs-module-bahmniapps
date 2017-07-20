@@ -4,11 +4,10 @@ angular.module('bahmni.common.conceptSet')
     .directive('obsConstraints', function () {
         var attributesMap = {'Numeric': 'number', 'Date': 'date', 'Datetime': 'datetime'};
         var link = function ($scope, element) {
-            var attributes = {}, primaryObs;
+            var attributes = {};
             var obsConcept = $scope.obs.concept;
             if (obsConcept.conceptClass == Bahmni.Common.Constants.conceptDetailsClassName) {
-                primaryObs = $scope.obs.getPrimaryObs();
-                obsConcept = primaryObs.concept;
+                obsConcept = $scope.obs.primaryObs.concept;
             }
             attributes['type'] = attributesMap[obsConcept.dataType] || "text";
             if (attributes['type'] === 'number') {
@@ -20,9 +19,9 @@ angular.module('bahmni.common.conceptSet')
             if (obsConcept.lowNormal) {
                 attributes['min'] = obsConcept.lowNormal;
             }
-            if(attributes['type'] == 'date') {
-                if($scope.obs.conceptUIConfig == null || !$scope.obs.conceptUIConfig['allowFutureDates']) {
-                    attributes['max'] = moment().format("YYYY-MM-DD");
+            if (attributes['type'] == 'date') {
+                if ($scope.obs.conceptUIConfig == null || !$scope.obs.conceptUIConfig['allowFutureDates']) {
+                    attributes['max'] = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime();
                 }
             }
             element.attr(attributes);
@@ -34,5 +33,5 @@ angular.module('bahmni.common.conceptSet')
                 obs: '='
             },
             require: 'ngModel'
-        }
+        };
     });

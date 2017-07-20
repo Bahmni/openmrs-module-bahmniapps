@@ -1,16 +1,14 @@
 <header class="template-header">
-    <button class="back-btn" ng-click="close()">
-        <i class="fa fa-arrow-circle-left"></i>
-    </button>
     <h5>
         <i class="fa fa-user"></i>
         <span>{{patient.name}} {{'(' + patient.identifier + ')'}}</span>
     </h5>
-
     <button class="toggle-patient" ng-click="toggleImpression()" ng-if="accessImpression">
         <i class="fa fa-bars fa-white fa-large"></i>
     </button>
-
+    <button class="dialog-close-btn" ng-click="closeThisDialog()">
+        <i class="fa fa-times" aria-hidden="true"></i>
+    </button>
 </header>
 <div class="image-container" ng-class="{'shift': showImpression}">
     <div class="container slider">
@@ -33,8 +31,8 @@
                     </div>
                 </div>
             </div>
-            <span ng-if="album.tag == albumTag" class="arrow prev" ng-click="showPrev()"></span>
-            <span ng-if="album.tag == albumTag" class="arrow next" ng-click="showNext()"></span>
+            <span ng-if="album.tag == albumTag && getTotalLength() > 1" class="arrow prev" ng-click="showPrev()"></span>
+            <span ng-if="album.tag == albumTag && getTotalLength() > 1" class="arrow next" ng-click="showNext()"></span>
 
         </div>
     </div>
@@ -43,15 +41,13 @@
         <div ng-repeat="image in album.images">
 
             <div class="image-bottom-bar" ng-if="isActive($index,album.tag)">
-                <i class="fa fa-file-text-o has-notes" title="has impression" ng-if="hasObsRelationship(image)"></i>
-                <span class="image-provider">{{image.providerName}}</span>
-                <span class="image-date">{{image.date | bahmniDateTime}}</span>
-                <span class="image-index">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
+                <p ng-if="image.commentOnUpload" class="image-preview-notes" ng-class="{'hide': accessImpression}">{{image.commentOnUpload}}</p>
+                <p>
+                    <span class="image-provider">{{image.providerName}}</span>
+                    <span class="image-date">{{image.date | bahmniDateTime}}</span>
+                    <span ng-if="getTotalLength() > 1" class="image-index">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
+                </p>
             </div>
-            <div class="image-desc" ng-if="isActive($index, album.tag) && image.desc"><strong>Comments:</strong>
-                {{image.desc}}
-            </div>
-
         </div>
     </div>
 </div>
@@ -63,6 +59,11 @@
             <span class="image-title">{{image.title}}</span>
         </div>
         <section ng-show="isActive($index,album.tag)">
+            <div ng-if="image.commentOnUpload">
+                <pre class="notes inline-notes"><strong>{{image.providerName}} ({{image.date |
+                    bahmniDate}}):</strong>{{image.commentOnUpload}}</pre>
+            </div>
+
             <ul class="impression">
                 <li ng-repeat="obs in image.sourceObs">
                     <pre class="notes inline-notes"><strong>{{obs.providers[0].name}} ({{obs.observationDateTime |

@@ -3,16 +3,19 @@
 angular.module('bahmni.clinical')
     .directive('buttonsRadio', function () {
         return {
-            restrict:'E',
-            scope:{ model:'=', options:'=', dirtyCheckFlag:'=' },
-            link:function(scope, element, attrs){
-                if(attrs.dirtyCheckFlag){
-                  scope.hasDirtyFlag = true;
-              }
+            restrict: 'E',
+            scope: { model: '=', options: '=', dirtyCheckFlag: '=' },
+            link: function (scope, element, attrs) {
+                if (attrs.dirtyCheckFlag) {
+                    scope.hasDirtyFlag = true;
+                }
             },
-            controller:function ($scope) {
-                if(!($scope.options instanceof Array)) { //in case a string is passed instead of array
-                    $scope.options = $scope.options.split(',');
+            controller: function ($scope) {
+                if (angular.isString($scope.options)) {
+                    $scope.options = $scope.options.split(',').reduce(function (options, item) {
+                        options[item] = item;
+                        return options;
+                    }, {});
                 }
                 $scope.activate = function (option) {
                     if ($scope.model === option) {
@@ -25,10 +28,10 @@ angular.module('bahmni.clinical')
                     }
                 };
             },
-            template:"<button type='button' class='btn' " +
-                "ng-class='{active: option == model}'" +
-                "ng-repeat='option in options' " +
-                "ng-click='activate(option)'><span></span>{{option}} " +
+            template: "<button type='button' class='btn' " +
+                "ng-class='{active: value === model}'" +
+                "ng-repeat='(displayOption,value) in options' " +
+                "ng-click='activate(value)'><span></span>{{displayOption | translate}} " +
                 "</button>"
         };
     });

@@ -86,4 +86,79 @@ describe("ensure that the directive order-selector works properly", function () 
 
         expect(scope.hasTests()).not.toBeNull();
     });
+
+    describe("filterBySearchString",function () {
+        it("should filter tests by fullName, shortName and synonym",function () {
+            scope = rootScope.$new();
+
+            httpBackend.expectGET("./consultation/views/orderSelector.html").respond("<div>dummy</div>");
+
+            compile(html)(scope);
+
+            scope.$digest();
+            httpBackend.flush();
+
+            scope.$digest();
+
+            var test = {
+                names: [
+                    {
+                        name: "fullName"
+                    },
+                    {
+                        name: "shortname"
+                    },
+                    {
+                        name: "synonym"
+                    }
+                ]
+            };
+
+            scope.search = {
+                string: 'full'
+            };
+            expect(scope.filterBySearchString(test)).toBeTruthy();
+
+            scope.search.string = 'short';
+            expect(scope.filterBySearchString(test)).toBeTruthy();
+
+            scope.search.string = 'syno';
+            expect(scope.filterBySearchString(test)).toBeTruthy();
+
+        });
+
+        it("should not filter those tests whose names does not match the search string",function () {
+            scope = rootScope.$new();
+
+            httpBackend.expectGET("./consultation/views/orderSelector.html").respond("<div>dummy</div>");
+
+            compile(html)(scope);
+
+            scope.$digest();
+            httpBackend.flush();
+
+            scope.$digest();
+
+            var test = {
+                names: [
+                    {
+                        name: "fullName"
+                    },
+                    {
+                        name: "shortname"
+                    },
+                    {
+                        name: "synonym"
+                    }
+                ]
+            };
+
+            scope.search = {
+                string: 'random'
+            };
+            expect(scope.filterBySearchString(test)).toBeFalsy();
+        });
+
+    });
+
 });

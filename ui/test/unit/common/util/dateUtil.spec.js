@@ -315,4 +315,31 @@ describe('DateUtil', function () {
            expect(dateUtil.getDateInMonthsAndYears(new Date('2014', '7', '15', '12','30','25'))).toBe('Aug 14');
         });
     });
+
+    describe("formatDateInStrictMode", function(){
+       it("should return date in dd MMM yy format when date with yyyy-MM-dd format is passed", function(){
+          expect(dateUtil.formatDateInStrictMode('2016-02-10')).toBe('10 Feb 16');
+       });
+
+       it("should return date in dd MMM yy format when date with yyyy-MM-ddTHH:mm:ss.SSSZ is passed", function(){
+           expect(dateUtil.formatDateInStrictMode('2016-03-01T10:30:00.000+0530')).toBe(moment('2016-03-01T10:30:00.000+0530').format('DD MMM YY'));
+       });
+
+       it("should return the string if the format does not match yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss.SSSZ", function(){
+           expect(dateUtil.formatDateInStrictMode('10-02-1994')).toBe('10-02-1994');
+
+       })
+
+    });
+
+    describe("getDateTimeInSpecifiedFormat", function(){
+        it("should return the date in the specified format, say \"dddd, MMMM Do YYYY\"", function(){
+            expect(dateUtil.getDateTimeInSpecifiedFormat("2016-06-10T10:36:21.310", "dddd, MMMM Do YYYY")).toBe("Friday, June 10th 2016");
+        })
+
+        it("should return null if date is not passed and say format is \"dddd, MMMM Do YYYY, HH:mm:ss\"", function(){
+            expect(dateUtil.getDateTimeInSpecifiedFormat(undefined, "dddd, MMMM Do YYYY, HH:mm:ss")).toBe(null);
+        })
+
+    });
 });

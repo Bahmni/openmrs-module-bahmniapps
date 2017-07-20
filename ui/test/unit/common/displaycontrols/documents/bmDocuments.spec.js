@@ -60,9 +60,9 @@ describe("Radiology Display Control", function () {
             visitStopDate: "2014-10-02T16:10:11.000+0530"
         }];
 
-        var radiologyRecords = [records_group1, records_group2]
+        var radiologyRecords = [records_group1, records_group2];
 
-        scope.config = {};
+        scope.config = {translationKey: "translationKey"};
         encounterService.getEncountersForEncounterType.and.callFake(function(param1, param2){
             return params[param2];
         });
@@ -76,7 +76,8 @@ describe("Radiology Display Control", function () {
 
     it("should not show active visit star if it is on the visit page", function(){
         scope.config = {
-            visitUuids: ["uuid1"]
+            visitUuids: ["uuid1"],
+            translationKey: "translationKey"
         };
         encounterService.getEncountersForEncounterType.and.callFake(function(param1, param2){
             return params[param2];

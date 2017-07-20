@@ -6,6 +6,10 @@
         <link rel="stylesheet" href="../lib/jquery/jquery-ui-1.10.4.custom.min.css">
         <!-- build:css orders.min.css -->
         <link rel="stylesheet" href="../styles/clinical.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
+
         <!-- endbuild -->
         <title>Orders</title>
     </head>
@@ -25,6 +29,7 @@
         <script src="../components/jquery.cookie/jquery.cookie.js"></script>
         <script src="../components/keyboardjs/dist/keyboard.min.js"></script>
         <script src="../components/angular/angular.min.js"></script>
+        <script src="../components/ng-tags-input/ng-tags-input.min.js"></script>
         <script src="../components/angular-ui-router/release/angular-ui-router.min.js"></script>
 
         <script src="../components/moment/min/moment.min.js"></script>
@@ -44,16 +49,21 @@
         <script src="../components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
         <script src="../components/angular-translate-storage-local/angular-translate-storage-local.min.js"></script>
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
+        <script src="../components/ngDialog/js/ngDialog.min.js"></script>
+        <script src="../components/ng-tags-input/ng-tags-input.min.js"></script>
+        <script src="../lib/angular-workers/dist/angular-workers.js"></script>
 
 
         <!-- build:js orders.min.js -->
         <script src="../common/constants.js"></script>
         <script src="../common/util/init.js"></script>
         <script src="../common/util/arrayUtil.js"></script>
+        <script src="../common/util/stringFormat.js"></script>
         <script src="../common/util/httpErrorInterceptor.js"></script>
 
         <script src="../common/offline/init.js"></script>
         <script src="../common/offline/offlineService.js"></script>
+        <script src="../common/models/init.js"></script>
 
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>
@@ -73,6 +83,11 @@
         <script src="../common/domain/encounterConfig.js"></script>
         <script src="../common/domain/observationFilter.js"></script>
 
+        <script src="../common/logging/init.js"></script>
+        <script src="../common/logging/exceptionHandler.js"></script>
+        <script src="../common/logging/services/loggingService.js"></script>
+        <script src="../common/logging/services/auditLogService.js"></script>
+
         <script src="../common/domain/services/retrospectiveEntryService.js"></script>
         <script src="../common/domain/services/encounterService.js"></script>
         <script src="../common/domain/services/observationsService.js"></script>
@@ -82,6 +97,7 @@
         <script src="../common/domain/services/visitDocumentService.js"></script>
         <script src="../common/domain/services/bedService.js"></script>
         <script src="../common/domain/services/diagnosisService.js"></script>
+        <script src="../common/domain/services/locationService.js"></script>
 
 
         <script src="../common/domain/mappers/providerMapper.js"></script>
@@ -111,6 +127,7 @@
         <script src="../common/concept-set/models/customRepresentationBuilder.js"></script>
         <script src="../common/concept-set/mappers/observationMapper.js"></script>
         <script src="../common/concept-set/services/conceptSetServices.js"></script>
+        <script src="../common/concept-set/services/conceptService.js"></script>
         <script src="../common/concept-set/services/conceptSetUiConfigService.js"></script>
 
         <script src="../common/config/init.js"></script>
@@ -121,6 +138,10 @@
         <script src="../common/patient/services/patientService.js"></script>
         <script src="../common/patient/filters/gender.js"></script>
         <script src="../common/patient/directives/patientSummary.js"></script>
+        <script src="../common/ui-helper/directives/fallbackSrc.js"></script>
+
+        <script src="../common/gallery/init.js"></script>
+        <script src="../common/gallery/directives/galleryPane.js"></script>
 
         <script src="../common/ui-helper/init.js"></script>
         <script src="../common/ui-helper/spinner.js"></script>
@@ -149,12 +170,12 @@
         <script src="../common/ui-helper/controllers/messageController.js"></script>
         <script src="../common/ui-helper/services/messagingService.js"></script>
 
+        <script src="../common/uicontrols/init.js"></script>
+        <script src="../common/uicontrols/concept-dropdown/directives/conceptDropdown.js"></script>
 
         <script src="../common/route-errorhandler/init.js"></script>
         <script src="../common/util/dateUtil.js"></script>
-
-        <script src="../common/logging/init.js"></script>
-        <script src="../common/logging/exceptionHandler.js"></script>
+        <script src="../common/util/dateTimeFormatter.js"></script>
 
         <script src="../common/patient-search/init.js"></script>
         <script src="../common/patient-search/constants.js"></script>
@@ -175,6 +196,8 @@
         <script src="../common/displaycontrols/observation/init.js"></script>
         <script src="../common/displaycontrols/observation/directives/bahmniObservation.js"></script>
         <script src="../common/displaycontrols/observation/helpers/groupingFunctions.js"></script>
+        <script src="../common/displaycontrols/observation/services/formHierarchyBuildService.js"></script>
+        <script src="../common/services/formService.js"></script>
 
         <script src="../common/obs/init.js"></script>
         <script src="../common/obs/directives/showObservation.js"></script>

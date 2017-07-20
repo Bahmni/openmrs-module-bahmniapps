@@ -1,37 +1,35 @@
-<div class="dashboard-chronic-treatment-section dashboard-tabular-obs-section" id="regimen"
+<section class="dashboard-chronic-treatment-section dashboard-tabular-obs-section" id="regimen"
      ng-class="{'noTable' :(regimen.rows.length == 0),'hasTable' :(regimen.rows.length > 0 && section.rotateInPrint)}">
-    <div ng-class="{'rotate':section.rotateInPrint}">
+    <section ng-class="{'rotate':section.rotateInPrint}">
         <h2 ng-if="!isClickable()" class="section-title">{{section | titleTranslate}}</h2>
-
-        <div ng-if="isClickable()" class="dashboard-chronic-treatment-section">
-            <h2 ng-dialog="../common/displaycontrols/chronicTreatmentChart/views/allChronicTreatmentChart.html"
-                ng-dialog-controller="AllChronicTreatmentChartController"
-                ng-dialog-data="{{dialogData}}"
-                ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
-                class="section-title has-link">
-                <span class="title-link"> {{section | titleTranslate}} </span>
-                <i class="fa fa-external-link"></i>
-            </h2>
-        </div>
-
-        <section bindonce="regimen" class="chronic-treatment dashboard-section">
+        <h2 ng-if="isClickable()"
+            ng-dialog="../common/displaycontrols/chronicTreatmentChart/views/allChronicTreatmentChart.html"
+            ng-dialog-controller="AllChronicTreatmentChartController"
+            ng-dialog-data="{{dialogData}}"
+            ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
+            class="section-title has-link">
+            <span class="title-link"> {{section | titleTranslate}} </span>
+            <i class="fa fa-external-link"></i>
+        </h2>
+        <div>
             <div class="placeholder-text" ng-if="regimen.rows.length == 0">
                 <p>{{'NO_DATA_MESSAGE' | translate}}</p>
             </div>
-            <table ng-if="regimen.rows.length > 0">
-                <th ng-if="isMonthNumberRequired()">Month</th>
-                <th>Date</th>
-                <th ng-repeat="header in regimen.headers">{{getAbbreviation(header)}}</th>
-                <tr ng-repeat="row in regimen.rows">
-                    <td ng-if="isMonthNumberRequired()">{{row.month}}</td>
-                    <td>{{row.date | bahmniDate}}</td>
-                    <td ng-repeat="header in regimen.headers" ng-class="{'stopped': row.drugs[header.name] == 'Stop'}">
-                        <span ng-if="row.drugs[header.name] == 'Stop'">{{row.drugs[header.name]}}</span>
-                        <span ng-if="row.drugs[header.name] != 'Stop'">{{ row.drugs[header.name] | decimalFilter}}</span>
-                    </td>
-                </tr>
-            </table>
-        </section>
-    </div>
-
-</div>
+            <section bindonce="regimen" class="chronic-treatment dashboard-section" fixed-first-column>
+                <table ng-if="regimen.rows.length > 0">
+                    <th ng-if="isMonthNumberRequired()">Month</th>
+                    <th>Date</th>
+                    <th ng-repeat="header in regimen.headers">{{getAbbreviation(header)}}</th>
+                    <tr class="regimen-row" ng-repeat="row in regimen.rows">
+                        <td class="current-month" ng-if="isMonthNumberRequired()">{{row.month}}</td>
+                        <td class="regimen-date">{{row.date | bahmniDate}}</td>
+                        <td class="regimen-drug" id="{{(header.name).toValidId()}}" ng-repeat="header in regimen.headers" ng-class="{'stopped': row.drugs[header.name] == 'Stop', 'error': row.drugs[header.name] == 'Error'}">
+                            <span ng-if="row.drugs[header.name] == 'Stop'">{{row.drugs[header.name]}}</span>
+                            <span ng-if="row.drugs[header.name] != 'Stop'">{{ row.drugs[header.name] | decimalFilter}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </section>
+        </div>
+    </section>
+</section>

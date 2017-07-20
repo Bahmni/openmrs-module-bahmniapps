@@ -9,7 +9,7 @@
             concept: concept,
             uuid: concept.uuid,
             name: conceptName
-        }
+        };
     };
 
     var find = function (allAnswers, savedAnswer) {
@@ -27,15 +27,15 @@
                 $scope.answers = answers;
                 $scope.selectedAnswer = find(answers, $scope.selectedAnswer);
             };
-            if (!$scope.codedConceptName && $scope.defaultConcept) {
+            if (!$scope.answersConceptName && $scope.defaultConcept) {
                 conceptService.getAnswers($scope.defaultConcept).then(function (results) {
                     return _.map(results, constructSearchResult);
                 }).then(response);
                 return;
             }
 
-            conceptService.getConceptByQuestion({
-                codedConceptName: $scope.codedConceptName
+            conceptService.getAnswersForConceptName({
+                answersConceptName: $scope.answersConceptName
             }).then(function (results) {
                 return _.map(results, constructSearchResult);
             }).then(response);
@@ -46,14 +46,15 @@
             restrict: 'E',
             scope: {
                 selectedAnswer: '=model',
-                codedConceptName: '=?',
+                answersConceptName: '=?',
                 defaultConcept: '=',
                 onChange: '&',
                 onInvalidClass: '@',
-                isValid: '='
+                isValid: '=',
+                ngDisabled: '='
             },
             templateUrl: '../common/uicontrols/concept-dropdown/views/conceptDropdown.html'
-        }
+        };
     };
 
     conceptDropdown.$inject = toBeInjected;

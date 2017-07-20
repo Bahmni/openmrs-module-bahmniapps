@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitHeaderController', ['$rootScope', '$scope', '$state', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'visitConfig', 'contextChangeHandler', '$location', '$stateParams',
-        function ($rootScope, $scope, $state, clinicalAppConfigService, patientContext, visitHistory, visitConfig, contextChangeHandler, $location, $stateParams) {
+    .controller('VisitHeaderController', ['$rootScope', '$scope', '$state', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'visitConfig', 'contextChangeHandler', '$location', '$stateParams', 'urlHelper',
+        function ($rootScope, $scope, $state, clinicalAppConfigService, patientContext, visitHistory, visitConfig, contextChangeHandler, $location, $stateParams, urlHelper) {
             $scope.patient = patientContext.patient;
             $scope.visitHistory = visitHistory;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
@@ -15,9 +15,27 @@ angular.module('bahmni.clinical')
             };
 
             $scope.gotoPatientDashboard = function () {
-                if(contextChangeHandler.execute()["allow"]) {
-                    $location.path($stateParams.configName+"/patient/" + patientContext.patient.uuid + "/dashboard");
+                if (contextChangeHandler.execute()["allow"]) {
+                    $location.path($stateParams.configName + "/patient/" + patientContext.patient.uuid + "/dashboard");
                 }
+            };
+
+            $scope.openConsultation = function () {
+                var board = clinicalAppConfigService.getAllConsultationBoards()[0];
+                var urlPrefix = urlHelper.getPatientUrl();
+                $scope.collapseControlPanel();
+                $rootScope.hasVisitedConsultation = true;
+                var url = "/" + $stateParams.configName + (board.url ? urlPrefix + "/" + board.url : urlPrefix);
+                var extensionParams = board.extensionParams;
+                var queryParams = [];
+                angular.forEach(extensionParams, function (extensionParamValue, extensionParamKey) {
+                    queryParams.push(extensionParamKey + "=" + extensionParamValue);
+                });
+                if (!_.isEmpty(queryParams)) {
+                    url = url + "?" + queryParams.join("&");
+                }
+
+                $location.url(url);
             };
 
             $scope.closeTab = function (tab) {
@@ -29,7 +47,7 @@ angular.module('bahmni.clinical')
                 $rootScope.$broadcast("event:printVisitTab", $scope.visitTabConfig.currentTab);
             };
 
-            $scope.showPrint = function(){
+            $scope.showPrint = function () {
                 return $scope.visitTabConfig.showPrint();
-            }
+            };
         }]);

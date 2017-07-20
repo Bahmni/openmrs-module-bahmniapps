@@ -39,6 +39,8 @@
         <script src="../components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
         <script src="../components/angular-translate-storage-local/angular-translate-storage-local.min.js"></script>
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
+        <script src="../components/ngDialog/js/ngDialog.min.js"></script>
+        <script src="../lib/angular-workers/dist/angular-workers.js"></script>
 
         <!-- build:js admin.min.js -->
         <script src="../common/constants.js"></script>
@@ -53,6 +55,7 @@
 
         <script src="../common/offline/init.js"></script>
         <script src="../common/offline/offlineService.js"></script>
+        <script src="../common/models/init.js"></script>
 
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>
@@ -80,22 +83,39 @@
 
         <script src="../common/domain/init.js"></script>
         <script src="../common/domain/mappers/observationValueMapper.js"></script>
+        <script src="../common/domain/services/configurationService.js"></script>
 
         <script src="../common/logging/init.js"></script>
         <script src="../common/logging/exceptionHandler.js"></script>
+        <script src="../common/logging/services/loggingService.js"></script>
+        <script src="../common/logging/services/auditLogService.js"></script>
 
         <script src="../common/i18n/init.js"></script>
         <script src="../common/i18n/bahmni-translate.js"></script>
         <script src="../common/i18n/services/mergeLocaleFilesService.js"></script>
 
+        <script src="../common/services/init.js"></script>
+        <script src="../common/services/drugService.js"></script>
+        <script src="../common/ui-helper/directives/singleSubmit.js"></script>
+
+
         <script src="init.js"></script>
         <script src="initialization.js"></script>
         <script src="app.js"></script>
         <script src="models/importedItem.js"></script>
+        <script src="models/orderSet.js"></script>
         <script src="controllers/csvUploadController.js"></script>
         <script src="controllers/csvExportController.js"></script>
+        <script src="controllers/auditLogController.js"></script>
+        <script src="controllers/orderSetDashboardController.js"></script>
+        <script src="controllers/orderSetController.js"></script>
+        <script src="controllers/orderTemplateController.js"></script>
         <script src="controllers/adminDashboardController.js"></script>
         <script src="services/adminImportService.js"></script>
+        <script src="services/adminOrderSetService.js"></script>
+
+        <script src="../common/orders/init.js"></script>
+        <script src="../common/orders/services/orderTypeService.js"></script>
         <!-- endbuild -->
     </body>
 

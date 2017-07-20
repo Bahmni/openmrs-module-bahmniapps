@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('bahmni.common.offline').service('offlineService', ['$rootScope', '$bahmniCookieStore', function ($rootScope, $bahmniCookieStore) {
-
     this.getAppPlatform = function () {
         return $bahmniCookieStore.get(Bahmni.Common.Constants.platform);
     };
@@ -15,11 +14,11 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
     };
 
     this.isAndroidApp = function () {
-        return this.getAppPlatform() === Bahmni.Common.Constants.platformType.android
+        return this.getAppPlatform() === Bahmni.Common.Constants.platformType.android;
     };
 
     this.isChromeApp = function () {
-        return this.getAppPlatform() === Bahmni.Common.Constants.platformType.chromeApp
+        return this.getAppPlatform() === Bahmni.Common.Constants.platformType.chromeApp;
     };
 
     this.isChromeBrowser = function () {
@@ -36,7 +35,6 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
     this.setItem = function (key, value) {
         localStorage.setItem(key, JSON.stringify(value));
     };
-
     this.getItem = function (key) {
         var value = localStorage.getItem(key);
         if (value) {
@@ -46,8 +44,12 @@ angular.module('bahmni.common.offline').service('offlineService', ['$rootScope',
     };
 
     this.validateLoginInfo = function (loginInfo) {
-        return (this.getItem(Bahmni.Common.Constants.LoginInformation)['username'] === loginInfo.username &&
+        var username = this.getItem(Bahmni.Common.Constants.LoginInformation)['username'] || '';
+        return (username.toLowerCase() === loginInfo.username.toLowerCase() &&
         JSON.stringify(this.getItem(Bahmni.Common.Constants.LoginInformation)['password']) === JSON.stringify(CryptoJS.SHA3(loginInfo.password)));
     };
 
+    this.setSchedulerStatus = function (stage) {
+        $rootScope.$broadcast("schedulerStage", stage);
+    };
 }]);

@@ -1,14 +1,14 @@
 <html>
 <head>
-    <link rel="stylesheet" href="../styles/clinicalPrint.css" media="all"/>
+    <link rel="stylesheet" href="../styles/clinicalPrint.css" media="print"/>
 </head>
 <body>
     <div class="print-wrapper print-patient-summary">
         <div class="print-header">
             <h1>
-                <img ng-if="clinicalDashboardConfig.getPrintConfigForCurrentTab().logo" class="logo" src="{{clinicalDashboardConfig.getPrintConfigForCurrentTab().logo}}" alt="logo">
-                {{clinicalDashboardConfig.getPrintConfigForCurrentTab().title}}</h1>
-            <h2>{{clinicalDashboardConfig.getPrintConfigForCurrentTab().header}}</h2>
+                <img ng-if="tabBeingPrinted.printing.logo" class="logo" ng-src="{{tabBeingPrinted.printing.logo}}" alt="logo">
+                {{tabBeingPrinted.printing.title}}</h1>
+            <h2>{{tabBeingPrinted.printing.header}}</h2>
         </div>
         <div ng-include="currentDashboardTemplateUrl"></div>
     </div>

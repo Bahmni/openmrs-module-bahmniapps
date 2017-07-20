@@ -1,33 +1,32 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .directive('bmPopOver', function(){
-        var controller = function($scope) {
+    .directive('bmPopOver', function () {
+        var controller = function ($scope) {
             $scope.targetElements = [];
 
-            var hideTargetElements = function() {
-                $scope.targetElements.forEach(function(el) { el.hide(); } );
+            var hideTargetElements = function () {
+                $scope.targetElements.forEach(function (el) { el.hide(); });
             };
 
-            var showTargetElements = function() {
-                $scope.targetElements.forEach(function(el) { el.show(); } );
+            var showTargetElements = function () {
+                $scope.targetElements.forEach(function (el) { el.show(); });
             };
 
-            this.registerTriggerElement = function(triggerElement) {
+            this.registerTriggerElement = function (triggerElement) {
                 $scope.triggerElement = triggerElement;
 
-                var docClickHandler = function() {
+                var docClickHandler = function () {
                     if (!$scope.autoclose) {
                         return;
                     }
-
                     hideTargetElements();
                     $scope.isTargetOpen = false;
                     $(document).off('click', docClickHandler);
                 };
 
-                $scope.triggerElement.on('click', function(event) {
-                    if($scope.isTargetOpen) {
+                $scope.triggerElement.on('click', function (event) {
+                    if ($scope.isTargetOpen) {
                         $scope.isTargetOpen = false;
                         hideTargetElements(0);
                         $(document).off('click', docClickHandler);
@@ -38,17 +37,27 @@ angular.module('bahmni.common.uiHelper')
                         event.stopImmediatePropagation();
                     }
                 });
+
+                $scope.$on('$destroy', function () {
+                    $(document).off('click', docClickHandler);
+                });
             };
 
-            this.registerTargetElement = function(targetElement) {
+            this.registerTargetElement = function (targetElement) {
                 targetElement.hide();
                 $scope.targetElements.push(targetElement);
             };
-            $(document).on('click','.reg-wrapper', function () {
+            var hideOrShowTargetElements = function () {
                 if ($scope.isTargetOpen) {
                     $scope.isTargetOpen = false;
                     hideTargetElements(0);
                 }
+            };
+
+            $(document).on('click', '.reg-wrapper', hideOrShowTargetElements);
+
+            $scope.$on('$destroy', function () {
+                $(document).off('click', '.reg-wrapper', hideOrShowTargetElements);
             });
         };
 
@@ -60,8 +69,8 @@ angular.module('bahmni.common.uiHelper')
             }
         };
     })
-    .directive('bmPopOverTarget', function(){
-        var link = function($scope, element, attrs, popOverController) {
+    .directive('bmPopOverTarget', function () {
+        var link = function ($scope, element, attrs, popOverController) {
             popOverController.registerTargetElement(element);
         };
 
@@ -69,10 +78,10 @@ angular.module('bahmni.common.uiHelper')
             restrict: 'A',
             require: '^bmPopOver',
             link: link
-        }
+        };
     })
-    .directive('bmPopOverTrigger', function(){
-        var link = function($scope, element, attrs, popOverController) {
+    .directive('bmPopOverTrigger', function () {
+        var link = function ($scope, element, attrs, popOverController) {
             popOverController.registerTriggerElement(element);
         };
 
@@ -80,5 +89,5 @@ angular.module('bahmni.common.uiHelper')
             restrict: 'A',
             require: '^bmPopOver',
             link: link
-        }
+        };
     });

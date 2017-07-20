@@ -1,0 +1,41 @@
+<form class="clearfix">
+    <input type="text" ng-model="searchString" ng-change="search()" autofocus="autofocus" placeholder="{{::'REPORTS_SEARCH_PLACEHOLDER' | translate }}" class="fr"/>
+</form>
+    <div class="reports-page">
+    <section class="section-grid">
+        <h2 class="section-title">{{::'REPORTS_QUEUE' | translate}}</h2>
+        <table class="alt-row form">
+            <tbody ng-repeat="day in days" ng-hide="day.hidden">
+            <tr>
+                <td class="report-sort-date">{{ convertToDate(day.unixTimeStamp, "MMMM Do YYYY, dddd") }}</td>
+            </tr>
+            <tr>
+                <th>{{::'REPORTS_NAME_HEADER_KEY' | translate }}</th>
+                <th>{{::'REPORT_REQUEST_TIME' | translate }}</th>
+                <th>{{::'REPORTS_START_DATE_HEADER_KEY' | translate }}</th>
+                <th>{{::'REPORTS_END_DATE_HEADER_KEY' | translate }}</th>
+                <th>{{::'REPORT_FORMAT_KEY' | translate }}</th>
+                <th>{{::'REPORT_STATUS' | translate }}</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="report in reports[day.unixTimeStamp]" ng-hide="report.hidden">
+                <td>{{:: report.name }}</td>
+                <td>{{ :: convertToDate(report.requestDatetime , 'hh:mm A')}}</td>
+                <td>{{ :: convertToDate(report.startDate , "DD MMM YY")}}</td>
+                <td>{{ :: convertToDate(report.endDate , "DD MMM YY")}}</td>
+                <td> {{ :: getFormat(report.format) }}</td>
+                <td ng-if="report.status != 'Completed' && report.status != 'Error'" class="reportStatus reportStatus--{{report.status}}">{{ report.status }}</td>
+                <td ng-if="report.status == 'Completed'" class="reportStatus reportStatus--link">
+                    <a target="_blank" ng-href="{{ getDownloadLink(report) }}">{{"REPORT_DOWNLOAD" | translate}}</a>
+                </td>
+                <td ng-if="report.status == 'Error'" class="reportStatus reportStatus--error" >
+                    <a ng-click="displayErrorPopup(report)">{{ "REPORT_ERROR" | translate }}</a>
+                </td>
+                <td>
+                    <button ng-confirm-click="delete(report, day)" ng-if="report.status != 'Processing'" confirm-message="{{:: 'REPORT_DELETE_DIALOG' | translate }}" class="delete-report"><i class="fa fa-remove"></i></button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>

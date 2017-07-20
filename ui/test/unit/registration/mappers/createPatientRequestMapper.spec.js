@@ -1,28 +1,89 @@
 'use strict';
 
-describe('patient mapper', function () {
+describe('CreatePatientRequestMapper', function () {
 
     var patient;
     var patientAttributeTypes;
+    var identifiersMock, identifierDetails;
     var date = new Date();
 
     beforeEach(function () {
         module('bahmni.registration');
         module('bahmni.common.models');
+        module(function($provide){
+            identifiersMock = jasmine.createSpyObj('identifiers', ['create']);
+            identifierDetails = {
+                primaryIdentifier: {
+                    identifierType: {
+                        primary: true,
+                        uuid: "identifier-type-uuid",
+                        identifierSources: [{
+                            prefix: "GAN",
+                            uuid: 'dead-cafe'
+                        }, {
+                            prefix: "SEM",
+                            uuid: 'new-cafe'
+                        }]
+                    }
+                },
+                extraIdentifiers: [{
+                    identifierType: {
+                        uuid: 'extra-identifier-type-uuid',
+                        primary: false
+                    }
+                }]
+            };
+            identifiersMock.create.and.returnValue(identifierDetails);
+
+            $provide.value('identifiers', identifiersMock);
+        });
         inject(['patient', function (patientFactory) {
             patient = patientFactory.create();
         }]);
 
         patientAttributeTypes = [
-            {"uuid": "class-uuid", "sortWeight": 2.0, "name": "class", "description": "Caste", "format": "java.lang.String", "answers": []},
-            {"uuid": "caste-uuid", "sortWeight": 2.0, "name": "caste", "description": "Class", "format": "org.openmrs.Concept",
+            {
+                "uuid": "class-uuid",
+                "sortWeight": 2.0,
+                "name": "class",
+                "description": "Caste",
+                "format": "java.lang.String",
+                "answers": []
+            },
+            {
+                "uuid": "caste-uuid",
+                "sortWeight": 2.0,
+                "name": "caste",
+                "description": "Class",
+                "format": "org.openmrs.Concept",
                 "answers": [
                     {"description": "OBC", "conceptId": "10"}
                 ]
             },
-            {"uuid": "education-uuid", "sortWeight": 2.0, "name": "education", "description": "Caste", "format": "java.lang.String", "answers": []},
-            {"uuid": "isUrban-uuid", "sortWeight": 2.0, "name": "isUrban", "description": "isUrban", "format": "java.lang.Boolean", "answers": []},
-            {"uuid": "testDate-uuid", "sortWeight": 2.0, "name": "testDate", "description": "Test Date", "format": "org.openmrs.util.AttributableDate", "answers": []}
+            {
+                "uuid": "education-uuid",
+                "sortWeight": 2.0,
+                "name": "education",
+                "description": "Caste",
+                "format": "java.lang.String",
+                "answers": []
+            },
+            {
+                "uuid": "isUrban-uuid",
+                "sortWeight": 2.0,
+                "name": "isUrban",
+                "description": "isUrban",
+                "format": "java.lang.Boolean",
+                "answers": []
+            },
+            {
+                "uuid": "testDate-uuid",
+                "sortWeight": 2.0,
+                "name": "testDate",
+                "description": "Test Date",
+                "format": "org.openmrs.util.AttributableDate",
+                "answers": []
+            }
         ];
 
     });
@@ -47,7 +108,6 @@ describe('patient mapper', function () {
                 "days": 17
             },
             "gender": "M",
-            "identifier": "GAN200011",
             "registrationDate": moment(date).format(),
             "caste": "10",
             "education": "16",
@@ -57,15 +117,21 @@ describe('patient mapper', function () {
             "healthCenter": "2",
             "primaryRelative": "fathus name",
             "class": "10",
-//            "image": "/patient_images/GAN200011.jpeg?q=1379938731779",
             "givenNameLocal": "fhindi",
             "familyNameLocal": "lhindi",
             "secondaryIdentifier": "sec id",
             "isNew": "true",
-            "isUrban":false,
+            "isUrban": false,
             "dead": true,
             "testDate": "Fri Jan 01 1999 00:00:00"
         });
+
+        _.assign(patient.primaryIdentifier, { identifier: "GAN200011",
+            selectedIdentifierSource: {"prefix": "GAN", "uuid": "dead-cafe"},
+            preferred: true,
+            voided: false
+        });
+        _.assign(patient.extraIdentifiers[0], {identifier: "GAN200012", preferred: false, voided: false});
 
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(new Date()).mapFromPatient(patientAttributeTypes, patient);
 
@@ -74,7 +140,8 @@ describe('patient mapper', function () {
                 givenName: "gname",
                 familyName: "fname",
                 middleName: undefined,
-                "preferred": false
+                "preferred": false,
+                display: "gname fname"
             }
         ]);
 
@@ -97,16 +164,28 @@ describe('patient mapper', function () {
 
         expect(openmrsPatient.patient.person.causeOfDeath).toBe('');
 
-        expect(openmrsPatient.patient.identifiers).toEqual([
+        expect(openmrsPatient.patient.identifiers.length).toBe(2);
+
+        expect(openmrsPatient.patient.identifiers).toContain(
             {
                 "identifier": "GAN200011",
-                "identifierType": {
-                    "name": "Bahmni Id"
-                },
+                "identifierSourceUuid" : "dead-cafe",
+                "identifierPrefix": "GAN",
+                "identifierType": "identifier-type-uuid",
                 "preferred": true,
                 "voided": false
+            });
+
+        expect(openmrsPatient.patient.identifiers).toContain(
+            {
+                "identifier": "GAN200012",
+                "identifierSourceUuid": undefined,
+                "identifierPrefix": undefined,
+                "identifierType": "extra-identifier-type-uuid",
+                "preferred": false,
+                "voided": false
             }
-        ]);
+        );
 
         expect(openmrsPatient.patient.person.personDateCreated).toBe(moment(date).format());
     });
@@ -123,7 +202,7 @@ describe('patient mapper', function () {
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(date).mapFromPatient(patientAttributeTypes, patient);
         var dob = moment();
         dob = dob.subtract(7, 'days').subtract(1, 'months').subtract(1, 'years');
-        expect(openmrsPatient.patient.person.birthdate).toBe(dob.format("YYYY-MM-DD"));
+        expect(moment(openmrsPatient.patient.person.birthdate).format('YYYY-MM-DD')).toBe(dob.format('YYYY-MM-DD'));
     });
 
     it('should map birthdate to age and birthdate', function () {
@@ -134,7 +213,7 @@ describe('patient mapper', function () {
 
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(date).mapFromPatient(patientAttributeTypes, patient);
 
-        expect(openmrsPatient.patient.person.birthdate).toBe(moment(date).format("YYYY-MM-DD"));
+        expect(moment(openmrsPatient.patient.person.birthdate).format('YYYY-MM-DD')).toBe(moment(date).format("YYYY-MM-DD"));
     });
 
     it('should not use age when birthdate is present', function () {
@@ -150,7 +229,7 @@ describe('patient mapper', function () {
 
         var openmrsPatient = new Bahmni.Registration.CreatePatientRequestMapper(new Date('2013-09-23')).mapFromPatient(patientAttributeTypes, patient);
 
-        expect(openmrsPatient.patient.person.birthdate).toBe(moment(date).format("YYYY-MM-DD"));
+        expect(moment(openmrsPatient.patient.person.birthdate).format('YYYY-MM-DD')).toBe(moment(date).format("YYYY-MM-DD"));
         expect(openmrsPatient.patient.person.birthdateEstimated).toBeFalsy();
     });
 

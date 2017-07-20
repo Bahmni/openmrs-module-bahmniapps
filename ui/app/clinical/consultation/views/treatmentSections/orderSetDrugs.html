@@ -1,0 +1,31 @@
+<section class="medications-orderset-list" ng-if="allOrderedSets.length > 0">
+    <div class="inpage">
+        <div class="tabs">
+            <div class="tab">
+                <label class="tab-label">
+                    <span>List of Order Sets</span>
+                </label>
+            </div>
+            <div class="inpage-tab-panel">
+                <div class="inpage-tab-content">
+                    <ul class="table-mimic">
+                        <li id="new-drug-orders" ng-repeat="orderSet in allOrderedSets">
+                            <div class="drug-details">
+                                <div class="form">
+                                    <strong class="drug-name">{{orderSet.name}}</strong>
+                                    <span>(</span>
+                                    <span ng-repeat = "orderSetMember in orderSet.orderSetMembers">
+                                        {{orderSetMember.concept.display}}
+                                        <span ng-if="!$last">,</span>
+                                    </span>
+                                    <span>)</span>
+                                    <input type="button" value="Use" ng-click="addOrderSetDrugs(orderSet)"/>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

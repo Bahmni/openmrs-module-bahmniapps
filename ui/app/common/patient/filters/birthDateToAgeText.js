@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-    .filter('birthDateToAgeText', function ($filter, $translate) {
+    .filter('birthDateToAgeText', ['$filter', '$translate', function ($filter, $translate) {
         return function (birthDate) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             if (birthDate) {
@@ -18,7 +18,7 @@ angular.module('bahmni.common.patient')
                 }
                 return ageInString;
             } else {
-                return ""
+                return "";
             }
         };
-    });
+    }]);

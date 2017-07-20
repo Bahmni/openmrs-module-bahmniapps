@@ -1,7 +1,7 @@
 'use strict';
 
 Bahmni.Registration.RegistrationEncounterConfig = (function () {
-    function RegistrationEncounterConfig(conceptData, encounterTypes, visitTypes) {
+    function RegistrationEncounterConfig (conceptData, encounterTypes, visitTypes) {
         this.conceptData = conceptData;
         this.encounterTypes = encounterTypes;
         this.visitTypes = visitTypes;
@@ -18,12 +18,12 @@ Bahmni.Registration.RegistrationEncounterConfig = (function () {
         getDefaultVisitType: function (locationUuid) {
             var visitType = null;
             _.each(this.loginLocationToVisitTypeMap.results, function (result) {
-                if (result.entity.uuid == locationUuid) {
+                if (result.entity.uuid === locationUuid) {
                     visitType = result.mappings[0].name;
                 }
             });
             return visitType;
         }
-    }
+    };
     return RegistrationEncounterConfig;
 })();

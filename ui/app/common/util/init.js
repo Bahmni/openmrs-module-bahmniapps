@@ -1,31 +1,37 @@
 'use strict';
 
-Bahmni = Bahmni || {};
+var Bahmni = Bahmni || {};
 Bahmni.Common = Bahmni.Common || {};
 Bahmni.Common.Util = Bahmni.Common.Util || {};
 
 angular.module('bahmni.common.util', [])
-    .provider('$bahmniCookieStore', [function(){
+    .provider('$bahmniCookieStore', [function () {
         var self = this;
         self.defaultOptions = {};
+        var fixedEncodeURIComponent = function (str) {
+            return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+                return '%' + c.charCodeAt(0).toString(16);
+            });
+        };
 
-        self.setDefaultOptions = function(options){
+        self.setDefaultOptions = function (options) {
             self.defaultOptions = options;
         };
 
-        self.$get = function(){
+        self.$get = function () {
             return {
-                get: function(name){
+                get: function (name) {
                     var jsonCookie = $.cookie(name);
-                    if(jsonCookie){
-                        return angular.fromJson(jsonCookie);
+                    if (jsonCookie) {
+                        return angular.fromJson(decodeURIComponent(jsonCookie));
                     }
                 },
-                put: function(name, value, options){
+                put: function (name, value, options) {
                     options = $.extend({}, self.defaultOptions, options);
-                    $.cookie(name, angular.toJson(value), options);
+                    $.cookie.raw = true;
+                    $.cookie(name, fixedEncodeURIComponent(angular.toJson(value)), options);
                 },
-                remove: function(name, options){
+                remove: function (name, options) {
                     options = $.extend({}, self.defaultOptions, options);
                     $.removeCookie(name, options);
                 }

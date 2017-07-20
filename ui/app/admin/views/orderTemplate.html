@@ -1,0 +1,93 @@
+<div ng-controller="OrderTemplateController">
+    <section class="edit-drug-order">
+        <form name="addForm" bm-form>
+            <div class="clearfix">
+                <div class="form-field">
+                    <div class="field-value">
+                        <input class="enter-concept"
+                               type="text"
+                               name="conceptSetTemplate"
+                               ng-model="orderSetMember.orderTemplate.drug.name"
+                               bahmni-autocomplete
+                               strict-select="true"
+                               on-select="onSelectOfDrug(orderSetMember)"
+                               ng-change="onChange(orderSetMember)"
+                               is-invalid="conceptNameInvalid"
+                               source="getDrugsOf(orderSetMember)"
+                               placeholder="Enter a drug name"/>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <input id="uniform-dose" class="form-field dose" integer="true" type="number" min="0" step="any" placeholder="Dose"
+                               ng-model="orderSetMember.orderTemplate.dosingInstructions.dose" required
+                               ng-disabled="isRuleMode(orderSetMember) && orderSetMember.orderTemplate.dosingInstructions.dosingRule=='customrule'" />
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <select id="uniform-dose-unit" ng-disabled="isRuleMode(orderSetMember)" class="form-field freq-dose-units" ng-model="orderSetMember.orderTemplate.dosingInstructions.doseUnits"
+                                ng-options="item.name as item.name for item in treatmentConfig.doseUnits" required>
+                            <option value="">Choose Unit</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <select id="dosingrule" class="form-field frequency" ng-model="orderSetMember.orderTemplate.dosingInstructions.dosingRule"
+                                ng-options="item as item for item in treatmentConfig.dosingRules" placeholder="Please select a rule">
+                            <option value="">Choose Rule</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <select id="frequency" class="form-field frequency" ng-model="orderSetMember.orderTemplate.dosingInstructions.frequency"
+                                ng-options="item.name as item.name for item in treatmentConfig.frequencies" required placeholder="Please select a frequency">
+                            <option value="">Choose frequency</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="form-field">
+                    <div class="field-value">
+                        <select ng-model="orderSetMember.orderTemplate.administrationInstructions"
+                                ng-options="item.name as item.name for item in treatmentConfig.dosingInstructions">
+                            <option value="">Choose Instruction</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <input type="number" min="1" placeholder="Duration"
+                               ng-model="orderSetMember.orderTemplate.duration" ng-change="treatment.calculateDurationInDays()" required ng-pattern="/^[0-9]+$/"/>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <select ng-model="orderSetMember.orderTemplate.durationUnits"
+                                ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
+                            <option value="">Choose Unit</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <select ng-model="orderSetMember.orderTemplate.dosingInstructions.route"
+                                ng-options="item.name as item.name for item in treatmentConfig.routes" required>
+                            <option value="">Choose Route</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="field-value">
+                        <textarea class="order-set-additionalInstructions" placeholder="Additional Instructions"
+                                  ng-model="orderSetMember.orderTemplate.additionalInstructions">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>

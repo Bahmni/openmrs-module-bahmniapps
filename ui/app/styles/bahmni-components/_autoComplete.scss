@@ -1,0 +1,62 @@
+.autocompleteMultiSelect{
+  width:auto;
+  min-width: 197px;
+  max-width: 807px;
+}
+tags-input{
+  .autocomplete{
+    border: 1px solid #ddd;
+    background: linear-gradient(to bottom, #FFF, #ECECEC);
+    background-color: #ECECEC;
+    .suggestion-item{
+      font: 14px openSans;
+      border-radius: 3px;
+      padding: 4px 10px 5px;
+      display: block;
+      line-height: 1.2em;
+      width:100%;
+      color: #363463;
+      background-color:initial;
+      em{
+        background: none;
+        color: #457FAC;
+      }
+      &.selected{
+        background: #d8d8d8;
+        border: #d0d0d0 1px solid;
+        color: #457FAC;
+        em {
+          background: #d8d8d8;
+          color: #457FAC;
+        }
+      }
+    }
+  }
+  .tags{
+    border-radius:0px;
+    .tag-list{
+      display: inline;
+    }
+    .tag-item{
+      border: 1px solid #ddd;
+      background: linear-gradient(to bottom, #FFF, #DDD);
+      background-color: #DDD;
+      color: #363463;
+      .remove-button{
+        color:#363463;
+      }
+    }
+    &.focused{
+      box-shadow:none;
+      outline: 2px solid #007FFF;
+      background: #FFFDF7;
+    }
+  }
+  &.ng-invalid .tags{
+    box-shadow: none;
+  }
+  .host{
+    margin-top:0;
+    margin-bottom: 0;
+  }
+}

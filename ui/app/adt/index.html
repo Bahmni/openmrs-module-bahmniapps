@@ -50,6 +50,8 @@
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
         <script src="../components/angular-file-upload/dist/angular-file-upload.min.js"></script>
         <script src="../components/ngDialog/js/ngDialog.min.js"></script>
+        <script src="../components/ng-tags-input/ng-tags-input.min.js"></script>
+        <script src="../lib/angular-workers/dist/angular-workers.js"></script>
 
 
         <!-- build:js adt.min.js -->
@@ -80,8 +82,11 @@
         <script src="../common/constants.js"></script>
         <script src="../common/util/init.js"></script>
         <script src="../common/util/dateUtil.js"></script>
+        <script src="../common/util/dateTimeFormatter.js"></script>
         <script src="../common/util/arrayUtil.js"></script>
+        <script src="../common/util/stringFormat.js"></script>
         <script src="../common/util/modernizr.tests.js"></script>
+        <script src="../common/models/init.js"></script>
         <script src="../common/models/visitControl.js"></script>
         <script src="../common/models/visitSummary.js"></script>
 
@@ -92,14 +97,17 @@
         <script src="../common/config/directives/showIfPrivilege.js"></script>
         <script src="../common/patient/filters/gender.js"></script>
         <script src="../common/patient/directives/patientSummary.js"></script>
+        <script src="../common/ui-helper/directives/fallbackSrc.js"></script>
 
         <script src="../common/domain/init.js"></script>
 
         <!-- Mujir/Vikash - to remove -->
         <script src="../common/domain/models/retrospectiveEntry.js"></script>
         <script src="../common/domain/models/diagnosis.js"></script>
+        <script src="../common/domain/models/condition.js"></script>
         <script src="../common/domain/services/retrospectiveEntryService.js"></script>
         <script src="../common/domain/services/diagnosisService.js"></script>
+        <script src="../common/domain/services/conditionsService.js"></script>
 
 
         <script src="../common/domain/services/bedService.js"></script>
@@ -148,15 +156,20 @@
         <script src="../common/ui-helper/directives/focusOn.js"></script>
         <script src="../common/ui-helper/directives/bmShow.js"></script>
         <script src="../common/ui-helper/spinner.js"></script>
+        <script src="../common/ui-helper/printer.js"></script>
+        <script src="../common/ui-helper/directives/toggle.js"></script>
         <script src="../common/ui-helper/filters/thumbnail.js"></script>
         <script src="../common/ui-helper/filters/dateFilters.js"></script>
         <script src="../common/ui-helper/controllers/messageController.js"></script>
         <script src="../common/ui-helper/services/messagingService.js"></script>
         <script src="../common/ui-helper/directives/monthyearpicker.js"></script>
+        <script src="../common/ui-helper/directives/providerDirective.js"></script>
 
 
         <script src="../common/logging/init.js"></script>
         <script src="../common/logging/exceptionHandler.js"></script>
+        <script src="../common/logging/services/loggingService.js"></script>
+        <script src="../common/logging/services/auditLogService.js"></script>
 
         <script src="../common/obs/init.js"></script>
         <script src="../common/obs/models/observation.js"></script>
@@ -168,6 +181,7 @@
 
         <script src="../common/displaycontrols/dashboard/init.js"></script>
         <script src="../common/displaycontrols/dashboard/directives/dashboard.js"></script>
+        <script src="../common/displaycontrols/dashboard/directives/dashboardSection.js"></script>
         <script src="../common/displaycontrols/dashboard/models/dashboard.js"></script>
         <script src="../common/displaycontrols/dashboard/models/dashboardSection.js"></script>
         <script src="../common/displaycontrols/dashboard/controllers/patientDashboardDiagnosisController.js"></script>
@@ -176,9 +190,13 @@
         <script src="../common/displaycontrols/observation/directives/bahmniObservation.js"></script>
         <script src="../common/displaycontrols/observation/controllers/allObservationDetailsController.js"></script>
         <script src="../common/displaycontrols/observation/helpers/groupingFunctions.js"></script>
+        <script src="../common/displaycontrols/observation/services/formHierarchyBuildService.js"></script>
+        <script src="../common/services/formService.js"></script>
+
 
         <script src="../common/displaycontrols/disposition/init.js"></script>
         <script src="../common/displaycontrols/disposition/directives/disposition.js"></script>
+        <script src="../common/displaycontrols/conditionsList/directives/conditionsList.js"></script>
 
         <script src="../common/displaycontrols/admissiondetails/init.js"></script>
         <script src="../common/displaycontrols/admissiondetails/directives/admissionDetails.js"></script>
@@ -210,6 +228,7 @@
         <script src="patientInitialization.js"></script>
         <script src="util/dispositionDisplayUtil.js"></script>
         <script src="controllers/adtController.js"></script>
+        <script src="../common/models/auditLogEventDetails.js"></script>
         <script src="controllers/bedManagementController.js"></script>
         <script src="controllers/wardsController.js"></script>
         <script src="controllers/wardController.js"></script>

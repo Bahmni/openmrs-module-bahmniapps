@@ -105,7 +105,8 @@ describe('Order Service', function () {
             visitUuid:undefined,
             orderUuid:undefined,
             orderTypeUuid:undefined,
-            conceptNames:"someConceptName"
+            conceptNames:"someConceptName",
+            locationUuids : []
         };
         orderService.getOrders(params).then(function() {
             done();
@@ -115,6 +116,30 @@ describe('Order Service', function () {
             includeObs:true,
             numberOfVisits:1,
             concept:"someConceptName"
+        });
+    });
+
+    it("getOrders should make http get request with location uuids when specified", function (done) {
+        var params = {
+            patientUuid:"somePatientUuid",
+            includeObs:true,
+            numberOfVisits:2,
+            obsIgnoreList:undefined,
+            visitUuid:undefined,
+            orderUuid:undefined,
+            orderTypeUuid:undefined,
+            conceptNames:"someConceptName",
+            locationUuids:["uuid1", "uuid2", "uuid3"]
+        };
+        orderService.getOrders(params).then(function() {
+            done();
+        });
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({
+            patientUuid:"somePatientUuid",
+            includeObs:true,
+            numberOfVisits:0,
+            concept:"someConceptName",
+            locationUuids:["uuid1", "uuid2", "uuid3"]
         });
     });
 });

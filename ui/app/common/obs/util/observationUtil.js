@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Common.Obs.ObservationUtil = (function () {
-
     var sortSameConceptsWithObsDateTime = function (observation) {
         var sortedObservations = [];
         for (var i = 0; i < observation.length; i++) {
@@ -31,10 +30,11 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
             return observation.getValues();
         }
         var obsValue;
-        if(observation.value && observation.value.name && observation.value.name.name){
+        if (observation.value && observation.value.name && observation.value.name.name) {
             obsValue = observation.value.name.name;
-        }
-        else{
+        } else if (observation.value && observation.value.name && !observation.value.name.name) {
+            obsValue = observation.value.name;
+        } else {
             obsValue = observation.value;
         }
 
@@ -42,7 +42,7 @@ Bahmni.Common.Obs.ObservationUtil = (function () {
     };
 
     var collect = function (flattenedObservations, key, value) {
-        if (value != undefined){
+        if (value != undefined) {
             flattenedObservations[key] = flattenedObservations[key] ? _.uniq(_.flatten(_.union([flattenedObservations[key]], [value]))) : value;
         }
     };

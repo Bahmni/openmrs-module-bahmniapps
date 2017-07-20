@@ -10,10 +10,11 @@ Bahmni.Common.Obs.ObservationMapper = function () {
 
     var mapObservations = function (bahmniObservations, allConceptsConfig, dontSortByObsDateTime) {
         var mappedObservations = [];
-        if(dontSortByObsDateTime)
+        if (dontSortByObsDateTime) {
             bahmniObservations = _.flatten(bahmniObservations);
-        else
-            bahmniObservations =  Bahmni.Common.Obs.ObservationUtil.sortSameConceptsWithObsDateTime(bahmniObservations);
+        } else {
+            bahmniObservations = Bahmni.Common.Obs.ObservationUtil.sortSameConceptsWithObsDateTime(bahmniObservations);
+        }
         $.each(bahmniObservations, function (i, bahmniObservation) {
             var conceptConfig = allConceptsConfig[bahmniObservation.concept.name] || [];
             var observation = new Bahmni.Common.Obs.Observation(bahmniObservation, conceptConfig);
@@ -33,7 +34,19 @@ Bahmni.Common.Obs.ObservationMapper = function () {
         $.each(groupedObservations, function (i, obsGroup) {
             var conceptConfig = allConceptsConfig[obsGroup[0].concept.name] || [];
             if (conceptConfig.multiSelect) {
-                mappedObservations.push(new Bahmni.Common.Obs.MultiSelectObservation(obsGroup, conceptConfig));
+                var multiSelectObservations = {};
+                $.each(obsGroup, function (i, observation) {
+                    if (multiSelectObservations[observation.encounterDateTime]) {
+                        multiSelectObservations[observation.encounterDateTime].push(observation);
+                    } else {
+                        var observations = [];
+                        observations.push(observation);
+                        multiSelectObservations[observation.encounterDateTime] = observations;
+                    }
+                });
+                $.each(multiSelectObservations, function (i, observations) {
+                    mappedObservations.push(new Bahmni.Common.Obs.MultiSelectObservation(observations, conceptConfig));
+                });
             } else if (conceptConfig.grid) {
                 mappedObservations.push(new Bahmni.Common.Obs.GridObservation(obsGroup[0], conceptConfig));
             } else {
@@ -65,7 +78,5 @@ Bahmni.Common.Obs.ObservationMapper = function () {
             return valueConcept.shortName || valueConcept.name;
         }
         return observation.value.shortName || observation.value.name || observation.value;
-    }
-
-
+    };
 };

@@ -1,8 +1,6 @@
 'use strict';
 
-
 Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observations, conceptSet) {
-    
     var self = this;
 
     self.clone = function () {
@@ -19,16 +17,17 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         conceptName = conceptName ? conceptName.name : conceptName;
         self.label = conceptName || self.conceptName || self.options.conceptName;
         self.isLoaded = self.isOpen;
-        self.collapseInnerSections = false;
+        self.collapseInnerSections = {value: false};
         self.uuid = conceptSet.uuid;
         self.alwaysShow = user.isFavouriteObsTemplate(self.conceptName);
         self.allowAddMore = config.allowAddMore;
+        self.id = "concept-set-" + conceptSet.uuid;
     };
 
     var getShowIfFunction = function () {
         if (!self.showIfFunction) {
             var showIfFunctionStrings = self.options.showIf || ["return true;"];
-            self.showIfFunction = new Function("context", showIfFunctionStrings.join('\n'));
+            self.showIfFunction = new Function("context", showIfFunctionStrings.join('\n')); // eslint-disable-line no-new-func
         }
         return self.showIfFunction;
     };
@@ -37,12 +36,12 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         if (observation.groupMembers && observation.groupMembers.length > 0) {
             return observation.groupMembers.some(function (groupMember) {
                 return atLeastOneValueSet(groupMember);
-            })
+            });
         } else {
-            return observation.value;
+            return !(_.isUndefined(observation.value) || observation.value === "");
         }
     };
-    
+
     self.isAvailable = function (context) {
         return getShowIfFunction()(context || {});
     };
@@ -65,10 +64,10 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         var observations = self.getObservationsForConceptSection();
         return _.some(observations, function (observation) {
             return atLeastOneValueSet(observation);
-        })
+        });
     };
 
-    self.showComputeButton = function (){
+    self.showComputeButton = function () {
         return config.computeDrugs === true;
     };
 
@@ -78,13 +77,17 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
             self.show();
         }
     };
-    self.toggleInnerSections = function(event){
+    self.maximizeInnerSections = function (event) {
         event.stopPropagation();
-        self.collapseInnerSections = !self.collapseInnerSections;
+        self.collapseInnerSections = {value: false};
+    };
+    self.minimizeInnerSections = function (event) {
+        event.stopPropagation();
+        self.collapseInnerSections = {value: true};
     };
 
-    self.toggleDisplay = function() {
-        if(self.isOpen) {
+    self.toggleDisplay = function () {
+        if (self.isOpen) {
             self.hide();
         } else {
             self.show();
@@ -95,8 +98,8 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         return !self.hasSomeValue();
     };
 
-    self.canAddMore = function(){
-        return self.allowAddMore;
+    self.canAddMore = function () {
+        return self.allowAddMore == true;
     };
 
     Object.defineProperty(self, "isOpen", {
@@ -110,6 +113,10 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
             self.open = value;
         }
     });
+
+    self.isDefault = function () {
+        return self.options.default;
+    };
 
     Object.defineProperty(self, "isAdded", {
         get: function () {

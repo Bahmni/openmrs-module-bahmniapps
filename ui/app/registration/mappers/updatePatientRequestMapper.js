@@ -6,7 +6,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
     };
 
     UpdatePatientRequestMapper.prototype.currentDate = undefined;
-    
+
     UpdatePatientRequestMapper.prototype.mapFromPatient = function (patientAttributeTypes, openMRSPatient, patient) {
         var openMRSPatientProfile = {
             patient: {
@@ -17,6 +17,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                             givenName: patient.givenName,
                             middleName: patient.middleName,
                             familyName: patient.familyName,
+                            display: patient.givenName + " " + patient.familyName,
                             "preferred": true
                         }
                     ],
@@ -26,25 +27,40 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                     birthtime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(patient.birthtime),
                     gender: patient.gender,
                     attributes: this.getMrsAttributes(openMRSPatient, patient, patientAttributeTypes),
-                    dead:patient.dead,
+                    dead: patient.dead,
                     deathDate: Bahmni.Common.Util.DateUtil.getDateWithoutTime(patient.deathDate),
-                    causeOfDeath: patient.causeOfDeath != null ? patient.causeOfDeath.uuid : ''
+                    causeOfDeath: patient.causeOfDeath ? patient.causeOfDeath.uuid : ''
                 }
             }
         };
 
+        var allIdentifiers = _.concat(patient.extraIdentifiers, patient.primaryIdentifier);
+        var nonEmptyIdentifiers = _.filter(allIdentifiers, function (identifier) {
+            return identifier.uuid || identifier.identifier;
+        });
+
+        openMRSPatientProfile.patient.identifiers = _.map(nonEmptyIdentifiers, function (identifier) {
+            return {
+                uuid: identifier.uuid,
+                identifier: identifier.identifier,
+                identifierType: identifier.identifierType.uuid,
+                preferred: identifier.preferred,
+                voided: identifier.voided
+            };
+        });
+
         this.setImage(patient, openMRSPatientProfile);
 
-        if(patient.relationships) {
+        if (patient.relationships) {
             openMRSPatientProfile.relationships = patient.relationships;
         }
 
-        return  openMRSPatientProfile;
+        return openMRSPatientProfile;
     };
 
     UpdatePatientRequestMapper.prototype.setImage = function (patient, openMRSPatient) {
         if (patient.getImageData()) {
-            openMRSPatient.image = patient.getImageData()
+            openMRSPatient.image = patient.getImageData();
         }
     };
 
@@ -60,7 +76,6 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                 return attributeType.uuid === attribute.attributeType.uuid;
             })[0];
 
-
             if (savedAttribute) {
                 attr.uuid = savedAttribute.uuid;
                 setAttributeValue(attributeType, attr, patient[savedAttribute.attributeType.display]);
@@ -70,21 +85,17 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
             attributes.push(attr);
         });
         return attributes;
-    };    
+    };
 
     var setAttributeValue = function (attributeType, attr, value) {
-
-        if(value === "" || value === null || value === undefined) {
+        if (value === "" || value === null || value === undefined || value.conceptUuid === null) {
             attr.voided = true;
-        }
-        else if (attributeType.format === "org.openmrs.Concept") {
-            attr.hydratedObject = value;
-        }
-        else if(attributeType.format == "org.openmrs.util.AttributableDate"){
+        } else if (attributeType.format === "org.openmrs.Concept") {
+            attr.hydratedObject = value.conceptUuid;
+        } else if (attributeType.format === "org.openmrs.util.AttributableDate") {
             var mnt = moment(value);
-            attr.value = mnt.format('YYYY-MM-DD');
-        }
-        else {
+            attr.value = mnt.format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
+        } else {
             attr.value = value.toString();
         }
     };
@@ -96,8 +107,8 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
         } else if (age !== undefined) {
             mnt = moment(this.currentDate).subtract('days', age.days).subtract('months', age.months).subtract('years', age.years);
         }
-        return mnt.format('YYYY-MM-DD');
+        return mnt.format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
     };
-    
+
     return UpdatePatientRequestMapper;
 })();

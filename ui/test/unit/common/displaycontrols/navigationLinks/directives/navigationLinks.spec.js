@@ -2,47 +2,11 @@
 
 describe('NavigationalLinks DisplayControl', function () {
     var scope, rootScope, filter, httpBackend, compile, q, compiledScope, appService, compileDirective;
-    var html = '<navigation-links params="section" link-params="{patientUuid: patient.uuid, visitUuid: visitSummary.uuid}"></navigation-links>';
+    var html = '<navigation-links params="section" link-params="linkParams"></navigation-links>';
     var mandatoryConfig = { sections: [{type: "General"}, {type: "Discharge Summary"}] };
+    var linkParams = {patientUuid: "patientUuid", visitUuid: "visitUuid"};
+    var spinner = jasmine.createSpyObj('spinner', ['show', 'hide', 'forPromise']);
 
-    var standardLinks = [
-        {
-            "name": "home",
-            "title":"Home",
-            "url": "../home/#/dashboard",
-            "icon": "H"
-        },
-        {
-            "name": "visit",
-            "url": "../clinical/#/default/patient/{{patientUuid}}/dashboard/visit/{{visitUuid}}/?encounterUuid=active",
-            "title":"Visit",
-            "icon": "V"
-        },
-        {
-            "name": "inpatient",
-            "title":"Inpatient",
-            "url": "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/",
-            "icon": "I"
-        },
-        {
-            "name" :"enrolment",
-            "title":"Enrolment",
-            "url": "../clinical/#/programs/patient/{{patientUuid}}/consultationContext",
-            "icon": "E"
-        },
-        {
-            "name" :"documents",
-            "title":"Documents",
-            "url": "../clinical/#/default/patient/{{patientUuid}}/dashboard",
-            "icon": "D"
-        },
-        {
-            "name" :"visitAttribute",
-            "title":"Visit Attributes",
-            "url": "../clinical/#/programs/patient/{{patientUuid}}/consultationContext",
-            "icon": "A"
-        }
-    ];
     var showLinks = ["home", "visit", "inpatient"];
     var customLinks = [
         {
@@ -59,6 +23,7 @@ describe('NavigationalLinks DisplayControl', function () {
 
     beforeEach(module(function ($provide) {
         $provide.value('appService', appService);
+        $provide.value('spinner', spinner);
     }));
 
     beforeEach(inject(function($filter, $compile, $httpBackend, $rootScope, $q){
@@ -72,9 +37,10 @@ describe('NavigationalLinks DisplayControl', function () {
         q = $q;
 
 
-        compileDirective = function (section) {
+        compileDirective = function (params, linkParams) {
             scope = rootScope.$new();
-            scope.section = section;
+            scope.section = params;
+            scope.linkParams = linkParams;
             httpBackend.expectGET("../common/displaycontrols/navigationlinks/views/navigationLinks.html").respond("<div>dummy</div>");
             var compiledEle = compile(html)(scope);
             scope.$digest();
@@ -86,20 +52,20 @@ describe('NavigationalLinks DisplayControl', function () {
 
 
     it('should get the navigationLinks html', function () {
-        var params = {standardLinks: standardLinks, showLinks: showLinks, customLinks: customLinks};
-        compileDirective(params);
+        var params = {showLinks: showLinks, customLinks: customLinks};
+        compileDirective(params, linkParams);
         expect(compiledScope).not.toBeUndefined();
     });
 
     it('should show url for existing parameters', function () {
-        var params = {standardLinks: standardLinks, showLinks: showLinks, customLinks: customLinks};
-        compileDirective(params);
-        expect(compiledScope.showUrl(standardLinks[0])).toBeTruthy();
+        var params = {showLinks: showLinks, customLinks: customLinks};
+        compileDirective(params, linkParams);
+        expect(compiledScope.showUrl({"url": "../home/#/dashboard"})).toBeTruthy();
     });
 
     it('should not show url for non-existing parameters', function () {
-        var params = {standardLinks: standardLinks, showLinks: showLinks, customLinks: customLinks};
-        compileDirective(params);
+        var params = {showLinks: showLinks, customLinks: customLinks};
+        compileDirective(params, linkParams);
         expect(compiledScope.showUrl({
             "title": "Patient ADT Page",
             "url": "../adt/#/patient/{{patientUuid}}/visit/{{visit}}/"
@@ -107,34 +73,39 @@ describe('NavigationalLinks DisplayControl', function () {
     });
 
     it('should show only links configured under showLinks config', function () {
-        var params = {standardLinks: standardLinks, showLinks: showLinks};
-        compileDirective(params);
+        var params = {showLinks: showLinks};
+        compileDirective(params, linkParams);
         expect(compiledScope.getLinks().length).toBe(showLinks.length);
     });
 
     it('should show only links configured under customLinks config', function () {
-        var params = {standardLinks: standardLinks, customLinks: customLinks};
-        compileDirective(params);
+        var params = {customLinks: customLinks};
+        compileDirective(params, linkParams);
         expect(compiledScope.getLinks().length).toBe(customLinks.length);
     });
 
     it('should show collection of links configured under customLinks and showLinks config', function () {
-        var params = {standardLinks: standardLinks, showLinks: showLinks, customLinks: customLinks};
-        compileDirective(params);
+        var params = {showLinks: showLinks, customLinks: customLinks};
+        compileDirective(params, linkParams);
         expect(compiledScope.getLinks().length).toBe(customLinks.length + showLinks.length);
     });
 
     it('should not show any link if both customLinks and showLinks config are not configured', function () {
-        var params = {standardLinks: standardLinks};
-        compileDirective(params);
+        compileDirective({}, linkParams);
         expect(compiledScope.getLinks().length).toBe(0);
     });
 
     it('should not show any link if both customLinks and showLinks config are not configured', function () {
         showLinks = ["home", "visit", "inpatient"];
-        var params = {standardLinks: standardLinks};
-        compileDirective(params);
+        compileDirective({}, linkParams);
         expect(compiledScope.getLinks().length).toBe(0);
     });
 
+    it('should not show url if the linkParams does not contain visitUuid', function () {
+        var showLinks = ["home", "visit", "registration", "inpatient", "enrolment", "visitAttribute"];
+        var params = {showLinks: showLinks, customLinks: customLinks};
+        var linkParams = {patientUuid: "patientUuid"};
+        compileDirective(params, linkParams);
+        expect(compiledScope.showUrl({url: "../clinical/#/default/patient/{{patientUuid}}/dashboard/visit/{{visitUuid}}/?encounterUuid=active"})).toBeFalsy();
+    });
 });

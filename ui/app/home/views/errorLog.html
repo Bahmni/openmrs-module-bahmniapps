@@ -1,0 +1,41 @@
+<div class="opd-header-wrapper">
+    <div class="opd-header-top">
+        <header class="reg-header">
+            <ul class="top-nav fl">
+                <li><a class="back-btn" accesskey="h" href="../home/index.html"><i class="fa fa-home"></i></a></li>
+            </ul>
+        </header>
+    </div>
+</div>
+<div class="opd-wrapper">
+    <div class="opd-content-wrapper error-log-wrapper">
+        <div ng-if="errorLogs.length==0">No errors present</div>
+        <table ng-if="errorLogs.length>0">
+            <thead>
+            <tr>
+                <th>Request Url</th>
+                <th>Response Status</th>
+                <th>Error Time</th>
+                <th>StackTrace</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="errorLog in errorLogs | orderBy: '-logDateTime' track by errorLog.uuid ">
+                <td>{{::errorLog.failedRequestUrl}}</td>
+                <td>{{::errorLog.responseStatus}}</td>
+                <td>{{::errorLog.logDateTime | bahmniDateTime }}</td>
+                <td>
+                    <pre class="stackTrace" ng-class="{'stackTraceMore' : !showErrorLog}">{{ ::errorLog.stackTrace | json:4 }}</pre>
+                   <div class="read-wrap clearfix">
+                       <span ng-if="showErrorLog" class="read-wrap-ellipse">.....</span>
+                       <button class="readButton fr" toggle="showErrorLog">
+                           <span class="more">More</span>
+                           <span class="less">Less</span>
+                       </button>
+                   </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

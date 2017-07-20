@@ -41,14 +41,12 @@
                                         <button class="stop-drug-btn" ng-if="!drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
                                             Stop
                                         </button>
-                                        <button class="refill-btn" ng-disabled="!drugOrder.effectiveStopDate" ng-click="refill(drugOrder)">
+                                        <button class="refill-btn" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
                                             Refill
                                         </button>
-                                        <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-hide="drugOrder.showAdditionalInstructions">
-                                            <i class="fa fa-plus-circle"></i>
-                                        </button>
-                                        <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)" ng-show="drugOrder.showAdditionalInstructions">
-                                            <i class="fa fa-minus-circle"></i>
+                                        <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)">
+                                            <i class="fa fa-plus-circle" ng-hide="drugOrder.showAdditionalInstructions"></i>
+                                            <i class="fa fa-minus-circle" ng-show="drugOrder.showAdditionalInstructions"></i>
                                         </button>
                                     </div>
 								</div>
@@ -78,7 +76,8 @@
                                                 <label class="control-label">Stop Date</label>
                                             </div>
                                             <div class="field-value">
-                                                <input id="date-stopped" type="date" min="{{getMinDateForDiscontinue(drugOrder)}}" max="{{scheduledDate}}" ng-model="drugOrder.dateStopped"
+                                                <input id="date-stopped" type="date" min="{{getMinDateForDiscontinue(drugOrder)}}"
+                                                       max="{{scheduledDate}}" ng-model="drugOrder.dateStopped"
                                                        required="required">
                                             </div>
                                             <div class="field-value">
