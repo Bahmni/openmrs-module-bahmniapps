@@ -149,6 +149,13 @@
         }
       }
     }
+    fieldset {
+      p.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+    }
   }
   .add-availability {
     padding-right: 0;

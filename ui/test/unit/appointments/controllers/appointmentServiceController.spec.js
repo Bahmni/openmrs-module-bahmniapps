@@ -137,6 +137,64 @@ describe("AppointmentServiceController", function () {
         });
     });
 
+    describe('appointmentServiceType', function () {
+        var serviceTypeName;
+        beforeEach(function () {
+            createController();
+            serviceTypeName = jasmine.createSpyObj('serviceTypeName', ['$setValidity']);
+            scope.createServiceForm = {serviceTypeName: serviceTypeName};
+        });
+        it("should validate to false if duplicate service type name is added", function () {
+            var serviceType = {name: 'Type1', duration: 15};
+            scope.addServiceType(serviceType);
+            var duplicateServiceType = {name: 'Type1', duration: 15};
+            scope.addServiceType(duplicateServiceType);
+            expect(serviceTypeName.$setValidity).toHaveBeenCalledWith('uniqueServiceTypeName', false);
+        });
+
+        it("should validate to true if unique service type is added", function () {
+            var serviceType = {name: 'Type1', duration: 15};
+            scope.addServiceType(serviceType);
+            var duplicateServiceType = {name: 'Type1', duration: 30};
+            scope.addServiceType(duplicateServiceType);
+            expect(serviceTypeName.$setValidity).toHaveBeenCalledWith('uniqueServiceTypeName', true);
+        });
+
+        it("should clear the service type name and set duration to default of defaultServiceTypeDuration after adding", function () {
+            scope.serviceType.name = 'Type1';
+            scope.serviceType.duration = 30;
+            scope.addServiceType(scope.serviceType);
+            expect(scope.serviceType.name).toEqual(undefined);
+            expect(scope.serviceType.duration).toEqual(Bahmni.Appointments.Constants.defaultServiceTypeDuration);
+        });
+
+        it("should disable maxload field by setting oneServiceTypeSelected to true if atleast one service type is added", function () {
+            scope.serviceType.name = 'Type1';
+            scope.serviceType.duration = 15;
+            scope.addServiceType(scope.serviceType);
+            expect(scope.oneServiceTypeSelected).toEqual(true);
+        });
+
+        it("should add servcie type name and duration to service", function () {
+            scope.serviceType.name = 'Type1';
+            scope.addServiceType(scope.serviceType);
+            scope.serviceType.name = 'Type2';
+            scope.serviceType.duration = 30;
+            scope.addServiceType(scope.serviceType);
+            scope.serviceType.name = 'Type3';
+            scope.serviceType.duration = null;
+            scope.addServiceType(scope.serviceType);
+            expect(scope.service.serviceTypes[0].name).toEqual('Type1');
+            expect(scope.service.serviceTypes[0].duration).toEqual(Bahmni.Appointments.Constants.defaultServiceTypeDuration);
+            expect(scope.service.serviceTypes[1].name).toEqual('Type2');
+            expect(scope.service.serviceTypes[1].duration).toEqual(30);
+            expect(scope.service.serviceTypes[2].name).toEqual('Type3');
+            expect(scope.service.serviceTypes[2].duration).toEqual(0);
+
+        });
+
+    });
+
     describe('save', function () {
         beforeEach(function () {
             createController();

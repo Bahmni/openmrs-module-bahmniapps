@@ -19,7 +19,8 @@ Bahmni.Appointments.AppointmentServiceViewModel = (function () {
             endTime: getDateTime(serviceDetails.endTime),
             specialityUuid: serviceDetails.specialityUuid,
             locationUuid: serviceDetails.locationUuid,
-            weeklyAvailability: serviceDetails.weeklyAvailability || []
+            weeklyAvailability: serviceDetails.weeklyAvailability || [],
+            serviceTypes: serviceDetails.serviceTypes || []
         });
         return service;
     };
