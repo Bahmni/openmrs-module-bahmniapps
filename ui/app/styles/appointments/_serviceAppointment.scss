@@ -230,14 +230,14 @@
         cursor: pointer;
         padding: 2px;
         background: #fff;
-        margin: 2px;
+        margin: 0 2px 2px;
         border: 1px solid #808080;
         font-size: 12px;
-        border-radius: 100px;
         min-width: 20px;
         text-align: center;
         height: 20px;
         line-height: 19px;
+        border-radius: 5px;
         &.is-selected {
           background: #27AE60;
           border-color: #27AE60;
