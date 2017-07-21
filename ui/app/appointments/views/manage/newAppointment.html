@@ -1,11 +1,10 @@
 <div class="create-new-app-container">
-    <a href="#/home/manage/appointments/list">close</a>
+    <a href="#/home/manage/appointments/list"> <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+
+    <h2>{{ ::'ADD_NEW_APPOINTMENT' | translate}}</h2>
     <form ng-submit="save()" id="create-appointment-form" name="createAppointmentForm">
-        <div>
-            <h2>{{ ::'ADD_NEW_APPOINTMENT' | translate}}</h2>
-        </div>
+
         <section id = "addNewAppointment">
-            <div>
                 <p>
                     <label>{{'APPOINTMENT_CREATE_PATIENT_NAME' | translate}}<sup>*</sup></label>
 
@@ -134,7 +133,6 @@
                     <textarea placeholder="{{ ::'PLACEHOLDER_CREATE_NOTES' | translate }}" id="notes"
                               ng-model="appointment.notes"></textarea>
                 </p>
-            </div>
         </section>
         <button type="submit" class="service-save-btn">{{::'APPOINTMENT_SAVE' | translate }}
         </button>
