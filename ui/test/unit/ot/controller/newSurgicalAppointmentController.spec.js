@@ -1,7 +1,7 @@
 'use strict';
 
 describe("newSurgicalAppointmentController", function () {
-    var scope, controller, q, surgicalAppointmentHelper, _window, getAppDescriptor;
+    var scope, controller, q, surgicalAppointmentHelper, _window, getAppDescriptor, programHelper;
     q = jasmine.createSpyObj('$q', ['all', 'when']);
     var patientService = jasmine.createSpyObj('patientService', ['search']);
     var spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
@@ -12,6 +12,7 @@ describe("newSurgicalAppointmentController", function () {
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     var queryService = jasmine.createSpyObj('queryService', ['getResponseFromQuery']);
     appService.getAppDescriptor.and.returnValue(getAppDescriptor);
+    programHelper = jasmine.createSpyObj('programHelper', ['groupPrograms']);
 
     var ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
     _window = jasmine.createSpyObj('$window', ['open', 'location']);
@@ -98,7 +99,8 @@ describe("newSurgicalAppointmentController", function () {
             programService: programService,
             appService: appService,
             surgicalAppointmentHelper: surgicalAppointmentHelper,
-            ngDialog: ngDialog
+            ngDialog: ngDialog,
+            programHelper: programHelper
         });
     };
 
@@ -352,6 +354,7 @@ describe("newSurgicalAppointmentController", function () {
             link : "/bahmni/clinical/#/programs/patient/{{patientUuid}}/dashboard?dateEnrolled={{dateEnrolled}}&programUuid={{programUuid}}&enrollment={{enrollment}}&currentTab=DASHBOARD_TAB_GENERAL_KEY"
         });
         getAppDescriptor.formatUrl.and.returnValue("formattedUrl");
+        programHelper.groupPrograms.and.returnValue({activePrograms : [enrollmentInfo]});
         scope.patient = { uuid: "patientUuid", display: "patient-GAN2020" };
         scope.ngDialogData = { id: "someId", patient: scope.patient };
         programService.getEnrollmentInfoFor.and.returnValue(specUtil.simplePromise([enrollmentInfo]));
@@ -373,6 +376,7 @@ describe("newSurgicalAppointmentController", function () {
         scope.patient = { uuid: "patientUuid", display: "patient-GAN2020" };
         scope.ngDialogData = { id: "someId", patient: scope.patient };
         programService.getEnrollmentInfoFor.and.returnValue(specUtil.simplePromise([]));
+        programHelper.groupPrograms.and.returnValue({activePrograms: []});
 
         scope.enrollmentInfo = undefined;
         createController();
