@@ -83,14 +83,15 @@
                         <span>{{'ADD_SERVICE_APPOINTMENT_TYPE' | translate}}</span>
                     </div>
                     <fieldset class="create-service-type">
+                        <p class="caution" ng-show="createServiceForm.serviceTypeName.$error.uniqueServiceTypeName">
+                            <i class="fa fa-exclamation-circle small"></i>
+                            <span>{{'DUPLICATE_SERVICE_APPOINTMENT_TYPE_ERROR_MESSAGE' | translate}}</span>
+                        </p>
                         <p>
                             <label>{{'ADD_NEW_TYPE'| translate}}</label>
                             <input placeholder="{{ ::'PLACEHOLDER_SERVICE_TYPE_NAME' | translate }}" type="text"
                                    ng-model="serviceType.name" id="serviceTypeName" name="serviceTypeName">
-                            <p class="caution" ng-show="createServiceForm.serviceTypeName.$error.uniqueServiceTypeName">
-                                <i class="fa fa-exclamation-circle small"></i>
-                              <span>{{'DUPLICATE_SERVICE_APPOINTMENT_TYPE_ERROR_MESSAGE' | translate}}</span>
-                            </p>
+
                             <label class="duration-label">{{'APPOINTMENT_SERVICE_DURATION_KEY' | translate}}</label>
                             <input placeholder="{{ 'PLACEHOLDER_SERVICE_DURATION' | translate }}" class="duration-box"
                                    type="number" ng-model="serviceType.duration" min="0"/>
