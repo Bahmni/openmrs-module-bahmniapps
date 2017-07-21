@@ -99,7 +99,7 @@
       }
     }
     .create-service-type {
-      input[type = number] {
+      input[type = text] {
         width: 120px;
       }
       .duration-label {
@@ -108,6 +108,7 @@
       .duration-box {
         width: 47px;
         margin-right: 1%;
+        padding-right: 0;
       }
       button {
         @extend .serviceButton;
@@ -170,7 +171,7 @@
       right: 5px;
       position: absolute;
       margin: auto;
-      top: 0;
+      top: 2px;
       bottom: 0;
       height: 25px;
       button {
@@ -232,6 +233,7 @@
   .weekday-selector-wrapper {
     p.service-ava-days {
       float: left;
+      margin-top: 1px;
       span {
         float: left;
         cursor: pointer;
