@@ -1,10 +1,11 @@
-<div class="create-new-app-container">
-    <a href="#/home/manage/appointments/list"> <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+<div class="create-new-app-wrapper">
+    <div class="create-new-app-container">
+        <a href="#/home/manage/appointments/list"> <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 
-    <h2>{{ ::'ADD_NEW_APPOINTMENT' | translate}}</h2>
-    <form ng-submit="save()" id="create-appointment-form" name="createAppointmentForm">
+        <h2>{{ ::'ADD_NEW_APPOINTMENT' | translate}}</h2>
+        <form ng-submit="save()" id="create-appointment-form" name="createAppointmentForm">
 
-        <section id = "addNewAppointment">
+            <section id="addNewAppointment">
                 <p>
                     <label>{{'APPOINTMENT_CREATE_PATIENT_NAME' | translate}}<sup>*</sup></label>
 
@@ -44,7 +45,8 @@
                     </label>
                     <select id="service" ng-model="appointment.serviceUuid"
                             ng-options="item.uuid as item.name for item in services | filter:(enableSpecialities || '') &&
-                            {speciality:{uuid:appointment.specialityUuid}}:true" ng-change="onServiceChange(item.locationUuid)">
+                            {speciality:{uuid:appointment.specialityUuid}}:true"
+                            ng-change="onServiceChange(item.locationUuid)">
                         <option disabled value="">{{ ::'PLACEHOLDER_SERVICE' | translate}}
                         </option>
                     </select>
@@ -55,7 +57,8 @@
                     <label for="serviceType">
                         {{'APPOINTMENT_SERVICE_TYPE' | translate}}
                     </label>
-                    <select ng-disabled="!(serviceTypes.length > 0)" id="serviceType" ng-model="appointment.serviceTypeUuid"
+                    <select ng-disabled="!(serviceTypes.length > 0)" id="serviceType"
+                            ng-model="appointment.serviceTypeUuid"
                             ng-options="item.uuid as item.name for item in serviceTypes | orderBy:'name'">
                         <option disabled value="">{{ ::'PLACEHOLDER_SERVICE_TYPE' | translate}}
                         </option>
@@ -133,8 +136,9 @@
                     <textarea placeholder="{{ ::'PLACEHOLDER_CREATE_NOTES' | translate }}" id="notes"
                               ng-model="appointment.comments"></textarea>
                 </p>
-        </section>
-        <button type="submit" class="service-save-btn">{{::'APPOINTMENT_SAVE' | translate }}
-        </button>
-    </form>
+            </section>
+            <button type="submit" class="service-save-btn">{{::'APPOINTMENT_SAVE' | translate }}
+            </button>
+        </form>
+    </div>
 </div>
