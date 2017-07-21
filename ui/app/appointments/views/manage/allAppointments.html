@@ -11,6 +11,12 @@
         <a class="add-app-btn" ng-href="#/home/manage/appointments/{{currentTab}}/new">{{::'ADD_NEW_APPOINTMENT' | translate }}</a>
     </div>
 
-    <div ui-view="content@viewAppointments"></div>
-
+    <div ui-view="content@viewAppointments" class="appointment-content-container"></div>
+    <div class="appointment-action-btn-container">
+        <a href="#">Check-in</a>
+        <a href="#">Complete</a>
+        <a href="#">Missed</a>
+        <a href="#">Edit</a>
+        <a href="#">Cancel Appointment</a>
+    </div>
 </div>
