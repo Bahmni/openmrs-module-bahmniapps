@@ -2,14 +2,23 @@
 
 angular.module('bahmni.appointments')
     .controller('AllAppointmentServicesController', ['$scope', '$state', '$location', 'spinner',
-        'appointmentsServiceService', 'appService',
-        function ($scope, $state, $location, spinner, appointmentsServiceService, appService) {
+        'appointmentsServiceService', 'appService', 'ngDialog',
+        function ($scope, $state, $location, spinner, appointmentsServiceService, appService, ngDialog) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.createService = function (uuid) {
                 if (!uuid) {
                     uuid = 'new';
                 }
                 $state.go('home.admin.service.edit', {uuid: uuid});
+            };
+
+            $scope.deleteAppointmentService = function (service) {
+                ngDialog.open({
+                    template: 'views/admin/deleteAppointmentService.html',
+                    data: {service: service},
+                    controller: 'deleteAppointmentServiceController'
+                    }
+                );
             };
 
             var init = function () {
