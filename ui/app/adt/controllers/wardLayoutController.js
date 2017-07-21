@@ -71,7 +71,7 @@ angular.module('bahmni.adt')
                         cell.patientInfo = [];
                         _.each(data.patients, function (patient) {
                             cell.patientInfo.push({
-                                "name": patient.person.personName.givenName + " " + patient.person.personName.familyName,
+                                "name": patient.person.personName.givenName + " " + (patient.person.personName.familyName === null ? "" : patient.person.personName.familyName),
                                 "identifier": patient.identifiers[0].identifier,
                                 "gender": patient.person.gender
                             });
