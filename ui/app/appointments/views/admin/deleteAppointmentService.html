@@ -1,1 +1,8 @@
-{{service}}
+<div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label">
+    <div>
+        <p>There could be appointments booked for <b>{{service.name}}</b>. Are you sure you want to delete <b>{{service.name}}</b>?</p>
+    </div>
+    <div class="dialog-button-group">
+        <button id="modal-revise-button2" class="secondary-button" ng-click="deleteServiceConfirmation()">{{'APPOINTMENT_SERVICE_DELETE_ACTION' | translate}}</button>
+    </div>
+</div>

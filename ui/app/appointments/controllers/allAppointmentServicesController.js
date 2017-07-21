@@ -17,8 +17,7 @@ angular.module('bahmni.appointments')
                     template: 'views/admin/deleteAppointmentService.html',
                     data: {service: service},
                     controller: 'deleteAppointmentServiceController'
-                    }
-                );
+                });
             };
 
             var init = function () {
@@ -26,5 +25,6 @@ angular.module('bahmni.appointments')
                     $scope.appointmentServices = response.data;
                 });
             };
+
             return spinner.forPromise(init());
         }]);
