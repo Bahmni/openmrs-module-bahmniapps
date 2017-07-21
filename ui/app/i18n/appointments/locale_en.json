@@ -11,6 +11,7 @@
   "APPOINTMENT_SERVICE_ACTION_KEY": "Action",
   "APPOINTMENT_SERVICE_EDIT_ACTION": "Edit",
   "APPOINTMENT_SERVICE_DELETE_ACTION": "Delete",
+  "APPOINTMENT_SERVICE_CANCEL_ACTION": "Cancel",
   "APPOINTMENT_SERVICE_NAME_KEY": "Service Name",
   "PLACEHOLDER_SERVICE_NAME": "Enter a service name",
   "APPOINTMENT_SERVICE_DESCRIPTION_KEY": "Description",
@@ -48,5 +49,6 @@
   "ADD_NEW_TYPE": "Add new type",
   "PLACEHOLDER_SERVICE_TYPE_NAME": "Enter a service type name",
   "ADD": "Add",
-  "DUPLICATE_SERVICE_APPOINTMENT_TYPE_ERROR_MESSAGE": "Service appointment type already exists."
+  "DUPLICATE_SERVICE_APPOINTMENT_TYPE_ERROR_MESSAGE": "Service appointment type already exists.",
+  "APPOINTMENT_SERVICE_DELETE_SUCCESS_MESSAGE_KEY": "Service deleted successfully"
 }

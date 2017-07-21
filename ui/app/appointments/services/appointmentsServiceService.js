@@ -16,4 +16,13 @@ angular.module('bahmni.appointments')
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 });
             };
+
+            this.deleteAppointmentService = function (serviceUuid) {
+                var params = {uuid: serviceUuid};
+                return $http.delete(Bahmni.Common.Constants.appointmentServiceUrl, {
+                    params: params,
+                    withCredentials: true,
+                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                });
+            };
         }]);

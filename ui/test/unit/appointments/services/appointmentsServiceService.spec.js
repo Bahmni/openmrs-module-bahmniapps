@@ -2,7 +2,7 @@
 
 describe('AppointmentsServiceService', function () {
     var appointmentsServiceService, mockHttp;
-    mockHttp = jasmine.createSpyObj('$http', ['get', 'post']);
+    mockHttp = jasmine.createSpyObj('$http', ['get', 'post', 'delete']);
     mockHttp.get.and.callFake(function (params) {
         return specUtil.respondWith({data: {}});
     });
@@ -23,5 +23,13 @@ describe('AppointmentsServiceService', function () {
     it('should post service data on save', function () {
         appointmentsServiceService.save();
         expect(mockHttp.post).toHaveBeenCalled();
+    });
+
+    it('should delete the appointment service', function () {
+        var serviceUuid = "serviceUuid";
+        appointmentsServiceService.deleteAppointmentService(serviceUuid);
+        var headers = {Accept: 'application/json', 'Content-Type': 'application/json'};
+        var params = {params: {uuid: serviceUuid}, withCredentials: true, headers: headers};
+        expect(mockHttp.delete).toHaveBeenCalledWith('/openmrs/ws/rest/v1/appointmentService', params);
     });
 });
