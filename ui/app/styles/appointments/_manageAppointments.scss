@@ -7,6 +7,18 @@
   color: #000;
   margin-left: 10px;
 }
+.ui-autocomplete {
+  max-height: 150px;
+  overflow-y: auto;
+  /* prevent horizontal scrollbar */
+  overflow-x: hidden;
+}
+/* IE 6 doesn't support max-height
+ * we use height instead, but this forces the menu to always be this tall
+ */
+* html .ui-autocomplete {
+  height: 150px;
+}
 /*---- page and nav style ----*/
 
 .add-app-wrapper {
@@ -94,14 +106,22 @@
 }
 
 /*----- create new appointment styles -----*/
-
+.create-new-app-wrapper {
+  top: 52px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: not-allowed;
+  z-index: 10;
+}
 .create-new-app-container {
   position: absolute;
+  cursor: default;
   width: 500px;
   background: #fff;
   height: calc(100vh - 52px);
   right: 0;
-  top: 52px;
+  top: 0;
   overflow: auto;
   padding: 10px 10px 0;
   box-sizing: border-box;
