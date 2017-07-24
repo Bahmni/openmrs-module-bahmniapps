@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsCreateController', ['$scope', '$q', 'spinner', '$window', '$state', '$translate', 'patientService',
+    .controller('AppointmentsCreateController', ['$scope', '$q', '$window', '$state', '$translate', 'spinner', 'patientService',
         'appointmentsService', 'appointmentsServiceService', 'locationService', 'messagingService', 'specialityService',
         'ngDialog', 'appService', 'providerService',
-        function ($scope, $q, spinner, $window, $state, $translate, patientService, appointmentsService, appointmentsServiceService, locationService,
+        function ($scope, $q, $window, $state, $translate, spinner, patientService, appointmentsService, appointmentsServiceService, locationService,
                   messagingService, specialityService, ngDialog, appService, providerService) {
             var init = function () {
                 var promises = [];
@@ -22,16 +22,16 @@ angular.module('bahmni.appointments')
             };
 
             $scope.save = function () {
-                // if ($scope.createServiceForm.$invalid) {
-                //     messagingService.showMessage('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
-                //     return;
-                // }
-                // var service = Bahmni.Appointments.Service.create($scope.service);
-                // appointmentsServiceService.save(service).then(function () {
-                //     messagingService.showMessage('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
-                //     $scope.showConfirmationPopUp = false;
-                //     $state.go('home.admin.service');
-                // });
+                if ($scope.createAppointmentForm.$invalid) {
+                    messagingService.showMessage('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
+                    return;
+                }
+                var appointment = Bahmni.Appointments.Appointment.create($scope.appointment);
+                appointmentsService.save(appointment).then(function () {
+                    messagingService.showMessage('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
+                    $scope.showConfirmationPopUp = false;
+                    //$state.go('home.admin.service');
+                });
             };
 
             $scope.shouldBeDisabled = function () {
@@ -49,7 +49,7 @@ angular.module('bahmni.appointments')
 
             $scope.startTimeSource = function () {
                 return $q(function (resolve) {
-                    resolve(["11:00 am", " 12:00 am"]);
+                    resolve($scope.startTimes);
                 });
             };
 
@@ -61,6 +61,15 @@ angular.module('bahmni.appointments')
 
             $scope.onSelectPatient = function (data) {
                 $scope.selectedPatient = data;
+                $scope.appointment.patientUuid = data.uuid;
+            };
+
+            $scope.onSelectStartTime = function (data) {
+                $scope.appointment.startTime = data.value;
+            };
+
+            $scope.onSelectEndTime = function (data) {
+                $scope.appointment.endTime = data.value;
             };
 
             $scope.responseMap = function (data) {
@@ -71,9 +80,35 @@ angular.module('bahmni.appointments')
             };
 
             $scope.onServiceChange = function () {
-                var serviceSelected = _.find($scope.services, {uuid: $scope.appointment.serviceUuid});
-                $scope.serviceTypes = serviceSelected.serviceTypes;
-                $scope.appointment.locationUuid = serviceSelected.location.uuid;
+                if ($scope.appointment.serviceUuid) {
+                    setServiceDetails($scope.appointment.serviceUuid);
+                }
+            };
+
+            $scope.OnDateChange = function () {
+                var dayOfWeek = moment($scope.appointment.date).format('dddd').toUpperCase();
+                var allSlots = getAllSlots($scope.selectedService.startTime, $scope.selectedService.endTime, $scope.minDuration);
+                $scope.startTimes = $scope.selectedService.weeklyAvailability && $scope.selectedService.weeklyAvailability.length > 0 ?
+                    getAvailableSlots(dayOfWeek, $scope.selectedService.weeklyAvailability, allSlots) : allSlots;
+            };
+
+            var setServiceDetails = function (serviceUuid) {
+                appointmentsServiceService.getService(serviceUuid).then(
+                    function (response) {
+                        $scope.serviceTypes = response.data.serviceTypes;
+                        $scope.appointment.locationUuid = response.data.location.uuid;
+                        $scope.minDuration = $scope.serviceTypes.length > 0 ?
+                            _.head(_.sortBy($scope.serviceTypes, _.property('duration'))).duration :
+                            response.data.durationMins;
+                        $scope.selectedService = response.data;
+                    },
+                    function (response) {
+                        if (response.status) {
+                            response = 'MESSAGE_GET_SERVICES_ERROR';
+                        }
+                        messagingService.showMessage('error', response);
+                    }
+                );
             };
 
             var getAppointmentLocations = function () {
@@ -165,6 +200,36 @@ angular.module('bahmni.appointments')
                     scope: $scope,
                     closeByEscape: true
                 });
+            };
+
+            var getAvailableSlots = function (dayOfWeek, weeklyAvailability, allSlots) {
+                return _.filter(allSlots, function (slot) {
+                    var currentSlot = moment(slot, 'hh:mm a');
+                    var dayAvailability = _.find(weeklyAvailability, function (o) {
+                        return o.dayOfWeek === dayOfWeek;
+                    });
+                    return dayAvailability &&
+                        moment(dayAvailability.startTime, 'hh:mm a') <= currentSlot &&
+                        moment(dayAvailability.endTime, 'hh:mm a') > currentSlot;
+                });
+            };
+
+            var getAllSlots = function (startString, endString, durationInMin) {
+                startString = (startString && startString.length > 0) ? startString : '08:00 am';
+                endString = (endString && endString.length > 0) ? endString : '9:00 pm';
+
+                var start = moment(startString, 'hh:mm a');
+                var end = moment(endString, 'hh:mm a');
+                start.minutes(Math.ceil(start.minutes() / durationInMin) * durationInMin);
+
+                var result = [];
+                var current = moment(start);
+
+                while (current.valueOf() <= end.valueOf()) {
+                    result.push(current.format('hh:mm a'));
+                    current.add(durationInMin, 'minutes');
+                }
+                return result;
             };
 
             var isFormFilled = function () {

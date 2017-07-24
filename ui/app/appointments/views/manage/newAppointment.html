@@ -55,9 +55,9 @@
                     <label for="serviceType">
                         {{'APPOINTMENT_SERVICE_TYPE' | translate}}
                     </label>
-                    <select id="serviceType" ng-model="appointment.serviceUuid"
+                    <select ng-disabled="!(serviceTypes.length > 0)" id="serviceType" ng-model="appointment.serviceTypeUuid"
                             ng-options="item.uuid as item.name for item in serviceTypes | orderBy:'name'">
-                        <option disabled value="">{{ ::'PLACEHOLDER_SERVICE' | translate}}
+                        <option disabled value="">{{ ::'PLACEHOLDER_SERVICE_TYPE' | translate}}
                         </option>
                     </select>
                 </p>
@@ -88,7 +88,7 @@
                     <label for="date">
                         {{'APPOINTMENT_DATE' | translate}}
                     </label>
-                    <input id="date" type="date" ng-model="appointment.date"/>
+                    <input id="date" type="date" ng-model="appointment.date" ng-change="OnDateChange()"/>
                     <span>22 out of 50 slots booked.</span>
                 </p>
                 <p>
@@ -102,7 +102,7 @@
                            ng-model="startTime"
                            source="startTimeSource"
                            response-map="startTimeResponseMap"
-                           on-select="onSelectPatient"
+                           on-select="onSelectStartTime"
                            ng-class="{'illegalValue': isInvalid}"
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
@@ -110,7 +110,7 @@
                     <span>start time error placeholder</span>
 
                     <label for="endTimeID">
-                        {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
+                        {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
                     </label>
                     <input type="text"
                            id="endTimeID"
@@ -119,7 +119,7 @@
                            ng-model="endTime"
                            source="startTimeSource"
                            response-map="startTimeResponseMap"
-                           on-select="onSelectPatient"
+                           on-select="onSelectEndTime"
                            ng-class="{'illegalValue': isInvalid}"
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
@@ -131,7 +131,7 @@
                         {{'APPOINTMENT_CREATE_NOTES' | translate}}
                     </label>
                     <textarea placeholder="{{ ::'PLACEHOLDER_CREATE_NOTES' | translate }}" id="notes"
-                              ng-model="appointment.notes"></textarea>
+                              ng-model="appointment.comments"></textarea>
                 </p>
         </section>
         <button type="submit" class="service-save-btn">{{::'APPOINTMENT_SAVE' | translate }}

@@ -11,6 +11,7 @@
   "APPOINTMENT_SAVE": "Save",
   "APPOINTMENT_SERVICE": "Service",
   "PLACEHOLDER_SERVICE": "Select a service",
+  "PLACEHOLDER_SERVICE_TYPE": "Select a service type",
   "APPOINTMENT_SERVICE_SAVE": "Save",
   "APPOINTMENT_SERVICE_ADD_NEW": "Add New Service",
   "APPOINTMENT_SERVICE_ACTION_KEY": "Action",
