@@ -110,14 +110,15 @@
   top: 52px;
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 52px);
   cursor: not-allowed;
+  overflow: hidden;
   z-index: 10;
 }
 .create-new-app-container {
   position: absolute;
   cursor: default;
-  width: 500px;
+  width: 450px;
   background: #fff;
   height: calc(100vh - 52px);
   right: 0;
@@ -142,10 +143,12 @@
   }
   #addNewAppointment {
     p {
+      overflow: hidden;
+      margin: 0 0 10px;
       label {
         clear: left;
         float: left;
-        width: 125px;
+        width: 115px;
         text-align: right;
         margin-right: 10px;
       }
