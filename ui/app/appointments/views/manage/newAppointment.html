@@ -26,8 +26,7 @@
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </p>
 
-                <p ng-show="enableSpecialities">
-                <p>
+                <p ng-if="enableSpecialities">
                     <label for="speciality">
                         {{'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate}}
                     </label>
@@ -37,8 +36,6 @@
                         </option>
                     </select>
                 </p>
-                </p>
-                <br/><br/>
                 <p>
                     <label for="service">
                         {{'APPOINTMENT_SERVICE' | translate}}
@@ -52,7 +49,6 @@
                     </select>
                 </p>
 
-                <br/><br/>
                 <p>
                     <label for="serviceType">
                         {{'APPOINTMENT_SERVICE_TYPE' | translate}}
@@ -65,7 +61,6 @@
                     </select>
                 </p>
 
-                <br/><br/>
                 <p>
                     <label for="location">
                         {{'APPOINTMENT_SERVICE_LOCATION_KEY' | translate}}
@@ -76,7 +71,6 @@
                         </option>
                     </select>
                 </p>
-                <br/><br/>
                 <p>
                     <label for="provider">
                         {{'APPOINTMENT_PROVIDER' | translate}}
@@ -86,7 +80,6 @@
                         <option disabled value="">{{ ::'PLACEHOLDER_CREATE_PROVIDER' | translate}}</option>
                     </select>
                 </p>
-                <br/><br/>
                 <p>
                     <label for="date">
                         {{'APPOINTMENT_DATE' | translate}}
@@ -111,7 +104,8 @@
                            non-blank
                            ng-disabled='false'/>
                     <span>start time error placeholder</span>
-
+                </p>
+                <p>
                     <label for="endTimeID">
                         {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
                     </label>
@@ -128,6 +122,11 @@
                            non-blank
                            ng-disabled='false'/>
                     <span>end time error placeholder</span>
+                </p>
+                <p>
+                    <label></label>
+                    <input type="checkbox">
+                    <span>Walk-in Appointment</span>
                 </p>
                 <p>
                     <label for="notes">
