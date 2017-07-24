@@ -33,19 +33,17 @@
                                     type="number" min="0" ng-model="service.durationMins"/>
                 </p>
                 <fieldset ng-hide="hasWeeklyAvailability()">
-                    <p class="time-wrapper">
+                    <p name="serviceTime" class="time-wrapper" ng-model="service" time-validator>
                         <label for="start-time">
                             {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
-                        </label> <input id="start-time" type="time" ng-model="service.startTime"
-                                        dependent-model="service.startTime" time-validator/>
+                        </label> <input id="start-time" type="time" ng-model="service.startTime"/>
                         <label class="end-time" for="end-time">
                             {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
-                        </label> <input id="end-time" type="time" name="endTime" ng-model="service.endTime"
-                                        dependent-model="service.startTime" time-validator/>
-                    <p class="caution" ng-show="createServiceForm.endTime.$error.timeSequence">
+                        </label> <input id="end-time" type="time" ng-model="service.endTime"/>
+                    </p>
+                    <p class="caution" ng-show="createServiceForm.serviceTime.$error.timeSequence">
                         <i class="fa fa-exclamation-circle small"></i>
                         <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
-                    </p>
                     </p>
                     <p ng-class="{'disabled': oneServiceTypeSelected}">
                         <label class="max-load" for="max-load">
@@ -119,7 +117,6 @@
 
                     <li class="service-availability-wrapper">
                         <service-availability availability-list="service.weeklyAvailability"
-                                              on-add-availability="clearAvailabilityOnService()"
                                               state="0"></service-availability>
                     </li>
                 </ul>

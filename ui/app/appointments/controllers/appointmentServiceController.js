@@ -33,12 +33,6 @@ angular.module('bahmni.appointments')
                 $scope.createServiceForm.name.$setValidity('uniqueServiceName', isServiceNameUnique($scope.service.name));
             };
 
-            $scope.clearAvailabilityOnService = function () {
-                delete $scope.service.startTime;
-                delete $scope.service.endTime;
-                delete $scope.service.maxAppointmentsLimit;
-            };
-
             var isServiceNameUnique = function (serviceName) {
                 if (!serviceName) {
                     return true;
@@ -147,8 +141,7 @@ angular.module('bahmni.appointments')
                     $scope.serviceType = {name: undefined, duration: Bahmni.Appointments.Constants.defaultServiceTypeDuration};
                     $scope.oneServiceTypeSelected = true;
                     $scope.createServiceForm.serviceTypeName.$setValidity('uniqueServiceTypeName', true);
-                }
-                else {
+                } else {
                     $scope.createServiceForm.serviceTypeName.$setValidity('uniqueServiceTypeName', false);
                 }
             };
