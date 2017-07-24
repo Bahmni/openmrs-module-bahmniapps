@@ -23,14 +23,13 @@ angular.module('bahmni.appointments')
 
             $scope.save = function () {
                 if ($scope.createAppointmentForm.$invalid) {
-                    messagingService.showMessage('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
+                    messagingService.showMessage('error', 'INVALID_APPOINTMENT_FORM_ERROR_MESSAGE');
                     return;
                 }
                 var appointment = Bahmni.Appointments.Appointment.create($scope.appointment);
                 appointmentsService.save(appointment).then(function () {
-                    messagingService.showMessage('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
+                    messagingService.showMessage('info', 'APPOINTMENT_SAVE_SUCCESS');
                     $scope.showConfirmationPopUp = false;
-                    //$state.go('home.admin.service');
                 });
             };
 
