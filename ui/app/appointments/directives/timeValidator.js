@@ -4,25 +4,25 @@ angular.module('bahmni.appointments')
     .directive('timeValidator', function () {
         var DateUtil = Bahmni.Common.Util.DateUtil;
 
-        var isStartTimeBeforeEndTime = function (serviceDetails) {
-            if (!serviceDetails.startTime || !serviceDetails.endTime) {
+        var isStartTimeBeforeEndTime = function (model) {
+            if (!model.startTime || !model.endTime) {
                 return true;
             }
             var timeFormat = 'HH:mm:ss';
-            var startTime = DateUtil.getDateTimeInSpecifiedFormat(serviceDetails.startTime, timeFormat);
-            var endTime = DateUtil.getDateTimeInSpecifiedFormat(serviceDetails.endTime, timeFormat);
-            return (startTime <= endTime);
+            var startTime = DateUtil.getDateTimeInSpecifiedFormat(model.startTime, timeFormat);
+            var endTime = DateUtil.getDateTimeInSpecifiedFormat(model.endTime, timeFormat);
+            return (startTime < endTime);
         };
 
         return {
             restrict: 'A',
             require: 'ngModel',
-            link: function (scope, element, attrs, ngModel) {
+            link: function (scope, element, attrs, ctrl) {
                 function validate () {
-                    ngModel.$setValidity("timeSequence", isStartTimeBeforeEndTime(scope.service));
+                    ctrl.$setValidity("timeSequence", isStartTimeBeforeEndTime(ctrl.$viewValue));
                 }
-                scope.$watch(attrs.ngModel, validate);
-                scope.$watch(attrs.dependentModel, validate);
+                scope.$watch(attrs.ngModel + '.startTime', validate);
+                scope.$watch(attrs.ngModel + '.endTime', validate);
             }
         };
     });

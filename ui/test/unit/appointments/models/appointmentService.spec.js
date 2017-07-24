@@ -36,9 +36,7 @@ describe('AppointmentService', function () {
             weeklyAvailability: [{
                 startTime: startDateTime,
                 endTime: endDateTime,
-                days: [{name: 'MONDAY', isSelected: true},
-                       {name: 'TUESDAY', isSelected: true},
-                       {name: 'SUNDAY', isSelected: false}]
+                days: 6
             }]
         };
         var appointmentService = Bahmni.Appointments.AppointmentService.createFromUIObject(service);
@@ -63,16 +61,12 @@ describe('AppointmentService', function () {
                 {
                     startTime: startDateTime,
                     endTime: endDateTime,
-                    days: [{name: 'MONDAY', isSelected: true},
-                           {name: 'TUESDAY', isSelected: true},
-                           {name: 'SUNDAY', isSelected: false}]
+                    days: 6
                 },
                 {
                     startTime: startDateTime2,
                     endTime: endDateTime2,
-                    days: [{name: 'MONDAY', isSelected: true},
-                           {name: 'TUESDAY', isSelected: true},
-                           {name: 'SATURDAY', isSelected: true}]
+                    days: 70
                 }
             ]
         };

@@ -7,19 +7,54 @@ angular.module('bahmni.appointments')
         var link = function (scope) {
             var init = function () {
                 scope.availability = scope.availability || {};
-                scope.startOfWeek = appService.getAppDescriptor().getConfigValue('startOfWeek');
+                scope.startOfWeek = appService.getAppDescriptor().getConfigValue('startOfWeek') || 2;
             };
 
             scope.add = function () {
-                scope.availabilityList.push(scope.availability);
-                scope.availability = {};
-                scope.onAddAvailability();
+                if (addOrUpdateToIndex(scope.availabilityList.length)) {
+                    scope.availability = {};
+                }
+            };
+
+            scope.update = function () {
+                var index = scope.availabilityList.indexOf(scope.backUpAvailability);
+                if (addOrUpdateToIndex(index)) {
+                    scope.state = states.READONLY;
+                }
+            };
+
+            var addOrUpdateToIndex = function (index) {
+                if (!overlapsWithExisting(index)) {
+                    scope.availabilityList[index] = scope.availability;
+                    scope.doesOverlap = false;
+                    return true;
+                }
+                scope.doesOverlap = true;
             };
 
             scope.isValid = function () {
-                return scope.availability.startTime &&
-                    scope.availability.endTime &&
-                    _.find(scope.availability.days, {isSelected: true});
+                var startTime = scope.availability.startTime;
+                var endTime = scope.availability.endTime;
+                return startTime &&
+                       endTime && startTime < endTime &&
+                        scope.availability.days;
+            };
+
+            var overlapsWithExisting = function (index) {
+                var avb = scope.availability;
+                return !_.isEmpty(scope.availabilityList) && _.some(scope.availabilityList, function (currAvb, currIndex) {
+                    if (index !== currIndex) {
+                        return hasCommonDays(avb, currAvb) && hasOverlappingTimes(avb, currAvb);
+                    }
+                });
+            };
+
+            var hasCommonDays = function (avb1, avb2) {
+                return (avb1.days & avb2.days) !== 0;
+            };
+
+            var hasOverlappingTimes = function (avb1, avb2) {
+                return (avb1.startTime < avb2.endTime) && (avb2.startTime < avb1.endTime);
             };
 
             scope.delete = function () {
@@ -29,6 +64,7 @@ angular.module('bahmni.appointments')
 
             scope.cancel = function () {
                 scope.availability = scope.backUpAvailability;
+                scope.doesOverlap = false;
                 scope.state = states.READONLY;
             };
 
@@ -36,12 +72,6 @@ angular.module('bahmni.appointments')
                 scope.backUpAvailability = scope.availability;
                 scope.availability = angular.copy(scope.availability);
                 scope.state = states.EDIT;
-            };
-
-            scope.update = function () {
-                var index = scope.availabilityList.indexOf(scope.backUpAvailability);
-                scope.availabilityList[index] = scope.availability;
-                scope.state = states.READONLY;
             };
 
             scope.isNew = function () {
@@ -64,8 +94,7 @@ angular.module('bahmni.appointments')
             scope: {
                 availability: '=?',
                 availabilityList: '=',
-                state: '=',
-                onAddAvailability: '&?'
+                state: '='
             },
             link: link,
             templateUrl: '../appointments/views/admin/appointmentServiceAvailability.html'
