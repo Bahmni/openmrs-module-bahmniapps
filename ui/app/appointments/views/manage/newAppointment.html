@@ -23,7 +23,7 @@
                            non-blank
                            ng-disabled="shouldBeDisabled()"
                     />
-                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
                 </p>
 
                 <p ng-if="enableSpecialities">
@@ -85,7 +85,7 @@
                         {{'APPOINTMENT_DATE' | translate}}
                     </label>
                     <input id="date" type="date" ng-model="appointment.date" ng-change="OnDateChange()"/>
-                    <span>22 out of 50 slots booked.</span>
+                    <span class="slots-remaining">22 out of 50 slots booked.</span>
                 </p>
                 <p>
                     <label for="startTimeID">
@@ -103,7 +103,7 @@
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
                            ng-disabled='false'/>
-                    <span>start time error placeholder</span>
+                    <span class="slots-remaining">start time error placeholder</span>
                 </p>
                 <p>
                     <label for="endTimeID">
@@ -121,12 +121,12 @@
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
                            ng-disabled='false'/>
-                    <span>end time error placeholder</span>
+                    <span class="slots-remaining">end time error placeholder</span>
                 </p>
                 <p>
                     <label></label>
                     <input type="checkbox">
-                    <span>Walk-in Appointment</span>
+                    <span class="walk-in-text">Walk-in Appointment</span>
                 </p>
                 <p>
                     <label for="notes">
@@ -136,7 +136,8 @@
                               ng-model="appointment.comments"></textarea>
                 </p>
             </section>
-            <button type="submit" class="service-save-btn">{{::'APPOINTMENT_SAVE' | translate }}
+            <a class="create-appointment-action-btn" href="#/home/manage/appointments/list">Cancel</a>
+            <button type="submit" class="service-save-btn create-appointment-action-btn">{{::'APPOINTMENT_SAVE' | translate }}
             </button>
         </form>
     </div>
