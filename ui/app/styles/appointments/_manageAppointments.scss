@@ -6,6 +6,10 @@
   display: inline-block;
   color: #000;
   margin-left: 10px;
+  &:hover {
+    box-shadow: 0 4px 9px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+    opacity: 1;
+  }
 }
 .ui-autocomplete {
   max-height: 150px;
@@ -72,9 +76,6 @@
     @extend .appBtn;
     &.active {
       background: #E2E2E2;
-    }
-    &:hover {
-        box-shadow: 0 4px 9px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
     }
     i {
       color: #00ACC3;
@@ -145,22 +146,65 @@
     p {
       overflow: hidden;
       margin: 0 0 10px;
+      position: relative;
+      .search-icon-app {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
       label {
         clear: left;
         float: left;
         width: 115px;
         text-align: right;
         margin-right: 10px;
+        margin-top: 15px;
       }
-      input, textarea {
-        float:left;
+      input, textarea, select {
+        float: left;
+        width: calc(100% - 130px);
+        box-sizing: border-box;
+        height: 35px;
+        border-radius: 5px;
+      }
+      input[type = checkbox] {
+        width: auto;
+        height: auto;
+        margin-left: 0;
+      }
+      .slots-remaining {
+        display: inline-block;
+        width: calc(100% - 130px);
+        margin-left: 125px;
+        padding-top: 10px;
+        color: #0BB118;
+      }
+      .walk-in-text {
+        display: inline-block;
+        margin-top: 3px;
       }
     }
   }
-  button {
-    float: left;
-    clear: left;
-    margin-left: 135px;
+  .create-appointment-action-btn {
+    float: right;
+    line-height: 1;
+    font-size: 14px;
+    background: #E6E6E6;
+    color: #171717;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    margin: 0 10px 10px 0;
+    width: 85px;
+    text-align: center;
+    @extend .appBtn;
+  }
+  button.create-appointment-action-btn {
+  background: #99C915;
+  color: #fff;
+}
+  a.create-appointment-action-btn {
+    margin-right: 5px;
   }
 }
 /*----- list view styles -----*/
