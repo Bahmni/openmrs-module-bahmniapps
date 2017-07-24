@@ -13,6 +13,20 @@
         <link rel="stylesheet" href="../components/fullcalendar/dist/fullcalendar.min.css"/>
         <link rel="stylesheet" href="../components/fullcalendar-scheduler/dist/scheduler.min.css"/>
         <!-- endbuild -->
+        <style>
+            .ui-autocomplete {
+                max-height: 150px;
+                overflow-y: auto;
+                /* prevent horizontal scrollbar */
+                overflow-x: hidden;
+            }
+            /* IE 6 doesn't support max-height
+             * we use height instead, but this forces the menu to always be this tall
+             */
+            * html .ui-autocomplete {
+                height: 150px;
+            }
+        </style>
     </head>
     <body>
         <div ng-app="bahmni.appointments" class="bahmni-appointments">
@@ -124,6 +138,7 @@
         <script src="init.js"></script>
         <script src="initialization.js"></script>
         <script src="constants.js"></script>
+        <script src="models/appointment.js"></script>
         <script src="models/appointmentService.js"></script>
         <script src="models/appointmentServiceViewModel.js"></script>
         <script src="directives/timeValidator.js"></script>
