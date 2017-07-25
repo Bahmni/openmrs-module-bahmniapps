@@ -2,20 +2,14 @@
 
 angular.module('bahmni.registration')
     .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate', 'offlineService',
-        'auditLogService',
-        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, offlineService, auditLogService) {
+        'auditLogService', 'formService',
+        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, offlineService, auditLogService, formService) {
             var vm = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
+            var formExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "forms");
             var locationUuid = sessionService.getLoginLocationUuid();
             var selectedProvider = $rootScope.currentProvider;
-
-            $scope.conceptSets = extensions.map(function (extension) {
-                return new Bahmni.ConceptSet.ConceptSetSection(extension, $rootScope.currentUser, {}, [], {});
-            });
-            $scope.availableConceptSets = $scope.conceptSets.filter(function (conceptSet) {
-                return conceptSet.isAvailable($scope.context);
-            });
             var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType];
             var visitLocationUuid = $rootScope.visitLocation;
 
@@ -40,8 +34,28 @@ angular.module('bahmni.registration')
                     encounterTypeUuids: [regEncounterTypeUuid]
                 }).then(function (response) {
                     deferred.resolve(response);
+                    $scope.encounterUuid = response.data.encounterUuid;
                     $scope.observations = response.data.observations;
                 });
+                return deferred.promise;
+            };
+
+            var getAllForms = function () {
+                var deferred = $q.defer();
+                formService.getFormList($scope.encounterUuid)
+                    .then(function (response) {
+                        $scope.conceptSets = extensions.map(function (extension) {
+                            return new Bahmni.ConceptSet.ConceptSetSection(extension, $rootScope.currentUser, {}, [], {});
+                        });
+
+                        $scope.observationForms = getObservationForms(formExtensions, response.data);
+                        $scope.conceptSets = $scope.conceptSets.concat($scope.observationForms);
+
+                        $scope.availableConceptSets = $scope.conceptSets.filter(function (conceptSet) {
+                            return conceptSet.isAvailable($scope.context);
+                        });
+                        deferred.resolve(response.data);
+                    });
                 return deferred.promise;
             };
 
@@ -74,6 +88,8 @@ angular.module('bahmni.registration')
 
                 $scope.encounter.observations = $scope.observations;
                 $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
+
+                addFormObservations($scope.encounter.observations);
 
                 var createPromise = offlineService.isOfflineApp() ? encounterPromise() : encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise);
@@ -156,12 +172,31 @@ angular.module('bahmni.registration')
             $scope.getMessage = function () {
                 return $scope.message;
             };
+
+            var isObservationFormValid = function () {
+                var valid = true;
+                _.each($scope.observationForms, function (observationForm) {
+                    if (valid && observationForm.component) {
+                        var value = observationForm.component.getValue();
+                        if (value.errors) {
+                            messagingService.showMessage('error', "{{'REGISTRATION_FORM_ERRORS_MESSAGE_KEY' | translate }}");
+                            valid = false;
+                        }
+                    }
+                });
+                return valid;
+            };
+
             var validate = function () {
                 mandatoryValidate();
                 var deferred = $q.defer();
                 var contxChange = contextChangeHandler.execute();
                 var allowContextChange = contxChange["allow"];
                 var errorMessage;
+                if (!isObservationFormValid()) {
+                    deferred.reject("Some fields are not valid");
+                    return deferred.promise;
+                }
                 if (!allowContextChange) {
                     errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : 'REGISTRATION_LABEL_CORRECT_ERRORS';
                     messagingService.showMessage('error', errorMessage);
@@ -247,5 +282,48 @@ angular.module('bahmni.registration')
                 $scope.context = {visitType: visitType, patient: $scope.patient};
             };
 
-            spinner.forPromise($q.all([getPatient(), getActiveEncounter(), searchActiveVisitsPromise()]).then(getConceptSet));
+            var getObservationForms = function (extensions, observationsForms) {
+                var forms = [];
+                var observations = $scope.observations || [];
+                _.each(extensions, function (ext) {
+                    var options = ext.extensionParams || {};
+                    var observationForm = _.find(observationsForms, function (form) {
+                        return (form.formName === options.formName || form.name === options.formName);
+                    });
+                    if (observationForm) {
+                        var formUuid = observationForm.formUuid || observationForm.uuid;
+                        var formName = observationForm.name || observationForm.formName;
+                        var formVersion = observationForm.version || observationForm.formVersion;
+                        forms.push(new Bahmni.ObservationForm(formUuid, $rootScope.currentUser, formName, formVersion, observations, ext));
+                    }
+                });
+                return forms;
+            };
+
+            $scope.isFormTemplate = function (data) {
+                return data.formUuid;
+            };
+
+            var addFormObservations = function (observations) {
+                if ($scope.observationForms) {
+                    _.remove(observations, function (observation) {
+                        return observation.formNamespace;
+                    });
+                    _.each($scope.observationForms, function (observationForm) {
+                        if (observationForm.component) {
+                            var formObservations = observationForm.component.getValue();
+                            _.each(formObservations.observations, function (obs) {
+                                observations.push(obs);
+                            });
+                        }
+                    });
+                }
+            };
+
+            spinner.forPromise($q.all([getPatient(), getActiveEncounter(), searchActiveVisitsPromise()])
+                .then(function () {
+                    getAllForms().then(function () {
+                        getConceptSet();
+                    });
+                }));
         }]);
