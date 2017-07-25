@@ -204,7 +204,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     },
 
     isHtml5InputDataType: function () {
-        return ['Date', 'Numeric'].indexOf(this.getDataTypeName()) != -1;
+        return ['Date', 'Numeric'].indexOf(this.getDataTypeName()) !== -1;
     },
 
     isGrid: function () {
@@ -215,19 +215,18 @@ Bahmni.ConceptSet.Observation.prototype = {
         return this.conceptUIConfig.buttonRadio;
     },
 
-    isComplex: function() {
+    isComplex: function () {
         return this.concept.dataType === "Complex";
-
     },
 
-    isLocationRef: function() {
+    isLocationRef: function () {
         return this.isComplex() && this.concept.handler === "LocationObsHandler";
     },
 
-    isProviderRef: function() {
+    isProviderRef: function () {
         return this.isComplex() && this.concept.handler === "ProviderObsHandler";
     },
-    
+
     getControlType: function () {
         if (this.hidden) {
             return "hidden";
@@ -257,7 +256,7 @@ Bahmni.ConceptSet.Observation.prototype = {
             return "datetime";
         }
         if (this.isLocationRef()) {
-           return "text";     
+            return "text";
         }
         if (this.isProviderRef()) {
             return "text";
@@ -409,7 +408,9 @@ Bahmni.ConceptSet.Observation.prototype = {
         if (this._isDateDataType()) {
             return this.isValidDate();
         }
-        if (this._isDateTimeDataType()) { return !this.hasInvalidDateTime(); }
+        if (this._isDateTimeDataType()) {
+            return !this.hasInvalidDateTime();
+        }
         if (this.erroneousValue) {
             return false;
         }

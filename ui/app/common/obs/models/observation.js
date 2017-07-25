@@ -24,20 +24,20 @@ Bahmni.Common.Obs.Observation = (function () {
             return (this.value.indexOf(".pdf") > 0);
         },
 
-        isComplexConcept: function() {
+        isComplexConcept: function () {
             return this.concept.dataType === "Complex";
         },
 
-        getComplexDataType: function() {
+        getComplexDataType: function () {
             return this.complexData ? this.complexData.dataType : null;
         },
 
-        isLocationRef: function() {
-            return this.isComplexConcept() && this.getComplexDataType() === "Location"; 
+        isLocationRef: function () {
+            return this.isComplexConcept() && this.getComplexDataType() === "Location";
         },
 
-        isProviderRef: function() {
-            return this.isComplexConcept() && this.getComplexDataType() === "Provider"; 
+        isProviderRef: function () {
+            return this.isComplexConcept() && this.getComplexDataType() === "Provider";
         },
 
         getDisplayValue: function () {
@@ -60,11 +60,11 @@ Bahmni.Common.Obs.Observation = (function () {
             }
 
             if (this.isLocationRef()) {
-                return  this.complexData.display;   
+                return this.complexData.display;
             }
- 
+
             if (this.isProviderRef()) {
-                return  this.complexData.display;   
+                return this.complexData.display;
             }
 
             value = this.value;
