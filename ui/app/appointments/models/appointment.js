@@ -1,7 +1,6 @@
 'use strict';
 
 Bahmni.Appointments.Appointment = (function () {
-    var timeFormat = 'HH:mm:ss';
     var Appointment = function (appointmentDetails) {
         angular.extend(this, appointmentDetails);
     };
@@ -9,6 +8,7 @@ Bahmni.Appointments.Appointment = (function () {
     Appointment.create = function (appointmentDetails) {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var getDateTime = function (appointmentDate, givenTime) {
+            if (!appointmentDate && !givenTime) return appointmentDate;
             return dateUtil.parseLongDateToServerFormat(dateUtil.getDateWithoutTime(appointmentDate) + ' ' + givenTime);
         };
         var appointment = new Appointment({
@@ -21,7 +21,7 @@ Bahmni.Appointments.Appointment = (function () {
             locationUuid: appointmentDetails.locationUuid,
             serviceUuid: appointmentDetails.serviceUuid,
             serviceTypeUuid: appointmentDetails.serviceTypeUuid,
-            status: 'Scheduled'
+            status: appointmentDetails.status
         });
         return appointment;
     };
