@@ -22,6 +22,7 @@
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT' | translate }}"
                            non-blank
                            ng-disabled="shouldBeDisabled()"
+                           required
                     />
                     <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
                 </p>
@@ -31,8 +32,8 @@
                         {{'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate}}
                     </label>
                     <select id="speciality" ng-model="appointment.specialityUuid"
-                            ng-options="item.uuid as item.name for item in specialities | orderBy:'name'">
-                        <option disabled value="">{{ ::'PLACEHOLDER_SERVICE_SPECIALITY' | translate}}
+                            ng-options="item.uuid as item.name for item in specialities | orderBy:'name'"  ng-change="onSpecialityChange()">
+                        <option value="">{{ ::'PLACEHOLDER_SERVICE_SPECIALITY' | translate}}
                         </option>
                     </select>
                 </p>
@@ -41,21 +42,21 @@
                         {{'APPOINTMENT_SERVICE' | translate}}
                     </label>
                     <select id="service" ng-model="appointment.serviceUuid"
-                            ng-options="item.uuid as item.name for item in services | filter:(enableSpecialities || '') &&
-                            {speciality:{uuid:appointment.specialityUuid}}:true"
-                            ng-change="onServiceChange(item.locationUuid)">
+                            ng-options="item.uuid as item.name for item in services | filter: {speciality:{uuid:appointment.specialityUuid}}:true"
+                            ng-change="onServiceChange()"
+                            required>
                         <option disabled value="">{{ ::'PLACEHOLDER_SERVICE' | translate}}
                         </option>
                     </select>
                 </p>
 
-                <p>
+                <p ng-show="enableServiceTypes">
                     <label for="serviceType">
                         {{'APPOINTMENT_SERVICE_TYPE' | translate}}
                     </label>
                     <select ng-disabled="!(serviceTypes.length > 0)" id="serviceType"
-                            ng-model="appointment.serviceTypeUuid"
-                            ng-options="item.uuid as item.name for item in serviceTypes | orderBy:'name'">
+                            ng-model="appointment.serviceTypeUuid" ng-change="onServiceTypeChange()"
+                            ng-options="item.uuid as item.name + '   [' + item.duration + ' min]'  for item in serviceTypes | orderBy:'name'">
                         <option disabled value="">{{ ::'PLACEHOLDER_SERVICE_TYPE' | translate}}
                         </option>
                     </select>
@@ -84,8 +85,11 @@
                     <label for="date">
                         {{'APPOINTMENT_DATE' | translate}}
                     </label>
-                    <input id="date" type="date" ng-model="appointment.date" ng-change="OnDateChange()"/>
-                    <span class="slots-remaining">22 out of 50 slots booked.</span>
+                    <input  id="date" ng-disabled="!(appointment.serviceUuid.length > 0)" type="date" min="{{today}}"
+                            ng-model="appointment.date" required ng-blur="OnDateChange()" placeholder="Pick appointment date"/>
+                    <span ng-show="InvalidDate" style="float: right; padding-top: 5px; padding-right: 5px; color: red">
+                        Not a valid date.</span>
+                    <span class="slots-remaining"></span>
                 </p>
                 <p>
                     <label for="startTimeID">
@@ -95,15 +99,17 @@
                            id="startTimeID"
                            min-length=1
                            bahmni-autocomplete
-                           ng-model="startTime"
+                           ng-model="appointment.startTime"
                            source="startTimeSource"
                            response-map="startTimeResponseMap"
                            on-select="onSelectStartTime"
                            ng-class="{'illegalValue': isInvalid}"
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
-                           ng-disabled='false'/>
-                    <span class="slots-remaining">start time error placeholder</span>
+                           ng-disabled='!appointment.date'
+                           required/>
+                    <i class="fa fa-angle-down search-icon-app" aria-hidden="true"></i>
+                    <span ng-show="InvalidEndTime" style="float: right; padding-top: 5px; padding-right: 5px; color: red">Invalid time format.</span>
                 </p>
                 <p>
                     <label for="endTimeID">
@@ -113,19 +119,24 @@
                            id="endTimeID"
                            min-length=1
                            bahmni-autocomplete
-                           ng-model="endTime"
+                           ng-model="appointment.endTime"
                            source="startTimeSource"
                            response-map="startTimeResponseMap"
                            on-select="onSelectEndTime"
+                           ng-blur="onSelectEndTime"
                            ng-class="{'illegalValue': isInvalid}"
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
-                           ng-disabled='false'/>
-                    <span class="slots-remaining">end time error placeholder</span>
+                           ng-disabled='!appointment.date'
+                           required/>
+                    <i class="fa fa-angle-down search-icon-app" aria-hidden="true"></i>
+                    <span ng-show="InvalidEndTime" style="float: right; padding-top: 5px; padding-right: 5px; color: red">Invalid time format.</span>
+                    <span ng-show="EndTimeAfterStartError" style="float: right; padding-top: 5px; padding-right: 5px; color: red">
+                        End Time should be after Start Time.</span>
                 </p>
                 <p>
                     <label></label>
-                    <input type="checkbox">
+                    <input type="checkbox" ng-model="appointment.appointmentsKind" ng-true-value="'WalkIn'" ng-false-value="">
                     <span class="walk-in-text">Walk-in Appointment</span>
                 </p>
                 <p>
@@ -136,7 +147,7 @@
                               ng-model="appointment.comments"></textarea>
                 </p>
             </section>
-            <a class="create-appointment-action-btn" href="#/home/manage/appointments/list">Cancel</a>
+            <a class="create-appointment-action-btn" ui-sref="^" >Cancel</a>
             <button type="submit" class="service-save-btn create-appointment-action-btn">{{::'APPOINTMENT_SAVE' | translate }}
             </button>
         </form>

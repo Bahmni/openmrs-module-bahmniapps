@@ -8,8 +8,10 @@ Bahmni.Appointments.Constants = (function () {
     return {
         createServiceUrl: hostURL + '/appointmentService',
         getAllSpecialitiesUrl: hostURL + '/speciality/all',
+        createAppointmentUrl: hostURL + '/appointment',
+        searchAppointmentUrl: hostURL + '/appointment/search',
         defaultServiceTypeDuration: 15,
-        createAppointmentUrl: hostURL + '/appointment'
+        defaultAppointmentStatus: 'Scheduled'
     };
 })();
 

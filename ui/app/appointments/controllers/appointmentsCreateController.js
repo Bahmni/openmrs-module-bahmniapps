@@ -4,8 +4,8 @@ angular.module('bahmni.appointments')
     .controller('AppointmentsCreateController', ['$scope', '$q', '$window', '$state', '$translate', 'spinner', 'patientService',
         'appointmentsService', 'appointmentsServiceService', 'locationService', 'messagingService', 'specialityService',
         'ngDialog', 'appService', 'providerService',
-        function ($scope, $q, $window, $state, $translate, spinner, patientService, appointmentsService, appointmentsServiceService, locationService,
-                  messagingService, specialityService, ngDialog, appService, providerService) {
+        function ($scope, $q, $window, $state, $translate, spinner, patientService, appointmentsService, appointmentsServiceService,
+                  locationService, messagingService, specialityService, ngDialog, appService, providerService) {
             var init = function () {
                 var promises = [];
                 $scope.showConfirmationPopUp = true;
@@ -13,24 +13,39 @@ angular.module('bahmni.appointments')
                 $scope.selectedPatient = $scope.ngDialogData && $scope.ngDialogData.patient;
                 $scope.patient = $scope.ngDialogData && $scope.ngDialogData.patient && ($scope.ngDialogData.patient.value || $scope.ngDialogData.patient.display);
                 $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
+                $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
+                $scope.today = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
 
                 promises.push(getAppointmentLocations(), getAllServices(), getAllProviders());
                 if ($scope.enableSpecialities) {
                     promises.push(getAllSpecialities());
                 }
+                $("#endTimeID").bind('focus', function () {
+                    $("#endTimeID").autocomplete("search");
+                });
+                $("#startTimeID").bind('focus', function () {
+                    $("#startTimeID").autocomplete("search");
+                });
+
                 return spinner.forPromise($q.all(promises));
             };
 
             $scope.save = function () {
-                if ($scope.createAppointmentForm.$invalid) {
-                    messagingService.showMessage('error', 'INVALID_APPOINTMENT_FORM_ERROR_MESSAGE');
+                doTimeValidations();
+
+                if ($scope.createAppointmentForm.$invalid || $scope.EndTimeAfterStartError
+                    || $scope.InvalidEndTime || $scope.InvalidStartTime) {
+                    messagingService.showMessage('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
                     return;
                 }
-                var appointment = Bahmni.Appointments.Appointment.create($scope.appointment);
-                appointmentsService.save(appointment).then(function () {
-                    messagingService.showMessage('info', 'APPOINTMENT_SAVE_SUCCESS');
-                    $scope.showConfirmationPopUp = false;
-                });
+                defaultsForNewAppointment();
+                $scope.validatedAppointment = Bahmni.Appointments.Appointment.create($scope.appointment);
+                var conflictingAppointments = checkForOldConflicts($scope.validatedAppointment);
+                if (conflictingAppointments.length == 0) {
+                    saveAppointment($scope.validatedAppointment);
+                } else {
+                    $scope.displayConflictConfirmationDialog();
+                }
             };
 
             $scope.shouldBeDisabled = function () {
@@ -61,10 +76,16 @@ angular.module('bahmni.appointments')
             $scope.onSelectPatient = function (data) {
                 $scope.selectedPatient = data;
                 $scope.appointment.patientUuid = data.uuid;
+                var appointment = Bahmni.Appointments.Appointment.create({patientUuid: data.uuid});
+                appointmentsService.search(appointment).then(function (oldAppointments) {
+                    $scope.patientAppointments = oldAppointments.data;
+                });
             };
 
             $scope.onSelectStartTime = function (data) {
                 $scope.appointment.startTime = data.value;
+                $scope.appointment.endTime
+                    = moment(data.value, 'hh:mm a').add($scope.minDuration, 'm').format('hh:mm a');
             };
 
             $scope.onSelectEndTime = function (data) {
@@ -78,17 +99,44 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            $scope.onSpecialityChange = function () {
+                if (!$scope.appointment.specialityUuid || $scope.appointment.specialityUuid.length == 0) {
+                    delete $scope.appointment.specialityUuid;
+                }
+                delete $scope.appointment.serviceUuid;
+                delete $scope.appointment.serviceTypeUuid;
+                delete $scope.appointment.locationUuid;
+                delete $scope.appointment.date;
+                delete $scope.appointment.startTime;
+                delete $scope.appointment.endTime;
+            };
+
             $scope.onServiceChange = function () {
                 if ($scope.appointment.serviceUuid) {
                     setServiceDetails($scope.appointment.serviceUuid);
                 }
             };
 
+            $scope.onServiceTypeChange = function () {
+                if ($scope.appointment.serviceTypeUuid) {
+                    var type = _.find($scope.serviceTypes, function (serviceType) {
+                        return serviceType.uuid === $scope.appointment.serviceTypeUuid;
+                    });
+                    $scope.minDuration = type.duration;
+                    delete $scope.appointment.date;
+                    delete $scope.appointment.startTime;
+                    delete $scope.appointment.endTime;
+                }
+            };
+
             $scope.OnDateChange = function () {
-                var dayOfWeek = moment($scope.appointment.date).format('dddd').toUpperCase();
-                var allSlots = getAllSlots($scope.selectedService.startTime, $scope.selectedService.endTime, $scope.minDuration);
-                $scope.startTimes = $scope.selectedService.weeklyAvailability && $scope.selectedService.weeklyAvailability.length > 0 ?
-                    getAvailableSlots(dayOfWeek, $scope.selectedService.weeklyAvailability, allSlots) : allSlots;
+                if ($scope.appointment.date) {
+                    var selectedDate = moment($scope.appointment.date);
+                    var dayOfWeek = selectedDate.format('dddd').toUpperCase();
+                    var allSlots = getAllSlots($scope.selectedService.startTime, $scope.selectedService.endTime, $scope.minDuration);
+                    $scope.startTimes = $scope.selectedService.weeklyAvailability && $scope.selectedService.weeklyAvailability.length > 0 ?
+                        getAvailableSlots(dayOfWeek, $scope.selectedService.weeklyAvailability, allSlots) : allSlots;
+                }
             };
 
             var setServiceDetails = function (serviceUuid) {
@@ -96,10 +144,11 @@ angular.module('bahmni.appointments')
                     function (response) {
                         $scope.serviceTypes = response.data.serviceTypes;
                         $scope.appointment.locationUuid = response.data.location.uuid;
-                        $scope.minDuration = $scope.serviceTypes.length > 0 ?
+                        $scope.selectedService = response.data;
+                        var duration = $scope.serviceTypes.length > 0 ?
                             _.head(_.sortBy($scope.serviceTypes, _.property('duration'))).duration :
                             response.data.durationMins;
-                        $scope.selectedService = response.data;
+                        $scope.minDuration = duration ? duration : 30;
                     },
                     function (response) {
                         if (response.status) {
@@ -188,6 +237,11 @@ angular.module('bahmni.appointments')
                 ngDialog.close();
             };
 
+            $scope.continueWithSaving = function () {
+                saveAppointment($scope.validatedAppointment);
+                ngDialog.close();
+            };
+
             $scope.cancelTransition = function () {
                 $scope.showConfirmationPopUp = true;
                 ngDialog.close();
@@ -195,11 +249,23 @@ angular.module('bahmni.appointments')
 
             $scope.displayConfirmationDialog = function () {
                 ngDialog.openConfirm({
-                    template: 'views/appointmentServiceSaveConfirmation.html',
+                    template: 'views/admin/appointmentServiceSaveConfirmation.html',
                     scope: $scope,
                     closeByEscape: true
                 });
             };
+
+            $scope.displayConflictConfirmationDialog = function () {
+                ngDialog.openConfirm({
+                    template: 'views/manage/appointmentConflictConfirmation.html',
+                    scope: $scope,
+                    closeByEscape: true
+                });
+            };
+
+            $scope.$on("$destroy", function () {
+                cleanUpListenerStateChangeStart();
+            });
 
             var getAvailableSlots = function (dayOfWeek, weeklyAvailability, allSlots) {
                 return _.filter(allSlots, function (slot) {
@@ -248,9 +314,37 @@ angular.module('bahmni.appointments')
                 }
             );
 
-            $scope.$on("$destroy", function () {
-                cleanUpListenerStateChangeStart();
-            });
+            var doTimeValidations = function () {
+                $scope.InvalidDate = !$scope.appointment.date;
+                $scope.InvalidEndTime = !moment($scope.appointment.endTime, 'hh:mm a').isValid();
+                $scope.InvalidStartTime = !moment($scope.appointment.startTime, 'hh:mm a').isValid();
+                $scope.EndTimeAfterStartError = !moment($scope.appointment.startTime, 'hh:mm a')
+                    .isBefore(moment($scope.appointment.endTime, 'hh:mm a'), 'minutes');
+            };
+
+            var defaultsForNewAppointment = function () {
+                if (!($scope.appointment.status && $scope.appointment.status.length > 0)) {
+                    $scope.appointment.status = Bahmni.Appointments.Constants.defaultAppointmentStatus;
+                }
+                if (!$scope.appointment.appointmentsKind) {
+                    $scope.appointment.appointmentsKind = 'Scheduled';
+                }
+            };
+
+            var checkForOldConflicts = function (appointment) {
+                return _.filter($scope.patientAppointments, function (apt) {
+                    return (moment(apt.startDateTime) <= moment(appointment.endDateTime) &&
+                     moment(apt.endDateTime) >= moment(appointment.startDateTime));
+                });
+            };
+
+            var saveAppointment = function (appointment) {
+                appointmentsService.save(appointment).then(function () {
+                    messagingService.showMessage('info', 'APPOINTMENT_SAVE_SUCCESS');
+                    $scope.showConfirmationPopUp = false;
+                    $state.go('^');
+                });
+            };
 
             return init();
         }]);
