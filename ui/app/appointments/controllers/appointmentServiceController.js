@@ -10,8 +10,6 @@ angular.module('bahmni.appointments')
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse({});
-            $scope.serviceType = {name: undefined, duration: Bahmni.Appointments.Constants.defaultServiceTypeDuration};
-            $scope.oneServiceTypeSelected = false;
             $scope.save = function () {
                 if ($scope.createServiceForm.$invalid) {
                     messagingService.showMessage('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
@@ -130,21 +128,6 @@ angular.module('bahmni.appointments')
                     }
                 }
             );
-
-            var validateServiceType = function (serviceType) {
-                return (!_.find($scope.service.serviceTypes, serviceType));
-            };
-
-            $scope.addServiceType = function (serviceType) {
-                if (validateServiceType(serviceType)) {
-                    $scope.service.serviceTypes.push({name: serviceType.name, duration: serviceType.duration ? serviceType.duration : 0});
-                    $scope.serviceType = {name: undefined, duration: Bahmni.Appointments.Constants.defaultServiceTypeDuration};
-                    $scope.oneServiceTypeSelected = true;
-                    $scope.createServiceForm.serviceTypeName.$setValidity('uniqueServiceTypeName', true);
-                } else {
-                    $scope.createServiceForm.serviceTypeName.$setValidity('uniqueServiceTypeName', false);
-                }
-            };
 
             $scope.$on("$destroy", function () {
                 cleanUpListenerStateChangeStart();
