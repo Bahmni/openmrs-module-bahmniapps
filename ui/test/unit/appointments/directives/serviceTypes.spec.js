@@ -50,29 +50,32 @@ describe('ServiceTypes', function () {
         expect(serviceTypeName.$setValidity).toHaveBeenCalledWith('uniqueServiceTypeName', true);
     });
 
-    it("should clear the service type name and set duration to default of defaultServiceTypeDuration after adding", function () {
+    it("should clear the service type name and duration after adding a serviceType", function () {
         scope.serviceType.name = 'Type1';
         scope.serviceType.duration = 30;
         scope.addServiceType(scope.serviceType);
-        expect(scope.serviceType.name).toEqual(undefined);
-        expect(scope.serviceType.duration).toEqual(Bahmni.Appointments.Constants.defaultServiceTypeDuration);
+        expect(scope.serviceType.name).toBeUndefined();
+        expect(scope.serviceType.duration).toBeUndefined();
     });
 
     it("should add service type name and duration to service", function () {
         scope.serviceType.name = 'Type1';
+        scope.updateServiceTypeDuration();
         scope.addServiceType(scope.serviceType);
         scope.serviceType.name = 'Type2';
         scope.serviceType.duration = 30;
+        scope.updateServiceTypeDuration();
         scope.addServiceType(scope.serviceType);
         scope.serviceType.name = 'Type3';
         scope.serviceType.duration = null;
+        scope.updateServiceTypeDuration();
         scope.addServiceType(scope.serviceType);
         expect(scope.service.serviceTypes[0].name).toEqual('Type1');
         expect(scope.service.serviceTypes[0].duration).toEqual(Bahmni.Appointments.Constants.defaultServiceTypeDuration);
         expect(scope.service.serviceTypes[1].name).toEqual('Type2');
         expect(scope.service.serviceTypes[1].duration).toEqual(30);
         expect(scope.service.serviceTypes[2].name).toEqual('Type3');
-        expect(scope.service.serviceTypes[2].duration).toEqual(0);
+        expect(scope.service.serviceTypes[2].duration).toEqual(15);
     });
 
     it('should clear the serviceType duration on clearing the serviceType name', function () {
