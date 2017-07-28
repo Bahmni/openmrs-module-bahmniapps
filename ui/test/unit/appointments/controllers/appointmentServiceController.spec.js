@@ -2,7 +2,7 @@
 
 describe("AppointmentServiceController", function () {
     var controller, scope, q, state, appointmentsServiceService, locationService, messagingService,
-        locations, specialityService, specialities, ngDialog, appointmentServices, appService, appDescriptor;
+        locations, specialityService, specialities, ngDialog, appointmentServices, appService, appDescriptor, colorsForAppointmentService;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -34,7 +34,18 @@ describe("AppointmentServiceController", function () {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
-        appDescriptor.getConfigValue.and.returnValue(true);
+        colorsForAppointmentService = ['#000000', '#111111', '#ffffff'];
+        appDescriptor.getConfigValue.and.callFake(function (key) {
+            if (key === 'enableSpecialities') {
+                return true;
+            } else if(key === 'enableServiceTypes') {
+                return true;
+            } else if(key === 'colorsForAppointmentService') {
+                return colorsForAppointmentService;
+            } else if(key == 'enableCalendarView') {
+                return true;
+            }
+        });
     });
 
     var createController = function () {
@@ -58,6 +69,20 @@ describe("AppointmentServiceController", function () {
             createController();
             expect(locationService.getAllByTag).toHaveBeenCalledWith('Appointment Location');
             expect(scope.locations).toBe(locations);
+            expect(scope.enableSpecialities).toBeTruthy();
+            expect(scope.enableServiceTypes).toBeTruthy();
+            expect(scope.colorsForAppointmentService).toBe(colorsForAppointmentService);
+        });
+
+        it("should have default color for appointment service type", function () {
+            createController();
+            expect(scope.enableCalendarView).toBe(true);
+            expect(scope.service.color).toBe("#000000");
+            colorsForAppointmentService = undefined;
+            createController();
+            expect(scope.service.color).toBe("#008000");
+            scope.service.color = "#A9A9A9";
+            expect(scope.service.color).toBe("#A9A9A9");
         });
 
         it('should show error message if fetch appointment locations has failed', function () {

@@ -70,11 +70,9 @@
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}</option>
                     </select>
                 </p>
-                <p>
+                <p ng-if="enableCalendarView">
                     <label for="label-color">Label Colour</label>
-                    <select id="label-color">
-                        <option>option1</option>
-                    </select>
+                    <color-picker colors="colorsForAppointmentService" selected-color="service.color"></color-picker>
                 </p>
                 <div ng-if="enableServiceTypes">
                     <service-types service="service"></service-types>

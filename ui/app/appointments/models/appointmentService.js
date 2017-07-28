@@ -35,6 +35,7 @@ Bahmni.Appointments.AppointmentService = (function () {
             description: serviceDetails.description,
             durationMins: serviceDetails.durationMins,
             maxAppointmentsLimit: serviceDetails.maxAppointmentsLimit,
+            color: serviceDetails.color,
             startTime: getTime(serviceDetails.startTime),
             endTime: getTime(serviceDetails.endTime),
             specialityUuid: serviceDetails.specialityUuid,
