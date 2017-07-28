@@ -230,6 +230,14 @@ describe("AppointmentServiceController", function () {
             expect(ngDialog.openConfirm).not.toHaveBeenCalled();
         });
 
+        it('should ignore the color attribute of service while checking atleast one value set during $stateChangeStart', function () {
+            scope.service = {
+                color: "#A9A9A9"
+            };
+            scope.$broadcast("$stateChangeStart");
+            expect(ngDialog.openConfirm).not.toHaveBeenCalled();
+        });
+
         it('should open confirmation dialog if form is filled', function () {
             scope.service = {
                 name: 'Pathology',

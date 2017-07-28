@@ -118,11 +118,13 @@ angular.module('bahmni.appointments')
             };
 
             var isAtLeastOneValueIsSet = function () {
-                return _.values($scope.service).some(function (value) { return _.isArray(value) ? !_.isEmpty(value) : value; });
+                return _.values(_.omit($scope.service, 'color')).some(function (value) {
+                    return _.isArray(value) ? !_.isEmpty(value) : value;
+                });
             };
 
             var cleanUpListenerStateChangeStart = $scope.$on('$stateChangeStart',
-                function (event, toState, toParams, fromState, fromParams) {
+                function (event, toState, toParams) {
                     if (isAtLeastOneValueIsSet() && $scope.showConfirmationPopUp) {
                         event.preventDefault();
                         ngDialog.close();
