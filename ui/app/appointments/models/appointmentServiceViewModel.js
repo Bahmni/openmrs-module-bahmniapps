@@ -15,10 +15,11 @@ Bahmni.Appointments.AppointmentServiceViewModel = (function () {
             description: serviceDetails.description,
             durationMins: serviceDetails.durationMins,
             maxAppointmentsLimit: serviceDetails.maxAppointmentsLimit,
+            color: serviceDetails.color,
             startTime: getDateTime(serviceDetails.startTime),
             endTime: getDateTime(serviceDetails.endTime),
             specialityUuid: serviceDetails.specialityUuid,
-            locationUuid: serviceDetails.locationUuid,
+            locationUuid: serviceDetails.location && serviceDetails.location.uuid,
             weeklyAvailability: serviceDetails.weeklyAvailability || [],
             serviceTypes: serviceDetails.serviceTypes || []
         });

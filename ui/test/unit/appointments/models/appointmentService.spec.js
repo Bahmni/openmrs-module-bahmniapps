@@ -11,6 +11,7 @@ describe('AppointmentService', function () {
             name: 'Chemotherapy',
             description: 'For cancer',
             startTime: startDateTime,
+            color: "#fffff0",
             endTime: endDateTime,
             maxAppointmentsLimit: 30,
             specialityUuid: 'specUuid',
@@ -25,6 +26,7 @@ describe('AppointmentService', function () {
         expect(appointmentService.endTime).toBe(dateUtil.getDateTimeInSpecifiedFormat(endDateTime, timeFormat));
         expect(appointmentService.locationUuid).toBe(service.locationUuid);
         expect(appointmentService.specialityUuid).toBe(service.specialityUuid);
+        expect(appointmentService.color).toBe("#fffff0");
     });
 
     it('should re arrange all weeklyAvailabilities by day', function () {

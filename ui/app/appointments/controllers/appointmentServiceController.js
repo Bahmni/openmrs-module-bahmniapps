@@ -9,7 +9,10 @@ angular.module('bahmni.appointments')
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
+            $scope.enableCalendarView = appService.getAppDescriptor().getConfigValue('enableCalendarView');
+            $scope.colorsForAppointmentService = appService.getAppDescriptor().getConfigValue('colorsForAppointmentService');
             $scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse({});
+            $scope.service.color = $scope.service.color || $scope.colorsForAppointmentService && $scope.colorsForAppointmentService[0] || "#008000";
             $scope.save = function () {
                 if ($scope.createServiceForm.$invalid) {
                     messagingService.showMessage('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
