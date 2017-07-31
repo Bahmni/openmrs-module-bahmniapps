@@ -42,7 +42,7 @@ ddescribe('Controller: AppointmentsCreateController', function () {
     });
 
     var createController = function () {
-        return controller('AppointmentServiceController', {
+        return controller('AppointmentsCreateController', {
                 $scope: $scope,
                 $q: q,
                 $state: $state,
