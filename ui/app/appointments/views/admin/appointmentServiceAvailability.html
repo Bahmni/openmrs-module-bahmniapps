@@ -13,7 +13,8 @@
         <div class="weekday-selector-wrapper">
         <label class="ava-input-fields">
             <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_MAX_LOAD_KEY' | translate}}</span>
-            <input class="max-load" type="number" min="0" ng-model="availability.maxAppointmentsLimit">
+            <input class="max-load"  type="number" min="0" ng-model="availability.maxAppointmentsLimit"
+                   ng-disabled="disableMaxLoad" ng-class="{'disabled': disableMaxLoad}">
         </label>
         <weekday-selector class="service-ava-days"
                           ng-model="availability.days" week-starts-index="startOfWeek"
