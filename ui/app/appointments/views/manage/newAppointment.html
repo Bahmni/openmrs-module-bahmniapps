@@ -7,7 +7,7 @@
 
             <section id="addNewAppointment">
                 <p>
-                    <label>{{'APPOINTMENT_CREATE_PATIENT_NAME' | translate}}<sup>*</sup></label>
+                    <label>{{'APPOINTMENT_CREATE_PATIENT_NAME' | translate}}<sup class="asterick">*</sup></label>
 
                     <input type="text"
                            id="patientID"
@@ -39,7 +39,7 @@
                 </p>
                 <p>
                     <label for="service">
-                        {{'APPOINTMENT_SERVICE' | translate}}
+                        {{'APPOINTMENT_SERVICE' | translate}}<sup class="asterick">*</sup>
                     </label>
                     <select id="service" ng-model="appointment.serviceUuid"
                             ng-options="item.uuid as item.name for item in services | filter: {speciality:{uuid:appointment.specialityUuid}}:true"
@@ -57,7 +57,7 @@
                     <select ng-disabled="!(serviceTypes.length > 0)" id="serviceType"
                             ng-model="appointment.serviceTypeUuid" ng-change="onServiceTypeChange()"
                             ng-options="item.uuid as item.name + '   [' + item.duration + ' min]'  for item in serviceTypes | orderBy:'name'">
-                        <option disabled value="">{{ ::'PLACEHOLDER_SERVICE_TYPE' | translate}}
+                        <option value="">{{ ::'PLACEHOLDER_SERVICE_TYPE' | translate}}
                         </option>
                     </select>
                 </p>
@@ -68,7 +68,7 @@
                     </label>
                     <select id="location" ng-model="appointment.locationUuid"
                             ng-options="item.uuid as item.display for item in locations | orderBy:'display'">
-                        <option disabled value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}
+                        <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}
                         </option>
                     </select>
                 </p>
@@ -78,61 +78,55 @@
                     </label>
                     <select id="provider" ng-model="appointment.providerUuid"
                             ng-options="item.uuid as item.display for item in providers | orderBy:'display'">
-                        <option disabled value="">{{ ::'PLACEHOLDER_CREATE_PROVIDER' | translate}}</option>
+                        <option value="">{{ ::'PLACEHOLDER_CREATE_PROVIDER' | translate}}</option>
                     </select>
                 </p>
                 <p>
                     <label for="date">
-                        {{'APPOINTMENT_DATE' | translate}}
+                        {{'APPOINTMENT_DATE' | translate}}<sup class="asterick">*</sup>
                     </label>
                     <input  id="date" ng-disabled="!(appointment.serviceUuid.length > 0)" type="date" min="{{today}}"
                             ng-model="appointment.date" required ng-blur="OnDateChange()" placeholder="Pick appointment date"/>
-                    <span ng-show="InvalidDate" style="float: right; padding-top: 5px; padding-right: 5px; color: red">
-                        Not a valid date.</span>
                     <span class="slots-remaining"></span>
                 </p>
                 <p>
                     <label for="startTimeID">
-                        {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
+                        {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}<sup class="asterick">*</sup>
                     </label>
                     <input type="text"
                            id="startTimeID"
                            min-length=1
                            bahmni-autocomplete
                            ng-model="appointment.startTime"
-                           source="startTimeSource"
-                           response-map="startTimeResponseMap"
+                           source="timeSource"
                            on-select="onSelectStartTime"
                            ng-class="{'illegalValue': isInvalid}"
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
+                           ng-pattern="timeRegex"
                            ng-disabled='!appointment.date'
                            required/>
                     <i class="fa fa-angle-down search-icon-app" aria-hidden="true"></i>
-                    <span ng-show="InvalidEndTime" style="float: right; padding-top: 5px; padding-right: 5px; color: red">Invalid time format.</span>
                 </p>
                 <p>
                     <label for="endTimeID">
-                        {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
+                        {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}<sup class="asterick">*</sup>
                     </label>
                     <input type="text"
                            id="endTimeID"
                            min-length=1
                            bahmni-autocomplete
                            ng-model="appointment.endTime"
-                           source="startTimeSource"
-                           response-map="startTimeResponseMap"
+                           source="timeSource"
                            on-select="onSelectEndTime"
                            ng-blur="onSelectEndTime"
                            ng-class="{'illegalValue': isInvalid}"
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
                            ng-disabled='!appointment.date'
+                           ng-pattern="timeRegex"
                            required/>
                     <i class="fa fa-angle-down search-icon-app" aria-hidden="true"></i>
-                    <span ng-show="InvalidEndTime" style="float: right; padding-top: 5px; padding-right: 5px; color: red">Invalid time format.</span>
-                    <span ng-show="EndTimeAfterStartError" style="float: right; padding-top: 5px; padding-right: 5px; color: red">
-                        End Time should be after Start Time.</span>
                 </p>
                 <p>
                     <label></label>
