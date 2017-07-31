@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .directive('serviceAvailability', ['appService', function (appService) {
+    .directive('serviceAvailability', ['$window', '$translate', 'appService', function ($window, $translate, appService) {
         var states = {NEW: 0, EDIT: 1, READONLY: 2};
 
         var link = function (scope) {
@@ -49,8 +49,16 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            var convertDaysToBinary = function(days){
+                return parseInt(days.map(function(day){
+                    return day.isSelected? 1: 0;
+                }).reverse().join(''), 2)
+            };
+
             var hasCommonDays = function (avb1, avb2) {
-                return (avb1.days & avb2.days) !== 0;
+               var days1InBinary = convertDaysToBinary(avb1.days);
+               var days2InBinary = convertDaysToBinary(avb2.days);
+               return (days1InBinary & days2InBinary) !== 0;
             };
 
             var hasOverlappingTimes = function (avb1, avb2) {
@@ -58,8 +66,11 @@ angular.module('bahmni.appointments')
             };
 
             scope.delete = function () {
-                var index = scope.availabilityList.indexOf(scope.availability);
-                scope.availabilityList.splice(index, 1);
+                var confirmed = $window.confirm($translate.instant('CONFIRM_DELETE_AVAILABILITY'));
+                if (confirmed) {
+                    var index = scope.availabilityList.indexOf(scope.availability);
+                    scope.availabilityList.splice(index, 1);
+                }
             };
 
             scope.cancel = function () {
