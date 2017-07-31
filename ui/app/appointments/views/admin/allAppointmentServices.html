@@ -21,7 +21,7 @@
                 <td>{{service.durationMins}}</td>
                 <td class="service-disc-tablecell">{{service.description}}</td>
                 <td>
-                    <a ng-href="#/home/admin/service/{{service.uuid}}">{{ ::'APPOINTMENT_SERVICE_EDIT_ACTION' | translate}}</a>
+                    <a ng-click="editService(service.uuid)" >{{ ::'APPOINTMENT_SERVICE_EDIT_ACTION' | translate}}</a>
                     <a ng-click="deleteAppointmentService(service)">{{ ::'APPOINTMENT_SERVICE_DELETE_ACTION' | translate}}</a>
                 </td>
             </tr>

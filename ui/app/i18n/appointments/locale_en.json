@@ -40,6 +40,7 @@
   "APPOINTMENT_SERVICE_AVAILABILITY_END_TIME_KEY": "End Time",
   "APPOINTMENT_SERVICE_AVAILABILITY_MAX_LOAD_KEY": "Max Load",
   "ADD_AVAILABILITY": "ADD",
+  "CONFIRM_DELETE_AVAILABILITY": "There could be appointments booked for this service availability. Are you sure you want to proceed with deleting it?",
   "APPOINTMENT_SERVICE_SAVE_SUCCESS": "Service saved successfully",
   "APPOINTMENT_SAVE_SUCCESS": "Appointment saved successfully",
   "SAVE_CONFIRMATION_DIALOG_MESSAGE_KEY": "You have unsaved changes, please choose an option",
@@ -69,7 +70,13 @@
   "APPOINTMENT_CREATE_NOTES": "Notes",
   "PLACEHOLDER_CREATE_NOTES": "Enter appointment notes",
   "PLACEHOLDER_CREATE_PROVIDER": "Select a provider",
-  "PLACEHOLDER_APPOINTMENT_TIME_FORMAT": "hh:mm am/pm",
+  "PLACEHOLDER_APPOINTMENT_TIME_FORMAT": "Enter time as hh:mm am/pm",
   "APPOINTMENT_SERVICE_DELETE_SUCCESS_MESSAGE_KEY": "Service deleted successfully",
-  "PLACEHOLDER_APPOINTMENT_TIME_FORMAT": "Enter time as hh:mm am/pm"
+  "SUNDAY": "Su",
+  "MONDAY": "Mo",
+  "TUESDAY": "Tu",
+  "WEDNESDAY": "We",
+  "THURSDAY": "Th",
+  "FRIDAY": "Fr",
+  "SATURDAY": "Sa"
 }
