@@ -3,7 +3,7 @@
 describe("AppointmentServiceController", function () {
     var controller, scope, q, state, appointmentsServiceService, locationService, messagingService,
         locations, specialityService, specialities, ngDialog, appointmentServices, appService, appDescriptor,
-        colorsForAppointmentService, appointmentServiceContext;
+        colorsForAppointmentService, appointmentServiceContext, window, translate;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -47,6 +47,8 @@ describe("AppointmentServiceController", function () {
                 return true;
             }
         });
+        window = jasmine.createSpyObj('$window', ['confirm']);
+        translate = jasmine.createSpyObj('$translate', ['instant']);
     });
 
     var createController = function () {
@@ -60,7 +62,9 @@ describe("AppointmentServiceController", function () {
             specialityService: specialityService,
             ngDialog: ngDialog,
             appService: appService,
-            appointmentServiceContext: appointmentServiceContext
+            appointmentServiceContext: appointmentServiceContext,
+            $window: window,
+            $translate: translate
         }
       );
     };
@@ -267,18 +271,11 @@ describe("AppointmentServiceController", function () {
             state.name = 'home.service';
             createController();
             scope.createServiceForm = {$dirty: true};
+            window.confirm.and.returnValue(true);
         });
 
         it('should not open confirmation dialog if form is not edited', function () {
             scope.createServiceForm = {$dirty: false};
-            scope.$broadcast("$stateChangeStart");
-            expect(ngDialog.openConfirm).not.toHaveBeenCalled();
-        });
-
-        it('should ignore the color attribute of service while checking atleast one value set during $stateChangeStart', function () {
-            scope.service = {
-                color: "#A9A9A9"
-            };
             scope.$broadcast("$stateChangeStart");
             expect(ngDialog.openConfirm).not.toHaveBeenCalled();
         });
@@ -313,5 +310,43 @@ describe("AppointmentServiceController", function () {
             expect(state.go).toHaveBeenCalledWith(toState, toParams);
             expect(ngDialog.close).toHaveBeenCalled();
         });
+    });
+
+    it('should return true in case of edit and confirmed', function () {
+        createController();
+        scope.service = {
+            name: 'Chemotherapy',
+            uuid: '81da9590-3f10-11e4-2908-0800271c123'
+        };
+        var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
+        window.confirm.and.returnValue(true);
+        translate.instant.and.returnValue('Edit confirmation');
+        var confirmEdit = scope.confirmForEdit();
+        expect(window.confirm).toHaveBeenCalled();
+        expect(confirmEdit).toBeTruthy();
+    });
+
+    it('should return false in case of edit and not confirmed', function () {
+        createController();
+        scope.service = {
+            name: 'Chemotherapy',
+            uuid: '81da9590-3f10-11e4-2908-0800271c123'
+        };
+        var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
+        window.confirm.and.returnValue(false);
+        translate.instant.and.returnValue('Edit confirmation');
+        var confirmEdit = scope.confirmForEdit();
+        expect(window.confirm).toHaveBeenCalled();
+        expect(confirmEdit).toBeFalsy();
+    });
+
+    it('should always return true if is create service ', function () {
+        createController();
+        scope.service = {
+            name: 'Chemotherapy'
+        };
+        var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
+        var confirmEdit = scope.confirmForEdit();
+        expect(confirmEdit).toBeTruthy();
     });
 });
