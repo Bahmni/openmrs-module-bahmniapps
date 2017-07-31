@@ -72,9 +72,14 @@
     top: 63px;
   }
 }
-
+.appointment-filter {
+  width: 280px;
+  float: left;
+  height: calc(100vh - 126px);
+}
 .appointment-btn-container {
   padding: 0 10px 20px;
+  float: left;
   a {
     @extend .appBtn;
     &.active {
@@ -96,18 +101,29 @@
       margin: 0;
     }
   }
+  &.app-filter-open {
+    width: calc(100% - 300px);
+  }
 }
 
 .appointment-content-container {
   overflow: hidden;
   height: calc(100vh - 230px);
+  float: left;
+  &.app-filter-open {
+    width: calc(100% - 300px);
+  }
 }
 
 .appointment-action-btn-container {
   text-align: right;
   padding: 10px;
+  float: left;
   a {
     @extend .appBtn;
+  }
+  &.app-filter-open {
+    width: calc(100% - 300px);
   }
 }
 

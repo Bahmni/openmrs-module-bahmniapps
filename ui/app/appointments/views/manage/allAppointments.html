@@ -1,6 +1,9 @@
-<div class="appointment-container">
-    <div class="appointment-btn-container">
-        <span class="app-filter-btn-wrapper"><a class="app-filter-btn"><i class="fa fa-filter" aria-hidden="true"></i> Filter</a></span>
+<div class="appointment-container" ng-init="isFilterOpen = true">
+    <aside class="appointment-filter" ng-show="isFilterOpen">
+        <h4>Filter</h4>
+    </aside>
+    <div class="appointment-btn-container" ng-class="{'app-filter-open': isFilterOpen}">
+        <span class="app-filter-btn-wrapper" ng-show="!isFilterOpen"><a class="app-filter-btn"><i class="fa fa-filter" aria-hidden="true"></i> Filter</a></span>
         <!---TODO: move all the logic to controller --->
         <a ng-class="{'active': currentTab === 'list'}" ng-click="navigateTo('list')">
             {{::'LIST_VIEW' | translate}}
@@ -10,9 +13,8 @@
         </a>
         <a class="add-app-btn" ng-href="#/home/manage/appointments/{{currentTab}}/new">{{::'ADD_NEW_APPOINTMENT' | translate }}</a>
     </div>
-
-    <div ui-view="content@viewAppointments" class="appointment-content-container"></div>
-    <div class="appointment-action-btn-container">
+    <div ui-view="content@viewAppointments" class="appointment-content-container" ng-class="{'app-filter-open': isFilterOpen}"></div>
+    <div class="appointment-action-btn-container" ng-class="{'app-filter-open': isFilterOpen}">
         <a href="#">Check-in</a>
         <a href="#">Complete</a>
         <a href="#">Missed</a>
