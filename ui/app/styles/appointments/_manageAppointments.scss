@@ -72,11 +72,16 @@
     top: 63px;
   }
 }
+
 .appointment-filter {
-  width: 280px;
+  width: 300px;
   float: left;
-  height: calc(100vh - 177px);
+  height: calc(100vh - 178px);
+  overflow: auto;
+  border-right: 1px solid #ddd;
+  border-top: 1px solid #ddd;
 }
+
 .appointment-btn-container {
   padding: 0 10px 20px;
   a {
@@ -109,12 +114,13 @@
 .appointment-action-btn-container {
   text-align: right;
   padding: 10px;
+  box-sizing: border-box;
   float: left;
   a {
     @extend .appBtn;
   }
   &.app-filter-open {
-    width: calc(100% - 300px);
+    width: calc(100% - 301px);
   }
 }
 
@@ -227,6 +233,9 @@
 .app-list-view {
   overflow: auto;
   height: calc(100vh - 230px);
+  &.app-filter-open {
+    width: calc(100% - 311px);
+  }
   table {
     th {
       background: #C7C0C0;
@@ -254,12 +263,30 @@
     }
   }
 }
+
 /*----- Calendar view styles -----*/
 .app-calendar-container {
   float: left;
   overflow: hidden;
   height: calc(100vh - 230px);
+
   &.app-filter-open {
-    width: calc(100% - 300px);
+    width: calc(100% - 311px);
+    padding-left: 0;
+  }
+  .section-grid {
+    border-radius: 0;
+    border: 1px solid #ddd;
+    border-left: none;
+    tr {
+      border-left: none;
+      border-right: none;
+      td, th {
+        border-left: none;
+        &:last-child {
+          border-right: none;
+        }
+      }
+    }
   }
 }
