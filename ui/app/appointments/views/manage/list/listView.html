@@ -1,4 +1,8 @@
-<div class="app-list-view">
+<div  ng-init="isFilterOpen = true">
+<div class="appointment-filter" ng-init="isFilterOpen = true" ng-show="isFilterOpen">
+<h4>Filter</h4>
+</div>
+<div class="app-list-view"  ng-class="{'app-filter-open': isFilterOpen}">
     <table>
         <thead>
         <tr>
@@ -27,3 +31,11 @@
     </table>
 </div>
 <div ui-view="content@appointment"></div>
+<div class="appointment-action-btn-container" ng-class="{'app-filter-open': isFilterOpen}">
+    <a href="#">Check-in</a>
+    <a href="#">Complete</a>
+    <a href="#">Missed</a>
+    <a href="#">Edit</a>
+    <a href="#">Cancel Appointment</a>
+</div>
+</div>
