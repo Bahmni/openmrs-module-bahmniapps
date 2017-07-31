@@ -1,4 +1,16 @@
-<div class="app-calendar-container">
+<div  ng-init="isFilterOpen = true">
+<div class="appointment-filter" ng-show="isFilterOpen">
+<h4>Filter</h4>
+</div>
+<div class="app-calendar-container"  ng-class="{'app-filter-open': isFilterOpen}">
     <day-calendar appointments="providerAppointments"></day-calendar>
 </div>
 <div ui-view="content@appointment"></div>
+<div class="appointment-action-btn-container" ng-class="{'app-filter-open': isFilterOpen}">
+    <a href="#">Check-in</a>
+    <a href="#">Complete</a>
+    <a href="#">Missed</a>
+    <a href="#">Edit</a>
+    <a href="#">Cancel Appointment</a>
+</div>
+</div>
