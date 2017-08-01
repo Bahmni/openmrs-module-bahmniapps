@@ -13,7 +13,7 @@
                     </label>
                     <input placeholder="{{ ::'PLACEHOLDER_SERVICE_NAME' | translate }}" id="name" name="name"
                            type="text"
-                           ng-change="validateServiceName()" ng-model="service.name" required/>
+                           ng-change="validateServiceName(service.name)" ng-model="service.name" required/>
                 </p>
                 <p class="caution" ng-show="createServiceForm.name.$error.uniqueServiceName">
                     <i class="fa fa-exclamation-circle small"></i>
@@ -32,7 +32,7 @@
                     </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_DURATION' | translate }}" id="duration"
                                     type="number" min="0" ng-model="service.durationMins"/>
                 </p>
-                <fieldset ng-disabled="hasWeeklyAvailability()" ng-class="{'disabled': hasWeeklyAvailability()}">
+                <fieldset ng-hide="hasWeeklyAvailability()">
                     <p name="serviceTime" class="time-wrapper" ng-model="service" time-validator>
                         <label for="start-time">
                             {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
@@ -45,10 +45,10 @@
                         <i class="fa fa-exclamation-circle small"></i>
                         <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
                     </p>
-                    <p ng-disabled="hasServiceTypes()" ng-class="{'disabled': hasServiceTypes()}">
+                    <p ng-class="{'disabled': service.serviceTypes.length > 0}">
                         <label class="max-load" for="max-load">
                             {{'APPOINTMENT_SERVICE_MAX_LOAD_KEY' | translate}}
-                        </label> <input name="serviceMaxLoad" placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
+                        </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
                                         type="number" min="0" ng-model="service.maxAppointmentsLimit">
                     </p>
                 </fieldset>
@@ -84,6 +84,7 @@
                     <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_ADD_NEW' | translate}}</span>
                 </div>
                 <ul>
+
                     <li class="service-availability-wrapper" ng-repeat="availability in service.weeklyAvailability">
                         <service-availability availability="availability"
                                               availability-list="service.weeklyAvailability"

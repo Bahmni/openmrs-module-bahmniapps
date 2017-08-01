@@ -1,55 +1,22 @@
 'use strict';
 
 describe('ServiceAvailability', function () {
-    var compile, scope, httpBackend, appService, appDescriptor, window, translate;
-
-    var days = [{
-        dayOfWeek: 'SUNDAY',
-        displayName: 'Su',
-        isSelected: false
-    }, {
-        dayOfWeek: 'MONDAY',
-        displayName: 'Mo',
-        isSelected: false
-    }, {
-        dayOfWeek: 'TUESDAY',
-        displayName: 'Tu',
-        isSelected: false
-    }, {
-        dayOfWeek: 'WEDNESDAY',
-        displayName: 'We',
-        isSelected: false
-    }, {
-        dayOfWeek: 'THURSDAY',
-        displayName: 'Th',
-        isSelected: false
-    }, {
-        dayOfWeek: 'FRIDAY',
-        displayName: 'Fr',
-        isSelected: false
-    }, {
-        dayOfWeek: 'SATURDAY',
-        displayName: 'Sa',
-        isSelected: false
-    }];
-
+    var compile, scope, httpBackend, appService, appDescriptor;
 
     beforeEach(module('bahmni.appointments', function ($provide) {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
-        window = jasmine.createSpyObj('$window', ['confirm']);
-        translate = jasmine.createSpyObj('$translate', ['storageKey', 'instant', 'storage', 'preferredLanguage']);
 
         $provide.value('appService', appService);
-        $provide.value('$window', window);
-        $provide.value('$translate', translate);
     }));
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope) {
         compile = $compile;
         scope = $rootScope.$new();
         httpBackend = $httpBackend;
+        httpBackend.expectGET('../i18n/appointments/locale_en.json').respond({});
+        httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond({});
         httpBackend.expectGET('../appointments/views/admin/appointmentServiceAvailability.html').respond('<div></div>');
     }));
 
@@ -115,7 +82,7 @@ describe('ServiceAvailability', function () {
             scope.availability = {
                 startTime: startDateTime,
                 endTime: endDateTime,
-                days: days
+                days: 2
             };
             scope.availabilityList = [];
             var element = createElement();
@@ -207,9 +174,8 @@ describe('ServiceAvailability', function () {
             scope.availability = {
                 startTime: new Date().toString(),
                 endTime: new Date().toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            scope.availability.days[1].isSelected = true;
             scope.availabilityList = [];
             var element = createElement();
             var compiledElementScope = element.isolateScope();
@@ -225,17 +191,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability1.days[1].isSelected = true;
-
             var availability2 = {
                 startTime: new Date("2015-10-01T08:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T10:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability2.days[1].isSelected = true;
-
             scope.availabilityList = [availability1];
             scope.availability = availability2;
             var element = createElement();
@@ -251,17 +213,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T08:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-
-            availability1.days[1].isSelected = true;
-            availability2.days[1].isSelected = true;
-
             scope.availabilityList = [availability1];
             scope.availability = availability2;
             var element = createElement();
@@ -279,16 +237,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T10:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T12:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability1.days[1].isSelected = true;
-            availability2.days[1].isSelected = true;
-
             scope.availabilityList = [availability1];
             scope.availability = availability2;
             var element = createElement();
@@ -304,15 +259,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T10:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T10:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T12:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability1.days[1].isSelected = true;
-            availability2.days[1].isSelected = true;
             scope.availabilityList = [availability1];
             scope.availability = availability2;
             var element = createElement();
@@ -330,16 +283,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T09:45:00.000Z").toString(),
                 endTime: new Date("2015-10-01T10:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability1.days[1].isSelected = true;
-            availability2.days[1].isSelected = true;
-
             scope.availabilityList = [availability1];
             scope.availability = availability2;
             var element = createElement();
@@ -355,16 +305,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-
-            availability1.days[1].isSelected = true;
-            availability2.days[1].isSelected = true;
             scope.availabilityList = [availability1];
             scope.availability = availability2;
             var element = createElement();
@@ -380,17 +327,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 4
             };
-
-            availability1.days[1].isSelected = true;
-            availability2.days[3].isSelected = true;
-
             scope.availabilityList = [availability1];
             scope.availability = availability2;
             var element = createElement();
@@ -404,44 +347,21 @@ describe('ServiceAvailability', function () {
         });
     });
 
-    it('should not delete availability if not confirmed', function () {
+    it('should delete availability from weeklyAvailability list', function () {
         var availability1 = {
             startTime: new Date().toString(),
             endTime: new Date().toString(),
             days: 2
         };
-        scope.availabilityList = [availability1];
-        window.confirm.and.returnValue(false);
-        translate.instant.and.returnValue('Are you sure you want to delete?');
-        var element = createElement();
-        var compiledElementScope = element.isolateScope();
-
-        expect(compiledElementScope.availabilityList.length).toBe(1);
-        expect(compiledElementScope.availabilityList[0]).toEqual(availability1);
-        compiledElementScope.delete();
-        expect(window.confirm).toHaveBeenCalledWith('Are you sure you want to delete?');
-        expect(compiledElementScope.availabilityList.length).toBe(1);
-        expect(compiledElementScope.availabilityList[0]).toEqual(availability1);
-    });
-
-    it('should delete availability from weeklyAvailability list if confirmed', function () {
-        var availability1 = {
-            startTime: new Date().toString(),
-            endTime: new Date().toString(),
-            days: angular.copy(days)
-        };
         var availability2 = {
             startTime: new Date().toString(),
             endTime: new Date().toString(),
-            days: angular.copy(days)
+            days: 2
         };
-        availability1.days[1].isSelected = true;
-        availability2.days[1].isSelected = true;
         scope.availability = availability1;
-        scope.availabilityList = [scope.availability, availability2];
-        window.confirm.and.returnValue(true);
-        translate.instant.and.returnValue('Are you sure you want to delete?');
-
+        scope.availabilityList = [];
+        scope.availabilityList.push(scope.availability);
+        scope.availabilityList.push(availability2);
         var element = createElement();
         var compiledElementScope = element.isolateScope();
 
@@ -449,7 +369,6 @@ describe('ServiceAvailability', function () {
         expect(compiledElementScope.availabilityList[0]).toEqual(availability1);
         expect(compiledElementScope.availabilityList[1]).toEqual(availability2);
         compiledElementScope.delete();
-        expect(window.confirm).toHaveBeenCalledWith('Are you sure you want to delete?');
         expect(compiledElementScope.availabilityList.length).toBe(1);
         expect(compiledElementScope.availabilityList[0]).toEqual(availability2);
     });
@@ -459,9 +378,8 @@ describe('ServiceAvailability', function () {
         scope.availability = {
             startTime: new Date().toString(),
             endTime: new Date().toString(),
-            days: angular.copy(days)
+            days: 2
         };
-        scope.availability.days[1].isSelected = true;
         scope.availabilityList = [scope.availability];
 
         var element = createElement();
@@ -480,9 +398,8 @@ describe('ServiceAvailability', function () {
         scope.availability = {
             startTime: new Date().toString(),
             endTime: new Date().toString(),
-            days: angular.copy(days)
+            days: 2
         };
-        scope.availability.days[1].isSelected = true;
         scope.availabilityList = [scope.availability];
 
         var element = createElement();
@@ -500,15 +417,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 4
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability1.days[3].isSelected = true;
-            availability1.days[1].isSelected = true;
             scope.availability = availability1;
             scope.availabilityList = [availability1, availability2];
             var element = createElement();
@@ -521,10 +436,8 @@ describe('ServiceAvailability', function () {
             compiledElementScope.availability = {
                 startTime: new Date("2015-10-01T04:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T08:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 5
             };
-            compiledElementScope.availability.days[0].isSelected = true;
-            compiledElementScope.availability.days[2].isSelected = true;
             compiledElementScope.update();
             expect(compiledElementScope.doesOverlap).toBeFalsy();
             expect(compiledElementScope.availabilityList.length).toBe(2);
@@ -537,9 +450,8 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 4
             };
-            availability1.days[2].isSelected = true;
             scope.availability = availability1;
             scope.availabilityList = [availability1];
             var element = createElement();
@@ -551,10 +463,8 @@ describe('ServiceAvailability', function () {
             compiledElementScope.availability = {
                 startTime: new Date("2015-10-01T10:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:00:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 5
             };
-            compiledElementScope.availability.days[0].isSelected = true;
-            compiledElementScope.availability.days[2].isSelected = true;
             compiledElementScope.update();
             expect(compiledElementScope.doesOverlap).toBeFalsy();
             expect(compiledElementScope.availabilityList.length).toBe(1);
@@ -566,15 +476,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 4
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T08:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T10:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability1.days[2].isSelected = true;
-            availability2.days[1].isSelected = true;
             scope.availability = availability1;
             scope.availabilityList = [availability1, availability2];
             var element = createElement();
@@ -587,10 +495,8 @@ describe('ServiceAvailability', function () {
             compiledElementScope.availability = {
                 startTime: new Date("2015-10-01T07:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 3
             };
-            compiledElementScope.availability.days[0].isSelected = true;
-            compiledElementScope.availability.days[1].isSelected = true;
             compiledElementScope.update();
             expect(compiledElementScope.doesOverlap).toBeTruthy();
             expect(compiledElementScope.availabilityList.length).toBe(2);
@@ -601,15 +507,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 4
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T10:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability1.days[2].isSelected = true;
-            availability2.days[1].isSelected = true;
             scope.availability = availability1;
             scope.availabilityList = [availability1, availability2];
             var element = createElement();
@@ -622,10 +526,8 @@ describe('ServiceAvailability', function () {
             compiledElementScope.availability = {
                 startTime: new Date("2015-10-01T07:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 6
             };
-            compiledElementScope.availability.days[2].isSelected = true;
-            compiledElementScope.availability.days[1].isSelected = true;
             compiledElementScope.update();
             expect(compiledElementScope.doesOverlap).toBeFalsy();
             expect(compiledElementScope.availabilityList.length).toBe(2);
@@ -638,15 +540,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 4
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T08:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T10:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability1.days[2].isSelected = true;
-            availability2.days[1].isSelected = true;
             scope.availability = availability1;
             scope.availabilityList = [availability1, availability2];
             var element = createElement();
@@ -659,10 +559,8 @@ describe('ServiceAvailability', function () {
             compiledElementScope.availability = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 3
             };
-            compiledElementScope.availability.days[0].isSelected = true;
-            compiledElementScope.availability.days[1].isSelected = true;
             compiledElementScope.update();
             expect(compiledElementScope.doesOverlap).toBeTruthy();
             expect(compiledElementScope.availabilityList.length).toBe(2);
@@ -673,15 +571,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 4
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability1.days[2].isSelected = true;
-            availability2.days[1].isSelected = true;
             scope.availability = availability1;
             scope.availabilityList = [availability1, availability2];
             var element = createElement();
@@ -694,10 +590,8 @@ describe('ServiceAvailability', function () {
             compiledElementScope.availability = {
                 startTime: new Date("2015-10-01T11:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T12:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 3
             };
-            compiledElementScope.availability.days[2].isSelected = true;
-            compiledElementScope.availability.days[1].isSelected = true;
             compiledElementScope.update();
             expect(compiledElementScope.doesOverlap).toBeFalsy();
             expect(compiledElementScope.availabilityList.length).toBe(2);
@@ -710,15 +604,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 4
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T08:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T12:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability1.days[2].isSelected = true;
-            availability2.days[1].isSelected = true;
             scope.availability = availability1;
             scope.availabilityList = [availability1, availability2];
             var element = createElement();
@@ -731,10 +623,8 @@ describe('ServiceAvailability', function () {
             compiledElementScope.availability = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 3
             };
-            compiledElementScope.availability.days[2].isSelected = true;
-            compiledElementScope.availability.days[1].isSelected = true;
             compiledElementScope.update();
             expect(compiledElementScope.doesOverlap).toBeTruthy();
             expect(compiledElementScope.availabilityList.length).toBe(2);
@@ -745,15 +635,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 4
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T07:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T10:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability1.days[2].isSelected = true;
-            availability2.days[1].isSelected = true;
             scope.availability = availability1;
             scope.availabilityList = [availability1, availability2];
             var element = createElement();
@@ -766,10 +654,8 @@ describe('ServiceAvailability', function () {
             compiledElementScope.availability = {
                 startTime: new Date("2015-10-01T08:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T09:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 3
             };
-            compiledElementScope.availability.days[2].isSelected = true;
-            compiledElementScope.availability.days[1].isSelected = true;
             compiledElementScope.update();
             expect(compiledElementScope.doesOverlap).toBeTruthy();
             expect(compiledElementScope.availabilityList.length).toBe(2);
@@ -780,15 +666,13 @@ describe('ServiceAvailability', function () {
             var availability1 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 4
             };
             var availability2 = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 2
             };
-            availability1.days[2].isSelected = true;
-            availability2.days[1].isSelected = true;
             scope.availability = availability1;
             scope.availabilityList = [availability1, availability2];
             var element = createElement();
@@ -801,10 +685,8 @@ describe('ServiceAvailability', function () {
             compiledElementScope.availability = {
                 startTime: new Date("2015-10-01T09:30:00.000Z").toString(),
                 endTime: new Date("2015-10-01T11:30:00.000Z").toString(),
-                days: angular.copy(days)
+                days: 5
             };
-            compiledElementScope.availability.days[0].isSelected = true;
-            compiledElementScope.availability.days[2].isSelected = true;
             compiledElementScope.update();
             expect(compiledElementScope.doesOverlap).toBeFalsy();
             expect(compiledElementScope.availabilityList.length).toBe(2);

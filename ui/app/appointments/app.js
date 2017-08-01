@@ -127,11 +127,6 @@ angular
                         templateUrl: 'views/admin/appointmentService.html',
                         controller: 'AppointmentServiceController'
                     }
-                },
-                resolve: {
-                    appointmentServiceContext: function (appointmentServiceInitialization, $stateParams) {
-                        return appointmentServiceInitialization($stateParams.uuid);
-                    }
                 }
             });
 
