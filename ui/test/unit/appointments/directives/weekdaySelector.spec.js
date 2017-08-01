@@ -24,50 +24,42 @@ describe('WeekdaySelector', function () {
 
     it('should assign days to ngmodel', function () {
         expect(scope.days).toBeUndefined();
-        createElement();
+        var element = createElement();
+        var compiledScope = element.isolateScope();
 
         expect(scope.days).not.toBeUndefined();
-        expect(scope.days).toBe(0);
+        expect(scope.days).toEqual(compiledScope.constDays);
     });
 
     it('should display first two letters of day name', function () {
         scope.startOfWeek = 2;
         var element = createElement();
-        expect($(element).find('#day-0').text()).toEqual('Mo');
-        expect($(element).find('#day-1').text()).toEqual('Tu');
-        expect($(element).find('#day-6').text()).toEqual('Su');
+        expect($(element).find('#day-0').text()).toEqual('MONDAY');
+        expect($(element).find('#day-1').text()).toEqual('TUESDAY');
+        expect($(element).find('#day-6').text()).toEqual('SUNDAY');
     });
 
-    it('should check if nth bit is set', function () {
-        scope.days = 4;
-        var element = createElement();
-        var compiledScope = element.isolateScope();
-        expect(compiledScope.isBitSet(0)).toBeFalsy();
-        expect(compiledScope.isBitSet(1)).toBeFalsy();
-        expect(compiledScope.isBitSet(2)).toBeTruthy();
-    });
-
-    it('should toggle nth bit of days value when nth day is clicked', function () {
+    it('should toggle isSelected of a day when clicked', function () {
         scope.startOfWeek = 1;
         var element = createElement();
         var monDay = $(element).find('#day-1');
         expect(monDay.hasClass('is-selected')).toBeFalsy();
-        expect(scope.days).toBe(0);
+        expect(scope.days[1].isSelected).toBeFalsy();
         monDay.click();
         expect(monDay.hasClass('is-selected')).toBeTruthy();
-        expect(scope.days).toBe(2);
+        expect(scope.days[1].isSelected).toBeTruthy();
         monDay.click();
-        expect(scope.days).toBe(0);
         expect(monDay.hasClass('is-selected')).toBeFalsy();
+        expect(scope.days[1].isSelected).toBeFalsy();
     });
 
-    it('should not toggle nth bit if ngDisabled is true', function () {
+    it('should not toggle isSelected of a day if ngDisabled is true', function () {
         scope.disabled = true;
         var element = createElement();
         var monDay = $(element).find('#day-1');
-        expect(scope.days).toBe(0);
+        expect(scope.days[1].isSelected).toBeFalsy();
         monDay.click();
-        expect(scope.days).toBe(0);
+        expect(scope.days[1].isSelected).toBeFalsy();
     });
 
     it('should call function provided to ngChange when data is changed', function () {
