@@ -49,16 +49,16 @@ angular.module('bahmni.appointments')
                 });
             };
 
-            var convertDaysToBinary = function(days){
-                return parseInt(days.map(function(day){
-                    return day.isSelected? 1: 0;
-                }).reverse().join(''), 2)
+            var convertDaysToBinary = function (days) {
+                return parseInt(days.map(function (day) {
+                    return day.isSelected ? 1 : 0;
+                }).reverse().join(''), 2);
             };
 
             var hasCommonDays = function (avb1, avb2) {
-               var days1InBinary = convertDaysToBinary(avb1.days);
-               var days2InBinary = convertDaysToBinary(avb2.days);
-               return (days1InBinary & days2InBinary) !== 0;
+                var days1InBinary = convertDaysToBinary(avb1.days);
+                var days2InBinary = convertDaysToBinary(avb2.days);
+                return (days1InBinary & days2InBinary) !== 0;
             };
 
             var hasOverlappingTimes = function (avb1, avb2) {
@@ -105,7 +105,8 @@ angular.module('bahmni.appointments')
             scope: {
                 availability: '=?',
                 availabilityList: '=',
-                state: '='
+                state: '=',
+                disableMaxLoad: '='
             },
             link: link,
             templateUrl: '../appointments/views/admin/appointmentServiceAvailability.html'

@@ -46,7 +46,7 @@ Bahmni.Appointments.AppointmentServiceViewModel = (function () {
                 var selectedDays = groupedAvbs[key];
                 var days = angular.copy(constDays);
                 selectedDays.map(function (day) {
-                    var d = _.find(days, { dayOfWeek: day.dayOfWeek});
+                    var d = _.find(days, {dayOfWeek: day.dayOfWeek});
                     d.uuid = day.uuid;
                     d.isSelected = true;
                 });
@@ -64,8 +64,8 @@ Bahmni.Appointments.AppointmentServiceViewModel = (function () {
             color: serviceDetails.color,
             startTime: getDateTime(serviceDetails.startTime),
             endTime: getDateTime(serviceDetails.endTime),
-            specialityUuid: serviceDetails.specialityUuid,
-            locationUuid: serviceDetails.locationUuid,
+            specialityUuid: serviceDetails.speciality ? serviceDetails.speciality.uuid : undefined,
+            locationUuid: serviceDetails.location ? serviceDetails.location.uuid : undefined,
             weeklyAvailability: parseAvailability(serviceDetails.weeklyAvailability) || [],
             serviceTypes: serviceDetails.serviceTypes || []
         });
