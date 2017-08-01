@@ -113,6 +113,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.updateSelectedOrdersForActiveTab = function () {
+                if (!$scope.activeTab) {
+                    return;
+                }
                 var activeTabTestConcepts = _.map(_.flatten(_.map($scope.getOrderTemplate($scope.activeTab.name).setMembers, 'setMembers')), 'uuid');
                 $scope.selectedOrders = _.filter($scope.consultation.orders, function (testOrder) {
                     return _.indexOf(activeTabTestConcepts, testOrder.concept.uuid) !== -1;
