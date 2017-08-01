@@ -9,7 +9,7 @@ angular.module('bahmni.appointments')
                 $state.go('home.admin.service.edit', {uuid: 'new'});
             };
 
-            $scope.editService = function (uuid) {
+            $scope.editService = function(uuid){
                 $state.go('home.admin.service.edit', {uuid: uuid});
             };
 

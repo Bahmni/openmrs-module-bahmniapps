@@ -14,17 +14,17 @@ Bahmni.Appointments.AppointmentService = (function () {
         };
 
         var constructAvailabilityPerDay = function (result, availability) {
-            var selectedDays = availability.days.filter(function (day) {
-                return day.isSelected || day.uuid;
-            });
+           var selectedDays = availability.days.filter(function (day) {
+               return day.isSelected || day.uuid;
+           });
 
             result = result.concat(selectedDays.map(function (day) {
-                return { dayOfWeek: day.dayOfWeek,
-                    uuid: day.uuid,
-                    startTime: getTime(availability.startTime),
-                    endTime: getTime(availability.endTime),
-                    voided: !day.isSelected };
-            }));
+                   return { dayOfWeek: day.dayOfWeek,
+                       uuid: day.uuid,
+                       startTime: getTime(availability.startTime),
+                       endTime: getTime(availability.endTime),
+                       voided: !day.isSelected };
+               }));
             return result;
         };
 

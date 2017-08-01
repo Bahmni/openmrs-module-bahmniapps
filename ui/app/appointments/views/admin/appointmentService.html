@@ -1,5 +1,5 @@
 <div class="add-service-wrapper">
-    <form class="create-service" ng-submit="confirmForEdit() && save()" id="create-service-form" name="createServiceForm">
+    <form class="create-service" ng-submit="save()" id="create-service-form" name="createServiceForm">
         <div class="service-title">
             <h2>{{ ::'SERVICES' | translate}}</h2>
             <button type="submit" class="service-save-btn">{{::'APPOINTMENT_SERVICE_SAVE' | translate }}</button>
@@ -87,13 +87,11 @@
                     <li class="service-availability-wrapper" ng-repeat="availability in service.weeklyAvailability">
                         <service-availability availability="availability"
                                               availability-list="service.weeklyAvailability"
-                                              disable-max-load="hasServiceTypes()"
                                               state="2"></service-availability>
                     </li>
 
                     <li class="service-availability-wrapper">
                         <service-availability availability-list="service.weeklyAvailability"
-                                              disable-max-load="hasServiceTypes()"
                                               state="0"></service-availability>
                     </li>
                 </ul>
