@@ -50,6 +50,10 @@ angular.module('bahmni.appointments')
                 return ($scope.service.serviceTypes.length > 0);
             };
 
+            $scope.confirmForEdit = function () {
+                return !$scope.service.uuid || ($window.confirm($translate.instant('CONFIRM_DELETE_AVAILABILITY')));
+            };
+
             $scope.validateServiceName = function () {
                 var name = $scope.service.name;
                 $scope.createServiceForm.name.$setValidity('uniqueServiceName', name ? isServiceNameUnique(name) : true);
