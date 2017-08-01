@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.domain')
     .service('observationsService', ['$http', function ($http) {
-        this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList, filterObsWithOrders, patientProgramUuid) {
+        this.fetch = function (patientUuid, conceptNames, scope, numberOfVisits, visitUuid, obsIgnoreList, obsSelectList, filterObsWithOrders, patientProgramUuid) {
             var params = {concept: conceptNames};
             if (obsIgnoreList) {
                 params.obsIgnoreList = obsIgnoreList;
@@ -19,6 +19,9 @@ angular.module('bahmni.common.domain')
                 params.numberOfVisits = numberOfVisits;
                 params.scope = scope;
                 params.patientProgramUuid = patientProgramUuid;
+            }
+            if (obsSelectList) {
+                params.obsSelectList = obsSelectList;
             }
             return $http.get(Bahmni.Common.Constants.observationsUrl, {
                 params: params,
@@ -47,9 +50,9 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.fetchForPatientProgram = function (patientProgramUuid, conceptNames, scope) {
+        this.fetchForPatientProgram = function (patientProgramUuid, conceptNames, scope, obsSelectList) {
             return $http.get(Bahmni.Common.Constants.observationsUrl, {
-                params: {patientProgramUuid: patientProgramUuid, concept: conceptNames, scope: scope},
+                params: {patientProgramUuid: patientProgramUuid, concept: conceptNames, scope: scope, obsSelectList: obsSelectList},
                 withCredentials: true
             });
         };

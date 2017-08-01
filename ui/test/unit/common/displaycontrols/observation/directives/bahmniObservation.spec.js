@@ -89,7 +89,7 @@ describe("BahmniObservation", function () {
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.config).not.toBeUndefined();
             expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, scope.config.conceptNames, scope.config.scope,
-                scope.config.numberOfVisits, undefined, undefined, null);
+                scope.config.numberOfVisits, undefined, undefined, undefined, null);
             expect(observationsService.fetch.calls.count()).toEqual(1);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
             expect(observationsService.fetchForPatientProgram.calls.count()).toEqual(0);
@@ -125,7 +125,7 @@ describe("BahmniObservation", function () {
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.config).not.toBeUndefined();
             expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, scope.config.conceptNames,
-                scope.config.scope, scope.config.numberOfVisits, undefined, undefined, null);
+                scope.config.scope, scope.config.numberOfVisits, undefined, undefined, undefined, null);
             expect(observationsService.fetch.calls.count()).toEqual(1);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
             expect(observationsService.fetchForPatientProgram.calls.count()).toEqual(0);
@@ -150,7 +150,7 @@ describe("BahmniObservation", function () {
         });
 
         it("should fetch observations for patient if the patientProgramUuid is provided", function () {
-            scope.config = {conceptNames: ["Concept Name"], scope: "latest"};
+            scope.config = {conceptNames: ["Concept Name"], scope: "latest", obsSelectList: ["Child Concept Name"]};
             scope.section = {};
             scope.enrollment = 'patientProgramUuid';
             observationsService.fetchForPatientProgram.and.returnValue(specUtil.respondWithPromise(q, {data: {}}));
@@ -165,46 +165,10 @@ describe("BahmniObservation", function () {
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.config).not.toBeUndefined();
 
-            expect(observationsService.fetchForPatientProgram).toHaveBeenCalledWith(scope.enrollment, scope.config.conceptNames, scope.config.scope);
+            expect(observationsService.fetchForPatientProgram).toHaveBeenCalledWith(scope.enrollment, scope.config.conceptNames, scope.config.scope, scope.config.obsSelectList);
             expect(observationsService.fetchForPatientProgram.calls.count()).toEqual(1);
             expect(observationsService.fetch.calls.count()).toEqual(0);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
-        });
-
-        it("should only fetch observations from config which are fully specified", function () {
-            scope.patient = {uuid: '123'};
-            scope.config = {
-                conceptNames: [
-                    "Vitals",
-                    "History and Examination"
-                ],
-                scope: "latest"
-            };
-            scope.section = {};
-            scope.observations = [
-                {
-                    concept: {
-                        name: "Vitals",
-                        shortName: "Vitals"
-                    }
-                },
-                {
-                    concept: {
-                        name: "History and Examination Template",
-                        shortName: "History and Examination"
-                    }
-                }
-            ];
-
-            mockBackend.expectGET('../common/displaycontrols/observation/views/observationDisplayControl.html').respond("<div>dummy</div>");
-
-            var element = $compile(simpleHtml)(scope);
-            scope.$digest();
-            var compiledElementScope = element.isolateScope();
-            scope.$digest();
-
-            expect(compiledElementScope.bahmniObservations[0].value.length).toEqual(1);
-            expect(compiledElementScope.bahmniObservations[0].value[0].concept.name).toEqual("Vitals");
         });
     });
 });
