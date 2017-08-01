@@ -131,7 +131,7 @@
                 <p>
                     <label></label>
                     <input type="checkbox" ng-model="appointment.appointmentsKind" ng-true-value="'WalkIn'" ng-false-value="">
-                    <span class="walk-in-text">Walk-in Appointment</span>
+                    <span class="walk-in-text">{{'APPOINTMENT_CREATE_WALKIN' | translate}}</span>
                 </p>
                 <p>
                     <label for="notes">
@@ -141,7 +141,7 @@
                               ng-model="appointment.comments"></textarea>
                 </p>
             </section>
-            <a class="create-appointment-action-btn" ui-sref="^" >Cancel</a>
+            <a class="create-appointment-action-btn" ui-sref="^" >{{::'APPOINTMENT_CANCEL' | translate }}</a>
             <button type="submit" class="service-save-btn create-appointment-action-btn">{{::'APPOINTMENT_SAVE' | translate }}
             </button>
         </form>
