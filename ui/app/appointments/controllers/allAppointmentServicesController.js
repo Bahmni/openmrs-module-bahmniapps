@@ -5,11 +5,10 @@ angular.module('bahmni.appointments')
         'appointmentsServiceService', 'appService', 'ngDialog',
         function ($scope, $state, $location, spinner, appointmentsServiceService, appService, ngDialog) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
-            $scope.createService = function () {
-                $state.go('home.admin.service.edit', {uuid: 'new'});
-            };
-
-            $scope.editService = function(uuid){
+            $scope.createService = function (uuid) {
+                if (!uuid) {
+                    uuid = 'new';
+                }
                 $state.go('home.admin.service.edit', {uuid: uuid});
             };
 

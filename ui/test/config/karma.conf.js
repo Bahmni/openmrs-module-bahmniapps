@@ -23,6 +23,7 @@ module.exports = function (config) {
             'app/components/nvd3/nv.d3.min.js',
             'app/components/angularjs-nvd3-directives/dist/*.js',
             'app/components/moment/min/moment.min.js',
+            'app/components/fullcalendar/dist/fullcalendar.min.js',
             'app/components/angular-ui-calendar/src/calendar.js',
             'app/components/fullcalendar/dist/fullcalendar.min.js',
             'app/components/fullcalendar-scheduler/dist/scheduler.min.js',

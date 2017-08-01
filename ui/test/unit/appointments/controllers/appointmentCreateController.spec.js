@@ -33,7 +33,7 @@ ddescribe('Controller: AppointmentsCreateController', function () {
         appService.getAppDescriptor.and.returnValue(appDescriptor);
         appDescriptor.getConfigValue.and.returnValue(true);
 
-        ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
+        ngDialog = jasmine.createSpyObj('ngDialong', ['close']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         providerService = jasmine.createSpyObj('providerService', ['search']);
         $translate = jasmine.createSpyObj('$translate', ['']);

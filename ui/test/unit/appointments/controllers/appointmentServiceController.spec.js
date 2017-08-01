@@ -2,8 +2,7 @@
 
 describe("AppointmentServiceController", function () {
     var controller, scope, q, state, appointmentsServiceService, locationService, messagingService,
-        locations, specialityService, specialities, ngDialog, appointmentServices, appService, appDescriptor,
-        colorsForAppointmentService, appointmentServiceContext;
+        locations, specialityService, specialities, ngDialog, appointmentServices, appService, appDescriptor, colorsForAppointmentService;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -39,11 +38,11 @@ describe("AppointmentServiceController", function () {
         appDescriptor.getConfigValue.and.callFake(function (key) {
             if (key === 'enableSpecialities') {
                 return true;
-            } else if (key === 'enableServiceTypes') {
+            } else if(key === 'enableServiceTypes') {
                 return true;
-            } else if (key === 'colorsForAppointmentService') {
+            } else if(key === 'colorsForAppointmentService') {
                 return colorsForAppointmentService;
-            } else if (key == 'enableCalendarView') {
+            } else if(key == 'enableCalendarView') {
                 return true;
             }
         });
@@ -59,8 +58,7 @@ describe("AppointmentServiceController", function () {
             messagingService: messagingService,
             specialityService: specialityService,
             ngDialog: ngDialog,
-            appService: appService,
-            appointmentServiceContext: appointmentServiceContext
+            appService: appService
         }
       );
     };
@@ -87,6 +85,18 @@ describe("AppointmentServiceController", function () {
             expect(scope.service.color).toBe("#A9A9A9");
         });
 
+        it('should show error message if fetch appointment locations has failed', function () {
+            var locationsPromise = specUtil.simplePromise();
+            locationsPromise.then = function (successFn, errorFn) {
+                errorFn({status: 404});
+                return locationsPromise;
+            };
+            locationService.getAllByTag.and.returnValue(locationsPromise);
+            createController();
+            expect(scope.locations).toBeUndefined();
+            expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'MESSAGE_GET_LOCATIONS_ERROR');
+        });
+
         it('should not fetch specialities if not configured', function () {
             appDescriptor.getConfigValue.and.returnValue(false);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
@@ -101,6 +111,18 @@ describe("AppointmentServiceController", function () {
             createController();
             expect(specialityService.getAllSpecialities).toHaveBeenCalled();
             expect(scope.specialities).toBe(specialities);
+        });
+
+        it('should show error message if fetch specialities has failed', function () {
+            var specialitiesPromise = specUtil.simplePromise();
+            specialitiesPromise.then = function (successFn, errorFn) {
+                errorFn({status: 404});
+                return specialitiesPromise;
+            };
+            specialityService.getAllSpecialities.and.returnValue(specialitiesPromise);
+            createController();
+            expect(scope.specialities).toBeUndefined();
+            expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'MESSAGE_GET_SPECIALITIES_ERROR');
         });
 
         it('should fetch all services on initialization', function () {
@@ -148,75 +170,9 @@ describe("AppointmentServiceController", function () {
     });
 
     describe('save', function () {
-        var serviceTime, serviceMaxLoad;
         beforeEach(function () {
             createController();
             scope.createServiceForm = {$invalid: false};
-            serviceTime = jasmine.createSpyObj('serviceTime', ['$setValidity']);
-            serviceTime.$invalid = false;
-            scope.createServiceForm.serviceTime = serviceTime;
-            serviceMaxLoad = jasmine.createSpyObj('serviceMaxLoad', ['$setValidity']);
-            serviceMaxLoad.$invalid = false;
-            scope.createServiceForm.serviceMaxLoad = serviceMaxLoad;
-            scope.service.weeklyAvailability = [];
-            scope.service.serviceTypes = [];
-        });
-
-        describe('clear incorrect data', function () {
-            var startDateTime, endDateTime, serviceResponse;
-            beforeEach(function () {
-                startDateTime = new Date('Thu Jan 01 1970 18:45:00 GMT+0530 (IST)');
-                endDateTime = new Date('Thu Jan 01 1970 12:30:00 GMT+0530 (IST)');
-                serviceResponse = {
-                    startTime: '18:45:00',
-                    endTime: '12:30:00',
-                    maxAppointmentsLimit: -4
-                };
-                serviceTime.$invalid = true;
-                serviceMaxLoad.$invalid = true;
-            });
-
-            it('should clear incorrect service start and end time and maxLoad if at least one weeklyAvailability is added', function () {
-                serviceResponse.weeklyAvailability = [{startTime: new Date().toString(), endTime: new Date().toString(), dayOfWeek: 'SUNDAY'}];
-                scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceResponse);
-                scope.save();
-                expect(scope.service.startTime).toBeUndefined();
-                expect(scope.service.endTime).toBeUndefined();
-                expect(serviceTime.$setValidity).toHaveBeenCalledWith('timeSequence', true);
-                expect(scope.service.maxAppointmentsLimit).toBeUndefined();
-                expect(serviceMaxLoad.$setValidity).toHaveBeenCalledWith('min', true);
-            });
-
-            it('should clear service maxLoad if at least one service type is added', function () {
-                serviceResponse.serviceTypes = [{name: 'newType'}];
-                scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceResponse);
-                scope.save();
-                expect(scope.service.startTime).toEqual(startDateTime);
-                expect(scope.service.endTime).toEqual(endDateTime);
-                expect(serviceTime.$setValidity).not.toHaveBeenCalled();
-                expect(scope.service.maxAppointmentsLimit).toBeUndefined();
-                expect(serviceMaxLoad.$setValidity).toHaveBeenCalledWith('min', true);
-            });
-
-            it('should not clear service level incorrect start and end time and maxLoad if weeklyAvailability is empty', function () {
-                scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceResponse);
-                scope.save();
-                expect(scope.service.startTime).toEqual(startDateTime);
-                expect(scope.service.endTime).toEqual(endDateTime);
-                expect(serviceTime.$setValidity).not.toHaveBeenCalled();
-                expect(scope.service.maxAppointmentsLimit).toBe(-4);
-                expect(serviceMaxLoad.$setValidity).not.toHaveBeenCalled();
-            });
-
-            it('should not clear service maxLoad if no service type is added', function () {
-                scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceResponse);
-                scope.save();
-                expect(scope.service.startTime).toEqual(startDateTime);
-                expect(scope.service.endTime).toEqual(endDateTime);
-                expect(serviceTime.$setValidity).not.toHaveBeenCalled();
-                expect(scope.service.maxAppointmentsLimit).toBe(-4);
-                expect(serviceMaxLoad.$setValidity).not.toHaveBeenCalled();
-            });
         });
 
         it('should save all appointment service details', function () {
@@ -254,7 +210,7 @@ describe("AppointmentServiceController", function () {
         });
 
         it('should show error message if form is invalid', function () {
-            scope.createServiceForm.$invalid = true;
+            scope.createServiceForm = {$invalid: true};
             scope.save();
             expect(appointmentsServiceService.save).not.toHaveBeenCalled();
             expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
@@ -266,11 +222,10 @@ describe("AppointmentServiceController", function () {
         beforeEach(function () {
             state.name = 'home.service';
             createController();
-            scope.createServiceForm = {$dirty: true};
         });
 
-        it('should not open confirmation dialog if form is not edited', function () {
-            scope.createServiceForm = {$dirty: false};
+        it('should not open confirmation dialog if form is empty', function () {
+            scope.service = {weeklyAvailability: []};
             scope.$broadcast("$stateChangeStart");
             expect(ngDialog.openConfirm).not.toHaveBeenCalled();
         });

@@ -3,28 +3,6 @@
 describe('AppointmentService', function () {
     var dateUtil = Bahmni.Common.Util.DateUtil;
     var timeFormat = 'HH:mm:ss';
-    var constDays = [{
-        dayOfWeek: 'SUNDAY',
-        isSelected: false
-    }, {
-        dayOfWeek: 'MONDAY',
-        isSelected: false
-    }, {
-        dayOfWeek: 'TUESDAY',
-        isSelected: false
-    }, {
-        dayOfWeek: 'WEDNESDAY',
-        isSelected: false
-    }, {
-        dayOfWeek: 'THURSDAY',
-        isSelected: false
-    }, {
-        dayOfWeek: 'FRIDAY',
-        isSelected: false
-    }, {
-        dayOfWeek: 'SATURDAY',
-        isSelected: false
-    }];
 
     it('should change date time format to time string', function () {
         var startDateTime = new Date('Thu Jan 01 1970 09:45:00 GMT+0530 (IST)');
@@ -54,17 +32,13 @@ describe('AppointmentService', function () {
     it('should re arrange all weeklyAvailabilities by day', function () {
         var startDateTime = new Date().toString();
         var endDateTime = new Date().toString();
-
-        var days = angular.copy(constDays);
-        days[1].isSelected=true;
-        days[2].isSelected=true;
         var service = {
             name: 'Chemotherapy',
             description: 'For cancer',
             weeklyAvailability: [{
                 startTime: startDateTime,
                 endTime: endDateTime,
-                days: days
+                days: 6
             }]
         };
         var appointmentService = Bahmni.Appointments.AppointmentService.createFromUIObject(service);
@@ -72,8 +46,8 @@ describe('AppointmentService', function () {
         expect(appointmentService.weeklyAvailability.length).toBe(2);
         var startTime = dateUtil.getDateTimeInSpecifiedFormat(startDateTime, timeFormat);
         var endTime = dateUtil.getDateTimeInSpecifiedFormat(endDateTime, timeFormat);
-        expect(appointmentService.weeklyAvailability[0]).toEqual({dayOfWeek: 'MONDAY', uuid: undefined, startTime: startTime, endTime: endTime, voided: false});
-        expect(appointmentService.weeklyAvailability[1]).toEqual({dayOfWeek: 'TUESDAY', uuid: undefined, startTime: startTime, endTime: endTime, voided: false});
+        expect(appointmentService.weeklyAvailability[0]).toEqual({dayOfWeek: 'MONDAY', startTime: startTime, endTime: endTime});
+        expect(appointmentService.weeklyAvailability[1]).toEqual({dayOfWeek: 'TUESDAY', startTime: startTime, endTime: endTime});
     });
 
     it('should construct weekly availability by day for multiple availabilities', function () {
@@ -82,18 +56,6 @@ describe('AppointmentService', function () {
 
         var startDateTime2 = new Date("2015-10-01T18:30:00.000Z").toString();
         var endDateTime2 = new Date("2015-10-01T18:30:00.000Z").toString();
-
-
-        var days1 = angular.copy(constDays);
-        days1[1].isSelected=true;
-        days1[2].isSelected=true;
-
-
-        var days2 = angular.copy(constDays);
-        days2[1].isSelected=true;
-        days2[2].isSelected=true;
-        days2[6].uuid='uuid1';
-
         var service = {
             name: 'Chemotherapy',
             description: 'For cancer',
@@ -101,12 +63,12 @@ describe('AppointmentService', function () {
                 {
                     startTime: startDateTime,
                     endTime: endDateTime,
-                    days: days1
+                    days: 6
                 },
                 {
                     startTime: startDateTime2,
                     endTime: endDateTime2,
-                    days: days2
+                    days: 70
                 }
             ]
         };
@@ -117,11 +79,10 @@ describe('AppointmentService', function () {
         var endTime = dateUtil.getDateTimeInSpecifiedFormat(endDateTime, timeFormat);
         var startTime2 = dateUtil.getDateTimeInSpecifiedFormat(startDateTime2, timeFormat);
         var endTime2 = dateUtil.getDateTimeInSpecifiedFormat(endDateTime2, timeFormat);
-        expect(appointmentService.weeklyAvailability).toEqual(
-        [{dayOfWeek: 'MONDAY',  uuid: undefined, voided: false, startTime: startTime, endTime: endTime},
-         {dayOfWeek: 'TUESDAY', uuid: undefined, voided: false, startTime: startTime, endTime: endTime},
-         {dayOfWeek: 'MONDAY',  uuid: undefined, voided: false, startTime: startTime2, endTime: endTime2},
-         {dayOfWeek: 'TUESDAY', uuid: undefined, voided: false, startTime: startTime2, endTime: endTime2},
-         {dayOfWeek: 'SATURDAY',uuid: 'uuid1', voided: true, startTime: startTime2, endTime: endTime2}]);
+        expect(appointmentService.weeklyAvailability).toEqual([{dayOfWeek: 'MONDAY', startTime: startTime, endTime: endTime},
+        {dayOfWeek: 'TUESDAY', startTime: startTime, endTime: endTime},
+        {dayOfWeek: 'MONDAY', startTime: startTime2, endTime: endTime2},
+        {dayOfWeek: 'TUESDAY', startTime: startTime2, endTime: endTime2},
+        {dayOfWeek: 'SATURDAY', startTime: startTime2, endTime: endTime2}]);
     });
 });
