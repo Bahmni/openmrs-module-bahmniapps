@@ -1,41 +1,75 @@
-<div  ng-init="isFilterOpen = true">
-<div class="appointment-filter" ng-init="isFilterOpen = true" ng-show="isFilterOpen">
-<h4>Filter</h4>
-</div>
-<div class="app-list-view"  ng-class="{'app-filter-open': isFilterOpen}">
-    <table>
-        <thead>
-        <tr>
-            <th>{{::'APPOINTMENT_ID' | translate}}</th>
-            <th>{{::'PATIENT ' |translate}}</th>
-            <th>{{::'DATE' |translate}}</th>
-            <th>{{::'TIME' |translate}}</th>
-            <th>{{::'PROVIDER' |translate}}</th>
-            <th>{{::'SERVICE' |translate}}</th>
-            <th>{{::'LOCATION' |translate}}</th>
-            <th>{{::'STATUS' |translate}}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td><input type="checkbox"><a ng-href="#/home/manage/appointments/12384710">12</a></td>
-            <td>Test Patient (GAN20178)</td>
-            <td>01/01/2017</td>
-            <td>09:00AM</td>
-            <td>Dr. Superman</td>
-            <td>Ortho</td>
-            <td>OPD-1</td>
-            <td>Scheduled</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div ui-view="content@appointment"></div>
-<div class="appointment-action-btn-container" ng-class="{'app-filter-open': isFilterOpen}">
-    <a href="#">Check-in</a>
-    <a href="#">Complete</a>
-    <a href="#">Missed</a>
-    <a href="#">Edit</a>
-    <a href="#">Cancel Appointment</a>
-</div>
+<div ng-init="isFilterOpen = true">
+    <div class="appointment-filter" ng-init="isFilterOpen = true" ng-show="isFilterOpen">
+        <a ng-click="isFilterOpen = false"><i class="fa fa-angle-double-left" aria-hidden="true"></i>
+            </a>
+        <label>Speciality</label>
+        <p>
+            <input type="text"/>
+            <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
+            <span><i class="fa fa-times" aria-hidden="true"></i><span></span></span>
+        </p>
+        <label>Service</label>
+        <p>
+            <input type="text"/>
+            <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
+            <span><i class="fa fa-times" aria-hidden="true"></i><span></span></span>
+        </p>
+        <p>
+            <input type="text"/>
+            <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
+            <span><i class="fa fa-times" aria-hidden="true"></i><span></span></span>
+        </p>
+        <label>Provider</label>
+        <p>
+            <input type="text"/>
+            <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
+            <span><i class="fa fa-times" aria-hidden="true"></i><span></span></span>
+        </p>
+        <label>Appoinment status</label>
+        <p>
+            <input type="text"/>
+            <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
+            <span><i class="fa fa-times" aria-hidden="true"></i><span></span></span>
+        </p>
+        <p>
+            <button>Reset</button>
+            <button>Apply Filter</button>
+        </p>
+    </div>
+    <div class="app-list-view" ng-class="{'app-filter-open': isFilterOpen}">
+        <table>
+            <thead>
+            <tr>
+                <th>{{::'APPOINTMENT_ID' | translate}}</th>
+                <th>{{::'PATIENT ' |translate}}</th>
+                <th>{{::'DATE' |translate}}</th>
+                <th>{{::'TIME' |translate}}</th>
+                <th>{{::'PROVIDER' |translate}}</th>
+                <th>{{::'SERVICE' |translate}}</th>
+                <th>{{::'LOCATION' |translate}}</th>
+                <th>{{::'STATUS' |translate}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><input type="checkbox"><a ng-href="#/home/manage/appointments/12384710">12</a></td>
+                <td>Test Patient (GAN20178)</td>
+                <td>01/01/2017</td>
+                <td>09:00AM</td>
+                <td>Dr. Superman</td>
+                <td>Ortho</td>
+                <td>OPD-1</td>
+                <td>Scheduled</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ui-view="content@appointment"></div>
+    <div class="appointment-action-btn-container" ng-class="{'app-filter-open': isFilterOpen}">
+        <a href="#">Check-in</a>
+        <a href="#">Complete</a>
+        <a href="#">Missed</a>
+        <a href="#">Edit</a>
+        <a href="#">Cancel Appointment</a>
+    </div>
 </div>
