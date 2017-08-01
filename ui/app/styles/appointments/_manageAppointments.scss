@@ -80,28 +80,35 @@
   overflow: auto;
   border-right: 1px solid #ddd;
   border-top: 1px solid #ddd;
-  padding-top: 10px;
+  padding-top: 20px;
   box-sizing: border-box;
+  position: relative;
   a {
-    float: right;
     display: inline-block;
     width: 20px;
     height: 20px;
     color: #00ACC3;
     font-size: 21px;
+    position: absolute;
+    right: 3px;
+    top: 5px;
+    z-index: 10;
+    text-align: center;
     i {
       padding: 0;
     }
   }
-  label {
-    margin-bottom: 10px;
-    display: inline-block;
-    margin-left: 10px;
-  }
+
   p {
     padding: 0 10px;
     margin-bottom: 10px;
     position: relative;
+    label {
+      margin-bottom: 10px;
+      display: inline-block;
+      color: #292929;
+      font-weight: bold;
+    }
     input {
       width: 100%;
       padding: 5px;
@@ -109,10 +116,11 @@
       border-radius: 3px;
       border: 1px solid #ddd;
       outline: none;
+      margin-bottom: 10px;
     }
     .app-filter-search {
       position: absolute;
-      top: 5px;
+      top: 30px;
       right: 15px;
       color: #929292;
     }
@@ -134,10 +142,15 @@
         }
       }
     }
-    button {
-      background: #fff;
-      float: right;
-      @extend .appBtn;
+    &.app-filter-action-btn {
+      overflow: hidden;
+      padding-bottom: 10px;
+      margin-bottom: 0;
+      button {
+        background: #fff;
+        float: right;
+        @extend .appBtn;
+      }
     }
   }
 }
@@ -176,6 +189,7 @@
   padding: 10px;
   box-sizing: border-box;
   float: left;
+  width: 100%;
   a {
     @extend .appBtn;
   }
