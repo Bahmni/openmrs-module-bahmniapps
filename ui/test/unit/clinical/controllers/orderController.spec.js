@@ -143,6 +143,12 @@ describe("OrderController", function () {
 
             expect(scope.activeTab.leftCategory).toEqual(allOrderables["'Radiology Orders'"].setMembers[0]);
         });
+
+        it("should not update selected orders if no tab is active", function () {
+            scope.activeTab = undefined;
+            scope.updateSelectedOrdersForActiveTab();
+            expect(scope.selectedOrders.length).toBe(0);
+        });
     });
 
     it("should open notes popup", function () {
