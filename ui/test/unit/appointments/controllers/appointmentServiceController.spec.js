@@ -151,7 +151,7 @@ describe("AppointmentServiceController", function () {
         });
     });
 
-    describe('save', function () {
+    xdescribe('save', function () {
         var serviceTime, serviceMaxLoad;
         beforeEach(function () {
             createController();
