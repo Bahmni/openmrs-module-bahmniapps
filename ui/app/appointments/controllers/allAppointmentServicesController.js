@@ -15,6 +15,7 @@ angular.module('bahmni.appointments')
             $scope.deleteAppointmentService = function (service) {
                 ngDialog.open({
                     template: 'views/admin/deleteAppointmentService.html',
+                    className: 'ngdialog-theme-default',
                     data: {service: service},
                     controller: 'deleteAppointmentServiceController'
                 });

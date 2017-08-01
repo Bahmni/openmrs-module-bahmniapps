@@ -10,6 +10,12 @@ angular.module('bahmni.appointments')
                     messagingService.showMessage('info', "{{'APPOINTMENT_SERVICE_DELETE_SUCCESS_MESSAGE_KEY' | translate}}");
                     ngDialog.close();
                     $state.reload();
+                }, function () {
+                    ngDialog.close();
                 });
+            };
+
+            $scope.cancelDeleteService = function () {
+                ngDialog.close();
             };
         }]);

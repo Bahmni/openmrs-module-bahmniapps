@@ -52,6 +52,6 @@ describe("AllAppointmentServicesController", function () {
 
         scope.deleteAppointmentService(services[0]);
 
-        expect(ngDialog.open).toHaveBeenCalledWith({template: 'views/admin/deleteAppointmentService.html', data: {service: services[0]}, controller: 'deleteAppointmentServiceController'});
+        expect(ngDialog.open).toHaveBeenCalledWith({template: 'views/admin/deleteAppointmentService.html', className: 'ngdialog-theme-default', data: {service: services[0]}, controller: 'deleteAppointmentServiceController'});
     });
 });
