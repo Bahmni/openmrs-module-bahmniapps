@@ -126,7 +126,6 @@ angular.module('bahmni.appointments')
                     var allSlots = getAllSlots($scope.selectedService.startTime, $scope.selectedService.endTime, $scope.minDuration);
                     $scope.startTimes = $scope.selectedService.weeklyAvailability && $scope.selectedService.weeklyAvailability.length > 0 ?
                         getAvailableSlots(dayOfWeek, $scope.selectedService.weeklyAvailability, allSlots) : allSlots;
-                    $scope.onSelectStartTime({value: _.head($scope.startTimes)});
                 }
             };
 
