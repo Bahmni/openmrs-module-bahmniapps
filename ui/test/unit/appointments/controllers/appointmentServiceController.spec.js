@@ -164,12 +164,14 @@ describe("AppointmentServiceController", function () {
 
         describe('clear incorrect data', function () {
             var startDateTime, endDateTime, serviceResponse;
+            var dateUtil = Bahmni.Common.Util.DateUtil;
+            var timeFormat = 'HH:mm:ss';
             beforeEach(function () {
-                startDateTime = new Date('Thu Jan 01 1970 18:45:00 GMT+0530 (IST)');
-                endDateTime = new Date('Thu Jan 01 1970 12:30:00 GMT+0530 (IST)');
+                startDateTime = new Date('1970-01-01T11:30:00.000Z');
+                endDateTime = new Date('1970-01-01T14:30:00.000Z');
                 serviceResponse = {
-                    startTime: '18:45:00',
-                    endTime: '12:30:00',
+                    startTime: dateUtil.getDateTimeInSpecifiedFormat(startDateTime, timeFormat),
+                    endTime: dateUtil.getDateTimeInSpecifiedFormat(endDateTime, timeFormat),
                     maxAppointmentsLimit: -4
                 };
                 serviceTime.$invalid = true;
@@ -191,8 +193,8 @@ describe("AppointmentServiceController", function () {
                 serviceResponse.serviceTypes = [{name: 'newType'}];
                 scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceResponse);
                 scope.save();
-                expect(scope.service.startTime).toEqual(startDateTime);
-                expect(scope.service.endTime).toEqual(endDateTime);
+                expect(scope.service.startTime.toString()).toEqual(startDateTime.toString());
+                expect(scope.service.endTime.toString()).toEqual(endDateTime.toString());
                 expect(serviceTime.$setValidity).not.toHaveBeenCalled();
                 expect(scope.service.maxAppointmentsLimit).toBeUndefined();
                 expect(serviceMaxLoad.$setValidity).toHaveBeenCalledWith('min', true);
@@ -201,8 +203,8 @@ describe("AppointmentServiceController", function () {
             it('should not clear service level incorrect start and end time and maxLoad if weeklyAvailability is empty', function () {
                 scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceResponse);
                 scope.save();
-                expect(scope.service.startTime).toEqual(startDateTime);
-                expect(scope.service.endTime).toEqual(endDateTime);
+                expect(scope.service.startTime.toString()).toEqual(startDateTime.toString());
+                expect(scope.service.endTime.toString()).toEqual(endDateTime.toString());
                 expect(serviceTime.$setValidity).not.toHaveBeenCalled();
                 expect(scope.service.maxAppointmentsLimit).toBe(-4);
                 expect(serviceMaxLoad.$setValidity).not.toHaveBeenCalled();
@@ -211,8 +213,8 @@ describe("AppointmentServiceController", function () {
             it('should not clear service maxLoad if no service type is added', function () {
                 scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceResponse);
                 scope.save();
-                expect(scope.service.startTime).toEqual(startDateTime);
-                expect(scope.service.endTime).toEqual(endDateTime);
+                expect(scope.service.startTime.toString()).toEqual(startDateTime.toString());
+                expect(scope.service.endTime.toString()).toEqual(endDateTime.toString());
                 expect(serviceTime.$setValidity).not.toHaveBeenCalled();
                 expect(scope.service.maxAppointmentsLimit).toBe(-4);
                 expect(serviceMaxLoad.$setValidity).not.toHaveBeenCalled();
