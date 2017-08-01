@@ -247,6 +247,9 @@
         height: 35px;
         border-radius: 5px;
       }
+      textarea {
+        min-height: 100px;
+      }
       input[type = checkbox] {
         width: auto;
         height: auto;
