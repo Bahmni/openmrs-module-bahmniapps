@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ServiceAvailability', function () {
-    var compile, scope, httpBackend, appService, appDescriptor, window, translate;
+    var compile, scope, httpBackend, appService, appDescriptor, confirmBox;
 
     var days = [{
         dayOfWeek: 'SUNDAY',
@@ -33,23 +33,22 @@ describe('ServiceAvailability', function () {
         isSelected: false
     }];
 
-
     beforeEach(module('bahmni.appointments', function ($provide) {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
-        window = jasmine.createSpyObj('$window', ['confirm']);
-        translate = jasmine.createSpyObj('$translate', ['storageKey', 'instant', 'storage', 'preferredLanguage']);
+        confirmBox = jasmine.createSpy('confirmBox');
 
         $provide.value('appService', appService);
-        $provide.value('$window', window);
-        $provide.value('$translate', translate);
+        $provide.value('confirmBox', confirmBox);
     }));
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope) {
         compile = $compile;
         scope = $rootScope.$new();
         httpBackend = $httpBackend;
+        httpBackend.expectGET('../i18n/appointments/locale_en.json').respond({});
+        httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond({});
         httpBackend.expectGET('../appointments/views/admin/appointmentServiceAvailability.html').respond('<div></div>');
     }));
 
@@ -404,6 +403,22 @@ describe('ServiceAvailability', function () {
         });
     });
 
+    it('should clear max appointments limit if it is invalid', function () {
+        scope.availability = {maxAppointmentsLimit: -3};
+        var element = createElement();
+        var compiledElementScope = element.isolateScope();
+        compiledElementScope.clearValueIfInvalid();
+        expect(scope.availability.maxAppointmentsLimit).toEqual('');
+    });
+
+    it('should not clear max appointments limit if it is valid', function () {
+        scope.availability = {maxAppointmentsLimit: 2};
+        var element = createElement();
+        var compiledElementScope = element.isolateScope();
+        compiledElementScope.clearValueIfInvalid();
+        expect(scope.availability.maxAppointmentsLimit).toBe(2);
+    });
+
     it('should not delete availability if not confirmed', function () {
         var availability1 = {
             startTime: new Date().toString(),
@@ -411,15 +426,16 @@ describe('ServiceAvailability', function () {
             days: 2
         };
         scope.availabilityList = [availability1];
-        window.confirm.and.returnValue(false);
-        translate.instant.and.returnValue('Are you sure you want to delete?');
+        confirmBox.and.callFake(function (config) {
+            config.scope.cancel(function () {
+            });
+        });
         var element = createElement();
         var compiledElementScope = element.isolateScope();
 
         expect(compiledElementScope.availabilityList.length).toBe(1);
         expect(compiledElementScope.availabilityList[0]).toEqual(availability1);
-        compiledElementScope.delete();
-        expect(window.confirm).toHaveBeenCalledWith('Are you sure you want to delete?');
+        compiledElementScope.confirmDelete();
         expect(compiledElementScope.availabilityList.length).toBe(1);
         expect(compiledElementScope.availabilityList[0]).toEqual(availability1);
     });
@@ -439,8 +455,10 @@ describe('ServiceAvailability', function () {
         availability2.days[1].isSelected = true;
         scope.availability = availability1;
         scope.availabilityList = [scope.availability, availability2];
-        window.confirm.and.returnValue(true);
-        translate.instant.and.returnValue('Are you sure you want to delete?');
+        confirmBox.and.callFake(function (config) {
+            config.scope.ok(function () {
+            });
+        });
 
         var element = createElement();
         var compiledElementScope = element.isolateScope();
@@ -448,8 +466,7 @@ describe('ServiceAvailability', function () {
         expect(compiledElementScope.availabilityList.length).toBe(2);
         expect(compiledElementScope.availabilityList[0]).toEqual(availability1);
         expect(compiledElementScope.availabilityList[1]).toEqual(availability2);
-        compiledElementScope.delete();
-        expect(window.confirm).toHaveBeenCalledWith('Are you sure you want to delete?');
+        compiledElementScope.confirmDelete();
         expect(compiledElementScope.availabilityList.length).toBe(1);
         expect(compiledElementScope.availabilityList[0]).toEqual(availability2);
     });

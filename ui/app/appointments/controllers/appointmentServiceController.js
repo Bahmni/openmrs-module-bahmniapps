@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentServiceController', ['$scope', '$q', 'spinner', '$window', '$state', '$translate',
-        'appointmentsServiceService', 'locationService', 'messagingService', 'specialityService', 'ngDialog',
-        'appService', 'appointmentServiceContext',
-        function ($scope, $q, spinner, $window, $state, $translate, appointmentsServiceService, locationService,
-                  messagingService, specialityService, ngDialog, appService, appointmentServiceContext) {
+    .controller('AppointmentServiceController', ['$scope', '$q', 'spinner', '$state', 'appointmentsServiceService',
+        'locationService', 'messagingService', 'specialityService', 'ngDialog', 'appService', 'appointmentServiceContext',
+        'confirmBox',
+        function ($scope, $q, spinner, $state, appointmentsServiceService, locationService,
+                  messagingService, specialityService, ngDialog, appService, appointmentServiceContext, confirmBox) {
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
@@ -15,7 +15,7 @@ angular.module('bahmni.appointments')
             $scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceDetails);
             $scope.service.color = $scope.service.color || $scope.colorsForAppointmentService && $scope.colorsForAppointmentService[0] || "#008000";
 
-            $scope.save = function () {
+            var save = function () {
                 clearValuesIfDisabledAndInvalid();
                 if ($scope.createServiceForm.$invalid) {
                     messagingService.showMessage('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
@@ -27,17 +27,22 @@ angular.module('bahmni.appointments')
                     $scope.showConfirmationPopUp = false;
                     $state.go('home.admin.service');
                 });
+                ngDialog.close();
             };
 
             var clearValuesIfDisabledAndInvalid = function () {
                 var form = $scope.createServiceForm;
                 if (form.serviceTime.$invalid && $scope.hasWeeklyAvailability()) {
-                    $scope.service.startTime = undefined;
-                    $scope.service.endTime = undefined;
+                    delete $scope.service.startTime;
+                    delete $scope.service.endTime;
                     form.serviceTime.$setValidity('timeSequence', true);
                 }
                 if (form.serviceMaxLoad.$invalid && ($scope.hasWeeklyAvailability() || $scope.hasServiceTypes())) {
-                    $scope.service.maxAppointmentsLimit = undefined;
+                    delete $scope.service.maxAppointmentsLimit;
+                    form.serviceMaxLoad.$setValidity('min', true);
+                }
+                if (form.serviceMaxLoad.$invalid && ($scope.hasServiceTypes())) {
+                    delete $scope.service.maxAppointmentsLimit;
                     form.serviceMaxLoad.$setValidity('min', true);
                 }
             };
@@ -50,8 +55,24 @@ angular.module('bahmni.appointments')
                 return ($scope.service.serviceTypes.length > 0);
             };
 
-            $scope.confirmForEdit = function () {
-                return !$scope.service.uuid || ($window.confirm($translate.instant('CONFIRM_DELETE_AVAILABILITY')));
+            $scope.confirmSave = function () {
+                if (!$scope.service.uuid) {
+                    save();
+                    return;
+                }
+                var childScope = {};
+                childScope.message = 'CONFIRM_EDIT_SERVICE';
+                childScope.cancel = cancelSave;
+                childScope.ok = save;
+                confirmBox({
+                    scope: childScope,
+                    actions: [{name: 'cancel', display: 'CANCEL_KEY'}, {name: 'ok', display: 'OK_KEY'}],
+                    className: "ngdialog-theme-default delete-program-popup"
+                });
+            };
+
+            var cancelSave = function (closeDialog) {
+                closeDialog();
             };
 
             $scope.validateServiceName = function () {
