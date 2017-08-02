@@ -1,11 +1,18 @@
 'use strict';
 
 describe('ServiceTypes', function () {
-    var compile, scope, httpBackend, serviceTypeName;
+    var compile, scope, httpBackend, serviceTypeName, ngDialog, messagingService, appointmentsService;
 
     serviceTypeName = jasmine.createSpyObj('serviceTypeName', ['$setValidity']);
 
-    beforeEach(module('bahmni.appointments'));
+    beforeEach(module('bahmni.appointments', function ($provide) {
+        ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
+        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAppointmentsForServiceType']);
+        $provide.value('ngDialog', ngDialog);
+        $provide.value('messagingService', messagingService);
+        $provide.value('appointmentsService', appointmentsService);
+    }));
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope) {
         compile = $compile;
@@ -91,5 +98,89 @@ describe('ServiceTypes', function () {
         scope.serviceType.duration = 20;
         scope.serviceType.name = "type2";
         expect(scope.serviceType.duration).toBe(20);
+    });
+
+    it('should open the confirmation dialog when trying to delete an unsaved service type', function () {
+        var serviceType = {uuid: undefined, name: "type1", duration: 30};
+        scope.service.serviceTypes = [serviceType];
+
+        scope.deleteServiceType(serviceType);
+
+        expect(ngDialog.openConfirm).toHaveBeenCalledWith({
+            template: 'views/admin/serviceTypeDeleteConfirmation.html',
+            scope: scope,
+            data: {serviceType: serviceType},
+            closeByEscape: true
+        });
+        expect(appointmentsService.getAppointmentsForServiceType).not.toHaveBeenCalled();
+        expect(messagingService.showMessage).not.toHaveBeenCalled();
+    });
+
+    it('should check for any future appointments against the saved service type trying to delete and throw an error if there are future non-cancelled appointment', function () {
+        var serviceTypeUuid = "serviceTypeUuid";
+        var serviceType = {uuid: serviceTypeUuid, name: "type1", duration: 30};
+        scope.serviceType = serviceType;
+        var appointments = [{uuid: "appointmentUuid", serviceType: serviceType}];
+        appointmentsService.getAppointmentsForServiceType.and.returnValue(specUtil.simplePromise({data: appointments}));
+
+        scope.deleteServiceType(serviceType);
+
+        expect(appointmentsService.getAppointmentsForServiceType).toHaveBeenCalledWith(serviceTypeUuid);
+        expect(messagingService.showMessage).toHaveBeenCalledWith('error', "APPOINTMENT_SERVICE_TYPE_DELETE_CONFIRMATION_DIALOG_MESSAGE_KEY");
+    });
+
+    it('should check for any future appointments against the saved service type trying to delete and open confirmation dialog if there are no future non-cancelled appointment', function () {
+        var serviceTypeUuid = "serviceTypeUuid";
+        var serviceType = {uuid: serviceTypeUuid, name: "type1", duration: 30};
+        scope.serviceType = serviceType;
+        var appointments = [];
+        appointmentsService.getAppointmentsForServiceType.and.returnValue(specUtil.simplePromise({data: appointments}));
+
+        scope.deleteServiceType(serviceType);
+
+        expect(appointmentsService.getAppointmentsForServiceType).toHaveBeenCalledWith(serviceTypeUuid);
+        expect(messagingService.showMessage).not.toHaveBeenCalled();
+        expect(ngDialog.openConfirm).toHaveBeenCalledWith({
+            template: 'views/admin/serviceTypeDeleteConfirmation.html',
+            scope: scope,
+            data: {serviceType: serviceType},
+            closeByEscape: true
+        });
+    });
+
+    it('should close the dialog when delete transition is cancelled', function () {
+        scope.serviceType = {name: "type1", duration: 30};
+
+        scope.cancelTransition();
+
+        expect(ngDialog.close).toHaveBeenCalled();
+    });
+
+    it('should delete the unsaved service type from the service type list on Delete confirmation', function () {
+        var savedServiceType = {uuid: "serviceType1Uuid", name: "type1", duration: 30};
+        var unsavedServiceType = {name: "type2", duration: 30};
+
+        scope.service.serviceTypes = [savedServiceType, unsavedServiceType];
+
+        scope.deleteServiceTypeOnConfirmation(unsavedServiceType);
+
+        expect(scope.service.serviceTypes.length).toBe(1);
+        expect(scope.service.serviceTypes[0]).toBe(savedServiceType);
+        expect(ngDialog.close).toHaveBeenCalled();
+    });
+
+    it('should add void info to the saved service type on Delete confirmation', function () {
+        var savedServiceType = {uuid: "serviceType1Uuid", name: "type1", duration: 30};
+        var unsavedServiceType = {name: "type2", duration: 30};
+
+        scope.service.serviceTypes = [savedServiceType, unsavedServiceType];
+
+        scope.deleteServiceTypeOnConfirmation(savedServiceType);
+
+        expect(scope.service.serviceTypes.length).toBe(2);
+        expect(scope.service.serviceTypes[0]).toBe(savedServiceType);
+        expect(scope.service.serviceTypes[1]).toBe(unsavedServiceType);
+        expect(scope.service.serviceTypes[0].voided).toBeTruthy();
+        expect(ngDialog.close).toHaveBeenCalled();
     });
 });

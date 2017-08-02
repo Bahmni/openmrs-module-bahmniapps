@@ -80,6 +80,7 @@
   "PLACEHOLDER_CREATE_PROVIDER": "Select a provider",
   "PLACEHOLDER_APPOINTMENT_TIME_FORMAT": "Enter time as hh:mm am/pm",
   "APPOINTMENT_SERVICE_DELETE_SUCCESS_MESSAGE_KEY": "Service deleted successfully",
+  "APPOINTMENT_SERVICE_TYPE_DELETE_CONFIRMATION_DIALOG_MESSAGE_KEY": "There are appointments for this type in future, please cancel them before deleting this service appointment type.After deleting the service appt type, you will not be able to see any appts. for it",
   "SUNDAY": "Su",
   "MONDAY": "Mo",
   "TUESDAY": "Tu",
