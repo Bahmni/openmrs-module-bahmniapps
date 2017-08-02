@@ -13,8 +13,9 @@
         <div class="weekday-selector-wrapper">
         <label class="ava-input-fields">
             <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_MAX_LOAD_KEY' | translate}}</span>
-            <input class="max-load"  type="number" min="0" ng-model="availability.maxAppointmentsLimit"
-                   ng-disabled="disableMaxLoad" ng-class="{'disabled': disableMaxLoad}">
+            <input class="max-load" type="number" min="0" ng-model="availability.maxAppointmentsLimit"
+                   ng-disabled="disableMaxLoad" ng-change="clearValueIfInvalid()" ng-class="{'disabled': disableMaxLoad}">
+
         </label>
         <weekday-selector class="service-ava-days"
                           ng-model="availability.days" week-starts-index="startOfWeek"
@@ -41,7 +42,7 @@
         <button class="edit-ava" type="button" ng-click="enableEdit()">
             <i class="fa fa-pencil" aria-hidden="true"></i>
         </button>
-        <button class="delete-ava" type="button" ng-click="delete()">
+        <button class="delete-ava" type="button" ng-click="confirmDelete()">
             <i class="fa fa-trash-o"></i>
         </button>
     </p>

@@ -3,7 +3,7 @@
 describe("AppointmentServiceController", function () {
     var controller, scope, q, state, appointmentsServiceService, locationService, messagingService,
         locations, specialityService, specialities, ngDialog, appointmentServices, appService, appDescriptor,
-        colorsForAppointmentService, appointmentServiceContext, window, translate;
+        colorsForAppointmentService, appointmentServiceContext, confirmBox;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -47,8 +47,7 @@ describe("AppointmentServiceController", function () {
                 return true;
             }
         });
-        window = jasmine.createSpyObj('$window', ['confirm']);
-        translate = jasmine.createSpyObj('$translate', ['instant']);
+        confirmBox = jasmine.createSpy('confirmBox');
     });
 
     var createController = function () {
@@ -63,8 +62,7 @@ describe("AppointmentServiceController", function () {
             ngDialog: ngDialog,
             appService: appService,
             appointmentServiceContext: appointmentServiceContext,
-            $window: window,
-            $translate: translate
+            confirmBox: confirmBox
         }
       );
     };
@@ -162,8 +160,6 @@ describe("AppointmentServiceController", function () {
             serviceMaxLoad = jasmine.createSpyObj('serviceMaxLoad', ['$setValidity']);
             serviceMaxLoad.$invalid = false;
             scope.createServiceForm.serviceMaxLoad = serviceMaxLoad;
-            scope.service.weeklyAvailability = [];
-            scope.service.serviceTypes = [];
         });
 
         describe('clear incorrect data', function () {
@@ -185,7 +181,7 @@ describe("AppointmentServiceController", function () {
             it('should clear incorrect service start and end time and maxLoad if at least one weeklyAvailability is added', function () {
                 serviceResponse.weeklyAvailability = [{startTime: new Date().toString(), endTime: new Date().toString(), dayOfWeek: 'SUNDAY'}];
                 scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceResponse);
-                scope.save();
+                scope.confirmSave();
                 expect(scope.service.startTime).toBeUndefined();
                 expect(scope.service.endTime).toBeUndefined();
                 expect(serviceTime.$setValidity).toHaveBeenCalledWith('timeSequence', true);
@@ -196,7 +192,7 @@ describe("AppointmentServiceController", function () {
             it('should clear service maxLoad if at least one service type is added', function () {
                 serviceResponse.serviceTypes = [{name: 'newType'}];
                 scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceResponse);
-                scope.save();
+                scope.confirmSave();
                 expect(scope.service.startTime.toString()).toEqual(startDateTime.toString());
                 expect(scope.service.endTime.toString()).toEqual(endDateTime.toString());
                 expect(serviceTime.$setValidity).not.toHaveBeenCalled();
@@ -206,7 +202,7 @@ describe("AppointmentServiceController", function () {
 
             it('should not clear service level incorrect start and end time and maxLoad if weeklyAvailability is empty', function () {
                 scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceResponse);
-                scope.save();
+                scope.confirmSave();
                 expect(scope.service.startTime.toString()).toEqual(startDateTime.toString());
                 expect(scope.service.endTime.toString()).toEqual(endDateTime.toString());
                 expect(serviceTime.$setValidity).not.toHaveBeenCalled();
@@ -216,7 +212,7 @@ describe("AppointmentServiceController", function () {
 
             it('should not clear service maxLoad if no service type is added', function () {
                 scope.service = Bahmni.Appointments.AppointmentServiceViewModel.createFromResponse(serviceResponse);
-                scope.save();
+                scope.confirmSave();
                 expect(scope.service.startTime.toString()).toEqual(startDateTime.toString());
                 expect(scope.service.endTime.toString()).toEqual(endDateTime.toString());
                 expect(serviceTime.$setValidity).not.toHaveBeenCalled();
@@ -238,7 +234,7 @@ describe("AppointmentServiceController", function () {
                 }]
             };
             var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
-            scope.save();
+            scope.confirmSave();
             expect(appointmentsServiceService.save).toHaveBeenCalledWith(service);
             expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
         });
@@ -253,7 +249,7 @@ describe("AppointmentServiceController", function () {
                 endTime: endDateTime
             };
             var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
-            scope.save();
+            scope.confirmSave();
             expect(appointmentsServiceService.save).toHaveBeenCalledWith(service);
             expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
             expect(state.go).toHaveBeenCalledWith('home.admin.service');
@@ -261,10 +257,39 @@ describe("AppointmentServiceController", function () {
 
         it('should show error message if form is invalid', function () {
             scope.createServiceForm.$invalid = true;
-            scope.save();
+            scope.confirmSave();
             expect(appointmentsServiceService.save).not.toHaveBeenCalled();
             expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'INVALID_SERVICE_FORM_ERROR_MESSAGE');
             expect(state.go).not.toHaveBeenCalled();
+        });
+
+        it('should save all appointment service details only if confirmed on edit', function () {
+            confirmBox.and.callFake(function (config) {
+                config.scope.ok(function () {
+                });
+            });
+            scope.service = {
+                uuid: 'd4938f10-8677-4ad2-acd1-30a7ea21b810',
+                name: 'Chemotherapy'
+            };
+            var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
+            scope.confirmSave();
+            expect(appointmentsServiceService.save).toHaveBeenCalledWith(service);
+            expect(messagingService.showMessage).toHaveBeenCalledWith('info', 'APPOINTMENT_SERVICE_SAVE_SUCCESS');
+        });
+
+        it('should not call save if cancelled on edit', function () {
+            confirmBox.and.callFake(function (config) {
+                config.scope.cancel(function () {
+                });
+            });
+            scope.service = {
+                uuid: 'd4938f10-8677-4ad2-acd1-30a7ea21b810',
+                name: 'Chemotherapy'
+            };
+            scope.confirmSave();
+            expect(appointmentsServiceService.save).not.toHaveBeenCalled();
+            expect(messagingService.showMessage).not.toHaveBeenCalled();
         });
     });
 
@@ -273,7 +298,6 @@ describe("AppointmentServiceController", function () {
             state.name = 'home.service';
             createController();
             scope.createServiceForm = {$dirty: true};
-            window.confirm.and.returnValue(true);
         });
 
         it('should not open confirmation dialog if form is not edited', function () {
@@ -312,43 +336,5 @@ describe("AppointmentServiceController", function () {
             expect(state.go).toHaveBeenCalledWith(toState, toParams);
             expect(ngDialog.close).toHaveBeenCalled();
         });
-    });
-
-    it('should return true in case of edit and confirmed', function () {
-        createController();
-        scope.service = {
-            name: 'Chemotherapy',
-            uuid: '81da9590-3f10-11e4-2908-0800271c123'
-        };
-        var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
-        window.confirm.and.returnValue(true);
-        translate.instant.and.returnValue('Edit confirmation');
-        var confirmEdit = scope.confirmForEdit();
-        expect(window.confirm).toHaveBeenCalled();
-        expect(confirmEdit).toBeTruthy();
-    });
-
-    it('should return false in case of edit and not confirmed', function () {
-        createController();
-        scope.service = {
-            name: 'Chemotherapy',
-            uuid: '81da9590-3f10-11e4-2908-0800271c123'
-        };
-        var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
-        window.confirm.and.returnValue(false);
-        translate.instant.and.returnValue('Edit confirmation');
-        var confirmEdit = scope.confirmForEdit();
-        expect(window.confirm).toHaveBeenCalled();
-        expect(confirmEdit).toBeFalsy();
-    });
-
-    it('should always return true if is create service ', function () {
-        createController();
-        scope.service = {
-            name: 'Chemotherapy'
-        };
-        var service = Bahmni.Appointments.AppointmentService.createFromUIObject(scope.service);
-        var confirmEdit = scope.confirmForEdit();
-        expect(confirmEdit).toBeTruthy();
     });
 });

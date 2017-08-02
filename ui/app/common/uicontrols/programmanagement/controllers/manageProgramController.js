@@ -213,7 +213,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 scope.delete = _.partial(voidPatientProgram, patientProgram, _);
                 confirmBox({
                     scope: scope,
-                    actions: ['cancel', 'delete'],
+                    actions: [{name: 'cancel', display: 'cancel'}, {name: 'delete', display: 'delete'}],
                     className: "ngdialog-theme-default delete-program-popup"
                 });
             };

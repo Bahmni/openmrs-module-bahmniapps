@@ -40,6 +40,13 @@ describe('AppointmentServiceViewModel', function () {
                 uuid: '66c5901e-e6f1-4f16-b03c-be78d08ce263'
             },
             {
+                dayOfWeek: 'WEDNESDAY',
+                startTime: '10:30:00',
+                endTime: '16:05:00',
+                maxAppointmentsLimit: 8,
+                uuid: '66c5901e-e6f1-4f16-b03c-be78d08ce263'
+            },
+            {
                 dayOfWeek: 'FRIDAY',
                 startTime: '09:30:00',
                 endTime: '16:05:00',
@@ -63,10 +70,11 @@ describe('AppointmentServiceViewModel', function () {
     });
 
     it('should group weekly availability by starTime and endTime', function () {
-        expect(appointmentServiceModel.weeklyAvailability.length).toBe(2);
+        expect(appointmentServiceModel.weeklyAvailability.length).toBe(3);
 
         var availability1 = appointmentServiceModel.weeklyAvailability[0];
         var availability2 = appointmentServiceModel.weeklyAvailability[1];
+        var availability3 = appointmentServiceModel.weeklyAvailability[2];
 
         expect(availability1.maxAppointmentsLimit).toBe(serviceResponse.weeklyAvailability[0].maxAppointmentsLimit);
         expect(availability1.days[1].isSelected).toBeTruthy();
@@ -75,7 +83,11 @@ describe('AppointmentServiceViewModel', function () {
         expect(availability1.days[6].uuid).toBe(serviceResponse.weeklyAvailability[1].uuid);
 
         expect(availability2.maxAppointmentsLimit).toBe(serviceResponse.weeklyAvailability[2].maxAppointmentsLimit);
-        expect(availability2.days[5].isSelected).toBeTruthy();
-        expect(availability2.days[5].uuid).toBe(serviceResponse.weeklyAvailability[2].uuid);
+        expect(availability2.days[3].isSelected).toBeTruthy();
+        expect(availability2.days[3].uuid).toBe(serviceResponse.weeklyAvailability[2].uuid);
+
+        expect(availability3.maxAppointmentsLimit).toBe(serviceResponse.weeklyAvailability[3].maxAppointmentsLimit);
+        expect(availability3.days[5].isSelected).toBeTruthy();
+        expect(availability3.days[5].uuid).toBe(serviceResponse.weeklyAvailability[3].uuid);
     });
 });

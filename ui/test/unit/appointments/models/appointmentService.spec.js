@@ -56,14 +56,15 @@ describe('AppointmentService', function () {
         var endDateTime = new Date().toString();
 
         var days = angular.copy(constDays);
-        days[1].isSelected=true;
-        days[2].isSelected=true;
+        days[1].isSelected = true;
+        days[2].isSelected = true;
         var service = {
             name: 'Chemotherapy',
             description: 'For cancer',
             weeklyAvailability: [{
                 startTime: startDateTime,
                 endTime: endDateTime,
+                maxAppointmentsLimit: 4,
                 days: days
             }]
         };
@@ -72,8 +73,8 @@ describe('AppointmentService', function () {
         expect(appointmentService.weeklyAvailability.length).toBe(2);
         var startTime = dateUtil.getDateTimeInSpecifiedFormat(startDateTime, timeFormat);
         var endTime = dateUtil.getDateTimeInSpecifiedFormat(endDateTime, timeFormat);
-        expect(appointmentService.weeklyAvailability[0]).toEqual({dayOfWeek: 'MONDAY', uuid: undefined, startTime: startTime, endTime: endTime, voided: false});
-        expect(appointmentService.weeklyAvailability[1]).toEqual({dayOfWeek: 'TUESDAY', uuid: undefined, startTime: startTime, endTime: endTime, voided: false});
+        expect(appointmentService.weeklyAvailability[0]).toEqual({dayOfWeek: 'MONDAY', uuid: undefined, maxAppointmentsLimit: 4, startTime: startTime, endTime: endTime, voided: false});
+        expect(appointmentService.weeklyAvailability[1]).toEqual({dayOfWeek: 'TUESDAY', uuid: undefined, maxAppointmentsLimit: 4, startTime: startTime, endTime: endTime, voided: false});
     });
 
     it('should construct weekly availability by day for multiple availabilities', function () {
@@ -83,16 +84,14 @@ describe('AppointmentService', function () {
         var startDateTime2 = new Date("2015-10-01T18:30:00.000Z").toString();
         var endDateTime2 = new Date("2015-10-01T18:30:00.000Z").toString();
 
-
         var days1 = angular.copy(constDays);
-        days1[1].isSelected=true;
-        days1[2].isSelected=true;
-
+        days1[1].isSelected = true;
+        days1[2].isSelected = true;
 
         var days2 = angular.copy(constDays);
-        days2[1].isSelected=true;
-        days2[2].isSelected=true;
-        days2[6].uuid='uuid1';
+        days2[1].isSelected = true;
+        days2[2].isSelected = true;
+        days2[6].uuid = 'uuid1';
 
         var service = {
             name: 'Chemotherapy',
@@ -101,11 +100,13 @@ describe('AppointmentService', function () {
                 {
                     startTime: startDateTime,
                     endTime: endDateTime,
+                    maxAppointmentsLimit: 5,
                     days: days1
                 },
                 {
                     startTime: startDateTime2,
                     endTime: endDateTime2,
+                    maxAppointmentsLimit: 2,
                     days: days2
                 }
             ]
@@ -118,10 +119,10 @@ describe('AppointmentService', function () {
         var startTime2 = dateUtil.getDateTimeInSpecifiedFormat(startDateTime2, timeFormat);
         var endTime2 = dateUtil.getDateTimeInSpecifiedFormat(endDateTime2, timeFormat);
         expect(appointmentService.weeklyAvailability).toEqual(
-        [{dayOfWeek: 'MONDAY',  uuid: undefined, voided: false, startTime: startTime, endTime: endTime},
-         {dayOfWeek: 'TUESDAY', uuid: undefined, voided: false, startTime: startTime, endTime: endTime},
-         {dayOfWeek: 'MONDAY',  uuid: undefined, voided: false, startTime: startTime2, endTime: endTime2},
-         {dayOfWeek: 'TUESDAY', uuid: undefined, voided: false, startTime: startTime2, endTime: endTime2},
-         {dayOfWeek: 'SATURDAY',uuid: 'uuid1', voided: true, startTime: startTime2, endTime: endTime2}]);
+            [{dayOfWeek: 'MONDAY', uuid: undefined, voided: false, maxAppointmentsLimit: 5, startTime: startTime, endTime: endTime},
+         {dayOfWeek: 'TUESDAY', uuid: undefined, voided: false, maxAppointmentsLimit: 5, startTime: startTime, endTime: endTime},
+         {dayOfWeek: 'MONDAY', uuid: undefined, voided: false, maxAppointmentsLimit: 2, startTime: startTime2, endTime: endTime2},
+         {dayOfWeek: 'TUESDAY', uuid: undefined, voided: false, maxAppointmentsLimit: 2, startTime: startTime2, endTime: endTime2},
+         {dayOfWeek: 'SATURDAY', uuid: 'uuid1', voided: true, maxAppointmentsLimit: 2, startTime: startTime2, endTime: endTime2}]);
     });
 });
