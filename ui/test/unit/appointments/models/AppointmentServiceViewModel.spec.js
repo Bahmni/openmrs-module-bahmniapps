@@ -1,6 +1,6 @@
 'use strict';
 
-xdescribe('AppointmentServiceViewModel', function () {
+describe('AppointmentServiceViewModel', function () {
     var appointmentServiceModel;
     var dateUtil = Bahmni.Common.Util.DateUtil;
     var timeFormat = 'HH:mm:ss';
