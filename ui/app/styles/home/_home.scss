@@ -491,10 +491,14 @@ body {
   width: 100%;
 }
 .bottom-banner-wrapper {
-  position: absolute;
-  width: 100%;
-  bottom: 10px;
+  position: fixed;
   text-align: center;
+  bottom: 10px;
+  width: 100%;
+  img {
+    max-width: 35%;
+    height: auto;
+  }
 }
 .power-by {
   position: absolute;
