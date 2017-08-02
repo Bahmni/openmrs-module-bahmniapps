@@ -35,7 +35,7 @@ Bahmni.Appointments.AppointmentServiceViewModel = (function () {
 
         var parseAvailability = function (avbsByDay) {
             var groupedAvbs = _.groupBy(avbsByDay, function (avb) {
-                return avb.startTime + '#' + avb.endTime;
+                return avb.startTime + '#' + avb.endTime + '#' + avb.maxAppointmentsLimit;
             });
 
             return Object.keys(groupedAvbs).map(function (key) {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .directive('serviceAvailability', ['$window', '$translate', 'appService', function ($window, $translate, appService) {
+    .directive('serviceAvailability', ['appService', 'confirmBox', function (appService, confirmBox) {
         var states = {NEW: 0, EDIT: 1, READONLY: 2};
 
         var link = function (scope) {
@@ -16,6 +16,12 @@ angular.module('bahmni.appointments')
                 }
             };
 
+            scope.clearValueIfInvalid = function () {
+                if (scope.availability.maxAppointmentsLimit < 0) {
+                    scope.availability.maxAppointmentsLimit = '';
+                }
+            };
+
             scope.update = function () {
                 var index = scope.availabilityList.indexOf(scope.backUpAvailability);
                 if (addOrUpdateToIndex(index)) {
@@ -24,12 +30,11 @@ angular.module('bahmni.appointments')
             };
 
             var addOrUpdateToIndex = function (index) {
-                if (!overlapsWithExisting(index)) {
+                scope.doesOverlap = overlapsWithExisting(index);
+                if (!scope.doesOverlap) {
                     scope.availabilityList[index] = scope.availability;
-                    scope.doesOverlap = false;
-                    return true;
                 }
-                scope.doesOverlap = true;
+                return !scope.doesOverlap;
             };
 
             scope.isValid = function () {
@@ -65,12 +70,26 @@ angular.module('bahmni.appointments')
                 return (avb1.startTime < avb2.endTime) && (avb2.startTime < avb1.endTime);
             };
 
-            scope.delete = function () {
-                var confirmed = $window.confirm($translate.instant('CONFIRM_DELETE_AVAILABILITY'));
-                if (confirmed) {
-                    var index = scope.availabilityList.indexOf(scope.availability);
-                    scope.availabilityList.splice(index, 1);
-                }
+            scope.confirmDelete = function () {
+                var childScope = {};
+                childScope.message = 'CONFIRM_DELETE_AVAILABILITY';
+                childScope.ok = deleteAvailability;
+                childScope.cancel = cancelDelete;
+                confirmBox({
+                    scope: childScope,
+                    actions: [{name: 'cancel', display: 'CANCEL_KEY'}, {name: 'ok', display: 'OK_KEY'}],
+                    className: "ngdialog-theme-default delete-program-popup"
+                });
+            };
+
+            var deleteAvailability = function (closeDialog) {
+                var index = scope.availabilityList.indexOf(scope.availability);
+                scope.availabilityList.splice(index, 1);
+                closeDialog();
+            };
+
+            var cancelDelete = function (closeDialog) {
+                closeDialog();
             };
 
             scope.cancel = function () {

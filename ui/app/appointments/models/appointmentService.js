@@ -23,6 +23,7 @@ Bahmni.Appointments.AppointmentService = (function () {
                     uuid: day.uuid,
                     startTime: getTime(availability.startTime),
                     endTime: getTime(availability.endTime),
+                    maxAppointmentsLimit: availability.maxAppointmentsLimit,
                     voided: !day.isSelected };
             }));
             return result;
