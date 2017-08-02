@@ -18,6 +18,6 @@
     </p>
     <p class="newly-added-service-wrapper">
                         <span class="newly-added-service" ng-repeat="type in service.serviceTypes">
-                            {{type.name}} {{type.duration}}<i class="fa fa-times" aria-hidden="true"></i></span>
+                            {{type.name}} {{type.duration}}<i class="fa fa-times" aria-hidden="true" ng-click="deleteServiceType(type)"></i></span>
     </p>
 </form>

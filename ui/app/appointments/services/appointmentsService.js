@@ -15,4 +15,13 @@ angular.module('bahmni.appointments')
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 });
             };
+
+            this.getAppointmentsForServiceType = function (serviceTypeUuid) {
+                var params = {"appointmentServiceTypeUuid": serviceTypeUuid};
+                return $http.get(Bahmni.Appointments.Constants.createAppointmentUrl, {
+                    params: params,
+                    withCredentials: true,
+                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                });
+            };
         }]);
