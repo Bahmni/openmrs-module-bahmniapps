@@ -151,10 +151,12 @@
       }
     }
     fieldset {
-      p.disabled {
+      p.disabled, &.disabled {
         opacity: 0.5;
         cursor: not-allowed;
-        pointer-events: none;
+        input, label {
+          cursor: not-allowed;
+        }
       }
     }
   }
@@ -171,7 +173,7 @@
       right: 5px;
       position: absolute;
       margin: auto;
-      top: 2px;
+      top: 0;
       bottom: 0;
       height: 25px;
       button {
@@ -209,16 +211,16 @@
     margin: 0;
     .color-box-trigger {
       span {
-        height: 25px;
-        width: 25px;
+        height: 17px;
+        width: 17px;
         display: inline-block;
         float: left;
-        border: 1px solid #ddd;
+        border: 1px solid transparent;
       }
       i {
         float: left;
-        line-height: 27px;
-        padding: 0 7px;
+        line-height: 19px;
+        padding: 0 2px 0 5px;
         font-size: 17px;
         color: #1a1a1a;
       }

@@ -1,6 +1,6 @@
 <div class="color-picker-wrapper">
     <p class="color-box-trigger" ng-click="showTheColorPicker($event)">
-        <span style="background: {{ selectedColor }}"></span>
+        <span style="background: {{ selectedColor }}; border-color: {{ selectedColor }}"></span>
         <i class="fa fa-caret-down" aria-hidden="true"></i>
     </p>
     <div ng-class="{'color-box': colors.length > 0}" ng-show="showColorPicker">
