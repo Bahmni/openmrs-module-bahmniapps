@@ -2,9 +2,10 @@
 
 describe("grouping Observations", function () {
 
-    it("should return observation grouped together", function(){
+    it("should return observation grouped in conceptSortWeight order", function(){
         var groupedObservation = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(observationsList);
-        expect(groupedObservation[0].value[0].concept.name).toBe("Dispensed");
+        expect(groupedObservation[0].value[0].concept.name).toBe("Blood Pressure");
+        expect(groupedObservation[0].value[1].concept.name).toBe("Dispensed");
         expect(groupedObservation[1].value[0].concept.name).toBe("Vitals");
         expect(groupedObservation[2].value[0].concept.name).toBe("RBS");
     })
@@ -212,6 +213,36 @@ var observationsList = [
         "observationDateTime": "2015-01-11T21:25:41.000+0530",
         "isAbnormal": null,
         "conceptSortWeight": 1,
+        "visitStartDateTime": "2014-03-19T11:45:08.000+0530",
+        "encounterUuid": "0d6e8ed4-4c84-4de4-81e6-89ed0e544990",
+        "encounterDateTime": 1420988408000,
+        "targetObsRelation": null,
+        "orderUuid": "15c3680e-6575-416d-91d5-4919cae15594",
+        "abnormal": null,
+        "value": true,
+        "type": "Boolean",
+        "comment": null,
+        "providers": null,
+        "duration": null
+    },
+    {
+        "voided": false,
+        "uuid": "67c24cff-8e74-4693-936f-dc225396eaa4",
+        "concept": {
+            "shortName": null,
+            "uuid": "4e41484b-bb89-4bb6-adfd-3c9192f990d9",
+            "conceptClass": "Misc",
+            "units": null,
+            "dataType": "N/A",
+            "name": "Blood Pressure",
+            "set": false
+        },
+        "voidReason": null,
+        "groupMembers": [],
+        "conceptUuid": "4e41484b-bb89-4bb6-adfd-3c9192f990d9",
+        "observationDateTime": "2015-01-11T21:25:41.000+0530",
+        "isAbnormal": null,
+        "conceptSortWeight": 0,
         "visitStartDateTime": "2014-03-19T11:45:08.000+0530",
         "encounterUuid": "0d6e8ed4-4c84-4de4-81e6-89ed0e544990",
         "encounterDateTime": 1420988408000,
