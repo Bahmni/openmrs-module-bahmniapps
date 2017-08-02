@@ -77,12 +77,13 @@ angular.module('bahmni.appointments')
             };
 
             $scope.onSelectStartTime = function (data) {
-                if (data)
+                if (data) {
                     $scope.appointment.startTime = data.value;
-
-                if (moment($scope.appointment.startTime, 'hh:mm a').isValid())
+                }
+                if (moment($scope.appointment.startTime, 'hh:mm a').isValid()) {
                     $scope.appointment.endTime
                         = moment($scope.appointment.startTime, 'hh:mm a').add($scope.minDuration, 'm').format('hh:mm a');
+                }
             };
 
             $scope.onSelectEndTime = function (data) {
@@ -96,7 +97,7 @@ angular.module('bahmni.appointments')
                 });
             };
 
-            var clearDateTime = function() {
+            var clearDateTime = function () {
                 delete $scope.appointment.date;
                 delete $scope.appointment.startTime;
                 delete $scope.appointment.endTime;
