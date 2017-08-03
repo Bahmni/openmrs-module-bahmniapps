@@ -55,13 +55,17 @@ angular.module('bahmni.appointments')
                 return ($scope.service.serviceTypes.length > 0);
             };
 
+            var isNew = function () {
+                return !$scope.service.uuid;
+            };
+
             $scope.confirmSave = function () {
-                if (!$scope.service.uuid) {
+                if (isNew()) {
                     save();
                     return;
                 }
                 var childScope = {};
-                childScope.message = 'CONFIRM_EDIT_SERVICE';
+                childScope.message = 'CONFIRM_EDIT_SERVICE_MESSAGE_KEY';
                 childScope.cancel = cancelSave;
                 childScope.ok = save;
                 confirmBox({
@@ -128,7 +132,7 @@ angular.module('bahmni.appointments')
 
             $scope.displayConfirmationDialog = function () {
                 ngDialog.openConfirm({
-                    template: 'views/admin/appointmentServiceSaveConfirmation.html',
+                    template: 'views/admin/appointmentServiceNavigationConfirmation.html',
                     scope: $scope,
                     closeByEscape: true
                 });
@@ -136,7 +140,7 @@ angular.module('bahmni.appointments')
 
             var cleanUpListenerStateChangeStart = $scope.$on('$stateChangeStart',
                 function (event, toState, toParams) {
-                    if ($scope.createServiceForm.$dirty && $scope.showConfirmationPopUp) {
+                    if ($scope.showConfirmationPopUp) {
                         event.preventDefault();
                         ngDialog.close();
                         $scope.toStateConfig = {toState: toState, toParams: toParams};

@@ -297,23 +297,12 @@ describe("AppointmentServiceController", function () {
         beforeEach(function () {
             state.name = 'home.service';
             createController();
-            scope.createServiceForm = {$dirty: true};
         });
 
-        it('should not open confirmation dialog if form is not edited', function () {
-            scope.createServiceForm = {$dirty: false};
-            scope.$broadcast("$stateChangeStart");
-            expect(ngDialog.openConfirm).not.toHaveBeenCalled();
-        });
-
-        it('should open confirmation dialog if form is filled', function () {
-            scope.service = {
-                name: 'Pathology',
-                description: 'For viral diseases'
-            };
+        it('should open confirmation dialog if we change the state', function () {
             scope.$broadcast("$stateChangeStart");
             expect(ngDialog.openConfirm).toHaveBeenCalledWith({
-                template: 'views/admin/appointmentServiceSaveConfirmation.html',
+                template: 'views/admin/appointmentServiceNavigationConfirmation.html',
                 scope: scope,
                 closeByEscape: true
             });
