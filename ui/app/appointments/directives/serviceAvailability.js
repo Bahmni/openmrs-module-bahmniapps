@@ -42,7 +42,7 @@ angular.module('bahmni.appointments')
                 var endTime = scope.availability.endTime;
                 return startTime &&
                        endTime && startTime < endTime &&
-                        scope.availability.days;
+                        convertDaysToBinary(scope.availability.days);
             };
 
             var overlapsWithExisting = function (index) {
