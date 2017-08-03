@@ -149,6 +149,14 @@
           border: 1px solid #95989A;
         }
       }
+      .disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        input, label, button {
+          cursor: not-allowed;
+        }
+      }
+
     }
     fieldset {
       p.disabled, &.disabled {
