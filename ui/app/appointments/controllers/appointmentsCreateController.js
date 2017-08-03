@@ -101,6 +101,8 @@ angular.module('bahmni.appointments')
                 delete $scope.appointment.date;
                 delete $scope.appointment.startTime;
                 delete $scope.appointment.endTime;
+                $("#startTimeID").val('');
+                $("#endTimeID").val('');
             };
 
             $scope.onSpecialityChange = function () {

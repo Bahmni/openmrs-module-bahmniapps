@@ -9,7 +9,7 @@ Bahmni.Appointments.Appointment = (function () {
         var dateUtil = Bahmni.Common.Util.DateUtil;
         var getDateTime = function (appointmentDate, givenTime) {
             if (!appointmentDate && !givenTime) return appointmentDate;
-            return dateUtil.parseLongDateToServerFormat(dateUtil.getDateWithoutTime(appointmentDate) + ' ' + givenTime);
+            return dateUtil.parseServerDateToDate(dateUtil.getDateWithoutTime(appointmentDate) + ' ' + givenTime);
         };
         var appointment = new Appointment({
             patientUuid: appointmentDetails.patientUuid,
