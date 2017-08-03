@@ -31,7 +31,7 @@ angular.module('bahmni.appointments')
                 }
             };
 
-            var openConfirmationDialog = function(serviceType) {
+            var openConfirmationDialog = function (serviceType) {
                 ngDialog.openConfirm({
                     template: 'views/admin/serviceTypeDeleteConfirmation.html',
                     scope: $scope,
@@ -45,7 +45,7 @@ angular.module('bahmni.appointments')
                     openConfirmationDialog(serviceType);
                 } else {
                     appointmentsService.getAppointmentsForServiceType(serviceType.uuid).then(function (response) {
-                        if(response.data.length) {
+                        if (response.data.length) {
                             messagingService.showMessage('error', "APPOINTMENT_SERVICE_TYPE_DELETE_CONFIRMATION_DIALOG_MESSAGE_KEY");
                         } else {
                             openConfirmationDialog(serviceType);
