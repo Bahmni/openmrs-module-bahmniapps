@@ -10,11 +10,15 @@ angular.module('bahmni.appointments')
                     $scope.serviceType.duration = $scope.serviceType.duration || Bahmni.Appointments.Constants.defaultServiceTypeDuration;
                 } else {
                     $scope.serviceType.duration = undefined;
+                    $scope.serviceTypesForm.serviceTypeName.$setValidity('uniqueServiceTypeName', true);
                 }
             };
 
             var validateServiceType = function (serviceType) {
-                return (!_.find($scope.service.serviceTypes, serviceType));
+                var nonVoidedServiceTypes = _.filter($scope.service.serviceTypes, function (serviceType) {
+                    return !serviceType.voided;
+                });
+                return (!_.find(nonVoidedServiceTypes, serviceType));
             };
 
             $scope.addServiceType = function (serviceType) {

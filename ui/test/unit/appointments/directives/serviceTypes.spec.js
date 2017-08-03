@@ -85,10 +85,27 @@ describe('ServiceTypes', function () {
         expect(scope.service.serviceTypes[2].duration).toEqual(15);
     });
 
+    it("should be able to add new service type with same name and duration as that of a voided service type", function () {
+        scope.service.serviceTypes = [{name: "Type1", duration: 30}, {name: "Type2", duration: 15, voided: true}];
+        scope.serviceType.name = 'Type2';
+        scope.serviceType.duration = 15;
+        scope.updateServiceTypeDuration();
+        scope.addServiceType(scope.serviceType);
+        expect(scope.service.serviceTypes[0].name).toEqual('Type1');
+        expect(scope.service.serviceTypes[0].duration).toEqual(30);
+        expect(scope.service.serviceTypes[1].name).toEqual('Type2');
+        expect(scope.service.serviceTypes[1].duration).toEqual(15);
+        expect(scope.service.serviceTypes[1].voided).toBeTruthy();
+        expect(scope.service.serviceTypes[2].name).toEqual('Type2');
+        expect(scope.service.serviceTypes[2].duration).toEqual(15);
+    });
+
+
     it('should clear the serviceType duration on clearing the serviceType name', function () {
         scope.serviceType.name = "";
         scope.updateServiceTypeDuration();
         expect(scope.serviceType.duration).toBeUndefined();
+        expect(serviceTypeName.$setValidity).toHaveBeenCalledWith('uniqueServiceTypeName', true);
     });
 
     it('should set the serviceType duration to default duration when entering the serviceType name', function () {
