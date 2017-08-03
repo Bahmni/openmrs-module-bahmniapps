@@ -111,10 +111,12 @@ describe('ServiceAvailability', function () {
         it('should return true if all fields are valid', function () {
             var startDateTime = new Date("2015-10-01T09:30:00.000Z").toString();
             var endDateTime = new Date("2015-10-01T10:30:00.000Z").toString();
+            var avbdays = angular.copy(days);
+            avbdays[0].isSelected = true;
             scope.availability = {
                 startTime: startDateTime,
                 endTime: endDateTime,
-                days: days
+                days: avbdays
             };
             scope.availabilityList = [];
             var element = createElement();
