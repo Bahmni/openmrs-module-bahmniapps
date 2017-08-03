@@ -206,7 +206,7 @@ angular.module('bahmni.appointments')
 
             $scope.displayConfirmationDialog = function () {
                 ngDialog.openConfirm({
-                    template: 'views/admin/appointmentServiceSaveConfirmation.html',
+                    template: 'views/admin/appointmentServiceNavigationConfirmation.html',
                     scope: $scope,
                     closeByEscape: true
                 });

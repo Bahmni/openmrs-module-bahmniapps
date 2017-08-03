@@ -11,8 +11,7 @@ angular.module('bahmni.appointments')
                 $scope.currentTab = viewName;
                 if (viewName === 'calendar') {
                     setPath('calendar');
-                }
-                else {
+                } else {
                     setPath('list');
                 }
             };
