@@ -269,8 +269,8 @@ angular.module('bahmni.appointments')
                 if (!($scope.appointment.status && $scope.appointment.status.length > 0)) {
                     $scope.appointment.status = Bahmni.Appointments.Constants.defaultAppointmentStatus;
                 }
-                if (!$scope.appointment.appointmentsKind) {
-                    $scope.appointment.appointmentsKind = 'Scheduled';
+                if (!$scope.appointment.appointmentKind) {
+                    $scope.appointment.appointmentKind = 'Scheduled';
                 }
             };
 

@@ -14,7 +14,7 @@ Bahmni.Appointments.Appointment = (function () {
         var appointment = new Appointment({
             patientUuid: appointmentDetails.patientUuid,
             comments: appointmentDetails.comments,
-            appointmentsKind: appointmentDetails.appointmentsKind,
+            appointmentKind: appointmentDetails.appointmentKind,
             startDateTime: getDateTime(appointmentDetails.date, appointmentDetails.startTime),
             endDateTime: getDateTime(appointmentDetails.date, appointmentDetails.endTime),
             providerUuid: appointmentDetails.providerUuid,
