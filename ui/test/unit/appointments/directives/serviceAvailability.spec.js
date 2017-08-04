@@ -5,31 +5,24 @@ describe('ServiceAvailability', function () {
 
     var days = [{
         dayOfWeek: 'SUNDAY',
-        displayName: 'Su',
         isSelected: false
     }, {
         dayOfWeek: 'MONDAY',
-        displayName: 'Mo',
         isSelected: false
     }, {
         dayOfWeek: 'TUESDAY',
-        displayName: 'Tu',
         isSelected: false
     }, {
         dayOfWeek: 'WEDNESDAY',
-        displayName: 'We',
         isSelected: false
     }, {
         dayOfWeek: 'THURSDAY',
-        displayName: 'Th',
         isSelected: false
     }, {
         dayOfWeek: 'FRIDAY',
-        displayName: 'Fr',
         isSelected: false
     }, {
         dayOfWeek: 'SATURDAY',
-        displayName: 'Sa',
         isSelected: false
     }];
 
@@ -219,7 +212,7 @@ describe('ServiceAvailability', function () {
             compiledElementScope.add();
             expect(compiledElementScope.availabilityList.length).toBe(1);
             expect(compiledElementScope.availabilityList[0]).toEqual(scope.availability);
-            expect(compiledElementScope.availability).toEqual({});
+            expect(compiledElementScope.availability).toEqual({days: angular.copy(days)});
         });
 
         it('should not add availability if endTime is within existing duration', function () {
@@ -273,7 +266,7 @@ describe('ServiceAvailability', function () {
             expect(compiledElementScope.doesOverlap).toBeFalsy();
             expect(compiledElementScope.availabilityList.length).toBe(2);
             expect(compiledElementScope.availabilityList[1]).toEqual(availability2);
-            expect(compiledElementScope.availability).toEqual({});
+            expect(compiledElementScope.availability).toEqual({days: angular.copy(days)});
         });
 
         it('should not add availability if startTime is within existing duration)', function () {
@@ -324,7 +317,7 @@ describe('ServiceAvailability', function () {
             expect(compiledElementScope.doesOverlap).toBeFalsy();
             expect(compiledElementScope.availabilityList.length).toBe(2);
             expect(compiledElementScope.availabilityList[1]).toEqual(availability2);
-            expect(compiledElementScope.availability).toEqual({});
+            expect(compiledElementScope.availability).toEqual({days: angular.copy(days)});
         });
 
         it('should not add availability if new duration is within existing duration)', function () {

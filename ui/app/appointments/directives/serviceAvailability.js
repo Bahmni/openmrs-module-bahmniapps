@@ -4,6 +4,29 @@ angular.module('bahmni.appointments')
     .directive('serviceAvailability', ['appService', 'confirmBox', function (appService, confirmBox) {
         var states = {NEW: 0, EDIT: 1, READONLY: 2};
 
+        var constDays = [{
+            dayOfWeek: 'SUNDAY',
+            isSelected: false
+        }, {
+            dayOfWeek: 'MONDAY',
+            isSelected: false
+        }, {
+            dayOfWeek: 'TUESDAY',
+            isSelected: false
+        }, {
+            dayOfWeek: 'WEDNESDAY',
+            isSelected: false
+        }, {
+            dayOfWeek: 'THURSDAY',
+            isSelected: false
+        }, {
+            dayOfWeek: 'FRIDAY',
+            isSelected: false
+        }, {
+            dayOfWeek: 'SATURDAY',
+            isSelected: false
+        }];
+
         var link = function (scope) {
             var init = function () {
                 scope.availability = scope.availability || {};
@@ -12,7 +35,7 @@ angular.module('bahmni.appointments')
 
             scope.add = function () {
                 if (addOrUpdateToIndex(scope.availabilityList.length)) {
-                    scope.availability = {};
+                    scope.availability = {days: angular.copy(constDays)};
                 }
             };
 
