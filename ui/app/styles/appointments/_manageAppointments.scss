@@ -361,9 +361,9 @@
       border-right: none;
       td, th {
         border-left: none;
-        &:last-child {
-          border-right: none;
-        }
+      }
+      th:last-child {
+        border-right: none;
       }
     }
   }
