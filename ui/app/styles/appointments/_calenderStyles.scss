@@ -1,0 +1,14 @@
+.app-calendar-container {
+  .section-grid {
+    border: none;
+  }
+  thead {
+    border: transparent;
+    tr th {
+      background: transparent;
+      border: none;
+      padding: 10px;
+      text-align: center;
+    }
+  }
+}
