@@ -15,20 +15,12 @@ angular.module('bahmni.appointments')
                 $scope.today = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
                 $scope.timeRegex = /^(?:(?:1[0-2]|0?[1-9]):[0-5]\d\s*[AaPp][Mm])?$/;
 
+                wireAutocompleteEvents();
+
                 promises.push(getAppointmentLocations(), getAllServices(), getAllProviders());
                 if ($scope.enableSpecialities) {
                     promises.push(getAllSpecialities());
                 }
-                $("#endTimeID").bind('focus', function () {
-                    $("#endTimeID").autocomplete("search");
-                });
-                $("#startTimeID").bind('focus', function () {
-                    $("#startTimeID").autocomplete("search");
-                });
-                $("#startTimeID").bind('focusout', function () {
-                    $scope.onSelectStartTime();
-                });
-
                 return spinner.forPromise($q.all(promises));
             };
 
@@ -289,7 +281,7 @@ angular.module('bahmni.appointments')
                         s2 = moment(appointment.startDateTime),
                         e2 = moment(appointment.endDateTime);
 
-                    return s1.diff(s2, 'days') == 0 &&
+                    return s1.diff(s2, 'days') === 0 &&
                         ((s1 >= s2 && s1 <= e2) || (s2 >= s1 && s2 <= e1));
                 });
             };
@@ -299,6 +291,19 @@ angular.module('bahmni.appointments')
                     messagingService.showMessage('info', 'APPOINTMENT_SAVE_SUCCESS');
                     $scope.showConfirmationPopUp = false;
                     $state.go('^');
+                });
+            };
+
+            var wireAutocompleteEvents = function () {
+                $("#endTimeID").bind('focus', function () {
+                    $("#endTimeID").autocomplete("search");
+                });
+                var $startTimeID = $("#startTimeID");
+                $startTimeID.bind('focus', function () {
+                    $("#startTimeID").autocomplete("search");
+                });
+                $startTimeID.bind('focusout', function () {
+                    $scope.onSelectStartTime();
                 });
             };
 

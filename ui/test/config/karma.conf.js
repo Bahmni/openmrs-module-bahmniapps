@@ -95,9 +95,7 @@ module.exports = function (config) {
             'app/common/util/androidDateTimeFormatter.js',
             'test/unit/common/util/androidDateTimeFormatter.spec.js',
             'app/common/offline/dbservices/dao/labOrderResultsDbService.js',
-            'test/integration/dbServices/dao/labOrderResultsDbService.spec.js',
-            'test/unit/appointments/controllers/appointmentCreateController.spec.js',
-            'app/appointments/controllers/appointmentsCreateController.js'
+            'test/integration/dbServices/dao/labOrderResultsDbService.spec.js'
         ],
         reporters: ['junit', (process.env.CI === 'true' ? 'dots' : 'progress'), 'coverage'],
         preprocessors: {
