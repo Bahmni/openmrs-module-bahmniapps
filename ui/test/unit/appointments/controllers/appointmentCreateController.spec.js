@@ -1,9 +1,9 @@
 'use strict';
 
-ddescribe('Controller: AppointmentsCreateController', function () {
+describe("AppointmentsCreateController", function () {
     var $scope, controller, specialityService, appointmentsServiceService, locationService,
         q, $window, appService, ngDialog, providerService, messagingService, $state, spinner, appointmentsService,
-        patientService, $translate, appDescriptor, specialities, appointmentServices, locations;
+        patientService, $translate, appDescriptor, specialities, appointmentServices, locations, providers;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -34,9 +34,12 @@ ddescribe('Controller: AppointmentsCreateController', function () {
         appDescriptor.getConfigValue.and.returnValue(true);
 
         ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
+        providers = [];
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
-        providerService = jasmine.createSpyObj('providerService', ['search']);
+        providerService = jasmine.createSpyObj('providerService', ['list']);
+        providerService.list.and.returnValue(specUtil.simplePromise({data: {results: providers}}))
         $translate = jasmine.createSpyObj('$translate', ['']);
+        $state = jasmine.createSpyObj('$state', ['']);
         spinner = jasmine.createSpyObj('spinner', ['forPromise', 'forAjaxPromise']);
         $window = jasmine.createSpyObj('$window', ['open']);
     });
@@ -62,15 +65,52 @@ ddescribe('Controller: AppointmentsCreateController', function () {
         );
     };
 
-    it('should fetch all appointment locations on initialization', function () {
-        expect($scope.locations).toBeUndefined();
-        createController();
-        expect(locationService.getAllByTag).toHaveBeenCalledWith('Appointment Location');
+    describe('initialization', function () {
+        it('should fetch all appointment locations on initialization', function () {
+            expect($scope.locations).toBeUndefined();
+            createController();
+            expect(locationService.getAllByTag).toHaveBeenCalledWith('Appointment Location');
+            expect($scope.locations).toBe(locations);
+            expect($scope.enableSpecialities).toBeTruthy();
+            expect($scope.enableServiceTypes).toBeTruthy();
+        });
+
+        it('should not fetch specialities if not configured', function () {
+            appDescriptor.getConfigValue.and.returnValue(false);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            expect($scope.specialities).toBeUndefined();
+            createController();
+            expect(specialityService.getAllSpecialities).not.toHaveBeenCalled();
+            expect($scope.specialities).toBeUndefined();
+        });
+
+        it('should fetch all specialities on initialization if configured', function () {
+            expect($scope.specialities).toBeUndefined();
+            createController();
+            expect(specialityService.getAllSpecialities).toHaveBeenCalled();
+            expect($scope.specialities).toBe(specialities);
+        });
+
+        it('should fetch all services on initialization', function () {
+            expect($scope.services).toBeUndefined();
+            createController();
+            expect(appointmentsServiceService.getAllServices).toHaveBeenCalled();
+            expect($scope.services).toBe(appointmentServices);
+        });
     });
 
-    it('should ', function () {
-        $scope.save();
-        expect(2==2);
-    });
+    describe('confirmationDialogOnStateChange', function () {
+        beforeEach(function () {
+            $state.name = 'home.manage.appointments.calendar.new';
+            createController();
+        });
 
+        it('should stay in current state if Cancel is selected', function () {
+            expect($state.name).toEqual('home.manage.appointments.calendar.new');
+            $scope.cancelTransition();
+            expect($state.name).toEqual('home.manage.appointments.calendar.new');
+            expect(ngDialog.close).toHaveBeenCalled();
+        });
+
+    });
 });
