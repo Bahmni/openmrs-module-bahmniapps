@@ -88,5 +88,8 @@
   "WEDNESDAY": "We",
   "THURSDAY": "Th",
   "FRIDAY": "Fr",
-  "SATURDAY": "Sa"
+  "SATURDAY": "Sa",
+  "APPOINTMENT_CREATION_DATE_WARNING": "Date chosen is outside the availability of the service",
+  "APPOINTMENT_CREATION_START_TIME_WARNING": "Start time is outside the service available times",
+  "APPOINTMENT_CREATION_END_TIME_WARNING": "End time is outside the service available times"
 }

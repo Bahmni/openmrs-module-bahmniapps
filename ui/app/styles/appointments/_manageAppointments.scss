@@ -282,6 +282,20 @@
         margin-top: 3px;
       }
     }
+    .warning-message {
+      display: inline-block;
+      width: calc(100% - 130px);
+      margin-left: 125px;
+      color: #ffac2e;
+      span {
+        font-weight: bolder;
+        font-size: 13px;
+        margin-bottom: 5px;
+      }
+      p {
+        padding: 0 25px;
+      }
+    }
   }
   .create-appointment-action-btn {
     float: right;
