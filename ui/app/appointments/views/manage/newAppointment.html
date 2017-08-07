@@ -86,8 +86,12 @@
                         {{'APPOINTMENT_DATE' | translate}}<sup class="asterick">*</sup>
                     </label>
                     <input  id="date" ng-disabled="!(appointment.serviceUuid.length > 0)" type="date" min="{{today}}"
-                            ng-model="appointment.date" required ng-blur="OnDateChange()" placeholder="Pick appointment date"/>
+                            ng-model="appointment.date" required ng-change="OnDateChange()" placeholder="Pick appointment date"/>
                     <span class="slots-remaining"></span>
+                </p>
+                <p class="warning-message" ng-if="warning.appointmentDate">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <span> {{'APPOINTMENT_CREATION_DATE_WARNING' | translate}} </span>
                 </p>
                 <p>
                     <label for="startTimeID">
@@ -100,6 +104,7 @@
                            ng-model="appointment.startTime"
                            source="timeSource"
                            on-select="onSelectStartTime"
+                           ng-blur="onSelectStartTime()"
                            ng-class="{'illegalValue': isInvalid}"
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
@@ -108,6 +113,11 @@
                            required/>
                     <i class="fa fa-angle-down search-icon-app" aria-hidden="true"></i>
                 </p>
+                <p  class="warning-message" ng-if="warning.startTime">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <span> {{'APPOINTMENT_CREATION_START_TIME_WARNING' | translate}} </span>
+                </p>
+
                 <p>
                     <label for="endTimeID">
                         {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}<sup class="asterick">*</sup>
@@ -119,7 +129,7 @@
                            ng-model="appointment.endTime"
                            source="timeSource"
                            on-select="onSelectEndTime"
-                           ng-blur="onSelectEndTime"
+                           ng-blur="onSelectEndTime()"
                            ng-class="{'illegalValue': isInvalid}"
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
@@ -127,6 +137,10 @@
                            ng-pattern="timeRegex"
                            required/>
                     <i class="fa fa-angle-down search-icon-app" aria-hidden="true"></i>
+                </p>
+                <p class="warning-message" ng-if="warning.endTime">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <span> {{'APPOINTMENT_CREATION_END_TIME_WARNING' | translate}} </span>
                 </p>
                 <p>
                     <label></label>

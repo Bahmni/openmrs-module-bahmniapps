@@ -14,6 +14,11 @@ angular.module('bahmni.appointments')
                 $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
                 $scope.today = Bahmni.Common.Util.DateUtil.getDateWithoutTime(Bahmni.Common.Util.DateUtil.now());
                 $scope.timeRegex = /^(?:(?:1[0-2]|0?[1-9]):[0-5]\d\s*[AaPp][Mm])?$/;
+                $scope.warning = {
+                    startTime: false,
+                    endTime: false,
+                    appointmentDate: false
+                };
 
                 wireAutocompleteEvents();
 
@@ -68,18 +73,28 @@ angular.module('bahmni.appointments')
                 }));
             };
 
+            var isAppointmentTimeOutsideServiceAvailability = function (appointmentTime) {
+                var serviceEndTime = moment($scope.startTimes[$scope.startTimes.length - 1], 'hh:mm a').add($scope.minDuration, 'm');
+                return moment(appointmentTime, 'hh:mm a').isBefore(moment($scope.startTimes[0], 'hh:mm a')) ||
+                    serviceEndTime.isBefore(moment(appointmentTime, 'hh:mm a'));
+            };
+
             $scope.onSelectStartTime = function (data) {
                 if (data) {
                     $scope.appointment.startTime = data.value;
                 }
+                $scope.warning.startTime = isAppointmentTimeOutsideServiceAvailability($scope.appointment.startTime);
                 if (moment($scope.appointment.startTime, 'hh:mm a').isValid()) {
-                    $scope.appointment.endTime
-                        = moment($scope.appointment.startTime, 'hh:mm a').add($scope.minDuration, 'm').format('hh:mm a');
+                    var data = {value: moment($scope.appointment.startTime, 'hh:mm a').add($scope.minDuration, 'm').format('hh:mm a')};
+                    $scope.onSelectEndTime(data);
                 }
             };
 
             $scope.onSelectEndTime = function (data) {
-                $scope.appointment.endTime = data.value;
+                if (data) {
+                    $scope.appointment.endTime = data.value;
+                }
+                $scope.warning.endTime = isAppointmentTimeOutsideServiceAvailability($scope.appointment.endTime);
             };
 
             $scope.responseMap = function (data) {
@@ -95,6 +110,9 @@ angular.module('bahmni.appointments')
                 delete $scope.appointment.endTime;
                 $("#startTimeID").val('');
                 $("#endTimeID").val('');
+                $scope.warning.appointmentDate = false;
+                $scope.warning.startTime = false;
+                $scope.warning.endTime = false;
             };
 
             $scope.onSpecialityChange = function () {
@@ -125,15 +143,21 @@ angular.module('bahmni.appointments')
             };
 
             $scope.OnDateChange = function () {
+                $scope.warning.appointmentDate = false;
                 if ($scope.appointment.date) {
                     var dayOfWeek = moment($scope.appointment.date).format('dddd').toUpperCase();
                     if ($scope.selectedService.weeklyAvailability && $scope.selectedService.weeklyAvailability.length > 0) {
                         var allSlots = getAllSlots('', '', $scope.minDuration);
                         $scope.startTimes = getAvailableSlots(dayOfWeek, $scope.selectedService.weeklyAvailability, allSlots);
+                        if ($scope.startTimes && $scope.startTimes.length === 0) {
+                            $scope.warning.appointmentDate = true;
+                        }
                     }
                     else {
                         $scope.startTimes = getAllSlots($scope.selectedService.startTime, $scope.selectedService.endTime, $scope.minDuration);
                     }
+                    $scope.warning.endTime = isAppointmentTimeOutsideServiceAvailability($scope.appointment.endTime);
+                    $scope.warning.startTime = isAppointmentTimeOutsideServiceAvailability($scope.appointment.startTime);
                 }
             };
 
