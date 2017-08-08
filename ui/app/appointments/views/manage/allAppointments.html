@@ -7,7 +7,7 @@
         <a ng-class="{'active': currentTab === 'list'}" ng-click="navigateTo('list')">
             {{::'LIST_VIEW' | translate}}
         </a>
-        <a ng-class="{'active': currentTab === 'calendar'}" ng-click="navigateTo('calendar')">
+        <a ng-class="{'active': currentTab === 'calendar'}" ng-show="enableCalendarView" ng-click="navigateTo('calendar')">
             {{::'CALENDAR_VIEW' | translate}}
         </a>
         <a class="add-app-btn" ng-href="#/home/manage/appointments/{{currentTab}}/new">{{::'ADD_NEW_APPOINTMENT' |

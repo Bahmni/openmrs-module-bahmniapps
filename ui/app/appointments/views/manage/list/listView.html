@@ -37,40 +37,49 @@
             <button>Apply Filter</button>
         </p>
     </div>
+    <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
+
     <div class="app-list-view" ng-class="{'app-filter-open': isFilterOpen}">
         <table>
             <thead>
             <tr>
-                <th>{{::'APPOINTMENT_ID' | translate}}</th>
-                <th>{{::'PATIENT ' |translate}}</th>
-                <th>{{::'DATE' |translate}}</th>
-                <th>{{::'TIME' |translate}}</th>
-                <th>{{::'PROVIDER' |translate}}</th>
-                <th>{{::'SERVICE' |translate}}</th>
-                <th>{{::'LOCATION' |translate}}</th>
-                <th>{{::'STATUS' |translate}}</th>
+                <th>{{::'APPOINTMENT_PATIENT_ID' |translate}}</th>
+                <th>{{::'APPOINTMENT_PATIENT_NAME' |translate}}</th>
+                <th>{{::'APPOINTMENT_DATE' |translate}}</th>
+                <th>{{::'APPOINTMENT_START_TIME_KEY' |translate}}</th>
+                <th>{{::'APPOINTMENT_END_TIME_KEY' |translate}}</th>
+                <th>{{::'APPOINTMENT_PROVIDER' |translate}}</th>
+                <th>{{::'APPOINTMENT_SERVICE' |translate}}</th>
+                <th ng-show="enableServiceTypes">{{::'APPOINTMENT_SERVICE_TYPE_FULL' |translate}}</th>
+                <th>{{::'APPOINTMENT_WALK_IN' |translate}}</th>
+                <th>{{::'APPOINTMENT_SERVICE_LOCATION_KEY' |translate}}</th>
+                <th>{{::'APPOINTMENT_STATUS' |translate}}</th>
+                <th>{{::'APPOINTMENT_CREATE_NOTES' |translate}}</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td><input type="checkbox"><a ng-href="#/home/manage/appointments/12384710">12</a></td>
-                <td>Test Patient (GAN20178)</td>
-                <td>01/01/2017</td>
-                <td>09:00AM</td>
-                <td>Dr. Superman</td>
-                <td>Ortho</td>
-                <td>OPD-1</td>
-                <td>Scheduled</td>
+            <tr ng-repeat="appointment in appointments" ng-click="select(appointment)" ng-class="{'selected' : isSelected(appointment)}">
+                <td>{{::appointment.patient.identifier}}</td>
+                <td>{{::appointment.patient.name | titleCase}}</td>
+                <td>{{::appointment.startDateTime | bahmniDate}}</td>
+                <td>{{::appointment.startDateTime | bahmniTime}}</td>
+                <td>{{::appointment.endDateTime | bahmniTime}}</td>
+                <td>{{::appointment.provider.name}}</td>
+                <td>{{::appointment.service.name}}</td>
+                <td ng-show="enableServiceTypes">{{::appointment.serviceType.name}}</td>
+                <td>{{:: isWalkIn(appointment.appointmentKind)}}</td>
+                <td>{{::appointment.location.name}}</td>
+                <td>{{::appointment.status}}</td>
+                <td>{{::appointment.comments}}</td>
             </tr>
             </tbody>
         </table>
     </div>
     <div ui-view="content@appointment"></div>
-    <div class="appointment-action-btn-container" ng-class="{'app-filter-open': isFilterOpen}">
-        <a href="#">Check-in</a>
-        <a href="#">Complete</a>
-        <a href="#">Missed</a>
-        <a href="#">Edit</a>
-        <a href="#">Cancel Appointment</a>
-    </div>
+    <fieldset class="appointment-action-btn-container" ng-disabled="!selectedAppointment" ng-class="{'app-filter-open': isFilterOpen}">
+        <button>{{::'CHECK_IN_APPOINTMENT' |translate}}</button>
+        <button>{{::'COMPLETE_APPOINTMENT' |translate}}</button>
+        <button>{{::'EDIT_APPOINTMENT' |translate}}</button>
+        <button>{{::'CANCEL_APPOINTMENT' |translate}}</button>
+    </fieldset>
 </div>
