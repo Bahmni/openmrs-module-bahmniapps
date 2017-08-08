@@ -13,15 +13,15 @@ Bahmni.Appointments.Appointment = (function () {
         };
         var appointment = new Appointment({
             patientUuid: appointmentDetails.patientUuid,
-            comments: appointmentDetails.comments,
-            appointmentKind: appointmentDetails.appointmentKind,
+            serviceUuid: appointmentDetails.serviceUuid,
+            serviceTypeUuid: appointmentDetails.serviceTypeUuid,
             startDateTime: getDateTime(appointmentDetails.date, appointmentDetails.startTime),
             endDateTime: getDateTime(appointmentDetails.date, appointmentDetails.endTime),
             providerUuid: appointmentDetails.providerUuid,
             locationUuid: appointmentDetails.locationUuid,
-            serviceUuid: appointmentDetails.serviceUuid,
-            serviceTypeUuid: appointmentDetails.serviceTypeUuid,
-            status: appointmentDetails.status
+            appointmentKind: appointmentDetails.appointmentKind,
+            status: appointmentDetails.status,
+            comments: appointmentDetails.comments
         });
         return appointment;
     };

@@ -1,13 +1,10 @@
-<section class="add-app-wrapper" ng-init="currentAppTab = 'summary'">
+<section class="add-app-wrapper">
     <header>
-<!--  TODO: all this logic should be moved to a controller  -->
-        <nav style="display: inline">
-            <a ng-class="{'active': currentAppTab === 'summary'}" ng-click="currentAppTab = 'summary'"
-               ng-href="#/home/manage/summary">{{ ::'SUMMARY' | translate}}</a>
-            <a ng-class="{'active': currentAppTab === 'appointments'}" ng-click="currentAppTab = 'appointments'"
-               ng-href="#/home/manage/appointments">{{ ::'APPOINTMENT_LIST' | translate}}</a>
+        <nav>
+            <a ng-class="{'active': currentTab === 'summary'}" ng-click="navigateTo('summary')">{{ ::'SUMMARY' | translate}}</a>
+            <a ng-class="{'active': currentTab === 'appointments'}" ng-click="navigateTo('appointments')">{{ ::'APPOINTMENT_LIST' | translate}}</a>
         </nav>
-<br/><br/><br/>
+    <br/><br/><br/>
     </header>
     <div ui-view="content@manage"></div>
 </section>

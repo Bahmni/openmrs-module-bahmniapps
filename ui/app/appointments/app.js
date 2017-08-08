@@ -87,14 +87,16 @@ angular
                 url: '/list',
                 views: {
                     'content@viewAppointments': {
-                        templateUrl: 'views/manage/list/listView.html'
+                        templateUrl: 'views/manage/list/listView.html',
+                        controller: 'AppointmentsListViewController'
                     }
                 }
             }).state('home.manage.appointments.list.new', {
                 url: '/new',
                 views: {
                     'content@appointment': {
-                        templateUrl: 'views/manage/newAppointment.html'
+                        templateUrl: 'views/manage/newAppointment.html',
+                        controller: 'AppointmentsCreateController'
                     }
                 }
             }).state('home.manage.appointments.list.edit', {

@@ -95,7 +95,7 @@
                 </p>
                 <p>
                     <label for="startTimeID">
-                        {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}<sup class="asterick">*</sup>
+                        {{'APPOINTMENT_START_TIME_KEY' | translate}}<sup class="asterick">*</sup>
                     </label>
                     <input type="text"
                            id="startTimeID"
@@ -120,7 +120,7 @@
 
                 <p>
                     <label for="endTimeID">
-                        {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}<sup class="asterick">*</sup>
+                        {{'APPOINTMENT_END_TIME_KEY' | translate}}<sup class="asterick">*</sup>
                     </label>
                     <input type="text"
                            id="endTimeID"
@@ -145,7 +145,7 @@
                 <p>
                     <label></label>
                     <input type="checkbox" ng-model="appointment.appointmentKind" ng-true-value="'WalkIn'" ng-false-value="">
-                    <span class="walk-in-text">{{'APPOINTMENT_CREATE_WALKIN' | translate}}</span>
+                    <span class="walk-in-text">{{'APPOINTMENT_CREATE_WALK_IN' | translate}}</span>
                 </p>
                 <p>
                     <label for="notes">
@@ -155,8 +155,8 @@
                               ng-model="appointment.comments"></textarea>
                 </p>
             </section>
-            <a class="create-appointment-action-btn" ui-sref="^" >{{::'APPOINTMENT_CANCEL' | translate }}</a>
-            <button type="submit" class="service-save-btn create-appointment-action-btn">{{::'APPOINTMENT_SAVE' | translate }}
+            <a class="create-appointment-action-btn" ui-sref="^" >{{::'APPOINTMENT_CREATE_CANCEL' | translate }}</a>
+            <button type="submit" class="service-save-btn create-appointment-action-btn">{{::'APPOINTMENT_CREATE_SAVE' | translate }}
             </button>
         </form>
     </div>

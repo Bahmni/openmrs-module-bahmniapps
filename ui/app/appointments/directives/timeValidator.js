@@ -8,7 +8,7 @@ angular.module('bahmni.appointments')
             if (!model.startTime || !model.endTime) {
                 return true;
             }
-            var timeFormat = 'HH:mm:ss';
+            var timeFormat = 'THH:mm:ss';
             var startTime = DateUtil.getDateTimeInSpecifiedFormat(model.startTime, timeFormat);
             var endTime = DateUtil.getDateTimeInSpecifiedFormat(model.endTime, timeFormat);
             return (startTime < endTime);

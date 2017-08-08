@@ -76,6 +76,9 @@
         <script src="../common/app-framework/models/appDescriptor.js"></script>
         <script src="../common/app-framework/services/loadConfigService.js"></script>
 
+        <script src="../common/displaycontrols/patientprofile/init.js"></script>
+        <script src="../common/displaycontrols/patientprofile/filters/titleCase.js"></script>
+
         <script src="../common/config/init.js"></script>
         <script src="../common/config/services/configurations.js"></script>
         <script src="../common/config/directives/showIfPrivilege.js"></script>
@@ -94,6 +97,7 @@
         <script src="../common/ui-helper/services/messagingService.js"></script>
         <script src="../common/ui-helper/services/confirmBoxService.js"></script>
         <script src="../common/ui-helper/directives/bahmniAutocomplete.js"></script>
+        <script src="../common/ui-helper/filters/dateFilters.js"></script>
 
         <script src="../common/patient/init.js"></script>
         <script src="../common/patient/mappers/patientMapper.js"></script>
@@ -136,19 +140,21 @@
         <script src="directives/serviceAvailability.js"></script>
         <script src="directives/serviceTypes.js"></script>
         <script src="directives/colorPicker.js"></script>
+        <script src="directives/datePicker.js"></script>
         <script src="services/appointmentsServiceService.js"></script>
         <script src="services/specialityService.js"></script>
         <script src="services/appointmentsService.js"></script>
-        <script src="controllers/deleteAppointmentServiceController.js" ></script>
+        <script src="controllers/admin/deleteAppointmentServiceController.js" ></script>
         <script src="controllers/appointmentsHeaderController.js"></script>
-        <script src="controllers/appointmentsManageController.js"></script>
-        <script src="controllers/allAppointmentServicesController.js"></script>
-        <script src="controllers/appointmentsCreateController.js"></script>
-        <script src="controllers/appointmentServiceController.js"></script>
-        <script src="controllers/appointmentsDayCalendarController.js"></script>
-        <script src="controllers/allAppointmentServicesController.js"></script>
-        <script src="controllers/allAppointmentsController.js" ></script>
-        <script src="controllers/appointmentsCalendarViewController.js" ></script>
+        <script src="controllers/manage/appointmentsManageController.js"></script>
+        <script src="controllers/admin/allAppointmentServicesController.js"></script>
+        <script src="controllers/manage/appointmentsCreateController.js"></script>
+        <script src="controllers/admin/appointmentServiceController.js"></script>
+        <script src="controllers/manage/calendar/appointmentsDayCalendarController.js"></script>
+        <script src="controllers/admin/allAppointmentServicesController.js"></script>
+        <script src="controllers/manage/allAppointmentsController.js" ></script>
+        <script src="controllers/manage/calendar/appointmentsCalendarViewController.js" ></script>
+        <script src="controllers/manage/list/appointmentsListViewController.js" ></script>
         <script src="app.js"></script>
         <!-- endbuild -->
     </body>
