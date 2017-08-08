@@ -74,9 +74,8 @@ angular.module('bahmni.appointments')
             };
 
             var isAppointmentTimeOutsideServiceAvailability = function (appointmentTime) {
-                var serviceEndTime = moment($scope.startTimes[$scope.startTimes.length - 1], 'hh:mm a').add($scope.minDuration, 'm');
-                return moment(appointmentTime, 'hh:mm a').isBefore(moment($scope.startTimes[0], 'hh:mm a')) ||
-                    serviceEndTime.isBefore(moment(appointmentTime, 'hh:mm a'));
+                return moment(appointmentTime, 'hh:mm a').isBefore(moment($scope.allowedStartTime, 'hh:mm a')) ||
+                    moment($scope.allowedEndTime, 'hh:mm a').isBefore(moment(appointmentTime, 'hh:mm a'));
             };
 
             $scope.onSelectStartTime = function (data) {
@@ -142,16 +141,38 @@ angular.module('bahmni.appointments')
                 clearDateTime();
             };
 
+            var getWeeklyAvailabilityOnADate = function (date, weeklyAvailability) {
+                return _.find(weeklyAvailability, function (o) {
+                    return o.dayOfWeek === moment(date).format('dddd').toUpperCase();
+                });
+            };
+
+            var setServiceAvailableTimesForADate = function (date) {
+                $scope.allowedStartTime = $scope.selectedService.startTime || '08:00 am';
+                $scope.allowedEndTime = $scope.selectedService.endTime || '09:00 pm';
+
+                if ($scope.selectedService.weeklyAvailability && $scope.selectedService.weeklyAvailability.length > 0) {
+                    var weeklyAvailability = getWeeklyAvailabilityOnADate(date, $scope.selectedService.weeklyAvailability);
+                    if (weeklyAvailability) {
+                        $scope.allowedStartTime = weeklyAvailability.startTime;
+                        $scope.allowedEndTime = weeklyAvailability.endTime;
+                    }
+                    else {
+                        $scope.allowedStartTime = undefined;
+                        $scope.allowedEndTime = undefined;
+                    }
+                }
+            };
+
             $scope.OnDateChange = function () {
                 $scope.warning.appointmentDate = false;
                 if ($scope.appointment.date) {
+                    setServiceAvailableTimesForADate($scope.appointment.date);
                     var dayOfWeek = moment($scope.appointment.date).format('dddd').toUpperCase();
                     if ($scope.selectedService.weeklyAvailability && $scope.selectedService.weeklyAvailability.length > 0) {
                         var allSlots = getAllSlots('', '', $scope.minDuration);
                         $scope.startTimes = getAvailableSlots(dayOfWeek, $scope.selectedService.weeklyAvailability, allSlots);
-                        if ($scope.startTimes && $scope.startTimes.length === 0) {
-                            $scope.warning.appointmentDate = true;
-                        }
+                        $scope.warning.appointmentDate = !getWeeklyAvailabilityOnADate($scope.appointment.date, $scope.selectedService.weeklyAvailability);
                     }
                     else {
                         $scope.startTimes = getAllSlots($scope.selectedService.startTime, $scope.selectedService.endTime, $scope.minDuration);
