@@ -50,6 +50,7 @@
                 <th>{{::'APPOINTMENT_END_TIME_KEY' |translate}}</th>
                 <th>{{::'APPOINTMENT_PROVIDER' |translate}}</th>
                 <th>{{::'APPOINTMENT_SERVICE' |translate}}</th>
+                <th ng-show="enableSpecialities">{{::'APPOINTMENT_SERVICE_SPECIALITY_KEY' |translate}}</th>
                 <th ng-show="enableServiceTypes">{{::'APPOINTMENT_SERVICE_TYPE_FULL' |translate}}</th>
                 <th>{{::'APPOINTMENT_WALK_IN' |translate}}</th>
                 <th>{{::'APPOINTMENT_SERVICE_LOCATION_KEY' |translate}}</th>
@@ -66,7 +67,8 @@
                 <td>{{::appointment.endDateTime | bahmniTime}}</td>
                 <td>{{::appointment.provider.name}}</td>
                 <td>{{::appointment.service.name}}</td>
-                <td ng-show="enableServiceTypes">{{::appointment.serviceType.name}}</td>
+                <td ng-show="enableSpecialities">{{::appointment.service.speciality.name}}</td>
+                <td ng-show="enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
                 <td>{{:: isWalkIn(appointment.appointmentKind)}}</td>
                 <td>{{::appointment.location.name}}</td>
                 <td>{{::appointment.status}}</td>
