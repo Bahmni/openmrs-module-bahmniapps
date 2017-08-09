@@ -286,7 +286,7 @@ angular.module('bahmni.appointments')
                 var result = [];
                 var current = moment(start);
 
-                while (current.valueOf() <= end.valueOf()) {
+                while (current.valueOf() < end.valueOf()) {
                     result.push(current.format('hh:mm a'));
                     current.add(durationInMin, 'minutes');
                 }
