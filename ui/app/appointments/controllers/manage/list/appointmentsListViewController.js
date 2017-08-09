@@ -4,6 +4,7 @@ angular.module('bahmni.appointments')
     .controller('AppointmentsListViewController', ['$scope', 'spinner', 'appointmentsService', 'appService',
         function ($scope, spinner, appointmentsService, appService) {
             $scope.startDate = moment().startOf('day').toDate();
+            $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             var init = function () {
                 return $scope.getAppointmentsForDate($scope.startDate);

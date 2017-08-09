@@ -43,8 +43,9 @@ describe('AppointmentsListViewController', function () {
         expect(scope.startDate).toEqual(today);
     });
 
-    it("should initialize enable service types from config", function () {
+    it("should initialize enable service types and enable specialities from config", function () {
         expect(scope.enableServiceTypes).toBeTruthy();
+        expect(scope.enableSpecialities).toBeTruthy();
     });
 
     it('should get appointments for date', function () {
