@@ -273,10 +273,17 @@ angular.module('bahmni.ipd')
 
             $scope.transferConfirmation = function () {
                 var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterTypeUuid(), getCurrentVisitTypeUuid());
-                return encounterService.create(encounterData).then(function (response) {
-                    assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
-                    ngDialog.close();
-                    forwardUrl(response.data, "onTransferForwardTo");
+                bedService.getCompleteBedDetailsByBedId($rootScope.selectedBedInfo.bed.bedId).then(function (response) {
+                    var bedDetails = response.data;
+                    if (!bedDetails.patients.length) {
+                        encounterService.create(encounterData).then(function (response) {
+                            assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
+                            ngDialog.close();
+                            forwardUrl(response.data, "onTransferForwardTo");
+                        });
+                    } else {
+                        updateOccupiedBedDetailsAndThrowAnError(bedDetails);
+                    }
                 });
             };
 
@@ -310,13 +317,29 @@ angular.module('bahmni.ipd')
                 }));
             };
 
+            var updateOccupiedBedDetailsAndThrowAnError = function (bedDetails) {
+                $rootScope.selectedBedInfo.bed.status = "OCCUPIED";
+                var patient = bedDetails.patients[0];
+                patient.identifiers[0].identifier = patient.display && patient.display.split(" - ")[0];
+                $rootScope.selectedBedInfo.bed.patient = patient;
+                messagingService.showMessage('error', "Please select an available bed. This bed is already assigned to " + patient.person.display);
+                $scope.cancelConfirmationDialog();
+            };
+
             $scope.admitConfirmation = function () {
                 if (hideStartNewVisitPopUp && $scope.visitSummary && getVisitTypeUuid($scope.visitSummary.visitType) != defaultVisitTypeUuid) {
                     $scope.closeCurrentVisitAndStartNewVisit();
                 }
                 else {
-                    createEncounterAndContinue();
-                    $scope.cancelConfirmationDialog();
+                    bedService.getCompleteBedDetailsByBedId($rootScope.selectedBedInfo.bed.bedId).then(function (response) {
+                        var bedDetails = response.data;
+                        if (!bedDetails.patients.length) {
+                            createEncounterAndContinue();
+                            $scope.cancelConfirmationDialog();
+                            return;
+                        }
+                        updateOccupiedBedDetailsAndThrowAnError(bedDetails);
+                    });
                 }
             };
         }
