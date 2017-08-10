@@ -91,7 +91,7 @@
   "PLACEHOLDER_CREATE_NOTES": "Enter appointment notes",
   "APPOINTMENT_CREATE_SAVE": "Save",
   "APPOINTMENT_CREATE_CANCEL": "Cancel",
-  "APPOINTMENT_PATIENT_ID": "Patient Identifier",
+  "APPOINTMENT_PATIENT_ID": "Patient Id",
   "APPOINTMENT_PATIENT_NAME": "Patient Name",
   "APPOINTMENT_SERVICE_TYPE_FULL": "Service Appointment Type",
   "APPOINTMENT_WALK_IN": "Walk In",
