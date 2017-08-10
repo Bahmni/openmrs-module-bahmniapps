@@ -4,10 +4,10 @@ angular.module('bahmni.ipd')
     .controller('WardController', ['$scope', '$rootScope', '$stateParams', '$state',
         function ($scope, $rootScope, $stateParams, $state) {
             var init = function () {
-                if ($rootScope.bedDetails) {
-                    expandAdmissionMasterForRoom($rootScope.bedDetails.physicalLocationName);
-                } else if ($stateParams.context && $stateParams.context.roomName) {
+                if ($stateParams.context && $stateParams.context.roomName) {
                     expandAdmissionMasterForRoom($stateParams.context.roomName);
+                } else if ($rootScope.bedDetails) {
+                    expandAdmissionMasterForRoom($rootScope.bedDetails.physicalLocationName);
                 }
             };
 

@@ -22,9 +22,7 @@ describe("AdtController", function () {
         ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         spinnerService = jasmine.createSpyObj('spinnerService', ['forPromise']);
-        state = {current: {name: "some state"}, transitionTo: function () {
-            return true;
-        }};
+        state = jasmine.createSpyObj('state', ['transitionTo']);
         window = {location: { reload: jasmine.createSpy()} };
 
         appService.getAppDescriptor.and.returnValue({
@@ -548,9 +546,17 @@ describe("AdtController", function () {
 
     it("should not transfer the patient when the selected bed is already assigned to some other patient", function () {
         var bed = { bedId: 4, "bedName": "402/1"};
-        rootScope.selectedBedInfo = {bed : bed};
+        var roomName = "Room1";
+        var wardUuid = "wardUuid";
+        var wardName = "ward 1";
+        rootScope.selectedBedInfo = {bed : bed, roomName: roomName, wardUuid: wardUuid, wardName: wardName};
         var patient = {id: 4, uuid: "someUuid", display: "IQ201 - someName", person: {display: "firstName lastName"}, identifiers: [{identifier: "IQ201"}]};
         bedService.getCompleteBedDetailsByBedId.and.returnValue(specUtil.simplePromise({data: {bed: bed, patients: [patient]}}));
+        var stateParams = {
+            patientUuid: scope.patient.uuid,
+            context: { roomName: roomName, department: { uuid: wardUuid, name: wardName, roomName: roomName }}
+        };
+
         createController();
 
         scope.transferConfirmation();
@@ -560,6 +566,7 @@ describe("AdtController", function () {
         expect(bedService.getCompleteBedDetailsByBedId).toHaveBeenCalledWith(rootScope.selectedBedInfo.bed.bedId);
         expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please select an available bed. This bed is already assigned to " + patient.person.display);
         expect(ngDialog.close).toHaveBeenCalled();
+        expect(state.transitionTo).toHaveBeenCalledWith("bedManagement.patient", stateParams, {reload: true, inherit: false, notify: true});
     });
 
     it("Should throw an error message, when the bed is not selected and trying to discharge the patient", function () {

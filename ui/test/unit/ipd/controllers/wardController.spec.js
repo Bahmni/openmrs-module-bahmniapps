@@ -30,6 +30,7 @@ describe('WardController', function() {
         }];
 
     var room1 = {name: "room1", beds: beds};
+    var room2 = {name: "room2", beds: []};
 
     state = jasmine.createSpyObj('$state',['go']);
     beforeEach(function() {
@@ -50,7 +51,7 @@ describe('WardController', function() {
             controller = $controller;
             rootScope = $rootScope;
             scope = $rootScope.$new();
-            scope.ward = {rooms: [room1]};
+            scope.ward = {rooms: [room1, room2]};
             rootScope.bedDetails = {physicalLocationName: "room1"};
         });
     });
@@ -91,6 +92,17 @@ describe('WardController', function() {
     });
 
     it('should initialize room info, on admitting the patient', function() {
+        stateParams.context = {roomName: "room1"};
+        rootScope.selectedBedInfo = {};
+        initController(rootScope, stateParams, state);
+        expect(scope.room).toBe(room1);
+        expect(scope.roomSelected).toBeTruthy();
+        expect(rootScope.selectedBedInfo.roomName).toBe("room1");
+        expect(rootScope.selectedBedInfo.bed).toBeUndefined();
+    });
+
+    it('should initialize room info, with the context from the stateParams and ignore the bedDetails', function() {
+        rootScope.bedDetails = {physicalLocationName: "room2"};
         stateParams.context = {roomName: "room1"};
         rootScope.selectedBedInfo = {};
         initController(rootScope, stateParams, state);

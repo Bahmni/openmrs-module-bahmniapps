@@ -133,11 +133,36 @@ describe('BedManagementController', function () {
         expect(scope.patient).toBeUndefined();
         expect(scope.wards).toBe(wardList.results);
         expect(wardService.bedsForWard).toHaveBeenCalledWith(stateParams.context.department.uuid);
+        expect(rootScope.selectedBedInfo.wardUuid).toBe("some uuid");
+        expect(rootScope.selectedBedInfo.wardName).toBe("some department");
         expect(scope.departmentSelected).toBeTruthy();
         expect(scope.$broadcast).toHaveBeenCalledWith("event:departmentChanged");
     });
 
+    it('should expand the department and raise an event, with the stateParams departmentInfo and ignore the bedDetails departmentInfo', function () {
+        rootScope.bedDetails = {
+            wardUuid: "ward1Uuid",
+            wardName: "ward 1"
+        };
+
+        stateParams.context = {
+            department : {
+                uuid: "some uuid",
+                name: "ward 2"
+            }
+        };
+        initController(rootScope, stateParams);
+        expect(scope.patient).toBeUndefined();
+        expect(scope.wards).toBe(wardList.results);
+        expect(wardService.bedsForWard).toHaveBeenCalledWith(stateParams.context.department.uuid);
+        expect(scope.departmentSelected).toBeTruthy();
+        expect(rootScope.selectedBedInfo.wardUuid).toBe("some uuid");
+        expect(rootScope.selectedBedInfo.wardName).toBe("ward 2");
+        expect(scope.$broadcast).toHaveBeenCalledWith("event:departmentChanged");
+    });
+
     it('should expand the department and raise an event, when rootScope has bedDetails i.e for admitted patients', function () {
+        stateParams.context = undefined;
         rootScope.bedDetails = {
             wardUuid: "some uuid",
             wardName: "some department"
@@ -146,6 +171,8 @@ describe('BedManagementController', function () {
         expect(scope.patient).toBeUndefined();
         expect(scope.wards).toBe(wardList.results);
         expect(wardService.bedsForWard).toHaveBeenCalledWith(rootScope.bedDetails.wardUuid);
+        expect(rootScope.selectedBedInfo.wardUuid).toBe("some uuid");
+        expect(rootScope.selectedBedInfo.wardName).toBe("some department");
         expect(scope.departmentSelected).toBeTruthy();
         expect(scope.$broadcast).toHaveBeenCalledWith("event:departmentChanged");
     });
@@ -165,6 +192,8 @@ describe('BedManagementController', function () {
         expect(scope.patient).toBeUndefined();
         expect(scope.wards).toBe(wardList.results);
         expect(wardService.bedsForWard).toHaveBeenCalledWith(department.uuid);
+        expect(rootScope.selectedBedInfo.wardUuid).toBe("some uuid");
+        expect(rootScope.selectedBedInfo.wardName).toBe("some department");
         expect(scope.departmentSelected).toBeTruthy();
         expect(scope.$broadcast).toHaveBeenCalledWith("event:departmentChanged");
         expect(scope.roomName).toBeUndefined();
@@ -186,6 +215,8 @@ describe('BedManagementController', function () {
         expect(scope.patient).toBeUndefined();
         expect(scope.wards).toBe(wardList.results);
         expect(wardService.bedsForWard).toHaveBeenCalledWith(department.uuid);
+        expect(rootScope.selectedBedInfo.wardUuid).toBe("some uuid");
+        expect(rootScope.selectedBedInfo.wardName).toBe("some department");
         expect(scope.departmentSelected).toBeTruthy();
         expect(scope.$broadcast).toHaveBeenCalledWith("event:departmentChanged");
         expect(scope.roomName).toBeUndefined();

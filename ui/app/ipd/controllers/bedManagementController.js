@@ -24,13 +24,13 @@ angular.module('bahmni.ipd')
                 $rootScope.selectedBedInfo = $rootScope.selectedBedInfo || {};
                 loadAllWards().then(function () {
                     var context = $stateParams.context || {};
-                    if ($rootScope.bedDetails) {
+                    if (context && isDepartmentPresent(context.department)) {
+                        expandAdmissionMasterForDepartment(context.department);
+                    } else if ($rootScope.bedDetails) {
                         expandAdmissionMasterForDepartment({
                             uuid: $rootScope.bedDetails.wardUuid,
                             name: $rootScope.bedDetails.wardName
                         });
-                    } else if (context && isDepartmentPresent(context.department)) {
-                        expandAdmissionMasterForDepartment(context.department);
                     }
                     resetDepartments();
                     resetBedInfo();
@@ -89,6 +89,7 @@ angular.module('bahmni.ipd')
                     };
                     $scope.departmentSelected = true;
                     $rootScope.selectedBedInfo.wardName = department.name;
+                    $rootScope.selectedBedInfo.wardUuid = department.uuid;
                     selectCurrentDepartment(department);
                     $scope.$broadcast("event:departmentChanged");
                 });

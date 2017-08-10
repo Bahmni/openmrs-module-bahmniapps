@@ -283,6 +283,21 @@ angular.module('bahmni.ipd')
                         });
                     } else {
                         updateOccupiedBedDetailsAndThrowAnError(bedDetails);
+                        var selectedBedInfo = $rootScope.selectedBedInfo;
+                        var options = {
+                            patientUuid: $scope.patient.uuid,
+                            context: {
+                                roomName: selectedBedInfo.roomName,
+                                department: {
+                                    uuid: selectedBedInfo.wardUuid,
+                                    name: selectedBedInfo.wardName,
+                                    roomName: selectedBedInfo.roomName
+                                }
+                            }
+                        };
+                        $state.transitionTo("bedManagement.patient", options, {
+                            reload: true, inherit: false, notify: true
+                        });
                     }
                 });
             };
