@@ -158,6 +158,10 @@
 
 .appointment-btn-container {
   padding: 0 10px 20px;
+  overflow: hidden;
+  .view-toggle-wrapper {
+    float: right;
+  }
   a {
     @extend .appBtn;
     &.active {
@@ -322,33 +326,93 @@
 
 /*----- list view styles -----*/
 
+.app-date-nav {
+  position: absolute;
+  width: calc(100% - 184px);
+  text-align: center;
+  box-sizing: border-box;
+  top: 126px;
+  button, input {
+    @extend .appBtn;
+    background: #F8F8F8;
+    border: none;
+    outline: none;
+    &.app-today-btn {
+      float: left;
+      background: #fff;
+    }
+  }
+  input {
+    font-size: 14px;
+    padding: 6px;
+  }
+  .app-view-prev {
+    margin-left: 80px;
+  }
+}
+
 .app-list-view {
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
   height: calc(100vh - 230px);
+  position: relative;
   &.app-filter-open {
     width: calc(100% - 311px);
   }
-  table {
-    th {
-      background: #C7C0C0;
-      color: #222222;
-      border-color: #C7C0C0;
-      text-align: center;
-      padding: 10px;
+  .app-list-view-table-head {
+    thead {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      th {
+        background: #C7C0C0;
+        color: #222222;
+        border-color: #C7C0C0;
+        text-align: center;
+        padding: 10px;
+        min-width: 110px;
+        box-sizing: border-box;
+        &.app-list-view-startDate, &.app-list-view-startTime, &.app-list-view-endTime {
+          min-width: 90px;
+        }
+        &.app-list-view-serviceType {
+          min-width: 192px;
+        }
+        &.app-list-view-note {
+          min-width: 200px;
+        }
+      }
     }
+  }
+  .app-list-view-table-body {
     tbody {
+      height: calc(100% - 51px);
+      position: absolute;
+      overflow-y: auto;
+      top: 37px;
       tr {
         &:nth-child(even) {
           background: #F2F1F1;
         }
         td {
           text-align: center;
-          border-right: none;
-          border-left: none;
           padding: 10px;
+          min-width: 110px;
+          box-sizing: border-box;
           input[type=checkbox] {
             float: left;
             margin-top: 2px;
+          }
+          &.app-list-view-startDate, &.app-list-view-startTime, &.app-list-view-endTime {
+            min-width: 90px;
+          }
+          &.app-list-view-serviceType {
+            min-width: 192px;
+          }
+          &.app-list-view-note {
+            word-break: break-all;
+            min-width: 200px;
           }
         }
       }
