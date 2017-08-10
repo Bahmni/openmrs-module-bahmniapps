@@ -259,7 +259,7 @@ angular.module('bahmni.ipd')
             };
 
             $scope.transfer = function () {
-                if ($rootScope.selectedBedInfo.bed == undefined || $rootScope.selectedBedInfo.bed.bedNumber === $rootScope.bedDetails.bedNumber) {
+                if ($rootScope.selectedBedInfo.bed == undefined || $rootScope.selectedBedInfo.bed.bedId === $rootScope.bedDetails.bedId) {
                     messagingService.showMessage("error", "Please select a bed to transfer the patient");
                 } else {
                     ngDialog.openConfirm({

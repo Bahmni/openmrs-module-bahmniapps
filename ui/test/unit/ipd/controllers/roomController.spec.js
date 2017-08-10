@@ -60,10 +60,14 @@ describe('RoomController', function () {
             "empty": true,
             "available": false,
             "bed": {"bedId": false, "bedNumber": false, "bedType": false, "bedTags": false, "status": false}
-        }, {
+        },{
             "empty": false,
             "available": false,
             "bed": {"bedId": 9, "bedNumber": "404-i", "bedType": "normal bed", "bedTags": [], "status": "OCCUPIED"}
+        }, {
+            "empty": false,
+            "available": false,
+            "bed": {"bedId": 10, "bedNumber": "404-i", "bedType": "normal bed", "bedTags": [], "status": "OCCUPIED"}
         }]],
         "totalBeds": 9,
         "availableBeds": 1
@@ -88,21 +92,16 @@ describe('RoomController', function () {
             rootScope = $rootScope;
             scope = $rootScope.$new();
             rootScope.selectedBedInfo ={};
-            rootScope.bedDetails =
-            {
-                bedId: 9,
-                bedNumber: "404-i",
-                physicalLocationName: "room1"
-            };
             spyOn(scope, '$emit');
             scope.room = room;
             scope.currentView = "Grid";
         });
     });
 
-    it('should initialize bed info based on Admitted Patient Details', function () {
+    it('should initialize bed info based on Admitted Patient Details ', function () {
+        rootScope.bedDetails = { bedId: 10, bedNumber: "404-i", physicalLocationName: "room1" };
         var expectedBed = {
-            bedId: 9,
+            bedId: 10,
             bedNumber: "404-i",
             bedType: "normal bed",
             bedTags: [],

@@ -3,7 +3,7 @@
         <div ng-repeat="cell in row" class="bed-layout-cells">
             {{getColorForTheTag(cell.bed)}}
             <div class="bed" ng-if="!cell.bed.bedId"></div>
-            <div class="bed {{ cell.bed.status }}" ng-class="{'highlight-bed': cell.bed.bedNumber===$root.selectedBedInfo.bed.bedNumber, 'highlight-old-bed': cell.bed.bedNumber===$root.bedDetails.bedNumber, 'tagged': cell.bed.bedTagMaps[0] !== undefined}"
+            <div class="bed {{ cell.bed.status }}" ng-class="{'highlight-bed': cell.bed.bedId == $root.selectedBedInfo.bed.bedId, 'highlight-old-bed': cell.bed.bedId == $root.bedDetails.bedId, 'tagged': cell.bed.bedTagMaps[0] !== undefined}"
                  ng-if="cell.bed.bedId" ng-click="onSelectBed(cell.bed)" style="background:{{cell.bed.bedTagMaps[0].bedTag.color}};">
                 <div class="bed-space"></div>
                 <div class="bed-details">

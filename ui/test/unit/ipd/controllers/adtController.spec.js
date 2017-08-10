@@ -495,8 +495,8 @@ describe("AdtController", function () {
     });
 
     it("Should throw an error message, when source and destination beds are same while trying to transfer a patient", function () {
-        rootScope.selectedBedInfo = {bed: {bedNumber: "202-a"}};
-        rootScope.bedDetails = {bedNumber: "202-a"};
+        rootScope.selectedBedInfo = {bed: {bedId: 10}};
+        rootScope.bedDetails = {bedId: 10};
         createController();
 
         scope.transfer();
@@ -504,8 +504,8 @@ describe("AdtController", function () {
     });
 
     it("Should show confirmation dialog, when a bed is selected and trying to transfer a patient", function () {
-        rootScope.bedDetails = {bedNumber: "202-a"};
-        rootScope.selectedBedInfo = {bed: {bedNumber: "202-b"}};
+        rootScope.bedDetails = {bedId: 9};
+        rootScope.selectedBedInfo = {bed: {bedId: 10}};
         createController();
 
         scope.transfer();

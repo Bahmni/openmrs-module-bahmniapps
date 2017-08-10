@@ -14,7 +14,7 @@ angular.module('bahmni.ipd')
                     $scope.oldBedNumber = $rootScope.bedDetails.bedNumber;
                     _.some($scope.room.beds, function (row) {
                         var selectedBed = _.filter(row, function (bed) {
-                            return bed.bed.bedNumber == $rootScope.bedDetails.bedNumber;
+                            return bed.bed.bedId === $rootScope.bedDetails.bedId;
                         });
                         if (selectedBed.length) {
                             $scope.selectedBed = selectedBed[0].bed;
