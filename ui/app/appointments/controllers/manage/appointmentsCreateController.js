@@ -335,7 +335,7 @@ angular.module('bahmni.appointments')
                 appointmentsService.save(appointment).then(function () {
                     messagingService.showMessage('info', 'APPOINTMENT_SAVE_SUCCESS');
                     $scope.showConfirmationPopUp = false;
-                    $state.go('^');
+                    $state.go('^', {}, {reload: true});
                 });
             };
 

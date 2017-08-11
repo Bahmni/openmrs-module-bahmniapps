@@ -11,7 +11,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.goToPrevious = function () {
-                $scope.viewDate = dateUtil.subtractDays($scope.viewDate, 1);
+                $scope.viewDate = $scope.viewDate && dateUtil.subtractDays($scope.viewDate, 1);
             };
 
             $scope.goToCurrent = function () {
@@ -19,7 +19,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.goToNext = function () {
-                $scope.viewDate = dateUtil.addDays($scope.viewDate, 1);
+                $scope.viewDate = $scope.viewDate && dateUtil.addDays($scope.viewDate, 1);
             };
 
             $scope.$watch("viewDate", $scope.onChange($scope.viewDate));

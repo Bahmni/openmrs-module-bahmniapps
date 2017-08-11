@@ -1,7 +1,6 @@
 <div ng-init="isFilterOpen = true">
     <div class="appointment-filter" ng-init="isFilterOpen = true" ng-show="isFilterOpen">
-        <a ng-click="isFilterOpen = false"><i class="fa fa-angle-double-left" aria-hidden="true"></i>
-        </a>
+        <a ng-click="isFilterOpen = false"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
         <p>
             <label>Speciality</label>
             <input type="text"/>
@@ -38,14 +37,14 @@
         </p>
     </div>
     <div class="app-calendar-container" ng-class="{'app-filter-open': isFilterOpen}">
-        <day-calendar appointments="providerAppointments"></day-calendar>
+        <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
+        <day-calendar ng-if="shouldReload" date="startDate" appointments="providerAppointments"></day-calendar>
     </div>
     <div ui-view="content@appointment"></div>
     <div class="appointment-action-btn-container" ng-class="{'app-filter-open': isFilterOpen}">
-        <a href="#">Check-in</a>
-        <a href="#">Complete</a>
-        <a href="#">Missed</a>
-        <a href="#">Edit</a>
-        <a href="#">Cancel Appointment</a>
+        <button>{{::'CHECK_IN_APPOINTMENT' |translate}}</button>
+        <button>{{::'COMPLETE_APPOINTMENT' |translate}}</button>
+        <button>{{::'EDIT_APPOINTMENT' |translate}}</button>
+        <button>{{::'CANCEL_APPOINTMENT' |translate}}</button>
     </div>
 </div>

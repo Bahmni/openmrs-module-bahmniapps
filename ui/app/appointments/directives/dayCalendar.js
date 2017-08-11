@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .directive('dayCalendar', ['uiCalendarConfig', function (uiCalendarConfig) {
+    .directive('dayCalendar', [function () {
         return {
             restrict: 'E',
             controller: "AppointmentsDayCalendarController",
             scope: {
-                appointments: "="
+                appointments: "=",
+                date: "="
             },
             templateUrl: "../appointments/views/manage/calendar/dayCalendar.html"
         };
