@@ -43,7 +43,7 @@ describe("AppointmentServiceController", function () {
                 return true;
             } else if (key === 'colorsForAppointmentService') {
                 return colorsForAppointmentService;
-            } else if (key == 'enableCalendarView') {
+            } else if (key === 'enableCalendarView') {
                 return true;
             }
         });

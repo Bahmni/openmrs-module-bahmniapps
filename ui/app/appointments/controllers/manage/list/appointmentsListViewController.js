@@ -15,10 +15,9 @@ angular.module('bahmni.appointments')
                 var params = {
                     forDate: viewDate
                 };
-                var promise = appointmentsService.getAllAppointments(params).then(function (response) {
+                spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
                     $scope.appointments = response.data;
-                });
-                spinner.forPromise(promise);
+                }));
             };
 
             $scope.isSelected = function (appointment) {

@@ -26,7 +26,7 @@ angular.module('bahmni.appointments')
             };
 
             this.getAllAppointments = function (params) {
-                return $http.get(Bahmni.Appointments.Constants.createAppointmentUrl + "/all", {
+                return $http.get(Bahmni.Appointments.Constants.getAllAppointmentsUrl, {
                     params: params,
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
