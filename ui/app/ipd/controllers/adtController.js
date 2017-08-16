@@ -271,6 +271,24 @@ angular.module('bahmni.ipd')
                 }
             };
 
+            var reloadStateWithContextParams = function () {
+                var selectedBedInfo = $rootScope.selectedBedInfo;
+                var options = {
+                    patientUuid: $scope.patient.uuid,
+                    context: {
+                        roomName: selectedBedInfo.roomName,
+                        department: {
+                            uuid: selectedBedInfo.wardUuid,
+                            name: selectedBedInfo.wardName,
+                            roomName: selectedBedInfo.roomName
+                        }
+                    }
+                };
+                $state.transitionTo("bedManagement.patient", options, {
+                    reload: true, inherit: false, notify: true
+                });
+            };
+
             $scope.transferConfirmation = function () {
                 var encounterData = getEncounterData($scope.encounterConfig.getTransferEncounterTypeUuid(), getCurrentVisitTypeUuid());
                 bedService.getCompleteBedDetailsByBedId($rootScope.selectedBedInfo.bed.bedId).then(function (response) {
@@ -282,22 +300,8 @@ angular.module('bahmni.ipd')
                             forwardUrl(response.data, "onTransferForwardTo");
                         });
                     } else {
-                        updateOccupiedBedDetailsAndThrowAnError(bedDetails);
-                        var selectedBedInfo = $rootScope.selectedBedInfo;
-                        var options = {
-                            patientUuid: $scope.patient.uuid,
-                            context: {
-                                roomName: selectedBedInfo.roomName,
-                                department: {
-                                    uuid: selectedBedInfo.wardUuid,
-                                    name: selectedBedInfo.wardName,
-                                    roomName: selectedBedInfo.roomName
-                                }
-                            }
-                        };
-                        $state.transitionTo("bedManagement.patient", options, {
-                            reload: true, inherit: false, notify: true
-                        });
+                        showErrorMessage(bedDetails);
+                        reloadStateWithContextParams();
                     }
                 });
             };
@@ -332,12 +336,11 @@ angular.module('bahmni.ipd')
                 }));
             };
 
-            var updateOccupiedBedDetailsAndThrowAnError = function (bedDetails) {
-                $rootScope.selectedBedInfo.bed.status = "OCCUPIED";
+            var showErrorMessage = function (bedDetails) {
                 var patient = bedDetails.patients[0];
-                patient.identifiers[0].identifier = patient.display && patient.display.split(" - ")[0];
-                $rootScope.selectedBedInfo.bed.patient = patient;
-                messagingService.showMessage('error', "Please select an available bed. This bed is already assigned to " + patient.person.display);
+                var identifier = patient.display && patient.display.split(" - ")[0];
+                patient.identifiers[0].identifier = identifier;
+                messagingService.showMessage('error', "Please select an available bed. This bed is already assigned to " + identifier);
                 $scope.cancelConfirmationDialog();
             };
 
@@ -345,7 +348,8 @@ angular.module('bahmni.ipd')
                 bedService.getCompleteBedDetailsByBedId($rootScope.selectedBedInfo.bed.bedId).then(function (response) {
                     var bedDetails = response.data;
                     if (bedDetails.patients.length) {
-                        updateOccupiedBedDetailsAndThrowAnError(bedDetails);
+                        showErrorMessage(bedDetails);
+                        reloadStateWithContextParams();
                         return;
                     }
                     if (hideStartNewVisitPopUp && $scope.visitSummary && getVisitTypeUuid($scope.visitSummary.visitType) !== defaultVisitTypeUuid) {

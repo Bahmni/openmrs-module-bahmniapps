@@ -567,10 +567,8 @@ describe("AdtController", function () {
 
         scope.transferConfirmation();
 
-        expect(rootScope.selectedBedInfo.bed.patient).toBe(patient);
-        expect(rootScope.selectedBedInfo.bed.patient.identifiers[0].identifier).toBe("IQ201");
         expect(bedService.getCompleteBedDetailsByBedId).toHaveBeenCalledWith(rootScope.selectedBedInfo.bed.bedId);
-        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please select an available bed. This bed is already assigned to " + patient.person.display);
+        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please select an available bed. This bed is already assigned to " + patient.identifiers[0].identifier);
         expect(ngDialog.close).toHaveBeenCalled();
         expect(state.transitionTo).toHaveBeenCalledWith("bedManagement.patient", stateParams, {reload: true, inherit: false, notify: true});
     });
@@ -630,17 +628,25 @@ describe("AdtController", function () {
     it("should not admit the patient when the bed has patient", function () {
         var bed = { bedId: 4, "bedName": "402/1"};
         rootScope.selectedBedInfo = {bed : bed};
+        var roomName = "Room1";
+        var wardUuid = "wardUuid";
+        var wardName = "ward 1";
+        rootScope.selectedBedInfo = {bed : bed, roomName: roomName, wardUuid: wardUuid, wardName: wardName};
+        var stateParams = {
+            patientUuid: scope.patient.uuid,
+            context: { roomName: roomName, department: { uuid: wardUuid, name: wardName, roomName: roomName }}
+        };
         var patient = {id: 4, uuid: "someUuid", display: "IQ201 - someName", person: {display: "firstName lastName"}, identifiers: [{identifier: "IQ201"}]};
         bedService.getCompleteBedDetailsByBedId.and.returnValue(specUtil.simplePromise({data: {bed: bed, patients: [patient]}}));
+
         createController();
 
         scope.admitConfirmation();
 
-        expect(rootScope.selectedBedInfo.bed.patient).toBe(patient);
-        expect(rootScope.selectedBedInfo.bed.patient.identifiers[0].identifier).toBe("IQ201");
         expect(bedService.getCompleteBedDetailsByBedId).toHaveBeenCalledWith(rootScope.selectedBedInfo.bed.bedId);
-        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please select an available bed. This bed is already assigned to " + patient.person.display);
+        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please select an available bed. This bed is already assigned to " + patient.identifiers[0].identifier);
         expect(ngDialog.close).toHaveBeenCalled();
+        expect(state.transitionTo).toHaveBeenCalledWith("bedManagement.patient", stateParams, {reload: true, inherit: false, notify: true});
     });
 
     it("should admit the patient in the same visit when the bed available and visit type is default visit type", function () {
