@@ -195,11 +195,21 @@
   box-sizing: border-box;
   float: left;
   width: 100%;
-  a {
+  button {
     @extend .appBtn;
+    background: #fff;
+    border: none;
+    &:hover {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    }
   }
   &.app-filter-open {
     width: calc(100% - 301px);
+  }
+  &.disabled button{
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #E2E2E2;
   }
 }
 
@@ -333,6 +343,9 @@
   box-sizing: border-box;
   top: 126px;
   left: 0;
+  &.filter-opened {
+    padding-left: 300px;
+  }
   button, input {
     @extend .appBtn;
     background: #F8F8F8;
@@ -346,9 +359,15 @@
   input {
     font-size: 14px;
     padding: 6px;
+    width: 135px;
   }
   .app-view-prev {
     margin-left: 80px;
+  }
+  &.filter-opened {
+    .app-view-prev {
+      margin-left: 0;
+    }
   }
 }
 
@@ -396,11 +415,25 @@
         &:nth-child(even) {
           background: #F2F1F1;
         }
+        &.selected {
+          td {
+            color: inherit;
+            background: #298dd5;
+            border-color: #298dd5;
+          }
+        }
         td {
           text-align: center;
           padding: 10px;
           min-width: 110px;
           box-sizing: border-box;
+          cursor: pointer;
+          &:first-child {
+            border-left: none;
+          }
+          &:last-child {
+            border-right: none;
+          }
           input[type=checkbox] {
             float: left;
             margin-top: 2px;
