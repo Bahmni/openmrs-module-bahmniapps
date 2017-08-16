@@ -1,12 +1,16 @@
 'use strict';
 
 describe('AppointmentsDayCalendarController', function () {
-    var controller, scope, appService, appDescriptor;
+    var element,controller, scope, appService, appDescriptor, $compile, httpBackend;
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function ($controller, $rootScope) {
+        inject(function ($controller, $rootScope, _$compile_, _$httpBackend_) {
             controller = $controller;
+            $compile = _$compile_;
+            httpBackend = _$httpBackend_;
+            httpBackend.expectGET('../i18n/appointments/locale_en.json').respond({});
+            httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond({});
             scope = $rootScope.$new();
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
@@ -14,7 +18,16 @@ describe('AppointmentsDayCalendarController', function () {
         });
     });
 
+
+    var createElement = function () {
+        document.body.innerHTML += '<div class="app-calendar-container"></div>';
+        element = angular.element("<div class=\"app-calendar-container\">");
+        $compile(element)(scope);
+        scope.$digest();
+    };
+
     var createController = function () {
+        createElement();
         controller('AppointmentsDayCalendarController', {
             $scope: scope,
             appService: appService
