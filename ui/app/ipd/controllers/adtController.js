@@ -342,20 +342,19 @@ angular.module('bahmni.ipd')
             };
 
             $scope.admitConfirmation = function () {
-                if (hideStartNewVisitPopUp && $scope.visitSummary && getVisitTypeUuid($scope.visitSummary.visitType) != defaultVisitTypeUuid) {
-                    $scope.closeCurrentVisitAndStartNewVisit();
-                }
-                else {
-                    bedService.getCompleteBedDetailsByBedId($rootScope.selectedBedInfo.bed.bedId).then(function (response) {
-                        var bedDetails = response.data;
-                        if (!bedDetails.patients.length) {
-                            createEncounterAndContinue();
-                            $scope.cancelConfirmationDialog();
-                            return;
-                        }
+                bedService.getCompleteBedDetailsByBedId($rootScope.selectedBedInfo.bed.bedId).then(function (response) {
+                    var bedDetails = response.data;
+                    if (bedDetails.patients.length) {
                         updateOccupiedBedDetailsAndThrowAnError(bedDetails);
-                    });
-                }
+                        return;
+                    }
+                    if (hideStartNewVisitPopUp && $scope.visitSummary && getVisitTypeUuid($scope.visitSummary.visitType) !== defaultVisitTypeUuid) {
+                        $scope.closeCurrentVisitAndStartNewVisit();
+                    } else {
+                        createEncounterAndContinue();
+                        $scope.cancelConfirmationDialog();
+                    }
+                });
             };
         }
     ]);

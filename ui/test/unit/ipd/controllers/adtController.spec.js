@@ -26,8 +26,14 @@ describe("AdtController", function () {
         window = {location: { reload: jasmine.createSpy()} };
 
         appService.getAppDescriptor.and.returnValue({
-            getConfigValue: function () {
-                return "IPD";
+            getConfigValue: function (key) {
+                if (key === 'hideStartNewVisitPopUp') {
+                    return true;
+                } else if (key === 'defaultVisitType') {
+                    return "IPD";
+                } else  {
+                    return {};
+                }
             }, getExtensions: function (a, b) {
                 return {
                     maxPatientsPerBed: 2
@@ -44,7 +50,7 @@ describe("AdtController", function () {
         rootScope.selectedBedInfo = {};
         rootScope.encounterConfig = {
             getVisitTypes: function () {
-                return [{name : "Current Visit", uuid : "visitUuid"}, {name : "IPD", uuid : "visitUuid"}];
+                return [{name : "Current Visit", uuid : "visitUuid2"}, {name : "IPD", uuid : "visitUuid"}];
             }, getAdmissionEncounterTypeUuid: function () {
                 return "admitEncounterTypeUuid";
 
@@ -637,13 +643,13 @@ describe("AdtController", function () {
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
-    it("should admit the patient when the bed does not have patient", function () {
+    it("should admit the patient in the same visit when the bed available and visit type is default visit type", function () {
         var bed = { bedId: 4, bedNumber: "402/1"};
         rootScope.selectedBedInfo = {bed : bed};
         bedService.getCompleteBedDetailsByBedId.and.returnValue(specUtil.simplePromise({data: {bed: bed, patients: []}}));
         bedService.assignBed.and.returnValue(specUtil.simplePromise({data: {}}));
 
-        scope.visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid"};
+        scope.visitSummary = {"visitType": "IPD", "uuid": "visitUuid"};
         scope.patient = {uuid: "123"};
         scope.adtObservations = [];
 
@@ -675,6 +681,51 @@ describe("AdtController", function () {
         expect(bedService.assignBed).toHaveBeenCalledWith(rootScope.selectedBedInfo.bed.bedId, "patientUuid", "encounterUuid");
         expect(scope.$emit).toHaveBeenCalledWith("event:patientAssignedToBed", rootScope.selectedBedInfo.bed);
         expect(messagingService.showMessage).toHaveBeenCalledWith('info', "Bed " + rootScope.selectedBedInfo.bed.bedNumber + " is assigned successfully");
+        expect(ngDialog.close).toHaveBeenCalled();
+    });
+
+    it("should admit the patient and close the current visit and open a new Hospital visit when the bed available and the current visit not of Hospital visit ", function () {
+        var bed = { bedId: 4, bedNumber: "402/1"};
+        rootScope.selectedBedInfo = {bed : bed};
+        bedService.getCompleteBedDetailsByBedId.and.returnValue(specUtil.simplePromise({data: {bed: bed, patients: []}}));
+        bedService.assignBed.and.returnValue(specUtil.simplePromise({data: {}}));
+
+        scope.patient = {uuid: "123"};
+        scope.adtObservations = [];
+
+        var visitSummary = {"visitType": "Current Visit", "uuid": "visitUuid2", "stopDateTime": null};
+        scope.visitSummary = {uuid: "visitUuid"};
+
+        var stubPromise = function (data) {
+            return {
+                then: function (successFn) {
+                    successFn({data: data});
+                }
+            };
+        };
+
+        visitService.getVisitSummary.and.returnValue(specUtil.createFakePromise(visitSummary));
+        visitService.endVisitAndCreateEncounter.and.returnValue(specUtil.simplePromise({data: {patientUuid: "patientUuid", encounterUuid: "encounterUuid"}}));
+        encounterService.buildEncounter.and.returnValue({encounterUuid: 'uuid'});
+
+        createController();
+
+        scope.admitConfirmation();
+
+        expect(encounterService.buildEncounter).toHaveBeenCalledWith({
+            patientUuid: '123',
+            encounterTypeUuid: 'admitEncounterTypeUuid',
+            visitTypeUuid: 'visitUuid',
+            observations: [],
+            locationUuid: 'someLocationUuid'
+        });
+        expect(bedService.getCompleteBedDetailsByBedId).toHaveBeenCalledWith(rootScope.selectedBedInfo.bed.bedId);
+        expect(bedService.assignBed).toHaveBeenCalledWith(rootScope.selectedBedInfo.bed.bedId, "patientUuid", "encounterUuid");
+        expect(scope.$emit).toHaveBeenCalledWith("event:patientAssignedToBed", rootScope.selectedBedInfo.bed);
+        expect(messagingService.showMessage).toHaveBeenCalledWith('info', "Bed " + rootScope.selectedBedInfo.bed.bedNumber + " is assigned successfully");
+        expect(scope.visitSummary.visitType).toBe(visitSummary.visitType);
+        expect(scope.visitSummary.uuid).toBe(visitSummary.uuid);
+        expect(visitService.endVisitAndCreateEncounter).toHaveBeenCalledWith("visitUuid", {encounterUuid: 'uuid'});
         expect(ngDialog.close).toHaveBeenCalled();
     });
 });
