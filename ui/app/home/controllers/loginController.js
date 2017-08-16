@@ -35,13 +35,12 @@ angular.module('bahmni.home')
             var promise = localeService.allowedLocalesList();
             localeService.serverDateTime().then(function (response) {
                 var serverTime = response.data.date;
-                var list = serverTime.split(" ");
-                var serverTimeZone = list[list.length - 1];
+                var offset = response.data.offset;
                 var localTime = new Date().toLocaleString();
                 var localtimeZone = getLocalTimeZone();
                 var localeTimeZone = localTime + " " + localtimeZone;
                 $scope.timeZoneObject = { serverTime: serverTime, localeTimeZone: localeTimeZone};
-                if (localtimeZone !== serverTimeZone) {
+                if (offset && !new Date().toString().includes(offset)) {
                     $scope.warning = "Warning";
                     $scope.warningMessage = "WARNING_SERVER_TIME_ZONE_MISMATCH";
                 }
