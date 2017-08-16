@@ -46,7 +46,7 @@ angular.module('bahmni.appointments')
 
                 $scope.uiConfig = {
                     calendar: {
-                        height: 700,
+                        height: document.getElementsByClassName('app-calendar-container')[0].clientHeight,
                         editable: true,
                         defaultDate: $scope.date,
                         header: false,
