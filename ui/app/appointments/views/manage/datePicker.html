@@ -1,4 +1,4 @@
-<p class="app-date-nav">
+<p class="app-date-nav" ng-init="isFilterOpen = true" ng-class="{'filter-opened': isFilterOpen}">
     <button class="app-today-btn" ng-click="goToCurrent()">{{::'CURRENT_DATE' |translate}}</button>
     <button class="app-view-prev" ng-click="goToPrevious()"><i class="fa fa-angle-left"></i></button>
     <input type="date" ng-model="viewDate"/>

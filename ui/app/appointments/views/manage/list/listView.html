@@ -80,7 +80,7 @@
         </table>
     </div>
     <div ui-view="content@appointment"></div>
-    <fieldset class="appointment-action-btn-container" ng-disabled="!selectedAppointment" ng-class="{'app-filter-open': isFilterOpen}">
+    <fieldset class="appointment-action-btn-container" ng-disabled="!selectedAppointment" ng-class="{'app-filter-open': isFilterOpen, 'disabled': !selectedAppointment}">
         <button>{{::'CHECK_IN_APPOINTMENT' |translate}}</button>
         <button>{{::'COMPLETE_APPOINTMENT' |translate}}</button>
         <button>{{::'EDIT_APPOINTMENT' |translate}}</button>
