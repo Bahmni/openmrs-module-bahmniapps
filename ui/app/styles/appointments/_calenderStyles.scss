@@ -11,6 +11,7 @@
     border: none;
     tr {
       border: none;
+      background: transparent;
       td {
         border: none;
       }
@@ -40,6 +41,7 @@
   }
   .fc-slats tr {
     border: none;
+    background: transparent;
     td:first-child {
       border-top: none;
     }
@@ -49,5 +51,8 @@
   }
   .fc-body > tr > .fc-widget-content {
     border-top: none;
+  }
+  .fc-unthemed .fc-today {
+    background: transparent;
   }
 }
