@@ -1,11 +1,11 @@
 'use strict'
 
 describe ('appointmentsSummaryController', function () {
-    var controller, scope, appointmentsService, spinner, appService, appDescriptor;
+    var controller, scope, appointmentsService, spinner, appService, appDescriptor, state, window;
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function ($controller, $rootScope, _spinner_) {
+        inject(function ($controller, $rootScope) {
             controller = $controller;
             scope = $rootScope.$new();
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -14,6 +14,8 @@ describe ('appointmentsSummaryController', function () {
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             appDescriptor.getConfigValue.and.returnValue({'week': 'week'});
             spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
+            state = jasmine.createSpyObj('state', ['href']);
+            window = jasmine.createSpyObj('window', ['open']);
             appointmentsService.getAppointmentsSummary.and.returnValue(specUtil.simplePromise({}));
             spinner.forPromise.and.callFake(function () {
                 return {
@@ -31,7 +33,9 @@ describe ('appointmentsSummaryController', function () {
            $scope: scope,
            appService: appService,
            appointmentsService: appointmentsService,
-           spinner: spinner
+           spinner: spinner,
+           $state: state,
+           $window: window
        });
     };
 
@@ -44,8 +48,6 @@ describe ('appointmentsSummaryController', function () {
 
     it('should construct dates array for current week on initialization', function () {
         createController();
-
-        var viewDate = moment().startOf('week');
         expect(scope.weekDatesInfo[0].date).toEqual(moment().startOf('week').format('YYYY-MM-DD'));
         expect(scope.weekDatesInfo[1].date).toEqual(moment(Bahmni.Common.Util.DateUtil.addDays(scope.weekDatesInfo[0].date, 1)).format('YYYY-MM-DD'));
         expect(scope.weekDatesInfo[2].date).toEqual(moment(Bahmni.Common.Util.DateUtil.addDays(scope.weekDatesInfo[0].date, 2)).format('YYYY-MM-DD'));
@@ -62,4 +64,18 @@ describe ('appointmentsSummaryController', function () {
         expect(spinner.forPromise).toHaveBeenCalled();
     });
 
+    it('should go to list view on clicking of appointment count', function () {
+        createController();
+        var date = moment("2017-02-01").toDate();
+        scope.goToListView(date);
+        expect(state.href).toHaveBeenCalledWith('home.manage.appointments.list', { viewDate : date, view : 'list' });
+    });
+
+    it('should open list view in new tab on clicking of appointment count', function () {
+        state.href.and.returnValue('url');
+        createController();
+        var date = moment("2017-02-01").toDate();
+        scope.goToListView(date);
+        expect(window.open).toHaveBeenCalledWith('url', '_blank');
+    });
 });
