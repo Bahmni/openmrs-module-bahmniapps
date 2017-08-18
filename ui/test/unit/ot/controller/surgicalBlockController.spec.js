@@ -1,7 +1,7 @@
 'use strict';
 
 describe("surgicalBlockController", function () {
-    var scope, controller, surgicalAppointmentHelper, stateParams = {};
+    var scope, controller, surgicalAppointmentHelper, surgicalBlockHelper, stateParams = {};
     var openmrsSurgicalAppointmentAttributes = [
         {
             "id": 104,
@@ -264,10 +264,11 @@ describe("surgicalBlockController", function () {
 
     beforeEach(function () {
         module('bahmni.ot');
-        inject(function ($controller, $rootScope, _surgicalAppointmentHelper_) {
+        inject(function ($controller, $rootScope, _surgicalAppointmentHelper_, _surgicalBlockHelper_) {
             controller = $controller;
             scope = $rootScope.$new();
             surgicalAppointmentHelper = _surgicalAppointmentHelper_;
+            surgicalBlockHelper = _surgicalBlockHelper_;
         });
     });
 

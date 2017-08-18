@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('surgicalBlockController', ['$scope', '$q', '$state', '$stateParams', 'spinner', 'surgicalAppointmentService', 'locationService', 'appService', 'messagingService', 'surgicalAppointmentHelper', 'ngDialog',
-        function ($scope, $q, $state, $stateParams, spinner, surgicalAppointmentService, locationService, appService, messagingService, surgicalAppointmentHelper, ngDialog) {
+    .controller('surgicalBlockController', ['$scope', '$q', '$state', '$stateParams', 'spinner', 'surgicalAppointmentService', 'locationService', 'appService', 'messagingService', 'surgicalAppointmentHelper', 'surgicalBlockHelper', 'ngDialog',
+        function ($scope, $q, $state, $stateParams, spinner, surgicalAppointmentService, locationService, appService, messagingService, surgicalAppointmentHelper, surgicalBlockHelper, ngDialog) {
             var init = function () {
                 $scope.surgicalForm = {
                     surgicalAppointments: []
@@ -36,11 +36,7 @@ angular.module('bahmni.ot')
             };
 
             var getAvailableBlockDuration = function () {
-                var blockDuration = Bahmni.Common.Util.DateUtil.diffInMinutes($scope.surgicalForm.startDatetime, $scope.surgicalForm.endDatetime);
-                var appointmentsDuration = _.sumBy(_.reject($scope.surgicalForm.surgicalAppointments, ['sortWeight', null]), function (appointment) {
-                    return getAppointmentDuration(appointment);
-                });
-                return blockDuration - appointmentsDuration;
+                return surgicalBlockHelper.getAvailableBlockDuration($scope.surgicalForm);
             };
 
             $scope.getPatientName = function (surgicalAppointment) {
