@@ -25,6 +25,14 @@ describe('AppointmentsServiceService', function () {
         expect(mockHttp.post).toHaveBeenCalled();
     });
 
+    it('should get service load', function () {
+        var serviceUuid = "serviceUuid";
+        var headers = {Accept: 'application/json', 'Content-Type': 'application/json'};
+        var params = {params: {uuid: serviceUuid, startDateTime: "startTime", endDateTime: "endTime"}, withCredentials: true, headers: headers};
+        appointmentsServiceService.getServiceLoad(serviceUuid, "startTime", "endTime");
+        expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Appointments.Constants.getServiceLoad, params);
+    });
+
     it('should delete the appointment service', function () {
         var serviceUuid = "serviceUuid";
         appointmentsServiceService.deleteAppointmentService(serviceUuid);

@@ -21,6 +21,9 @@ angular.module('bahmni.appointments')
                 };
 
                 wireAutocompleteEvents();
+                $scope.$on("event:triggerLoadCalculation", function () {
+                    getSlotsInfo();
+                });
 
                 promises.push(getAppointmentLocations(), getAllServices(), getAllProviders());
                 if ($scope.enableSpecialities) {
@@ -31,10 +34,9 @@ angular.module('bahmni.appointments')
 
             $scope.save = function () {
                 if ($scope.createAppointmentForm.$invalid) {
-                    var message = $scope.createAppointmentForm.$error.pattern ?
-                        'INVALID_TIME_ERROR_MESSAGE' : 'INVALID_SERVICE_FORM_ERROR_MESSAGE';
-                }
-                else if (!moment($scope.appointment.startTime, 'hh:mm a')
+                    var message = $scope.createAppointmentForm.$error.pattern
+                        ? 'INVALID_TIME_ERROR_MESSAGE' : 'INVALID_SERVICE_FORM_ERROR_MESSAGE';
+                } else if (!moment($scope.appointment.startTime, 'hh:mm a')
                         .isBefore(moment($scope.appointment.endTime, 'hh:mm a'), 'minutes')) {
                     var message = 'TIME_SEQUENCE_ERROR_MESSAGE';
                 }
@@ -78,9 +80,59 @@ angular.module('bahmni.appointments')
                     moment($scope.allowedEndTime, 'hh:mm a').isBefore(moment(appointmentTime, 'hh:mm a'));
             };
 
+            var clearSlotsInfo = function () {
+                delete $scope.currentLoad;
+                delete $scope.maxAppointmentsLimit;
+            };
+
+            var getSlotsInfo = function () {
+                var daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+                var selectedService = $scope.selectedService;
+                var appointment = $scope.appointment;
+                var startDateTime, endDateTime;
+                var availabilityObject;
+                clearSlotsInfo();
+                if (!_.isEmpty(selectedService.weeklyAvailability)) {
+                    var availability = _.find(selectedService.weeklyAvailability, function (avb) {
+                        return daysOfWeek[appointment.date.getDay()] === avb.dayOfWeek &&
+                            moment(avb.startTime, 'hh:mm a') <= moment(appointment.startTime, 'hh:mm a') &&
+                            moment(appointment.endTime, 'hh:mm a') <= moment(avb.endTime, 'hh:mm a');
+                    });
+                    if (availability) {
+                        availabilityObject = availability;
+                        availabilityObject.durationMins = selectedService.durationMins;
+                    }
+                } else {
+                    availabilityObject = selectedService;
+                }
+                if (availabilityObject) {
+                    $scope.maxAppointmentsLimit = availabilityObject.maxAppointmentsLimit || calculateMaxLoadFromDuration(availabilityObject);
+                    startDateTime = getDateTime(appointment.date, availabilityObject.startTime || "00:00");
+                    endDateTime = getDateTime(appointment.date, availabilityObject.endTime || "23:59");
+                    appointmentsServiceService.getServiceLoad(selectedService.uuid, startDateTime, endDateTime).then(function (response) {
+                        $scope.currentLoad = response.data;
+                    });
+                }
+            };
+
+            var dateUtil = Bahmni.Common.Util.DateUtil;
+            var calculateMaxLoadFromDuration = function (avb) {
+                if (avb.durationMins && avb.startTime && avb.endTime) {
+                    var startTime = moment(avb.startTime, ["hh:mm a"]);
+                    var endTime = moment(avb.endTime, ["hh:mm a"]);
+                    return Math.round((dateUtil.diffInMinutes(startTime, endTime)) / avb.durationMins);
+                }
+            };
+
+            var getDateTime = function (date, time) {
+                var formattedTime = moment(time, ["hh:mm a"]).format("HH:mm");
+                return dateUtil.parseServerDateToDate(dateUtil.getDateWithoutTime(date) + ' ' + formattedTime);
+            };
+
             $scope.onSelectStartTime = function (data) {
                 if (data) {
                     $scope.appointment.startTime = data.value;
+                    triggerSlotCalculation();
                 }
                 $scope.warning.startTime = isAppointmentTimeOutsideServiceAvailability($scope.appointment.startTime);
                 if (moment($scope.appointment.startTime, 'hh:mm a').isValid()) {
@@ -89,9 +141,16 @@ angular.module('bahmni.appointments')
                 }
             };
 
+            var triggerSlotCalculation = function () {
+                if ($scope.appointment && $scope.appointment.date && $scope.appointment.startTime && $scope.appointment.endTime) {
+                    $scope.$broadcast('event:triggerLoadCalculation');
+                }
+            };
+
             $scope.onSelectEndTime = function (data) {
                 if (data) {
                     $scope.appointment.endTime = data.value;
+                    if (_.isEmpty($scope.selectedService.serviceTypes)) { triggerSlotCalculation(); }
                 }
                 $scope.warning.endTime = isAppointmentTimeOutsideServiceAvailability($scope.appointment.endTime);
             };
@@ -112,6 +171,7 @@ angular.module('bahmni.appointments')
                 $scope.warning.appointmentDate = false;
                 $scope.warning.startTime = false;
                 $scope.warning.endTime = false;
+                clearSlotsInfo();
             };
 
             $scope.onSpecialityChange = function () {
@@ -156,8 +216,7 @@ angular.module('bahmni.appointments')
                     if (weeklyAvailability) {
                         $scope.allowedStartTime = weeklyAvailability.startTime;
                         $scope.allowedEndTime = weeklyAvailability.endTime;
-                    }
-                    else {
+                    } else {
                         $scope.allowedStartTime = undefined;
                         $scope.allowedEndTime = undefined;
                     }
@@ -166,6 +225,7 @@ angular.module('bahmni.appointments')
 
             $scope.OnDateChange = function () {
                 $scope.warning.appointmentDate = false;
+                triggerSlotCalculation();
                 if ($scope.appointment.date) {
                     setServiceAvailableTimesForADate($scope.appointment.date);
                     var dayOfWeek = moment($scope.appointment.date).format('dddd').toUpperCase();
@@ -173,8 +233,7 @@ angular.module('bahmni.appointments')
                         var allSlots = getAllSlots('', '', $scope.minDuration);
                         $scope.startTimes = getAvailableSlots(dayOfWeek, $scope.selectedService.weeklyAvailability, allSlots);
                         $scope.warning.appointmentDate = !getWeeklyAvailabilityOnADate($scope.appointment.date, $scope.selectedService.weeklyAvailability);
-                    }
-                    else {
+                    } else {
                         $scope.startTimes = getAllSlots($scope.selectedService.startTime, $scope.selectedService.endTime, $scope.minDuration);
                     }
                     $scope.warning.endTime = isAppointmentTimeOutsideServiceAvailability($scope.appointment.endTime);
@@ -188,10 +247,10 @@ angular.module('bahmni.appointments')
                         $scope.serviceTypes = response.data.serviceTypes;
                         $scope.appointment.locationUuid = response.data.location.uuid;
                         $scope.selectedService = response.data;
-                        var duration = $scope.serviceTypes.length > 0 ?
-                            _.head(_.sortBy($scope.serviceTypes, _.property('duration'))).duration :
-                            response.data.durationMins;
-                        $scope.minDuration = duration ? duration : 30;
+                        var duration = $scope.serviceTypes.length > 0
+                            ? _.head(_.sortBy($scope.serviceTypes, _.property('duration'))).duration
+                            : response.data.durationMins;
+                        $scope.minDuration = duration || 30;
                     });
             };
 
