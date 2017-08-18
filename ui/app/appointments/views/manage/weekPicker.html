@@ -1,0 +1,6 @@
+<p class="app-date-nav">
+    <input type="date" ng-model="viewDate"/>
+    <button class="app-view-prev" ng-click="goToPreviousWeek()"><i class="fa fa-angle-left"></i></button>
+        <label>{{weekStartDate | date:'d MMM'}} - {{weekEndDate | date:'d MMM'}}</label>
+    <button type="button" ng-click="goToNextWeek()"><i class="fa fa-angle-right"></i></button>
+</p>
