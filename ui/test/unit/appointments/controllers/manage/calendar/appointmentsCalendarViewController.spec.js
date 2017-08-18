@@ -104,9 +104,10 @@ describe('AppointmentsCalendarViewController', function () {
         scope.getAppointmentsForDate(viewDate);
 
         var resources = scope.providerAppointments.resources;
+        var sortedAppointments = _.sortBy(allAppointments, 'provider.name');
         expect(resources.length).toBe(3);
-        expect(resources[0]).toEqual({id: allAppointments[0].provider.name, title: allAppointments[0].provider.name});
-        expect(resources[1]).toEqual({id: allAppointments[1].provider.name, title: allAppointments[1].provider.name});
+        expect(resources[0]).toEqual({id: sortedAppointments[0].provider.name, title: sortedAppointments[0].provider.name});
+        expect(resources[1]).toEqual({id: sortedAppointments[1].provider.name, title: sortedAppointments[1].provider.name});
         expect(resources[2]).toEqual({id: '[No Provider]', title: 'No provider appointments'});
 
         var events = scope.providerAppointments.events;
@@ -183,7 +184,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(events[0].end).toBe(allAppointments[0].endDateTime);
         expect(events[0].color).toBe(allAppointments[0].service.color);
         expect(events[0].serviceName).toBe(allAppointments[0].service.name);
-        var mergedPatientNames = allAppointments[0].patient.name + "(" + allAppointments[0].patient.identifier + ")" + ',' +
+        var mergedPatientNames = allAppointments[0].patient.name + "(" + allAppointments[0].patient.identifier + ")" + ', ' +
             allAppointments[1].patient.name + "(" + allAppointments[1].patient.identifier + ")";
         expect(events[0].title).toBe(mergedPatientNames);
     });

@@ -22,6 +22,7 @@ angular.module('bahmni.appointments')
                         }
                         return result;
                     }, resources);
+                    resources = _.sortBy(resources, 'id');
                     resources.push({id: '[No Provider]', title: $translate.instant("NO_PROVIDER_COLUMN_KEY")});
 
                     var events = [];
@@ -35,7 +36,7 @@ angular.module('bahmni.appointments')
                         var existingEvent = _.find(result, event);
                         var patientName = appointment.patient.name + "(" + appointment.patient.identifier + ")";
                         if (existingEvent) {
-                            existingEvent.title = [existingEvent.title, patientName].join(',');
+                            existingEvent.title = [existingEvent.title, patientName].join(', ');
                         } else {
                             event.title = patientName;
                             result.push(event);

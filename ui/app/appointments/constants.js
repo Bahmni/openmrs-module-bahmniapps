@@ -7,6 +7,7 @@ Bahmni.Appointments.Constants = (function () {
     var hostURL = Bahmni.Common.Constants.hostURL + Bahmni.Common.Constants.RESTWS_V1;
     return {
         createServiceUrl: hostURL + '/appointmentService',
+        getServiceLoad: hostURL + '/appointmentService/load',
         getAllSpecialitiesUrl: hostURL + '/speciality/all',
         createAppointmentUrl: hostURL + '/appointment',
         getAllAppointmentsUrl: hostURL + '/appointment/all',
