@@ -14,7 +14,7 @@
             {{appointment.appointmentService.name}}
         </td>
         <td ng-repeat="dateInfo in weekDatesInfo">
-            {{appointment.appointmentCountMap[dateInfo.date].allAppointmentsCount}}
+            <a ng-click="goToListView(dateInfo.date)" target="_blank">{{appointment.appointmentCountMap[dateInfo.date].allAppointmentsCount}}</a>
             <span ng-if="appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount">
                 ({{appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount}} missed)</span>
         </td>
@@ -22,7 +22,7 @@
     <tr>
         <td>Total</td>
         <td ng-repeat="dateInfo in weekDatesInfo">
-            <span ng-if="dateInfo.total.all">{{dateInfo.total.all}} </span>
+            <a ng-if="dateInfo.total.all" ng-click="goToListView(dateInfo.date)" target="_blank">{{dateInfo.total.all}} </a>
             <span ng-if="dateInfo.total.missed">({{dateInfo.total.missed}} missed) </span>
         </td>
     </tr>

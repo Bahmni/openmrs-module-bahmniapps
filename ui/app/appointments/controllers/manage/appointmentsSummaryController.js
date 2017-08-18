@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsSummaryController', ['$scope', 'spinner', 'appointmentsService', 'appService',
-        function ($scope, spinner, appointmentsService, appService) {
+    .controller('AppointmentsSummaryController', ['$scope', '$state', '$window', 'spinner', 'appointmentsService', 'appService',
+        function ($scope, $state, $window, spinner, appointmentsService, appService) {
             var init = function () {
                 $scope.viewDate = moment().startOf('day').toDate();
                 $scope.weekStartDate = moment().startOf('week').toDate();
@@ -22,6 +22,15 @@ angular.module('bahmni.appointments')
                     $scope.appointments = response.data;
                     setWeekDatesInfo();
                 }));
+            };
+
+            $scope.goToListView = function (date) {
+                var options = {
+                    viewDate: moment(date).toDate(),
+                    view: 'list'
+                };
+                var url = $state.href('home.manage.appointments.list', options);
+                $window.open(url, '_blank');
             };
 
             var setWeekDatesInfo = function () {
