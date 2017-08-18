@@ -49,7 +49,8 @@ angular
                 url: '/summary',
                 views: {
                     'content@manage': {
-                        templateUrl: 'views/manage/appointmentsSummary.html'
+                        templateUrl: 'views/manage/appointmentsSummary.html',
+                        controller: 'AppointmentsSummaryController'
                     }
                 }
             }).state('home.manage.appointments', {

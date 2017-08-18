@@ -1,1 +1,30 @@
-<div>this is summary</div>
+<div>
+    <div>
+        <week-picker view-date="viewDate" on-change="getAppointmentsSummaryForAWeek" week-start="weekStart"></week-picker>
+    </div>
+<table style="top:50px; position:relative;">
+    <tr>
+        <th></th>
+        <th ng-repeat="dateInfo in weekDatesInfo">
+            {{dateInfo.date | date:'d MMM, EEE'}}
+        </th>
+    </tr>
+    <tr ng-repeat="appointment in appointments">
+        <td>
+            {{appointment.appointmentService.name}}
+        </td>
+        <td ng-repeat="dateInfo in weekDatesInfo">
+            {{appointment.appointmentCountMap[dateInfo.date].allAppointmentsCount}}
+            <span ng-if="appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount">
+                ({{appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount}} missed)</span>
+        </td>
+    </tr>
+    <tr>
+        <td>Total</td>
+        <td ng-repeat="dateInfo in weekDatesInfo">
+            <span ng-if="dateInfo.total.all">{{dateInfo.total.all}} </span>
+            <span ng-if="dateInfo.total.missed">({{dateInfo.total.missed}} missed) </span>
+        </td>
+    </tr>
+</table>
+</div>
