@@ -1,0 +1,9 @@
+<form>
+    <input type="date" ng-model="dateForMovingSurgery" ng-change="changeInSurgeryDate()"/>
+    </br>
+    <select ng-options="surgeonDetails for surgeonDetails in availableSurgicalBlocksForGivenDate" required ng-model="destinationBlock">
+        <option value=""> Select Surgeon </option>
+    </select>
+    <button type="submit"> Move</button>
+    <button ng-mousedown="cancel()">Cancel</button>
+</form>

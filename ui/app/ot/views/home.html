@@ -113,5 +113,6 @@
 <div class="surgical-action-wrapper">
     <button  show-if-privilege="app:ot:write" ng-disabled="addActualTimeDisabled" ng-mousedown="addActualTime()">Add Actual Time</button>
     <button  show-if-privilege="app:ot:write" ng-disabled="editDisabled" ng-mousedown="goToEdit($event)">Edit</button>
+    <button  show-if-privilege="app:ot:write" ng-disabled="moveButtonDisabled" ng-mousedown="gotoMove()">Move</button>
     <button  show-if-privilege="app:ot:write" ng-disabled="cancelDisabled" ng-mousedown="cancelSurgicalBlockOrSurgicalAppointment()">Cancel</button>
 </div>

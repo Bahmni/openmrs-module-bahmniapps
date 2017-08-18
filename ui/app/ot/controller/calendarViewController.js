@@ -32,6 +32,7 @@ angular.module('bahmni.ot')
                 $scope.surgicalBlockSelected = {};
                 $scope.surgicalAppointmentSelected = {};
                 $scope.editDisabled = true;
+                $scope.moveButtonDisabled = true;
                 $scope.cancelDisabled = true;
                 $scope.addActualTimeDisabled = true;
                 $scope.surgeonList = _.map($rootScope.surgeons, function (surgeon) {
@@ -170,6 +171,7 @@ angular.module('bahmni.ot')
 
             $scope.$on("event:surgicalAppointmentSelect", function (event, surgicalAppointment, surgicalBlock) {
                 $scope.cancelDisabled = !(surgicalAppointment.status === Bahmni.OT.Constants.scheduled);
+                $scope.moveButtonDisabled = !(surgicalAppointment.status === Bahmni.OT.Constants.scheduled);
                 $scope.editDisabled = !((surgicalAppointment.status === Bahmni.OT.Constants.scheduled) || (surgicalAppointment.status === Bahmni.OT.Constants.completed));
                 $scope.addActualTimeDisabled = !((surgicalAppointment.status === Bahmni.OT.Constants.scheduled) || (surgicalAppointment.status === Bahmni.OT.Constants.completed));
                 $scope.surgicalAppointmentSelected = surgicalAppointment;
@@ -178,6 +180,7 @@ angular.module('bahmni.ot')
 
             $scope.$on("event:surgicalBlockSelect", function (event, surgicalBlock) {
                 $scope.editDisabled = false;
+                $scope.moveButtonDisabled = true;
                 $scope.addActualTimeDisabled = true;
                 $scope.surgicalBlockSelected = surgicalBlock;
                 $scope.surgicalAppointmentSelected = {};
@@ -196,6 +199,7 @@ angular.module('bahmni.ot')
             $scope.$on("event:surgicalBlockDeselect", function (event) {
                 $scope.editDisabled = true;
                 $scope.cancelDisabled = true;
+                $scope.moveButtonDisabled = true;
                 $scope.addActualTimeDisabled = true;
                 $scope.surgicalBlockSelected = {};
                 $scope.surgicalAppointmentSelected = {};
@@ -213,6 +217,20 @@ angular.module('bahmni.ot')
                     $state.go("editSurgicalAppointment", options);
                     $event.stopPropagation();
                 }
+            };
+
+            $scope.gotoMove = function () {
+                ngDialog.open({
+                    template: "views/moveAppointment.html",
+                    closeByDocument: false,
+                    controller: "moveSurgicalAppointmentController",
+                    className: "ngdialog-theme-default ng-dialog-adt-popUp",
+                    showClose: true,
+                    data: {
+                        surgicalBlock: $scope.surgicalBlockSelected,
+                        surgicalAppointment: $scope.surgicalAppointmentSelected
+                    }
+                });
             };
 
             $scope.addActualTime = function () {

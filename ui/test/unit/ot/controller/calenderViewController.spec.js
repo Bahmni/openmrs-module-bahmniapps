@@ -403,4 +403,67 @@ describe("calendarViewController", function () {
             {name: Bahmni.OT.Constants.postponed}, {name: Bahmni.OT.Constants.cancelled}]);
         expect(scope.filters.statusList).toEqual([{name: Bahmni.OT.Constants.scheduled},{name: Bahmni.OT.Constants.completed}, {name: Bahmni.OT.Constants.cancelled}]);
     });
+
+    it("move button should be disabled by default", function () {
+        createController();
+        expect(scope.editDisabled).toBeTruthy();
+        expect(scope.moveButtonDisabled).toBeTruthy();
+        expect(scope.cancelDisabled).toBeTruthy();
+        expect(scope.addActualTimeDisabled).toBeTruthy();
+    });
+
+    it('should navigate to the move appointment dialog box when a move Appointment is clicked', function () {
+        createController();
+        scope.surgicalBlockSelected = surgicalBlocks[0];
+        scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
+        scope.gotoMove();
+
+        expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
+            template: "views/moveAppointment.html",
+            closeByDocument: false,
+            controller: "moveSurgicalAppointmentController",
+            className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+            showClose: true,
+            data: {
+                surgicalBlock: scope.surgicalBlockSelected,
+                surgicalAppointment: scope.surgicalAppointmentSelected
+            }
+        }));
+    });
+
+    it("should disable move button when user selects surgical block", function () {
+       createController();
+       scope.$emit("event:surgicalBlockSelect", {surgicalAppointments: []});
+       expect(scope.moveButtonDisabled).toBeTruthy();
+       expect(scope.editDisabled).toBeFalsy();
+       expect(scope.addActualTimeDisabled).toBeTruthy();
+       expect(scope.cancelDisabled).toBeFalsy();
+    });
+
+    it("should disable move button when user deselects surgical block", function () {
+       createController();
+       scope.$emit("event:surgicalBlockDeselect", {surgicalAppointments: []});
+       expect(scope.moveButtonDisabled).toBeTruthy();
+       expect(scope.editDisabled).toBeTruthy();
+       expect(scope.addActualTimeDisabled).toBeTruthy();
+       expect(scope.cancelDisabled).toBeTruthy();
+    });
+
+    it("should disable move button when user selects surgical appointment but status is not Scheduled", function () {
+       createController();
+       scope.$emit("event:surgicalAppointmentSelect", {status: Bahmni.OT.Constants.completed}, {surgicalAppointments: []});
+       expect(scope.moveButtonDisabled).toBeTruthy();
+       expect(scope.editDisabled).toBeFalsy();
+       expect(scope.addActualTimeDisabled).toBeFalsy();
+       expect(scope.cancelDisabled).toBeTruthy();
+    });
+
+    it("should enable move button when user selects surgical appointment but status is Scheduled", function () {
+       createController();
+       scope.$emit("event:surgicalAppointmentSelect", {status: Bahmni.OT.Constants.scheduled}, {surgicalAppointments: []});
+       expect(scope.moveButtonDisabled).toBeFalsy();
+       expect(scope.editDisabled).toBeFalsy();
+       expect(scope.addActualTimeDisabled).toBeFalsy();
+       expect(scope.cancelDisabled).toBeFalsy();
+    });
 });
