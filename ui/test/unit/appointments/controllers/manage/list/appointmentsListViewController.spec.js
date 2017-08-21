@@ -1,13 +1,14 @@
 'use strict';
 
 describe('AppointmentsListViewController', function () {
-    var controller, scope, spinner, appointmentsService, appService, appDescriptor;
+    var controller, scope, stateparams, spinner, appointmentsService, appService, appDescriptor;
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function ($controller, $rootScope) {
+        inject(function ($controller, $rootScope, $stateParams) {
             scope = $rootScope.$new();
             controller = $controller;
+            stateparams = $stateParams,
             appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments']);
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({}));
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -30,7 +31,8 @@ describe('AppointmentsListViewController', function () {
             $scope: scope,
             spinner: spinner,
             appointmentsService: appointmentsService,
-            appService: appService
+            appService: appService,
+            $stateParams: stateparams
         });
     };
 
@@ -38,9 +40,17 @@ describe('AppointmentsListViewController', function () {
         createController();
     });
 
-    it("should initialize today's date", function () {
+    it("should initialize today's date if not viewDate is provided in stateParams", function () {
         var today = moment().startOf('day').toDate();
         expect(scope.startDate).toEqual(today);
+    });
+
+    it('should initialize to viewDate in stateParams if provided', function () {
+        stateparams = {
+            viewDate: moment("2017-08-20").toDate()
+        };
+        createController();
+        expect(scope.startDate).toEqual(stateparams.viewDate);
     });
 
     it("should initialize enable service types and enable specialities from config", function () {

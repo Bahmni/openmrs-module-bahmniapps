@@ -1,19 +1,16 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AllAppointmentsController', ['$scope', '$location', 'appService',
-        function ($scope, $location, appService) {
+    .controller('AllAppointmentsController', ['$scope', '$location', '$state', 'appService',
+        function ($scope, $location, $state, appService) {
             $scope.enableCalendarView = appService.getAppDescriptor().getConfigValue('enableCalendarView');
 
             $scope.navigateTo = function (viewName) {
-                $scope.currentTab = viewName;
                 var path = '/home/manage/appointments/' + viewName;
                 $location.url(path);
             };
 
-            var init = function () {
-                var defaultTab = $scope.enableCalendarView ? 'calendar' : 'list';
-                $scope.navigateTo(defaultTab);
+            $scope.getCurrentAppointmentTabName = function () {
+                return $state.current.tabName;
             };
-            return init();
         }]);

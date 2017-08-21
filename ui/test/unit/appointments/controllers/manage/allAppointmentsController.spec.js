@@ -1,13 +1,14 @@
 'use strict';
 
 describe('AllAppointmentsController', function () {
-    var controller, scope, location, appService, appDescriptor;
+    var controller, scope, state, location, appService, appDescriptor;
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function ($controller, $rootScope) {
+        inject(function ($controller, $rootScope, $state) {
             scope = $rootScope.$new();
             controller = $controller;
+            state = $state;
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             location = jasmine.createSpyObj('$location', ['url']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
@@ -20,7 +21,8 @@ describe('AllAppointmentsController', function () {
         controller('AllAppointmentsController', {
             $scope: scope,
             appService: appService,
-            $location: location
+            $location: location,
+            $state: state
         });
     };
 
@@ -29,18 +31,28 @@ describe('AllAppointmentsController', function () {
         expect(scope.enableCalendarView).toBeTruthy();
     });
 
-    it("should navigate to appointments tab calendar view if configured", function () {
+    it("should navigate to calendar view if calendar button in pressed", function () {
         createController();
-        scope.navigateTo('appointments');
-        expect(scope.currentTab).toBe('appointments');
+        scope.navigateTo('calendar');
         expect(location.url).toHaveBeenCalledWith('/home/manage/appointments/calendar');
     });
 
-    it("should navigate to appointments tab list view if calendar view is not configured", function () {
-        appDescriptor.getConfigValue.and.returnValue(false);
+    it("should navigate to list view if list button is pressed", function () {
         createController();
-        scope.navigateTo('appointments');
-        expect(scope.currentTab).toBe('appointments');
+        scope.navigateTo('list');
         expect(location.url).toHaveBeenCalledWith('/home/manage/appointments/list');
+    });
+
+    it("should get tabName from state.current", function () {
+        state = {
+            name: "home.manage.appointments.calendar",
+            url: '/calendar',
+            current: {
+                tabName: 'calendar'
+            }
+        };
+        createController();
+        var tabName = scope.getCurrentAppointmentTabName();
+        expect(tabName).toBe("calendar");
     });
 });
