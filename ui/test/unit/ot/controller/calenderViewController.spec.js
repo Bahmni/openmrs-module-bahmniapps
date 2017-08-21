@@ -2,7 +2,7 @@
 
 describe("calendarViewController", function () {
 
-    var controller, rootScope, scope;
+    var controller, rootScope, scope, stateParams;
     var state = jasmine.createSpyObj('$state', ['go']);
     var patientService = jasmine.createSpyObj('patientService', ['search']);
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
@@ -28,6 +28,7 @@ describe("calendarViewController", function () {
             controller = $controller;
             rootScope = $rootScope;
             scope = $rootScope.$new();
+            stateParams = {};
         });
     });
 
@@ -39,7 +40,8 @@ describe("calendarViewController", function () {
             appService: appService,
             patientService: patientService,
             locationService: locationService,
-            ngDialog: ngDialog
+            ngDialog: ngDialog,
+            $stateParams: stateParams
         });
     };
 
@@ -465,5 +467,11 @@ describe("calendarViewController", function () {
        expect(scope.editDisabled).toBeFalsy();
        expect(scope.addActualTimeDisabled).toBeFalsy();
        expect(scope.cancelDisabled).toBeFalsy();
+    });
+
+    it("should take stateParams viewDate when it is present", function () {
+        stateParams.viewDate = new Date();
+        createController();
+        expect(scope.viewDate).toBe(stateParams.viewDate);
     });
 });

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('calendarViewController', ['$scope', '$rootScope', '$state', 'appService', 'patientService', 'locationService', 'ngDialog',
-        function ($scope, $rootScope, $state, appService, patientService, locationService, ngDialog) {
-            $scope.viewDate = $state.viewDate || (moment().startOf('day')).toDate();
+    .controller('calendarViewController', ['$scope', '$rootScope', '$state', '$stateParams', 'appService', 'patientService', 'locationService', 'ngDialog',
+        function ($scope, $rootScope, $state, $stateParams, appService, patientService, locationService, ngDialog) {
+            $scope.viewDate = $stateParams.viewDate || $state.viewDate || (moment().startOf('day')).toDate();
             $state.viewDate = $scope.viewDate;
             $scope.calendarConfig = appService.getAppDescriptor().getConfigValue("calendarView");
 

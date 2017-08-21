@@ -48,6 +48,9 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                     homeBackLink: homeBackLink,
                     navigationLinks: navigationLinks
                 },
+                params: {
+                    viewDate: null
+                },
                 views: {
                     'content': {
                         templateUrl: 'views/home.html',
