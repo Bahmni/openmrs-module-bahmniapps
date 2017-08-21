@@ -49,8 +49,8 @@
                 <th class="app-list-view-startTime">{{::'APPOINTMENT_START_TIME_KEY' |translate}}</th>
                 <th class="app-list-view-endTime">{{::'APPOINTMENT_END_TIME_KEY' |translate}}</th>
                 <th>{{::'APPOINTMENT_PROVIDER' |translate}}</th>
-                <th>{{::'APPOINTMENT_SERVICE' |translate}}</th>
                 <th ng-show="enableSpecialities">{{::'APPOINTMENT_SERVICE_SPECIALITY_KEY' |translate}}</th>
+                <th>{{::'APPOINTMENT_SERVICE' |translate}}</th>
                 <th class="app-list-view-serviceType" ng-show="enableServiceTypes">{{::'APPOINTMENT_SERVICE_TYPE_FULL' |translate}}</th>
                 <th>{{::'APPOINTMENT_WALK_IN' |translate}}</th>
                 <th>{{::'APPOINTMENT_SERVICE_LOCATION_KEY' |translate}}</th>
@@ -68,8 +68,8 @@
                 <td class="app-list-view-startTime">{{::appointment.startDateTime | bahmniTime}}</td>
                 <td class="app-list-view-endTime">{{::appointment.endDateTime | bahmniTime}}</td>
                 <td>{{::appointment.provider.name}}</td>
-                <td>{{::appointment.service.name}}</td>
                 <td ng-show="enableSpecialities">{{::appointment.service.speciality.name}}</td>
+                <td>{{::appointment.service.name}}</td>
                 <td class="app-list-view-serviceType" ng-show="enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
                 <td>{{:: isWalkIn(appointment.appointmentKind)}}</td>
                 <td>{{::appointment.location.name}}</td>
