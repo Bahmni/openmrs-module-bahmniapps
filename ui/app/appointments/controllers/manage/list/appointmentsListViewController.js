@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsListViewController', ['$scope', 'spinner', 'appointmentsService', 'appService',
-        function ($scope, spinner, appointmentsService, appService) {
-            $scope.startDate = moment().startOf('day').toDate();
+    .controller('AppointmentsListViewController', ['$scope', '$stateParams', 'spinner', 'appointmentsService', 'appService',
+        function ($scope, $stateParams, spinner, appointmentsService, appService) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             var init = function () {
+                $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 return $scope.getAppointmentsForDate($scope.startDate);
             };
 

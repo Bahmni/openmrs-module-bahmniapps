@@ -33,13 +33,23 @@ describe('AppointmentsService', function () {
         expect(mockHttp.post).toHaveBeenCalledWith(Bahmni.Appointments.Constants.searchAppointmentUrl, appointmentInfo, params);
     });
 
-    // it('should get all the appointments against the given service type', function () {
-    //     var serviceTypeUuid = "serviceTypeUuid";
-    //     appointmentsService.getAppointmentsForServiceType(serviceTypeUuid);
-    //     var headers = {"Accept": "application/json", "Content-Type": "application/json"};
-    //     var params = {appointmentServiceTypeUuid: serviceTypeUuid, withCredentials: true, headers: headers};
-    //     console.log("calls", mockHttp.get.calls.count());
-    //     console.log("calls", mockHttp.get.calls.mostRecent);
-    //     expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Appointments.Constants.createAppointmentUrl, params);
-    // });
+    it('should get all the appointments summary for all the service types', function () {
+        var weekInfo = {
+            startDate: moment().startOf('week').toDate(),
+            endDate: moment().endOf('week').toDate()
+        };
+        appointmentsService.getAppointmentsSummary(weekInfo);
+        var headers = {"Accept": "application/json", "Content-Type": "application/json"};
+        var params = {params: weekInfo, withCredentials: true, headers: headers};
+        expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Appointments.Constants.getAppointmentsSummaryUrl, params);
+    });
+
+    it('should get all the appointments for a service type', function () {
+        var serviceTypeUuid = "serviceTypeUuid";
+        appointmentsService.getAppointmentsForServiceType(serviceTypeUuid);
+        var headers = {"Accept": "application/json", "Content-Type": "application/json"};
+        var params = {params: {"appointmentServiceTypeUuid": serviceTypeUuid}, withCredentials: true, headers: headers};
+        expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Appointments.Constants.createAppointmentUrl, params);
+    });
 });
+

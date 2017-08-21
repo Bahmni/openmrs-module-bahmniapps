@@ -61,7 +61,7 @@ describe ('appointmentsSummaryController', function () {
         createController();
         var date = moment("2017-02-01").toDate();
         scope.goToListView(date);
-        expect(state.href).toHaveBeenCalledWith('home.manage.appointments.list', { viewDate : date, view : 'list' });
+        expect(state.href).toHaveBeenCalledWith('home.manage.appointments.list', { viewDate : date });
     });
 
     it('should open list view in new tab on clicking of appointment count', function () {
@@ -88,6 +88,12 @@ describe ('appointmentsSummaryController', function () {
                     "missedAppointmentsCount": 0,
                     "appointmentDate": 1502821800000,
                     "appointmentServiceUuid": "c526c72a-ae6a-446c-9337-42d1119bcb94"
+                },
+                "2017-08-18": {
+                    "allAppointmentsCount": 1,
+                    "missedAppointmentsCount": 2,
+                    "appointmentDate": 1502821800000,
+                    "appointmentServiceUuid": "c526c72a-ae6a-446c-9337-42d1119bcb94"
                 }
             }
         }, {
@@ -97,7 +103,20 @@ describe ('appointmentsSummaryController', function () {
                 "uuid": "230e77c7-8924-45ad-9b4c-d4090c4ade71",
                 "color": "#008000",
                 "creatorName": null
-            }, "appointmentCountMap": {}
+            }, "appointmentCountMap": {
+                "2017-08-16": {
+                    "allAppointmentsCount": 1,
+                    "missedAppointmentsCount": 2,
+                    "appointmentDate": 1502821800000,
+                    "appointmentServiceUuid": "c526c72a-ae6a-446c-9337-42d1119bcb95"
+                },
+                "2017-08-19": {
+                    "allAppointmentsCount": 1,
+                    "missedAppointmentsCount": 3,
+                    "appointmentDate": 1502821800000,
+                    "appointmentServiceUuid": "c526c72a-ae6a-446c-9337-42d1119bcb95"
+                }
+            }
         }, {
             "appointmentService": {
                 "appointmentServiceId": 3,
@@ -109,18 +128,34 @@ describe ('appointmentsSummaryController', function () {
                 "uuid": "75c006aa-d3dd-4848-9735-03aee74ae27e",
                 "color": "#008000",
                 "creatorName": null
-            }, "appointmentCountMap": {}
+            }, "appointmentCountMap": {
+                "2017-08-14": {
+                    "allAppointmentsCount": 3,
+                    "missedAppointmentsCount": 2,
+                    "appointmentDate": 1502821800000,
+                    "appointmentServiceUuid": "c526c72a-ae6a-446c-9337-42d1119bcb96"
+                },
+                "2017-08-18": {
+                    "allAppointmentsCount": 14,
+                    "missedAppointmentsCount": 2,
+                    "appointmentDate": 1502821800000,
+                    "appointmentServiceUuid": "c526c72a-ae6a-446c-9337-42d1119bcb96"
+                }
+            }
         }];
         appointmentsService.getAppointmentsSummary.and.returnValue(specUtil.simplePromise({data: appointments}));
         createController();
+        var startDate = moment("2017-08-13").toDate();
+        var endDate = moment("2017-08-20").toDate()
+        scope.getAppointmentsSummaryForAWeek(startDate, endDate);
         expect(scope.appointments).toEqual(appointments);
         expect(scope.weekDatesInfo.length).toEqual(7);
-        expect(scope.weekDatesInfo[0]).toEqual({date: '2017-08-20', total: {all: 0, missed: 0}});
-        expect(scope.weekDatesInfo[1]).toEqual({date: '2017-08-21', total: {all: 0, missed: 0}});
-        expect(scope.weekDatesInfo[2]).toEqual({date: '2017-08-22', total: {all: 0, missed: 0}});
-        expect(scope.weekDatesInfo[3]).toEqual({date: '2017-08-23', total: {all: 0, missed: 0}});
-        expect(scope.weekDatesInfo[4]).toEqual({date: '2017-08-24', total: {all: 0, missed: 0}});
-        expect(scope.weekDatesInfo[5]).toEqual({date: '2017-08-25', total: {all: 0, missed: 0}});
-        expect(scope.weekDatesInfo[6]).toEqual({date: '2017-08-26', total: {all: 0, missed: 0}});
+        expect(scope.weekDatesInfo[0]).toEqual({date: '2017-08-13', total: {all: 0, missed: 0}});
+        expect(scope.weekDatesInfo[1]).toEqual({date: '2017-08-14', total: {all: 3, missed: 2}});
+        expect(scope.weekDatesInfo[2]).toEqual({date: '2017-08-15', total: {all: 0, missed: 0}});
+        expect(scope.weekDatesInfo[3]).toEqual({date: '2017-08-16', total: {all: 2, missed: 2}});
+        expect(scope.weekDatesInfo[4]).toEqual({date: '2017-08-17', total: {all: 0, missed: 0}});
+        expect(scope.weekDatesInfo[5]).toEqual({date: '2017-08-18', total: {all: 15, missed: 4}});
+        expect(scope.weekDatesInfo[6]).toEqual({date: '2017-08-19', total: {all: 1, missed: 3}});
     });
 });

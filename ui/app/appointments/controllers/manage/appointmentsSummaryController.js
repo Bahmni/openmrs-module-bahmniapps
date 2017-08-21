@@ -25,12 +25,10 @@ angular.module('bahmni.appointments')
             };
 
             $scope.goToListView = function (date) {
-                var options = {
-                    viewDate: moment(date).toDate(),
-                    view: 'list'
+                var params = {
+                    viewDate: moment(date).toDate()
                 };
-                var url = $state.href('home.manage.appointments.list', options);
-                $window.open(url, '_blank');
+                var url = $state.go('home.manage.appointments.list', params);
             };
 
             var setWeekDatesInfo = function () {

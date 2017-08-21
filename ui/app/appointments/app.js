@@ -47,6 +47,7 @@ angular
                 }
             }).state('home.manage.summary', {
                 url: '/summary',
+                tabName: 'summary',
                 views: {
                     'content@manage': {
                         templateUrl: 'views/manage/appointmentsSummary.html',
@@ -63,6 +64,7 @@ angular
                 }
             }).state('home.manage.appointments.calendar', {
                 url: '/calendar',
+                tabName: 'calendar',
                 views: {
                     'content@viewAppointments': {
                         templateUrl: 'views/manage/calendar/calendarView.html',
@@ -91,6 +93,10 @@ angular
                 }
             }).state('home.manage.appointments.list', {
                 url: '/list',
+                tabName: 'list',
+                params: {
+                    viewDate: null
+                },
                 views: {
                     'content@viewAppointments': {
                         templateUrl: 'views/manage/list/listView.html',

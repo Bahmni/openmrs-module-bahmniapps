@@ -101,5 +101,6 @@
   "COMPLETE_APPOINTMENT": "Complete",
   "EDIT_APPOINTMENT": "Edit",
   "CANCEL_APPOINTMENT": "Cancel",
-  "CURRENT_DATE": "Today"
+  "CURRENT_DATE": "Today",
+  "TOTAL": "Total"
 }
