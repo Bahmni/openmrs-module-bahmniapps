@@ -30,7 +30,8 @@ angular.module('bahmni.appointments')
         var link = function (scope) {
             var init = function () {
                 scope.availability = scope.availability || {};
-                scope.startOfWeek = appService.getAppDescriptor().getConfigValue('startOfWeek') || 2;
+                var weekStartConfigValue = appService.getAppDescriptor().getConfigValue('weekStart');
+                scope.startOfWeek = (weekStartConfigValue && weekStartConfigValue==='week')? 1 : 2;
             };
 
             scope.add = function () {
