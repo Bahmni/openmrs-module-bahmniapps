@@ -5,6 +5,7 @@ angular.module('bahmni.ot').controller('moveSurgicalAppointmentController', ['$r
         var init = function () {
             $scope.surgicalAppointment = $scope.ngDialogData.surgicalAppointment;
             $scope.appointmentDuration = surgicalAppointmentHelper.getEstimatedDurationForAppointment($scope.surgicalAppointment);
+            $scope.selectedSurgicalBlock = $scope.ngDialogData.surgicalBlock;
         };
 
         var surgicalBlockMapper = new Bahmni.OT.SurgicalBlockMapper();
@@ -16,14 +17,11 @@ angular.module('bahmni.ot').controller('moveSurgicalAppointmentController', ['$r
             var startDateTime = $scope.dateForMovingSurgery;
             var endDateTime = moment($scope.dateForMovingSurgery).endOf("day").toDate();
             surgicalAppointmentService.getSurgicalBlocksInDateRange(startDateTime, endDateTime, false).then(function (response) {
-                if (response.data.results.length === 0) {
-                    messagingService.showMessage('error', "No free time slots available for this surgeon on the selected date");
-                }
                 var surgicalBlocksOfThatDate = _.map(response.data.results, function (surgicalBlock) {
                     return surgicalBlockMapper.map(surgicalBlock, $rootScope.attributeTypes, $rootScope.surgeons);
                 });
                 $scope.availableBlocks = _.filter(surgicalBlocksOfThatDate, function (surgicalBlock) {
-                    return surgicalBlockHelper.getAvailableBlockDuration(surgicalBlock) >= $scope.appointmentDuration;
+                    return surgicalBlockHelper.getAvailableBlockDuration(surgicalBlock) >= $scope.appointmentDuration && surgicalBlock.uuid !== $scope.ngDialogData.surgicalBlock.uuid;
                 });
                 $scope.availableSurgicalBlocksForGivenDate = _.map($scope.availableBlocks, function (surgicalBlock) {
                     var blockStartTime = Bahmni.Common.Util.DateUtil.formatTime(surgicalBlock.startDatetime);

@@ -52,6 +52,7 @@
     "OT_SURGICAL_BLOCK_CANCELLED_MESSAGE": "Cancelled surgeries for Dr.",
     "OT_SURGICAL_BLOCK_POSTPONED_MESSAGE": "Postponed surgeries for Dr.",
     "OT_SURGICAL_BLOCK_CANCEL_ALL_SURGERIES_MESSAGE": "This change will affect all surgeries of the block",
+    "NO_FREE_SLOT_AVAILABLE_FOR_THE_GIVEN_SURGEON_AND_DATE_MESSAGE": "No free time slots available for the selected date",
     "OT_CANCEL_BLOCK": "Cancel Block",
     "OT_OPERATION_THEATRE_LABEL": "Operation Theatre",
     "OT_APPOINTMENT_STATUS": "Status",

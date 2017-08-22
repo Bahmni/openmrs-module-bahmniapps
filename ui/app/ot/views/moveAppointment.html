@@ -1,9 +1,15 @@
 <div>
-    <input type="date" ng-model="dateForMovingSurgery" ng-change="changeInSurgeryDate()"/>
+    Date: <input type="date" ng-model="dateForMovingSurgery" ng-change="changeInSurgeryDate()"/>
     <br>
-    <select ng-options="surgeonDetails.displayName for surgeonDetails in availableSurgicalBlocksForGivenDate" required ng-model="destinationBlock">
-        <option value=""> Select Surgeon </option>
-    </select>
+    <p ng-show="availableSurgicalBlocksForGivenDate.length">
+        Destination Block: <select ng-options="surgeonDetails.displayName for surgeonDetails in availableSurgicalBlocksForGivenDate" required ng-model="destinationBlock">
+            <option value=""> Select Block </option>
+        </select>
+    </p>
+    <p class="caution" ng-show="availableSurgicalBlocksForGivenDate.length === 0">
+        <i class="fa fa-exclamation-circle small"></i>
+        <span>{{'NO_FREE_SLOT_AVAILABLE_FOR_THE_GIVEN_SURGEON_AND_DATE_MESSAGE' | translate}}</span>
+    </p>
     <br>
     <button ng-click="moveSurgicalAppointment()" ng-disabled="!dateForMovingSurgery || !destinationBlock"> Move</button>
     <button ng-mousedown="cancel()">Cancel</button>

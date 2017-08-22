@@ -73,7 +73,7 @@ describe("moveSurgicalAppointmentController", function () {
     });
 
     it("should get the surgical blocks for that date when user selects a date", function () {
-        scope.ngDialogData = {surgicalAppointment: surgicalAppointment};
+        scope.ngDialogData = {surgicalAppointment: surgicalAppointment, surgicalBlock: surgicalBlock};
         surgicalAppointmentService.getSurgicalBlocksInDateRange.and.returnValue(specUtil.simplePromise({data: {results: [surgicalBlock, surgicalBlock1]}}));
         var dateForMovingSurgery = new Date("2017-08-17T00:00:00.0530");
         scope.dateForMovingSurgery = dateForMovingSurgery;
@@ -116,6 +116,17 @@ describe("moveSurgicalAppointmentController", function () {
         scope.changeInSurgeryDate();
         expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(dateForMovingSurgery, new Date(_.clone(dateForMovingSurgery).setHours(23, 59, 59, 999)), false);
         expect(scope.availableBlocks.length).toBe(0);
-        expect(messagingService.showMessage).toHaveBeenCalledWith('error', "No free time slots available for this surgeon on the selected date")
+    });
+
+    it("should not be able to move to the same surgical block", function () {
+        scope.ngDialogData = {surgicalAppointment: surgicalAppointment, surgicalBlock: surgicalBlock};
+        surgicalAppointmentService.getSurgicalBlocksInDateRange.and.returnValue(specUtil.simplePromise({data: {results: [surgicalBlock]}}));
+        scope.dateForMovingSurgery = new Date('2017-08-17T00:00:00.0530');
+        createController();
+
+        scope.changeInSurgeryDate();
+
+        expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalled();
+        expect(scope.availableBlocks.length).toBe(0);
     });
 });
