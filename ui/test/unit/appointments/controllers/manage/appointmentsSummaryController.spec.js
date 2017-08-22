@@ -14,7 +14,7 @@ describe ('appointmentsSummaryController', function () {
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             appDescriptor.getConfigValue.and.returnValue({'week': 'week'});
             spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
-            state = jasmine.createSpyObj('state', ['href']);
+            state = jasmine.createSpyObj('state', ['href', 'go']);
             window = jasmine.createSpyObj('window', ['open']);
             appointmentsService.getAppointmentsSummary.and.returnValue(specUtil.simplePromise({response : "hello"}));
 
@@ -61,15 +61,7 @@ describe ('appointmentsSummaryController', function () {
         createController();
         var date = moment("2017-02-01").toDate();
         scope.goToListView(date);
-        expect(state.href).toHaveBeenCalledWith('home.manage.appointments.list', { viewDate : date });
-    });
-
-    it('should open list view in new tab on clicking of appointment count', function () {
-        state.href.and.returnValue('url');
-        createController();
-        var date = moment("2017-02-01").toDate();
-        scope.goToListView(date);
-        expect(window.open).toHaveBeenCalledWith('url', '_blank');
+        expect(state.go).toHaveBeenCalledWith('home.manage.appointments.list', { viewDate : date });
     });
 
    it('should set the appointments to the response data', function () {

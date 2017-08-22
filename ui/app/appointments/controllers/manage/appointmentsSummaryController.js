@@ -28,7 +28,7 @@ angular.module('bahmni.appointments')
                 var params = {
                     viewDate: moment(date).toDate()
                 };
-                var url = $state.go('home.manage.appointments.list', params);
+                $state.go('home.manage.appointments.list', params);
             };
 
             var setWeekDatesInfo = function () {
