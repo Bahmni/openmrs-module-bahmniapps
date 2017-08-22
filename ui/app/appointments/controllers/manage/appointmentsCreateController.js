@@ -178,6 +178,7 @@ angular.module('bahmni.appointments')
                 if (!$scope.appointment.specialityUuid) {
                     delete $scope.appointment.specialityUuid;
                 }
+                delete $scope.serviceTypes;
                 delete $scope.appointment.serviceUuid;
                 delete $scope.appointment.serviceTypeUuid;
                 delete $scope.appointment.locationUuid;
