@@ -55,13 +55,13 @@ describe('ServiceAvailability', function () {
     };
 
     it('should init availability and startOfWeek', function () {
-        appDescriptor.getConfigValue.and.returnValue('week');
+        appDescriptor.getConfigValue.and.returnValue(3);
         expect(scope.availability).toBeUndefined();
         var element = createElement();
         var compiledElementScope = element.isolateScope();
 
         expect(scope.availability).toEqual({});
-        expect(compiledElementScope.startOfWeek).toBe(1);
+        expect(compiledElementScope.startOfWeek).toBe(3);
     });
 
     it('should take 2 as startOfWeek by default', function () {
