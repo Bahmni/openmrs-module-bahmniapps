@@ -31,6 +31,10 @@ angular.module('bahmni.appointments')
                 $state.go('home.manage.appointments.list', params);
             };
 
+            $scope.isCurrentDate = function(date) {
+                return moment(date).format('YYYY-MM-DD') === moment().format('YYYY-MM-DD');
+            };
+
             var setWeekDatesInfo = function () {
                 $scope.weekDatesInfo = [];
                 for (var i = $scope.weekStartDate;

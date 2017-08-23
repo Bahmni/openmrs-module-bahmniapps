@@ -138,7 +138,7 @@ describe ('appointmentsSummaryController', function () {
         appointmentsService.getAppointmentsSummary.and.returnValue(specUtil.simplePromise({data: appointments}));
         createController();
         var startDate = moment("2017-08-13").toDate();
-        var endDate = moment("2017-08-20").toDate()
+        var endDate = moment("2017-08-20").toDate();
         scope.getAppointmentsSummaryForAWeek(startDate, endDate);
         expect(scope.appointments).toEqual(appointments);
         expect(scope.weekDatesInfo.length).toEqual(7);
@@ -149,5 +149,17 @@ describe ('appointmentsSummaryController', function () {
         expect(scope.weekDatesInfo[4]).toEqual({date: '2017-08-17', total: {all: 0, missed: 0}});
         expect(scope.weekDatesInfo[5]).toEqual({date: '2017-08-18', total: {all: 15, missed: 4}});
         expect(scope.weekDatesInfo[6]).toEqual({date: '2017-08-19', total: {all: 1, missed: 3}});
+    });
+
+    it('should set to true if it is current date', function () {
+        var date = moment().toDate();
+        createController();
+        expect(scope.isCurrentDate(date)).toBeTruthy();
+    });
+
+    it('should set to false if it is not current date', function () {
+        var date = moment('2017-04-02').toDate();
+        createController();
+        expect(scope.isCurrentDate(date)).toBeFalsy();
     });
 });
