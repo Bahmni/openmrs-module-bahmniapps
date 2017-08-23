@@ -20,7 +20,7 @@
                 </td>
                 <td ng-repeat="dateInfo in weekDatesInfo" ng-class="{'currentDate' : isCurrentDate(dateInfo.date)}">
                     <a ng-click="goToListView(dateInfo.date)">{{appointment.appointmentCountMap[dateInfo.date].allAppointmentsCount}}</a>
-                    <span ng-if="appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount">
+                    <span style="color: #E31C3B" ng-if="appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount">
                 ({{appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount}} missed)</span>
                 </td>
             </tr>
@@ -28,7 +28,7 @@
                 <td>{{ 'TOTAL_KEY' | translate }}</td>
                 <td ng-repeat="dateInfo in weekDatesInfo" class="app-summary-total" ng-class="{'currentDate' : isCurrentDate(dateInfo.date)}">
                     <a ng-if="dateInfo.total.all" ng-click="goToListView(dateInfo.date)" target="_blank">{{dateInfo.total.all}} </a>
-                    <span ng-if="dateInfo.total.missed">({{dateInfo.total.missed}} {{'MISSED_KEY' | translate}}) </span>
+                    <span style="color: #E31C3B" ng-if="dateInfo.total.missed">({{dateInfo.total.missed}} {{'MISSED_KEY' | translate}})</span>
                 </td>
             </tr>
             </tbody>
