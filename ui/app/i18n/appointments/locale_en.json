@@ -102,5 +102,6 @@
   "EDIT_APPOINTMENT": "Edit",
   "CANCEL_APPOINTMENT": "Cancel",
   "CURRENT_DATE": "Today",
-  "TOTAL": "Total"
+  "TOTAL_KEY": "Total",
+  "MISSED_KEY": "Missed"
 }
