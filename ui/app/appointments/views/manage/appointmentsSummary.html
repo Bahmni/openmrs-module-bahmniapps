@@ -1,30 +1,37 @@
-<div>
-    <div>
-        <week-picker view-date="viewDate" on-change="getAppointmentsSummaryForAWeek" week-start="weekStart"></week-picker>
-    </div>
-<table style="top:50px; position:relative;">
-    <tr>
-        <th></th>
-        <th ng-repeat="dateInfo in weekDatesInfo">
-            {{dateInfo.date | date:'d MMM, EEE'}}
-        </th>
-    </tr>
-    <tr ng-repeat="appointment in appointments">
-        <td>
-            {{appointment.appointmentService.name}}
-        </td>
-        <td ng-repeat="dateInfo in weekDatesInfo">
-            <a ng-click="goToListView(dateInfo.date)" >{{appointment.appointmentCountMap[dateInfo.date].allAppointmentsCount}}</a>
-            <span ng-if="appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount">
+<div class="app-summary-container">
+    <week-picker view-date="viewDate" on-change="getAppointmentsSummaryForAWeek"
+                 week-start="weekStart"></week-picker>
+    <div class="app-summary-table-container">
+        <table class="table-header">
+            <thead>
+            <tr>
+                <th></th>
+                <th ng-repeat="dateInfo in weekDatesInfo">
+                    {{dateInfo.date | date:'d MMM, EEE'}}
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <table>
+            <tbody>
+            <tr ng-repeat="appointment in appointments">
+                <td>
+                    {{appointment.appointmentService.name}}
+                </td>
+                <td ng-repeat="dateInfo in weekDatesInfo">
+                    <a ng-click="goToListView(dateInfo.date)">{{appointment.appointmentCountMap[dateInfo.date].allAppointmentsCount}}</a>
+                    <span ng-if="appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount">
                 ({{appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount}} missed)</span>
-        </td>
-    </tr>
-    <tr>
-        <td>{{ 'TOTAL' | translate }}</td>
-        <td ng-repeat="dateInfo in weekDatesInfo">
-            <a ng-if="dateInfo.total.all" ng-click="goToListView(dateInfo.date)" target="_blank">{{dateInfo.total.all}} </a>
-            <span ng-if="dateInfo.total.missed">({{dateInfo.total.missed}} missed) </span>
-        </td>
-    </tr>
-</table>
+                </td>
+            </tr>
+            <tr>
+                <td>{{ 'TOTAL' | translate }}</td>
+                <td ng-repeat="dateInfo in weekDatesInfo" class="app-summary-total">
+                    <a ng-if="dateInfo.total.all" ng-click="goToListView(dateInfo.date)" target="_blank">{{dateInfo.total.all}} </a>
+                    <span ng-if="dateInfo.total.missed">({{dateInfo.total.missed}} missed) </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
