@@ -291,9 +291,12 @@
         padding-top: 10px;
         color: #0BB118;
       }
-      .walk-in-text {
-        display: inline-block;
-        margin-top: 3px;
+      &.walk-in-app {
+        margin-left: 125px;
+        .walk-in-text {
+          display: inline-block;
+          margin-top: 3px;
+        }
       }
     }
     .warning-message {
@@ -303,7 +306,7 @@
       color: #ffac2e;
       span {
         font-weight: bolder;
-        font-size: 13px;
+        font-size: 11px;
         margin-bottom: 5px;
       }
       p {
@@ -479,4 +482,7 @@
       }
     }
   }
+}
+.app-ava-slots {
+  padding-left: 125px;
 }

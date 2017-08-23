@@ -138,14 +138,14 @@
                            required/>
                     <i class="fa fa-angle-down search-icon-app" aria-hidden="true"></i>
                 </p>
-                <text ng-if = "maxAppointmentsLimit"> Total: {{maxAppointmentsLimit}}       </text>
-                <text ng-if = "currentLoad"> Booked: {{currentLoad}}        </text>
-                <text ng-if = "maxAppointmentsLimit && currentLoad"> Available: {{maxAppointmentsLimit-currentLoad}}        </text>
+                <p class="app-ava-slots" style="color: #0275d8;" ng-if = "maxAppointmentsLimit"> Total: {{maxAppointmentsLimit}} Slots</p>
+                <p class="app-ava-slots" style="color: #f0ad4e;" ng-if = "currentLoad"> Booked: {{currentLoad}} Slots</p>
+                <p class="app-ava-slots" style="color: #5cb85c;" ng-if = "maxAppointmentsLimit && currentLoad"> Available: {{maxAppointmentsLimit-currentLoad}} Slots</p>
                 <p class="warning-message" ng-if="warning.endTime">
                     <i class="fa fa-exclamation-triangle"></i>
                     <span> {{'APPOINTMENT_CREATION_END_TIME_WARNING' | translate}} </span>
                 </p>
-                <p>
+                <p class="walk-in-app">
                     <input type="checkbox" ng-model="appointment.appointmentKind" ng-true-value="'WalkIn'" ng-false-value="">
                     <span class="walk-in-text">{{'APPOINTMENT_CREATE_WALK_IN' | translate}}</span>
                 </p>
