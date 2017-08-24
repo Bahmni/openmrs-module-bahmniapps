@@ -255,3 +255,33 @@
     top: 6px;
   }
 }
+
+.move-appointment {
+  p {
+    margin-bottom: 12px;
+    label {
+      width: 120px;
+      text-align: right;
+      display: inline-block;
+    }
+    input, select {
+      width: calc(100% - 200px);
+      height: 30px;
+      border-radius: 5px;
+    }
+    input {
+      border: 1px solid #ddd;
+      padding-left: 10px;
+    }
+  }
+  button {
+    float: right;
+    -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+    padding: 5px 10px;
+    color: #000;
+    border: 1px solid #95989a;
+    margin-right: 10px;
+    background: #fff;
+  }
+}

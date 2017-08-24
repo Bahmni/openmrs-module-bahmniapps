@@ -59,5 +59,8 @@
     "OT_APPLY_FILTERS": "Apply Filter",
     "OT_CLEAR_FILTERS": "Clear",
     "OT_SURGICAL_BLOCK_POSTPONE_BLOCK": "Postpone Block",
-    "OT_SURGICAL_BLOCK_CANCEL_BLOCK": "Cancel Block"
+    "OT_SURGICAL_BLOCK_CANCEL_BLOCK": "Cancel Block",
+    "DESTINATION_BLOCK": "Destination Block",
+    "SELECT_BLOCK": "Select Block",
+    "OT_SURGICAL_APPOINTMENT_MOVE": "Move"
 }
