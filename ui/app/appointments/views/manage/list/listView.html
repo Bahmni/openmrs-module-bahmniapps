@@ -40,41 +40,39 @@
     <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
 
     <div class="app-list-view" ng-class="{'app-filter-open': isFilterOpen}">
-        <table class="app-list-view-table-head">
+        <table>
             <thead>
             <tr>
-                <th class="app-list-view-patientId">{{::'APPOINTMENT_PATIENT_ID' |translate}}</th>
-                <th>{{::'APPOINTMENT_PATIENT_NAME' |translate}}</th>
-                <th class="app-list-view-startDate">{{::'APPOINTMENT_DATE' |translate}}</th>
-                <th class="app-list-view-startTime">{{::'APPOINTMENT_START_TIME_KEY' |translate}}</th>
-                <th class="app-list-view-endTime">{{::'APPOINTMENT_END_TIME_KEY' |translate}}</th>
-                <th>{{::'APPOINTMENT_PROVIDER' |translate}}</th>
+                <th>{{::'APPOINTMENT_PATIENT_ID' |translate}}</th>
+                <th class="table-mid-width">{{::'APPOINTMENT_PATIENT_NAME' |translate}}</th>
+                <th>{{::'APPOINTMENT_DATE' |translate}}</th>
+                <th>{{::'APPOINTMENT_START_TIME_KEY' |translate}}</th>
+                <th>{{::'APPOINTMENT_END_TIME_KEY' |translate}}</th>
+                <th class="table-mid-width">{{::'APPOINTMENT_PROVIDER' |translate}}</th>
                 <th ng-show="enableSpecialities">{{::'APPOINTMENT_SERVICE_SPECIALITY_KEY' |translate}}</th>
                 <th>{{::'APPOINTMENT_SERVICE' |translate}}</th>
-                <th class="app-list-view-serviceType" ng-show="enableServiceTypes">{{::'APPOINTMENT_SERVICE_TYPE_FULL' |translate}}</th>
+                <th class="table-mid-width" ng-show="enableServiceTypes">{{::'APPOINTMENT_SERVICE_TYPE_FULL' |translate}}</th>
                 <th>{{::'APPOINTMENT_WALK_IN' |translate}}</th>
-                <th>{{::'APPOINTMENT_SERVICE_LOCATION_KEY' |translate}}</th>
+                <th class="table-mid-width">{{::'APPOINTMENT_SERVICE_LOCATION_KEY' |translate}}</th>
                 <th>{{::'APPOINTMENT_STATUS' |translate}}</th>
-                <th class="app-list-view-note">{{::'APPOINTMENT_CREATE_NOTES' |translate}}</th>
+                <th>{{::'APPOINTMENT_CREATE_NOTES' |translate}}</th>
             </tr>
             </thead>
-        </table>
-        <table class="app-list-view-table-body">
             <tbody>
             <tr ng-repeat="appointment in appointments" ng-click="select(appointment)" ng-class="{'selected' : isSelected(appointment)}">
-                <td class="app-list-view-patientId">{{::appointment.patient.identifier}}</td>
-                <td>{{::appointment.patient.name | titleCase}}</td>
-                <td class="app-list-view-startDate">{{::appointment.startDateTime | bahmniDate}}</td>
-                <td class="app-list-view-startTime">{{::appointment.startDateTime | bahmniTime}}</td>
-                <td class="app-list-view-endTime">{{::appointment.endDateTime | bahmniTime}}</td>
-                <td>{{::appointment.provider.name}}</td>
+                <td>{{::appointment.patient.identifier}}</td>
+                <td class="table-mid-width">{{::appointment.patient.name | titleCase}}</td>
+                <td>{{::appointment.startDateTime | bahmniDate}}</td>
+                <td>{{::appointment.startDateTime | bahmniTime}}</td>
+                <td>{{::appointment.endDateTime | bahmniTime}}</td>
+                <td class="table-mid-width">{{::appointment.provider.name}}</td>
                 <td ng-show="enableSpecialities">{{::appointment.service.speciality.name}}</td>
                 <td>{{::appointment.service.name}}</td>
-                <td class="app-list-view-serviceType" ng-show="enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
+                <td class="table-mid-width" ng-show="enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
                 <td>{{:: isWalkIn(appointment.appointmentKind)}}</td>
-                <td>{{::appointment.location.name}}</td>
+                <td class="table-mid-width">{{::appointment.location.name}}</td>
                 <td>{{::appointment.status}}</td>
-                <td class="app-list-view-note">{{::appointment.comments}}</td>
+                <td>{{::appointment.comments}}</td>
             </tr>
             </tbody>
         </table>
