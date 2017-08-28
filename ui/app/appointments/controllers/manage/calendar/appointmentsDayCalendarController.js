@@ -3,6 +3,8 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentsDayCalendarController', ['$scope', 'uiCalendarConfig', 'appService',
         function ($scope, uiCalendarConfig, appService) {
+            $scope.eventSources = [];
+
             var init = function () {
                 $scope.events = $scope.appointments.events;
 
@@ -76,5 +78,20 @@ angular.module('bahmni.appointments')
 
                 $scope.eventSources = [$scope.events];
             };
-            return init();
+
+            var resetEvents = function () {
+                if (!_.isEmpty($scope.eventSources)) {
+                    $scope.eventSources.splice(0, $scope.eventSources.length);
+                }
+                if (!_.isEmpty($scope.appointments.events)) {
+                    $scope.eventSources.push($scope.appointments.events);
+                }
+            };
+
+            $scope.$watch("appointments", function (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    resetEvents();
+                }
+            });
+            init();
         }]);

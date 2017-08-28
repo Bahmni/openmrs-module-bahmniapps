@@ -27,6 +27,7 @@ module.exports = function (config) {
             'app/components/fullcalendar/dist/fullcalendar.min.js',
             'app/components/fullcalendar-scheduler/dist/scheduler.min.js',
             'app/components/angular-elastic/elastic.js',
+            'app/components/angular-ivh-treeview/dist/ivh-treeview.min.js',
             'app/components/offline/offline.min.js',
             'app/components/angular-ui-router/release/angular-ui-router.js',
             'app/components/lodash/dist/lodash.min.js',
