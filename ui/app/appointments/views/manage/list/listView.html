@@ -1,42 +1,4 @@
 <div ng-init="isFilterOpen = true">
-    <div class="appointment-filter" ng-init="isFilterOpen = true" ng-show="isFilterOpen">
-        <a ng-click="isFilterOpen = false"><i class="fa fa-angle-double-left" aria-hidden="true"></i>
-        </a>
-        <p>
-            <label>Speciality</label>
-            <input type="text"/>
-            <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
-            <span><i class="fa fa-times" aria-hidden="true"></i><span></span></span>
-        </p>
-        <p>
-            <label>Service</label>
-            <input type="text"/>
-            <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
-            <span><i class="fa fa-times" aria-hidden="true"></i><span></span></span>
-        </p>
-        <p>
-            <label>Service Type</label>
-            <input type="text"/>
-            <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
-            <span><i class="fa fa-times" aria-hidden="true"></i><span></span></span>
-        </p>
-        <p>
-            <label>Provider</label>
-            <input type="text"/>
-            <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
-            <span><i class="fa fa-times" aria-hidden="true"></i><span></span></span>
-        </p>
-        <p>
-            <label>Appoinment status</label>
-            <input type="text"/>
-            <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
-            <span><i class="fa fa-times" aria-hidden="true"></i><span></span></span>
-        </p>
-        <p class="app-filter-action-btn">
-            <button>Reset</button>
-            <button>Apply Filter</button>
-        </p>
-    </div>
     <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
 
     <div class="app-list-view" ng-class="{'app-filter-open': isFilterOpen}">
@@ -61,7 +23,7 @@
         </table>
         <table class="app-list-view-table-body">
             <tbody>
-            <tr ng-repeat="appointment in appointments" ng-click="select(appointment)" ng-class="{'selected' : isSelected(appointment)}">
+            <tr ng-repeat="appointment in filteredAppointments" ng-click="select(appointment)" ng-class="{'selected' : isSelected(appointment)}">
                 <td class="app-list-view-patientId">{{::appointment.patient.identifier}}</td>
                 <td>{{::appointment.patient.name | titleCase}}</td>
                 <td class="app-list-view-startDate">{{::appointment.startDateTime | bahmniDate}}</td>

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsListViewController', ['$scope', '$stateParams', 'spinner', 'appointmentsService', 'appService',
-        function ($scope, $stateParams, spinner, appointmentsService, appService) {
+    .controller('AppointmentsListViewController', ['$scope', '$state', '$stateParams', 'spinner', 'appointmentsService', 'appService', 'appointmentsFilter',
+        function ($scope, $state, $stateParams, spinner, appointmentsService, appService, appointmentsFilter) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             var init = function () {
@@ -17,6 +17,7 @@ angular.module('bahmni.appointments')
                 };
                 spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
                     $scope.appointments = response.data;
+                    $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
                 }));
             };
 
@@ -35,6 +36,14 @@ angular.module('bahmni.appointments')
             $scope.isWalkIn = function (appointmentType) {
                 return appointmentType === 'WalkIn' ? 'Yes' : 'No';
             };
+
+            $scope.$watch(function () {
+                return $stateParams.filterParams;
+            }, function (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
+                }
+            }, true);
 
             init();
         }]);
