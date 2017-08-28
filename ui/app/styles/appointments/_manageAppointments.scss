@@ -206,7 +206,7 @@
   &.app-filter-open {
     width: calc(100% - 301px);
   }
-  &.disabled button{
+  &.disabled button {
     opacity: 0.5;
     cursor: not-allowed;
     background: #E2E2E2;
@@ -382,75 +382,54 @@
   &.app-filter-open {
     width: calc(100% - 311px);
   }
-  .app-list-view-table-head {
-    thead {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      th {
-        background: #C7C0C0;
-        color: #222222;
-        border-color: #C7C0C0;
-        text-align: center;
-        padding: 10px;
-        min-width: 110px;
-        box-sizing: border-box;
-        &.app-list-view-startDate, &.app-list-view-startTime, &.app-list-view-endTime {
-          min-width: 90px;
-        }
-        &.app-list-view-serviceType {
-          min-width: 192px;
-        }
-        &.app-list-view-note {
-          min-width: 200px;
-        }
-      }
+  th, td {
+    font-size: 14px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    width: 90px;
+    min-width: 90px;
+    max-width: 90px;
+    overflow: hidden;
+    text-align: center;
+    &.table-mid-width {
+      width: 180px;
+      min-width: 180px;
+      max-width: 180px;
+    }
+    &:last-child {
+      width: 540px;
+      min-width: 540px;
+      max-width: 540px;
     }
   }
-  .app-list-view-table-body {
-    tbody {
-      height: calc(100% - 51px);
-      position: absolute;
-      overflow-y: auto;
-      top: 37px;
-      tr {
-        &:nth-child(even) {
-          background: #F2F1F1;
-        }
-        &.selected {
-          td {
-            color: inherit;
-            background: #298dd5;
-            border-color: #298dd5;
-          }
-        }
+  thead {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    th {
+      font-weight: 900;
+      color: #4c4c4c;
+      background: #e2e1e1;
+      border-color: #e2e1e1;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  tbody {
+    position: absolute;
+    height: calc(100% - 51px);
+    overflow-y: auto;
+    top: 33px;
+    tr {
+      &:nth-child(even) {
+        background: #F2F1F1;
+      }
+      &.selected {
         td {
-          text-align: center;
-          padding: 10px;
-          min-width: 110px;
-          box-sizing: border-box;
-          cursor: pointer;
-          &:first-child {
-            border-left: none;
-          }
-          &:last-child {
-            border-right: none;
-          }
-          input[type=checkbox] {
-            float: left;
-            margin-top: 2px;
-          }
-          &.app-list-view-startDate, &.app-list-view-startTime, &.app-list-view-endTime {
-            min-width: 90px;
-          }
-          &.app-list-view-serviceType {
-            min-width: 192px;
-          }
-          &.app-list-view-note {
-            word-break: break-all;
-            min-width: 200px;
-          }
+          color: inherit;
+          background: #298dd5;
+          border-color: #298dd5;
         }
       }
     }
@@ -483,6 +462,7 @@
     }
   }
 }
+
 .app-ava-slots {
   padding-left: 125px;
 }
