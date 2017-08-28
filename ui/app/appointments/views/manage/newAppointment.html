@@ -101,7 +101,7 @@
                     </label>
                     <input type="text"
                            id="startTimeID"
-                           min-length=2
+                           min-length=1
                            bahmni-autocomplete
                            ng-model="appointment.startTime"
                            source="timeSource"
@@ -141,11 +141,12 @@
                            required/>
                     <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
                 </p>
-                <p class="app-ava-slots" ng-if="currentLoad || maxAppointmentsLimit || (maxAppointmentsLimit && currentLoad)">
-                    <span  ng-if="maxAppointmentsLimit"><span style="color: #5cb85c;">{{maxAppointmentsLimit-currentLoad}} {{'APPOINTMENT_CREATE_SLOT' | translate}}</span>
-                        {{'APPOINTMENT_CREATE_OUTOF' | translate}} <span style="color: #0275d8;">{{maxAppointmentsLimit}} {{'APPOINTMENT_CREATE_SLOT' | translate}}</span></span>
-                    <span style="color: #f0ad4e;">{{currentLoad}} {{'APPOINTMENT_CREATE_SLOT' | translate}} {{'APPOINTMENT_CREATE_BOOKED' | translate}}</span>
-                    <span style="color: #f0ad4e;" ng-if="currentLoad"> Booked: {{currentLoad}} Slots</span>
+                <p class="app-ava-slots"
+                   ng-if="currentLoad || maxAppointmentsLimit || (maxAppointmentsLimit && currentLoad)">
+                    <span ng-if="maxAppointmentsLimit"><span style="color: #5cb85c;">{{maxAppointmentsLimit-currentLoad}} {{'APPOINTMENT_CREATE_SLOT' | translate}} {{'APPOINTMENT_CREATE_AVAL' | translate}}</span>
+                        {{'APPOINTMENT_CREATE_OUTOF' | translate}} <span style="color: #0275d8;">{{maxAppointmentsLimit}} {{'APPOINTMENT_CREATE_SLOT' | translate}}</span><span
+                                ng-if="maxAppointmentsLimit && currentLoad">, </span></span>
+                    <span style="color: #f0ad4e;" ng-if="currentLoad">{{currentLoad}} {{'APPOINTMENT_CREATE_SLOT' | translate}} {{'APPOINTMENT_CREATE_BOOKED' | translate}}</span>
                 </p>
                 <p class="warning-message" ng-if="warning.endTime">
                     <i class="fa fa-exclamation-triangle"></i>
