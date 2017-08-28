@@ -181,4 +181,99 @@ describe('AllAppointmentsController', function () {
         expect(state.params.filterParams.serviceUuids.length).toEqual(1);
         expect(state.params.filterParams.serviceUuids[0]).toEqual("75c006aa-d3dd-4848-9735-03aee74ae27e");
     });
+
+    it('should set service types to state params', function () {
+        appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({}));
+        createController();
+        state.params = {};
+        scope.selectedSpecialities = [
+            {
+                "label": "Speciality",
+                "children": [
+                    {
+                        "label": "Dermatology",
+                        "value": "75c006aa-d3dd-4848-9735-03aee74ae27e",
+                        "children": [
+                            {
+                                "label": "type1",
+                                "value": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a",
+                                "selected": true
+                            },
+                            {
+                                "label": "type2",
+                                "value": "f9556d31-2c42-4c7b-8d05-48aceeae0900",
+                                "selected": false
+                            }
+                        ],
+                        "selected": false
+                    },
+                    {
+                        "label": "Ophthalmology",
+                        "value": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                        "children": [
+                            {
+                                "label": "type1",
+                                "value": "6f59ba62-ddf4-46bc-b866-c09ae7b8200f",
+                                "selected": false
+                            }
+                        ],
+                        "selected": false
+                    }
+                ],
+                "selected": false
+            }
+        ];
+        scope.applyFilter();
+        expect(state.params.filterParams.serviceTypeUuids.length).toEqual(1);
+        expect(state.params.filterParams.serviceTypeUuids[0]).toEqual("f9556d31-2c42-4c7b-8d05-48aceeae0c9a");
+    });
+
+    it('should select service types only when the service is not selected', function () {
+        appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({}));
+        createController();
+        state.params = {};
+        scope.selectedSpecialities = [
+            {
+                "label": "Speciality",
+                "children": [
+                    {
+                        "label": "Dermatology",
+                        "value": "75c006aa-d3dd-4848-9735-03aee74ae27e",
+                        "children": [
+                            {
+                                "label": "type1",
+                                "value": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a",
+                                "selected": true
+                            },
+                            {
+                                "label": "type2",
+                                "value": "f9556d31-2c42-4c7b-8d05-48aceeae0900",
+                                "selected": true
+                            }
+                        ],
+                        "selected": true
+                    },
+                    {
+                        "label": "Ophthalmology",
+                        "value": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                        "children": [
+                            {
+                                "label": "type1",
+                                "value": "6f59ba62-ddf4-46bc-b866-c09ae7b8200f",
+                                "selected": true
+                            }
+                        ],
+                        "selected": true
+                    }
+                ],
+                "selected": false
+            }
+        ];
+        scope.applyFilter();
+        expect(state.params.filterParams.serviceTypeUuids.length).toEqual(0);
+        expect(state.params.filterParams.serviceUuids.length).toEqual(2);
+        expect(state.params.filterParams.serviceUuids[0]).toEqual("75c006aa-d3dd-4848-9735-03aee74ae27e");
+        expect(state.params.filterParams.serviceUuids[1]).toEqual("02666cc6-5f3e-4920-856d-ab7e28d3dbdb");
+    })
+
 });
