@@ -17,6 +17,13 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            this.getAllServicesWithServiceTypes = function () {
+                return $http.get(Bahmni.Common.Constants.appointmentServiceUrl + "/allWithServiceTypes", {
+                    withCredentials: true,
+                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                });
+            };
+
             this.getServiceLoad = function (serviceUuid, startDateTime, endDateTime) {
                 var params = {uuid: serviceUuid, startDateTime: startDateTime, endDateTime: endDateTime};
                 return $http.get(Bahmni.Appointments.Constants.getServiceLoad, {

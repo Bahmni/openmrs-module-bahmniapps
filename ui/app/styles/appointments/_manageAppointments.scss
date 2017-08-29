@@ -154,6 +154,19 @@
       }
     }
   }
+  .app-filter-speciality {
+    overflow: auto;
+    max-height: 200px;
+    padding-left: 10px;
+    font-size: 14px;
+    input[type=checkbox] {
+      margin: 0 3px;
+    }
+    .ivh-treeview-node-content {
+      margin: 4px 0px;
+    }
+  }
+
 }
 
 .appointment-btn-container {
@@ -203,10 +216,7 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     }
   }
-  &.app-filter-open {
-    width: calc(100% - 301px);
-  }
-  &.disabled button {
+  &.disabled button{
     opacity: 0.5;
     cursor: not-allowed;
     background: #E2E2E2;
@@ -346,9 +356,6 @@
   box-sizing: border-box;
   top: 126px;
   left: 0;
-  &.filter-opened {
-    padding-left: 300px;
-  }
   button, input {
     @extend .appBtn;
     background: #F8F8F8;
@@ -367,11 +374,6 @@
   .app-view-prev {
     margin-left: 80px;
   }
-  &.filter-opened {
-    .app-view-prev {
-      margin-left: 0;
-    }
-  }
 }
 
 .app-list-view {
@@ -379,9 +381,6 @@
   overflow-y: hidden;
   height: calc(100vh - 230px);
   position: relative;
-  &.app-filter-open {
-    width: calc(100% - 311px);
-  }
   th, td {
     font-size: 14px;
     padding: 8px;
@@ -441,11 +440,7 @@
   float: left;
   overflow: hidden;
   height: calc(100vh - 230px);
-
-  &.app-filter-open {
-    width: calc(100% - 311px);
-    padding-left: 0;
-  }
+  width: 100%;
   .section-grid {
     border-radius: 0;
     border: 1px solid #ddd;
@@ -462,7 +457,6 @@
     }
   }
 }
-
 .app-ava-slots {
   padding-left: 125px;
 }
