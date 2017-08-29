@@ -54,7 +54,7 @@ angular.module('bahmni.appointments')
                 };
 
                 $scope.createAppointment = function (start, end, jsEvent, view, resource) {
-                    $state.go("home.manage.appointments.calendar.new", {appointment: {startDateTime: start, endDateTime: end, provider: resource.provider}});
+                    $state.go('home.manage.appointments.calendar.new', {appointment: {startDateTime: start, endDateTime: end, provider: resource.provider}});
                 };
 
                 var isSelectable = function () {
