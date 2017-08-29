@@ -107,5 +107,7 @@
   "CANCEL_APPOINTMENT": "Cancel",
   "CURRENT_DATE": "Today",
   "TOTAL_KEY": "Total",
-  "MISSED_KEY": "missed"
+  "MISSED_KEY": "missed",
+  "PLACEHOLDER_SELECT_PATIENT": "Select a patient",
+  "APPOINTMENT_SLOT": "Slot"
 }
