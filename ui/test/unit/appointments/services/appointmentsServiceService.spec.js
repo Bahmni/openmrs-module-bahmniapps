@@ -40,4 +40,11 @@ describe('AppointmentsServiceService', function () {
         var params = {params: {uuid: serviceUuid}, withCredentials: true, headers: headers};
         expect(mockHttp.delete).toHaveBeenCalledWith('/openmrs/ws/rest/v1/appointmentService', params);
     });
+
+    it("should get appointment serivices with speciality and service types", function () {
+       appointmentsServiceService.getAllServicesWithServiceTypes();
+        var headers = {Accept: 'application/json', 'Content-Type': 'application/json'};
+        var params = { withCredentials: true, headers: headers};
+        expect(mockHttp.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/appointmentService/allWithServiceTypes', params);
+    });
 });

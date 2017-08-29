@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsCalendarViewController', ['$scope', 'spinner', 'appointmentsService', 'appointmentsContext', '$translate',
-        '$stateParams',
-        function ($scope, spinner, appointmentsService, appointmentsContext, $translate, $stateParams) {
+    .controller('AppointmentsCalendarViewController', ['$scope', '$stateParams', '$translate', 'spinner', 'appointmentsService', 'appointmentsContext', 'appointmentsFilter',
+        function ($scope, $stateParams, $translate, spinner, appointmentsService, appointmentsContext, appointmentsFilter) {
+            $scope.allAppointmentsForDay = appointmentsContext.appointments;
             var init = function () {
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 var parseAppointments = function (allAppointments) {
@@ -60,11 +60,22 @@ angular.module('bahmni.appointments')
 
                 $scope.getAppointmentsForDate = function (viewDate) {
                     $scope.shouldReload = false;
-                    var params = { forDate: viewDate };
+                    var params = {forDate: viewDate};
                     return spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
-                        return parseAppointments(response.data);
+                        $scope.allAppointmentsForDay = response.data;
+                        var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay, $stateParams.filterParams);
+                        return parseAppointments(filteredAppointments);
                     }));
                 };
+
+                $scope.$watch(function () {
+                    return $stateParams.filterParams;
+                }, function (newValue, oldValue) {
+                    if (newValue !== oldValue) {
+                        var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay, $stateParams.filterParams);
+                        parseAppointments(filteredAppointments);
+                    }
+                }, true);
             };
             return init();
         }]);

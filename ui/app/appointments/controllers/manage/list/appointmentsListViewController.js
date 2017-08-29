@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsListViewController', ['$scope', '$stateParams', 'spinner', 'appointmentsService', 'appService',
-        '$state',
-        function ($scope, $stateParams, spinner, appointmentsService, appService, $state) {
+    .controller('AppointmentsListViewController', ['$scope', '$state', '$stateParams', 'spinner', 'appointmentsService', 'appService', 'appointmentsFilter',
+        function ($scope, $state, $stateParams, spinner, appointmentsService, appService, appointmentsFilter) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             var init = function () {
@@ -18,6 +17,7 @@ angular.module('bahmni.appointments')
                 };
                 spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
                     $scope.appointments = response.data;
+                    $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
                 }));
             };
 
@@ -40,6 +40,14 @@ angular.module('bahmni.appointments')
             $scope.editAppointment = function () {
                 $state.go('home.manage.appointments.list.edit', {appointment: $scope.selectedAppointment, uuid: $scope.selectedAppointment.uuid});
             };
+
+            $scope.$watch(function () {
+                return $stateParams.filterParams;
+            }, function (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
+                }
+            }, true);
 
             init();
         }]);
