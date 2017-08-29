@@ -65,6 +65,9 @@ angular
             }).state('home.manage.appointments.calendar', {
                 url: '/calendar',
                 tabName: 'calendar',
+                params: {
+                    viewDate: null
+                },
                 views: {
                     'content@viewAppointments': {
                         templateUrl: 'views/manage/calendar/calendarView.html',
@@ -78,17 +81,34 @@ angular
                 }
             }).state('home.manage.appointments.calendar.new', {
                 url: '/new',
+                params: {
+                    appointment: null
+                },
                 views: {
                     'content@appointment': {
                         templateUrl: 'views/manage/newAppointment.html',
                         controller: 'AppointmentsCreateController'
                     }
+                },
+                resolve: {
+                    appointmentCreateConfig: function (appointmentConfigInitialization) {
+                        return appointmentConfigInitialization();
+                    }
                 }
             }).state('home.manage.appointments.calendar.edit', {
                 url: '/:uuid',
+                params: {
+                    appointment: null
+                },
                 views: {
                     'content@appointment': {
-                        templateUrl: 'views/manage/editAppointment.html'
+                        templateUrl: 'views/manage/newAppointment.html',
+                        controller: 'AppointmentsCreateController'
+                    }
+                },
+                resolve: {
+                    appointmentCreateConfig: function (appointmentConfigInitialization) {
+                        return appointmentConfigInitialization();
                     }
                 }
             }).state('home.manage.appointments.list', {
@@ -110,12 +130,26 @@ angular
                         templateUrl: 'views/manage/newAppointment.html',
                         controller: 'AppointmentsCreateController'
                     }
+                },
+                resolve: {
+                    appointmentCreateConfig: function (appointmentConfigInitialization) {
+                        return appointmentConfigInitialization();
+                    }
                 }
             }).state('home.manage.appointments.list.edit', {
                 url: '/:uuid',
+                params: {
+                    appointment: null
+                },
                 views: {
                     'content@appointment': {
-                        templateUrl: 'views/manage/editAppointment.html'
+                        templateUrl: 'views/manage/newAppointment.html',
+                        controller: 'AppointmentsCreateController'
+                    }
+                },
+                resolve: {
+                    appointmentCreateConfig: function (appointmentConfigInitialization) {
+                        return appointmentConfigInitialization();
                     }
                 }
             }).state('home.admin', {

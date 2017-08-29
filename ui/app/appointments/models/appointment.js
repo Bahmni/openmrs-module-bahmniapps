@@ -13,13 +13,14 @@ Bahmni.Appointments.Appointment = (function () {
             return dateUtil.parseServerDateToDate(dateUtil.getDateWithoutTime(appointmentDate) + ' ' + formattedTime);
         };
         var appointment = new Appointment({
-            patientUuid: appointmentDetails.patientUuid,
-            serviceUuid: appointmentDetails.serviceUuid,
-            serviceTypeUuid: appointmentDetails.serviceTypeUuid,
+            uuid: appointmentDetails.uuid,
+            patientUuid: appointmentDetails.patient.uuid,
+            serviceUuid: appointmentDetails.service.uuid,
+            serviceTypeUuid: appointmentDetails.serviceType && appointmentDetails.serviceType.uuid,
             startDateTime: getDateTime(appointmentDetails.date, appointmentDetails.startTime),
             endDateTime: getDateTime(appointmentDetails.date, appointmentDetails.endTime),
-            providerUuid: appointmentDetails.providerUuid,
-            locationUuid: appointmentDetails.locationUuid,
+            providerUuid: appointmentDetails.provider && appointmentDetails.provider.uuid,
+            locationUuid: appointmentDetails.location && appointmentDetails.location.uuid,
             appointmentKind: appointmentDetails.appointmentKind,
             status: appointmentDetails.status,
             comments: appointmentDetails.comments

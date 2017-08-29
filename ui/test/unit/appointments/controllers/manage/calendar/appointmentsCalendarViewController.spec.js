@@ -106,8 +106,8 @@ describe('AppointmentsCalendarViewController', function () {
         var resources = scope.providerAppointments.resources;
         var sortedAppointments = _.sortBy(allAppointments, 'provider.name');
         expect(resources.length).toBe(3);
-        expect(resources[0]).toEqual({id: sortedAppointments[0].provider.name, title: sortedAppointments[0].provider.name});
-        expect(resources[1]).toEqual({id: sortedAppointments[1].provider.name, title: sortedAppointments[1].provider.name});
+        expect(resources[0]).toEqual({id: sortedAppointments[0].provider.name, title: sortedAppointments[0].provider.name, provider: sortedAppointments[0].provider });
+        expect(resources[1]).toEqual({id: sortedAppointments[1].provider.name, title: sortedAppointments[1].provider.name, provider: sortedAppointments[1].provider});
         expect(resources[2]).toEqual({id: '[No Provider]', title: 'No provider appointments'});
 
         var events = scope.providerAppointments.events;
@@ -118,6 +118,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(events[0].color).toBe(allAppointments[0].service.color);
         expect(events[0].serviceName).toBe(allAppointments[0].service.name);
         expect(events[0].title).toBe(allAppointments[0].patient.name + "(" + allAppointments[0].patient.identifier + ")");
+        expect(events[0].appointments).toEqual([allAppointments[0]]);
 
         expect(events[1].resourceId).toBe(allAppointments[1].provider.name);
         expect(events[1].start).toBe(allAppointments[1].startDateTime);
@@ -125,6 +126,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(events[1].color).toBe(allAppointments[1].service.color);
         expect(events[1].serviceName).toBe(allAppointments[1].service.name);
         expect(events[1].title).toBe(allAppointments[1].patient.name + "(" + allAppointments[1].patient.identifier + ")");
+        expect(events[1].appointments).toEqual([allAppointments[1]]);
     });
 
     it('should append to existing event if they are of same slot & provider & service', function () {
@@ -175,7 +177,7 @@ describe('AppointmentsCalendarViewController', function () {
         scope.getAppointmentsForDate(viewDate);
         var resources = scope.providerAppointments.resources;
         expect(resources.length).toBe(2);
-        expect(resources[0]).toEqual({id: allAppointments[0].provider.name, title: allAppointments[0].provider.name});
+        expect(resources[0]).toEqual({id: allAppointments[0].provider.name, title: allAppointments[0].provider.name, provider: allAppointments[0].provider});
         expect(resources[1]).toEqual({id: '[No Provider]', title: 'No provider appointments'});
         var events = scope.providerAppointments.events;
         expect(events.length).toBe(1);
@@ -187,6 +189,7 @@ describe('AppointmentsCalendarViewController', function () {
         var mergedPatientNames = allAppointments[0].patient.name + "(" + allAppointments[0].patient.identifier + ")" + ', ' +
             allAppointments[1].patient.name + "(" + allAppointments[1].patient.identifier + ")";
         expect(events[0].title).toBe(mergedPatientNames);
+        expect(events[0].appointments).toEqual(allAppointments);
     });
 
     it('should not append to existing event if they are of same slot & provider & but not service', function () {
@@ -237,7 +240,7 @@ describe('AppointmentsCalendarViewController', function () {
         scope.getAppointmentsForDate(viewDate);
         var resources = scope.providerAppointments.resources;
         expect(resources.length).toBe(2);
-        expect(resources[0]).toEqual({id: allAppointments[0].provider.name, title: allAppointments[0].provider.name});
+        expect(resources[0]).toEqual({id: allAppointments[0].provider.name, title: allAppointments[0].provider.name, provider: allAppointments[0].provider});
         expect(resources[1]).toEqual({id: '[No Provider]', title: 'No provider appointments'});
         var events = scope.providerAppointments.events;
         expect(events.length).toBe(2);
@@ -247,6 +250,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(events[0].color).toBe(allAppointments[0].service.color);
         expect(events[0].serviceName).toBe(allAppointments[0].service.name);
         expect(events[0].title).toBe(allAppointments[0].patient.name + "(" + allAppointments[0].patient.identifier + ")");
+        expect(events[0].appointments).toEqual([allAppointments[0]]);
 
         expect(events[1].resourceId).toBe(allAppointments[1].provider.name);
         expect(events[1].start).toBe(allAppointments[1].startDateTime);
@@ -254,6 +258,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(events[1].color).toBe(allAppointments[1].service.color);
         expect(events[1].serviceName).toBe(allAppointments[1].service.name);
         expect(events[1].title).toBe(allAppointments[1].patient.name + "(" + allAppointments[1].patient.identifier + ")");
+        expect(events[1].appointments).toEqual([allAppointments[1]]);
     });
 
     it('should filter out the cancelled appointments', function () {

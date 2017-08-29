@@ -2,8 +2,10 @@
 
 angular.module('bahmni.appointments')
     .controller('AppointmentsCalendarViewController', ['$scope', 'spinner', 'appointmentsService', 'appointmentsContext', '$translate',
-        function ($scope, spinner, appointmentsService, appointmentsContext, $translate) {
+        '$stateParams',
+        function ($scope, spinner, appointmentsService, appointmentsContext, $translate, $stateParams) {
             var init = function () {
+                $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 var parseAppointments = function (allAppointments) {
                     var appointments = allAppointments.filter(function (appointment) {
                         return appointment.status !== "Cancelled";
@@ -14,7 +16,11 @@ angular.module('bahmni.appointments')
                     var resources = [];
                     providers.reduce(function (result, provider) {
                         if (provider) {
-                            var resource = { id: provider.name, title: provider.name };
+                            var resource = {
+                                id: provider.name,
+                                title: provider.name,
+                                provider: provider
+                            };
                             var exists = _.find(result, resource);
                             if (!exists) {
                                 result.push(resource);
@@ -37,8 +43,11 @@ angular.module('bahmni.appointments')
                         var patientName = appointment.patient.name + "(" + appointment.patient.identifier + ")";
                         if (existingEvent) {
                             existingEvent.title = [existingEvent.title, patientName].join(', ');
+                            existingEvent.appointments.push(appointment);
                         } else {
                             event.title = patientName;
+                            event.appointments = [];
+                            event.appointments.push(appointment);
                             result.push(event);
                         }
                         return result;

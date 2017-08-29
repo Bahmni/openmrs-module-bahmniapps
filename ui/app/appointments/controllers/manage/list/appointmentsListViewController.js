@@ -2,7 +2,8 @@
 
 angular.module('bahmni.appointments')
     .controller('AppointmentsListViewController', ['$scope', '$stateParams', 'spinner', 'appointmentsService', 'appService',
-        function ($scope, $stateParams, spinner, appointmentsService, appService) {
+        '$state',
+        function ($scope, $stateParams, spinner, appointmentsService, appService, $state) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             var init = function () {
@@ -34,6 +35,10 @@ angular.module('bahmni.appointments')
 
             $scope.isWalkIn = function (appointmentType) {
                 return appointmentType === 'WalkIn' ? 'Yes' : 'No';
+            };
+
+            $scope.editAppointment = function () {
+                $state.go('home.manage.appointments.list.edit', {appointment: $scope.selectedAppointment, uuid: $scope.selectedAppointment.uuid});
             };
 
             init();

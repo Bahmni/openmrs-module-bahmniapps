@@ -18,7 +18,9 @@ Bahmni.Appointments.Constants = (function () {
         defaultCalendarSlotDuration: "00:30:00",
         defaultCalendarStartTime: "08:00",
         defaultCalendarEndTime: "19:00",
-        defaultAppointmentStatus: 'Scheduled'
+        minDurationForAppointment: 30,
+        defaultAppointmentStatus: 'Scheduled',
+        regexForTime: /^(?:(?:1[0-2]|0?[1-9]):[0-5]\d\s*[AaPp][Mm])?$/
     };
 })();
 

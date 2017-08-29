@@ -1,14 +1,26 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsDayCalendarController', ['$scope', 'uiCalendarConfig', 'appService',
-        function ($scope, uiCalendarConfig, appService) {
+    .controller('AppointmentsDayCalendarController', ['$scope', '$state', 'uiCalendarConfig', 'appService', 'calendarViewPopUp',
+        function ($scope, $state, uiCalendarConfig, appService, calendarViewPopUp) {
             var init = function () {
                 $scope.events = $scope.appointments.events;
 
-                $scope.alertOnEventClick = function (date, jsEvent, view) {
-                    $scope.alertMessage = (date.title + ' for ' + date.resourceId + ' was clicked ');
-                    alert($scope.alertMessage);
+                $scope.alertOnEventClick = function (event, jsEvent, view) {
+                    var createAppointment = function (closeDialog) {
+                        closeDialog();
+                        $state.go('home.manage.appointments.calendar.new', {appointment: {startDateTime: event.start, endDateTime: event.end, provider: event.appointments[0].provider}});
+                    };
+
+                    var editAppointment = function (closeDialog, appointment) {
+                        closeDialog();
+                        $state.go('home.manage.appointments.calendar.edit', {appointment: appointment});
+                    };
+
+                    calendarViewPopUp({
+                        scope: { appointments: event.appointments, editAppointment: editAppointment, createAppointment: isSelectable() ? createAppointment : undefined },
+                        className: "ngdialog-theme-default delete-program-popup"
+                    });
                 };
 
                 $scope.alertOnDrop = function (event, delta, revertFunc, jsEvent, ui, view) {
@@ -41,13 +53,17 @@ angular.module('bahmni.appointments')
                 };
 
                 $scope.createAppointment = function (start, end, jsEvent, view, resource) {
-                    alert("startTime is " + start + " endTime is " + end + ' for ' + resource.title);
+                    $state.go("home.manage.appointments.calendar.new", {appointment: {startDateTime: start, endDateTime: end, provider: resource.provider}});
+                };
+
+                var isSelectable = function () {
+                    return !(Bahmni.Common.Util.DateUtil.isBeforeDate($scope.date, moment().startOf('day')));
                 };
 
                 $scope.uiConfig = {
                     calendar: {
                         height: document.getElementsByClassName('app-calendar-container')[0].clientHeight,
-                        editable: true,
+                        editable: false,
                         defaultDate: $scope.date,
                         header: false,
                         timezone: 'local',
@@ -59,7 +75,7 @@ angular.module('bahmni.appointments')
                         },
                         scrollTime: appService.getAppDescriptor().getConfigValue('startOfDay') || Bahmni.Appointments.Constants.defaultCalendarStartTime,
                         groupByResource: true,
-                        selectable: true,
+                        selectable: isSelectable(),
                         select: $scope.createAppointment,
                         slotLabelInterval: appService.getAppDescriptor().getConfigValue('calendarSlotLabelInterval') || Bahmni.Appointments.Constants.defaultCalendarSlotLabelInterval,
                         slotDuration: appService.getAppDescriptor().getConfigValue('calendarSlotDuration') || Bahmni.Appointments.Constants.defaultCalendarSlotDuration,

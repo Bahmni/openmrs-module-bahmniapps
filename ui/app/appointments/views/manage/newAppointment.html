@@ -2,7 +2,8 @@
     <div class="create-new-app-container">
         <a href="#/home/manage/appointments/list"> <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 
-        <h2>{{ ::'ADD_NEW_APPOINTMENT' | translate}}</h2>
+        <h2 ng-hide="appointment.uuid">{{ ::'ADD_NEW_APPOINTMENT' | translate}}</h2>
+        <h2 ng-show="appointment.uuid">Edit Appointment</h2>
         <form ng-submit="save()" id="create-appointment-form" name="createAppointmentForm">
 
             <section id="addNewAppointment">
@@ -13,7 +14,7 @@
                            id="patientID"
                            min-length=3
                            bahmni-autocomplete
-                           ng-model="patient"
+                           ng-model="appointment.patient.label"
                            source="search"
                            response-map="responseMap"
                            on-select="onSelectPatient"
@@ -31,8 +32,8 @@
                     <label for="speciality">
                         {{'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate}}
                     </label>
-                    <select id="speciality" ng-model="appointment.specialityUuid"
-                            ng-options="item.uuid as item.name for item in specialities | orderBy:'name'"
+                    <select id="speciality" ng-model="appointment.speciality"
+                            ng-options="speciality.name for speciality in appointmentCreateConfig.specialities | orderBy:'name'"
                             ng-change="onSpecialityChange()">
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_SPECIALITY' | translate}}
                         </option>
@@ -42,8 +43,8 @@
                     <label for="service">
                         {{'APPOINTMENT_SERVICE' | translate}}<sup class="asterick">*</sup>
                     </label>
-                    <select id="service" ng-model="appointment.serviceUuid"
-                            ng-options="item.uuid as item.name for item in services | filter: {speciality:{uuid:appointment.specialityUuid}}:true"
+                    <select id="service" ng-model="appointment.service"
+                            ng-options="service.name for service in appointmentCreateConfig.services | filter: {speciality:{uuid:appointment.speciality.uuid}}:true"
                             ng-change="onServiceChange()"
                             required>
                         <option disabled value="">{{ ::'PLACEHOLDER_SERVICE' | translate}}
@@ -55,9 +56,9 @@
                     <label for="serviceType">
                         {{'APPOINTMENT_SERVICE_TYPE' | translate}}
                     </label>
-                    <select ng-disabled="!(serviceTypes.length > 0)" id="serviceType"
-                            ng-model="appointment.serviceTypeUuid" ng-change="onServiceTypeChange()"
-                            ng-options="item.uuid as item.name + '   [' + item.duration + ' min]'  for item in serviceTypes | orderBy:'name'">
+                    <select ng-disabled="!(selectedService.serviceTypes.length > 0)" id="serviceType"
+                            ng-model="appointment.serviceType" ng-change="onServiceTypeChange()"
+                            ng-options="serviceType.name + '   [' + serviceType.duration + ' min]'  for serviceType in selectedService.serviceTypes | orderBy:'name'">
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_TYPE' | translate}}
                         </option>
                     </select>
@@ -67,8 +68,8 @@
                     <label for="location">
                         {{'APPOINTMENT_SERVICE_LOCATION_KEY' | translate}}
                     </label>
-                    <select id="location" ng-model="appointment.locationUuid"
-                            ng-options="item.uuid as item.display for item in locations | orderBy:'display'">
+                    <select id="location" ng-model="appointment.location"
+                            ng-options="location.display for location in appointmentCreateConfig.locations | orderBy:'display'">
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}
                         </option>
                     </select>
@@ -77,8 +78,8 @@
                     <label for="provider">
                         {{'APPOINTMENT_PROVIDER' | translate}}
                     </label>
-                    <select id="provider" ng-model="appointment.providerUuid"
-                            ng-options="item.uuid as item.display for item in providers | orderBy:'display'">
+                    <select id="provider" ng-model="appointment.provider"
+                            ng-options="provider.display for provider in appointmentCreateConfig.providers | orderBy:'display'">
                         <option value="">{{ ::'PLACEHOLDER_CREATE_PROVIDER' | translate}}</option>
                     </select>
                 </p>
@@ -86,9 +87,8 @@
                     <label for="date">
                         {{'APPOINTMENT_DATE' | translate}}<sup class="asterick">*</sup>
                     </label>
-                    <input id="date" ng-disabled="!(appointment.serviceUuid.length > 0)" type="date" min="{{today}}"
-                           ng-model="appointment.date" required ng-change="OnDateChange()"
-                           placeholder="Pick appointment date"/>
+                    <input  id="date" type="date" min="{{today}}"
+                            ng-model="appointment.date" required ng-change="appointment.service && checkAvailability()" placeholder="Pick appointment date"/>
                     <span class="slots-remaining"></span>
                 </p>
                 <p class="warning-message" ng-if="warning.appointmentDate">

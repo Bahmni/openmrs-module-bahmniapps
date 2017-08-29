@@ -1,0 +1,40 @@
+<div class="confirm-box">
+    <span ng-click="close()">
+        <i class="fa fa-remove"></i>
+    </span>
+    <p>
+        <label for="patient">
+            {{::'APPOINTMENT_CREATE_PATIENT_NAME' |translate}}:
+        </label>
+        <select id="patient" ng-model="patient" ng-options="patient as patient.name + ' (' + patient.identifier + ')' for patient in scope.patientList">
+            <option value="">{{ ::'PLACEHOLDER_SELECT_PATIENT' | translate}}</option>
+        </select>
+    </p>
+    <div ng-if="patient">
+        <p>{{::'APPOINTMENT_SERVICE' | translate}}: {{scope.patientAppointmentMap[patient.uuid].service.name}}</p>
+        <p ng-show="scope.patientAppointmentMap[patient.uuid].serviceType">{{::'APPOINTMENT_SERVICE_TYPE_FULL' | translate}}: {{scope.patientAppointmentMap[patient.uuid].serviceType.name}}</p>
+        <p ng-show="scope.patientAppointmentMap[patient.uuid].status">{{::'APPOINTMENT_STATUS' | translate}}: {{scope.patientAppointmentMap[patient.uuid].status}}</p>
+    </div>
+    <p ng-if="scope.appointments[0].provider">{{::'APPOINTMENT_PROVIDER' | translate}}: {{scope.appointments[0].provider.name}}</p>
+    <p>{{::'APPOINTMENT_DATE' | translate}}: {{scope.appointments[0].startDateTime | bahmniDate}}</p>
+    <p>{{::'APPOINTMENT_SLOT' | translate}}: {{scope.appointments[0].startDateTime | bahmniTime}} - {{scope.appointments[0].endDateTime | bahmniTime}}</p>
+    <p>
+        <fieldset ng-disabled="!patient">
+            <button ng-click="scope.editAppointment(close, scope.patientAppointmentMap[patient.uuid]);" >
+                {{::'EDIT_APPOINTMENT' | translate}}
+            </button>
+            <button>
+                {{::'CHECK_IN_APPOINTMENT' | translate}}
+            </button>
+            <button>
+                {{::'COMPLETE_APPOINTMENT' | translate}}
+            </button>
+            <button>
+                {{::'CANCEL_APPOINTMENT' | translate}}
+            </button>
+        </fieldset>
+        <button ng-show="scope.createAppointment" ng-click="scope.createAppointment(close, scope.patientAppointmentMap[patient.uuid]);" >
+            {{::'ADD_NEW_APPOINTMENT' | translate}}
+        </button>
+    </p>
+</div>
