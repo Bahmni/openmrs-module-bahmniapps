@@ -9,9 +9,11 @@ Bahmni.Appointments.AppointmentViewModel = (function () {
         var getDateWithoutTime = function (dateTime) {
             return dateTime ? new Date(moment(dateTime)) : undefined;
         };
+
         var getTimeWithoutDate = function (dateTime) {
             return dateTime ? moment(dateTime).format('hh:mm a') : undefined;
         };
+
         var parsePatient = function (patientInfo) {
             var patient = {};
             patient.label = patientInfo.name + " (" + patientInfo.identifier + ")";
