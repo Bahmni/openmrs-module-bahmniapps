@@ -351,11 +351,11 @@
 
 .app-date-nav {
   position: absolute;
-  width: calc(100% - 184px);
+  width: calc(100% - 478px);
   text-align: center;
   box-sizing: border-box;
   top: 126px;
-  left: 0;
+  right: 179px;
   button, input {
     @extend .appBtn;
     background: #F8F8F8;
