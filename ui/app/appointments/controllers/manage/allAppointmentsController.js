@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AllAppointmentsController', ['$scope', '$location', '$state', '$stateParams', 'appService', 'appointmentsServiceService', 'spinner',
-        function ($scope, $location, $state, $stateParams, appService, appointmentsServiceService, spinner) {
+    .controller('AllAppointmentsController', ['$scope', '$location', '$state', '$stateParams', 'appService', 'appointmentsServiceService', 'spinner', 'ivhTreeviewMgr',
+        function ($scope, $location, $state, $stateParams, appService, appointmentsServiceService, spinner, ivhTreeviewMgr) {
             var init = function () {
                 spinner.forPromise(appointmentsServiceService.getAllServicesWithServiceTypes().then(function (response) {
                     $scope.servicesWithTypes = response.data;
@@ -26,8 +26,17 @@ angular.module('bahmni.appointments')
                 }));
             };
 
+            $scope.setFilterParams = function () {
+                $state.params.filterParams = {
+                    serviceUuids: [],
+                    serviceTypeUuids: [],
+                    providerUuids: [],
+                    statusList: []
+                };
+            };
+
             $scope.applyFilter = function () {
-                $state.params.filterParams = {serviceUuids: [], serviceTypeUuids: []};
+                $scope.setFilterParams();
                 $state.params.filterParams.serviceUuids = _.reduce($scope.selectedSpecialities, function (accumulator, speciality) {
                     var serviceUuids = _.chain(speciality.children)
                         .filter(function (service) {
@@ -67,6 +76,11 @@ angular.module('bahmni.appointments')
 
             $scope.getCurrentAppointmentTabName = function () {
                 return $state.current.tabName;
+            };
+
+            $scope.resetFilter = function () {
+                ivhTreeviewMgr.deselectAll($scope.selectedSpecialities, false);
+                $scope.setFilterParams();
             };
 
             init();
