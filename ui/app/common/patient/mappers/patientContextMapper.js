@@ -5,7 +5,8 @@ Bahmni.PatientContextMapper = function () {
         var patientContext = {};
         patientContext.uuid = patient.uuid;
         patientContext.givenName = patient.person.names[0].givenName;
-        patientContext.familyName = patient.person.names[0].familyName;
+        var familyName = patient.person.names[0].familyName;
+        patientContext.familyName = familyName ? familyName : "";
         patientContext.middleName = patient.person.names[0].middleName;
         patientContext.gender = patient.person.gender;
         if (patient.identifiers) {
