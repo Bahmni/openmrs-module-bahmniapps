@@ -20,7 +20,7 @@ angular.module('bahmni.appointments')
 
                     calendarViewPopUp({
                         scope: { appointments: event.appointments, editAppointment: editAppointment, createAppointment: isSelectable() ? createAppointment : undefined },
-                        className: "ngdialog-theme-default delete-program-popup"
+                        className: "ngdialog-theme-default delete-program-popup app-dialog-container"
                     });
                 };
 

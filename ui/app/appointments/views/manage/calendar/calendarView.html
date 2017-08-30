@@ -1,10 +1,10 @@
-<div ng-init="isFilterOpen = true">
+<div ng-init="isFilterOpen = true" ng-class="{'app-filter-open': isFilterOpen}">
     <div class="app-calendar-container" ng-class="{'app-filter-open': isFilterOpen}">
         <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
         <day-calendar ng-if="shouldReload" date="startDate" appointments="providerAppointments"></day-calendar>
     </div>
     <div ui-view="content@appointment"></div>
-    <div class="appointment-action-btn-container" ng-class="{'app-filter-open': isFilterOpen}">
+    <div class="appointment-action-btn-container">
         <button>{{::'CHECK_IN_APPOINTMENT' |translate}}</button>
         <button>{{::'COMPLETE_APPOINTMENT' |translate}}</button>
         <button>{{::'EDIT_APPOINTMENT' |translate}}</button>
