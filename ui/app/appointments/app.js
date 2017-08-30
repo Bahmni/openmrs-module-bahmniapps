@@ -95,7 +95,7 @@ angular
                 },
                 resolve: {
                     appointmentCreateConfig: function (appointmentConfigInitialization, $stateParams) {
-                        return appointmentConfigInitialization( $stateParams);
+                        return appointmentConfigInitialization($stateParams);
                     }
                 }
             }).state('home.manage.appointments.calendar.edit', {
