@@ -112,8 +112,8 @@ describe('AppointmentViewModel', function () {
         expect(appointmentViewModel.provider).toBe(providers[1]);
         expect(appointmentViewModel.location).toBe(locations[0]);
         expect(appointmentViewModel.date).toEqual(new Date(moment(appointmentResponse.startDateTime)));
-        expect(appointmentViewModel.startTime).toBe('10:10 pm');
-        expect(appointmentViewModel.endTime).toBe('10:40 pm');
+        expect(appointmentViewModel.startTime).toBe(moment(appointmentResponse.startDateTime).format('hh:mm a'));
+        expect(appointmentViewModel.endTime).toBe(moment(appointmentResponse.endDateTime).format('hh:mm a'));
         expect(appointmentViewModel.appointmentKind).toBe(appointmentResponse.appointmentKind);
         expect(appointmentViewModel.status).toBe(appointmentResponse.status);
         expect(appointmentViewModel.comments).toBe(appointmentResponse.comments);
