@@ -18,15 +18,6 @@ angular.module('bahmni.appointments')
             var init = function () {
                 wireAutocompleteEvents();
                 $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create($stateParams.appointment || {}, appointmentCreateConfig);
-                if ($scope.appointment && $scope.appointment.service) {
-                    return setServiceDetails($scope.appointment.service).then(setServiceType);
-                }
-            };
-
-            var setServiceType = function () {
-                if ($scope.selectedService && $scope.appointment.serviceType) {
-                    $scope.appointment.serviceType = _.find($scope.selectedService.serviceTypes, {uuid: $scope.appointment.serviceType.uuid});
-                }
             };
 
             $scope.save = function () {
@@ -236,8 +227,9 @@ angular.module('bahmni.appointments')
                 return appointmentsServiceService.getService(service.uuid).then(
                     function (response) {
                         $scope.selectedService = response.data;
-                        $scope.appointment.location = $scope.selectedService.location;
                         var serviceTypes = $scope.selectedService.serviceTypes;
+                        appointmentCreateConfig.serviceTypes = serviceTypes;
+                        $scope.appointment.location = _.find(appointmentCreateConfig.locations, {uuid: $scope.selectedService.location.uuid});
                         var duration = serviceTypes.length > 0 ? _.head(_.sortBy(serviceTypes, _.property('duration'))).duration : response.data.durationMins;
                         $scope.minDuration = duration || $scope.minDuration;
                         $scope.checkAvailability();

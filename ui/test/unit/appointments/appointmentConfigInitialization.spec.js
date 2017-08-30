@@ -2,7 +2,7 @@
 
 describe('AppointmentConfigInitialization', function () {
     var appointmentConfig, locationService, specialityService, appointmentsServiceService, providerService,
-        appService, spinner, $q, locations, specialities, appointmentServices, providers, appDescriptor ;
+        appService, spinner, $q, locations, specialities, appointmentServices, providers, appDescriptor, $stateParams ;
 
     beforeEach(function () {
         locations = [{display: 'OPD', uuid: 1}, {display: 'Registration Desk', uuid: 2}];
@@ -30,6 +30,7 @@ describe('AppointmentConfigInitialization', function () {
         spinner.forPromise.and.callFake(function (param) {
             return param;
         });
+        $stateParams = {};
     });
 
     beforeEach(module('bahmni.appointments', function ($provide) {
@@ -49,7 +50,7 @@ describe('AppointmentConfigInitialization', function () {
     });
 
     it('should fetch all locations,services,provider,specialities on initialization', function (done) {
-        appointmentConfig().then(function (response) {
+        appointmentConfig($stateParams).then(function (response) {
             expect(locationService.getAllByTag).toHaveBeenCalledWith('Appointment Location');
             expect(appointmentsServiceService.getAllServices).toHaveBeenCalled();
             expect(specialityService.getAllSpecialities).toHaveBeenCalled();
@@ -64,7 +65,7 @@ describe('AppointmentConfigInitialization', function () {
 
     it('should not fetch specialities if not configured', function (done) {
         appDescriptor.getConfigValue.and.returnValue(false);
-        appointmentConfig().then(function (response) {
+        appointmentConfig($stateParams).then(function (response) {
             expect(specialityService.getAllSpecialities).not.toHaveBeenCalled();
             expect(response.specialities).toBeUndefined();
             done();
