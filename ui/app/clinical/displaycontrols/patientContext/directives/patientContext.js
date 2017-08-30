@@ -3,6 +3,14 @@
 angular.module('bahmni.clinical')
     .directive('patientContext', ['$state', '$translate', '$sce', 'patientService', 'spinner', 'appService', function ($state, $translate, $sce, patientService, spinner, appService) {
         var controller = function ($scope, $rootScope) {
+            var setMiddleNameWhenConfigured = function () {
+                var patientConfig = appService.getAppDescriptor().getConfigValue("patientConfig");
+                var showMiddleNameOn = _.get(patientConfig, 'showMiddleNameOn');
+                if (_.includes(showMiddleNameOn, "patient-context")) {
+                    $scope.patientContext.name = [$scope.patient.givenName, $scope.patient.middleName, $scope.patient.familyName].join(' ');
+                }
+            };
+
             var patientContextConfig = appService.getAppDescriptor().getConfigValue('patientContext') || {};
             $scope.initPromise = patientService.getPatientContext($scope.patient.uuid, $state.params.enrollment, patientContextConfig.personAttributes, patientContextConfig.programAttributes, patientContextConfig.additionalPatientIdentifiers);
 
@@ -30,7 +38,10 @@ angular.module('bahmni.clinical')
                     $scope.patientContext.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + $scope.patientContext.uuid;
                 }
                 $scope.patientContext.gender = $rootScope.genderMap[$scope.patientContext.gender];
+                $scope.patientContext.name = [$scope.patient.givenName, $scope.patient.familyName].join(' ');
             });
+
+            $scope.initPromise.then(setMiddleNameWhenConfigured);
         };
 
         var link = function ($scope, element) {

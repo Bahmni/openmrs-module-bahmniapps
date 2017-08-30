@@ -31,8 +31,9 @@
     };
     angular.module('bahmni.common.displaycontrol.patientprofile')
         .directive('patientProfile', ['patientService', 'spinner', '$sce', '$rootScope', '$stateParams', '$window', '$translate',
-            'configurations', '$q', 'visitService',
-            function (patientService, spinner, $sce, $rootScope, $stateParams, $window, $translate, configurations, $q, visitService) {
+            'configurations', '$q', 'visitService', 'appService',
+            function (patientService, spinner, $sce, $rootScope, $stateParams, $window, $translate,
+                      configurations, $q, visitService, appService) {
                 var controller = function ($scope) {
                     $scope.isProviderRelationship = function (relationship) {
                         return _.includes($rootScope.relationshipTypeMap.provider, relationship.relationshipType.aIsToB);
@@ -78,9 +79,17 @@
                         $scope.showBirthDate = $scope.config.showDOB !== false;
                         $scope.showBirthDate = $scope.showBirthDate && !!$scope.patient.birthdate;
                     };
+                    var setMiddleNameWhenConfigured = function () {
+                        var patientConfig = appService.getAppDescriptor().getConfigValue("patientConfig");
+                        var showMiddleNameOn = _.get(patientConfig, 'showMiddleNameOn');
+                        if (_.includes(showMiddleNameOn, "patient-profile")) {
+                            $scope.patient.name = [$scope.patient.givenName, $scope.patient.middleName, $scope.patient.familyName].join(' ');
+                        }
+                    };
                     var initPromise = $q.all([assignPatientDetails(), assignRelationshipDetails()]);
                     initPromise.then(onDirectiveReady);
                     initPromise.then(setHasBeenAdmittedOnVisitUuidChange);
+                    initPromise.then(setMiddleNameWhenConfigured);
                     initPromise.then(setDirectiveAsReady);
                     $scope.initialization = initPromise;
                 };
