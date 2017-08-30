@@ -1,7 +1,8 @@
 'use strict';
 
 describe('AllAppointmentsController', function () {
-    var controller, scope, state, location, appService, appDescriptor, appointmentsServiceService;
+    var controller, scope, state, location, appService, appDescriptor, appointmentsServiceService, ivhTreeviewMgr;
+    ivhTreeviewMgr = jasmine.createSpyObj('ivhTreeviewMgr', ['deselectAll']);
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -25,7 +26,8 @@ describe('AllAppointmentsController', function () {
             appService: appService,
             appointmentsServiceService: appointmentsServiceService,
             $location: location,
-            $state: state
+            $state: state,
+            ivhTreeviewMgr: ivhTreeviewMgr
         });
     };
     it("should initialize enable calendar view from config", function () {
@@ -274,6 +276,42 @@ describe('AllAppointmentsController', function () {
         expect(state.params.filterParams.serviceUuids.length).toEqual(2);
         expect(state.params.filterParams.serviceUuids[0]).toEqual("75c006aa-d3dd-4848-9735-03aee74ae27e");
         expect(state.params.filterParams.serviceUuids[1]).toEqual("02666cc6-5f3e-4920-856d-ab7e28d3dbdb");
+    });
+
+    it("should reset ivh Tree, reset the filter and apply them on appointments", function () {
+        state.params={};
+        state.params.filterParams = {serviceUuids: ["someServiceUuid"], serviceTypeUuid: ["serviceTypeUuid"], providerUuids: [], statusList: []};
+        appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({ data: [{
+            appointmentServiceId: 1,
+            name: "ortho",
+            speciality: {
+                name: "Cardiology",
+                uuid: "bdbb1d1e-87c8-11e7-93b0-080027e99513"
+            },
+            startTime: "",
+            endTime: "",
+            maxAppointmentsLimit: 12,
+            durationMins: 60,
+            location: {},
+            uuid: "d3f5062e-b92d-4c70-8d22-b199dcb65a2c",
+            color: "#006400",
+            weeklyAvailability: [],
+            serviceTypes: [
+                {
+                    duration: 15,
+                    name: "maxillo",
+                    uuid: "de849ecd-47ad-4610-8080-20e7724b2df6"
+                }]
+        }]}));
+
+        scope.selectedSpecialities = [ { label : 'Speciality', children : [ { label : 'Dermatology', value : '75c006aa-d3dd-4848-9735-03aee74ae27e', children : [ { label : 'type1', value : 'f9556d31-2c42-4c7b-8d05-48aceeae0c9a', selected : true }, { label : 'type2', value : 'f9556d31-2c42-4c7b-8d05-48aceeae0900', selected : true } ], selected : true }, { label : 'Ophthalmology', value : '02666cc6-5f3e-4920-856d-ab7e28d3dbdb', children : [ { label : 'type1', value : '6f59ba62-ddf4-46bc-b866-c09ae7b8200f', selected : true } ], selected : true } ], selected : false } ];
+        createController();
+        scope.resetFilter();
+        expect(state.params.filterParams.serviceTypeUuids.length).toBe(0);
+        expect(state.params.filterParams.serviceUuids.length).toBe(0);
+        expect(state.params.filterParams.providerUuids.length).toBe(0);
+        expect(state.params.filterParams.statusList.length).toBe(0);
+        expect(ivhTreeviewMgr.deselectAll).toHaveBeenCalledWith(scope.selectedSpecialities, false);
     })
 
 });
