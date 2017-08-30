@@ -49,15 +49,15 @@
     "ng-tags-input": "^3.1.1",
     "ngReact": "^0.3.0",
     "offline": "0.7.14",
-    "react": "^15.3.2"
+    "react": "^15.3.2",
+    "angular-ivh-treeview": "^1.1.0"
   },
   "devDependencies": {
     "angular-mocks": "1.4.9",
     "angular-scenario": "1.4.9",
     "q": "1.0.1",
     "jasmine-jquery": "~2.1.0",
-    "Cortana": "~1.2.6",
-    "angular-ivh-treeview": "^1.1.0"
+    "Cortana": "~1.2.6"
   },
   "resolutions": {
     "angular": "1.4.9",
