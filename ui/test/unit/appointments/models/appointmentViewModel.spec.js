@@ -1,7 +1,7 @@
 'use strict';
 
 describe('AppointmentViewModel', function () {
-    var appointmentViewModel, locations, services, providers, specialities;
+    var appointmentViewModel, locations, services, providers, specialities, serviceTypes;
     var dateUtil = Bahmni.Common.Util.DateUtil;
     var timeFormat = 'HH:mm:ss';
     var startDateTime = new Date('1970-01-01T11:30:00.000Z');
@@ -94,11 +94,13 @@ describe('AppointmentViewModel', function () {
         }];
         providers = [{uuid: "7d162c29-3f12-11e4-adec-0800271c1b75", display: "LABSYSTEM - labsystem system"},
                      {uuid: "c1c26908-3f10-11e4-adec-0800271c1b75", display: "superman - Super Man"}];
+        serviceTypes = [{duration: 30, name: 'type1', uuid: 'f5203cea-f4d2-4cd9-b7d2-b00f7e8890e9'}];
         var config = {
             locations: locations,
             specialities: specialities,
             services: services,
-            providers: providers
+            providers: providers,
+            serviceTypes: serviceTypes
         };
         appointmentViewModel = Bahmni.Appointments.AppointmentViewModel.create(appointmentResponse, config);
     });
@@ -108,7 +110,7 @@ describe('AppointmentViewModel', function () {
         expect(appointmentViewModel.patient).toEqual({label: appointmentResponse.patient.name + " (" + appointmentResponse.patient.identifier + ")", uuid: appointmentResponse.patient.uuid});
         expect(appointmentViewModel.speciality).toBe(specialities[1]);
         expect(appointmentViewModel.service).toBe(services[0]);
-        expect(appointmentViewModel.serviceType).toBe(appointmentResponse.serviceType);
+        expect(appointmentViewModel.serviceType).toBe(serviceTypes[0]);
         expect(appointmentViewModel.provider).toBe(providers[1]);
         expect(appointmentViewModel.location).toBe(locations[0]);
         expect(appointmentViewModel.date).toEqual(new Date(moment(appointmentResponse.startDateTime)));

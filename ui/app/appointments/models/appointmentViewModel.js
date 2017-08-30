@@ -49,12 +49,19 @@ Bahmni.Appointments.AppointmentViewModel = (function () {
             });
         };
 
+        var getServiceTypeFromConfig = function (selectedServiceType, config) {
+            var serviceTypes = config.serviceTypes;
+            return _.find(serviceTypes, function (serviceType) {
+                return serviceType.uuid === selectedServiceType.uuid;
+            });
+        };
+
         var appointment = new Appointment({
             uuid: appointmentDetails.uuid,
             patient: appointmentDetails.patient && parsePatient(appointmentDetails.patient),
             speciality: appointmentDetails.service && getSpecialityFromConfig(appointmentDetails.service.speciality, config),
             service: appointmentDetails.service && getServiceFromConfig(appointmentDetails.service, config),
-            serviceType: appointmentDetails.serviceType,
+            serviceType: appointmentDetails.serviceType && getServiceTypeFromConfig(appointmentDetails.serviceType, config),
             provider: appointmentDetails.provider && getProviderFromConfig(appointmentDetails.provider, config),
             location: appointmentDetails.location && getLocationFromConfig(appointmentDetails.location, config),
             date: getDateWithoutTime(appointmentDetails.startDateTime),

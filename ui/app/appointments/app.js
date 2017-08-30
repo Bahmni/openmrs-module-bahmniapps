@@ -94,8 +94,8 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentCreateConfig: function (appointmentConfigInitialization) {
-                        return appointmentConfigInitialization();
+                    appointmentCreateConfig: function (appointmentConfigInitialization, $stateParams) {
+                        return appointmentConfigInitialization( $stateParams);
                     }
                 }
             }).state('home.manage.appointments.calendar.edit', {
@@ -110,8 +110,8 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentCreateConfig: function (appointmentConfigInitialization) {
-                        return appointmentConfigInitialization();
+                    appointmentCreateConfig: function (appointmentConfigInitialization, $stateParams) {
+                        return appointmentConfigInitialization($stateParams);
                     }
                 }
             }).state('home.manage.appointments.list', {
@@ -135,8 +135,8 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentCreateConfig: function (appointmentConfigInitialization) {
-                        return appointmentConfigInitialization();
+                    appointmentCreateConfig: function (appointmentConfigInitialization, $stateParams) {
+                        return appointmentConfigInitialization($stateParams);
                     }
                 }
             }).state('home.manage.appointments.list.edit', {
@@ -151,8 +151,8 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentCreateConfig: function (appointmentConfigInitialization) {
-                        return appointmentConfigInitialization();
+                    appointmentCreateConfig: function (appointmentConfigInitialization, $stateParams) {
+                        return appointmentConfigInitialization($stateParams);
                     }
                 }
             }).state('home.admin', {

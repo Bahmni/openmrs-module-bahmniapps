@@ -3,7 +3,7 @@
 angular.module('bahmni.appointments').factory('appointmentConfigInitialization',
     ['locationService', 'specialityService', 'appointmentsServiceService', 'providerService', 'appService', 'spinner', '$q',
         function (locationService, specialityService, appointmentsServiceService, providerService, appService, spinner, $q) {
-            return function () {
+            return function ($stateParams) {
                 var init = function () {
                     var promises = [];
                     var config = {};
@@ -13,12 +13,18 @@ angular.module('bahmni.appointments').factory('appointmentConfigInitialization',
                     if (enableSpecialities) {
                         promises.push(getAllSpecialities());
                     }
+                    if ($stateParams.appointment && $stateParams.appointment.service) {
+                        promises.push(getAppointmentService($stateParams.appointment.service.uuid));
+                    }
 
                     return spinner.forPromise($q.all(promises).then(function (results) {
                         config.locations = results[0].data.results;
                         config.services = results[1].data;
                         config.providers = results[2];
                         if (enableSpecialities) { config.specialities = results[3].data; }
+                        if ($stateParams.appointment && $stateParams.appointment.service) {
+                            config.serviceTypes = results[4].data.serviceTypes;
+                        }
                         return config;
                     }));
                 };
@@ -41,6 +47,10 @@ angular.module('bahmni.appointments').factory('appointmentConfigInitialization',
                             return result.display;
                         });
                     });
+                };
+
+                var getAppointmentService = function (uuid) {
+                    return appointmentsServiceService.getService(uuid);
                 };
 
                 return init();
