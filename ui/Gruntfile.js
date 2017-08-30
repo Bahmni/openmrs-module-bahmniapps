@@ -64,7 +64,8 @@ module.exports = function (grunt) {
         'components/purl/purl.js',
         'components/angular-route/angular-route.min.js',
         'components/crypto-js/crypto-js.js',
-        'components/jquery-ui/ui/minified/jquery-ui.custom.min.js'
+        'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
+        'components/angular-ivh-treeview/dist/ivh-treeview.min.js'
     ];
 
     try {
