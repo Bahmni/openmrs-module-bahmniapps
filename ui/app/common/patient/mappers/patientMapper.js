@@ -13,7 +13,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope, $translate) {
         var patient = {};
         patient.uuid = openmrsPatient.uuid;
         patient.givenName = openmrsPatient.person.preferredName.givenName;
-        patient.familyName = openmrsPatient.person.preferredName.familyName;
+        patient.familyName = openmrsPatient.person.preferredName.familyName === null ? '' : openmrsPatient.person.preferredName.familyName;
         patient.name = patient.givenName + ' ' + patient.familyName;
         patient.age = openmrsPatient.person.age;
         patient.ageText = calculateAge(Bahmni.Common.Util.DateUtil.parseServerDateToDate(openmrsPatient.person.birthdate));
