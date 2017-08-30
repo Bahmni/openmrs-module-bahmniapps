@@ -114,7 +114,7 @@ describe('AppointmentsDayCalendarController', function () {
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
             scope: { appointments: event.appointments, editAppointment: jasmine.any(Function), createAppointment: jasmine.any(Function) },
-            className: "ngdialog-theme-default delete-program-popup"
+            className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
 

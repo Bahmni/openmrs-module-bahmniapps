@@ -1,7 +1,7 @@
-<div ng-init="isFilterOpen = true">
+<div ng-init="isFilterOpen = true" ng-class="{'app-filter-open': isFilterOpen}">
     <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
 
-    <div class="app-list-view" ng-class="{'app-filter-open': isFilterOpen}">
+    <div class="app-list-view"">
         <table>
             <thead>
             <tr>
@@ -40,7 +40,7 @@
         </table>
     </div>
     <div ui-view="content@appointment"></div>
-    <fieldset class="appointment-action-btn-container" ng-disabled="!selectedAppointment" ng-class="{'app-filter-open': isFilterOpen, 'disabled': !selectedAppointment}">
+    <fieldset class="appointment-action-btn-container" ng-disabled="!selectedAppointment" ng-class="{'disabled': !selectedAppointment}">
         <button>{{::'CHECK_IN_APPOINTMENT' |translate}}</button>
         <button>{{::'COMPLETE_APPOINTMENT' |translate}}</button>
         <button ng-click="editAppointment()">{{::'EDIT_APPOINTMENT' |translate}}</button>

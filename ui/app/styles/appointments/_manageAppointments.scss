@@ -216,7 +216,7 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     }
   }
-  &.disabled button{
+  &.disabled button {
     opacity: 0.5;
     cursor: not-allowed;
     background: #E2E2E2;
@@ -457,6 +457,37 @@
     }
   }
 }
+
 .app-ava-slots {
   padding-left: 125px;
+}
+
+.app-filter-open {
+  .create-new-app-wrapper {
+    width: calc(100% - 300px);
+  }
+}
+
+.app-dialog-container.ngdialog.ngdialog-theme-default{
+  .ngdialog-content {
+    width: 525px;
+    p {
+      margin-bottom: 5px;
+    }
+    .app-dialog-btn-wrap {
+      text-align: center;
+      margin: 10px 0 0;
+      button {
+        @extend .appBtn;
+        border: none;
+        color: #fff;
+        &:disabled {
+          pointer-events: none;
+        }
+        &:first-child {
+          margin: 0;
+        }
+      }
+    }
+  }
 }
