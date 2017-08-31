@@ -2,7 +2,6 @@
 
 describe('AppointmentsFilterController', function () {
     var controller, scope, state, location, appService, appDescriptor, appointmentsServiceService, ivhTreeviewMgr, q;
-    ivhTreeviewMgr = jasmine.createSpyObj('ivhTreeviewMgr', ['deselectAll']);
     var providerService = jasmine.createSpyObj('providerService', ['list']);
 
     var servicesWithTypes = {
@@ -52,10 +51,12 @@ describe('AppointmentsFilterController', function () {
             location = jasmine.createSpyObj('$location', ['url']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['getAllServicesWithServiceTypes']);
+            ivhTreeviewMgr = jasmine.createSpyObj('ivhTreeviewMgr', ['deselectAll', 'selectEach']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             appDescriptor.getConfigValue.and.returnValue(true);
             appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({}));
             q.all.and.returnValue(specUtil.simplePromise({}));
+            state.params = {filterParams: {}}
         });
     });
 
@@ -77,6 +78,7 @@ describe('AppointmentsFilterController', function () {
 
     it("should get tabName from state.current", function () {
         state = {
+            params : {filterParams : {}},
             name: "home.manage.appointments.calendar",
             url: '/calendar',
             current: {
@@ -114,9 +116,9 @@ describe('AppointmentsFilterController', function () {
         }]}));
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         createController();
-        expect(scope.mappedSpecialities[0].label).toBe("Cardiology");
-        expect(scope.mappedSpecialities[0].children[0].label).toBe("ortho");
-        expect(scope.mappedSpecialities[0].children[0].children[0].label).toBe("maxillo");
+        expect(scope.selectedSpecialities[0].label).toBe("Cardiology");
+        expect(scope.selectedSpecialities[0].children[0].label).toBe("ortho");
+        expect(scope.selectedSpecialities[0].children[0].children[0].label).toBe("maxillo");
     });
 
     it("should map selected services to state params", function(){
@@ -151,11 +153,11 @@ describe('AppointmentsFilterController', function () {
                 "children": [
                     {
                         "label": "Dermatology",
-                        "value": "75c006aa-d3dd-4848-9735-03aee74ae27e",
+                        "id": "75c006aa-d3dd-4848-9735-03aee74ae27e",
                         "children": [
                             {
                                 "label": "type1",
-                                "value": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a",
+                                "id": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a",
                                 "selected": true
                             }
                         ],
@@ -163,11 +165,11 @@ describe('AppointmentsFilterController', function () {
                     },
                     {
                         "label": "Ophthalmology",
-                        "value": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                        "id": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
                         "children": [
                             {
                                 "label": "type1",
-                                "value": "6f59ba62-ddf4-46bc-b866-c09ae7b8200f",
+                                "id": "6f59ba62-ddf4-46bc-b866-c09ae7b8200f",
                                 "selected": false
                             }
                         ],
@@ -193,16 +195,16 @@ describe('AppointmentsFilterController', function () {
                 "children": [
                     {
                         "label": "Dermatology",
-                        "value": "75c006aa-d3dd-4848-9735-03aee74ae27e",
+                        "id": "75c006aa-d3dd-4848-9735-03aee74ae27e",
                         "children": [
                             {
                                 "label": "type1",
-                                "value": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a",
+                                "id": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a",
                                 "selected": true
                             },
                             {
                                 "label": "type2",
-                                "value": "f9556d31-2c42-4c7b-8d05-48aceeae0900",
+                                "id": "f9556d31-2c42-4c7b-8d05-48aceeae0900",
                                 "selected": false
                             }
                         ],
@@ -210,11 +212,11 @@ describe('AppointmentsFilterController', function () {
                     },
                     {
                         "label": "Ophthalmology",
-                        "value": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                        "id": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
                         "children": [
                             {
                                 "label": "type1",
-                                "value": "6f59ba62-ddf4-46bc-b866-c09ae7b8200f",
+                                "id": "6f59ba62-ddf4-46bc-b866-c09ae7b8200f",
                                 "selected": false
                             }
                         ],
@@ -240,16 +242,16 @@ describe('AppointmentsFilterController', function () {
                 "children": [
                     {
                         "label": "Dermatology",
-                        "value": "75c006aa-d3dd-4848-9735-03aee74ae27e",
+                        "id": "75c006aa-d3dd-4848-9735-03aee74ae27e",
                         "children": [
                             {
                                 "label": "type1",
-                                "value": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a",
+                                "id": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a",
                                 "selected": true
                             },
                             {
                                 "label": "type2",
-                                "value": "f9556d31-2c42-4c7b-8d05-48aceeae0900",
+                                "id": "f9556d31-2c42-4c7b-8d05-48aceeae0900",
                                 "selected": true
                             }
                         ],
@@ -257,11 +259,11 @@ describe('AppointmentsFilterController', function () {
                     },
                     {
                         "label": "Ophthalmology",
-                        "value": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                        "id": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
                         "children": [
                             {
                                 "label": "type1",
-                                "value": "6f59ba62-ddf4-46bc-b866-c09ae7b8200f",
+                                "id": "6f59ba62-ddf4-46bc-b866-c09ae7b8200f",
                                 "selected": true
                             }
                         ],
@@ -305,7 +307,25 @@ describe('AppointmentsFilterController', function () {
                 }]
         }]}));
 
-        scope.selectedSpecialities = [ { label : 'Speciality', children : [ { label : 'Dermatology', value : '75c006aa-d3dd-4848-9735-03aee74ae27e', children : [ { label : 'type1', value : 'f9556d31-2c42-4c7b-8d05-48aceeae0c9a', selected : true }, { label : 'type2', value : 'f9556d31-2c42-4c7b-8d05-48aceeae0900', selected : true } ], selected : true }, { label : 'Ophthalmology', value : '02666cc6-5f3e-4920-856d-ab7e28d3dbdb', children : [ { label : 'type1', value : '6f59ba62-ddf4-46bc-b866-c09ae7b8200f', selected : true } ], selected : true } ], selected : false } ];
+        scope.selectedSpecialities = [{
+            label: 'Speciality',
+            children: [{
+                label: 'Dermatology',
+                id: '75c006aa-d3dd-4848-9735-03aee74ae27e',
+                children: [{
+                    label: 'type1',
+                    id: 'f9556d31-2c42-4c7b-8d05-48aceeae0c9a',
+                    selected: true
+                }, {label: 'type2', id: 'f9556d31-2c42-4c7b-8d05-48aceeae0900', selected: true}],
+                selected: true
+            }, {
+                label: 'Ophthalmology',
+                id: '02666cc6-5f3e-4920-856d-ab7e28d3dbdb',
+                children: [{label: 'type1', id: '6f59ba62-ddf4-46bc-b866-c09ae7b8200f', selected: true}],
+                selected: true
+            }],
+            selected: false
+        }];
         createController();
         scope.resetFilter();
         expect(state.params.filterParams.serviceTypeUuids.length).toBe(0);
@@ -322,8 +342,25 @@ describe('AppointmentsFilterController', function () {
         providerService.list.and.returnValue(specUtil.simplePromise(providers));
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         createController();
-        expect(scope.statusList.length).toBe(6);
+        expect(scope.statusList.length).toBe(5);
         expect(scope.providers.length).toBe(2);
-    })
+    });
+
+    it('should preselect the services to filter when services are not empty in filterParams', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        state.params.filterParams.serviceUuids = ["d3f5062e-b92d-4c70-8d22-b199dcb65a2c"];
+        createController();
+        expect(scope.selectedSpecialities[0].label).toBe("Cardiology");
+        expect(scope.selectedSpecialities[0].children[0].label).toBe("ortho");
+        expect(scope.selectedSpecialities[0].children[0].children[0].label).toBe("maxillo");
+        expect(ivhTreeviewMgr.selectEach).toHaveBeenCalledWith(scope.selectedSpecialities,state.params.filterParams.serviceUuids);
+    });
+    
+    it('should set the selectedStatusList', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        state.params.filterParams.statusList = ["Completed", "Scheduled"];
+        createController();
+        expect(scope.selectedStatusList.length).toBe(2);
+    });
 
 });
