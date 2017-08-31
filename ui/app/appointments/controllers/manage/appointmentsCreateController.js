@@ -232,7 +232,7 @@ angular.module('bahmni.appointments')
                         $scope.appointment.location = _.find(appointmentCreateConfig.locations, {uuid: $scope.selectedService.location.uuid});
                         var duration = serviceTypes.length > 0 ? _.head(_.sortBy(serviceTypes, _.property('duration'))).duration : response.data.durationMins;
                         $scope.minDuration = duration || $scope.minDuration;
-                        $scope.checkAvailability();
+                        $scope.onSelectStartTime();
                     });
             };
 
