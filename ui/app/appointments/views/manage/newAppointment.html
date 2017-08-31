@@ -56,7 +56,7 @@
                     <label for="serviceType">
                         {{'APPOINTMENT_SERVICE_TYPE' | translate}}
                     </label>
-                    <select ng-disabled="!(selectedService.serviceTypes.length > 0)" id="serviceType"
+                    <select ng-disabled="!(appointmentCreateConfig.serviceTypes.length > 0)" id="serviceType"
                             ng-model="appointment.serviceType" ng-change="onServiceTypeChange()"
                             ng-options="serviceType.name + '   [' + serviceType.duration + ' min]'  for serviceType in appointmentCreateConfig.serviceTypes | orderBy:'name'">
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_TYPE' | translate}}
@@ -111,7 +111,6 @@
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
                            ng-pattern="timeRegex"
-                           strict-select="true"
                            ng-disabled='!appointment.date'
                            required/>
                     <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
