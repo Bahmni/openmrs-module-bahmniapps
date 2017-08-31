@@ -1,0 +1,55 @@
+
+<div class="appointment-filter" ng-init="isFilterOpen = true" ng-show="isFilterOpen">
+    <a ng-click="isFilterOpen = false"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+
+    <p>
+        <label>Speciality</label>
+        <input type="text" ng-model="search"/>
+        <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
+    <div class="app-filter-speciality">
+        <div ivh-treeview="mappedSpecialities"
+             ivh-treeview-filter="search"
+             ivh-treeview-expand-to-depth="-1"
+             ivh-treeview-on-cb-change="setSelectedSpecialities(ivhTree)"
+             ivh-treeview-twistie-expanded-tpl="'-'"
+             ivh-treeview-twistie-leaf-tpl="'-'"
+             ivh-treeview-twistie-collapsed-tpl="'+'"></div>
+    </div>
+    </p>
+    <div class="appointment-filter-items provider-block">
+        <label>Provider</label>
+        <multi-select-autocomplete
+                input-items="providers"
+                selected-values="selectedProviders"
+                display-property="'display'"
+                key-property="'uuid'"
+                placeholder="'Enter Provider Name'"
+                load-on-down-arrow="true"
+                auto-complete-min-length="1"></multi-select-autocomplete>
+
+    </div>
+    <div class="appointment-filter-items status-block">
+        <label>Appoinment status</label>
+        <multi-select-autocomplete
+                input-items="statusList"
+                selected-values="selectedStatusList"
+                display-property="'name'"
+                key-property="'name'"
+                placeholder="'Enter status Name'"
+                load-on-down-arrow="true"
+                auto-complete-min-length="1"></multi-select-autocomplete>
+    </div>
+    <p class="app-filter-action-btn">
+        <button ng-click="resetFilter()">Reset</button>
+        <button ng-click="applyFilter(ivhTree)">Apply Filter</button>
+    </p>
+</div>
+<div class="appointment-container" ng-init="isFilterOpen = true">
+    <div class="appointment-btn-container">
+         <span class="app-filter-btn-wrapper" ng-click="isFilterOpen = true" ng-show="!isFilterOpen">
+            <a class="app-filter-btn">
+                <i class="fa fa-filter" aria-hidden="true"></i> Filter
+            </a>
+        </span>
+    </div>
+</div>
