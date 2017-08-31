@@ -4,10 +4,5 @@
         <day-calendar ng-if="shouldReload" date="startDate" appointments="providerAppointments"></day-calendar>
     </div>
     <div ui-view="content@appointment"></div>
-    <div class="appointment-action-btn-container">
-        <button>{{::'CHECK_IN_APPOINTMENT' |translate}}</button>
-        <button>{{::'COMPLETE_APPOINTMENT' |translate}}</button>
-        <button>{{::'EDIT_APPOINTMENT' |translate}}</button>
-        <button>{{::'CANCEL_APPOINTMENT' |translate}}</button>
-    </div>
+    <div class="appointment-action-btn-container calendar-view-btn-container"></div>
 </div>
