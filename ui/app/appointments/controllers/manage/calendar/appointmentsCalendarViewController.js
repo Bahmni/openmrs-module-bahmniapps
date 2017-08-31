@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsCalendarViewController', ['$scope', '$stateParams', '$translate', 'spinner', 'appointmentsService', 'appointmentsContext', 'appointmentsFilter',
-        function ($scope, $stateParams, $translate, spinner, appointmentsService, appointmentsContext, appointmentsFilter) {
+    .controller('AppointmentsCalendarViewController', ['$scope', '$state', '$translate', 'spinner', 'appointmentsService', 'appointmentsContext', 'appointmentsFilter',
+        function ($scope, $state, $translate, spinner, appointmentsService, appointmentsContext, appointmentsFilter) {
             $scope.allAppointmentsForDay = appointmentsContext.appointments;
             var init = function () {
-                $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
+                $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
                 var parseAppointments = function (allAppointments) {
                     var appointments = allAppointments.filter(function (appointment) {
                         return appointment.status !== "Cancelled";
@@ -63,16 +63,16 @@ angular.module('bahmni.appointments')
                     var params = {forDate: viewDate};
                     return spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
                         $scope.allAppointmentsForDay = response.data;
-                        var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay, $stateParams.filterParams);
+                        var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay, $state.params.filterParams);
                         return parseAppointments(filteredAppointments);
                     }));
                 };
 
                 $scope.$watch(function () {
-                    return $stateParams.filterParams;
+                    return $state.params.filterParams;
                 }, function (newValue, oldValue) {
                     if (newValue !== oldValue) {
-                        var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay, $stateParams.filterParams);
+                        var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay, $state.params.filterParams);
                         parseAppointments(filteredAppointments);
                     }
                 }, true);

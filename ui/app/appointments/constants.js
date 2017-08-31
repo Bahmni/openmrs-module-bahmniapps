@@ -20,6 +20,7 @@ Bahmni.Appointments.Constants = (function () {
         defaultCalendarEndTime: "19:00",
         minDurationForAppointment: 30,
         defaultAppointmentStatus: 'Scheduled',
+        appointmentStatusList: [ "Scheduled", "CheckedIn", "Started", "Completed", "Cancelled", "Missed" ],
         regexForTime: /^(?:(?:1[0-2]|0?[1-9]):[0-5]\d\s*[AaPp][Mm])?$/
     };
 })();

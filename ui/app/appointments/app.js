@@ -60,10 +60,15 @@ angular
                     filterParams: {}
                 },
                 views: {
+                    'filter': {
+                        templateUrl: 'views/manage/appointmentFilter.html',
+                        controller: 'AppointmentsFilterController'
+                    },
                     'content@manage': {
                         templateUrl: 'views/manage/allAppointments.html',
                         controller: 'AllAppointmentsController'
                     }
+
                 }
             }).state('home.manage.appointments.calendar', {
                 url: '/calendar',
@@ -187,9 +192,4 @@ angular
             });
 
             $bahmniTranslateProvider.init({app: 'appointments', shouldMerge: true});
-        }]).run(['$rootScope', '$templateCache', function ($rootScope, $templateCache) {
-            $rootScope.$on('$viewContentLoaded', function () {
-                $templateCache.removeAll();
-            }
-        );
         }]);
