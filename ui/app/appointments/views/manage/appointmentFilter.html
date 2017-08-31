@@ -7,9 +7,10 @@
         <input type="text" ng-model="search"/>
         <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
     <div class="app-filter-speciality">
-        <div ivh-treeview="mappedSpecialities"
+        <div ivh-treeview="selectedSpecialities"
              ivh-treeview-filter="search"
              ivh-treeview-expand-to-depth="-1"
+             ivh-treeview-id-attribute="'value'"
              ivh-treeview-on-cb-change="setSelectedSpecialities(ivhTree)"
              ivh-treeview-twistie-expanded-tpl="'-'"
              ivh-treeview-twistie-leaf-tpl="'-'"
@@ -41,7 +42,7 @@
     </div>
     <p class="app-filter-action-btn">
         <button ng-click="resetFilter()">Reset</button>
-        <button ng-click="applyFilter(ivhTree)">Apply Filter</button>
+        <button ng-click="applyFilter()">Apply Filter</button>
     </p>
 </div>
 <div class="appointment-container" ng-init="isFilterOpen = true">
