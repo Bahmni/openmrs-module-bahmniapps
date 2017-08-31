@@ -221,6 +221,9 @@
     cursor: not-allowed;
     background: #E2E2E2;
   }
+  &.calendar-view-btn-container {
+    height: 53px;
+  }
 }
 
 /*----- create new appointment styles -----*/
@@ -292,7 +295,6 @@
       input[type = checkbox] {
         width: auto;
         height: auto;
-        margin-left: 0;
       }
       .slots-remaining {
         display: inline-block;
