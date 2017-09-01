@@ -44,8 +44,12 @@
         <button ng-click="applyFilter()">Apply Filter</button>
     </p>
 </div>
-<span class="app-filter-btn-wrapper" ng-init="isFilterOpen = true" ng-show="!isFilterOpen">
-    <a class="app-filter-btn" ng-click="isFilterOpen = true">
-        <i class="fa fa-filter" aria-hidden="true"></i> Filter
-    </a>
-</span>
+<div class="appointment-container" ng-init="isFilterOpen = true">
+    <div class="appointment-btn-container">
+         <span class="app-filter-btn-wrapper" ng-click="isFilterOpen = true" ng-show="!isFilterOpen">
+            <a class="app-filter-btn">
+                <i class="fa fa-filter" ng-class="{'colorForFilter': isFilterApplied()}" aria-hidden="true"></i> Filter
+            </a>
+        </span>
+    </div>
+</div>

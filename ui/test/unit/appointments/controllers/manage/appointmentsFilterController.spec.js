@@ -363,4 +363,27 @@ describe('AppointmentsFilterController', function () {
         expect(scope.selectedStatusList.length).toBe(2);
     });
 
+    it('should return false when filters are empty', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        state.params.filterParams = {};
+        createController();
+        var filterApplied = scope.isFilterApplied();
+        expect(filterApplied).toBeFalsy();
+    });
+
+    it('should return false when filters are empty', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        state.params.filterParams = {serviceUuids:[], providerUuids:[], statusList:[]};
+        createController();
+        var filterApplied = scope.isFilterApplied();
+        expect(filterApplied).toBeFalsy();
+    });
+
+    it('should return true when filters are not empty', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        state.params.filterParams = {serviceUuids:["someServiceUuid"], providerUuids:[], statusList:[]};
+        createController();
+        var filterApplied = scope.isFilterApplied();
+        expect(filterApplied).toBeTruthy();
+    });
 });
