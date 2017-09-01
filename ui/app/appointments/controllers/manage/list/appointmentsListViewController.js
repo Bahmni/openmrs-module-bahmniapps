@@ -27,12 +27,12 @@ angular.module('bahmni.appointments')
                 oldPatientData = $scope.filteredAppointments;
                 $scope.filteredAppointments = appointments;
                 $scope.searchedPatient = true;
-            }
+            };
 
             $scope.goBackToPreviousView = function () {
                 $scope.searchedPatient = false;
                 $scope.filteredAppointments = oldPatientData;
-            }
+            };
 
             $scope.isSelected = function (appointment) {
                 return $scope.selectedAppointment === appointment;
@@ -51,7 +51,10 @@ angular.module('bahmni.appointments')
             };
 
             $scope.editAppointment = function () {
-                $state.go('home.manage.appointments.list.edit', {appointment: $scope.selectedAppointment, uuid: $scope.selectedAppointment.uuid});
+                $state.go('home.manage.appointments.list.edit', {
+                    appointment: $scope.selectedAppointment,
+                    uuid: $scope.selectedAppointment.uuid
+                });
             };
 
             $scope.$watch(function () {

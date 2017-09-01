@@ -109,5 +109,7 @@
   "TOTAL_KEY": "Total",
   "MISSED_KEY": "missed",
   "PLACEHOLDER_SELECT_PATIENT": "Select a patient",
-  "APPOINTMENT_SLOT": "Slot"
+  "APPOINTMENT_SLOT": "Slot",
+  "BACK_LABEL": "Back",
+  "PATIENT_LIST_VIEW_SEARCH_HEADER": "Search Results"
 }
