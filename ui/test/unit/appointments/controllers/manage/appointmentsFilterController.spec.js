@@ -327,6 +327,8 @@ describe('AppointmentsFilterController', function () {
             selected: false
         }];
         createController();
+        scope.searchText = "Cardio";
+        scope.filterSelectedValues = {selected: true};
         scope.resetFilter();
         expect(state.params.filterParams.serviceTypeUuids.length).toBe(0);
         expect(state.params.filterParams.serviceUuids.length).toBe(0);
@@ -334,6 +336,9 @@ describe('AppointmentsFilterController', function () {
         expect(state.params.filterParams.statusList.length).toBe(0);
         expect(scope.selectedStatusList.length).toBe(0);
         expect(scope.selectedProviders.length).toBe(0);
+        expect(scope.showSelected).toBeFalsy();
+        expect(scope.filterSelectedValues).toBeUndefined();
+        expect(scope.searchText).toBeUndefined();
         expect(ivhTreeviewMgr.deselectAll).toHaveBeenCalledWith(scope.selectedSpecialities, false);
     });
 
@@ -385,5 +390,43 @@ describe('AppointmentsFilterController', function () {
         createController();
         var filterApplied = scope.isFilterApplied();
         expect(filterApplied).toBeTruthy();
+    });
+
+    it('should filter all the selected services when clicked on show selected toggle', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        createController();
+        scope.showSelected = true;
+        scope.filterSelected();
+        expect(scope.filterSelectedValues).toEqual({selected: true});
+    });
+
+    it('should filter all the selected services when clicked on show selected toggle', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        createController();
+        scope.showSelected = false;
+        scope.filterSelected();
+        expect(scope.filterSelectedValues).toBeUndefined();
+    });
+
+    it('should set state params when filter is expanded', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        createController();
+        scope.showSelected = false;
+        state.params.isFilterOpen = false;
+        state.isFilterOpen = false;
+        scope.expandFilter();
+        expect(state.params.isFilterOpen).toBeTruthy();
+        expect(scope.isFilterOpen).toBeTruthy();
+    });
+
+    it('should reset state params when filter is minimized', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        createController();
+        scope.showSelected = true;
+        state.params.isFilterOpen = true;
+        state.isFilterOpen = true;
+        scope.minimizeFilter();
+        expect(state.params.isFilterOpen).toBeFalsy();
+        expect(scope.isFilterOpen).toBeFalsy();
     });
 });

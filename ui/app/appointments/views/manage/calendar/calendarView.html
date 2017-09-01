@@ -1,4 +1,4 @@
-<div ng-init="isFilterOpen = true" ng-class="{'app-filter-open': isFilterOpen}">
+<div ng-class="{'app-filter-open': isFilterOpen}">
     <div class="app-calendar-container" ng-class="{'app-filter-open': isFilterOpen}">
         <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
         <day-calendar ng-if="shouldReload" date="startDate" appointments="providerAppointments"></day-calendar>
