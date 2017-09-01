@@ -63,6 +63,7 @@ describe('AppointmentsListViewController', function () {
     it('should get appointments for date', function () {
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
+        expect(stateparams.viewDate).toEqual(viewDate);
         expect(appointmentsService.getAllAppointments).toHaveBeenCalledWith({forDate: viewDate});
         expect(appointmentsService.selectedAppointment).toBeUndefined();
         expect(spinner.forPromise).toHaveBeenCalled();

@@ -57,7 +57,8 @@ angular
             }).state('home.manage.appointments', {
                 url: '/appointments',
                 params: {
-                    filterParams: {}
+                    filterParams: {},
+                    isFilterOpen: true
                 },
                 views: {
                     'filter': {

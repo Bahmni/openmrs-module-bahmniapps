@@ -21,10 +21,12 @@ angular.module('bahmni.appointments')
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             var init = function () {
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
+                $scope.isFilterOpen = $stateParams.isFilterOpen;
                 return $scope.getAppointmentsForDate($scope.startDate);
             };
 
             $scope.getAppointmentsForDate = function (viewDate) {
+                $stateParams.viewDate = viewDate;
                 $scope.selectedAppointment = undefined;
                 var params = {
                     forDate: viewDate
