@@ -1,7 +1,9 @@
 <div ng-init="isFilterOpen = true" ng-class="{'app-filter-open': isFilterOpen}">
-    <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
-
-    <div class="app-list-view"">
+    <date-picker view-date="startDate" on-change="getAppointmentsForDate" ng-hide="searchedPatient"></date-picker>
+    <a ng-click="goBackToPreviousView()" ng-show="searchedPatient">Back</a>
+    <span ng-show="searchedPatient">Search Results</span>
+    <patient-search on-search="displaySearchedPatient"></patient-search>
+    <div class="app-list-view">
         <table>
             <thead>
             <tr>
