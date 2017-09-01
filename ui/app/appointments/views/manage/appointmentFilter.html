@@ -1,4 +1,3 @@
-
 <div class="appointment-filter" ng-init="isFilterOpen = true" ng-show="isFilterOpen">
     <a ng-click="isFilterOpen = false"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
 
@@ -45,12 +44,8 @@
         <button ng-click="applyFilter()">Apply Filter</button>
     </p>
 </div>
-<div class="appointment-container" ng-init="isFilterOpen = true">
-    <div class="appointment-btn-container">
-         <span class="app-filter-btn-wrapper" ng-click="isFilterOpen = true" ng-show="!isFilterOpen">
-            <a class="app-filter-btn">
-                <i class="fa fa-filter" aria-hidden="true"></i> Filter
-            </a>
-        </span>
-    </div>
-</div>
+<span class="app-filter-btn-wrapper" ng-init="isFilterOpen = true" ng-show="!isFilterOpen">
+    <a class="app-filter-btn" ng-click="isFilterOpen = true">
+        <i class="fa fa-filter" aria-hidden="true"></i> Filter
+    </a>
+</span>
