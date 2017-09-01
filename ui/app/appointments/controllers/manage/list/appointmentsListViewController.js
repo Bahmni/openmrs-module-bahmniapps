@@ -5,6 +5,8 @@ angular.module('bahmni.appointments')
         function ($scope, $state, $stateParams, spinner, appointmentsService, appService, appointmentsFilter) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
+            $scope.searchedPatient = false;
+            var oldPatientData = [];
             var init = function () {
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 return $scope.getAppointmentsForDate($scope.startDate);
@@ -20,6 +22,17 @@ angular.module('bahmni.appointments')
                     $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
                 }));
             };
+
+            $scope.displaySearchedPatient = function (appointments) {
+                oldPatientData = $scope.filteredAppointments;
+                $scope.filteredAppointments = appointments;
+                $scope.searchedPatient = true;
+            }
+
+            $scope.goBackToPreviousView = function () {
+                $scope.searchedPatient = false;
+                $scope.filteredAppointments = oldPatientData;
+            }
 
             $scope.isSelected = function (appointment) {
                 return $scope.selectedAppointment === appointment;

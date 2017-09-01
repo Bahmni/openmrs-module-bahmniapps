@@ -189,4 +189,211 @@ describe('AppointmentsListViewController', function () {
         expect(scope.filteredAppointments.length).toEqual(1);
         expect(scope.filteredAppointments[0]).toEqual(appointments[0]);
     });
+    it("should display seached patient appointment history", function () {
+        var appointments = [{
+            "uuid": "347ae565-be21-4516-b573-103f9ce84a20",
+            "appointmentNumber": "0000",
+            "patient": {
+                "identifier": "GAN203006",
+                "name": "patient name",
+                "uuid": "4175c013-a44c-4be6-bd87-6563675d2da1"
+            },
+            "service": {
+                "appointmentServiceId": 4,
+                "name": "Ophthalmology",
+                "description": "",
+                "speciality": {},
+                "startTime": "",
+                "endTime": "",
+                "maxAppointmentsLimit": null,
+                "durationMins": 10,
+                "location": {},
+                "uuid": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                "color": "#006400",
+                "creatorName": null
+            },
+            "serviceType": null,
+            "provider": null,
+            "location": null,
+            "startDateTime": 1503891000000,
+            "endDateTime": 1503900900000,
+            "appointmentKind": "Scheduled",
+            "status": "Scheduled",
+            "comments": null
+        }, {
+            "uuid": "348d8416-58e1-48a4-b7db-44261c4d1798",
+            "appointmentNumber": "0000",
+            "patient": {
+                "identifier": "GAN203006",
+                "name": "patient name",
+                "uuid": "4175c013-a44c-4be6-bd87-6563675d2da1"
+            },
+            "service": {
+                "appointmentServiceId": 5,
+                "name": "Cardiology",
+                "description": null,
+                "speciality": {},
+                "startTime": "",
+                "endTime": "",
+                "maxAppointmentsLimit": null,
+                "durationMins": null,
+                "location": {},
+                "uuid": "2049ddaa-1287-450e-b4a3-8f523b072827",
+                "color": "#006400",
+                "creatorName": null
+            },
+            "serviceType": null,
+            "provider": null,
+            "location": null,
+            "startDateTime": 1503887400000,
+            "endDateTime": 1503889200000,
+            "appointmentKind": "Scheduled",
+            "status": "Scheduled",
+            "comments": null
+        }, {
+            "uuid": "8f895c2d-130d-4e12-a621-7cb6c16a2095",
+            "appointmentNumber": "0000",
+            "patient": {
+                "identifier": "GAN203003",
+                "name": "John Smith",
+                "uuid": "4175c013-a44c-4be6-bd87-6563675d2da1"
+            },
+            "service": {
+                "appointmentServiceId": 5,
+                "name": "Cardiology",
+                "description": null,
+                "speciality": {},
+                "startTime": "",
+                "endTime": "",
+                "maxAppointmentsLimit": null,
+                "durationMins": null,
+                "location": {},
+                "uuid": "2049ddaa-1287-450e-b4a3-8f523b072827",
+                "color": "#006400",
+                "creatorName": null
+            },
+            "serviceType": null,
+            "provider": {"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"},
+            "location": null,
+            "startDateTime": 1503923400000,
+            "endDateTime": 1503925200000,
+            "appointmentKind": "Scheduled",
+            "status": "Scheduled",
+            "comments": null
+        }];
+        appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
+        createController()
+        expect(scope.appointments).toBe(appointments);
+        expect(scope.filteredAppointments.length).toEqual(3);
+        expect(scope.searchedPatient).toBeFalsy();
+        scope.displaySearchedPatient([appointments[1]]);
+        expect(scope.filteredAppointments.length).toEqual(1);
+        expect(scope.searchedPatient).toBeTruthy();
+    });
+    describe("goBackToPreviousView", function () {
+        var appointments;
+        beforeEach(function () {
+            appointments = [{
+                "uuid": "347ae565-be21-4516-b573-103f9ce84a20",
+                "appointmentNumber": "0000",
+                "patient": {
+                    "identifier": "GAN203006",
+                    "name": "patient name",
+                    "uuid": "4175c013-a44c-4be6-bd87-6563675d2da1"
+                },
+                "service": {
+                    "appointmentServiceId": 4,
+                    "name": "Ophthalmology",
+                    "description": "",
+                    "speciality": {},
+                    "startTime": "",
+                    "endTime": "",
+                    "maxAppointmentsLimit": null,
+                    "durationMins": 10,
+                    "location": {},
+                    "uuid": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                    "color": "#006400",
+                    "creatorName": null
+                },
+                "serviceType": null,
+                "provider": null,
+                "location": null,
+                "startDateTime": 1503891000000,
+                "endDateTime": 1503900900000,
+                "appointmentKind": "Scheduled",
+                "status": "Scheduled",
+                "comments": null
+            }, {
+                "uuid": "348d8416-58e1-48a4-b7db-44261c4d1798",
+                "appointmentNumber": "0000",
+                "patient": {
+                    "identifier": "GAN203006",
+                    "name": "patient name",
+                    "uuid": "4175c013-a44c-4be6-bd87-6563675d2da1"
+                },
+                "service": {
+                    "appointmentServiceId": 5,
+                    "name": "Cardiology",
+                    "description": null,
+                    "speciality": {},
+                    "startTime": "",
+                    "endTime": "",
+                    "maxAppointmentsLimit": null,
+                    "durationMins": null,
+                    "location": {},
+                    "uuid": "2049ddaa-1287-450e-b4a3-8f523b072827",
+                    "color": "#006400",
+                    "creatorName": null
+                },
+                "serviceType": null,
+                "provider": null,
+                "location": null,
+                "startDateTime": 1503887400000,
+                "endDateTime": 1503889200000,
+                "appointmentKind": "Scheduled",
+                "status": "Scheduled",
+                "comments": null
+            }, {
+                "uuid": "8f895c2d-130d-4e12-a621-7cb6c16a2095",
+                "appointmentNumber": "0000",
+                "patient": {
+                    "identifier": "GAN203003",
+                    "name": "John Smith",
+                    "uuid": "4175c013-a44c-4be6-bd87-6563675d2da1"
+                },
+                "service": {
+                    "appointmentServiceId": 5,
+                    "name": "Cardiology",
+                    "description": null,
+                    "speciality": {},
+                    "startTime": "",
+                    "endTime": "",
+                    "maxAppointmentsLimit": null,
+                    "durationMins": null,
+                    "location": {},
+                    "uuid": "2049ddaa-1287-450e-b4a3-8f523b072827",
+                    "color": "#006400",
+                    "creatorName": null
+                },
+                "serviceType": null,
+                "provider": {"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"},
+                "location": null,
+                "startDateTime": 1503923400000,
+                "endDateTime": 1503925200000,
+                "appointmentKind": "Scheduled",
+                "status": "Scheduled",
+                "comments": null
+            }];
+            appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
+        })
+        it("should reset filtered appointments to its previous data", function () {
+            createController()
+            scope.filteredAppointments = appointments;
+            scope.displaySearchedPatient([appointments[1]]);
+            expect(scope.filteredAppointments.length).toEqual(1);
+            scope.goBackToPreviousView();
+            expect(scope.filteredAppointments.length).toEqual(3);
+            expect(scope.searchedPatient).toBeFalsy();
+        });
+    })
 });
