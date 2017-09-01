@@ -103,5 +103,11 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            $scope.isFilterApplied = function () {
+                return _.find($state.params.filterParams, function (filterParam) {
+                    return !_.isEmpty(filterParam);
+                });
+            };
+
             init();
         }]);

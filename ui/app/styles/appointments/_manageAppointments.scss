@@ -185,7 +185,7 @@
       background: #E2E2E2;
     }
     i {
-      color: #00ACC3;
+      color: black;
     }
     &.app-filter-btn {
       padding: 5px 10px;
@@ -507,4 +507,8 @@
       }
     }
   }
+}
+
+.colorForFilter {
+  color: #00ACC3 !important;
 }
