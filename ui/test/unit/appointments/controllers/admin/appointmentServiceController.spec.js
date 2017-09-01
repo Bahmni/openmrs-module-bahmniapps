@@ -143,10 +143,17 @@ describe("AppointmentServiceController", function () {
 
         it('should validate to true if service name is empty', function () {
             scope.service = {name: undefined};
-            scope.services = {name: 'Endocrinology'};
+            scope.services = [{name: 'Endocrinology'}];
             scope.validateServiceName();
             expect(name.$setValidity).toHaveBeenCalledWith('uniqueServiceName', true);
         });
+
+        it('should not compare with itself on edit', function () {
+            scope.service = {name: 'Cardiology', uuid: 'c36006e5-9fbb-4f20-866b-0ece245615a6'};
+            scope.services = [{name: 'Cardiology', uuid: 'c36006e5-9fbb-4f20-866b-0ece245615a6'}];
+            scope.validateServiceName();
+            expect(name.$setValidity).toHaveBeenCalledWith('uniqueServiceName', true);
+        })
     });
 
     describe('save', function () {

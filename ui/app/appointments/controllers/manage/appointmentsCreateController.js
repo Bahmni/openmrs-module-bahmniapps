@@ -177,10 +177,9 @@ angular.module('bahmni.appointments')
             };
 
             $scope.onServiceTypeChange = function () {
-                if ($scope.appointment.serviceType) {
-                    $scope.minDuration = $scope.appointment.serviceType.duration;
-                }
+                $scope.minDuration = $scope.appointment.serviceType && $scope.appointment.serviceType.duration;
                 clearAvailabilityInfo();
+                $scope.onSelectStartTime();
             };
 
             var getWeeklyAvailabilityOnADate = function (date, weeklyAvailability) {

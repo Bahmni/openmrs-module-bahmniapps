@@ -15,7 +15,7 @@ angular.module('bahmni.appointments')
 
                     var editAppointment = function (closeDialog, appointment) {
                         closeDialog();
-                        $state.go('home.manage.appointments.calendar.edit', {appointment: appointment});
+                        $state.go('home.manage.appointments.calendar.edit', {appointment: appointment, uuid: appointment.uuid});
                     };
 
                     calendarViewPopUp({
