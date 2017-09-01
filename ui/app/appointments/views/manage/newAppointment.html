@@ -3,7 +3,7 @@
         <a href="#/home/manage/appointments/list"> <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 
         <h2 ng-hide="appointment.uuid">{{ ::'ADD_NEW_APPOINTMENT' | translate}}</h2>
-        <h2 ng-show="appointment.uuid">Edit Appointment</h2>
+        <h2 ng-show="appointment.uuid">{{ ::'EDIT_APPOINTMENT_KEY' | translate}}</h2>
         <form ng-submit="save()" id="create-appointment-form" name="createAppointmentForm">
 
             <section id="addNewAppointment">
