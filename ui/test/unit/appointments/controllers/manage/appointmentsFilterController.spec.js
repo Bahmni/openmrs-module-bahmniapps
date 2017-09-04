@@ -42,7 +42,7 @@ describe('AppointmentsFilterController', function () {
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function ($controller, $rootScope) {
+        inject(function ($controller, $rootScope, $httpBackend) {
             scope = $rootScope.$new();
             controller = $controller;
             state = jasmine.createSpyObj('state', ['go']);
@@ -56,7 +56,11 @@ describe('AppointmentsFilterController', function () {
             appDescriptor.getConfigValue.and.returnValue(true);
             appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({}));
             q.all.and.returnValue(specUtil.simplePromise({}));
-            state.params = {filterParams: {}}
+            state.params = {filterParams: {}};
+            state.current = {tabName: "list"};
+            $httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>')
+            $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>')
+            $httpBackend.expectGET('/openmrs/ws/rest/v1/provider').respond('<div></div>')
         });
     });
 
@@ -117,6 +121,7 @@ describe('AppointmentsFilterController', function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         createController();
         expect(scope.selectedSpecialities[0].label).toBe("Cardiology");
+        expect(scope.selectedSpecialities[0].children[0].color).toBe("#006400");
         expect(scope.selectedSpecialities[0].children[0].label).toBe("ortho");
         expect(scope.selectedSpecialities[0].children[0].children[0].label).toBe("maxillo");
     });
@@ -428,5 +433,54 @@ describe('AppointmentsFilterController', function () {
         scope.minimizeFilter();
         expect(state.params.isFilterOpen).toBeFalsy();
         expect(scope.isFilterOpen).toBeFalsy();
+    });
+
+    it("if calender is open then statusList should not include cancelled", function () {
+        state.current = { tabName: "calendar" };
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        createController();
+        expect(scope.statusList.length).toBe(4);
+        expect(scope.statusList[0].name).toBe("Scheduled");
+        expect(scope.statusList[1].name).toBe("CheckedIn");
+        expect(scope.statusList[2].name).toBe("Completed");
+        expect(scope.statusList[3].name).toBe("Missed");
+    });
+
+    it("should remove cancel status from statusList and selectedStatusList when user navigates to calendar view from list view", function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        createController();
+        state.current = { tabName: "list" };
+        scope.selectedStatusList = [{name: "Cancelled", value: "Cancelled"} , { name: "Scheduled", value: "Scheduled"}];
+        scope.$digest();
+        state.current.tabName = "calendar";
+        scope.$digest();
+        expect(scope.statusList.length).toBe(4);
+        expect(scope.statusList[0].name).toBe("Scheduled");
+        expect(scope.statusList[1].name).toBe("CheckedIn");
+        expect(scope.statusList[2].name).toBe("Completed");
+        expect(scope.statusList[3].name).toBe("Missed");
+        expect(scope.selectedStatusList.length).toBe(1);
+        expect(scope.selectedStatusList[0].name).toBe("Scheduled");
+        expect(state.params.filterParams.statusList.length).toBe(1);
+        expect(state.params.filterParams.statusList[0]).toBe("Scheduled");
+    });
+
+    it("should set statusList to default statusList when user navigates to list view from calender view", function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        createController();
+        state.current = { tabName: "calender" };
+        scope.$digest();
+        scope.selectedStatusList = [{name: "Cancelled", value: "Cancelled"} , { name: "Scheduled", value: "Scheduled"}];
+        state.current.tabName = "list";
+        scope.$digest();
+        expect(scope.statusList.length).toBe(5);
+        expect(scope.statusList[0].name).toBe("Scheduled");
+        expect(scope.statusList[1].name).toBe("CheckedIn");
+        expect(scope.statusList[2].name).toBe("Completed");
+        expect(scope.statusList[3].name).toBe("Cancelled");
+        expect(scope.statusList[4].name).toBe("Missed");
+        expect(state.params.filterParams.statusList.length).toBe(2);
+        expect(state.params.filterParams.statusList[0]).toBe("Cancelled");
+        expect(state.params.filterParams.statusList[1]).toBe("Scheduled");
     });
 });

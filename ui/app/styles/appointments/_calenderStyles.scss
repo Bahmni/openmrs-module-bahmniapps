@@ -56,3 +56,11 @@
     background: transparent;
   }
 }
+
+.color-box {
+  display: inline-block;
+  width: 30px;
+  height: 8px;
+  margin: 1px;
+  border: 1px solid rgba(0, 0, 0, .2);
+}
