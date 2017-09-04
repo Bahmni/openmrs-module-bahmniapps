@@ -5,6 +5,7 @@ angular.module('bahmni.appointments')
         function ($scope, $state, $q, appointmentsServiceService, spinner, ivhTreeviewMgr, providerService) {
             var init = function () {
                 $scope.isFilterOpen = $state.params.isFilterOpen;
+                $scope.filterButtonHidden = $state.params.isSearchEnabled;
                 $scope.statusList = _.map(Bahmni.Appointments.Constants.appointmentStatusList, function (status) {
                     return {name: status, value: status};
                 });
@@ -126,6 +127,18 @@ angular.module('bahmni.appointments')
                     return !_.isEmpty(filterParam);
                 });
             };
+            $scope.$watch(function () {
+                return $state.params.isFilterOpen;
+            }, function (isFilterHidden) {
+                $scope.isFilterOpen = isFilterHidden;
+                $scope.filterButtonHidden = isFilterHidden;
+            }, true);
+
+            $scope.$watch(function () {
+                return $state.params.isSearchEnabled;
+            }, function (isSearchEnabled) {
+                $scope.isFilterButtonHidden = isSearchEnabled;
+            }, true);
 
             init();
         }]);

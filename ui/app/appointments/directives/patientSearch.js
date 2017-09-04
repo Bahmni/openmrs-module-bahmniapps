@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .directive('patientSearch', ['patientService', 'appointmentsService', 'spinner', function (patientService, appointmentsService, spinner) {
+    .directive('patientSearch', ['patientService', 'appointmentsService', 'spinner', '$state', function (patientService, appointmentsService, spinner, $state) {
         return {
             restrict: "E",
             scope: {
@@ -29,6 +29,13 @@ angular.module('bahmni.appointments')
                             $scope.onSearch(oldAppointments.data);
                         }));
                     };
+                    $scope.$watch(function () {
+                        return $state.params.isSearchEnabled;
+                    }, function (isSearchEnabled) {
+                        if (isSearchEnabled == false) {
+                            $scope.patient = null;
+                        }
+                    }, true);
                 }
             }
         };

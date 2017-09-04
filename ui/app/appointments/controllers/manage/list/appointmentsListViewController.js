@@ -57,11 +57,15 @@ angular.module('bahmni.appointments')
                 oldPatientData = $scope.filteredAppointments;
                 $scope.filteredAppointments = appointments;
                 $scope.searchedPatient = true;
+                $stateParams.isFilterOpen = false;
+                $stateParams.isSearchEnabled = true;
             };
 
             $scope.goBackToPreviousView = function () {
                 $scope.searchedPatient = false;
                 $scope.filteredAppointments = oldPatientData;
+                $stateParams.isFilterOpen = true;
+                $stateParams.isSearchEnabled = false;
             };
 
             $scope.isSelected = function (appointment) {

@@ -283,6 +283,10 @@ describe('AppointmentsListViewController', function () {
             "comments": null
         }];
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
+        stateparams = {
+            isFilterOpen: true,
+            isSearchEnabled: false
+        }
         createController()
         expect(scope.appointments).toBe(appointments);
         expect(scope.filteredAppointments.length).toEqual(3);
@@ -290,6 +294,8 @@ describe('AppointmentsListViewController', function () {
         scope.displaySearchedPatient([appointments[1]]);
         expect(scope.filteredAppointments.length).toEqual(1);
         expect(scope.searchedPatient).toBeTruthy();
+        expect(stateparams.isFilterOpen).toBeFalsy();
+        expect(stateparams.isSearchEnabled).toBeTruthy();
     });
     describe("goBackToPreviousView", function () {
         var appointments;
@@ -395,6 +401,8 @@ describe('AppointmentsListViewController', function () {
             scope.goBackToPreviousView();
             expect(scope.filteredAppointments.length).toEqual(3);
             expect(scope.searchedPatient).toBeFalsy();
+            expect(scope.isFilterOpen).toBeTruthy();
+            expect(scope.isSearchEnabled).toBeFalsy();
         });
         it("should sort appointments by the sort column", function () {
             scope.filterParams = {
