@@ -34,7 +34,7 @@ angular.module('bahmni.appointments')
                             id: speciality[0].speciality.uuid || "",
                             children: _.map(speciality, function (service) {
                                 return {
-                                    label: service.name, id: service.uuid, color:service.color,
+                                    label: service.name, id: service.uuid, color: service.color,
                                     children: _.map(service.serviceTypes, function (serviceType) {
                                         return {label: serviceType.name, id: serviceType.uuid};
                                     })
@@ -140,8 +140,8 @@ angular.module('bahmni.appointments')
                         $scope.statusList = _.filter($scope.statusList, function (status) {
                             return status.name !== "Cancelled";
                         });
-                        $scope.selectedStatusList =  _.filter($scope.selectedStatusList, function (status) {
-                            return  status.name !== "Cancelled";
+                        $scope.selectedStatusList = _.filter($scope.selectedStatusList, function (status) {
+                            return status.name !== "Cancelled";
                         });
                         $scope.applyFilter();
                     } else {
