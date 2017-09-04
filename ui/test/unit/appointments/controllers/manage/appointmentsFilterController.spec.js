@@ -368,7 +368,7 @@ describe('AppointmentsFilterController', function () {
         expect(scope.selectedStatusList.length).toBe(2);
     });
 
-    it('should return false when filters are empty', function () {
+    it('should return false when filters are empty without serviceUuids, serviceTypeUuids and providerUuids', function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         state.params.filterParams = {};
         createController();
@@ -400,7 +400,7 @@ describe('AppointmentsFilterController', function () {
         expect(scope.filterSelectedValues).toEqual({selected: true});
     });
 
-    it('should filter all the selected services when clicked on show selected toggle', function () {
+    it('should show all the service when clicked on all toggle', function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         createController();
         scope.showSelected = false;
