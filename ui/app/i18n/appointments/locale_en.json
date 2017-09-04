@@ -110,5 +110,12 @@
   "MISSED_KEY": "missed",
   "PLACEHOLDER_SELECT_PATIENT": "Select a patient",
   "APPOINTMENT_SLOT": "Slot",
-  "EDIT_APPOINTMENT_KEY": "Edit Appointment"
+  "EDIT_APPOINTMENT_KEY": "Edit Appointment",
+  "APPLY_FILTER_KEY": "Apply Filter",
+  "FILTER_KEY": "Filter",
+  "APPOINTMENT_STATUS_KEY": "Appointment status",
+  "APPOINTMENT_SERVICE_KEY": "Service",
+  "APPOINTMENT_SHOW_SELECTED_KEY": "Show selected",
+  "APPOINTMENT_ENTER_STATUS_NAME_KEY": "Enter status Name",
+  "RESET_KEY": "Reset"
 }
