@@ -58,7 +58,8 @@ angular
                 url: '/appointments',
                 params: {
                     filterParams: {},
-                    isFilterOpen: true
+                    isFilterOpen: true,
+                    isSearchEnabled: false
                 },
                 views: {
                     'filter': {
