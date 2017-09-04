@@ -5,8 +5,10 @@
         <label>{{::'APPOINTMENT_SERVICE_SPECIALITY_KEY' |translate}}/{{::'APPOINTMENT_SERVICE_KEY' |translate}}</label>
         <input type="text" ng-model="searchText" ng-disabled="showSelected" placeholder="Search ..."/>
         <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
+        <input type="checkbox" ng-model="showSelected" ng-click="filterSelected()" id="id-name--1" name="set-name" class="switch-input">
+        <label for="id-name--1" class="switch-label">{{::'APPOINTMENT_SHOW_SELECTED_KEY' |translate}} </label>
+    </p>
     <div class="app-filter-speciality">
-    {{::'APPOINTMENT_SHOW_SELECTED_KEY' |translate}} <input type="checkbox" ng-model="showSelected" ng-click="filterSelected()"/>
         <div ivh-treeview="selectedSpecialities"
              ivh-treeview-filter="filterSelectedValues || searchText "
              ivh-treeview-expand-to-depth="-1"
@@ -31,7 +33,6 @@
         </div>
 
     </div>
-    </p>
     <div class="appointment-filter-items provider-block">
         <label>{{::'APPOINTMENT_PROVIDER' |translate}}</label>
         <multi-select-autocomplete
