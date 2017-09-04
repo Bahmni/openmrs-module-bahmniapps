@@ -5,6 +5,8 @@ angular.module('bahmni.appointments')
         function ($scope, $state, $stateParams, spinner, appointmentsService, appService, appointmentsFilter) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
+            $scope.searchedPatient = false;
+            var oldPatientData = [];
 
             $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
@@ -12,11 +14,25 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
                 {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
                 {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
+                {
+                    heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY',
+                    sortInfo: 'service.speciality.name',
+                    enable: $scope.enableSpecialities
+                },
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', enable: true},
-                {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'service.serviceType.name', class: true, enable: $scope.enableServiceTypes},
+                {
+                    heading: 'APPOINTMENT_SERVICE_TYPE_FULL',
+                    sortInfo: 'service.serviceType.name',
+                    class: true,
+                    enable: $scope.enableServiceTypes
+                },
                 {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
-                {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'service.location.name', class: true, enable: true},
+                {
+                    heading: 'APPOINTMENT_SERVICE_LOCATION_KEY',
+                    sortInfo: 'service.location.name',
+                    class: true,
+                    enable: true
+                },
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             var init = function () {
@@ -37,6 +53,21 @@ angular.module('bahmni.appointments')
                 }));
             };
 
+            $scope.displaySearchedPatient = function (appointments) {
+                oldPatientData = $scope.filteredAppointments;
+                $scope.filteredAppointments = appointments;
+                $scope.searchedPatient = true;
+                $stateParams.isFilterOpen = false;
+                $stateParams.isSearchEnabled = true;
+            };
+
+            $scope.goBackToPreviousView = function () {
+                $scope.searchedPatient = false;
+                $scope.filteredAppointments = oldPatientData;
+                $stateParams.isFilterOpen = true;
+                $stateParams.isSearchEnabled = false;
+            };
+
             $scope.isSelected = function (appointment) {
                 return $scope.selectedAppointment === appointment;
             };
@@ -54,7 +85,10 @@ angular.module('bahmni.appointments')
             };
 
             $scope.editAppointment = function () {
-                $state.go('home.manage.appointments.list.edit', {appointment: $scope.selectedAppointment, uuid: $scope.selectedAppointment.uuid});
+                $state.go('home.manage.appointments.list.edit', {
+                    appointment: $scope.selectedAppointment,
+                    uuid: $scope.selectedAppointment.uuid
+                });
             };
 
             $scope.$watch(function () {

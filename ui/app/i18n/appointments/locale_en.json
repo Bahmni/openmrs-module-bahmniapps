@@ -117,5 +117,7 @@
   "APPOINTMENT_SERVICE_KEY": "Service",
   "APPOINTMENT_SHOW_SELECTED_KEY": "Show selected",
   "APPOINTMENT_ENTER_STATUS_NAME_KEY": "Enter status Name",
-  "RESET_KEY": "Reset"
+  "RESET_KEY": "Reset",
+  "BACK_LABEL": "Back",
+  "PATIENT_LIST_VIEW_SEARCH_HEADER": "Search Results"
 }
