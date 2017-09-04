@@ -24,10 +24,14 @@ angular.module('bahmni.appointments')
                 }));
             };
 
-            $scope.goToListView = function (date) {
+            $scope.goToListView = function (date, service) {
                 var params = {
-                    viewDate: moment(date).toDate()
+                    viewDate: moment(date).toDate(),
+                    filterParams: {statusList: _.without(Bahmni.Appointments.Constants.appointmentStatusList, "Cancelled")}
                 };
+                if (!_.isUndefined(service)) {
+                    params.filterParams.serviceUuids = [service.uuid];
+                }
                 $state.go('home.manage.appointments.list', params);
             };
 

@@ -1,13 +1,14 @@
 'use strict';
 
 describe('AppointmentsCalendarViewController', function () {
-    var controller, scope, spinner, appointmentsService, appointmentsContext, translate;
+    var controller, scope, spinner, appointmentsService, appointmentsContext, translate, stateParams;
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function ($controller, $rootScope) {
+        inject(function ($controller, $rootScope, $stateParams) {
             controller = $controller;
             scope = $rootScope.$new();
+            stateParams = $stateParams;
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             spinner.forPromise.and.callFake(function () {
                 return {
@@ -42,6 +43,7 @@ describe('AppointmentsCalendarViewController', function () {
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate).then(function () {
             expect(scope.shouldReload).toBeFalsy();
+            expect(stateParams.viewDate).toEqual(viewDate);
         });
         expect(appointmentsService.getAllAppointments).toHaveBeenCalledWith({forDate: viewDate});
         expect(spinner.forPromise).toHaveBeenCalled();

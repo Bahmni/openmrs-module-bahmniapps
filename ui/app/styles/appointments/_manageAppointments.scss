@@ -73,16 +73,20 @@
   }
 }
 
+.common-filter-wrapper {
+  float: left;
+}
+
 .appointment-filter {
   width: 300px;
   float: left;
-  height: calc(100vh - 178px);
+  height: calc(100vh - 111px);
   overflow: auto;
   border-right: 1px solid #ddd;
-  border-top: 1px solid #ddd;
   padding-top: 20px;
   box-sizing: border-box;
   position: relative;
+  margin-top: -15px;
   a {
     display: inline-block;
     width: 20px;
@@ -181,19 +185,26 @@
       background: #E2E2E2;
     }
     i {
-      color: #00ACC3;
+      color: black;
     }
     &.app-filter-btn {
       padding: 5px 10px;
     }
   }
-  .app-filter-btn-wrapper {
-    display: inline-block;
-    padding-right: 30px;
-    margin-right: 15px;
-    border-right: 1px solid #95989A;
-    a {
-      margin: 0;
+}
+
+.app-filter-btn-wrapper {
+  display: inline-block;
+  padding-right: 30px;
+  margin-right: 15px;
+  border-right: 1px solid #95989A;
+  a {
+    margin: 0;
+    @extend .appBtn;
+    background: #fff;
+    border: none;
+    &:hover {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     }
   }
 }
@@ -222,7 +233,7 @@
     background: #E2E2E2;
   }
   &.calendar-view-btn-container {
-    height: 53px;
+    height: 51px;
   }
 }
 
@@ -467,13 +478,14 @@
   padding-left: 125px;
 }
 
-.app-filter-open {
-  .create-new-app-wrapper {
+.create-new-app-wrapper {
+  width: 100%;
+  &.app-filter-open {
     width: calc(100% - 300px);
   }
 }
 
-.app-dialog-container.ngdialog.ngdialog-theme-default{
+.app-dialog-container.ngdialog.ngdialog-theme-default {
   .ngdialog-content {
     width: 525px;
     p {
@@ -495,4 +507,8 @@
       }
     }
   }
+}
+
+.colorForFilter {
+  color: #00ACC3 !important;
 }

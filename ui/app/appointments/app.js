@@ -57,7 +57,8 @@ angular
             }).state('home.manage.appointments', {
                 url: '/appointments',
                 params: {
-                    filterParams: {}
+                    filterParams: {},
+                    isFilterOpen: true
                 },
                 views: {
                     'filter': {
@@ -99,7 +100,7 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentCreateConfig: function (appointmentConfigInitialization, $stateParams) {
+                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, $stateParams) {
                         return appointmentConfigInitialization($stateParams);
                     }
                 }
@@ -115,7 +116,7 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentCreateConfig: function (appointmentConfigInitialization, $stateParams) {
+                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, $stateParams) {
                         return appointmentConfigInitialization($stateParams);
                     }
                 }
@@ -140,7 +141,7 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentCreateConfig: function (appointmentConfigInitialization, $stateParams) {
+                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, $stateParams) {
                         return appointmentConfigInitialization($stateParams);
                     }
                 }
@@ -156,7 +157,7 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentCreateConfig: function (appointmentConfigInitialization, $stateParams) {
+                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, $stateParams) {
                         return appointmentConfigInitialization($stateParams);
                     }
                 }

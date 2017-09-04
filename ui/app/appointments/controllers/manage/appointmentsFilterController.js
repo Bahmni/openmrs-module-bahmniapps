@@ -4,9 +4,14 @@ angular.module('bahmni.appointments')
     .controller('AppointmentsFilterController', ['$scope', '$state', '$q', 'appointmentsServiceService', 'spinner', 'ivhTreeviewMgr', 'providerService',
         function ($scope, $state, $q, appointmentsServiceService, spinner, ivhTreeviewMgr, providerService) {
             var init = function () {
+                $scope.isFilterOpen = $state.params.isFilterOpen;
                 $scope.statusList = _.map(Bahmni.Appointments.Constants.appointmentStatusList, function (status) {
                     return {name: status, value: status};
                 });
+                $scope.selectedStatusList = _.filter($scope.statusList, function (status) {
+                    return _.includes($state.params.filterParams.statusList, status.value);
+                });
+
                 spinner.forPromise($q.all([appointmentsServiceService.getAllServicesWithServiceTypes(), providerService.list()]).then(function (response) {
                     $scope.providers = _.filter(response[1].data.results, function (provider) {
                         return provider.display;
@@ -18,27 +23,48 @@ angular.module('bahmni.appointments')
                     $scope.specialities = _.groupBy(response[0].data, function (service) {
                         return service.speciality.name || "No Speciality";
                     });
-                    $scope.mappedSpecialities = _.map($scope.specialities, function (speciality, key) {
+                    $scope.selectedSpecialities = _.map($scope.specialities, function (speciality, key) {
                         return {
                             label: key,
-                            value: speciality[0].speciality.uuid || "",
+                            id: speciality[0].speciality.uuid || "",
                             children: _.map(speciality, function (service) {
                                 return {
-                                    label: service.name, value: service.uuid,
+                                    label: service.name, id: service.uuid,
                                     children: _.map(service.serviceTypes, function (serviceType) {
-                                        return {label: serviceType.name, value: serviceType.uuid};
+                                        return {label: serviceType.name, id: serviceType.uuid};
                                     })
                                 };
                             })
                         };
                     });
+                    if (!_.isEmpty($state.params.filterParams)) {
+                        ivhTreeviewMgr.selectEach($scope.selectedSpecialities, $state.params.filterParams.serviceUuids);
+                    }
                 }));
             };
 
-            var resetFilterParams = function () {
-                $state.params.filterParams = { serviceUuids: [], serviceTypeUuids: [], providerUuids: [], statusList: [] };
+            $scope.filterSelected = function () {
+                $scope.filterSelectedValues = $scope.showSelected ? {selected: true} : undefined;
             };
 
+            $scope.expandFilter = function () {
+                $state.params.isFilterOpen = true;
+                $scope.isFilterOpen = $state.params.isFilterOpen;
+            };
+
+            $scope.minimizeFilter = function () {
+                $state.params.isFilterOpen = false;
+                $scope.isFilterOpen = $state.params.isFilterOpen;
+            };
+
+            var resetFilterParams = function () {
+                $state.params.filterParams = {
+                    serviceUuids: [],
+                    serviceTypeUuids: [],
+                    providerUuids: [],
+                    statusList: []
+                };
+            };
             $scope.setSelectedSpecialities = function (selectedSpecialities) {
                 $scope.selectedSpecialities = selectedSpecialities;
             };
@@ -53,6 +79,9 @@ angular.module('bahmni.appointments')
                 }
                 $scope.selectedProviders = [];
                 $scope.selectedStatusList = [];
+                $scope.showSelected = false;
+                $scope.filterSelectedValues = undefined;
+                $scope.searchText = undefined;
                 resetFilterParams();
             };
 
@@ -63,7 +92,7 @@ angular.module('bahmni.appointments')
                         .filter(function (service) {
                             return service.selected;
                         }).map(function (service) {
-                            return service.value;
+                            return service.id;
                         }).value();
                     return serviceUuids.concat(accumulator);
                 }, []);
@@ -75,7 +104,7 @@ angular.module('bahmni.appointments')
                             serviceTypesForService = _.filter(service.children, function (serviceType) {
                                 return serviceType.selected;
                             }).map(function (serviceType) {
-                                return serviceType.value;
+                                return serviceType.id;
                             });
                         }
                         return serviceTypesForService.concat(accumulator);
@@ -89,6 +118,12 @@ angular.module('bahmni.appointments')
 
                 $state.params.filterParams.statusList = _.map($scope.selectedStatusList, function (status) {
                     return status.value;
+                });
+            };
+
+            $scope.isFilterApplied = function () {
+                return _.find($state.params.filterParams, function (filterParam) {
+                    return !_.isEmpty(filterParam);
                 });
             };
 

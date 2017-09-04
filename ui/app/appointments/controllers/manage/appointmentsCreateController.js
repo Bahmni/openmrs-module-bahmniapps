@@ -6,6 +6,7 @@ angular.module('bahmni.appointments')
         'ngDialog', 'appService', '$stateParams', 'appointmentCreateConfig',
         function ($scope, $q, $window, $state, $translate, spinner, patientService, appointmentsService, appointmentsServiceService,
                   messagingService, ngDialog, appService, $stateParams, appointmentCreateConfig) {
+            $scope.isFilterOpen = $stateParams.isFilterOpen;
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
@@ -177,10 +178,9 @@ angular.module('bahmni.appointments')
             };
 
             $scope.onServiceTypeChange = function () {
-                if ($scope.appointment.serviceType) {
-                    $scope.minDuration = $scope.appointment.serviceType.duration;
-                }
+                $scope.minDuration = $scope.appointment.serviceType && $scope.appointment.serviceType.duration;
                 clearAvailabilityInfo();
+                $scope.onSelectStartTime();
             };
 
             var getWeeklyAvailabilityOnADate = function (date, weeklyAvailability) {
