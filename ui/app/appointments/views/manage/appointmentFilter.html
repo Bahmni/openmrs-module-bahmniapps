@@ -60,7 +60,7 @@
         <button ng-click="applyFilter()">{{::'APPLY_FILTER_KEY' |translate}}</button>
     </p>
 </div>
-<div class="appointment-container">
+<div class="appointment-container" ng-hide="isFilterButtonHidden">
     <div class="appointment-btn-container">
          <span class="app-filter-btn-wrapper" ng-click="expandFilter()" ng-show="!isFilterOpen">
             <a class="app-filter-btn">
