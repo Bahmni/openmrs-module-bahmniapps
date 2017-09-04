@@ -61,7 +61,37 @@ describe ('appointmentsSummaryController', function () {
         createController();
         var date = moment("2017-02-01").toDate();
         scope.goToListView(date);
-        expect(state.go).toHaveBeenCalledWith('home.manage.appointments.list', { viewDate : date });
+        var params = {viewDate: date,
+            filterParams: {statusList: _.without(Bahmni.Appointments.Constants.appointmentStatusList, "Cancelled")}};
+        expect(state.go).toHaveBeenCalledWith('home.manage.appointments.list', params);
+    });
+
+    it('should set service uuids and date when services and date are passed', function () {
+        createController();
+        var appointment = {
+            "appointmentService": {
+                "appointmentServiceId": 1,
+                "name": "service1",
+                "description": null,
+                "uuid": "c526c72a-ae6a-446c-9337-42d1119bcb94",
+                "color": "#008000",
+                "creatorName": null
+            },
+            "appointmentCountMap": {
+                "2017-08-16": {
+                    "allAppointmentsCount": 1,
+                    "missedAppointmentsCount": 0,
+                    "appointmentDate": 1502821800000,
+                    "appointmentServiceUuid": "c526c72a-ae6a-446c-9337-42d1119bcb94"
+                }
+            }
+        };
+
+        var date = moment("2017-02-01").toDate();
+        scope.goToListView(date, appointment.appointmentService);
+        var params = {viewDate: date,
+            filterParams: {statusList: _.without(Bahmni.Appointments.Constants.appointmentStatusList, "Cancelled"),  serviceUuids : [ 'c526c72a-ae6a-446c-9337-42d1119bcb94' ]}};
+        expect(state.go).toHaveBeenCalledWith('home.manage.appointments.list', params);
     });
 
    it('should set the appointments to the response data', function () {

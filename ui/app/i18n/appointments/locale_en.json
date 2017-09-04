@@ -111,5 +111,6 @@
   "PLACEHOLDER_SELECT_PATIENT": "Select a patient",
   "APPOINTMENT_SLOT": "Slot",
   "BACK_LABEL": "Back",
-  "PATIENT_LIST_VIEW_SEARCH_HEADER": "Search Results"
+  "PATIENT_LIST_VIEW_SEARCH_HEADER": "Search Results",
+  "EDIT_APPOINTMENT_KEY": "Edit Appointment"
 }

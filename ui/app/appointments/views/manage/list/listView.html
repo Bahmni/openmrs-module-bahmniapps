@@ -1,25 +1,20 @@
-<div ng-init="isFilterOpen = true" ng-class="{'app-filter-open': isFilterOpen}">
+<div ng-class="{'app-filter-open': isFilterOpen}">
     <date-picker view-date="startDate" on-change="getAppointmentsForDate" ng-hide="searchedPatient"></date-picker>
     <a ng-click="goBackToPreviousView()" ng-show="searchedPatient">{{::'BACK_LABEL' | translate}}</a>
     <span ng-show="searchedPatient">{{::'PATIENT_LIST_VIEW_SEARCH_HEADER' | translate}}</span>
     <patient-search on-search="displaySearchedPatient"></patient-search>
+
     <div class="app-list-view">
         <table>
             <thead>
             <tr>
-                <th>{{::'APPOINTMENT_PATIENT_ID' |translate}}</th>
-                <th class="table-mid-width">{{::'APPOINTMENT_PATIENT_NAME' |translate}}</th>
-                <th>{{::'APPOINTMENT_DATE' |translate}}</th>
-                <th>{{::'APPOINTMENT_START_TIME_KEY' |translate}}</th>
-                <th>{{::'APPOINTMENT_END_TIME_KEY' |translate}}</th>
-                <th class="table-mid-width">{{::'APPOINTMENT_PROVIDER' |translate}}</th>
-                <th ng-show="enableSpecialities">{{::'APPOINTMENT_SERVICE_SPECIALITY_KEY' |translate}}</th>
-                <th>{{::'APPOINTMENT_SERVICE' |translate}}</th>
-                <th class="table-mid-width" ng-show="enableServiceTypes">{{::'APPOINTMENT_SERVICE_TYPE_FULL' |translate}}</th>
-                <th>{{::'APPOINTMENT_WALK_IN' |translate}}</th>
-                <th class="table-mid-width">{{::'APPOINTMENT_SERVICE_LOCATION_KEY' |translate}}</th>
-                <th>{{::'APPOINTMENT_STATUS' |translate}}</th>
-                <th>{{::'APPOINTMENT_CREATE_NOTES' |translate}}</th>
+                <th ng-class="{'table-mid-width': info.class}" ng-show="info.enable" ng-repeat="info in tableInfo" ng-click="info.sortInfo && sortSurgicalAppointmentsBy(info.sortInfo)">
+                    {{ info.heading | translate }}
+                    <span ng-if="sortColumn == info.sortInfo">
+                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
+                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
+                </span>
+                </th>
             </tr>
             </thead>
             <tbody>

@@ -7,12 +7,42 @@ angular.module('bahmni.appointments')
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.searchedPatient = false;
             var oldPatientData = [];
+
+            $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
+                {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_DATE', sortInfo: 'appointmentDate', enable: true},
+                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
+                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
+                {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
+                {
+                    heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY',
+                    sortInfo: 'service.speciality.name',
+                    enable: $scope.enableSpecialities
+                },
+                {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', enable: true},
+                {
+                    heading: 'APPOINTMENT_SERVICE_TYPE_FULL',
+                    sortInfo: 'service.serviceType.name',
+                    class: true,
+                    enable: $scope.enableServiceTypes
+                },
+                {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
+                {
+                    heading: 'APPOINTMENT_SERVICE_LOCATION_KEY',
+                    sortInfo: 'service.location.name',
+                    class: true,
+                    enable: true
+                },
+                {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
+                {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             var init = function () {
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
+                $scope.isFilterOpen = $stateParams.isFilterOpen;
                 return $scope.getAppointmentsForDate($scope.startDate);
             };
 
             $scope.getAppointmentsForDate = function (viewDate) {
+                $stateParams.viewDate = viewDate;
                 $scope.selectedAppointment = undefined;
                 var params = {
                     forDate: viewDate
@@ -64,6 +94,20 @@ angular.module('bahmni.appointments')
                     $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
                 }
             }, true);
+
+            $scope.sortSurgicalAppointmentsBy = function (sortColumn) {
+                var emptyObjects = _.filter($scope.filteredAppointments, function (appointment) {
+                    return !_.property(sortColumn)(appointment);
+                });
+                var nonEmptyObjects = _.difference($scope.filteredAppointments, emptyObjects);
+                var sortedNonEmptyObjects = _.sortBy(nonEmptyObjects, sortColumn);
+                if ($scope.reverseSort) {
+                    sortedNonEmptyObjects.reverse();
+                }
+                $scope.filteredAppointments = sortedNonEmptyObjects.concat(emptyObjects);
+                $scope.sortColumn = sortColumn;
+                $scope.reverseSort = !$scope.reverseSort;
+            };
 
             init();
         }]);

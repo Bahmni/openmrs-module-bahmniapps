@@ -80,13 +80,16 @@ angular.module('bahmni.appointments')
             };
 
             $scope.validateServiceName = function () {
-                var name = $scope.service.name;
-                $scope.createServiceForm.name.$setValidity('uniqueServiceName', name ? isServiceNameUnique(name) : true);
+                $scope.createServiceForm.name.$setValidity('uniqueServiceName', isServiceNameUnique($scope.service));
             };
 
-            var isServiceNameUnique = function (serviceName) {
-                return !$scope.services.some(function (service) {
-                    return service.name.toLowerCase() === serviceName.toLowerCase();
+            var isServiceNameUnique = function (service) {
+                if (!service.name) {
+                    return true;
+                }
+                return !$scope.services.some(function (existingService) {
+                    var isConflictingName = existingService.name.toLowerCase() === service.name.toLowerCase();
+                    return service.uuid ? isConflictingName && (service.uuid !== existingService.uuid) : isConflictingName;
                 });
             };
 

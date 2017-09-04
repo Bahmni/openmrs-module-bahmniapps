@@ -6,6 +6,7 @@ angular.module('bahmni.appointments')
             $scope.allAppointmentsForDay = appointmentsContext.appointments;
             var init = function () {
                 $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
+                $scope.isFilterOpen = $state.params.isFilterOpen;
                 var parseAppointments = function (allAppointments) {
                     var appointments = allAppointments.filter(function (appointment) {
                         return appointment.status !== "Cancelled";
@@ -59,6 +60,7 @@ angular.module('bahmni.appointments')
                 parseAppointments(appointmentsContext.appointments);
 
                 $scope.getAppointmentsForDate = function (viewDate) {
+                    $state.params.viewDate = viewDate;
                     $scope.shouldReload = false;
                     var params = {forDate: viewDate};
                     return spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {

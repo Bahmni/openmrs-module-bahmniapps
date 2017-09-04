@@ -59,6 +59,13 @@ describe("AppointmentsCreateController", function () {
             createController();
         });
 
+        it('should set the isFilterOpen from state params', function () {
+            $stateParams.isFilterOpen = true;
+            createController();
+            expect($scope.isFilterOpen).toBeTruthy();
+            expect($scope.showConfirmationPopUp).toBeTruthy();
+        });
+
         it('should stay in current state if Cancel is selected', function () {
             expect($state.name).toEqual('home.manage.appointments.calendar.new');
             $scope.cancelTransition();
