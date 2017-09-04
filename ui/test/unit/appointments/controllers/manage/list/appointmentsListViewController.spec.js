@@ -291,4 +291,23 @@ describe('AppointmentsListViewController', function () {
         expect(scope.appointments[0].patient.identifier).toEqual("IQ00001");
         expect(scope.appointments[1].patient.identifier).toEqual("IQ00002");
     });
+
+    it("should have table info", function () {
+        var tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
+            {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
+            {heading: 'APPOINTMENT_DATE', sortInfo: 'appointmentDate', enable: true},
+            {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
+            {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
+            {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
+            {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: scope.enableSpecialities},
+            {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', enable: true},
+            {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'service.serviceType.name', class: true, enable: scope.enableServiceTypes},
+            {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
+            {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'service.location.name', class: true, enable: true},
+            {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
+            {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
+        createController();
+        expect(scope.tableInfo).toEqual(tableInfo)
+
+    })
 });

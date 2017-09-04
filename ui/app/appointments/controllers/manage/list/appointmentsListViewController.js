@@ -3,22 +3,22 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentsListViewController', ['$scope', '$state', '$stateParams', 'spinner', 'appointmentsService', 'appService', 'appointmentsFilter',
         function ($scope, $state, $stateParams, spinner, appointmentsService, appService, appointmentsFilter) {
-            $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier'},
-                {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true},
-                {heading: 'APPOINTMENT_DATE', sortInfo: 'appointmentDate'},
-                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime'},
-                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime'},
-                {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true},
-                {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name'},
-                {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name'},
-                {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'service.serviceType.name', class: true},
-                {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind'},
-                {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'service.location.name', class: true},
-                {heading: 'APPOINTMENT_STATUS', sortInfo: 'status'},
-                {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments'}];
-
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
+
+            $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
+                {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_DATE', sortInfo: 'appointmentDate', enable: true},
+                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
+                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
+                {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
+                {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', enable: true},
+                {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'service.serviceType.name', class: true, enable: $scope.enableServiceTypes},
+                {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
+                {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'service.location.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
+                {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             var init = function () {
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
