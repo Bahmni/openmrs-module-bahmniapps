@@ -12,6 +12,11 @@ angular.module('bahmni.appointments')
                     return _.includes($state.params.filterParams.statusList, status.value);
                 });
 
+                if ($state.current.tabName === "calendar") {
+                    $scope.statusList = _.filter($scope.statusList, function (status) {
+                        return status.name !== "Cancelled";
+                    });
+                }
                 spinner.forPromise($q.all([appointmentsServiceService.getAllServicesWithServiceTypes(), providerService.list()]).then(function (response) {
                     $scope.providers = _.filter(response[1].data.results, function (provider) {
                         return provider.display;
@@ -29,7 +34,7 @@ angular.module('bahmni.appointments')
                             id: speciality[0].speciality.uuid || "",
                             children: _.map(speciality, function (service) {
                                 return {
-                                    label: service.name, id: service.uuid,
+                                    label: service.name, id: service.uuid, color:service.color,
                                     children: _.map(service.serviceTypes, function (serviceType) {
                                         return {label: serviceType.name, id: serviceType.uuid};
                                     })
@@ -127,5 +132,25 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            $scope.$watch(function () {
+                return $state.current.tabName;
+            }, function (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    if (newValue === "calendar") {
+                        $scope.statusList = _.filter($scope.statusList, function (status) {
+                            return status.name !== "Cancelled";
+                        });
+                        $scope.selectedStatusList =  _.filter($scope.selectedStatusList, function (status) {
+                            return  status.name !== "Cancelled";
+                        });
+                        $scope.applyFilter();
+                    } else {
+                        $scope.statusList = _.map(Bahmni.Appointments.Constants.appointmentStatusList, function (status) {
+                            return {name: status, value: status};
+                        });
+                        $scope.applyFilter();
+                    }
+                }
+            }, true);
             init();
         }]);

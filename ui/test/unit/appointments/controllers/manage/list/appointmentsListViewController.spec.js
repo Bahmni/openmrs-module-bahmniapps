@@ -5,11 +5,11 @@ describe('AppointmentsListViewController', function () {
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function ($controller, $rootScope, $stateParams, appointmentsFilter) {
+        inject(function ($controller, $rootScope, $stateParams, $httpBackend) {
             scope = $rootScope.$new();
             controller = $controller;
             stateparams = $stateParams;
-            _appointmentsFilter = appointmentsFilter;
+            _appointmentsFilter = jasmine.createSpy('appointmentsFilter');
             appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments']);
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({}));
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -24,6 +24,9 @@ describe('AppointmentsListViewController', function () {
                     }
                 };
             });
+            $httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>')
+            $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>')
+            $httpBackend.expectGET('/openmrs/ws/rest/v1/provider').respond('<div></div>')
         });
     });
 
@@ -92,6 +95,9 @@ describe('AppointmentsListViewController', function () {
     });
 
     it("should filter appointments on loading list view", function () {
+        _appointmentsFilter.and.callFake(function (data) {
+            return [appointments[0]];
+        });
         var appointments = [{
             "uuid": "347ae565-be21-4516-b573-103f9ce84a20",
             "appointmentNumber": "0000",
@@ -308,6 +314,20 @@ describe('AppointmentsListViewController', function () {
             {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
         createController();
         expect(scope.tableInfo).toEqual(tableInfo)
+    });
 
-    })
+    it('should filter the appointments on change of filter params', function () {
+        _appointmentsFilter.and.callFake(function (data) {
+            return data;
+        });
+        var appointment1 = {patient: {name: 'patient2', identifier: "IQ00001"}, comments:"comments1", status: "Completed", appointmentKind: "Completed", provider: {name:"provider1"}, endDateTime: 100000, startDateTime:200000, service: {name: "service1", serviceType: {name: "type1"}, speciality: {name: "speciality1"}, location: {name:"location1" }}};
+        var appointment2 = {patient: {name: 'patient1', identifier: "IQ00002"}, comments:"comments2", status: "Scheduled", appointmentKind: "Scheduled", provider: {name:"provider2"}, endDateTime: 200000, startDateTime:300000, service: {name: "service2", serviceType: {name: "type2"}, speciality: {name: "speciality2"}, location:  {name:"location2" }}};
+        scope.appointments = [appointment1, appointment2];
+        stateparams.filterParams = {};
+        scope.$digest();
+        stateparams.filterParams = {serviceUuids: ['serviceUuid']};
+        scope.$digest();
+        expect(_appointmentsFilter.calls.mostRecent().args[0]).toEqual(scope.appointments);
+        expect(_appointmentsFilter.calls.mostRecent().args[1]).toEqual(stateparams.filterParams);
+    });
 });
