@@ -95,8 +95,8 @@
     font-size: 21px;
     position: absolute;
     right: 3px;
-    top: 5px;
-    z-index: 10;
+    top: 12px;
+    z-index: 11;
     text-align: center;
     i {
       padding: 0;
@@ -112,6 +112,9 @@
       display: inline-block;
       color: #292929;
       font-weight: bold;
+      &.switch-label {
+        margin-bottom: 0;
+      }
     }
     input {
       width: 100%;
@@ -121,31 +124,16 @@
       border: 1px solid #ddd;
       outline: none;
       margin-bottom: 10px;
+      &.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
     }
     .app-filter-search {
       position: absolute;
       top: 30px;
       right: 15px;
       color: #929292;
-    }
-    span {
-      overflow: hidden;
-      i {
-        color: #696969;
-        display: inline-block;
-        vertical-align: middle;
-        cursor: pointer;
-      }
-      span {
-        display: inline-block;
-        vertical-align: middle;
-        padding: 5px;
-        margin-left: 5px;
-        @extend .appBtn;
-        &:hover {
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-        }
-      }
     }
     &.app-filter-action-btn {
       overflow: hidden;
