@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsListViewController', ['$scope', '$state', '$stateParams', 'spinner', 'appointmentsService', 'appService', 'appointmentsFilter',
-        function ($scope, $state, $stateParams, spinner, appointmentsService, appService, appointmentsFilter) {
+    .controller('AppointmentsListViewController', ['$scope', '$state', '$stateParams', 'spinner', 'appointmentsService', 'appService', 'appointmentsFilter', 'printer',
+        function ($scope, $state, $stateParams, spinner, appointmentsService, appService, appointmentsFilter, printer) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.searchedPatient = false;
@@ -111,6 +111,16 @@ angular.module('bahmni.appointments')
                 $scope.filteredAppointments = sortedNonEmptyObjects.concat(emptyObjects);
                 $scope.sortColumn = sortColumn;
                 $scope.reverseSort = !$scope.reverseSort;
+            };
+
+            $scope.printPage = function () {
+                var printTemplateUrl = appService.getAppDescriptor().getConfigValue("printListViewTemplateUrl") || 'views/listView.html';
+                printer.print(printTemplateUrl, {
+                    filteredAppointments: $scope.filteredAppointments,
+                    startDate: $scope.startDate,
+                    enableServiceTypes: $scope.enableServiceTypes,
+                    enableSpecialities: $scope.enableSpecialities
+                });
             };
 
             init();

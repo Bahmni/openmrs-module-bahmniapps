@@ -500,3 +500,20 @@
 .colorForFilter {
   color: #00ACC3 !important;
 }
+
+.list-view-print-btn {
+  position: fixed;
+  right: 185px;
+  top: 128px;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+  padding: 6px 10px;
+  color: #000;
+  border: 1px solid #95989a;
+  margin-right: 0;
+  display: inline-block;
+  background: #fff;
+  &:hover {
+    background: #ececec;
+    opacity: 1;
+  }
+}
