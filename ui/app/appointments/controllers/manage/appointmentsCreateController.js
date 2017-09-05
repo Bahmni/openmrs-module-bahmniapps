@@ -63,11 +63,6 @@ angular.module('bahmni.appointments')
                 }));
             };
 
-            var isAppointmentTimeOutsideServiceAvailability = function (appointmentTime) {
-                return moment(appointmentTime, 'hh:mm a').isBefore(moment($scope.allowedStartTime, 'hh:mm a')) ||
-                    moment($scope.allowedEndTime, 'hh:mm a').isBefore(moment(appointmentTime, 'hh:mm a'));
-            };
-
             var clearSlotsInfo = function () {
                 delete $scope.currentLoad;
                 delete $scope.maxAppointmentsLimit;
@@ -120,9 +115,22 @@ angular.module('bahmni.appointments')
                 return dateUtil.parseServerDateToDate(dateUtil.getDateWithoutTime(date) + ' ' + formattedTime);
             };
 
+            var isAppointmentTimeWithinServiceAvailability = function (appointmentTime) {
+                if ($scope.weeklyAvailabilityOnSelecedDate && $scope.weeklyAvailabilityOnSelecedDate.length) {
+                    return _.find($scope.weeklyAvailabilityOnSelecedDate, function (availability) {
+                        return !(moment(appointmentTime, 'hh:mm a').isBefore(moment(availability.startTime, 'hh:mm a')) ||
+                        moment(availability.endTime, 'hh:mm a').isBefore(moment(appointmentTime, 'hh:mm a')));
+                    });
+                } else if ($scope.allowedStartTime || $scope.allowedEndTime){
+                    return !(moment(appointmentTime, 'hh:mm a').isBefore(moment($scope.allowedStartTime, 'hh:mm a')) ||
+                    moment($scope.allowedEndTime, 'hh:mm a').isBefore(moment(appointmentTime, 'hh:mm a')));
+                }
+                return true;
+            };
+
             $scope.onSelectStartTime = function (data) {
-                $scope.warning.startTime = false;
                 if (moment($scope.appointment.startTime, 'hh:mm a').isValid()) {
+                    $scope.warning.startTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.startTime);
                     $scope.appointment.endTime = moment($scope.appointment.startTime, 'hh:mm a').add($scope.minDuration, 'm').format('hh:mm a');
                     $scope.onSelectEndTime();
                 }
@@ -131,6 +139,7 @@ angular.module('bahmni.appointments')
             $scope.onSelectEndTime = function (data) {
                 $scope.warning.endTime = false;
                 $scope.checkAvailability();
+                $scope.warning.endTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.endTime);
             };
 
             var triggerSlotCalculation = function () {
@@ -184,25 +193,28 @@ angular.module('bahmni.appointments')
             };
 
             var getWeeklyAvailabilityOnADate = function (date, weeklyAvailability) {
-                return _.find(weeklyAvailability, function (o) {
+                return _.filter(weeklyAvailability, function (o) {
                     return o.dayOfWeek === moment(date).format('dddd').toUpperCase();
                 });
             };
 
             var setServiceAvailableTimesForADate = function (date) {
-                $scope.allowedStartTime = $scope.selectedService.startTime || '08:00 am';
-                $scope.allowedEndTime = $scope.selectedService.endTime || '09:00 pm';
+                $scope.allowedStartTime = $scope.selectedService.startTime || '12:00 am';
+                $scope.allowedEndTime = $scope.selectedService.endTime || '11:59 pm';
 
                 if ($scope.selectedService.weeklyAvailability && $scope.selectedService.weeklyAvailability.length > 0) {
-                    var weeklyAvailability = getWeeklyAvailabilityOnADate(date, $scope.selectedService.weeklyAvailability);
-                    if (weeklyAvailability) {
-                        $scope.allowedStartTime = weeklyAvailability.startTime;
-                        $scope.allowedEndTime = weeklyAvailability.endTime;
-                    } else {
+                    $scope.weeklyAvailabilityOnSelecedDate = getWeeklyAvailabilityOnADate(date, $scope.selectedService.weeklyAvailability);
+                    if ($scope.weeklyAvailabilityOnSelecedDate && $scope.weeklyAvailabilityOnSelecedDate.length === 0) {
                         $scope.allowedStartTime = undefined;
                         $scope.allowedEndTime = undefined;
                     }
                 }
+            };
+
+            var isServiceAvailableOnWeekDate = function (dayOfWeek, weeklyAvailability) {
+                return _.find(weeklyAvailability, function (wA) {
+                    return wA.dayOfWeek === dayOfWeek;
+                });
             };
 
             $scope.checkAvailability = function () {
@@ -213,12 +225,12 @@ angular.module('bahmni.appointments')
                     if ($scope.selectedService.weeklyAvailability && $scope.selectedService.weeklyAvailability.length > 0) {
                         var allSlots = getAllSlots('', '', $scope.minDuration);
                         $scope.startTimes = getAvailableSlots(dayOfWeek, $scope.selectedService.weeklyAvailability, allSlots);
-                        $scope.warning.appointmentDate = !getWeeklyAvailabilityOnADate($scope.appointment.date, $scope.selectedService.weeklyAvailability);
+                        $scope.warning.appointmentDate = !isServiceAvailableOnWeekDate(dayOfWeek, $scope.selectedService.weeklyAvailability);
                     } else {
                         $scope.startTimes = getAllSlots($scope.selectedService.startTime, $scope.selectedService.endTime, $scope.minDuration);
                     }
-                    $scope.warning.endTime = isAppointmentTimeOutsideServiceAvailability($scope.appointment.endTime);
-                    $scope.warning.startTime = isAppointmentTimeOutsideServiceAvailability($scope.appointment.startTime);
+                    $scope.warning.endTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.endTime);
+                    $scope.warning.startTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.startTime);
                     triggerSlotCalculation();
                 }
             };
