@@ -193,8 +193,9 @@ angular.module('bahmni.appointments')
             };
 
             var getWeeklyAvailabilityOnADate = function (date, weeklyAvailability) {
+                var dayOfWeek = moment(date).format('dddd').toUpperCase();
                 return _.filter(weeklyAvailability, function (o) {
-                    return o.dayOfWeek === moment(date).format('dddd').toUpperCase();
+                    return o.dayOfWeek === dayOfWeek;
                 });
             };
 
@@ -297,8 +298,8 @@ angular.module('bahmni.appointments')
             };
 
             var getAllSlots = function (startString, endString, durationInMin) {
-                startString = (startString && startString.length > 0) ? startString : '08:00 am';
-                endString = (endString && endString.length > 0) ? endString : '9:00 pm';
+                startString = (startString && startString.length > 0) ? startString : '00:00';
+                endString = (endString && endString.length > 0) ? endString : '24:00';
 
                 var start = moment(startString, 'hh:mm a');
                 var end = moment(endString, 'hh:mm a');
@@ -356,7 +357,8 @@ angular.module('bahmni.appointments')
                 appointmentsService.save(appointment).then(function () {
                     messagingService.showMessage('info', 'APPOINTMENT_SAVE_SUCCESS');
                     $scope.showConfirmationPopUp = false;
-                    $state.go('^', {viewDate: $scope.appointment.date}, {reload: true});
+                    var dateToGo = moment($scope.appointment.date).startOf('day').toDate();
+                    $state.go('^', {viewDate: dateToGo}, {reload: true});
                 });
             };
 
