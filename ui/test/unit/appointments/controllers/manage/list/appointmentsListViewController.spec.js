@@ -782,7 +782,7 @@ describe('AppointmentsListViewController', function () {
         scope.enableServiceTypes = true;
         createController();
         scope.printPage();
-        expect(printer.print).toHaveBeenCalledWith("views/listView.html",
+        expect(printer.print).toHaveBeenCalledWith("views/manage/list/listView.html",
             {
                 filteredAppointments: scope.filteredAppointments,
                 startDate: scope.startDate,

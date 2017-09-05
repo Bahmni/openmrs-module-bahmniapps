@@ -461,8 +461,6 @@ describe('AppointmentsFilterController', function () {
         expect(scope.statusList[3].name).toBe("Missed");
         expect(scope.selectedStatusList.length).toBe(1);
         expect(scope.selectedStatusList[0].name).toBe("Scheduled");
-        expect(state.params.filterParams.statusList.length).toBe(1);
-        expect(state.params.filterParams.statusList[0]).toBe("Scheduled");
     });
 
     it("should set statusList to default statusList when user navigates to list view from calender view", function () {
@@ -479,8 +477,5 @@ describe('AppointmentsFilterController', function () {
         expect(scope.statusList[2].name).toBe("Completed");
         expect(scope.statusList[3].name).toBe("Cancelled");
         expect(scope.statusList[4].name).toBe("Missed");
-        expect(state.params.filterParams.statusList.length).toBe(2);
-        expect(state.params.filterParams.statusList[0]).toBe("Cancelled");
-        expect(state.params.filterParams.statusList[1]).toBe("Scheduled");
     });
 });

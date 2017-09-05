@@ -3,7 +3,7 @@
 
     <p>
         <label>{{::'APPOINTMENT_SERVICE_SPECIALITY_KEY' |translate}}/{{::'APPOINTMENT_SERVICE_KEY' |translate}}</label>
-        <input type="text" ng-model="searchText" ng-class="{'disabled': showSelected}"  ng-disabled="showSelected" placeholder="Search ..."/>
+        <input type="text" ng-model="searchText" ng-class="{'disabled': showSelected}"  ng-disabled="showSelected" placeholder="{{'SEARCH_KEY' | translate}}"/>
         <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
         <input type="checkbox" ng-model="showSelected" ng-click="filterSelected()" id="id-name--1" name="set-name" class="switch-input">
         <label for="id-name--1" class="switch-label">{{::'APPOINTMENT_SHOW_SELECTED_KEY' |translate}} </label>
@@ -40,7 +40,7 @@
                 selected-values="selectedProviders"
                 display-property="'display'"
                 key-property="'uuid'"
-                placeholder="'Enter Provider Name'"
+                placeholder="'APPOINTMENT_ENTER_PROVIDER_NAME_KEY'"
                 load-on-down-arrow="true"
                 auto-complete-min-length="1"></multi-select-autocomplete>
 
@@ -52,7 +52,7 @@
                 selected-values="selectedStatusList"
                 display-property="'name'"
                 key-property="'name'"
-                placeholder="'Enter status Name'"
+                placeholder="'APPOINTMENT_ENTER_STATUS_NAME_KEY'"
                 load-on-down-arrow="true"
                 auto-complete-min-length="1"></multi-select-autocomplete>
     </div>

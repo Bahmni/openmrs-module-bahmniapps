@@ -6,6 +6,7 @@ angular.module('bahmni.appointments')
             $scope.focusonthetest = function () {
                 var autoselectInput = $("input.input");
                 autoselectInput[0].focus();
+                $scope.selectedValues = $scope.selectedValues || [];
             };
 
             $scope.addItem = function (item) {

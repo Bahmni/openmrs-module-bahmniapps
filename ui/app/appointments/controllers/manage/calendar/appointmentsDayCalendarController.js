@@ -101,6 +101,7 @@ angular.module('bahmni.appointments')
                 if (!_.isEmpty($scope.appointments.events)) {
                     $scope.eventSources.push($scope.appointments.events);
                 }
+                $scope.uiConfig.calendar.resources = $scope.appointments.resources;
             };
 
             $scope.$watch("appointments", function (newValue, oldValue) {

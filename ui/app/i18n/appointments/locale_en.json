@@ -119,5 +119,7 @@
   "APPOINTMENT_ENTER_STATUS_NAME_KEY": "Enter status Name",
   "RESET_KEY": "Reset",
   "BACK_LABEL": "Back",
-  "PATIENT_LIST_VIEW_SEARCH_HEADER": "Search Results"
+  "PATIENT_LIST_VIEW_SEARCH_HEADER": "Search Results",
+  "SEARCH_KEY": "Search ...",
+  "APPOINTMENT_ENTER_PROVIDER_NAME_KEY": "Enter provider name"
 }
