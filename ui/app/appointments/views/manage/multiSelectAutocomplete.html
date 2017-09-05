@@ -1,7 +1,7 @@
 <div class="autocompleteMultiSelect provider-tag-selector">
     <tags-input ng-model="selectedValues" display-property="{{displayProperty}}"
                 key-property="{{keyProperty}}"
-                placeholder="{{placeholder}}"
+                placeholder="{{placeholder | translate}}"
                 ng-init="focusonthetest()"
                 on-tag-added="addItem($tag)"
                 on-tag-removed="removeItem($tag)"

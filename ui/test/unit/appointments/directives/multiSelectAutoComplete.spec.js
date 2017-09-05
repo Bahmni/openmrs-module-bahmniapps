@@ -27,17 +27,29 @@ describe('multiSelectAutocomplete', function () {
         return element;
     };
 
-    xit('should add item to selectedValues', function () {
-
+    it('should remove item from selectedValues', function () {
         scope.providers = [{name: "test1", display: "test1", uuid: "test1"}];
         scope.keyProperty = "uuid";
         scope.selectedProviders = [];
 
         var item = {name: "item1", uuid: "item1"};
         var scope1 = createElement().isolateScope();
-        scope1.addItem(item);
-
+        scope1.selectedValues = [{name: "item1", uuid: "item1"}, {name:"item2", uuid:"item2"}];
+        scope1.removeItem(item);
         expect(scope1.selectedValues.length).toBe(1);
-        expect(scope1.selectedValues[0].name).toBe("item1");
+    });
+
+    it('should return the matched values when we pass the query', function () {
+        scope.providers = [];
+        scope.keyProperty = "uuid";
+        scope.selectedProviders = [];
+
+        var item = {name: "item1", uuid: "item1"};
+        var scope1 = createElement().isolateScope();
+        scope1.selectedValues = [{name: "item1", uuid: "item1"}, {name:"item2", uuid:"item2"}];
+        var results = scope1.search("1");
+        expect(results.length).toBe(1);
+        var results = scope1.search("item");
+        expect(results.length).toBe(2);
     });
 });

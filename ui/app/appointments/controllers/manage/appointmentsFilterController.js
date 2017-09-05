@@ -156,12 +156,10 @@ angular.module('bahmni.appointments')
                         $scope.selectedStatusList = _.filter($scope.selectedStatusList, function (status) {
                             return status.name !== "Cancelled";
                         });
-                        $scope.applyFilter();
                     } else {
                         $scope.statusList = _.map(Bahmni.Appointments.Constants.appointmentStatusList, function (status) {
                             return {name: status, value: status};
                         });
-                        $scope.applyFilter();
                     }
                 }
             }, true);
