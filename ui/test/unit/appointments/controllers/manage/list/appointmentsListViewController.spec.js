@@ -1,7 +1,7 @@
 'use strict';
 
 describe('AppointmentsListViewController', function () {
-    var controller, scope, stateparams, spinner, appointmentsService, appService, appDescriptor, _appointmentsFilter;
+    var controller, scope, stateparams, spinner, appointmentsService, appService, appDescriptor, _appointmentsFilter, printer;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -14,6 +14,7 @@ describe('AppointmentsListViewController', function () {
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({}));
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            printer = jasmine.createSpyObj('printer', ['print']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             appDescriptor.getConfigValue.and.returnValue(true);
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
@@ -37,7 +38,8 @@ describe('AppointmentsListViewController', function () {
             appointmentsService: appointmentsService,
             appService: appService,
             $stateParams: stateparams,
-            appointmentsFilter: _appointmentsFilter
+            appointmentsFilter: _appointmentsFilter,
+            printer: printer
         });
     };
 
@@ -671,5 +673,121 @@ describe('AppointmentsListViewController', function () {
                 expect(scope.tableInfo).toEqual(tableInfo)
             });
         });
+    });
+
+    it("should print the page with the appointments list", function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'printListViewTemplateUrl') {
+                return "/bahmni_config/openmrs/apps/appointments/printListView.html";
+            }
+            return value;
+        });
+        scope.filterParams = {
+            providerUuids: [],
+            serviceUuids: [],
+            serviceTypeUuids: [],
+            statusList: []
+        };
+        scope.filteredAppointments = [{
+            "uuid": "347ae565-be21-4516-b573-103f9ce84a20",
+            "appointmentNumber": "0000",
+            "patient": {
+                "identifier": "GAN203006",
+                "name": "patient name",
+                "uuid": "4175c013-a44c-4be6-bd87-6563675d2da1"
+            },
+            "service": {
+                "appointmentServiceId": 4,
+                "name": "Ophthalmology",
+                "description": "",
+                "speciality": {},
+                "startTime": "",
+                "endTime": "",
+                "maxAppointmentsLimit": null,
+                "durationMins": 10,
+                "location": {},
+                "uuid": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                "color": "#006400",
+                "creatorName": null
+            },
+            "serviceType": null,
+            "provider": null,
+            "location": null,
+            "startDateTime": 1503891000000,
+            "endDateTime": 1503900900000,
+            "appointmentKind": "Scheduled",
+            "status": "Scheduled",
+            "comments": null
+        }];
+        scope.startDate =  new Date('2017-01-02T11:30:00.000Z');
+        scope.enableSpecialities = true;
+        scope.enableServiceTypes = true;
+        createController();
+        scope.printPage();
+        expect(printer.print).toHaveBeenCalledWith("/bahmni_config/openmrs/apps/appointments/printListView.html",
+            {
+                filteredAppointments: scope.filteredAppointments,
+                startDate: scope.startDate,
+                enableServiceTypes: scope.enableServiceTypes,
+                enableSpecialities: scope.enableSpecialities
+            });
+    });
+
+    it('should print the page with the default list view when configuration template url is not there', function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'printListViewTemplateUrl') {
+                return '';
+            }
+            return value;
+        });
+        scope.filterParams = {
+            providerUuids: [],
+            serviceUuids: [],
+            serviceTypeUuids: [],
+            statusList: []
+        };
+        scope.filteredAppointments = [{
+            "uuid": "347ae565-be21-4516-b573-103f9ce84a20",
+            "appointmentNumber": "0000",
+            "patient": {
+                "identifier": "GAN203006",
+                "name": "patient name",
+                "uuid": "4175c013-a44c-4be6-bd87-6563675d2da1"
+            },
+            "service": {
+                "appointmentServiceId": 4,
+                "name": "Ophthalmology",
+                "description": "",
+                "speciality": {},
+                "startTime": "",
+                "endTime": "",
+                "maxAppointmentsLimit": null,
+                "durationMins": 10,
+                "location": {},
+                "uuid": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                "color": "#006400",
+                "creatorName": null
+            },
+            "serviceType": null,
+            "provider": null,
+            "location": null,
+            "startDateTime": 1503891000000,
+            "endDateTime": 1503900900000,
+            "appointmentKind": "Scheduled",
+            "status": "Scheduled",
+            "comments": null
+        }];
+        scope.startDate =  new Date('2017-01-02T11:30:00.000Z');
+        scope.enableSpecialities = true;
+        scope.enableServiceTypes = true;
+        createController();
+        scope.printPage();
+        expect(printer.print).toHaveBeenCalledWith("views/listView.html",
+            {
+                filteredAppointments: scope.filteredAppointments,
+                startDate: scope.startDate,
+                enableServiceTypes: scope.enableServiceTypes,
+                enableSpecialities: scope.enableSpecialities
+            });
     });
 });
