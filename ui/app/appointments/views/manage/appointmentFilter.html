@@ -1,11 +1,22 @@
+<div class="appointment-container" ng-if="!isFilterOpen">
+    <div class="appointment-btn-container" ng-if="!isFilterOpen">
+         <span class="app-filter-btn-wrapper" ng-click="expandFilter()" ng-show="!isFilterOpen">
+            <a class="app-filter-btn">
+                <i class="fa fa-filter" ng-class="{'colorForFilter': isFilterApplied()}" aria-hidden="true"></i> {{::'FILTER_KEY' |translate}}
+            </a>
+        </span>
+    </div>
+</div>
 <div class="appointment-filter" ng-show="isFilterOpen">
     <a ng-click="minimizeFilter()"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
 
     <p>
         <label>{{::'APPOINTMENT_SERVICE_SPECIALITY_KEY' |translate}}/{{::'APPOINTMENT_SERVICE_KEY' |translate}}</label>
-        <input type="text" ng-model="searchText" ng-class="{'disabled': showSelected}"  ng-disabled="showSelected" placeholder="{{'SEARCH_KEY' | translate}}"/>
+        <input type="text" ng-model="searchText" ng-class="{'disabled': showSelected}" ng-disabled="showSelected"
+               placeholder="{{'SEARCH_KEY' | translate}}"/>
         <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
-        <input type="checkbox" ng-model="showSelected" ng-click="filterSelected()" id="id-name--1" name="set-name" class="switch-input">
+        <input type="checkbox" ng-model="showSelected" ng-click="filterSelected()" id="id-name--1" name="set-name"
+               class="switch-input">
         <label for="id-name--1" class="switch-label">{{::'APPOINTMENT_SHOW_SELECTED_KEY' |translate}} </label>
     </p>
     <div class="app-filter-speciality">
@@ -24,8 +35,8 @@
                  </span>
                     <span ng-if="trvw.useCheckboxes()" ivh-treeview-checkbox></span>
                     <span class="ivh-treeview-node-label" ivh-treeview-toggle>
-                        <span> {{trvw.label(node)}} </span>
-                    <span ng-if="node.color" class="color-box" ng-style="{'background': node.color}"></span>
+                        <span ng-if="!node.color">{{trvw.label(node)}}</span>
+                        <span ng-if="node.color" class="color-box" ng-style="{'background': node.color}">{{trvw.label(node)}} </span>
                     </span>
                     <div ivh-treeview-children></div>
                 </div>
@@ -60,13 +71,4 @@
         <button ng-click="resetFilter()">{{::'RESET_KEY' |translate}}</button>
         <button ng-click="applyFilter()">{{::'APPLY_FILTER_KEY' |translate}}</button>
     </p>
-</div>
-<div class="appointment-container" ng-hide="isFilterButtonHidden">
-    <div class="appointment-btn-container">
-         <span class="app-filter-btn-wrapper" ng-click="expandFilter()" ng-show="!isFilterOpen">
-            <a class="app-filter-btn">
-                <i class="fa fa-filter" ng-class="{'colorForFilter': isFilterApplied()}" aria-hidden="true"></i> {{::'FILTER_KEY' |translate}}
-            </a>
-        </span>
-    </div>
 </div>
