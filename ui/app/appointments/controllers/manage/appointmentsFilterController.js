@@ -25,7 +25,10 @@ angular.module('bahmni.appointments')
                         provider.name = provider.display;
                         return provider;
                     });
-
+                    $scope.providers.push({name: '[No Provider]', display: 'No Provider', uuid: 'no-provider-uuid'});
+                    $scope.selectedProviders = _.filter($scope.providers, function (provider) {
+                        return _.includes($state.params.filterParams.providerUuids, provider.uuid);
+                    });
                     $scope.specialities = _.groupBy(response[0].data, function (service) {
                         return service.speciality.name || "No Speciality";
                     });

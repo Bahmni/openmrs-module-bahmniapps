@@ -19,6 +19,7 @@ angular.module('bahmni.appointments')
                 return appointments;
             }
             return _.filter(appointments, function (appointment) {
+                if(!appointment.provider) return _.includes(providerUuids, 'no-provider-uuid');
                 return appointment.provider && _.includes(providerUuids, appointment.provider.uuid);
             });
         };
