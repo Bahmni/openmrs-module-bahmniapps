@@ -1,6 +1,6 @@
-<div class="appointment-container" ng-if="!isFilterOpen">
-    <div class="appointment-btn-container" ng-if="!isFilterOpen">
-         <span class="app-filter-btn-wrapper" ng-click="expandFilter()" ng-show="!isFilterOpen">
+<div class="appointment-container" ng-if="!isSearchEnabled && !isFilterOpen">
+    <div class="appointment-btn-container">
+         <span class="app-filter-btn-wrapper" ng-click="expandFilter()">
             <a class="app-filter-btn">
                 <i class="fa fa-filter" ng-class="{'colorForFilter': isFilterApplied()}" aria-hidden="true"></i> {{::'FILTER_KEY' |translate}}
             </a>
