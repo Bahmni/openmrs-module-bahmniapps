@@ -4,7 +4,6 @@
     <a ng-click="goBackToPreviousView()" ng-show="searchedPatient">{{::'RESET_KEY' | translate}} {{::'PATIENT_LIST_VIEW_SEARCH_HEADER' | translate}}</a>
     <patient-search on-search="displaySearchedPatient"></patient-search>
     </p>
-    <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
     <button ng-click="printPage()" class="list-view-print-btn"><i class="fa fa-print" aria-hidden="true"></i></button>
     <div class="app-list-view">
         <table>
