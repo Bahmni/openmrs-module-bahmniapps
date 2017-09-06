@@ -10,12 +10,17 @@ angular.module('bahmni.appointments')
                 $scope.alertOnEventClick = function (event, jsEvent, view) {
                     var createAppointment = function (closeDialog) {
                         closeDialog();
-                        $state.go('home.manage.appointments.calendar.new', {appointment: {startDateTime: event.start, endDateTime: event.end, provider: event.appointments[0].provider}});
+                        var params = $state.params;
+                        params.appointment = {startDateTime: event.start, endDateTime: event.end, provider: event.appointments[0].provider};
+                        $state.go('home.manage.appointments.calendar.new', params, {reload: false});
                     };
 
                     var editAppointment = function (closeDialog, appointment) {
                         closeDialog();
-                        $state.go('home.manage.appointments.calendar.edit', {appointment: appointment, uuid: appointment.uuid});
+                        var params = $state.params;
+                        params.appointment = appointment;
+                        params.uuid = appointment.uuid;
+                        $state.go('home.manage.appointments.calendar.edit', params, {reload: false});
                     };
 
                     calendarViewPopUp({
@@ -54,7 +59,9 @@ angular.module('bahmni.appointments')
                 };
 
                 $scope.createAppointment = function (start, end, jsEvent, view, resource) {
-                    $state.go('home.manage.appointments.calendar.new', {appointment: {startDateTime: start, endDateTime: end, provider: resource.provider}});
+                    var params = $state.params;
+                    params.appointment = {startDateTime: start, endDateTime: end, provider: resource.provider};
+                    $state.go('home.manage.appointments.calendar.new', params, {reload: false});
                 };
 
                 var isSelectable = function () {
