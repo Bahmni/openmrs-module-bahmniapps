@@ -17,6 +17,8 @@ describe("AppointmentsCreateController", function () {
         appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['save', 'getServiceLoad']);
         appointmentsServiceService.save.and.returnValue(specUtil.simplePromise({}));
         appointmentsServiceService.getServiceLoad.and.returnValue(specUtil.simplePromise({}));
+        appointmentsService = jasmine.createSpyObj('appointmentsService', ['save']);
+        appointmentsService.save.and.returnValue(specUtil.simplePromise({}));
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
@@ -24,7 +26,7 @@ describe("AppointmentsCreateController", function () {
         ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         $translate = jasmine.createSpyObj('$translate', ['']);
-        $state = jasmine.createSpyObj('$state', ['']);
+        $state = jasmine.createSpyObj('$state', ['go']);
         spinner = jasmine.createSpyObj('spinner', ['forPromise', 'forAjaxPromise']);
         $window = jasmine.createSpyObj('$window', ['open']);
         $stateParams = {
@@ -72,6 +74,23 @@ describe("AppointmentsCreateController", function () {
             expect($state.name).toEqual('home.manage.appointments.calendar.new');
             expect(ngDialog.close).toHaveBeenCalled();
         });
+
+        it('should go to previous view with appointment date after saving the appointment', function () {
+            createController();
+            $scope.createAppointmentForm = {$invalid: false};
+            var appointment = {
+                date: moment().toDate(),
+                startTime: '09:00 am',
+                endTime: '09:30 am',
+                patient: {uuid: 'patientUuid'},
+                service: {uuid: 'serviceUuid'}
+            };
+            $scope.appointment = appointment;
+            $scope.patientAppointments = [];
+            $scope.save();
+            expect(appointmentsService.save).toHaveBeenCalled();
+            expect($state.go).toHaveBeenCalledWith('^', {viewDate: moment().startOf('day').toDate()}, {reload: true})
+        })
     });
 
     describe('availabilityValidations', function () {
@@ -120,6 +139,38 @@ describe("AppointmentsCreateController", function () {
             $scope.warning.startTime = false;
             $scope.onSelectStartTime();
             expect($scope.warning.startTime).toBeTruthy();
+        });
+
+        it('should set the warning message when start time is outside the service available time and multiple service available times are defined for a day', function () {
+            createController();
+            $scope.appointment.date = new Date('Mon Aug 28 2017 14:30:00 GMT+0530 (IST)');
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}, {dayOfWeek: 'MONDAY', startTime: '14:00:00', endTime: '17:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.appointment.startTime = '01:00 pm';
+            $scope.warning.startTime = false;
+            $scope.minDuration = 30;
+            $scope.onSelectStartTime();
+            expect($scope.warning.startTime).toBeTruthy();
+            expect($scope.warning.endTime).toBeTruthy();
+        });
+
+        it('should not set the warning message when start time is within the second service available time and multiple service available times are defined for a day', function () {
+            createController();
+            $scope.appointment.date = new Date('Mon Aug 28 2017 14:30:00 GMT+0530 (IST)');
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}, {dayOfWeek: 'MONDAY', startTime: '14:00:00', endTime: '17:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.appointment.startTime = '03:00 pm';
+            $scope.warning.startTime = false;
+            $scope.minDuration = 30;
+            $scope.onSelectStartTime();
+            expect($scope.warning.startTime).toBeFalsy();
+            expect($scope.warning.endTime).toBeFalsy();
         });
 
         it('should not set warning on start time when the service availability is not defined for a given day', function () {
@@ -194,8 +245,8 @@ describe("AppointmentsCreateController", function () {
             };
             $scope.checkAvailability();
             expect($scope.warning.appointmentDate).toBeFalsy();
-            expect($scope.allowedStartTime).toEqual('08:00 am');
-            expect($scope.allowedEndTime).toEqual('09:00 pm');
+            expect($scope.allowedStartTime).toEqual('12:00 am');
+            expect($scope.allowedEndTime).toEqual('11:59 pm');
         });
 
         it('should set warning on a day and allowedStartTime and allowedEndTime to undefined when the service availability is not defined for a given day', function () {
@@ -223,8 +274,9 @@ describe("AppointmentsCreateController", function () {
             $scope.appointment.date = moment('2017-08-07').toDate();
             $scope.checkAvailability();
             expect($scope.warning.appointmentDate).toBeFalsy();
-            expect($scope.allowedStartTime).toEqual('09:00:00');
-            expect($scope.allowedEndTime).toEqual('12:00:00');
+            expect($scope.weeklyAvailabilityOnSelecedDate.length).toEqual(1);
+            expect($scope.weeklyAvailabilityOnSelecedDate[0].startTime).toEqual('09:00:00');
+            expect($scope.weeklyAvailabilityOnSelecedDate[0].endTime).toEqual('12:00:00');
         });
 
         it('should calculate warning messages for start time and end time when appointment date is changed', function () {
