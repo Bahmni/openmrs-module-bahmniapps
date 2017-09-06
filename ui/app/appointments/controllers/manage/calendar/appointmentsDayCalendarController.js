@@ -60,7 +60,7 @@ angular.module('bahmni.appointments')
 
                 $scope.createAppointment = function (start, end, jsEvent, view, resource) {
                     var params = $state.params;
-                    params.appointment = {startDateTime: start, endDateTime: end, provider: resource.provider};
+                    params.appointment = {startDateTime: start, endDateTime: end, provider: resource && resource.provider};
                     $state.go('home.manage.appointments.calendar.new', params, {reload: false});
                 };
 

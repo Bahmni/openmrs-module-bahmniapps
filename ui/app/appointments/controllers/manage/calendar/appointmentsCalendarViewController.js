@@ -11,26 +11,28 @@ angular.module('bahmni.appointments')
                     var appointments = allAppointments.filter(function (appointment) {
                         return appointment.status !== "Cancelled";
                     });
-                    var providers = appointments.map(function (appointment) {
-                        return appointment.provider;
+                    var resources = _.chain(appointments)
+                        .filter(function (appointment) {
+                            return !_.isEmpty(appointment.provider);
+                        }).map(function (appointment) {
+                            return appointment.provider;
+                        }).uniqBy('name')
+                        .map(function (provider) {
+                            return {id: provider.name, title: provider.name, provider: provider}
+                        }).sortBy('id')
+                        .value();
+
+                    var hasAppointmentsWithNoProvidersSpecified = _.find(appointments, function (appointment) {
+                        return _.isEmpty(appointment.provider);
                     });
-                    var resources = [];
-                    providers.reduce(function (result, provider) {
-                        if (provider) {
-                            var resource = {
-                                id: provider.name,
-                                title: provider.name,
-                                provider: provider
-                            };
-                            var exists = _.find(result, resource);
-                            if (!exists) {
-                                result.push(resource);
-                            }
-                        }
-                        return result;
-                    }, resources);
-                    resources = _.sortBy(resources, 'id');
-                    resources.push({id: '[No Provider]', title: $translate.instant("NO_PROVIDER_COLUMN_KEY")});
+
+                    if (hasAppointmentsWithNoProvidersSpecified) {
+                        resources.push({
+                            id: '[No Provider]',
+                            title: $translate.instant("NO_PROVIDER_COLUMN_KEY"),
+                            provider: {name: '[No Provider]', display: 'No Provider', uuid: 'no-provider-uuid'}
+                        });
+                    }
 
                     var events = [];
                     appointments.reduce(function (result, appointment) {
@@ -78,6 +80,10 @@ angular.module('bahmni.appointments')
                         parseAppointments(filteredAppointments);
                     }
                 }, true);
+            };
+
+            $scope.hasNoAppointments = function () {
+                return _.isEmpty($scope.providerAppointments.events);
             };
             return init();
         }]);

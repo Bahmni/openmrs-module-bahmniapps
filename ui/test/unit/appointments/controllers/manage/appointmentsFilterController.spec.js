@@ -353,7 +353,7 @@ describe('AppointmentsFilterController', function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         createController();
         expect(scope.statusList.length).toBe(5);
-        expect(scope.providers.length).toBe(2);
+        expect(scope.providers.length).toBe(3);
     });
 
     it('should preselect the services to filter when services are not empty in filterParams', function () {
@@ -478,4 +478,15 @@ describe('AppointmentsFilterController', function () {
         expect(scope.statusList[3].name).toBe("Cancelled");
         expect(scope.statusList[4].name).toBe("Missed");
     });
+
+    it('should have "No Provider" in providers and should have providerUuids in selectedProviders when providerUuids are present in filterParams', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        state.params.filterParams = {statusList: [], providerUuids: ['someProviderUuid', 'no-provider-uuid']};
+        createController();
+        expect(scope.providers.length).toEqual(2);
+        expect(scope.providers[1].uuid).toEqual('no-provider-uuid');
+        expect(scope.selectedProviders.length).toEqual(2);
+        expect(scope.selectedProviders[0].uuid).toEqual('someProviderUuid');
+        expect(scope.selectedProviders[1].uuid).toEqual('no-provider-uuid');
+    })
 });

@@ -1,6 +1,7 @@
 <div ng-class="{'app-filter-open': isFilterOpen}">
     <div class="app-calendar-container" ng-class="{'app-filter-open': isFilterOpen}">
         <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
+        <p ng-if="hasNoAppointments()"> No appointments found</p>
         <day-calendar ng-if="shouldReload" date="startDate" appointments="providerAppointments"></day-calendar>
     </div>
     <div ui-view="content@appointment"></div>

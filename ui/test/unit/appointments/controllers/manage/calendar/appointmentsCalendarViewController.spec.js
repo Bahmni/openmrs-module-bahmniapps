@@ -49,9 +49,45 @@ describe('AppointmentsCalendarViewController', function () {
         expect(spinner.forPromise).toHaveBeenCalled();
     });
 
-    it('should push [No provider] resource by default', function () {
+    it('should push [No provider] resource when there are appointments with no provider', function () {
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
-        appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: []}));
+        appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: [{
+            "uuid": "7f366f38-9d41-48e0-bffb-9497d55e3097",
+            "appointmentNumber": "0000",
+            "patient": {
+                "identifier": "GAN203008",
+                "name": "pramida tumma",
+                "uuid": "56d5e8b1-b2b4-44f3-b953-fab5d12fd5ff"
+            },
+            "service": {
+                "appointmentServiceId": 1,
+                "name": "hell",
+                "description": "description",
+                "speciality": {
+                    "name": "Cardiology",
+                    "uuid": "bdbb1d1e-87c8-11e7-93b0-080027e99513"
+                },
+                "startTime": "",
+                "endTime": "",
+                "maxAppointmentsLimit": 12,
+                "durationMins": 60,
+                "location": {},
+                "uuid": "d3f5062e-b92d-4c70-8d22-b199dcb65a2c",
+                "color": "#DC143C",
+                "creatorName": null
+            },"serviceType": {
+                "duration": 15,
+                "name": "maxillo",
+                "uuid": "de849ecd-47ad-4610-8080-20e7724b2df6"
+            },
+            "provider": null,
+            "location": null,
+            "startDateTime": 1504665900000,
+            "endDateTime": 1504666800000,
+            "appointmentKind": "Scheduled",
+            "status": "Scheduled",
+            "comments": null
+        }]}));
         scope.getAppointmentsForDate(viewDate);
         expect(scope.providerAppointments.resources.length).toBe(1);
         expect(scope.providerAppointments.resources[0].id).toBe('[No Provider]');
@@ -107,10 +143,9 @@ describe('AppointmentsCalendarViewController', function () {
 
         var resources = scope.providerAppointments.resources;
         var sortedAppointments = _.sortBy(allAppointments, 'provider.name');
-        expect(resources.length).toBe(3);
+        expect(resources.length).toBe(2);
         expect(resources[0]).toEqual({id: sortedAppointments[0].provider.name, title: sortedAppointments[0].provider.name, provider: sortedAppointments[0].provider });
         expect(resources[1]).toEqual({id: sortedAppointments[1].provider.name, title: sortedAppointments[1].provider.name, provider: sortedAppointments[1].provider});
-        expect(resources[2]).toEqual({id: '[No Provider]', title: 'No provider appointments'});
 
         var events = scope.providerAppointments.events;
         expect(events.length).toBe(2);
@@ -178,9 +213,8 @@ describe('AppointmentsCalendarViewController', function () {
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
         var resources = scope.providerAppointments.resources;
-        expect(resources.length).toBe(2);
+        expect(resources.length).toBe(1);
         expect(resources[0]).toEqual({id: allAppointments[0].provider.name, title: allAppointments[0].provider.name, provider: allAppointments[0].provider});
-        expect(resources[1]).toEqual({id: '[No Provider]', title: 'No provider appointments'});
         var events = scope.providerAppointments.events;
         expect(events.length).toBe(1);
         expect(events[0].resourceId).toBe(allAppointments[0].provider.name);
@@ -241,9 +275,8 @@ describe('AppointmentsCalendarViewController', function () {
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
         var resources = scope.providerAppointments.resources;
-        expect(resources.length).toBe(2);
+        expect(resources.length).toBe(1);
         expect(resources[0]).toEqual({id: allAppointments[0].provider.name, title: allAppointments[0].provider.name, provider: allAppointments[0].provider});
-        expect(resources[1]).toEqual({id: '[No Provider]', title: 'No provider appointments'});
         var events = scope.providerAppointments.events;
         expect(events.length).toBe(2);
         expect(events[0].resourceId).toBe(allAppointments[0].provider.name);
@@ -309,7 +342,102 @@ describe('AppointmentsCalendarViewController', function () {
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: allAppointments}));
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
-        expect(scope.providerAppointments.resources.length).toBe(2);
+        expect(scope.providerAppointments.resources.length).toBe(1);
         expect(scope.providerAppointments.events.length).toBe(1);
     });
+
+    it('should return true when there are no appointments for the selected date', function () {
+        scope.providerAppointments= {events:[]};
+       createController();
+       scope.hasNoAppointments();
+
+    });
+
+    it('should not include "No Provider" in resources when there are no appointments with "No Provider"', function () {
+        var appointments = [{
+            "uuid": "7f366f38-9d41-48e0-bffb-9497d55e3097",
+            "appointmentNumber": "0000",
+            "patient": {
+                "identifier": "GAN203008",
+                "name": "pramida tumma",
+                "uuid": "56d5e8b1-b2b4-44f3-b953-fab5d12fd5ff"
+            },
+            "service": {
+                "appointmentServiceId": 1,
+                "name": "hell",
+                "description": "description",
+                "speciality": {
+                    "name": "Cardiology",
+                    "uuid": "bdbb1d1e-87c8-11e7-93b0-080027e99513"
+                },
+                "startTime": "",
+                "endTime": "",
+                "maxAppointmentsLimit": 12,
+                "durationMins": 60,
+                "location": {},
+                "uuid": "d3f5062e-b92d-4c70-8d22-b199dcb65a2c",
+                "color": "#DC143C",
+                "creatorName": null
+            },"serviceType": {
+                "duration": 15,
+                "name": "maxillo",
+                "uuid": "de849ecd-47ad-4610-8080-20e7724b2df6"
+            },
+            "provider": {display : "someName", uuid: "someUuid"},
+            "location": null,
+            "startDateTime": 1504665900000,
+            "endDateTime": 1504666800000,
+            "appointmentKind": "Scheduled",
+            "status": "Scheduled",
+            "comments": null
+        }];
+        appointmentsContext.appointments = appointments;
+        createController();
+        expect(scope.providerAppointments.resources.length).toEqual(1);
+        expect(scope.providerAppointments.resources[0].provider.uuid).toEqual("someUuid");
+    });
+
+    it('should include "No Provider" in resources appointments when there are appointments with "No Provider"', function () {
+        var appointments = [{
+                "uuid": "7f366f38-9d41-48e0-bffb-9497d55e3097",
+                "appointmentNumber": "0000",
+                "patient": {
+                    "identifier": "GAN203008",
+                    "name": "pramida tumma",
+                    "uuid": "56d5e8b1-b2b4-44f3-b953-fab5d12fd5ff"
+                },
+                "service": {
+                    "appointmentServiceId": 1,
+                    "name": "hell",
+                    "description": "description",
+                    "speciality": {
+                        "name": "Cardiology",
+                        "uuid": "bdbb1d1e-87c8-11e7-93b0-080027e99513"
+                    },
+                    "startTime": "",
+                    "endTime": "",
+                    "maxAppointmentsLimit": 12,
+                    "durationMins": 60,
+                    "location": {},
+                    "uuid": "d3f5062e-b92d-4c70-8d22-b199dcb65a2c",
+                    "color": "#DC143C",
+                    "creatorName": null
+                },"serviceType": {
+                "duration": 15,
+                "name": "maxillo",
+                "uuid": "de849ecd-47ad-4610-8080-20e7724b2df6"
+            },
+                "provider": null,
+                "location": null,
+                "startDateTime": 1504665900000,
+                "endDateTime": 1504666800000,
+                "appointmentKind": "Scheduled",
+                "status": "Scheduled",
+                "comments": null
+            }];
+        appointmentsContext.appointments = appointments;
+        createController();
+        expect(scope.providerAppointments.resources.length).toEqual(1);
+        expect(scope.providerAppointments.resources[0].provider.uuid).toEqual("no-provider-uuid");
+    })
 });
