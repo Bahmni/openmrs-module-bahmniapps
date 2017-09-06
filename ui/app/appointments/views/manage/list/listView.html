@@ -1,8 +1,9 @@
 <div ng-class="{'app-filter-open': isFilterOpen}">
     <date-picker view-date="startDate" on-change="getAppointmentsForDate" ng-hide="searchedPatient"></date-picker>
-    <a ng-click="goBackToPreviousView()" ng-show="searchedPatient">{{::'BACK_LABEL' | translate}}</a>
-    <span ng-show="searchedPatient">{{::'PATIENT_LIST_VIEW_SEARCH_HEADER' | translate}}</span>
+    <p class="app-patient-search">
+    <a ng-click="goBackToPreviousView()" ng-show="searchedPatient">{{::'RESET_KEY' | translate}} {{::'PATIENT_LIST_VIEW_SEARCH_HEADER' | translate}}</a>
     <patient-search on-search="displaySearchedPatient"></patient-search>
+    </p>
     <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
     <button ng-click="printPage()" class="list-view-print-btn"><i class="fa fa-print" aria-hidden="true"></i></button>
     <div class="app-list-view">
