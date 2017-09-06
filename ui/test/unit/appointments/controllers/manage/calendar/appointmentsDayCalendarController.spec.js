@@ -57,8 +57,8 @@ describe('AppointmentsDayCalendarController', function () {
     it('should init uiConfig with configured values', function () {
         var startOfDay = '00:08:30';
         var endOfDay = '00:17:30';
-        var calendarSlotDuration = '00:10:00';
-        var calendarSlotLabelInterval = '00:12:00';
+        var calendarSlotDuration = '00:10';
+        var calendarSlotLabelInterval = '00:12';
         appDescriptor.getConfigValue.and.callFake(function (key) {
             if (key === 'startOfDay') {
                 return startOfDay;
