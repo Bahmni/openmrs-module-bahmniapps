@@ -488,5 +488,13 @@ describe('AppointmentsFilterController', function () {
         expect(scope.selectedProviders.length).toEqual(2);
         expect(scope.selectedProviders[0].uuid).toEqual('someProviderUuid');
         expect(scope.selectedProviders[1].uuid).toEqual('no-provider-uuid');
-    })
+    });
+
+    it('should reset searchText to undefined', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", uuid:"someProviderUuid", display: "someProvider"}]}}]));
+       scope.searchText = "SomeText";
+       createController();
+       scope.resetSearchText();
+       expect(scope.searchText).toBeUndefined();
+    });
 });

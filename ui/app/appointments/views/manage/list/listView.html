@@ -4,13 +4,14 @@
     <a ng-click="goBackToPreviousView()" ng-show="searchedPatient">{{::'RESET_KEY' | translate}} {{::'PATIENT_LIST_VIEW_SEARCH_HEADER' | translate}}</a>
     <patient-search on-search="displaySearchedPatient"></patient-search>
     </p>
+    <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
     <button ng-click="printPage()" class="list-view-print-btn"><i class="fa fa-print" aria-hidden="true"></i></button>
     <div class="app-list-view">
         <table>
             <thead>
             <tr>
-                <th ng-class="{'table-mid-width': info.class}" ng-show="info.enable" ng-repeat="info in tableInfo" ng-click="info.sortInfo && sortSurgicalAppointmentsBy(info.sortInfo)">
-                    {{ info.heading | translate }}
+                <th ng-class="{'table-mid-width': info.class}" ng-show="::info.enable" ng-repeat="info in ::tableInfo" ng-click="::info.sortInfo && sortSurgicalAppointmentsBy(info.sortInfo)">
+                    {{ ::info.heading | translate }}
                     <span ng-if="sortColumn == info.sortInfo">
                         <i class="fa fa-caret-up" ng-show="reverseSort"></i>
                         <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
@@ -26,9 +27,9 @@
                 <td>{{::appointment.startDateTime | bahmniTime}}</td>
                 <td>{{::appointment.endDateTime | bahmniTime}}</td>
                 <td class="table-mid-width">{{::appointment.provider.name}}</td>
-                <td ng-show="enableSpecialities">{{::appointment.service.speciality.name}}</td>
+                <td ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
                 <td>{{::appointment.service.name}}</td>
-                <td class="table-mid-width" ng-show="enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
+                <td class="table-mid-width" ng-show="::enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
                 <td>{{:: isWalkIn(appointment.appointmentKind)}}</td>
                 <td class="table-mid-width">{{::appointment.location.name}}</td>
                 <td>{{::appointment.status}}</td>

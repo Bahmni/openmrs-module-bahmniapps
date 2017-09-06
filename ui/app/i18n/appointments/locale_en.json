@@ -121,5 +121,7 @@
   "BACK_LABEL": "Back",
   "PATIENT_LIST_VIEW_SEARCH_HEADER": "Search",
   "SEARCH_KEY": "Search ...",
-  "APPOINTMENT_ENTER_PROVIDER_NAME_KEY": "Enter provider name"
+  "APPOINTMENT_ENTER_PROVIDER_NAME_KEY": "Enter provider name",
+  "APPOINTMENT_CANCELLED_STATUS": "Cancelled",
+  "NO_SPECIALITY_KEY": "No Speciality"
 }

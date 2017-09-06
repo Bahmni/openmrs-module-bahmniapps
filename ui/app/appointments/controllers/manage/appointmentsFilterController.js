@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsFilterController', ['$scope', '$state', '$q', 'appointmentsServiceService', 'spinner', 'ivhTreeviewMgr', 'providerService',
-        function ($scope, $state, $q, appointmentsServiceService, spinner, ivhTreeviewMgr, providerService) {
+    .controller('AppointmentsFilterController', ['$scope', '$state', '$q', '$translate', 'appointmentsServiceService', 'spinner', 'ivhTreeviewMgr', 'providerService',
+        function ($scope, $state, $q, $translate, appointmentsServiceService, spinner, ivhTreeviewMgr, providerService) {
             var init = function () {
                 $scope.isFilterOpen = $state.params.isFilterOpen;
                 $scope.isSearchEnabled = $state.params.isSearchEnabled;
@@ -25,12 +25,12 @@ angular.module('bahmni.appointments')
                         provider.name = provider.display;
                         return provider;
                     });
-                    $scope.providers.push({name: '[No Provider]', display: 'No Provider', uuid: 'no-provider-uuid'});
+                    $scope.providers.push({name: $translate.instant("NO_PROVIDER_COLUMN_KEY"), display: $translate.instant("NO_PROVIDER_COLUMN_KEY"), uuid: 'no-provider-uuid'});
                     $scope.selectedProviders = _.filter($scope.providers, function (provider) {
                         return _.includes($state.params.filterParams.providerUuids, provider.uuid);
                     });
                     $scope.specialities = _.groupBy(response[0].data, function (service) {
-                        return service.speciality.name || "No Speciality";
+                        return service.speciality.name || $translate.instant("NO_SPECIALITY_KEY");
                     });
                     $scope.selectedSpecialities = _.map($scope.specialities, function (speciality, key) {
                         return {
@@ -92,6 +92,10 @@ angular.module('bahmni.appointments')
                 $scope.filterSelectedValues = undefined;
                 $scope.searchText = undefined;
                 resetFilterParams();
+            };
+
+            $scope.resetSearchText = function () {
+                $scope.searchText = undefined;
             };
 
             $scope.applyFilter = function () {
