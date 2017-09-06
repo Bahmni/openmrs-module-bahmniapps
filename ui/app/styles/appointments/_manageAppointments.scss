@@ -228,12 +228,13 @@
 /*----- create new appointment styles -----*/
 .create-new-app-wrapper {
   top: 52px;
-  position: absolute;
+  left: 0;
+  position: fixed;
   width: 100%;
   height: calc(100vh - 52px);
   cursor: not-allowed;
   overflow: hidden;
-  z-index: 10;
+  z-index: 12;
 }
 
 .create-new-app-container {
@@ -466,13 +467,6 @@
   padding-left: 125px;
 }
 
-.create-new-app-wrapper {
-  width: 100%;
-  &.app-filter-open {
-    width: calc(100% - 300px);
-  }
-}
-
 .app-dialog-container.ngdialog.ngdialog-theme-default {
   .ngdialog-content {
     width: 525px;
@@ -502,18 +496,9 @@
 }
 
 .list-view-print-btn {
-  position: fixed;
+  position: absolute;
   right: 185px;
   top: 128px;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-  padding: 6px 10px;
-  color: #000;
-  border: 1px solid #95989a;
-  margin-right: 0;
-  display: inline-block;
   background: #fff;
-  &:hover {
-    background: #ececec;
-    opacity: 1;
-  }
+  @extend .appBtn;
 }
