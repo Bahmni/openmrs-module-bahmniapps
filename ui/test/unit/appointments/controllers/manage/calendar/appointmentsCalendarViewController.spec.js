@@ -49,7 +49,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(spinner.forPromise).toHaveBeenCalled();
     });
 
-    it('should push [No provider] resource when there are appointments with no provider', function () {
+    it('should push "No provider appointments" resource when there are appointments with no provider', function () {
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: [{
             "uuid": "7f366f38-9d41-48e0-bffb-9497d55e3097",
@@ -90,7 +90,7 @@ describe('AppointmentsCalendarViewController', function () {
         }]}));
         scope.getAppointmentsForDate(viewDate);
         expect(scope.providerAppointments.resources.length).toBe(1);
-        expect(scope.providerAppointments.resources[0].id).toBe('[No Provider]');
+        expect(scope.providerAppointments.resources[0].id).toBe('No provider appointments');
         expect(scope.providerAppointments.resources[0].title).toBe('No provider appointments');
     });
 
