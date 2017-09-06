@@ -9,7 +9,7 @@ angular.module('bahmni.appointments')
                 $scope.isFilterOpen = $state.params.isFilterOpen;
                 var parseAppointments = function (allAppointments) {
                     var appointments = allAppointments.filter(function (appointment) {
-                        return appointment.status !== "Cancelled";
+                        return appointment.status !== $translate.instant("APPOINTMENT_CANCELLED_STATUS");
                     });
                     var resources = _.chain(appointments)
                         .filter(function (appointment) {
@@ -18,7 +18,7 @@ angular.module('bahmni.appointments')
                             return appointment.provider;
                         }).uniqBy('name')
                         .map(function (provider) {
-                            return {id: provider.name, title: provider.name, provider: provider}
+                            return {id: provider.name, title: provider.name, provider: provider};
                         }).sortBy('id')
                         .value();
 
@@ -28,16 +28,16 @@ angular.module('bahmni.appointments')
 
                     if (hasAppointmentsWithNoProvidersSpecified) {
                         resources.push({
-                            id: '[No Provider]',
+                            id: $translate.instant("NO_PROVIDER_COLUMN_KEY"),
                             title: $translate.instant("NO_PROVIDER_COLUMN_KEY"),
-                            provider: {name: '[No Provider]', display: 'No Provider', uuid: 'no-provider-uuid'}
+                            provider: {name: $translate.instant("NO_PROVIDER_COLUMN_KEY"), display: $translate.instant("NO_PROVIDER_COLUMN_KEY"), uuid: 'no-provider-uuid'}
                         });
                     }
 
                     var events = [];
                     appointments.reduce(function (result, appointment) {
                         var event = {};
-                        event.resourceId = appointment.provider ? appointment.provider.name : '[No Provider]';
+                        event.resourceId = appointment.provider ? appointment.provider.name : $translate.instant("NO_PROVIDER_COLUMN_KEY");
                         event.start = appointment.startDateTime;
                         event.end = appointment.endDateTime;
                         event.color = appointment.service.color;
