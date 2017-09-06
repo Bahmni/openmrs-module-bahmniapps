@@ -10,9 +10,8 @@
 <div class="appointment-filter" ng-show="isFilterOpen">
     <a ng-click="minimizeFilter()"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
 
-    <p>
-        <label>{{::'APPOINTMENT_SERVICE_SPECIALITY_KEY' |translate}}/{{::'APPOINTMENT_SERVICE_KEY' |translate}}</label>
-        <input type="text" ng-model="searchText" ng-class="{'disabled': showSelected}" ng-disabled="showSelected"
+    <p >
+        <input class="app-search-service" type="text" ng-model="searchText" ng-class="{'disabled': showSelected}" ng-disabled="showSelected"
                placeholder="{{'SEARCH_KEY' | translate}}"/>
         <i class="fa fa-search app-filter-search" aria-hidden="true"></i>
         <input type="checkbox" ng-model="showSelected" ng-click="filterSelected()" id="id-name--1" name="set-name"
@@ -36,7 +35,7 @@
                     <span ng-if="trvw.useCheckboxes()" ivh-treeview-checkbox></span>
                     <span class="ivh-treeview-node-label" ivh-treeview-toggle>
                         <span ng-if="!node.color">{{trvw.label(node)}}</span>
-                        <span ng-if="node.color" class="color-box" ng-style="{'background': node.color}">{{trvw.label(node)}} </span>
+                        <span ng-if="node.color" class="app-color-box" ng-style="{'background': node.color}">{{trvw.label(node)}} </span>
                     </span>
                     <div ivh-treeview-children></div>
                 </div>

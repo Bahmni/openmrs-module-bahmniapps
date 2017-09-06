@@ -137,7 +137,8 @@
     }
     &.app-filter-action-btn {
       overflow: hidden;
-      padding-bottom: 10px;
+      padding-bottom: 9px;
+      padding-top: 1px;
       margin-bottom: 0;
       button {
         background: #fff;
@@ -148,9 +149,10 @@
   }
   .app-filter-speciality {
     overflow: auto;
-    max-height: 200px;
+    max-height: 280px;
     padding-left: 10px;
     font-size: 14px;
+    margin-bottom: 10px;
     input[type=checkbox] {
       margin: 0 3px;
     }
@@ -501,4 +503,16 @@
   top: 128px;
   background: #fff;
   @extend .appBtn;
+}
+.ivh-treeview-node-label {
+  margin-bottom: 2px;
+  display: inline-block;
+  span {
+    padding: 2px 5px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+}
+.app-search-service {
+  margin-top: 24px;
 }
