@@ -102,9 +102,10 @@ describe('AppointmentsDayCalendarController', function () {
         var startDateTime = moment();
         var endDateTime = moment().add(30, 'minutes');
         var resource = {id: 'Superman', title: 'Superman', provider: {name: "Superman", uuid: "7d162c29-3f12-11e4-adec-0800271c1b75"}};
+        $state.params = {};
         scope.createAppointment(startDateTime, endDateTime, undefined, undefined, resource);
         expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new',
-            {appointment: {startDateTime: startDateTime, endDateTime: endDateTime, provider: resource.provider}});
+            $state.params,{reload:false});
     });
 
     it('should show calendarView pop up on eventClick', function () {
