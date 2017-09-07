@@ -11,14 +11,14 @@ angular.module('bahmni.appointments')
             };
 
             this.getAllServices = function () {
-                return $http.get(Bahmni.Common.Constants.appointmentServiceUrl + "/all", {
+                return $http.get(Bahmni.Common.Constants.appointmentServiceUrl + "/all/default", {
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 });
             };
 
             this.getAllServicesWithServiceTypes = function () {
-                return $http.get(Bahmni.Common.Constants.appointmentServiceUrl + "/allWithServiceTypes", {
+                return $http.get(Bahmni.Common.Constants.appointmentServiceUrl + "/all/full", {
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 });

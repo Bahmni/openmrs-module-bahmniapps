@@ -41,10 +41,17 @@ describe('AppointmentsServiceService', function () {
         expect(mockHttp.delete).toHaveBeenCalledWith('/openmrs/ws/rest/v1/appointmentService', params);
     });
 
-    it("should get appointment serivices with speciality and service types", function () {
+    it("should get appointment services with speciality and service types", function () {
        appointmentsServiceService.getAllServicesWithServiceTypes();
         var headers = {Accept: 'application/json', 'Content-Type': 'application/json'};
         var params = { withCredentials: true, headers: headers};
-        expect(mockHttp.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/appointmentService/allWithServiceTypes', params);
+        expect(mockHttp.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/appointmentService/all/full', params);
+    });
+
+    it("should get all appointment services with default response", function () {
+        appointmentsServiceService.getAllServices();
+        var headers = {Accept: 'application/json', 'Content-Type': 'application/json'};
+        var params = { withCredentials: true, headers: headers};
+        expect(mockHttp.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/appointmentService/all/default', params);
     });
 });
