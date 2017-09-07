@@ -349,7 +349,12 @@ angular.module('bahmni.appointments')
                     messagingService.showMessage('info', 'APPOINTMENT_SAVE_SUCCESS');
                     $scope.showConfirmationPopUp = false;
                     var dateToGo = moment($scope.appointment.date).startOf('day').toDate();
-                    $state.go('^', {viewDate: dateToGo}, {reload: true});
+                    var params = {
+                        viewDate: dateToGo,
+                        isFilterOpen: true,
+                        isSearchEnabled: false
+                    };
+                    $state.go('^', params, {reload: true});
                 });
             };
 
