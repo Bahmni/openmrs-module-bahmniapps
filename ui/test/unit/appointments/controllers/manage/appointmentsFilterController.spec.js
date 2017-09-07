@@ -1,7 +1,7 @@
 'use strict';
 
 describe('AppointmentsFilterController', function () {
-    var controller, scope, state, location, appService, appDescriptor, appointmentsServiceService, ivhTreeviewMgr, q;
+    var controller, scope, state, location, appService, appDescriptor, appointmentsServiceService, ivhTreeviewMgr, q, translate;
     var providerService = jasmine.createSpyObj('providerService', ['list']);
 
     var servicesWithTypes = {
@@ -52,6 +52,7 @@ describe('AppointmentsFilterController', function () {
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['getAllServicesWithServiceTypes']);
             ivhTreeviewMgr = jasmine.createSpyObj('ivhTreeviewMgr', ['deselectAll', 'selectEach']);
+            translate = jasmine.createSpyObj('$translate', ['instant']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             appDescriptor.getConfigValue.and.returnValue(true);
             appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({}));
@@ -74,7 +75,8 @@ describe('AppointmentsFilterController', function () {
             $location: location,
             $state: state,
             ivhTreeviewMgr: ivhTreeviewMgr,
-            $q: q
+            $q: q,
+            $translate: translate
         });
     };
 
@@ -119,11 +121,12 @@ describe('AppointmentsFilterController', function () {
                 }]
         }]}));
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        translate.instant.and.returnValue("min");
         createController();
         expect(scope.selectedSpecialities[0].label).toBe("Cardiology");
         expect(scope.selectedSpecialities[0].children[0].color).toBe("#006400");
         expect(scope.selectedSpecialities[0].children[0].label).toBe("ortho");
-        expect(scope.selectedSpecialities[0].children[0].children[0].label).toBe("maxillo");
+        expect(scope.selectedSpecialities[0].children[0].children[0].label).toBe("maxillo [15 min]");
     });
 
     it("should map selected services to state params", function(){
@@ -357,12 +360,13 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should preselect the services to filter when services are not empty in filterParams', function () {
+        translate.instant.and.returnValue("min");
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         state.params.filterParams.serviceUuids = ["d3f5062e-b92d-4c70-8d22-b199dcb65a2c"];
         createController();
         expect(scope.selectedSpecialities[0].label).toBe("Cardiology");
         expect(scope.selectedSpecialities[0].children[0].label).toBe("ortho");
-        expect(scope.selectedSpecialities[0].children[0].children[0].label).toBe("maxillo");
+        expect(scope.selectedSpecialities[0].children[0].children[0].label).toBe("maxillo [15 min]");
         expect(ivhTreeviewMgr.selectEach).toHaveBeenCalledWith(scope.selectedSpecialities,state.params.filterParams.serviceUuids);
     });
     
