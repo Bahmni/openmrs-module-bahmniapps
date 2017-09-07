@@ -40,7 +40,7 @@ angular.module('bahmni.appointments')
                                 return {
                                     label: service.name, id: service.uuid, color: service.color,
                                     children: _.map(service.serviceTypes, function (serviceType) {
-                                        return {label: serviceType.name, id: serviceType.uuid};
+                                        return {label: serviceType.name + ' [' + serviceType.duration + ' ' + $translate.instant("PLACEHOLDER_SERVICE_TYPE_DURATION_MIN") + ']', id: serviceType.uuid};
                                     })
                                 };
                             })
