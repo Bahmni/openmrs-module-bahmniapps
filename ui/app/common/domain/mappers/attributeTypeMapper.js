@@ -4,7 +4,7 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
     function AttributeTypeMapper () {
     }
 
-    AttributeTypeMapper.prototype.mapFromOpenmrsAttributeTypes = function (mrsAttributeTypes, mandatoryAttributes) {
+    AttributeTypeMapper.prototype.mapFromOpenmrsAttributeTypes = function (mrsAttributeTypes, mandatoryAttributes, attributesConfig) {
         var attributeTypes = [];
         angular.forEach(mrsAttributeTypes, function (mrsAttributeType) {
             var isRequired = function () {
@@ -23,7 +23,8 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
                 format: mrsAttributeType.format || mrsAttributeType.datatypeClassname,
                 answers: [],
                 required: isRequired(),
-                concept: mrsAttributeType.concept || {}
+                concept: mrsAttributeType.concept || {},
+                excludeFrom: (attributesConfig && attributesConfig[mrsAttributeType.name] && attributesConfig[mrsAttributeType.name].excludeFrom) || []
             };
             attributeType.concept.dataType = attributeType.concept.datatype && attributeType.concept.datatype.name;
 

@@ -234,6 +234,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.setWorkflowStates = function (program) {
+                $scope.patientProgramAttributes = {};
                 $scope.programWorkflowStates = $scope.getStates(program);
             };
 
@@ -285,6 +286,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     }
                 }
                 return minStartDate;
+            };
+
+            $scope.isIncluded = function (attribute) {
+                return !($scope.programSelected && _.includes(attribute.excludeFrom, $scope.programSelected.name));
             };
 
             init();

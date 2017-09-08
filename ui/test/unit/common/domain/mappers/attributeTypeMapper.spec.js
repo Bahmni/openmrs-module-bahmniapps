@@ -195,6 +195,7 @@ describe('AttributeTypeMapper', function () {
         expect(mappedAttributeTypes.attributeTypes[0].pattern).toBe("[0-9]*");
         expect(mappedAttributeTypes.attributeTypes[0].format).toBe("org.openmrs.customdatatype.datatype.RegexValidatedTextDatatype");
         expect(mappedAttributeTypes.attributeTypes[0].description).toBe("Sample regex attribute");
+        expect(mappedAttributeTypes.attributeTypes[0].excludeFrom.length).toBe(0);
     });
 
     it('should map dataType Config to pattern for RegexValidatedTextDatatype attributeTypes', function(){
@@ -210,4 +211,31 @@ describe('AttributeTypeMapper', function () {
         var mappedAttributeTypes = new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(mrsAttributeTypes, {});
         expect(mappedAttributeTypes.attributeTypes[0].pattern).toBe("[0-9]*");
     });
+
+    it('should map excludeFrom from config to attributeType', function () {
+        var mrsAttributeTypes= [
+            {
+                "uuid" : "uuid2",
+                "name" : "Sample regex attribute",
+                "datatypeClassname" : "org.openmrs.customdatatype.datatype.RegexValidatedTextDatatype",
+                "datatypeConfig" : "[0-9]*"
+            },
+            {
+                "uuid" : "uuid9",
+                "name" : "Age",
+                "datatypeClassname" : "Number"
+            }
+        ];
+
+        var attributeConfig = {
+            "Sample regex attribute": { required: true, excludeFrom: ["Some Program"]},
+            "Age": { required: true }
+        };
+
+        var mappedAttributeTypes = new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(mrsAttributeTypes, {}, attributeConfig);
+        expect(mappedAttributeTypes.attributeTypes[0].excludeFrom.length).toBe(1);
+        expect(mappedAttributeTypes.attributeTypes[0].excludeFrom[0]).toBe("Some Program");
+        expect(mappedAttributeTypes.attributeTypes[1].excludeFrom.length).toBe(0);
+    });
+
 });
