@@ -99,9 +99,14 @@ describe("AppointmentsCreateController", function () {
             };
             $scope.appointment = appointment;
             $scope.patientAppointments = [];
+            var params = {
+                viewDate: moment().startOf('day').toDate(),
+                isFilterOpen: true,
+                isSearchEnabled: false
+            };
             $scope.save();
             expect(appointmentsService.save).toHaveBeenCalled();
-            expect($state.go).toHaveBeenCalledWith('^', {viewDate: moment().startOf('day').toDate()}, {reload: true})
+            expect($state.go).toHaveBeenCalledWith('^', params, {reload: true})
         })
     });
 
