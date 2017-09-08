@@ -2,7 +2,8 @@
 
 describe("AppointmentsCreateController", function () {
     var $scope, controller, appointmentsServiceService, q, $window, appService, ngDialog, messagingService, $state,
-        spinner, appointmentsService, patientService, $translate, appDescriptor, $stateParams, appointmentCreateConfig;
+        spinner, appointmentsService, patientService, $translate, appDescriptor, $stateParams, appointmentCreateConfig,
+        appointmentContext;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -29,10 +30,9 @@ describe("AppointmentsCreateController", function () {
         $state = jasmine.createSpyObj('$state', ['go']);
         spinner = jasmine.createSpyObj('spinner', ['forPromise', 'forAjaxPromise']);
         $window = jasmine.createSpyObj('$window', ['open']);
-        $stateParams = {
-            appointment: null
-        };
+        $stateParams = {};
         appointmentCreateConfig = {};
+        appointmentContext = {}
     });
 
     var createController = function () {
@@ -50,10 +50,22 @@ describe("AppointmentsCreateController", function () {
             patientService: patientService,
             $translate: $translate,
             $stateParams: $stateParams,
-            appointmentCreateConfig: appointmentCreateConfig
+            appointmentCreateConfig: appointmentCreateConfig,
+            appointmentContext: appointmentContext
         }
         );
     };
+
+    it('should init appointment with defaultAppointmentKind if there is no appointment in appointmentContext', function () {
+        createController();
+        expect($scope.appointment.appointmentKind).toBe('Scheduled');
+    });
+
+    it('should init appointment with appointment in appointmentContext', function () {
+        appointmentContext = {appointment: {comments: 'Some notes'}};
+        createController();
+        expect($scope.appointment.comments).toBe(appointmentContext.appointment.comments);
+    });
 
     describe('confirmationDialogOnStateChange', function () {
         beforeEach(function () {

@@ -108,24 +108,35 @@ describe('AppointmentsDayCalendarController', function () {
             $state.params,{reload:false});
     });
 
-    it('should show calendarView pop up on eventClick', function () {
+    it('should call calendarView pop up on eventClick with appointments and enableCreateAppointment true for current date', function () {
         createController();
         scope.date = moment().toDate();
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope: { appointments: event.appointments, editAppointment: jasmine.any(Function), createAppointment: jasmine.any(Function) },
+            scope: { appointments: event.appointments, enableCreateAppointment: true},
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
 
-    it('should not send createAppointment function if date is past date in calendarView pop up on eventClick', function () {
+    it('should call calendarView pop up on eventClick with appointments and enableCreateAppointment true for future date', function () {
+        createController();
+        scope.date = moment().add(1, 'day').toDate();
+        var event = {appointments: []};
+        scope.alertOnEventClick(event);
+        expect(calendarViewPopUp).toHaveBeenCalledWith({
+            scope: { appointments: event.appointments, enableCreateAppointment: true},
+            className: "ngdialog-theme-default delete-program-popup app-dialog-container"
+        });
+    });
+
+    it('should call calendarView pop up on eventClick with appointments and enableCreateAppointment false for past dates', function () {
         createController();
         scope.date = moment().subtract(1, 'day').toDate();
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope: { appointments: event.appointments, editAppointment: jasmine.any(Function), createAppointment: undefined },
+            scope: { appointments: event.appointments, enableCreateAppointment: false},
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });

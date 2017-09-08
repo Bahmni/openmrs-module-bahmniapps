@@ -1,7 +1,8 @@
 'use strict';
 
 describe('AppointmentsListViewController', function () {
-    var controller, scope, stateparams, spinner, appointmentsService, appService, appDescriptor, _appointmentsFilter, printer;
+    var controller, scope, stateparams, spinner, appointmentsService, appService, appDescriptor, _appointmentsFilter,
+        printer, confirmBox, $translate, $state;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -10,7 +11,7 @@ describe('AppointmentsListViewController', function () {
             controller = $controller;
             stateparams = $stateParams;
             _appointmentsFilter = jasmine.createSpy('appointmentsFilter');
-            appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments']);
+            appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments', 'changeStatus']);
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({}));
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
@@ -25,7 +26,10 @@ describe('AppointmentsListViewController', function () {
                     }
                 };
             });
-            $httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>')
+            $state = jasmine.createSpyObj('$state', ['go']);
+            confirmBox = jasmine.createSpy('confirmBox');
+            $translate = jasmine.createSpyObj('$translate', ['instant', 'storageKey', 'storage', 'preferredLanguage']);
+            $httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>');
             $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>')
             $httpBackend.expectGET('/openmrs/ws/rest/v1/provider').respond('<div></div>')
         });
@@ -39,7 +43,10 @@ describe('AppointmentsListViewController', function () {
             appService: appService,
             $stateParams: stateparams,
             appointmentsFilter: _appointmentsFilter,
-            printer: printer
+            printer: printer,
+            $translate: $translate,
+            confirmBox: confirmBox,
+            $state: $state
         });
     };
 
@@ -294,8 +301,8 @@ describe('AppointmentsListViewController', function () {
         stateparams = {
             isFilterOpen: true,
             isSearchEnabled: false
-        }
-        createController()
+        };
+        createController();
         expect(scope.appointments).toBe(appointments);
         expect(scope.searchedPatient).toBeFalsy();
         scope.displaySearchedPatient([appointments[1]]);
@@ -789,5 +796,52 @@ describe('AppointmentsListViewController', function () {
                 enableServiceTypes: scope.enableServiceTypes,
                 enableSpecialities: scope.enableSpecialities
             });
+    });
+
+    it('should show a pop up on confirmAction', function () {
+        var toStatus = 'Completed';
+        var translatedMessage = 'Are you sure you want change status to ' + toStatus + '?';
+        $translate.instant.and.returnValue(translatedMessage);
+        confirmBox.and.callFake(function (config) {
+            expect($translate.instant).toHaveBeenCalledWith('APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE', {toStatus: toStatus});
+            expect(config.scope.message).toEqual(translatedMessage);
+            expect(config.scope.no).toEqual(jasmine.any(Function));
+            expect(config.scope.yes).toEqual(jasmine.any(Function));
+            expect(config.actions).toEqual([{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}]);
+            expect(config.className).toEqual('ngdialog-theme-default');
+        });
+        createController();
+        scope.selectedAppointment = {uuid: 'appointmentUuid'};
+        scope.confirmAction(toStatus);
+        expect(confirmBox).toHaveBeenCalled();
+    });
+
+    it('should change status on confirmation on confirmAction', function () {
+        var appointment = {uuid: 'appointmentUuid', status: 'Scheduled'};
+        var toStatus = 'Cancelled';
+        appointmentsService.changeStatus.and.returnValue(specUtil.simplePromise({}));
+        confirmBox.and.callFake(function (config) {
+            var close = jasmine.createSpy('close');
+            config.scope.yes(close).then(function () {
+                expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, toStatus);
+                expect($state.go).toHaveBeenCalledWith($state.current, $state.params, {reload: true});
+                expect(close).toHaveBeenCalled();
+            });
+        });
+        createController();
+        scope.selectedAppointment = appointment;
+        scope.confirmAction(toStatus);
+    });
+
+    it('should call passed function on cancel on confirmAction', function () {
+        var toStatus = 'Completed';
+        confirmBox.and.callFake(function (config) {
+            var close = jasmine.createSpy('close');
+            config.scope.no(close);
+            expect(close).toHaveBeenCalled();
+        });
+        createController();
+        scope.selectedAppointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
+        scope.confirmAction(toStatus);
     });
 });

@@ -2,8 +2,8 @@
     <div class="create-new-app-container">
         <a href="#/home/manage/appointments/list"> <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
 
-        <h2 ng-hide="appointment.uuid">{{ ::'ADD_NEW_APPOINTMENT' | translate}}</h2>
-        <h2 ng-show="appointment.uuid">{{ ::'EDIT_APPOINTMENT_KEY' | translate}}</h2>
+        <h2 ng-hide="isEditMode()">{{ ::'ADD_NEW_APPOINTMENT' | translate}}</h2>
+        <h2 ng-show="isEditMode()">{{ ::'EDIT_APPOINTMENT_KEY' | translate}}</h2>
         <form ng-submit="save()" id="create-appointment-form" name="createAppointmentForm">
 
             <section id="addNewAppointment">
@@ -22,19 +22,20 @@
                            ng-class="{'illegalValue': isInvalid}"
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT' | translate }}"
                            non-blank
-                           ng-disabled="shouldBeDisabled()"
+                           ng-disabled="isEditMode()"
                            required
                     />
                     <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
                 </p>
 
-                <p ng-if="enableSpecialities">
+                <p ng-show="enableSpecialities">
                     <label for="speciality">
                         {{'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate}}
                     </label>
                     <select id="speciality" ng-model="appointment.speciality"
                             ng-options="speciality.name for speciality in appointmentCreateConfig.specialities | orderBy:'name'"
-                            ng-change="onSpecialityChange()">
+                            ng-change="onSpecialityChange()"
+                            ng-disabled="isEditMode() && (!isEditAllowed() || !enableEditService)">
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_SPECIALITY' | translate}}
                         </option>
                     </select>
@@ -46,6 +47,7 @@
                     <select id="service" ng-model="appointment.service"
                             ng-options="service.name for service in appointmentCreateConfig.services | filter: {speciality:{uuid:appointment.speciality.uuid}}:true"
                             ng-change="onServiceChange()"
+                            ng-disabled="isEditMode() && (!isEditAllowed() || !enableEditService)"
                             required>
                         <option disabled value="">{{ ::'PLACEHOLDER_SERVICE' | translate}}
                         </option>
@@ -56,7 +58,7 @@
                     <label for="serviceType">
                         {{'APPOINTMENT_SERVICE_TYPE' | translate}}
                     </label>
-                    <select ng-disabled="!(appointmentCreateConfig.serviceTypes.length > 0)" id="serviceType"
+                    <select ng-disabled="!(appointmentCreateConfig.serviceTypes.length > 0) || (isEditMode() && !isEditAllowed())" id="serviceType"
                             ng-model="appointment.serviceType" ng-change="onServiceTypeChange()"
                             ng-options="serviceType.name + '   [' + serviceType.duration + ' min]'  for serviceType in appointmentCreateConfig.serviceTypes | orderBy:'name'">
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_TYPE' | translate}}
@@ -69,7 +71,8 @@
                         {{'APPOINTMENT_SERVICE_LOCATION_KEY' | translate}}
                     </label>
                     <select id="location" ng-model="appointment.location"
-                            ng-options="location.display for location in appointmentCreateConfig.locations | orderBy:'display'">
+                            ng-options="location.display for location in appointmentCreateConfig.locations | orderBy:'display'"
+                            ng-disabled="isEditMode() && !isEditAllowed()">
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}
                         </option>
                     </select>
@@ -79,7 +82,8 @@
                         {{'APPOINTMENT_PROVIDER' | translate}}
                     </label>
                     <select id="provider" ng-model="appointment.provider"
-                            ng-options="provider.display for provider in appointmentCreateConfig.providers | orderBy:'display'">
+                            ng-options="provider.display for provider in appointmentCreateConfig.providers | orderBy:'display'"
+                            ng-disabled="isEditMode() && !isEditAllowed()">
                         <option value="">{{ ::'PLACEHOLDER_CREATE_PROVIDER' | translate}}</option>
                     </select>
                 </p>
@@ -87,8 +91,11 @@
                     <label for="date">
                         {{'APPOINTMENT_DATE' | translate}}<sup class="asterick">*</sup>
                     </label>
-                    <input  id="date" type="date" min="{{today}}"
-                            ng-model="appointment.date" required ng-change="appointment.service && checkAvailability()" placeholder="Pick appointment date"/>
+                    <input  id="date" type="date" ng-min="isEditMode() && !isEditAllowed()" min="{{today}}" required
+                            ng-model="appointment.date"
+                            ng-change="appointment.service && checkAvailability()"
+                            placeholder="Pick appointment date"
+                            ng-disabled="isEditMode() && !isEditAllowed()"/>
                     <span class="slots-remaining"></span>
                 </p>
                 <p class="warning-message" ng-if="warning.appointmentDate">
@@ -111,7 +118,7 @@
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
                            ng-pattern="timeRegex"
-                           ng-disabled='!appointment.date'
+                           ng-disabled='(!appointment.date || (isEditMode() && !isEditAllowed()))'
                            required/>
                     <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
                 </p>
@@ -135,7 +142,7 @@
                            ng-class="{'illegalValue': isInvalid}"
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
-                           ng-disabled='!appointment.date'
+                           ng-disabled='(!appointment.date || (isEditMode() && !isEditAllowed()))'
                            ng-pattern="timeRegex"
                            required/>
                     <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
@@ -153,7 +160,7 @@
                 </p>
                 <p class="walk-in-app">
                     <input type="checkbox" ng-model="appointment.appointmentKind" ng-true-value="'WalkIn'"
-                           ng-false-value="">
+                           ng-false-value="'Scheduled'" ng-disabled="isEditMode() && !isEditAllowed()">
                     <span class="walk-in-text">{{'APPOINTMENT_CREATE_WALK_IN' | translate}}</span>
                 </p>
                 <p>

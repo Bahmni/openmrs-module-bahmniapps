@@ -3,9 +3,9 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentsCreateController', ['$scope', '$q', '$window', '$state', '$translate', 'spinner', 'patientService',
         'appointmentsService', 'appointmentsServiceService', 'messagingService',
-        'ngDialog', 'appService', '$stateParams', 'appointmentCreateConfig',
+        'ngDialog', 'appService', '$stateParams', 'appointmentCreateConfig', 'appointmentContext',
         function ($scope, $q, $window, $state, $translate, spinner, patientService, appointmentsService, appointmentsServiceService,
-                  messagingService, ngDialog, appService, $stateParams, appointmentCreateConfig) {
+                  messagingService, ngDialog, appService, $stateParams, appointmentCreateConfig, appointmentContext) {
             $scope.isFilterOpen = $stateParams.isFilterOpen;
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
@@ -15,10 +15,11 @@ angular.module('bahmni.appointments')
             $scope.warning = {};
             $scope.minDuration = Bahmni.Appointments.Constants.minDurationForAppointment;
             $scope.appointmentCreateConfig = appointmentCreateConfig;
+            $scope.enableEditService = appService.getAppDescriptor().getConfigValue('isServiceOnAppointmentEditable');
 
             var init = function () {
                 wireAutocompleteEvents();
-                $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create($stateParams.appointment || {}, appointmentCreateConfig);
+                $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create(appointmentContext.appointment || {appointmentKind: 'Scheduled'}, appointmentCreateConfig);
             };
 
             $scope.save = function () {
@@ -33,7 +34,6 @@ angular.module('bahmni.appointments')
                     messagingService.showMessage('error', message);
                     return;
                 }
-                defaultsForNewAppointment();
 
                 $scope.validatedAppointment = Bahmni.Appointments.Appointment.create($scope.appointment);
                 var conflictingAppointments = checkForOldConflicts($scope.validatedAppointment);
@@ -332,15 +332,6 @@ angular.module('bahmni.appointments')
                 }
             );
 
-            var defaultsForNewAppointment = function () {
-                if (!($scope.appointment.status && $scope.appointment.status.length > 0)) {
-                    $scope.appointment.status = Bahmni.Appointments.Constants.defaultAppointmentStatus;
-                }
-                if (!$scope.appointment.appointmentKind) {
-                    $scope.appointment.appointmentKind = 'Scheduled';
-                }
-            };
-
             var checkForOldConflicts = function (appointment) {
                 return _.filter($scope.patientAppointments, function (apt) {
                     var s1 = moment(apt.startDateTime),
@@ -373,6 +364,14 @@ angular.module('bahmni.appointments')
                 $startTimeID.bind('focusout', function () {
                     $scope.onSelectStartTime();
                 });
+            };
+
+            $scope.isEditMode = function () {
+                return $scope.appointment.uuid;
+            };
+
+            $scope.isEditAllowed = function () {
+                return ($scope.appointment.status === 'Scheduled' || $scope.appointment.status === 'CheckedIn');
             };
 
             return init();

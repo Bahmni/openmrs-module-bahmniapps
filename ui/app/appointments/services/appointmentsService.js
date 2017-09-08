@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .service('appointmentsService', ['$http',
-        function ($http) {
+    .service('appointmentsService', ['$http', 'appService',
+        function ($http, appService) {
             this.save = function (appointment) {
                 return $http.post(Bahmni.Appointments.Constants.createAppointmentUrl, appointment, {
                     withCredentials: true,
@@ -18,7 +18,7 @@ angular.module('bahmni.appointments')
 
             this.getAppointmentsForServiceType = function (serviceTypeUuid) {
                 var params = {"appointmentServiceTypeUuid": serviceTypeUuid};
-                return $http.get(Bahmni.Appointments.Constants.createAppointmentUrl, {
+                return $http.get(Bahmni.Appointments.Constants.getAppointmentsForServiceTypeUrl, {
                     params: params,
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
@@ -33,9 +33,27 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            this.getAppointmentByUuid = function (appointmentUuid) {
+                var params = {uuid: appointmentUuid};
+                return $http.get(Bahmni.Appointments.Constants.getAppointmentByUuid, {
+                    params: params,
+                    withCredentials: true,
+                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                });
+            };
+
             this.getAppointmentsSummary = function (params) {
                 return $http.get(Bahmni.Appointments.Constants.getAppointmentsSummaryUrl, {
                     params: params,
+                    withCredentials: true,
+                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                });
+            };
+
+            this.changeStatus = function (appointmentUuid, toStatus) {
+                var params = {toStatus: toStatus};
+                var changeStatusUrl = appService.getAppDescriptor().formatUrl(Bahmni.Appointments.Constants.changeAppointmentStatusUrl, {appointmentUuid: appointmentUuid});
+                return $http.post(changeStatusUrl, params, {
                     withCredentials: true,
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 });

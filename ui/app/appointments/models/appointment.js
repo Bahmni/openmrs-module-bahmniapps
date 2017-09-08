@@ -22,7 +22,6 @@ Bahmni.Appointments.Appointment = (function () {
             providerUuid: appointmentDetails.provider && appointmentDetails.provider.uuid,
             locationUuid: appointmentDetails.location && appointmentDetails.location.uuid,
             appointmentKind: appointmentDetails.appointmentKind,
-            status: appointmentDetails.status,
             comments: appointmentDetails.comments
         });
         return appointment;

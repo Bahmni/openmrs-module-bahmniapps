@@ -124,5 +124,8 @@
   "APPOINTMENT_ENTER_PROVIDER_NAME_KEY": "Enter provider name",
   "APPOINTMENT_CANCELLED_STATUS": "Cancelled",
   "NO_SPECIALITY_KEY": "No Speciality",
-  "PLACEHOLDER_SERVICE_TYPE_DURATION_MIN": "min"
+  "PLACEHOLDER_SERVICE_TYPE_DURATION_MIN": "min",
+  "APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE": "Are you sure, you want to mark appointment as {{toStatus}}?"
+  "YES_KEY": "Yes",
+  "NO_KEY": "No"
 }

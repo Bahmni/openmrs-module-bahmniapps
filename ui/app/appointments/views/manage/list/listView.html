@@ -40,9 +40,20 @@
     </div>
     <div ui-view="content@appointment"></div>
     <fieldset class="appointment-action-btn-container" ng-disabled="!selectedAppointment" ng-class="{'disabled': !selectedAppointment}">
-        <button>{{::'CHECK_IN_APPOINTMENT' |translate}}</button>
-        <button>{{::'COMPLETE_APPOINTMENT' |translate}}</button>
-        <button ng-click="editAppointment()">{{::'EDIT_APPOINTMENT' |translate}}</button>
-        <button>{{::'CANCEL_APPOINTMENT' |translate}}</button>
+        <button ng-disabled="selectedAppointment.status != 'Scheduled'"
+                ng-click="confirmAction('CheckedIn')">
+                {{::'CHECK_IN_APPOINTMENT' | translate}}
+        </button>
+        <button ng-disabled="selectedAppointment.status != 'CheckedIn'"
+                ng-click="confirmAction('Completed')">
+                {{::'COMPLETE_APPOINTMENT' |translate}}
+        </button>
+        <button ng-click="editAppointment()">
+                {{::'EDIT_APPOINTMENT' |translate}}
+        </button>
+        <button ng-disabled="(selectedAppointment.status != 'Scheduled' && selectedAppointment.status != 'CheckedIn')"
+                ng-click="confirmAction('Cancelled')">
+                {{::'CANCEL_APPOINTMENT' | translate}}
+        </button>
     </fieldset>
 </div>

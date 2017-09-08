@@ -101,15 +101,15 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, $stateParams) {
-                        return appointmentConfigInitialization($stateParams);
+                    appointmentContext: function (appointmentInitialization, $stateParams) {
+                        return appointmentInitialization($stateParams);
+                    },
+                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                        return appointmentConfigInitialization(appointmentContext);
                     }
                 }
             }).state('home.manage.appointments.calendar.edit', {
                 url: '/:uuid',
-                params: {
-                    appointment: null
-                },
                 views: {
                     'content@appointment': {
                         templateUrl: 'views/manage/newAppointment.html',
@@ -117,8 +117,11 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, $stateParams) {
-                        return appointmentConfigInitialization($stateParams);
+                    appointmentContext: function (appointmentInitialization, $stateParams) {
+                        return appointmentInitialization($stateParams);
+                    },
+                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                        return appointmentConfigInitialization(appointmentContext);
                     }
                 }
             }).state('home.manage.appointments.list', {
@@ -142,15 +145,15 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, $stateParams) {
-                        return appointmentConfigInitialization($stateParams);
+                    appointmentContext: function (appointmentInitialization, $stateParams) {
+                        return appointmentInitialization($stateParams);
+                    },
+                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                        return appointmentConfigInitialization(appointmentContext);
                     }
                 }
             }).state('home.manage.appointments.list.edit', {
                 url: '/:uuid',
-                params: {
-                    appointment: null
-                },
                 views: {
                     'content@appointment': {
                         templateUrl: 'views/manage/newAppointment.html',
@@ -158,8 +161,11 @@ angular
                     }
                 },
                 resolve: {
-                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, $stateParams) {
-                        return appointmentConfigInitialization($stateParams);
+                    appointmentContext: function (appointmentInitialization, $stateParams) {
+                        return appointmentInitialization($stateParams);
+                    },
+                    appointmentCreateConfig: function (initializeConfig, appointmentConfigInitialization, appointmentContext) {
+                        return appointmentConfigInitialization(appointmentContext);
                     }
                 }
             }).state('home.admin', {
