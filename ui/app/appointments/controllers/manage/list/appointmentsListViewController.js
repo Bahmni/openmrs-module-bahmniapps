@@ -14,25 +14,11 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
                 {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
                 {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
-            {
-                heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY',
-                sortInfo: 'service.speciality.name',
-                enable: $scope.enableSpecialities
-            },
+                {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', enable: true},
-            {
-                heading: 'APPOINTMENT_SERVICE_TYPE_FULL',
-                sortInfo: 'service.serviceType.name',
-                class: true,
-                enable: $scope.enableServiceTypes
-            },
+                {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'service.serviceType.name', class: true, enable: $scope.enableServiceTypes},
                 {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
-            {
-                heading: 'APPOINTMENT_SERVICE_LOCATION_KEY',
-                sortInfo: 'service.location.name',
-                class: true,
-                enable: true
-            },
+                {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'service.location.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             var init = function () {
@@ -44,9 +30,7 @@ angular.module('bahmni.appointments')
             $scope.getAppointmentsForDate = function (viewDate) {
                 $stateParams.viewDate = viewDate;
                 $scope.selectedAppointment = undefined;
-                var params = {
-                    forDate: viewDate
-                };
+                var params = {forDate: viewDate};
                 spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
                     $scope.appointments = response.data;
                     $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
