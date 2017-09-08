@@ -101,6 +101,7 @@
   "APPOINTMENT_SERVICE_TYPE_FULL": "Service Appointment Type",
   "APPOINTMENT_WALK_IN": "Walk In",
   "APPOINTMENT_STATUS": "Status",
+  "APPOINTMENT_COMMENTS": "Comments",
   "CHECK_IN_APPOINTMENT": "Check-in",
   "COMPLETE_APPOINTMENT": "Complete",
   "EDIT_APPOINTMENT": "Edit",

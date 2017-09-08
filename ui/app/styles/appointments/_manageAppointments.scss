@@ -167,6 +167,10 @@
   padding: 0 10px 20px;
   min-height: 35px;
   overflow: hidden;
+  box-sizing: border-box;
+  &.list-view {
+    padding-right: 58px;
+  }
   .view-toggle-wrapper {
     float: right;
   }
@@ -500,9 +504,11 @@
 
 .list-view-print-btn {
   position: absolute;
-  right: 185px;
-  top: 128px;
+  right: 10px;
+  top: 126px;
   background: #fff;
+  padding: 7px;
+  border: none;
   @extend .appBtn;
 }
 .ivh-treeview-node-label {

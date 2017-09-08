@@ -1,6 +1,6 @@
 
 <div class="appointment-container">
-    <div class="appointment-btn-container">
+    <div class="appointment-btn-container" ng-class="{'list-view': getCurrentTabName() === 'list'}">
         <p class="view-toggle-wrapper">
             <a ng-class="{'active': getCurrentTabName() === 'list'}" ng-click="navigateTo('list')" ng-if="enableListView">
                 {{::'LIST_VIEW' | translate}}
