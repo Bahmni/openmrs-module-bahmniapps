@@ -1,8 +1,6 @@
 <div class="confirm-box">
     <div class="ngdialog-close clearfix"></div>
-    <!--<span ng-click="close()">-->
-    <!--<i class="fa fa-remove"></i>-->
-    <!--</span>-->
+
     <p>
         <label for="patient">
             <b>{{::'APPOINTMENT_CREATE_PATIENT_NAME' |translate}}:</b> <span ng-if="scope.patientList.length === 1">{{ patient.name }} ({{ patient.identifier }})</span>
@@ -25,21 +23,29 @@
     <p><b>{{::'APPOINTMENT_SLOT' | translate}}:</b> {{scope.appointments[0].startDateTime | bahmniTime}} -
         {{scope.appointments[0].endDateTime | bahmniTime}}</p>
     <p class="app-dialog-btn-wrap">
-        <button style="background: #039BE5" ng-disabled="!patient"
-                ng-click="scope.editAppointment(close, scope.patientAppointmentMap[patient.uuid]);">
+        <button style="background: #039BE5"
+                ng-disabled="!patient"
+                ng-click="editAppointment(scope.patientAppointmentMap[patient.uuid]);">
             {{::'EDIT_APPOINTMENT' | translate}}
         </button>
-        <button style="background: #009688" ng-disabled="!patient">
+        <button style="background: #009688"
+                ng-disabled="!patient || scope.patientAppointmentMap[patient.uuid].status != 'Scheduled'"
+                ng-click="confirmAction(scope.patientAppointmentMap[patient.uuid], 'CheckedIn')">
             {{::'CHECK_IN_APPOINTMENT' | translate}}
         </button>
-        <button style="background: #43A047" ng-disabled="!patient">
+        <button style="background: #43A047"
+                ng-disabled="!patient || scope.patientAppointmentMap[patient.uuid].status != 'CheckedIn'"
+                ng-click="confirmAction(scope.patientAppointmentMap[patient.uuid], 'Completed')">
             {{::'COMPLETE_APPOINTMENT' | translate}}
         </button>
-        <button style="background: #DD2C00" ng-disabled="!patient">
+        <button style="background: #DD2C00"
+                ng-disabled="!patient || (scope.patientAppointmentMap[patient.uuid].status != 'Scheduled' && scope.patientAppointmentMap[patient.uuid].status != 'CheckedIn')"
+                ng-click="confirmAction(scope.patientAppointmentMap[patient.uuid], 'Cancelled')">
             {{::'CANCEL_APPOINTMENT' | translate}}
         </button>
-        <button style="background: #8BC34A" ng-show="scope.createAppointment"
-                ng-click="scope.createAppointment(close, scope.patientAppointmentMap[patient.uuid]);">
+        <button style="background: #8BC34A"
+                ng-show="scope.enableCreateAppointment"
+                ng-click="createAppointment();">
             {{::'ADD_NEW_APPOINTMENT' | translate}}
         </button>
     </p>

@@ -3,7 +3,7 @@
 angular.module('bahmni.appointments').factory('appointmentConfigInitialization',
     ['locationService', 'specialityService', 'appointmentsServiceService', 'providerService', 'appService', 'spinner', '$q',
         function (locationService, specialityService, appointmentsServiceService, providerService, appService, spinner, $q) {
-            return function ($stateParams) {
+            return function (appointmentContext) {
                 var init = function () {
                     var promises = [];
                     var config = {};
@@ -11,20 +11,20 @@ angular.module('bahmni.appointments').factory('appointmentConfigInitialization',
 
                     var enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
                     if (enableSpecialities) {
-                        promises.push(getAllSpecialities());
+                        promises.push(getAllSpecialities().then(function (response) {
+                            config.specialities = response.data;
+                        }));
                     }
-                    if ($stateParams.appointment && $stateParams.appointment.service) {
-                        promises.push(getAppointmentService($stateParams.appointment.service.uuid));
+                    if (appointmentContext.appointment && appointmentContext.appointment.service) {
+                        promises.push(getAppointmentService(appointmentContext.appointment.service.uuid).then(function (response) {
+                            config.serviceTypes = response.data.serviceTypes;
+                        }));
                     }
 
                     return spinner.forPromise($q.all(promises).then(function (results) {
                         config.locations = results[0].data.results;
                         config.services = results[1].data;
                         config.providers = results[2];
-                        if (enableSpecialities) { config.specialities = results[3].data; }
-                        if ($stateParams.appointment && $stateParams.appointment.service) {
-                            config.serviceTypes = results[4].data.serviceTypes;
-                        }
                         return config;
                     }));
                 };

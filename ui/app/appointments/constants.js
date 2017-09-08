@@ -10,6 +10,9 @@ Bahmni.Appointments.Constants = (function () {
         getServiceLoad: hostURL + '/appointmentService/load',
         getAllSpecialitiesUrl: hostURL + '/speciality/all',
         createAppointmentUrl: hostURL + '/appointment',
+        getAppointmentsForServiceTypeUrl: hostURL + '/appointment/futureAppointmentsForServiceType/',
+        changeAppointmentStatusUrl: hostURL + '/appointment/{{appointmentUuid}}/changeStatus',
+        getAppointmentByUuid: hostURL + '/appointment/',
         getAllAppointmentsUrl: hostURL + '/appointment/all',
         searchAppointmentUrl: hostURL + '/appointment/search',
         getAppointmentsSummaryUrl: hostURL + '/appointment/appointmentSummary',
@@ -19,7 +22,6 @@ Bahmni.Appointments.Constants = (function () {
         defaultCalendarStartTime: "08:00",
         defaultCalendarEndTime: "19:00",
         minDurationForAppointment: 30,
-        defaultAppointmentStatus: 'Scheduled',
         appointmentStatusList: [ "Scheduled", "CheckedIn", "Completed", "Cancelled", "Missed" ],
         regexForTime: /^(?:(?:1[0-2]|0?[1-9]):[0-5]\d\s*[AaPp][Mm])?$/
     };

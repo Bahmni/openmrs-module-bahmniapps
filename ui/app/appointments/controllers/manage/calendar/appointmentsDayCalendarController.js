@@ -8,23 +8,11 @@ angular.module('bahmni.appointments')
                 $scope.events = $scope.appointments.events;
 
                 $scope.alertOnEventClick = function (event, jsEvent, view) {
-                    var createAppointment = function (closeDialog) {
-                        closeDialog();
-                        var params = $state.params;
-                        params.appointment = {startDateTime: event.start, endDateTime: event.end, provider: event.appointments[0].provider};
-                        $state.go('home.manage.appointments.calendar.new', params, {reload: false});
-                    };
-
-                    var editAppointment = function (closeDialog, appointment) {
-                        closeDialog();
-                        var params = $state.params;
-                        params.appointment = appointment;
-                        params.uuid = appointment.uuid;
-                        $state.go('home.manage.appointments.calendar.edit', params, {reload: false});
-                    };
-
                     calendarViewPopUp({
-                        scope: { appointments: event.appointments, editAppointment: editAppointment, createAppointment: isSelectable() ? createAppointment : undefined },
+                        scope: {
+                            appointments: event.appointments,
+                            enableCreateAppointment: isSelectable()
+                        },
                         className: "ngdialog-theme-default delete-program-popup app-dialog-container"
                     });
                 };
@@ -60,7 +48,11 @@ angular.module('bahmni.appointments')
 
                 $scope.createAppointment = function (start, end, jsEvent, view, resource) {
                     var params = $state.params;
-                    params.appointment = {startDateTime: start, endDateTime: end, provider: resource && resource.provider};
+                    params.appointment = {startDateTime: start,
+                        endDateTime: end,
+                        appointmentKind: 'Scheduled',
+                        provider: resource && resource.provider
+                    };
                     $state.go('home.manage.appointments.calendar.new', params, {reload: false});
                 };
 

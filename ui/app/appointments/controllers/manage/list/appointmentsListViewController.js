@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsListViewController', ['$scope', '$state', '$stateParams', 'spinner', 'appointmentsService', 'appService', 'appointmentsFilter', 'printer',
-        function ($scope, $state, $stateParams, spinner, appointmentsService, appService, appointmentsFilter, printer) {
+    .controller('AppointmentsListViewController', ['$scope', '$state', '$stateParams', 'spinner', 'appointmentsService', 'appService', 'appointmentsFilter', 'printer', '$translate', 'confirmBox',
+        function ($scope, $state, $stateParams, spinner, appointmentsService, appService, appointmentsFilter, printer, $translate, confirmBox) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.searchedPatient = false;
@@ -14,25 +14,25 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
                 {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
                 {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
-                {
-                    heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY',
-                    sortInfo: 'service.speciality.name',
-                    enable: $scope.enableSpecialities
-                },
+            {
+                heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY',
+                sortInfo: 'service.speciality.name',
+                enable: $scope.enableSpecialities
+            },
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', enable: true},
-                {
-                    heading: 'APPOINTMENT_SERVICE_TYPE_FULL',
-                    sortInfo: 'service.serviceType.name',
-                    class: true,
-                    enable: $scope.enableServiceTypes
-                },
+            {
+                heading: 'APPOINTMENT_SERVICE_TYPE_FULL',
+                sortInfo: 'service.serviceType.name',
+                class: true,
+                enable: $scope.enableServiceTypes
+            },
                 {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
-                {
-                    heading: 'APPOINTMENT_SERVICE_LOCATION_KEY',
-                    sortInfo: 'service.location.name',
-                    class: true,
-                    enable: true
-                },
+            {
+                heading: 'APPOINTMENT_SERVICE_LOCATION_KEY',
+                sortInfo: 'service.location.name',
+                class: true,
+                enable: true
+            },
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             var init = function () {
@@ -86,7 +86,6 @@ angular.module('bahmni.appointments')
 
             $scope.editAppointment = function () {
                 $state.go('home.manage.appointments.list.edit', {
-                    appointment: $scope.selectedAppointment,
                     uuid: $scope.selectedAppointment.uuid
                 });
             };
@@ -120,6 +119,29 @@ angular.module('bahmni.appointments')
                     startDate: $scope.startDate,
                     enableServiceTypes: $scope.enableServiceTypes,
                     enableSpecialities: $scope.enableSpecialities
+                });
+            };
+
+            $scope.confirmAction = function (toStatus) {
+                var closeConfirmBox = function (closeConfirmBox) {
+                    closeConfirmBox();
+                };
+
+                var changeStatus = function (toStatus, closeConfirmBox) {
+                    return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus).then(function () {
+                        $state.go($state.current, $state.params, {reload: true});
+                    }).then(closeConfirmBox);
+                };
+                var scope = {};
+                scope.message = $translate.instant('APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE', {
+                    toStatus: toStatus
+                });
+                scope.no = closeConfirmBox;
+                scope.yes = _.partial(changeStatus, toStatus, _);
+                confirmBox({
+                    scope: scope,
+                    actions: [{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}],
+                    className: "ngdialog-theme-default"
                 });
             };
 

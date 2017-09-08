@@ -1,7 +1,7 @@
 'use strict';
 
 describe('AppointmentsService', function () {
-    var appointmentsService, mockHttp;
+    var appointmentsService, mockHttp, appService, appDescriptor;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -11,7 +11,11 @@ describe('AppointmentsService', function () {
         mockHttp = jasmine.createSpyObj('$http', ['get', 'post']);
         mockHttp.get.and.returnValue(specUtil.simplePromise({}));
         mockHttp.post.and.returnValue(specUtil.simplePromise({}));
+        appDescriptor = jasmine.createSpyObj('appDescriptor', ['formatUrl']);
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
         $provide.value('$http', mockHttp);
+        $provide.value('appService', appService);
     }));
     beforeEach(inject(['appointmentsService', function (appointmentsServiceInjected) {
         appointmentsService = appointmentsServiceInjected;
@@ -49,7 +53,27 @@ describe('AppointmentsService', function () {
         appointmentsService.getAppointmentsForServiceType(serviceTypeUuid);
         var headers = {"Accept": "application/json", "Content-Type": "application/json"};
         var params = {params: {"appointmentServiceTypeUuid": serviceTypeUuid}, withCredentials: true, headers: headers};
-        expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Appointments.Constants.createAppointmentUrl, params);
+        expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Appointments.Constants.getAppointmentsForServiceTypeUrl, params);
+    });
+
+    it('should get appointment by uuid', function () {
+        var appointmentUuid = "7d162c29-3f12-11e4-adec-0800271c1b75";
+        appointmentsService.getAppointmentByUuid(appointmentUuid);
+        var headers = {"Accept": "application/json", "Content-Type": "application/json"};
+        var params = {params: {"uuid": appointmentUuid}, withCredentials: true, headers: headers};
+        expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Appointments.Constants.getAppointmentByUuid, params);
+    });
+
+    it('should change the status of the appointment', function () {
+        var appointment = {status: 'Scheduled', uuid: "7d162c29-3f12-11e4-adec-0800271c1b75"};
+        var toStatus = "CheckedIn";
+        var changeStatusUrl = Bahmni.Appointments.Constants.changeAppointmentStatusUrl;
+        changeStatusUrl.replace('{{appointmentUuid}}', appointment.uuid);
+        appDescriptor.formatUrl.and.returnValue(changeStatusUrl);
+        appointmentsService.changeStatus(appointment, toStatus);
+        var headers = {"Accept": "application/json", "Content-Type": "application/json"};
+        var params = {withCredentials: true, headers: headers};
+        expect(mockHttp.post).toHaveBeenCalledWith(changeStatusUrl, {'toStatus': toStatus},  params);
     });
 });
 
