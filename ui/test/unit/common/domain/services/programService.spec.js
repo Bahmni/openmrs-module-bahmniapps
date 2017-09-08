@@ -402,7 +402,8 @@ describe('programService', function () {
                 format: 'java.lang.String',
                 answers: [],
                 required: false,
-                concept: {dataType: undefined}
+                concept: {dataType: undefined},
+                excludeFrom: []
             }, {
                 uuid: '82325788-3f10-11es-adec-0800271c1b75',
                 sortWeight: 3,
@@ -412,7 +413,8 @@ describe('programService', function () {
                 format: 'java.lang.Boolean',
                 answers: [],
                 required: false,
-                concept: {dataType: undefined}
+                concept: {dataType: undefined},
+                excludeFrom: []
             }]);
 
         });

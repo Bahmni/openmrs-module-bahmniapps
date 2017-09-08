@@ -497,6 +497,7 @@ describe("ManageProgramController", function () {
             scope.setWorkflowStates(allPrograms[0]);
 
             expect(scope.programWorkflowStates.length).toBe(2);
+            expect(scope.patientProgramAttributes).toEqual({});
         })
     });
 
@@ -534,6 +535,38 @@ describe("ManageProgramController", function () {
             });
 
             scope.confirmDeletion(listOfPatientPrograms.activePrograms[0]);
+        });
+    });
+
+    describe('attributeTypes', function () {
+       it('should hide attributeType for selected program if it is excluded in the config', function () {
+           scope.$apply(setUp);
+           var attribute = {
+               name: "ID_Number",
+               uuid: "uuid1",
+               excludeFrom: ['TB Program']
+           };
+
+           scope.programSelected = {
+               name: 'TB Program',
+               uuid: 'someUuid'
+           };
+           expect(scope.isIncluded(attribute)).toBeFalsy()
+       });
+
+        it('should show attributeType for selected program if it is not excluded in the config', function () {
+            scope.$apply(setUp);
+            var attribute = {
+                name: "ID_Number",
+                uuid: "uuid1",
+                excludeFrom: ['HIV Program']
+            };
+
+            scope.programSelected = {
+                name: 'TB Program',
+                uuid: 'someUuid'
+            };
+            expect(scope.isIncluded(attribute)).toBeTruthy()
         });
     });
 });
