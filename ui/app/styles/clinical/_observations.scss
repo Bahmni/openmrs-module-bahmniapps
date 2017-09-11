@@ -800,6 +800,9 @@ concept-set {
     @media screen and (max-width: 1200px) {
       width: 300px;
     }
+    @media screen and (max-width: 1025px) {
+      width: 198px;
+    }
   }
   table .field-value-buttonSelectType {
     width: 47%;
