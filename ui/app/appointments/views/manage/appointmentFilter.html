@@ -14,7 +14,7 @@
         <input class="app-search-service" type="text" ng-model="searchText" ng-class="{'disabled': showSelected}" ng-disabled="showSelected"
                placeholder="{{::'SEARCH_KEY' | translate}}"/>
         <i ng-if="!searchText" class="fa fa-search app-filter-search" aria-hidden="true"></i>
-        <i ng-if="searchText" class="fa fa-times app-filter-search" aria-hidden="true" ng-click="resetSearchText()"></i>
+        <i ng-if="searchText" class="fa fa-times app-filter-search" aria-hidden="true" ng-click=" searchText || resetSearchText()"></i>
         <input type="checkbox" ng-model="showSelected" ng-click="filterSelected()" id="id-name--1" name="set-name"
                class="switch-input">
         <label for="id-name--1" class="switch-label">{{::'APPOINTMENT_SHOW_SELECTED_KEY' |translate}} </label>
