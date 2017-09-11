@@ -775,10 +775,8 @@ concept-set {
         margin-left: 193px;
       }
       @media screen and (max-width: 1024px) {
-        margin-left: 163px;
-      }
-      @media screen and (max-width: 850px) {
-        margin-left: 150px;
+        margin-left: 10px;
+        margin-top: -10px;
       }
       .input.duration-value {
         @media screen and (max-width: 1200px) {
@@ -797,12 +795,6 @@ concept-set {
   }
   form .form-field textarea, .form .form-field textarea {
     width: 500px;
-    @media screen and (max-width: 1200px) {
-      width: 300px;
-    }
-    @media screen and (max-width: 1025px) {
-      width: 198px;
-    }
   }
   table .field-value-buttonSelectType {
     width: 47%;
