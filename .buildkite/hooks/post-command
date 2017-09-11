@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "--- :file_folder: Uploading Log"
+
+export BUILDKITE_S3_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+export BUILDKITE_S3_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+buildkite-agent artifact upload "bk-*.log" s3://buildkite-logs/$BUILDKITE_PIPELINE_SLUG/$BUILDKITE_BRANCH/$BUILDKITE_BUILD_NUMBER
+buildkite-agent meta-data set "acklen:build:logurl" "https://s3.amazonaws.com/buildkite-logs/$BUILDKITE_PIPELINE_SLUG/$BUILDKITE_BRANCH/$BUILDKITE_BUILD_NUMBER/bk-pipeline.log"
