@@ -36,7 +36,7 @@
                     <span ng-if="trvw.useCheckboxes()" ivh-treeview-checkbox></span>
                     <span class="ivh-treeview-node-label" ivh-treeview-toggle>
                         <span ng-if="!node.color">{{trvw.label(node)}}</span>
-                        <span ng-if="node.color" class="app-color-box" ng-style="{'background': node.color}">{{trvw.label(node)}} </span>
+                        <span ng-if="node.color"><i ng-style="{'background': node.color}"></i>{{trvw.label(node)}} </span>
                     </span>
                     <div ivh-treeview-children></div>
                 </div>
