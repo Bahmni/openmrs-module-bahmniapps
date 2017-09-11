@@ -515,9 +515,16 @@
   margin-bottom: 2px;
   display: inline-block;
   span {
-    padding: 2px 5px;
+    padding: 2px 0;
     border-radius: 3px;
     display: inline-block;
+    color: #0a0a0a;
+    i {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+    }
   }
 }
 .app-search-service {
