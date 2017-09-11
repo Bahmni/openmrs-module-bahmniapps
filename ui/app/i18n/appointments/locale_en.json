@@ -98,6 +98,7 @@
   "APPOINTMENT_CREATE_OUTOF": "out of",
   "APPOINTMENT_PATIENT_ID": "Patient ID",
   "APPOINTMENT_PATIENT_NAME": "Patient Name",
+  "APPOINTMENT_CHECKIN_TIME_KEY": "Check in time",
   "APPOINTMENT_SERVICE_TYPE_FULL": "Service Appointment Type",
   "APPOINTMENT_WALK_IN": "Walk In",
   "APPOINTMENT_STATUS": "Status",

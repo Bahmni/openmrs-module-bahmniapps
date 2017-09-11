@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .service('calendarViewPopUp', ['$rootScope', 'ngDialog', '$state', '$translate', 'appointmentsService', 'confirmBox',
-        function ($rootScope, ngDialog, $state, $translate, appointmentsService, confirmBox) {
+    .service('calendarViewPopUp', ['$rootScope', 'ngDialog', '$state', '$translate', 'appointmentsService',
+        'confirmBox', 'checkinPopUp',
+        function ($rootScope, ngDialog, $state, $translate, appointmentsService, confirmBox, checkinPopUp) {
             var calendarViewPopUp = function (config) {
                 var popUpScope = $rootScope.$new();
                 var close = function () {
@@ -37,6 +38,16 @@ angular.module('bahmni.common.uiHelper')
                     $state.go('home.manage.appointments.calendar.edit', params, {reload: false});
                 };
 
+                popUpScope.checkinAppointment = function (patientAppointment) {
+                    checkinPopUp({
+                        scope: {
+                            patientAppointment: patientAppointment,
+                            confirmAction: confirmActionCurrent
+                        },
+                        className: "ngdialog-theme-default app-dialog-container"
+                    });
+                };
+
                 popUpScope.confirmAction = function (appointment, toStatus) {
                     var scope = {};
                     scope.message = $translate.instant('APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE', {
@@ -49,6 +60,7 @@ angular.module('bahmni.common.uiHelper')
 
                     var changeStatus = function (appointment, toStatus, closeConfirmBox) {
                         return appointmentsService.changeStatus(appointment.uuid, toStatus).then(function () {
+                            ngDialog.close();
                             appointment.status = toStatus;
                         }).then(closeConfirmBox);
                     };
@@ -71,6 +83,10 @@ angular.module('bahmni.common.uiHelper')
                     className: config.className || 'ngdialog-theme-default',
                     preCloseCallback: close
                 });
+
+                var confirmActionCurrent = function (toStatus) {
+                    popUpScope.confirmAction(scope.patientAppointmentMap[popUpScope.patient.uuid], toStatus);
+                };
             };
             return calendarViewPopUp;
         }]);
