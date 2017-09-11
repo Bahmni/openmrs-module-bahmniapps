@@ -30,7 +30,7 @@
         </button>
         <button style="background: #009688"
                 ng-disabled="!patient || scope.patientAppointmentMap[patient.uuid].status != 'Scheduled'"
-                ng-click="confirmAction(scope.patientAppointmentMap[patient.uuid], 'CheckedIn')">
+                ng-click="checkinAppointment(scope.patientAppointmentMap[patient.uuid])">
             {{::'CHECK_IN_APPOINTMENT' | translate}}
         </button>
         <button style="background: #43A047"

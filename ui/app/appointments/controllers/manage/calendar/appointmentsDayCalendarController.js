@@ -1,16 +1,45 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsDayCalendarController', ['$scope', '$state', 'uiCalendarConfig', 'appService', 'calendarViewPopUp',
-        function ($scope, $state, uiCalendarConfig, appService, calendarViewPopUp) {
+    .controller('AppointmentsDayCalendarController', ['$scope', '$state', 'uiCalendarConfig', 'appService', 'calendarViewPopUp', 'checkinPopUp',
+        function ($scope, $state, uiCalendarConfig, appService, calendarViewPopUp, checkinPopUp) {
             $scope.eventSources = [];
             var init = function () {
                 $scope.events = $scope.appointments.events;
 
                 $scope.alertOnEventClick = function (event, jsEvent, view) {
+                    var createAppointment = function (closeDialog) {
+                        closeDialog();
+                        var params = $state.params;
+                        params.appointment = {
+                            startDateTime: event.start,
+                            endDateTime: event.end,
+                            provider: event.appointments[0].provider
+                        };
+                        $state.go('home.manage.appointments.calendar.new', params, {reload: false});
+                    };
+
+                    var editAppointment = function (closeDialog, appointment) {
+                        closeDialog();
+                        var params = $state.params;
+                        params.appointment = appointment;
+                        params.uuid = appointment.uuid;
+                        $state.go('home.manage.appointments.calendar.edit', params, {reload: false});
+                    };
+
+                    var checkinAppointment = function (patient, patientAppointment) {
+                        checkinPopUp({
+                            scope: {
+                                patientAppointment: patientAppointment
+                            },
+                            className: "ngdialog-theme-default app-dialog-container"
+                        });
+                    };
+
                     calendarViewPopUp({
                         scope: {
                             appointments: event.appointments,
+                            checkinAppointment: checkinAppointment,
                             enableCreateAppointment: isSelectable()
                         },
                         className: "ngdialog-theme-default delete-program-popup app-dialog-container"

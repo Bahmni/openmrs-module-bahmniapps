@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsListViewController', ['$scope', '$state', '$stateParams', 'spinner', 'appointmentsService', 'appService', 'appointmentsFilter', 'printer', '$translate', 'confirmBox',
-        function ($scope, $state, $stateParams, spinner, appointmentsService, appService, appointmentsFilter, printer, $translate, confirmBox) {
+    .controller('AppointmentsListViewController', ['$scope', '$state', '$translate', '$stateParams', 'spinner',
+        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog',
+        function ($scope, $state, $translate, $stateParams, spinner, appointmentsService, appService,
+                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.searchedPatient = false;
@@ -74,6 +76,16 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            $scope.checkinAppointment = function () {
+                checkinPopUp({
+                    scope: {
+                        patientAppointment: $scope.selectedAppointment,
+                        confirmAction: $scope.confirmAction
+                    },
+                    className: "ngdialog-theme-default app-dialog-container"
+                });
+            };
+
             $scope.$watch(function () {
                 return $stateParams.filterParams;
             }, function (newValue, oldValue) {
@@ -113,6 +125,7 @@ angular.module('bahmni.appointments')
 
                 var changeStatus = function (toStatus, closeConfirmBox) {
                     return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus).then(function () {
+                        ngDialog.close();
                         $state.go($state.current, $state.params, {reload: true});
                     }).then(closeConfirmBox);
                 };
