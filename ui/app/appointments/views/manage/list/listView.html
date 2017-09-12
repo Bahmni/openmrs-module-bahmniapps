@@ -2,11 +2,12 @@
     <date-picker view-date="startDate" on-change="getAppointmentsForDate" ng-hide="searchedPatient"></date-picker>
     <p class="app-patient-search">
     <a ng-click="goBackToPreviousView()" ng-show="searchedPatient">{{::'RESET_KEY' | translate}} {{::'PATIENT_LIST_VIEW_SEARCH_HEADER' | translate}}</a>
-    <patient-search on-search="displaySearchedPatient"></patient-search>
+    <patient-search on-search="displaySearchedPatient" on-change="patientSearchNullHandle"></patient-search>
     </p>
-    <button ng-click="printPage()" class="list-view-print-btn"><i class="fa fa-print" aria-hidden="true"></i></button>
+    <button ng-if="!isNoSearchResult" ng-click="printPage()" class="list-view-print-btn"><i class="fa fa-print" aria-hidden="true"></i></button>
     <div class="app-list-view">
-        <table>
+        <p class="no-app-avab-list-view" ng-if="isNoSearchResult">{{::'NO_APPOINTMENT_LIST_VIEW' | translate}}</p>
+        <table ng-show="!isNoSearchResult">
             <thead>
             <tr>
                 <th ng-class="{'table-mid-width': info.class}" ng-show="::info.enable" ng-repeat="info in ::tableInfo" ng-click="::info.sortInfo && sortSurgicalAppointmentsBy(info.sortInfo)">
@@ -27,7 +28,7 @@
                 <td>{{::appointment.endDateTime | bahmniTime}}</td>
                 <td class="table-mid-width">{{::appointment.provider.name}}</td>
                 <td ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
-                <td>{{::appointment.service.name}}</td>
+                <td class="table-mid-width">{{::appointment.service.name}}</td>
                 <td class="table-mid-width" ng-show="::enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
                 <td>{{:: isWalkIn(appointment.appointmentKind)}}</td>
                 <td class="table-mid-width">{{::appointment.location.name}}</td>
