@@ -9,4 +9,4 @@ echo "--- Install Dependencies" | tee -a bk-pipeline.log
 npm install | tee -a bk-pipeline.log
 echo "--- Test" | tee -a bk-pipeline.log
 sed -i -e 's/"test": "karma start/"e2e": "xvfb-run -a karma start/' package.json | tee -a bk-pipeline.log
-grunt test | tee -a bk-pipeline.log
+npm run test | tee -a bk-pipeline.log
