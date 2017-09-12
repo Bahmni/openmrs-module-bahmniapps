@@ -80,7 +80,7 @@ gulp.task("deploy", function(done) {
           s3.upload.bind(s3, {
             Bucket: bucketName,
             Key: "index.html",
-            Body: fs.createReadStream("dist/home/index.html"),
+            Body: fs.createReadStream("home/index.html"),
             ContentType: "text/html"
           }),
           s3.putBucketPolicy.bind(s3, {
