@@ -17,7 +17,7 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
                 {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
-                {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', enable: true},
+                {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'service.serviceType.name', class: true, enable: $scope.enableServiceTypes},
                 {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
                 {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'service.location.name', class: true, enable: true},
@@ -45,10 +45,15 @@ angular.module('bahmni.appointments')
                 $scope.searchedPatient = true;
                 $stateParams.isFilterOpen = false;
                 $stateParams.isSearchEnabled = true;
+                $scope.isNoSearchResult = false;
+                if ($scope.filteredAppointments.length === 0) {
+                    $scope.isNoSearchResult = true;
+                }
             };
 
             $scope.goBackToPreviousView = function () {
                 $scope.searchedPatient = false;
+                $scope.isNoSearchResult = false;
                 $scope.filteredAppointments = oldPatientData;
                 $stateParams.isFilterOpen = true;
                 $stateParams.isSearchEnabled = false;
