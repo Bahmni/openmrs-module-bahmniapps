@@ -1,8 +1,5 @@
 <div class="confirm-box">
     <div class="ngdialog-close clearfix"></div>
-    <!--<span ng-click="close()">-->
-    <!--<i class="fa fa-remove"></i>-->
-    <!--</span>-->
     <p>
         <label>
             <b>{{::'APPOINTMENT_CREATE_PATIENT_NAME' |translate}}:</b>
@@ -30,9 +27,12 @@
         <b>{{::'APPOINTMENT_CHECKIN_TIME_KEY' | translate}}:</b><sup class="asterick">*</sup>
         <input type="time" ng-model="checkinTime" required/>
     </p>
-
     <p>
-        <button ng-disabled="scope.patientAppointment.status != 'Scheduled'" ng-click="checkIn(scope.checkinTime);">
+        {{::'CHECK_IN_APPOINTMENT_TEXT' | translate}}
+        "<b>{{ scope.patientAppointment.patient.name }} ({{ scope.patientAppointment.patient.identifier }})</b>"
+    </p>
+    <p class="app-check-in-btn">
+        <button style="background: #8BC34A; color: #fff" ng-disabled="scope.patientAppointment.status != 'Scheduled'" ng-click="checkIn(scope.checkinTime);">
             {{::'CHECK_IN_APPOINTMENT' | translate}}
         </button>
         <button ng-click="close()">
