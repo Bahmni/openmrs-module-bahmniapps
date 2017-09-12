@@ -34,7 +34,7 @@ gulp.task("deploy", function(done) {
   });
 
   var params = {
-    localDir: "ui/dist/",
+    localDir: "dist/",
     deleteRemoved: true,
     s3Params: {
       Bucket: bucketName
