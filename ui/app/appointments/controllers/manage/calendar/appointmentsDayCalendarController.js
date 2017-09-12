@@ -8,25 +8,6 @@ angular.module('bahmni.appointments')
                 $scope.events = $scope.appointments.events;
 
                 $scope.alertOnEventClick = function (event, jsEvent, view) {
-                    var createAppointment = function (closeDialog) {
-                        closeDialog();
-                        var params = $state.params;
-                        params.appointment = {
-                            startDateTime: event.start,
-                            endDateTime: event.end,
-                            provider: event.appointments[0].provider
-                        };
-                        $state.go('home.manage.appointments.calendar.new', params, {reload: false});
-                    };
-
-                    var editAppointment = function (closeDialog, appointment) {
-                        closeDialog();
-                        var params = $state.params;
-                        params.appointment = appointment;
-                        params.uuid = appointment.uuid;
-                        $state.go('home.manage.appointments.calendar.edit', params, {reload: false});
-                    };
-
                     var checkinAppointment = function (patient, patientAppointment) {
                         checkinPopUp({
                             scope: {
@@ -35,7 +16,6 @@ angular.module('bahmni.appointments')
                             className: "ngdialog-theme-default app-dialog-container"
                         });
                     };
-
                     calendarViewPopUp({
                         scope: {
                             appointments: event.appointments,

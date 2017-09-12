@@ -48,7 +48,7 @@ angular.module('bahmni.common.uiHelper')
                     });
                 };
 
-                popUpScope.confirmAction = function (appointment, toStatus) {
+                popUpScope.confirmAction = function (appointment, toStatus, onDate) {
                     var scope = {};
                     scope.message = $translate.instant('APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE', {
                         toStatus: toStatus
@@ -59,7 +59,7 @@ angular.module('bahmni.common.uiHelper')
                     };
 
                     var changeStatus = function (appointment, toStatus, closeConfirmBox) {
-                        return appointmentsService.changeStatus(appointment.uuid, toStatus).then(function () {
+                        return appointmentsService.changeStatus(appointment.uuid, toStatus, onDate).then(function () {
                             ngDialog.close();
                             appointment.status = toStatus;
                         }).then(closeConfirmBox);
@@ -84,8 +84,8 @@ angular.module('bahmni.common.uiHelper')
                     preCloseCallback: close
                 });
 
-                var confirmActionCurrent = function (toStatus) {
-                    popUpScope.confirmAction(scope.patientAppointmentMap[popUpScope.patient.uuid], toStatus);
+                var confirmActionCurrent = function (toStatus, onDate) {
+                    popUpScope.confirmAction(scope.patientAppointmentMap[popUpScope.patient.uuid], toStatus, onDate);
                 };
             };
             return calendarViewPopUp;

@@ -485,8 +485,10 @@
         @extend .appBtn;
         border: none;
         color: #fff;
+
         &:disabled {
-          pointer-events: none;
+          cursor: not-allowed;
+          opacity: 0.5;
         }
         &:first-child {
           margin: 0;

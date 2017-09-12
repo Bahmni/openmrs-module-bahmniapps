@@ -123,13 +123,13 @@ angular.module('bahmni.appointments')
                 });
             };
 
-            $scope.confirmAction = function (toStatus) {
+            $scope.confirmAction = function (toStatus, onDate) {
                 var closeConfirmBox = function (closeConfirmBox) {
                     closeConfirmBox();
                 };
 
                 var changeStatus = function (toStatus, closeConfirmBox) {
-                    return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus).then(function () {
+                    return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus, onDate).then(function () {
                         ngDialog.close();
                         $state.go($state.current, $state.params, {reload: true});
                     }).then(closeConfirmBox);

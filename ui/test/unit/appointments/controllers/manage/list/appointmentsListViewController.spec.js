@@ -823,7 +823,7 @@ describe('AppointmentsListViewController', function () {
         confirmBox.and.callFake(function (config) {
             var close = jasmine.createSpy('close');
             config.scope.yes(close).then(function () {
-                expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, toStatus);
+                expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, toStatus, undefined);
                 expect($state.go).toHaveBeenCalledWith($state.current, $state.params, {reload: true});
                 expect(close).toHaveBeenCalled();
             });

@@ -67,13 +67,15 @@ describe('AppointmentsService', function () {
     it('should change the status of the appointment', function () {
         var appointment = {status: 'Scheduled', uuid: "7d162c29-3f12-11e4-adec-0800271c1b75"};
         var toStatus = "CheckedIn";
+        var onDate = new Date();
         var changeStatusUrl = Bahmni.Appointments.Constants.changeAppointmentStatusUrl;
         changeStatusUrl.replace('{{appointmentUuid}}', appointment.uuid);
         appDescriptor.formatUrl.and.returnValue(changeStatusUrl);
-        appointmentsService.changeStatus(appointment, toStatus);
+        appointmentsService.changeStatus(appointment, toStatus, onDate);
         var headers = {"Accept": "application/json", "Content-Type": "application/json"};
         var params = {withCredentials: true, headers: headers};
-        expect(mockHttp.post).toHaveBeenCalledWith(changeStatusUrl, {'toStatus': toStatus},  params);
+        expect(mockHttp.post).toHaveBeenCalledWith(changeStatusUrl, {'toStatus': toStatus, 'onDate': onDate},  params);
     });
 });
+
 

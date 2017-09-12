@@ -21,8 +21,8 @@ angular.module('bahmni.common.uiHelper')
                 popUpScope.$destroy();
             };
 
-            popUpScope.checkIn = function (checkinTime) {
-                scope.confirmAction('CheckedIn');
+            popUpScope.checkIn = function () {
+                scope.confirmAction('CheckedIn', this.checkinTime);
             };
         };
         return checkinPopUp;

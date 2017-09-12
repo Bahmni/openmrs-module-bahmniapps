@@ -104,7 +104,6 @@
   "APPOINTMENT_STATUS": "Status",
   "APPOINTMENT_COMMENTS": "Comments",
   "CHECK_IN_APPOINTMENT": "Check-in",
-  "CHECK_IN_APPOINTMENT_TEXT": "Are you sure of, checking in for",
   "COMPLETE_APPOINTMENT": "Complete",
   "EDIT_APPOINTMENT": "Edit",
   "CANCEL_APPOINTMENT": "Cancel",
@@ -129,6 +128,7 @@
   "NO_SPECIALITY_KEY": "No Speciality",
   "PLACEHOLDER_SERVICE_TYPE_DURATION_MIN": "min",
   "APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE": "Are you sure, you want to mark appointment as {{toStatus}}?",
+  "CHECK_IN_APPOINTMENT_TIME_VALIDATION": "Enter valid check in time.",
   "YES_KEY": "Yes",
   "NO_KEY": "No"
 }
