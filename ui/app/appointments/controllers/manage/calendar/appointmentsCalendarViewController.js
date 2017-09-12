@@ -9,7 +9,7 @@ angular.module('bahmni.appointments')
                 $scope.isFilterOpen = $state.params.isFilterOpen;
                 var parseAppointments = function (allAppointments) {
                     var appointments = allAppointments.filter(function (appointment) {
-                        return appointment.status !== $translate.instant("APPOINTMENT_CANCELLED_STATUS");
+                        return appointment.status !== 'Cancelled';
                     });
                     var resources = _.chain(appointments)
                         .filter(function (appointment) {
