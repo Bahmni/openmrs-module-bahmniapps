@@ -6,6 +6,7 @@ module.exports = function (config) {
         browserNoActivityTimeout: 100000,
         autoWatch: false,
         singleRun: true,
+        logLevel: config.LOG_DEBUG,
         files: [
             {pattern: 'test/data/*.json', watched: true, served: true, included: false},
             {pattern: 'app/images/*', included: false, served: true },
