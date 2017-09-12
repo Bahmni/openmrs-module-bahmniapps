@@ -27,12 +27,11 @@
         <b>{{::'APPOINTMENT_CHECKIN_TIME_KEY' | translate}}:</b><sup class="asterick">*</sup>
         <input type="time" ng-model="checkinTime" required/>
     </p>
-    <p>
-        {{::'CHECK_IN_APPOINTMENT_TEXT' | translate}}
-        "<b>{{ scope.patientAppointment.patient.name }} ({{ scope.patientAppointment.patient.identifier }})</b>"
+    <p class="asterick" ng-show="!checkinTime">
+        {{::'CHECK_IN_APPOINTMENT_TIME_VALIDATION' | translate}}
     </p>
     <p class="app-check-in-btn">
-        <button style="background: #8BC34A; color: #fff" ng-disabled="scope.patientAppointment.status != 'Scheduled'" ng-click="checkIn(scope.checkinTime);">
+        <button style="background: #8BC34A; color: #fff" ng-disabled="!checkinTime || scope.patientAppointment.status != 'Scheduled'" ng-click="checkIn();">
             {{::'CHECK_IN_APPOINTMENT' | translate}}
         </button>
         <button ng-click="close()">

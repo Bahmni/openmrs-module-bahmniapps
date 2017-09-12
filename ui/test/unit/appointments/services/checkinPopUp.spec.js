@@ -44,8 +44,10 @@ describe('checkinPopUp', function () {
         var config = {scope: {appointments: [], confirmAction : function () {}}};
         spyOn(config.scope, "confirmAction");
         checkinPopUp(config);
+        var onDate = new Date();
+        popUpScope.checkinTime = onDate;
         popUpScope.checkIn();
-        expect(config.scope.confirmAction).toHaveBeenCalledWith('CheckedIn');
+        expect(config.scope.confirmAction).toHaveBeenCalledWith('CheckedIn', onDate);
     })
 
 });

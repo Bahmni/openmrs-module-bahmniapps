@@ -116,6 +116,7 @@ describe('CalendarViewPopUp', function () {
     it('should show a pop up on confirmAction', function () {
         var appointment = {uuid: 'appointmentUuid'};
         var toStatus = 'Completed';
+        var onDate = new Date();
         var translatedMessage = 'Are you sure you want change status to ' + toStatus + '?';
         $translate.instant.and.returnValue(translatedMessage);
         confirmBox.and.callFake(function (config) {
@@ -128,7 +129,7 @@ describe('CalendarViewPopUp', function () {
         });
         var config = {scope: {appointments: []}};
         calendarViewPopUp(config);
-        popUpScope.confirmAction(appointment, toStatus);
+        popUpScope.confirmAction(appointment, toStatus, onDate);
         expect(confirmBox).toHaveBeenCalled();
     });
 
@@ -139,7 +140,7 @@ describe('CalendarViewPopUp', function () {
         confirmBox.and.callFake(function (config) {
             var close = jasmine.createSpy('close');
             config.scope.yes(close).then(function () {
-                expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, toStatus);
+                expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, toStatus, undefined);
                 expect(appointment.status).toBe(toStatus);
                 expect(close).toHaveBeenCalled();
             });
