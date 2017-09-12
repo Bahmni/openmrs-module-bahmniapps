@@ -123,7 +123,11 @@
   "RESET_KEY": "Reset",
   "BACK_LABEL": "Back",
   "PATIENT_LIST_VIEW_SEARCH_HEADER": "Search",
+<<<<<<< HEAD
   "NO_APPOINTMENT_LIST_VIEW": "No appointments available for searched patient",
+=======
+  "NO_APPOINTMENT_LIST_VIEW": "No appointments found for the patient",
+>>>>>>> Krishna | #3702 | Added helper test for no appointments for patient search
   "SEARCH_KEY": "Search ...",
   "APPOINTMENT_ENTER_PROVIDER_NAME_KEY": "Enter provider name",
   "NO_SPECIALITY_KEY": "No Speciality",
