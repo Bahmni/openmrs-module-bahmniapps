@@ -8,8 +8,8 @@ var s3_dir = require("s3");
 var fs = require("fs");
 var environment = process.env.ENVIRONMENT || "dev";
 var appName = process.env.appName;
-var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || "AKIAJ3MQCEI4BN76PQTQ";
-var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || "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";
+var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || "";
+var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || "";
 
 if (environment == "production") {
   appName = process.env.appName_prod;
