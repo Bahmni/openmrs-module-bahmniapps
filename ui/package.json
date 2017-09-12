@@ -7,6 +7,7 @@
     "test": "test"
   },
   "devDependencies": {
+    "aws-sdk": "^2.114.0",
     "bahmni-form-controls": "^0.89.0",
     "eslint-config-angular": "^0.5.0",
     "eslint-config-semistandard": "^7.0.0",
@@ -45,7 +46,8 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "matchdep": "^0.3.0",
     "react": "^15.2.1",
-    "react-dom": "^15.2.1"
+    "react-dom": "^15.2.1",
+    "s3": "^4.4.0"
   },
   "scripts": {
     "test": "karma start test/config/karma.conf.js"
