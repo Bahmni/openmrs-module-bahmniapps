@@ -3,6 +3,6 @@
 set -eo pipefail
 echo "--- Set Node Version"
 . "$NVM_DIR/nvm.sh"
-nvm use 6.10
-echo "--- Deploy to $BUILDKITE_BRANCH"
+nvm use 6.10 | tee -a bk-pipeline.log
+echo "--- Deploy to $BUILDKITE_BRANCH" | tee -a bk-pipeline.log
 gulp deploy | tee -a bk-pipeline.log
