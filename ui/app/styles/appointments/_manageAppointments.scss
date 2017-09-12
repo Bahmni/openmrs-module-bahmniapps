@@ -6,6 +6,7 @@
   display: inline-block;
   color: #000;
   margin-left: 10px;
+  background: #fff;
   &:hover {
     box-shadow: 0 4px 9px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
     opacity: 1;
@@ -141,7 +142,6 @@
       padding-top: 1px;
       margin-bottom: 0;
       button {
-        background: #fff;
         float: right;
         @extend .appBtn;
       }
@@ -196,7 +196,6 @@
   a {
     margin: 0;
     @extend .appBtn;
-    background: #fff;
     border: none;
     &:hover {
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -216,7 +215,6 @@
   width: 100%;
   button {
     @extend .appBtn;
-    background: #fff;
     border: none;
     &:hover {
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
@@ -506,7 +504,6 @@
   position: absolute;
   right: 10px;
   top: 126px;
-  background: #fff;
   padding: 7px;
   border: none;
   @extend .appBtn;
@@ -529,4 +526,10 @@
 }
 .app-search-service {
   margin-top: 24px;
+}
+.app-check-in-btn {
+  button{
+    @extend .appBtn;
+    border: none;
+  }
 }

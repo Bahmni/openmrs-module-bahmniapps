@@ -104,6 +104,7 @@
   "APPOINTMENT_STATUS": "Status",
   "APPOINTMENT_COMMENTS": "Comments",
   "CHECK_IN_APPOINTMENT": "Check-in",
+  "CHECK_IN_APPOINTMENT_TEXT": "Are you sure of, checking in for",
   "COMPLETE_APPOINTMENT": "Complete",
   "EDIT_APPOINTMENT": "Edit",
   "CANCEL_APPOINTMENT": "Cancel",
