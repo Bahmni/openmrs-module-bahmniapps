@@ -4,7 +4,7 @@ var Bahmni = Bahmni || {};
 Bahmni.Common = Bahmni.Common || {};
 
 (function () {
-    var hostUrl = localStorage.getItem('host') ? ("https://" + "34.233.132.33") : "";
+    var hostUrl = localStorage.getItem('host') ? ("https://" + localStorage.getItem('host')) : "";
     var offlineRootDir = localStorage.getItem('offlineRootDir') || "";
     var RESTWS = hostUrl + "/openmrs/ws/rest";
     var RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
