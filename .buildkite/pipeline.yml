@@ -1,0 +1,25 @@
+steps:
+
+  - name: ':fire: Test'
+    command: '/.buildkite/test.sh'
+    agents:
+      node: 'true'
+      frontend: 'true'
+
+  - wait
+
+  - name: ':hammer: Build'
+    command: '/.buildkite/build.sh'
+    branches: 'develop staging master ci-configuration'
+    agents:
+      node: 'true'
+      frontend: 'true'
+
+  - wait
+
+  - name: ':rocket: Deploy'
+    command: '/.buildkite/deploy.sh'
+    branches: 'develop staging master ci-configuration'
+    agents:
+      node: 'true'
+      frontend: 'true'
