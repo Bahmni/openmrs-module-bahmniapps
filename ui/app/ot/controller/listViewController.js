@@ -6,7 +6,9 @@ angular.module('bahmni.ot')
             var startDatetime = moment($scope.viewDate).toDate();
             var surgicalBlockMapper = new Bahmni.OT.SurgicalBlockMapper();
             var endDatetime = moment(startDatetime).endOf('day').toDate();
-            $scope.tableInfo = [{heading: 'Date', sortInfo: 'derivedAttributes.expectedStartDate'},
+            $scope.tableInfo = [
+                {heading: 'Status', sortInfo: 'status'},
+                {heading: 'Date', sortInfo: 'derivedAttributes.expectedStartDate'},
                 {heading: 'Identifier', sortInfo: 'derivedAttributes.patientIdentifier'},
                 {heading: 'Patient Name', sortInfo: 'derivedAttributes.patientName'},
                 {heading: 'Start Time', sortInfo: 'derivedAttributes.expectedStartTime'},
@@ -21,7 +23,6 @@ angular.module('bahmni.ot')
                 {heading: 'Anaesthetist', sortInfo: 'surgicalAppointmentAttributes.anaesthetist.value'},
                 {heading: 'Scrub Nurse', sortInfo: 'surgicalAppointmentAttributes.scrubNurse.value'},
                 {heading: 'Circulating Nurse', sortInfo: 'surgicalAppointmentAttributes.circulatingNurse.value'},
-                {heading: 'Status', sortInfo: 'status'},
                 {heading: 'Status Change Notes', sortInfo: 'notes'}];
 
             var filterSurgicalBlocksAndMapAppointmentsForDisplay = function (surgicalBlocks) {
@@ -142,6 +143,14 @@ angular.module('bahmni.ot')
                     filterSurgicalBlocksAndMapAppointmentsForDisplay($scope.surgicalBlocks);
                 }
             });
+
+            $scope.isStatusPostponed = function (status) {
+                return status === Bahmni.OT.Constants.postponed;
+            };
+
+            $scope.isStatusCancelled = function (status) {
+                return status === Bahmni.OT.Constants.cancelled;
+            };
 
             spinner.forPromise(init(startDatetime, endDatetime));
         }]);

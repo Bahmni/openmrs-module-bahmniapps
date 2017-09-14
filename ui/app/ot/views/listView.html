@@ -14,7 +14,11 @@
         </thead>
         <tbody>
         <tr ng-repeat="appointment in surgicalAppointmentList" ng-click="selectSurgicalAppointment($event, appointment)"
-            ng-blur="deselectSurgicalAppointment($event)" tabindex="1" ng-class="{'current-date': isCurrentDateinWeekView(appointment.derivedAttributes.expectedStartDate)}">
+            ng-blur="deselectSurgicalAppointment($event)" tabindex="1" ng-class="{'current-date': isCurrentDateinWeekView(appointment.derivedAttributes.expectedStartDate),
+             'status-postponed': isStatusPostponed(appointment.status), 'status-cancelled': isStatusCancelled(appointment.status)}">
+            <td>
+                {{appointment.status}}
+            </td>
             <td>
                 {{appointment.derivedAttributes.expectedStartDate | bahmniDate}}
             </td>
@@ -63,9 +67,6 @@
             </td>
             <td>
                 {{appointment.surgicalAppointmentAttributes.circulatingNurse.value}}
-            </td>
-            <td>
-                {{appointment.status}}
             </td>
             <td class="list-view-notes">
                 {{appointment.notes}}

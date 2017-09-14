@@ -375,6 +375,12 @@ div[ng-app="ot"] {
     .current-date {
       background: #f0f5f5 ;
     }
+    .status-postponed {
+      background: #fceab6;
+    }
+    .status-cancelled {
+      background: #fcb6b6;
+    }
   }
 }
 

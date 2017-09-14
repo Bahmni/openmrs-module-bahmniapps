@@ -572,4 +572,63 @@ describe('listViewController', function () {
         expect(scope.$emit).toHaveBeenCalledWith("event:surgicalBlockDeselect");
     });
 
+    it("isStatusPostponed should return true if status is postponed", function () {
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        var event = {
+            stopPropagation: function () {
+            }
+        };
+        createController();
+        var isPostponed = scope.isStatusPostponed('POSTPONED');
+        expect(isPostponed).toBeTruthy();
+    });
+
+    it("isStatusPostponed should return false if status is not postponed", function () {
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        var event = {
+            stopPropagation: function () {
+            }
+        };
+        createController();
+        var isPostponed = scope.isStatusPostponed('CANCELLED');
+        expect(isPostponed).toBeFalsy();
+    });
+
+    it("isStatusCancelled should return true if status is cancelled", function () {
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        var event = {
+            stopPropagation: function () {
+            }
+        };
+        createController();
+        var isCancelled = scope.isStatusCancelled('CANCELLED');
+        expect(isCancelled).toBeTruthy();
+    });
+
+    it("isStatusCancelled should return false if status is not cancelled", function () {
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        var event = {
+            stopPropagation: function () {
+            }
+        };
+        createController();
+        var isCancelled = scope.isStatusCancelled('SCHEDULED');
+        expect(isCancelled).toBeFalsy();
+    });
 });
