@@ -3,6 +3,10 @@
 describe('AppointmentsFilterController', function () {
     var controller, scope, state, location, appService, appDescriptor, appointmentsServiceService, ivhTreeviewMgr, q, translate;
     var providerService = jasmine.createSpyObj('providerService', ['list']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    appService.getAppDescriptor.and.returnValue(appDescriptor);
+    appDescriptor.getConfigValue.and.returnValue(true);
 
     var servicesWithTypes = {
         data: [{
@@ -500,5 +504,217 @@ describe('AppointmentsFilterController', function () {
        createController();
        scope.resetSearchText();
        expect(scope.searchText).toBeUndefined();
+    });
+
+    it('should have isSpecialitiesEnable and isServiceTypeEnabled', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        createController();
+        expect(scope.isSpecialityEnabled).toBeTruthy();
+        expect(scope.isServiceTypeEnabled).toBeTruthy();
+    });
+
+    it('should not inclued specialities in ivhTreeView when specialities are not enabled', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        appDescriptor.getConfigValue.and.returnValue(false);
+        createController();
+        expect(scope.selectedSpecialities[0].label).toEqual('ortho');
+        expect(scope.selectedSpecialities[0].id).toEqual('d3f5062e-b92d-4c70-8d22-b199dcb65a2c');
+    });
+
+    it('should not inclued specialities in ivhTreeView when specialities are not enabled', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        appDescriptor.getConfigValue.and.returnValue(false);
+        createController();
+        scope.isSpecialityEnabled = false;
+        scope.isServiceTypeEnabled = false;
+        state.params = {};
+        scope.selectedSpecialities = [
+            {
+                "label": "Dermatology",
+                "id": "75c006aa-d3dd-4848-9735-03aee74ae27e",
+                "children": [
+                    {
+                        "label": "type1",
+                        "id": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a"
+                    },
+                    {
+                        "label": "type2",
+                        "id": "f9556d31-2c42-4c7b-8d05-48aceeae0900"
+                    }
+                ]
+            }, {
+                "label": "Ophthalmology",
+                "id": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                "children": [
+                    {
+                        "label": "type1",
+                        "id": "6f59ba62-ddf4-46bc-b866-c09ae7b8200f"
+                    }
+                ],
+                "selected": true
+            }
+        ];
+        scope.applyFilter();
+        expect(state.params.filterParams.serviceUuids.length).toEqual(1);
+        expect(state.params.filterParams.serviceUuids[0]).toEqual('02666cc6-5f3e-4920-856d-ab7e28d3dbdb');
+    });
+
+    it('should not inclued serviceTypes and should include specialities in ivhTreeView when service types are not enabled and specialities are enabled', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        appDescriptor.getConfigValue.and.returnValue(true);
+        createController();
+        scope.isSpecialityEnabled = true;
+        scope.isServiceTypeEnabled = false;
+        state.params = {};
+        scope.selectedSpecialities = [
+            {
+                "label": "Dermatology",
+                "id": "75c006aa-d3dd-4848-9735-03aee74ae27e",
+                "children": [
+                    {
+                        "label": "type1",
+                        "id": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a"
+                    },
+                    {
+                        "label": "type2",
+                        "id": "f9556d31-2c42-4c7b-8d05-48aceeae0900",
+                        selected: true
+                    }
+                ],
+                selected: true
+            }, {
+                "label": "Ophthalmology",
+                "id": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                "children": [
+                    {
+                        "label": "type1",
+                        "id": "6f59ba62-ddf4-46bc-b866-c09ae7b8200f"
+                    }
+                ],
+                "selected": true
+            }
+        ];
+        scope.applyFilter();
+        expect(state.params.filterParams.serviceUuids.length).toEqual(1);
+        expect(state.params.filterParams.serviceUuids[0]).toEqual('f9556d31-2c42-4c7b-8d05-48aceeae0900');
+        expect(state.params.filterParams.serviceTypeUuids.length).toEqual(0);
+    });
+
+
+    it('should inclued serviceTypes and specialities in ivhTreeView when service types and specialities are enabled', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        appDescriptor.getConfigValue.and.returnValue(true);
+        createController();
+        scope.isSpecialityEnabled = true;
+        scope.isServiceTypeEnabled = true;
+        state.params = {};
+        scope.selectedSpecialities = [
+            {
+                "label": "Dermatology",
+                "id": "75c006aa-d3dd-4848-9735-03aee74ae27e",
+                "children": [
+                    {
+                        "label": "type1",
+                        "id": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a",
+                        "children": [
+                            {
+                                "label": "type1",
+                                "id": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a"
+                            },
+                            {
+                                "label": "subtype2",
+                                "id": "f9556d31-2c42-4c7b-8d05-48aceeae0CCC",
+                                selected: true
+                            }
+                        ]
+                    },
+                    {
+                        "label": "type2",
+                        "id": "f9556d31-2c42-4c7b-8d05-48aceeae0900",
+                        selected: true
+                    }
+                ],
+                selected: true
+            }, {
+                "label": "Ophthalmology",
+                "id": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                "children": [
+                    {
+                        "label": "type1",
+                        "id": "6f59ba62-ddf4-46bc-b866-c09ae7b8200f"
+                    }
+                ],
+                "selected": true
+            }
+        ];
+        scope.applyFilter();
+        expect(state.params.filterParams.serviceUuids.length).toEqual(1);
+        expect(state.params.filterParams.serviceUuids[0]).toEqual('f9556d31-2c42-4c7b-8d05-48aceeae0900');
+        expect(state.params.filterParams.serviceTypeUuids.length).toEqual(1);
+        expect(state.params.filterParams.serviceTypeUuids[0]).toEqual('f9556d31-2c42-4c7b-8d05-48aceeae0CCC');
+    });
+
+    it('should not inclued specialities in ivhTreeView when specialities are not enabled', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        appDescriptor.getConfigValue.and.returnValue(true);
+        createController();
+        scope.isSpecialityEnabled = false;
+        scope.isServiceTypeEnabled = true;
+        state.params = {};
+        scope.selectedSpecialities = [
+            {
+                "label": "Dermatology",
+                "id": "75c006aa-d3dd-4848-9735-03aee74ae27e",
+                "children": [
+                    {
+                        "label": "type1",
+                        "id": "f9556d31-2c42-4c7b-8d05-48aceeae0c9a"
+                    },
+                    {
+                        "label": "type2",
+                        "id": "f9556d31-2c42-4c7b-8d05-48aceeae0900",
+                        selected: true
+                    }
+                ]
+            }, {
+                "label": "Ophthalmology",
+                "id": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                "children": [
+                    {
+                        "label": "type1",
+                        "id": "6f59ba62-ddf4-46bc-b866-c09ae7b8200f"
+                    }
+                ],
+                "selected": true
+            }
+        ];
+        scope.applyFilter();
+        expect(state.params.filterParams.serviceUuids.length).toEqual(1);
+        expect(state.params.filterParams.serviceUuids[0]).toEqual('02666cc6-5f3e-4920-856d-ab7e28d3dbdb');
+        expect(state.params.filterParams.serviceTypeUuids.length).toEqual(1);
+        expect(state.params.filterParams.serviceTypeUuids[0]).toEqual('f9556d31-2c42-4c7b-8d05-48aceeae0900');
+    });
+
+    it('should not include specialities and service types in ivhTreeView when specialities and service types are not enabled', function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        appDescriptor.getConfigValue.and.returnValue(true);
+        createController();
+        scope.isSpecialityEnabled = false;
+        scope.isServiceTypeEnabled = false;
+        state.params = {};
+        scope.selectedSpecialities = [
+            {
+                "label": "Dermatology",
+                "id": "75c006aa-d3dd-4848-9735-03aee74ae27e"
+            }, {
+                "label": "Ophthalmology",
+                "id": "02666cc6-5f3e-4920-856d-ab7e28d3dbdb",
+                "selected": true
+            }
+        ];
+        scope.applyFilter();
+        expect(state.params.filterParams.serviceUuids.length).toEqual(1);
+        expect(state.params.filterParams.serviceUuids[0]).toEqual('02666cc6-5f3e-4920-856d-ab7e28d3dbdb');
+        expect(state.params.filterParams.serviceTypeUuids.length).toEqual(0);
     });
 });

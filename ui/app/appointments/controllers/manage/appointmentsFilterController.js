@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsFilterController', ['$scope', '$state', '$rootScope', '$q', '$translate', 'appointmentsServiceService', 'spinner', 'ivhTreeviewMgr', 'providerService',
-        function ($scope, $state, $rootScope, $q, $translate, appointmentsServiceService, spinner, ivhTreeviewMgr, providerService) {
+    .controller('AppointmentsFilterController', ['$scope', '$state', '$rootScope', '$q', '$translate', 'appointmentsServiceService', 'spinner', 'ivhTreeviewMgr', 'providerService', 'appService',
+        function ($scope, $state, $rootScope, $q, $translate, appointmentsServiceService, spinner, ivhTreeviewMgr, providerService, appService) {
             var init = function () {
+                $scope.isSpecialityEnabled = appService.getAppDescriptor().getConfigValue('enableSpecialities');
+                $scope.isServiceTypeEnabled = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
                 $scope.isFilterOpen = $state.params.isFilterOpen;
                 $scope.isSearchEnabled = $state.params.isSearchEnabled;
                 $scope.statusList = _.map(Bahmni.Appointments.Constants.appointmentStatusList, function (status) {
@@ -25,27 +27,51 @@ angular.module('bahmni.appointments')
                         provider.name = provider.display;
                         return provider;
                     });
-                    $scope.providers.push({name: $translate.instant("NO_PROVIDER_COLUMN_KEY"), display: $translate.instant("NO_PROVIDER_COLUMN_KEY"), uuid: 'no-provider-uuid'});
+                    $scope.providers.push({
+                        name: $translate.instant("NO_PROVIDER_COLUMN_KEY"),
+                        display: $translate.instant("NO_PROVIDER_COLUMN_KEY"),
+                        uuid: 'no-provider-uuid'
+                    });
+
+                    if ($scope.isSpecialityEnabled) {
+                        $scope.specialities = _.groupBy(response[0].data, function (service) {
+                            return service.speciality.name || $translate.instant("NO_SPECIALITY_KEY");
+                        });
+                        $scope.selectedSpecialities = _.map($scope.specialities, function (speciality, key) {
+                            return {
+                                label: key,
+                                id: speciality[0].speciality.uuid || "",
+                                children: _.map(speciality, function (service) {
+                                    return {
+                                        label: service.name, id: service.uuid, color: service.color,
+                                        children: !$scope.isServiceTypeEnabled ? [] : _.map(service.serviceTypes, function (serviceType) {
+                                            return {
+                                                label: serviceType.name + ' [' + serviceType.duration + ' ' + $translate.instant("PLACEHOLDER_SERVICE_TYPE_DURATION_MIN") + ']',
+                                                id: serviceType.uuid
+                                            };
+                                        })
+                                    };
+                                })
+                            };
+                        });
+                    } else {
+                        $scope.selectedSpecialities = _.map(response[0].data, function (service) {
+                            return {
+                                label: service.name, id: service.uuid, color: service.color,
+                                children: !$scope.isServiceTypeEnabled ? [] : _.map(service.serviceTypes, function (serviceType) {
+                                    return {
+                                        label: serviceType.name + ' [' + serviceType.duration + ' ' + $translate.instant("PLACEHOLDER_SERVICE_TYPE_DURATION_MIN") + ']',
+                                        id: serviceType.uuid
+                                    };
+                                })
+                            };
+                        });
+                    }
+
                     $scope.selectedProviders = _.filter($scope.providers, function (provider) {
                         return _.includes($state.params.filterParams.providerUuids, provider.uuid);
                     });
-                    $scope.specialities = _.groupBy(response[0].data, function (service) {
-                        return service.speciality.name || $translate.instant("NO_SPECIALITY_KEY");
-                    });
-                    $scope.selectedSpecialities = _.map($scope.specialities, function (speciality, key) {
-                        return {
-                            label: key,
-                            id: speciality[0].speciality.uuid || "",
-                            children: _.map(speciality, function (service) {
-                                return {
-                                    label: service.name, id: service.uuid, color: service.color,
-                                    children: _.map(service.serviceTypes, function (serviceType) {
-                                        return {label: serviceType.name + ' [' + serviceType.duration + ' ' + $translate.instant("PLACEHOLDER_SERVICE_TYPE_DURATION_MIN") + ']', id: serviceType.uuid};
-                                    })
-                                };
-                            })
-                        };
-                    });
+
                     if (!_.isEmpty($state.params.filterParams)) {
                         ivhTreeviewMgr.selectEach($scope.selectedSpecialities, $state.params.filterParams.serviceUuids);
                     }
@@ -101,30 +127,56 @@ angular.module('bahmni.appointments')
 
             $scope.applyFilter = function () {
                 resetFilterParams();
-                $state.params.filterParams.serviceUuids = _.reduce($scope.selectedSpecialities, function (accumulator, speciality) {
-                    var serviceUuids = _.chain(speciality.children)
-                        .filter(function (service) {
-                            return service.selected;
-                        }).map(function (service) {
-                            return service.id;
-                        }).value();
-                    return serviceUuids.concat(accumulator);
-                }, []);
-
-                $state.params.filterParams.serviceTypeUuids = _.reduce($scope.selectedSpecialities, function (accumulator, speciality) {
-                    var selectedServiceTypes = _.reduce(speciality.children, function (accumulator, service) {
-                        var serviceTypesForService = [];
-                        if (!service.selected) {
-                            serviceTypesForService = _.filter(service.children, function (serviceType) {
-                                return serviceType.selected;
-                            }).map(function (serviceType) {
-                                return serviceType.id;
-                            });
-                        }
-                        return serviceTypesForService.concat(accumulator);
+                if ($scope.isSpecialityEnabled) {
+                    $state.params.filterParams.serviceUuids = _.reduce($scope.selectedSpecialities, function (accumulator, speciality) {
+                        var serviceUuids = _.chain(speciality.children)
+                            .filter(function (service) {
+                                return service.selected;
+                            }).map(function (service) {
+                                return service.id;
+                            }).value();
+                        return serviceUuids.concat(accumulator);
                     }, []);
-                    return selectedServiceTypes.concat(accumulator);
-                }, []);
+
+                    if ($scope.isServiceTypeEnabled) {
+                        $state.params.filterParams.serviceTypeUuids = _.reduce($scope.selectedSpecialities, function (accumulator, speciality) {
+                            var selectedServiceTypes = _.reduce(speciality.children, function (accumulator, service) {
+                                var serviceTypesForService = [];
+                                if (!service.selected) {
+                                    serviceTypesForService = _.filter(service.children, function (serviceType) {
+                                        return serviceType.selected;
+                                    }).map(function (serviceType) {
+                                        return serviceType.id;
+                                    });
+                                }
+                                return serviceTypesForService.concat(accumulator);
+                            }, []);
+                            return selectedServiceTypes.concat(accumulator);
+                        }, []);
+                    } else {
+                        $state.params.filterParams.serviceTypeUuids = [];
+                    }
+                } else {
+                    $state.params.filterParams.serviceUuids = _.chain($scope.selectedSpecialities).filter(function (service) {
+                        return service.selected;
+                    }).map(function (service) {
+                        return service.id;
+                    }).value();
+
+                    if ($scope.isServiceTypeEnabled) {
+                        $state.params.filterParams.serviceTypeUuids = $scope.selectedSpecialities.filter(function (service) {
+                            return !service.selected;
+                        }).reduce(function (accumulator, service) {
+                            return accumulator.concat(service.children);
+                        }, []).filter(function (serviceType) {
+                            return serviceType.selected;
+                        }).reduce(function (accumulator, serviceType) {
+                            return accumulator.concat(serviceType.id);
+                        }, []);
+                    } else {
+                        $state.params.filterParams.serviceTypeUuids = [];
+                    }
+                }
 
                 $state.params.filterParams.providerUuids = _.map($scope.selectedProviders, function (provider) {
                     return provider.uuid;
