@@ -6,6 +6,9 @@ angular.module('bahmni.appointments')
             $scope.allAppointmentsForDay = appointmentsContext.appointments;
             var init = function () {
                 $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
+                $scope.$on('filterClosedOpen', function (event, args) {
+                    $scope.isFilterOpen = args.filterViewStatus;
+                });
                 $scope.isFilterOpen = $state.params.isFilterOpen;
                 var parseAppointments = function (allAppointments) {
                     var appointments = allAppointments.filter(function (appointment) {

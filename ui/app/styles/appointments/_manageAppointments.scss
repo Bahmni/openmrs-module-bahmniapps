@@ -358,7 +358,7 @@
 
 .app-date-nav {
   position: absolute;
-  width: calc(100% - 478px);
+  width: calc(100% - 310px);
   text-align: center;
   box-sizing: border-box;
   top: 126px;
@@ -382,7 +382,9 @@
     margin-left: 80px;
   }
 }
-
+.app-filter-open .app-date-nav {
+  width: calc(100% - 478px);
+}
 .app-list-view {
   overflow-x: auto;
   overflow-y: hidden;

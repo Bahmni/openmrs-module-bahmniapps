@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsFilterController', ['$scope', '$state', '$q', '$translate', 'appointmentsServiceService', 'spinner', 'ivhTreeviewMgr', 'providerService',
-        function ($scope, $state, $q, $translate, appointmentsServiceService, spinner, ivhTreeviewMgr, providerService) {
+    .controller('AppointmentsFilterController', ['$scope', '$state', '$rootScope', '$q', '$translate', 'appointmentsServiceService', 'spinner', 'ivhTreeviewMgr', 'providerService',
+        function ($scope, $state, $rootScope, $q, $translate, appointmentsServiceService, spinner, ivhTreeviewMgr, providerService) {
             var init = function () {
                 $scope.isFilterOpen = $state.params.isFilterOpen;
                 $scope.isSearchEnabled = $state.params.isSearchEnabled;
@@ -59,13 +59,14 @@ angular.module('bahmni.appointments')
             $scope.expandFilter = function () {
                 $state.params.isFilterOpen = true;
                 $scope.isFilterOpen = $state.params.isFilterOpen;
+                $rootScope.$broadcast("filterClosedOpen", { filterViewStatus: $scope.isFilterOpen });
             };
 
             $scope.minimizeFilter = function () {
                 $state.params.isFilterOpen = false;
                 $scope.isFilterOpen = $state.params.isFilterOpen;
+                $rootScope.$broadcast("filterClosedOpen", { filterViewStatus: $scope.isFilterOpen });
             };
-
             var resetFilterParams = function () {
                 $state.params.filterParams = {
                     serviceUuids: [],

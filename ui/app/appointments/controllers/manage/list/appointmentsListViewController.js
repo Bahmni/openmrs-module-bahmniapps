@@ -1,15 +1,17 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsListViewController', ['$scope', '$state', '$translate', '$stateParams', 'spinner',
+    .controller('AppointmentsListViewController', ['$scope', '$state', '$rootScope', '$translate', '$stateParams', 'spinner',
         'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog',
-        function ($scope, $state, $translate, $stateParams, spinner, appointmentsService, appService,
+        function ($scope, $state, $rootScope, $translate, $stateParams, spinner, appointmentsService, appService,
                   appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.searchedPatient = false;
             var oldPatientData = [];
-
+            $scope.$on('filterClosedOpen', function (event, args) {
+                $scope.isFilterOpen = args.filterViewStatus;
+            });
             $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_DATE', sortInfo: 'appointmentDate', enable: true},
