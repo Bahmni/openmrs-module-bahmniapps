@@ -23,12 +23,13 @@ angular.module('bahmni.appointments')
             };
 
             $scope.save = function () {
+                var message;
                 if ($scope.createAppointmentForm.$invalid) {
-                    var message = $scope.createAppointmentForm.$error.pattern
+                    message = $scope.createAppointmentForm.$error.pattern
                         ? 'INVALID_TIME_ERROR_MESSAGE' : 'INVALID_SERVICE_FORM_ERROR_MESSAGE';
                 } else if (!moment($scope.appointment.startTime, 'hh:mm a')
                         .isBefore(moment($scope.appointment.endTime, 'hh:mm a'), 'minutes')) {
-                    var message = 'TIME_SEQUENCE_ERROR_MESSAGE';
+                    message = 'TIME_SEQUENCE_ERROR_MESSAGE';
                 }
                 if (message) {
                     messagingService.showMessage('error', message);
@@ -187,7 +188,9 @@ angular.module('bahmni.appointments')
             };
 
             $scope.onServiceTypeChange = function () {
-                $scope.minDuration = $scope.appointment.serviceType && $scope.appointment.serviceType.duration;
+                $scope.minDuration = $scope.appointment.serviceType
+                    ? $scope.appointment.serviceType.duration
+                    : ($scope.appointment.service.durationMins || Bahmni.Appointments.Constants.minDurationForAppointment);
                 clearAvailabilityInfo();
                 $scope.onSelectStartTime();
             };
@@ -243,8 +246,7 @@ angular.module('bahmni.appointments')
                         var serviceTypes = $scope.selectedService.serviceTypes;
                         appointmentCreateConfig.serviceTypes = serviceTypes;
                         $scope.appointment.location = _.find(appointmentCreateConfig.locations, {uuid: $scope.selectedService.location.uuid});
-                        var duration = serviceTypes.length > 0 ? _.head(_.sortBy(serviceTypes, _.property('duration'))).duration : response.data.durationMins;
-                        $scope.minDuration = duration || $scope.minDuration;
+                        $scope.minDuration = response.data.durationMins || Bahmni.Appointments.Constants.minDurationForAppointment;
                         $scope.onSelectStartTime();
                     });
             };
