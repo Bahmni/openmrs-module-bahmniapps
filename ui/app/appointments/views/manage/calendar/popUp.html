@@ -25,7 +25,7 @@
     <p class="app-dialog-btn-wrap">
         <button style="background: #039BE5"
                 ng-disabled="!patient"
-                ng-click="editAppointment(scope.patientAppointmentMap[patient.uuid]);">
+                ng-click="navigateTo('edit')">
             {{::'EDIT_APPOINTMENT' | translate}}
         </button>
         <button style="background: #009688"
@@ -45,7 +45,7 @@
         </button>
         <button style="background: #8BC34A"
                 ng-show="scope.enableCreateAppointment"
-                ng-click="createAppointment();">
+                ng-click="navigateTo('new')">
             {{::'ADD_NEW_APPOINTMENT' | translate}}
         </button>
     </p>

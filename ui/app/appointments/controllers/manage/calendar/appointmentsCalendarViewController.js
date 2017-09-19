@@ -46,7 +46,7 @@ angular.module('bahmni.appointments')
                         event.color = appointment.service.color;
                         event.serviceName = appointment.service.name;
                         var existingEvent = _.find(result, event);
-                        var patientName = appointment.patient.name + "(" + appointment.patient.identifier + ")";
+                        var patientName = appointment.patient.name + " (" + appointment.patient.identifier + ")";
                         if (existingEvent) {
                             existingEvent.title = [existingEvent.title, patientName].join(', ');
                             existingEvent.appointments.push(appointment);
