@@ -78,9 +78,9 @@ angular.module('bahmni.appointments')
             };
 
             $scope.editAppointment = function () {
-                $state.go('home.manage.appointments.list.edit', {
-                    uuid: $scope.selectedAppointment.uuid
-                });
+                var params = $stateParams;
+                params.uuid = $scope.selectedAppointment.uuid;
+                $state.go('home.manage.appointments.list.edit', params);
             };
 
             $scope.checkinAppointment = function () {
@@ -125,11 +125,21 @@ angular.module('bahmni.appointments')
                 });
             };
 
-            $scope.confirmAction = function (toStatus, onDate) {
-                var closeConfirmBox = function (closeConfirmBox) {
-                    closeConfirmBox();
+            $scope.undoCheckIn = function () {
+                var undoCheckIn = function (closeConfirmBox) {
+                    return appointmentsService.undoCheckIn($scope.selectedAppointment.uuid).then(function () {
+                        ngDialog.close();
+                        $state.go($state.current, $state.params, {reload: true});
+                    }).then(closeConfirmBox);
                 };
 
+                var scope = {};
+                scope.message = $translate.instant('APPOINTMENT_UNDO_CHECKIN_CONFIRM_MESSAGE');
+                scope.yes = undoCheckIn;
+                showPopUp(scope);
+            };
+
+            $scope.confirmAction = function (toStatus, onDate) {
                 var changeStatus = function (toStatus, closeConfirmBox) {
                     return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus, onDate).then(function () {
                         ngDialog.close();
@@ -140,10 +150,16 @@ angular.module('bahmni.appointments')
                 scope.message = $translate.instant('APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE', {
                     toStatus: toStatus
                 });
-                scope.no = closeConfirmBox;
                 scope.yes = _.partial(changeStatus, toStatus, _);
+                showPopUp(scope);
+            };
+
+            var showPopUp = function (popUpScope) {
+                popUpScope.no = function (closeConfirmBox) {
+                    closeConfirmBox();
+                };
                 confirmBox({
-                    scope: scope,
+                    scope: popUpScope,
                     actions: [{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}],
                     className: "ngdialog-theme-default"
                 });

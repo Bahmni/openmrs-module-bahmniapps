@@ -1,13 +1,18 @@
 'use strict';
 
 describe('CalendarViewPopUp', function () {
-    var rootScope, calendarViewPopUp, popUpScope, ngDialog, $state, confirmBox, $translate, appointmentsService;
+    var rootScope, calendarViewPopUp, popUpScope, ngDialog, $state, confirmBox, $translate, appointmentsService, dialog;
 
     beforeEach(function () {
         module('bahmni.appointments');
         module(function ($provide) {
             popUpScope = {};
+            popUpScope.$destroy = jasmine.createSpy('$destroy');
             ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
+            dialog = {};
+            dialog.id = 'dialogId';
+            dialog.closePromise = specUtil.simplePromise({});
+            ngDialog.open.and.returnValue(dialog);
             $state = jasmine.createSpyObj('$state', ['go']);
             confirmBox = jasmine.createSpy('confirmBox');
             $translate = jasmine.createSpyObj('$translate', ['instant', 'storageKey', 'storage', 'preferredLanguage']);
@@ -65,23 +70,31 @@ describe('CalendarViewPopUp', function () {
         expect(ngDialog.open).toHaveBeenCalledWith({
             template: '../appointments/views/manage/calendar/popUp.html',
             scope: popUpScope,
-            className: 'ngdialog-theme-default',
-            preCloseCallback: jasmine.any(Function)
+            className: 'ngdialog-theme-default'
         });
     });
 
-    it('preCloseCallBack should reload current state', function () {
-        popUpScope.$destroy = jasmine.createSpy('$destroy');
-        ngDialog.open.and.callFake(function (params) {
-            params.preCloseCallback();
+    it('closePromise should reload current state if value false', function () {
+        dialog.closePromise = specUtil.simplePromise({value: false});
+        ngDialog.close.and.callFake(function () {
+            dialog.closePromise();
             expect($state.go).toHaveBeenCalledWith($state.current, $state.params, {reload: true});
-            expect(popUpScope.$destroy).toHaveBeenCalled();
         });
         var config = {scope: {appointments: []}};
         calendarViewPopUp(config);
     });
 
-    it('should go to new appointment state on createAppointment', function () {
+    it('closePromise should reload current state if value is not false', function () {
+        dialog.closePromise = specUtil.simplePromise({value: true});
+        ngDialog.close.and.callFake(function () {
+            dialog.closePromise();
+            expect($state.go).not.toHaveBeenCalled();
+        });
+        var config = {scope: {appointments: []}};
+        calendarViewPopUp(config);
+    });
+
+    it('should go to new appointment state on navigateTo new', function () {
         $state.params = {};
         var appointments = [{
             startDateTime: moment(),
@@ -91,8 +104,8 @@ describe('CalendarViewPopUp', function () {
         }];
         var config = {scope: {appointments: appointments}};
         calendarViewPopUp(config);
-        popUpScope.createAppointment();
-        expect(ngDialog.close).toHaveBeenCalled();
+        popUpScope.navigateTo('new');
+        expect(ngDialog.close).toHaveBeenCalledWith(dialog.id, false);
         expect($state.params.appointment).toEqual({
             startDateTime: appointments[0].startDateTime,
             endDateTime: appointments[0].endDateTime,
@@ -102,15 +115,25 @@ describe('CalendarViewPopUp', function () {
         expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new', $state.params, {reload: false});
     });
 
-    it('should go to edit appointment state on editAppointment', function () {
+    it('should go to edit appointment state on navigateTo edit', function () {
         $state.params = {};
-        var appointment = {uuid: 'appointUuid'};
-        var config = {scope: {appointments: []}};
+        var appointment = {uuid: 'appointUuid', patient: {uuid: 'patientUuid'}};
+        var config = {scope: {appointments: [appointment]}};
         calendarViewPopUp(config);
-        popUpScope.editAppointment(appointment);
-        expect(ngDialog.close).toHaveBeenCalled();
+        popUpScope.patient = {uuid: 'patientUuid'};
+        popUpScope.navigateTo('edit');
+        expect(ngDialog.close).toHaveBeenCalledWith(dialog.id, false);
         expect($state.params.uuid).toBe(appointment.uuid);
         expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.edit', $state.params, {reload: false});
+    });
+
+    it('should reload current state on navigateTo any other', function () {
+        $state.params = {};
+        $state.current = 'home.manage.appointments.calendar';
+        var config = {scope: {appointments: []}};
+        calendarViewPopUp(config);
+        popUpScope.navigateTo();
+        expect($state.go).toHaveBeenCalledWith($state.current, $state.params, {reload: true});
     });
 
     it('should show a pop up on confirmAction', function () {

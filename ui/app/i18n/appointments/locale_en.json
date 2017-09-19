@@ -130,5 +130,7 @@
   "APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE": "Are you sure, you want to mark appointment as {{toStatus}}?",
   "CHECK_IN_APPOINTMENT_TIME_VALIDATION": "Enter valid check in time.",
   "YES_KEY": "Yes",
-  "NO_KEY": "No"
+  "NO_KEY": "No",
+  "UNDO_CHECK_IN_APPOINTMENT": "Undo Check-in",
+  "APPOINTMENT_UNDO_CHECKIN_CONFIRM_MESSAGE": "Are you sure, you want to undo Check-in?"
 }

@@ -11,7 +11,7 @@ describe('AppointmentsListViewController', function () {
             controller = $controller;
             stateparams = $stateParams;
             _appointmentsFilter = jasmine.createSpy('appointmentsFilter');
-            appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments', 'changeStatus']);
+            appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments', 'changeStatus', 'undoCheckIn']);
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({}));
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
@@ -30,7 +30,7 @@ describe('AppointmentsListViewController', function () {
             confirmBox = jasmine.createSpy('confirmBox');
             $translate = jasmine.createSpyObj('$translate', ['instant', 'storageKey', 'storage', 'preferredLanguage']);
             $httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>');
-            $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>')
+            $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>');
             $httpBackend.expectGET('/openmrs/ws/rest/v1/provider').respond('<div></div>')
         });
     });
@@ -843,5 +843,38 @@ describe('AppointmentsListViewController', function () {
         createController();
         scope.selectedAppointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
         scope.confirmAction(toStatus);
+    });
+
+    it('should show a pop up on undo checkIn', function () {
+        var translatedMessage = 'Are you sure, you want to undo Check-in this appointment?';
+        $translate.instant.and.returnValue(translatedMessage);
+        confirmBox.and.callFake(function (config) {
+            expect($translate.instant).toHaveBeenCalledWith('APPOINTMENT_UNDO_CHECKIN_CONFIRM_MESSAGE');
+            expect(config.scope.message).toEqual(translatedMessage);
+            expect(config.scope.no).toEqual(jasmine.any(Function));
+            expect(config.scope.yes).toEqual(jasmine.any(Function));
+            expect(config.actions).toEqual([{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}]);
+            expect(config.className).toEqual('ngdialog-theme-default');
+        });
+        createController();
+        scope.selectedAppointment = {uuid: 'appointmentUuid'};
+        scope.undoCheckIn();
+        expect(confirmBox).toHaveBeenCalled();
+    });
+
+    it('should change status on confirmation on undo check in', function () {
+        var appointment = {uuid: 'appointmentUuid', status: 'Scheduled'};
+        appointmentsService.undoCheckIn.and.returnValue(specUtil.simplePromise({}));
+        confirmBox.and.callFake(function (config) {
+            var close = jasmine.createSpy('close');
+            config.scope.yes(close).then(function () {
+                expect(appointmentsService.undoCheckIn).toHaveBeenCalledWith(appointment.uuid);
+                expect($state.go).toHaveBeenCalledWith($state.current, $state.params, {reload: true});
+                expect(close).toHaveBeenCalled();
+            });
+        });
+        createController();
+        scope.selectedAppointment = appointment;
+        scope.undoCheckIn();
     });
 });

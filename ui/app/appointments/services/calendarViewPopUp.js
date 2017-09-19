@@ -1,15 +1,12 @@
 'use strict';
 
-angular.module('bahmni.common.uiHelper')
+angular.module('bahmni.appointments')
     .service('calendarViewPopUp', ['$rootScope', 'ngDialog', '$state', '$translate', 'appointmentsService',
         'confirmBox', 'checkinPopUp',
         function ($rootScope, ngDialog, $state, $translate, appointmentsService, confirmBox, checkinPopUp) {
             var calendarViewPopUp = function (config) {
                 var popUpScope = $rootScope.$new();
-                var close = function () {
-                    $state.go($state.current, $state.params, {reload: true});
-                    popUpScope.$destroy();
-                };
+                var dialog;
                 var scope = config.scope;
                 scope.patientList = scope.appointments.map(function (appt) {
                     return appt.patient;
@@ -20,23 +17,8 @@ angular.module('bahmni.common.uiHelper')
                     return result;
                 }, {});
 
-                popUpScope.createAppointment = function () {
-                    ngDialog.close();
-                    var params = $state.params;
-                    params.appointment = { startDateTime: scope.appointments[0].startDateTime,
-                        endDateTime: scope.appointments[0].endDateTime,
-                        provider: scope.appointments[0].provider,
-                        appointmentKind: 'Scheduled'
-                    };
-                    $state.go('home.manage.appointments.calendar.new', params, {reload: false});
-                };
-
-                popUpScope.editAppointment = function (appointment) {
-                    ngDialog.close();
-                    var params = $state.params;
-                    params.uuid = appointment.uuid;
-                    $state.go('home.manage.appointments.calendar.edit', params, {reload: false});
-                };
+                popUpScope.scope = scope;
+                popUpScope.patient = scope.patientList.length === 1 ? scope.patientList[0] : undefined;
 
                 popUpScope.checkinAppointment = function (patientAppointment) {
                     checkinPopUp({
@@ -46,6 +28,26 @@ angular.module('bahmni.common.uiHelper')
                         },
                         className: "ngdialog-theme-default app-dialog-container"
                     });
+                };
+
+                popUpScope.navigateTo = function (state) {
+                    var params = $state.params;
+                    if (state === 'edit') {
+                        ngDialog.close(dialog.id, false);
+                        params.uuid = scope.patientAppointmentMap[popUpScope.patient.uuid].uuid;
+                        $state.go('home.manage.appointments.calendar.edit', params, {reload: false});
+                    } else if (state === 'new') {
+                        ngDialog.close(dialog.id, false);
+                        params.appointment = { startDateTime: scope.appointments[0].startDateTime,
+                            endDateTime: scope.appointments[0].endDateTime,
+                            provider: scope.appointments[0].provider,
+                            appointmentKind: 'Scheduled'
+                        };
+                        $state.go('home.manage.appointments.calendar.new', params, {reload: false});
+                    } else {
+                        $state.go($state.current, $state.params, {reload: true});
+                    }
+                    popUpScope.$destroy();
                 };
 
                 popUpScope.confirmAction = function (appointment, toStatus, onDate) {
@@ -74,16 +76,17 @@ angular.module('bahmni.common.uiHelper')
                     });
                 };
 
-                popUpScope.scope = scope;
-                popUpScope.patient = scope.patientList.length === 1 ? scope.patientList[0] : undefined;
-
-                ngDialog.open({
+                dialog = ngDialog.open({
                     template: '../appointments/views/manage/calendar/popUp.html',
                     scope: popUpScope,
-                    className: config.className || 'ngdialog-theme-default',
-                    preCloseCallback: close
+                    className: config.className || 'ngdialog-theme-default'
                 });
 
+                dialog.closePromise.then(function (data) {
+                    if (data.value !== false) {
+                        popUpScope.navigateTo('calendar');
+                    }
+                });
                 var confirmActionCurrent = function (toStatus, onDate) {
                     popUpScope.confirmAction(scope.patientAppointmentMap[popUpScope.patient.uuid], toStatus, onDate);
                 };

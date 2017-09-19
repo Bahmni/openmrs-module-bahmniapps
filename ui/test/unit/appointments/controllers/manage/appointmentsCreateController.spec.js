@@ -591,4 +591,10 @@ describe("AppointmentsCreateController", function () {
             expect($scope.maxAppointmentsLimit).toBeUndefined();
         });
     });
+
+    it('should navigate to previous state', function () {
+        createController();
+        $scope.navigateToPreviousState();
+        expect($state.go).toHaveBeenCalledWith('^', $state.params, {reload: true});
+    })
 });

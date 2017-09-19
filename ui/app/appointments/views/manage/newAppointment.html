@@ -1,6 +1,10 @@
 <div class="create-new-app-wrapper">
     <div class="create-new-app-container">
-        <a href="#/home/manage/appointments/list"> <i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+        <span ng-click="navigateToPreviousState()">
+            <a>
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            </a>
+        </span>
 
         <h2 ng-hide="isEditMode()">{{ ::'ADD_NEW_APPOINTMENT' | translate}}</h2>
         <h2 ng-show="isEditMode()">{{ ::'EDIT_APPOINTMENT_KEY' | translate}}</h2>

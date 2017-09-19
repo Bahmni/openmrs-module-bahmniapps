@@ -379,5 +379,9 @@ angular.module('bahmni.appointments')
                 return ($scope.appointment.status === 'Scheduled' || $scope.appointment.status === 'CheckedIn');
             };
 
+            $scope.navigateToPreviousState = function () {
+                $state.go('^', $state.params, {reload: true});
+            };
+
             return init();
         }]);
