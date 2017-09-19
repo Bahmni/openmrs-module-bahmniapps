@@ -95,7 +95,7 @@
     color: #00ACC3;
     font-size: 21px;
     position: absolute;
-    right: 3px;
+    right: 8px;
     top: 12px;
     z-index: 11;
     text-align: center;
@@ -329,6 +329,9 @@
       p {
         padding: 0 25px;
       }
+    }
+    input:disabled {
+      color: #ccc;
     }
   }
   .create-appointment-action-btn {
