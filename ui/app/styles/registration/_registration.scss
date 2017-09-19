@@ -222,4 +222,17 @@ body{
     margin-left: 215px !important;
   }
 
+  legend {
+    width: auto !important;
+  }
+
+  .Select-input {
+    input {
+      &:focus {
+        outline: none !important;
+        background: $focus;
+      }
+    }
+  }
+
 }
