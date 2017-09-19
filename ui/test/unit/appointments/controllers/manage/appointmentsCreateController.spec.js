@@ -32,7 +32,7 @@ describe("AppointmentsCreateController", function () {
         $window = jasmine.createSpyObj('$window', ['open']);
         $stateParams = {};
         appointmentCreateConfig = {};
-        appointmentContext = {}
+        appointmentContext = {};
     });
 
     var createController = function () {
@@ -106,8 +106,8 @@ describe("AppointmentsCreateController", function () {
             };
             $scope.save();
             expect(appointmentsService.save).toHaveBeenCalled();
-            expect($state.go).toHaveBeenCalledWith('^', params, {reload: true})
-        })
+            expect($state.go).toHaveBeenCalledWith('^', params, {reload: true});
+        });
     });
 
     describe('availabilityValidations', function () {
@@ -351,6 +351,7 @@ describe("AppointmentsCreateController", function () {
             $scope.warning.appointmentDate = true;
             $scope.warning.startTime = true;
             $scope.warning.endTime = true;
+            $scope.appointment.serviceType = {name: 'initial', duration: 23};
             $scope.onServiceTypeChange();
             expect($scope.warning.appointmentDate).toBeFalsy();
             expect($scope.warning.startTime).toBeFalsy();
@@ -656,5 +657,22 @@ describe("AppointmentsCreateController", function () {
             $scope.appointment = {date: moment().add(1, 'day').toDate(), status: 'Cancelled'};
             expect($scope.isEditAllowed()).toBeFalsy();
         });
+    });
+
+    it('should assign default duration of service when service type is unselected', function () {
+        createController();
+        $scope.minDuration = 15;
+        var serviceDuration = 20;
+        $scope.appointment = {service: {name: 'Cardiology', durationMins: serviceDuration}};
+        $scope.onServiceTypeChange();
+        expect($scope.minDuration).toEqual(serviceDuration);
+    });
+
+    it('should assign default duration when service type is unselected and there is no service duration', function () {
+        createController();
+        $scope.minDuration = 15;
+        $scope.appointment = {service: {name: 'Cardiology'}};
+        $scope.onServiceTypeChange();
+        expect($scope.minDuration).toEqual(Bahmni.Appointments.Constants.minDurationForAppointment);
     });
 });
