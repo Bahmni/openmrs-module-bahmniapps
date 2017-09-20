@@ -116,7 +116,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                     list.push(name);
                 }
 
-                return list.join(', ');
+                return list.join($scope.config && $scope.config.obsDelimiter ? $scope.config.obsDelimiter : ', ');
             };
 
             $scope.isMonthAvailable = function () {

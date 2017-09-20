@@ -1,9 +1,8 @@
 'use strict';
 
 describe('PatientAction', function () {
-    var appDescriptor, spinner, provide, state, scope;
-    var $bahmniCookieStore, $location, $window, $state, $stateParams,
-        appService, visitService, encounterService, offlineService, sessionService, messagingService;
+    var appDescriptor, spinner, provide, state, scope, $bahmniCookieStore, $location, $window, appService,
+        visitService, encounterService, offlineService, sessionService, messagingService, auditLogService, messageParams;
 
     beforeEach(module('bahmni.registration'));
 
@@ -20,18 +19,18 @@ describe('PatientAction', function () {
                 });
                 appDescriptor = jasmine.createSpyObj('appDescriptor', ['getExtensions', 'getConfigValue', 'formatUrl']);
                 appDescriptor.getExtensions.and.returnValue(input.appDescriptor.getExtensions);
-                appDescriptor.getConfigValue.and.callFake(function(value) {
-                    if (value == 'defaultVisitType'){
+                appDescriptor.getConfigValue.and.callFake(function (value) {
+                    if (value == 'defaultVisitType') {
                         return input.appDescriptor.getConfigValue.defaultVisitType;
-                    } else if (value == 'showStartVisitButton'){
+                    } else if (value == 'showStartVisitButton') {
                         return input.appDescriptor.getConfigValue.showStartVisitButton;
-                    } else if (value == 'forwardUrlsForVisitTypes'){
+                    } else if (value == 'forwardUrlsForVisitTypes') {
                         return input.appDescriptor.getConfigValue.forwardUrls;
                     }
                 });
                 appDescriptor.formatUrl.and.callFake(function (value) {
-                    if(value) {
-                        return input.appDescriptor.formattedUrl
+                    if (value) {
+                        return input.appDescriptor.formattedUrl;
                     }
                 });
                 appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -43,7 +42,8 @@ describe('PatientAction', function () {
                 $location = jasmine.createSpyObj('$location', ['path']);
                 visitService = jasmine.createSpyObj('visitService', ['search', 'createVisit']);
                 visitService.search.and.returnValue(specUtil.simplePromise(input.visitSearchResults));
-                visitService.createVisit.and.returnValue(specUtil.simplePromise({}));
+                var visitResponse = {uuid: "visitUuid", visitType: {display: 'OPD'}};
+                visitService.createVisit.and.returnValue(specUtil.simplePromise({data: visitResponse}));
                 encounterService = jasmine.createSpyObj('encounterService', ['']);
                 offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
                 offlineService.isOfflineApp.and.callFake(function () {
@@ -51,6 +51,9 @@ describe('PatientAction', function () {
                 });
                 sessionService = jasmine.createSpyObj('sessionService', ['']);
                 messagingService = jasmine.createSpyObj('messagingService', ['showMessage', 'clearAll']);
+                auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
+                auditLogService.log.and.returnValue(specUtil.simplePromise({}));
+                messageParams = {visitUuid: visitResponse.uuid, visitType: visitResponse.visitType.display};
                 provide.value('$state', state);
                 provide.value('$window', $window);
                 provide.value('spinner', spinner);
@@ -62,6 +65,7 @@ describe('PatientAction', function () {
                 provide.value('offlineService', offlineService);
                 provide.value('sessionService', sessionService);
                 provide.value('messagingService', messagingService);
+                provide.value('auditLogService', auditLogService);
             });
         };
 
@@ -73,7 +77,6 @@ describe('PatientAction', function () {
                     },
                     getVisitTypesAsArray: function () {
                         return [{type: 'IPD'}, {type: "OPD"}];
-
                     }
                 };
                 $rootScope.visitLocation = "visitLocationUuid";
@@ -112,7 +115,7 @@ describe('PatientAction', function () {
 
         it("should set the forwardActionKey to enterVisitDetails, If forwardUrls and Extensions are not configured and is not OfflineApp", function () {
             var patientUuid = 'patientUuid';
-            var visitSearchParams = { patient : patientUuid, includeInactive : false, v : 'custom:(uuid,visitType,location:(uuid))' };
+            var visitSearchParams = { patient: patientUuid, includeInactive: false, v: 'custom:(uuid,visitType,location:(uuid))' };
             var visitSearchResults = {data: {results: [{location: {uuid: "visitLocationUuid"}}]}};
             var input = {appDescriptor: {getExtensions: [], getConfigValue: {}}, stateParams: {patientUuid: patientUuid}, isOfflineApp: false, visitSearchResults: visitSearchResults};
             initProvider(input);
@@ -123,7 +126,7 @@ describe('PatientAction', function () {
 
         it("should set the forwardActionKey to enterVisitDetails, If forwardUrls is configured and a match not found with active visit type", function () {
             var patientUuid = 'patientUuid';
-            var visitSearchParams = { patient : patientUuid, includeInactive : false, v : 'custom:(uuid,visitType,location:(uuid))' };
+            var visitSearchParams = { patient: patientUuid, includeInactive: false, v: 'custom:(uuid,visitType,location:(uuid))' };
             var activeVisitTypeName = 'REG';
             var visitSearchResults = {data: {results: [{location: {uuid: "visitLocationUuid"}, visitType: {name: activeVisitTypeName}}]}};
             var forwardUrlList = [{
@@ -147,7 +150,7 @@ describe('PatientAction', function () {
 
         it("should set the forwardActionKey to forwardAction, If forwardUrls is configured and a match found with active visit type", function () {
             var patientUuid = 'patientUuid';
-            var visitSearchParams = { patient : patientUuid, includeInactive : false, v : 'custom:(uuid,visitType,location:(uuid))' };
+            var visitSearchParams = { patient: patientUuid, includeInactive: false, v: 'custom:(uuid,visitType,location:(uuid))' };
             var activeVisitTypeName = 'IPD';
             var visitSearchResults = {data: {results: [{location: {uuid: "visitLocationUuid"}, visitType: {name: activeVisitTypeName}}]}};
             var forwardUrlList = [{
@@ -156,11 +159,11 @@ describe('PatientAction', function () {
                 "translationKey": "Enter Visit details",
                 "shortcutKey": "c"
             }, {
-                    "visitType": "OPD",
-                    "forwardUrl": "../document-upload/?encounterType=RADIOLOGY&topLevelConcept=Radiology#/patient/{{patientUuid}}/document",
-                    "translationKey": "Enter <u>D</u>ocuments upload",
-                    "shortcutKey": "d"
-                }];
+                "visitType": "OPD",
+                "forwardUrl": "../document-upload/?encounterType=RADIOLOGY&topLevelConcept=Radiology#/patient/{{patientUuid}}/document",
+                "translationKey": "Enter <u>D</u>ocuments upload",
+                "shortcutKey": "d"
+            }];
             var configValues = {defaultVisitType: "IPD", showStartVisitButton: true, forwardUrls: forwardUrlList};
             var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues}, stateParams: {patientUuid: patientUuid}, isOfflineApp: false, visitSearchResults: visitSearchResults};
             initProvider(input);
@@ -173,7 +176,7 @@ describe('PatientAction', function () {
 
         it("should set the forwardActionKey to forwardAction, If forwardUrls is configured and a match found with active visit type and no translationKey on matched entry", function () {
             var patientUuid = 'patientUuid';
-            var visitSearchParams = { patient : patientUuid, includeInactive : false, v : 'custom:(uuid,visitType,location:(uuid))' };
+            var visitSearchParams = { patient: patientUuid, includeInactive: false, v: 'custom:(uuid,visitType,location:(uuid))' };
             var activeVisitTypeName = 'IPD';
             var visitSearchResults = {data: {results: [{location: {uuid: "visitLocationUuid"}, visitType: {name: activeVisitTypeName}}]}};
             var forwardUrlList = [{
@@ -223,6 +226,7 @@ describe('PatientAction', function () {
             var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues, formattedUrl: "../clinical/#/programs/patient/patientUuid/consultationContext"}, stateParams: {patientUuid: patientUuid}, isOfflineApp: false, visitSearchResults: visitSearchResults};
             initProvider(input);
             injectDependencies();
+
             var selectedVisitType = {name: "IPD"};
             scope.visitControl.startVisit(selectedVisitType);
             var patientProfileData = {patient: {uuid: patientUuid}};
@@ -230,6 +234,7 @@ describe('PatientAction', function () {
             expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("startVisit");
             expect($window.location.href).toBe("../clinical/#/programs/patient/patientUuid/consultationContext");
+            expect(auditLogService.log).toHaveBeenCalledWith(patientUuid, 'OPEN_VISIT', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
         });
 
         it("should create a new Visit on selecting the visitType and submitSource set to startVisit, if forwardUrl is not present", function () {
@@ -248,16 +253,18 @@ describe('PatientAction', function () {
             var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues, formattedUrl: "../clinical/#/programs/patient/patientUuid/consultationContext"}, stateParams: {patientUuid: patientUuid}, isOfflineApp: false, visitSearchResults: visitSearchResults};
             initProvider(input);
             injectDependencies();
+
             scope.patient = {};
             var selectedVisitType = {name: "IPD"};
             scope.visitControl.startVisit(selectedVisitType);
-            var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
+            var patientProfileData = {patient: {uuid: patientUuid, person: {names: [{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
             expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("startVisit");
             expect(scope.patient.uuid).toBe(patientUuid);
             expect(scope.patient.name).toBe("Test Patient");
             expect($location.path).toHaveBeenCalledWith("/patient/patientUuid/visit");
+            expect(auditLogService.log).toHaveBeenCalledWith(patientUuid, 'OPEN_VISIT', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
         });
 
         it("should go to configured forwardUrl, if the submitSource is forwardAction", function () {
@@ -278,7 +285,7 @@ describe('PatientAction', function () {
             initProvider(input);
             injectDependencies();
             scope.setSubmitSource("forwardAction");
-            var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
+            var patientProfileData = {patient: {uuid: patientUuid, person: {names: [{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
             expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("forwardAction");
@@ -302,9 +309,9 @@ describe('PatientAction', function () {
             var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues, formattedUrl: "../clinical/#/programs/patient/patientUuid/consultationContext"}, stateParams: {patientUuid: patientUuid}, isOfflineApp: false, visitSearchResults: visitSearchResults};
             initProvider(input);
             injectDependencies();
-            scope.patient={};
+            scope.patient = {};
             scope.setSubmitSource("enterVisitDetails");
-            var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
+            var patientProfileData = {patient: {uuid: patientUuid, person: {names: [{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
             expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("enterVisitDetails");
@@ -334,7 +341,7 @@ describe('PatientAction', function () {
             initProvider(input);
             injectDependencies();
             scope.setSubmitSource("configAction");
-            var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
+            var patientProfileData = {patient: {uuid: patientUuid, person: {names: [{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
             expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("configAction");
@@ -361,14 +368,16 @@ describe('PatientAction', function () {
             var input = {appDescriptor: {getExtensions: extension, getConfigValue: configValues, formattedUrl: "../clinical/#/programs/patient/patientUuid/consultationContext"}, stateParams: {patientUuid: patientUuid}, isOfflineApp: false, visitSearchResults: visitSearchResults};
             initProvider(input);
             injectDependencies();
+
             var selectedVisitType = {name: "IPD"};
             scope.visitControl.startVisit(selectedVisitType);
             scope.setSubmitSource("configAction");
-            var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
+            var patientProfileData = {patient: {uuid: patientUuid, person: {names: [{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
             expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("configAction");
             expect($window.location.href).toBe("../clinical/#/programs/patient/patientUuid/consultationContext");
+            expect(auditLogService.log).toHaveBeenCalledWith(patientUuid, 'OPEN_VISIT', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
         });
 
         it("should create a visit and go to visitDetails page, if the configAction forwardUrl not present and the submitSource is configAction and there is no active visit", function () {
@@ -389,19 +398,20 @@ describe('PatientAction', function () {
             var input = {appDescriptor: {getExtensions: extension, getConfigValue: configValues, formattedUrl: "../clinical/#/programs/patient/patientUuid/consultationContext"}, stateParams: {patientUuid: patientUuid}, isOfflineApp: false, visitSearchResults: visitSearchResults};
             initProvider(input);
             injectDependencies();
+
             scope.patient = {};
             var selectedVisitType = {name: "IPD"};
             scope.visitControl.startVisit(selectedVisitType);
             scope.setSubmitSource("configAction");
-            var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
+            var patientProfileData = {patient: {uuid: patientUuid, person: {names: [{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
             expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("configAction");
             expect(scope.patient.uuid).toBe(patientUuid);
             expect(scope.patient.name).toBe("Test Patient");
             expect($location.path).toHaveBeenCalledWith("/patient/patientUuid/visit");
+            expect(auditLogService.log).toHaveBeenCalledWith(patientUuid, 'OPEN_VISIT', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
         });
-
 
         it("should create a visit and go to visitDetails page, if the configAction forwardUrl not present and the submitSource is configAction and there is no active visit", function () {
             var patientUuid = 'patientUuid';
@@ -421,17 +431,19 @@ describe('PatientAction', function () {
             var input = {appDescriptor: {getExtensions: extension, getConfigValue: configValues, formattedUrl: "../clinical/#/programs/patient/patientUuid/consultationContext"}, stateParams: {patientUuid: patientUuid}, isOfflineApp: false, visitSearchResults: visitSearchResults};
             initProvider(input);
             injectDependencies();
+
             scope.patient = {};
             var selectedVisitType = {name: "IPD"};
             scope.visitControl.startVisit(selectedVisitType);
             scope.setSubmitSource("configAction");
-            var patientProfileData = {patient: {uuid: patientUuid, person:{names:[{display: "Test Patient"}]}}};
+            var patientProfileData = {patient: {uuid: patientUuid, person: {names: [{display: "Test Patient"}]}}};
             scope.actions.followUpAction(patientProfileData);
             expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("configAction");
             expect(scope.patient.uuid).toBe(patientUuid);
             expect(scope.patient.name).toBe("Test Patient");
             expect($location.path).toHaveBeenCalledWith("/patient/patientUuid/visit");
+            expect(auditLogService.log).toHaveBeenCalledWith(patientUuid, 'OPEN_VISIT', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
         });
     });
 });

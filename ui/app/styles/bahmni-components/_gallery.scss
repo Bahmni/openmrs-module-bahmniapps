@@ -96,12 +96,7 @@
     }
   }
   .pdf-link {
-    text-align: right;
-    display: block;
-    margin-right: 10px;
-    i {
-      font-size: 16px;
-    }
+    display: none;
     @media screen and (max-width: 1024px) {
       display: block;
       float: right;
@@ -299,7 +294,7 @@
         font-weight: normal;
       }
       .dialog-close-btn, .toggle-patient {
-        background: #527A7A;
+        background: transparent;
         border: none;
         outline: none;
         color: #fff;
@@ -308,15 +303,11 @@
         line-height: 50px;
         padding: 0;
         margin: 0;
-        margin-right: 20px;
+        margin-right: 5px;
         &:hover, &:focus {
           outline: none;
           border: none;
-          background: #527A7A;
-          opacity: 1;
-          i {
-            opacity: 0.8;
-          }
+          background: transparent;
         }
       }
     }
@@ -374,6 +365,7 @@
 }
 .gallery-open .ngdialog.ngdialog-theme-default .ngdialog-content {
   padding: 0;
+  width: 70%;
 }
 .dialog-close-btn {
   position: absolute;

@@ -2,6 +2,7 @@
 
 angular.module('bahmni.common.uicontrols.programmanagment')
     .controller('ProgramAttributesController', ['$scope', function ($scope) {
+        var program = $scope.patientProgram.program;
         $scope.getProgramAttributesMap = function () {
             var programAttributesMap = {};
             var programAttributes = $scope.patientProgram.attributes;
@@ -33,6 +34,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             } else {
                 return programAttributesMap[attributeType.name];
             }
+        };
+
+        $scope.isIncluded = function (attribute) {
+            return !(program && _.includes(attribute.excludeFrom, program.name));
         };
 
         var getProgramAttributeByType = function (programAttributes, attributeType) {

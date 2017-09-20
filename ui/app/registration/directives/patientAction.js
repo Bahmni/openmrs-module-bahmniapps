@@ -3,10 +3,10 @@
 angular.module('bahmni.registration')
     .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams',
         '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService',
-        'messagingService', '$translate', 'offlineService',
+        'messagingService', '$translate', 'offlineService', 'auditLogService',
         function ($window, $location, $state, spinner, $rootScope, $stateParams,
                   $bahmniCookieStore, appService, visitService, sessionService, encounterService,
-                  messagingService, $translate, offlineService) {
+                  messagingService, $translate, offlineService, auditLogService) {
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;
@@ -14,13 +14,13 @@ angular.module('bahmni.registration')
                 var conceptSetExtensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
                 var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
                 var defaultVisitType = $rootScope.regEncounterConfiguration.getDefaultVisitType(loginLocationUuid);
-                defaultVisitType = defaultVisitType ? defaultVisitType : appService.getAppDescriptor().getConfigValue('defaultVisitType');
+                defaultVisitType = defaultVisitType || appService.getAppDescriptor().getConfigValue('defaultVisitType');
                 var showStartVisitButton = appService.getAppDescriptor().getConfigValue("showStartVisitButton");
                 var forwardUrlsForVisitTypes = appService.getAppDescriptor().getConfigValue("forwardUrlsForVisitTypes");
-                showStartVisitButton = showStartVisitButton ? showStartVisitButton : true;
+                showStartVisitButton = showStartVisitButton || true;
                 var isOfflineApp = offlineService.isOfflineApp();
                 var visitLocationUuid = $rootScope.visitLocation;
-                var forwardUrls = forwardUrlsForVisitTypes ? forwardUrlsForVisitTypes : false;
+                var forwardUrls = forwardUrlsForVisitTypes || false;
 
                 var getForwardUrlEntryForVisitFromTheConfig = function () {
                     var matchedEntry = _.find(forwardUrls, function (entry) {
@@ -149,7 +149,8 @@ angular.module('bahmni.registration')
                         });
                         return;
                     }
-                    spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function () {
+                    spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function (response) {
+                        auditLogService.log(patientProfileData.patient.uuid, "OPEN_VISIT", {visitUuid: response.data.uuid, visitType: response.data.visitType.display}, 'MODULE_LABEL_REGISTRATION_KEY');
                         if (forwardUrl) {
                             var updatedForwardUrl = appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patientProfileData.patient.uuid});
                             $window.location.href = updatedForwardUrl;

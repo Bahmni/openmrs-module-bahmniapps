@@ -5,7 +5,7 @@ angular.module('bahmni.common.domain')
         var search = function (fieldValue) {
             return $http.get(Bahmni.Common.Constants.providerUrl, {
                 method: "GET",
-                params: { q: fieldValue, v: "full"},
+                params: {q: fieldValue, v: "full"},
                 withCredentials: true
             });
         };
@@ -20,8 +20,16 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        var list = function () {
+            return $http.get(Bahmni.Common.Constants.providerUrl, {
+                method: "GET",
+                cache: false
+            });
+        };
+
         return {
             search: search,
-            searchByUuid: searchByUuid
+            searchByUuid: searchByUuid,
+            list: list
         };
     }]);

@@ -1,0 +1,31 @@
+<div class="service-admin-wrapper">
+    <div class="service-title"><h2>{{ ::'SERVICES' | translate}}</h2></div>
+    <button ng-click="createService()" class="add-service-btn">{{::'APPOINTMENT_SERVICE_ADD_NEW' | translate }}</button>
+    <section class="service-admin-content">
+        <table>
+            <thead>
+            <tr>
+                <th>{{::'APPOINTMENT_SERVICE_NAME_KEY' | translate }}</th>
+                <th>{{::'APPOINTMENT_SERVICE_LOCATION_KEY' | translate }}</th>
+                <th ng-show="enableSpecialities">{{::'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate }}</th>
+                <th>{{::'APPOINTMENT_SERVICE_DURATION_KEY' | translate }}</th>
+                <th>{{::'APPOINTMENT_SERVICE_DESCRIPTION_KEY' | translate }}</th>
+                <th>{{::'APPOINTMENT_SERVICE_ACTION_KEY' | translate }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="service in ::appointmentServices">
+                <td>{{service.name}}</td>
+                <td>{{service.location.name}}</td>
+                <td ng-show="enableSpecialities">{{service.speciality.name}}</td>
+                <td>{{service.durationMins}}</td>
+                <td class="service-disc-tablecell">{{service.description}}</td>
+                <td>
+                    <a ng-click="editService(service.uuid)" >{{ ::'APPOINTMENT_SERVICE_EDIT_ACTION' | translate}}</a>
+                    <a ng-click="deleteAppointmentService(service)">{{ ::'APPOINTMENT_SERVICE_DELETE_ACTION' | translate}}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>

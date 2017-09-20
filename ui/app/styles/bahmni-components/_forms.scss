@@ -195,6 +195,9 @@ form, .form {
             @media screen and (max-width: 850px) and (min-width: 596px) {
               margin-top:13px;
             }
+          @media screen and (max-width: 1024px) {
+            margin-top: 0 ;
+          }
         }
         textarea {
             height: 35px;

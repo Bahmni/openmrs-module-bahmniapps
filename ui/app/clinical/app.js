@@ -478,26 +478,12 @@ angular.module('consultation')
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
             $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
-        }]).run(['stateChangeSpinner', '$rootScope', 'offlineService', 'schedulerService', 'auditLogService', 'configurationService',
-            function (stateChangeSpinner, $rootScope, offlineService, schedulerService, auditLogService, configurationService) {
+        }]).run(['stateChangeSpinner', '$rootScope', 'offlineService', 'schedulerService', 'auditLogService',
+            function (stateChangeSpinner, $rootScope, offlineService, schedulerService, auditLogService) {
                 FastClick.attach(document.body);
                 stateChangeSpinner.activate();
-                var log = function (toState, toParams) {
-                    var params = {};
-                    params.eventType = Bahmni.Clinical.AuditLogEventDetails[toState.name].eventType;
-                    params.message = Bahmni.Clinical.AuditLogEventDetails[toState.name].message;
-                    params.patientUuid = toParams.patientUuid;
-                    params.programUuid = toParams.programUuid;
-                    params.module = "clinical";
-                    auditLogService.auditLog(params);
-                };
                 var cleanUpStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams) {
-                    configurationService.getConfigurations(['enableAuditLog']).then(function (result) {
-                        if (result.enableAuditLog) {
-                            log(toState, toParams);
-                        }
-                    });
-
+                    auditLogService.log(toParams.patientUuid, Bahmni.Clinical.StateNameEvenTypeMap[toState.name], undefined, "MODULE_LABEL_CLINICAL_KEY");
                     window.scrollTo(0, 0);
                 });
                 var cleanUpNgDialogOpened = $rootScope.$on('ngDialog.opened', function () {

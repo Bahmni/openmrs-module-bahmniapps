@@ -1,0 +1,678 @@
+'use strict';
+
+describe("AppointmentsCreateController", function () {
+    var $scope, controller, appointmentsServiceService, q, $window, appService, ngDialog, messagingService, $state,
+        spinner, appointmentsService, patientService, $translate, appDescriptor, $stateParams, appointmentCreateConfig,
+        appointmentContext;
+
+    beforeEach(function () {
+        module('bahmni.appointments');
+        inject(function ($controller, $rootScope, $q) {
+            controller = $controller;
+            $scope = $rootScope.$new();
+            q = $q;
+        });
+    });
+
+    beforeEach(function () {
+        appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['save', 'getServiceLoad']);
+        appointmentsServiceService.save.and.returnValue(specUtil.simplePromise({}));
+        appointmentsServiceService.getServiceLoad.and.returnValue(specUtil.simplePromise({}));
+        appointmentsService = jasmine.createSpyObj('appointmentsService', ['save']);
+        appointmentsService.save.and.returnValue(specUtil.simplePromise({}));
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
+        appDescriptor.getConfigValue.and.returnValue(true);
+        ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
+        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        $translate = jasmine.createSpyObj('$translate', ['']);
+        $state = jasmine.createSpyObj('$state', ['go']);
+        spinner = jasmine.createSpyObj('spinner', ['forPromise', 'forAjaxPromise']);
+        $window = jasmine.createSpyObj('$window', ['open']);
+        $stateParams = {};
+        appointmentCreateConfig = {};
+        appointmentContext = {};
+    });
+
+    var createController = function () {
+        return controller('AppointmentsCreateController', {
+            $scope: $scope,
+            $q: q,
+            $state: $state,
+            appointmentsServiceService: appointmentsServiceService,
+            messagingService: messagingService,
+            ngDialog: ngDialog,
+            appService: appService,
+            $window: $window,
+            spinner: spinner,
+            appointmentsService: appointmentsService,
+            patientService: patientService,
+            $translate: $translate,
+            $stateParams: $stateParams,
+            appointmentCreateConfig: appointmentCreateConfig,
+            appointmentContext: appointmentContext
+        }
+        );
+    };
+
+    it('should init appointment with defaultAppointmentKind if there is no appointment in appointmentContext', function () {
+        createController();
+        expect($scope.appointment.appointmentKind).toBe('Scheduled');
+    });
+
+    it('should init appointment with appointment in appointmentContext', function () {
+        appointmentContext = {appointment: {comments: 'Some notes'}};
+        createController();
+        expect($scope.appointment.comments).toBe(appointmentContext.appointment.comments);
+    });
+
+    describe('confirmationDialogOnStateChange', function () {
+        beforeEach(function () {
+            $state.name = 'home.manage.appointments.calendar.new';
+            createController();
+        });
+
+        it('should set the isFilterOpen from state params', function () {
+            $stateParams.isFilterOpen = true;
+            createController();
+            expect($scope.isFilterOpen).toBeTruthy();
+            expect($scope.showConfirmationPopUp).toBeTruthy();
+        });
+
+        it('should stay in current state if Cancel is selected', function () {
+            expect($state.name).toEqual('home.manage.appointments.calendar.new');
+            $scope.cancelTransition();
+            expect($state.name).toEqual('home.manage.appointments.calendar.new');
+            expect(ngDialog.close).toHaveBeenCalled();
+        });
+
+        it('should go to previous view with appointment date after saving the appointment', function () {
+            createController();
+            $scope.createAppointmentForm = {$invalid: false};
+            var appointment = {
+                date: moment().toDate(),
+                startTime: '09:00 am',
+                endTime: '09:30 am',
+                patient: {uuid: 'patientUuid'},
+                service: {uuid: 'serviceUuid'}
+            };
+            $scope.appointment = appointment;
+            $scope.patientAppointments = [];
+            var params = {
+                viewDate: moment().startOf('day').toDate(),
+                isFilterOpen: true,
+                isSearchEnabled: false
+            };
+            $scope.save();
+            expect(appointmentsService.save).toHaveBeenCalled();
+            expect($state.go).toHaveBeenCalledWith('^', params, {reload: true});
+        });
+    });
+
+    describe('availabilityValidations', function () {
+        it('should not set the warning message when start time is same as the start time of service availability', function () {
+            createController();
+            $scope.appointment.date = new Date('Mon Aug 28 2017 14:30:00 GMT+0530 (IST)');
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.appointment.startTime = '09:00 am';
+            $scope.warning.startTime = true;
+            $scope.onSelectStartTime();
+            expect($scope.warning.startTime).toBeFalsy();
+        });
+
+        it('should not set the warning message when start time is before the service end time', function () {
+            createController();
+            $scope.appointment.date = new Date('Mon Aug 28 2017 14:30:00 GMT+0530 (IST)');
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.appointment.startTime = '09:41 am';
+            $scope.warning.startTime = true;
+            $scope.onSelectStartTime();
+            expect($scope.warning.startTime).toBeFalsy();
+        });
+
+        it('should set the warning message when start time is outside the service available time', function () {
+            createController();
+            $scope.appointment.date = new Date('Mon Aug 28 2017 14:30:00 GMT+0530 (IST)');
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.appointment.startTime = '08:00 am';
+            $scope.warning.startTime = false;
+            $scope.onSelectStartTime();
+            expect($scope.warning.startTime).toBeTruthy();
+
+            $scope.appointment.startTime = '12:30 pm';
+            $scope.warning.startTime = false;
+            $scope.onSelectStartTime();
+            expect($scope.warning.startTime).toBeTruthy();
+        });
+
+        it('should set the warning message when start time is outside the service available time and multiple service available times are defined for a day', function () {
+            createController();
+            $scope.appointment.date = new Date('Mon Aug 28 2017 14:30:00 GMT+0530 (IST)');
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}, {dayOfWeek: 'MONDAY', startTime: '14:00:00', endTime: '17:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.appointment.startTime = '01:00 pm';
+            $scope.warning.startTime = false;
+            $scope.minDuration = 30;
+            $scope.onSelectStartTime();
+            expect($scope.warning.startTime).toBeTruthy();
+            expect($scope.warning.endTime).toBeTruthy();
+        });
+
+        it('should not set the warning message when start time is within the second service available time and multiple service available times are defined for a day', function () {
+            createController();
+            $scope.appointment.date = new Date('Mon Aug 28 2017 14:30:00 GMT+0530 (IST)');
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}, {dayOfWeek: 'MONDAY', startTime: '14:00:00', endTime: '17:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.appointment.startTime = '03:00 pm';
+            $scope.warning.startTime = false;
+            $scope.minDuration = 30;
+            $scope.onSelectStartTime();
+            expect($scope.warning.startTime).toBeFalsy();
+            expect($scope.warning.endTime).toBeFalsy();
+        });
+
+        it('should not set warning on start time when the service availability is not defined for a given day', function () {
+            createController();
+            $scope.appointment.date = new Date('Sun Aug 27 2017 14:30:00 GMT+0530 (IST)');
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.appointment.startTime = '06:00 am';
+            $scope.warning.startTime = true;
+            $scope.onSelectStartTime();
+            expect($scope.warning.startTime).toBeFalsy();
+        });
+
+        it('should reset the warning on start time to false when start time is undefined', function () {
+            createController();
+            $scope.warning.startTime = true;
+            $scope.appointment.startTime = undefined;
+            $scope.onSelectStartTime();
+            expect($scope.warning.startTime).toBeFalsy();
+        });
+
+        it('should not set the warning message when end time is inside the service availability', function () {
+            createController();
+            $scope.appointment.date = new Date('Mon Aug 28 2017 14:30:00 GMT+0530 (IST)');
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.appointment.endTime = '09:00 am';
+            $scope.warning.endTime = true;
+            $scope.onSelectEndTime();
+            expect($scope.warning.endTime).toBeFalsy();
+        });
+
+        it('should set the warning on end time when it is outside the service availability', function () {
+            createController();
+            $scope.appointment.date = new Date('Mon Aug 28 2017 11:30:00 GMT+0530 (IST)');
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.appointment.endTime = '01:30 pm';
+            $scope.onSelectEndTime();
+            expect($scope.warning.endTime).toBeTruthy();
+        });
+
+        it('should reset the warning on day to false if appointment date is undefined', function () {
+            createController();
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.warning.appointmentDate = true;
+            $scope.appointment.date = undefined;
+            $scope.checkAvailability();
+            expect($scope.warning.appointmentDate).toBeFalsy();
+        });
+
+        it('should not set warning on a day and set default start and end times when the service weekly availability is not defined for a given day', function () {
+            createController();
+            $scope.appointment.date = moment().toDate();
+            $scope.selectedService = {
+                weeklyAvailability: [],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.checkAvailability();
+            expect($scope.warning.appointmentDate).toBeFalsy();
+            expect($scope.allowedStartTime).toEqual('12:00 am');
+            expect($scope.allowedEndTime).toEqual('11:59 pm');
+        });
+
+        it('should set warning on a day and allowedStartTime and allowedEndTime to undefined when the service availability is not defined for a given day', function () {
+            createController();
+            $scope.appointment.date = moment('2017-08-04').toDate();
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.checkAvailability();
+            expect($scope.warning.appointmentDate).toBeTruthy();
+            expect($scope.allowedStartTime).toBeUndefined();
+            expect($scope.allowedEndTime).toBeUndefined();
+        });
+
+        it('should remove warning on a day and set allowedStartTime and allowedEndTime when the service availability is defined for a given day', function () {
+            createController();
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.warning.appointmentDate = true;
+            $scope.appointment.date = moment('2017-08-07').toDate();
+            $scope.checkAvailability();
+            expect($scope.warning.appointmentDate).toBeFalsy();
+            expect($scope.weeklyAvailabilityOnSelecedDate.length).toEqual(1);
+            expect($scope.weeklyAvailabilityOnSelecedDate[0].startTime).toEqual('09:00:00');
+            expect($scope.weeklyAvailabilityOnSelecedDate[0].endTime).toEqual('12:00:00');
+        });
+
+        it('should calculate warning messages for start time and end time when appointment date is changed', function () {
+            createController();
+            $scope.selectedService = {
+                weeklyAvailability: [{dayOfWeek: 'MONDAY', startTime: '09:00:00', endTime: '12:00:00'}],
+                startTime: undefined,
+                endTime: undefined
+            };
+            $scope.warning.appointmentDate = false;
+            $scope.warning.startTime = true;
+            $scope.warning.endTime = true;
+            $scope.appointment.startTime = '08:00 am';
+            $scope.appointment.endTime = '08:30 am';
+            $scope.appointment.date = moment('2017-08-08').toDate();
+            $scope.checkAvailability();
+            expect($scope.warning.appointmentDate).toBeTruthy();
+            expect($scope.warning.startTime).toBeFalsy();
+            expect($scope.warning.endTime).toBeFalsy();
+            $scope.appointment.date = moment('2017-08-07').toDate();
+            $scope.checkAvailability();
+            expect($scope.warning.appointmentDate).toBeFalsy();
+            expect($scope.warning.startTime).toBeTruthy();
+            expect($scope.warning.endTime).toBeTruthy();
+        });
+
+        it('should validate and set allowedStartTime and allowedEndTime ' +
+            'when service weeklyAvailability is not defined but service start time and end time are defined', function () {
+            createController();
+            $scope.selectedService = {
+                weeklyAvailability: [],
+                startTime: '09:00 am',
+                endTime: '11:00 am'
+            };
+            $scope.appointment.date = moment().toDate();
+            $scope.checkAvailability();
+            expect($scope.warning.appointmentDate).toBeFalsy();
+            expect($scope.allowedStartTime).toEqual('09:00 am');
+            expect($scope.allowedEndTime).toEqual('11:00 am');
+        });
+
+        it('should reset availibility warnings when a service is selected', function () {
+            createController();
+            $scope.warning.appointmentDate = true;
+            $scope.warning.startTime = true;
+            $scope.warning.endTime = true;
+            $scope.onServiceChange();
+            expect($scope.warning.appointmentDate).toBeFalsy();
+            expect($scope.warning.startTime).toBeFalsy();
+            expect($scope.warning.endTime).toBeFalsy();
+        });
+
+        it('should reset availibilty warnings when a service type is selected', function () {
+            createController();
+            $scope.warning.appointmentDate = true;
+            $scope.warning.startTime = true;
+            $scope.warning.endTime = true;
+            $scope.appointment.serviceType = {name: 'initial', duration: 23};
+            $scope.onServiceTypeChange();
+            expect($scope.warning.appointmentDate).toBeFalsy();
+            expect($scope.warning.startTime).toBeFalsy();
+            expect($scope.warning.endTime).toBeFalsy();
+        });
+    });
+
+    describe('loadCalculation', function () {
+        it('should trigger load calculation on date change', function () {
+            createController();
+            $scope.selectedService = {
+                weeklyAvailability: [],
+                startTime: '09:00 am',
+                endTime: '11:00 am'
+            };
+            $scope.appointment = {
+                service: {name: 'Cardiology'},
+                date: moment().toDate(),
+                startTime: '09:00 am',
+                endTime: '11:00 am'
+            };
+            $scope.checkAvailability();
+            expect(appointmentsServiceService.getServiceLoad).toHaveBeenCalled();
+        });
+
+        it('should trigger load calculation on time change', function () {
+            createController();
+            $scope.selectedService = {
+                weeklyAvailability: [],
+                startTime: '09:00 am',
+                endTime: '11:00 am',
+                serviceTypes: []
+            };
+            $scope.appointment = {
+                service: {name: 'Cardiology'},
+                date: moment().toDate(),
+                startTime: '09:00 am',
+                endTime: '11:00 am'
+            };
+            $scope.onSelectEndTime();
+            expect(appointmentsServiceService.getServiceLoad).toHaveBeenCalled();
+        });
+
+        it('should not trigger load calculation on time change when service types are defined', function () {
+            createController();
+            $scope.selectedService = {
+                weeklyAvailability: [],
+                startTime: '09:00 am',
+                endTime: '11:00 am',
+                serviceTypes: ['serviceType1']
+            };
+            $scope.appointment = {
+                service: {name: 'Cardiology'},
+                date: moment().toDate(),
+                startTime: '09:00 am',
+                endTime: '11:00 am'
+            };
+            $scope.onSelectEndTime();
+            expect(appointmentsServiceService.getServiceLoad).not.toHaveBeenCalled();
+        });
+
+        it('should not trigger load calculation on time change when timings are out of service availability', function () {
+            createController();
+            $scope.selectedService = {
+                weeklyAvailability: [],
+                startTime: '09:00 am',
+                endTime: '11:00 am',
+                maxAppointmentsLimit: 5
+            };
+            $scope.appointment = {
+                service: {name: 'Cardiology'},
+                date: moment().toDate(),
+                startTime: '11:30 am',
+                endTime: '01:00 pm'
+            };
+            $scope.onSelectEndTime();
+            expect(appointmentsServiceService.getServiceLoad).not.toHaveBeenCalled();
+            expect($scope.currentLoad).toBeUndefined();
+            expect($scope.maxAppointmentsLimit).toBeUndefined();
+        });
+
+        it('should clear the existing slot info', function () {
+            createController();
+            $scope.currentLoad = 20;
+            $scope.maxAppointmentsLimit = 30;
+            $scope.selectedService = {
+                weeklyAvailability: [],
+                startTime: '09:00:00',
+                endTime: '11:00:00'
+            };
+            $scope.appointment = {
+                service: {name: 'Cardiology'},
+                date: moment().toDate(),
+                startTime: '09:00 am',
+                endTime: '11:00 am'
+            };
+            $scope.onSelectEndTime();
+            expect($scope.currentLoad).toBeUndefined();
+            expect($scope.maxAppointmentsLimit).toBeUndefined();
+        });
+
+        it('should assign currentLoad and maxAppointmentsLimit', function () {
+            var bookedAppointments = 10;
+            var serviceMaxLoad = 30;
+            appointmentsServiceService.getServiceLoad.and.returnValue(specUtil.simplePromise({data: bookedAppointments}));
+            createController();
+            $scope.selectedService = {
+                name: 'Cardiology',
+                weeklyAvailability: [],
+                startTime: '09:00:00',
+                endTime: '11:00:00',
+                maxAppointmentsLimit: serviceMaxLoad
+            };
+            $scope.appointment = {
+                service: {name: 'Cardiology'},
+                date: moment().toDate(),
+                startTime: '09:00 am',
+                endTime: '11:00 am'
+            };
+            $scope.onSelectEndTime();
+            expect($scope.currentLoad).toBe(bookedAppointments);
+            expect($scope.maxAppointmentsLimit).toBe(serviceMaxLoad);
+        });
+
+        it('should only assign currentLoad of that day if no duration,startTime&endTime,maxAppointmentsLimit present', function () {
+            var bookedAppointments = 10;
+            appointmentsServiceService.getServiceLoad.and.returnValue(specUtil.simplePromise({data: bookedAppointments}));
+            createController();
+            $scope.selectedService = {
+                name: 'Cardiology'
+            };
+            $scope.appointment = {
+                service: {name: 'Cardiology'},
+                date: moment().toDate(),
+                startTime: '09:00 am',
+                endTime: '11:00 am'
+            };
+            $scope.onSelectEndTime();
+            expect($scope.currentLoad).toBe(bookedAppointments);
+            expect($scope.maxAppointmentsLimit).toBeUndefined();
+        });
+
+        it('should calculate maxAppointmentsLimit from service duration,start&endTime if service maxAppointmentsLimit is empty', function () {
+            createController();
+            $scope.selectedService = {
+                name: 'Cardiology',
+                weeklyAvailability: [],
+                startTime: '09:00:00',
+                endTime: '11:00:00',
+                durationMins: 30
+            };
+            $scope.appointment = {
+                service: {name: 'Cardiology'},
+                date: moment().toDate(),
+                startTime: '09:00 am',
+                endTime: '11:00 am'
+            };
+            $scope.onSelectEndTime();
+            expect($scope.maxAppointmentsLimit).toBe(4);
+        });
+
+        it('should assign currentLoad and maxAppointmentsLimit of availability', function () {
+            var bookedAppointments = 10;
+            var serviceMaxLoad = 20;
+            var availabilityMaxLoad = 8;
+            appointmentsServiceService.getServiceLoad.and.returnValue(specUtil.simplePromise({data: bookedAppointments}));
+            createController();
+            $scope.selectedService = {
+                startTime: '00:30:00',
+                endTime: '18:30:00',
+                maxAppointmentsLimit: serviceMaxLoad,
+                weeklyAvailability: [
+                    {
+                        dayOfWeek: 'THURSDAY',
+                        startTime: '10:03:00',
+                        endTime: '16:05:00',
+                        maxAppointmentsLimit: availabilityMaxLoad
+                    }
+                ]
+            };
+            $scope.appointment = {
+                service: {name: 'Cardiology'},
+                date: new Date('1970-01-01T11:30:00.000Z'),
+                startTime: '10:15:00',
+                endTime: '12:20:00'
+            };
+            $scope.onSelectEndTime();
+            expect($scope.currentLoad).toBe(bookedAppointments);
+            expect($scope.maxAppointmentsLimit).toBe(availabilityMaxLoad);
+        });
+
+        it('should calculate maxAppointmentsLimit from service duration and availability start&endTime if availability maxAppointmentsLimit is empty', function () {
+            var serviceMaxLoad = 20;
+            createController();
+            $scope.selectedService = {
+                startTime: '00:30:00',
+                endTime: '18:30:00',
+                maxAppointmentsLimit: serviceMaxLoad,
+                weeklyAvailability: [
+                    {
+                        dayOfWeek: 'THURSDAY',
+                        startTime: '10:03:00',
+                        endTime: '16:05:00'
+                    }
+                ],
+                durationMins: 10
+            };
+            $scope.appointment = {
+                service: {name: 'Cardiology'},
+                date: new Date('1970-01-01T11:30:00.000Z'),
+                startTime: '10:15:00',
+                endTime: '12:20:00'
+            };
+            $scope.onSelectEndTime();
+            expect($scope.maxAppointmentsLimit).toBe(36);
+        });
+
+        it('should not calculate slot info if appointment is booked outside the availability', function () {
+            createController();
+            $scope.selectedService = {
+                weeklyAvailability: [
+                    {
+                        dayOfWeek: 'SUNDAY',
+                        startTime: '10:03:00',
+                        endTime: '16:05:00',
+                        maxAppointmentsLimit: 5
+                    }
+                ]
+            };
+            $scope.appointment = {
+                service: {name: 'Cardiology'},
+                date: new Date('1970-01-01T11:30:00.000Z'),
+                startTime: '09:15:00',
+                endTime: '12:20:00'
+            };
+            $scope.onSelectEndTime();
+            expect($scope.currentLoad).toBeUndefined();
+            expect($scope.maxAppointmentsLimit).toBeUndefined();
+        });
+    });
+
+    it('should navigate to previous state', function () {
+        createController();
+        $scope.navigateToPreviousState();
+        expect($state.go).toHaveBeenCalledWith('^', $state.params, {reload: true});
+    });
+
+    describe('isEditAllowed', function () {
+        beforeEach(function () {
+            createController();
+        });
+
+        it('should not allow edit if it is past appointment irrespective of status', function () {
+            createController();
+            $scope.appointment = {date: moment().subtract(1, 'day').toDate(), status: 'Scheduled'};
+            expect($scope.isEditAllowed()).toBeFalsy();
+        });
+
+        it('should allow edit for scheduled appointment if is of current date', function () {
+            createController();
+            $scope.appointment = {date: moment().toDate(), status: 'Scheduled'};
+            expect($scope.isEditAllowed()).toBeTruthy();
+        });
+
+        it('should allow edit for checked-in appointment if is of current date', function () {
+            createController();
+            $scope.appointment = {date: moment().toDate(), status: 'CheckedIn'};
+            expect($scope.isEditAllowed()).toBeTruthy();
+        });
+
+        it('should not allow edit for completed appointment if is of current date', function () {
+            createController();
+            $scope.appointment = {date: moment().toDate(), status: 'Completed'};
+            expect($scope.isEditAllowed()).toBeFalsy();
+        });
+
+        it('should not allow edit for cancelled appointment if is of current date', function () {
+            createController();
+            $scope.appointment = {date: moment().toDate(), status: 'Cancelled'};
+            expect($scope.isEditAllowed()).toBeFalsy();
+        });
+
+        it('should allow edit for scheduled appointment if is of future date', function () {
+            createController();
+            $scope.appointment = {date: moment().add(1, 'day').toDate(), status: 'Scheduled'};
+            expect($scope.isEditAllowed()).toBeTruthy();
+        });
+
+        it('should allow edit for checked-in appointment if is of future date', function () {
+            createController();
+            $scope.appointment = {date: moment().add(1, 'day').toDate(), status: 'CheckedIn'};
+            expect($scope.isEditAllowed()).toBeTruthy();
+        });
+
+        it('should not allow edit for completed appointment if is of future date', function () {
+            createController();
+            $scope.appointment = {date: moment().add(1, 'day').toDate(), status: 'Completed'};
+            expect($scope.isEditAllowed()).toBeFalsy();
+        });
+
+        it('should not allow edit for cancelled appointment if is of future date', function () {
+            createController();
+            $scope.appointment = {date: moment().add(1, 'day').toDate(), status: 'Cancelled'};
+            expect($scope.isEditAllowed()).toBeFalsy();
+        });
+    });
+
+    it('should assign default duration of service when service type is unselected', function () {
+        createController();
+        $scope.minDuration = 15;
+        var serviceDuration = 20;
+        $scope.appointment = {service: {name: 'Cardiology', durationMins: serviceDuration}};
+        $scope.onServiceTypeChange();
+        expect($scope.minDuration).toEqual(serviceDuration);
+    });
+
+    it('should assign default duration when service type is unselected and there is no service duration', function () {
+        createController();
+        $scope.minDuration = 15;
+        $scope.appointment = {service: {name: 'Cardiology'}};
+        $scope.onServiceTypeChange();
+        expect($scope.minDuration).toEqual(Bahmni.Appointments.Constants.minDurationForAppointment);
+    });
+});

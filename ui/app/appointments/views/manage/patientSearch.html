@@ -1,0 +1,15 @@
+<input type="text"
+       id="patientID"
+       min-length=3
+       bahmni-autocomplete
+       ng-model="patient"
+       source="search"
+       response-map="responseMap"
+       on-select="onSelectPatient"
+       strict-select="true"
+       ng-class="{'illegalValue': isInvalid}"
+       placeholder="{{'PLACEHOLDER_APPOINTMENT_CREATE_SEARCH_PATIENT' | translate }}"
+       non-blank
+       required
+/>
+<i class="fa fa-search search-icon-app" aria-hidden="true"></i>

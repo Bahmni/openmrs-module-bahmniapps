@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'offlineService',
-        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, offlineService) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'offlineService', 'auditLogService',
+        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, offlineService, auditLogService) {
             var redirectUrl = $location.search()['from'];
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
@@ -21,19 +21,26 @@ angular.module('bahmni.home')
 
             var findLanguageByLocale = function (localeCode) {
                 return _.find(localeLanguages, function (localeLanguage) {
-                    return localeLanguage.code == localeCode; });
+                    return localeLanguage.code == localeCode;
+                });
+            };
+
+            var logAuditForLoginAttempts = function (eventType, isFailedEvent) {
+                if ($scope.loginInfo.username) {
+                    var messageParams = isFailedEvent ? {userName: $scope.loginInfo.username} : undefined;
+                    auditLogService.log(undefined, eventType, messageParams, 'login');
+                }
             };
 
             var promise = localeService.allowedLocalesList();
             localeService.serverDateTime().then(function (response) {
                 var serverTime = response.data.date;
-                var list = serverTime.split(" ");
-                var serverTimeZone = list[list.length - 1];
+                var offset = response.data.offset;
                 var localTime = new Date().toLocaleString();
                 var localtimeZone = getLocalTimeZone();
                 var localeTimeZone = localTime + " " + localtimeZone;
                 $scope.timeZoneObject = { serverTime: serverTime, localeTimeZone: localeTimeZone};
-                if (localtimeZone !== serverTimeZone) {
+                if (offset && !new Date().toString().includes(offset)) {
                     $scope.warning = "Warning";
                     $scope.warningMessage = "WARNING_SERVER_TIME_ZONE_MISMATCH";
                 }
@@ -41,6 +48,7 @@ angular.module('bahmni.home')
 
             localeService.getLoginText().then(function (response) {
                 $scope.logo = response.data.loginPage.logo;
+                $scope.bottomBanner = response.data.loginPage.bottomBanner;
                 $scope.headerText = response.data.loginPage.showHeaderText;
                 $scope.titleText = response.data.loginPage.showTitleText;
                 $scope.helpLink = response.data.helpLink.url;
@@ -56,8 +64,7 @@ angular.module('bahmni.home')
                         var localeLanguage = findLanguageByLocale(locale);
                         if (_.isUndefined(localeLanguage)) {
                             $scope.locales.push({"code": locale, "nativeName": locale});
-                        }
-                        else {
+                        } else {
                             $scope.locales.push(localeLanguage);
                         }
                     });
@@ -145,9 +152,11 @@ angular.module('bahmni.home')
                                 function () { deferrable.resolve(); },
                                 function (error) { deferrable.reject(error); }
                             );
+                            logAuditForLoginAttempts("USER_LOGIN_SUCCESS");
                         }, function (error) {
                             $scope.errorMessageTranslateKey = error;
                             deferrable.reject(error);
+                            logAuditForLoginAttempts("USER_LOGIN_FAILED", true);
                         }
                         );
                     },
@@ -159,6 +168,7 @@ angular.module('bahmni.home')
                             delete $scope.loginInfo.otp;
                         }
                         deferrable.reject(error);
+                        logAuditForLoginAttempts("USER_LOGIN_FAILED", true);
                     }
                 );
 

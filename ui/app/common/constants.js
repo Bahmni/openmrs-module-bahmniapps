@@ -275,11 +275,13 @@ Bahmni.Common = Bahmni.Common || {};
         bahmniConnectMetaDataDb: "metaData",
         serverDateTimeUrl: "/cgi-bin/systemdate",
         loginText: "/bahmni_config/openmrs/apps/home/whiteLabel.json",
-        auditLogUrl: BAHMNI_CORE + "/auditlog",
+        auditLogUrl: RESTWS_V1 + "/auditlog",
+        appointmentServiceUrl: RESTWS_V1 + "/appointmentService",
         conditionUrl: EMRAPI + '/condition',
         conditionHistoryUrl: EMRAPI + '/conditionhistory',
         followUpConditionConcept: 'Follow-up Condition',
-        localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json"
+        localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json",
+        privilegeRequiredErrorMessage: "User is logged in but doesn't have the relevant privilege"
     };
 })();
 

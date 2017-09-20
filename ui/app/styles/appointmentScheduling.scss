@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+/*BAHMNI css files*/
+@import "vendor/normalize";
+
+@import "bahmni-helper/variables";
+@import "bahmni-helper/base";
+@import "bahmni-helper/fonts";
+@import "bahmni-helper/font-awesome";
+@import "bahmni-helper/custom-fonts";
+
+@import "bahmni-components/grid";
+@import "bahmni-components/uiHelper";
+@import "bahmni-components/loader";
+@import "bahmni-components/header";
+@import "bahmni-components/navigation";
+@import "bahmni-components/forms";
+@import "bahmni-components/buttons";
+@import "bahmni-components/autoComplete";
+@import "bahmni-components/inPageTabs";
+@import "bahmni-components/ngDialog";
+@import "bahmni-components/gallery";
+@import "bahmni-components/templateController";
+@import "bahmni-components/patientControlPanel";
+@import "bahmni-components/tooltip";
+@import "bahmni-components/splitButton";
+@import "bahmni-components/table";
+@import "bahmni-components/typography";
+
+@import "clinical/clinicalIndex";
+
+@import "common/bahmniGlobal";
+@import "common/confirmBox";
+@import "common/notifications";
+@import "common/directives";
+@import "common/angularFix";
+@import "common/noTouch";
+
+
+@import "bahmni-layout/layout";
+@import "bahmni-layout/retroMode";
+
+@import "appointments/appointments";
+@import "appointments/manageAppointments";
+@import "appointments/serviceAppointment";
+@import "appointments/calenderStyles";
+@import "appointments/appSummary";
+@import "appointments/autoComplete";
+@import "appointments/components";

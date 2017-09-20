@@ -65,7 +65,8 @@ module.exports = function (grunt) {
         'components/angular-route/angular-route.min.js',
         'components/crypto-js/crypto-js.js',
         'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
-        'components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.min.js'
+        'components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.min.js',
+        'components/angular-ivh-treeview/dist/ivh-treeview.min.js'
     ];
 
     try {
@@ -150,10 +151,10 @@ module.exports = function (grunt) {
         coverage: {
             options: {
                 thresholds: {
-                    statements: 68.9,
-                    branches: 58.1,
-                    functions: 61.3,
-                    lines: 68.9
+                    statements: 70.0,
+                    branches: 59.0,
+                    functions: 62.50,
+                    lines: 70.05
                 },
                 dir: 'coverage',
                 root: '.'
@@ -205,7 +206,8 @@ module.exports = function (grunt) {
                 '<%= yeoman.app %>/admin/**/*.html',
                 '<%= yeoman.app %>/registration/**/*.html',
                 '<%= yeoman.app %>/document-upload/**/*.html',
-                '<%= yeoman.app %>/reports/**/*.html'
+                '<%= yeoman.app %>/reports/**/*.html',
+                '<%= yeoman.app %>/appointments/**/*.html'
             ],
             css: '<%= yeoman.app %>/styles/**/*.css',
             options: {
@@ -279,7 +281,8 @@ module.exports = function (grunt) {
                             'admin/**/*.html',
                             'reports/**/*.html',
                             'registration/**/*.html',
-                            'document-upload/**/*.html'
+                            'document-upload/**/*.html',
+                            'appointments/**/*.html'
                         ],
                         dest: '<%= yeoman.dist %>'
                     }
@@ -386,6 +389,12 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
+                        src: ['appointments.*.js'],
+                        dest: '<%= yeoman.dist %>/appointments/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
                         src: ['patients.min.*.css'],
                         dest: '<%= yeoman.dist %>/patients/'
                     },
@@ -439,6 +448,12 @@ module.exports = function (grunt) {
                         cwd: '<%= yeoman.dist %>',
                         src: ['document-upload.*.css'],
                         dest: '<%= yeoman.dist %>/document-upload/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['appointments.*.css'],
+                        dest: '<%= yeoman.dist %>/appointments/'
                     }
                 ]
             }
@@ -490,7 +505,8 @@ module.exports = function (grunt) {
                     '<%= yeoman.dist %>/home.min.js': '<%= yeoman.dist %>/home.min.js',
                     '<%= yeoman.dist %>/orders.min.js': '<%= yeoman.dist %>/orders.min.js',
                     '<%= yeoman.dist %>/reports.min.js': '<%= yeoman.dist %>/reports.min.js',
-                    '<%= yeoman.dist %>/clinical.min.js': '<%= yeoman.dist %>/clinical.min.js'
+                    '<%= yeoman.dist %>/clinical.min.js': '<%= yeoman.dist %>/clinical.min.js',
+                    '<%= yeoman.dist %>/appointments.min.js': '<%= yeoman.dist %>/appointments.min.js'
                 }
             },
             web: {

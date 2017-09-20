@@ -1,7 +1,8 @@
-<dev class="clint-logo-wrapper">
+<div class="clint-logo-wrapper">
     <img class="implementor-logo" src={{logo}} >
     <span ng-if="titleText" class="title_text"> {{'LOGIN_PAGE_TITLE_TEXT' | translate }} </span>
-</dev>
+</div>
+
 <div class="login" ng-hide="showOTP">
     <div ng-if="headerText" class="emr-login-text">
         <b>{{'LOGIN_PAGE_HEADER_TEXT'| translate}} </b>
@@ -60,7 +61,7 @@
                 </div>
                 <div class="field-value">
                     <select id="location" ng-model="loginInfo.currentLocation"
-                            ng-options="item as item.display for item in locations | orderBy:'display'" required>
+                            ng-options="item as (item.display | translate) for item in locations | orderBy:'display'" required>
                         <option value="">{{'LOGIN_LABEL_SELECT_LOCATION_KEY' | translate}}</option>
                     </select>
                 </div>
@@ -115,6 +116,10 @@
             </div>
         </div>
     </form>
+</div>
+
+<div class="bottom-banner-wrapper">
+    <img id="bottom-banner-image" src={{bottomBanner}}>
 </div>
 
 <div class="power-by">

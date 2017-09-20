@@ -1,0 +1,37 @@
+<div class="app-summary-container">
+    <week-picker view-date="viewDate" on-change="getAppointmentsSummaryForAWeek"
+                 week-start="weekStart"></week-picker>
+    <div class="app-summary-table-container">
+        <table class="table-header">
+            <thead>
+            <tr>
+                <th></th>
+                <th ng-repeat="dateInfo in weekDatesInfo">
+                    {{dateInfo.date | date:'d MMM, EEE'}}
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <table>
+            <tbody>
+            <tr ng-repeat="appointment in appointments">
+                <td>
+                    {{appointment.appointmentService.name}}
+                </td>
+                <td ng-repeat="dateInfo in weekDatesInfo" ng-class="{'currentDate' : isCurrentDate(dateInfo.date)}">
+                    <a ng-click="goToListView(dateInfo.date, appointment.appointmentService)">{{appointment.appointmentCountMap[dateInfo.date].allAppointmentsCount}}</a>
+                    <span style="color: #E31C3B" ng-if="appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount">
+                ({{appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount}} {{'MISSED_KEY' | translate}})</span>
+                </td>
+            </tr>
+            <tr>
+                <td>{{ 'TOTAL_KEY' | translate }}</td>
+                <td ng-repeat="dateInfo in weekDatesInfo" class="app-summary-total" ng-class="{'currentDate' : isCurrentDate(dateInfo.date)}">
+                    <a ng-if="dateInfo.total.all" ng-click="goToListView(dateInfo.date)" target="_blank">{{dateInfo.total.all}} </a>
+                    <span style="color: #E31C3B" ng-if="dateInfo.total.missed">({{dateInfo.total.missed}} {{'MISSED_KEY' | translate}})</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

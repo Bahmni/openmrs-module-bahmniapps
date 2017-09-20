@@ -88,7 +88,7 @@ angular.module('bahmni.common.domain')
                         mandatoryProgramAttributes.push(attributeName);
                     }
                 }
-                return new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(response.data.results, mandatoryProgramAttributes).attributeTypes;
+                return new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(response.data.results, mandatoryProgramAttributes, programAttributesConfig).attributeTypes;
             });
         };
 

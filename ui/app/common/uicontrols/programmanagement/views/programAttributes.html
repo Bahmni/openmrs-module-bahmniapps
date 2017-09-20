@@ -1,4 +1,4 @@
-<div class="form-field" ng-repeat="attributeType in programAttributeTypes" ng-show="!patientProgram.editing">
+<div class="form-field" ng-repeat="attributeType in programAttributeTypes" ng-show="!patientProgram.editing" ng-if="isIncluded(attributeType)">
     <div class="field-attribute">
         <label>{{attributeType.description}} : </label>
     </div>
@@ -9,7 +9,7 @@
     </div>
 </div>
 <div  ng-show="patientProgram.editing" class="programEditing">
-    <article class="form-field" ng-repeat="attributeType in programAttributeTypes">
+    <article class="form-field" ng-repeat="attributeType in programAttributeTypes" ng-if="isIncluded(attributeType)">
         <attribute-types target-model="patientProgram.patientProgramAttributes" attribute="attributeType"></attribute-types>
     </article>
 </div>

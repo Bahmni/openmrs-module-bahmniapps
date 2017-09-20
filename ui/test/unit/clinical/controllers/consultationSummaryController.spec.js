@@ -16,7 +16,14 @@ describe("ConsultationSummaryController", function () {
                     name: "Follow Up Condition"
                 },
                 value: "17867621-0a65-4ba6-9e9b-e6bbcfbad9f0"
+            },{
+                concept: {
+                    uuid: "487c45c7-1929-11e7-a138-0800270ab0ce",
+                    name: "Dispensed"
+                },
+                value: true
             }],
+
             investigations: [],
             newlyAddedDiagnoses: [],
             disposition: {},
@@ -84,8 +91,8 @@ describe("ConsultationSummaryController", function () {
         });
     });
 
-    describe("Filter followup Condition Obs", function () {
-       it("should not display follow up condition obs if present", function () {
+    describe("Filter followup Condition Obs and Drug Dispensed Obs", function () {
+       it("should not display follow up condition obs and Drug Dispensed Obs if present", function () {
            expect(scope.isConsultationTabEmpty()).toBe(true);
            expect(scope.groupedObservations.length).toBe(0);
        });

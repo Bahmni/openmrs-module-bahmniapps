@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['observationFormService', 'spinner', '$timeout',
-        function (observationFormService, spinner, $timeout) {
+    .directive('formControls', ['formService', 'spinner', '$timeout',
+        function (formService, spinner, $timeout) {
             var loadedFormDetails = {};
             var unMountReactContainer = function (formUuid) {
                 var reactContainerElement = angular.element(document.getElementById(formUuid));
@@ -15,23 +15,24 @@ angular.module('bahmni.common.conceptSet')
                 var formUuid = $scope.form.formUuid;
                 var formObservations = $scope.form.observations;
                 var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
+                var validateForm = $scope.validateForm || false;
 
                 if (!loadedFormDetails[formUuid]) {
-                    spinner.forPromise(observationFormService.getFormDetail(formUuid, { v: "custom:(resources:(value))" })
+                    spinner.forPromise(formService.getFormDetail(formUuid, { v: "custom:(resources:(value))" })
                         .then(function (response) {
                             var formDetailsAsString = _.get(response, 'data.resources[0].value');
                             if (formDetailsAsString) {
                                 var formDetails = JSON.parse(formDetailsAsString);
                                 formDetails.version = $scope.form.formVersion;
                                 loadedFormDetails[formUuid] = formDetails;
-                                $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse);
+                                $scope.form.component = renderWithControls(formDetails, formObservations, formUuid, collapse, $scope.patient.uuid, validateForm);
                             }
                             unMountReactContainer($scope.form.formUuid);
                         })
                     );
                 } else {
                     $timeout(function () {
-                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse);
+                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse, $scope.patient.uuid, validateForm);
                         unMountReactContainer($scope.form.formUuid);
                     }, 0, false);
                 }
@@ -39,12 +40,12 @@ angular.module('bahmni.common.conceptSet')
                 $scope.$watch('form.collapseInnerSections', function () {
                     var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                     if (loadedFormDetails[formUuid]) {
-                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse);
+                        $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations, formUuid, collapse, $scope.patient.uuid, validateForm);
                     }
                 });
 
                 $scope.$on('$destroy', function () {
-                    if ($scope.$parent.consultation.observationForms) {
+                    if ($scope.$parent.consultation && $scope.$parent.consultation.observationForms) {
                         if ($scope.form.component) {
                             var formObservations = $scope.form.component.getValue();
                             $scope.form.observations = formObservations.observations;
@@ -61,7 +62,9 @@ angular.module('bahmni.common.conceptSet')
             return {
                 restrict: 'E',
                 scope: {
-                    form: "="
+                    form: "=",
+                    patient: "=",
+                    validateForm: "="
                 },
                 controller: controller
             };

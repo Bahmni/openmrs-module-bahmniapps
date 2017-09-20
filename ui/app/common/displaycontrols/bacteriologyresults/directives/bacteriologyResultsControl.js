@@ -38,10 +38,12 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         _.forEach($scope.observations, function (observation) {
                             $scope.specimens.push(specimenMapper.mapObservationToSpecimen(observation, $scope.allSamples, conceptsConfig, dontSortByObsDateTime));
                         });
+                    } else {
+                        $scope.specimens = [];
                     }
 
                     $scope.isDataPresent = function () {
-                        if (!$scope.specimens) {
+                        if (!$scope.specimens || !$scope.specimens.length) {
                             return $scope.$emit("no-data-present-event") && false;
                         }
                         return true;

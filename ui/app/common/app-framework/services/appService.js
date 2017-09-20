@@ -112,6 +112,10 @@ angular.module('bahmni.common.appFramework')
                 }
             };
 
+            var hasPrivilegeOf = function (privilegeName) {
+                return _.some(currentUser.privileges, {name: privilegeName});
+            };
+
             var loadPageConfig = function (pageName, appDescriptor) {
                 var deferrable = $q.defer();
                 loadConfig(baseUrl + appDescriptor.contextPath + "/" + pageName + ".json").then(
@@ -177,6 +181,14 @@ angular.module('bahmni.common.appFramework')
 
             this.getAppName = function () {
                 return this.appName;
+            };
+
+            this.checkPrivilege = function (privilegeName) {
+                if (hasPrivilegeOf(privilegeName)) {
+                    return $q.when(true);
+                }
+                messagingService.showMessage("error", Bahmni.Common.Constants.privilegeRequiredErrorMessage + " [Privileges required: " + privilegeName + "]");
+                return $q.reject();
             };
 
             this.initApp = function (appName, options, extensionFileSuffix, configPages) {

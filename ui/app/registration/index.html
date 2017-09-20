@@ -46,6 +46,11 @@
         <script src="../components/angular-elastic/elastic.js"></script>
         <script src="../components/lovefield/dist/lovefield.min.js"></script>
         <script src="../components/ng-tags-input/ng-tags-input.min.js"></script>
+        <script src="../components/react/react.min.js"></script>
+        <script src="../components/react/react-dom.min.js"></script>
+
+        <script src="../components/bahmni-form-controls/helpers.js"></script>
+        <script src="../components/bahmni-form-controls/bundle.js"></script>
 
         <!-- build:js ../common.offline.min.js -->
         <script src="../common/constants.js"></script>
@@ -53,6 +58,7 @@
         <script src="../common/util/init.js"></script>
         <script src="../common/models/init.js"></script>
         <script src="../common/models/age.js"></script>
+        <script src="../common/models/auditLogEventDetails.js"></script>
         <script src="../lib/angular-workers/dist/angular-workers.js"></script>
         <script src="../common/offline/init.js"></script>
         <script src="../common/offline/offlineService.js"></script>
@@ -168,6 +174,7 @@
         <script src="../common/concept-set/init.js"></script>
         <script src="../common/concept-set/directives/conceptSetGroup.js"></script>
         <script src="../common/concept-set/directives/conceptSet.js"></script>
+        <script src="../common/concept-set/directives/formControls.js"></script>
         <script src="../common/concept-set/directives/concept.js"></script>
         <script src="../common/concept-set/directives/buttonSelect.js"></script>
         <script src="../common/concept-set/directives/stepper.js"></script>
@@ -182,6 +189,7 @@
         <script src="../common/concept-set/models/multiSelectObservations.js"></script>
         <script src="../common/concept-set/models/customRepresentationBuilder.js"></script>
         <script src="../common/concept-set/models/conceptSetSection.js"></script>
+        <script src="../common/concept-set/models/observationForm.js"></script>
         <script src="../common/concept-set/mappers/observationMapper.js"></script>
         <script src="../common/concept-set/services/conceptService.js"></script>
         <script src="../common/concept-set/services/conceptSetUiConfigService.js"></script>
@@ -193,7 +201,7 @@
         <script src="../common/displaycontrols/init.js"></script>
 
         <script src="../common/displaycontrols/observation/init.js"></script>
-        <script src="../clinical/consultation/services/observationFormService.js"></script>
+        <script src="../common/services/formService.js"></script>
         <script src="../common/displaycontrols/observation/helpers/groupingFunctions.js"></script>
         <script src="../common/displaycontrols/observation/services/formHierarchyBuildService.js"></script>
         <script src="../common/displaycontrols/observation/directives/bahmniObservation.js"></script>
@@ -291,6 +299,9 @@
         <script src="../common/domain/services/observationsService.js"></script>
         <script src="../common/domain/services/encounterService.js"></script>
         <script src="../common/concept-set/services/conceptSetServices.js"></script>
+        <script src="common/auditLogEventDetails.js"></script>
+        <script src="../common/logging/services/auditLogService.js"></script>
+
 
         <!-- endbuild -->
         <!-- @endif -->

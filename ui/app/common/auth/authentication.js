@@ -255,19 +255,20 @@ angular.module('authentication')
         return {
             authenticateUser: authenticateUser
         };
-    }]).directive('logOut', ['sessionService', 'offlineService', '$window', function (sessionService, offlineService, $window) {
+    }]).directive('logOut', ['sessionService', 'offlineService', '$window', 'configurationService', 'auditLogService', function (sessionService, offlineService, $window, configurationService, auditLogService) {
         return {
             link: function (scope, element) {
                 element.bind('click', function () {
                     scope.$apply(function () {
-                        sessionService.destroy().then(
-                            function () {
-                                if (offlineService.isOfflineApp()) {
-                                    $window.location.reload();
-                                }
-                                $window.location = "../home/index.html#/login";
-                            }
-                        );
+                        auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'REGISTRATION_LABEL_LOGOUT').then(function () {
+                            sessionService.destroy().then(
+                                function () {
+                                    if (offlineService.isOfflineApp()) {
+                                        $window.location.reload();
+                                    }
+                                    $window.location = "../home/index.html#/login";
+                                });
+                        });
                     });
                 });
             }

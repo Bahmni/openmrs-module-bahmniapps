@@ -80,6 +80,7 @@
         <script src="../common/util/init.js"></script>
         <script src="../common/models/init.js"></script>
         <script src="../common/models/age.js"></script>
+        <script src="../common/models/auditLogEventDetails.js"></script>
         <script src="../common/offline/init.js"></script>
         <script src="../common/offline/offlineService.js"></script>
         <script src="../common/offline/services/dbNameService.js"></script>
@@ -254,6 +255,7 @@
         <script src="../common/concept-set/directives/conceptSetGroup.js"></script>
         <script src="../common/concept-set/controller/multiSelectObservationSearchController.js"></script>
         <script src="../common/concept-set/directives/conceptSet.js"></script>
+        <script src="../common/concept-set/directives/formControls.js"></script>
         <script src="../common/concept-set/directives/concept.js"></script>
         <script src="../common/concept-set/directives/buttonSelect.js"></script>
         <script src="../common/concept-set/directives/stepper.js"></script>
@@ -269,6 +271,7 @@
         <script src="../common/concept-set/models/observationNode.js"></script>
         <script src="../common/concept-set/models/tabularObservations.js"></script>
         <script src="../common/concept-set/models/customRepresentationBuilder.js"></script>
+        <script src="../common/concept-set/models/observationForm.js"></script>
         <script src="../common/concept-set/mappers/observationMapper.js"></script>
         <script src="../common/concept-set/services/conceptService.js"></script>
         <script src="../common/concept-set/services/conceptSetUiConfigService.js"></script>
@@ -419,7 +422,6 @@
         <script src="consultation/models/selectable.js"></script>
         <script src="consultation/models/Specimen.js"></script>
         <script src="consultation/models/drugOrderOptions.js"></script>
-        <script src="consultation/models/observationForm.js"></script>
         <script src="consultation/helpers/urlHelper.js"></script>
         <script src="consultation/helpers/drugOrderHistoryHelper.js"></script>
         <script src="consultation/helpers/reactHelper.js"></script>
@@ -443,8 +445,6 @@
         <script src="consultation/directives/newDrugOrders.js"></script>
         <script src="consultation/directives/newOrderGroup.js"></script>
         <script src="consultation/directives/investigationsSelector.js"></script>
-        <script src="consultation/directives/observationForm.js"></script>
-        <script src="consultation/directives/formControls.js"></script>
         <script src="consultation/controllers/clinicalController.js"></script>
         <script src="consultation/controllers/consultationSummaryController.js"></script>
         <script src="consultation/controllers/diagnosisController.js"></script>
@@ -555,7 +555,7 @@
 
         <!-- @ifdef ONLINE -->
         <!-- build:js clinical.min.web.js -->
-        <script src="consultation/services/observationFormService.js"></script>
+        <script src="../common/services/formService.js"></script>
         <script src="../common/domain/services/visitService.js"></script>
         <script src="../common/domain/services/diagnosisService.js"></script>
         <script src="../common/domain/services/conditionsService.js"></script>
@@ -602,7 +602,7 @@
         <!-- @ifdef CHROME -->
         <!-- build:js clinical.min.chrome.js -->
         <!-- comments:toggle html -->
-        <!--<script src="consultation/offline/offlineObservationFormService.js"></script>-->
+        <!--<script src="consultation/offline/offlineFormService.js"></script>-->
         <!--<script src="../common/domain/offline/chrome/chromeVisitService.js"></script>-->
         <!--<script src="../common/domain/offline/chrome/chromeEncounterService.js"></script>-->
         <!--<script src="../common/patient/offline/chrome/chromePatientService.js"></script>-->
@@ -631,7 +631,7 @@
         <!-- @ifdef ANDROID -->
         <!-- build:js clinical.min.android.js -->
         <!-- comments:toggle html -->
-        <!--<script src="consultation/offline/offlineObservationFormService.js"></script>-->
+        <!--<script src="consultation/offline/offlineFormService.js"></script>-->
         <!--<script src="../common/domain/offline/android/androidVisitService.js"></script>-->
         <!--<script src="../common/domain/offline/android/androidEncounterService.js"></script>-->
         <!--<script src="../common/patient/offline/android/androidPatientService.js"></script>-->

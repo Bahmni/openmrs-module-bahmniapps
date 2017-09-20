@@ -12,6 +12,7 @@ describe("ObservationForm", function () {
         it("should have isOpen set to false if there are no obs recorded", function () {
             var observationForm = new ObservationForm('uuid', dummyUser, 'formName', '1', []);
             expect(observationForm.isOpen).toBe(false);
+            expect(observationForm.options).toEqual({});
         });
 
         it("should have isOpen set to true if there are obs recorded", function () {
@@ -53,6 +54,17 @@ describe("ObservationForm", function () {
 
             observationForm.maximizeInnerSections(event);
             expect(observationForm.collapseInnerSections.value).toBe(false);
+        });
+
+        it("should have set options if extensions are passed", function () {
+            var extension = {
+                extensionParams: {
+                    conceptNames: ["Pulse"]
+                }
+            };
+            var observationForm = new ObservationForm('uuid', dummyUser, 'formName', '1', [], extension);
+            expect(observationForm.isOpen).toBe(false);
+            expect(observationForm.options).toEqual(extension.extensionParams);
         });
     });
 

@@ -4,7 +4,7 @@
             <form class="change-location fl" ng-class="{'change-location-offline': isOfflineApp}">
                 <select  ng-model="selectedLocationUuid" ng-change="onLocationChange()">
                     <option ng-repeat="location in locations | orderBy:'display'" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
-                        {{location.display}}
+                        {{location.display | translate}}
                     </option>
                 </select>
             </form>
@@ -39,7 +39,7 @@
                 <li ng-show=currentUser.currentLocation>
                     <a class="disabled">
                         <i class="fa fa-map-marker fa-white small"></i>
-                        <span ng-bind="currentUser.currentLocation"></span>
+                        <span ng-bind="currentUser.currentLocation | translate"></span>
                     </a>
                 </li>
                 <li>

@@ -1,6 +1,6 @@
 'use strict';
 
-describe('observationFormService', function () {
+describe('formService', function () {
 
     var http;
     beforeEach(module('bahmni.clinical'));
@@ -11,15 +11,15 @@ describe('observationFormService', function () {
         $provide.value('$http', http);
     }));
 
-    beforeEach(inject(['observationFormService', function (observationFormService) {
-        this.observationFormService = observationFormService;
+    beforeEach(inject(['formService', function (formService) {
+        this.formService = formService;
     }]));
 
     it('should call http service to return the form list', function () {
         var response = { data: { results: [{ name: 'form1' }] } };
         http.get.and.returnValue(response);
 
-        var httpPromise = this.observationFormService.getFormList("encounterUuid");
+        var httpPromise = this.formService.getFormList("encounterUuid");
 
         expect(httpPromise).toEqual(response);
         expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/bahmniie/form/latestPublishedForms", {
@@ -31,7 +31,7 @@ describe('observationFormService', function () {
         var response = { data: { resources: [{ value: 'form1' }] } };
         http.get.and.returnValue(response);
 
-        var httpPromise = this.observationFormService.getAllForms();
+        var httpPromise = this.formService.getAllForms();
 
         expect(httpPromise).toEqual(response);
         expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/bahmniie/form/allForms", { params : { v : 'custom:(version,name,uuid)' } });
@@ -42,7 +42,7 @@ describe('observationFormService', function () {
         var response = { data: { resources: [{ value: 'form1' }] } };
         http.get.and.returnValue(response);
 
-        var httpPromise = this.observationFormService.getFormDetail('someFormUuid', { v: "custom:(uuid,name)" });
+        var httpPromise = this.formService.getFormDetail('someFormUuid', { v: "custom:(uuid,name)" });
 
         expect(httpPromise).toEqual(response);
         expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/form/someFormUuid", {

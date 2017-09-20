@@ -17,8 +17,9 @@ describe("Diagnosis Controller", function () {
         rootScope.currentUser = {privileges: [{name: "app:clinical:deleteDiagnosis"}, {name: "app:clinical"}]};
 
         spyOn(DateUtil, 'today');
-        mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig']);
+        mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig','getConfigValue']);
         mockAppDescriptor.getConfig.and.returnValue({value: true});
+        mockAppDescriptor.getConfigValue.and.returnValue(true);
 
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue(mockAppDescriptor);
@@ -75,6 +76,11 @@ describe("Diagnosis Controller", function () {
             $scope.$apply();
             expect($scope.isStatusConfigured).toBeTruthy();
             expect($scope.diagnosisMetaData).toBe(diagnosisMetaData.data.results[0]);
+        });
+
+        it("should set conditions to be hidden on UI when configured", function () {
+            expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("hideConditions");
+            expect($scope.hideConditions).toBeTruthy();
         });
     });
 

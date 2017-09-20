@@ -94,20 +94,40 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(['$rootScope', '$templateCache', 'offlineService', 'schedulerService', '$bahmniCookieStore', 'locationService', 'messagingService', function ($rootScope, $templateCache, offlineService, schedulerService, $bahmniCookieStore, locationService, messagingService) {
-        // Disable caching view template partials
+    }]).run(['$rootScope', '$templateCache', 'offlineService', 'schedulerService', '$bahmniCookieStore',
+        'locationService', 'messagingService', 'auditLogService',
+        function ($rootScope, $templateCache, offlineService, schedulerService, $bahmniCookieStore, locationService,
+              messagingService, auditLogService) {
+            var getStates = function (toState, fromState) {
+                var states = [];
+                if (fromState === "newpatient" && (toState === "patient.edit" || toState === "patient.visit")) {
+                    states.push("newpatient.save");
+                }
+                states.push(toState);
+                return states;
+            };
 
-        var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
-        locationService.getVisitLocation(loginLocationUuid).then(function (response) {
-            if (response.data) {
-                $rootScope.visitLocation = response.data.uuid;
+            var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
+            locationService.getVisitLocation(loginLocationUuid).then(function (response) {
+                if (response.data) {
+                    $rootScope.visitLocation = response.data.uuid;
+                }
+            });
+            if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
+                schedulerService.sync();
             }
-        });
-        if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
-            schedulerService.sync();
-        }
 
-        $rootScope.$on('$stateChangeStart', function () {
-            messagingService.hideMessages("error");
-        });
-    }]);
+            $rootScope.$on('$stateChangeStart', function () {
+                messagingService.hideMessages("error");
+            });
+
+            $rootScope.createAuditLog = function (event, toState, toParams, fromState) {
+                var states = getStates(toState.name, fromState.name);
+                states.forEach(function (state) {
+                    auditLogService.log(toParams.patientUuid, Bahmni.Registration.StateNameEvenTypeMap[state], undefined, "MODULE_LABEL_REGISTRATION_KEY");
+                });
+            };
+
+            $rootScope.$on('$stateChangeSuccess', $rootScope.createAuditLog);
+        }
+    ]);

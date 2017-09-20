@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observations) {
+Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observations, extension) {
     var self = this;
 
     var init = function () {
@@ -20,6 +20,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
         });
         self.isOpen = self.observations.length > 0;
         self.id = "concept-set-" + formUuid;
+        self.options = extension ? (extension.extensionParams || {}) : {};
     };
 
     self.toggleDisplay = function () {

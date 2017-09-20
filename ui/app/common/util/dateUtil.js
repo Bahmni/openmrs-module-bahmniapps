@@ -274,5 +274,8 @@ Bahmni.Common.Util.DateUtil = {
     },
     getISOString: function (date) {
         return date ? moment(date).toDate().toISOString() : null;
+    },
+    isBeforeTime: function (time, otherTime) {
+        return moment(time, 'hh:mm a').format('YYYY-MM-DD');
     }
 };
