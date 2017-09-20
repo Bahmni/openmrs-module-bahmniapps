@@ -15,8 +15,7 @@ describe("AppointmentsCreateController", function () {
     });
 
     beforeEach(function () {
-        appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['save', 'getServiceLoad']);
-        appointmentsServiceService.save.and.returnValue(specUtil.simplePromise({}));
+        appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['getServiceLoad', 'getService']);
         appointmentsServiceService.getServiceLoad.and.returnValue(specUtil.simplePromise({}));
         appointmentsService = jasmine.createSpyObj('appointmentsService', ['save']);
         appointmentsService.save.and.returnValue(specUtil.simplePromise({}));
@@ -65,6 +64,28 @@ describe("AppointmentsCreateController", function () {
         appointmentContext = {appointment: {comments: 'Some notes'}};
         createController();
         expect($scope.appointment.comments).toBe(appointmentContext.appointment.comments);
+    });
+
+    it('should set service details on serviceChange', function () {
+        createController();
+        $scope.appointment.service = {uuid: 'serviceUuid'};
+        var service = {name: 'Knee', description: 'treatment', uuid: 'serviceUuid', location: {}, durationMins: 45, serviceTypes: [{name: 'type1', duration: 15}]};
+        appointmentsServiceService.getService.and.returnValue(specUtil.simplePromise({data: service}));
+        $scope.onServiceChange();
+        expect(appointmentsServiceService.getService).toHaveBeenCalledWith($scope.appointment.service.uuid);
+        expect($scope.selectedService).toBe(service);
+        expect(appointmentCreateConfig.serviceTypes).toBe(service.serviceTypes);
+        expect($scope.minDuration).toEqual(service.durationMins);
+    });
+
+    it('should set default duration if service duration does not exist on serviceChange', function () {
+        createController();
+        $scope.appointment.service = {uuid: 'serviceUuid'};
+        var service = {name: 'Knee', description: 'treatment', uuid: 'serviceUuid', location: {}};
+        appointmentsServiceService.getService.and.returnValue(specUtil.simplePromise({data: service}));
+        $scope.onServiceChange();
+        expect(appointmentsServiceService.getService).toHaveBeenCalledWith($scope.appointment.service.uuid);
+        expect($scope.minDuration).toEqual(Bahmni.Appointments.Constants.minDurationForAppointment);
     });
 
     describe('confirmationDialogOnStateChange', function () {
@@ -291,9 +312,9 @@ describe("AppointmentsCreateController", function () {
             $scope.appointment.date = moment('2017-08-07').toDate();
             $scope.checkAvailability();
             expect($scope.warning.appointmentDate).toBeFalsy();
-            expect($scope.weeklyAvailabilityOnSelecedDate.length).toEqual(1);
-            expect($scope.weeklyAvailabilityOnSelecedDate[0].startTime).toEqual('09:00:00');
-            expect($scope.weeklyAvailabilityOnSelecedDate[0].endTime).toEqual('12:00:00');
+            expect($scope.weeklyAvailabilityOnSelectedDate.length).toEqual(1);
+            expect($scope.weeklyAvailabilityOnSelectedDate[0].startTime).toEqual('09:00:00');
+            expect($scope.weeklyAvailabilityOnSelectedDate[0].endTime).toEqual('12:00:00');
         });
 
         it('should calculate warning messages for start time and end time when appointment date is changed', function () {
@@ -335,7 +356,7 @@ describe("AppointmentsCreateController", function () {
             expect($scope.allowedEndTime).toEqual('11:00 am');
         });
 
-        it('should reset availibility warnings when a service is selected', function () {
+        it('should reset availability warnings when a service is selected', function () {
             createController();
             $scope.warning.appointmentDate = true;
             $scope.warning.startTime = true;
@@ -346,7 +367,7 @@ describe("AppointmentsCreateController", function () {
             expect($scope.warning.endTime).toBeFalsy();
         });
 
-        it('should reset availibilty warnings when a service type is selected', function () {
+        it('should reset availability warnings when a service type is selected', function () {
             createController();
             $scope.warning.appointmentDate = true;
             $scope.warning.startTime = true;
@@ -659,20 +680,13 @@ describe("AppointmentsCreateController", function () {
         });
     });
 
-    it('should assign default duration of service when service type is unselected', function () {
+    it('should retain previous minDuration when service type is unselected', function () {
         createController();
         $scope.minDuration = 15;
         var serviceDuration = 20;
         $scope.appointment = {service: {name: 'Cardiology', durationMins: serviceDuration}};
         $scope.onServiceTypeChange();
-        expect($scope.minDuration).toEqual(serviceDuration);
+        expect($scope.minDuration).toEqual(15);
     });
 
-    it('should assign default duration when service type is unselected and there is no service duration', function () {
-        createController();
-        $scope.minDuration = 15;
-        $scope.appointment = {service: {name: 'Cardiology'}};
-        $scope.onServiceTypeChange();
-        expect($scope.minDuration).toEqual(Bahmni.Appointments.Constants.minDurationForAppointment);
-    });
 });
