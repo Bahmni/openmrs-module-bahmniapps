@@ -10,7 +10,7 @@ steps:
 
   - name: ':hammer: Build'
     command: '/.buildkite/build.sh'
-    branches: 'develop staging master ci-configuration'
+    branches: 'develop staging master deploy-to-ec2'
     agents:
       node: 'true'
       frontend: 'true'
@@ -19,7 +19,7 @@ steps:
 
   - name: ':rocket: Deploy'
     command: '/.buildkite/deploy.sh'
-    branches: 'develop staging master ci-configuration'
+    branches: 'develop staging master deploy-to-ec2'
     agents:
       node: 'true'
       frontend: 'true'

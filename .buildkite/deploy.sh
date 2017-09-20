@@ -8,4 +8,4 @@ cd ui/
 echo "--- Install Dependencies" | tee -a bk-pipeline.log
 npm install | tee -a bk-pipeline.log
 echo "--- Deploy to $BUILDKITE_BRANCH" | tee -a bk-pipeline.log
-gulp deploy | tee -a bk-pipeline.log
+gulp scp-ec2 | tee -a bk-pipeline.log
