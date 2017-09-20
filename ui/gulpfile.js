@@ -117,5 +117,5 @@ gulp.task("deploy-s3", function(done) {
 });
 
 gulp.task('scp-ec2', shell.task([
-	'scp -i ' + AWS_PEM_KEY + ' -r ./dist/ ' + AWS_USER + '@' + AWS_IP + ':' + AWS_DESTINATION_PATH
+	'sudo scp -i ' + AWS_PEM_KEY + ' -r ./dist/* ' + AWS_USER + '@' + AWS_IP + ':' + AWS_DESTINATION_PATH
 ]));
