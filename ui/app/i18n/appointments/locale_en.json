@@ -123,6 +123,7 @@
   "BACK_LABEL": "Back",
   "PATIENT_LIST_VIEW_SEARCH_HEADER": "Search",
   "NO_APPOINTMENT_LIST_VIEW": "No appointments found for the patient",
+  "NO_APPOINTMENT_CALENDAR_VIEW": "No appointments booked for this date",
   "SEARCH_KEY": "Search ...",
   "APPOINTMENT_ENTER_PROVIDER_NAME_KEY": "Enter provider name",
   "NO_SPECIALITY_KEY": "No Speciality",
