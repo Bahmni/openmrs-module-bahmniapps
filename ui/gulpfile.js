@@ -6,10 +6,16 @@ var gutil = require("gulp-util");
 var async = require("async");
 var s3_dir = require("s3");
 var fs = require("fs");
+var shell = require('gulp-shell');
+
 var environment = process.env.ENVIRONMENT || "dev";
 var appName = process.env.appName;
 var AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || "";
 var AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || "";
+var AWS_PEM_KEY = process.env.AWS_PEM_KEY || "";
+var AWS_USER = process.env.AWS_USER || "";
+var AWS_IP = process.env.AWS_IP || "";
+var AWS_DESTINATION_PATH = process.env.AWS_DESTINATION_PATH || "";
 
 if (environment == "production") {
   appName = process.env.appName_prod;
@@ -23,7 +29,7 @@ AWS.config.update({
   region: "us-east-1"
 });
 
-gulp.task("deploy", function(done) {
+gulp.task("deploy-s3", function(done) {
   var s3 = new AWS.S3();
   var bucketName = appName + "-" + environment;
   var client = s3_dir.createClient({
@@ -109,3 +115,7 @@ gulp.task("deploy", function(done) {
     }
   );
 });
+
+gulp.task('scp-ec2', shell.task([
+	'scp -i ' + AWS_PEM_KEY + ' -r ./dist/ ' + AWS_USER + '@' + AWS_IP + ':' + AWS_DESTINATION_PATH
+]));
