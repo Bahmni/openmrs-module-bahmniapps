@@ -132,5 +132,6 @@
   "YES_KEY": "Yes",
   "NO_KEY": "No",
   "UNDO_CHECK_IN_APPOINTMENT": "Undo Check-in",
-  "APPOINTMENT_UNDO_CHECKIN_CONFIRM_MESSAGE": "Are you sure, you want to undo Check-in?"
+  "APPOINTMENT_UNDO_CHECKIN_CONFIRM_MESSAGE": "Are you sure, you want to undo Check-in?",
+  "APPOINTMENT_ADDITIONAL_INFO": "Additional Info"
 }

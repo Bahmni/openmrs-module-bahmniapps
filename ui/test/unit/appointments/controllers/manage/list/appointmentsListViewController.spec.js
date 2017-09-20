@@ -458,61 +458,61 @@ describe('AppointmentsListViewController', function () {
             var appointments = [appointment1, appointment2];
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
             createController();
-            scope.sortSurgicalAppointmentsBy('patient.name');
+            scope.sortAppointmentsBy('patient.name');
             expect(scope.sortColumn).toEqual('patient.name');
             expect(scope.appointments.length).toEqual(2);
             expect(scope.appointments[0].patient.name).toEqual("patient2");
             expect(scope.appointments[1].patient.name).toEqual("patient1");
 
-            scope.sortSurgicalAppointmentsBy('comments');
+            scope.sortAppointmentsBy('comments');
             expect(scope.sortColumn).toEqual('comments');
             expect(scope.appointments.length).toEqual(2);
             expect(scope.appointments[0].comments).toEqual("comments1");
             expect(scope.appointments[1].comments).toEqual("comments2");
 
-            scope.sortSurgicalAppointmentsBy('status');
+            scope.sortAppointmentsBy('status');
             expect(scope.sortColumn).toEqual('status');
             expect(scope.appointments.length).toEqual(2);
             expect(scope.appointments[0].status).toEqual("Completed");
             expect(scope.appointments[1].status).toEqual("Scheduled");
 
-            scope.sortSurgicalAppointmentsBy('patient.identifier');
+            scope.sortAppointmentsBy('patient.identifier');
             expect(scope.sortColumn).toEqual('patient.identifier');
             expect(scope.appointments.length).toEqual(2);
             expect(scope.appointments[0].patient.identifier).toEqual("IQ00001");
             expect(scope.appointments[1].patient.identifier).toEqual("IQ00002");
 
-            scope.sortSurgicalAppointmentsBy('provider.name');
+            scope.sortAppointmentsBy('provider.name');
             expect(scope.sortColumn).toEqual('provider.name');
             expect(scope.appointments.length).toEqual(2);
             expect(scope.appointments[0].provider.name).toEqual("provider1");
             expect(scope.appointments[1].provider.name).toEqual("provider2");
 
-            scope.sortSurgicalAppointmentsBy('service.location.name');
+            scope.sortAppointmentsBy('service.location.name');
             expect(scope.sortColumn).toEqual('service.location.name');
             expect(scope.appointments.length).toEqual(2);
             expect(scope.appointments[0].service.location.name).toEqual("location1");
             expect(scope.appointments[1].service.location.name).toEqual("location2");
 
-            scope.sortSurgicalAppointmentsBy('service.serviceType.name');
+            scope.sortAppointmentsBy('service.serviceType.name');
             expect(scope.sortColumn).toEqual('service.serviceType.name');
             expect(scope.appointments.length).toEqual(2);
             expect(scope.appointments[0].service.serviceType.name).toEqual("type1");
             expect(scope.appointments[1].service.serviceType.name).toEqual("type2");
 
-            scope.sortSurgicalAppointmentsBy('service.name');
+            scope.sortAppointmentsBy('service.name');
             expect(scope.sortColumn).toEqual('service.name');
             expect(scope.appointments.length).toEqual(2);
             expect(scope.appointments[0].service.name).toEqual("service1");
             expect(scope.appointments[1].service.name).toEqual("service2");
 
-            scope.sortSurgicalAppointmentsBy('endDateTime');
+            scope.sortAppointmentsBy('endDateTime');
             expect(scope.sortColumn).toEqual('endDateTime');
             expect(scope.appointments.length).toEqual(2);
             expect(scope.appointments[0].endDateTime).toEqual(100000);
             expect(scope.appointments[1].endDateTime).toEqual(200000);
 
-            scope.sortSurgicalAppointmentsBy('startDateTime');
+            scope.sortAppointmentsBy('startDateTime');
             expect(scope.sortColumn).toEqual('startDateTime');
             expect(scope.appointments.length).toEqual(2);
             expect(scope.appointments[0].startDateTime).toEqual(200000);
@@ -560,7 +560,7 @@ describe('AppointmentsListViewController', function () {
             var appointments = [appointment1, appointment2];
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
             createController();
-            scope.sortSurgicalAppointmentsBy('patient.name');
+            scope.sortAppointmentsBy('patient.name');
             expect(scope.reverseSort).toEqual(true);
             expect(scope.sortColumn).toEqual('patient.name');
             expect(scope.appointments.length).toEqual(2);
@@ -640,7 +640,7 @@ describe('AppointmentsListViewController', function () {
                 scope.$digest();
                 expect(_appointmentsFilter.calls.mostRecent().args[0]).toEqual(scope.appointments);
                 expect(_appointmentsFilter.calls.mostRecent().args[1]).toEqual(stateparams.filterParams);
-                scope.sortSurgicalAppointmentsBy('patient.identifier');
+                scope.sortAppointmentsBy('patient.identifier');
                 expect(scope.reverseSort).toEqual(false);
                 expect(scope.sortColumn).toEqual('patient.identifier');
                 expect(scope.appointments.length).toEqual(2);
@@ -877,4 +877,12 @@ describe('AppointmentsListViewController', function () {
         scope.selectedAppointment = appointment;
         scope.undoCheckIn();
     });
+
+    it('should get display of a json object', function () {
+        createController();
+        var jsonObject = {"array": [1, 2, 3], "boolean": true, "null": null, "number": 123, "object": {"a": "b", "c": "d", "e": "f"}, "string": "Hello World"};
+        var display = scope.display(jsonObject);
+        var jsonString = 'array:[1,\t2,\t3],\tboolean:true,\tnull:null,\tnumber:123,\tobject:a:b,\tc:d,\te:f,\tstring:Hello World';
+        expect(display).toEqual(jsonString);
+    })
 });

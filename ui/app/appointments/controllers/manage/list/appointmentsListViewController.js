@@ -24,6 +24,7 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                 {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
                 {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'service.location.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             var init = function () {
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
@@ -101,7 +102,7 @@ angular.module('bahmni.appointments')
                 }
             }, true);
 
-            $scope.sortSurgicalAppointmentsBy = function (sortColumn) {
+            $scope.sortAppointmentsBy = function (sortColumn) {
                 var emptyObjects = _.filter($scope.filteredAppointments, function (appointment) {
                     return !_.property(sortColumn)(appointment);
                 });
@@ -154,6 +155,9 @@ angular.module('bahmni.appointments')
                 showPopUp(scope);
             };
 
+            $scope.display = function (jsonObj) {
+                return JSON.stringify(jsonObj || '').replace(/[{\"}]/g, "").replace(/[,]/g, ",\t");
+            };
             var showPopUp = function (popUpScope) {
                 popUpScope.no = function (closeConfirmBox) {
                     closeConfirmBox();

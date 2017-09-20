@@ -243,8 +243,7 @@ angular.module('bahmni.appointments')
                 return appointmentsServiceService.getService(service.uuid).then(
                     function (response) {
                         $scope.selectedService = response.data;
-                        var serviceTypes = $scope.selectedService.serviceTypes;
-                        appointmentCreateConfig.serviceTypes = serviceTypes;
+                        appointmentCreateConfig.serviceTypes = $scope.selectedService.serviceTypes;
                         $scope.appointment.location = _.find(appointmentCreateConfig.locations, {uuid: $scope.selectedService.location.uuid});
                         $scope.minDuration = response.data.durationMins || Bahmni.Appointments.Constants.minDurationForAppointment;
                         $scope.onSelectStartTime();
