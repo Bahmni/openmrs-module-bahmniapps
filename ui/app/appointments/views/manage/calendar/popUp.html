@@ -38,6 +38,11 @@
                 ng-click="confirmAction(scope.patientAppointmentMap[patient.uuid], 'Completed')">
             {{::'COMPLETE_APPOINTMENT' | translate}}
         </button>
+        <button style="background: #FF9800"
+                ng-disabled=""
+                ng-click="">
+            {{::'MISSED_APPOINTMENT' | translate}}
+        </button>
         <button style="background: #DD2C00"
                 ng-disabled="!patient || (scope.patientAppointmentMap[patient.uuid].status != 'Scheduled' && scope.patientAppointmentMap[patient.uuid].status != 'CheckedIn')"
                 ng-click="confirmAction(scope.patientAppointmentMap[patient.uuid], 'Cancelled')">
