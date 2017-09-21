@@ -50,7 +50,7 @@ Bahmni.Appointments.AppointmentViewModel = (function () {
         };
 
         var getServiceTypeFromConfig = function (selectedServiceType, config) {
-            var serviceTypes = config.serviceTypes;
+            var serviceTypes = config.selectedService.serviceTypes;
             return _.find(serviceTypes, function (serviceType) {
                 return serviceType.uuid === selectedServiceType.uuid;
             });

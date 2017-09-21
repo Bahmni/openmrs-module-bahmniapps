@@ -74,7 +74,6 @@ describe("AppointmentsCreateController", function () {
         $scope.onServiceChange();
         expect(appointmentsServiceService.getService).toHaveBeenCalledWith($scope.appointment.service.uuid);
         expect($scope.selectedService).toBe(service);
-        expect(appointmentCreateConfig.serviceTypes).toBe(service.serviceTypes);
         expect($scope.minDuration).toEqual(service.durationMins);
     });
 
