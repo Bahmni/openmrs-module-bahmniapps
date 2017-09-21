@@ -105,6 +105,7 @@
   "APPOINTMENT_COMMENTS": "Comments",
   "CHECK_IN_APPOINTMENT": "Check-in",
   "COMPLETE_APPOINTMENT": "Complete",
+  "MISSED_APPOINTMENT": "Missed",
   "EDIT_APPOINTMENT": "Edit",
   "CANCEL_APPOINTMENT": "Cancel",
   "CURRENT_DATE": "Today",
