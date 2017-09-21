@@ -95,7 +95,7 @@
                     <label for="date">
                         {{'APPOINTMENT_DATE' | translate}}<sup class="asterick">*</sup>
                     </label>
-                    <input  id="date" type="date" ng-min="isEditMode() && !isEditAllowed()" min="{{today}}" required
+                    <input  id="date" type="date" min="{{today}}" required
                             ng-model="appointment.date"
                             ng-change="appointment.service && checkAvailability()"
                             placeholder="Pick appointment date"
