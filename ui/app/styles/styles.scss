@@ -1,0 +1,239 @@
+// Log in (login.html)
+.logo {
+    max-width: 120px;
+    padding: 25px
+}
+
+.login .login-body {
+    border: 1px solid #CCCCCC;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.login {
+    height: 600px;
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    font-size: 0.865em;
+    max-width: 380px;
+    form {
+        box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.15);
+        border-radius: 10px;
+    }
+    header {
+        border-radius: 10px 10px 0 0;
+        box-sizing: border-box;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 52px;
+        padding: 0px 20px;
+        .left {
+            max-width: 150px;
+            overflow: hidden;
+        }
+        .locale-wrapper {
+            font-size: 14px;
+            max-width: 300px;
+            overflow: hidden;
+            .locale-text {
+                padding-right: 10px;
+                max-width: 130px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                float: left;
+            }
+            select {
+                background-color: #FFF;
+                border: 1px solid #F2B726;
+                color: #F2B726;
+                height: 25px;
+                padding: 0px 10px;
+                margin: 0;
+            }
+        }
+        a.back-btn {
+            line-height: initial !important;
+        }
+    }
+    .login-body {
+        border: 1px solid #CCCCCC;
+        padding-bottom: 10px;
+        border-radius: 10px;
+        padding-top: 10px;
+        text-align: center;
+        background: white;
+        p.caution {
+            padding: 0px;
+        }
+        .note-container {
+            width: 95.1%;
+            margin: auto;
+            .note {
+                min-width: 10px;
+                display: block;
+                text-align: center;
+                &.error {
+                    color: #ff0000;
+                }
+            }
+        }
+        .form-field {
+            display: block;
+            margin: 7px 13px 7px 17px;
+            .field-attribute {
+                label {
+                    text-align: left;
+                    padding: 7px 4px 7px 10px;
+                    margin: 0;
+                }
+            }
+            .field-value {
+                clear: both;
+                float: none;
+                width: 100%;
+                input[type="text"],
+                input[type="password"] {
+                    width: 95%;
+                    display: block;
+                    margin: 0px;
+                    min-width: 10%;
+                    padding: 7px 4px 7px 10px;
+                    -webkit-border-radius: 4px;
+                    -moz-border-radius: 4px;
+                    border-radius: 4px;
+                }
+                select {
+                    width: 99%;
+                }
+            }
+        }
+        .form-footer {
+            margin: 10px 13px 10px 17px;
+            button.confirm {
+                margin: 2px auto;
+                max-width: 100%;
+                width: 99%;
+                padding: 10px;
+                font-size: 16px;
+            }
+        }
+    }
+    @media screen and (min-width: 1025px) {
+        width: 500px;
+        .login-body {
+            padding-top: 10px;
+            .note-container .note {
+                margin: 0px auto;
+            }
+            .form-field {
+                padding: 0;
+                .field-attribute {
+                    label {
+                        text-align: right;
+                        margin: 0;
+                        width: 100%;
+                    }
+                }
+                .field-value {
+                    clear: both;
+                    float: none;
+                    width: 100%;
+                    input[type="text"],
+                    input[type="password"] {
+                        width: 96%;
+                        display: block;
+                        margin: 0px;
+                        min-width: 10%;
+                        padding: 7px 0px 7px 10px;
+                        -webkit-border-radius: 4px;
+                        -moz-border-radius: 4px;
+                        border-radius: 4px;
+                    }
+                    select {
+                        width: 100%;
+                    }
+                }
+            }
+            .form-footer {
+                padding-left: 0;
+                button.confirm {
+                    margin: 2px auto;
+                    max-width: 100%;
+                    width: 99%;
+                    padding: 10px;
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+}
+
+.warning-message {
+    text-align: center;
+    margin-top: 20px;
+    color: #ffac2e;
+    span {
+        font-weight: bolder;
+        font-size: 10px;
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+    p {
+        padding: 0 25px;
+    }
+}
+
+.emr-login-text {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    color: #585858;
+    position: absolute;
+    top: -33px;
+    left: 0;
+    width: 100%;
+    color: #585858;
+}
+
+.power-by {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+    background: #fafafa;
+    padding-bottom: 5px;
+    font-size: 12px;
+    color: #898989;
+    img {
+        width: 72px;
+        vertical-align: middle;
+        margin: 0 2px;
+    }
+    a {
+        color: #000;
+    }
+}
+
+.clint-logo-wrapper {
+    display: block;
+    text-align: center;
+    padding-top: 10px;
+    img {
+        max-width: 200px;
+        vertical-align: middle;
+        max-height: 120px;
+    }
+    span {
+        vertical-align: middle;
+        color: #888;
+        font-size: 20px;
+    }
+}

@@ -1,4 +1,3 @@
-
 /*doc
 ---
 title: Colors
@@ -160,8 +159,6 @@ Color patterns used in the whole Bahmni application are listed below... For usin
 */
 
 
-
-
 /*doc
 ---
 title: Fonts
@@ -182,153 +179,145 @@ Below listed fonts are used in the whole Bahmni application.
 */
 
 
-
-
-
 /* settings */
+
 $max-page-width: 1300px;
 
 /*  _colors - bahmniTheme:  */
+
 $bahmniPrimaryColor: #00463f;
 $bahmniSecondaryColor: #669999;
 $bahmniTertiaryColor: #457FAC;
-
 $bahmniLinkColor: #2b95ff;
-
 $bahmniPrimaryBtnColor: #a1d030;
 $bahmniPrimaryBtnColorHover: #88af28;
-
 $bahmniSectionHeaderColor: #66b298;
 
-
 /*  _components - bahmniTheme: */
+
 $clinicalNotesColor: #EFF8FF;
 $clinicalCurrentVist: #E8A000;
 $clinicalInfoMessageBg: #e8edf3;
 $clinicalRemoveBtn: #660000;
 $clinicalHighlight: #cceffc;
-
-
 $clinicalFormInvalid: #ffcdcd;
 $clinicalFormFocus: #007fff;
 $clinicalFormFocusBg: #fffdf7;
 $clinicalFormWarning: #FFFAD8;
-
 // New Observation Template Color
-
 $observationTitleHover:#b7e5e5;
 
-
 /*  _different shades of grey/gray:  */
-$darkGray:     #333;
-$mediumGray:   #666;       /* any text will not be lighter than this */
-$lightGray:    #ccc;     /* any border will not be lighter than this */
-$lighterGray:  #ddd; 
-$lightestGray: #eee; /* any background will not be lighter than this */
+
+$darkGray : #333;
+$mediumGray : #666;
+
+/* any text will not be lighter than this */
+
+$lightGray : #ccc;
+
+/* any border will not be lighter than this */
+
+$lighterGray : #ddd;
+$lightestGray: #eee;
+
+/* any background will not be lighter than this */
 
 $primarySectionGridBorder: #bbb;
 $bahmniTableHeaderBg: #f1f1f1;
-
 $bahmniPageBg: #fafafa;
-
 //fonts
-
 $iconFont: "FontAwesome";
 $fontPath: "../styles/fonts";
 $customFontPath: "../styles/fonts/bahmni-custom-fonts";
-
 //colors
 $alertBackground: #FFFDF0;
 $bodyBackground: #EEE;
-
 $white: #FFFFFF;
 $black: #000000;
 $darkerGrey: #BBB;
 $lighterGrey: #f3f3f3;
-
 //openMrs colors
 $highlight: darken(#009384, 15%);
 $text: darken(#5B57A6, 20%);
 $subtleText: darken($darkerGrey, 25%);
 $subtlerText: $darkerGrey;
-
 $link: #007FFF;
 $focus: #FFFDF7;
-
-$success: #A1D030;
+$success: #F2B726;
 $alert: #FFA000;
 $error: #ff6666;
 $successBackground: #ddffdd;
 
 /*  _spacing padding - margin:  */
+
 $smallestSpacing: 5px;
 $defaultSpacing: 10px;
 $mediumSpacing: 15px;
 $largeSpacing: 20px;
 
-
 /* _fonts */
 
-$OpenSansBoldFont: OpenSansBold, Arial, sans-serif;
-$OpenSansFont: OpenSans, Arial, sans-serif;
-
+$OpenSansBoldFont: OpenSansBold,
+Arial,
+sans-serif;
+$OpenSansFont: OpenSans,
+Arial,
+sans-serif;
 $OpenSansSemiBoldFont: 'OpenSansSemiBold';
-
 $primaryFont: "OpenSans";
 $primaryBoldFont: "OpenSansBold";
 $primaryLightFont: "OpenSansLight";
 $primaryItalicFont: "OpenSansItalic";
 
-
 /* _mixins */
+
 @mixin font-size($sizeValue: 1) {
     font-size: ($sizeValue * 16) + px;
     font-size: $sizeValue + rem;
 }
 
 @mixin clearfix() {
-  *zoom:1;
-  &:before,
-  &:after {
-      content:"";
-      display:table;
-  }
-  &:after {
-      clear:both;
-  }
+    *zoom: 1;
+    &:before,
+    &:after {
+        content: "";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
 }
 
-@mixin box-shadow-for-section{
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+@mixin box-shadow-for-section {
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
 
 @mixin check-box {
-  -webkit-appearance: none;
-  background-color: #fafafa;
-  border: 1px solid #cacece;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
-  padding: 8px;
-  border-radius: 3px;
-  display: inline-block;
-  position: relative;
-
-  &:active, &:checked:active {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px 1px 3px rgba(0,0,0,0.1);
-  }
-   
-  &:checked {
-    background-color: white;
-    border: 1px solid #adb8c0;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
-    color: $text;
-  }
-  
-  &:checked:after {
-    content: '\2714';
-    font-size: 15px;
-    position: absolute;
-    top: -2px;
-    left: 2px;
-    color: $text;
-  }
+    -webkit-appearance: none;
+    background-color: #fafafa;
+    border: 1px solid #cacece;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 8px;
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+    &:active,
+    &:checked:active {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    &:checked {
+        background-color: white;
+        border: 1px solid #adb8c0;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
+        color: $text;
+    }
+    &:checked:after {
+        content: '\2714';
+        font-size: 15px;
+        position: absolute;
+        top: -2px;
+        left: 2px;
+        color: $text;
+    }
 }

@@ -1,17 +1,15 @@
 @charset "UTF-8";
 
 /*BAHMNI css files*/
-@import "vendor/normalize";
 
+@import "vendor/normalize";
 @import "bahmni-helper/variables";
 @import "bahmni-helper/base";
 @import "bahmni-helper/fonts";
 @import "bahmni-helper/font-awesome";
 @import "bahmni-helper/custom-fonts";
-
 @import "bahmni-layout/layout";
 @import "bahmni-layout/retroMode";
-
 @import "bahmni-components/grid";
 @import "bahmni-components/uiHelper";
 @import "bahmni-components/loader";
@@ -26,10 +24,9 @@
 @import "bahmni-components/patientControlPanel";
 @import "bahmni-components/tooltip";
 @import "bahmni-components/splitButton";
-
-
 @import "common/bahmniGlobal";
 @import "common/angularFix";
 @import "common/notifications";
 @import "home/home";
 @import "home/errorLogs";
+@import "styles";
