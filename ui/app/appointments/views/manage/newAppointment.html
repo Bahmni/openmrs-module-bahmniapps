@@ -62,9 +62,9 @@
                     <label for="serviceType">
                         {{'APPOINTMENT_SERVICE_TYPE' | translate}}
                     </label>
-                    <select ng-disabled="!(appointmentCreateConfig.serviceTypes.length > 0) || (isEditMode() && !isEditAllowed())" id="serviceType"
+                    <select ng-disabled="!(selectedService.serviceTypes.length > 0) || (isEditMode() && !isEditAllowed())" id="serviceType"
                             ng-model="appointment.serviceType" ng-change="onServiceTypeChange()"
-                            ng-options="serviceType.name + '   [' + serviceType.duration + ' min]'  for serviceType in appointmentCreateConfig.serviceTypes | orderBy:'name'">
+                            ng-options="serviceType.name + '   [' + serviceType.duration + ' min]'  for serviceType in selectedService.serviceTypes | orderBy:'name'">
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_TYPE' | translate}}
                         </option>
                     </select>

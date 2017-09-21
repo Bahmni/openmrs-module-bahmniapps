@@ -73,30 +73,21 @@ describe('AppointmentConfigInitialization', function () {
         });
     });
 
-    it('should not fetch serviceTypes if there is no appointment', function (done) {
-        appDescriptor.getConfigValue.and.returnValue(false);
-        appointmentConfig(appointmentContext).then(function (response) {
-            expect(specialityService.getAllSpecialities).not.toHaveBeenCalled();
-            expect(response.specialities).toBeUndefined();
-            done();
-        });
-    });
-
-    it('should fetch serviceTypes if there is service', function (done) {
+    it('should fetch selectedService if there is service', function (done) {
         appointmentContext.appointment = {service: {uuid: 'serviceUuid'}};
         appointmentConfig(appointmentContext).then(function (response) {
             expect(appointmentsServiceService.getService).toHaveBeenCalledWith('serviceUuid');
-            expect(response.serviceTypes).toEqual(appointmentServices[0].serviceTypes);
+            expect(response.selectedService).toEqual(appointmentServices[0]);
             done();
         });
     });
 
-    it('should not fetch serviceTypes if there is no service', function (done) {
+    it('should not fetch selectedService if there is no service', function (done) {
         appointmentContext.appointment = {startDateTime: new Date()};
         appDescriptor.getConfigValue.and.returnValue(false);
         appointmentConfig(appointmentContext).then(function (response) {
             expect(appointmentsServiceService.getService).not.toHaveBeenCalled();
-            expect(response.serviceTypes).toBeUndefined();
+            expect(response.selectedService).toBeUndefined();
             done();
         });
     });
