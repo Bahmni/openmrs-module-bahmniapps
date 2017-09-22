@@ -41,22 +41,22 @@
     </div>
     <div ui-view="content@appointment"></div>
     <fieldset class="appointment-action-btn-container" ng-disabled="!selectedAppointment" ng-class="{'disabled': !selectedAppointment}">
-        <button ng-disabled="selectedAppointment.status != 'CheckedIn'"
+        <button show-if-privilege="{{manageAppointmentPrivilege}}" ng-disabled="selectedAppointment.status != 'CheckedIn'"
                 ng-click="undoCheckIn()">
             {{::'UNDO_CHECK_IN_APPOINTMENT' | translate}}
         </button>
-        <button ng-disabled="selectedAppointment.status != 'Scheduled'"
+        <button show-if-privilege="{{manageAppointmentPrivilege}}" ng-disabled="selectedAppointment.status != 'Scheduled'"
                 ng-click="checkinAppointment()">
                 {{::'CHECK_IN_APPOINTMENT' | translate}}
         </button>
-        <button ng-disabled="selectedAppointment.status != 'CheckedIn'"
+        <button show-if-privilege="{{manageAppointmentPrivilege}}" ng-disabled="selectedAppointment.status != 'CheckedIn'"
                 ng-click="confirmAction('Completed')">
                 {{::'COMPLETE_APPOINTMENT' |translate}}
         </button>
-        <button ng-click="editAppointment()">
+        <button show-if-privilege="{{manageAppointmentPrivilege}}" ng-click="editAppointment()">
                 {{::'EDIT_APPOINTMENT' |translate}}
         </button>
-        <button ng-disabled="(selectedAppointment.status != 'Scheduled' && selectedAppointment.status != 'CheckedIn')"
+        <button show-if-privilege="{{manageAppointmentPrivilege}}" ng-disabled="(selectedAppointment.status != 'Scheduled' && selectedAppointment.status != 'CheckedIn')"
                 ng-click="confirmAction('Cancelled')">
                 {{::'CANCEL_APPOINTMENT' | translate}}
         </button>

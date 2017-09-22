@@ -7,6 +7,7 @@ angular.module('bahmni.appointments')
                   appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
+            $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.searchedPatient = false;
             var oldPatientData = [];
             $scope.$on('filterClosedOpen', function (event, args) {

@@ -1,7 +1,7 @@
 'use strict';
 
 describe('AppointmentsDayCalendarController', function () {
-    var element,controller, scope, appService, appDescriptor, $compile, httpBackend, $state, calendarViewPopUp;
+    var element,controller, scope, rootScope, appService, appDescriptor, $compile, httpBackend, $state, calendarViewPopUp;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -12,6 +12,7 @@ describe('AppointmentsDayCalendarController', function () {
             httpBackend.expectGET('../i18n/appointments/locale_en.json').respond({});
             httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond({});
             scope = $rootScope.$new();
+            rootScope = $rootScope;
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
@@ -32,6 +33,7 @@ describe('AppointmentsDayCalendarController', function () {
         createElement();
         controller('AppointmentsDayCalendarController', {
             $scope: scope,
+            $rootScope: rootScope,
             appService: appService,
             $state: $state,
             calendarViewPopUp: calendarViewPopUp
@@ -97,7 +99,8 @@ describe('AppointmentsDayCalendarController', function () {
         expect(scope.uiConfig.calendar.selectable).toBe(true)
     });
 
-    it('should go to new appointment state on createAppointment', function () {
+    it('should go to new appointment state on createAppointment only if the user has Manage privilege', function () {
+        rootScope.currentUser = {privileges: [{name: Bahmni.Appointments.Constants.privilegeToCreateAppointment}]};
         createController();
         var startDateTime = moment();
         var endDateTime = moment().add(30, 'minutes');
@@ -107,6 +110,12 @@ describe('AppointmentsDayCalendarController', function () {
         expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new',
             $state.params,{reload:false});
     });
+
+    it('should not go to new appointment state on createAppointment if the user does not have Manage privilege', function () {
+        rootScope.currentUser = {privileges: []};
+        createController();
+        expect($state.go).not.toHaveBeenCalled();
+    })
 
     it('should call calendarView pop up on eventClick with appointments and enableCreateAppointment true for current date', function () {
         createController();
