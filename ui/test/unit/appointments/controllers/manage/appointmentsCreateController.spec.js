@@ -620,61 +620,58 @@ describe("AppointmentsCreateController", function () {
     });
 
     describe('isEditAllowed', function () {
-        beforeEach(function () {
-            createController();
-        });
 
         it('should not allow edit if it is past appointment irrespective of status', function () {
+            appointmentContext.appointment = {startDateTime: moment().subtract(1, 'day').toDate(), status: 'Scheduled', uuid: 'appointmentUuid'};
             createController();
-            $scope.appointment = {date: moment().subtract(1, 'day').toDate(), status: 'Scheduled'};
             expect($scope.isEditAllowed()).toBeFalsy();
         });
 
         it('should allow edit for scheduled appointment if is of current date', function () {
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', uuid: 'appointmentUuid'};
             createController();
-            $scope.appointment = {date: moment().toDate(), status: 'Scheduled'};
             expect($scope.isEditAllowed()).toBeTruthy();
         });
 
         it('should allow edit for checked-in appointment if is of current date', function () {
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'CheckedIn', uuid: 'appointmentUuid'};
             createController();
-            $scope.appointment = {date: moment().toDate(), status: 'CheckedIn'};
             expect($scope.isEditAllowed()).toBeTruthy();
         });
 
         it('should not allow edit for completed appointment if is of current date', function () {
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Completed', uuid: 'appointmentUuid'};
             createController();
-            $scope.appointment = {date: moment().toDate(), status: 'Completed'};
             expect($scope.isEditAllowed()).toBeFalsy();
         });
 
         it('should not allow edit for cancelled appointment if is of current date', function () {
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Cancelled', uuid: 'appointmentUuid'};
             createController();
-            $scope.appointment = {date: moment().toDate(), status: 'Cancelled'};
             expect($scope.isEditAllowed()).toBeFalsy();
         });
 
         it('should allow edit for scheduled appointment if is of future date', function () {
+            appointmentContext.appointment = {startDateTime: moment().add(1, 'day').toDate(), status: 'Scheduled', uuid: 'appointmentUuid'};
             createController();
-            $scope.appointment = {date: moment().add(1, 'day').toDate(), status: 'Scheduled'};
             expect($scope.isEditAllowed()).toBeTruthy();
         });
 
         it('should allow edit for checked-in appointment if is of future date', function () {
+            appointmentContext.appointment = {startDateTime: moment().add(1, 'day').toDate(), status: 'CheckedIn', uuid: 'appointmentUuid'};
             createController();
-            $scope.appointment = {date: moment().add(1, 'day').toDate(), status: 'CheckedIn'};
             expect($scope.isEditAllowed()).toBeTruthy();
         });
 
         it('should not allow edit for completed appointment if is of future date', function () {
+            appointmentContext.appointment = {startDateTime: moment().add(1, 'day').toDate(), status: 'Completed', uuid: 'appointmentUuid'};
             createController();
-            $scope.appointment = {date: moment().add(1, 'day').toDate(), status: 'Completed'};
             expect($scope.isEditAllowed()).toBeFalsy();
         });
 
         it('should not allow edit for cancelled appointment if is of future date', function () {
+            appointmentContext.appointment = {startDateTime: moment().add(1, 'day').toDate(), status: 'Cancelled', uuid: 'appointmentUuid'};
             createController();
-            $scope.appointment = {date: moment().add(1, 'day').toDate(), status: 'Cancelled'};
             expect($scope.isEditAllowed()).toBeFalsy();
         });
     });
