@@ -40,7 +40,8 @@ describe("AppointmentsHeaderController", function () {
         }, {
             text: 'APPOINTMENTS_ADMIN',
             state: 'home.admin.service',
-            accessKey: 'A'
+            accessKey: 'A',
+            requiredPrivilege: Bahmni.Appointments.Constants.privilegeForAdmin
         }];
         expect(appService.getAppDescriptor).toHaveBeenCalled();
         expect(appDescriptor.getExtensionById).toHaveBeenCalledWith('bahmni.appointments.admin', true);

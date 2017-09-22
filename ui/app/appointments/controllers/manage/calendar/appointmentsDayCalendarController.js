@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsDayCalendarController', ['$scope', '$state', 'uiCalendarConfig', 'appService', 'calendarViewPopUp', 'checkinPopUp',
-        function ($scope, $state, uiCalendarConfig, appService, calendarViewPopUp, checkinPopUp) {
+    .controller('AppointmentsDayCalendarController', ['$scope', '$rootScope', '$state', 'uiCalendarConfig', 'appService', 'calendarViewPopUp', 'checkinPopUp',
+        function ($scope, $rootScope, $state, uiCalendarConfig, appService, calendarViewPopUp, checkinPopUp) {
             $scope.eventSources = [];
             var init = function () {
                 $scope.events = $scope.appointments.events;
@@ -55,7 +55,16 @@ angular.module('bahmni.appointments')
                     uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
                 };
 
+                var isUserPrivilegedToCreateAppointment = function () {
+                    return _.find($rootScope.currentUser.privileges, function (privilege) {
+                        return privilege.name === Bahmni.Appointments.Constants.privilegeToCreateAppointment;
+                    });
+                };
+
                 $scope.createAppointment = function (start, end, jsEvent, view, resource) {
+                    if (!isUserPrivilegedToCreateAppointment()) {
+                        return;
+                    }
                     var params = $state.params;
                     params.appointment = {startDateTime: start,
                         endDateTime: end,
