@@ -21,6 +21,7 @@ angular.module('bahmni.appointments')
                 wireAutocompleteEvents();
                 $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create(appointmentContext.appointment || {appointmentKind: 'Scheduled'}, appointmentCreateConfig);
                 $scope.selectedService = appointmentCreateConfig.selectedService;
+                $scope.isPastAppointment = $scope.isEditMode() ? Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')) : false;
             };
 
             $scope.save = function () {
@@ -379,11 +380,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.isEditAllowed = function () {
-                return isPastAppointment() ? false : ($scope.appointment.status === 'Scheduled' || $scope.appointment.status === 'CheckedIn');
-            };
-
-            var isPastAppointment = function () {
-                return (Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')));
+                return $scope.isPastAppointment ? false : ($scope.appointment.status === 'Scheduled' || $scope.appointment.status === 'CheckedIn');
             };
 
             $scope.navigateToPreviousState = function () {
