@@ -19,6 +19,7 @@ angular.module('bahmni.appointments')
 
                 popUpScope.scope = scope;
                 popUpScope.patient = scope.patientList.length === 1 ? scope.patientList[0] : undefined;
+                popUpScope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
 
                 popUpScope.checkinAppointment = function (patientAppointment) {
                     checkinPopUp({

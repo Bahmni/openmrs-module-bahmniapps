@@ -17,7 +17,7 @@ angular.module('bahmni.appointments').factory('appointmentConfigInitialization',
                     }
                     if (appointmentContext.appointment && appointmentContext.appointment.service) {
                         promises.push(getAppointmentService(appointmentContext.appointment.service.uuid).then(function (response) {
-                            config.serviceTypes = response.data.serviceTypes;
+                            config.selectedService = response.data;
                         }));
                     }
 

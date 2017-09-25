@@ -20,6 +20,8 @@ angular.module('bahmni.appointments')
             var init = function () {
                 wireAutocompleteEvents();
                 $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create(appointmentContext.appointment || {appointmentKind: 'Scheduled'}, appointmentCreateConfig);
+                $scope.selectedService = appointmentCreateConfig.selectedService;
+                $scope.isPastAppointment = $scope.isEditMode() ? Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')) : false;
             };
 
             $scope.save = function () {
@@ -117,8 +119,8 @@ angular.module('bahmni.appointments')
             };
 
             var isAppointmentTimeWithinServiceAvailability = function (appointmentTime) {
-                if ($scope.weeklyAvailabilityOnSelecedDate && $scope.weeklyAvailabilityOnSelecedDate.length) {
-                    return _.find($scope.weeklyAvailabilityOnSelecedDate, function (availability) {
+                if ($scope.weeklyAvailabilityOnSelectedDate && $scope.weeklyAvailabilityOnSelectedDate.length) {
+                    return _.find($scope.weeklyAvailabilityOnSelectedDate, function (availability) {
                         return !(moment(appointmentTime, 'hh:mm a').isBefore(moment(availability.startTime, 'hh:mm a')) ||
                         moment(availability.endTime, 'hh:mm a').isBefore(moment(appointmentTime, 'hh:mm a')));
                     });
@@ -182,17 +184,20 @@ angular.module('bahmni.appointments')
 
             $scope.onServiceChange = function () {
                 clearAvailabilityInfo();
+                delete $scope.weeklyAvailabilityOnSelectedDate;
                 if ($scope.appointment.service) {
-                    setServiceDetails($scope.appointment.service);
+                    setServiceDetails($scope.appointment.service).then(function () {
+                        $scope.onSelectStartTime();
+                    });
                 }
             };
 
             $scope.onServiceTypeChange = function () {
-                $scope.minDuration = $scope.appointment.serviceType
-                    ? $scope.appointment.serviceType.duration
-                    : ($scope.appointment.service.durationMins || Bahmni.Appointments.Constants.minDurationForAppointment);
-                clearAvailabilityInfo();
-                $scope.onSelectStartTime();
+                if ($scope.appointment.serviceType) {
+                    $scope.minDuration = $scope.appointment.serviceType.duration || $scope.minDuration;
+                    clearAvailabilityInfo();
+                    $scope.onSelectStartTime();
+                }
             };
 
             var getWeeklyAvailabilityOnADate = function (date, weeklyAvailability) {
@@ -207,8 +212,8 @@ angular.module('bahmni.appointments')
                 $scope.allowedEndTime = $scope.selectedService.endTime || '11:59 pm';
 
                 if ($scope.selectedService.weeklyAvailability && $scope.selectedService.weeklyAvailability.length > 0) {
-                    $scope.weeklyAvailabilityOnSelecedDate = getWeeklyAvailabilityOnADate(date, $scope.selectedService.weeklyAvailability);
-                    if ($scope.weeklyAvailabilityOnSelecedDate && $scope.weeklyAvailabilityOnSelecedDate.length === 0) {
+                    $scope.weeklyAvailabilityOnSelectedDate = getWeeklyAvailabilityOnADate(date, $scope.selectedService.weeklyAvailability);
+                    if ($scope.weeklyAvailabilityOnSelectedDate && $scope.weeklyAvailabilityOnSelectedDate.length === 0) {
                         $scope.allowedStartTime = undefined;
                         $scope.allowedEndTime = undefined;
                     }
@@ -243,10 +248,8 @@ angular.module('bahmni.appointments')
                 return appointmentsServiceService.getService(service.uuid).then(
                     function (response) {
                         $scope.selectedService = response.data;
-                        appointmentCreateConfig.serviceTypes = $scope.selectedService.serviceTypes;
                         $scope.appointment.location = _.find(appointmentCreateConfig.locations, {uuid: $scope.selectedService.location.uuid});
                         $scope.minDuration = response.data.durationMins || Bahmni.Appointments.Constants.minDurationForAppointment;
-                        $scope.onSelectStartTime();
                     });
             };
 
@@ -377,11 +380,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.isEditAllowed = function () {
-                return isPastAppointment() ? false : ($scope.appointment.status === 'Scheduled' || $scope.appointment.status === 'CheckedIn');
-            };
-
-            var isPastAppointment = function () {
-                return (Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')));
+                return $scope.isPastAppointment ? false : ($scope.appointment.status === 'Scheduled' || $scope.appointment.status === 'CheckedIn');
             };
 
             $scope.navigateToPreviousState = function () {
