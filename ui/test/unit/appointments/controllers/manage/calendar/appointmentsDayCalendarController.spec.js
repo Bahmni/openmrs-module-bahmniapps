@@ -100,7 +100,7 @@ describe('AppointmentsDayCalendarController', function () {
     });
 
     it('should go to new appointment state on createAppointment only if the user has Manage privilege', function () {
-        rootScope.currentUser = {privileges: [{name: Bahmni.Appointments.Constants.privilegeToCreateAppointment}]};
+        rootScope.currentUser = {privileges: [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}]};
         createController();
         var startDateTime = moment();
         var endDateTime = moment().add(30, 'minutes');
