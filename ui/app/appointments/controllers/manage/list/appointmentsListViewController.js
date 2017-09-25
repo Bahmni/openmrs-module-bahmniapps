@@ -28,9 +28,12 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             var init = function () {
+                $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
-                return $scope.getAppointmentsForDate($scope.startDate);
+                if (!$scope.searchedPatient) {
+                    return $scope.getAppointmentsForDate($scope.startDate);
+                }
             };
 
             $scope.getAppointmentsForDate = function (viewDate) {
@@ -49,10 +52,7 @@ angular.module('bahmni.appointments')
                 $scope.searchedPatient = true;
                 $stateParams.isFilterOpen = false;
                 $stateParams.isSearchEnabled = true;
-                $scope.isNoSearchResult = false;
-                if ($scope.filteredAppointments.length === 0) {
-                    $scope.isNoSearchResult = true;
-                }
+                $scope.isNoSearchResult = ($scope.filteredAppointments.length === 0);
             };
 
             $scope.goBackToPreviousView = function () {
@@ -129,9 +129,9 @@ angular.module('bahmni.appointments')
 
             $scope.undoCheckIn = function () {
                 var undoCheckIn = function (closeConfirmBox) {
-                    return appointmentsService.undoCheckIn($scope.selectedAppointment.uuid).then(function () {
+                    return appointmentsService.undoCheckIn($scope.selectedAppointment.uuid).then(function (response) {
                         ngDialog.close();
-                        $state.go($state.current, $state.params, {reload: true});
+                        $scope.selectedAppointment.status = response.data.status;
                     }).then(closeConfirmBox);
                 };
 
@@ -143,9 +143,9 @@ angular.module('bahmni.appointments')
 
             $scope.confirmAction = function (toStatus, onDate) {
                 var changeStatus = function (toStatus, closeConfirmBox) {
-                    return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus, onDate).then(function () {
+                    return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus, onDate).then(function (response) {
                         ngDialog.close();
-                        $state.go($state.current, $state.params, {reload: true});
+                        $scope.selectedAppointment.status = response.data.status;
                     }).then(closeConfirmBox);
                 };
                 var scope = {};
