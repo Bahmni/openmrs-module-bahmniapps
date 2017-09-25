@@ -128,7 +128,8 @@ angular
                 url: '/list',
                 tabName: 'list',
                 params: {
-                    viewDate: null
+                    viewDate: null,
+                    patient: null
                 },
                 views: {
                     'content@viewAppointments': {

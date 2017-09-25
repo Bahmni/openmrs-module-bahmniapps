@@ -1,8 +1,10 @@
 <div ng-class="{'app-filter-open': isFilterOpen}">
-    <date-picker view-date="startDate" on-change="getAppointmentsForDate" ng-hide="searchedPatient"></date-picker>
+    <div ng-if="!searchedPatient">
+        <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
+    </div>
     <p class="app-patient-search">
     <a ng-click="goBackToPreviousView()" ng-show="searchedPatient">{{::'RESET_KEY' | translate}} {{::'PATIENT_LIST_VIEW_SEARCH_HEADER' | translate}}</a>
-    <patient-search on-search="displaySearchedPatient" on-change="patientSearchNullHandle"></patient-search>
+    <patient-search on-search="displaySearchedPatient"></patient-search>
     </p>
     <button ng-if="!isNoSearchResult" ng-click="printPage()" class="list-view-print-btn"><i class="fa fa-print" aria-hidden="true"></i></button>
     <div class="app-list-view">
@@ -30,7 +32,7 @@
                 <td ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
                 <td class="table-mid-width">{{::appointment.service.name}}</td>
                 <td class="table-mid-width" ng-show="::enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
-                <td>{{::appointment.status}}</td>
+                <td>{{appointment.status}}</td>
                 <td>{{:: isWalkIn(appointment.appointmentKind)}}</td>
                 <td class="table-mid-width">{{::appointment.location.name}}</td>
                 <td class="table-mid-width">{{display(appointment.additionalInfo)}}</td>

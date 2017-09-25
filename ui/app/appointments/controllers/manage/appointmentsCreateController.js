@@ -228,7 +228,7 @@ angular.module('bahmni.appointments')
 
             $scope.checkAvailability = function () {
                 $scope.warning.appointmentDate = false;
-                if ($scope.selectedService && $scope.appointment.date) {
+                if (!$scope.isPastAppointment && $scope.selectedService && $scope.appointment.date) {
                     setServiceAvailableTimesForADate($scope.appointment.date);
                     var dayOfWeek = moment($scope.appointment.date).format('dddd').toUpperCase();
                     if ($scope.selectedService.weeklyAvailability && $scope.selectedService.weeklyAvailability.length > 0) {
@@ -352,12 +352,10 @@ angular.module('bahmni.appointments')
                 appointmentsService.save(appointment).then(function () {
                     messagingService.showMessage('info', 'APPOINTMENT_SAVE_SUCCESS');
                     $scope.showConfirmationPopUp = false;
-                    var dateToGo = moment($scope.appointment.date).startOf('day').toDate();
-                    var params = {
-                        viewDate: dateToGo,
-                        isFilterOpen: true,
-                        isSearchEnabled: false
-                    };
+                    var params = $state.params;
+                    params.viewDate = moment($scope.appointment.date).startOf('day').toDate();
+                    params.isFilterOpen = true;
+                    params.isSearchEnabled = params.isSearchEnabled && $scope.isEditMode();
                     $state.go('^', params, {reload: true});
                 });
             };

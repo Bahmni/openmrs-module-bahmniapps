@@ -115,7 +115,7 @@ describe('AppointmentsDayCalendarController', function () {
         rootScope.currentUser = {privileges: []};
         createController();
         expect($state.go).not.toHaveBeenCalled();
-    })
+    });
 
     it('should call calendarView pop up on eventClick with appointments and enableCreateAppointment true for current date', function () {
         createController();

@@ -50,11 +50,8 @@ describe('AppointmentsListViewController', function () {
         });
     };
 
-    beforeEach(function () {
-        createController();
-    });
-
     it("should initialize today's date if not viewDate is provided in stateParams", function () {
+        createController();
         var today = moment().startOf('day').toDate();
         expect(scope.startDate).toEqual(today);
     });
@@ -68,11 +65,42 @@ describe('AppointmentsListViewController', function () {
     });
 
     it("should initialize enable service types and enable specialities from config", function () {
+        createController();
         expect(scope.enableServiceTypes).toBeTruthy();
         expect(scope.enableSpecialities).toBeTruthy();
     });
 
+    it('should initialize searchedPatient as true if search enabled and patient exists ', function () {
+        stateparams = {
+            isSearchEnabled: true,
+            patient: {name: 'Test patient', uuid: 'patientUuid'}
+        };
+        createController();
+        expect(scope.searchedPatient).toBeTruthy();
+    });
+
+    it('should get appointments for the date if searchedPatient is false', function () {
+        stateparams = {
+            isSearchEnabled: false,
+            patient: {name: 'Test patient', uuid: 'patientUuid'}
+        };
+        createController();
+        expect(appointmentsService.getAllAppointments).toHaveBeenCalledWith({forDate: moment().startOf('day').toDate()});
+        expect(spinner.forPromise).toHaveBeenCalled();
+    });
+
+    it('should not get appointments for the date if searchedPatient is true', function () {
+        stateparams = {
+            isSearchEnabled: true,
+            patient: {name: 'Test patient', uuid: 'patientUuid'}
+        };
+        createController();
+        expect(appointmentsService.getAllAppointments).not.toHaveBeenCalled();
+        expect(spinner.forPromise).not.toHaveBeenCalled();
+    });
+
     it('should get appointments for date', function () {
+        createController();
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
         expect(stateparams.viewDate).toEqual(viewDate);
@@ -82,6 +110,7 @@ describe('AppointmentsListViewController', function () {
     });
 
     it('should select an appointment', function () {
+        createController();
         var appointment1 = {patient: {name: 'patient1'}};
         var appointment2 = {patient: {name: 'patient2'}};
         scope.appointments = [appointment1, appointment2];
@@ -92,6 +121,7 @@ describe('AppointmentsListViewController', function () {
     });
 
     it('should unselect an appointment if is selected', function () {
+        createController();
         var appointment1 = {patient: {name: 'patient1'}};
         var appointment2 = {patient: {name: 'patient2'}};
         scope.appointments = [appointment1, appointment2];
@@ -819,17 +849,18 @@ describe('AppointmentsListViewController', function () {
     it('should change status on confirmation on confirmAction', function () {
         var appointment = {uuid: 'appointmentUuid', status: 'Scheduled'};
         var toStatus = 'Cancelled';
-        appointmentsService.changeStatus.and.returnValue(specUtil.simplePromise({}));
+        var appointmentResponse = {uuid: 'appointmentUuid', status: toStatus};
+        appointmentsService.changeStatus.and.returnValue(specUtil.simplePromise({data: appointmentResponse}));
+        createController();
+        scope.selectedAppointment = appointment;
         confirmBox.and.callFake(function (config) {
             var close = jasmine.createSpy('close');
             config.scope.yes(close).then(function () {
                 expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, toStatus, undefined);
-                expect($state.go).toHaveBeenCalledWith($state.current, $state.params, {reload: true});
+                expect(scope.selectedAppointment.status).toEqual(appointmentResponse.status);
                 expect(close).toHaveBeenCalled();
             });
         });
-        createController();
-        scope.selectedAppointment = appointment;
         scope.confirmAction(toStatus);
     });
 
@@ -863,18 +894,18 @@ describe('AppointmentsListViewController', function () {
     });
 
     it('should change status on confirmation on undo check in', function () {
-        var appointment = {uuid: 'appointmentUuid', status: 'Scheduled'};
-        appointmentsService.undoCheckIn.and.returnValue(specUtil.simplePromise({}));
+        var appointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
+        appointmentsService.undoCheckIn.and.returnValue(specUtil.simplePromise({data: {uuid: 'appointmentUuid', status: 'Scheduled'}}));
+        createController();
+        scope.selectedAppointment = appointment;
         confirmBox.and.callFake(function (config) {
             var close = jasmine.createSpy('close');
             config.scope.yes(close).then(function () {
                 expect(appointmentsService.undoCheckIn).toHaveBeenCalledWith(appointment.uuid);
-                expect($state.go).toHaveBeenCalledWith($state.current, $state.params, {reload: true});
+                expect(scope.selectedAppointment.status).toBe('Scheduled');
                 expect(close).toHaveBeenCalled();
             });
         });
-        createController();
-        scope.selectedAppointment = appointment;
         scope.undoCheckIn();
     });
 
