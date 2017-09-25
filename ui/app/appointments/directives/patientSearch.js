@@ -24,12 +24,18 @@ angular.module('bahmni.appointments')
                     };
 
                     $scope.onSelectPatient = function (data) {
-                        $scope.patientUuid = data.uuid;
+                        $state.params.patient = data;
                         spinner.forPromise(appointmentsService.search({patientUuid: data.uuid}).then(function (oldAppointments) {
                             var appointmentInDESCOrderBasedOnStartDateTime = _.sortBy(oldAppointments.data, "startDateTime").reverse();
                             $scope.onSearch(appointmentInDESCOrderBasedOnStartDateTime);
                         }));
                     };
+
+                    if ($state.params.isSearchEnabled && $state.params.patient) {
+                        $scope.patient = $scope.responseMap([$state.params.patient])[0].label;
+                        $scope.onSelectPatient($state.params.patient);
+                    }
+
                     $scope.$watch(function () {
                         return $state.params.isSearchEnabled;
                     }, function (isSearchEnabled) {
