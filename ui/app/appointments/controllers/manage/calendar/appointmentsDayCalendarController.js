@@ -59,7 +59,7 @@ angular.module('bahmni.appointments')
 
                 var isUserPrivilegedToCreateAppointment = function () {
                     return _.find($rootScope.currentUser.privileges, function (privilege) {
-                        return privilege.name === Bahmni.Appointments.Constants.privilegeToCreateAppointment;
+                        return privilege.name === Bahmni.Appointments.Constants.privilegeManageAppointments;
                     });
                 };
 
