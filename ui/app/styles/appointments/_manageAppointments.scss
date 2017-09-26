@@ -474,9 +474,21 @@
   }
   .calendar-no-appointment {
     text-align: center;
-    padding-bottom: 5px;
-    color: #ff0000
-  ;
+    color: #ff0000;
+    position: absolute;
+    z-index: 30;
+    top: 178px;
+    display: inline-block;
+    width: 200px;
+    left: 95px;
+    right: 0;
+    margin: auto;
+    padding: 10px 5px;
+    background: #eceaec;
+    border-radius: 0 0 3px 3px;
+  }
+  &.app-filter-open .calendar-no-appointment {
+    left: 265px;
   }
 }
 
