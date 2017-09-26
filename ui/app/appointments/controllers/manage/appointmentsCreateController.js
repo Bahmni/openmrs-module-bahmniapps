@@ -255,7 +255,7 @@ angular.module('bahmni.appointments')
 
             $scope.continueWithoutSaving = function () {
                 $scope.showConfirmationPopUp = false;
-                $state.go($scope.toStateConfig.toState, $scope.toStateConfig.toParams);
+                $state.go($scope.toStateConfig.toState, $scope.toStateConfig.toParams, {reload: true});
                 ngDialog.close();
             };
 
