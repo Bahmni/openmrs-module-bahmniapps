@@ -6,9 +6,6 @@ angular.module('bahmni.appointments')
             $scope.eventSources = [];
             var init = function () {
                 $scope.events = $scope.appointments.events;
-                $scope.eventRender = function (event, element, view) {
-                    element.find('.fc-title').append('<span>Test</span>');
-                };
                 $scope.alertOnEventClick = function (event, jsEvent, view) {
                     var checkinAppointment = function (patient, patientAppointment) {
                         checkinPopUp({

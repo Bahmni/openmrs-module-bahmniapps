@@ -24,7 +24,7 @@
     }
     th, td {
       text-align: center;
-      border-color: #95989A;
+      border-color: #ddd;
       color: #313131;
       font-size: 13px;
       &:first-child {
@@ -32,13 +32,17 @@
       }
     }
     th {
-      background: #EBEBEB;
+      background: #e2e1e1;
+      border-color: #e2e1e1;
     }
     td {
       a {
         display: inline-block;
         margin: 0 5px;
       }
+    }
+    tr:nth-child(even) {
+      background: #F2F1F1;
     }
   }
 }

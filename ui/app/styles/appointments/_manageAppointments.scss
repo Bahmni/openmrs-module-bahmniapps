@@ -562,3 +562,28 @@
 .no-app-avab-list-view {
   text-align: center;
 }
+.appointmentIcons {
+  &:after, &:before {
+    font-family: FontAwesome;
+    content: "";
+    top: 2px;
+    position: absolute;
+    right: 5px;
+  }
+  &.CheckedIn:after {
+    content: "\f05d";
+  }
+  &.Completed:after {
+     content: "\f00c";
+   }
+  &.Missed:after {
+    content: "\f05e";
+  }
+  &.multiplePatients:after {
+    content: "\f0c0";
+  }
+  &.bed-accom:before {
+    content: "\f236";
+    right: 20px;
+  }
+}
