@@ -52,12 +52,14 @@ angular.module('bahmni.appointments')
                 $scope.searchedPatient = true;
                 $stateParams.isFilterOpen = false;
                 $stateParams.isSearchEnabled = true;
-                $scope.isNoSearchResult = ($scope.filteredAppointments.length === 0);
+            };
+
+            $scope.hasNoAppointments = function () {
+                return _.isEmpty($scope.filteredAppointments);
             };
 
             $scope.goBackToPreviousView = function () {
                 $scope.searchedPatient = false;
-                $scope.isNoSearchResult = false;
                 $scope.filteredAppointments = oldPatientData;
                 $stateParams.isFilterOpen = true;
                 $stateParams.isSearchEnabled = false;
