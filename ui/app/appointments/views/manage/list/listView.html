@@ -6,10 +6,10 @@
     <a ng-click="goBackToPreviousView()" ng-show="searchedPatient">{{::'RESET_KEY' | translate}} {{::'PATIENT_LIST_VIEW_SEARCH_HEADER' | translate}}</a>
     <patient-search on-search="displaySearchedPatient"></patient-search>
     </p>
-    <button ng-if="!isNoSearchResult" ng-click="printPage()" class="list-view-print-btn"><i class="fa fa-print" aria-hidden="true"></i></button>
+    <button ng-show="!hasNoAppointments()" ng-click="printPage()" class="list-view-print-btn"><i class="fa fa-print" aria-hidden="true"></i></button>
     <div class="app-list-view">
-        <p class="no-app-avab-list-view" ng-if="isNoSearchResult">{{::'NO_APPOINTMENT_LIST_VIEW' | translate}}</p>
-        <table ng-show="!isNoSearchResult">
+        <p class="no-app-avab-list-view" ng-show="hasNoAppointments()">{{::'NO_APPOINTMENT_LIST_VIEW' | translate}}</p>
+        <table ng-show="!hasNoAppointments()">
             <thead>
             <tr>
                 <th ng-class="{'table-mid-width': info.class}" ng-show="::info.enable" ng-repeat="info in ::tableInfo" ng-click="::info.sortInfo && sortAppointmentsBy(info.sortInfo)">
