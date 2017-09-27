@@ -1,41 +1,18 @@
 <div class="confirm-box">
-    <div class="ngdialog-close clearfix"></div>
-    <p>
-        <label>
-            <b>{{::'APPOINTMENT_CREATE_PATIENT_NAME' |translate}}:</b>
-            <span>{{ scope.patientAppointment.patient.name }} ({{ scope.patientAppointment.patient.identifier }})</span>
-        </label>
-    </p>
+    <span class="ngdialog-close"></span>
+    <p class="message">{{::message | translate}}</p>
 
-        <p>
-            <b>{{::'APPOINTMENT_SERVICE' | translate}}:</b>
-            {{scope.patientAppointment.service.name}}
-        </p>
-        <p ng-show="scope.patientAppointment.serviceType">
-            <b>{{::'APPOINTMENT_SERVICE_TYPE_FULL' | translate}}:</b>
-            {{scope.patientAppointment.serviceType.name}}
-        </p>
-        <p ng-show="scope.patientAppointment.status">
-            <b>{{::'APPOINTMENT_STATUS' | translate}}:</b>
-            {{scope.patientAppointment.status}}
-        </p>
-
-    <p><b>{{::'APPOINTMENT_DATE' | translate}}:</b> {{scope.patientAppointment.startDateTime | bahmniDate}}</p>
-    <p><b>{{::'APPOINTMENT_SLOT' | translate}}:</b> {{scope.patientAppointment.startDateTime | bahmniTime}} -
-        {{scope.patientAppointment.endDateTime | bahmniTime}}</p>
     <p>
         <b>{{::'APPOINTMENT_CHECKIN_TIME_KEY' | translate}}:</b><sup class="asterick">*</sup>
-        <input type="time" ng-model="checkinTime" required/>
+        <input type="time" ng-model="time" required/>
     </p>
-    <p class="asterick" ng-show="!checkinTime">
-        {{::'CHECK_IN_APPOINTMENT_TIME_VALIDATION' | translate}}
-    </p>
-    <p class="app-check-in-btn">
-        <button style="background: #8BC34A; color: #fff" ng-disabled="!checkinTime || scope.patientAppointment.status != 'Scheduled'" ng-click="checkIn();">
-            {{::'CHECK_IN_APPOINTMENT' | translate}}
-        </button>
-        <button ng-click="close()">
-            {{::'CANCEL_APPOINTMENT' | translate}}
-        </button>
-    </p>
+    <p class="asterick" ng-show="!time">
+            {{::'CHECK_IN_APPOINTMENT_TIME_VALIDATION' | translate}}
+        </p>
+    <button ng-click="performAction(close);">
+        {{::'YES_KEY' | translate}}
+    </button>
+    <button ng-click="close()">
+        {{::'NO_KEY' | translate}}
+    </button>
 </div>

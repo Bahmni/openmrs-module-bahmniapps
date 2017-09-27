@@ -1,7 +1,7 @@
 'use strict';
 
 describe('checkinPopUp', function () {
-    var rootScope, checkinPopUp, popUpScope, ngDialog;
+    var rootScope, checkinPopUp, popUpScope, ngDialog, dialog;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -21,10 +21,12 @@ describe('checkinPopUp', function () {
     beforeEach(function () {
         spyOn(rootScope, '$new');
         rootScope.$new.and.returnValue(popUpScope);
+        dialog = { id: 'id1' };
+        ngDialog.open.and.returnValue(dialog);
     });
 
     it('should open ngDialog with properties', function () {
-        var config = {scope: {appointments: []}};
+        var config = {scope: popUpScope};
         checkinPopUp(config);
         expect(ngDialog.open).toHaveBeenCalledWith({
             template: '../appointments/views/checkInPopUp.html',
@@ -34,20 +36,21 @@ describe('checkinPopUp', function () {
     });
 
     it('should call ngDialog close with two arguments on popUp close', function () {
-        var config = {scope: {appointments: []}};
+        var config = {scope: popUpScope};
         checkinPopUp(config);
         popUpScope.close();
-        expect(ngDialog.close).toHaveBeenCalledWith(undefined, true);
-    })
+        expect(ngDialog.close).toHaveBeenCalled();
+    });
 
     it('should call confirmAction with correct parameter on checkIn', function () {
-        var config = {scope: {appointments: [], confirmAction : function () {}}};
-        spyOn(config.scope, "confirmAction");
+        popUpScope.action = function(){};
+        var config = {scope:popUpScope };
+        spyOn(config.scope, "action");
         checkinPopUp(config);
-        var onDate = new Date();
-        popUpScope.checkinTime = onDate;
-        popUpScope.checkIn();
-        expect(config.scope.confirmAction).toHaveBeenCalledWith('CheckedIn', onDate);
+        popUpScope.time = new Date();
+        var f = function(){};
+        popUpScope.performAction(f);
+        expect(config.scope.action).toHaveBeenCalledWith(popUpScope.time, f);
     })
 
 });
