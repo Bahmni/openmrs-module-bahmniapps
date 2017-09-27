@@ -21,16 +21,6 @@ angular.module('bahmni.appointments')
                 popUpScope.patient = scope.patientList.length === 1 ? scope.patientList[0] : undefined;
                 popUpScope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
 
-                popUpScope.checkinAppointment = function (patientAppointment) {
-                    checkinPopUp({
-                        scope: {
-                            patientAppointment: patientAppointment,
-                            confirmAction: confirmActionCurrent
-                        },
-                        className: "ngdialog-theme-default app-dialog-container"
-                    });
-                };
-
                 popUpScope.navigateTo = function (state) {
                     var params = $state.params;
                     if (state === 'edit') {
@@ -51,25 +41,35 @@ angular.module('bahmni.appointments')
                     popUpScope.$destroy();
                 };
 
-                popUpScope.confirmAction = function (appointment, toStatus, onDate) {
+                var closeConfirmBox = function (closeConfirmBox) {
+                    closeConfirmBox();
+                };
+
+                var changeStatus = function (appointment, toStatus, onDate, closeConfirmBox) {
+                    return appointmentsService.changeStatus(appointment.uuid, toStatus, onDate).then(function () {
+                        appointment.status = toStatus;
+                    }).then(closeConfirmBox);
+                };
+
+                popUpScope.checkinAppointment = function (patientAppointment) {
+                    var scope = $rootScope.$new();
+                    scope.message = $translate.instant('APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE', {
+                        toStatus: 'CheckedIn'
+                    });
+                    scope.action = _.partial(changeStatus, patientAppointment, 'CheckedIn', _);
+                    checkinPopUp({
+                        scope: scope,
+                        className: "ngdialog-theme-default app-dialog-container"
+                    });
+                };
+
+                popUpScope.confirmAction = function (appointment, toStatus) {
                     var scope = {};
                     scope.message = $translate.instant('APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE', {
                         toStatus: toStatus
                     });
-
-                    var closeConfirmBox = function (closeConfirmBox) {
-                        closeConfirmBox();
-                    };
-
-                    var changeStatus = function (appointment, toStatus, closeConfirmBox) {
-                        return appointmentsService.changeStatus(appointment.uuid, toStatus, onDate).then(function () {
-                            ngDialog.close();
-                            appointment.status = toStatus;
-                        }).then(closeConfirmBox);
-                    };
-
                     scope.no = closeConfirmBox;
-                    scope.yes = _.partial(changeStatus, appointment, toStatus, _);
+                    scope.yes = _.partial(changeStatus, appointment, toStatus, undefined, _);
                     confirmBox({
                         scope: scope,
                         actions: [{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}],
@@ -88,9 +88,6 @@ angular.module('bahmni.appointments')
                         popUpScope.navigateTo('calendar');
                     }
                 });
-                var confirmActionCurrent = function (toStatus, onDate) {
-                    popUpScope.confirmAction(scope.patientAppointmentMap[popUpScope.patient.uuid], toStatus, onDate);
-                };
             };
             return calendarViewPopUp;
         }]);
