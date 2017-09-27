@@ -910,10 +910,27 @@ describe('AppointmentsListViewController', function () {
     });
 
     it('should get display of a json object', function () {
+        $translate.instant.and.callFake(function (value) {
+            return value;
+        });
         createController();
         var jsonObject = {"array": [1, 2, 3], "boolean": true, "null": null, "number": 123, "object": {"a": "b", "c": "d", "e": "f"}, "string": "Hello World"};
         var display = scope.display(jsonObject);
         var jsonString = 'array:[1,\t2,\t3],\tboolean:true,\tnull:null,\tnumber:123,\tobject:a:b,\tc:d,\te:f,\tstring:Hello World';
         expect(display).toEqual(jsonString);
-    })
+    });
+
+    it('should internationalize the keys if present of the json object', function () {
+        $translate.instant.and.callFake(function (value) {
+            if(value === 'LOCATION_KEY') {
+                return 'Location';
+            }
+            return value;
+        });
+       createController();
+       var jsonObject = {"array": [1, 2, 3], "LOCATION_KEY": "Registration"};
+       var display = scope.display(jsonObject);
+       var jsonString = 'array:[1,\t2,\t3],\tLocation:Registration';
+       expect(display).toEqual(jsonString);
+    });
 });

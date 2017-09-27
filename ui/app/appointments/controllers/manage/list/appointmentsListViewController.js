@@ -162,8 +162,12 @@ angular.module('bahmni.appointments')
             };
 
             $scope.display = function (jsonObj) {
+                jsonObj = _.mapKeys(jsonObj, function (value, key) {
+                    return $translate.instant(key);
+                });
                 return JSON.stringify(jsonObj || '').replace(/[{\"}]/g, "").replace(/[,]/g, ",\t");
             };
+
             var showPopUp = function (popUpScope) {
                 popUpScope.no = function (closeConfirmBox) {
                     closeConfirmBox();
