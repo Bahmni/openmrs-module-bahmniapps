@@ -88,11 +88,13 @@ angular.module('bahmni.appointments')
             };
 
             $scope.checkinAppointment = function () {
+                var scope = $rootScope.$new();
+                scope.message = $translate.instant('APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE', {
+                    toStatus: 'CheckedIn'
+                });
+                scope.action = _.partial(changeStatus, 'CheckedIn', _);
                 checkinPopUp({
-                    scope: {
-                        patientAppointment: $scope.selectedAppointment,
-                        confirmAction: $scope.confirmAction
-                    },
+                    scope: scope,
                     className: "ngdialog-theme-default app-dialog-container"
                 });
             };
@@ -143,18 +145,19 @@ angular.module('bahmni.appointments')
                 showPopUp(scope);
             };
 
-            $scope.confirmAction = function (toStatus, onDate) {
-                var changeStatus = function (toStatus, closeConfirmBox) {
-                    return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus, onDate).then(function (response) {
-                        ngDialog.close();
-                        $scope.selectedAppointment.status = response.data.status;
-                    }).then(closeConfirmBox);
-                };
+            var changeStatus = function (toStatus, onDate, closeConfirmBox) {
+                return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus, onDate).then(function (response) {
+                    ngDialog.close();
+                    $scope.selectedAppointment.status = response.data.status;
+                }).then(closeConfirmBox);
+            };
+
+            $scope.confirmAction = function (toStatus) {
                 var scope = {};
                 scope.message = $translate.instant('APPOINTMENT_STATUS_CHANGE_CONFIRM_MESSAGE', {
                     toStatus: toStatus
                 });
-                scope.yes = _.partial(changeStatus, toStatus, _);
+                scope.yes = _.partial(changeStatus, toStatus, undefined, _);
                 showPopUp(scope);
             };
 
