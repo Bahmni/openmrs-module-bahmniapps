@@ -121,7 +121,7 @@ describe('CalendarViewPopUp', function () {
         var config = {scope: {appointments: [appointment]}};
         calendarViewPopUp(config);
         popUpScope.patient = {uuid: 'patientUuid'};
-        popUpScope.navigateTo('edit');
+        popUpScope.navigateTo('edit', appointment);
         expect(ngDialog.close).toHaveBeenCalledWith(dialog.id, false);
         expect($state.params.uuid).toBe(appointment.uuid);
         expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.edit', $state.params, {reload: false});

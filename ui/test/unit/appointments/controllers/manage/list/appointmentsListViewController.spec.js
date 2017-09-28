@@ -31,7 +31,7 @@ describe('AppointmentsListViewController', function () {
             $translate = jasmine.createSpyObj('$translate', ['instant', 'storageKey', 'storage', 'preferredLanguage']);
             $httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>');
             $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>');
-            $httpBackend.expectGET('/openmrs/ws/rest/v1/provider').respond('<div></div>')
+            $httpBackend.expectGET('/openmrs/ws/rest/v1/provider').respond('<div></div>');
         });
     });
 
@@ -436,9 +436,9 @@ describe('AppointmentsListViewController', function () {
                 "comments": null
             }];
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
-        })
+        });
         it("should reset filtered appointments to its previous data", function () {
-            createController()
+            createController();
             scope.filteredAppointments = appointments;
             scope.displaySearchedPatient([appointments[1]]);
             expect(scope.filteredAppointments.length).toEqual(1);
@@ -549,7 +549,6 @@ describe('AppointmentsListViewController', function () {
             expect(scope.appointments[1].startDateTime).toEqual(300000);
         });
 
-
         it("should reverse sort appointments if sorted on the same column consecutively", function () {
             scope.filterParams = {
                 providerUuids: [],
@@ -626,7 +625,7 @@ describe('AppointmentsListViewController', function () {
                     {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                     {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
                 createController();
-                expect(scope.tableInfo).toEqual(tableInfo)
+                expect(scope.tableInfo).toEqual(tableInfo);
             });
 
             it('should filter the appointments on change of filter params', function () {
@@ -707,7 +706,7 @@ describe('AppointmentsListViewController', function () {
                     {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                     {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
                 createController();
-                expect(scope.tableInfo).toEqual(tableInfo)
+                expect(scope.tableInfo).toEqual(tableInfo);
             });
         });
     });
@@ -756,7 +755,7 @@ describe('AppointmentsListViewController', function () {
             "status": "Scheduled",
             "comments": null
         }];
-        scope.startDate =  new Date('2017-01-02T11:30:00.000Z');
+        scope.startDate = new Date('2017-01-02T11:30:00.000Z');
         scope.enableSpecialities = true;
         scope.enableServiceTypes = true;
         createController();
@@ -814,7 +813,7 @@ describe('AppointmentsListViewController', function () {
             "status": "Scheduled",
             "comments": null
         }];
-        scope.startDate =  new Date('2017-01-02T11:30:00.000Z');
+        scope.startDate = new Date('2017-01-02T11:30:00.000Z');
         scope.enableSpecialities = true;
         scope.enableServiceTypes = true;
         createController();

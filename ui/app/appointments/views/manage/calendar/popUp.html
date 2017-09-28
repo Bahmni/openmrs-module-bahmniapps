@@ -25,7 +25,7 @@
     <p class="app-dialog-btn-wrap">
         <button show-if-privilege="{{manageAppointmentPrivilege}}" style="background: #039BE5"
                 ng-disabled="!patient"
-                ng-click="navigateTo('edit')">
+                ng-click="navigateTo('edit', scope.patientAppointmentMap[patient.uuid])">
             {{::'EDIT_APPOINTMENT' | translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}}" style="background: #009688"
