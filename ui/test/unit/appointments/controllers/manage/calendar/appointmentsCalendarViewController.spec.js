@@ -114,7 +114,10 @@ describe('AppointmentsCalendarViewController', function () {
                 },
                 "startDateTime": 1502442000000,
                 "endDateTime": 1502443200000,
-                "status": "Scheduled"
+                "status": "Scheduled",
+                "additionalInfo": {
+                    "BED_NUMBER_KEY": "202"
+                }
             },
             {
                 "uuid": "e53c9655-d56f-4234-b9fd-46bbb74daffa",
@@ -158,6 +161,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(events[0].serviceName).toBe(allAppointments[0].service.name);
         expect(events[0].title).toBe(allAppointments[0].patient.name + " (" + allAppointments[0].patient.identifier + ")");
         expect(events[0].appointments).toEqual([allAppointments[0]]);
+        expect(events[0].className).toEqual('appointmentIcons Scheduled bed-accom');
 
         expect(events[1].resourceId).toBe(allAppointments[1].provider.name);
         expect(events[1].start).toBe(allAppointments[1].startDateTime);
@@ -166,6 +170,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(events[1].serviceName).toBe(allAppointments[1].service.name);
         expect(events[1].title).toBe(allAppointments[1].patient.name + " (" + allAppointments[1].patient.identifier + ")");
         expect(events[1].appointments).toEqual([allAppointments[1]]);
+        expect(events[1].className).toEqual('appointmentIcons CheckedIn');
     });
 
     it('should append to existing event if they are of same slot & provider & service', function () {
@@ -208,7 +213,10 @@ describe('AppointmentsCalendarViewController', function () {
                 },
                 "startDateTime": 1502442000000,
                 "endDateTime": 1502443200000,
-                "status": "CheckedIn"
+                "status": "CheckedIn",
+                "additionalInfo": {
+                    "BED_NUMBER_KEY": "202"
+                }
             }
         ];
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: allAppointments}));
@@ -224,6 +232,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(events[0].end).toBe(allAppointments[0].endDateTime);
         expect(events[0].color).toBe(allAppointments[0].service.color);
         expect(events[0].serviceName).toBe(allAppointments[0].service.name);
+        expect(events[0].className).toEqual('appointmentIcons multiplePatients bed-accom');
         var mergedPatientNames = allAppointments[0].patient.name + " (" + allAppointments[0].patient.identifier + ")" + ', ' +
             allAppointments[1].patient.name + " (" + allAppointments[1].patient.identifier + ")";
         expect(events[0].title).toBe(mergedPatientNames);
@@ -250,7 +259,10 @@ describe('AppointmentsCalendarViewController', function () {
                 },
                 "startDateTime": 1502442000000,
                 "endDateTime": 1502443200000,
-                "status": "Scheduled"
+                "status": "Scheduled",
+                "additionalInfo": {
+                    "BED_NUMBER_KEY": "202"
+                }
             },
             {
                 "uuid": "a4569655-d56f-4234-b9fd-46bbb74daffa",
@@ -287,6 +299,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(events[0].color).toBe(allAppointments[0].service.color);
         expect(events[0].serviceName).toBe(allAppointments[0].service.name);
         expect(events[0].title).toBe(allAppointments[0].patient.name + " (" + allAppointments[0].patient.identifier + ")");
+        expect(events[0].className).toEqual('appointmentIcons Scheduled bed-accom');
         expect(events[0].appointments).toEqual([allAppointments[0]]);
 
         expect(events[1].resourceId).toBe(allAppointments[1].provider.name);
@@ -295,6 +308,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(events[1].color).toBe(allAppointments[1].service.color);
         expect(events[1].serviceName).toBe(allAppointments[1].service.name);
         expect(events[1].title).toBe(allAppointments[1].patient.name + " (" + allAppointments[1].patient.identifier + ")");
+        expect(events[1].className).toEqual('appointmentIcons CheckedIn');
         expect(events[1].appointments).toEqual([allAppointments[1]]);
     });
 
