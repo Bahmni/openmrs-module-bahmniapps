@@ -47,13 +47,14 @@ angular.module('bahmni.appointments')
                         event.serviceName = appointment.service.name;
                         var existingEvent = _.find(result, event);
                         var patientName = appointment.patient.name + " (" + appointment.patient.identifier + ")";
+                        var isBedAssigned = appointment.additionalInfo && appointment.additionalInfo.BED_NUMBER_KEY;
                         if (existingEvent) {
                             existingEvent.title = [existingEvent.title, patientName].join(', ');
-                            existingEvent.className = 'appointmentIcons multiplePatients' + (appointment.additionalInfo ? ' bed-accom' : '');
+                            existingEvent.className = 'appointmentIcons multiplePatients' + (isBedAssigned ? ' bed-accom' : '');
                             existingEvent.appointments.push(appointment);
                         } else {
                             event.title = patientName;
-                            event.className = 'appointmentIcons ' + appointment.status + (appointment.additionalInfo ? ' bed-accom' : '');
+                            event.className = 'appointmentIcons ' + appointment.status + (isBedAssigned ? ' bed-accom' : '');
                             event.appointments = [];
                             event.appointments.push(appointment);
                             result.push(event);
