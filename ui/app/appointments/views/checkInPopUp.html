@@ -9,7 +9,7 @@
     <p class="asterick" ng-show="!time">
             {{::'CHECK_IN_APPOINTMENT_TIME_VALIDATION' | translate}}
         </p>
-    <button ng-click="performAction(close);">
+    <button ng-click="performAction(close);" ng-disabled="!time">
         {{::'YES_KEY' | translate}}
     </button>
     <button ng-click="close()">
