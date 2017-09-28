@@ -21,11 +21,11 @@ angular.module('bahmni.appointments')
                 popUpScope.patient = scope.patientList.length === 1 ? scope.patientList[0] : undefined;
                 popUpScope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
 
-                popUpScope.navigateTo = function (state) {
+                popUpScope.navigateTo = function (state, appointment) {
                     var params = $state.params;
                     if (state === 'edit') {
                         ngDialog.close(dialog.id, false);
-                        params.uuid = scope.patientAppointmentMap[popUpScope.patient.uuid].uuid;
+                        params.uuid = appointment.uuid;
                         $state.go('home.manage.appointments.calendar.edit', params, {reload: false});
                     } else if (state === 'new') {
                         ngDialog.close(dialog.id, false);
