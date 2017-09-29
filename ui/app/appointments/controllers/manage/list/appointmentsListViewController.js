@@ -7,6 +7,8 @@ angular.module('bahmni.appointments')
                   appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
+            $scope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
+            $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.searchedPatient = false;
             var oldPatientData = [];
@@ -177,6 +179,19 @@ angular.module('bahmni.appointments')
                     actions: [{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}],
                     className: "ngdialog-theme-default"
                 });
+            };
+
+            $scope.isAllowedAction = function (action) {
+                return _.includes($scope.allowedActions, action);
+            };
+
+            $scope.isValidAction = function (action) {
+                if (!$scope.selectedAppointment) {
+                    return false;
+                }
+                var status = $scope.selectedAppointment.status;
+                var allowedActions = $scope.allowedActionsByStatus.hasOwnProperty(status) ? $scope.allowedActionsByStatus[status] : [];
+                return _.includes(allowedActions, action);
             };
 
             init();
