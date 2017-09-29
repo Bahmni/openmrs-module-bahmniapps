@@ -1,7 +1,8 @@
 'use strict';
 
 describe('CalendarViewPopUp', function () {
-    var rootScope, calendarViewPopUp, popUpScope, ngDialog, $state, confirmBox, $translate, appointmentsService, dialog;
+    var rootScope, calendarViewPopUp, popUpScope, ngDialog, $state, confirmBox, $translate, appointmentsService, dialog,
+        appService, appDescriptor;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -17,12 +18,16 @@ describe('CalendarViewPopUp', function () {
             confirmBox = jasmine.createSpy('confirmBox');
             $translate = jasmine.createSpyObj('$translate', ['instant', 'storageKey', 'storage', 'preferredLanguage']);
             appointmentsService = jasmine.createSpyObj('appointmentsService', ['changeStatus']);
+            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
 
             $provide.value('ngDialog', ngDialog);
             $provide.value('$state', $state);
             $provide.value('confirmBox', confirmBox);
             $provide.value('$translate', $translate);
             $provide.value('appointmentsService', appointmentsService);
+            $provide.value('appService', appService);
         });
     });
 
@@ -184,5 +189,151 @@ describe('CalendarViewPopUp', function () {
         var config = {scope: {appointments: []}};
         calendarViewPopUp(config);
         popUpScope.confirmAction(appointment, toStatus);
+    });
+
+    describe('isAllowedAction', function () {
+        it('should init with empty array if config is undefined', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActions') {
+                    return undefined;
+                }
+                return value;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
+            expect(popUpScope.allowedActions).toEqual([]);
+        });
+
+        it('should init with configured actions if config is present', function () {
+            var allowedActionsConfig = ['Missed', 'CheckedIn'];
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActions') {
+                    return allowedActionsConfig;
+                }
+                return value;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
+            expect(popUpScope.allowedActions).toEqual(allowedActionsConfig);
+        });
+
+        it('should return false if config is empty', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActions') {
+                    return undefined;
+                }
+                return value;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
+            expect(popUpScope.isAllowedAction('Missed')).toBeFalsy();
+            expect(popUpScope.isAllowedAction('Completed')).toBeFalsy();
+            expect(popUpScope.isAllowedAction('Random')).toBeFalsy();
+        });
+
+        it('should return true if action exists in config', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActions') {
+                    return ['Completed', 'CheckedIn'];
+                }
+                return value;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
+            expect(popUpScope.isAllowedAction('Completed')).toBeTruthy();
+            expect(popUpScope.isAllowedAction('CheckedIn')).toBeTruthy();
+        });
+
+        it('should return false if action does not exist in config', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActions') {
+                    return ['Completed', 'CheckedIn'];
+                }
+                return value;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
+            expect(popUpScope.isAllowedAction('Missed')).toBeFalsy();
+            expect(popUpScope.isAllowedAction('Random')).toBeFalsy();
+        });
+    });
+
+    describe('isValidAction', function () {
+        it('should init with empty object if config is undefined', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActionsByStatus') {
+                    return undefined;
+                }
+                return value;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
+            expect(popUpScope.allowedActionsByStatus).toEqual({});
+        });
+
+        it('should init with configured actions if config is present', function () {
+            var allowedActionsByStatus = { "Scheduled": ["Completed", "Missed", "Cancelled"] };
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActionsByStatus') {
+                    return allowedActionsByStatus;
+                }
+                return value;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
+            expect(popUpScope.allowedActionsByStatus).toEqual(allowedActionsByStatus);
+        });
+
+        it('should return false if no appointment is selected', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActionsByStatus') {
+                    return { CheckedIn: ['Completed'] };
+                }
+                return value;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
+            expect(popUpScope.isValidAction(undefined, 'Missed')).toBeFalsy();
+        });
+
+        it('should return false if allowedActionsByStatus is undefined', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActionsByStatus') {
+                    return undefined;
+                }
+                return value;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
+            expect(popUpScope.allowedActionsByStatus).toEqual({});
+            var appointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
+            expect(popUpScope.isValidAction(appointment, 'Completed')).toBeFalsy();
+        });
+
+        it('should return true if action exists in allowedActionsByStatus', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActionsByStatus') {
+                    return { CheckedIn: ['Completed'] };
+                }
+                return value;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
+            var appointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
+            expect(popUpScope.isValidAction(appointment, 'Completed')).toBeTruthy();
+        });
+
+        it('should return false if action does not exist in allowedActionsByStatus', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActionsByStatus') {
+                    return { Scheduled: ['CheckedIn'] };
+                }
+                return value;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
+            var appointment = {uuid: 'appointmentUuid', status: 'Scheduled'};
+            expect(popUpScope.isValidAction(appointment, 'Completed')).toBeFalsy();
+        });
     });
 });

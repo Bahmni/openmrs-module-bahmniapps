@@ -2,8 +2,8 @@
 
 angular.module('bahmni.appointments')
     .service('calendarViewPopUp', ['$rootScope', 'ngDialog', '$state', '$translate', 'appointmentsService',
-        'confirmBox', 'checkinPopUp',
-        function ($rootScope, ngDialog, $state, $translate, appointmentsService, confirmBox, checkinPopUp) {
+        'confirmBox', 'checkinPopUp', 'appService',
+        function ($rootScope, ngDialog, $state, $translate, appointmentsService, confirmBox, checkinPopUp, appService) {
             var calendarViewPopUp = function (config) {
                 var popUpScope = $rootScope.$new();
                 var dialog;
@@ -20,6 +20,8 @@ angular.module('bahmni.appointments')
                 popUpScope.scope = scope;
                 popUpScope.patient = scope.patientList.length === 1 ? scope.patientList[0] : undefined;
                 popUpScope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
+                popUpScope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
+                popUpScope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
 
                 popUpScope.navigateTo = function (state, appointment) {
                     var params = $state.params;
@@ -75,6 +77,18 @@ angular.module('bahmni.appointments')
                         actions: [{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}],
                         className: "ngdialog-theme-default"
                     });
+                };
+
+                popUpScope.isAllowedAction = function (action) {
+                    return _.includes(popUpScope.allowedActions, action);
+                };
+
+                popUpScope.isValidAction = function (appointment, action) {
+                    if (!appointment) {
+                        return false;
+                    }
+                    var allowedActions = popUpScope.allowedActionsByStatus.hasOwnProperty(appointment.status) ? popUpScope.allowedActionsByStatus[appointment.status] : [];
+                    return _.includes(allowedActions, action);
                 };
 
                 dialog = ngDialog.open({

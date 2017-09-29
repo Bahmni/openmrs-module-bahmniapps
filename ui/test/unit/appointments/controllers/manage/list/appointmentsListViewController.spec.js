@@ -921,15 +921,151 @@ describe('AppointmentsListViewController', function () {
 
     it('should internationalize the keys if present of the json object', function () {
         $translate.instant.and.callFake(function (value) {
-            if(value === 'LOCATION_KEY') {
+            if (value === 'LOCATION_KEY') {
                 return 'Location';
             }
             return value;
         });
-       createController();
-       var jsonObject = {"array": [1, 2, 3], "LOCATION_KEY": "Registration"};
-       var display = scope.display(jsonObject);
-       var jsonString = 'array:[1,\t2,\t3],\tLocation:Registration';
-       expect(display).toEqual(jsonString);
+        createController();
+        var jsonObject = {"array": [1, 2, 3], "LOCATION_KEY": "Registration"};
+        var display = scope.display(jsonObject);
+        var jsonString = 'array:[1,\t2,\t3],\tLocation:Registration';
+        expect(display).toEqual(jsonString);
+    });
+
+    describe('isAllowedAction', function () {
+        it('should init with empty array if config is undefined', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActions') {
+                    return undefined;
+                }
+                return value;
+            });
+            createController();
+            expect(scope.allowedActions).toEqual([]);
+        });
+
+        it('should init with configured actions if config is present', function () {
+            var allowedActionsConfig = ['Missed', 'CheckedIn'];
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActions') {
+                    return allowedActionsConfig;
+                }
+                return value;
+            });
+            createController();
+            expect(scope.allowedActions).toEqual(allowedActionsConfig);
+        });
+
+        it('should return false if config is empty', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActions') {
+                    return undefined;
+                }
+                return value;
+            });
+            createController();
+            expect(scope.isAllowedAction('Missed')).toBeFalsy();
+            expect(scope.isAllowedAction('Completed')).toBeFalsy();
+            expect(scope.isAllowedAction('Random')).toBeFalsy();
+        });
+
+        it('should return true if action exists in config', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActions') {
+                    return ['Completed', 'CheckedIn'];
+                }
+                return value;
+            });
+            createController();
+            expect(scope.isAllowedAction('Completed')).toBeTruthy();
+            expect(scope.isAllowedAction('CheckedIn')).toBeTruthy();
+        });
+
+        it('should return false if action does not exist in config', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActions') {
+                    return ['Completed', 'CheckedIn'];
+                }
+                return value;
+            });
+            createController();
+            expect(scope.isAllowedAction('Missed')).toBeFalsy();
+            expect(scope.isAllowedAction('Random')).toBeFalsy();
+        });
+    });
+
+    describe('isValidAction', function () {
+        it('should init with empty object if config is undefined', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActionsByStatus') {
+                    return undefined;
+                }
+                return value;
+            });
+            createController();
+            expect(scope.allowedActionsByStatus).toEqual({});
+        });
+
+        it('should init with configured actions if config is present', function () {
+            var allowedActionsByStatus = { "Scheduled": ["Completed", "Missed", "Cancelled"] };
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActionsByStatus') {
+                    return allowedActionsByStatus;
+                }
+                return value;
+            });
+            createController();
+            expect(scope.allowedActionsByStatus).toEqual(allowedActionsByStatus);
+        });
+
+        it('should return false if no appointment is selected', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActionsByStatus') {
+                    return { CheckedIn: ['Completed'] };
+                }
+                return value;
+            });
+            createController();
+            scope.selectedAppointment = undefined;
+            expect(scope.isValidAction('Missed')).toBeFalsy();
+        });
+
+        it('should return false if allowedActionsByStatus is undefined', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActionsByStatus') {
+                    return undefined;
+                }
+                return value;
+            });
+            createController();
+            scope.selectedAppointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
+            expect(scope.allowedActionsByStatus).toEqual({});
+            expect(scope.isValidAction('Completed')).toBeFalsy();
+        });
+
+        it('should return true if action exists in allowedActionsByStatus', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActionsByStatus') {
+                    return { CheckedIn: ['Completed'] };
+                }
+                return value;
+            });
+            createController();
+            scope.selectedAppointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
+            expect(scope.isValidAction('Completed')).toBeTruthy();
+        });
+
+        it('should return false if action does not exist in allowedActionsByStatus', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowedActionsByStatus') {
+                    return { Scheduled: ['CheckedIn'] };
+                }
+                return value;
+            });
+            createController();
+            scope.selectedAppointment = {uuid: 'appointmentUuid', status: 'Scheduled'};
+            expect(scope.isValidAction('Completed')).toBeFalsy();
+        });
     });
 });
