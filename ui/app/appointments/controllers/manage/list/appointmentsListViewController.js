@@ -53,6 +53,7 @@ angular.module('bahmni.appointments')
                 $scope.filteredAppointments = appointments;
                 $scope.searchedPatient = true;
                 $stateParams.isFilterOpen = false;
+                $scope.isFilterOpen = false;
                 $stateParams.isSearchEnabled = true;
             };
 
@@ -64,6 +65,7 @@ angular.module('bahmni.appointments')
                 $scope.searchedPatient = false;
                 $scope.filteredAppointments = oldPatientData;
                 $stateParams.isFilterOpen = true;
+                $scope.isFilterOpen = true;
                 $stateParams.isSearchEnabled = false;
             };
 

@@ -563,6 +563,10 @@
   text-align: center;
 }
 .appointmentIcons {
+  .fc-content {
+    padding-right: 30px;
+    text-overflow: ellipsis;
+  }
   &:after, &:before {
     font-family: FontAwesome;
     content: "";
