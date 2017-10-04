@@ -94,7 +94,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(scope.providerAppointments.resources[0].title).toBe('No provider appointments');
     });
 
-    iit('should construct resources and events for appointments', function () {
+    it('should construct resources and events for appointments', function () {
         var allAppointments = [
             {
                 "uuid": "e53c9655-d56f-4234-b9fd-46bbb74daffa",
