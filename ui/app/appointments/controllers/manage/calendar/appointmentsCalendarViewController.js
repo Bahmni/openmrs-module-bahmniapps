@@ -22,7 +22,9 @@ angular.module('bahmni.appointments')
                         }).uniqBy('name')
                         .map(function (provider) {
                             return {id: provider.name, title: provider.name, provider: provider};
-                        }).sortBy('id')
+                        }).sortBy(function (provider) {
+                            return provider.id && provider.id.toLowerCase();
+                        })
                         .value();
 
                     var hasAppointmentsWithNoProvidersSpecified = _.find(appointments, function (appointment) {
