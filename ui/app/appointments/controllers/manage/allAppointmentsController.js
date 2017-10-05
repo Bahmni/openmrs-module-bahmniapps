@@ -4,7 +4,7 @@ angular.module('bahmni.appointments')
     .controller('AllAppointmentsController', ['$scope', '$state', 'appService',
         function ($scope, $state, appService) {
             $scope.enableCalendarView = appService.getAppDescriptor().getConfigValue('enableCalendarView');
-            $scope.enableListView = true;
+            $scope.isSearchEnabled = false;
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
 
             $scope.navigateTo = function (viewName) {
@@ -20,7 +20,6 @@ angular.module('bahmni.appointments')
             $scope.$watch(function () {
                 return $state.params.isSearchEnabled;
             }, function (isSearchEnabled) {
-                $scope.enableCalendarView = !isSearchEnabled;
-                $scope.enableListView = !isSearchEnabled;
+                $scope.isSearchEnabled = isSearchEnabled;
             }, true);
         }]);
