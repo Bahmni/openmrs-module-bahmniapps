@@ -142,7 +142,9 @@ describe('AppointmentsCalendarViewController', function () {
         scope.getAppointmentsForDate(viewDate);
 
         var resources = scope.providerAppointments.resources;
-        var sortedAppointments = _.sortBy(allAppointments, 'provider.name');
+        var sortedAppointments = _.sortBy(allAppointments, function (appointment) {
+            return appointment.provider.name.toLowerCase();
+        });
         expect(resources.length).toBe(2);
         expect(resources[0]).toEqual({id: sortedAppointments[0].provider.name, title: sortedAppointments[0].provider.name, provider: sortedAppointments[0].provider });
         expect(resources[1]).toEqual({id: sortedAppointments[1].provider.name, title: sortedAppointments[1].provider.name, provider: sortedAppointments[1].provider});
