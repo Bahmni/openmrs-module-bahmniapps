@@ -3,10 +3,11 @@
 describe("PatientListHeaderController", function () {
 
     var scope, ngDialog,
-        $bahmniCookieStore, locationService, $window, retrospectiveEntryService,
+        $bahmniCookieStore, locationService, $window, retrospectiveEntryService, translate,
         providerService, rootScope, thisController, locationsPromise, offlineService, schedulerService, offlineStatusService;
     var date = "2015-01-11";
     var encounterProvider = {value: "Test", uuid: "Test_UUID"};
+    translate = jasmine.createSpyObj('$translate', ['instant']);
 
 
     beforeEach(module('bahmni.clinical'));
@@ -59,7 +60,8 @@ describe("PatientListHeaderController", function () {
             ngDialog: ngDialog,
             offlineService: offlineService,
             schedulerService: schedulerService,
-            offlineStatusService : offlineStatusService
+            offlineStatusService : offlineStatusService,
+            $translate: translate
         });
         thisController.windowReload = function () {
         };
