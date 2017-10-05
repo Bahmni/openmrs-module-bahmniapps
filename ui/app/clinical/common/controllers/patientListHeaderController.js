@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog', 'retrospectiveEntryService', 'offlineService', 'schedulerService', 'offlineStatusService',
-        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, offlineService, schedulerService, offlineStatusService) {
+    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog', 'retrospectiveEntryService', 'offlineService', 'schedulerService', 'offlineStatusService', '$translate',
+        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, offlineService, schedulerService, offlineStatusService, $translate) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.maxStartDate = DateUtil.getDateWithoutTime(DateUtil.today());
             var selectedProvider = {};
@@ -67,7 +67,7 @@ angular.module('bahmni.clinical')
             $scope.getTitle = function () {
                 var title = [];
                 if (getCurrentCookieLocation()) {
-                    title.push(getCurrentCookieLocation().name);
+                    title.push($translate.instant(getCurrentCookieLocation().name));
                 }
                 if (getCurrentProvider() && getCurrentProvider().value) {
                     title.push(getCurrentProvider().value);
