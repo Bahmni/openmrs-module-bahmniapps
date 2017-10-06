@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 describe ('appointmentsSummaryController', function () {
     var controller, scope, appointmentsService, spinner, appService, appDescriptor, state, window;
@@ -15,6 +15,7 @@ describe ('appointmentsSummaryController', function () {
             appDescriptor.getConfigValue.and.returnValue({'week': 'week'});
             spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
             state = jasmine.createSpyObj('state', ['href', 'go']);
+            state.params = {};
             window = jasmine.createSpyObj('window', ['open']);
             appointmentsService.getAppointmentsSummary.and.returnValue(specUtil.simplePromise({response : "hello"}));
 
@@ -31,6 +32,17 @@ describe ('appointmentsSummaryController', function () {
            $window: window
        });
     };
+
+    it('should initialize to viewDate in stateParams if provided', function () {
+        var date = moment("2017-08-20").toDate();
+        state.params = {
+            viewDate: date
+        };
+        createController();
+        expect(scope.viewDate).toEqual(date);
+        expect(scope.weekStartDate).toEqual(moment(date).startOf('week').toDate());
+        expect(scope.weekEndDate).toEqual(moment(date).endOf('week').endOf('day').toDate());
+    });
 
     it('should initialize the week to current week and date to todays date', function () {
         createController();

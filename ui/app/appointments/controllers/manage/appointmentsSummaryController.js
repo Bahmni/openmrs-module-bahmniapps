@@ -4,9 +4,9 @@ angular.module('bahmni.appointments')
     .controller('AppointmentsSummaryController', ['$scope', '$state', '$window', 'spinner', 'appointmentsService', 'appService',
         function ($scope, $state, $window, spinner, appointmentsService, appService) {
             var init = function () {
-                $scope.viewDate = moment().startOf('day').toDate();
-                $scope.weekStartDate = moment().startOf('week').toDate();
-                $scope.weekEndDate = moment().endOf('week').toDate();
+                $scope.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
+                $scope.weekStartDate = moment($scope.viewDate).startOf('week').toDate();
+                $scope.weekEndDate = moment($scope.viewDate).endOf('week').toDate();
                 $scope.weekStart = appService.getAppDescriptor().getConfigValue('weekStart');
                 $scope.getAppointmentsSummaryForAWeek($scope.weekStartDate, $scope.weekEndDate);
             };
