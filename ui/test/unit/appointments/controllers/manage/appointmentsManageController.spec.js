@@ -1,16 +1,15 @@
 'use strict';
 
 describe('AppointmentsManageController', function () {
-    var controller, scope, state, location, appService, appDescriptor;
+    var controller, scope, state, appService, appDescriptor;
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function ($controller, $rootScope, $state) {
+        inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             controller = $controller;
-            state = $state;
+            state = jasmine.createSpyObj('$state', ['go']);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-            location = jasmine.createSpyObj('$location', ['url']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             appDescriptor.getConfigValue.and.returnValue(true);
@@ -21,7 +20,6 @@ describe('AppointmentsManageController', function () {
         controller('AppointmentsManageController', {
             $scope: scope,
             appService: appService,
-            $location: location,
             $state: state
         });
     };
@@ -35,20 +33,23 @@ describe('AppointmentsManageController', function () {
     });
 
     it("should navigate to summary tab", function () {
+        state.params = {};
         scope.navigateTo('summary');
-        expect(location.url).toHaveBeenCalledWith('/home/manage/summary');
+        expect(state.go).toHaveBeenCalledWith('home.manage.summary', state.params, {reload: false});
     });
 
     it("should navigate to appointments tab calendar view if configured", function () {
+        state.params = {};
         scope.navigateTo('appointments');
-        expect(location.url).toHaveBeenCalledWith('/home/manage/appointments/calendar');
+        expect(state.go).toHaveBeenCalledWith('home.manage.appointments.calendar', state.params, {reload: false});
     });
 
     it("should navigate to appointments tab list view if calendar view is not configured", function () {
         appDescriptor.getConfigValue.and.returnValue(false);
         createController();
+        state.params = {};
         scope.navigateTo('appointments');
-        expect(location.url).toHaveBeenCalledWith('/home/manage/appointments/list');
+        expect(state.go).toHaveBeenCalledWith('home.manage.appointments.list', state.params, {reload: false});
     });
 
     it('should get tabName from state.current', function () {

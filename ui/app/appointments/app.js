@@ -48,6 +48,9 @@ angular
             }).state('home.manage.summary', {
                 url: '/summary',
                 tabName: 'summary',
+                params: {
+                    viewDate: null
+                },
                 views: {
                     'content@manage': {
                         templateUrl: 'views/manage/appointmentsSummary.html',
