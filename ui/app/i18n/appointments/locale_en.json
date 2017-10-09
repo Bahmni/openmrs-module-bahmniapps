@@ -87,6 +87,7 @@
   "APPOINTMENT_CREATION_DATE_WARNING": "Date chosen is outside the availability of the service",
   "APPOINTMENT_CREATION_START_TIME_WARNING": "Start time is outside the service available times",
   "APPOINTMENT_CREATION_END_TIME_WARNING": "End time is outside the service available times",
+  "APPOINTMENT_CREATION_OUT_OF_RANGE_WARNING": "Selected time slots are outside the service available times",
   "APPOINTMENT_CREATE_WALK_IN": "  Walk-in Appointment",
   "APPOINTMENT_CREATE_NOTES": "Notes",
   "PLACEHOLDER_CREATE_NOTES": "Enter appointment notes",
