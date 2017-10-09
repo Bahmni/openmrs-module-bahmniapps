@@ -373,6 +373,78 @@ describe("AppointmentsCreateController", function () {
             expect($scope.warning.startTime).toBeFalsy();
             expect($scope.warning.endTime).toBeFalsy();
         });
+
+        it('should not include endTime value in startTimeSlots and startTime value should not be included in endTimeSlots', function () {
+            createController();
+            $scope.isPastAppointment = false;
+            $scope.appointment = { date: new Date('1970-01-01T11:30:00.000Z') };
+            $scope.selectedService= { startTime: '10:00', endTime: '13:00' };
+            $scope.minDuration = 60;
+            $scope.checkAvailability();
+
+            expect($scope.startTimes.length).toEqual(3);
+            expect($scope.endTimes.length).toEqual(3);
+        });
+
+        it('should get all slots for weekly availability', function () {
+            createController();
+            var availabilityMaxLoad = 8;
+            $scope.isPastAppointment = false;
+            $scope.minDuration = 30;
+            $scope.appointment = { date: new Date('2017-10-05T11:30:00.000Z') };
+            $scope.selectedService = {
+                startTime: '00:30:00',
+                endTime: '18:30:00',
+                weeklyAvailability: [
+                    {
+                        dayOfWeek: 'THURSDAY',
+                        startTime: '10:00:00',
+                        endTime: '11:00:00',
+                        maxAppointmentsLimit: availabilityMaxLoad
+                    },
+                    {
+                        dayOfWeek: 'THURSDAY',
+                        startTime: '12:00:00',
+                        endTime: '13:00:00',
+                        maxAppointmentsLimit: availabilityMaxLoad
+                    }
+                ]
+            };
+            $scope.checkAvailability();
+
+            expect($scope.startTimes.length).toEqual(4);
+            expect($scope.endTimes.length).toEqual(4);
+        });
+
+        it('should get empty slots when there is weekly availability but not for the given appointment day', function () {
+            createController();
+            var availabilityMaxLoad = 8;
+            $scope.isPastAppointment = false;
+            $scope.minDuration = 30;
+            $scope.appointment = { date: new Date('2017-10-04T11:30:00.000Z') };
+            $scope.selectedService = {
+                startTime: '00:30:00',
+                endTime: '18:30:00',
+                weeklyAvailability: [
+                    {
+                        dayOfWeek: 'THURSDAY',
+                        startTime: '10:00:00',
+                        endTime: '11:00:00',
+                        maxAppointmentsLimit: availabilityMaxLoad
+                    },
+                    {
+                        dayOfWeek: 'THURSDAY',
+                        startTime: '12:00:00',
+                        endTime: '13:00:00',
+                        maxAppointmentsLimit: availabilityMaxLoad
+                    }
+                ]
+            };
+            $scope.checkAvailability();
+
+            expect($scope.startTimes.length).toEqual(0);
+            expect($scope.endTimes.length).toEqual(0);
+        });
     });
 
     describe('loadCalculation', function () {
@@ -607,6 +679,40 @@ describe("AppointmentsCreateController", function () {
             expect($scope.currentLoad).toBeUndefined();
             expect($scope.maxAppointmentsLimit).toBeUndefined();
         });
+
+        it('outOfRange should be true when selected date having more than one availability slots, and startTime and endTime are not in one slot', function () {
+            createController();
+            $scope.selectedService = {
+                weeklyAvailability: [
+                    {
+                        dayOfWeek: 'SUNDAY',
+                        startTime: '10:00:00',
+                        endTime: '13:00:00',
+                        maxAppointmentsLimit: 5
+                    },
+                    {
+                        dayOfWeek: 'SUNDAY',
+                        startTime: '17:00:00',
+                        endTime: '18:00:00',
+                        maxAppointmentsLimit: 5
+                    }
+                ]
+            };
+            $scope.appointment = {
+                service: {name: 'Cardiology'},
+                date: new Date('2017-10-08T11:30:00.000Z'),
+                startTime: '11:15:00',
+                endTime: '17:20:00'
+            };
+            $scope.warning = {
+                appointmentDate: false,
+                startTime: false,
+                endTime: false,
+                outOfRange: false
+            };
+            $scope.onSelectEndTime();
+            expect($scope.warning.outOfRange).toBeTruthy();
+        })
     });
 
     it('should navigate to previous state', function () {
@@ -680,5 +786,4 @@ describe("AppointmentsCreateController", function () {
         $scope.onServiceTypeChange();
         expect($scope.minDuration).toEqual(15);
     });
-
 });
