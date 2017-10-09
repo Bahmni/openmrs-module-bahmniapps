@@ -59,6 +59,12 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            $scope.endTimeSlots = function () {
+                return $q(function (resolve) {
+                    resolve($scope.endTimes);
+                });
+            };
+
             $scope.onSelectPatient = function (data) {
                 $scope.appointment.patient = data;
                 return spinner.forPromise(appointmentsService.search({patientUuid: data.uuid}).then(function (oldAppointments) {
@@ -131,6 +137,23 @@ angular.module('bahmni.appointments')
                 return true;
             };
 
+            var isAppointmentStartTimeAndEndTimeWithinServiceAvailability = function () {
+                var selectedService = $scope.selectedService;
+                var appointmentStartTime = $scope.appointment.startTime;
+                var appointmentEndTime = $scope.appointment.endTime;
+
+                if ($scope.weeklyAvailabilityOnSelectedDate && $scope.weeklyAvailabilityOnSelectedDate.length) {
+                    return _.find($scope.weeklyAvailabilityOnSelectedDate, function (availability) {
+                        return (moment(availability.startTime, 'hh:mm a') <= moment(appointmentStartTime, 'hh:mm a')) &&
+                        (moment(appointmentEndTime, 'hh:mm a') <= moment(availability.endTime, 'hh:mm a'));
+                    });
+                } else if ($scope.allowedStartTime || $scope.allowedEndTime) {
+                    return (moment($scope.allowedStartTime, 'hh:mm a') <= moment(appointmentStartTime, 'hh:mm a')) &&
+                    (moment(appointmentEndTime, 'hh:mm a') <= moment(selectedService.endTime, 'hh:mm a'));
+                }
+                return false;
+            };
+
             $scope.onSelectStartTime = function (data) {
                 $scope.warning.startTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.startTime);
                 if (moment($scope.appointment.startTime, 'hh:mm a').isValid()) {
@@ -143,6 +166,10 @@ angular.module('bahmni.appointments')
                 $scope.warning.endTime = false;
                 $scope.checkAvailability();
                 $scope.warning.endTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.endTime);
+
+                if ($scope.appointment.startTime && !($scope.warning.appointmentDate || $scope.warning.startTime || $scope.warning.endTime)) {
+                    $scope.warning.outOfRange = !isAppointmentStartTimeAndEndTimeWithinServiceAvailability();
+                }
             };
 
             var triggerSlotCalculation = function () {
@@ -168,6 +195,7 @@ angular.module('bahmni.appointments')
                 $scope.warning.appointmentDate = false;
                 $scope.warning.startTime = false;
                 $scope.warning.endTime = false;
+                $scope.warning.outOfRange = false;
                 clearSlotsInfo();
             };
 
@@ -231,13 +259,15 @@ angular.module('bahmni.appointments')
                 if (!$scope.isPastAppointment && $scope.selectedService && $scope.appointment.date) {
                     setServiceAvailableTimesForADate($scope.appointment.date);
                     var dayOfWeek = moment($scope.appointment.date).format('dddd').toUpperCase();
-                    if ($scope.selectedService.weeklyAvailability && $scope.selectedService.weeklyAvailability.length > 0) {
-                        var allSlots = getAllSlots('', '', $scope.minDuration);
-                        $scope.startTimes = getAvailableSlots(dayOfWeek, $scope.selectedService.weeklyAvailability, allSlots);
+                    var allSlots;
+                    if (!_.isEmpty($scope.selectedService.weeklyAvailability)) {
+                        allSlots = getSlotsForWeeklyAvailability(dayOfWeek, $scope.selectedService.weeklyAvailability, $scope.minDuration);
                         $scope.warning.appointmentDate = !isServiceAvailableOnWeekDate(dayOfWeek, $scope.selectedService.weeklyAvailability);
                     } else {
-                        $scope.startTimes = getAllSlots($scope.selectedService.startTime, $scope.selectedService.endTime, $scope.minDuration);
+                        allSlots = getAllSlots($scope.selectedService.startTime, $scope.selectedService.endTime, $scope.minDuration);
                     }
+                    $scope.startTimes = allSlots.startTime;
+                    $scope.endTimes = allSlots.endTime;
                     $scope.warning.endTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.endTime);
                     $scope.warning.startTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.startTime);
                     triggerSlotCalculation();
@@ -289,34 +319,45 @@ angular.module('bahmni.appointments')
                 cleanUpListenerStateChangeStart();
             });
 
-            var getAvailableSlots = function (dayOfWeek, weeklyAvailability, allSlots) {
-                return _.filter(allSlots, function (slot) {
-                    var currentSlot = moment(slot, 'hh:mm a');
-                    var dayAvailability = _.find(weeklyAvailability, function (o) {
-                        return o.dayOfWeek === dayOfWeek;
-                    });
-                    return dayAvailability &&
-                        moment(dayAvailability.startTime, 'hh:mm a') <= currentSlot &&
-                        moment(dayAvailability.endTime, 'hh:mm a') > currentSlot;
+            var getSlotsForWeeklyAvailability = function (dayOfWeek, weeklyAvailability, durationInMin) {
+                var slots = { startTime: [], endTime: [] };
+                var dayAvailability = _.filter(weeklyAvailability, function (o) {
+                    return o.dayOfWeek === dayOfWeek;
                 });
+                dayAvailability = _.sortBy(dayAvailability, 'startTime');
+                _.each(dayAvailability, function (day) {
+                    var allSlots = getAllSlots(day.startTime, day.endTime, durationInMin);
+
+                    slots.startTime = _.concat(slots.startTime, allSlots.startTime);
+                    slots.endTime = _.concat(slots.endTime, allSlots.endTime);
+                });
+                return slots;
             };
 
-            var getAllSlots = function (startString, endString, durationInMin) {
-                startString = (startString && startString.length > 0) ? startString : '00:00';
-                endString = (endString && endString.length > 0) ? endString : '24:00';
+            var getAllSlots = function (startTimeString, endTimeString, durationInMin) {
+                startTimeString = _.isEmpty(startTimeString) ? '00:00' : startTimeString;
+                endTimeString = _.isEmpty(endTimeString) ? '23:59' : endTimeString;
 
-                var start = moment(startString, 'hh:mm a');
-                var end = moment(endString, 'hh:mm a');
-                start.minutes(Math.ceil(start.minutes() / durationInMin) * durationInMin);
+                var startTime = getFormattedTime(startTimeString);
+                var endTime = getFormattedTime(endTimeString);
 
                 var result = [];
-                var current = moment(start);
+                var slots = { startTime: [], endTime: [] };
+                var current = moment(startTime);
 
-                while (current.valueOf() < end.valueOf()) {
+                while (current.valueOf() <= endTime.valueOf()) {
                     result.push(current.format('hh:mm a'));
                     current.add(durationInMin, 'minutes');
                 }
-                return result;
+
+                slots.startTime = _.slice(result, 0, result.length - 1);
+                slots.endTime = _.slice(result, 1);
+
+                return slots;
+            };
+
+            var getFormattedTime = function (time) {
+                return moment(time, 'hh:mm a');
             };
 
             var isFormFilled = function () {
