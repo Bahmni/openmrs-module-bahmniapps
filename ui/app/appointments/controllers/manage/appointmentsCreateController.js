@@ -138,7 +138,6 @@ angular.module('bahmni.appointments')
             };
 
             var isAppointmentStartTimeAndEndTimeWithinServiceAvailability = function () {
-                var selectedService = $scope.selectedService;
                 var appointmentStartTime = $scope.appointment.startTime;
                 var appointmentEndTime = $scope.appointment.endTime;
 
@@ -147,11 +146,8 @@ angular.module('bahmni.appointments')
                         return (moment(availability.startTime, 'hh:mm a') <= moment(appointmentStartTime, 'hh:mm a')) &&
                         (moment(appointmentEndTime, 'hh:mm a') <= moment(availability.endTime, 'hh:mm a'));
                     });
-                } else if ($scope.allowedStartTime || $scope.allowedEndTime) {
-                    return (moment($scope.allowedStartTime, 'hh:mm a') <= moment(appointmentStartTime, 'hh:mm a')) &&
-                    (moment(appointmentEndTime, 'hh:mm a') <= moment(selectedService.endTime, 'hh:mm a'));
                 }
-                return false;
+                return true;
             };
 
             $scope.onSelectStartTime = function (data) {
