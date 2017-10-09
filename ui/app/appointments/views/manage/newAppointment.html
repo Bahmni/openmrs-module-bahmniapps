@@ -140,7 +140,7 @@
                            min-length=1
                            bahmni-autocomplete
                            ng-model="appointment.endTime"
-                           source="timeSource"
+                           source="endTimeSlots"
                            on-select="onSelectEndTime"
                            ng-blur="onSelectEndTime()"
                            ng-class="{'illegalValue': isInvalid}"
@@ -161,6 +161,10 @@
                 <p class="warning-message" ng-if="warning.endTime">
                     <i class="fa fa-exclamation-triangle"></i>
                     <span> {{'APPOINTMENT_CREATION_END_TIME_WARNING' | translate}} </span>
+                </p>
+                <p class="warning-message" ng-if="warning.outOfRange">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <span> {{'APPOINTMENT_CREATION_OUT_OF_RANGE_WARNING' | translate}} </span>
                 </p>
                 <p class="walk-in-app">
                     <input type="checkbox" ng-model="appointment.appointmentKind" ng-true-value="'WalkIn'"
