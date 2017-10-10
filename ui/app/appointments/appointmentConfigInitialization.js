@@ -42,9 +42,10 @@ angular.module('bahmni.appointments').factory('appointmentConfigInitialization',
                 };
 
                 var getAllProviders = function () {
-                    return providerService.list().then(function (response) {
-                        return _.filter(response.data.results, function (result) {
-                            return result.display;
+                    var params = {v: "custom:(display,person,uuid)"};
+                    return providerService.list(params).then(function (response) {
+                        return _.uniqBy(response.data.results, function (result) {
+                            return result.person && result.person.display;
                         });
                     });
                 };
