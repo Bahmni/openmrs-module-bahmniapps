@@ -31,6 +31,5 @@ echo "Starting Xvfb process $XVFB_PID"
 grunt web
 cd dist && zip -r ../target/${ZIP_FILE_NAME}.zip *
 
-
 echo "Killing Xvfb process $XVFB_PID"
 /usr/bin/sudo kill $XVFB_PID

@@ -1,0 +1,25 @@
+{
+    "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/{{ primaryIdentifier }}  ...",
+    "SEARCH_KEY": "Search",
+    "NO_ADMISSION_DETAILS_MESSAGE": "No Admission Details for this patient.",
+    "NO_DIAGNOSIS_MESSAGE": "No diagnosis for this patient",
+    "CLINICAL_YEARS_TRANSLATION_KEY": "Years",
+    "CLINICAL_MONTHS_TRANSLATION_KEY": "months",
+    "CLINICAL_DAYS_TRANSLATION_KEY": "days",
+    "CONCEPT_SET_GROUP_EXPAND_ALL_KEY":"Expand All",
+    "CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY":"Collapse All",
+
+    "NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY": "No dispositions available.",
+    "ALL_DIAGNOSES_KEY": "All Diagnoses",
+    "DISPLAY_CONTROL_ERROR_MESSAGE_KEY": "No {{ displayControl }} for this patient",
+    "VISIT_CHANGE_CONFIRMATION_DIALOG_MESSAGE_KEY": "Current visit type is <b>{{ visitType }}</b>, Do you want to close it and start a new <b>{{ defaultVisitType }}</b> visit?",
+    "VISIT_CHANGE_CONFIRMATION_OPTION_YES_KEY": "Yes",
+    "VISIT_CHANGE_CONFIRMATION_OPTION_CANCEL_KEY": "Cancel",
+    "VISIT_CHANGE_CONFIRMATION_OPTION_CONTINUE_KEY": "Continue with current Visit",
+    "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
+    "MESSAGE_DIALOG_OPTION_OKAY": "OK",
+    "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY" : "Please configure a valid default visit type",
+    "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY" : "Please configure a default visit type",
+    "PATIENT_VISIT_ATTRIBUTES_PAGE_KEY":"Visit Attributes",
+    "PATIENT_REGISTRATION_PAGE_KEY" : "Registration"
+}

@@ -135,8 +135,6 @@
         }
     }
 }
-div.ngdialog-close {
-}
 .dashboard-treatment-section, .dashboard-laborders-section, .dashboard-visits-section, .dashboard-more-info {
 
 }
@@ -230,9 +228,17 @@ div.ngdialog-close {
 
                 }
                 section{
-                    height: 98%;
+                    height: 99%;
+                    overflow: auto !important;
                     &.form-field-inline{
                         height:auto;
+                    }
+                    .hierarchy ul li {
+                        overflow: hidden !important;
+                        img {
+                            max-width: 100%;
+                            margin: 0 auto;
+                        }
                     }
                 }
 

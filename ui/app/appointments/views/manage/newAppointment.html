@@ -86,7 +86,7 @@
                         {{'APPOINTMENT_PROVIDER' | translate}}
                     </label>
                     <select id="provider" ng-model="appointment.provider"
-                            ng-options="provider.display for provider in appointmentCreateConfig.providers | orderBy:'display'"
+                            ng-options="provider.person.display for provider in appointmentCreateConfig.providers | orderBy:'person.display'"
                             ng-disabled="isEditMode() && !isEditAllowed()">
                         <option value="">{{ ::'PLACEHOLDER_CREATE_PROVIDER' | translate}}</option>
                     </select>

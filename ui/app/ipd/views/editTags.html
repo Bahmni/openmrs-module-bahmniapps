@@ -1,0 +1,41 @@
+<div data-ng-controller="editTagsController" class="revise-refill-modal-wrapper transfer-wrapper" aria-labelledby="dialog-label">
+    <style type="text/css">
+        .opd-header-wrapper {
+            z-index: 10000 !important;
+        }
+    </style>
+    <div class="ngdialog-close clearfix"></div>
+    <h4>Bed Tagging</h4>
+    <div class="transfer-section clearfix">
+        <p class="transfer-container">
+            <span>Bed# {{$root.selectedBedInfo.bed.bedNumber}}</span>
+            <span>Location: {{$root.selectedBedInfo.roomName}}</span>
+            <span>Dept: {{ward.name}}</span>
+        </p>
+    </div>
+    <div class="all-tags-button clearfix">
+        <button ng-repeat="tag in allTags" ng-click="onClickingTheTag(tag)" ng-disabled="disableTagButton(tag)">{{tag.name}}</button>
+    </div>
+    <div class="clearfix">
+        <div class="autocompleteMultiSelect bed-tag-selector">
+            <tags-input ng-model="values" display-property="name"
+                        ng-blur="removeFreeTextItem()"
+                        key-property="name"
+                        ng-init="focusonthetest()"
+                        on-tag-added="addItem($tag)"
+                        on-tag-removed="removeItem($tag)"
+                        add-from-autocomplete-only="true"
+                        replace-spaces-with-dashes="false"
+                        >
+                <auto-complete source="search($query)" min-length="2"></auto-complete>
+            </tags-input>
+        </div>
+    <div class="dialog-button-group ipd-button-group">
+        <button id="modal-revise-button1" class="secondary-button" ng-click="updateTagsForTheSelectedBed()">Update
+        </button>
+        <button id="modal-revise-button3" class="secondary-button" ng-click="cancelConfirmationDialog()">Cancel</button>
+    </div>
+    <span class="ngdialog-end"></span>
+</div>
+
+

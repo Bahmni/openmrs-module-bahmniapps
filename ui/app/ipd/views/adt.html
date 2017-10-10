@@ -1,0 +1,12 @@
+<div class="ADT-container">
+    <form>
+        <div id="observations" ng-if="patient">
+            <edit-adt-observations patient="patient" concept-set-name="expectedDateOfDischargeConceptName" edit-mode="$parent.editMode" visit-type-uuid="currentVisitTypeUuid"></edit-adt-observations>
+        </div>
+        <div class="clearfix action-button" ng-if="showAdtButtons()" show-if-privilege="{{assignBedsPrivilege}}">
+            <button class="adt-admit" ng-click="admit()" ng-disabled="disableAdmitButton()">Admit</button>
+            <button class="adt-transfer" ng-click="transfer()" ng-disabled="disableTransfer()">Movement</button>
+            <button class="adt-discharge" ng-click="discharge()" ng-disabled="disableDischargeButton()">Discharge</button>
+        </div>
+    </form>
+</div>

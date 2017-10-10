@@ -135,7 +135,6 @@ angular.module('bahmni.common.displaycontrol.observation')
             if (_.isEmpty(bahmniObservations)) {
                 return;
             }
-
             formService.getAllForms().then(function (response) {
                 var allForms = response.data;
                 _.forEach(bahmniObservations, function (observation) {

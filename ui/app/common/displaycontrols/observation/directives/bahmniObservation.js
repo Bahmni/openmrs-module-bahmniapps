@@ -12,14 +12,6 @@ angular.module('bahmni.common.displaycontrol.observation')
                     var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
 
-                    if ($scope.config.conceptNames) {
-                        observations = _.filter(observations, function (observation) {
-                            return _.some($scope.config.conceptNames, function (conceptName) {
-                                return _.toLower(conceptName) === _.toLower(_.get(observation, 'concept.name'));
-                            });
-                        });
-                    }
-
                     if ($scope.config.persistOrderOfConcepts) {
                         $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().persistOrderOfConceptNames(observations);
                     } else {
@@ -63,13 +55,13 @@ angular.module('bahmni.common.displaycontrol.observation')
                                 mapObservation(response.data, $scope.config);
                             });
                         } else if ($scope.enrollment) {
-                            $scope.initialization = observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope).then(function (response) {
+                            $scope.initialization = observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope, $scope.config.obsSelectList).then(function (response) {
                                 mapObservation(response.data, $scope.config);
                             });
                         } else {
                             $scope.initialization = observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames,
                                 $scope.config.scope, $scope.config.numberOfVisits, $scope.visitUuid,
-                                $scope.config.obsIgnoreList, null).then(function (response) {
+                                $scope.config.obsIgnoreList, $scope.config.obsSelectList, null).then(function (response) {
                                     mapObservation(response.data, $scope.config);
                                 });
                         }

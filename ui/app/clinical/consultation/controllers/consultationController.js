@@ -132,6 +132,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return appService.getAppDescriptor().getConfigValue('allowPatientSwitchOnConsultation') === true;
             };
 
+            $scope.isGoToIPDButtonHidden = function () {
+                return $scope.ipdButtonConfig.hideGoToIPDButton;
+            };
+
             var setCurrentBoardBasedOnPath = function () {
                 var currentPath = $location.url();
                 var board = _.find($scope.availableBoards, function (board) {
@@ -150,6 +154,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
                 $scope.availableBoards = $scope.availableBoards.concat(appExtensions);
                 $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog');
+                $scope.ipdButtonConfig = appService.getAppDescriptor().getConfigValue('ipdButton');
                 setCurrentBoardBasedOnPath();
             };
 
@@ -178,6 +183,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             var cleanUpListenerErrorsOnForm = $scope.$on("event:errorsOnForm", function () {
                 $scope.showConfirmationPopUp = true;
             });
+
+            $scope.generateBedManagementURL = function (visitUuid) {
+                return appService.getAppDescriptor().formatUrl($scope.ipdButtonConfig.forwardUrl, {'patientUuid': $scope.patient.uuid, 'visitUuid': visitUuid});
+            };
 
             $scope.displayConfirmationDialog = function (event) {
                 if ($rootScope.hasVisitedConsultation && $scope.showSaveConfirmDialogConfig) {

@@ -28,7 +28,7 @@ describe('multiSelectAutocomplete', function () {
     };
 
     it('should remove item from selectedValues', function () {
-        scope.providers = [{name: "test1", display: "test1", uuid: "test1"}];
+        scope.providers = [{name: "test1",person:{display:"test1"}, display: "test1", uuid: "test1"}];
         scope.keyProperty = "uuid";
         scope.selectedProviders = [];
 

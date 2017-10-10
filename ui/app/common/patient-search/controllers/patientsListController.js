@@ -67,8 +67,16 @@ angular.module('bahmni.common.patientSearch')
             return [];
         };
 
-        $scope.isHeadingOfIdentifier = function (heading) {
-            return _.includes(Bahmni.Common.PatientSearch.Constants.identifierHeading, heading);
+        $scope.isHeadingOfLinkColumn = function (search, heading) {
+            var identifierHeading = _.includes(Bahmni.Common.PatientSearch.Constants.identifierHeading, heading);
+            if (identifierHeading) {
+                return identifierHeading;
+            } else if (search.searchType && search.searchType.links) {
+                return _.find(search.searchType.links, {linkColumn: heading});
+            }
+            else if (search.searchType && search.searchType.linkColumn) {
+                return _.includes([search.searchType.linkColumn], heading);
+            }
         };
 
         $scope.isHeadingOfName = function (heading) {
@@ -106,7 +114,9 @@ angular.module('bahmni.common.patientSearch')
                 printHtmlLocation: appExtn.extensionParams.printHtmlLocation || null,
                 additionalParams: appExtn.extensionParams.additionalParams,
                 searchColumns: appExtn.extensionParams.searchColumns,
-                translationKey: appExtn.extensionParams.translationKey
+                translationKey: appExtn.extensionParams.translationKey,
+                linkColumn: appExtn.extensionParams.linkColumn,
+                links: appExtn.extensionParams.links
             };
         };
 
@@ -124,21 +134,25 @@ angular.module('bahmni.common.patientSearch')
             }
         };
 
-        $scope.forwardPatient = function (patient) {
+        $scope.forwardPatient = function (patient, heading) {
             var options = $.extend({}, $stateParams);
+            $rootScope.patientAdmitLocationStatus = patient.Status;
             $.extend(options, {
                 patientUuid: patient.uuid,
                 visitUuid: patient.activeVisitUuid || null,
                 encounterUuid: $stateParams.encounterUuid || 'active',
                 programUuid: patient.programUuid || null,
                 enrollment: patient.enrollment || null,
-                forwardUrl: patient.forwardUrl || null
+                forwardUrl: patient.forwardUrl || null,
+                dateEnrolled: patient.dateEnrolled || null
             });
 
-            if (options.forwardUrl !== null) {
-                $window.open(appService.getAppDescriptor().formatUrl(options.forwardUrl, options, true), '_blank');
-            } else {
-                $window.location = appService.getAppDescriptor().formatUrl($scope.search.searchType.forwardUrl, options, true);
+            var link = options.forwardUrl ? {url: options.forwardUrl, newTab: true} : {url: $scope.search.searchType.forwardUrl, newTab: false};
+            if ($scope.search.searchType.links) {
+                link = _.find($scope.search.searchType.links, {linkColumn: heading}) || link;
+            }
+            if (link.url && link.url !== null) {
+                $window.open(appService.getAppDescriptor().formatUrl(link.url, options, true), link.newTab ? "_blank" : "_self");
             }
         };
         initialize();
