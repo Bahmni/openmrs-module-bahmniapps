@@ -22,5 +22,4 @@ angular.module('bahmni.appointments')
             }, function (isSearchEnabled) {
                 $scope.isSearchEnabled = isSearchEnabled;
             }, true);
-
         }]);
