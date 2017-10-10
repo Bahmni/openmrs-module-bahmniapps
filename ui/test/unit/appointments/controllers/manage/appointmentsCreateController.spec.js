@@ -712,7 +712,19 @@ describe("AppointmentsCreateController", function () {
             };
             $scope.onSelectEndTime();
             expect($scope.warning.outOfRange).toBeTruthy();
-        })
+        });
+
+        it('outOfRange should be false when there is no weekly service and appointmentDate, startTime, endTime are false', function () {
+            createController();
+            $scope.warning = {
+                appointmentDate: false,
+                startTime: false,
+                endTime: false,
+                outOfRange: false
+            };
+            $scope.onSelectEndTime();
+            expect($scope.warning.outOfRange).toBeFalsy();
+        });
     });
 
     it('should navigate to previous state', function () {
