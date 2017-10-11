@@ -20,10 +20,11 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        var list = function () {
+        var list = function (params) {
             return $http.get(Bahmni.Common.Constants.providerUrl, {
                 method: "GET",
-                cache: false
+                cache: false,
+                params: params
             });
         };
 
