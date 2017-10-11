@@ -19,7 +19,7 @@ describe('AppointmentConfigInitialization', function () {
         appointmentsServiceService.getService.and.returnValue(specUtil.simplePromise({data: appointmentServices[0]}));
 
         providerService = jasmine.createSpyObj('providerService', ['list']);
-        providers = [{display: 'Superman'}];
+        providers = [{person:{display: 'Superman'}}];
         providerService.list.and.returnValue(specUtil.simplePromise({data: {results: providers}}));
 
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);

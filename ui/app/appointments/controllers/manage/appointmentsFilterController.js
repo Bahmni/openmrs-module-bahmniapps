@@ -20,11 +20,13 @@ angular.module('bahmni.appointments')
                         return status.name !== "Cancelled";
                     });
                 }
-                spinner.forPromise($q.all([appointmentsServiceService.getAllServicesWithServiceTypes(), providerService.list()]).then(function (response) {
-                    $scope.providers = _.filter(response[1].data.results, function (provider) {
-                        return provider.display;
+                var params = {v: "custom:(display,person,uuid)"};
+
+                spinner.forPromise($q.all([appointmentsServiceService.getAllServicesWithServiceTypes(), providerService.list(params)]).then(function (response) {
+                    $scope.providers = _.uniqBy(response[1].data.results, function (provider) {
+                        return provider.person.display;
                     }).map(function (provider) {
-                        provider.name = provider.display;
+                        provider.name = provider.person.display;
                         return provider;
                     });
                     $scope.providers.push({
@@ -85,13 +87,13 @@ angular.module('bahmni.appointments')
             $scope.expandFilter = function () {
                 $state.params.isFilterOpen = true;
                 $scope.isFilterOpen = $state.params.isFilterOpen;
-                $rootScope.$broadcast("filterClosedOpen", { filterViewStatus: $scope.isFilterOpen });
+                $rootScope.$broadcast("filterClosedOpen", {filterViewStatus: $scope.isFilterOpen});
             };
 
             $scope.minimizeFilter = function () {
                 $state.params.isFilterOpen = false;
                 $scope.isFilterOpen = $state.params.isFilterOpen;
-                $rootScope.$broadcast("filterClosedOpen", { filterViewStatus: $scope.isFilterOpen });
+                $rootScope.$broadcast("filterClosedOpen", {filterViewStatus: $scope.isFilterOpen});
             };
             var resetFilterParams = function () {
                 $state.params.filterParams = {
