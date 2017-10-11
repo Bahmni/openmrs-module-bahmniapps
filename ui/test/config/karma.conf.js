@@ -68,8 +68,6 @@ module.exports = function (config) {
             'app/registration/**/*.js',
             'app/appointments/**/*.js',
             'test/support/**/*.js',
-            'test/integration/**/*.js',
-            'test/integration/utils/*.js',
             'test/unit/**/*.js',
             "test/unit/common/util/dateTimeFormatter.spec.js"
         ],
@@ -95,8 +93,7 @@ module.exports = function (config) {
             'test/unit/common/offline/scheduler/*.js',
             'app/common/util/androidDateTimeFormatter.js',
             'test/unit/common/util/androidDateTimeFormatter.spec.js',
-            'app/common/offline/dbservices/dao/labOrderResultsDbService.js',
-            'test/integration/dbServices/dao/labOrderResultsDbService.spec.js'
+            'app/common/offline/dbservices/dao/labOrderResultsDbService.js'
         ],
         reporters: ['junit', (process.env.CI === 'true' ? 'dots' : 'progress'), 'coverage'],
         preprocessors: {
