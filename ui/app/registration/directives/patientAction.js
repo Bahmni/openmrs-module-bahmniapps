@@ -3,10 +3,10 @@
 angular.module('bahmni.registration')
     .directive('patientAction', ['$window', '$location', '$state', 'spinner', '$rootScope', '$stateParams',
         '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService',
-        'messagingService', '$translate', 'offlineService', 'auditLogService',
+        'messagingService', '$translate', 'auditLogService',
         function ($window, $location, $state, spinner, $rootScope, $stateParams,
                   $bahmniCookieStore, appService, visitService, sessionService, encounterService,
-                  messagingService, $translate, offlineService, auditLogService) {
+                  messagingService, $translate, auditLogService) {
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;
@@ -18,7 +18,6 @@ angular.module('bahmni.registration')
                 var showStartVisitButton = appService.getAppDescriptor().getConfigValue("showStartVisitButton");
                 var forwardUrlsForVisitTypes = appService.getAppDescriptor().getConfigValue("forwardUrlsForVisitTypes");
                 showStartVisitButton = showStartVisitButton || true;
-                var isOfflineApp = offlineService.isOfflineApp();
                 var visitLocationUuid = $rootScope.visitLocation;
                 var forwardUrls = forwardUrlsForVisitTypes || false;
 
@@ -45,9 +44,7 @@ angular.module('bahmni.registration')
                 };
 
                 function setForwardActionKey () {
-                    if (editActionsConfig.length === 0 && isOfflineApp) {
-                        $scope.forwardActionKey = conceptSetExtensions.length === 0 ? undefined : 'enterVisitDetails';
-                    } else if (editActionsConfig.length === 0) {
+                    if (editActionsConfig.length === 0) {
                         $scope.forwardActionKey = self.hasActiveVisit ? (getForwardUrlEntryForVisitFromTheConfig() ? keyForActiveVisitEntry() : 'enterVisitDetails') : 'startVisit';
                     } else {
                         $scope.actionConfig = editActionsConfig[0];
@@ -75,7 +72,6 @@ angular.module('bahmni.registration')
                             });
                         }
                         self.hasActiveVisit = activeVisitForCurrentLoginLocation && (activeVisitForCurrentLoginLocation.length > 0);
-                        self.hasActiveVisit = self.hasActiveVisit ? self.hasActiveVisit : (isOfflineApp ? true : false);
                         if (self.hasActiveVisit) {
                             self.activeVisit = activeVisitForCurrentLoginLocation[0];
                         }

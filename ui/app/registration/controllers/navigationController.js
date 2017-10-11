@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService', '$sce', 'offlineService', 'schedulerService',
-        function ($scope, $rootScope, $location, sessionService, $window, appService, $sce, offlineService, schedulerService) {
+    .controller('NavigationController', ['$scope', '$rootScope', '$location', 'sessionService', '$window', 'appService', '$sce', 'schedulerService',
+        function ($scope, $rootScope, $location, sessionService, $window, appService, $sce, schedulerService) {
             $scope.extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.navigation", "link");
-            $scope.isOfflineApp = offlineService.isOfflineApp();
             $scope.goTo = function (url) {
                 $location.url(url);
             };
