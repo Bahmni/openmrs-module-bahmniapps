@@ -3,7 +3,7 @@
 describe('navigationController', function () {
 
     var $aController, window, sce;
-    var scopeMock,rootScopeMock,locationMock,offlineService,sessionServiceMock,appServiceMock,schedulerService,scheduledSyncMock;
+    var scopeMock,rootScopeMock,locationMock,sessionServiceMock,appServiceMock,schedulerService,scheduledSyncMock;
 
     beforeEach(module('bahmni.registration'));
 
@@ -18,12 +18,9 @@ describe('navigationController', function () {
         appServiceMock.getAppDescriptor.and.returnValue({
             getExtensions: function () { return {} }
         });
-        offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
         schedulerService = jasmine.createSpyObj('schedulerService', ['sync','stopSync']);
         schedulerService.sync.and.returnValue({});
         schedulerService.stopSync.and.returnValue({});
-
-        offlineService.isOfflineApp.and.returnValue(true);
     }));
 
     beforeEach(
@@ -45,21 +42,13 @@ describe('navigationController', function () {
             $sce: sce,
             sessionService: sessionServiceMock,
             appService: appServiceMock,
-            offlineService: offlineService,
             scheduledSync:scheduledSyncMock,
             schedulerService: schedulerService
         });
     });
 
-    it("should set isOfflineApp  to true if it is chrome or android app", function () {
-        scopeMock.$digest();
-        expect(offlineService.isOfflineApp).toHaveBeenCalled();
-        expect(scopeMock.isOfflineApp).toBeTruthy();
-    });
-
     it("should set isSyncing to true  when user clicks on sync button", function () {
         scopeMock.$digest();
-        expect(offlineService.isOfflineApp).toHaveBeenCalled();
 
         rootScopeMock.$broadcast("schedulerStage","stage1");
         expect(scopeMock.isSyncing).toBeTruthy();

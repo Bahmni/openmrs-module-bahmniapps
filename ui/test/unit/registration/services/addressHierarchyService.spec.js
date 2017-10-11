@@ -46,13 +46,6 @@ describe('addressHierarchyService', function () {
         get:jasmine.createSpy('Http get').and.returnValue(resultList)
     };
 
-    var mockofflineService = jasmine.createSpyObj('offlineService', ['isOfflineApp', 'isAndroidApp']);
-    mockofflineService.isOfflineApp.and.returnValue(false);
-    mockofflineService.isAndroidApp.and.returnValue(false);
-
-    var mockofflineDbService= jasmine.createSpyObj('offlineDbService', ['searchAddress']);
-    mockofflineDbService.searchAddress.and.returnValue(resultList);
-
     var mockandroidDbService= jasmine.createSpyObj('androidDbService', ['searchAddress']);
     mockandroidDbService.searchAddress.and.returnValue(resultList);
 
@@ -60,9 +53,6 @@ describe('addressHierarchyService', function () {
     beforeEach(module('bahmni.registration'));
     beforeEach(module(function ($provide) {
         $provide.value('$http', mockHttp);
-        $provide.value('offlineService', mockofflineService);
-        $provide.value('androidDbService', mockandroidDbService);
-        $provide.value('offlineDbService', mockofflineDbService);
     }));
 
     describe("search", function () {
@@ -81,8 +71,6 @@ describe('addressHierarchyService', function () {
         }]));
 
         it('Should parse the searchString for Chrome app, if searchString contains parenthesis', inject(['addressHierarchyService', function (addressHierarchyService) {
-            mockofflineService.isOfflineApp.and.returnValue(true);
-            mockofflineService.isAndroidApp.and.returnValue(false);
             var query = "Barisal Sadar (kotwali)";
             var parsedQuery = "Barisal Sadar \\(kotwali\\)";
             var params = {parentUuid : undefined, limit : 20 };
@@ -90,12 +78,7 @@ describe('addressHierarchyService', function () {
             var fieldName = "Village";
             params.addressField = fieldName;
 
-            var results = addressHierarchyService.search(fieldName, query);
-
-            expect(mockofflineDbService.searchAddress.calls.count()).toBe(1);
-            expect(mockofflineDbService.searchAddress).toHaveBeenCalledWith(params);
-
-            expect(results).toBe(resultList);
+            expect(addressHierarchyService.search(fieldName, query)).toBe(resultList);
         }]));
     });
     describe("getAddressDataResults", function(){
