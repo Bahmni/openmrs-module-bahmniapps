@@ -2,7 +2,7 @@
 
 describe('CalendarViewPopUp', function () {
     var rootScope, calendarViewPopUp, popUpScope, ngDialog, $state, confirmBox, $translate, appointmentsService, dialog,
-        appService, appDescriptor;
+        appService, appDescriptor, messagingService;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -21,6 +21,7 @@ describe('CalendarViewPopUp', function () {
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
+            messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
 
             $provide.value('ngDialog', ngDialog);
             $provide.value('$state', $state);
@@ -28,6 +29,7 @@ describe('CalendarViewPopUp', function () {
             $provide.value('$translate', $translate);
             $provide.value('appointmentsService', appointmentsService);
             $provide.value('appService', appService);
+            $provide.value('messagingService', messagingService);
         });
     });
 
@@ -164,13 +166,16 @@ describe('CalendarViewPopUp', function () {
     it('should change status on confirmation on confirmAction', function () {
         var appointment = {uuid: 'appointmentUuid', status: 'Scheduled'};
         var toStatus = 'Cancelled';
+        var message = "Successfully changed appointment status to Cancelled";
         appointmentsService.changeStatus.and.returnValue(specUtil.simplePromise({}));
+        $translate.instant.and.returnValue(message);
         confirmBox.and.callFake(function (config) {
             var close = jasmine.createSpy('close');
             config.scope.yes(close).then(function () {
                 expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, toStatus, undefined);
                 expect(appointment.status).toBe(toStatus);
                 expect(close).toHaveBeenCalled();
+                expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
             });
         });
         var config = {scope: {appointments: []}};

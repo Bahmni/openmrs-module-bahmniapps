@@ -2,9 +2,9 @@
 
 angular.module('bahmni.appointments')
     .controller('AppointmentsListViewController', ['$scope', '$state', '$rootScope', '$translate', '$stateParams', 'spinner',
-        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog',
+        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService',
         function ($scope, $state, $rootScope, $translate, $stateParams, spinner, appointmentsService, appService,
-                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog) {
+                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
@@ -140,7 +140,12 @@ angular.module('bahmni.appointments')
                     return appointmentsService.undoCheckIn($scope.selectedAppointment.uuid).then(function (response) {
                         ngDialog.close();
                         $scope.selectedAppointment.status = response.data.status;
-                    }).then(closeConfirmBox);
+                        var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
+                            toStatus: response.data.status
+                        });
+                        closeConfirmBox();
+                        messagingService.showMessage('info', message);
+                    });
                 };
 
                 var scope = {};
@@ -150,10 +155,15 @@ angular.module('bahmni.appointments')
             };
 
             var changeStatus = function (toStatus, onDate, closeConfirmBox) {
+                var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
+                    toStatus: toStatus
+                });
                 return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus, onDate).then(function (response) {
                     ngDialog.close();
                     $scope.selectedAppointment.status = response.data.status;
-                }).then(closeConfirmBox);
+                    closeConfirmBox();
+                    messagingService.showMessage('info', message);
+                });
             };
 
             $scope.confirmAction = function (toStatus) {
