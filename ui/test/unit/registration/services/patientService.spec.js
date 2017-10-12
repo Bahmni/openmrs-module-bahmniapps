@@ -38,7 +38,6 @@ describe('Patient resource', function () {
 
     beforeEach(function () {
         module('bahmni.common.models');
-        module('bahmni.common.offline');
         module('bahmni.registration');
 
         module(function ($provide) {

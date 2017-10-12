@@ -84,7 +84,6 @@ describe('VisitController', function () {
     }];
 
     beforeEach(module('bahmni.registration'));
-    beforeEach(module('bahmni.common.offline'));
     beforeEach(module('stateMock'));
     beforeEach(module('pascalprecht.translate'));
     beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', '$state', '$translate', function ($injector, timeout, $q, $rootScope, $state) {

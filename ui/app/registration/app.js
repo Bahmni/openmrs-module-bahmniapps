@@ -6,7 +6,7 @@ angular
         'bahmni.common.displaycontrol.observation', 'bahmni.common.i18n', 'bahmni.common.displaycontrol.custom',
         'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.pivottable', 'RecursionHelper', 'ngSanitize',
         'bahmni.common.uiHelper', 'bahmni.common.domain', 'ngDialog', 'pascalprecht.translate', 'ngCookies',
-        'monospaced.elastic', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint', 'bahmni.common.attributeTypes',
+        'monospaced.elastic', 'bahmni.common.displaycontrol.hint', 'bahmni.common.attributeTypes',
         'bahmni.common.models', 'bahmni.common.uicontrols',
         'bahmni.common.displaycontrol.diagnosis'])
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', '$compileProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
@@ -83,9 +83,8 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(['$rootScope', '$templateCache', 'schedulerService', '$bahmniCookieStore',
-        'locationService', 'messagingService', 'auditLogService',
-        function ($rootScope, $templateCache, schedulerService, $bahmniCookieStore, locationService,
+    }]).run(['$rootScope', '$templateCache', '$bahmniCookieStore', 'locationService', 'messagingService', 'auditLogService',
+        function ($rootScope, $templateCache, $bahmniCookieStore, locationService,
               messagingService, auditLogService) {
             var getStates = function (toState, fromState) {
                 var states = [];
