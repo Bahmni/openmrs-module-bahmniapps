@@ -17,7 +17,7 @@ describe("AppointmentsCreateController", function () {
     beforeEach(function () {
         appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['getServiceLoad', 'getService']);
         appointmentsServiceService.getServiceLoad.and.returnValue(specUtil.simplePromise({}));
-        appointmentsService = jasmine.createSpyObj('appointmentsService', ['save']);
+        appointmentsService = jasmine.createSpyObj('appointmentsService', ['save','search']);
         appointmentsService.save.and.returnValue(specUtil.simplePromise({}));
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
@@ -127,6 +127,73 @@ describe("AppointmentsCreateController", function () {
     });
 
     describe('availabilityValidations', function () {
+        it('should not check for conflicts with itself(same uuid), when editing an appointment', function () {
+            createController();
+            $scope.createAppointmentForm = {$invalid: false};
+            var appointment = {
+                date: moment().toDate(),
+                startTime: '09:00 am',
+                endTime: '09:30 am',
+                patient: {uuid: 'patientUuid'},
+                service: {uuid: 'serviceUuid'}
+            };
+            $scope.patientAppointments = [appointment];
+            $state.params = {};
+            $scope.appointment = appointment;
+            $scope.save();
+
+            expect(appointmentsService.save).toHaveBeenCalled();
+        });
+
+        it('should not check for conflicts with cancelled appointments', function () {
+            createController();
+            $scope.createAppointmentForm = {$invalid: false};
+            var cancelledAppointment = {
+                date: moment().toDate(),
+                startTime: '09:00 am',
+                endTime: '09:30 am',
+                patient: {uuid: 'patientUuid'},
+                service: {uuid: 'serviceUuid'},
+                status: 'Cancelled',
+                uuid: 'uuid'
+            },
+            newAppointment = {
+                date: moment().toDate(),
+                startTime: '09:00 am',
+                endTime: '09:30 am',
+                patient: {uuid: 'patientUuid'},
+                service: {uuid: 'serviceUuid'},
+                uuid: 'newUuid'
+            };
+            $scope.patientAppointments = [cancelledAppointment];
+            $state.params = {};
+            $scope.appointment = newAppointment;
+            $scope.save();
+
+            expect(appointmentsService.save).toHaveBeenCalled();
+        });
+
+        it('should initialize patientAppointments, if an appointment is editing', function () {
+            var patientAppointmentsData = [{
+                uuid: 'veryNewUuid'
+            },
+            {
+                uuid: 'newUuid'
+            }];
+            var patientAppointments = {
+                data: patientAppointmentsData
+            };
+            appointmentsService.search.and.returnValue(specUtil.simplePromise(patientAppointments));
+            $scope.patientAppointments = undefined;
+            var patientUuid = 'uuid';
+            appointmentContext = {appointment: {patient:{uuid: patientUuid}}};
+            var appointmentSearchParams = {patientUuid: patientUuid};
+            createController();
+
+            expect(appointmentsService.search).toHaveBeenCalledWith(appointmentSearchParams);
+            expect($scope.patientAppointments).toBe(patientAppointmentsData);
+        });
+
         it('should not set the warning message when start time is same as the start time of service availability', function () {
             createController();
             $scope.appointment.date = new Date('Mon Aug 28 2017 14:30:00 GMT+0530 (IST)');
