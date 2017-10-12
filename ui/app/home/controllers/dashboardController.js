@@ -1,13 +1,17 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q', 'networkStatusService',
-        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q, networkStatusService) {
+    .controller('DashboardController', ['$scope', '$state', 'appService', 'locationService', 'spinner', '$bahmniCookieStore', '$window', '$q',
+        function ($scope, $state, appService, locationService, spinner, $bahmniCookieStore, $window, $q) {
             $scope.appExtensions = appService.getAppDescriptor().getExtensions($state.current.data.extensionPointId, "link") || [];
             $scope.selectedLocationUuid = {};
 
+            var isOnline = function () {
+                return $window.navigator.onLine;
+            };
+
             $scope.isVisibleExtension = function (extension) {
-                return extension.exclusiveOnlineModule ? networkStatusService.isOnline() : extension.exclusiveOfflineModule ? !networkStatusService.isOnline() : true;
+                return extension.exclusiveOnlineModule ? isOnline() : extension.exclusiveOfflineModule ? !isOnline() : true;
             };
 
             var getCurrentLocation = function () {

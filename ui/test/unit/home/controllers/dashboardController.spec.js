@@ -3,8 +3,8 @@
 describe('dashboardController', function () {
 
 
-    var $aController, window;
-    var scopeMock, rootScopeMock, _spinner, httpBackend, $q, state, $bahmniCookieStore, locationService, appServiceMock, networkStatusService;
+    var $aController, window, navigator;
+    var scopeMock, rootScopeMock, _spinner, httpBackend, $q, state, $bahmniCookieStore, locationService, appServiceMock;
 
     beforeEach(module('bahmni.home'));
 
@@ -23,8 +23,6 @@ describe('dashboardController', function () {
         appServiceMock.getAppDescriptor.and.returnValue({
             getExtensions: function () { return {} }
         });
-
-        networkStatusService = jasmine.createSpyObj('networkStatusService',['isOnline']);
         locationService.getAllByTag.and.returnValue(specUtil.createFakePromise({"data": {"results": {}}}));
     }));
 
@@ -46,6 +44,7 @@ describe('dashboardController', function () {
     );
 
     beforeEach(function () {
+        navigator = window.navigator;
         $aController('DashboardController', {
             $scope: scopeMock,
             $rootScope: rootScopeMock,
@@ -55,9 +54,14 @@ describe('dashboardController', function () {
             locationService: locationService,
             spinner: _spinner,
             appService: appServiceMock,
-            $bahmniCookieStore: $bahmniCookieStore,
-            networkStatusService: networkStatusService
+            $bahmniCookieStore: $bahmniCookieStore
         });
+    });
+
+    afterEach(function () {
+        window.__defineGetter__('navigator', function () {
+            return navigator;
+        })
     });
 
     it("should return true, if the extension has exclusiveOnlineModule configuration set to true and Device is in online state", function () {
@@ -72,8 +76,6 @@ describe('dashboardController', function () {
             "icon": "fa-stethoscope",
             exclusiveOnlineModule: true
         };
-
-        networkStatusService.isOnline.and.returnValue(true);
 
         expect(scopeMock.isVisibleExtension(extension)).toBeTruthy();
     });
@@ -90,8 +92,9 @@ describe('dashboardController', function () {
             "icon": "fa-stethoscope",
             exclusiveOnlineModule: true
         };
-        networkStatusService.isOnline.and.returnValue(false);
-
+        window.navigator.__defineGetter__('onLine', function(){
+            return false;
+        });
         expect(scopeMock.isVisibleExtension(extension)).toBeFalsy();
     });
 
@@ -107,7 +110,6 @@ describe('dashboardController', function () {
             "icon": "fa-stethoscope",
             exclusiveOnlineModule: false
         };
-        networkStatusService.isOnline.and.returnValue(false);
 
         expect(scopeMock.isVisibleExtension(extension)).toBeTruthy();
     });
@@ -124,7 +126,6 @@ describe('dashboardController', function () {
             "icon": "fa-stethoscope",
             exclusiveOnlineModule: false
         };
-        networkStatusService.isOnline.and.returnValue(true);
 
         expect(scopeMock.isVisibleExtension(extension)).toBeTruthy();
     });
@@ -141,8 +142,10 @@ describe('dashboardController', function () {
             "icon": "fa-stethoscope",
             exclusiveOfflineModule: true
         };
-        scopeMock.isOfflineApp = true;
-        networkStatusService.isOnline.and.returnValue(false);
+
+        window.navigator.__defineGetter__('onLine', function(){
+            return false;
+        });
 
         expect(scopeMock.isVisibleExtension(extension)).toBeTruthy();
     });
@@ -159,8 +162,9 @@ describe('dashboardController', function () {
             "icon": "fa-stethoscope",
             exclusiveOfflineModule: true
         };
-        networkStatusService.isOnline.and.returnValue(true);
-
+        window.navigator.__defineGetter__('onLine', function(){
+            return true;
+        });
         expect(scopeMock.isVisibleExtension(extension)).toBeFalsy();
     });
 });

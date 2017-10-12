@@ -14,7 +14,7 @@ describe('patientControlPanelTest', function () {
         $bahmniCookieStore,
         simpleHtml = '<patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel"/>';
 
-    beforeEach(module('bahmni.common.patient','bahmni.clinical','bahmni.common.appFramework','bahmni.common.util','bahmni.common.uiHelper', 'bahmni.common.offline'));
+    beforeEach(module('bahmni.common.patient','bahmni.clinical','bahmni.common.appFramework','bahmni.common.util','bahmni.common.uiHelper'));
 
     beforeEach(module(function($provide){
         _provide = $provide;
@@ -32,16 +32,11 @@ describe('patientControlPanelTest', function () {
         });
 
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore',['get']);
-        var _offlineService = jasmine.createSpyObj('offlineService', ['getAppPlatform', 'isOfflineApp']);
-        _offlineService.isOfflineApp.and.callFake(function(){
-            return false;
-        });
 
         _encounterService.then.and.returnValue({data: {results: []}});
         $provide.value('configurations',_configurations);
         $provide.value('encounterService',_encounterService);
         $provide.value('$bahmniCookieStore', $bahmniCookieStore);
-        $provide.value('offlineService', _offlineService);
     }));
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope,$q) {
