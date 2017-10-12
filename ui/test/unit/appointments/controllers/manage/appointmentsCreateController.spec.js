@@ -798,4 +798,24 @@ describe("AppointmentsCreateController", function () {
         $scope.onServiceTypeChange();
         expect($scope.minDuration).toEqual(15);
     });
+
+    it("should dropDown have times list which are having entered number in hours of the allowed list", function () {
+       createController();
+        $scope.startTimes = ['10:00 am', '11:00 am', '12:00 pm', '01:00 pm', '02:00 pm'];
+        $scope.showStartTimes = [];
+        $scope.appointment= { startTime: 2 };
+
+        $scope.onKeyDownOnStartTime();
+        expect($scope.showStartTimes).toEqual(['02:00 pm']);
+    });
+
+    it('should dropDown have all the allowed time list when the entered number is not in hours of the allowed list', function () {
+        createController();
+        $scope.endTimes = ['10:00 am', '11:00 am', '12:00 pm', '01:00 pm', '02:00 pm', '03:00 pm'];
+        $scope.showEndTimes = [];
+        $scope.appointment= { endTime: 4 };
+
+        $scope.onKeyDownOnEndTime();
+        expect($scope.showEndTimes).toEqual($scope.endTimes);
+    })
 });
