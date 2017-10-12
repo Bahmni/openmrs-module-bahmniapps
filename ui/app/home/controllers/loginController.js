@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'offlineService', 'auditLogService',
-        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, offlineService, auditLogService) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'auditLogService',
+        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, auditLogService) {
             var redirectUrl = $location.search()['from'];
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
-            var isOfflineApp = offlineService.isOfflineApp();
             $scope.locations = initialData.locations;
             $scope.loginInfo = {};
             var localeLanguages = [];
@@ -110,11 +109,6 @@ angular.module('bahmni.home')
                 redirectToLandingPageIfAlreadyAuthenticated();
             }
             var onSuccessfulAuthentication = function () {
-                if (isOfflineApp) {
-                    var encryptedPassword = offlineService.encrypt($scope.loginInfo.password, Bahmni.Common.Constants.encryptionType.SHA3);
-                    $scope.loginInfo.password = encryptedPassword;
-                    offlineService.setItem(Bahmni.Common.Constants.LoginInformation, $scope.loginInfo);
-                }
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName, {
                     path: '/',
                     expires: 1
@@ -198,7 +192,6 @@ angular.module('bahmni.home')
                         if (redirectUrl) {
                             $window.location = redirectUrl;
                         } else {
-                            landingPagePath = offlineService.isOfflineApp() ? $window.location = '../offline/index.html#/scheduler' : landingPagePath;
                             $location.path(landingPagePath);
                         }
                     }

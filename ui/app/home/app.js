@@ -7,8 +7,6 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
         function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
             $urlRouterProvider.otherwise('/dashboard');
 
-            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
-
         // @if DEBUG='production'
             $compileProvider.debugInfoEnabled(false);
         // @endif
@@ -24,14 +22,8 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                     controller: 'DashboardController',
                     data: {extensionPointId: 'org.bahmni.home.dashboard'},
                     resolve: {
-                        offlineDb: function (offlineDbInitialization) {
-                            return offlineDbInitialization();
-                        },
-                        initialize: function (initialization, offlineDb) {
-                            return initialization(offlineDb);
-                        },
-                        webWorker: function (schedulerService, initialize) {
-                            return schedulerService.sync();
+                        initialize: function (initialization) {
+                            return initialization();
                         }
                     }
                 }).state('changePassword', {
@@ -44,14 +36,8 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                     templateUrl: 'views/login.html',
                     controller: 'LoginController',
                     resolve: {
-                        offlineDb: function (offlineDbInitialization) {
-                            return offlineDbInitialization();
-                        },
-                        initialData: function (loginInitialization, offlineDb) {
+                        initialData: function (loginInitialization) {
                             return loginInitialization();
-                        },
-                        webWorker: function (schedulerService, initialData) {
-                            return schedulerService.stopSync();
                         }
                     }
                 })
@@ -65,9 +51,6 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                     ]
                 },
                 resolve: {
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-                    }
                 }
             });
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
