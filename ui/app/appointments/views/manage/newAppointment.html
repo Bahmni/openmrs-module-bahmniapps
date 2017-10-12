@@ -116,12 +116,14 @@
                            bahmni-autocomplete
                            ng-model="appointment.startTime"
                            source="timeSource"
+                           ng-change="onKeyDownOnStartTime()"
                            on-select="onSelectStartTime"
                            ng-blur="onSelectStartTime()"
                            ng-class="{'illegalValue': isInvalid}"
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
                            ng-pattern="timeRegex"
+                           ng-model-options="{allowInvalid: true}"
                            ng-disabled='(!appointment.date || (isEditMode() && !isEditAllowed()))'
                            required/>
                     <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
@@ -141,6 +143,7 @@
                            bahmni-autocomplete
                            ng-model="appointment.endTime"
                            source="endTimeSlots"
+                           ng-change="onKeyDownOnEndTime()"
                            on-select="onSelectEndTime"
                            ng-blur="onSelectEndTime()"
                            ng-class="{'illegalValue': isInvalid}"
@@ -148,6 +151,7 @@
                            non-blank
                            ng-disabled='(!appointment.date || (isEditMode() && !isEditAllowed()))'
                            ng-pattern="timeRegex"
+                           ng-model-options="{allowInvalid: true}"
                            required/>
                     <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
                 </p>
