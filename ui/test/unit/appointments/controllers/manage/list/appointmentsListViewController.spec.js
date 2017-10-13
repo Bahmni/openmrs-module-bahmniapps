@@ -758,6 +758,7 @@ describe('AppointmentsListViewController', function () {
             "comments": null
         }];
         scope.startDate = new Date('2017-01-02T11:30:00.000Z');
+        stateparams.viewDate = "02 Jan 2017";
         scope.enableSpecialities = true;
         scope.enableServiceTypes = true;
         createController();
@@ -765,7 +766,7 @@ describe('AppointmentsListViewController', function () {
         expect(printer.print).toHaveBeenCalledWith("/bahmni_config/openmrs/apps/appointments/printListView.html",
             {
                 filteredAppointments: scope.filteredAppointments,
-                startDate: scope.startDate,
+                startDate: stateparams.viewDate,
                 enableServiceTypes: scope.enableServiceTypes,
                 enableSpecialities: scope.enableSpecialities
             });
@@ -818,12 +819,13 @@ describe('AppointmentsListViewController', function () {
         scope.startDate = new Date('2017-01-02T11:30:00.000Z');
         scope.enableSpecialities = true;
         scope.enableServiceTypes = true;
+        stateparams.viewDate = "02 Jan 2017";
         createController();
         scope.printPage();
         expect(printer.print).toHaveBeenCalledWith("views/manage/list/listView.html",
             {
                 filteredAppointments: scope.filteredAppointments,
-                startDate: scope.startDate,
+                startDate: stateparams.viewDate,
                 enableServiceTypes: scope.enableServiceTypes,
                 enableSpecialities: scope.enableSpecialities
             });
