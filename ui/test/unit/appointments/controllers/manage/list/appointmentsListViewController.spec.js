@@ -2,7 +2,7 @@
 
 describe('AppointmentsListViewController', function () {
     var controller, scope, stateparams, spinner, appointmentsService, appService, appDescriptor, _appointmentsFilter,
-        printer, confirmBox, $translate, $state;
+        printer, confirmBox, $translate, $state, messagingService;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -28,6 +28,7 @@ describe('AppointmentsListViewController', function () {
             });
             $state = jasmine.createSpyObj('$state', ['go']);
             confirmBox = jasmine.createSpy('confirmBox');
+            messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
             $translate = jasmine.createSpyObj('$translate', ['instant', 'storageKey', 'storage', 'preferredLanguage']);
             $httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>');
             $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>');
@@ -46,7 +47,8 @@ describe('AppointmentsListViewController', function () {
             printer: printer,
             $translate: $translate,
             confirmBox: confirmBox,
-            $state: $state
+            $state: $state,
+            messagingService: messagingService
         });
     };
 
@@ -845,11 +847,13 @@ describe('AppointmentsListViewController', function () {
         expect(confirmBox).toHaveBeenCalled();
     });
 
-    it('should change status on confirmation on confirmAction', function () {
+    it('should change status and show success message on confirmation on confirmAction', function () {
         var appointment = {uuid: 'appointmentUuid', status: 'Scheduled'};
         var toStatus = 'Cancelled';
+        var message = "Successfully changed appointment status to Cancelled";
         var appointmentResponse = {uuid: 'appointmentUuid', status: toStatus};
         appointmentsService.changeStatus.and.returnValue(specUtil.simplePromise({data: appointmentResponse}));
+        $translate.instant.and.returnValue(message);
         createController();
         scope.selectedAppointment = appointment;
         confirmBox.and.callFake(function (config) {
@@ -858,6 +862,7 @@ describe('AppointmentsListViewController', function () {
                 expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, toStatus, undefined);
                 expect(scope.selectedAppointment.status).toEqual(appointmentResponse.status);
                 expect(close).toHaveBeenCalled();
+                expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
             });
         });
         scope.confirmAction(toStatus);
@@ -894,7 +899,9 @@ describe('AppointmentsListViewController', function () {
 
     it('should change status on confirmation on undo check in', function () {
         var appointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
+        var message = "Successfully changed appointment status to Scheduled";
         appointmentsService.undoCheckIn.and.returnValue(specUtil.simplePromise({data: {uuid: 'appointmentUuid', status: 'Scheduled'}}));
+        $translate.instant.and.returnValue(message);
         createController();
         scope.selectedAppointment = appointment;
         confirmBox.and.callFake(function (config) {
@@ -903,6 +910,7 @@ describe('AppointmentsListViewController', function () {
                 expect(appointmentsService.undoCheckIn).toHaveBeenCalledWith(appointment.uuid);
                 expect(scope.selectedAppointment.status).toBe('Scheduled');
                 expect(close).toHaveBeenCalled();
+                expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
             });
         });
         scope.undoCheckIn();
