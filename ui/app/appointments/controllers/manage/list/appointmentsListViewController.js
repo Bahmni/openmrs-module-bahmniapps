@@ -129,7 +129,7 @@ angular.module('bahmni.appointments')
                 var printTemplateUrl = appService.getAppDescriptor().getConfigValue("printListViewTemplateUrl") || 'views/manage/list/listView.html';
                 printer.print(printTemplateUrl, {
                     filteredAppointments: $scope.filteredAppointments,
-                    startDate: $scope.startDate,
+                    startDate: $stateParams.viewDate,
                     enableServiceTypes: $scope.enableServiceTypes,
                     enableSpecialities: $scope.enableSpecialities
                 });

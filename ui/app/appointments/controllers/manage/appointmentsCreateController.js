@@ -178,14 +178,18 @@ angular.module('bahmni.appointments')
                 }
             };
 
+            var isSelectedSlotOutOfRange = function () {
+                if ($scope.appointment.startTime && !($scope.warning.appointmentDate || $scope.warning.startTime || $scope.warning.endTime)) {
+                    return !isAppointmentStartTimeAndEndTimeWithinServiceAvailability();
+                }
+                return false;
+            };
+
             $scope.onSelectEndTime = function (data) {
                 $scope.warning.endTime = false;
                 $scope.checkAvailability();
                 $scope.warning.endTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.endTime);
-
-                if ($scope.appointment.startTime && !($scope.warning.appointmentDate || $scope.warning.startTime || $scope.warning.endTime)) {
-                    $scope.warning.outOfRange = !isAppointmentStartTimeAndEndTimeWithinServiceAvailability();
-                }
+                $scope.warning.outOfRange = isSelectedSlotOutOfRange();
             };
 
             var triggerSlotCalculation = function () {
@@ -286,7 +290,7 @@ angular.module('bahmni.appointments')
                     $scope.endTimes = allSlots.endTime;
                     $scope.warning.endTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.endTime);
                     $scope.warning.startTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.startTime);
-                    $scope.warning.outOfRange = ($scope.appointment.startTime && $scope.appointment.endTime) && !isAppointmentStartTimeAndEndTimeWithinServiceAvailability();
+                    $scope.warning.outOfRange = isSelectedSlotOutOfRange();
                     triggerSlotCalculation();
                 }
             };
