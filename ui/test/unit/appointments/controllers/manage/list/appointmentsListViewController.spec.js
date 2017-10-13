@@ -455,24 +455,9 @@ describe('AppointmentsListViewController', function () {
                 serviceTypeUuids: [],
                 statusList: []
             };
-            var appointment1 = {
-                patient: {name: 'patient2', identifier: "IQ00001"},
-                comments: "comments1",
-                status: "Completed",
-                appointmentKind: "Completed",
-                provider: {name: "provider1"},
-                endDateTime: 100000,
-                startDateTime: 200000,
-                service: {
-                    name: "service1",
-                    serviceType: {name: "type1"},
-                    speciality: {name: "speciality1"},
-                    location: {name: "location1"}
-                }
-            };
-            var appointment2 = {
-                patient: {name: 'patient1', identifier: "IQ00002"},
-                comments: "comments2",
+            var appointment = {
+                patient: {name: 'Smith', identifier: "IQ00002"},
+                comments: "comment2",
                 status: "Scheduled",
                 appointmentKind: "Scheduled",
                 provider: {name: "provider2"},
@@ -485,68 +470,105 @@ describe('AppointmentsListViewController', function () {
                     location: {name: "location2"}
                 }
             };
-            var appointments = [appointment1, appointment2];
+            var otherAppointment = {
+                patient: {name: 'john', identifier: "IQ00001"},
+                comments: "comment1",
+                status: "Completed",
+                appointmentKind: "Completed",
+                provider: {name: "provider1"},
+                endDateTime: 100000,
+                startDateTime: 200000,
+                service: {
+                    name: "service1",
+                    serviceType: {name: "type1"},
+                    speciality: {name: "speciality1"},
+                    location: {name: "location1"}
+                }
+            };
+            var appointments = [appointment, otherAppointment];
+            _appointmentsFilter.and.callFake(function () {
+                return appointments;
+            });
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
             createController();
+
             scope.sortAppointmentsBy('patient.name');
             expect(scope.sortColumn).toEqual('patient.name');
-            expect(scope.appointments.length).toEqual(2);
-            expect(scope.appointments[0].patient.name).toEqual("patient2");
-            expect(scope.appointments[1].patient.name).toEqual("patient1");
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].patient.name).toEqual("john");
+            expect(scope.filteredAppointments[1].patient.name).toEqual("Smith");
 
+            scope.filteredAppointments = [appointment, otherAppointment];
+            scope.reverseSort = false;
             scope.sortAppointmentsBy('comments');
             expect(scope.sortColumn).toEqual('comments');
-            expect(scope.appointments.length).toEqual(2);
-            expect(scope.appointments[0].comments).toEqual("comments1");
-            expect(scope.appointments[1].comments).toEqual("comments2");
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].comments).toEqual("comment1");
+            expect(scope.filteredAppointments[1].comments).toEqual("comment2");
 
+            scope.filteredAppointments = [appointment, otherAppointment];
+            scope.reverseSort = false;
             scope.sortAppointmentsBy('status');
             expect(scope.sortColumn).toEqual('status');
-            expect(scope.appointments.length).toEqual(2);
-            expect(scope.appointments[0].status).toEqual("Completed");
-            expect(scope.appointments[1].status).toEqual("Scheduled");
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].status).toEqual("Completed");
+            expect(scope.filteredAppointments[1].status).toEqual("Scheduled");
 
+            scope.filteredAppointments = [appointment, otherAppointment];
+            scope.reverseSort = false;
             scope.sortAppointmentsBy('patient.identifier');
             expect(scope.sortColumn).toEqual('patient.identifier');
-            expect(scope.appointments.length).toEqual(2);
-            expect(scope.appointments[0].patient.identifier).toEqual("IQ00001");
-            expect(scope.appointments[1].patient.identifier).toEqual("IQ00002");
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].patient.identifier).toEqual("IQ00001");
+            expect(scope.filteredAppointments[1].patient.identifier).toEqual("IQ00002");
 
+            scope.filteredAppointments = [appointment, otherAppointment];
+            scope.reverseSort = false;
             scope.sortAppointmentsBy('provider.name');
             expect(scope.sortColumn).toEqual('provider.name');
-            expect(scope.appointments.length).toEqual(2);
-            expect(scope.appointments[0].provider.name).toEqual("provider1");
-            expect(scope.appointments[1].provider.name).toEqual("provider2");
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].provider.name).toEqual("provider1");
+            expect(scope.filteredAppointments[1].provider.name).toEqual("provider2");
 
+            scope.filteredAppointments = [appointment, otherAppointment];
+            scope.reverseSort = false;
             scope.sortAppointmentsBy('service.location.name');
             expect(scope.sortColumn).toEqual('service.location.name');
-            expect(scope.appointments.length).toEqual(2);
-            expect(scope.appointments[0].service.location.name).toEqual("location1");
-            expect(scope.appointments[1].service.location.name).toEqual("location2");
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].service.location.name).toEqual("location1");
+            expect(scope.filteredAppointments[1].service.location.name).toEqual("location2");
 
+            scope.filteredAppointments = [appointment, otherAppointment];
+            scope.reverseSort = false;
             scope.sortAppointmentsBy('service.serviceType.name');
             expect(scope.sortColumn).toEqual('service.serviceType.name');
-            expect(scope.appointments.length).toEqual(2);
-            expect(scope.appointments[0].service.serviceType.name).toEqual("type1");
-            expect(scope.appointments[1].service.serviceType.name).toEqual("type2");
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].service.serviceType.name).toEqual("type1");
+            expect(scope.filteredAppointments[1].service.serviceType.name).toEqual("type2");
 
+            scope.filteredAppointments = [appointment, otherAppointment];
+            scope.reverseSort = false;
             scope.sortAppointmentsBy('service.name');
             expect(scope.sortColumn).toEqual('service.name');
-            expect(scope.appointments.length).toEqual(2);
-            expect(scope.appointments[0].service.name).toEqual("service1");
-            expect(scope.appointments[1].service.name).toEqual("service2");
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].service.name).toEqual("service1");
+            expect(scope.filteredAppointments[1].service.name).toEqual("service2");
 
+            scope.filteredAppointments = [appointment, otherAppointment];
+            scope.reverseSort = false;
             scope.sortAppointmentsBy('endDateTime');
             expect(scope.sortColumn).toEqual('endDateTime');
-            expect(scope.appointments.length).toEqual(2);
-            expect(scope.appointments[0].endDateTime).toEqual(100000);
-            expect(scope.appointments[1].endDateTime).toEqual(200000);
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].endDateTime).toEqual(100000);
+            expect(scope.filteredAppointments[1].endDateTime).toEqual(200000);
 
+            scope.filteredAppointments = [appointment, otherAppointment];
+            scope.reverseSort = false;
             scope.sortAppointmentsBy('startDateTime');
             expect(scope.sortColumn).toEqual('startDateTime');
-            expect(scope.appointments.length).toEqual(2);
-            expect(scope.appointments[0].startDateTime).toEqual(200000);
-            expect(scope.appointments[1].startDateTime).toEqual(300000);
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].startDateTime).toEqual(200000);
+            expect(scope.filteredAppointments[1].startDateTime).toEqual(300000);
         });
 
         it("should reverse sort appointments if sorted on the same column consecutively", function () {
