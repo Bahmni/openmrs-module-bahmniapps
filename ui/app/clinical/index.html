@@ -16,7 +16,6 @@
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
         <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.bootstrap.min.css"/>
         <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.min.css"/>
-        <link rel="stylesheet" href="../components/offline/themes/offline-theme-dark.css"/>
 
         <!-- build:css clinical.min.css -->
         <link rel="stylesheet" href="../styles/clinical.css"/>
@@ -65,8 +64,6 @@
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
         <script src="../components/angular-file-upload/dist/angular-file-upload.min.js"></script>
         <script src="../components/angular-elastic/elastic.js"></script>
-        <script src="../components/hustle/hustle.js"></script>
-        <script src="../components/offline/offline.min.js"></script>
         <script src="../components/react/react.min.js"></script>
         <script src="../components/react/react-dom.min.js"></script>
         <script src="../lib/angular-workers/dist/angular-workers.js"></script>
@@ -74,17 +71,14 @@
         <script src="../components/bahmni-form-controls/helpers.js"></script>
         <script src="../components/bahmni-form-controls/bundle.js"></script>
 
-        <!-- build:js ../common.offline.min.js -->
+        <!-- build:js clinical.min.js -->
         <script src="../common/constants.js"></script>
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../common/util/init.js"></script>
         <script src="../common/models/init.js"></script>
         <script src="../common/models/age.js"></script>
         <script src="../common/models/auditLogEventDetails.js"></script>
-        <!-- endbuild -->
 
-
-        <!-- build:js clinical.min.js -->
         <script src="../common/constants.js"></script>
         <script src="../common/route-errorhandler/init.js"></script>
         <script src="../common/util/init.js"></script>
@@ -99,12 +93,8 @@
         <script src="../common/util/dynamicResourceLoader.js"></script>
         <script src="../components/lovefield/dist/lovefield.min.js"></script>
 
-
-
         <script src="../common/models/init.js"></script>
         <script src="../common/models/age.js"></script>
-
-
 
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>
@@ -503,9 +493,6 @@
         <script src="app.js"></script>
         <!-- endbuild -->
 
-
-
-        <!-- @ifdef ONLINE -->
         <!-- build:js clinical.min.web.js -->
         <script src="../common/services/formService.js"></script>
         <script src="../common/domain/services/visitService.js"></script>
@@ -526,15 +513,11 @@
         <script src="../common/logging/services/auditLogService.js"></script>
         <script src="common/services/treatmentService.js"></script>
         <script src="common/models/auditLogEventDetails.js"></script>
-
-
+        
         <!-- endbuild -->
-        <!-- @endif -->
 
-        <!-- @ifdef ONLINE -->
         <script src="/bahmni_config/openmrs/apps/customDisplayControl/js/customControl.js"></script>
         <script src="/bahmni_config/openmrs/apps/clinical/formConditions.js"></script>
         <script src="/implementation_config/openmrs/apps/clinical/formConditions.js"></script>
-        <!-- @endif -->
     </body>
 </html>

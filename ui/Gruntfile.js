@@ -20,7 +20,6 @@ module.exports = function (grunt) {
         'components/ngDialog/css/ngDialog-theme-plain.min.css',
         'components/ng-tags-input/ng-tags-input.bootstrap.min.css',
         'components/ng-tags-input/ng-tags-input.min.css',
-        'components/offline/themes/*.css',
         'components/jquery-ui/themes/smoothness/jquery-ui.min.css'
     ];
 
@@ -54,13 +53,10 @@ module.exports = function (grunt) {
         'components/angular-translate-handler-log/angular-translate-handler-log.min.js',
         'components/angular-file-upload/dist/angular-file-upload.min.js',
         'components/angular-elastic/elastic.js',
-        'components/hustle/hustle.js',
-        'components/offline/offline.min.js',
         'components/react/react.min.js',
         'components/react/react-dom.min.js',
         'components/bahmni-form-controls/helpers.js',
         'components/bahmni-form-controls/bundle.js',
-        'components/lovefield/dist/lovefield.min.js',
         'components/purl/purl.js',
         'components/angular-route/angular-route.min.js',
         'components/crypto-js/crypto-js.js',
@@ -109,7 +105,6 @@ module.exports = function (grunt) {
                     removeCommands: true
                 },
                 files: {
-                    "dist/offline/index.html": "dist/offline/index.html",
                     "dist/registration/index.html": "dist/registration/index.html",
                     "dist/clinical/index.html": "dist/clinical/index.html",
                     "dist/home/index.html": "dist/home/index.html"
@@ -185,9 +180,7 @@ module.exports = function (grunt) {
                     '!<%= yeoman.dist %>/**/registrationPrint.css',
                     '!<%= yeoman.dist %>/initWorker.js',
                     '!<%= yeoman.dist %>/components/sw-toolbox/sw-toolbox.js',
-                    '!<%= yeoman.dist %>/components/offline/*.js',
-                    '!<%= yeoman.dist %>/worker.js',
-                    '!<%= yeoman.dist %>/components/offline/themes/*.css'
+                    '!<%= yeoman.dist %>/worker.js'
                 ]
             }
         },
@@ -272,7 +265,6 @@ module.exports = function (grunt) {
                             'common/**/*.html',
                             'orders/**/*.html',
                             'home/**/*.html',
-                            'offline/**/*.html',
                             'admin/**/*.html',
                             'reports/**/*.html',
                             'registration/**/*.html',
@@ -354,12 +346,6 @@ module.exports = function (grunt) {
                         src: ['admin.*.js'],
                         dest: '<%= yeoman.dist %>/admin/'
                     },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['offline.*.js'],
-                        dest: '<%= yeoman.dist %>/offline/'
-                    },
                     {expand: true, cwd: '<%= yeoman.root %>', src: ['common.*.js'], dest: '<%= yeoman.dist %>/'},
                     {
                         expand: true,
@@ -415,12 +401,6 @@ module.exports = function (grunt) {
                         cwd: '<%= yeoman.dist %>',
                         src: ['admin.*.css'],
                         dest: '<%= yeoman.dist %>/admin/'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= yeoman.dist %>',
-                        src: ['offline.*.css'],
-                        dest: '<%= yeoman.dist %>/offline/'
                     },
                     {
                         expand: true,
