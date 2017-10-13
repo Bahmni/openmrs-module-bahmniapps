@@ -28,10 +28,8 @@ module.exports = function (config) {
             'app/components/fullcalendar-scheduler/dist/scheduler.min.js',
             'app/components/angular-elastic/elastic.js',
             'app/components/angular-ivh-treeview/dist/ivh-treeview.min.js',
-            'app/components/offline/offline.min.js',
             'app/components/angular-ui-router/release/angular-ui-router.js',
             'app/components/lodash/dist/lodash.min.js',
-            'app/components/lovefield/dist/lovefield.js',
             'app/components/angular-ui-select2/src/select2.js',
             'app/components/angular-bindonce/bindonce.js',
             'app/components/ng-tags-input/ng-tags-input.min.js',
@@ -72,26 +70,7 @@ module.exports = function (config) {
             "test/unit/common/util/dateTimeFormatter.spec.js"
         ],
         exclude:[
-            'app/clinical/displaycontrols/investigationresults/offline/*',
-            'app/registration/offline/**/*.js',
-            'app/clinical/common/offline/**/*.js',
-            'app/common/domain/offline/*.js',
-            'app/components/moment/src/**/*.js',
-            'app/common/**/offline/chrome/*.js',
-            'app/common/**/offline/android/*.js',
-            'app/common/orders/offline/*.js',
-            'app/common/orders/offline/services/*.js',
-            'app/common/domain/offline/*.js',
-            'app/clinical/dashboard/services/offline/**/*.js',
-            'app/clinical/consultation/offline/**/*.js',
-            'test/unit/registration/offline/**/*.js',
-            'test/unit/**/offline/*.js',
-            'test/unit/**/offline/android/*.js',
-            'test/unit/**/offline/chrome/*.js',
-            'app/common/offline/scheduler/backgroundWorker.js',
-            'app/common/offline/scheduler/*.js',
-            'test/unit/common/offline/scheduler/*.js',
-            'app/common/offline/dbservices/dao/labOrderResultsDbService.js'
+            'app/components/moment/src/**/*.js'
         ],
         reporters: ['junit', (process.env.CI === 'true' ? 'dots' : 'progress'), 'coverage'],
         preprocessors: {

@@ -92,10 +92,10 @@ angular.module('authentication')
 
         this.destroy = function () {
             var deferrable = $q.defer();
-                destroySessionFromServer().then(function () {
-                    sessionCleanup();
-                    deferrable.resolve();
-                });
+            destroySessionFromServer().then(function () {
+                sessionCleanup();
+                deferrable.resolve();
+            });
             return deferrable.promise;
         };
 
