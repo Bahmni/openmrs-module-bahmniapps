@@ -44,13 +44,14 @@
                         <i class="fa fa-exclamation-circle small"></i>
                         <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
                     </p>
-                    <p ng-disabled="hasServiceTypes()" ng-class="{'disabled': hasServiceTypes()}">
+                    <p>
                         <label class="max-load" for="max-load">
                             {{'APPOINTMENT_SERVICE_MAX_LOAD_KEY' | translate}}
-                        </label> <input name="serviceMaxLoad" placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
+                        </label> <input ng-disabled="hasServiceTypes()" ng-class="{'disabled': hasServiceTypes()}" name="serviceMaxLoad" placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
                                         type="number" min="0" ng-model="service.maxAppointmentsLimit">
                     </p>
                 </fieldset>
+
                 <p ng-show="enableSpecialities">
                     <label for="speciality">
                         {{'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate}}
