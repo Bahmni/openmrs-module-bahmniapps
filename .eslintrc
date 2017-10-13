@@ -14,8 +14,6 @@ extends:
   - angular
 
 globals:
-  AndroidConfigDbService: false
-  AndroidOfflineService: false
   Bahmni: true
   CryptoJS: false
   EncounterConfig: true
