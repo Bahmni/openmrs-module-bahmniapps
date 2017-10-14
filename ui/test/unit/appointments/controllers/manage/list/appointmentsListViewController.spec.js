@@ -579,7 +579,7 @@ describe('AppointmentsListViewController', function () {
                 statusList: []
             };
             var appointment1 = {
-                patient: {name: 'patient2', identifier: "IQ00001"},
+                patient: {name: 'john', identifier: "IQ00001"},
                 comments: "comments1",
                 status: "Completed",
                 appointmentKind: "Completed",
@@ -594,7 +594,7 @@ describe('AppointmentsListViewController', function () {
                 }
             };
             var appointment2 = {
-                patient: {name: 'patient1', identifier: "IQ00002"},
+                patient: {name: 'Smith', identifier: "IQ00002"},
                 comments: "comments2",
                 status: "Scheduled",
                 appointmentKind: "Scheduled",
@@ -610,126 +610,53 @@ describe('AppointmentsListViewController', function () {
             };
             var appointments = [appointment1, appointment2];
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
+            _appointmentsFilter.and.callFake(function () {
+                return appointments;
+            });
             createController();
             scope.sortAppointmentsBy('patient.name');
             expect(scope.reverseSort).toEqual(true);
+            scope.sortAppointmentsBy('patient.name');
+
+            expect(scope.reverseSort).toEqual(false);
             expect(scope.sortColumn).toEqual('patient.name');
-            expect(scope.appointments.length).toEqual(2);
-            expect(scope.appointments[0].patient.name).toEqual("patient2");
-            expect(scope.appointments[1].patient.name).toEqual("patient1");
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].patient.name).toEqual("Smith");
+            expect(scope.filteredAppointments[1].patient.name).toEqual("john");
+        });
 
-            it("should have table info", function () {
-                var tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
-                    {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
-                    {heading: 'APPOINTMENT_DATE', sortInfo: 'appointmentDate', enable: true},
-                    {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
-                    {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
-                    {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
-                    {
-                        heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY',
-                        sortInfo: 'service.speciality.name',
-                        enable: scope.enableSpecialities
-                    },
-                    {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', enable: true},
-                    {
-                        heading: 'APPOINTMENT_SERVICE_TYPE_FULL',
-                        sortInfo: 'service.serviceType.name',
-                        class: true,
-                        enable: scope.enableServiceTypes
-                    },
-                    {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
-                    {
-                        heading: 'APPOINTMENT_SERVICE_LOCATION_KEY',
-                        sortInfo: 'service.location.name',
-                        class: true,
-                        enable: true
-                    },
-                    {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
-                    {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
+        it("should have table info", function () {
+            var tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
+                {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_DATE', sortInfo: 'appointmentDate', enable: true},
+                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
+                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
+                {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: true},
+                {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'service.serviceType.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
+                {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
+                {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'service.location.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
+                {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
                 createController();
-                expect(scope.tableInfo).toEqual(tableInfo);
-            });
 
-            it('should filter the appointments on change of filter params', function () {
-                _appointmentsFilter.and.callFake(function (data) {
-                    return data;
-                });
-                var appointment1 = {
-                    patient: {name: 'patient2', identifier: "IQ00001"},
-                    comments: "comments1",
-                    status: "Completed",
-                    appointmentKind: "Completed",
-                    provider: {name: "provider1"},
-                    endDateTime: 100000,
-                    startDateTime: 200000,
-                    service: {
-                        name: "service1",
-                        serviceType: {name: "type1"},
-                        speciality: {name: "speciality1"},
-                        location: {name: "location1"}
-                    }
-                };
-                var appointment2 = {
-                    patient: {name: 'patient1', identifier: "IQ00002"},
-                    comments: "comments2",
-                    status: "Scheduled",
-                    appointmentKind: "Scheduled",
-                    provider: {name: "provider2"},
-                    endDateTime: 200000,
-                    startDateTime: 300000,
-                    service: {
-                        name: "service2",
-                        serviceType: {name: "type2"},
-                        speciality: {name: "speciality2"},
-                        location: {name: "location2"}
-                    }
-                };
-                scope.appointments = [appointment1, appointment2];
-                stateparams.filterParams = {};
-                scope.$digest();
-                stateparams.filterParams = {serviceUuids: ['serviceUuid']};
-                scope.$digest();
-                expect(_appointmentsFilter.calls.mostRecent().args[0]).toEqual(scope.appointments);
-                expect(_appointmentsFilter.calls.mostRecent().args[1]).toEqual(stateparams.filterParams);
-                scope.sortAppointmentsBy('patient.identifier');
-                expect(scope.reverseSort).toEqual(false);
-                expect(scope.sortColumn).toEqual('patient.identifier');
-                expect(scope.appointments.length).toEqual(2);
-                expect(scope.appointments[0].patient.identifier).toEqual("IQ00001");
-                expect(scope.appointments[1].patient.identifier).toEqual("IQ00002");
-            });
-
-            it("should have table info", function () {
-                var tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
-                    {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
-                    {heading: 'APPOINTMENT_DATE', sortInfo: 'appointmentDate', enable: true},
-                    {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
-                    {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
-                    {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
-                    {
-                        heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY',
-                        sortInfo: 'service.speciality.name',
-                        enable: scope.enableSpecialities
-                    },
-                    {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', enable: true},
-                    {
-                        heading: 'APPOINTMENT_SERVICE_TYPE_FULL',
-                        sortInfo: 'service.serviceType.name',
-                        class: true,
-                        enable: scope.enableServiceTypes
-                    },
-                    {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
-                    {
-                        heading: 'APPOINTMENT_SERVICE_LOCATION_KEY',
-                        sortInfo: 'service.location.name',
-                        class: true,
-                        enable: true
-                    },
-                    {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
-                    {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
-                createController();
                 expect(scope.tableInfo).toEqual(tableInfo);
+        });
+
+        it('should filter the appointments on change of filter params', function () {
+            var appointment = {patient: {name: 'patient'}};
+            scope.appointments = [appointment];
+            _appointmentsFilter.and.callFake(function () {
+                return appointment;
             });
+            stateparams.filterParams = {};
+            createController();
+            stateparams.filterParams = {serviceUuids: ['serviceUuid']};
+            scope.$digest();
+
+            expect(scope.filteredAppointments).toEqual(appointment);
         });
     });
 
