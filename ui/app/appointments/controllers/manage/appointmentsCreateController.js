@@ -24,6 +24,9 @@ angular.module('bahmni.appointments')
                 $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create(appointmentContext.appointment || {appointmentKind: 'Scheduled'}, appointmentCreateConfig);
                 $scope.selectedService = appointmentCreateConfig.selectedService;
                 $scope.isPastAppointment = $scope.isEditMode() ? Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')) : false;
+                if ($scope.appointment.patient) {
+                    $scope.onSelectPatient($scope.appointment.patient);
+                }
             };
 
             $scope.save = function () {
@@ -41,7 +44,7 @@ angular.module('bahmni.appointments')
                 }
 
                 $scope.validatedAppointment = Bahmni.Appointments.Appointment.create($scope.appointment);
-                var conflictingAppointments = checkForOldConflicts($scope.validatedAppointment);
+                var conflictingAppointments = getConflictingAppointments($scope.validatedAppointment);
                 if (conflictingAppointments.length === 0) {
                     saveAppointment($scope.validatedAppointment);
                 } else {
@@ -398,15 +401,23 @@ angular.module('bahmni.appointments')
                 }
             );
 
-            var checkForOldConflicts = function (appointment) {
-                return _.filter($scope.patientAppointments, function (apt) {
-                    var s1 = moment(apt.startDateTime),
-                        e1 = moment(apt.endDateTime),
-                        s2 = moment(appointment.startDateTime),
-                        e2 = moment(appointment.endDateTime);
+            var checkForConflict = function (bookedAppointment, appointment) {
+                var startDateTime = moment(bookedAppointment.startDateTime),
+                    endDateTime = moment(bookedAppointment.endDateTime);
+                var appointmentStartDateTime = moment(appointment.startDateTime),
+                    appointmentEndDateTime = moment(appointment.endDateTime);
+                var isOnSameDay = startDateTime.diff(appointmentStartDateTime, 'days') === 0;
+                var isAppointmentTimingConflicted = ((startDateTime >= appointmentStartDateTime && startDateTime <= appointmentEndDateTime) ||
+                    (appointmentStartDateTime >= startDateTime && appointmentStartDateTime <= endDateTime));
 
-                    return s1.diff(s2, 'days') === 0 &&
-                        ((s1 >= s2 && s1 <= e2) || (s2 >= s1 && s2 <= e1));
+                return bookedAppointment.uuid !== appointment.uuid &&
+                    bookedAppointment.status !== 'Cancelled' &&
+                    isOnSameDay && isAppointmentTimingConflicted;
+            };
+
+            var getConflictingAppointments = function (appointment) {
+                return _.filter($scope.patientAppointments, function (bookedAppointment) {
+                    return checkForConflict(bookedAppointment, appointment);
                 });
             };
 
