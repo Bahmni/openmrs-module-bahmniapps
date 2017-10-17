@@ -116,7 +116,12 @@ angular.module('bahmni.appointments')
                     return !_.property(sortColumn)(appointment);
                 });
                 var nonEmptyObjects = _.difference($scope.filteredAppointments, emptyObjects);
-                var sortedNonEmptyObjects = _.sortBy(nonEmptyObjects, sortColumn);
+                var sortedNonEmptyObjects = _.sortBy(nonEmptyObjects, function (appointment) {
+                    if (angular.isNumber(_.get(appointment, sortColumn))) {
+                        return _.get(appointment, sortColumn);
+                    }
+                    return _.get(appointment, sortColumn).toLowerCase();
+                });
                 if ($scope.reverseSort) {
                     sortedNonEmptyObjects.reverse();
                 }
