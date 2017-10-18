@@ -173,6 +173,35 @@ describe("AppointmentsCreateController", function () {
             expect(appointmentsService.save).toHaveBeenCalled();
         });
 
+        it('should not conflict when the same patient has another appointment at end time of previous appointment', function () {
+            createController();
+            $scope.createAppointmentForm = {$invalid: false};
+            var previousAppointment = {
+                date: moment().toDate(),
+                startTime: '09:15:00',
+                endTime: '12:20:00',
+                patient: {uuid: 'patientUuid'},
+                service: {uuid: 'serviceUuid'},
+                status: 'Scheduled',
+                uuid: 'uuid'
+            },
+            newAppointment = {
+                date: moment().toDate(),
+                startTime: '12:20:00',
+                endTime: '13:20:00',
+                patient: {uuid: 'patientUuid'},
+                service: {uuid: 'serviceUuid'},
+                uuid: 'newUuid'
+            };
+            previousAppointment = Bahmni.Appointments.Appointment.create(previousAppointment);
+            $scope.patientAppointments = [previousAppointment];
+            $state.params = {};
+            $scope.appointment = newAppointment;
+            $scope.save();
+
+            expect(appointmentsService.save).toHaveBeenCalled();
+        });
+
         it('should initialize patientAppointments, if an appointment is editing', function () {
             var patientAppointmentsData = [{
                 uuid: 'veryNewUuid'

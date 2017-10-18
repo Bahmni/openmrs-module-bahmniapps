@@ -407,9 +407,8 @@ angular.module('bahmni.appointments')
                 var appointmentStartDateTime = moment(appointment.startDateTime),
                     appointmentEndDateTime = moment(appointment.endDateTime);
                 var isOnSameDay = startDateTime.diff(appointmentStartDateTime, 'days') === 0;
-                var isAppointmentTimingConflicted = ((startDateTime >= appointmentStartDateTime && startDateTime <= appointmentEndDateTime) ||
-                    (appointmentStartDateTime >= startDateTime && appointmentStartDateTime <= endDateTime));
-
+                var isAppointmentTimingConflicted = ((startDateTime > appointmentStartDateTime && startDateTime < appointmentEndDateTime) ||
+                    (appointmentStartDateTime > startDateTime && appointmentStartDateTime < endDateTime));
                 return bookedAppointment.uuid !== appointment.uuid &&
                     bookedAppointment.status !== 'Cancelled' &&
                     isOnSameDay && isAppointmentTimingConflicted;
