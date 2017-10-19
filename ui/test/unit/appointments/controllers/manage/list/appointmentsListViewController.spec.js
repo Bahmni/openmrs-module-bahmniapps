@@ -627,19 +627,64 @@ describe('AppointmentsListViewController', function () {
             expect(scope.filteredAppointments[1].patient.name).toEqual("john");
         });
 
+        it("should sort searched appointments by date in list view", function () {
+            scope.filterParams = {
+                providerUuids: [],
+                serviceUuids: [],
+                serviceTypeUuids: [],
+                statusList: []
+            };
+            var appointment1 = {
+                patient: {name: 'Smith', identifier: "IQ00002"},
+                comments: "comments2",
+                status: "Scheduled",
+                appointmentKind: "Scheduled",
+                provider: {name: "provider2"},
+                startDateTime: 16007753800000,
+                service: {
+                    name: "service2",
+                    serviceType: {name: "type2"},
+                    speciality: {name: "speciality2"},
+                    location: {name: "location2"}
+                }
+            };
+            var appointment2 = {
+                patient: {name: 'john', identifier: "IQ00001"},
+                comments: "comments1",
+                status: "Completed",
+                appointmentKind: "Completed",
+                provider: {name: "provider1"},
+                startDateTime: 1508322600000,
+                service: {
+                    name: "service1",
+                    serviceType: {name: "type1"},
+                    speciality: {name: "speciality1"},
+                    location: {name: "location1"}
+                }
+            };
+            var appointments = [appointment1, appointment2];
+            createController();
+            scope.displaySearchedPatient(appointments);
+            scope.sortAppointmentsBy('date');
+            expect(scope.sortColumn).toEqual('date');
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].date).toEqual(1508322600000);
+            expect(scope.filteredAppointments[1].date).toEqual(16007753800000);
+        });
+
         it("should have table info", function () {
             var tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_DATE', sortInfo: 'appointmentDate', enable: true},
+                {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
                 {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
                 {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
                 {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: true},
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'service.serviceType.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                 {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
-                {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'service.location.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
                 createController();
