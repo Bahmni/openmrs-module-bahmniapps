@@ -136,6 +136,7 @@ angular.module('bahmni.appointments')
             $scope.printPage = function () {
                 var printTemplateUrl = appService.getAppDescriptor().getConfigValue("printListViewTemplateUrl") || 'views/manage/list/listView.html';
                 printer.print(printTemplateUrl, {
+                    searchedPatient: $scope.searchedPatient,
                     filteredAppointments: $scope.filteredAppointments,
                     startDate: $stateParams.viewDate,
                     enableServiceTypes: $scope.enableServiceTypes,
