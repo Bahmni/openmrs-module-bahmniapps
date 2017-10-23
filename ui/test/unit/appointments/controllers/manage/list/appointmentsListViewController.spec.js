@@ -457,6 +457,9 @@ describe('AppointmentsListViewController', function () {
                 serviceTypeUuids: [],
                 statusList: []
             };
+            $translate.instant.and.callFake(function (value) {
+                return value;
+            });
             var appointment = {
                 patient: {name: 'Smith', identifier: "IQ00002"},
                 comments: "comment2",
@@ -470,6 +473,10 @@ describe('AppointmentsListViewController', function () {
                     serviceType: {name: "type2"},
                     speciality: {name: "speciality2"},
                     location: {name: "location2"}
+                },
+                additionalInfo : {
+                    location : "Ward",
+                    bedNumber : "212"
                 }
             };
             var otherAppointment = {
@@ -485,6 +492,10 @@ describe('AppointmentsListViewController', function () {
                     serviceType: {name: "type1"},
                     speciality: {name: "speciality1"},
                     location: {name: "location1"}
+                },
+                additionalInfo : {
+                    location : "Another ward",
+                    bedNumber : "214"
                 }
             };
             var appointments = [appointment, otherAppointment];
@@ -571,6 +582,14 @@ describe('AppointmentsListViewController', function () {
             expect(scope.filteredAppointments.length).toEqual(2);
             expect(scope.filteredAppointments[0].startDateTime).toEqual(200000);
             expect(scope.filteredAppointments[1].startDateTime).toEqual(300000);
+
+            scope.filteredAppointments = [appointment, otherAppointment];
+            scope.reverseSort = false;
+            scope.sortAppointmentsBy('additionalInfo');
+            expect(scope.sortColumn).toEqual('additionalInformation');
+            expect(scope.filteredAppointments.length).toEqual(2);
+            expect(scope.filteredAppointments[0].additionalInfo).toEqual(otherAppointment.additionalInfo);
+            expect(scope.filteredAppointments[1].additionalInfo).toEqual(appointment.additionalInfo);
         });
 
         it("should reverse sort appointments if sorted on the same column consecutively", function () {
