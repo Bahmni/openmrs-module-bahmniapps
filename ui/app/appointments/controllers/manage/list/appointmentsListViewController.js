@@ -115,6 +115,13 @@ angular.module('bahmni.appointments')
             }, true);
 
             $scope.sortAppointmentsBy = function (sortColumn) {
+                if (sortColumn === 'additionalInfo') {
+                    $scope.filteredAppointments = $scope.filteredAppointments.map(function (appointment) {
+                        appointment.additionalInformation = $scope.display(_.get(appointment, sortColumn));
+                        return appointment;
+                    });
+                    sortColumn = "additionalInformation";
+                }
                 var emptyObjects = _.filter($scope.filteredAppointments, function (appointment) {
                     return !_.property(sortColumn)(appointment);
                 });
