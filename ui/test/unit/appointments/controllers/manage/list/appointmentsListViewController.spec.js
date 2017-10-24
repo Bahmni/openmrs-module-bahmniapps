@@ -756,9 +756,11 @@ describe('AppointmentsListViewController', function () {
         scope.enableSpecialities = true;
         scope.enableServiceTypes = true;
         createController();
+        scope.searchedPatient = true;
         scope.printPage();
         expect(printer.print).toHaveBeenCalledWith("/bahmni_config/openmrs/apps/appointments/printListView.html",
             {
+                searchedPatient: scope.searchedPatient,
                 filteredAppointments: scope.filteredAppointments,
                 startDate: stateparams.viewDate,
                 enableServiceTypes: scope.enableServiceTypes,
@@ -815,9 +817,11 @@ describe('AppointmentsListViewController', function () {
         scope.enableServiceTypes = true;
         stateparams.viewDate = "02 Jan 2017";
         createController();
+        scope.searchedPatient = true;
         scope.printPage();
         expect(printer.print).toHaveBeenCalledWith("views/manage/list/listView.html",
             {
+                searchedPatient: scope.searchedPatient,
                 filteredAppointments: scope.filteredAppointments,
                 startDate: stateparams.viewDate,
                 enableServiceTypes: scope.enableServiceTypes,
