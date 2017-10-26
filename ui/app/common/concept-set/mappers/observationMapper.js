@@ -93,9 +93,11 @@ Bahmni.ConceptSet.ObservationMapper = function () {
                 var tabularObservations = new Bahmni.ConceptSet.TabularObservations(groups, obs, conceptSetConfig);
                 obs.groupMembers.push(tabularObservations);
             });
-            obs.groupMembers = _.sortBy(obs.groupMembers, function (observation) {
+            var sortedGroupMembers = _.sortBy(obs.groupMembers, function (observation) {
                 return array.indexOf(observation.concept.name);
             });
+            obs.groupMembers.length = 0;
+            obs.groupMembers.push.apply(obs.groupMembers, sortedGroupMembers);
         }
     }
 
