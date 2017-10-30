@@ -5,7 +5,7 @@ Bahmni.Common = Bahmni.Common || {};
 
 (function () {
     var hostUrl = localStorage.getItem('host') ? ("https://" + localStorage.getItem('host')) : "";
-    var offlineRootDir = localStorage.getItem('offlineRootDir') || "";
+    var rootDir = localStorage.getItem('rootDir') || "";
     var RESTWS = hostUrl + "/openmrs/ws/rest";
     var RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
     var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
@@ -13,11 +13,6 @@ Bahmni.Common = Bahmni.Common || {};
     var BACTERIOLOGY = RESTWS_V1;
     var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
     var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
-    var CUSTOM_LOCALE_URL = hostUrl + "/bahmni_config/openmrs/i18n/";
-    var syncButtonConfiguration = {
-        delay: 1000,
-        repeat: 1
-    };
 
     var serverErrorMessages = [
         {
@@ -29,19 +24,6 @@ Bahmni.Common = Bahmni.Common || {};
             clientMessage: "One or more drugs you are trying to order are already active. Please change the start date of the conflicting drug or remove them from the new prescription."
         }
     ];
-
-    var offlineErrorMessages = {
-        networkError: "The network connectivity is bad and not able to connect to the server. Please ensure minimum network condition to sync the device",
-        openmrsServerError: "OpenMRS is down and the device not able to communicate to the server. Please make sure the server is up before Syncing the device",
-        openmrsServerDownError: "OpenMRS is down and the device not able to communicate to the server. Please ensure the server is up for the first time login and setup.",
-        networkErrorForFirstTimeLogin: "The device is not connected to the internet. Please ensure minimal connectivity for the first time login and setup."
-    };
-
-    var syncStatusMessages = {
-        syncFailed: "Sync Failed, Press sync button to try again",
-        syncSuccess: "Data Synced Successfully",
-        syncPending: "Sync Pending, Press Sync button to Sync"
-    };
 
     var representation = "custom:(uuid,name,names,conceptClass," +
         "setMembers:(uuid,name,names,conceptClass," +
@@ -241,16 +223,8 @@ Bahmni.Common = Bahmni.Common || {};
         RESTWS_V1: RESTWS_V1,
         baseUrl: BASE_URL,
         customUrl: CUSTOM_URL,
-        customLocaleUrl: CUSTOM_LOCALE_URL,
-        addressEventLogServiceUrl: hostUrl + "/event-log-service/rest/eventlog/getAddressHierarchyEvents",
-        eventLogServiceUrl: hostUrl + "/event-log-service/rest/eventlog/events",
-        eventLogServiceConceptUrl: hostUrl + "/event-log-service/rest/eventlog/concepts",
-        offlineMetadataUrl: hostUrl + "/offlineMetadata.json",
         faviconUrl: hostUrl + "/bahmni/favicon.ico",
         platformType: {
-            chrome: 'other',
-            android: 'other',
-            chromeApp: 'other',
             other: 'other'
         },
         numericDataType: "Numeric",
@@ -263,14 +237,9 @@ Bahmni.Common = Bahmni.Common || {};
         calculateDose: BAHMNI_CORE + "/calculateDose",
         unAuthenticatedReferenceDataMap: unAuthenticatedReferenceDataMap,
         authenticatedReferenceDataMap: authenticatedReferenceDataMap,
-        offlineRootDir: offlineRootDir,
+        rootDir: rootDir,
         dischargeUrl: BAHMNI_CORE + "/discharge",
-        newOfflineVisitUuid: "newOfflineVisitUuid",
-        offlineErrorMessages: offlineErrorMessages,
-        syncButtonConfiguration: syncButtonConfiguration,
-        syncStatusMessages: syncStatusMessages,
         uuidRegex: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
-        offlineBahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/",
         eventlogFilterUrl: hostUrl + "/openmrs/ws/rest/v1/eventlog/filter",
         bahmniConnectMetaDataDb: "metaData",
         serverDateTimeUrl: "/cgi-bin/systemdate",

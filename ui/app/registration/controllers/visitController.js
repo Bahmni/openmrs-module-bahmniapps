@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate', 'offlineService',
+    .controller('VisitController', ['$window', '$scope', '$rootScope', '$state', '$bahmniCookieStore', 'patientService', 'encounterService', '$stateParams', 'spinner', '$timeout', '$q', 'appService', 'openmrsPatientMapper', 'contextChangeHandler', 'messagingService', 'sessionService', 'visitService', '$location', '$translate',
         'auditLogService', 'formService',
-        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, offlineService, auditLogService, formService) {
+        function ($window, $scope, $rootScope, $state, $bahmniCookieStore, patientService, encounterService, $stateParams, spinner, $timeout, $q, appService, openmrsPatientMapper, contextChangeHandler, messagingService, sessionService, visitService, $location, $translate, auditLogService, formService) {
             var vm = this;
             var patientUuid = $stateParams.patientUuid;
             var extensions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.conceptSetGroup.observations", "config");
@@ -91,7 +91,7 @@ angular.module('bahmni.registration')
 
                 addFormObservations($scope.encounter.observations);
 
-                var createPromise = offlineService.isOfflineApp() ? encounterPromise() : encounterService.create($scope.encounter);
+                var createPromise = encounterService.create($scope.encounter);
                 spinner.forPromise(createPromise);
                 return createPromise.then(function (response) {
                     var messageParams = {encounterUuid: response.data.encounterUuid, encounterType: response.data.encounterType};
@@ -105,15 +105,6 @@ angular.module('bahmni.registration')
                             }
                         });
                     });
-                });
-            };
-
-            var encounterPromise = function () {
-                return getActiveEncounter().then(function (response) {
-                    $scope.encounter.encounterUuid = response.data.encounterUuid;
-                    $scope.encounter.encounterDateTime = response.data.encounterDateTime;
-                }).then(function () {
-                    return encounterService.create($scope.encounter);
                 });
             };
 

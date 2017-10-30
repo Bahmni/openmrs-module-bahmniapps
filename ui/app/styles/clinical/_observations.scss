@@ -323,9 +323,9 @@ concept-set {
         top: 50%;
         height: 100%;
         width: auto;
-        -webkit-transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
-        transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
       }
     }
     .placeholder {
@@ -604,7 +604,7 @@ concept-set {
   position: relative;
   .left-panel-toggle {
     display: none;
-    @media screen and (max-width: 1024px){
+    @media screen and (max-width: 1024px) {
       display: inline-block;
       color: #669999;
       border: 1px solid;
@@ -812,4 +812,9 @@ concept-set {
   width: auto;
   vertical-align: top;
   margin-left: 34px;
+}
+
+.ngdialog .ngdialog-content .video-dialog {
+  width: 100%;
+  height: auto;
 }

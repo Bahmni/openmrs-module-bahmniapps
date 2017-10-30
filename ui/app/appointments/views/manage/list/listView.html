@@ -14,7 +14,7 @@
             <tr>
                 <th ng-class="{'table-mid-width': info.class}" ng-show="::info.enable" ng-repeat="info in ::tableInfo" ng-click="::info.sortInfo && sortAppointmentsBy(info.sortInfo)">
                     {{ ::info.heading | translate }}
-                    <span ng-if="sortColumn == info.sortInfo">
+                    <span ng-if="sortColumn == info.sortInfo || info.sortInfo == 'additionalInfo' && sortColumn == 'additionalInformation'">
                         <i class="fa fa-caret-up" ng-show="reverseSort"></i>
                         <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
                 </span>

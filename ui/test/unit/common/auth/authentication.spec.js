@@ -33,14 +33,9 @@ describe("Authentication", function () {
         userService.getUser.and.returnValue(getUserPromise);
         userService.getProviderForUser.and.returnValue(getProviderForUserPromise);
 
-        var mockOfflineService = jasmine.createSpyObj('offlineService',['setPlatformCookie', 'getAppPlatform','isOfflineApp']);
-        mockOfflineService.getAppPlatform.and.returnValue('chrome');
-        mockOfflineService.isOfflineApp.and.returnValue(false);
-
         $provide.value('$bahmniCookieStore', $bahmniCookieStore);
         $provide.value('userService', userService);
         $provide.value('$q', $q);
-        $provide.value('offlineService', mockOfflineService);
     }));
 
 
@@ -59,11 +54,6 @@ describe("Authentication", function () {
 
     describe("loginUser", function () {
         it("should createSession and authenticate the user then save currentUser and cookie in the $bahmniCookieStore", inject(['sessionService', '$rootScope', '$http', function (sessionService, $rootScope, $http) {
-            var mockOfflineService = jasmine.createSpyObj('offlineService',['setPlatformCookie', 'getAppPlatform','isOfflineApp', 'getItem']);
-            mockOfflineService.isOfflineApp.and.returnValue(true);
-            var userInfoFromLocalStorage = undefined;
-            mockOfflineService.getItem.and.returnValue(userInfoFromLocalStorage);
-
             var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
             deferrable.promise = {
                 then: function (callback) {
@@ -100,11 +90,6 @@ describe("Authentication", function () {
 
     describe("loginUserWithOTP", function () {
         it("should authenticate the user and show otp page", inject(['sessionService', '$rootScope', '$http',function (sessionService, $rootScope, $http) {
-            var mockOfflineService = jasmine.createSpyObj('offlineService',['setPlatformCookie', 'getAppPlatform','isOfflineApp', 'getItem']);
-            mockOfflineService.isOfflineApp.and.returnValue(true);
-            var userInfoFromLocalStorage = undefined;
-            mockOfflineService.getItem.and.returnValue(userInfoFromLocalStorage);
-
             var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
             deferrable.promise = {
                 then: function (callback) {
@@ -139,11 +124,6 @@ describe("Authentication", function () {
 
 
         it("should createSession and authenticate the user with OTP then save currentUser and cookie in the $bahmniCookieStore", inject(['sessionService', '$rootScope', '$http',function (sessionService, $rootScope, $http) {
-            var mockOfflineService = jasmine.createSpyObj('offlineService',['setPlatformCookie', 'getAppPlatform','isOfflineApp', 'getItem']);
-            mockOfflineService.isOfflineApp.and.returnValue(true);
-            var userInfoFromLocalStorage = undefined;
-            mockOfflineService.getItem.and.returnValue(userInfoFromLocalStorage);
-
             var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
             deferrable.promise = {
                 then: function (callback) {
@@ -177,11 +157,6 @@ describe("Authentication", function () {
         }]));
 
         it("should show login page if the user is locked out after too may invalid OTP attempts", inject(['sessionService', '$rootScope', '$http',function (sessionService, $rootScope, $http) {
-            var mockOfflineService = jasmine.createSpyObj('offlineService',['setPlatformCookie', 'getAppPlatform','isOfflineApp', 'getItem']);
-            mockOfflineService.isOfflineApp.and.returnValue(true);
-            var userInfoFromLocalStorage = undefined;
-            mockOfflineService.getItem.and.returnValue(userInfoFromLocalStorage);
-
             var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
             deferrable.promise = {
                 then: function (callback) {
@@ -229,31 +204,6 @@ describe("Authentication", function () {
                 headers: {Authorization: 'Basic dXNlck5hbWU6cGFzc3dvcmQ='},
                 cache: false
             })
-        }]));
-    });
-
-
-
-    describe("Should loadProviders ", function () {
-            var mockOfflineService;
-
-            beforeEach(module(function ($provide) {
-                $q = jasmine.createSpyObj('$q', ['defer', 'when']);
-                mockOfflineService = jasmine.createSpyObj('offlineService',['setPlatformCookie', 'getAppPlatform','isOfflineApp', 'getItem']);
-                mockOfflineService.getAppPlatform.and.returnValue('chrome');
-                mockOfflineService.isOfflineApp.and.returnValue(true);
-
-                $provide.value('$q', $q);
-                $provide.value('offlineService', mockOfflineService);
-            }));
-        it("and set the providers to currentProvider in rootScope", inject(['sessionService', '$rootScope', function (sessionService, $rootScope) {
-            var provider = {results: [{uuid: "6a5d9c71-bb71-47ad-abed-bda86637f1b7", name: "93779 - Arman Vuiyan", links: []}]};
-
-            mockOfflineService.isOfflineApp.and.returnValue(true);
-            mockOfflineService.getItem.and.returnValue(provider);
-
-            sessionService.loadProviders({uuid: "userInfoUuid"});
-            expect($rootScope.currentProvider).toEqual({uuid: "6a5d9c71-bb71-47ad-abed-bda86637f1b7", name: "93779 - Arman Vuiyan", links: []});
         }]));
     });
 
