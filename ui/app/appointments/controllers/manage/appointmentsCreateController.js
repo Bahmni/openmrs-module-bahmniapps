@@ -400,17 +400,29 @@ angular.module('bahmni.appointments')
                     }
                 }
             );
+          
+            var newAppointmentStartingEndingBeforeExistingAppointment = function (existingStart, newStart, newEnd) {
+                return newEnd <= existingStart;
+            };
 
-            var checkForConflict = function (bookedAppointment, appointment) {
-                var startDateTime = moment(bookedAppointment.startDateTime),
-                    endDateTime = moment(bookedAppointment.endDateTime);
-                var appointmentStartDateTime = moment(appointment.startDateTime),
-                    appointmentEndDateTime = moment(appointment.endDateTime);
-                var isOnSameDay = startDateTime.diff(appointmentStartDateTime, 'days') === 0;
-                var isAppointmentTimingConflicted = ((startDateTime > appointmentStartDateTime && startDateTime < appointmentEndDateTime) ||
-                    (appointmentStartDateTime > startDateTime && appointmentStartDateTime < endDateTime));
-                return bookedAppointment.uuid !== appointment.uuid &&
-                    bookedAppointment.status !== 'Cancelled' &&
+            var newAppointmentStartingEndingAfterExistingAppointment = function (newStart, existingStart, existingEnd) {
+                return newStart >= existingEnd;
+            };
+
+            var isNewAppointmentConflictingWithExistingAppointment = function (existingAppointment, newAppointment) {
+                var existingStart = moment(existingAppointment.startDateTime),
+                    existingEnd = moment(existingAppointment.endDateTime);
+                var newStart = moment(newAppointment.startDateTime),
+                    newEnd = moment(newAppointment.endDateTime);
+                return !(newAppointmentStartingEndingBeforeExistingAppointment(existingStart, newStart, newEnd) ||
+                    newAppointmentStartingEndingAfterExistingAppointment(newStart, existingStart, existingEnd));
+            };
+
+            var checkForConflict = function (existingAppointment, newAppointment) {
+                var isOnSameDay = moment(existingAppointment.startDateTime).diff(moment(newAppointment.startDateTime), 'days') === 0;
+                var isAppointmentTimingConflicted = isNewAppointmentConflictingWithExistingAppointment(existingAppointment, newAppointment);
+                return existingAppointment.uuid !== newAppointment.uuid &&
+                    existingAppointment.status !== 'Cancelled' &&
                     isOnSameDay && isAppointmentTimingConflicted;
             };
 
