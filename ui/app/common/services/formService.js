@@ -14,9 +14,14 @@ angular.module('bahmni.common.conceptSet')
             return $http.get(Bahmni.Common.Constants.formUrl + '/' + formUuid, {params: params});
         };
 
+        var getFormTranslations = function (form) {
+            return $http.get(Bahmni.Common.Constants.formTranslationsUrl, { params: form});
+        };
+
         return {
             getFormList: getFormList,
             getAllForms: getAllForms,
-            getFormDetail: getFormDetail
+            getFormDetail: getFormDetail,
+            getFormTranslations: getFormTranslations
         };
     }]);
