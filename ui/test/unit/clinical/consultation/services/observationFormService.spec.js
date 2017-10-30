@@ -50,4 +50,35 @@ describe('formService', function () {
         });
     });
 
+    it('should call http service to return the form translations', function () {
+        var response = {
+            data: [
+                {
+                    en: {
+                        labels: {
+                            LABEL_1: 'Vital'
+                        },
+                        concepts: {
+                            TEMPERATURE_2: 'Temperature'
+                        }
+                    }
+                }
+            ]
+        };
+        http.get.and.returnValue(response);
+
+        var form = {
+            formName: 'some Name',
+            formVersion: 'someVersion',
+            locale: 'some Locale'
+        };
+
+        var httpPromise = this.formService.getFormTranslations(form);
+
+        expect(httpPromise).toEqual(response);
+        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/bahmniie/form/translations", {
+            params: form
+        });
+    });
+
 });
