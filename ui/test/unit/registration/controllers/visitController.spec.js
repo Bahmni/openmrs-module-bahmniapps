@@ -3,8 +3,7 @@
 describe('VisitController', function () {
     var scope, $controller, success, encounterService, patientService, patient, dateUtil, $timeout, spinner,
         getEncounterPromise, getPatientPromise, stateParams, patientMapper, q, state, appService, appDescriptor,
-        sessionService, messagingService, rootScope, visitService, visitController, location, window, bahmniCookieStore,
-        offlineService, auditLogService, messageParams, formService;
+        sessionService, messagingService, rootScope, visitService, visitController, location, window, bahmniCookieStore, auditLogService, messageParams, formService;
 
     var stubAllPromise = function () {
         return {
@@ -85,7 +84,6 @@ describe('VisitController', function () {
     }];
 
     beforeEach(module('bahmni.registration'));
-    beforeEach(module('bahmni.common.offline'));
     beforeEach(module('stateMock'));
     beforeEach(module('pascalprecht.translate'));
     beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', '$state', '$translate', function ($injector, timeout, $q, $rootScope, $state) {
@@ -112,8 +110,6 @@ describe('VisitController', function () {
         visitService = jasmine.createSpyObj('visitService', ['search', 'endVisit', 'getVisitSummary', 'getVisitType']);
         appService = jasmine.createSpyObj('appService', ['getDescription', 'getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue', 'getExtensions', 'formatUrl']);
-        offlineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
-        offlineService.isOfflineApp.and.returnValue(false);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
         appDescriptor.getExtensions.and.callFake(function(id, type){
             if (type === "forms") return extensions;
@@ -166,7 +162,6 @@ describe('VisitController', function () {
             messagingService: messagingService,
             visitService: visitService,
             $location: location,
-            offlineService: offlineService,
             auditLogService: auditLogService,
             formService: formService
         });

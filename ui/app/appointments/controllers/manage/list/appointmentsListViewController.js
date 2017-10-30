@@ -2,9 +2,9 @@
 
 angular.module('bahmni.appointments')
     .controller('AppointmentsListViewController', ['$scope', '$state', '$rootScope', '$translate', '$stateParams', 'spinner',
-        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog',
+        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService',
         function ($scope, $state, $rootScope, $translate, $stateParams, spinner, appointmentsService, appService,
-                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog) {
+                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
@@ -17,16 +17,16 @@ angular.module('bahmni.appointments')
             });
             $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_DATE', sortInfo: 'appointmentDate', enable: true},
+                {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
                 {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
                 {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
                 {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'service.serviceType.name', class: true, enable: $scope.enableServiceTypes},
+                {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes},
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                 {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
-                {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'service.location.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             var init = function () {
@@ -50,7 +50,10 @@ angular.module('bahmni.appointments')
 
             $scope.displaySearchedPatient = function (appointments) {
                 oldPatientData = $scope.filteredAppointments;
-                $scope.filteredAppointments = appointments;
+                $scope.filteredAppointments = appointments.map(function (appointmet) {
+                    appointmet.date = appointmet.startDateTime;
+                    return appointmet;
+                });
                 $scope.searchedPatient = true;
                 $stateParams.isFilterOpen = false;
                 $scope.isFilterOpen = false;
@@ -112,11 +115,23 @@ angular.module('bahmni.appointments')
             }, true);
 
             $scope.sortAppointmentsBy = function (sortColumn) {
+                if (sortColumn === 'additionalInfo') {
+                    $scope.filteredAppointments = $scope.filteredAppointments.map(function (appointment) {
+                        appointment.additionalInformation = $scope.display(_.get(appointment, sortColumn));
+                        return appointment;
+                    });
+                    sortColumn = "additionalInformation";
+                }
                 var emptyObjects = _.filter($scope.filteredAppointments, function (appointment) {
                     return !_.property(sortColumn)(appointment);
                 });
                 var nonEmptyObjects = _.difference($scope.filteredAppointments, emptyObjects);
-                var sortedNonEmptyObjects = _.sortBy(nonEmptyObjects, sortColumn);
+                var sortedNonEmptyObjects = _.sortBy(nonEmptyObjects, function (appointment) {
+                    if (angular.isNumber(_.get(appointment, sortColumn))) {
+                        return _.get(appointment, sortColumn);
+                    }
+                    return _.get(appointment, sortColumn).toLowerCase();
+                });
                 if ($scope.reverseSort) {
                     sortedNonEmptyObjects.reverse();
                 }
@@ -128,8 +143,9 @@ angular.module('bahmni.appointments')
             $scope.printPage = function () {
                 var printTemplateUrl = appService.getAppDescriptor().getConfigValue("printListViewTemplateUrl") || 'views/manage/list/listView.html';
                 printer.print(printTemplateUrl, {
+                    searchedPatient: $scope.searchedPatient,
                     filteredAppointments: $scope.filteredAppointments,
-                    startDate: $scope.startDate,
+                    startDate: $stateParams.viewDate,
                     enableServiceTypes: $scope.enableServiceTypes,
                     enableSpecialities: $scope.enableSpecialities
                 });
@@ -140,7 +156,12 @@ angular.module('bahmni.appointments')
                     return appointmentsService.undoCheckIn($scope.selectedAppointment.uuid).then(function (response) {
                         ngDialog.close();
                         $scope.selectedAppointment.status = response.data.status;
-                    }).then(closeConfirmBox);
+                        var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
+                            toStatus: response.data.status
+                        });
+                        closeConfirmBox();
+                        messagingService.showMessage('info', message);
+                    });
                 };
 
                 var scope = {};
@@ -150,10 +171,15 @@ angular.module('bahmni.appointments')
             };
 
             var changeStatus = function (toStatus, onDate, closeConfirmBox) {
+                var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
+                    toStatus: toStatus
+                });
                 return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus, onDate).then(function (response) {
                     ngDialog.close();
                     $scope.selectedAppointment.status = response.data.status;
-                }).then(closeConfirmBox);
+                    closeConfirmBox();
+                    messagingService.showMessage('info', message);
+                });
             };
 
             $scope.confirmAction = function (toStatus) {

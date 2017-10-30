@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientAttributeService', ['$http', 'offlineService', '$q', function ($http, offlineService, $q) {
+    .factory('patientAttributeService', ['$http', '$q', function ($http, $q) {
         var urlMap;
 
         var init = function () {
@@ -13,9 +13,6 @@ angular.module('bahmni.registration')
         init();
 
         var search = function (fieldName, query, type) {
-            if (offlineService.isOfflineApp()) {
-                return $q.when({ data: {} });
-            }
             var url = urlMap[type];
             var queryWithoutTrailingSpaces = query.trimLeft();
 

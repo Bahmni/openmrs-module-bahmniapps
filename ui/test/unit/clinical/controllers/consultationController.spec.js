@@ -247,8 +247,8 @@ describe("ConsultationController", function () {
         auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
         auditLogService.log.and.returnValue({});
     };
+    beforeEach(module('bahmni.common.util'));
     beforeEach(module('bahmni.clinical'));
-    beforeEach(module('bahmni.common.offline'));
     beforeEach(function () {
         inject(function ($controller, $rootScope, _$window_) {
             _window_ = _$window_;

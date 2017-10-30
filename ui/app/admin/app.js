@@ -2,7 +2,7 @@
 
 angular.module('admin', ['httpErrorInterceptor', 'bahmni.admin', 'bahmni.common.routeErrorHandler', 'ngSanitize',
     'bahmni.common.uiHelper', 'bahmni.common.config', 'bahmni.common.orders', 'bahmni.common.i18n', 'pascalprecht.translate',
-    'ngCookies', 'angularFileUpload', 'bahmni.common.offline', 'bahmni.common.services']);
+    'ngCookies', 'angularFileUpload', 'bahmni.common.services']);
 angular.module('admin')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$compileProvider', '$bahmniTranslateProvider',
         function ($stateProvider, $httpProvider, $urlRouterProvider, $compileProvider, $bahmniTranslateProvider) {

@@ -3,7 +3,6 @@ describe("Diagnosis Controller", function () {
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     beforeEach(module('bahmni.clinical'));
-    beforeEach(module('bahmni.common.offline'));
 
     beforeEach(inject(function ($controller, $rootScope, $q, diagnosisService) {
         $scope = $rootScope.$new();

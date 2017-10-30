@@ -6,14 +6,12 @@ angular
         'bahmni.common.displaycontrol.observation', 'bahmni.common.i18n', 'bahmni.common.displaycontrol.custom',
         'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.pivottable', 'RecursionHelper', 'ngSanitize',
         'bahmni.common.uiHelper', 'bahmni.common.domain', 'ngDialog', 'pascalprecht.translate', 'ngCookies',
-        'monospaced.elastic', 'bahmni.common.offline', 'bahmni.common.displaycontrol.hint', 'bahmni.common.attributeTypes',
+        'monospaced.elastic', 'bahmni.common.displaycontrol.hint', 'bahmni.common.attributeTypes',
         'bahmni.common.models', 'bahmni.common.uicontrols',
         'bahmni.common.displaycontrol.diagnosis'])
     .config(['$urlRouterProvider', '$stateProvider', '$httpProvider', '$bahmniTranslateProvider', '$compileProvider', function ($urlRouterProvider, $stateProvider, $httpProvider, $bahmniTranslateProvider, $compileProvider) {
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $urlRouterProvider.otherwise('/search');
-        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
-        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|blob|chrome-extension):/);
 
         // @if DEBUG='production'
         $compileProvider.debugInfoEnabled(false);
@@ -32,11 +30,8 @@ angular
                     'content@search': {templateUrl: 'views/search.html'}
                 },
                 resolve: {
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-                    },
-                    initialize: function (initialization, offlineDb) {
-                        return initialization(offlineDb);
+                    initialize: function (initialization) {
+                        return initialization();
                     }
                 }
             })
@@ -47,11 +42,8 @@ angular
                     'content@newpatient': {templateUrl: 'views/newpatient.html'}
                 },
                 resolve: {
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-                    },
-                    initialize: function (initialization, offlineDb) {
-                        return initialization(offlineDb);
+                    initialize: function (initialization) {
+                        return initialization();
                     }
                 }
             })
@@ -62,11 +54,8 @@ angular
                     'layout': {template: '<div ui-view="layout"></div>'}
                 },
                 resolve: {
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-                    },
-                    initialize: function (initialization, offlineDb) {
-                        return initialization(offlineDb);
+                    initialize: function (initialization) {
+                        return initialization();
                     }
                 }
             })
@@ -94,9 +83,8 @@ angular
                 }
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
-    }]).run(['$rootScope', '$templateCache', 'offlineService', 'schedulerService', '$bahmniCookieStore',
-        'locationService', 'messagingService', 'auditLogService',
-        function ($rootScope, $templateCache, offlineService, schedulerService, $bahmniCookieStore, locationService,
+    }]).run(['$rootScope', '$templateCache', '$bahmniCookieStore', 'locationService', 'messagingService', 'auditLogService',
+        function ($rootScope, $templateCache, $bahmniCookieStore, locationService,
               messagingService, auditLogService) {
             var getStates = function (toState, fromState) {
                 var states = [];
@@ -113,9 +101,6 @@ angular
                     $rootScope.visitLocation = response.data.uuid;
                 }
             });
-            if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
-                schedulerService.sync();
-            }
 
             $rootScope.$on('$stateChangeStart', function () {
                 messagingService.hideMessages("error");

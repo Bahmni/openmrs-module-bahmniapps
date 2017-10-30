@@ -16,12 +16,17 @@ angular.module('bahmni.appointments')
             $scope.minDuration = Bahmni.Appointments.Constants.minDurationForAppointment;
             $scope.appointmentCreateConfig = appointmentCreateConfig;
             $scope.enableEditService = appService.getAppDescriptor().getConfigValue('isServiceOnAppointmentEditable');
+            $scope.showStartTimes = [];
+            $scope.showEndTimes = [];
 
             var init = function () {
                 wireAutocompleteEvents();
                 $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create(appointmentContext.appointment || {appointmentKind: 'Scheduled'}, appointmentCreateConfig);
                 $scope.selectedService = appointmentCreateConfig.selectedService;
                 $scope.isPastAppointment = $scope.isEditMode() ? Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')) : false;
+                if ($scope.appointment.patient) {
+                    $scope.onSelectPatient($scope.appointment.patient);
+                }
             };
 
             $scope.save = function () {
@@ -55,13 +60,13 @@ angular.module('bahmni.appointments')
 
             $scope.timeSource = function () {
                 return $q(function (resolve) {
-                    resolve($scope.startTimes);
+                    resolve($scope.showStartTimes);
                 });
             };
 
             $scope.endTimeSlots = function () {
                 return $q(function (resolve) {
-                    resolve($scope.endTimes);
+                    resolve($scope.showEndTimes);
                 });
             };
 
@@ -150,22 +155,44 @@ angular.module('bahmni.appointments')
                 return true;
             };
 
+            var filterTimingsBasedOnInput = function (enteredNumber, allowedList) {
+                var showTimes = [];
+
+                _.each(allowedList, function (time) {
+                    (time.startsWith(enteredNumber) || (time.indexOf(enteredNumber) === 1 && (time.indexOf(0) === 0))) && showTimes.push(time);
+                });
+
+                return showTimes.length === 0 ? allowedList : showTimes;
+            };
+
+            $scope.onKeyDownOnStartTime = function () {
+                $scope.showStartTimes = filterTimingsBasedOnInput($scope.appointment.startTime, $scope.startTimes);
+            };
+
+            $scope.onKeyDownOnEndTime = function () {
+                $scope.showEndTimes = filterTimingsBasedOnInput($scope.appointment.endTime, $scope.endTimes);
+            };
+
             $scope.onSelectStartTime = function (data) {
                 $scope.warning.startTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.startTime);
-                if (moment($scope.appointment.startTime, 'hh:mm a').isValid()) {
+                if (moment($scope.appointment.startTime, 'hh:mm a', true).isValid()) {
                     $scope.appointment.endTime = moment($scope.appointment.startTime, 'hh:mm a').add($scope.minDuration, 'm').format('hh:mm a');
                     $scope.onSelectEndTime();
                 }
+            };
+
+            var isSelectedSlotOutOfRange = function () {
+                if ($scope.appointment.startTime && !($scope.warning.appointmentDate || $scope.warning.startTime || $scope.warning.endTime)) {
+                    return !isAppointmentStartTimeAndEndTimeWithinServiceAvailability();
+                }
+                return false;
             };
 
             $scope.onSelectEndTime = function (data) {
                 $scope.warning.endTime = false;
                 $scope.checkAvailability();
                 $scope.warning.endTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.endTime);
-
-                if ($scope.appointment.startTime && !($scope.warning.appointmentDate || $scope.warning.startTime || $scope.warning.endTime)) {
-                    $scope.warning.outOfRange = !isAppointmentStartTimeAndEndTimeWithinServiceAvailability();
-                }
+                $scope.warning.outOfRange = isSelectedSlotOutOfRange();
             };
 
             var triggerSlotCalculation = function () {
@@ -266,6 +293,7 @@ angular.module('bahmni.appointments')
                     $scope.endTimes = allSlots.endTime;
                     $scope.warning.endTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.endTime);
                     $scope.warning.startTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.startTime);
+                    $scope.warning.outOfRange = isSelectedSlotOutOfRange();
                     triggerSlotCalculation();
                 }
             };
@@ -372,7 +400,7 @@ angular.module('bahmni.appointments')
                     }
                 }
             );
-
+          
             var newAppointmentStartingEndingBeforeExistingAppointment = function (existingStart, newStart, newEnd) {
                 return newEnd <= existingStart;
             };

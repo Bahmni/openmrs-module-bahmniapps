@@ -1,7 +1,7 @@
 <div class="dashboard">
     <header class="reg-header">
         <div class="reg-header-right fr">
-            <form class="change-location fl" ng-class="{'change-location-offline': isOfflineApp}">
+            <form class="change-location fl">
                 <select  ng-model="selectedLocationUuid" ng-change="onLocationChange()">
                     <option ng-repeat="location in locations | orderBy:'display'" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
                         {{location.display | translate}}
@@ -11,16 +11,6 @@
             <!-- Mujir/Vikash - to be introduced when we do retrospective entry for registration and other modules -->
             <!--<input class="retro-date-widget fr" type="date"/>-->
 
-            <div ng-if="isOfflineApp" class="offline-sync fl" ng-controller="AppUpdateController">
-                <button class="btn" ng-if="isUpdateAvailable()" ng-click="update()">Update</button>
-            </div>
-
-            <button class="btn offline-sync fl" ng-click="sync()" ng-show="isOfflineApp && !isSyncing ">
-                {{::'HEADER_LABEL_SYNC_KEY' | translate}}
-            </button>
-            <button class="btn offline-sync fl offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
-                <img src="../images/sync.gif" />
-            </button>
             <button class="btn-user-info fr">
                 <i class="fa fa-user-md fa-white small"></i>
                 <i class="fa fa-caret-down fa-white mini"></i>
@@ -54,10 +44,5 @@
                 <a id="{{extn.id}}" ng-href="{{extn.url}}" class="button app big" target="{{extn.target?extn.target:'_self'}}" ng-if="isVisibleExtension(extn)"><i class="{{extn.icon}}"></i>{{extn | titleTranslate}}</a>
             </li>
         </ul>
-    </div>
-    <div ng-if="::isOfflineApp" class="syncStatusInfo">
-        <button ng-if="errorsInSync" ui-sref="errorLog" class="button-Errorlog "><i class="fa fa-warning fa-orange"></i><span>Error logs</span></button>
-        <p class="{{getStatusStyleCode()}} message">{{syncStatusMessage}}</p>
-        <p>Last Successful Sync Time : {{lastSyncTime}}</p>
     </div>
 </div>
