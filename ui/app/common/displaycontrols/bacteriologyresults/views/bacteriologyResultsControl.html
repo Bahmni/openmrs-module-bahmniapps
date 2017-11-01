@@ -15,7 +15,7 @@
                         </span>
 
                         <span class="specimenCollectionDate fr">
-                            <i class="fa fa-pencil fl" ng-click="editBacteriologySample(specimen)"></i>
+                            <i show-if-privilege="app:clinical:bacteriologyTab" class="fa fa-pencil fl" ng-click="editBacteriologySample(specimen)"></i>
                             {{specimen.specimenCollectionDate | bahmniDate}}
                         </span>
                     </span>
