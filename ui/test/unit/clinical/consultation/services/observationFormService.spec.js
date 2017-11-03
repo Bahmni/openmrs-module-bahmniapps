@@ -15,6 +15,27 @@ describe('formService', function () {
         this.formService = formService;
     }]));
 
+    var formTranslationResponse = {
+        data: [
+            {
+                en: {
+                    labels: {
+                        LABEL_1: 'Vital'
+                    },
+                    concepts: {
+                        TEMPERATURE_2: 'Temperature'
+                    }
+                }
+            }
+        ]
+    };
+
+    var formTranslationParams = {
+        formName: 'some Name',
+        formVersion: 'someVersion',
+        locale: 'some Locale'
+    };
+
     it('should call http service to return the form list', function () {
         var response = { data: { results: [{ name: 'form1' }] } };
         http.get.and.returnValue(response);
@@ -50,35 +71,23 @@ describe('formService', function () {
         });
     });
 
-    it('should call http service to return the form translations', function () {
-        var response = {
-            data: [
-                {
-                    en: {
-                        labels: {
-                            LABEL_1: 'Vital'
-                        },
-                        concepts: {
-                            TEMPERATURE_2: 'Temperature'
-                        }
-                    }
-                }
-            ]
-        };
-        http.get.and.returnValue(response);
 
-        var form = {
-            formName: 'some Name',
-            formVersion: 'someVersion',
-            locale: 'some Locale'
-        };
+    it('should call http service with default url to return the form translations', function () {
+        var translationsUrl = '/openmrs/ws/rest/v1/bahmniie/form/translations';
+        http.get.and.returnValue(formTranslationResponse);
+        var httpPromise = this.formService.getFormTranslations(translationsUrl, formTranslationParams);
 
-        var httpPromise = this.formService.getFormTranslations(form);
+        expect(httpPromise).toEqual(formTranslationResponse);
+        expect(http.get).toHaveBeenCalledWith(translationsUrl, { params: formTranslationParams });
+    });
 
-        expect(httpPromise).toEqual(response);
-        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/bahmniie/form/translations", {
-            params: form
-        });
+    it('should call http service with custom url to return the form translations', function () {
+        var customUrl = '/openmrs/ws/rest/v1/customUrl';
+        http.get.and.returnValue(formTranslationResponse);
+        var httpPromise = this.formService.getFormTranslations(customUrl, formTranslationParams);
+
+        expect(httpPromise).toEqual(formTranslationResponse);
+        expect(http.get).toHaveBeenCalledWith(customUrl);
     });
 
 });
