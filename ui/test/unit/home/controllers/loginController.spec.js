@@ -103,7 +103,7 @@ describe('loginController', function () {
             expect(sessionService.loginUser.calls.count()).toBe(2);
             expect(sessionService.loadCredentials.calls.count()).toBe(1);
             expect(auditLogService.log.calls.count()).toBe(1);
-            expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGIN_SUCCESS', undefined, 'login');
+            expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGIN_SUCCESS', undefined, 'MODULE_LABEL_LOGIN_KEY');
         });
 
         it('audit log the failed login attempt with username', function () {
@@ -118,7 +118,7 @@ describe('loginController', function () {
             sessionService.loginUser.and.returnValue(fakeHttpGetPromise);
             scopeMock.login();
             expect(auditLogService.log.calls.count()).toBe(1);
-            expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGIN_FAILED', messageParams, 'login');
+            expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGIN_FAILED', messageParams, 'MODULE_LABEL_LOGIN_KEY');
         });
 
         it('should not audit log the login attempt if logging is disabled', function () {

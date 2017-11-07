@@ -208,7 +208,7 @@ angular.module('authentication')
             link: function (scope, element) {
                 element.bind('click', function () {
                     scope.$apply(function () {
-                        auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'REGISTRATION_LABEL_LOGOUT').then(function () {
+                        auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
                             sessionService.destroy().then(
                                 function () {
                                     $window.location = "../home/index.html#/login";
