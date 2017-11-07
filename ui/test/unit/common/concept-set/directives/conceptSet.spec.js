@@ -31,7 +31,7 @@ describe("conceptSet", function () {
     beforeEach(function () {
         scope.additionalAttributesConceptName = "dummy";
         scope.observations = {};
-        scope.patient = {uuid: "patientUuid"};
+        scope.patient = {uuid: "patientUuid", age: 10};
         scope.observations = [{
                 concept: {
                     "uuid": "c393fd1d-3f10-11e4-adec-0800271c1b75",
@@ -118,9 +118,9 @@ describe("conceptSet", function () {
     describe("init",function () {
         beforeEach(function(){
             Bahmni.ConceptSet.FormConditions.rules = {
-                'Chief Complaint Notes' : function (formName, formFieldValues) {
+                'Chief Complaint Notes' : function (formName, formFieldValues, patient) {
                     var chiefComplaint = formFieldValues['Chief Complaint Notes'];
-                    if (chiefComplaint) {
+                    if (chiefComplaint && patient.age === 10) {
                         return {
                             disable: ["Chief Complaint Data"]
                         }
