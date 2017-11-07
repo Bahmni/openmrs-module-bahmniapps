@@ -27,7 +27,7 @@ angular.module('bahmni.home')
             var logAuditForLoginAttempts = function (eventType, isFailedEvent) {
                 if ($scope.loginInfo.username) {
                     var messageParams = isFailedEvent ? {userName: $scope.loginInfo.username} : undefined;
-                    auditLogService.log(undefined, eventType, messageParams, 'login');
+                    auditLogService.log(undefined, eventType, messageParams, 'MODULE_LABEL_LOGIN_KEY');
                 }
             };
 
