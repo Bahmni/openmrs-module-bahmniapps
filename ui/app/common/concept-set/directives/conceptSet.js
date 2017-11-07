@@ -198,7 +198,7 @@ angular.module('bahmni.common.conceptSet')
                                 conceptSetValueMap[conceptName.split('|')[0]] = obsValue;
                                 return conceptSetValueMap;
                             }, {});
-                            var conditions = formCondition(formName, valueMap);
+                            var conditions = formCondition(formName, valueMap, $scope.patient);
                             if (!_.isUndefined(conditions)) {
                                 if (conditions.error && !_.isEmpty(conditions.error)) {
                                     messagingService.showMessage('error', conditions.error);
