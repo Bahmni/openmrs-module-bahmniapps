@@ -17,10 +17,10 @@ Bahmni.Common.DisplayControl.Observation.GroupingFunctions = function () {
             if (anObs.encounterDateTime > challengerObs.encounterDateTime) {
                 return -1;
             }
-            if (anObs.sortWeight < challengerObs.sortWeight) {
+            if (anObs.conceptSortWeight < challengerObs.conceptSortWeight) {
                 return -1;
             }
-            if (anObs.sortWeight > challengerObs.sortWeight) {
+            if (anObs.conceptSortWeight > challengerObs.conceptSortWeight) {
                 return 1;
             }
 
