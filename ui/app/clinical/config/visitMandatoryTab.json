@@ -1,18 +1,5 @@
 {
     "sections": {
-        "Patient Information": {
-            "type": "patientInformation",
-            "displayOrder": 0,
-            "config": {
-                "translationKey": "VISIT_TITLE_PATIENT_INFORMATION",
-                "patientAttributes": [
-                    "caste",
-                    "class",
-                    "education",
-                    "occupation"
-                ]
-            }
-        },
         "Diagnosis": {
             "type": "diagnosis",
             "title": "Diagnosis",
