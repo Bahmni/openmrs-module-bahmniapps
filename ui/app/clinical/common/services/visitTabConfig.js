@@ -36,11 +36,9 @@ angular.module('bahmni.clinical')
                         return section.title !== "Treatments";
                     });
                 }
-                
-                var mandatorySections = _.map(_.values(mandatoryConfig.sections), function(item) {
-                    return _.assign(item, _.find( _.values(firstTabWithDefaultSection.sections), ['type', item.type]));
+                var mandatorySections = _.map(_.values(mandatoryConfig.sections), function (item) {
+                    return _.assign(item, _.find(_.values(firstTabWithDefaultSection.sections), ['type', item.type]));
                 });
-
                 firstTabWithDefaultSection.sections = _.unionWith(_.values(mandatorySections), _.values(firstTabWithDefaultSection.sections), _.isEqual);
 
                 firstTabWithDefaultSection.sections = _.sortBy(firstTabWithDefaultSection.sections, function (section) {
