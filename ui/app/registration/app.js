@@ -91,7 +91,11 @@ angular
                 if (fromState === "newpatient" && (toState === "patient.edit" || toState === "patient.visit")) {
                     states.push("newpatient.save");
                 }
-                states.push(toState);
+                if (toState === 'patient.edit') {
+                    states.push("patient.view");
+                } else {
+                    states.push(toState);
+                }
                 return states;
             };
 
