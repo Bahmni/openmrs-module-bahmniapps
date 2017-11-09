@@ -150,7 +150,7 @@ describe("BahmniObservation", function () {
         });
 
         it("should fetch observations for patient if the patientProgramUuid is provided", function () {
-            scope.config = {conceptNames: ["Concept Name"], scope: "latest"};
+            scope.config = {conceptNames: ["Concept Name"], scope: "latest", obsIgnoreList: ["obsIgnoreList"]};
             scope.section = {};
             scope.enrollment = 'patientProgramUuid';
             observationsService.fetchForPatientProgram.and.returnValue(specUtil.respondWithPromise(q, {data: {}}));
@@ -165,7 +165,7 @@ describe("BahmniObservation", function () {
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.config).not.toBeUndefined();
 
-            expect(observationsService.fetchForPatientProgram).toHaveBeenCalledWith(scope.enrollment, scope.config.conceptNames, scope.config.scope);
+            expect(observationsService.fetchForPatientProgram).toHaveBeenCalledWith(scope.enrollment, scope.config.conceptNames, scope.config.scope, scope.config.obsIgnoreList);
             expect(observationsService.fetchForPatientProgram.calls.count()).toEqual(1);
             expect(observationsService.fetch.calls.count()).toEqual(0);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);
