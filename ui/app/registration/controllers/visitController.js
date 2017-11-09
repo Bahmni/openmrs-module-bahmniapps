@@ -179,7 +179,7 @@ angular.module('bahmni.registration')
             };
 
             var validate = function () {
-                mandatoryValidate();
+                var isFormValidated = mandatoryValidate();
                 var deferred = $q.defer();
                 var contxChange = contextChangeHandler.execute();
                 var allowContextChange = contxChange["allow"];
@@ -193,7 +193,7 @@ angular.module('bahmni.registration')
                     messagingService.showMessage('error', errorMessage);
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
-                } else if (!mandatoryValidate()) { // This ELSE IF condition is to be deleted later.
+                } else if (!isFormValidated) { // This ELSE IF condition is to be deleted later.
                     errorMessage = "REGISTRATION_LABEL_ENTER_MANDATORY_FIELDS";
                     messagingService.showMessage('error', errorMessage);
                     deferred.reject("Some fields are not valid");
@@ -231,6 +231,13 @@ angular.module('bahmni.registration')
                 var concept = mandatoryConcepts.filter(function (mandatoryConcept) {
                     if (mandatoryConcept.isNumeric() && mandatoryConcept.value === 0) {
                         return false;
+                    }
+                    if (mandatoryConcept instanceof Bahmni.ConceptSet.Observation &&
+                        mandatoryConcept.conceptUIConfig && mandatoryConcept.conceptUIConfig.multiSelect) {
+                        return false;
+                    }
+                    if (mandatoryConcept.isMultiSelect) {
+                        return _.isEmpty(mandatoryConcept.getValues());
                     }
                     return !mandatoryConcept.value;
                 });
