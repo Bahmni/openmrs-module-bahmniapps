@@ -47,9 +47,9 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        this.fetchForPatientProgram = function (patientProgramUuid, conceptNames, scope) {
+        this.fetchForPatientProgram = function (patientProgramUuid, conceptNames, scope, obsIgnoreList) {
             return $http.get(Bahmni.Common.Constants.observationsUrl, {
-                params: {patientProgramUuid: patientProgramUuid, concept: conceptNames, scope: scope},
+                params: {patientProgramUuid: patientProgramUuid, concept: conceptNames, scope: scope, obsIgnoreList: obsIgnoreList},
                 withCredentials: true
             });
         };
