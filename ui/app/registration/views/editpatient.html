@@ -14,12 +14,18 @@
             </div>
             <article class="form-field">
                     <div class="field-attribute">
-                    <label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
+			<label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
                     </div>
-
                     <div class="field-value">
                         <span class="uneditable-input text-only">{{patient.registrationDate | bahmniDate}}</span>
-                   </div>
+                    </div>
+
+		    <div class="field-attribute">
+			<label class="control-label">Last Visit Date</label>
+		    </div>
+		    <div class="field-value">
+			<span class="uneditable-input text-only">{{lastVisitDate | bahmniDate}}</span>
+		    </div>
             </article>
         </div>
         <ng-include src="'views/patientcommon.html'"></ng-include>
