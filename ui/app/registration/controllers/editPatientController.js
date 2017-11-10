@@ -52,7 +52,22 @@ angular.module('bahmni.registration')
                     $scope.isDigitized = encountersWithObservations.length > 0;
                 });
 
-                spinner.forPromise($q.all([getPatientPromise, isDigitized]));
+		var getLastVisitDate = patientService.getVisitDates({patient: uuid, v: 'custom:(startDatetime)', includeInactive: true});
+		getLastVisitDate.then(function (data) {
+		    if (data && data.data) {
+			var lastVisitDate = new Date(0);
+                        data.data.results.forEach(function (visit) {
+                            if (visit.startDatetime) {
+                                if(lastVisitDate < dateUtil.getDate(visit.startDatetime)){
+                                    lastVisitDate = dateUtil.getDate(visit.startDatetime)
+                                }
+                            }
+                        });
+			$scope.lastVisitDate = lastVisitDate;
+		    }
+		});
+
+                spinner.forPromise($q.all([getPatientPromise, isDigitized, getLastVisitDate]));
             })();
 
             $scope.update = function () {

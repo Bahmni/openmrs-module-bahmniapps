@@ -66,12 +66,20 @@ angular.module('bahmni.registration')
             return $http.post(url, data, config);
         };
 
+        var getVisitDates = function (parameters) {
+            return $http.get(Bahmni.Common.Constants.visitUrl, {
+                params: parameters,
+                withCredentials: true
+            });
+        };
+
         return {
             search: search,
             searchByIdentifier: searchByIdentifier,
             create: create,
             update: update,
             get: get,
-            updateImage: updateImage
+            updateImage: updateImage,
+            getVisitDates: getVisitDates
         };
     }]);
