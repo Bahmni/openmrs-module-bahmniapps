@@ -110,6 +110,11 @@ describe("Identifier Model", function () {
             expect(identifier.hasIdentifierSourceWithEmptyPrefix()).toBeTruthy();
         });
 
+        it("should return true if there is only one identifier source with null prefix", function () {
+            var identifierType = {identifierSources: [{name: "ABC", prefix: null}]};
+            var identifier = new Bahmni.Registration.Identifier(identifierType);
+            expect(identifier.hasIdentifierSourceWithEmptyPrefix()).toBeTruthy();
+        });
 
         it("should return false if there is only one identifier source without a blank prefix", function () {
             var identifierType = {identifierSources: [{name: "ABC", prefix: "prefix"}]};
