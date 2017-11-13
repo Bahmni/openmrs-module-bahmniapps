@@ -29,7 +29,7 @@ prototype.map = function (identifiers) {
 
 prototype.hasIdentifierSourceWithEmptyPrefix = function () {
     var identifierSources = this.identifierType.identifierSources;
-    return identifierSources.length === 1 && identifierSources[0].prefix === "";
+    return (identifierSources.length === 1 && identifierSources[0].prefix === "") || (identifierSources.length === 1 && identifierSources[0].prefix === null);
 };
 
 prototype.isIdentifierRequired = function () {
