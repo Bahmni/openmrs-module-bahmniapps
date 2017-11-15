@@ -7,6 +7,7 @@ describe('Bacteriology Results Control', function () {
         section,element,_bacteriologyResultsService, appService, _spinner,mockedBacteriologyTabInitialization,patient={uuid:"patientUuid"},
         simpleHtml = '<bacteriology-results-control id="dashboard-drug-order-details" patient="patient" section="section"></bacteriology-results-control>',
         mockDialog,mockConsultationInitialization;
+    var bacteriologyTabData = {};
 
     var messageServiceMock = jasmine.createSpyObj('messagingService', ['showMessage']);
     beforeEach(module('bahmni.common.bacteriologyresults'));
@@ -15,6 +16,23 @@ describe('Bacteriology Results Control', function () {
     beforeEach(module(function ($provide) {
         _bacteriologyResultsService = jasmine.createSpyObj('bacteriologyResultsService', ['getBacteriologyResults', 'saveBacteriologyResults']);
         _bacteriologyResultsService.saveBacteriologyResults.and.returnValue(specUtil.createFakePromise({}));
+        var observation1 = {
+            type: {name: "specimen type name"},
+            dateCollected: undefined,
+            identifier: undefined,
+            uuid: "some uuid",
+            typeObservation: {type: "Some Type", dateCollected: "Some date"},
+            sample: {}
+        };
+        var observation2 = {
+            type: {name: "specimen type name"},
+            dateCollected: undefined,
+            identifier: undefined,
+            uuid: "some uuid2",
+            typeObservation: {type: "Some Type2", dateCollected: "Some date2"},
+            sample: {}
+        };
+        _bacteriologyResultsService.getBacteriologyResults.and.returnValue(specUtil.simplePromise({data: {results: [observation1, observation2]}}));
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         var mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appService.getAppDescriptor.and.returnValue(mockAppDescriptor);
@@ -28,8 +46,11 @@ describe('Bacteriology Results Control', function () {
             return deferred.promise;
         };
 
-        mockedBacteriologyTabInitialization = function(){ deferred = q.defer();
-             return deferred.promise;};
+        mockedBacteriologyTabInitialization = function(){
+            deferred = q.defer();
+            deferred.resolve(bacteriologyTabData);
+            return deferred.promise;
+        };
 
         mockDialog = {
             open: function(item){
@@ -51,10 +72,11 @@ describe('Bacteriology Results Control', function () {
         $provide.value('$translate', {});
     }));
 
-    var compileScope = function () {
+    var compileScope = function (isBeingPrinted) {
         section = section || {};
         inject(function (_$compile_, $rootScope, $httpBackend, $q) {
             scope = $rootScope;
+            scope.isBeingPrinted = isBeingPrinted || false;
             $compile = _$compile_;
             q = $q;
             scope.patient= {uuid:'123'};
@@ -76,6 +98,30 @@ describe('Bacteriology Results Control', function () {
             section = {};
             var compiledElementScope = compileScope();
             expect(compiledElementScope.title).toBe("bacteriology results");
+        });
+
+        it("should not expand the specimens if dashboard is not being printed", function () {
+            section = {};
+            var compiledElementScope = compileScope(false);
+            expect(compiledElementScope.title).toBe("bacteriology results");
+            expect(compiledElementScope.bacteriologyTabData).toBe(bacteriologyTabData);
+            expect(compiledElementScope.specimens.length).toBe(2);
+            expect(compiledElementScope.specimens[0].uuid).toEqual("some uuid");
+            expect(compiledElementScope.specimens[0].isOpen).toBeFalsy();
+            expect(compiledElementScope.specimens[1].uuid).toEqual("some uuid2");
+            expect(compiledElementScope.specimens[1].isOpen).toBeFalsy();
+        });
+
+        it("should expand all specimens if dashboard is being printed", function () {
+            section = {};
+            var compiledElementScope = compileScope(true);
+            expect(compiledElementScope.title).toBe("bacteriology results");
+            expect(compiledElementScope.bacteriologyTabData).toBe(bacteriologyTabData);
+            expect(compiledElementScope.specimens.length).toBe(2);
+            expect(compiledElementScope.specimens[0].uuid).toEqual("some uuid");
+            expect(compiledElementScope.specimens[0].isOpen).toBeTruthy();
+            expect(compiledElementScope.specimens[1].uuid).toEqual("some uuid2");
+            expect(compiledElementScope.specimens[1].isOpen).toBeTruthy();
         });
     });
     describe('save specimens', function() {

@@ -1,0 +1,11 @@
+{
+    "userName": "Nombre de usuario",
+    "password": "Contraseña",
+    "location": "Ubicación",
+    "login": "Iniciar sesión",
+    "selectLocation": "Seleccionar ubicación",
+    "clinical_key": "Clínico",
+    "MESSAGE_DIALOG_OPTION_COPY": "Error de copia",
+    "MESSAGE_DIALOG_OPTION_OKAY": "OK",
+    "ORDERS_FORM_ERRORS_MESSAGE_KEY": "Por favor ingrese la información necesaria en los campos o corrija la informacion en aquellos resaltados"
+}

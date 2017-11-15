@@ -47,7 +47,7 @@
     "REGISTRATION_LABEL_PROVIDER_AUTOCOMPLETE_LIST": "Por favor, seleccione um provedor da lista de preenchimento automático",
     "REGISTRATION_LABEL_ENTER_NAME": "Inserir Nome",
     "REGISTRATION_LABEL_PERSON_NOT_FOUND": "Pessoa não encontrada",
-    "REGISTRATION_LABEL_PATIENT_ID": "ID do Paciente",
+    "REGISTRATION_LABEL_PATIENT_ID": "ID",
     "REGISTRATION_LABEL_SEARCH": "Pesquisar",
     "REGISTRATION_LABEL_NAME": "Nome",
     "REGISTRATION_LABEL_ID": "ID",
@@ -61,7 +61,7 @@
     "REGISTRATION_LABEL_ENTER_VISIT": "Inserir Detalhes da <u>V</u>isita",
     "REGISTRATION_TITLE_ADDITIONAL_PATIENT": "Informação Adicional do Paciente",
     "REGISTRATION_TITLE_RELATIONSHIPS": "Relacionamento",
-    "REGISTRATION_CONTENT_ENTERING_ID": "You are entering ID(s) which is ahead of the Sequence. It will create a gap in the Sequence. Do you want to continue?",
+    "REGISTRATION_CONTENT_ENTERING_ID": "Você está entrando ID(s), que estão à frente da Sequência. Ele vai criar uma lacuna na sequência. Você quer continuar?",
     "REGISTRATION_LABEL_SAVED": "Salvo",
     "REGISTRATION_NO_RESULTS_FOUND": "Nenhum resultado encontrado",
     "REGISTRATION_INSUFFICIENT_PRIVILEGE": "Você não tem privilégio fazer esta ação.",
@@ -80,5 +80,9 @@
     "REGISTRATION_LABEL_NUMBER": "Número de Registro",
     "REGISTRATION_START_VISIT": "Iniciar {{ visitType }} visita",
     "MESSAGE_DIALOG_OPTION_COPY": "Erro de Cópia",
-    "MESSAGE_DIALOG_OPTION_OKAY": "OK"
+    "MESSAGE_DIALOG_OPTION_OKAY": "OK",
+    "NO_LOCATION_TAGGED_TO_VISIT_LOCATION": "No location tagged to Visit Location Found",
+    "REGISTRATION_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
+    "OBS_BOOLEAN_YES_KEY": "Yes",
+    "OBS_BOOLEAN_NO_KEY": "No"
 }
