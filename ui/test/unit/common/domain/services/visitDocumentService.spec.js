@@ -86,6 +86,66 @@ describe("visitDocumentService", function () {
         expect(_$http.post).toHaveBeenCalledWith(Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument", visitDocuments);
     });
 
+    it("should not make request to delete voided documents from disk if the image path is not present", function () {
+        var visitDocuments = {
+            documents: [{
+                testUuid: "c4694ad6-3f10-11e4-adec-0800271c1b75",
+                image: "",
+                voided: true,
+                obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d658e"
+            }, {
+                testUuid: "c4694ad6-3f13-11e4-adec-0800271c1b95",
+                image: null,
+                voided: true,
+                obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d658f"
+            },
+                {
+                    testUuid: "c4694ad6-3f13-11e4-adec-0800271c1b96",
+                    image: undefined,
+                    voided: true,
+                    obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d6590"
+                }]
+        };
+        _$http.post.and.returnValue(specUtil.respondWithPromise(Q, {data: {}}));
+        visitDocumentService.save(visitDocuments);
+        expect(_$http.delete).not.toHaveBeenCalledWith();
+        expect(_$http.delete.calls.count()).toBe(0);
+        expect(_$http.post).toHaveBeenCalledWith(Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument", visitDocuments);
+    });
+
+    it("should make request to delete only voided documents from disk if the image path is present", function () {
+        var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?" +
+            "filename=200/196-Patient Document-00870da2-7ee3-4a53-9eeb-abd2f686afab.jpeg";
+        var visitDocuments = {
+            documents: [{
+                testUuid: "c4694ad6-3f10-11e4-adec-0800271c1b75",
+                image: "",
+                voided: true,
+                obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d658e"
+            }, {
+                testUuid: "c4694ad6-3f13-11e4-adec-0800271c1b95",
+                image: null,
+                voided: true,
+                obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d658f"
+            },{
+                testUuid: "c4694ad6-3f13-11e4-adec-0800271c1b96",
+                image: undefined,
+                voided: true,
+                obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d6590"
+            },{
+                testUuid: "c4694ad6-3f13-11e4-adec-0800271c1b97",
+                image: "200/196-Patient Document-00870da2-7ee3-4a53-9eeb-abd2f686afab.jpeg",
+                voided: true,
+                obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d6591"
+            }]
+        };
+        _$http.post.and.returnValue(specUtil.respondWithPromise(Q, {data: {}}));
+        visitDocumentService.save(visitDocuments);
+        expect(_$http.delete).toHaveBeenCalledWith(url, {withCredentials: true});
+        expect(_$http.delete.calls.count()).toBe(1);
+        expect(_$http.post).toHaveBeenCalledWith(Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument", visitDocuments);
+    });
+
     it('should log when uploading files for a new visit and encounter', function () {
         var visitDocuments = {documents: [], patientUuid: 'patientUuid'};
         var visitDocumentResponse = {visitUuid: 'visitUuid', encounterUuid: "encounterUuid"};
