@@ -87,15 +87,20 @@ angular.module('bahmni.common.domain')
                 });
             };
 
-            var deleteIfVoided = function (obs) {
-                if (obs.voided && obs.groupMembers && !obs.groupMembers.length) {
+            function isObsConceptClassVideoOrImage (obs) {
+                return (obs.concept.conceptClass === 'Video' || obs.concept.conceptClass === 'Image');
+            }
+
+            var deleteIfImageOrVideoObsIsVoided = function (obs) {
+                if (obs.voided && obs.groupMembers && !obs.groupMembers.length && obs.value
+                    && isObsConceptClassVideoOrImage(obs)) {
                     var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + obs.value;
                     $http.delete(url, {withCredentials: true});
                 }
             };
 
             var stripExtraConceptInfo = function (obs) {
-                deleteIfVoided(obs);
+                deleteIfImageOrVideoObsIsVoided(obs);
                 obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType};
                 obs.groupMembers = obs.groupMembers || [];
                 obs.groupMembers.forEach(function (groupMember) {
