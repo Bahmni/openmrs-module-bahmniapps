@@ -44,7 +44,8 @@ describe('EncounterService', function () {
     var mockHttp = {
         defaults: {headers: {common: {'X-Requested-With': 'present'}}},
         get: jasmine.createSpy('Http get').and.callFake(getFunction),
-        post: jasmine.createSpy('Http post').and.returnValue('success')
+        post: jasmine.createSpy('Http post').and.returnValue('success'),
+        delete: jasmine.createSpy('Http delete').and.returnValue('success')
     };
     var rootScope = {currentProvider: {uuid: 'provider-uuid'}};
 
@@ -229,4 +230,158 @@ describe('EncounterService', function () {
         });
     });
 
+    it('should call URL to delete file if Video or Image obs are voided', function() {
+        var encounter = {
+            "encounterTypeUuid": "b469afaa-c79a-11e2-b284-107d46e7b2c5",
+            "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
+            "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
+            "observations": [
+                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided" : true, "groupMembers": []},
+                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided" : true, "groupMembers": []}
+            ],
+            providers: [{uuid: "existing-provider-uuid"}]
+
+        };
+        var Videourl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForVideo";
+        var Imageurl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForImage";
+
+        var results = encounterService.buildEncounter(encounter);
+        expect(mockHttp.delete).toHaveBeenCalledWith(Videourl, {withCredentials: true});
+        expect(mockHttp.delete).toHaveBeenCalledWith(Imageurl, {withCredentials: true});
+        mockHttp.delete.calls.reset();
+
+    });
+
+    it('should not call URL to delete file if Video or Image obs are not voided', function () {
+        var encounter = {
+            "encounterTypeUuid": "b469afaa-c79a-11e2-b284-107d46e7b2c5",
+            "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
+            "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
+            "observations": [
+                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided" : false, "groupMembers": []},
+                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided" : true, "groupMembers": []}
+            ],
+            providers: [{uuid: "existing-provider-uuid"}]
+
+        };
+        var Videourl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForVideo";
+        var Imageurl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForImage";
+
+        var results = encounterService.buildEncounter(encounter);
+        expect(mockHttp.delete).not.toHaveBeenCalledWith(Videourl, {withCredentials: true});
+        expect(mockHttp.delete).toHaveBeenCalledWith(Imageurl, {withCredentials: true});
+        mockHttp.delete.calls.reset();
+    });
+
+    it('should not call URL to delete file if Video or Image obs does not have groupMembers', function () {
+        var encounter = {
+            "encounterTypeUuid": "b469afaa-c79a-11e2-b284-107d46e7b2c5",
+            "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
+            "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
+            "observations": [
+                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided" : true, "groupMembers": []},
+                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided" : true}
+            ],
+            providers: [{uuid: "existing-provider-uuid"}]
+
+        };
+        var Videourl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForVideo";
+        var Imageurl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForImage";
+
+        var results = encounterService.buildEncounter(encounter);
+        expect(mockHttp.delete).not.toHaveBeenCalledWith(Imageurl, {withCredentials: true});
+        expect(mockHttp.delete).toHaveBeenCalledWith(Videourl, {withCredentials: true});
+        mockHttp.delete.calls.reset();
+    });
+
+    it('should not call URL to delete file if Video or Image obs have groupMembers with length as non zero', function () {
+        var encounter = {
+            "encounterTypeUuid": "b469afaa-c79a-11e2-b284-107d46e7b2c5",
+            "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
+            "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
+            "observations": [
+                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided" : true, "groupMembers": [{"value": "xxx", "uuid": "someUuid", "concept": {"name": "childConcept"}}]},
+                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided" : true, "groupMembers": []}
+            ],
+            providers: [{uuid: "existing-provider-uuid"}]
+
+        };
+        var Videourl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForVideo";
+        var Imageurl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForImage";
+
+        var results = encounterService.buildEncounter(encounter);
+        expect(mockHttp.delete).not.toHaveBeenCalledWith(Videourl, {withCredentials: true});
+        expect(mockHttp.delete).toHaveBeenCalledWith(Imageurl, {withCredentials: true});
+        mockHttp.delete.calls.reset();
+    });
+
+    it('should not call URL to delete file if Video or Image obs if value is empty or null or undefined', function () {
+        var encounter = {
+            "encounterTypeUuid": "b469afaa-c79a-11e2-b284-107d46e7b2c5",
+            "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
+            "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
+            "observations": [
+                {"value": null, "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided" : true, "groupMembers": []},
+                {"value": undefined, "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided" : true, "groupMembers": []},
+                {"value": "", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c7"},
+                    "voided" : true, "groupMembers": []}
+            ],
+            providers: [{uuid: "existing-provider-uuid"}]
+
+        };
+
+        var results = encounterService.buildEncounter(encounter);
+        expect(mockHttp.delete).not.toHaveBeenCalled();
+        mockHttp.delete.calls.reset();
+    });
+
+    it('should not call URL to delete file if obs concept Class is not Video Or Image', function () {
+        var encounter = {
+            "encounterTypeUuid": "b469afaa-c79a-11e2-b284-107d46e7b2c5",
+            "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
+            "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
+            "observations": [
+                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass" : "non-Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided" : true, "groupMembers": []},
+                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "non-Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided" : true, "groupMembers": []}
+            ],
+            providers: [{uuid: "existing-provider-uuid"}]
+
+        };
+
+        var results = encounterService.buildEncounter(encounter);
+        expect(mockHttp.delete).not.toHaveBeenCalled();
+        mockHttp.delete.calls.reset();
+    });
+
+    it('should not call URL to delete file if any Obs other than Video or Image are voided', function () {
+        var encounter = {
+            "encounterTypeUuid": "b469afaa-c79a-11e2-b284-107d46e7b2c5",
+            "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
+            "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
+            "observations": [
+                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided" : false, "groupMembers": []},
+                {"value": "someValue", "concept": {"name": "someObs", "conceptClass" : "someClass", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided" : true, "groupMembers": []}
+            ],
+            providers: [{uuid: "existing-provider-uuid"}]
+
+        };
+
+        var results = encounterService.buildEncounter(encounter);
+        expect(mockHttp.delete).not.toHaveBeenCalled();
+        mockHttp.delete.calls.reset();
+    });
 });
