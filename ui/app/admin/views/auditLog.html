@@ -1,32 +1,32 @@
 <div>
     <div class="audit-log-filter">
         <header>
-            <p>Filters</p>
+            <p>{{ 'FILTERS_HEADER_LABEL'|translate }}</p>
         </header>
         <article id="startFrom">
           <form>
               <p>
-                  <label for="startFrom">Start From </label>
+                  <label for="startFrom">{{ 'START_FROM_FILTER_LABEL'|translate }} </label>
                   <input id="startDate" type="date" ng-model="startDate" max="{{::maxDate}}">
                   <input id="startTime" type="time" ng-model="startDate">
               </p>
               <p>
-                  <label for="username">Username </label>
-                  <input type="text" id="username" ng-model="username" placeholder="Enter Username">
+                  <label for="username">{{ 'USERNAME_FILTER_LABEL'|translate }} </label>
+                  <input type="text" id="username" ng-model="username" placeholder="{{ 'ENTER_USERNAME_PLACEHOLDER'|translate }}">
               </p>
               <p>
-                  <label for="patientId">Patient ID </label>
-                  <input type="text" id="patientId" ng-model="patientId" placeholder="Enter Patient ID">
+                  <label for="patientId">{{ 'PATIENT_ID_FILTER_LABEL'|translate }} </label>
+                  <input type="text" id="patientId" ng-model="patientId" placeholder="{{ 'ENTER_PATIENT_ID_PLACEHOLDER'|translate }}">
               </p>
               <button class="button" type="submit" ng-click="runReport()"><i class="fa fa-filter" aria-hidden="true"></i>
-                  Filter
+                  {{ 'FILTER_BUTTON_LABEL'|translate }}
               </button>
           </form>
         </article>
     </div>
     <div class="audit-log-table">
         <header>
-            <p>Audit Log Events</p>
+            <p>{{ 'AUDIT_LOG_TABLE_HEADER_LABEL'|translate }}</p>
         </header>
         <table id="auditLogTable" border="0">
             <thead>
