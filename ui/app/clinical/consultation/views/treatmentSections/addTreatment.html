@@ -35,7 +35,7 @@
                             active: treatment.isNonCodedDrug
                         }"
                             ng-disabled="treatment.drug.uuid || treatment.concept.uuid || (treatment.isBeingEdited && treatment.isNonCodedDrug)">
-                        <span>Accept</span>
+                        <span>{{ ::'CLINICAL_ACCEPT' | translate }}</span>
                     </button>
                 </span>
                         </div>
@@ -260,12 +260,13 @@
                 </article>
 
                 <div class="operations fr clearfix">
-                    <button class="add-drug-btn secondary-button fl" type="submit" accesskey="a"
+                    <button class="add-drug-btn secondary-button fl" type="submit" accesskey="{{ ::treatmentConfig.translate('addAccessKey', 'MEDICATION_ADD_ACCESS_KEY') }}"
                             ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug">
-                        <u>A</u>dd
+                             <span ng-bind-html="::treatmentConfig.translate('add', 'MEDICATION_ADD')">
+                        </span>
                     </button>
                     <button type="button" class="icon-button showInfo-btn fr reset-drug-form" tabindex="-1" ng-click="clearForm()" title="Clear">
-                        Clear
+                        {{ ::'MEDICATION_CLEAR' | translate }}
                     </button>
                 </div>
                 <div class="drug-options-wrapper clearfix">
@@ -290,7 +291,7 @@
         <div class="Order-section-orderDrug form clearfix">
             <article class="form-field clearfix">
                 <div class="field-attribute">
-                    <label>Search</label>
+                    <label>{{ ::'SEARCH_KEY' | translate }}</label>
                 </div>
                 <div class="field-value">
                     <input class="search-order-set" type="text" ng-model="newOrderSet.searchQuery"
@@ -299,7 +300,7 @@
                 </div>
 
                 <div class="field-attribute">
-                    <label>Start Date</label>
+                    <label>{{ ::'MEDICATION_LABEL_START_DATE' | translate}}</label>
                 </div>
                 <div class="field-value">
                     <input type="date" ng-model="newOrderSet.date" ng-disabled="isSearchDisabled"/>
