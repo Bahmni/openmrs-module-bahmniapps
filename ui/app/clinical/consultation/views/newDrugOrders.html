@@ -1,6 +1,6 @@
 <section class="section-grid new-drug-order" ng-if="treatments.length > 0">
     <div class="section-title-wrapper clearfix">
-        <h2 class="section-title fl">New Prescription</h2>
+        <h2 class="section-title fl">{{ ::'MEDICATION_NEW_PRESCRIPTION' | translate}}</h2>
         <button class="secondary-button fr bulk-toggle-btn" ng-show="!showBulkChangeToggle && showBulkChangeDuration"
                 ng-click="bulkChangeDuration()">{{ ::'MEDICATION_CHANGE_DURATION_BUTTON' | translate}}
         </button>
@@ -17,8 +17,8 @@
                 <select class="form-field bulk-duration-unit" ng-model="bulkDurationData.bulkDurationUnit"
                         ng-options="item.name as item.name for item in treatmentConfig.durationUnits" required>
                 </select>
-                <button type="submit" class="bulk-update-btn secondary-button">Update</button>
-                <button type="button" ng-click="bulkChangeDuration()" class="bulk-cancel-btn">Cancel</button>
+                <button type="submit" class="bulk-update-btn secondary-button">{{ ::'CLINICAL_UPDATE' | translate }}</button>
+                <button type="button" ng-click="bulkChangeDuration()" class="bulk-cancel-btn">{{ ::'CLINICAL_CANCEL' | translate }}</button>
             </div>
         </form>
     </div>

@@ -39,14 +39,14 @@
         </div>
     </div>
 
-    <span class="message">Changed!</span>
+    <span class="message">{{ ::'CLINICAL_CHANGED' | translate }}!</span>
 
     <button id="deleteDiagnosis-{{$index}}" ng-confirm-click="deleteDiagnosis(diagnosis)" ng-if="canDeleteDiagnosis" class="small-btn row-remover remove-diagnosis" confirm-message="Are you sure you want to remove this diagnosis?"><span class="fa fa-remove"></span></button>
     <button id="addCondition-{{$index}}" ng-click="addDiagnosisToConditions(diagnosis)"
             ng-disabled="cannotBeACondition(diagnosis)"
             ng-if="!isRetrospectiveMode() && !hideConditions"
             class="small-btn add-condition">
-        <span>Add as condition</span>
+        <span>{{ ::'CLINICAL_ADD_AS_CONDITION' | translate }}</span>
     </button>
 
     <button class="toggle fr diagnosis-toggle" toggle="diagnosis.showComments" ng-class="{'has-notes': diagnosis.comments}">

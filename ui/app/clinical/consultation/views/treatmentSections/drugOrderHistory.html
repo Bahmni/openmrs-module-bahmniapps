@@ -1,6 +1,6 @@
 <section class="drug-orders-history" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     <div ng-if="drugOrderGroupsEmpty()">
-        <p class="placeholder-text">No prescriptions saved yet</p>
+        <p class="placeholder-text">{{ ::'MEDICATION_NO_PRESCRIPTION_SAVED' | translate }}</p>
     </div>
 	<div class="inpage">
 		<div class="tabs">
@@ -10,14 +10,14 @@
                     <span>{{drugOrderGroup.label | bahmniDate}}</span>
                     <i class="fa fa-star current-visit-icon" title="Current visit" ng-if="drugOrderGroup.isCurrentVisit"></i>
                 </label>
-                <button class="secondary-button refill-drugs-btn fr" ng-click="refillAll(drugOrderGroup.drugOrders)" ng-if="!drugOrderGroupsEmpty()">Refill All</button>
+                <button class="secondary-button refill-drugs-btn fr" ng-click="refillAll(drugOrderGroup.drugOrders)" ng-if="!drugOrderGroupsEmpty()">{{ ::'MEDICATION_REFILL_ALL' | translate }}</button>
                 <button  ng-repeat="orderAttribute in getOrderAttributes()" class="secondary-button dispense-all-btn fr" show-if-privilege="{{dispensePrivilege}}" ng-if="!drugOrderGroupsEmpty()"  ng-click="updateAllOrderAttributesByName(orderAttribute,drugOrderGroup)" ng-disabled="!canUpdateAtLeastOneOrderAttributeOfName(drugOrderGroup,orderAttribute.name)">
                     <i  ng-init="allOrderAttributesOfNameSet(drugOrderGroup,orderAttribute.name)" class="fa fa-check" ng-show="drugOrderGroup[orderAttribute.name].selected" ></i>
                     {{orderAttribute.name}} All
                 </button>
                 <div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
-                        <p ng-if="!drugOrderGroup.drugOrders.length" class="placeholder-text">No Recent Treatments</p>
+                        <p ng-if="!drugOrderGroup.drugOrders.length" class="placeholder-text">{{ ::'MEDICATION_NO_RECENT_TREATMENT' | translate }}</p>
                         <ul class="table-mimic">
 							<li id="ordered-drug-orders" ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
@@ -39,10 +39,10 @@
                                             <i class="fa fa-undo"></i>
                                         </button>
                                         <button class="stop-drug-btn" ng-if="!drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
-                                            Stop
+                                            {{ ::'MEDICATION_STOP' | translate }}
                                         </button>
                                         <button class="refill-btn" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
-                                            Refill
+                                            {{ ::'MEDICATION_REFILL' | translate }}
                                         </button>
                                         <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)">
                                             <i class="fa fa-plus-circle" ng-hide="drugOrder.showAdditionalInstructions"></i>
@@ -51,10 +51,10 @@
                                     </div>
 								</div>
                                 <div class="start-date fr">
-                                    <span ng-if="showEffectiveFromDate(drugOrderGroup.visitStartDate, drugOrder.effectiveStartDate)"> started on {{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                                    <span ng-if="showEffectiveFromDate(drugOrderGroup.visitStartDate, drugOrder.effectiveStartDate)"> {{ ::'MEDICATION_STARTED_ON' | translate }} {{drugOrder.effectiveStartDate | bahmniDate}}</span>
                                     <span class="stop-date">
-                                        <div ng-if="drugOrder.isDiscontinuedOrStopped()">Stopped on {{drugOrder.dateStopped | bahmniDate}}</div>
-                                        <div ng-if="drugOrder.orderReasonText && drugOrder.isDiscontinuedOrStopped()">due to {{drugOrder.orderReasonText}}</div>
+                                        <div ng-if="drugOrder.isDiscontinuedOrStopped()">{{ ::'MEDICATION_STOPPED_ON' | translate }} {{drugOrder.dateStopped | bahmniDate}}</div>
+                                        <div ng-if="drugOrder.orderReasonText && drugOrder.isDiscontinuedOrStopped()">{{ ::'MEDICATION_DUE_TO' | translate }} {{drugOrder.orderReasonText}}</div>
                                         <div ng-if="getOrderReasonConcept(drugOrder) && drugOrder.isDiscontinuedOrStopped()">({{getOrderReasonConcept(drugOrder)}})</div>
                                     </span>
                                 </div>
@@ -73,7 +73,7 @@
                                     <div class="form fl drug-stop-container">
                                         <article class="form-field">
                                             <div class="field-attribute stop-date-label">
-                                                <label class="control-label">Stop Date</label>
+                                                <label class="control-label">{{ ::'CLINICAL_STOP_DATE' | translate }}</label>
                                             </div>
                                             <div class="field-value">
                                                 <input id="date-stopped" type="date" min="{{getMinDateForDiscontinue(drugOrder)}}"
