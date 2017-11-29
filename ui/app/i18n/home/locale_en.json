@@ -47,5 +47,12 @@
     "WARNING_SERVER_TIME_ZONE_MISMATCH": "The server timezone ({{serverTime}}) is different from your browser's time/timezone ({{localeTimeZone}}). This can cause some data or reports to appear incorrect. Please contact the administrator for further assistance.",
     "LOGIN_PAGE_HEADER_TEXT": "BAHMNI EMR LOGIN",
     "LOGIN_PAGE_TITLE_TEXT": "TITLE TEXT",
-    "LOGIN_UNSUPPORTED_BROWSER_KEY" : "Bahmni is supported on Chrome Browser"
+    "LOGIN_UNSUPPORTED_BROWSER_KEY" : "Bahmni is supported on Chrome Browser",
+    "DOB_LABEL": "Date of Birth",
+    "NO_RESULTS_FOUND": "No results found",
+    "PRIVILEGE_REQUIRED": "User is logged in but doesn't have the relevant privilege",
+    "NO_FULFILMENT_MESSAGE": "No observations captured for this order.",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "No navigation links available.",
+    "ACCEPT":"Accept",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Please select a value from auto complete"
 }

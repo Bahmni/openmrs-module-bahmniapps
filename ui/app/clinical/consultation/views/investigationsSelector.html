@@ -1,4 +1,4 @@
-<p ng-hide="hasTests()">There are no tests. Please setup tests</p>
+<p ng-hide="hasTests()">{{ 'INVESTIGATION_NO_TEST_PRESENT_MESSAGE'|translate }}</p>
 <section class="first" ng-show="hasTests()">
 	<section>
 		<header>{{filterHeader}}</header>
@@ -14,7 +14,7 @@
 	<section class="investigation-results">
 		<form>
 		    <fieldset>
-		        <header>Selection</header>
+		        <header>{{ 'INVESTIGATIONS_SELECTIONS_HEADER_LABEL'|translate }}</header>
 		        <div id="selectedNodesArea" tabindex="0">
 		            <span ng-repeat="selectable in selctedSelectables()" class="selectedNode"
 		                ng-class="{panel: selectable.set}">
@@ -28,7 +28,7 @@
 </section>
 <section class="last" ng-show="hasTests()">
 	<section ng-show="filteredPanels.length">
-		<header>Panels</header>
+		<header>{{ 'INVESTIGATIONS_PANELS_HEADER_LABEL'|translate }}</header>
 		<ul class="panels" >
 			<li ng-repeat="panel in filteredPanels | orderBy:'name'" ng-click="panel.toggle()" ng-class="{selected: panel.isSelected()}">
 				<span class="fa fa-ok"></span>

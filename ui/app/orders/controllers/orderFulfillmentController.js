@@ -1,9 +1,9 @@
 "use strict";
 
 angular.module('bahmni.orders').controller('OrderFulfillmentController', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'patientContext', 'orderService', 'orderObservationService',
-    'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService', 'appService', '$anchorScroll', 'orderFulfillmentConfig', 'contextChangeHandler',
+    'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService', 'appService', '$anchorScroll', 'orderFulfillmentConfig', 'contextChangeHandler', '$translate',
     function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, orderObservationService,
-              orderTypeService, sessionService, encounterService, spinner, messagingService, appService, $anchorScroll, orderFulfillmentConfig, contextChangeHandler) {
+              orderTypeService, sessionService, encounterService, spinner, messagingService, appService, $anchorScroll, orderFulfillmentConfig, contextChangeHandler, $translate) {
         $scope.patient = patientContext.patient;
         $scope.formName = $stateParams.orderType + Bahmni.Common.Constants.fulfillmentFormSuffix;
         $scope.fulfillmentConfig = orderFulfillmentConfig;
@@ -74,6 +74,10 @@ angular.module('bahmni.orders').controller('OrderFulfillmentController', ['$scop
             return shouldAllow;
         };
 
+        $scope.getEmptyMessage = function () {
+            return $translate.instant('NO_ORDERS_PRESENT', {orderType: $scope.orderType});
+        };
+
         $scope.$on("event:saveOrderObservations", function () {
             if (!$scope.isFormValid()) {
                 $scope.$parent.$broadcast("event:errorsOnForm");
@@ -89,13 +93,13 @@ angular.module('bahmni.orders').controller('OrderFulfillmentController', ['$scop
                     messagingService.showMessage('info', 'Saved');
                 });
             }).catch(function (error) {
-                var message = 'An error has occurred on the server. Information not saved.';
+                var message = $translate.instant("DEFAULT_SERVER_ERROR_MESSAGE");
                 try {
                 /* This is a dirty fix to do, the real reason of failure is because of there is no visit type assosiated with
                  save request to create a new visit in mrs.
                   */
                     if (error.data.error.message.indexOf("Visit Type is required") >= 0) {
-                        message = "Visit already closed, create new visit to fulfill the order";
+                        message = $translate.instant("VISIT_CLOSED_CREATE_NEW_ERROR_MESSAGE");
                     }
                 } catch (e) { /* ignore the error */ }
                 messagingService.showMessage('error', message);

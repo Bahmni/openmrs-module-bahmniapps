@@ -5,7 +5,7 @@
             <i class="fa fa-caret-down" ng-show="expanded"></i>
             <span class="section-title-text">
                 <span>{{ward.ward.name}} -  </span>
-                <small>(Total Beds: {{ward.totalBeds}} | Available Beds: {{ward.totalBeds-ward.occupiedBeds}})</small>
+                <small>({{ 'TOTAL_BEDS_LABEL'|translate }}: {{ward.totalBeds}} | {{ 'AVAILABLE_BEDS_LABEL'|translate }}: {{ward.totalBeds-ward.occupiedBeds}})</small>
             </span>
         </span>
         <span class="quick-links" ng-if="readOnly">

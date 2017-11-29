@@ -2,7 +2,7 @@
     <div ng-class="{'disableBacteriologyInRetroMode':isRetrospectiveMode()}">
         <div class="infoMsgRetrospectiveModeEnabled" ng-if="isRetrospectiveMode()">
             <i class="fa fa-info-circle"></i>
-            <span><strong>Bacteriology</strong> entry is <strong>NOT allowed</strong> in retrospective mode</span>
+            <span ng-bind-html="'BACTERIOLOGY_NOT_ALLOWED_IN_RETROSPECTIVE_MESSAGE'|translate"></span>
         </div>
         <div ng-repeat="newSpecimen in newSpecimens track by $id(newSpecimen)" class="sample-container">
             <form class="form">

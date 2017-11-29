@@ -4,8 +4,8 @@ angular.module('bahmni.common.appFramework')
     .config(['$compileProvider', function ($compileProvider) {
         $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
     }])
-    .service('appService', ['$http', '$q', 'sessionService', '$rootScope', 'mergeService', 'loadConfigService', 'messagingService',
-        function ($http, $q, sessionService, $rootScope, mergeService, loadConfigService, messagingService) {
+    .service('appService', ['$http', '$q', 'sessionService', '$rootScope', 'mergeService', 'loadConfigService', 'messagingService', '$translate',
+        function ($http, $q, sessionService, $rootScope, mergeService, loadConfigService, messagingService, $translate) {
             var currentUser = null;
             var baseUrl = Bahmni.Common.Constants.baseUrl;
             var customUrl = Bahmni.Common.Constants.customUrl;
@@ -187,7 +187,7 @@ angular.module('bahmni.common.appFramework')
                 if (hasPrivilegeOf(privilegeName)) {
                     return $q.when(true);
                 }
-                messagingService.showMessage("error", Bahmni.Common.Constants.privilegeRequiredErrorMessage + " [Privileges required: " + privilegeName + "]");
+                messagingService.showMessage("error", $translate.instant(Bahmni.Common.Constants.privilegeRequiredErrorMessage) + " [Privileges required: " + privilegeName + "]");
                 return $q.reject();
             };
 

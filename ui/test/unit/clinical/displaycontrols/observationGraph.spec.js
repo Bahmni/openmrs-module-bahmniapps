@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Observation Graph", function () {
-    var element, scope, compile, httpBackend, observationsService, patientService, conceptSetService, appService, c3ChartSpy;
+    var element, scope, compile, httpBackend, observationsService, patientService, conceptSetService, appService, c3ChartSpy, translate;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -10,10 +10,15 @@ describe("Observation Graph", function () {
         patientService = jasmine.createSpyObj('patientService', ['getPatient']);
         conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
         appService = jasmine.createSpyObj('appService', ['loadCsvFileFromConfig']);
+        translate = jasmine.createSpyObj('$translate', ['instant']);
+        translate.instant.and.callFake(function (key) {
+            return key;
+        });
         $provide.value('observationsService', observationsService);
         $provide.value('patientService', patientService);
         $provide.value('conceptSetService', conceptSetService);
         $provide.value('appService', appService);
+        $provide.value('$translate', translate);
 
         c3ChartSpy = jasmine.createSpyObj('c3Chart', ['render']);
         Bahmni.Graph.c3Chart.create = function () {

@@ -452,13 +452,14 @@ angular.module('consultation')
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
             $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
-        }]).run(['stateChangeSpinner', '$rootScope', 'auditLogService',
-            function (stateChangeSpinner, $rootScope, auditLogService) {
+        }]).run(['stateChangeSpinner', '$rootScope', 'auditLogService', '$window',
+            function (stateChangeSpinner, $rootScope, auditLogService, $window) {
+                moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
                 FastClick.attach(document.body);
                 stateChangeSpinner.activate();
                 var cleanUpStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams) {
                     auditLogService.log(toParams.patientUuid, Bahmni.Clinical.StateNameEvenTypeMap[toState.name], undefined, "MODULE_LABEL_CLINICAL_KEY");
-                    window.scrollTo(0, 0);
+                    $window.scrollTo(0, 0);
                 });
                 var cleanUpNgDialogOpened = $rootScope.$on('ngDialog.opened', function () {
                     $('html').addClass('ngdialog-open');

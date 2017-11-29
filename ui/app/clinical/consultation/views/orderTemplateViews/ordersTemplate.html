@@ -11,9 +11,9 @@
                 </ul>
             </div>
             <div class="block consultation-notes">
-                    <h2 class="section-title">Selected Orders</h2>
+                    <h2 class="section-title">{{ 'SELECTED_ORDERS_LABEL'|translate }}</h2>
                     <div id="selected-orders" class="selected-orders">
-                        <p class="null-data-message" ng-hide="selectedOrders.length">Selected orders is empty</p>
+                        <p class="null-data-message" ng-hide="selectedOrders.length">{{ 'SELECTED_ORDERS_EMPTY_MESSAGE'|translate }}</p>
                         <ul class="selected-items">
                             <li ng-repeat="order in selectedOrders" >
                                 <div class="grid-row-element">

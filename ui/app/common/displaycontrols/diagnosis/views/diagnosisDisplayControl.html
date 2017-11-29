@@ -5,8 +5,8 @@
         <table class="dashboard-table history-diagnosis">
             <tr ng-if="showLatestDiagnosis == 'true'" class="table-header">
                 <th>&nbsp;</th>
-                <th><span>Initial</span></th>
-                <th><span>Current</span></th>
+                <th><span>{{'CLINICAL_INITIAL'|translate}}</span></th>
+                <th><span>{{'CLINICAL_CURRENT'|translate}}</span></th>
             </tr>
 
             <tbody ng-repeat="diagnosis in allDiagnoses | primaryDiagnosisFirst" class="row"

@@ -1,6 +1,6 @@
 <div class="program-tile" ng-if="!patientProgram.deleting">
     <div class="button-group">
-        <input type="button" ng-click="toggleDelete(patientProgram)" value="Delete" class="button"/>
+        <input type="button" ng-click="toggleDelete(patientProgram)" value="{{ 'DELETE_LABEL'|translate }}" class="button"/>
     </div>
     <div class="programName cursor-pointer" toggle="patientProgram.isOpen">
         <i class="fa fa-caret-right" ng-hide="patientProgram.isOpen"></i>

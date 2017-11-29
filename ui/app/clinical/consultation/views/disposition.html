@@ -1,19 +1,19 @@
 <div class="disposition-wrapper">
     <div class="infoMsgRetrospectiveModeEnabled" ng-if="isRetrospectiveMode()">
         <i class="fa fa-info-circle"></i>
-        <span><strong>Disposition</strong> entry is <strong>NOT allowed</strong> in retrospective mode</span>
+        <span ng-bind-html="'DISPOSITION_NOT_ALLOWED_IN_RETROSPECTIVE_MESSAGE'|translate"></span>
     </div>
     <div class="box disposition-tab">
         <form ng-submit="submit()">
-            <label for="dispositionAction">Disposition Type: </label>
+            <label for="dispositionAction">{{ 'DISPOSITION_TYPE_LABEL'|translate }}: </label>
             <select id="dispositionAction" ng-model="dispositionCode" ng-options="d.code as d.name for d in dispositionActions" ng-change="clearDispositionNote();"  ng-disabled="isRetrospectiveMode()">
                 <option value=""></option>
             </select>
             <div class="dispositionNotesWrap">
-                <label class="disposition-notes" for="dispositionNotes">Disposition Notes: </label>
+                <label class="disposition-notes" for="dispositionNotes">{{ 'DISPOSITION_NOTE_LABEL'|translate }}: </label>
                 <p ng-if="showWarningForEarlierDispositionNote()" class="caution" >
                     <i class="fa fa-exclamation-sign small"></i>
-                    <span>The Disposition Note will also be removed</span>
+                    <span>{{ 'DISPOSITION_NOTE_WILL_BE_REMOVED_WARNING_MESSAGE'|translate }}</span>
                 </p>
                 <textarea id="dispositionNotes" ng-model="dispositionNote.value" ng-disabled="isRetrospectiveMode()"   msd-elastic></textarea>
             </div>
