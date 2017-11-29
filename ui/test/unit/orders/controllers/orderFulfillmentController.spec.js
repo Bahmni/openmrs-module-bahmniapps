@@ -2,7 +2,7 @@
 
 describe("OrderFulfillmentController", function () {
 
-    var scope, rootScope, deferred, deferred1, q, $bahmniCookieStore, contextChangeHandler;
+    var scope, rootScope, deferred, deferred1, q, $bahmniCookieStore, contextChangeHandler, translate;
     var mockEncounterService = jasmine.createSpyObj('encounterService', ['find']);
     var mockOrderObservationService = jasmine.createSpyObj('orderObservationService', ['save']);
     var mockOrderTypeService = jasmine.createSpyObj('orderTypeService', ['getOrderTypeUuid']);
@@ -44,6 +44,9 @@ describe("OrderFulfillmentController", function () {
     beforeEach(module('bahmni.orders'));
 
     beforeEach(module(function ($provide) {
+        $provide.value('appService', {});
+        translate = jasmine.createSpyObj("$translate", ["instant"]);
+        $provide.value('$translate', translate);
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get', 'remove', 'put']);
         $provide.value('$bahmniCookieStore', $bahmniCookieStore);
     }));
@@ -145,5 +148,13 @@ describe("OrderFulfillmentController", function () {
         scope.$digest();
 
         expect(scope.$parent.$broadcast).toHaveBeenCalledWith("event:errorsOnForm");
+    });
+
+    it('should give message for empty order', function () {
+        var orderType = "Test order";
+        scope.orderType = orderType;
+        scope.$digest();
+        scope.getEmptyMessage();
+        expect(translate.instant).toHaveBeenCalledWith("NO_ORDERS_PRESENT", {orderType: orderType});
     });
 });

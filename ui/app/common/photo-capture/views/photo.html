@@ -1,6 +1,6 @@
 <button type="button" class="camera-btn btn" ng-click="launchPhotoCapturePopup()" accesskey="p"></button>
 <button type="button" class="upload-btn btn" ng-click="launchPhotoUploadPopup()" accesskey="u"><i class="fa fa-upload" aria-hidden="true"></i></button>
-<div class="photoCaptureDialog container-fluid" title="Take Patient's Photo">
+<div class="photoCaptureDialog container-fluid" title="{{ 'TAKE_PATIENT_PHOTO_TITTLE'|translate }}">
     <div class="row-clear">
         <div class="photo-video-container">
              <span class="photoCapture-left-overlay"></span>
@@ -12,8 +12,8 @@
         </div>
     </div>
     <div class="row-clear">
-        <button type="button" id="click" ng-click="captureClickImage()" class="take-photo-btn">Click Photo</button>
-        <button type="button" class="confirmImage confirm" disabled ng-click="captureConfirmImage()">Confirm Photo</button>
+        <button type="button" id="click" ng-click="captureClickImage()" class="take-photo-btn">{{ 'CLICK_PATIENT_PHOTO_LABEL'|translate }}</button>
+        <button type="button" class="confirmImage confirm" disabled ng-click="captureConfirmImage()">{{ 'CONFIRM_PATIENT_PHOTO_LABEL'|translate }}</button>
     </div>
 </div>
 <div class="photoUploadDialog container-fluid" title="Upload Patient's Photo">
@@ -21,5 +21,5 @@
     <div id="photo-canvas-container" class="photo-canvas-container">
         <canvas height="180" width="180" ></canvas>
     </div>
-    <button type="button" class="confirmImage confirm" disabled ng-click="uploadConfirmImage()">Confirm Photo</button>
+    <button type="button" class="confirmImage confirm" disabled ng-click="uploadConfirmImage()">{{ 'CONFIRM_PATIENT_PHOTO_LABEL'|translate }}</button>
 </div>

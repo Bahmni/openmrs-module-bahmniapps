@@ -1,18 +1,18 @@
 <article class="consultation-page visit">
     <section class="messages" ng-if="isConsultationTabEmpty()">
-        <p class="null-data-message">Consultation pad is empty</p>
+        <p class="null-data-message">{{ 'CONSULTATION_PAD_EMPTY_MESSAGE'|translate }}</p>
     </section>
     <div ng-if="!isConsultationTabEmpty()">
         <section class="block diagnosis section-grid"
                  ng-show="consultation.newlyAddedDiagnoses.length > 0 || consultation.savedDiagnosesFromCurrentEncounter.length > 0 || editedDiagnosesFromPastEncounters.length > 0">
-            <h2 class="section-title">Diagnoses</h2>
+            <h2 class="section-title">{{ 'CONSULTATION_TAB_DIAGNOSES_HEADER_LABEL'|translate }}</h2>
 
             <div class="table history-diagnosis" ng-show="consultation.newlyAddedDiagnoses.length > 0">
                 <div class="row table-header">
-                    <div class="col col1"><span class="table-head-title">Newly Added</span></div>
-                    <div class="col col2"><span class="table-head-title">Status</span></div>
+                    <div class="col col1"><span class="table-head-title">{{ 'CONSULTATION_TAB_NEW_DIAGNOSES_LABEL'|translate }}</span></div>
+                    <div class="col col2"><span class="table-head-title">{{ 'CONSULTATION_TAB_DIAGNOSES_STATUS_LABEL'|translate }}</span></div>
                     <div class="col col3"><span class="table-head-title"></span></div>
-                    <div class="col col4"><span class="table-head-title">Revised</span></div>
+                    <div class="col col4"><span class="table-head-title">{{ 'CONSULTATION_TAB_{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}_DIAGNOSES_LABEL'|translate }}</span></div>
                     <div class="col col5"><span class="table-head-title"></span></div>
                 </div>
                 <div class="table-body">
@@ -26,8 +26,8 @@
                                 <div class="view">
                                     <span class="certainty">{{diagnosis.certainty}}</span>
                                     <span class="order">
-                                        <span ng-show="diagnosis.isPrimary()">Primary</span>
-                                        <span ng-hide="diagnosis.isPrimary()">Secondary</span>
+                                        <span ng-show="diagnosis.isPrimary()">{{ 'CLINICAL_DIAGNOSIS_ORDER_PRIMARY'|translate }}</span>
+                                        <span ng-hide="diagnosis.isPrimary()">{{ 'CLINICAL_DIAGNOSIS_ORDER_SECONDARY'|translate }}</span>
                                     </span>
                                     <span class="status"></span>
 
@@ -44,7 +44,7 @@
                             </div>
                             <div class="col col3"></div>
                             <div class="col col4">
-                                <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
+                                <i ng-show="diagnosis.{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments"
                                         ng-click="diagnosis.showComment = !diagnosis.showComment"
                                         ng-class="{'has-notes': diagnosis.comments}">
@@ -55,7 +55,7 @@
                         </div>
                         <div class="diagnosis-row notes inline-notes" ng-show="diagnosis.showComment">
                             <p>
-                                <strong class="diagnosis-notes-title">Diagnosis Notes: </strong>
+                                <strong class="diagnosis-notes-title">{{ 'CONSULTATION_TAB_DIAGNOSES_NOTES_LABEL'|translate }}: </strong>
                             <pre>{{diagnosis.comments}}</pre>
                             </p>
                         </div>
@@ -66,10 +66,10 @@
 
             <div class="table history-diagnosis" ng-show="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
                 <div class="row table-header">
-                    <div class="col col1"><span class="table-head-title">Current</span></div>
-                    <div class="col col2"><span class="table-head-title">Status</span></div>
+                    <div class="col col1"><span class="table-head-title">{{ 'CLINICAL_CURRENT'|translate }}</span></div>
+                    <div class="col col2"><span class="table-head-title">{{ 'CONSULTATION_TAB_DIAGNOSES_STATUS_LABEL'|translate }}</span></div>
                     <div class="col col3"><span class="table-head-title"></span></div>
-                    <div class="col col4"><span class="table-head-title">Revised</span></div>
+                    <div class="col col4"><span class="table-head-title">{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}</span></div>
                     <div class="col col5"><span class="table-head-title"></span></div>
                 </div>
 
@@ -84,8 +84,8 @@
                                 <div class="view">
                                     <span class="certainty">{{diagnosis.certainty}}</span>
                                     <span class="order">
-                                        <span ng-show="diagnosis.isPrimary()">Primary</span>
-                                        <span ng-hide="diagnosis.isPrimary()">Secondary</span>
+                                        <span ng-show="diagnosis.isPrimary()">{{ 'CLINICAL_DIAGNOSIS_ORDER_PRIMARY'|translate }}</span>
+                                        <span ng-hide="diagnosis.isPrimary()">{{ 'CLINICAL_DIAGNOSIS_ORDER_SECONDARY'|translate }}</span>
                                     </span>
                                     <span class="status"></span>
                                 </div>
@@ -101,7 +101,7 @@
                             </div>
                             <div class="col col3"></div>
                             <div class="col col4">
-                                <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
+                                <i ng-show="diagnosis.{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments"
                                         toggle="diagnosis.showComment"
                                         ng-class="{'has-notes': diagnosis.comments}">
@@ -112,7 +112,7 @@
                         </div>
                         <div class="diagnosis-row notes inline-notes" ng-show="diagnosis.showComment">
                             <p>
-                                <strong class="diagnosis-notes-title">Diagnosis Notes: </strong>
+                                <strong class="diagnosis-notes-title">{{ 'CONSULTATION_TAB_DIAGNOSES_NOTES_LABEL'|translate }}: </strong>
                             <pre>{{diagnosis.comments}}</pre>
                             </p>
                         </div>
@@ -123,10 +123,10 @@
 
             <div class="table history-diagnosis" ng-show="editedDiagnosesFromPastEncounters.length > 0">
                 <div class="row table-header">
-                    <div class="col col1"><span class="table-head-title">Past</span></div>
-                    <div class="col col2"><span class="table-head-title">Status</span></div>
+                    <div class="col col1"><span class="table-head-title">{{ 'CONSULTATION_TAB_PAST_DIAGNOSES_LABEL'|translate }}</span></div>
+                    <div class="col col2"><span class="table-head-title">{{ 'CONSULTATION_TAB_DIAGNOSES_STATUS_LABEL'|translate }}</span></div>
                     <div class="col col3"><span class="table-head-title"></span></div>
-                    <div class="col col4"><span class="table-head-title">Revised</span></div>
+                    <div class="col col4"><span class="table-head-title">{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}</span></div>
                     <div class="col col5"><span class="table-head-title"></span></div>
                 </div>
 
@@ -141,8 +141,8 @@
                                 <div class="view">
                                     <span class="certainty">{{diagnosis.certainty}}</span>
                                     <span class="order">
-                                        <span ng-show="diagnosis.isPrimary()" class="order">Primary</span>
-                                        <span ng-hide="diagnosis.isPrimary()" class="order">Secondary</span>
+                                        <span ng-show="diagnosis.isPrimary()" class="order">{{ 'CLINICAL_DIAGNOSIS_ORDER_PRIMARY'|translate }}</span>
+                                        <span ng-hide="diagnosis.isPrimary()" class="order">{{ 'CLINICAL_DIAGNOSIS_ORDER_SECONDARY'|translate }}</span>
                                     </span>
                                     <span class="status"></span>
                                 </div>
@@ -158,7 +158,7 @@
                             </div>
                             <div class="col col3"></div>
                             <div class="col col4">
-                                <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
+                                <i ng-show="diagnosis.{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments"
                                         ng-click="diagnosis.showComment = !diagnosis.showComment"
                                         ng-class="{'has-notes': diagnosis.comments}">
@@ -169,7 +169,7 @@
                         </div>
                         <div class="diagnosis-row notes inline-notes" ng-show="diagnosis.showComment">
                             <p>
-                                <strong class="diagnosis-notes-title">Diagnosis Notes: </strong>
+                                <strong class="diagnosis-notes-title">{{ 'CONSULTATION_TAB_DIAGNOSES_NOTES_LABEL'|translate }}: </strong>
                             <pre>{{diagnosis.comments}}</pre>
                             </p>
                         </div>
@@ -179,7 +179,7 @@
             </div>
         </section>
         <section class="block observation section-grid" ng-show="groupedObservations.length > 0">
-            <h2 class="section-title">Observations</h2>
+            <h2 class="section-title">{{ 'CONSULTATION_TAB_OBSERVATIONS_HEADER_LABEL'|translate }}</h2>
 
             <div ng-repeat="observationGroup in groupedObservations">
                 <table>
@@ -227,7 +227,7 @@
             </div>
         </section>
         <section class="block investigation" style="display:none;"> <!--Hiding the section for release 4-->
-            <h2>Investigation</h2>
+            <h2>{{ 'CONSULTATION_TAB_INVESTIGATION_HEADER_LABEL'|translate }}</h2>
             <ul>
                 <li ng-repeat="investigation in consultation.investigations"
                     ng-class="{panel: investigation.concept.set, voided: investigation.voided}">
@@ -236,18 +236,18 @@
                 </li>
             </ul>
             <div ng-show="consultation.labOrderNote.value" class="notes">
-                <h5 class="title">Notes:</h5>
+                <h5 class="title">{{ 'NOTES_LABEL'|translate }}:</h5>
 
                 <p class="content">{{consultation.labOrderNote.value}}</p>
             </div>
             <ng-include src="'consultation/views/labResults.html'" ng-init="labResults=consultation.labResults"/>
         </section>
         <section class="block disposition section-grid" ng-if="consultation.disposition.code && !consultation.disposition.voided">
-            <h2 class="section-title">Disposition</h2>
+            <h2 class="section-title">{{ 'CONSULTATION_TAB_DISPOSITION_HEADER_LABEL'|translate }}</h2>
             <ul class="block-content">
                 <li>
                     <div class="expander-row row-click">
-                        <span class="disposition-state">{{consultation.disposition.conceptName}} <span ng-if="consultation.disposition.dispositionDateTime">on</span> {{consultation.disposition.dispositionDateTime | bahmniDateTime }}</span>
+                        <span class="disposition-state">{{consultation.disposition.conceptName}} <span ng-if="consultation.disposition.dispositionDateTime">{{ 'CONSULTATION_ON_KEY'|translate }}</span> {{consultation.disposition.dispositionDateTime | bahmniDateTime }}</span>
                         <button class="toggle fr" ng-class="{'has-notes': consultation.disposition.additionalObs[0].value}" toggle="disposition.show">
                             <i class="fa fa-plus-circle"></i>
                             <i class="fa fa-minus-circle"></i>
@@ -256,7 +256,7 @@
                     <div>
                         <div ng-if="disposition.show" class="inline-notes notes" ng-class="{'print-notes': note.value}">
                             <p class="left">
-                                <strong>Disposition Notes: </strong>{{consultation.disposition.additionalObs[0].value}}
+                                <strong>{{ 'CONSULTATION_TAB_DISPOSITIONS_NOTES_LABEL'|translate }}: </strong>{{consultation.disposition.additionalObs[0].value}}
                             </p>
                         </div>
                     </div>
@@ -269,9 +269,9 @@
         </section>
     </div>
     <section class="block consultation-notes section-grid">
-        <h2 class="section-title">Consultation Notes</h2>
+        <h2 class="section-title">{{ 'CONSULTATION_TAB_CONSULTATION_NOTES_LABEL'|translate }}</h2>
         <textarea ng-model="consultation.consultationNote.value" ng-change="onNoteChanged()"
-                  placeholder="Enter Notes here " rows="6" msd-elastic></textarea>
+                  placeholder="{{ 'CLINICAL_ENTER_NOTES_PLACEHOLDER'|translate }} " rows="6" msd-elastic></textarea>
     </section>
 
 </article>

@@ -4,10 +4,10 @@
             {{::patientProgram.display}}
         </div>
         <form ng-submit="confirmDeletion(patientProgram)">
-            <textarea ng-model="patientProgram.voidReason" class="" required placeholder="Reason to delete the program"></textarea>
+            <textarea ng-model="patientProgram.voidReason" class="" required placeholder="{{ 'PROGRAM_DELETE_REASON_PLACEHOLDER'|translate }}"></textarea>
             <div class="button-group">
-                <input type="button" ng-click="toggleDelete(patientProgram)" value="Cancel" class="button"/>
-                <input type="submit" value="Delete" class="button"/>
+                <input type="button" ng-click="toggleDelete(patientProgram)" value="{{ 'CANCEL'|translate }}" class="button"/>
+                <input type="submit" value="{{ 'DELETE_LABEL'|translate }}" class="button"/>
             </div>
         </form>
     </div>

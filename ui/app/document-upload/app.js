@@ -66,8 +66,8 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
 
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $bahmniTranslateProvider.init({app: 'document-upload', shouldMerge: true});
-    }]).run(['backlinkService', function (backlinkService) {
+    }]).run(['backlinkService', '$window', function (backlinkService, $window) {
         FastClick.attach(document.body);
-
+        moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
         backlinkService.addBackUrl();
     }]);

@@ -8,11 +8,11 @@
     </div>
     <div class="recent-patients-panel" ng-if="showPatientsList">
         <div class="recent-patients-search">
-             <input type="text" id="patientIdentifier" ng-model="::search.searchParameter" ng-focus="getActivePatients()" placeholder="Search Patient by ID"
+             <input type="text" id="patientIdentifier" ng-model="::search.searchParameter" ng-focus="getActivePatients()" placeholder={{'SEARCH_BY_PATIENT_ID_KEY'|translate}}
                focus-on="search.startPatientSearch" autocomplete="off"
                ng-change="search.filterPatientsByIdentifier()"/>
         </div>
-        <span  class="recent_patient" ng-if="!search.searchParameter">Recent Patients</span>
+        <span  class="recent_patient" ng-if="!search.searchParameter">{{'RECENT_PATIENTS_LABEL'|translate}}</span>
         <div ng-repeat="recent in recentlyViewedPatients track by $index" ng-class ="{'currentPatient': recent.uuid == patient.uuid}" ng-if="!search.searchParameter">
             <a ng-href="#/{{configName}}/patient/{{recent.uuid}}/dashboard" ng-click="closeAllDialogs()"> <span>{{recent.name}}</span> ({{recent.identifier}})</a>
         </div>

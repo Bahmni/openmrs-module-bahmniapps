@@ -59,7 +59,8 @@ angular.module('admin')
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
             $bahmniTranslateProvider.init({app: 'admin', shouldMerge: true});
         }
-    ]).run(['$rootScope', '$templateCache', function ($rootScope, $templateCache) {
+    ]).run(['$rootScope', '$templateCache', '$window', function ($rootScope, $templateCache, $window) {
+        moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
         // Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', $templateCache.removeAll);
     }]);
