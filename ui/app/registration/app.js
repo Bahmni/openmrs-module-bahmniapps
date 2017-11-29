@@ -84,8 +84,8 @@ angular
             });
         $bahmniTranslateProvider.init({app: 'registration', shouldMerge: true});
     }]).run(['$rootScope', '$templateCache', '$bahmniCookieStore', 'locationService', 'messagingService', 'auditLogService',
-        function ($rootScope, $templateCache, $bahmniCookieStore, locationService,
-              messagingService, auditLogService) {
+        '$window', function ($rootScope, $templateCache, $bahmniCookieStore, locationService,
+              messagingService, auditLogService, $window) {
             var getStates = function (toState, fromState) {
                 var states = [];
                 if (fromState === "newpatient" && (toState === "patient.edit" || toState === "patient.visit")) {
@@ -98,7 +98,7 @@ angular
                 }
                 return states;
             };
-
+            moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
             var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
             locationService.getVisitLocation(loginLocationUuid).then(function (response) {
                 if (response.data) {

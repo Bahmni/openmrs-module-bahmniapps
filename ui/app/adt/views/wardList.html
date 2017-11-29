@@ -1,6 +1,6 @@
 <div class="ward-details-container">
     <span ng-if="tableDetails.length == 0" class="no-data-info">
-        There are no patients in this ward.
+        {{ 'EMPTY_WARD_MESSAGE'|translate }}
     </span>
     <table class="table ward-details-content" ng-if="tableDetails.length > 0">
         <thead>

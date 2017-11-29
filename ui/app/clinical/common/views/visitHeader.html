@@ -38,8 +38,8 @@
                
             </button>
             <span class="grouped-buttons" ng-if="visitHistory.activeVisit || retrospectiveEntry">
-                <a class=" btn--left btn--success "  ng-click="openConsultation()">Consultation</a>
-                <a class="btn--right btn--success " title="Open in new window"ng-click="collapseControlPanel()" ui-sref="patient.dashboard.show.observations({patientUuid: patient.uuid,programUuid: programUuid,conceptSetGroupName: 'observations'})" target="_blank"><i class="fa fa-external-link"></i></a>
+                <a class=" btn--left btn--success "  ng-click="openConsultation()">{{'CONSULTATION_TAB_KEY'|translate}}</a>
+                <a class="btn--right btn--success " title="{{'OPEN_IN_NEW_WINDOW'|translate}}" ng-click="collapseControlPanel()" ui-sref="patient.dashboard.show.observations({patientUuid: patient.uuid,programUuid: programUuid,conceptSetGroupName: 'observations'})" target="_blank"><i class="fa fa-external-link"></i></a>
            </span>
            <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel}">
                <i class="fa fa-bars fa-white fa-large"></i>

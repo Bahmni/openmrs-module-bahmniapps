@@ -2,10 +2,10 @@
     <div class="box">
         <div>
             <label>
-                <span class="fl adt-disposition-action">Patient Movement:</span>
+                <span class="fl adt-disposition-action">{{ 'PATIENT_MOVEMENT_LABEL'|translate }}:</span>
                 <select id="dispositionAction" ng-model="dispositionAction"
                         ng-options="d.name.name for d in dispositionActions" class="disposition-action">
-                    <option value="">Select</option>
+                    <option value="">{{ 'PATIENT_MOVEMENT_SELECT_LABEL'|translate }}</option>
                 </select>
             </label>
         </div>

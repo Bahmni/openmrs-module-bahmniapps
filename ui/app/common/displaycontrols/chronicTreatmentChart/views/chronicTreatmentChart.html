@@ -17,7 +17,7 @@
             </div>
             <section bindonce="regimen" class="chronic-treatment dashboard-section" fixed-first-column>
                 <table ng-if="regimen.rows.length > 0">
-                    <th ng-if="isMonthNumberRequired()">Month</th>
+                    <th ng-if="isMonthNumberRequired()">{{ 'MONTH_LABEL'|translate }}</th>
                     <th>Date</th>
                     <th ng-repeat="header in regimen.headers">{{getAbbreviation(header)}}</th>
                     <tr class="regimen-row" ng-repeat="row in regimen.rows">

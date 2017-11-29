@@ -33,6 +33,6 @@
 
     </div>
     <div ng-show="orders && orders.length == 0">
-        <div class="placeholder-text">No order of type {{orderType}} for this patient.</div>
+        <div class="placeholder-text">{{getEmptyMessage()}}</div>
     </div>
 </div>
