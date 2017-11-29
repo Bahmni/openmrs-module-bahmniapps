@@ -28,5 +28,11 @@
     "REPORT_ERROR": "Error",
     "REPORT_DELETE" : "Delete",
     "REPORTS_HEADER_REPORTS" : "Reports",
-    "REPORTS_HEADER_MY_REPORTS" : "My Reports"
+    "REPORTS_HEADER_MY_REPORTS" : "My Reports",
+    "NO_RESULTS_FOUND": "No results found",
+    "PRIVILEGE_REQUIRED": "User is logged in but doesn't have the relevant privilege",
+    "NO_FULFILMENT_MESSAGE": "No observations captured for this order.",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "No navigation links available.",
+    "CHOOSE_REPORT_FORMAT": "Choose Format",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Please select a value from auto complete"
 }

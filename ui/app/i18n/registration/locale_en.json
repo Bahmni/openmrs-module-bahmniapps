@@ -84,5 +84,10 @@
   "NO_LOCATION_TAGGED_TO_VISIT_LOCATION": "No location tagged to Visit Location Found",
   "REGISTRATION_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
   "OBS_BOOLEAN_YES_KEY":"Yes",
-  "OBS_BOOLEAN_NO_KEY":"No"
+  "OBS_BOOLEAN_NO_KEY":"No",
+  "REQUIRED_FIELD": "Please fill out this field",
+  "PRIVILEGE_REQUIRED": "User is logged in but doesn't have the relevant privilege",
+  "NO_FULFILMENT_MESSAGE": "No observations captured for this order.",
+  "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "No navigation links available.",
+  "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Please select a value from auto complete"
 }

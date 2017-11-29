@@ -7,8 +7,8 @@
                 <div class="laborder-sub-heading toggle-container" toggle="labOrderResults.isOpen">
                     <i class="fa fa-caret-right"></i>
                     <i class="fa fa-caret-down"></i>
-                    <span class="hidden-print">Accession at </span>
-                    <span class="visible-print">Sample at </span>
+                    <span class="hidden-print">{{ 'ACCESSION_AT_LABEL'|translate }} </span>
+                    <span class="visible-print">{{ 'SAMPLE_AT_LABEL'|translate }} </span>
                     <span bo-text="getAccessionDetailsFrom(labOrderResults).accessionDateTime | bahmniDateTime"></span>
                     <button class="toggle-btn fr" ng-if="showAccessionNotes(labOrderResults)" ng-click="toggle(labOrderResults)">
                         <i class="fa fa-envelope" ng-hide="!labOrders.show"></i>

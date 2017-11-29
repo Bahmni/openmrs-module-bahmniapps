@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-.directive('bahmniAutocomplete', function () {
+.directive('bahmniAutocomplete', ['$translate', function ($translate) {
     var link = function (scope, element, attrs, ngModelCtrl) {
         var source = scope.source();
         var responseMap = scope.responseMap && scope.responseMap();
@@ -9,7 +9,7 @@ angular.module('bahmni.common.uiHelper')
         var onEdit = scope.onEdit && scope.onEdit();
         var minLength = scope.minLength || 2;
         var formElement = element[0];
-        var validationMessage = scope.validationMessage || 'Please select a value from auto complete';
+        var validationMessage = scope.validationMessage || $translate.instant("SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE");
 
         var validateIfNeeded = function (value) {
             if (!scope.strictSelect) {
@@ -102,4 +102,4 @@ angular.module('bahmni.common.uiHelper')
             initialValue: "=?"
         }
     };
-});
+}]);

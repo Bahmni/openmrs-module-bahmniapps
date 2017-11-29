@@ -5,6 +5,13 @@ describe("AddTreatmentController", function () {
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.common.services'));
     beforeEach(module('bahmni.clinical'));
+    beforeEach(module(function ($provide) {
+        var translate = jasmine.createSpyObj('$translate', ['instant']);
+        translate.instant.and.callFake(function (key) {
+            return key;
+        });
+        $provide.value('$translate', translate);
+    }));
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     var activeDrugOrder = {

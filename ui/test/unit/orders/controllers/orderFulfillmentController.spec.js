@@ -44,6 +44,7 @@ describe("OrderFulfillmentController", function () {
     beforeEach(module('bahmni.orders'));
 
     beforeEach(module(function ($provide) {
+        $provide.value('appService', {});
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get', 'remove', 'put']);
         $provide.value('$bahmniCookieStore', $bahmniCookieStore);
     }));

@@ -177,9 +177,9 @@ Bahmni.Common = Bahmni.Common || {};
         locationPickerPrivilege: 'app:clinical:locationpicker',
         onBehalfOfPrivilege: 'app:clinical:onbehalf',
         nutritionalConceptName: 'Nutritional Values',
-        messageForNoObservation: "No observations captured for this visit.",
+        messageForNoObservation: "NO_OBSERVATIONS_CAPTURED",
         messageForNoDisposition: "NO_DISPOSTIONS_AVAILABLE_MESSAGE_KEY",
-        messageForNoFulfillment: "No observations captured for this order.",
+        messageForNoFulfillment: "NO_FULFILMENT_MESSAGE",
         reportsUrl: "/bahmnireports",
         uploadReportTemplateUrl: "/bahmnireports/upload",
         ruledOutdiagnosisStatus: "Ruled Out Diagnosis",
@@ -197,7 +197,7 @@ Bahmni.Common = Bahmni.Common || {};
         passwordPolicyUrl: BAHMNI_CORE + "/globalProperty/passwordPolicyProperties",
         fulfillmentConfiguration: "fulfillment",
         fulfillmentFormSuffix: " Fulfillment Form",
-        noNavigationLinksMessage: "No navigation links available.",
+        noNavigationLinksMessage: "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE",
         conceptSetRepresentationForOrderFulfillmentConfig: representation,
         entityMappingUrl: RESTWS_V1 + "/entitymapping",
         encounterTypeUrl: RESTWS_V1 + "/encountertype",
@@ -251,7 +251,7 @@ Bahmni.Common = Bahmni.Common || {};
         conditionHistoryUrl: EMRAPI + '/conditionhistory',
         followUpConditionConcept: 'Follow-up Condition',
         localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json",
-        privilegeRequiredErrorMessage: "User is logged in but doesn't have the relevant privilege"
+        privilegeRequiredErrorMessage: "PRIVILEGE_REQUIRED"
     };
 })();
 

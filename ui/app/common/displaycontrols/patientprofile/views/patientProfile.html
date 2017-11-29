@@ -25,7 +25,7 @@
                      </td>
                 </tr>
                 <tr ng-if="::showBirthDate" >
-                    <td class="name">Date of Birth</td>
+                    <td class="name">{{ 'DOB_LABEL' | translate }}</td>
                     <td class="value">{{::patient.birthdate | bahmniDate}}
                         <span ng-if="::patient.birthdateEstimated" class="patient-estimated-text"> (est.)</span>
                     </td>

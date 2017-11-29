@@ -4,10 +4,10 @@
             <div id="selectedNodesArea">
                 <div class="table new-diagnosis primary-section-grid">
                     <div class="row table-header">
-                        <div class="col col1"><span>Diagnosis</span></div>
-                        <div class="col col2"><span>Order</span></div>
-                        <div class="col col3"><span>Certainty</span></div>
-                        <div class="col col4" ng-show="isStatusConfigured()"><span>Status</span></div>
+                        <div class="col col1"><span>{{ ::'CLINICAL_DIAGNOSIS' | translate }}</span></div>
+                        <div class="col col2"><span>{{ ::'CLINICAL_ORDER' | translate }}</span></div>
+                        <div class="col col3"><span>{{ ::'CLINICAL_CERTAINTY' | translate }}</span></div>
+                        <div class="col col4" ng-show="isStatusConfigured()"><span>{{ ::'CLINICAL_STATUS' | translate }}</span></div>
                     </div>
 
                     <div ng-repeat="diagnosis in consultation.newlyAddedDiagnoses" ng-hide="diagnosis.voided" class="table-body">
@@ -31,7 +31,7 @@
                                                 illegalValue: diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer,
                                                 active: diagnosis.isNonCodedAnswer
                                             }"
-                                            ng-disabled="diagnosis.codedAnswer.uuid"><span></span>Accept</button>
+                                            ng-disabled="diagnosis.codedAnswer.uuid"><span></span>{{ ::'CLINICAL_ACCEPT' | translate }}</button>
                                 </span>
 
                             </div>
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class=" current-diagnosis section-grid" ng-if="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
-                    <h2 class="section-title">Current</h2>
+                    <h2 class="section-title">{{ ::'CLINICAL_CURRENT' | translate }}</h2>
                     <div class="table">
                         <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst" class="table-body">
                             <div class="row diagnosis-row" ng-if="!diagnosis.voided">
@@ -90,11 +90,11 @@
                           <span>
                               <i class="fa fa-caret-down" ng-show="toggles.expandPastDiagnoses"></i>
                               <i class="fa fa-caret-right" ng-hide="toggles.expandPastDiagnoses"></i>
-                              Past Diagnosis
+                              {{ ::'CLINICAL_PAST_DIAGNOSIS' | translate }}
                           </span>
                         </div>
-                        <div class="col col2"><span>Initial</span></div>
-                        <div class="col col3"><span>Current</span></div>
+                        <div class="col col2"><span>{{ ::'CLINICAL_INITIAL' | translate }}</span></div>
+                        <div class="col col3"><span>{{ ::'CLINICAL_CURRENT' | translate }}</span></div>
                     </div>
                     <div ng-show="toggles.expandPastDiagnoses"
                          ng-repeat="diagnosis in consultation.pastDiagnoses | primaryDiagnosisFirst"

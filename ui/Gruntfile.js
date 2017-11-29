@@ -35,7 +35,7 @@ module.exports = function (grunt) {
         'components/angular-bindonce/bindonce.min.js',
         'components/angular-recursion/angular-recursion.min.js',
         'components/ngInfiniteScroll/build/ng-infinite-scroll.min.js',
-        'components/moment/min/moment.min.js',
+        'components/moment/min/moment-with-locales.min.js',
         'components/select2/select2.min.js',
         'components/angular-ui-select2/src/select2.js',
         'components/angular-ui-router/release/angular-ui-router.min.js',

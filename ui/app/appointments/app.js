@@ -204,4 +204,6 @@ angular
             });
 
             $bahmniTranslateProvider.init({app: 'appointments', shouldMerge: true});
-        }]);
+        }]).run(function () {
+            moment.locale(window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+        });

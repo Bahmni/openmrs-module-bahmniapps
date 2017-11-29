@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope', 'formHierarchyService',
-        function (observationsService, appService, $q, spinner, $rootScope, formHierarchyService) {
+    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope', 'formHierarchyService', '$translate',
+        function (observationsService, appService, $q, spinner, $rootScope, formHierarchyService, $translate) {
             var controller = function ($scope) {
                 $scope.print = $rootScope.isBeingPrinted || false;
 
@@ -27,7 +27,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
 
                     if (_.isEmpty($scope.bahmniObservations)) {
-                        $scope.noObsMessage = Bahmni.Common.Constants.messageForNoObservation;
+                        $scope.noObsMessage = $translate.instant(Bahmni.Common.Constants.messageForNoObservation);
                         $scope.$emit("no-data-present-event");
                     } else {
                         if (!$scope.showGroupDateTime) {

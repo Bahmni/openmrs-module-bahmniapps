@@ -454,6 +454,7 @@ angular.module('consultation')
             $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
         }]).run(['stateChangeSpinner', '$rootScope', 'auditLogService',
             function (stateChangeSpinner, $rootScope, auditLogService) {
+                moment.locale(window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
                 FastClick.attach(document.body);
                 stateChangeSpinner.activate();
                 var cleanUpStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams) {

@@ -93,4 +93,6 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
         });
 
         $bahmniTranslateProvider.init({app: 'adt', shouldMerge: true});
-    }]);
+    }]).run(function () {
+        moment.locale(window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+    });
