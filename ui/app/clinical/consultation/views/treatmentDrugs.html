@@ -1,9 +1,9 @@
-<h2 class="section-title">Treatments</h2>
+<h2 class="section-title">{{ 'CONSULTATION_TREATMENTS_HEADER_LABEL'|translate }}</h2>
 <table ng-show="consultation.treatmentDrugs.length > 0">
   <thead>
   <tr class="title">
-      <th><span class="table-head-title">Drug Name</span></th>
-      <th colspan="2"><span class="table-head-title">Dosage Instructions</span></th>
+      <th><span class="table-head-title">{{ 'MEDICATION_DRUG_NAME'|translate }}</span></th>
+      <th colspan="2"><span class="table-head-title">{{ 'MEDICATION_DOSAGE_INSTRUCTIONS'|translate }}</span></th>
   </tr>
   </thead>
   <tbody ng-repeat="drugOrder in consultation.treatmentDrugs" bindonce="drugOrder" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
@@ -41,11 +41,11 @@
     <table ng-show="consultation.newlyAddedTreatments.length > 0">
         <thead>
         <tr>
-            <th colspan="3">New Treatments</th>
+            <th colspan="3">{{ 'MEDICATION_NEW_TREATMENTS'|translate }}</th>
         </tr>
         <tr class="title">
-            <th><span class="table-head-title">Drug Name</span></th>
-            <th colspan="2"><span class="table-head-title">Dosage Instructions</span></th>
+            <th><span class="table-head-title">{{ 'MEDICATION_DRUG_NAME'|translate }}</span></th>
+            <th colspan="2"><span class="table-head-title">{{ 'MEDICATION_DOSAGE_INSTRUCTIONS'|translate }}</span></th>
         </tr>
         </thead>
         <tbody ng-repeat="drugOrder in consultation.newlyAddedTreatments" bindonce="drugOrder">
@@ -84,11 +84,11 @@
     <table ng-show="consultation.discontinuedDrugs.length > 0">
         <thead>
         <tr>
-            <th colspan="3">Discontinued Treatments</th>
+            <th colspan="3">{{ 'MEDICATION_DISCONTINUED_TREATMENTS'|translate }}</th>
         </tr>
         <tr class="title">
-            <th><span class="table-head-title">Drug Name</span></th>
-            <th colspan="2"><span class="table-head-title">Dosage Instructions</span></th>
+            <th><span class="table-head-title">{{ 'MEDICATION_DRUG_NAME'|translate }}</span></th>
+            <th colspan="2"><span class="table-head-title">{{ 'MEDICATION_DOSAGE_INSTRUCTIONS'|translate }}</span></th>
         </tr>
         </thead>
         <tbody ng-repeat="drugOrder in consultation.discontinuedDrugs" bindonce="drugOrder" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">

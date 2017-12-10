@@ -2,7 +2,7 @@
     <div ng-class="{'disableOrdersInRetroMode':isRetrospectiveMode()}">
         <div class="infoMsgRetrospectiveModeEnabled" ng-if="isRetrospectiveMode()">
             <i class="fa fa-info-circle"></i>
-            <span><strong>Order</strong> entry is <strong>NOT allowed</strong> in retrospective mode</span>
+            <span ng-bind-html="'ORDER_NOT_ALLOWED_IN_RETROSPECTIVE_MESSAGE'|translate"></span>
         </div>
         <div ng-repeat="tab in tabs" class="{{tab.klass}} clearfix">
             <div class="order-grid"  ng-click="activateTab(tab)">
@@ -16,7 +16,7 @@
                 <div class="form search-container">
                     <section class="form-field fr">
                         <div class="field-attribute">
-                            <label>Search:</label>
+                            <label>{{ 'SEARCH_KEY'|translate }}:</label>
                         </div>
                         <div class="field-value">
                             <input type="text" ng-model="search.string" autofocus class="order_search_desktop">

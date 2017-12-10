@@ -14,7 +14,7 @@
                              <span class="patient-gender-age" ng-bind-html="::patientAttributeTypes"></span>
                              <span class="patient-estimated-text" ng-if="::patient.birthdateEstimated"> (est.)</span>
                              <span class="patient-birth-time" ng-show="::patient.birthtime">
-                                 <span>Time of Birth</span>
+                                 <span>{{ 'TIME_OF_BIRTH_LABEL'|translate }}</span>
                                  <span ng-bind-html="::patient.birthtime | date:'hh:mm a'"></span>
                              </span>
                              <span class="patient-address">
@@ -37,7 +37,7 @@
                     <td class="value" ng-if="::patient[attribute].isDateField">{{::patient[attribute].value | bahmniDate}}</td>
                 </tr>
                 <tr ng-if="::relationships && relationships.length > 0">
-                    <td>Relationships</td>
+                    <td>{{ 'PATIENT_PROFILE_RELATIONSHIPS_LABEL'|translate }}</td>
                 </tr>
                 <tr ng-repeat="relationship in relationships track by relationship.uuid">
                     <td class="name relationshipType" ng-if="::relationship.personA.uuid === patient.uuid">{{::relationship.relationshipType.aIsToB}}</td>

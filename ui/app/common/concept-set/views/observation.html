@@ -162,7 +162,7 @@
                     <label class="control-label"></label>
                     <div class="field-value">
                         <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
-                                  placeholder="Notes" tabindex="1" msd-elastic>
+                                  placeholder="{{ 'NOTES_LABEL'|translate }}" tabindex="1" msd-elastic>
                         </textarea>
                     </div>
 
@@ -329,7 +329,7 @@
                     <label class="control-label"></label>
                     <div class="field-value" ng-if="observation.showComment">
                         <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
-                                  placeholder="Notes" msd-elastic>
+                                  placeholder="{{ 'NOTES_LABEL'|translate }}" msd-elastic>
                         </textarea>
                     </div>
                 </div>

@@ -14,7 +14,7 @@
                 <tr>
                     <th ng-repeat="columnName in columns" ng-class="{ 'active-drugs' : columns.length ===5 ,
                     '{{::columnName}}':true }"><span>{{columnHeaders[columnName] | translate}}</span></th>
-                    <th class="empty-header noOfActions-{{::config.actions.length}}-width">Actions</th>
+                    <th class="empty-header noOfActions-{{::config.actions.length}}-width">{{ 'MEDICATIONS_ACTIONS_LABEL'|translate }}</th>
                 </tr>
                 </thead>
                 <tbody ng-repeat="drugOrder in drugOrders">
@@ -65,10 +65,10 @@
                                     <i class="fa fa-undo"></i>
                                 </button>
                                 <button class="stop-drug-btn" ng-if="actionName=='stop' && !drugOrder.isMarkedForDiscontinue" ng-disabled="!drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed" ng-click="discontinue(drugOrder)">
-                                    Stop
+                                    {{ 'MEDICATIONS_STOP_LABEL'|translate }}
                                 </button>
                                 <button class="refill-btn" ng-if="actionName=='refill'" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
-                                    Refill
+                                    {{ 'MEDICATIONS_REFILL_LABEL'|translate }}
                                 </button>
                             </div>
                             <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" toggle="drugOrder.showAdditionalInstructions">
@@ -97,7 +97,7 @@
                     <td colspan="{{columns.length + 1}}" class="form drug-stop-container">
                         <article class="form-field">
                             <div class="field-attribute stop-date-label">
-                                <label class="control-label">Stop Date</label>
+                                <label class="control-label">{{ 'DRUG_DETAILS_STOP_DATE'|translate }}</label>
                             </div>
                             <div class="field-value">
                                 <input id="date-stopped" type="date" min="{{::getMinDateForDiscontinue(drugOrder)}}"

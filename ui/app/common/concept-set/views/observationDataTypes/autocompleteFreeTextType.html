@@ -20,7 +20,7 @@
                 ng-class="{'illegalValue': observation.primaryObs.value.length > 0 && !observation.markedAsNonCoded, active: observation.markedAsNonCoded}"
                 ng-disabled="observation.primaryObs.isCoded() && observation.primaryObs.value" tabindex="1">
             <span></span>
-            Accept
+            {{ 'ACCEPT'|translate }}
         </button>
     </div>
 </div>

@@ -3,7 +3,7 @@
     	<button ng-repeat="tab in tabs" class="{{tab.klass}}" ng-click="activateTab(tab)">{{tab.name}} </button>
     </div>
     <div ng-show="activeTab.name == 'Laboratory'" class="add-notes">
-        <button  name="notes" ng-click="toggleNote()" ng-disabled="!isValidInvestigation()" class="fa fa-pencil primary-btn"> Add Notes</button>
+        <button  name="notes" ng-click="toggleNote()" ng-disabled="!isValidInvestigation()" class="fa fa-pencil primary-btn"> {{ 'CLINICAL_ADD_NOTES'|translate }}</button>
         <textarea ng-model="consultation.labOrderNote.value" ng-show="noteState" placeholder="Please enter your notes here..." ng-change="onNoteChanged()"></textarea>
     </div>
     <div ng-switch="activeTab" class="investigation-selection">

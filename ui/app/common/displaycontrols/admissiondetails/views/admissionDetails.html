@@ -12,7 +12,7 @@
             </tr>
             <tr class="view-past">
                 <td class="name">
-                    <span class="disposition-state">Admission Date</span>
+                    <span class="disposition-state">{{ 'ADMISSION_DATE_LABEL'|translate }}</span>
                 </td>
                 <td class="value" ng-if="::visitSummary.admissionDetails">
                     {{::visitSummary.admissionDetails.date | bahmniDate}}
@@ -35,7 +35,7 @@
             </tr>
             <tr class="view-past" ng-if="::visitSummary.dischargeDetails">
                 <td class="name">
-                    <span class="disposition-state">Discharge Date</span>
+                    <span class="disposition-state">{{ 'DISCHARGE_DATE_LABEL'|translate }}</span>
                 </td>
                 <td class="value">
                     {{::visitSummary.dischargeDetails.date| bahmniDate}}

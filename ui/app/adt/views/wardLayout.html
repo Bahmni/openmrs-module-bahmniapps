@@ -1,15 +1,15 @@
 <div>
     <div class="bed-info" ng-show="selectedBed.bed.bedNumber">
 		<ul>
-			<li>Bed: {{selectedBed.bed.bedNumber}}</li>
+			<li>{{ 'BED_LABEL'|translate }}: {{selectedBed.bed.bedNumber}}</li>
 			<div class="patient-info" ng-repeat="patientInfo in selectedBed.patientInfo">
                 <li>{{patientInfo.identifier}}</li>
                 <li>{{patientInfo.name}} ({{patientInfo.gender}})</li>
             </div>
 			<li ng-show="!readOnly"><a class="assign" ng-show="!getCurrentBed()"
-                ng-click="assignBed(selectedBed)">Assign</a></li>
+                ng-click="assignBed(selectedBed)">{{ 'ASSIGN_BED_LABEL'|translate }}</a></li>
 			<li ng-show="!readOnly"><a class="transfer" ng-show="getCurrentBed() && selectedBed.bed.bedId != getCurrentBed().bedId"
-                ng-click="assignBed(selectedBed)">Transfer</a></li>
+                ng-click="assignBed(selectedBed)">{{ 'TRANSFER_BED_LABEL'|translate }}</a></li>
 		</ul>
     </div>
     <div class="bed-assignment" ng-repeat="layout in ward.layouts">

@@ -35,7 +35,7 @@
                             active: treatment.isNonCodedDrug
                         }"
                             ng-disabled="treatment.drug.uuid || treatment.concept.uuid || (treatment.isBeingEdited && treatment.isNonCodedDrug)">
-                        <span>{{ ::'CLINICAL_ACCEPT' | translate }}</span>
+                        <span>{{ ::'ACCEPT' | translate }}</span>
                     </button>
                 </span>
                         </div>
@@ -298,7 +298,7 @@
                 </div>
 
                 <div class="field-attribute">
-                    <label>{{'MEDICATION_START_DATE_LABEL'|translate}}</label>
+                    <label>{{'MEDICATION_LABEL_START_DATE'|translate}}</label>
                 </div>
                 <div class="field-value">
                     <input type="date" ng-model="newOrderSet.date" ng-disabled="isSearchDisabled"/>
