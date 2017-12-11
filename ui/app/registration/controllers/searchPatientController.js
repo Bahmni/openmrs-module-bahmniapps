@@ -74,7 +74,7 @@ angular.module('bahmni.registration')
                 }
             };
             $scope.convertToTableHeader = function (camelCasedText) {
-                return camelCasedText.replace(/[A-Z]|^[a-z]/g, function (str) {
+                return $translate.instant(camelCasedText).replace(/[A-Z]|^[a-z]/g, function (str) {
                     return " " + str.toUpperCase() + "";
                 }).trim();
             };
