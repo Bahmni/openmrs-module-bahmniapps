@@ -20,11 +20,13 @@ angular.module('bahmni.appointments')
                         return status.name !== "Cancelled";
                     });
                 }
-                var params = {v: "custom:(display,person,uuid)"};
+                var params = {v: "custom:(display,person,uuid,retired,attributes:(attributeType:(display),value,voided))"};
 
                 spinner.forPromise($q.all([appointmentsServiceService.getAllServicesWithServiceTypes(), providerService.list(params)]).then(function (response) {
-                    $scope.providers = _.uniqBy(response[1].data.results, function (provider) {
-                        return provider.person.display;
+                    $scope.providers = _.filter(response[1].data.results, function (provider) {
+                        return _.find(provider.attributes, function (attribute) {
+                            return attribute.attributeType.display === 'Available for appointments' && attribute.value === true && attribute.voided === false && provider.retired === false;
+                        });
                     }).map(function (provider) {
                         provider.name = provider.person.display;
                         return provider;

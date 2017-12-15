@@ -42,10 +42,12 @@ angular.module('bahmni.appointments').factory('appointmentConfigInitialization',
                 };
 
                 var getAllProviders = function () {
-                    var params = {v: "custom:(display,person,uuid)"};
+                    var params = {v: "custom:(display,person,uuid,retired,attributes:(attributeType:(display),value,voided))"};
                     return providerService.list(params).then(function (response) {
-                        return _.uniqBy(response.data.results, function (result) {
-                            return result.person && result.person.display;
+                        return _.filter(response.data.results, function (provider) {
+                            return _.find(provider.attributes, function (attribute) {
+                                return attribute.attributeType.display === 'Available for appointments' && attribute.value === true && attribute.voided === false && provider.retired === false;
+                            });
                         });
                     });
                 };
