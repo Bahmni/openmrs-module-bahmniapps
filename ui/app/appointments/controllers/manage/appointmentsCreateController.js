@@ -34,7 +34,6 @@ angular.module('bahmni.appointments')
                 if (_.isEmpty(providerCurrentAvailability)) {
                     appointmentContext.appointment.provider.person = {display: appointmentContext.appointment.provider.name};
                     appointmentCreateConfig.providers.push(appointmentContext.appointment.provider);
-                    console.log(appointmentCreateConfig.providers);
                 }
                 $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create(appointmentContext.appointment || {appointmentKind: 'Scheduled'}, appointmentCreateConfig);
                 $scope.selectedService = appointmentCreateConfig.selectedService;

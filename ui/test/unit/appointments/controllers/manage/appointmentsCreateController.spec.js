@@ -1,6 +1,6 @@
 'use strict';
 
-ddescribe("AppointmentsCreateController", function () {
+describe("AppointmentsCreateController", function () {
     var $scope, controller, appointmentsServiceService, q, $window, appService, ngDialog, messagingService, $state,
         spinner, appointmentsService, patientService, $translate, appDescriptor, $stateParams, appointmentCreateConfig,
         appointmentContext;
