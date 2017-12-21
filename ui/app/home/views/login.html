@@ -71,11 +71,16 @@
                 <button type="submit" class="confirm">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</button>
             </div>
         </div>
+
     </form>
 
     <div class="warning-message">
         <span ng-if="warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{warning}}</span>
         <p>{{warningMessage | translate :timeZoneObject}} </p>
+    </div>
+
+    <div ng-show="bottomLogos" class="bottom-logos-wrapper">
+        <img ng-repeat="logo in bottomLogos" id="bottom-logos-image" src={{logo}}>
     </div>
 
 </div>
@@ -116,10 +121,6 @@
             </div>
         </div>
     </form>
-</div>
-
-<div class="bottom-banner-wrapper">
-    <img id="bottom-banner-image" src={{bottomBanner}}>
 </div>
 
 <div class="power-by">
