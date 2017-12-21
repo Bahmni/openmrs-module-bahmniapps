@@ -1095,4 +1095,17 @@ describe('AppointmentsListViewController', function () {
             expect(scope.isValidAction('Completed')).toBeFalsy();
         });
     });
+
+    it('should get colors for config', function () {
+        var colors = { Cancelled: "Red", Missed: "Orange" };
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'colorsForListView') {
+                return colors;
+            }
+            return value;
+        });
+        createController();
+        expect(scope.colorsForListView.Cancelled).toBe("Red");
+        expect(scope.colorsForListView.Missed).toBe("Orange");
+    });
 });
