@@ -22,7 +22,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="appointment in filteredAppointments" ng-click="select(appointment)" ng-class="{'selected' : isSelected(appointment)}">
+            <tr ng-repeat="appointment in filteredAppointments" ng-click="select(appointment)" ng-style="{'background-color': colorsForListView[appointment.status]}" ng-class="{'selected' : isSelected(appointment)}">
                 <td>{{::appointment.patient.identifier}}</td>
                 <td class="table-mid-width">{{::appointment.patient.name | titleCase}}</td>
                 <td>{{::appointment.startDateTime | bahmniDate}}</td>
