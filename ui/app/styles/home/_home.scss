@@ -9,7 +9,7 @@ Overlay window is visible when page is loading.
 
 ```html_example
 <div id="overlay">
-  <div></div>
+<div></div>
 </div>
 ```
 
@@ -490,15 +490,19 @@ body {
   left: 0;
   width: 100%;
 }
-.bottom-banner-wrapper {
-  position: fixed;
-  text-align: center;
-  bottom: 10px;
-  width: 100%;
-  img {
-    max-width: 35%;
-    height: auto;
+.bottom-logos-wrapper {
+  @media screen and (min-width: 1025px) {
+    width: 700px;
+    margin-left: -20%;
   }
+  width:auto;
+  text-align: center;
+  margin-bottom: 15px;
+  margin-top: 20px;
+  img {
+    height: 60px;
+    padding: 0 8px;
+  }  
 }
 .power-by {
   position: absolute;
