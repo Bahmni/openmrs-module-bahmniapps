@@ -21,6 +21,14 @@ angular.module('bahmni.appointments')
 
             var init = function () {
                 wireAutocompleteEvents();
+                var providerCurrentAvailability = "No";
+                if (!_.isEmpty(appointmentContext) && !_.isEmpty(appointmentContext.appointment) && !_.isEmpty(appointmentContext.appointment.provider)) {
+                    providerCurrentAvailability = isProviderCurrentlyAvailableForAppointments(appointmentContext.appointment.provider, appointmentCreateConfig);
+                }
+                if (_.isEmpty(providerCurrentAvailability)) {
+                    appointmentContext.appointment.provider.person = {display: appointmentContext.appointment.provider.name};
+                    appointmentCreateConfig.providers.push(appointmentContext.appointment.provider);
+                }
                 $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create(appointmentContext.appointment || {appointmentKind: 'Scheduled'}, appointmentCreateConfig);
                 $scope.selectedService = appointmentCreateConfig.selectedService;
                 $scope.isPastAppointment = $scope.isEditMode() ? Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')) : false;
