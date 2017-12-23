@@ -9,6 +9,7 @@ angular.module('bahmni.appointments')
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
+            $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.searchedPatient = false;
             var oldPatientData = [];
