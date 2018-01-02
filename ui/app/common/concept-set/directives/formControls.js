@@ -35,12 +35,12 @@ angular.module('bahmni.common.conceptSet')
                                         var formTranslations = !_.isEmpty(response.data) ? response.data[0] : {};
                                         loadedFormTranslations[formUuid] = formTranslations;
                                         $scope.form.component = renderWithControls(formDetails, formObservations,
-                                            formUuid, collapse, $scope.patient.uuid, validateForm, locale, formTranslations);
+                                            formUuid, collapse, $scope.patient, validateForm, locale, formTranslations);
                                     }, function () {
                                         var formTranslations = {};
                                         loadedFormTranslations[formUuid] = formTranslations;
                                         $scope.form.component = renderWithControls(formDetails, formObservations,
-                                            formUuid, collapse, $scope.patient.uuid, validateForm, locale, formTranslations);
+                                            formUuid, collapse, $scope.patient, validateForm, locale, formTranslations);
                                     })
                                 );
                             }
@@ -50,7 +50,7 @@ angular.module('bahmni.common.conceptSet')
                 } else {
                     $timeout(function () {
                         $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations,
-                            formUuid, collapse, $scope.patient.uuid, validateForm, locale, loadedFormTranslations[formUuid]);
+                            formUuid, collapse, $scope.patient, validateForm, locale, loadedFormTranslations[formUuid]);
                         unMountReactContainer($scope.form.formUuid);
                     }, 0, false);
                 }
@@ -59,7 +59,7 @@ angular.module('bahmni.common.conceptSet')
                     var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                     if (loadedFormDetails[formUuid]) {
                         $scope.form.component = renderWithControls(loadedFormDetails[formUuid], formObservations,
-                            formUuid, collapse, $scope.patient.uuid, validateForm, locale, loadedFormTranslations[formUuid]);
+                            formUuid, collapse, $scope.patient, validateForm, locale, loadedFormTranslations[formUuid]);
                     }
                 });
 
