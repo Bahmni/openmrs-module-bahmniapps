@@ -38,7 +38,6 @@ describe('Patient resource', function () {
 
     beforeEach(function () {
         module('bahmni.common.models');
-        module('bahmni.common.offline');
         module('bahmni.registration');
 
         module(function ($provide) {
@@ -107,7 +106,7 @@ describe('Patient resource', function () {
             customAttributeFields, programAttributeFieldName, programAttributeFieldValue);
 
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/patient");
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/patient/lucene");
         expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
         expect(mockHttp.get.calls.mostRecent().args[1].params.identifier).toBe(identifier);
         expect(mockHttp.get.calls.mostRecent().args[1].params.addressFieldName).toBe(addressFieldName);

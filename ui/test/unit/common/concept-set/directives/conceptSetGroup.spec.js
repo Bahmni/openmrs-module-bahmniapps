@@ -3,7 +3,7 @@
 describe("conceptSetGroup", function () {
     var _provide, scope, contextChangeHandler, spinner, messagingService, conceptSetService, rootScope, sessionService,
         encounterService, treatmentConfig, retrospectiveEntryService,
-        userService, conceptSetUiConfigService, timeout, clinicalAppConfigService, stateParams, compile, httpBackend;
+        userService, conceptSetUiConfigService, timeout, clinicalAppConfigService, stateParams, compile, httpBackend, translate;
 
     beforeEach(function () {
         module('bahmni.common.conceptSet');
@@ -18,7 +18,11 @@ describe("conceptSetGroup", function () {
             userService = jasmine.createSpyObj('userService', ['savePreferences']);
             conceptSetUiConfigService = jasmine.createSpyObj('conceptSetUiConfigService', ['getConfig']);
             clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getVisitTypeForRetrospectiveEntries']);
+            timeout = function(init) {
+                init()
+            };
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+            translate = jasmine.createSpyObj('$translate',['instant']);
             $provide.value('contextChangeHandler', contextChangeHandler);
             $provide.value('messagingService', messagingService);
             $provide.value('conceptSetService', conceptSetService);
@@ -30,6 +34,8 @@ describe("conceptSetGroup", function () {
             $provide.value('conceptSetUiConfigService', conceptSetUiConfigService);
             $provide.value('clinicalAppConfigService', clinicalAppConfigService);
             $provide.value('spinner', spinner);
+            $provide.value('$translate', translate);
+            $provide.value('$timeout', timeout);
             _provide = $provide;
         });
         inject(function ($compile, $rootScope, $httpBackend) {
@@ -54,11 +60,27 @@ describe("conceptSetGroup", function () {
             },
             selectedObsTemplate : [
                 {
-                    "uuid" : "conceptSet1"
+                    "uuid": "conceptSet1",
+                    "label": "Followup",
+                    clone: function () {
+                        return {
+                            "uuid": "conceptSet1",
+                            "label": "Followup"
+                        }
+                    }
                 },
                 {
                     "uuid" : "conceptSet2",
-                    "klass" : "active"
+                    "klass": "active",
+                    "label": "Followup",
+                    clone: function () {
+                        return {
+                            "uuid": "conceptSet2",
+                            "klass": "active",
+                            "label": "Followup"
+                        }
+                    },
+                    "observations": [{uuid : "uuid"}]
                 }
             ]
         };
@@ -76,7 +98,7 @@ describe("conceptSetGroup", function () {
         scope.$digest();
         httpBackend.flush();
         return element.isolateScope();
-    }
+    };
 
 
     it("should conceptSetGroup controller be initialized", function () {
@@ -98,8 +120,6 @@ describe("conceptSetGroup", function () {
 
         expect(compiledElementScope.isInEditEncounterMode()).toBeTruthy();
         expect(contextChangeHandler.add).toHaveBeenCalled();
-        expect(compiledElementScope.leftPanelConceptSet).toBeDefined();
-        expect(compiledElementScope.leftPanelConceptSet.klass).toBe("active");
     });
 
     it("showLeftPanelConceptSet should set the selected conceptset to be loaded, open, klass as active", function () {
@@ -185,5 +205,38 @@ describe("conceptSetGroup", function () {
         var conceptKlass = compiledElementScope.openActiveForm(selectConceptSetSection);
         expect(conceptKlass).toEqual("active");
         expect(compiledElementScope.leftPanelConceptSet.name).toEqual("activeForm");
+    });
+
+    it("should delete the template only if other template with the same label is available", function () {
+        var compiledElementScope = executeDirective();
+        var selectConceptSetSection = {
+            name: "activeForm",
+            hasSomeValue: function () {
+                return true;
+            },
+            klass: 'active'
+        };
+        scope.$digest();
+
+        compiledElementScope.leftPanelConceptSet = {
+            name: "alreadyOpenedForm",
+            isOpen: true,
+            isLoaded: true,
+            klass: "active"
+        };
+        expect(compiledElementScope.allTemplates.length).toEqual(2);
+        compiledElementScope.remove(0);
+        expect(compiledElementScope.allTemplates.length).toEqual(1);
+        compiledElementScope.remove(0);
+        expect(compiledElementScope.allTemplates.length).toEqual(1);
+    });
+
+    it("canRemove should return true only if it is unsaved template", function(){
+        var compiledElementScope = executeDirective();
+
+        compiledElementScope.$digest();
+        expect(compiledElementScope.canRemove(0)).toBeTruthy();
+        expect(compiledElementScope.canRemove(1)).toBeFalsy();
+
     });
 });

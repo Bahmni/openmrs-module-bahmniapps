@@ -1,4 +1,5 @@
 @import "orderSet";
+@import "auditLog";
 .admin-app {
 	background: $white;
 
@@ -90,4 +91,12 @@
 		margin-top: 5px;
 	}
 
+}
+.note-warning {
+	padding: 5px 10px;
+	background: #F0F4C3;
+	font-size: 14px;
+	border-radius: 3px;
+	border: 1px solid #CDDC39;
+	margin-bottom: 10px;
 }

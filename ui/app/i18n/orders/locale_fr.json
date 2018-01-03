@@ -1,0 +1,11 @@
+{
+    "userName": "nom d'utilisateur",
+    "password": "Mot de passe",
+    "location": "Emplacement",
+    "login": "S'identifier1",
+    "selectLocation": "Choisir emplacement",
+    "clinical_key": "Clinique",
+    "MESSAGE_DIALOG_OPTION_COPY": "Erreur de copie",
+    "MESSAGE_DIALOG_OPTION_OKAY": "Approuver",
+    "ORDERS_FORM_ERRORS_MESSAGE_KEY": "Entrez une valeur dans les champs obligatoires ou corrigez la valeur dans les champs en couleur pour continuer"
+}

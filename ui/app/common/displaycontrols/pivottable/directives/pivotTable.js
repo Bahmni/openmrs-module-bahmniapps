@@ -1,6 +1,6 @@
 'use strict';
-angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable', ['$rootScope', '$filter', '$stateParams', 'spinner', 'pivotTableService', 'appService', 'conceptSetUiConfigService',
-    function ($rootScope, $filter, $stateParams, spinner, pivotTableService, appService, conceptSetUiConfigService) {
+angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable', ['$rootScope', '$filter', '$stateParams', 'spinner', 'pivotTableService', 'appService', 'conceptSetUiConfigService', '$interval',
+    function ($rootScope, $filter, $stateParams, spinner, pivotTableService, appService, conceptSetUiConfigService, $interval) {
         return {
             scope: {
                 patientUuid: "=",
@@ -11,6 +11,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 status: "=?"
             },
             link: function (scope, element) {
+                var tablescroll;
                 if (!scope.config) {
                     return;
                 }
@@ -38,6 +39,17 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                     return scope.isLonger(value) ? value.substring(0, 10) + "..." : value;
                 };
 
+                scope.scrollLeft = function () {
+                    $('table.pivot-table tbody').animate({
+                        scrollLeft: 0});
+                    return false;
+                };
+                scope.scrollRight = function () {
+                    $('table.pivot-table tbody').animate({
+                        scrollLeft: tablescroll});
+                    return false;
+                };
+
                 var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
 
                 var startDate = null, endDate = null;
@@ -45,6 +57,19 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                     startDate = $stateParams.dateEnrolled;
                     endDate = $stateParams.dateCompleted;
                 }
+
+                var checkIfPivotTableLoaded = $interval(function () {
+                    if ($('table.pivot-table tbody tr').length > 11) {
+                        $('table.pivot-table tbody').animate({
+                            scrollLeft: '20000px' }, 500);
+                        tablescroll = $('table.pivot-table tbody').scrollLeft();
+                        clearInterval(checkIfPivotTableLoaded);
+                    }
+                    else if ($('table.pivot-table tbody tr').length < 12) {
+                        $('.btn-scroll-right, .btn-scroll-left').attr("disabled", true);
+                        clearInterval(checkIfPivotTableLoaded);
+                    }
+                }, 1000, 2);
 
                 var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid, scope.config, scope.visitUuid, startDate, endDate);
                 spinner.forPromise(pivotDataPromise, element);
@@ -58,13 +83,15 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                             units: conceptDetail.units
                         };
                     });
-                    scope.result = {concepts: concepts, tabularData: response.data.tabularData};
+                    var tabluarDataInAscOrderByDate = _(response.data.tabularData).toPairs().sortBy(0).fromPairs().value();
+                    scope.result = {concepts: concepts, tabularData: tabluarDataInAscOrderByDate};
                     scope.hasData = !_.isEmpty(scope.result.tabularData);
                     scope.status = scope.status || {};
                     scope.status.data = scope.hasData;
                 });
                 scope.showOnPrint = !$rootScope.isBeingPrinted;
             },
+
             templateUrl: '../common/displaycontrols/pivottable/views/pivotTable.html'
         };
     }]);

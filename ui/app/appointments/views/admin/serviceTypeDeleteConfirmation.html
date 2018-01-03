@@ -1,0 +1,21 @@
+<div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label">
+    <!--Added to override the z-index property of the top navigation bar. It is done to prevent any user action
+    when the popup is shown-->
+    <style type="text/css">
+        .opd-header-wrapper {
+            z-index: 10000 !important;
+        }
+    </style>
+    <div>
+        <p>{{'APPOINTMENT_SERVICE_TYPE_CONFORMATION_POPUP_MESSAGE_FOR_DELETE' | translate}}: <b> {{ ngDialogData.serviceType.name }}? </b> </p>
+    </div>
+
+    <div class="dialog-button-group">
+        <button id="modal-revise-button2" class="secondary-button" ng-click="deleteServiceTypeOnConfirmation(ngDialogData.serviceType)">{{'APPOINTMENT_SERVICE_DELETE_ACTION' | translate}}</button>
+        <button id="modal-revise-button3" class="secondary-button" ng-click="cancelTransition()">{{'APPOINTMENT_SERVICE_CANCEL_ACTION' | translate}}</button>
+    </div>
+
+    <span class="ngdialog-end"></span>
+</div>
+
+

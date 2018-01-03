@@ -37,4 +37,9 @@ angular.module('bahmni.common.uiHelper')
         this.hideMessages = function (level) {
             self.messages[level].length = 0;
         };
+
+        this.clearAll = function () {
+            self.messages["error"] = [];
+            self.messages["info"] = [];
+        };
     }]);

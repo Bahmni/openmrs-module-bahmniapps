@@ -161,6 +161,16 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        configurationFunctions.enableAuditLog = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                method: "GET",
+                params: {
+                    property: 'bahmni.enableAuditLog'
+                },
+                withCredentials: true
+            });
+        };
+
         var existingPromises = {};
         var configurations = {};
 

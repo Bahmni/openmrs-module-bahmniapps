@@ -18,17 +18,17 @@ describe("Observation", function () {
         });
 
         it("should return shortName if exists for coded observation", function () {
-            var observation = new Observation({"type": "Coded", "value": {"shortName": "BP", "name": "Blood Pressure"}});
+            var observation = new Observation({"type": "Coded", "value": {"shortName": "BP", "name": "Blood Pressure"}, concept: {conceptClass: 'Text'}});
             expect(observation.getDisplayValue()).toBe("BP");
         });
 
         it("should return value for nonCoded observation", function () {
-            var observation = new Observation({"type": "Numeric", "value": 1.0});
+            var observation = new Observation({"type": "Numeric", "value": 1.0, concept: {conceptClass: 'Text'}});
             expect(observation.getDisplayValue()).toBe(1.0);
         });
 
         it("should return duration if present for an observation", function () {
-            var observation = new Observation({"type": "Numeric", "value": 1.0, "duration": 120});
+            var observation = new Observation({"type": "Numeric", "value": 1.0, "duration": 120, concept: {conceptClass: 'Text'}});
             expect(observation.getDisplayValue()).toBe("1 since 2 Hours");
         });
 

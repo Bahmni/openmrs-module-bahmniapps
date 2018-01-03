@@ -8,21 +8,19 @@ angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.c
     'bahmni.common.displaycontrol.disposition', 'bahmni.common.displaycontrol.custom', 'bahmni.common.displaycontrol.admissiondetails',
     'bahmni.common.routeErrorHandler', 'bahmni.common.displaycontrol.disposition',
     'httpErrorInterceptor', 'pasvaz.bindonce', 'infinite-scroll', 'bahmni.common.util', 'ngAnimate', 'ngDialog',
-    'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'RecursionHelper', 'ngSanitize',
+    'bahmni.common.displaycontrol.patientprofile', 'bahmni.common.displaycontrol.diagnosis', 'bahmni.common.displaycontrol.conditionsList', 'RecursionHelper', 'ngSanitize',
     'bahmni.common.orders', 'bahmni.common.displaycontrol.orders', 'bahmni.common.displaycontrol.prescription',
     'bahmni.common.displaycontrol.navigationlinks', 'bahmni.common.displaycontrol.programs',
     'bahmni.common.displaycontrol.pacsOrders', 'bahmni.common.uicontrols', 'bahmni.common.uicontrols.programmanagment', 'pascalprecht.translate',
     'ngCookies', 'monospaced.elastic', 'bahmni.common.bacteriologyresults', 'bahmni.common.displaycontrol.bacteriologyresults',
     'bahmni.common.displaycontrol.obsVsObsFlowSheet', 'bahmni.common.displaycontrol.chronicTreatmentChart',
-    'bahmni.common.displaycontrol.forms', 'bahmni.common.displaycontrol.drugOrderDetails', 'bahmni.common.offline',
+    'bahmni.common.displaycontrol.forms', 'bahmni.common.displaycontrol.drugOrderDetails',
     'bahmni.common.displaycontrol.hint', 'bahmni.common.displaycontrol.drugOrdersSection', 'bahmni.common.attributeTypes',
     'bahmni.common.services', 'bahmni.common.models']);
 angular.module('consultation')
     .config(['$stateProvider', '$httpProvider', '$urlRouterProvider', '$bahmniTranslateProvider', '$compileProvider',
         function ($stateProvider, $httpProvider, $urlRouterProvider, $bahmniTranslateProvider, $compileProvider) {
             $urlRouterProvider.otherwise('/' + Bahmni.Clinical.Constants.defaultExtensionName + '/patient/search');
-            $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension|file):/);
-            $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|local|data|blob|chrome-extension):/);
             var patientSearchBackLink = {
                 label: "",
                 state: "search.patientsearch",
@@ -70,13 +68,10 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-                    },
-                    initializeConfigs: function (initialization, $stateParams, offlineDb) {
+                    initializeConfigs: function (initialization, $stateParams) {
                         $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
                         patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
-                        return initialization($stateParams.configName, offlineDb);
+                        return initialization($stateParams.configName);
                     }
                 }
             })
@@ -95,13 +90,10 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-                    },
-                    initialization: function (initialization, $stateParams, offlineDb) {
+                    initialization: function (initialization, $stateParams) {
                         $stateParams.configName = $stateParams.configName || Bahmni.Clinical.Constants.defaultExtensionName;
                         patientSearchBackLink.state = 'search.patientsearch({configName: \"' + $stateParams.configName + '\"})';
-                        return initialization($stateParams.configName, offlineDb);
+                        return initialization($stateParams.configName);
                     },
                     patientContext: function (initialization, patientInitialization, $stateParams) {
                         return patientInitialization($stateParams.patientUuid);
@@ -114,28 +106,31 @@ angular.module('consultation')
                     'content': {
                         template: '<div ui-view="dashboard-header"></div> <div ui-view="dashboard-content"></div>' +
                         '<patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel" consultation="consultation"/>',
-                        controller: function ($scope, visitHistory, consultationContext) {
+                        controller: function ($scope, visitHistory, consultationContext, followUpConditionConcept) {
                             $scope.visitHistory = visitHistory;
                             $scope.consultation = consultationContext;
+                            $scope.followUpConditionConcept = followUpConditionConcept;
                             $scope.lastConsultationTabUrl = {url: undefined};
                         }
                     }
                 },
                 resolve: {
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-                    },
-                    visitHistory: function (offlineDb, visitHistoryInitialization, $stateParams, $rootScope) {
+                    visitHistory: function (visitHistoryInitialization, $stateParams, $rootScope) {
                         return visitHistoryInitialization($stateParams.patientUuid, $rootScope.visitLocation);
                     },
                     retrospectiveIntialization: function (retrospectiveEntryService) {
                         return retrospectiveEntryService.initializeRetrospectiveEntry();
                     },
-                    consultationContext: function (consultationInitialization, initialization, $stateParams) {
-                        return consultationInitialization(
-                            $stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid, $stateParams.enrollment);
+                    followUpConditionConcept: function (conditionsService) {
+                        return conditionsService.getFollowUpConditionConcept().then(function (response) {
+                            return response.data.results[0];
+                        });
                     },
-                    dashboardInitialization: function (offlineDb, $rootScope, initialization, patientContext, clinicalDashboardConfig, userService) {
+                    consultationContext: function (consultationInitialization, initialization, $stateParams, followUpConditionConcept) {
+                        return consultationInitialization(
+                            $stateParams.patientUuid, $stateParams.encounterUuid, $stateParams.programUuid, $stateParams.enrollment, followUpConditionConcept);
+                    },
+                    dashboardInitialization: function ($rootScope, initialization, patientContext, clinicalDashboardConfig, userService) {
                         return clinicalDashboardConfig.load().then(function () {
                             $rootScope.currentUser.addToRecentlyViewed(patientContext.patient, clinicalDashboardConfig.getMaxRecentlyViewedPatients());
                             return userService.savePreferences();
@@ -168,24 +163,13 @@ angular.module('consultation')
             .state('patient.dashboard.show.observations', {
                 url: '/concept-set-group/:conceptSetGroupName',
                 params: {
-                    cachebuster: null
+                    cachebuster: null,
+                    lastOpenedTemplate: null
                 },
                 views: {
                     'consultation-content': {
                         templateUrl: 'consultation/views/conceptSet.html',
                         controller: 'ConceptSetPageController'
-                    }
-                }
-            })
-            .state('patient.dashboard.show.formObservations', {
-                url: '/form-observations',
-                params: {
-                    cachebuster: null
-                },
-                views: {
-                    'consultation-content': {
-                        templateUrl: 'consultation/views/observationForm.html',
-                        controller: 'ObservationFormController'
                     }
                 }
             })
@@ -328,10 +312,7 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-                    },
-                    visitHistory: function (offlineDb, visitHistoryInitialization, $stateParams) {
+                    visitHistory: function (visitHistoryInitialization, $stateParams) {
                         return visitHistoryInitialization($stateParams.patientUuid);
                     }
                 }
@@ -360,10 +341,7 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-                    },
-                    visitSummary: function (offlineDb, visitSummaryInitialization, $stateParams) {
+                    visitSummary: function (visitSummaryInitialization, $stateParams) {
                         return visitSummaryInitialization($stateParams.visitUuid);
                     }
                 }
@@ -392,7 +370,7 @@ angular.module('consultation')
                 },
                 resolve: {
                     observation: function (observationsService, $stateParams) {
-                        return observationsService.getByUuid($stateParams.observationUuid).then(function (results) {
+                        return observationsService.getRevisedObsByUuid($stateParams.observationUuid).then(function (results) {
                             return results.data;
                         });
                     }
@@ -428,10 +406,7 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-                    },
-                    visitSummary: function (offlineDb, visitSummaryInitialization, $stateParams) {
+                    visitSummary: function (visitSummaryInitialization, $stateParams) {
                         return visitSummaryInitialization($stateParams.visitUuid, $stateParams.tab);
                     },
                     visitConfig: function (initialization, visitTabConfig) {
@@ -468,10 +443,7 @@ angular.module('consultation')
                     }
                 },
                 resolve: {
-                    offlineDb: function (offlineDbInitialization) {
-                        return offlineDbInitialization();
-                    },
-                    visitHistory: function (offlineDb, visitHistoryInitialization, $stateParams) {
+                    visitHistory: function (visitHistoryInitialization, $stateParams) {
                         return visitHistoryInitialization($stateParams.patientUuid);
                     }
                 }
@@ -480,11 +452,12 @@ angular.module('consultation')
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
 
             $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
-        }]).run(['stateChangeSpinner', '$rootScope', 'offlineService', 'schedulerService',
-            function (stateChangeSpinner, $rootScope, offlineService, schedulerService) {
+        }]).run(['stateChangeSpinner', '$rootScope', 'auditLogService',
+            function (stateChangeSpinner, $rootScope, auditLogService) {
                 FastClick.attach(document.body);
                 stateChangeSpinner.activate();
-                var cleanUpStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function () {
+                var cleanUpStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams) {
+                    auditLogService.log(toParams.patientUuid, Bahmni.Clinical.StateNameEvenTypeMap[toState.name], undefined, "MODULE_LABEL_CLINICAL_KEY");
                     window.scrollTo(0, 0);
                 });
                 var cleanUpNgDialogOpened = $rootScope.$on('ngDialog.opened', function () {
@@ -499,9 +472,5 @@ angular.module('consultation')
                     cleanUpNgDialogOpened();
                     cleanUpNgDialogClosing();
                 });
-
-                if (offlineService.isChromeApp() || offlineService.isAndroidApp()) {
-                    schedulerService.sync();
-                }
             }]);
 

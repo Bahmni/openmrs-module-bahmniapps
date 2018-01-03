@@ -200,3 +200,39 @@ body{
   margin: 2px 0;
 }
 
+
+.form-builder-row {
+
+  .label-wrap {
+    padding-right: 15px !important;
+    margin-top: 0 !important;
+    width: 200px !important;
+    label {
+      text-align: right;
+      font-size: 14px;
+      padding-right: 20px !important;
+    }
+  }
+
+  textarea, input {
+    width: 14em !important;
+  }
+
+  .obs-comment-section-wrap {
+    margin-left: 215px !important;
+  }
+
+  legend {
+    width: auto !important;
+  }
+
+  .Select-input {
+    input {
+      &:focus {
+        outline: none !important;
+        background: $focus;
+      }
+    }
+  }
+
+}

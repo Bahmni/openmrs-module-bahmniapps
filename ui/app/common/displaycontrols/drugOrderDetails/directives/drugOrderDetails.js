@@ -14,15 +14,20 @@ angular.module('bahmni.common.displaycontrol.drugOrderDetails')
                         var drugOrderResponse = results[0];
                         var drugOrders = drugOrderResponse.map(createDrugOrder);
                         $scope.drugOrders = sortOrders(drugOrders);
+                        if (_.isEmpty($scope.drugOrders)) {
+                            $scope.$emit("no-data-present-event");
+                        }
                     });
             };
 
             $scope.columnHeaders = [
                 "DRUG_DETAILS_DRUG_NAME",
                 "DRUG_DETAILS_DOSE_INFO",
+                "DRUG_DETAILS_QUANTITY_TEXT",
                 "DRUG_DETAILS_ROUTE",
                 "DRUG_DETAILS_FREQUENCY",
                 "DRUG_DETAILS_START_DATE",
+                "DRUG_DETAILS_INSTRUCTIONS_TEXT",
                 "DRUG_DETAILS_ADDITIONAL_INSTRUCTIONS"
             ];
 

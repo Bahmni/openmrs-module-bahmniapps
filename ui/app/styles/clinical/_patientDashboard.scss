@@ -176,7 +176,6 @@ category:  Layout - sections
     top: 46px;
     width: 220px;
     padding: 10px 10px 0;
-    right: 385px;
     li{
       display: block;
       padding-bottom: 10px;
@@ -699,7 +698,13 @@ table.drug-order-table td.drug {
       padding:3px 10px 0;
       box-sizing: border-box;
       .btn-download{
-        padding: 6px 9px 7px;
+        padding: 5px 10px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        color: #88af28;
+        font-size: 12px;
+        margin-bottom: 7px;
       }
     }
     .tree-list-item{
@@ -728,9 +733,42 @@ table.drug-order-table td.drug {
         clear: both;
       }
     }
+    .obs-video-thumb-container {
+      position: relative;
+      clear: both;
+      .obs-play-btn {
+        background: transparent;
+        color: rgb(169,169,169);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        outline: none;
+        border: none;
+        width: 83px;
+        height: 50px;
+        padding: 0;
+        i {
+          font-size: 50px;
+          padding: 0;
+        }
+      }
+      img {
+        max-width: 100%;
+      }
+    }
   }
 }
 
+.dashboard-section {
+  .activeSince {
+    width:35%;
+    display:inline-block;
+    float: right;
+  }
+}
 .template-container .dashboard-section section.block.hierarchy{
   .testUnderPanel,.value-text-only {
     width: 34.5% !important;
@@ -971,6 +1009,9 @@ table.pivot-table {
       @media screen and (max-width: 1024px) {
         table-layout:auto;
       }
+      td,th{
+        word-break: break-word;
+      }
     }
   }
   .tabular-obs table tr td:first-child {
@@ -984,10 +1025,14 @@ table.pivot-table {
     color: $darkGray;
   }
   .tabular-obs table tr th.obsTableHeaderName{
-    width:155px;
-  }
+     width:155px;
+   }
   .tabular-obs table tr th.obsTableEdit{
     width:170px;
+  }
+  .tabular-obs table tr th.obsTableDate{
+    width:75px;
+    word-break: normal;
   }
 
   .tabular-obs table tr td.obsTableEdit{
@@ -1067,7 +1112,7 @@ table.treatments-details-table{
 .patient-info-fixed-postion-container{
   position: fixed;
   top: 52px;
-  z-index: 9999;
+  z-index: 998;
   background: $lighterGray;
   width: 100%;
   left: 0;
@@ -1138,6 +1183,20 @@ table.treatments-details-table{
       width:50%;
     }
   }
+}
+
+
+h2.section-title.section-title-pivot{
+  overflow: hidden;
+  padding: 8px 10px 5px;
+
+  .btn-scrolling {
+    margin-top: -3px;
+    button {
+      margin-left: 10px;
+    }
+  }
+
 }
 
 

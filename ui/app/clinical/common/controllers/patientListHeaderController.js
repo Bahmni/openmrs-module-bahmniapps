@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog', 'retrospectiveEntryService', 'offlineService', 'schedulerService', 'offlineStatusService',
-        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, offlineService, schedulerService, offlineStatusService) {
+    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog', 'retrospectiveEntryService', '$translate',
+        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, $translate) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.maxStartDate = DateUtil.getDateWithoutTime(DateUtil.today());
             var selectedProvider = {};
@@ -10,9 +10,6 @@ angular.module('bahmni.clinical')
             $scope.locationPickerPrivilege = Bahmni.Common.Constants.locationPickerPrivilege;
             $scope.onBehalfOfPrivilege = Bahmni.Common.Constants.onBehalfOfPrivilege;
             $scope.selectedLocationUuid = {};
-            $rootScope.isOfflineApp = offlineService.isOfflineApp();
-
-            offlineStatusService.setOfflineOptions();
             $scope.getProviderList = function () {
                 return function (searchAttrs) {
                     return providerService.search(searchAttrs.term);
@@ -67,7 +64,7 @@ angular.module('bahmni.clinical')
             $scope.getTitle = function () {
                 var title = [];
                 if (getCurrentCookieLocation()) {
-                    title.push(getCurrentCookieLocation().name);
+                    title.push($translate.instant(getCurrentCookieLocation().name));
                 }
                 if (getCurrentProvider() && getCurrentProvider().value) {
                     title.push(getCurrentProvider().value);
@@ -79,16 +76,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.sync = function () {
-                schedulerService.sync(Bahmni.Common.Constants.syncButtonConfiguration);
             };
-
-            $scope.$on("schedulerStage", function (event, stage, restartSync) {
-                $rootScope.isSyncing = (stage !== null);
-                if (restartSync) {
-                    schedulerService.stopSync();
-                    schedulerService.sync();
-                }
-            });
 
             var getCurrentCookieLocation = function () {
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;

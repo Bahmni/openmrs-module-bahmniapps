@@ -1,0 +1,67 @@
+<div>
+    <div class="audit-log-filter">
+        <header>
+            <p>{{ 'FILTERS_HEADER_LABEL'|translate }}</p>
+        </header>
+        <article id="startFrom">
+          <form>
+              <p>
+                  <label for="startFrom">{{ 'START_FROM_FILTER_LABEL'|translate }} </label>
+                  <input id="startDate" type="date" ng-model="startDate" max="{{::maxDate}}">
+                  <input id="startTime" type="time" ng-model="startDate">
+              </p>
+              <p>
+                  <label for="username">{{ 'USERNAME_FILTER_LABEL'|translate }} </label>
+                  <input type="text" id="username" ng-model="username" placeholder="{{ 'ENTER_USERNAME_PLACEHOLDER'|translate }}">
+              </p>
+              <p>
+                  <label for="patientId">{{ 'PATIENT_ID_FILTER_LABEL'|translate }} </label>
+                  <input type="text" id="patientId" ng-model="patientId" placeholder="{{ 'ENTER_PATIENT_ID_PLACEHOLDER'|translate }}">
+              </p>
+              <button class="button" type="submit" ng-click="runReport()"><i class="fa fa-filter" aria-hidden="true"></i>
+                  {{ 'FILTER_BUTTON_LABEL'|translate }}
+              </button>
+          </form>
+        </article>
+    </div>
+    <div class="audit-log-table">
+        <header>
+            <p>{{ 'AUDIT_LOG_TABLE_HEADER_LABEL'|translate }}</p>
+        </header>
+        <table id="auditLogTable" border="0">
+            <thead>
+            <tr>
+                <th>{{ 'EVENT_ID' | translate }}</th>
+                <th class="audit-log-created-at">{{ 'CREATED_AT' | translate }}</th>
+                <th>{{ 'EVENT_TYPE' | translate }}</th>
+                <th>{{ 'USERNAME' | translate }}</th>
+                <th>{{ 'PATIENT_ID' | translate }}</th>
+                <th>{{ 'MESSAGE' | translate }}</th>
+                <th>{{ 'MODULE' | translate }}</th>
+            </tr>
+            </thead>
+            <tbody ng-repeat="log in logs">
+            <tr>
+                <td>{{:: log.auditLogId | translate }}</td>
+                <td class="audit-log-created-at">{{:: log.dateCreated | translate }}</td>
+                <td>{{:: log.eventType | translate }}</td>
+                <td>{{:: log.userId | translate }}</td>
+                <td>{{:: log.patientId | translate }}</td>
+                <td>{{:: log.displayMessage}}</td>
+                <td>{{:: log.module | translate}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <p class="audit-log-table-buttons">
+            <button class="button" type="button" ng-click="prev()">
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            </button>
+            <button class="button" type="button" ng-click="next()">
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </button>
+        </p>
+    </div>
+    <div id="messageContainer">
+        <p style="text-align: center; color: red; font-weight: bold;">{{ errorMessage }}</p>
+    </div>
+</div>

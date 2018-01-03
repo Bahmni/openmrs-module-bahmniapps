@@ -16,70 +16,70 @@ Overlay window is visible when page is loading.
 
 */
 
-
-
 $column-width: 100;
 $gutter-width: 0;
 $columns: 12;
 $total-width: 100%;
 
-
 @import "compass";
 
 /*** grid form elements css start ***/
-.form-field-inline{
-  .form-field{
-      float:left;
-      @include column(6);
-      margin-bottom:10px;
+.form-field-inline {
+  .form-field {
+    float: left;
+    @include column(6);
+    margin-bottom: 10px;
   }
   @include clearfix();
 }
-.form-field{
-  margin-bottom:10px;
+
+.form-field {
+  margin-bottom: 10px;
   @include clearfix();
-  .field-attribute{
-    float:left;
-    label{
-        width:11em;
-        line-height:20px;
-        float:left;
-        text-align:right;
-        margin:8px 0.8em 8px 0px;
-        font-size: 14px;
+  .field-attribute {
+    float: left;
+    label {
+      width: 11em;
+      line-height: 20px;
+      float: left;
+      text-align: right;
+      margin: 8px 0.8em 8px 0px;
+      font-size: 14px;
     }
   }
-  .field-value{
-    float:left;
+  .field-value {
+    float: left;
     font-size: 14px;
-     input[type="text"],input[type="password"]{
-        float:left;
-        width:12.5em;
-        padding: 2px 10px;
+    input[type="text"], input[type="password"] {
+      float: left;
+      width: 12.5em;
+      padding: 2px 10px;
     }
-    input[type="number"]{
-        width:8em;
-        padding: 5px 10px;
+    input[type="number"] {
+      width: 8em;
+      padding: 5px 10px;
     }
-    span.text-only{
-       display:inline-block;
-       margin:8px 5px 8px 5px;
-    }
-  }
-}
-.asterick{
-    color:red;
-}
-.input-prepend{
-  float:left;
-  input{
+    span.text-only {
       display: inline-block;
-      margin-bottom: 0;
-      vertical-align: middle;
-      float:left;
-      margin:0px !important;
+      margin: 8px 5px 8px 5px;
+    }
   }
-  .add-on{
+}
+
+.asterick {
+  color: red;
+}
+
+.input-prepend {
+  float: left;
+  input {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+    float: left;
+    margin: 0px !important;
+  }
+  .add-on {
     @extend input;
     border-radius: 3px;
     height: 21px;
@@ -90,21 +90,24 @@ $total-width: 100%;
   }
 
 }
+
 .input-prepend .add-on:first-child, .input-prepend .btn:first-child {
   -webkit-border-radius: 4px 0 0 4px;
   -moz-border-radius: 4px 0 0 4px;
   border-radius: 4px 0 0 4px;
 }
-.input-prepend .add-on, .input-prepend .btn{
-  margin-right:-1px;
+
+.input-prepend .add-on, .input-prepend .btn {
+  margin-right: -1px;
 }
-input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly]{
+
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly] {
   cursor: not-allowed;
   background-color: $lightestGray;
-  &:focus{
+  &:focus {
     cursor: not-allowed;
     background-color: $lightestGray;
-    outline:none;
+    outline: none;
   }
 }
 
@@ -113,53 +116,60 @@ input[disabled], select[disabled], textarea[disabled], input[readonly], select[r
 }
 
 /********************** overridding the common ui ***********************/
-.simple-form-ui{
-  form{
+.simple-form-ui {
+  form {
     background: $white;
-    section{
-      display:block;
-      padding:0px;
+    section {
+      display: block;
+      padding: 0px;
       border-left: none;
       background: $white;
     }
   }
 }
+
 p.caution {
   color: red;
   padding: 15px 5px 5px 5px;
   background: $white;
-  text-align:center;
+  text-align: center;
 }
-.button.confirm, button.confirm, input[type="submit"].confirm, input[type="button"].confirm, input[type="submit"].confirm, a.button.confirm{
+
+.button.confirm, button.confirm, input[type="submit"].confirm, input[type="button"].confirm, input[type="submit"].confirm, a.button.confirm {
   padding: 7px 20px;
 }
-.button, button, input[type="submit"], input[type="button"], input[type="submit"], a.button{
+
+.button, button, input[type="submit"], input[type="button"], input[type="submit"], a.button {
   padding: 7px 20px;
 }
-button[disabled], button[disabled]:hover, button.disabled, button.disabled:hover{
-    opacity: .65;
-    filter: alpha(opacity=65);
-    background: $lightestGray;
-    border:1px solid $lightGray;
-    color: $darkGray;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    cursor:default;
+
+button[disabled], button[disabled]:hover, button.disabled, button.disabled:hover {
+  opacity: .65;
+  filter: alpha(opacity=65);
+  background: $lightestGray;
+  border: 1px solid $lightGray;
+  color: $darkGray;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  cursor: default;
 }
+
 /*** grid form elements css end ***/
-body{
-  width:100%;
-  max-width:100%;
-  font-size:14px;
-  font-family: "OpenSans",Arial,sans-serif;
+body {
+  width: 100%;
+  max-width: 100%;
+  font-size: 14px;
+  font-family: "OpenSans", Arial, sans-serif;
 }
-.reg-header{
-    @include clearfix;
-	height:52px;
+
+.reg-header {
+  @include clearfix;
+  height: 52px;
 }
-.remove-margin{
-  margin:0px !important;
+
+.remove-margin {
+  margin: 0px !important;
 }
 
 #overlay {
@@ -170,22 +180,24 @@ body{
   height: 100%;
   top: 0px;
   left: 0px;
-  background: rgba(0,0,0,0.6) url('../images/spinner.gif') no-repeat center center;
+  background: rgba(0, 0, 0, 0.6) url('../images/spinner.gif') no-repeat center center;
   div {
-    width:100%;
+    width: 100%;
     height: 100%;
   }
 }
 
 /*** login specific css end ***/
 /*** search page css start ****/
-.reg-wrapper{
-  margin:0px auto;
-  .inline-element,select,input,button{
-      display:inline-block;
+.reg-wrapper {
+  margin: 0px auto;
+  height: 100%;
+
+  .inline-element, select, input, button {
+    display: inline-block;
   }
-  select{
-        height:35px;
+  select {
+    height: 35px;
   }
   header {
     color: $lightGray;
@@ -193,7 +205,7 @@ body{
     border-radius: 0;
     line-height: 1em;
     background: $bahmniSecondaryColor;
-    .header-logo{
+    .header-logo {
       display: block;
       width: 35px;
       margin: 8px auto;
@@ -204,94 +216,96 @@ body{
         box-shadow: 0 8px 6px -7px $black;
       }
     }
-    ul{
+    ul {
       //float:right;
-      li{
+      li {
         //margin:11px 15px 10px 0px;
-        display:inline-block;
-        a{
+        display: inline-block;
+        a {
           color: $white;
-          font-weight:bold;
-          cursor:pointer;
-          text-decoration:none;
-          .nav-link{
-            padding-left:2px;
-            &:hover{
-              text-decoration:underline;
+          font-weight: bold;
+          cursor: pointer;
+          text-decoration: none;
+          .nav-link {
+            padding-left: 2px;
+            &:hover {
+              text-decoration: underline;
             }
           }
-       }
+        }
       }
     }
   }
-.reg-search-wrapper{
-    padding:10px;
-    margin-top:5px;
-    border:1px solid $lightGray;
+  .reg-search-wrapper {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid $lightGray;
     background: $white;
     border-radius: 3px;
-    .reg-search{
-        margin-bottom:10px;
-        @include clearfix;
-        .search-seperator-l{
-          @include column(5);
-          border-right:2px dotted $lightGray;
-            select{
-              width:80px;
-              min-width:80px;
-              padding: 0 10px !important;
-          }
+    .reg-search {
+      margin-bottom: 10px;
+      @include clearfix;
+      .search-seperator-l {
+        @include column(5);
+        border-right: 2px dotted $lightGray;
+        select {
+          width: 80px;
+          min-width: 80px;
+          padding: 0 10px !important;
         }
-        .search-seperator-r{
-          padding:0px 0px 10px 20px;
-          input{
-            margin-right:5px;
-          }
-          .reg-srch-btn{
-            margin-top:25px;
-          }
+      }
+      .search-seperator-r {
+        padding: 0px 0px 10px 20px;
+        input {
+          margin-right: 5px;
         }
-    }
-    .note-container{
-        text-align:left;
-       .note {
-           padding:6px 10px 6px 10px;
-           .text{
-            p{
-              max-width:100%;
-              top:0px;
-              margin-left:0
-            }
-          }
-        }
-    }
-}
-}
- /*** search page css end ***/
-.apps{
-    li{
-      display:inline-block;
-      a{
-        padding: 20px 10px;
-        width: 130px;
-        max-height: 90px;
-        vertical-align: top;
-        line-height: 1.3em;
-        margin: 10px;
-        text-align: center;
-        font-size:1.3em;
-        &:hover{
-          background: $lightestGray;
-          border:1px solid $lightGray;
-        }
-        i{
-          display:block;
-          font-size:50px;
-          margin:0px auto;
-          padding:10px;
+        .reg-srch-btn {
+          margin-top: 25px;
         }
       }
     }
+    .note-container {
+      text-align: left;
+      .note {
+        padding: 6px 10px 6px 10px;
+        .text {
+          p {
+            max-width: 100%;
+            top: 0px;
+            margin-left: 0
+          }
+        }
+      }
+    }
+  }
+}
+
+/*** search page css end ***/
+.apps {
+  text-align: center;
+  li {
+    display: inline-block;
+    a {
+      padding: 20px 10px;
+      width: 130px;
+      max-height: 90px;
+      vertical-align: top;
+      line-height: 1.3em;
+      margin: 10px;
+      text-align: center;
+      font-size: 1.3em;
+      &:hover {
+        background: $lightestGray;
+        border: 1px solid $lightGray;
+      }
+      i {
+        display: block;
+        font-size: 50px;
+        margin: 0px auto;
+        padding: 10px;
+      }
+    }
+  }
 }
 
 /*** Login Page Styles ***/
@@ -303,8 +317,9 @@ body{
   left: 10px;
   right: 10px;
   top: 0;
-  margin: 80px auto;
-  font-size:0.865em;
+  bottom: 0;
+  margin: auto;
+  font-size: 0.865em;
   max-width: 500px;
   form {
     border-radius: 0 0 10px 10px;
@@ -315,19 +330,26 @@ body{
     box-sizing: border-box;
     color: $white;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 52px;
     padding: 0px 20px;
     .left {
       max-width: 150px;
       overflow: hidden;
     }
-    .locale-wrapper{
+    .locale-wrapper {
       font-size: 14px;
-      .locale-text{
+      max-width: 300px;
+      overflow: hidden;
+      .locale-text {
         padding-right: 10px;
+        max-width: 130px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        float: left;
       }
-      select{
+      select {
         background-color: #FFF;
         border: 1px solid $lighterGray;
         color: #363463;
@@ -337,16 +359,19 @@ body{
 
       }
     }
+    a.back-btn {
+      line-height: initial !important;
+    }
   }
 
-  .login-body{
+  .login-body {
     background: $white;
-    border:1px solid $lightGray;
-    padding-bottom:10px;
+    border: 1px solid $lightGray;
+    padding-bottom: 10px;
     border-radius: 0 0 10px 10px;
     padding-top: 10px;
-    p.caution{
-      padding:0px;
+    p.caution {
+      padding: 0px;
     }
     .note-container {
       width: 95.1%;
@@ -355,7 +380,7 @@ body{
         min-width: 10px;
         display: block;
         text-align: center;
-        &.error{
+        &.error {
           color: #ff0000;
         }
       }
@@ -374,7 +399,7 @@ body{
         clear: both;
         float: none;
         width: 100%;
-        input[type="text"],input[type="password"]{
+        input[type="text"], input[type="password"] {
           width: 95%;
           display: block;
           margin: 0px;
@@ -399,8 +424,6 @@ body{
   }
   @media screen and (min-width: 1025px) {
     width: 500px;
-    margin: auto;
-    bottom: 0;
     .login-body {
       padding-top: 10px;
       .note-container .note {
@@ -412,15 +435,15 @@ body{
           label {
             text-align: right;
             margin: 8px 0.8em 8px 0px;
-            width:11em;
+            width: 11em;
           }
         }
         .field-value {
           clear: none;
           float: left;
           width: auto;
-          input[type="text"],input[type="password"] {
-            width:15em;
+          input[type="text"], input[type="password"] {
+            width: 15em;
             display: inline-block;
             margin: 2px;
             min-width: 80%;
@@ -443,6 +466,133 @@ body{
   }
 }
 
+.warning-message {
+  text-align: center;
+  margin-top: 20px;
+  color: #ffac2e;
+  span {
+    font-weight: bolder;
+    font-size: 13px;
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+  p {
+    padding: 0 25px;
+  }
+}
+.emr-login-text {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 900;
+  color: $bahmniSecondaryColor;
+  position: absolute;
+  top: -25px;
+  left: 0;
+  width: 100%;
+}
+.bottom-banner-wrapper {
+  position: fixed;
+  text-align: center;
+  bottom: 10px;
+  width: 100%;
+  img {
+    max-width: 35%;
+    height: auto;
+  }
+}
+.power-by {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  text-align: center;
+  background: #fafafa;
+  padding-bottom: 5px;
+  font-size: 12px;
+  color: #898989;
+  img {
+    width: 55px;
+    vertical-align: middle;
+    margin: 0 1px;
+  }
+  a {
+    color: #000;
+  }
+}
+.clint-logo-wrapper {
+  display: block;
+  text-align: center;
+  padding-top: 10px;
+  img {
+    max-width: 200px;
+    vertical-align: middle;
+    max-height: 120px;
+  }
+  span {
+    vertical-align: middle;
+    color: #888;
+    font-size: 20px;
+  }
+}
+
+/*** Change Password Page Styles ***/
+/******************************************************************************/
+.login.change-password-wrap {
+  width: auto;
+  max-width: 765px;
+  .change-password {
+    width: 450px;
+    .field-value-buttons {
+      padding: 2px 0 2px 2px;
+      button {
+        padding: 7px 13px !important;
+        &.confirm {
+          margin-right: 0;
+        }
+      }
+    }
+    @media screen and (max-width: 830px) {
+      width: 385px;
+    }
+    @media screen and (max-width: 720px) {
+      float: none !important;
+      clear: both;
+    }
+  }
+  @media screen and (max-width: 830px) {
+    max-width: 695px;
+  }
+  @media screen and (max-width: 720px) {
+    max-width: 400px;
+    height: auto;
+  }
+  .info {
+    width: 295px;
+    border-radius: 10px;
+    padding: 10px;
+    background: $white;
+    border: 1px solid $lightGray;
+    @include box-shadow-for-section();
+    box-sizing: border-box;
+    h3 {
+      margin: 0 0 15px;
+    }
+    ol {
+      line-height: 1.5;
+      padding-left: 15px;
+      li {
+        padding-bottom: 4px;
+      }
+    }
+    @media screen and (max-width: 720px) {
+      float: none !important;
+      clear: both;
+      width: 385px;
+      margin-top: 20px;
+    }
+
+  }
+}
+
 /*** Dashboard Styles ***/
 /******************************************************************************/
 
@@ -454,7 +604,9 @@ body{
       padding: 17px 16px;
       border: none;
       border-radius: 0;
-      &:focus {outline:0;}
+      &:focus {
+        outline: 0;
+      }
       i.mini {
         font-size: .9em;
       }
@@ -478,7 +630,7 @@ body{
           a.disabled {
             color: $lightGray;
             .fa-user {
-                color: $lightGray;
+              color: $lightGray;
             }
           }
         }
@@ -497,7 +649,7 @@ body{
           i {
             margin-bottom: 5px;
           }
-          &.button{
+          &.button {
             min-height: 115px !important;
           }
         }
@@ -522,7 +674,7 @@ body{
         li {
           a {
             width: 140px;
-            &.button{
+            &.button {
               min-height: 115px !important;
             }
             i {
@@ -536,19 +688,19 @@ body{
 }
 
 .change-location {
-    padding: 7px 10px;
-    select, select:focus {
-        background: lighten($bahmniPrimaryColor, 10%);
-        color: $white;
-        border: 1px solid lighten($bahmniPrimaryColor, 5%)
-    }
+  padding: 7px 10px;
+  select, select:focus {
+    background: lighten($bahmniPrimaryColor, 10%);
+    color: $white;
+    border: 1px solid lighten($bahmniPrimaryColor, 5%)
+  }
 }
 
-.orderSet-Create{
+.orderSet-Create {
   margin-top: 0 !important;
 }
 
-.syncStatusInfo{
+.syncStatusInfo {
   text-align: center;
   font-size: 14px;
   width: 100%;
@@ -556,7 +708,7 @@ body{
   bottom: 13px;
   font-style: italic;
   color: #666;
-  .message{
+  .message {
     font-style: normal;
   }
   .pending {
@@ -577,7 +729,8 @@ body{
   }
 
 }
-button.button-Errorlog{
+
+button.button-Errorlog {
   color: $alert;
   background: $alertBackground;
   border-color: $alert;
@@ -585,25 +738,25 @@ button.button-Errorlog{
 }
 
 .login.login-otp .login-body {
-  .form-field .field-attribute label{
-    width:7em;
+  .form-field .field-attribute label {
+    width: 7em;
   }
-  .form-field .field-value input[type="password"]{
+  .form-field .field-value input[type="password"] {
     min-width: initial;
   }
-  .otp-button{
+  .otp-button {
     padding: 6px 14px;
     margin: 2px 0 0 10px;
   }
   .form-footer {
     padding-left: 9.3em;
 
-    button.confirm{
-      width:220px;
+    button.confirm {
+      width: 220px;
     }
   }
-  .error.error_resend{
-    color:green;
+  .error.error_resend {
+    color: green;
   }
 }
 

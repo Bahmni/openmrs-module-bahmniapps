@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('encounterService', ['$http', '$q', '$rootScope', 'configurations', '$bahmniCookieStore', 'offlineService',
-        function ($http, $q, $rootScope, configurations, $bahmniCookieStore, offlineService) {
+    .service('encounterService', ['$http', '$q', '$rootScope', 'configurations', '$bahmniCookieStore',
+        function ($http, $q, $rootScope, configurations, $bahmniCookieStore) {
             this.buildEncounter = function (encounter) {
                 encounter.observations = encounter.observations || [];
                 encounter.observations.forEach(function (obs) {
@@ -16,7 +16,7 @@ angular.module('bahmni.common.domain')
                     if (providerData && providerData.uuid) {
                         encounter.providers.push({"uuid": providerData.uuid});
                     } else if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
-                        encounter.providers.push({"uuid": $rootScope.currentProvider.uuid });
+                        encounter.providers.push({"uuid": $rootScope.currentProvider.uuid});
                     }
                 }
                 return encounter;
@@ -87,8 +87,21 @@ angular.module('bahmni.common.domain')
                 });
             };
 
+            function isObsConceptClassVideoOrImage (obs) {
+                return (obs.concept.conceptClass === 'Video' || obs.concept.conceptClass === 'Image');
+            }
+
+            var deleteIfImageOrVideoObsIsVoided = function (obs) {
+                if (obs.voided && obs.groupMembers && !obs.groupMembers.length && obs.value
+                    && isObsConceptClassVideoOrImage(obs)) {
+                    var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + obs.value;
+                    $http.delete(url, {withCredentials: true});
+                }
+            };
+
             var stripExtraConceptInfo = function (obs) {
-                obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType };
+                deleteIfImageOrVideoObsIsVoided(obs);
+                obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType};
                 obs.groupMembers = obs.groupMembers || [];
                 obs.groupMembers.forEach(function (groupMember) {
                     stripExtraConceptInfo(groupMember);
@@ -136,16 +149,13 @@ angular.module('bahmni.common.domain')
                     params: {
                         patient: patientUuid,
                         encounterType: encounterTypeUuid,
-                        v: "custom:(uuid,provider,visit:(uuid,startDatetime,stopDatetime),obs:(uuid,concept:(uuid,name),groupMembers:(id,uuid,obsDatetime,value)))"
+                        v: "custom:(uuid,provider,visit:(uuid,startDatetime,stopDatetime),obs:(uuid,concept:(uuid,name),groupMembers:(id,uuid,obsDatetime,value,comment)))"
                     },
                     withCredentials: true
                 });
             };
 
             this.getDigitized = function (patientUuid) {
-                if (offlineService.isOfflineApp()) {
-                    return $q.when({"data": {"results": []}});
-                }
                 var patientDocumentEncounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
                 return $http.get(Bahmni.Common.Constants.encounterUrl, {
                     params: {

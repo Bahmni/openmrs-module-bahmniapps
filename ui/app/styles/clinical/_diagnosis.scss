@@ -5,6 +5,9 @@
     .comment-toggle{
       margin: 0;
     }
+    .diagnosis-toggle{
+      padding: 7px 5px;
+    }
     .table {
         .row {
             border-bottom: 1px solid $lightGray;
@@ -47,7 +50,7 @@
             color: $mediumGray;
             font-family: $OpenSansBoldFont;
             font-weight: normal;
-            padding-left: 10px;
+            padding-left: 12px;
         }
     }
     input[type=number] {
@@ -66,6 +69,14 @@
         }
         label.add-new {margin-top: 10px; font-size: 12px;}
         width: 39%;
+        .diagnosis-name ,.diagnosis-date{
+          width: 50%;
+          padding: 0 10px;
+          box-sizing: border-box;
+        }
+        .diagnosis-date{
+          font-size: 13px;
+        }
     }
   .col2 {
     @include column(3);
@@ -73,6 +84,27 @@
       margin-left: 10px;
     }
     width: 22%;
+    &.notes-subscriber{
+      width: 45%;
+      padding: 0;
+    }
+    .subscriber-name{
+      padding: 18px 10px 3px 0;
+      text-align: right;
+      font-size: 10px;
+      color: $mediumGray;
+      box-sizing: border-box;
+      width:36%;
+      display: inline-block;
+      vertical-align: bottom;
+    }
+    .diagnosis-notes{
+      display: inline-block;
+      width:60%;
+      box-sizing: border-box;
+      font-size: 13px;
+      padding: 10px 10px 10px 0;
+    }
   }
   .col3 {
     @include column(3);
@@ -84,6 +116,24 @@
   .col4 {
     @include column(2);
     width: 12%;
+    &.diagnosis-actions{
+      font-size: 13px;
+      width: 16%;
+      a{
+        text-decoration: underline;
+        margin:0 5px;
+        color: $bahmniLinkColor;
+        &:hover{
+          text-decoration: none;
+        }
+        &.followUp{
+          pointer-events: none;
+          text-decoration: none;
+          color: #e7ac3e;
+          font-weight: bold;
+        }
+      }
+    }
   }
   .col5 {
     @include column(1);
@@ -95,8 +145,8 @@
     .message {
       position: absolute;
       -webkit-transition: display 1s ease;
-      right: 83px;
-      top: 10px;
+      right: 215px;
+      top: 20px;
       color: orange;
       margin-bottom: 5px;
       font-size: 14px;
@@ -109,7 +159,7 @@
       display: block;
     }
   }
-  button:first-child {
+  button:first-child ,button.accept-btn{
     margin-left: 10px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -261,4 +311,30 @@
 textarea.comment-section {
     margin: 0 10px 10px 10px;
     min-width: 80%;
+}
+button.add-condition{
+  margin-top: 7px;
+  font-size: 12px;
+  padding: 11px 7px;
+}
+.condition-header {
+  width: 56%;
+  display: inline-block;
+}
+.conditions-display-contorl-overflow {
+  height: 98%;
+  overflow: auto;
+}
+.disable-conditions-in-retro-mode{
+  background: $lightestGray;
+  color: #999;
+  input, button{
+    pointer-events: none;
+    background: $lightestGray;
+    color: #999;
+  }
+  a {
+    pointer-events: none;
+    color: #999!important;
+  }
 }

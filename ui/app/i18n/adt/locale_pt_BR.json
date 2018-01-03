@@ -1,5 +1,5 @@
 {
-    "SEARCH_NAME_PLACEHOLDER_KEY": "Pesquisar Nome/ID ...",
+    "SEARCH_NAME_PLACEHOLDER_KEY": "Pesquisar Nome/{{ primaryIdentifier }} ...",
     "SEARCH_KEY": "Pesquisar",
     "NO_ADMISSION_DETAILS_MESSAGE": "Nenhum Detalhe de Admissão para este paciente.",
     "NO_DIAGNOSIS_MESSAGE": "Nenhum diagnóstico para este paciente",
@@ -20,5 +20,14 @@
     "MESSAGE_DEFAULT_VISIT_TYPE_INVALID_KEY": "Por favor, configurar um tipo de visita padrão válido",
     "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY": "Por favor, configurar um tipo de visita padrão",
     "PATIENT_VISIT_ATTRIBUTES_PAGE_KEY": "Atributos da Visita",
-    "PATIENT_REGISTRATION_PAGE_KEY": "Registro"
+    "PATIENT_REGISTRATION_PAGE_KEY": "Registro",
+    "CONDITION_LIST_DISPLAY_CONTROL_TITLE": "Conditions",
+    "CONDITION_LIST_STATUS": "Status",
+    "CONDITION_LIST_NOTES": "Notes",
+    "CONDITION_LIST_CONDITIONS_ACTIVE": "Active Conditions",
+    "CONDITION_LIST_CONDITIONS_HISTORY_OF": "History of Conditions",
+    "CONDITION_LIST_CONDITIONS_INACTIVE": "Inactive Conditions",
+    "CONDITION_LIST_CREATED_BY": "by",
+    "CONDITION_LIST_ACTIVE_SINCE": "condition from",
+    "CONDITION_LIST_NO_CONDITIONS": "No Conditions available"
 }

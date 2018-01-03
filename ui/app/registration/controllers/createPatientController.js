@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q', 'offlineService',
-        function ($scope, $rootScope, $state, patientService, patient, spinner, appService, messagingService, ngDialog, $q, offlineService) {
+    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q',
+        function ($scope, $rootScope, $state, patientService, patient, spinner, appService, messagingService, ngDialog, $q) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.actions = {};
+            var errorMessage;
             var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
             $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
             $scope.disablePhotoCapture = appService.getAppDescriptor().getConfigValue("disablePhotoCapture");
@@ -146,6 +147,9 @@ angular.module('bahmni.registration')
                             }
                         });
                     }
+                    if (response.isIdentifierDuplicate) {
+                        errorMessage = response.message;
+                    }
                 });
             };
 
@@ -157,10 +161,6 @@ angular.module('bahmni.registration')
                 return deferred.promise;
             };
 
-            $scope.isOffline = function () {
-                return offlineService.isOfflineApp();
-            };
-
             $scope.create = function () {
                 addNewRelationships();
                 var errorMessages = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
@@ -170,7 +170,12 @@ angular.module('bahmni.registration')
                     });
                     return $q.when({});
                 }
-                return spinner.forPromise(createPromise());
+                return spinner.forPromise(createPromise()).then(function (response) {
+                    if (errorMessage) {
+                        messagingService.showMessage("error", errorMessage);
+                        errorMessage = undefined;
+                    }
+                });
             };
 
             $scope.afterSave = function () {

@@ -1,17 +1,21 @@
 'use strict';
 
 describe("Form Controls", function () {
-    var element, scope, $compile, spinner, provide, observationFormService, renderHelper;
+    var element, scope, $compile, spinner, provide, formService, renderHelper, translate;
 
     beforeEach(
         function () {
             module('bahmni.clinical');
             module(function ($provide) {
                 provide = $provide;
-                observationFormService = jasmine.createSpyObj('observationFormService', ['getFormDetail']);
+                formService = jasmine.createSpyObj('formService', ['getFormDetail', 'getFormTranslations']);
                 spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-                provide.value('observationFormService', observationFormService);
+                provide.value('formService', formService);
+                translate = {
+                    use: function(){ return 'en' }
+                };
                 provide.value('spinner', spinner);
+                provide.value('$translate', translate);
             });
 
             inject(function (_$compile_, $rootScope) {
@@ -42,19 +46,27 @@ describe("Form Controls", function () {
     }
 
     function mockObservationService(data) {
-        observationFormService.getFormDetail.and.callFake(function () {
+        formService.getFormDetail.and.callFake(function () {
             return {
                 then: function (callback) {
                     return callback({ data: data });
                 }
             }
         });
+
+        formService.getFormTranslations.and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback({ concepts: { TEMPERATURE_2: 'Temperature' }});
+                }
+            }
+        })
     }
 
-    it('should call observationFormService.getFormDetail', function () {
+    it('should call formService.getFormDetail', function () {
         mockObservationService({});
         createElement();
-        expect(observationFormService.getFormDetail).toHaveBeenCalledWith('formUuid', { v: 'custom:(resources)' });
+        expect(formService.getFormDetail).toHaveBeenCalledWith('formUuid', { v: 'custom:(resources:(value))' });
     });
 
     it('should call spinner.forPromise', function () {
@@ -64,14 +76,14 @@ describe("Form Controls", function () {
     });
 
     it('should call renderWithControls', function () {
-        mockObservationService({ resources: [{ valueReference: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
+        mockObservationService({ resources: [{ value: '{"name":"Vitals", "controls": [{"type":"obsControl", "controls":[]}] }' }] });
         createElement();
-        expect(renderHelper.renderWithControlsCalledTimes).toBe(1);
+        expect(renderHelper.renderWithControlsCalledTimes).toBe(2);
     });
 
     var createElement = function () {
         document.body.innerHTML += '<div id="formUuid"></div>';
-        element = angular.element("<form-controls form=\"{ formName: 'form1', formUuid: 'formUuid' }\"></form-controls>");
+        element = angular.element("<form-controls patient = \"{ uuid: '123'}\" form=\"{ formName: 'form1', formUuid: 'formUuid', defaultLocale: 'en' }\" ></form-controls>");
         $compile(element)(scope);
         scope.$digest();
     };

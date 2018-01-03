@@ -1,0 +1,100 @@
+<div class="add-service-wrapper">
+    <form class="create-service" ng-submit="confirmSave()" id="create-service-form" name="createServiceForm">
+        <div class="service-title">
+            <h2>{{ ::'SERVICES' | translate}}</h2>
+            <button type="submit" class="service-save-btn">{{::'APPOINTMENT_SERVICE_SAVE' | translate }}</button>
+        </div>
+        <section class="add-service-content">
+            <div class="add-service">
+                <p>
+                    <label for="name">
+                        {{'APPOINTMENT_SERVICE_NAME_KEY' | translate}}<span class="asterick">*</span>
+                    </label>
+                    <input placeholder="{{ ::'PLACEHOLDER_SERVICE_NAME' | translate }}" id="name" name="name"
+                           type="text"
+                           ng-change="validateServiceName()" ng-model="service.name" required/>
+                </p>
+                <p class="caution" ng-show="createServiceForm.name.$error.uniqueServiceName">
+                    <i class="fa fa-exclamation-circle small"></i>
+                    <span> {{'DUPLICATE_SERVICE_NAME_ERROR_MESSAGE' | translate}} </span>
+                </p>
+                <p>
+                    <label for="description">
+                        {{'APPOINTMENT_SERVICE_DESCRIPTION_KEY' | translate}}
+                    </label>
+                    <textarea placeholder="{{ ::'PLACEHOLDER_SERVICE_DESCRIPTION' | translate }}" id="description"
+                              ng-model="service.description"></textarea>
+                </p>
+                <p>
+                    <label for="duration">
+                        {{'APPOINTMENT_SERVICE_DURATION_KEY' | translate}}
+                    </label> <input placeholder="{{ ::'PLACEHOLDER_SERVICE_DURATION' | translate }}" id="duration"
+                                    type="number" min="0" ng-model="service.durationMins"/>
+                </p>
+                <fieldset ng-disabled="hasWeeklyAvailability()" ng-class="{'disabled': hasWeeklyAvailability()}">
+                    <p name="serviceTime" class="time-wrapper" ng-model="service" time-validator>
+                        <label for="start-time">
+                            {{'APPOINTMENT_SERVICE_START_TIME_KEY' | translate}}
+                        </label> <input id="start-time" type="time" ng-model="service.startTime"/>
+                        <label class="end-time" for="end-time">
+                            {{'APPOINTMENT_SERVICE_END_TIME_KEY' | translate}}
+                        </label> <input id="end-time" type="time" ng-model="service.endTime"/>
+                    </p>
+                    <p class="caution" ng-show="createServiceForm.serviceTime.$error.timeSequence">
+                        <i class="fa fa-exclamation-circle small"></i>
+                        <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
+                    </p>
+                    <p>
+                        <label class="max-load" for="max-load">
+                            {{'APPOINTMENT_SERVICE_MAX_LOAD_KEY' | translate}}
+                        </label> <input ng-disabled="hasServiceTypes()" ng-class="{'disabled': hasServiceTypes()}" name="serviceMaxLoad" placeholder="{{ ::'PLACEHOLDER_SERVICE_MAX_LOAD' | translate }}" id="max-load"
+                                        type="number" min="0" ng-model="service.maxAppointmentsLimit">
+                    </p>
+                </fieldset>
+
+                <p ng-show="enableSpecialities">
+                    <label for="speciality">
+                        {{'APPOINTMENT_SERVICE_SPECIALITY_KEY' | translate}}
+                    </label>
+                    <select id="speciality" ng-model="service.specialityUuid"
+                            ng-options="item.uuid as item.name for item in specialities | orderBy:'name'">
+                        <option value="">{{ ::'PLACEHOLDER_SERVICE_SPECIALITY' | translate}}</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="location">
+                        {{'APPOINTMENT_SERVICE_LOCATION_KEY' | translate}}
+                    </label>
+                    <select id="location" ng-model="service.locationUuid"
+                            ng-options="item.uuid as item.display for item in locations | orderBy:'display'">
+                        <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}</option>
+                    </select>
+                </p>
+                <p ng-if="enableCalendarView">
+                    <label for="label-color">{{:: 'APPOINTMENT_SERVICE_LABEL_COLOUR_KEY' | translate}}</label>
+                    <color-picker colors="colorsForAppointmentService" selected-color="service.color"></color-picker>
+                </p>
+                <div ng-if="enableServiceTypes">
+                    <service-types service="service"></service-types>
+                </div>
+            </div>
+            <div class="add-availability">
+                <h3>{{'APPOINTMENT_SERVICE_AVAILABILITY' | translate}}</h3>
+                <ul>
+                    <li class="service-availability-wrapper" ng-repeat="availability in service.weeklyAvailability">
+                        <service-availability availability="availability"
+                                              availability-list="service.weeklyAvailability"
+                                              disable-max-load="hasServiceTypes()"
+                                              state="2"></service-availability>
+                    </li>
+
+                    <li class="service-availability-wrapper">
+                        <service-availability availability-list="service.weeklyAvailability"
+                                              disable-max-load="hasServiceTypes()"
+                                              state="0"></service-availability>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </form>
+</div>

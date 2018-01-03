@@ -89,7 +89,7 @@
             </tr>
             </tbody>
         </table>
-        <div ng-show="::(allDiagnoses && allDiagnoses.length == 0)" ng-class="::{'hidden-print': (allDiagnoses && allDiagnoses.length == 0)}">
+        <div ng-show="!isDataPresent()" ng-class="::{'hidden-print': !isDataPresent()}">
             <div class="placeholder-text">{{::'NO_DIAGNOSIS_MESSAGE' | translate}}</div>
         </div>
     </div>

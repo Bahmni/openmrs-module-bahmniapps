@@ -8,10 +8,13 @@ angular.module('bahmni.registration')
             var personAttributes = [];
             var caste;
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
+            $scope.showLastName = appService.getAppDescriptor().getConfigValue("showLastName");
+            $scope.isLastNameMandatory = $scope.showLastName && appService.getAppDescriptor().getConfigValue("isLastNameMandatory");
             $scope.showBirthTime = appService.getAppDescriptor().getConfigValue("showBirthTime") != null
                 ? appService.getAppDescriptor().getConfigValue("showBirthTime") : true;  // show birth time by default
             $scope.genderCodes = Object.keys($rootScope.genderMap);
             $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
+            $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
 
             $scope.getDeathConcepts = function () {
                 return $http({

@@ -86,7 +86,7 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
 
     function mapPatient (patient) {
         if (patient.name || patient.givenName || patient.familyName) {
-            patient.name = patient.name || (patient.givenName + ' ' + patient.familyName);
+            patient.name = patient.name || (patient.givenName + (patient.familyName ? ' ' + patient.familyName : ""));
         }
         patient.display = _.map(self.searchColumns, function (column) {
             return patient[column];

@@ -1,5 +1,5 @@
 #loader {
-  z-index: 10000;
+  z-index: 999999999;
   width: 100%;
   height: 20px;
   margin: 20px auto;
@@ -10,7 +10,7 @@
 
 #overlay {
   display: none;
-  z-index: 10000000;
+  z-index: 9999999999999;
   position: fixed;
   width: 100%;
   height: 100%;

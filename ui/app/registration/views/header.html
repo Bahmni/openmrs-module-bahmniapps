@@ -9,18 +9,6 @@
         <div class="reg-header-right fr">
             <div ui-view="headerExtension" class="print-action-items fl"></div>
 
-            <div ng-if="isOfflineApp" class="offline-sync fl" ng-controller="AppUpdateController">
-                <button class="btn" ng-if="isUpdateAvailable()" ng-click="update()">Update</button>
-            </div>
-
-            <button class="btn offline-sync fl" ng-click="sync()" ng-show="isOfflineApp && !isSyncing ">
-                {{::'REGISTRATION_LABEL_SYNC' | translate}}
-            </button>
-            <button class="btn offline-sync offline-sync-image fl" ng-show="isOfflineApp && isSyncing" disabled>
-                <!-- <i class="fa fa-refresh"></i> -->
-                <img src="../images/sync.gif" />
-            </button>
-
             <button class="btn-user-info fr">
                 <i class="fa fa-user-md fa-white small"></i>
                 <i class="fa fa-caret-down fa-white mini"></i>
@@ -30,7 +18,7 @@
                     <a><i class="fa fa-user fa-white small"></i><span>{{:: currentUser.username}}</span></a>
                 </li>
                 <li>
-                    <i class="fa fa-map-marker fa-white small"></i><span>{{:: currentUser.currentLocation}}</span>
+                    <i class="fa fa-map-marker fa-white small"></i><span>{{:: currentUser.currentLocation | translate}}</span>
                 </li>
                 <li>
                     <a log-out><i class="fa fa-power-off fa-white small"></i><span class="nav-link">{{::'REGISTRATION_LABEL_LOGOUT' | translate}}</span></a>

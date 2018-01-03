@@ -21,7 +21,7 @@
 
         <h2>Actions</h2>
         <ul>
-            <li class="btn-patient-doc">
+            <li class="btn-patient-doc" ng-click="$parent.toggleControlPanel()">
                 <div bm-gallery patient="patient" access-impression="true">
                     <a href="" bm-lazy-image-observation-gallery-items promise="documentsPromise" ><i class="fa fa-file-o fa-white"></i>{{"PATIENT_DOCUMENT_TRANSLATION_KEY"|translate}}</a>
                 </div>
@@ -42,7 +42,7 @@
                     ({{$parent.currentUser.username}}-
                 </span>
                 <span ng-show="$parent.currentUser.currentLocation">
-                    {{$parent.currentUser.currentLocation}})
+                    {{$parent.currentUser.currentLocation | translate}})
                 </span></a>
             </li>
         </ul>

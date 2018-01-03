@@ -2,10 +2,15 @@
 
 angular.module('bahmni.common.domain')
     .service('retrospectiveEntryService', ['$rootScope', '$bahmniCookieStore', function ($rootScope, $bahmniCookieStore) {
+        var retrospectiveEntryService = this;
         var dateUtil = Bahmni.Common.Util.DateUtil;
 
         this.getRetrospectiveEntry = function () {
             return $rootScope.retrospectiveEntry;
+        };
+
+        this.isRetrospectiveMode = function () {
+            return !_.isEmpty(retrospectiveEntryService.getRetrospectiveEntry());
         };
 
         this.getRetrospectiveDate = function () {

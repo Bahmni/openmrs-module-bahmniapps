@@ -8,6 +8,7 @@
         <i class="fa fa-external-link"></i>
     </h2>
     <div>
+        <p class="placeholder-text" ng-if="isFormFound">{{::noFormFoundMessage}}</p>
         <ul class="form-field" class="ng-isolate-scope" id="visitDisplayTable">
             <li>
                 <div class="placeholder-text" ng-if="formData.length == 0">

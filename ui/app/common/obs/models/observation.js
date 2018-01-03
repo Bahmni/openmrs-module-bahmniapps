@@ -24,6 +24,22 @@ Bahmni.Common.Obs.Observation = (function () {
             return (this.value.indexOf(".pdf") > 0);
         },
 
+        isComplexConcept: function () {
+            return this.concept.dataType === "Complex";
+        },
+
+        getComplexDataType: function () {
+            return this.complexData ? this.complexData.dataType : null;
+        },
+
+        isLocationRef: function () {
+            return this.isComplexConcept() && this.getComplexDataType() === "Location";
+        },
+
+        isProviderRef: function () {
+            return this.isComplexConcept() && this.getComplexDataType() === "Provider";
+        },
+
         getDisplayValue: function () {
             var value;
             if (this.type === "Boolean" || this.concept && this.concept.dataType === "Boolean") {
@@ -42,6 +58,15 @@ Bahmni.Common.Obs.Observation = (function () {
             if (this.type === "Date" || this.concept && this.concept.dataType === "Date") {
                 return this.value ? Bahmni.Common.Util.DateUtil.formatDateWithoutTime(this.value) : "";
             }
+
+            if (this.isLocationRef()) {
+                return this.complexData.display;
+            }
+
+            if (this.isProviderRef()) {
+                return this.complexData.display;
+            }
+
             value = this.value;
             var displayValue = value && (value.shortName || (value.name && (value.name.name || value.name)) || value);
             if (this.duration) {

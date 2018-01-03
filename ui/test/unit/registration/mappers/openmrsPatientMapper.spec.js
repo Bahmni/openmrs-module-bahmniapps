@@ -97,6 +97,10 @@ describe('OpenmrsPatientMapper', function () {
                     "age": 0,
                     "birthdate": moment(date).format(),
                     "birthdateEstimated": false,
+                    "dead" : true,
+                    "causeOfDeath" : {
+                      "conceptUuid": "123"
+                    },
                     "preferredName": {
                         "uuid": "72573d85-7793-49c1-8c29-7647c0a6a425",
                         "givenName": "first",
@@ -145,7 +149,12 @@ describe('OpenmrsPatientMapper', function () {
                         dateCreated: moment(date).format()
                     }
                 }
-            }
+            },
+            "relationships": [
+                {
+                    "name": "relationship"
+                }
+            ]
         }
     });
 
@@ -237,5 +246,28 @@ describe('OpenmrsPatientMapper', function () {
 
         expect(patient.primaryIdentifier).toBe(primaryIdentifier);
         expect(patient.extraIdentifiers).toBe(extraIdentifiers);
-    })
+    });
+
+    it('should map relationships', function () {
+        var relationships = [
+            {
+                "name": "relationship"
+            }
+        ];
+        var patient = mapper.map(openmrsPatient);
+
+        expect(patient.relationships).toEqual(relationships);
+        expect(patient.hasRelationships).toBeTruthy();
+    });
+
+  it('should map patient death details', function () {
+        var patient = mapper.map(openmrsPatient);
+
+        expect(patient.dead).toBeTruthy();
+        expect(patient.causeOfDeath).toEqual({
+            "conceptUuid": "123"
+        });
+        expect(patient.isDead).toBeTruthy();
+  });
+
 });

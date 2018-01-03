@@ -20,7 +20,6 @@ angular.module('bahmni.common.uiHelper')
                     if (!$scope.autoclose) {
                         return;
                     }
-
                     hideTargetElements();
                     $scope.isTargetOpen = false;
                     $(document).off('click', docClickHandler);

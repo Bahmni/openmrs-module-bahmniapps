@@ -17,7 +17,7 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
         conceptName = conceptName ? conceptName.name : conceptName;
         self.label = conceptName || self.conceptName || self.options.conceptName;
         self.isLoaded = self.isOpen;
-        self.collapseInnerSections = false;
+        self.collapseInnerSections = {value: false};
         self.uuid = conceptSet.uuid;
         self.alwaysShow = user.isFavouriteObsTemplate(self.conceptName);
         self.allowAddMore = config.allowAddMore;
@@ -77,9 +77,13 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
             self.show();
         }
     };
-    self.toggleInnerSections = function (event) {
+    self.maximizeInnerSections = function (event) {
         event.stopPropagation();
-        self.collapseInnerSections = !self.collapseInnerSections;
+        self.collapseInnerSections = {value: false};
+    };
+    self.minimizeInnerSections = function (event) {
+        event.stopPropagation();
+        self.collapseInnerSections = {value: true};
     };
 
     self.toggleDisplay = function () {
@@ -109,6 +113,10 @@ Bahmni.ConceptSet.ConceptSetSection = function (extensions, user, config, observ
             self.open = value;
         }
     });
+
+    self.isDefault = function () {
+        return self.options.default;
+    };
 
     Object.defineProperty(self, "isAdded", {
         get: function () {

@@ -1,0 +1,11 @@
+<section class="add-app-wrapper">
+    <header>
+        <nav>
+            <a ng-class="{'active': getCurrentTabName() === 'summary'}" ng-click="navigateTo('summary')">{{ ::'SUMMARY' | translate}}</a>
+            <a ng-class="{'active': (getCurrentTabName() === 'calendar' || getCurrentTabName() === 'list')}" ng-click="navigateTo('appointments')">{{ ::'APPOINTMENT_LIST' | translate}}</a>
+        </nav>
+    <br/><br/><br/>
+    </header>
+    <div class="common-filter-wrapper" ui-view="filter"></div>
+    <div ui-view="content@manage"></div>
+</section>

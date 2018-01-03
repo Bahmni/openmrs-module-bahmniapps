@@ -2,7 +2,7 @@
 
 describe('CreatePatientController', function() {
     var $aController, q, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, spinnerMock,
-        appServiceMock, ngDialogMock, ngDialogLocalScopeMock, httpBackend, http, sections, identifiersMock;
+        appServiceMock, ngDialogMock, ngDialogLocalScopeMock, httpBackend, http, sections, identifiersMock, messagingService;
 
     beforeEach(module('bahmni.registration'));
     beforeEach(module('bahmni.common.models'));
@@ -43,6 +43,7 @@ describe('CreatePatientController', function() {
         preferencesMock = jasmine.createSpyObj('preferencesMock', ['']);
         spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
         appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
+        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
 
         ngDialogMock = jasmine.createSpyObj('ngDialogMock', ['open', 'close']);
         ngDialogLocalScopeMock = scopeMock;
@@ -127,8 +128,8 @@ describe('CreatePatientController', function() {
             spinner: spinnerMock,
             appService: appServiceMock,
             ngDialog: ngDialogMock,
-            offlineService: {}
-        });
+            messagingService: messagingService
+    });
 
         scopeMock.actions = {
             followUpAction: function() {
@@ -155,8 +156,7 @@ describe('CreatePatientController', function() {
             preferences: preferencesMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            offlineService: {}
+            ngDialog: ngDialogMock
         });
 
         expect(scopeMock.patient["education"].conceptUuid).toBe("c2107f30-3f10-11e4-adec-0800271c1b75");
@@ -179,7 +179,7 @@ describe('CreatePatientController', function() {
         rootScopeMock.patientConfiguration.getPatientAttributesSections = function() {
             return sections;
         };
-        
+
         $aController('CreatePatientController', {
             $scope: scopeMock,
             $rootScope: rootScopeMock,
@@ -188,8 +188,7 @@ describe('CreatePatientController', function() {
             preferences: preferencesMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            offlineService: {}
+            ngDialog: ngDialogMock
         });
 
         expect(sections["additionalPatientInformation"].expand).toBeTruthy();
@@ -205,8 +204,7 @@ describe('CreatePatientController', function() {
             preferences: preferencesMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            offlineService: {}
+            ngDialog: ngDialogMock
         });
 
         expect(sections["additionalPatientInformation"].expand).toBeTruthy();
@@ -233,8 +231,7 @@ describe('CreatePatientController', function() {
             preferences: preferencesMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            offlineService: {}
+            ngDialog: ngDialogMock
         });
 
         expect(scopeMock.patient["education"]).toBeUndefined();
@@ -262,8 +259,7 @@ describe('CreatePatientController', function() {
                 preferences: preferencesMock,
                 spinner: spinnerMock,
                 appService: appServiceMock,
-                ngDialog: ngDialogMock,
-                offlineService: {}
+                ngDialog: ngDialogMock
             });
 
         expect(scopeMock.patient.address[scopeMock.addressLevels[0].addressField]).toBe("Dhaka");
@@ -442,6 +438,30 @@ describe('CreatePatientController', function() {
         expect(patientServiceMock.create.calls.count()).toEqual(1);
     });
 
+    it("should validate duplicate identifier entry in connect app and display error message", function(done) {
+        scopeMock.patient.identifierPrefix.prefix = "GAN";
+        scopeMock.patient.registrationNumber = "1050";
+
+        scopeMock.patient.hasOldIdentifier = true;
+        var defer = q.defer();
+        patientServiceMock.create.and.callFake(function() {
+            var deferred1 = q.defer();
+            deferred1.reject({isIdentifierDuplicate : true, message: "duplicate identifier"});
+            defer.resolve({data:"ds"});
+            return deferred1.promise;
+        });
+
+        spinnerMock.forPromise.and.returnValue(defer.promise);
+        scopeMock.create();
+        scopeMock.$apply();
+            expect(patientServiceMock.create.calls.count()).toEqual(1);
+            expect(messagingService.showMessage).toHaveBeenCalled();
+            done();
+
+
+
+    });
+
     it("should return true if there is disablePhotoCapture config defined to be true", function () {
         appServiceMock.getAppDescriptor = function() {
             return {
@@ -462,8 +482,7 @@ describe('CreatePatientController', function() {
             preferences: preferencesMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            ngDialog: ngDialogMock,
-            offlineService: {}
+            ngDialog: ngDialogMock
         });
         expect(scopeMock.disablePhotoCapture).toBeTruthy();
     });

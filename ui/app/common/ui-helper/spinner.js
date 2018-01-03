@@ -37,7 +37,6 @@ angular.module('bahmni.common.uiHelper')
         };
 
         var show = function (element) {
-            messagingService.hideMessages("error");
             if (element !== undefined) {
                 return showSpinnerForElement(element);
             }

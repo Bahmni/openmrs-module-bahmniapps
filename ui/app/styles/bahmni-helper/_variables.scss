@@ -214,6 +214,10 @@ $clinicalFormFocus: #007fff;
 $clinicalFormFocusBg: #fffdf7;
 $clinicalFormWarning: #FFFAD8;
 
+// New Observation Template Color
+
+$observationTitleHover:#b7e5e5;
+
 
 /*  _different shades of grey/gray:  */
 $darkGray:     #333;
@@ -267,6 +271,8 @@ $largeSpacing: 20px;
 
 $OpenSansBoldFont: OpenSansBold, Arial, sans-serif;
 $OpenSansFont: OpenSans, Arial, sans-serif;
+
+$OpenSansSemiBoldFont: 'OpenSansSemiBold';
 
 $primaryFont: "OpenSans";
 $primaryBoldFont: "OpenSansBold";

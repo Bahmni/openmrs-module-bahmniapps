@@ -1,0 +1,70 @@
+.app-summary-container {
+  .app-date-nav {
+    span {
+      position: relative;
+    }
+    label {
+      cursor: pointer;
+      position: absolute;
+      background: #F8F8F8;
+      top: -3px;
+      left: 16px;
+      padding: 5px;
+    }
+    input {
+      width: 155px;
+    }
+  }
+  .app-summary-table-container {
+    margin-top: 65px;
+    height: calc(100vh - 177px);
+    width: 100%;
+    overflow: auto;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0 10px;
+    table {
+      margin-top: 27px;
+      width: 100%;
+      &.table-header {
+        width: calc(100% - 20px);
+        position: fixed;
+        margin-top: 0;
+        top: 176px;
+        @media all and (max-width: 1300px) {
+          width: calc(100% - 40px);
+        }
+        th {
+          background: #fff;
+          border: none;
+          color: #363463;
+          font-family: opensansSemibold;
+          font-size: 15px;
+        }
+      }
+      tr {
+        border: none;
+        td, th {
+          width: 12%;
+          padding: 5px;
+          text-align: center;
+          box-sizing: border-box;
+          &:first-child {
+            width: 16%;
+            border: none;
+            text-align: right;
+            font-family: opensansSemibold;
+            font-size: 15px;
+            padding-right: 10px;
+          }
+        }
+        .currentDate {
+          background: #F5F5F5;
+        }
+        .app-summary-total {
+          background: #F0FAFF;
+        }
+      }
+    }
+  }
+}

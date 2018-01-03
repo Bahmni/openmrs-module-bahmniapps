@@ -1,0 +1,10 @@
+{
+    "userName": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "location": "emplacement",
+    "login": "S'identifier",
+    "selectLocation": "Choisir la localité",
+    "clinical_key": "Clinique",
+    "MESSAGE_DIALOG_OPTION_COPY": "Erreur d'exécution",
+    "MESSAGE_DIALOG_OPTION_OKAY": "Approuver"
+}

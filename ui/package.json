@@ -1,69 +1,69 @@
 {
-    "name": "bahmni.apps",
-    "version": "0.0.1",
-    "description": "Bahmni Apps",
-    "main": "app/app.js",
-    "directories": {
-        "test": "test"
-    },
-    "devDependencies": {
-        "bahmni-form-controls": "^0.1.0",
-        "eslint-config-angular": "^0.5.0",
-        "eslint-config-semistandard": "^7.0.0",
-        "eslint-config-standard": "^6.2.1",
-        "eslint-plugin-angular": "^1.4.1",
-        "eslint-plugin-promise": "^3.3.0",
-        "eslint-plugin-standard": "^2.0.1",
-        "grunt": "~0.4.5",
-        "grunt-contrib-clean": "^0.5.0",
-        "grunt-comment-toggler": "^0.2.2",
-        "grunt-contrib-clean": "0.6.0",
-        "grunt-contrib-compass": "~0.8.0",
-        "grunt-contrib-concat": "~0.4.0",
-        "grunt-contrib-copy": "0.6.0",
-        "grunt-contrib-cssmin": "~0.10.0",
-        "grunt-contrib-htmlmin": "~0.3.0",
-        "grunt-contrib-imagemin": "~0.1.2",
-        "grunt-contrib-uglify": "~0.11.0",
-        "grunt-eslint": "^19.0.0",
-        "grunt-filerev": "^0.2.1",
-        "grunt-hologram": "0.0.4",
-        "grunt-istanbul-coverage": "0.0.5",
-        "grunt-karma": "^0.8.3",
-        "grunt-ng-annotate": "^1.0.1",
-        "grunt-regarde": "~0.1.1",
-        "grunt-preprocess": "^5.0.1",
-        "grunt-rename": "~0.1.3",
-        "grunt-usemin": "~2.2.0",
-        "karma": "^0.12.16",
-        "karma-coverage": "~0.2.4",
-        "karma-jasmine": "~0.2.0",
-        "karma-junit-reporter": "^0.2.2",
-        "karma-ng-html2js-preprocessor": "^0.1.2",
-        "matchdep": "^0.3.0",
-        "karma-firefox-launcher": "~0.1.7",
-        "react": "^15.2.1",
-        "react-dom": "^15.2.1"
-    },
-    "scripts": {
-        "test": "karma start test/config/karma.conf.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/Bhamni/opd.git"
-    },
-    "keywords": [
-        "Bahmni",
-        "EMR",
-        "openmrs",
-        "HMS",
-        "healthcare"
-    ],
-    "author": "bahmni@thoughtworks.com",
-    "license": "Apache-2.0",
-    "gitHead": "d292a992ce359f79a807fd7d75505e45cb631b80",
-    "readmeFilename": "README.md",
-    "bugs": {
-        "url": "https://github.com/Bhamni/opd/issues"
-    }
+  "name": "bahmni.apps",
+  "version": "0.0.1",
+  "description": "Bahmni Apps",
+  "main": "app/app.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "bahmni-form-controls": "^0.91.0",
+    "eslint-config-angular": "^0.5.0",
+    "eslint-config-semistandard": "^7.0.0",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-angular": "^1.4.1",
+    "eslint-plugin-promise": "^3.3.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "grunt": "~0.4.5",
+    "grunt-comment-toggler": "^0.2.2",
+    "grunt-contrib-clean": "0.6.0",
+    "grunt-contrib-compass": "~0.8.0",
+    "grunt-contrib-concat": "~0.4.0",
+    "grunt-contrib-copy": "0.6.0",
+    "grunt-contrib-cssmin": "~0.10.0",
+    "grunt-contrib-htmlmin": "~0.3.0",
+    "grunt-contrib-imagemin": "~0.1.2",
+    "grunt-contrib-uglify": "~0.11.0",
+    "grunt-eslint": "^19.0.0",
+    "grunt-filerev": "^0.2.1",
+    "grunt-hologram": "0.0.4",
+    "grunt-istanbul-coverage": "0.0.5",
+    "grunt-karma": "^2.0.0",
+    "grunt-ng-annotate": "^1.0.1",
+    "grunt-preprocess": "^5.0.1",
+    "grunt-regarde": "~0.1.1",
+    "grunt-rename": "~0.1.3",
+    "grunt-usemin": "~2.2.0",
+    "karma": "^0.13.00",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-coverage": "~0.2.4",
+    "karma-firefox-launcher": "~0.1.7",
+    "karma-jasmine": "~0.2.0",
+    "karma-junit-reporter": "^0.2.2",
+    "karma-ng-html2js-preprocessor": "^0.1.2",
+    "matchdep": "^0.3.0",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1"
+  },
+  "scripts": {
+    "test": "karma start test/config/karma.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Bhamni/opd.git"
+  },
+  "keywords": [
+    "Bahmni",
+    "EMR",
+    "openmrs",
+    "HMS",
+    "healthcare"
+  ],
+  "author": "bahmni@thoughtworks.com",
+  "license": "Apache-2.0",
+  "gitHead": "d292a992ce359f79a807fd7d75505e45cb631b80",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/Bhamni/opd/issues"
+  }
 }

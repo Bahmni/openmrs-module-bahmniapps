@@ -8,23 +8,29 @@ module.exports = function (config) {
         singleRun: true,
         files: [
             {pattern: 'test/data/*.json', watched: true, served: true, included: false},
+            {pattern: 'app/images/*', included: false, served: true},
             'app/components/q/q.js',
             'app/components/angular/angular.js',
             'app/components/ngDialog/js/ngDialog.js',
             'app/components/angular-route/angular-route.js',
             'app/components/angular-sanitize/angular-sanitize.js',
             'app/components/jquery/jquery.js',
+            'app/components/jquery.cookie/jquery.cookie.js',
             'app/components/jasmine-jquery/lib/jasmine-jquery.js',
             'app/components/angular-mocks/angular-mocks.js',
             'app/components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'app/components/d3/d3.min.js',
             'app/components/nvd3/nv.d3.min.js',
             'app/components/angularjs-nvd3-directives/dist/*.js',
-            'app/components/moment/moment.js',
+            'app/components/moment/min/moment.min.js',
+            'app/components/angular-ui-calendar/src/calendar.js',
+            'app/components/fullcalendar/dist/fullcalendar.min.js',
+            'app/components/fullcalendar-scheduler/dist/scheduler.min.js',
+            'app/components/angular-elastic/elastic.js',
+            'app/components/angular-ivh-treeview/dist/ivh-treeview.min.js',
             'app/components/offline/offline.min.js',
             'app/components/angular-ui-router/release/angular-ui-router.js',
             'app/components/lodash/dist/lodash.min.js',
-            'app/components/lovefield/dist/lovefield.js',
             'app/components/angular-ui-select2/src/select2.js',
             'app/components/angular-bindonce/bindonce.js',
             'app/components/ng-tags-input/ng-tags-input.min.js',
@@ -41,6 +47,8 @@ module.exports = function (config) {
             'app/lib/modernizr.custom.80690.js',
             'app/lib/angular-workers/dist/angular-workers.js',
             'app/common/constants.js',
+            'app/common/util/init.js',
+            'app/common/util/**.js',
             'app/common/domain/init.js',
             'app/common/domain/**/*.js',
             'app/**/init.js',
@@ -57,32 +65,13 @@ module.exports = function (config) {
             'app/orders/**/*.js',
             'app/reports/**/*.js',
             'app/registration/**/*.js',
+            'app/appointments/**/*.js',
             'test/support/**/*.js',
-            'test/integration/**/*.js',
-            'test/integration/utils/*.js',
             'test/unit/**/*.js',
             "test/unit/common/util/dateTimeFormatter.spec.js"
         ],
         exclude:[
-            'app/clinical/displaycontrols/investigationresults/offline/*',
-            'app/registration/offline/**/*.js',
-            'app/clinical/common/offline/**/*.js',
-            'app/common/domain/offline/*.js',
-            'app/common/**/offline/chrome/*.js',
-            'app/common/**/offline/android/*.js',
-            'app/common/orders/offline/*.js',
-            'app/common/orders/offline/services/*.js',
-            'app/common/domain/offline/*.js',
-            'app/clinical/dashboard/services/offline/**/*.js',
-            'test/unit/registration/offline/**/*.js',
-            'test/unit/**/offline/*.js',
-            'test/unit/**/offline/android/*.js',
-            'test/unit/**/offline/chrome/*.js',
-            'app/common/offline/scheduler/backgroundWorker.js',
-            'app/common/util/androidDateTimeFormatter.js',
-            'test/unit/common/util/androidDateTimeFormatter.spec.js',
-            'app/common/offline/dbservices/dao/labOrderResultsDbService.js',
-            'test/integration/dbServices/dao/labOrderResultsDbService.spec.js'
+            'app/components/moment/src/**/*.js'
         ],
         reporters: ['junit', (process.env.CI === 'true' ? 'dots' : 'progress'), 'coverage'],
         preprocessors: {
@@ -95,6 +84,7 @@ module.exports = function (config) {
             'app/orders/**/*.js': ['coverage'],
             'app/registration/**/*.js': ['coverage'],
             'app/reports/**/*.js': ['coverage'],
+            'app/appointments/**/*.js': ['coverage'],
             'app/common/displaycontrols/**/views/*.html':['ng-html2js'],
             'app/common/concept-set/views/*.html':['ng-html2js'],
             'app/common/uicontrols/**/views/*.html': ['ng-html2js'],
@@ -117,7 +107,7 @@ module.exports = function (config) {
             moduleName: 'ngHtml2JsPreprocessor'
         },
         proxies:{
-            '/images/blank-user.gif' :'app/images/blank-user.gif'
+            '/images/blank-user.gif' :'/base/app/images/blank-user.gif'
         }
     });
 };

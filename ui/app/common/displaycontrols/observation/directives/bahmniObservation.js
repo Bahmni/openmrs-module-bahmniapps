@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope',
-        function (observationsService, appService, $q, spinner, $rootScope) {
+    .directive('bahmniObservation', ['observationsService', 'appService', '$q', 'spinner', '$rootScope', 'formHierarchyService',
+        function (observationsService, appService, $q, spinner, $rootScope, formHierarchyService) {
             var controller = function ($scope) {
                 $scope.print = $rootScope.isBeingPrinted || false;
 
@@ -28,6 +28,7 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                     if (_.isEmpty($scope.bahmniObservations)) {
                         $scope.noObsMessage = Bahmni.Common.Constants.messageForNoObservation;
+                        $scope.$emit("no-data-present-event");
                     } else {
                         if (!$scope.showGroupDateTime) {
                             _.forEach($scope.bahmniObservations, function (bahmniObs) {
@@ -37,7 +38,16 @@ angular.module('bahmni.common.displaycontrol.observation')
                             $scope.bahmniObservations[0].isOpen = true;
                         }
                     }
+
+                    var formObservations = _.filter(observations, function (obs) {
+                        return obs.formFieldPath;
+                    });
+
+                    if (formObservations.length > 0) {
+                        formHierarchyService.build($scope.bahmniObservations);
+                    }
                 };
+
                 var fetchObservations = function () {
                     if ($scope.observations) {
                         mapObservation($scope.observations, $scope.config);
@@ -53,7 +63,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                                 mapObservation(response.data, $scope.config);
                             });
                         } else if ($scope.enrollment) {
-                            $scope.initialization = observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope).then(function (response) {
+                            $scope.initialization = observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope, $scope.config.obsIgnoreList).then(function (response) {
                                 mapObservation(response.data, $scope.config);
                             });
                         } else {

@@ -32,6 +32,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
             mapRelationships = function (patient, relationships) {
                 patient.relationships = relationships || [];
                 patient.newlyAddedRelationships = [{}];
+                patient.hasRelationships = patient.relationships.length > 0;
             },
 
             map = function (openmrsPatient) {
@@ -52,6 +53,7 @@ angular.module('bahmni.registration').factory('openmrsPatientMapper', ['patient'
                 patient.image = Bahmni.Registration.Constants.patientImageUrlByPatientUuid + openmrsPatient.uuid + "&q=" + new Date().toISOString();
                 patient.registrationDate = Bahmni.Common.Util.DateUtil.parse(openmrsPerson.auditInfo.dateCreated);
                 patient.dead = openmrsPerson.dead;
+                patient.isDead = patient.dead;
                 patient.deathDate = parseDate(openmrsPerson.deathDate);
                 patient.causeOfDeath = openmrsPerson.causeOfDeath;
                 patient.birthdateEstimated = openmrsPerson.birthdateEstimated;

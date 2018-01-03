@@ -47,11 +47,11 @@ Bahmni.Common.Domain.Diagnosis = function (codedAnswer, order, certainty, existi
             self.answerNotFilled();
     };
     self.isValidOrder = function () {
-        return self.answerNotFilled() || self.order !== undefined;
+        return self.isEmpty() || self.order !== undefined;
     };
 
     self.isValidCertainty = function () {
-        return self.answerNotFilled() || self.certainty !== undefined;
+        return self.isEmpty() || self.certainty !== undefined;
     };
 
     self.isEmpty = function () {

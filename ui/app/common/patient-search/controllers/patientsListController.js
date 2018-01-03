@@ -2,14 +2,17 @@
 
 angular.module('bahmni.common.patientSearch')
 .controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner',
-    '$stateParams', '$bahmniCookieStore', 'offlineService', 'printer', 'configurationService',
-    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, offlineService, printer, configurationService) {
+    '$stateParams', '$bahmniCookieStore', 'printer', 'configurationService',
+    function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, printer, configurationService) {
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSearchType);
             $scope.search = new Bahmni.Common.PatientSearch.Search(_.without(searchTypes, undefined));
             $scope.search.markPatientEntry();
             $scope.$watch('search.searchType', function (currentSearchType) {
                 _.isEmpty(currentSearchType) || fetchPatients(currentSearchType);
+            });
+            _.each($scope.search.searchTypes, function (searchType) {
+                _.isEmpty(searchType) || ($scope.search.searchType != searchType && getPatientCount(searchType));
             });
             if ($rootScope.currentSearchType != null) {
                 $scope.search.switchSearchType($rootScope.currentSearchType);
@@ -33,20 +36,21 @@ angular.module('bahmni.common.patientSearch')
                 $scope.forwardPatient($scope.search.searchResults[0]);
             }
         };
-
-        $scope.getPatientCount = function (searchType) {
-            var params = { q: searchType.handler, v: "full",
-                location_uuid: $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid,
-                provider_uuid: $rootScope.currentProvider.uuid };
-            if (searchType.additionalParams) {
-                params["additionalParams"] = searchType.additionalParams;
-            }
-            patientService.findPatients(params).then(function (response) {
-                searchType.patientCount = response.data.length;
-                if ($scope.search.isSelectedSearch(searchType)) {
-                    $scope.search.updatePatientList(response.data);
+        var getPatientCount = function (searchType) {
+            if (searchType.handler) {
+                var params = { q: searchType.handler, v: "full",
+                    location_uuid: $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid,
+                    provider_uuid: $rootScope.currentProvider.uuid };
+                if (searchType.additionalParams) {
+                    params["additionalParams"] = searchType.additionalParams;
                 }
-            });
+                patientService.findPatients(params).then(function (response) {
+                    searchType.patientCount = response.data.length;
+                    if ($scope.search.isSelectedSearch(searchType)) {
+                        $scope.search.updatePatientList(response.data);
+                    }
+                });
+            }
         };
 
         $scope.getHeadings = function (patients) {
@@ -86,9 +90,6 @@ angular.module('bahmni.common.patientSearch')
         };
 
         var mapExtensionToSearchType = function (appExtn) {
-            if (offlineService.isOfflineApp() && appExtn.offline == false) {
-                return;
-            }
             return {
                 name: appExtn.label,
                 display: appExtn.extensionParams.display,
@@ -109,25 +110,7 @@ angular.module('bahmni.common.patientSearch')
         var fetchPatients = function (currentSearchType) {
             $rootScope.currentSearchType = currentSearchType;
             if ($scope.search.isCurrentSearchLookUp()) {
-                var params = { q: currentSearchType.handler, v: "full",
-                    location_uuid: $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid,
-                    provider_uuid: $rootScope.currentProvider.uuid };
-                if (currentSearchType.additionalParams) {
-                    params["additionalParams"] = currentSearchType.additionalParams;
-                }
-                return spinner.forPromise(patientService.findPatients(params)).then(function (response) {
-                    $scope.search.updatePatientList(response.data);
-                    if ($scope.search.searchType != undefined) {
-                        $scope.getPatientCount($scope.search.searchType);
-                    }
-                });
-            } else {
-                if (offlineService.isOfflineApp()) {
-                    var duration = appService.getAppDescriptor().getConfigValue('recentPatientsDuration');
-                    patientService.getRecentPatients(duration).then(function (response) {
-                        $scope.search.updatePatientList(response.data.pageOfResults);
-                    });
-                }
+                getPatientCount(currentSearchType);
             }
         };
 

@@ -1,9 +1,9 @@
 <div class="confirm-box">
     <span class="ngdialog-close"></span>
-    <p class="message">{{::scope.message}}</p>
+    <p class="message">{{::scope.message | translate}}</p>
     <div class="actions">
-        <button ng-repeat="actionName in actions" ng-click="scope[actionName](close);" id="{{actionName}}">
-            {{::actionName}}
+        <button ng-repeat="action in actions" ng-click="scope[action.name](close);" id="{{action.name}}">
+            {{::action.display | translate}}
         </button>
     </div>
 </div>

@@ -59,9 +59,6 @@
 
         <script src="../common/util/httpErrorInterceptor.js"></script>
 
-        <script src="../common/offline/init.js"></script>
-        <script src="../common/offline/offlineService.js"></script>
-
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>
         <script src="../common/auth/userService.js"></script>
@@ -104,8 +101,10 @@
         <!-- Mujir/Vikash - to remove -->
         <script src="../common/domain/models/retrospectiveEntry.js"></script>
         <script src="../common/domain/models/diagnosis.js"></script>
+        <script src="../common/domain/models/condition.js"></script>
         <script src="../common/domain/services/retrospectiveEntryService.js"></script>
         <script src="../common/domain/services/diagnosisService.js"></script>
+        <script src="../common/domain/services/conditionsService.js"></script>
 
 
         <script src="../common/domain/services/bedService.js"></script>
@@ -167,6 +166,7 @@
         <script src="../common/logging/init.js"></script>
         <script src="../common/logging/exceptionHandler.js"></script>
         <script src="../common/logging/services/loggingService.js"></script>
+        <script src="../common/logging/services/auditLogService.js"></script>
 
         <script src="../common/obs/init.js"></script>
         <script src="../common/obs/models/observation.js"></script>
@@ -178,6 +178,7 @@
 
         <script src="../common/displaycontrols/dashboard/init.js"></script>
         <script src="../common/displaycontrols/dashboard/directives/dashboard.js"></script>
+        <script src="../common/displaycontrols/dashboard/directives/dashboardSection.js"></script>
         <script src="../common/displaycontrols/dashboard/models/dashboard.js"></script>
         <script src="../common/displaycontrols/dashboard/models/dashboardSection.js"></script>
         <script src="../common/displaycontrols/dashboard/controllers/patientDashboardDiagnosisController.js"></script>
@@ -186,9 +187,13 @@
         <script src="../common/displaycontrols/observation/directives/bahmniObservation.js"></script>
         <script src="../common/displaycontrols/observation/controllers/allObservationDetailsController.js"></script>
         <script src="../common/displaycontrols/observation/helpers/groupingFunctions.js"></script>
+        <script src="../common/displaycontrols/observation/services/formHierarchyBuildService.js"></script>
+        <script src="../common/services/formService.js"></script>
+
 
         <script src="../common/displaycontrols/disposition/init.js"></script>
         <script src="../common/displaycontrols/disposition/directives/disposition.js"></script>
+        <script src="../common/displaycontrols/conditionsList/directives/conditionsList.js"></script>
 
         <script src="../common/displaycontrols/admissiondetails/init.js"></script>
         <script src="../common/displaycontrols/admissiondetails/directives/admissionDetails.js"></script>
@@ -220,6 +225,7 @@
         <script src="patientInitialization.js"></script>
         <script src="util/dispositionDisplayUtil.js"></script>
         <script src="controllers/adtController.js"></script>
+        <script src="../common/models/auditLogEventDetails.js"></script>
         <script src="controllers/bedManagementController.js"></script>
         <script src="controllers/wardsController.js"></script>
         <script src="controllers/wardController.js"></script>

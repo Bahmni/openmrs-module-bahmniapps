@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('initialization',
-    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'preferences', 'locationService', 'offlineService', 'offlineDbService', 'androidDbService', 'mergeService',
-        function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, offlineService, offlineDbService, androidDbService, mergeService) {
+    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'preferences', 'locationService', 'mergeService',
+        function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, mergeService) {
             var getConfigs = function () {
                 var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierTypesConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig', 'relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
                 return configurations.load(configNames).then(function () {
@@ -23,20 +23,8 @@ angular.module('bahmni.registration').factory('initialization',
             };
 
             var loadValidators = function (baseUrl, contextPath) {
-                var script;
-                var isOfflineApp = offlineService.isOfflineApp();
-                if (isOfflineApp) {
-                    if (offlineService.isAndroidApp()) {
-                        offlineDbService = androidDbService;
-                    }
-                    offlineDbService.getConfig("registration").then(function (config) {
-                        script = config.value['fieldValidation.js'];
-                        Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, isOfflineApp);
-                    });
-                } else {
-                    script = baseUrl + contextPath + '/fieldValidation.js';
-                    Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, isOfflineApp);
-                }
+                var script = baseUrl + contextPath + '/fieldValidation.js';
+                Bahmni.Common.Util.DynamicResourceLoader.includeJs(script, false);
             };
 
             var initApp = function () {
@@ -75,9 +63,14 @@ angular.module('bahmni.registration').factory('initialization',
                 }
             };
 
+            var checkPrivilege = function () {
+                return appService.checkPrivilege("app:registration");
+            };
+
             return function () {
                 return spinner.forPromise(authenticator.authenticateUser()
                 .then(initApp)
+                .then(checkPrivilege)
                 .then(getConfigs)
                 .then(initAppConfigs)
                 .then(mapRelationsTypeWithSearch)

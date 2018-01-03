@@ -91,7 +91,6 @@
             position:absolute;
             left:0;
             width:300px;
-            height: auto;
             box-sizing: border-box;
             height:37px;
             white-space: nowrap;
@@ -111,6 +110,9 @@
         td,th {
           &.monitoring-results {
             background: #efefef;
+            span{
+              display:none;
+            }
             &--green {
               background: #9ed016;
             }

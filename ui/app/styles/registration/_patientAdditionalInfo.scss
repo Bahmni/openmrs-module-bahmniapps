@@ -8,8 +8,14 @@
       margin-left: 0;
     }
   }
-  label[for="isUrban"]{
+  .form-field .field-attribute label[for="isUrban"]{
     @media (max-width : 990px) {
+      width: auto !important;
+    }
+    @media (max-width : 768px) {
+      width: 17em !important;
+    }
+    @media (max-width : 580px) {
       width: auto !important;
     }
   }

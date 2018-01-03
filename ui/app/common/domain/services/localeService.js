@@ -27,4 +27,42 @@ angular.module('bahmni.common.domain')
                 }
             });
         };
+
+        this.serverDateTime = function () {
+            return $http.get(Bahmni.Common.Constants.serverDateTimeUrl, {
+                method: "GET",
+                headers: {
+                    Accept: 'text/plain'
+                }
+            });
+        };
+
+        this.getLoginText = function () {
+            return $http.get(Bahmni.Common.Constants.loginText, {
+                method: "GET",
+                headers: {
+                    Accept: 'text/plain'
+                }
+            });
+        };
+
+        this.getLocalesLangs = function () {
+            return $http.get(Bahmni.Common.Constants.localeLangs, {
+                method: "GET",
+                headers: {
+                    Accept: 'text/plain'
+                }
+            });
+        };
+
+        this.setLocale = function (locale) {
+            return $http.post(Bahmni.Common.Constants.RESTWS_V1 + '/session', {
+                method: "POST",
+                locale: locale,
+                withCredentials: true,
+                headers: {
+                    Accept: 'text/plain'
+                }
+            });
+        };
     }]);

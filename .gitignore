@@ -15,6 +15,8 @@ ui/.css/
 ui/node_modules
 ui/app/components
 ui/dist
+ui/cacheAndroidDist
+ui/cacheChromeDist
 ui/app/styles/**/*.css
 ui/app/styles/*.css
 **/.DS_Store
@@ -26,4 +28,3 @@ node_modules
 *.tern-port
 **/.idea/*
 ui/common.background.min.js
-ui/common.offline.min.js

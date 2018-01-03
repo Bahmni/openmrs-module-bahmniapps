@@ -1,0 +1,21 @@
+<div class="confirm-box">
+    <span class="ngdialog-close"></span>
+    <p class="message">{{::message | translate}}</p>
+
+    <p>
+        <b>{{::'APPOINTMENT_CHECKIN_TIME_KEY' | translate}}:</b><sup class="asterick">*</sup>
+        <input type="time" ng-model="time" required/>
+    </p>
+    <p class="asterick" ng-show="!time">
+        {{::'CHECK_IN_APPOINTMENT_TIME_VALIDATION' | translate}}
+    </p>
+    <p class="app-check-in-btn">
+        <button style="background: #8BC34A; color: #fff" ng-click="performAction(close);" ng-disabled="!time">
+            {{::'YES_KEY' | translate}}
+        </button>
+        <button ng-click="close()">
+            {{::'NO_KEY' | translate}}
+        </button>
+    </p>
+
+</div>

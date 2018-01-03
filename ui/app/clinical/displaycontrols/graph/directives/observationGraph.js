@@ -66,6 +66,7 @@ angular.module('bahmni.clinical').directive('observationGraph', ['appService', '
                     referenceLines = observationGraphReferenceModel.createObservationGraphReferenceLines();
                 }
                 if (observations.length === 0) {
+                    $scope.$emit("no-data-present-event");
                     return;
                 }
 

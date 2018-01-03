@@ -16,6 +16,14 @@ describe("Observation Filter", function () {
         expect(filteredObservations[0].value).toBe(10);
       });
 
+      it("should remove new observations which has value but voided ", function() {
+        var observations = [buildObservation({value: 22, uuid: null, voided:true}), buildObservation({value: 10, uuid: '2222'})];
+
+        var filteredObservations = observationFilter.filter(observations);
+
+        expect(filteredObservations.length).toBe(1);
+      });
+
       it("should void existing observations without value", function() {
         var observations = [buildObservation({value: null, uuid: '1111'}), buildObservation({value: 10, uuid: '2222'})];
 
@@ -26,6 +34,16 @@ describe("Observation Filter", function () {
         expect(filteredObservations[1].voided).toBe(false);
       });
 
+      it("should add existing observations when voided status has changed", function() {
+        var observations = [buildObservation({value: 22, uuid: '1111', voided:false}), buildObservation({value: 10, uuid: '2222', voided:true})];
+
+        var filteredObservations = observationFilter.filter(observations);
+
+        expect(filteredObservations.length).toBe(2);
+        expect(filteredObservations[0].voided).toBe(false);
+        expect(filteredObservations[1].voided).toBe(true);
+
+      });
       it("should remove new observations groups which has no valid members", function() {
         var observation1 = buildObservation({ uuid: null,
           groupMembers: [buildObservation({value: null, uuid: null})]

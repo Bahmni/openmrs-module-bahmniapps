@@ -12,7 +12,7 @@
                            ng-model="patient.middleNameLocal"
                            pattern-validate
                            placeholder="{{::patientConfiguration.local()['placeholderForMiddleName']}}">
-                    <input type="text" id="familyNameLocal" ng-model="patient.familyNameLocal" pattern-validate
+                    <input type="text" ng-show="::showLastName" id="familyNameLocal" ng-model="patient.familyNameLocal" pattern-validate
                            placeholder="{{::patientConfiguration.local()['placeholderForFamilyName']}}">
                 </div>
             </article>
@@ -67,18 +67,18 @@
                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
               </span>
 
-              <span data-ng-switch="::isAutoComplete('familyName')">
+              <span ng-show="::showLastName" data-ng-switch="::isAutoComplete('familyName')">
                   <input data-ng-switch-when="true"
-                         type="text" id="familyName" ng-model="$parent.patient.familyName" non-blank pattern-validate
+                         type="text" id="familyName" ng-model="$parent.patient.familyName"  pattern-validate
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}">
+                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
 
                   <input data-ng-switch-default
-                         type="text" id="familyName" ng-model="patient.familyName" non-blank pattern-validate
+                         type="text" id="familyName" ng-model="patient.familyName"  pattern-validate
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}">
+                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
               </span>
 
                     <!--<span class="input-label-inline caste-lastname" ng-show="showCasteSameAsLastName()">
@@ -161,14 +161,15 @@
                                       class="asterick">*</span>
                             </label>
                         </div>
-                        <div class="field-value showOn-desktop-registration">
+                        <div class="field-value">
                             <input type="text" ng-model="identifier.identifier" disabled
                                    ng-if="identifier.hasIdentifierSources()"/>
 
                             <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
                                    ng-if="!identifier.hasIdentifierSources()"
                                    non-blank="identifier.identifierType.required && !identifier.hasIdentifierSources()"
-                                   pattern-validate ng-change="identifier.generate()">
+                                   pattern-validate ng-change="identifier.generate()"
+                                   ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
                         </div>
                     </article>
                 </div>
@@ -189,13 +190,22 @@
                                     required>
                             </select>
                         </div>
-
-                        <div class="field-value field-value-small-screen">
+                        <div class="field-value" ng-if="!identifier.hasIdentifierSources()">
                             <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
                                    non-blank="identifier.isIdentifierRequired()" pattern-validate
                                    ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
-                                   ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()">
-                            <div ng-show="::identifier.hasIdentifierSources()" class="fl">
+                                   ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()"
+                                   ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
+                        </div>
+
+                        <div class="field-value field-value-has-identifier"  ng-show="::identifier.hasIdentifierSources()">
+                            <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
+                                   non-blank="identifier.isIdentifierRequired()" pattern-validate
+                                   ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
+                                   ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()"
+                                   ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
+
+                            <div class="fl">
                                 <div class="field-attribute hasOldIdentifier-field-attribute">
                                     <label for="hasOldIdentifier" ng-show="::showEnterID" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' |
                                         translate}}</label>
@@ -255,25 +265,25 @@
         </div>
     </div>
     <div class="box-container" ng-if="::(relationshipTypes.length > 0)">
-        <legend class="additional-attribute" ng-show="::relationshipTypes" toggle="displayRelationshipInformation">
+        <legend class="additional-attribute" ng-show="::relationshipTypes" toggle="patient.hasRelationships">
           <span>
               <i class="fa fa-caret-right"></i>
               <i class="fa fa-caret-down"></i>
               <strong><a ng-bind-html="::'REGISTRATION_TITLE_RELATIONSHIPS' | translate"></a></strong>
           </span>
         </legend>
-        <div patient-relationship patient="patient" ng-show="displayRelationshipInformation"
+        <div patient-relationship patient="patient" ng-show="patient.hasRelationships"
              ng-if="::relationshipTypes"></div>
     </div>
     <div class="box-container" ng-if="deathConceptExists">
-        <legend class="additional-attribute" toggle="displayDeathInformation">
+        <legend class="additional-attribute" toggle="patient.isDead">
           <span>
               <i class="fa fa-caret-right"></i>
               <i class="fa fa-caret-down"></i>
               <strong><a>{{ ::'REGISTRATION_LABEL_DEATH_INFO' | translate}}</a></strong>
           </span>
         </legend>
-        <section class="form-field-inline form-field-inline-one-col clearfix" ng-show="displayDeathInformation">
+        <section class="form-field-inline form-field-inline-one-col clearfix" ng-show="patient.isDead">
             <ng-include src="'views/patientDeathInformation.html'"></ng-include>
         </section>
     </div>

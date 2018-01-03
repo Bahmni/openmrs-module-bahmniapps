@@ -36,7 +36,8 @@
                     "Lab Manager Notes",
                     "Accession Uuid",
                     "Impression",
-                    "Document"
+                    "Document",
+                    "Follow-up Condition"
                 ],
                 "showDetailsButton": true
             }

@@ -1,0 +1,593 @@
+.appBtn {
+  padding: 8px 10px;
+  border-radius: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  display: inline-block;
+  color: #000;
+  margin-left: 10px;
+  background: #fff;
+  &:hover {
+    box-shadow: 0 4px 9px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+    opacity: 1;
+  }
+}
+
+.ui-autocomplete {
+  max-height: 150px;
+  overflow-y: auto;
+  /* prevent horizontal scrollbar */
+  overflow-x: hidden;
+}
+
+/* IE 6 doesn't support max-height
+ * we use height instead, but this forces the menu to always be this tall
+ */
+* html .ui-autocomplete {
+  height: 150px;
+}
+
+/*---- page and nav style ----*/
+
+.add-app-wrapper {
+  header {
+    border-bottom: 1px solid #95989A;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 15px;
+    nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      a {
+        display: inline-block;
+        padding: 10px;
+        margin-left: 20px;
+        border-radius: 3px 3px 0 0;
+        color: #000;
+        border: 1px solid transparent;
+        border-bottom: none;
+        font-size: 12px;
+        outline: none;
+        font-family: "OpenSansBold";
+        &.active {
+          color: #27AE60;
+          background: #F7F7F7;
+          border-color: #95989A;
+        }
+      }
+    }
+  }
+  .add-app-btn {
+    float: right;
+    background: #99C915;
+    border: none;
+    outline: none;
+    color: #fff;
+    padding: 10px;
+    border-radius: 3px;
+    margin: 0 10px 10px 0;
+    font-size: 13px;
+    position: absolute;
+    right: 0;
+    top: 63px;
+  }
+}
+
+.common-filter-wrapper {
+  float: left;
+}
+
+.appointment-filter {
+  width: 300px;
+  float: left;
+  height: calc(100vh - 111px);
+  overflow: auto;
+  border-right: 1px solid #ddd;
+  padding-top: 20px;
+  box-sizing: border-box;
+  position: relative;
+  margin-top: -15px;
+  a {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    color: #00ACC3;
+    font-size: 21px;
+    position: absolute;
+    right: 8px;
+    top: 12px;
+    z-index: 11;
+    text-align: center;
+    i {
+      padding: 0;
+    }
+  }
+
+  p {
+    padding: 0 10px;
+    margin-bottom: 10px;
+    position: relative;
+    label {
+      margin-bottom: 10px;
+      display: inline-block;
+      color: #292929;
+      font-weight: bold;
+      &.switch-label {
+        margin-bottom: 0;
+      }
+    }
+    input {
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+      border-radius: 3px;
+      border: 1px solid #ddd;
+      outline: none;
+      margin-bottom: 10px;
+      &.disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+    .app-filter-search {
+      position: absolute;
+      top: 30px;
+      right: 15px;
+      color: #929292;
+    }
+    &.app-filter-action-btn {
+      overflow: hidden;
+      padding-bottom: 9px;
+      padding-top: 1px;
+      margin-bottom: 0;
+      button {
+        float: right;
+        @extend .appBtn;
+      }
+    }
+  }
+  .app-filter-speciality {
+    overflow: auto;
+    max-height: 240px;
+    padding-left: 10px;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    input[type=checkbox] {
+      margin: 0 3px;
+    }
+    .ivh-treeview-node-content {
+      margin: 4px 0px;
+    }
+  }
+
+}
+
+.appointment-btn-container {
+  padding: 0 10px 20px;
+  min-height: 35px;
+  overflow: hidden;
+  box-sizing: border-box;
+  &.list-view {
+    padding-right: 58px;
+  }
+  .view-toggle-wrapper {
+    float: right;
+  }
+  a {
+    @extend .appBtn;
+    &.active {
+      background: #E2E2E2;
+    }
+    i {
+      color: black;
+    }
+    &.app-filter-btn {
+      padding: 5px 10px;
+    }
+  }
+}
+
+.app-filter-btn-wrapper {
+  display: inline-block;
+  padding-right: 30px;
+  margin-right: 15px;
+  border-right: 1px solid #95989A;
+  a {
+    margin: 0;
+    @extend .appBtn;
+    border: none;
+    &:hover {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    }
+  }
+}
+
+.appointment-content-container {
+  overflow: hidden;
+}
+
+.appointment-action-btn-container {
+  text-align: right;
+  padding: 10px;
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+  button {
+    @extend .appBtn;
+    border: none;
+    &:hover {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    }
+  }
+  &.disabled button {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: #E2E2E2;
+  }
+  &.calendar-view-btn-container {
+    height: 51px;
+  }
+}
+
+/*----- create new appointment styles -----*/
+.create-new-app-wrapper {
+  top: 52px;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  height: calc(100vh - 52px);
+  cursor: not-allowed;
+  overflow: hidden;
+  z-index: 12;
+}
+
+.create-new-app-container {
+  position: absolute;
+  cursor: default;
+  width: 450px;
+  background: #fff;
+  height: calc(100vh - 52px);
+  right: 0;
+  top: 0;
+  overflow: auto;
+  padding: 10px 10px 0;
+  box-sizing: border-box;
+  z-index: 10;
+  -webkit-box-shadow: -5px 10px 20px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: -5px 10px 20px 0 rgba(0, 0, 0, 0.5);
+  a {
+    float: right;
+    font-size: 25px;
+    color: #ADA5A5;
+  }
+  h2 {
+    float: left;
+    clear: none;
+    color: #212121;
+  }
+  #create-appointment-form {
+    clear: both;
+  }
+  #addNewAppointment {
+    p {
+      overflow: hidden;
+      margin: 0 0 10px;
+      position: relative;
+      .search-icon-app {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+      label {
+        clear: left;
+        float: left;
+        width: 115px;
+        text-align: right;
+        margin-right: 10px;
+        margin-top: 15px;
+      }
+      input, textarea, select {
+        float: left;
+        width: calc(100% - 130px);
+        box-sizing: border-box;
+        height: 35px;
+        border-radius: 5px;
+      }
+      textarea {
+        min-height: 100px;
+      }
+      input[type = checkbox] {
+        width: auto;
+        height: auto;
+      }
+      .slots-remaining {
+        display: inline-block;
+        width: calc(100% - 130px);
+        margin-left: 125px;
+        padding-top: 10px;
+        color: #0BB118;
+      }
+      &.walk-in-app {
+        margin-left: 125px;
+        .walk-in-text {
+          display: inline-block;
+          margin-top: 3px;
+        }
+      }
+    }
+    .warning-message {
+      display: inline-block;
+      width: calc(100% - 130px);
+      margin-left: 125px;
+      color: #ffac2e;
+      span {
+        font-weight: bolder;
+        font-size: 11px;
+        margin-bottom: 5px;
+      }
+      p {
+        padding: 0 25px;
+      }
+    }
+    input:disabled {
+      color: #ccc;
+    }
+  }
+  .create-appointment-action-btn {
+    float: right;
+    line-height: 1;
+    font-size: 14px;
+    background: #E6E6E6;
+    color: #171717;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    margin: 0 10px 10px 0;
+    width: 85px;
+    text-align: center;
+    @extend .appBtn;
+  }
+  button.create-appointment-action-btn {
+    background: #99C915;
+    color: #fff;
+  }
+  a.create-appointment-action-btn {
+    margin-right: 5px;
+  }
+}
+
+/*----- list view styles -----*/
+
+.app-date-nav {
+  position: absolute;
+  width: calc(100% - 310px);
+  text-align: center;
+  box-sizing: border-box;
+  top: 126px;
+  right: 179px;
+  button, input {
+    @extend .appBtn;
+    background: #F8F8F8;
+    border: none;
+    outline: none;
+    &.app-today-btn {
+      float: left;
+      background: #fff;
+    }
+  }
+  input {
+    font-size: 14px;
+    padding: 6px;
+    width: 135px;
+  }
+  .app-view-prev {
+    margin-left: 80px;
+  }
+}
+.app-filter-open .app-date-nav {
+  width: calc(100% - 478px);
+}
+.app-list-view {
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: calc(100vh - 230px);
+  position: relative;
+  th, td {
+    font-size: 14px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    width: 90px;
+    min-width: 90px;
+    max-width: 90px;
+    overflow: hidden;
+    text-align: center;
+    &.table-mid-width {
+      width: 180px;
+      min-width: 180px;
+      max-width: 180px;
+    }
+    &:last-child {
+      width: 540px;
+      min-width: 540px;
+      max-width: 540px;
+    }
+  }
+  thead {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    th {
+      font-weight: 900;
+      color: #4c4c4c;
+      background: #e2e1e1;
+      border-color: #e2e1e1;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  tbody {
+    position: absolute;
+    height: calc(100% - 51px);
+    overflow-y: auto;
+    top: 33px;
+    tr {
+      &:nth-child(even) {
+        background: #F2F1F1;
+      }
+      &.selected {
+        td {
+          color: inherit;
+          background: #298dd5;
+          border-color: #298dd5;
+        }
+      }
+    }
+  }
+}
+
+/*----- Calendar view styles -----*/
+.app-calendar-container {
+  float: left;
+  overflow: hidden;
+  height: calc(100vh - 230px);
+  width: 100%;
+  .section-grid {
+    border-radius: 0;
+    border: 1px solid #ddd;
+    border-left: none;
+    tr {
+      border-left: none;
+      border-right: none;
+      td, th {
+        border-left: none;
+      }
+      th:last-child {
+        border-right: none;
+      }
+    }
+  }
+  .fc-event {
+    min-height: 15px;
+  }
+  .calendar-no-appointment {
+    text-align: center;
+    color: #ff0000;
+    position: absolute;
+    z-index: 30;
+    top: 178px;
+    display: inline-block;
+    width: 200px;
+    left: 95px;
+    right: 0;
+    margin: auto;
+    padding: 10px 5px;
+    background: #eceaec;
+    border-radius: 0 0 3px 3px;
+  }
+  &.app-filter-open .calendar-no-appointment {
+    left: 265px;
+  }
+}
+
+.app-ava-slots {
+  padding-left: 125px;
+}
+
+.app-dialog-container.ngdialog.ngdialog-theme-default {
+  .ngdialog-content {
+    width: 625px;
+    p {
+      margin-bottom: 5px;
+    }
+    .app-dialog-btn-wrap {
+      text-align: center;
+      margin: 10px 0 0;
+      button {
+        @extend .appBtn;
+        border: none;
+        color: #fff;
+
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
+        }
+        &:first-child {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+.colorForFilter {
+  color: #00ACC3 !important;
+}
+
+.list-view-print-btn {
+  position: absolute;
+  right: 10px;
+  top: 126px;
+  padding: 7px;
+  border: none;
+  @extend .appBtn;
+}
+.ivh-treeview-node-label {
+  margin-bottom: 2px;
+  display: inline-block;
+  span {
+    padding: 2px 0;
+    border-radius: 3px;
+    display: inline-block;
+    color: #0a0a0a;
+    i {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+    }
+  }
+}
+.app-search-service {
+  margin-top: 24px;
+}
+.app-check-in-btn {
+  button{
+    @extend .appBtn;
+    border: none;
+  }
+}
+.no-app-avab-list-view {
+  text-align: center;
+}
+.appointmentIcons {
+  .fc-content {
+    padding-right: 30px;
+    text-overflow: ellipsis;
+  }
+  &:after, &:before {
+    font-family: FontAwesome;
+    content: "";
+    top: 2px;
+    position: absolute;
+    right: 5px;
+  }
+  &.CheckedIn:after {
+    content: "\f05d";
+  }
+  &.Completed:after {
+     content: "\f00c";
+   }
+  &.Missed:after {
+    content: "\f05e";
+  }
+  &.multiplePatients:after {
+    content: "\f0c0";
+  }
+  &.bed-accom:before {
+    content: "\f236";
+    right: 20px;
+  }
+}

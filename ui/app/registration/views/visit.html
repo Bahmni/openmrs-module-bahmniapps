@@ -1,7 +1,7 @@
 <div class="reg-body-wrapper visit-patient-page">
     <div class="non-printable" xmlns="http://www.w3.org/1999/html">
         <div>
-            <form name="myForm" ng-init="disableFormSubmitOnEnter()" class="visit-patient" single-submit="submit()">
+            <form name="myForm" ng-init="disableFormSubmitOnEnter()" class="visit-patient">
                 <div class="box-container">
 
                     <legend class="registraion_legend first-registraion_legend">
@@ -32,27 +32,26 @@
                                 <span class="mylegend" ng-if="::conceptSet.options.translationKey">{{::conceptSet.options.translationKey | translate}}</span>
                                 <span class="mylegend" ng-if="::!conceptSet.options.translationKey">{{::conceptSet.label}}</span>
                             </div>
-                            <div ng-if="::conceptSet.options.showLatest" class="clearfix">
-                                <article class="fl obs-section-form">
+                            <div class="clearfix">
+                                <article ng-if="!isFormTemplate(conceptSet)" class="fl obs-section-form">
                                     <concept-set concept-set-name="::conceptSet.options.conceptName" required="::conceptSet.options.required" patient="patient" observations="observations"
                                                  obs-scope="::conceptSet.options.scope" show-title="false" concept-set-focused="::$index === 0"></concept-set>
                                 </article>
-                                <article class="obs-section fr" id="observationSection">
+                                <article ng-if="isFormTemplate(conceptSet)" class="fl obs-section-form" id={{::conceptSet.formUuid}}>
+                                    <form-controls form="conceptSet" patient="patient" validate-form="true"></form-controls>
+                                </article>
+                                <article ng-if="::conceptSet.options.showLatest" class="obs-section fr" id="observationSection">
                                     <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'REGISTRATON_LATEST_KEY'"></bahmni-observation>
                                 </article>
                             </div>
-                            <article ng-if="::!conceptSet.options.showLatest"  class="clearfix" ng-class="{'noShowLatest' : !conceptSet.options.showLatest}">
-                                <concept-set concept-set-name="::conceptSet.options.conceptName" required="::conceptSet.options.required" patient="patient" observations="observations"
-                                             obs-scope="::conceptSet.options.scope" show-title="false" concept-set-focused="::$index === 0"></concept-set>
-                            </article>
                         </div>
                     </section>
                 </div>
                 <div class="submit-btn-container">
                     <button type="button" class="cancel" tabindex="-1" ng-show="::canCloseVisit" ng-click="closeVisitIfDischarged()">{{ ::'REGISTRATION_LABEL_CLOSE_VISIT' | translate}}</button>
                     <div class="right">
-                        <button type="button" ng-click="back()" accesskey="{{ ::'REGISTRATION_BACK_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_BACK' | translate"></button>
-                        <button type="submit" class="confirm" accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
+                        <button ng-click="back()" accesskey="{{ ::'REGISTRATION_BACK_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_BACK' | translate"></button>
+                        <button ng-click="submit()" class="confirm" accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
                     </div>
                 </div>
             </form>

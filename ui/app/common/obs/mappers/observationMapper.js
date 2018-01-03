@@ -34,7 +34,19 @@ Bahmni.Common.Obs.ObservationMapper = function () {
         $.each(groupedObservations, function (i, obsGroup) {
             var conceptConfig = allConceptsConfig[obsGroup[0].concept.name] || [];
             if (conceptConfig.multiSelect) {
-                mappedObservations.push(new Bahmni.Common.Obs.MultiSelectObservation(obsGroup, conceptConfig));
+                var multiSelectObservations = {};
+                $.each(obsGroup, function (i, observation) {
+                    if (multiSelectObservations[observation.encounterDateTime]) {
+                        multiSelectObservations[observation.encounterDateTime].push(observation);
+                    } else {
+                        var observations = [];
+                        observations.push(observation);
+                        multiSelectObservations[observation.encounterDateTime] = observations;
+                    }
+                });
+                $.each(multiSelectObservations, function (i, observations) {
+                    mappedObservations.push(new Bahmni.Common.Obs.MultiSelectObservation(observations, conceptConfig));
+                });
             } else if (conceptConfig.grid) {
                 mappedObservations.push(new Bahmni.Common.Obs.GridObservation(obsGroup[0], conceptConfig));
             } else {

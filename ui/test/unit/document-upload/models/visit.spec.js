@@ -234,4 +234,92 @@ describe ("Visit ", function() {
             expect(documentUploadVisit.hasVisitType()).toBeFalsy();
         });
     });
+
+    describe("initSavedFiles", function(){
+        it("should map the observation to document from same encounter.", function(){
+            var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
+
+            var obsConceptName = "Radiology";
+            var member1 = {id: "skull id", value: "Skull value", obsDatetime: "2014-06-07T13:24:00", comment: "Skull broken"};
+            var member2 = {id: "Kidney id", value: "Kidney value", obsDatetime: "2014-06-07T13:24:00", comment: "Kidney Failure"};
+            var observation = {uuid: "ObsUuid",groupMembers: [member1, member2], concept: {name: {name: obsConceptName}, uuid: "obsConceptUuid"}};
+            var encounter = {uuid: "encounterUuid",visit: {uuid: "visitUuid"}, obs: [observation]};
+            var encounters = [encounter];
+
+            var documentImageKidney = new Bahmni.Common.DocumentImage({
+                id: member2.id,
+                encodedValue: Bahmni.Common.Constants.documentsPath + '/' + member2.value,
+                obsUuid: observation.uuid,
+                obsDatetime: member2.obsDatetime,
+                visitUuid: encounter.visit.uuid,
+                encounterUuid: encounter.uuid,
+                provider: new Bahmni.Common.Domain.ProviderMapper().map(encounter.provider),
+                concept: {uuid: observation.concept.uuid, editableName: obsConceptName, name: obsConceptName},
+                comment: member2.comment,
+                imageIndex : 0
+            });
+            var documentImageSkull = new Bahmni.Common.DocumentImage({
+                id: member1.id,
+                encodedValue: Bahmni.Common.Constants.documentsPath + '/' + member1.value,
+                obsUuid: observation.uuid,
+                obsDatetime: member1.obsDatetime,
+                visitUuid: encounter.visit.uuid,
+                encounterUuid: encounter.uuid,
+                provider: new Bahmni.Common.Domain.ProviderMapper().map(encounter.provider),
+                concept: {uuid: observation.concept.uuid, editableName: obsConceptName, name: obsConceptName},
+                comment: member1.comment,
+                imageIndex : 1
+            });
+            var expectedMappedFiles = [documentImageSkull, documentImageKidney];
+
+            documentUploadVisit.initSavedFiles(encounters);
+
+            expect(documentUploadVisit.files).toEqual(expectedMappedFiles);
+        });
+
+        it("should map the observation to document from different encounters.", function(){
+            var documentUploadVisit = new Bahmni.DocumentUpload.Visit;
+
+            var obsConceptName = "Radiology";
+            var provider = {uuid: "providerUuid", preferredName: {display: "ProviderPreferredName"}};
+            var member1 = {id: "skull id", value: "Skull value", obsDatetime: "2014-06-07T13:24:00", comment: "Skull broken"};
+            var member2 = {id: "Kidney id", value: "Kidney value", obsDatetime: "2014-06-07T13:24:00", comment: "Kidney Failure"};
+            var observation1 = {uuid: "ObsUuid",groupMembers: [member1], concept: {name: {name: obsConceptName}, uuid: "obsConceptUuid"}};
+            var observation2 = {uuid: "ObsUuid",groupMembers: [member2], concept: {name: {name: obsConceptName}, uuid: "obsConceptUuid"}};
+            var encounter1 = {uuid: "encounterUuid1",visit: {uuid: "visitUuid"}, obs: [observation1], provider: provider};
+            var encounter2 = {uuid: "encounterUuid2",visit: {uuid: "visitUuid"}, obs: [observation2], provider: provider};
+            var encounters = [encounter1, encounter2];
+
+            var documentImageSkull = new Bahmni.Common.DocumentImage({
+                id: member1.id,
+                encodedValue: Bahmni.Common.Constants.documentsPath + '/' + member1.value,
+                obsUuid: observation1.uuid,
+                obsDatetime: member1.obsDatetime,
+                visitUuid: encounter1.visit.uuid,
+                encounterUuid: encounter1.uuid,
+                provider: new Bahmni.Common.Domain.ProviderMapper().map(encounter1.provider),
+                concept: {uuid: observation1.concept.uuid, editableName: obsConceptName, name: obsConceptName},
+                comment: member1.comment,
+                imageIndex : 1
+            });
+            var documentImageKidney = new Bahmni.Common.DocumentImage({
+                id: member2.id,
+                encodedValue: Bahmni.Common.Constants.documentsPath + '/' + member2.value,
+                obsUuid: observation2.uuid,
+                obsDatetime: member2.obsDatetime,
+                visitUuid: encounter2.visit.uuid,
+                encounterUuid: encounter2.uuid,
+                provider: new Bahmni.Common.Domain.ProviderMapper().map(encounter2.provider),
+                concept: {uuid: observation2.concept.uuid, editableName: obsConceptName, name: obsConceptName},
+                comment: member2.comment,
+                imageIndex : 0
+            });
+            var expectedMappedFiles = [documentImageSkull, documentImageKidney];
+
+            documentUploadVisit.initSavedFiles(encounters);
+
+            expect(documentUploadVisit.files).toEqual(expectedMappedFiles);
+        });
+
+    });
 });

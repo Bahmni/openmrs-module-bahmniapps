@@ -1,46 +1,42 @@
 <div id="{{conceptSet.id}}" style="position: relative;">
     <div class="concept-set-title">
-        <div id="{{getNormalized(conceptSet.conceptName)}}" ng-click="conceptSet.toggleDisplay()">
-            <h2 class="section-title"
-                ng-class="{'section-title-add-more' : isLastClonedSection(conceptSet, allTemplates) && conceptSet.canAddMore() && !context.showPanelView}">
-                <i class="fa fa-caret-right" ng-hide="conceptSet.isOpen"></i>
-                <i class="fa fa-caret-down" ng-show="conceptSet.isOpen"></i>
+        <div id="{{getNormalized(conceptSet.conceptName)}}">
+            <h2 class="section-title">
                 <span class="section-label">{{conceptSet.label}}</span>
-                <label class="fa fa-remove fr" id="removeClonedObs" ng-confirm-click="remove($index)"
-                       confirm-message="{{::'REMOVE_CONFIRMATION_KEY' | translate}}"
-                       ng-if="isClonedSection(conceptSet, allTemplates) && !conceptSet.observations[0].observationDateTime && context.showPanelView"></label>
-                <button type="button" ng-if="::conceptSet.showComputeButton() && conceptSet.isOpen"
-                        ng-click="computeField(conceptSet, $event)"
-                        class="fr btn-small">Compute
-                </button>
-                <button type="button" ng-if="showPreviousButton(conceptSet.conceptName) && conceptSet.isOpen"
-                        ng-click="showPrevious(conceptSet.conceptName, $event)"
-                        class="fr btn-small">Previous
-                </button>
-                <button type="button" ng-if="conceptSet.isOpen" ng-click="conceptSet.toggleInnerSections($event)"
-                        class="fr btn-small">
-                    <span ng-show="conceptSet.collapseInnerSections">{{::'CONCEPT_SET_GROUP_EXPAND_ALL_KEY' | translate}}</span>
-                    <span ng-hide="conceptSet.collapseInnerSections">{{::'CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY' | translate}}</span>
-                </button>
             </h2>
+            <div class="form-actions fr">
+                <button type="button"  ng-if="conceptSet.isOpen" ng-click="conceptSet.maximizeInnerSections($event)"
+                        title="{{ ::'CONCEPT_SET_GROUP_EXPAND_ALL_KEY' | translate}}">
+                       <i class="fa icon-bahmni-expand"></i>
+                </button>
+                <button type="button" ng-if="conceptSet.isOpen" ng-click="conceptSet.minimizeInnerSections($event)"
+                        title="{{ ::'CONCEPT_SET_GROUP_COLLAPSE_ALL_KEY' | translate}}">
+                    <i class="fa icon-bahmni-collapse"></i>
+                </button>
+                <label class="add-fav" title="{{ ::'CONCEPT_SET_GROUP_PIN_UNPIN_KEY' | translate}}">
+                    <input type="checkbox" id="hasOldIdentifier" ng-model="conceptSet.alwaysShow"
+                           ng-change="togglePref(conceptSet, conceptSet.conceptName)"/>
+                    <i class="fa fa-thumb-tack"></i>
+                </label>
+                <button type="button" ng-confirm-click="remove($index)" ng-disabled="!canRemove($index)"
+                        title="{{ ::'CONCEPT_SET_GROUP_REMOVE_KEY' | translate}}"
+                    confirm-message="{{::'REMOVE_CONFIRMATION_KEY' | translate}}">
+                        <i class="fa fa-trash"></i>
+                </button>
+            </div>
         </div>
-        <button class="add-more-concept-set add-more-btn btn-small" type="button" ng-click="clone($index)"
-                ng-if="isLastClonedSection(conceptSet, allTemplates) && conceptSet.canAddMore() && !context.showPanelView">
-            <i class="fa fa-plus"></i> {{::'ADD_FORM_KEY' | translate}}
-        </button>
-    <span class="favourite-concept-set" ng-if="!context.showPanelView">
-        <label class="add-fav">
-            <input type="checkbox" id="hasOldIdentifier" ng-model="conceptSet.alwaysShow"
-                   ng-change="togglePref(conceptSet, conceptSet.conceptName)"/>
-            <i class="fa fa-thumb-tack"></i>
-        </label>
-    </span>
     </div>
-    <concept-set ng-if="conceptSet.isLoaded" patient="::patient" ng-show="conceptSet.isOpen"
-                 collapse-inner-sections="conceptSet.collapseInnerSections"
-                 concept-set-name="::conceptSet.conceptName" required="conceptSet.options.required"
-                 at-least-one-value-is-set="conceptSet.atLeastOneValueIsSet"
-                 observations="conceptSet.observations" show-title="::false" validation-handler="::validationHandler"
-                 section-id="conceptSet.id">
-    </concept-set>
+    <div ng-if="!isFormTemplate(conceptSet)">
+        <concept-set ng-if="conceptSet.isLoaded" patient="::patient" ng-show="conceptSet.isOpen"
+                     collapse-inner-sections="conceptSet.collapseInnerSections"
+                     concept-set-name="::conceptSet.conceptName" required="conceptSet.options.required"
+                     at-least-one-value-is-set="conceptSet.atLeastOneValueIsSet"
+                     observations="conceptSet.observations" show-title="::false"
+                     validation-handler="::validationHandler"
+                     section-id="conceptSet.id">
+        </concept-set>
+    </div>
+    <div ng-if="isFormTemplate(conceptSet)" id={{::conceptSet.formUuid}}>
+        <form-controls form="conceptSet" patient="patient" validate-form="false"></form-controls>
+    </div>
 </div>

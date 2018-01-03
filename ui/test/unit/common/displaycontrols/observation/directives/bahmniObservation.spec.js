@@ -1,7 +1,7 @@
 'use strict';
 
 describe("BahmniObservation", function () {
-    var appService, scope, $compile, mockBackend, observationsService, q, spinner;
+    var appService, scope, $compile, mockBackend, observationsService, q, spinner, formHierarchyService;
     var simpleHtml = '<bahmni-observation section="section" patient="patient" is-on-dashboard="true" config="config" enrollment="enrollment" observations="observations"></bahmni-observation>';
 
     beforeEach(module('ngHtml2JsPreprocessor'));
@@ -25,6 +25,9 @@ describe("BahmniObservation", function () {
 
             }
         });
+        formHierarchyService = jasmine.createSpyObj('formHierarchyService',['build']);
+        formHierarchyService.build.and.returnValue(null);
+
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
 
         spinner.forPromise.and.callFake(function (param) {
@@ -38,6 +41,7 @@ describe("BahmniObservation", function () {
         $provide.value('observationsService', observationsService);
         $provide.value('appService', appService);
         $provide.value('spinner', spinner);
+        $provide.value('formHierarchyService',formHierarchyService);
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {
@@ -146,7 +150,7 @@ describe("BahmniObservation", function () {
         });
 
         it("should fetch observations for patient if the patientProgramUuid is provided", function () {
-            scope.config = {conceptNames: ["Concept Name"], scope: "latest"};
+            scope.config = {conceptNames: ["Concept Name"], scope: "latest", obsIgnoreList: ["obsIgnoreList"]};
             scope.section = {};
             scope.enrollment = 'patientProgramUuid';
             observationsService.fetchForPatientProgram.and.returnValue(specUtil.respondWithPromise(q, {data: {}}));
@@ -161,7 +165,7 @@ describe("BahmniObservation", function () {
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.config).not.toBeUndefined();
 
-            expect(observationsService.fetchForPatientProgram).toHaveBeenCalledWith(scope.enrollment, scope.config.conceptNames, scope.config.scope);
+            expect(observationsService.fetchForPatientProgram).toHaveBeenCalledWith(scope.enrollment, scope.config.conceptNames, scope.config.scope, scope.config.obsIgnoreList);
             expect(observationsService.fetchForPatientProgram.calls.count()).toEqual(1);
             expect(observationsService.fetch.calls.count()).toEqual(0);
             expect(observationsService.fetchForEncounter.calls.count()).toEqual(0);

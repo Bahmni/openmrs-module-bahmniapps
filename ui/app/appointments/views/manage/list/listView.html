@@ -1,0 +1,80 @@
+<div ng-class="{'app-filter-open': isFilterOpen}">
+    <div ng-if="!searchedPatient">
+        <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
+    </div>
+    <p class="app-patient-search">
+    <a ng-click="goBackToPreviousView()" ng-show="searchedPatient">{{::'RESET_KEY' | translate}} {{::'PATIENT_LIST_VIEW_SEARCH_HEADER' | translate}}</a>
+    <patient-search on-search="displaySearchedPatient"></patient-search>
+    </p>
+    <button ng-show="!hasNoAppointments()" ng-click="printPage()" class="list-view-print-btn"><i class="fa fa-print" aria-hidden="true"></i></button>
+    <div class="app-list-view">
+        <p class="no-app-avab-list-view" ng-show="hasNoAppointments()">{{::'NO_APPOINTMENT_LIST_VIEW' | translate}}</p>
+        <table ng-show="!hasNoAppointments()">
+            <thead>
+            <tr>
+                <th ng-class="{'table-mid-width': info.class}" ng-show="::info.enable" ng-repeat="info in ::tableInfo" ng-click="::info.sortInfo && sortAppointmentsBy(info.sortInfo)">
+                    {{ ::info.heading | translate }}
+                    <span ng-if="sortColumn == info.sortInfo || info.sortInfo == 'additionalInfo' && sortColumn == 'additionalInformation'">
+                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
+                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
+                </span>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="appointment in filteredAppointments" ng-click="select(appointment)" ng-style="{'background-color': colorsForListView[appointment.status]}" ng-class="{'selected' : isSelected(appointment)}">
+                <td>{{::appointment.patient.identifier}}</td>
+                <td class="table-mid-width">{{::appointment.patient.name | titleCase}}</td>
+                <td>{{::appointment.startDateTime | bahmniDate}}</td>
+                <td>{{::appointment.startDateTime | bahmniTime}}</td>
+                <td>{{::appointment.endDateTime | bahmniTime}}</td>
+                <td class="table-mid-width">{{::appointment.provider.name}}</td>
+                <td ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
+                <td class="table-mid-width">{{::appointment.service.name}}</td>
+                <td class="table-mid-width" ng-show="::enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
+                <td>{{appointment.status}}</td>
+                <td>{{:: isWalkIn(appointment.appointmentKind)}}</td>
+                <td class="table-mid-width">{{::appointment.location.name}}</td>
+                <td class="table-mid-width">{{display(appointment.additionalInfo)}}</td>
+                <td>{{::appointment.comments}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ui-view="content@appointment"></div>
+    <fieldset class="appointment-action-btn-container" ng-disabled="!selectedAppointment" ng-class="{'disabled': !selectedAppointment}">
+        <button show-if-privilege="{{manageAppointmentPrivilege}}" ng-click="editAppointment()">
+            {{::'EDIT_APPOINTMENT' |translate}}
+        </button>
+        <button show-if-privilege="{{manageAppointmentPrivilege}}"
+                ng-show="isAllowedAction('CheckedIn')"
+                ng-disabled="selectedAppointment.status != 'CheckedIn'"
+                ng-click="undoCheckIn()">
+            {{::'UNDO_CHECK_IN_APPOINTMENT' | translate}}
+        </button>
+        <button show-if-privilege="{{manageAppointmentPrivilege}}"
+                ng-show="isAllowedAction('CheckedIn')"
+                ng-disabled="!isValidAction('CheckedIn')"
+                ng-click="checkinAppointment()">
+                {{::'CHECK_IN_APPOINTMENT' | translate}}
+        </button>
+        <button show-if-privilege="{{manageAppointmentPrivilege}}"
+                ng-show="isAllowedAction('Completed')"
+                ng-disabled="!isValidAction('Completed')"
+                ng-click="confirmAction('Completed')">
+                {{::'COMPLETE_APPOINTMENT' |translate}}
+        </button>
+        <button show-if-privilege="{{manageAppointmentPrivilege}}"
+                ng-show="isAllowedAction('Missed')"
+                ng-disabled="!isValidAction('Missed')"
+                ng-click="confirmAction('Missed')">
+                {{::'MISSED_APPOINTMENT' | translate}}
+        </button>
+        <button show-if-privilege="{{manageAppointmentPrivilege}}"
+                ng-show="isAllowedAction('Cancelled')"
+                ng-disabled="!isValidAction('Cancelled')"
+                ng-click="confirmAction('Cancelled')">
+                {{::'CANCEL_APPOINTMENT' | translate}}
+        </button>
+    </fieldset>
+</div>

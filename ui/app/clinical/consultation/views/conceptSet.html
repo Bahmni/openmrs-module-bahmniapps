@@ -1,20 +1,36 @@
 <div bm-pop-over autoclose="::true" class="clinical-observations" focus-on-input-errors>
-    <div class="template-control-header">
-        <button id="template-control-panel-button" bm-pop-over-trigger><i class="fa fa-th"></i></button>
-    </div>
-    <div class="template-control-panel primary-section-grid" bm-pop-over-target>
-        <ul class="template-icons">
-            <li ng-repeat="template in consultation.selectedObsTemplate" ng-if="!template.isAdded && !template.alwaysShow">
-                <button id="{{getNormalized(template.label)}}" ng-click="toggleTemplate(template)">
-                    <i class="fa fa-square-o" ng-hide="template.isAdded"></i>
-                    <i class="fa fa-check" ng-show="template.isAdded"></i>
-                    {{::template.label}}
-                </button>
-            </li>
-        </ul>
+    <div class="template-control">
+        <div class="template-control-wrapper">
+            <div class="template-control-panel-wrap clearfix">
+                <div class="template-control-panel-right-wrap">
+                    <div class="template-control-panel-right">
+                        <div class="template-control-panel" >
+                            <div  class="template-control-panel-button">
+                                <button id="template-control-panel-button" class="fr" bm-pop-over-trigger>{{::'ADD_NEW_OBSERVATION'  | translate }}</button>
+                            </div>
+                            <div class="primary-section-grid" bm-pop-over-target>
+                                <div class="form template-search-wrapper" ng-click="stopAutoClose($event)">
+                                    <div class="template-search-inner fr" ng-click="stopAutoClose($event)">
+                                        <input type="text" id="templateSearch" ng-model="::consultation.searchParameter"
+                                           ng-change="filterTemplates()" class="search_field" placeholder="{{:: 'CONCEPT_SET_GROUP_SEARCH_LABEL' | translate}}"/>
+                                    </div>
+                                </div>
+                                <ul class="template-icons">
+                                    <li ng-repeat="template in filterTemplates()">
+                                        <button id="{{getNormalized(template.label)}}" ng-disabled = "((template.isAdded || template.alwaysShow) && !template.allowAddMore)" ng-click="addTemplate(template)">
+                                            {{::template.label}}
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <concept-set-group patient="::patient" consultation="consultation" observations="consultation.observations"
                        all-templates="consultation.selectedObsTemplate" context="context"
-                       auto-scroll-enabled="::scrollingEnabled" ng-if="consultation.selectedObsTemplate.length > 0">
+                       auto-scroll-enabled="::scrollingEnabled" ng-if="allTemplates.length > 0">
     </concept-set-group>
 </div>

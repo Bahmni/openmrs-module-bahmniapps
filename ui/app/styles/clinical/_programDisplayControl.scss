@@ -68,3 +68,29 @@
     width: 95%;
   }
 }
+.app-dashboard-integration {
+  .section-title a {
+    color: #fff;
+    text-decoration: underline;
+  }
+  h4 {
+    font-size: 16px;
+    color: #0a0a0a;
+    padding-left: 5px;
+    font-weight: bold;
+  }
+  table {
+    width: 100%;
+    th, td {
+      font-size: 85%;
+      width: 18%;
+      text-align: center;
+      @media all and (max-width: 1025px){
+        font-size: 65%;
+      }
+    }
+    td {
+      padding: 5px 0;
+    }
+  }
+}

@@ -15,7 +15,7 @@
                         </span>
 
                         <span class="specimenCollectionDate fr">
-                            <i class="fa fa-pencil fl" ng-click="editBacteriologySample(specimen)"></i>
+                            <i show-if-privilege="app:clinical:bacteriologyTab" class="fa fa-pencil fl" ng-click="editBacteriologySample(specimen)"></i>
                             {{specimen.specimenCollectionDate | bahmniDate}}
                         </span>
                     </span>
@@ -29,7 +29,7 @@
                         <div class="placeholder-text"><p translate="NO_SPECIMEN_RESULT_FOUND_MESSAGE"></p></div>
                     </div>
                 </li>
-                <li ng-show="!specimens">
+                <li ng-show="!isDataPresent()">
                     <div class="placeholder-text"><p translate="NO_SPECIMEN_FOUND_MESSAGE"></p></div>
                 </li>
             </ul>

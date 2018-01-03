@@ -6,7 +6,7 @@
                 <li ng-repeat="bahmniOrder in ::bahmniOrders">
                 <span class="tree-list-item" >
                     <a ng-click="openImage(bahmniOrder)" target="_blank">
-                        {{::bahmniOrder.concept.name}}
+                        {{::getLabel(bahmniOrder)}}
                     </a>
                     <span class="fr order-sub-heading-container">
                         <span class="order-sub-heading">

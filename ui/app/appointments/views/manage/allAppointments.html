@@ -1,0 +1,17 @@
+
+<div class="appointment-container">
+    <div class="appointment-btn-container" ng-class="{'list-view': getCurrentTabName() === 'list'}">
+        <p class="view-toggle-wrapper">
+            <a ng-class="{'active': getCurrentTabName() === 'list'}" ng-click="navigateTo('list')" ng-if="!isSearchEnabled">
+                {{::'LIST_VIEW' | translate}}
+            </a>
+            <a ng-class="{'active': getCurrentTabName() === 'calendar'}" ng-if="enableCalendarView && !isSearchEnabled" ng-click="navigateTo('calendar')">
+                {{::'CALENDAR_VIEW' | translate}}
+            </a>
+            <a show-if-privilege="{{manageAppointmentPrivilege}}" class="add-app-btn" ng-click="navigateTo(getCurrentTabName() + '.new')">
+                {{::'ADD_NEW_APPOINTMENT' | translate }}
+            </a>
+        </p>
+    </div>
+    <div ui-view="content@viewAppointments" class="appointment-content-container"></div>
+</div>

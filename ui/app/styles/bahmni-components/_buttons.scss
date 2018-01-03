@@ -562,18 +562,17 @@ input[type="submit"].secondary-button:hover  {
 /* Add Favourite button */
 
 .add-fav {
-  display: inline-block;
-  padding: 4px;
   cursor: pointer;
-  border: 1px solid $lightGray;
-  background: linear-gradient(to bottom, #fff, $lighterGray) $lighterGray;
-  position: relative;
-  transition: all .5s ease;
-  border-radius: 4px;
-  box-shadow: inset 0 -1px 1px $lightestGray;
-
-  &:hover {
-    background: linear-gradient(to bottom, #fff, $lightGray) $lighterGray;
+  color:#fff;
+  margin-left: 12px;
+  float: left;
+  @media screen and (max-width: 1024px){
+    margin-left: 21px;
+  }
+  .fa-thumb-tack{
+    font-size: 18px;
+    padding: 0;
+    width:auto;
   }
 
   .fa-star-empty {
@@ -588,12 +587,20 @@ input[type="submit"].secondary-button:hover  {
     position: absolute;
     opacity: 0;
     & + .fa-thumb-tack {
-      color: $mediumGray;
+      //color: $mediumGray;
       cursor: pointer;
+      &:hover{
+        opacity:0.5;
+      }
     }
     &:checked + .fa-thumb-tack {
       color: orange;
-      text-shadow: 1px 1px 1px white;
+      display: block;
+      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      -o-transform: rotate(45deg);
+      transform: rotate(45deg);
     }
   }
 }
@@ -660,7 +667,23 @@ button.toggle{
       display: none;
     }
     .show-after-active {
-      display: block;
+      display: inline-block;
     }
+  }
+}
+button.btn--add{
+  background: linear-gradient(to bottom, #A1D030, #88af28);
+  background-color: #88af28;
+  border: #88af28 1px solid;
+  color: $white;
+  font-size: 13px !important;
+  padding: 7px !important;
+  margin-left:20px;
+  .fa-plus{
+    color: $white;
+    padding: 0;
+    font-size: 16px;
+    display: inline-block;
+    padding-right: 5px;
   }
 }

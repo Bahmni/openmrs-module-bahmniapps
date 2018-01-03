@@ -2,7 +2,12 @@
 
 describe("Boolean Observation", function() {
     it("toggleSelection should toggle selection for true and false value", function() {
-        var obs = new Bahmni.ConceptSet.BooleanObservation({}, {allowAddMore: true});
+        var observation = {
+            concept:{
+                name:"ANC, ANC Visit"
+            }
+        };
+        var obs = new Bahmni.ConceptSet.BooleanObservation(observation, {});
 
         obs.toggleSelection({value: true});
         expect(obs.value).toBeTruthy();
@@ -42,7 +47,7 @@ describe("Boolean Observation", function() {
             "voided": false
         };
 
-        var obs = new Bahmni.ConceptSet.BooleanObservation(originalObs, {allowAddMore: true});
+        var obs = new Bahmni.ConceptSet.BooleanObservation(originalObs, {"Delivery Note, Liveborn defects present": {allowAddMore: true}});
 
         var actualObs = obs.cloneNew();
         expect(actualObs.uuid).toBeNull();
@@ -51,7 +56,7 @@ describe("Boolean Observation", function() {
     });
 
     it("toggleSelection should set null value if toggled twice", function() {
-        var obs = new Bahmni.ConceptSet.BooleanObservation({}, {allowAddMore: true});
+        var obs = new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {"ABC": {allowAddMore: true}});
         obs.toggleSelection({value: true});
         obs.toggleSelection({value: true});
 
@@ -59,7 +64,7 @@ describe("Boolean Observation", function() {
     });
 
     it("should clone new with null values", function() {
-        var obs = new Bahmni.ConceptSet.BooleanObservation({}, {allowAddMore: true});
+        var obs = new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {"ABC": {allowAddMore: true}});
         obs.toggleSelection({value: true});
         var clone = obs.cloneNew();
 
@@ -78,7 +83,7 @@ describe("Boolean Observation", function() {
         expect(new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {"ABC": {required: true}}).isRequired()).toBeTruthy();
         expect(new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {"ABC": {required: false}}).isRequired()).toBeFalsy();
         expect(new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {}).isRequired()).toBeFalsy();
-        expect(new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}).isRequired()).toBeFalsy();
+        expect(new Bahmni.ConceptSet.BooleanObservation({concept: {name: "ABC"}}, {}).isRequired()).toBeFalsy();
     });
 
     it("should be valid if it is required and present", function() {
