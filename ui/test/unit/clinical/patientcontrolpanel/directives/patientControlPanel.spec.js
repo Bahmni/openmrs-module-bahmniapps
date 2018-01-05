@@ -1,6 +1,10 @@
 'use strict';
 
 describe('patientControlPanelTest', function () {
+    var translations = {
+        CONTROL_PANEL_CONSULTATION_TEXT: "Consultation",
+        CONTROL_PANEL_DASHBOARD_TEXT: "Dashboard"
+    };
     var q,
         compile,
         mockBackend,
@@ -9,6 +13,7 @@ describe('patientControlPanelTest', function () {
         stateParams,
         state,
         _encounterService,
+        $translate,
         deferred,
         _provide,
         $bahmniCookieStore,
@@ -17,6 +22,10 @@ describe('patientControlPanelTest', function () {
     beforeEach(module('bahmni.common.patient','bahmni.clinical','bahmni.common.appFramework','bahmni.common.util','bahmni.common.uiHelper'));
 
     beforeEach(module(function($provide){
+        $translate = jasmine.createSpyObj('$translate', ['instant']);
+        $translate.instant.and.callFake(function (value) {
+            return value;
+        });
         _provide = $provide;
 
         _configurations = {
@@ -37,6 +46,7 @@ describe('patientControlPanelTest', function () {
         $provide.value('configurations',_configurations);
         $provide.value('encounterService',_encounterService);
         $provide.value('$bahmniCookieStore', $bahmniCookieStore);
+        $provide.value('$translate', $translate);
     }));
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope,$q) {
@@ -75,7 +85,7 @@ describe('patientControlPanelTest', function () {
         scope.$digest();
 
         expect(compiledElementScope.links).not.toBeUndefined();
-        expect(compiledElementScope.links).toEqual([{text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/default/patient/patientUuid/dashboard"}]);
+        expect(compiledElementScope.links).toEqual([{text: "CONTROL_PANEL_DASHBOARD_TEXT", icon: "btn-summary dashboard-btn", href: "#/default/patient/patientUuid/dashboard"}]);
     });
 
     it('ensure links are correctly populated on patient visit page and without an active visit', function () {
@@ -107,7 +117,7 @@ describe('patientControlPanelTest', function () {
         scope.$digest();
 
         expect(compiledElementScope.links).not.toBeUndefined();
-        expect(compiledElementScope.links).toEqual([{text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/default/patient/patientUuid/dashboard"}]);
+        expect(compiledElementScope.links).toEqual([{text: "CONTROL_PANEL_DASHBOARD_TEXT", icon: "btn-summary dashboard-btn", href: "#/default/patient/patientUuid/dashboard"}]);
     });
 
     it('ensure links are correctly populated on patient dashboard page without an active visit', function () {
@@ -179,7 +189,7 @@ describe('patientControlPanelTest', function () {
         scope.$digest();
 
         expect(compiledElementScope.links).not.toBeUndefined();
-        expect(compiledElementScope.links).toEqual([{text: "Consultation", icon: "btn-consultation dashboard-btn", href: "#test"}]);
+        expect(compiledElementScope.links).toEqual([{text: "CONTROL_PANEL_CONSULTATION_TEXT", icon: "btn-consultation dashboard-btn", href: "#test"}]);
     });
 
     it("isInEditEncounterMode() should return false for active encounter",function(){

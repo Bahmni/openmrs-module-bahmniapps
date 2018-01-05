@@ -1,6 +1,6 @@
 <div class="retro-date-widget-panel" xmlns="http://www.w3.org/1999/html">
     <div class="input-container" show-if-privilege="{{locationPickerPrivilege}}">
-        <label class="retro-date-label">Location</label>
+        <label class="retro-date-label">{{ 'RETROSPECTIVE_POPUP_LOCATION_LABEL'|translate }}</label>
         <select ng-model="selectedLocationUuid">
             <option ng-repeat="location in locations | orderBy:'display'" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
                 {{location.display | translate}}
@@ -9,17 +9,17 @@
     </div>
     <div class="input-container">
         <div show-if-privilege="{{onBehalfOfPrivilege}}">
-            <label  class="retro-date-label">Enter on behalf</label>
+            <label  class="retro-date-label">{{ 'RETROSPECTIVE_POPUP_ON_BEHALF_LABEL'|translate }}</label>
             <input type="text" class="retro-date-widget" ng-model="encounterProvider.value"
                    bahmni-autocomplete source="getProviderList()" response-map="getProviderDataResults" on-select="providerSelected()" ng-change="clearProvider(encounterProvider.value)"/>
         </div>
     </div>
     <div class="input-container date-widget-container">
-        <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-label" class="retro-date-label" >Enter data for</label>
+        <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-label" class="retro-date-label" >{{ 'RETROSPECTIVE_POPUP_DATA_FOR_LABEL'|translate }}</label>
         <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="date" max="{{maxStartDate}}"/>
     </div>
     <div class="retro-widget-button-wrapper">
-        <button class="retro-widget-button ok_btn" ng-click="windowReload()">OK</button>
+        <button class="retro-widget-button ok_btn" ng-click="windowReload()">{{ 'OKAY_LABEL' | translate}}</button>
         <!-- <button class="retro-widget-button" ng-click="closePopUp()">Cancel</button> -->
     </div>
 </div>

@@ -1,6 +1,9 @@
 <section class="block patientInformation">
-    <h2 class="section-title" ng-if="::params.title">
+    <h2 class="section-title" ng-hide="::params.translationKey" ng-if="::params.title">
         {{::params.title}}
+    </h2>
+    <h2 class="section-title" ng-show="::params.translationKey" >
+        {{::params.translationKey|translate}}
     </h2>
 
     <div>

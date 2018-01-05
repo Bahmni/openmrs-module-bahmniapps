@@ -60,6 +60,7 @@ angular.module('admin')
             $bahmniTranslateProvider.init({app: 'admin', shouldMerge: true});
         }
     ]).run(['$rootScope', '$templateCache', function ($rootScope, $templateCache) {
+        moment.locale(window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
         // Disable caching view template partials
         $rootScope.$on('$viewContentLoaded', $templateCache.removeAll);
     }]);

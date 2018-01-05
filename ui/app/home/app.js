@@ -56,6 +56,7 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
             $bahmniTranslateProvider.init({app: 'home', shouldMerge: true});
         }]).run(['$rootScope', '$templateCache', function ($rootScope, $templateCache) {
+            moment.locale(window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
         // Disable caching view template partials
             $rootScope.$on('$viewContentLoaded', function () {
                 $templateCache.removeAll();

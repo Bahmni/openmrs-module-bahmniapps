@@ -1,5 +1,5 @@
 <form novalidate>
-    <div ng-if="::showEmptyConceptSetMessage" class="placeholder-text">{{::conceptSetName}} concept not found.</div>
+    <div ng-if="::showEmptyConceptSetMessage" class="placeholder-text">{{::conceptSetName}} {{ 'CONCEPT_NOT_FOUND_MESSAGE'|translate }}</div>
 
     <concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="::patient"
              observation="rootObservation" at-least-one-value-is-set="atLeastOneValueIsSet"

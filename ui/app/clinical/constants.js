@@ -19,10 +19,10 @@ Bahmni.Clinical.Constants = (function () {
         weight: "Weight"
     };
     var errorMessages = {
-        discontinuingAndOrderingSameDrug: "Discontinuing and ordering the same drug is not allowed. Instead, use edit",
-        incompleteForm: "Please click on Add or Clear to continue",
+        discontinuingAndOrderingSameDrug: "DISCONTINUING_AND_ORDERING_SAME_DRUG_NOT_ALLOWED",
+        incompleteForm: "INCOMPLETE_FORM_ERROR_MESSAGE",
         invalidItems: "Highlighted items in New Prescription section are incomplete. Please edit or remove them to continue",
-        conceptNotNumeric: "Concept ':conceptName''s datatype is not Numeric. At :placeErrorAccurred."
+        conceptNotNumeric: "CONCEPT_NOT_NUMERIC"
     };
     var bacteriologyConstants = {
         otherSampleType: "Other",
@@ -46,9 +46,9 @@ Bahmni.Clinical.Constants = (function () {
         otherInvestigationsConceptSetName: "Other Investigations",
         otherInvestigationCategoriesConceptSetName: "Other Investigations Categories",
         commentConceptName: "COMMENTS",
-        messageForNoLabOrders: "No lab orders.",
-        messageForNoObservation: "No observations captured for this visit.",
-        messageForNoActiveVisit: "No active visit.",
+        messageForNoLabOrders: "NO_LAB_ORDERS_MESSAGE",
+        messageForNoObservation: "NO_OBSERVATIONS_CAPTURED",
+        messageForNoActiveVisit: "NO_ACTIVE_VISIT_MESSAGE",
         dischargeSummaryConceptName: "Discharge Summary",
         flexibleDosingInstructionsClass: "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
         reviseAction: 'REVISE',

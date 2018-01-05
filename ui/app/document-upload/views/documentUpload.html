@@ -107,7 +107,7 @@
                                     <label class="control-label"></label>
                                     <div class="field-value" ng-if="show">
                                             <textarea class="obs-comment-section" maxlength="255" ng-model="file.comment" ng-change="enableSaveButtonOnCommentChange(file, visit)"
-                                                      placeholder="Notes" msd-elastic>
+                                                      placeholder="{{ 'NOTES_LABEL'|translate }}" msd-elastic>
                                             </textarea>
                                     </div>
                                 </div>
@@ -191,7 +191,7 @@
                                             <label class="control-label"></label>
                                             <div class="field-value" ng-if="show">
                                             <textarea class="obs-comment-section" maxlength="255" ng-model="file.comment" ng-change="enableSaveButtonOnCommentChange(file, visit)" ng-readonly="!canDeleteFile(file)"
-                                                placeholder="Notes" msd-elastic>
+                                                placeholder="{{ 'NOTES_LABEL'|translate }}" msd-elastic>
                                             </textarea>
                                             </div>
                                         </div>

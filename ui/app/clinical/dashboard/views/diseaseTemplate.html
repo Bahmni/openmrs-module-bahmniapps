@@ -2,7 +2,7 @@
     <section class="block hierarchy">
         <ul class="form-field">
             <span ng-if="diseaseTemplate.obsTemplates.length === 0">
-                <h4>&nbsp;&nbsp;&nbsp;No data</h4>
+                <h4 ng-bind-html="'DISEASE_NO_DATA_MESSAGE'|translate"></h4>
             </span>
             <li ng-repeat="obsTemplate in diseaseTemplate.obsTemplates">
                 <span class="tree-list-item">

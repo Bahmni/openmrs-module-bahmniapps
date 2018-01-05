@@ -1,9 +1,9 @@
-<h2 class="section-title">Treatments</h2>
+<h2 class="section-title">{{ 'CONSULTATION_TREATMENTS_HEADER_LABEL'|translate }}</h2>
 <table ng-show="consultation.treatmentDrugs.length > 0">
   <thead>
   <tr class="title">
-      <th><span class="table-head-title">Drug Name</span></th>
-      <th colspan="2"><span class="table-head-title">Dosage Instructions</span></th>
+      <th><span class="table-head-title">{{ 'MEDICATION_DRUG_NAME'|translate }}</span></th>
+      <th colspan="2"><span class="table-head-title">{{ 'MEDICATION_DOSAGE_INSTRUCTIONS'|translate }}</span></th>
   </tr>
   </thead>
   <tbody ng-repeat="drugOrder in consultation.treatmentDrugs" bindonce="drugOrder" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
@@ -13,7 +13,7 @@
                 <span bo-show="drugOrder.getDescription()"
                       bo-text="drugOrder.getDescription()"></span>
             <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
-            <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
+            <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">{{'MEDICATION_STOPPED_ON'|translate}} {{drugOrder.effectiveStopDate | bahmniDate}}</span>
         </td>
         <td class="toggle-btn">
             <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
@@ -24,7 +24,7 @@
     </tr>
     <tr ng-if="drugOrder.show">
         <td colspan="3" class="inline-notes notes">
-            <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
+            <p class="left"><strong>{{'TREATMENT_NOTES'|translate}}: </strong>{{drugOrder.additionalInstructions}}</p>
 
             <div class="footer-note right">
                     <span class="time-stamp">
@@ -41,11 +41,11 @@
     <table ng-show="consultation.newlyAddedTreatments.length > 0">
         <thead>
         <tr>
-            <th colspan="3">New Treatments</th>
+            <th colspan="3">{{ 'MEDICATION_NEW_TREATMENTS'|translate }}</th>
         </tr>
         <tr class="title">
-            <th><span class="table-head-title">Drug Name</span></th>
-            <th colspan="2"><span class="table-head-title">Dosage Instructions</span></th>
+            <th><span class="table-head-title">{{ 'MEDICATION_DRUG_NAME'|translate }}</span></th>
+            <th colspan="2"><span class="table-head-title">{{ 'MEDICATION_DOSAGE_INSTRUCTIONS'|translate }}</span></th>
         </tr>
         </thead>
         <tbody ng-repeat="drugOrder in consultation.newlyAddedTreatments" bindonce="drugOrder">
@@ -55,7 +55,7 @@
                 <span bo-show="drugOrder.getDescription()"
                       bo-text="drugOrder.getDescription()"></span>
                 <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
-                <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
+                <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">{{'MEDICATION_STOPPED_ON'|translate}} {{drugOrder.effectiveStopDate | bahmniDate}}</span>
             </td>
             <td class="toggle-btn">
                 <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
@@ -66,7 +66,7 @@
         </tr>
         <tr ng-if="drugOrder.show">
             <td colspan="3" class="inline-notes notes">
-                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
+                <p class="left"><strong>{{'TREATMENT_NOTES'|translate}}: </strong>{{drugOrder.additionalInstructions}}</p>
 
                 <div class="footer-note right">
                     <span class="time-stamp">
@@ -84,11 +84,11 @@
     <table ng-show="consultation.discontinuedDrugs.length > 0">
         <thead>
         <tr>
-            <th colspan="3">Discontinued Treatments</th>
+            <th colspan="3">{{ 'MEDICATION_DISCONTINUED_TREATMENTS'|translate }}</th>
         </tr>
         <tr class="title">
-            <th><span class="table-head-title">Drug Name</span></th>
-            <th colspan="2"><span class="table-head-title">Dosage Instructions</span></th>
+            <th><span class="table-head-title">{{ 'MEDICATION_DRUG_NAME'|translate }}</span></th>
+            <th colspan="2"><span class="table-head-title">{{ 'MEDICATION_DOSAGE_INSTRUCTIONS'|translate }}</span></th>
         </tr>
         </thead>
         <tbody ng-repeat="drugOrder in consultation.discontinuedDrugs" bindonce="drugOrder" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
@@ -98,7 +98,7 @@
                 <span bo-show="drugOrder.getDescription()"
                       bo-text="drugOrder.getDescription()"></span>
                 <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
-                <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
+                <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">{{'MEDICATION_STOPPED_ON'|translate}} {{drugOrder.effectiveStopDate | bahmniDate}}</span>
             </td>
             <td class="toggle-btn">
                 <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
@@ -109,7 +109,7 @@
         </tr>
         <tr ng-if="drugOrder.show">
             <td colspan="3" class="inline-notes notes">
-                <p class="left"><strong>Treatment Notes: </strong>{{drugOrder.additionalInstructions}}</p>
+                <p class="left"><strong>{{'TREATMENT_NOTES'|translate}}: </strong>{{drugOrder.additionalInstructions}}</p>
 
                 <div class="footer-note right">
                     <span class="time-stamp">

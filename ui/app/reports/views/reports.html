@@ -24,7 +24,7 @@
                     <select ng-model="default.reportsRequiringDateRange.responseType"
                             ng-options="type as label for (label , type) in ::formats"
                             ng-change="setDefault('responseType', 'reportsRequiringDateRange')">
-                        <option value="">Choose Format</option>
+                        <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
                     </select>
                 </th>
                 <th class="reports-action">
@@ -44,7 +44,7 @@
                 </td>
                 <td class="reports-format">
                     <select ng-model="report.responseType" ng-options="type as label for (label , type) in ::formats">
-                        <option value="">Choose Format</option>
+                        <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
                     </select>
                     <input ng-if="report.responseType=='application/vnd.ms-excel-custom' && !report.config.macroTemplatePath"
                            class="input-file-upload custom-file"
@@ -76,7 +76,7 @@
                     <select ng-model="default.reportsNotRequiringDateRange.responseType"
                             ng-change="setDefault('responseType', 'reportsNotRequiringDateRange')"
                             ng-options="type as label for (label , type) in ::formats">
-                        <option value="">Choose Format</option>
+                        <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
                     </select>
                 </th>
                 <th class="reports-action">
@@ -88,7 +88,7 @@
                 <td>{{:: report.name }}</td>
                 <td class="reports-format">
                     <select ng-model="report.responseType" ng-options="type as label for (label , type) in ::formats">
-                        <option value="">Choose Format</option>
+                        <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
 
                     </select>
                 </td>
