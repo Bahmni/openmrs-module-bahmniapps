@@ -251,7 +251,8 @@ Bahmni.Common = Bahmni.Common || {};
         conditionHistoryUrl: EMRAPI + '/conditionhistory',
         followUpConditionConcept: 'Follow-up Condition',
         localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json",
-        privilegeRequiredErrorMessage: "User is logged in but doesn't have the relevant privilege"
+        privilegeRequiredErrorMessage: "User is logged in but doesn't have the relevant privilege",
+        defaultPossibleRelativeSearchLimit: 10
     };
 })();
 
