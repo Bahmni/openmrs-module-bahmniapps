@@ -24,7 +24,7 @@
             <div class="row" ng-repeat="newRelationship in patient.newlyAddedRelationships">
                 <div class="col col1 form-field">
                     <div class="field-attribute showOn-small-screen">
-                        <label>Relationship Type
+                        <label>{{ 'REGISTRATION_RELATION_TYPE_LABEL'|translate }}
                             <span class="asterick">*</span>
                         </label>
                     </div>
@@ -38,18 +38,20 @@
                 </div>
                 <div class="col col2 form-field">
                     <div class="field-attribute showOn-small-screen">
-                        <label>Enter Name/ ID
+                        <label>{{ 'REGISTRATION_ENTER_NAME_ID_LABEL'|translate }}
                             <span class="asterick">*</span>
                         </label>
                     </div>
                     <div class="field-value" ng-switch="getChosenRelationshipType(newRelationship)">
-
-                        <input type="text" ng-switch-when="patient" ng-model-options="{updateOn: 'blur'}" ng-model="newRelationship.patientIdentifier"
-                               validate-on="newRelationship.personB.uuid" validation-message="{{ ::'REGISTRATION_LABEL_VALID_PATIENT_IDENTIFIER' | translate}}"
-                               ng-change="searchByPatientIdentifier(newRelationship)" placeholder="{{ ::'REGISTRATION_LABEL_ENTER_ID' | translate}}" />
+                        <input type="text" ng-switch-when="patient" bahmni-autocomplete
+                               validation-message="{{ ::'REGISTRATION_LABEL_PATIENT_AUTOCOMPLETE_LIST' | translate}}" on-edit="onEdit(newRelationship)"
+                               ng-model="newRelationship.patientIdentifier" response-map="getPatientList" source="searchByPatientIdentifierOrName"
+                               ng-change="clearPatient(newRelationship)" on-select="patientSelected(newRelationship)"
+                               placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME_ID' | translate}}"
+                               ng-class="{'illegalValue': !newRelationship.personB.uuid}" is-invalid="!newRelationship.personB.uuid"/>
 
                         <input type="text" ng-switch-when="provider" bahmni-autocomplete is-invalid="!newRelationship.personB.uuid"
-                               validation-message="{{ ::'REGISTRATION_LABEL_PROVIDER_AUTOCOMPLETE_LIST' | translate}}" on-edit="onEditProviderName(newRelationship)"
+                               validation-message="{{ ::'REGISTRATION_LABEL_PROVIDER_AUTOCOMPLETE_LIST' | translate}}" on-edit="onEdit(newRelationship)"
                                ng-model="newRelationship.providerName" response-map="getProviderDataResults" source="getProviderList(relationship)"
                                ng-change="clearProvider(newRelationship)" on-select="providerSelected(newRelationship)" placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME' | translate}}" />
 
