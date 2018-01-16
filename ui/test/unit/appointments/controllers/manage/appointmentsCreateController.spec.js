@@ -913,5 +913,30 @@ describe("AppointmentsCreateController", function () {
 
         $scope.onKeyDownOnEndTime();
         expect($scope.showEndTimes).toEqual($scope.endTimes);
-    })
+    });
+
+    it('should include appointment provider if the provider is not available in all available providers', function () {
+        var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
+        appointmentContext.appointment = {provider: {name: 'someone', uuid: '3'}};
+        appointmentCreateConfig.providers = allAvailableProviders;
+
+        createController();
+
+        expect(appointmentCreateConfig.providers.length).toBe(3);
+        expect(appointmentCreateConfig.providers[0].name).toBe("superman");
+        expect(appointmentCreateConfig.providers[1].name).toBe("mahmoud_h");
+        expect(appointmentCreateConfig.providers[2].name).toBe("someone");
+    });
+
+    it("should not affect the all providers when new appointment has created", function () {
+        var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
+        appointmentContext = {};
+        appointmentCreateConfig.providers = allAvailableProviders;
+
+        createController();
+
+        expect(appointmentCreateConfig.providers.length).toBe(2);
+        expect(appointmentCreateConfig.providers[0].name).toBe("superman");
+        expect(appointmentCreateConfig.providers[1].name).toBe("mahmoud_h");
+    });
 });
