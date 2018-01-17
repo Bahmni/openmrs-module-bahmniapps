@@ -42,9 +42,12 @@ angular.module('bahmni.appointments').factory('appointmentConfigInitialization',
                 };
 
                 var getAllProviders = function () {
-                    var params = {v: "custom:(display,person,uuid)"};
+                    var params = {v: "custom:(display,person,uuid,retired)"};
                     return providerService.list(params).then(function (response) {
-                        return _.uniqBy(response.data.results, function (result) {
+                        var results = _.filter(response.data.results, function (provider) {
+                            return !provider.retired;
+                        });
+                        return _.uniqBy(results, function (result) {
                             return result.person && result.person.display;
                         });
                     });
