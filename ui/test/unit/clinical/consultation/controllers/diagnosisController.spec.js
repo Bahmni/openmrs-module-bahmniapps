@@ -25,7 +25,6 @@ describe("Diagnosis Controller", function () {
 
         contextChangeHandler = jasmine.createSpyObj('contextChangeHandler', ['add']);
         spyOn(diagnosisService, 'getDiagnosisConceptSet').and.returnValue(deferred.promise);
-        spyOn(diagnosisService, 'getAllFor').and.returnValue(specUtil.createFakePromise({}));
 
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         spinner.forPromise.and.callFake(function (param) {
@@ -85,8 +84,27 @@ describe("Diagnosis Controller", function () {
 
     describe("getDiagnosis()", function () {
         it("should make a call to diagnosis service getAllFor", function () {
-            $scope.getDiagnosis({term:"primary"});
-            expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("primary");
+            $scope.getDiagnosis({term:"primary"}).then(function (list) {
+                spyOn(diagnosisService, 'getAllFor').and.returnValue(specUtil.simplePromise({data: [{"conceptName":"Cold, unspec.","conceptUuid":"uuid1","matchedName":null,"code":"T69.9XXA"}]}));
+                expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("primary");
+                expect(list.length).toBe(1);
+                expect(list[0].value).toBe("Cold, unspec. (T69.9XXA)");
+                expect(list[0].concept.name).toBe("Cold, unspec.");
+                expect(list[0].concept.uuid).toBe("uuid1");
+                expect(list[0].lookup.name).toBe(undefined);
+            });
+        });
+
+        it("should make a call to diagnosis service getAllFor with synonym", function () {
+            spyOn(mockDiagnosisService, 'getAllFor').and.returnValue(specUtil.simplePromise({data: [{"conceptName":"Cold, unspec.","conceptUuid":"uuid1","matchedName":"Cold xyz","code":"T69.9XXA"}]}));
+            $scope.getDiagnosis({term:"T69.9XXA"}).then(function (list) {
+                expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("T69.9XXA");
+                expect(list.length).toBe(1);
+                expect(list[0].value).toBe("Cold xyz => Cold, unspec. (T69.9XXA)");
+                expect(list[0].concept.name).toBe("Cold, unspec.");
+                expect(list[0].concept.uuid).toBe("uuid1");
+                expect(list[0].lookup.name).toBe("Cold xyz");
+            });
         });
     });
 
