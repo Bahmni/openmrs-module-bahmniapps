@@ -192,7 +192,7 @@ Bahmni.Common = Bahmni.Common || {};
         addVisitsPrivilege: 'Add Visits',
         deleteVisitsPrivilege: 'Delete Visits',
         grantProviderAccess: "app:clinical:grantProviderAccess",
-        grantProviderAccessDataCookieName: "app:clinical:grantProviderAccessData",
+        grantProviderAccessDataCookieName: "app.clinical.grantProviderAccessData",
         globalPropertyUrl: BAHMNI_CORE + "/sql/globalproperty",
         passwordPolicyUrl: BAHMNI_CORE + "/globalProperty/passwordPolicyProperties",
         fulfillmentConfiguration: "fulfillment",
