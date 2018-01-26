@@ -1,5 +1,5 @@
 <section ng-if="params">
-    <h2 class="section-title">{{params.title}}</h2>
+    <h2 class="section-title">{{:: params | titleTranslate }}</h2>
     <div>
         <div id="{{graphId}}">
             <p class="placeholder-text">{{ 'OBSERVATION_GRAPH_NO_DATA_LABEL'|translate }}</p>
