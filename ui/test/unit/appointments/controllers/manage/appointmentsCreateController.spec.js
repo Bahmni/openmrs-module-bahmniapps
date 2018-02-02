@@ -3,7 +3,7 @@
 describe("AppointmentsCreateController", function () {
     var $scope, controller, appointmentsServiceService, q, $window, appService, ngDialog, messagingService, $state,
         spinner, appointmentsService, patientService, $translate, appDescriptor, $stateParams, appointmentCreateConfig,
-        appointmentContext;
+        appointmentContext, $http;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -20,21 +20,40 @@ describe("AppointmentsCreateController", function () {
         appointmentsService = jasmine.createSpyObj('appointmentsService', ['save','search']);
         appointmentsService.save.and.returnValue(specUtil.simplePromise({}));
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appDescriptor = {
+            getConfigValue: function (input) {
+                if (input === "patientSearchUrl") {
+                    return "patientSearchUrl";
+                }
+                else
+                    return true;
+            },
+            formatUrl: function (url) {
+                return url;
+            }
+        };
         appService.getAppDescriptor.and.returnValue(appDescriptor);
-        appDescriptor.getConfigValue.and.returnValue(true);
         ngDialog = jasmine.createSpyObj('ngDialog', ['close']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        patientService = jasmine.createSpyObj('patientService', ['search']);
         $translate = jasmine.createSpyObj('$translate', ['']);
         $state = jasmine.createSpyObj('$state', ['go']);
         spinner = jasmine.createSpyObj('spinner', ['forPromise', 'forAjaxPromise']);
         $window = jasmine.createSpyObj('$window', ['open']);
+        $http = jasmine.createSpyObj('$http', ['get']);
         $stateParams = {};
         appointmentCreateConfig = {};
         appointmentContext = {};
     });
 
     var createController = function () {
+        spinner.forPromise.and.callFake(function () {
+            return {
+                then: function () {
+                    return {};
+                }
+            };
+        });
         return controller('AppointmentsCreateController', {
             $scope: $scope,
             $q: q,
@@ -50,7 +69,8 @@ describe("AppointmentsCreateController", function () {
             $translate: $translate,
             $stateParams: $stateParams,
             appointmentCreateConfig: appointmentCreateConfig,
-            appointmentContext: appointmentContext
+            appointmentContext: appointmentContext,
+            $http: $http
         }
         );
     };
@@ -883,6 +903,31 @@ describe("AppointmentsCreateController", function () {
             appointmentContext.appointment = {startDateTime: moment().add(1, 'day').toDate(), status: 'Cancelled', uuid: 'appointmentUuid'};
             createController();
             expect($scope.isEditAllowed()).toBeFalsy();
+        });
+    });
+
+
+    describe('searchPatient', function () {
+        it('should call patient service when there is no url defined ', function () {
+            appDescriptor.getConfigValue = function (input) {
+                return input !== "patientSearchUrl" ? true : undefined;
+            };
+            appointmentContext.appointment = { uuid: 'appointmentUuid'};
+            createController();
+            $scope.appointment.patient = { label: "GAN" };
+            patientService.search.and.returnValue(specUtil.simplePromise({data: {name:"GAN111"}}));
+            $scope.search();
+            expect(patientService.search).toHaveBeenCalledWith("GAN");
+        });
+
+        it('should call the url specified in the config for patient search', function () {
+            appointmentContext.appointment = { uuid: 'appointmentUuid'};
+            createController();
+            $scope.appointment.patient = { label: "GAN" };
+            patientService.search.and.returnValue(specUtil.simplePromise({data: {name:"GAN111"}}));
+            $scope.search();
+            expect($http.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1patientSearchUrl');
+            expect(patientService.search).not.toHaveBeenCalledWith();
         });
     });
 
