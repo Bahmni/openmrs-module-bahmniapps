@@ -3,9 +3,9 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentsCreateController', ['$scope', '$q', '$window', '$state', '$translate', 'spinner', 'patientService',
         'appointmentsService', 'appointmentsServiceService', 'messagingService',
-        'ngDialog', 'appService', '$stateParams', 'appointmentCreateConfig', 'appointmentContext',
+        'ngDialog', 'appService', '$stateParams', 'appointmentCreateConfig', 'appointmentContext', '$http', 'sessionService',
         function ($scope, $q, $window, $state, $translate, spinner, patientService, appointmentsService, appointmentsServiceService,
-                  messagingService, ngDialog, appService, $stateParams, appointmentCreateConfig, appointmentContext) {
+                  messagingService, ngDialog, appService, $stateParams, appointmentCreateConfig, appointmentContext, $http, sessionService) {
             $scope.isFilterOpen = $stateParams.isFilterOpen;
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
@@ -18,6 +18,9 @@ angular.module('bahmni.appointments')
             $scope.enableEditService = appService.getAppDescriptor().getConfigValue('isServiceOnAppointmentEditable');
             $scope.showStartTimes = [];
             $scope.showEndTimes = [];
+            var patientSearchURL = appService.getAppDescriptor().getConfigValue('patientSearchUrl');
+            var loginLocationUuid = sessionService.getLoginLocationUuid();
+            $scope.minCharLengthToTriggerPatientSearch = appService.getAppDescriptor().getConfigValue('minCharLengthToTriggerPatientSearch');
 
             var init = function () {
                 wireAutocompleteEvents();
@@ -53,7 +56,15 @@ angular.module('bahmni.appointments')
             };
 
             $scope.search = function () {
-                return spinner.forPromise(patientService.search($scope.appointment.patient.label).then(function (response) {
+                var formattedUrl;
+                if (patientSearchURL && !_.isEmpty(patientSearchURL)) {
+                    var params = {
+                        'loginLocationUuid': loginLocationUuid,
+                        'searchValue': $scope.appointment.patient.label
+                    };
+                    formattedUrl = appService.getAppDescriptor().formatUrl(patientSearchURL, params);
+                }
+                return (spinner.forPromise(formattedUrl ? $http.get(Bahmni.Common.Constants.RESTWS_V1 + formattedUrl) : patientService.search($scope.appointment.patient.label)).then(function (response) {
                     return response.data.pageOfResults;
                 }));
             };
