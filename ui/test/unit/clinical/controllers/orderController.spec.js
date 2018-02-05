@@ -2,7 +2,7 @@
 
 describe("OrderController", function () {
 
-    var scope, rootScope, ngDialog;
+    var scope, rootScope, ngDialog, appDescriptor;
 
     beforeEach(module('bahmni.common.conceptSet'));
     beforeEach(module('bahmni.clinical'));
@@ -17,10 +17,18 @@ describe("OrderController", function () {
         var retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
         retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
 
-        var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig']);
+        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig']);
         var appServiceMock = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        appDescriptor.getConfig = function() {
-            return {};
+        appDescriptor.getConfig = function (param) {
+            if (param === "enableRadiologyOrderOptions") {
+                return {
+                    value: ["NeedsPrint", "Urgent"]
+                };
+            } else if (param === "enableLabOrderOptions") {
+                return {
+                    value: ["Urgent"]
+                };
+            }
         };
         appServiceMock.getAppDescriptor = function() { return appDescriptor };
 
@@ -148,6 +156,56 @@ describe("OrderController", function () {
             scope.activeTab = undefined;
             scope.updateSelectedOrdersForActiveTab();
             expect(scope.selectedOrders.length).toBe(0);
+        });
+
+        it("should return true when orders is not saved and NeedsPrint configured for Radiology", function () {
+            scope.activeTab = {
+                name: 'Radiology'
+            };
+            expect(scope.isPrintShown(false)).toBeTruthy();
+        });
+
+        it("should return false when order was saved and NeedsPrint configured for Radiology", function () {
+            scope.activeTab = {
+                name: 'Radiology'
+            };
+            expect(scope.isPrintShown(true)).toBeFalsy();
+        });
+
+        it("should return true if there is Urgent configuration for Radiology", function () {
+            scope.activeTab = {
+                name: 'Radiology'
+            };
+            expect(scope.isUrgent()).toBeTruthy();
+        });
+
+        it("should return false if there is no configuration for NeedsPrint in Lab Orders and order is not saved", function () {
+            scope.activeTab = {
+                name: 'Lab'
+            };
+            expect(scope.isPrintShown(false)).toBeFalsy();
+        });
+
+        it("should return false if there is no configuration for NeedsPrint in Lab Orders and order was saved", function () {
+            scope.activeTab = {
+                name: 'Lab'
+            };
+            expect(scope.isPrintShown(true)).toBeFalsy();
+        });
+
+        it("should return true if there is configuration for Urgent in Lab Orders", function () {
+            scope.activeTab = {
+                name: 'Lab'
+            };
+            expect(scope.isUrgent()).toBeTruthy();
+        });
+
+        it("should return false if there is no configuration for Urgent in Lab Orders", function () {
+            scope.enableLabOrderOptions = null;
+            scope.activeTab = {
+                name: 'Lab'
+            };
+            expect(scope.isUrgent()).toBeFalsy();
         });
     });
 
