@@ -135,6 +135,10 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                 return $scope.obsTable.rows[0].columns['Month'] != null;
             };
 
+            $scope.hasPDFAsValue = function (data) {
+                return data.value ? data.value.indexOf('.pdf') > 0 : false;
+            };
+
             spinner.forPromise(init(), element);
         };
         return {
