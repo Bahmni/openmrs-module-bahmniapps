@@ -13,10 +13,10 @@
                     <th>&nbsp;</th>
                     <td class="normal" ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
                         <span bo-text="testOrderLabel.testName"></span>
-                                <span ng-show="accessions.hasRange(testOrderLabel)" class="range">
-                                    <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
-                                    <span bo-text="testOrderLabel.testUnitOfMeasurement"></span>
-                                </span>
+                            <span ng-show="accessions.hasRange(testOrderLabel)" class="range">
+                                <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
+                            </span>
+                            <span bo-text="testOrderLabel.testUnitOfMeasurement" ng-show="accessions.hasUnits(testOrderLabel)" class="range" ></span>
                     </td>
                 </tr>
                 </thead>
@@ -68,8 +68,8 @@
                         <span bo-text="testOrderLabel.testName"></span>
                         <span ng-show="accessions.hasRange(testOrderLabel)" class="range">
                             <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
-                            <span bo-text="testOrderLabel.testUnitOfMeasurement"></span>
                         </span>
+                        <span bo-text="testOrderLabel.testUnitOfMeasurement" ng-show="accessions.hasUnits(testOrderLabel)" class="range" ></span>
                     </th>
                     <td ng-repeat="dateLabel in accessions.getDateLabels()"
                         ng-class="{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}">
