@@ -403,6 +403,7 @@
     max-width: 90px;
     overflow: hidden;
     text-align: center;
+    word-wrap: break-word;
     &.table-mid-width {
       width: 180px;
       min-width: 180px;
