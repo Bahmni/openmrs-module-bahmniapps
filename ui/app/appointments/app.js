@@ -86,11 +86,6 @@ angular
                         templateUrl: 'views/manage/calendar/calendarView.html',
                         controller: 'AppointmentsCalendarViewController'
                     }
-                },
-                resolve: {
-                    appointmentsContext: function (appointmentsInitialization) {
-                        return appointmentsInitialization();
-                    }
                 }
             }).state('home.manage.appointments.calendar.new', {
                 url: '/new',
