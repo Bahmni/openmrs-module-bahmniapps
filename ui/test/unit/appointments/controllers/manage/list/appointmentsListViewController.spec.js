@@ -81,16 +81,6 @@ describe('AppointmentsListViewController', function () {
         expect(scope.searchedPatient).toBeTruthy();
     });
 
-    it('should get appointments for the date if searchedPatient is false', function () {
-        stateparams = {
-            isSearchEnabled: false,
-            patient: {name: 'Test patient', uuid: 'patientUuid'}
-        };
-        createController();
-        expect(appointmentsService.getAllAppointments).toHaveBeenCalledWith({forDate: moment().startOf('day').toDate()});
-        expect(spinner.forPromise).toHaveBeenCalled();
-    });
-
     it('should not get appointments for the date if searchedPatient is true', function () {
         stateparams = {
             isSearchEnabled: true,
@@ -233,11 +223,14 @@ describe('AppointmentsListViewController', function () {
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
         stateparams.filterParams = {serviceUuids: ["02666cc6-5f3e-4920-856d-ab7e28d3dbdb"]};
         createController();
+        var viewDate = new Date('2017-08-28T11:30:00.000Z');
+        scope.getAppointmentsForDate(viewDate);
         expect(scope.appointments).toBe(appointments);
         expect(scope.filteredAppointments.length).toEqual(1);
         expect(scope.filteredAppointments[0]).toEqual(appointments[0]);
     });
-    it("should display seached patient appointment history", function () {
+
+    it("should display searched patient appointment history", function () {
         var appointments = [{
             "uuid": "347ae565-be21-4516-b573-103f9ce84a20",
             "appointmentNumber": "0000",
@@ -335,6 +328,8 @@ describe('AppointmentsListViewController', function () {
             isSearchEnabled: false
         };
         createController();
+        var viewDate = new Date('2017-08-28T11:30:00.000Z');
+        scope.getAppointmentsForDate(viewDate);
         expect(scope.appointments).toBe(appointments);
         expect(scope.searchedPatient).toBeFalsy();
         scope.displaySearchedPatient([appointments[1]]);
@@ -343,6 +338,7 @@ describe('AppointmentsListViewController', function () {
         expect(stateparams.isFilterOpen).toBeFalsy();
         expect(stateparams.isSearchEnabled).toBeTruthy();
     });
+
     describe("goBackToPreviousView", function () {
         var appointments;
         beforeEach(function () {
@@ -439,6 +435,7 @@ describe('AppointmentsListViewController', function () {
             }];
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
         });
+
         it("should reset filtered appointments to its previous data", function () {
             createController();
             scope.filteredAppointments = appointments;
@@ -450,6 +447,7 @@ describe('AppointmentsListViewController', function () {
             expect(stateparams.isFilterOpen).toBeTruthy();
             expect(stateparams.isSearchEnabled).toBeFalsy();
         });
+
         it("should sort appointments by the sort column", function () {
             scope.filterParams = {
                 providerUuids: [],
@@ -504,7 +502,7 @@ describe('AppointmentsListViewController', function () {
             });
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
             createController();
-
+            scope.getAppointmentsForDate(new Date(200000));
             scope.sortAppointmentsBy('patient.name');
             expect(scope.sortColumn).toEqual('patient.name');
             expect(scope.filteredAppointments.length).toEqual(2);
@@ -635,6 +633,7 @@ describe('AppointmentsListViewController', function () {
                 return appointments;
             });
             createController();
+            scope.getAppointmentsForDate(new Date(200000));
             scope.sortAppointmentsBy('patient.name');
             expect(scope.reverseSort).toEqual(true);
             scope.sortAppointmentsBy('patient.name');
@@ -719,6 +718,7 @@ describe('AppointmentsListViewController', function () {
             });
             stateparams.filterParams = {};
             createController();
+            scope.getAppointmentsForDate(new Date(200000));
             stateparams.filterParams = {serviceUuids: ['serviceUuid']};
             scope.$digest();
 
