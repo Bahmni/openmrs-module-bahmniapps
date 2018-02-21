@@ -1,7 +1,7 @@
 'use strict';
 
 describe('AppointmentsCalendarViewController', function () {
-    var controller, scope, spinner, appointmentsService, appointmentsContext, translate, stateParams;
+    var controller, scope, spinner, appointmentsService, translate, stateParams;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -18,8 +18,6 @@ describe('AppointmentsCalendarViewController', function () {
                 };
             });
             appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments']);
-            appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: []}));
-            appointmentsContext = {appointments: []};
             translate = jasmine.createSpyObj('$translate', ['instant']);
             translate.instant.and.returnValue("No provider appointments");
         });
@@ -30,7 +28,6 @@ describe('AppointmentsCalendarViewController', function () {
             $scope: scope,
             spinner: spinner,
             appointmentsService: appointmentsService,
-            appointmentsContext: appointmentsContext,
             $translate: translate
         });
     };
@@ -41,6 +38,7 @@ describe('AppointmentsCalendarViewController', function () {
 
     it('should get appointments for date', function () {
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
+        appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: []}));
         scope.getAppointmentsForDate(viewDate).then(function () {
             expect(scope.shouldReload).toBeFalsy();
             expect(stateParams.viewDate).toEqual(viewDate);
@@ -407,8 +405,10 @@ describe('AppointmentsCalendarViewController', function () {
             "status": "Scheduled",
             "comments": null
         }];
-        appointmentsContext.appointments = appointments;
+        appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
         createController();
+        scope.getAppointmentsForDate("Wed Sep 06 2017 00:00:00 GMT+0530 (IST)");
+        // createController();
         expect(scope.providerAppointments.resources.length).toEqual(1);
         expect(scope.providerAppointments.resources[0].provider.uuid).toEqual("someUuid");
     });
@@ -451,8 +451,9 @@ describe('AppointmentsCalendarViewController', function () {
                 "status": "Scheduled",
                 "comments": null
             }];
-        appointmentsContext.appointments = appointments;
+        appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
         createController();
+        scope.getAppointmentsForDate("Wed Sep 06 2017 00:00:00 GMT+0530 (IST)");
         expect(scope.providerAppointments.resources.length).toEqual(1);
         expect(scope.providerAppointments.resources[0].provider.uuid).toEqual("no-provider-uuid");
     })
