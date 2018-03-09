@@ -59,7 +59,7 @@
   "SAVE_CONFIRMATION_OPTION_CONFLICT_SAVE_KEY" : "Proceed and save",
   "SAVE_CONFIRMATION_OPTION_CONFLICT_CANCEL_KEY" : "Back to edit",
   "DUPLICATE_SERVICE_NAME_ERROR_MESSAGE": "Service name already exists",
-  "TIME_SEQUENCE_ERROR_MESSAGE": "End time should not be less than or equal to Start time",
+  "TIME_SEQUENCE_ERROR_MESSAGE": "End time must be after Start time",
   "OVERLAPPING_AVAILABILITY_ERROR_MESSAGE": "Seems like there is an overlap in the availability you are trying to add. Please correct it to proceed further",
   "INVALID_SERVICE_FORM_ERROR_MESSAGE": "Please correct the values in the fields to proceed",
   "INVALID_TIME_ERROR_MESSAGE": "Invalid start/end time. Expected format is hh:mm am/pm.",
