@@ -433,5 +433,29 @@ describe('PatientAction', function () {
             expect($location.path).toHaveBeenCalledWith("/patient/patientUuid/visit");
             expect(auditLogService.log).toHaveBeenCalledWith(patientUuid, 'OPEN_VISIT', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
         });
+
+        it("should set showStartVisitButton to true, if showStartVisitButton config is not present", function () {
+            var configValues = {defaultVisitType: "IPD", forwardUrls: []};
+            var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues}, stateParams: {patientUuid: 'patientUuid'}, visitSearchResults: {data:{}}};
+            initProvider(input);
+            injectDependencies();
+            expect(scope.showStartVisitButton()).toBe(true);
+        });
+
+        it("should set showStartVisitButton to false, if showStartVisitButton config is false", function () {
+            var configValues = {defaultVisitType: "IPD", forwardUrls: [], showStartVisitButton: false};
+            var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues}, stateParams: {patientUuid: 'patientUuid'}, visitSearchResults: {data:{}}};
+            initProvider(input);
+            injectDependencies();
+            expect(scope.showStartVisitButton()).toBe(false);
+        });
+
+        it("should set showStartVisitButton to false, if showStartVisitButton config is true", function () {
+            var configValues = {defaultVisitType: "IPD", forwardUrls: [], showStartVisitButton: true};
+            var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues}, stateParams: {patientUuid: 'patientUuid'}, visitSearchResults: {data:{}}};
+            initProvider(input);
+            injectDependencies();
+            expect(scope.showStartVisitButton()).toBe(true);
+        });
     });
 });
