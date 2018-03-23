@@ -251,7 +251,8 @@ Bahmni.Common = Bahmni.Common || {};
         conditionHistoryUrl: EMRAPI + '/conditionhistory',
         followUpConditionConcept: 'Follow-up Condition',
         localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json",
-        privilegeRequiredErrorMessage: "PRIVILEGE_REQUIRED"
+        privilegeRequiredErrorMessage: "PRIVILEGE_REQUIRED",
+        defaultPossibleRelativeSearchLimit: 10
     };
 })();
 
