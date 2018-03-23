@@ -2,26 +2,33 @@
 
 describe('PatientRelationshipController', function () {
 
-    var patientServiceMock = jasmine.createSpyObj('patientService', ['searchByIdentifier']);
+    var patientServiceMock;
     var providerServiceMock = jasmine.createSpyObj('providerService', ['search']);
+    var mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    var mockAppService= jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
     var rootScope;
     var scope;
 
     var patientServiceSearchPromise = specUtil.respondWith({data: {results: [{uuid: "123"}]}});
-    patientServiceMock.searchByIdentifier.and.returnValue(patientServiceSearchPromise);
 
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     spinner.forPromise.and.returnValue(patientServiceSearchPromise);
-
-    patientServiceMock.searchByIdentifier.and.callFake(function () {
-        return specUtil.respondWith({data: {pageOfResults: [{uuid: "123"}]}});
-    });
-
     providerServiceMock.search.and.callFake(function () {
         return specUtil.respondWith({data: {pageOfResults: [{uuid: "123"}]}});
     });
 
     beforeEach(module('bahmni.registration'));
+
+    beforeEach(function () {
+        patientServiceMock = jasmine.createSpyObj('patientService', ['searchByIdentifier', 'searchByNameOrIdentifier']);
+        patientServiceMock.searchByIdentifier.and.returnValue(patientServiceSearchPromise);
+        patientServiceMock.searchByNameOrIdentifier.and.returnValue(patientServiceSearchPromise);
+        patientServiceMock.searchByIdentifier.and.callFake(function () {
+            return specUtil.respondWith({data: {pageOfResults: [{uuid: "123"}]}});
+        });
+    });
+
     beforeEach(
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
@@ -43,7 +50,8 @@ describe('PatientRelationshipController', function () {
                 $rootScope: rootScope,
                 spinner: spinner,
                 patientService: patientServiceMock,
-                providerService: providerServiceMock
+                providerService: providerServiceMock,
+                appService: mockAppService
             });
         })
     );
@@ -88,6 +96,175 @@ describe('PatientRelationshipController', function () {
         });
     });
 
+    describe("Search by patient identifier or name", function(){
+        it("should call patientService for relative with given limit and search attribute", function (done) {
+            mockAppDescriptor.getConfigValue.and.callFake(function (key) {
+                switch (key) {
+                    case "minCharRequireToSearch":
+                        return;
+                    case "possibleRelativeSearchLimit":
+                        return 100;
+                }
+            });
+            var relationship = {
+                p: "GAN200012",
+                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
+                personB: {"uuid": "uuid"}
+            };
+            var searchAttrs = {'term': 'search this'};
+            scope.patient.relationships = [relationship];
+            scope.searchByPatientIdentifierOrName(searchAttrs);
+            expect(patientServiceMock.searchByNameOrIdentifier).toHaveBeenCalledWith("search this", 100);
+            expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("minCharRequireToSearch");
+            expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("possibleRelativeSearchLimit");
+
+            done();
+        });
+
+        it("should call patientService for relative with default limit and given search attribute", function (done) {
+            mockAppDescriptor.getConfigValue.and.returnValue(undefined);
+            var relationship = {
+                p: "GAN200012",
+                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
+                personB: {"uuid": "uuid"}
+            };
+            var searchAttrs = {'term': 'search this'};
+            scope.patient.relationships = [relationship];
+            scope.searchByPatientIdentifierOrName(searchAttrs);
+            expect(patientServiceMock.searchByNameOrIdentifier).toHaveBeenCalledWith("search this", Bahmni.Common.Constants.defaultPossibleRelativeSearchLimit);
+            expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("minCharRequireToSearch");
+            expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("possibleRelativeSearchLimit");
+            done();
+        });
+
+        it("should not call patientService for relative if search term length is less than config", function (done) {
+            mockAppDescriptor.getConfigValue.and.callFake(function (key) {
+                switch (key) {
+                    case "minCharRequireToSearch":
+                        return 10;
+                    case "possibleRelativeSearchLimit":
+                        return 100;
+                }
+            });
+
+            var relationship = {
+                p: "GAN200012",
+                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
+                personB: {"uuid": "uuid"}
+            };
+
+            var searchAttrs = {'term': 'search'};
+            scope.patient.relationships = [relationship];
+            scope.searchByPatientIdentifierOrName(searchAttrs);
+            expect(patientServiceMock.searchByNameOrIdentifier).not.toHaveBeenCalled();
+            expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("minCharRequireToSearch");
+            expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("possibleRelativeSearchLimit");
+            done();
+        });
+    });
+
+    describe("clearPatient", function () {
+        it("should clear personB from relationship if patientIdentifier does not present in relationship", function () {
+            var relationship = {
+                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
+                personB: {"uuid": "uuid"}
+            };
+            scope.clearPatient(relationship);
+            expect(relationship.personB).toBeUndefined();
+        });
+
+        it("should not clear personB from relationship if patientIdentifier is present in relationship", function () {
+            var relationship = {
+                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
+                personB: {"uuid": "uuid"},
+                patientIdentifier: "11"
+            };
+            scope.clearPatient(relationship);
+            expect(relationship.personB).not.toBeUndefined();
+            expect(relationship.personB).toEqual({"uuid": "uuid"});
+        });
+    });
+
+    describe("patientSelected", function () {
+        it("should map personB to relationship", function () {
+            var relationship = {
+                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"}
+            };
+            var patientData = {
+                identifier: "TEST200",
+                value: "Test Pat - TEST2000",
+                uuid: "8d91a01c-c2cc-11de-8d13-0010c68aaab"
+            };
+            expect(relationship.personB).toBeUndefined();
+            expect(relationship.patientIdentifier).toBeUndefined();
+
+            var patientSelected = scope.patientSelected(relationship);
+            patientSelected(patientData);
+            expect(relationship.personB).toEqual({display: patientData.value, uuid: patientData.uuid});
+            expect(relationship.patientIdentifier).toBe(patientData.identifier);
+
+        });
+    });
+
+    describe("getPatientList", function () {
+        it("should give patient list from response", function () {
+            var response = {
+                data: {
+                    pageOfResults: [
+                        {
+                            "uuid": "5da6f388-12f6-406a-9f6a-30e051df788e",
+                            "identifier": "GAN200012",
+                            "givenName": "Test",
+                            "middleName": null,
+                            "familyName": "RefillDrugScenario",
+                            "gender": "M"
+                        },
+                        {
+                            "uuid": "a682dc32-ad96-476f-a7f4-5c4cad5d82be",
+                            "identifier": "GAN203012",
+                            "givenName": "Second",
+                            "middleName": "mid",
+                            "familyName": "sad",
+                            "gender": "M"
+                        },
+                        {
+                            "uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896",
+                            "identifier": "GAN203112",
+                            "givenName": "ttt",
+                            "middleName": "tt",
+                            "familyName": null,
+                            "gender": "M"
+                        }
+                    ]
+                }
+            };
+
+            var expectedPatientList = [
+                {
+                    value: "Test RefillDrugScenario - GAN200012",
+                    uuid: "5da6f388-12f6-406a-9f6a-30e051df788e",
+                    identifier: "GAN200012"
+                },
+                {
+                    value: "Second mid sad - GAN203012",
+                    uuid: "a682dc32-ad96-476f-a7f4-5c4cad5d82be",
+                    identifier: "GAN203012"
+                },
+                {
+                    value: "ttt tt - GAN203112",
+                    uuid: "7559e42e-cf8f-410a-9456-b2979c5c3896",
+                    identifier: "GAN203112"
+                }
+            ];
+
+            expect(scope.getPatientList(response)).toEqual(expectedPatientList);
+        });
+
+        it("should give undefined as patient list from response is not present", function () {
+            expect(scope.getPatientList()).toBeUndefined();
+        });
+    });
+
 
     describe("isPatientRelationship", function(){
         it("should return true if the relationship type is patient", function () {
@@ -97,6 +274,7 @@ describe('PatientRelationshipController', function () {
                 personB: {"uuid": "uuid"}
             };
             expect(scope.isPatientRelationship(relationship)).toBeTruthy();
+
         });
 
         it("should return false if the relationship type is not patient", function () {
@@ -159,7 +337,7 @@ describe('PatientRelationshipController', function () {
     describe("clearRelationshipRow", function(){
         it("should clear the relationship data", function () {
             var patientRelationship = {
-                patientIdentifier: "Doctor",
+                patientIdentifier: "nameOrId",
                 relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
                 personB: {"uuid": "uuid"},
                 endDate: "2015-07-12"
@@ -170,6 +348,7 @@ describe('PatientRelationshipController', function () {
             expect(patientRelationship.content).toBeUndefined();
             expect(patientRelationship.endDate).toBeUndefined();
             expect(patientRelationship.personB).toBeUndefined();
+            expect(patientRelationship.patientIdentifier).toBeUndefined();
 
             var providerRelationship = {
                 providerName: "Doctor",
@@ -235,15 +414,14 @@ describe('PatientRelationshipController', function () {
        })
     });
 
-    describe('onEditProviderName', function(){
+    describe('onEdit', function(){
        it("should delete personB on editing provider autocomplete", function(){
            var patientRelationship = {
                relationshipType: {"uuid": undefined},
                personB: {uuid: 'personB-uuid'}
            };
 
-           scope.onEditProviderName(patientRelationship);
-
+           scope.onEdit(patientRelationship)();
            expect(patientRelationship.personB).toBeFalsy();
        })
     });
@@ -257,7 +435,7 @@ describe('PatientRelationshipController', function () {
            };
 
            expect(scope.showPersonNotFound(patientRelationship)).toBeTruthy();
-       })
+       });
 
        it("should show not show 'person not found' message when the user has not searched for any patient", function(){
            var patientRelationship = {
