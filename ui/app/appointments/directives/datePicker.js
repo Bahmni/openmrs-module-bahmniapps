@@ -8,6 +8,7 @@ angular.module('bahmni.appointments')
                 if (!$scope.viewDate) {
                     $scope.goToCurrent();
                 }
+                $scope.lastValidDate = $scope.viewDate;
             };
 
             $scope.goToPrevious = function () {
@@ -22,7 +23,15 @@ angular.module('bahmni.appointments')
                 $scope.viewDate = $scope.viewDate && dateUtil.addDays($scope.viewDate, 1);
             };
 
-            $scope.$watch("viewDate", $scope.onChange($scope.viewDate));
+            $scope.$watch("viewDate", function (viewDate) {
+                if (!viewDate) {
+                    $scope.viewDate = $scope.lastValidDate;
+                } else {
+                    $scope.lastValidDate = viewDate;
+                    $scope.viewDate = viewDate;
+                }
+                $scope.onChange($scope.viewDate);
+            }, true);
 
             init();
         };
@@ -30,7 +39,7 @@ angular.module('bahmni.appointments')
             restrict: "E",
             scope: {
                 viewDate: "=",
-                onChange: "&"
+                onChange: "="
             },
             templateUrl: "../appointments/views/manage/datePicker.html",
             controller: controller

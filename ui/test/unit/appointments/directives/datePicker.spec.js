@@ -23,10 +23,10 @@ describe('DatePicker', function () {
         return element;
     };
 
-    it('should init view date to today if undefined', function () {
+    it('should init view date to the last valid date if undefined', function () {
         scope.viewDate = undefined;
         createElement();
-        expect(scope.viewDate).toEqual(moment().startOf('day').toDate());
+        expect(scope.viewDate).toEqual(scope.lastValidDate);
     });
 
     it('should call function provided to ngChange when data is changed', function () {
