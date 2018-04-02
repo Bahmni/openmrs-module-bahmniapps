@@ -15,7 +15,7 @@ describe('DatePicker', function () {
     }));
 
     var createElement = function () {
-        var html = '<date-picker view-date="viewDate" on-change="toggleChanged()"></date-picker>';
+        var html = '<date-picker view-date="viewDate" last-valid-date="lastValidDate" on-change="toggleChanged"></date-picker>';
 
         var element = compile(angular.element(html))(scope);
         scope.$digest();
@@ -23,10 +23,11 @@ describe('DatePicker', function () {
         return element;
     };
 
-    it('should init view date to today if undefined', function () {
+    it('should init view date to the last valid date if undefined', function () {
         scope.viewDate = undefined;
+        scope.toggleChanged = jasmine.createSpy('toggleChanged');
         createElement();
-        expect(scope.viewDate).toEqual(moment().startOf('day').toDate());
+        expect(scope.viewDate).toEqual(scope.lastValidDate);
     });
 
     it('should call function provided to ngChange when data is changed', function () {
@@ -38,4 +39,3 @@ describe('DatePicker', function () {
         expect(scope.toggleChanged).toHaveBeenCalled();
     });
 });
-

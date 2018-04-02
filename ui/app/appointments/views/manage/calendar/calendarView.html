@@ -1,6 +1,6 @@
 <div ng-class="{'app-filter-open': isFilterOpen}">
     <div class="app-calendar-container" ng-class="{'app-filter-open': isFilterOpen}">
-        <date-picker view-date="startDate" on-change="getAppointmentsForDate"></date-picker>
+        <date-picker view-date="startDate" last-valid-date="lastValidDate" on-change="getAppointmentsForDate"></date-picker>
         <p class="calendar-no-appointment" ng-if="hasNoAppointments()">{{::'NO_APPOINTMENT_CALENDAR_VIEW' | translate}}</p>
         <day-calendar ng-if="shouldReload" date="startDate" appointments="providerAppointments"></day-calendar>
     </div>
