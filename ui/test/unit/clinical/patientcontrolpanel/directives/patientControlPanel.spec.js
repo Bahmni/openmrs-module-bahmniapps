@@ -113,7 +113,7 @@ describe('patientControlPanelTest', function () {
         scope.$digest();
 
         expect(compiledElementScope.links).not.toBeUndefined();
-        expect(compiledElementScope.links).toEqual([{text: "CONTROL_PANEL_DASHBOARD_TEXT", icon: "btn-summary dashboard-btn", href: "#/default/patient/patientUuid/dashboard"}]);
+        expect(compiledElementScope.links).toEqual([{text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/default/patient/patientUuid/dashboard"}]);
     });
 
     it('ensure links are correctly populated on patient dashboard page without an active visit', function () {
@@ -254,4 +254,89 @@ describe('patientControlPanelTest', function () {
 
         expect(compiledElementScope.isInEditEncounterMode()).toBeTruthy();
     })
+
+    it("goToDashBoard() should return the dashboardUrl with given program stateParams",function(){
+        stateParams = {
+            configName: "programs",
+            patientUuid: "patientUuid",
+            encounterUuid: "encounterUuid",
+            programUuid: "programUuid",
+            enrollment: "patientProgramUuid",
+            dateEnrolled: "dateEnrolled"
+        };
+
+        state = {current: {name : "patient.dashboard"}};
+
+        mockBackend.expectGET('patientcontrolpanel/views/controlPanel.html').respond("<div>dummy</div>");
+
+
+        var _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService',['getConsultationBoardLink']);
+        _clinicalAppConfigService.getConsultationBoardLink.and.returnValue("test");
+
+        _provide.value('$state',state);
+        _provide.value('$stateParams', stateParams);
+        _provide.value('clinicalAppConfigService',_clinicalAppConfigService);
+
+        var scope = rootScope.$new();
+        scope.visitHistory={
+            activeVisit: true
+        };
+
+        scope.section = {
+            numberOfVisits:1
+        };
+        scope.patient = {uuid: "patientUuid"};
+
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        expect(compiledElementScope.getDashboardLink()).toEqual("#/programs/patient/patientUuid/dashboard?programUuid=programUuid&enrollment=patientProgramUuid&dateEnrolled=dateEnrolled");
+    });
+
+    it("goToDashBoard() should return the dashboardUrl with given default stateParams ",function(){
+        stateParams = {
+            configName: "default",
+            patientUuid: "patientUuid",
+            encounterUuid: "encounterUuid"
+        };
+
+        state = {current: {name : "patient.dashboard"}};
+
+        mockBackend.expectGET('patientcontrolpanel/views/controlPanel.html').respond("<div>dummy</div>");
+
+
+        var _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService',['getConsultationBoardLink']);
+        _clinicalAppConfigService.getConsultationBoardLink.and.returnValue("test");
+
+        _provide.value('$state',state);
+        _provide.value('$stateParams', stateParams);
+        _provide.value('clinicalAppConfigService',_clinicalAppConfigService);
+
+        var scope = rootScope.$new();
+        scope.visitHistory={
+            activeVisit: true
+        };
+
+        scope.section = {
+            numberOfVisits:1
+        };
+        scope.patient = {uuid: "patientUuid"};
+
+
+        var element = compile(simpleHtml)(scope);
+
+        scope.$digest();
+        mockBackend.flush();
+
+        var compiledElementScope = element.isolateScope();
+        scope.$digest();
+
+        expect(compiledElementScope.getDashboardLink()).toEqual("#/default/patient/patientUuid/dashboard");
+    });
 });
