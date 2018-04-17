@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner',
-        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner) {
+       .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner', 		'$location', 'ngDialog', '$window', '$state',
+        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner,$location,ngDialog, $window, $state) {
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             var personAttributes = [];
@@ -15,6 +15,68 @@ angular.module('bahmni.registration')
             $scope.genderCodes = Object.keys($rootScope.genderMap);
             $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
+	    $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
+
+
+            //Flag variable to check if Dont Save button is pressed or not
+            var flag=0;
+
+            //Flag to check whether the button has an href or not
+            var hrefFlag=0;
+
+            $("#bahmniHome").click(function(){
+                if($scope.showSaveConfirmDialogConfig) {
+                    event.preventDefault();
+                    $scope.targetUrl = event.currentTarget.getAttribute('href');
+                    naviConfirmBox(event);
+                }
+            });
+
+
+            $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams) {
+                naviConfirmBox(event, toState, toParams, fromState, fromParams);
+            });
+
+            var naviConfirmBox = function (event, toState, toParams, fromState, fromParams) {
+                if(flag==0){
+                    if($scope.showSaveConfirmDialogConfig){
+                        if(event){
+                            event.preventDefault();
+                            if($scope.targetUrl){
+                                hrefFlag=1;
+                            }
+                            else{
+                                $scope.targetUrl = toState.name;
+                                hrefFlag=0;
+                            }
+
+
+                        }
+                        ngDialog.openConfirm({template: "views/navigationPrompt.html", scope: $scope});
+
+
+                    }
+                }
+            }
+
+
+            $scope.continueWithoutSaving = function () {
+                ngDialog.close();
+                flag=1;
+                if(hrefFlag==1){
+                    $window.open($scope.targetUrl,'_self');
+                }
+                else{
+                    $state.go($scope.targetUrl);
+                }
+
+            };
+
+
+            $scope.saveAndContinue = function () {
+                ngDialog.close();
+                delete $scope.targetUrl;
+            };
 
             $scope.getDeathConcepts = function () {
                 return $http({
