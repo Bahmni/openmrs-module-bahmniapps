@@ -106,10 +106,10 @@ describe("DispositionController", function () {
         expect(scope.dispositionActions).toContain({"name":"extraDisposition","code":""});
     });
 
-    it("should give empty value if any of the default values are deleted", function () {
+    it("should give undefined value if any of the default values are deleted", function () {
         _.pullAt(dispositionActions,[0]);
         initController();
-        expect(scope.dispositionActions[0]).toEqual( {name: ''} );
+        expect(scope.dispositionActions[0]).toEqual(undefined);
     });
 
     var initController = function () {
