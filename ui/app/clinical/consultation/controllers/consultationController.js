@@ -129,6 +129,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return appService.getAppDescriptor().getConfigValue('allowPatientSwitchOnConsultation') === true;
             };
 
+            $scope.isGoToIPDButtonHidden = function () {
+                return appService.getAppDescriptor().getConfigValue('hideGoToIPDButton') === true;
+            };
+
             var setCurrentBoardBasedOnPath = function () {
                 var currentPath = $location.url();
                 var board = _.find($scope.availableBoards, function (board) {
