@@ -1,0 +1,36 @@
+<div class="revise-refill-modal-wrapper discharge-wrapper" aria-labelledby="dialog-label">
+    <style type="text/css">
+        .opd-header-wrapper {
+            z-index: 10000 !important;
+        }
+    </style>
+    <div class="ngdialog-close clearfix"></div>
+    <div class="clearfix">
+        <h4> Discharge Summary </h4>
+    </div>
+    <div class="clearfix">
+        <div class="patient-attributes dialog-patient-name">
+            <label for="patient-name">Patient name: </label>
+            <span id="patient-name">{{$root.patient.name}}</span>
+        </div>
+    </div>
+    <div class="transfer-section  discharge-bed-section">
+        <p class="transfer-container">
+            <b>Discharge From:</b>
+            <span>{{$root.bedDetails.wardName}},</span>
+            <span>{{$root.bedDetails.physicalLocationName}},</span>
+            <span>#{{$root.bedDetails.bedNumber}}</span>
+        </p>
+    </div>
+    <div id="adtNotes" ng-if="getAdtConceptConfig" class="concept-set-container">
+        <concept-set concept-set-name="getAdtConceptConfig" observations="adtObservations"></concept-set>
+    </div>
+    <div class="dialog-button-group ipd-button-group">
+        <button id="modal-revise-button1" class="secondary-button" ng-click="dischargeConfirmation()">Discharge</button>
+        <button id="modal-revise-button3" class="secondary-button" ng-click="cancelConfirmationDialog()">Cancel</button>
+    </div>
+
+    <span class="ngdialog-end"></span>
+</div>
+
+

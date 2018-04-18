@@ -1,0 +1,41 @@
+<div class="revise-refill-modal-wrapper transfer-wrapper" aria-labelledby="dialog-label">
+    <style type="text/css">
+        .opd-header-wrapper {
+            z-index: 10000 !important;
+        }
+    </style>
+    <div class="ngdialog-close clearfix"></div>
+    <div class="clearfix">
+        <h4>Patient Movement</h4>
+    </div>
+    <p class="patient-attributes dialog-patient-name">
+        <label for="patient-name">Patient name: </label>
+        <span id="patient-name">{{$root.patient.name}}</span>
+    </p>
+    <div class="transfer-section transfer-bed-section">
+        <p class="transfer-container">
+            <b>Movement From</b>
+            <span>{{$root.bedDetails.wardName}}</span>
+            <span>{{$root.bedDetails.physicalLocationName}}</span>
+            <span>{{$root.bedDetails.bedNumber}}</span>
+        </p>
+        <p class="ipd-transfer-container"><i class="fa fa-long-arrow-right"></i></p>
+        <p class="transfer-container">
+            <b>Movement To</b>
+            <span>{{$root.selectedBedInfo.wardName}}</span>
+            <span>{{$root.selectedBedInfo.roomName}}</span>
+            <span>{{$root.selectedBedInfo.bed.bedNumber}}</span>
+        </p>
+    </div>
+    <div id="adtNotes" ng-if="getAdtConceptConfig" class="concept-set-container">
+        <concept-set concept-set-name="getAdtConceptConfig" observations="adtObservations"></concept-set>
+    </div>
+    <div class="dialog-button-group ipd-button-group">
+        <button id="modal-revise-button1" ng-disabled="isDisabled" class="secondary-button" ng-click="transferConfirmation()">Move</button>
+        <button id="modal-revise-button3" class="secondary-button" ng-click="cancelConfirmationDialog()">Cancel</button>
+    </div>
+
+    <span class="ngdialog-end"></span>
+</div>
+
+

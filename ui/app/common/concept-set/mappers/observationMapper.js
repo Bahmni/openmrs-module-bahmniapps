@@ -54,12 +54,12 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         });
     };
 
-    var mapObservation = function (concept, savedObs, conceptSetConfig, parentConcept) {
+    var mapObservation = function (concept, savedObs, conceptSetConfig) {
         var obs = null;
         if (savedObs && (savedObs.isObservation || savedObs.isObservationNode)) {
             return savedObs;
         }
-        var mappedGroupMembers = concept.set ? mapObservationGroupMembers(savedObs ? savedObs.groupMembers : [], concept, conceptSetConfig) : [];
+        var mappedGroupMembers = concept && concept.set ? mapObservationGroupMembers(savedObs ? savedObs.groupMembers : [], concept, conceptSetConfig) : [];
 
         if (concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName) {
             obs = newObservationNode(concept, savedObs, conceptSetConfig, mappedGroupMembers);
