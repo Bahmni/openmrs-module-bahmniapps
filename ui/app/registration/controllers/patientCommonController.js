@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner',
-        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner) {
+    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner', '$location', 'ngDialog', '$window', '$state',
+        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner, $location, ngDialog, $window, $state) {
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             var personAttributes = [];
@@ -15,6 +15,60 @@ angular.module('bahmni.registration')
             $scope.genderCodes = Object.keys($rootScope.genderMap);
             $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
+            $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
+            $scope.isClinical = false;
+
+            var savedButtonClicked = false;
+
+            var isHref = false;
+
+            $rootScope.homeNavigate = function () {
+                if ($scope.showSaveConfirmDialogConfig) {
+                    event.preventDefault();
+                    $scope.targetUrl = event.currentTarget.getAttribute('href');
+                    $scope.naviConfirmBox(event);
+                }
+            };
+
+            var stateChangeListener = $rootScope.$on("$stateChangeStart", function (event, toState, toParams) {
+                $scope.naviConfirmBox(event, toState, toParams);
+            });
+
+            $scope.naviConfirmBox = function (event, toState) {
+                if (savedButtonClicked === false) {
+                    if ($scope.showSaveConfirmDialogConfig) {
+                        if (event) {
+                            event.preventDefault();
+                            if ($scope.targetUrl) {
+                                isHref = true;
+                            } else {
+                                $scope.targetUrl = toState.name;
+                                isHref = false;
+                            }
+                        }
+                        ngDialog.openConfirm({template: "../common/ui-helper/views/saveConfirmation.html", scope: $scope});
+                    }
+                }
+            };
+
+            $scope.continueWithoutSaving = function () {
+                ngDialog.close();
+                savedButtonClicked = true;
+                if (isHref === true) {
+                    $window.open($scope.targetUrl, '_self');
+                } else {
+                    $state.go($scope.targetUrl);
+                }
+            };
+
+            $scope.cancelTransition = function () {
+                ngDialog.close();
+                delete $scope.targetUrl;
+            };
+
+            $scope.$on("$destroy", function () {
+                stateChangeListener();
+            });
 
             $scope.getDeathConcepts = function () {
                 return $http({
