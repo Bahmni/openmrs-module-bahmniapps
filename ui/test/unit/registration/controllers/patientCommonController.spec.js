@@ -2,7 +2,7 @@
 
 describe('PatientCommonController', function () {
 
-    var $aController, $httpBackend, scope, appService, rootScope, patientAttributeService;
+    var $aController, $httpBackend, scope, appService, rootScope, ngDialog, patientAttributeService;
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
 
     beforeEach(module('bahmni.registration', 'ngDialog'));
