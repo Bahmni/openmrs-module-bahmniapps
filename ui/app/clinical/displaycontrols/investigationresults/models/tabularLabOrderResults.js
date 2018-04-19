@@ -50,6 +50,10 @@ Bahmni.Clinical.TabularLabOrderResults = (function () {
             return testOrderLabel.minNormal && testOrderLabel.maxNormal;
         };
 
+        this.hasUnits = function (testOrderLabel) {
+            return testOrderLabel.testUnitOfMeasurement != undefined && testOrderLabel.testUnitOfMeasurement != null;
+        };
+
         this.hasOrders = function () {
             return this.tabularResult.orders.length > 0;
         };
