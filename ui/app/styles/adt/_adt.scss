@@ -82,7 +82,7 @@ div[ng-app="adt"] {
                 }
             }
             tbody tr:nth-child(even) {
-              background: $clinicalFormFocusBg;
+                background: $clinicalFormFocusBg;
             }
         }
         .no-data-info{
@@ -101,4 +101,22 @@ div[ng-app="adt"] {
 }
 .drug-details{
     margin-top:15px;
+}
+
+.highlight-bed {
+    border: 1px solid;
+}
+.ngdialog.ngdialog-theme-default.ng-dialog-adt-popUp .ngdialog-content {
+    width: 500px;
+    position: relative;
+}
+.ngdialog.ngdialog-theme-default {
+    padding-bottom: 160px;
+    padding-top: 160px;
+}
+.ngdialog.ngdialog-theme-default.ng-dialog-all-details-page {
+    padding: 0;
+    .ngdialog-content {
+        width: 80%;
+    }
 }

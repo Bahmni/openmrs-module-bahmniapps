@@ -1,0 +1,16 @@
+<div class="ngdialog-close clearfix" ng-click="closeDialog()"></div>
+<form class="ot-cancel-dialog-form" ng-submit="confirmCancelAppointment()">
+    <p class="ot-cancel-dialog-label"><b>{{'OT_SURGICAL_APPOINTMENT_CANCEL_OR_POSTPONE_A_SURGERY' | translate}}</b></p>
+    <p class="ot-cancel-dialog-label">{{appointment.patient}}
+    {{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}} - {{appointment.estTimeHours}} {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} : {{appointment.estTimeMinutes}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}
+    </p>
+    <p class="ot-cancel-dialog-actions">
+        <label for="postpone-button" ng-class="{'selected' : appointment.status === 'POSTPONED'}"><input type="radio" name="status" id="postpone-button" ng-model="appointment.status"  value="POSTPONED" required/> {{'OT_SURGICAL_APPOINTMENT_POSTPONE_APPOINTMENT' | translate}}</label>
+        <label for="cancel-button"ng-class="{'selected' : appointment.status === 'CANCELLED'}"><input type="radio" name="status" id="cancel-button" ng-model="appointment.status"  value="CANCELLED" required/> {{'OT_SURGICAL_APPOINTMENT_CANCEL_APPOINTMENT' | translate}}</label>
+    </p>
+   <p class="location">{{'OT_SURGICAL_APPOINTMENT_REASON_FOR_CHANGE' | translate}} <sup>*</sup></p>
+    <textarea required placeholder="{{'OT_ENTER_REASON_KEY' | translate}}" id="reasonForChange" class="ot-cancel-dialog-notes" ng-model="appointment.notes" msd-elastic></textarea>
+    <p class="ot-cancel-dialog-buttons">
+        <input type="submit" value="{{'OT_CONFIRM_KEY' | translate}}"/>
+    </p>
+</form>

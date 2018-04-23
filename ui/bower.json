@@ -48,7 +48,8 @@
     "ngReact": "^0.3.0",
     "offline": "0.7.14",
     "react": "^15.3.2",
-    "angular-ivh-treeview": "^1.1.0"
+    "angular-ivh-treeview": "^1.1.0",
+    "angular-drag-and-drop-lists": "2.1.0"
   },
   "devDependencies": {
     "angular-mocks": "1.4.9",

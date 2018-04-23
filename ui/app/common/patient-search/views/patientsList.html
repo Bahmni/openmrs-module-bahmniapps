@@ -32,7 +32,6 @@
                     <input type="text" id="patientIdentifier" ng-model="::search.searchParameter"
                            focus-on="search.startPatientSearch" placeholder="{{'SEARCH_NAME_PLACEHOLDER_KEY' | translate: {primaryIdentifier : primaryIdentifier} }}"/>
                 </div>
-
                 <div class="reg-srch-btn left">
                     <button type="submit" ng-disabled="!search.searchParameter">
                         <i class="fa fa-search"></i>
@@ -57,12 +56,12 @@
                             {{$index + 1}}
                         </td> -->
                         <td ng-repeat="heading in getHeadings(search.visiblePatients)">
-                            <a ng-if="::isHeadingOfIdentifier(heading)"
-                               ng-click="forwardPatient(row)">{{::row[heading]}}</a>
+                            <a ng-if="::isHeadingOfLinkColumn(heading)"
+                               ng-click="forwardPatient(row, heading)">{{::row[heading]}}</a>
                             <span ng-if="::isHeadingOfName(heading)" ng-click="forwardPatient(row)">{{::row[heading]}}
                                 <i class="ipd-indication fa fa-bed" ng-if="::(row.hasBeenAdmitted===true||row.hasBeenAdmitted==='true')"></i>
                             </span>
-                            <span ng-if="::(!isHeadingOfIdentifier(heading) && !isHeadingOfName(heading))">
+                            <span ng-if="::(!isHeadingOfLinkColumn(heading) && !isHeadingOfName(heading))">
                             {{::row[heading]}}
                             </span>
                         </td>
@@ -76,11 +75,10 @@
             <ul>
                 <li ng-repeat="patient in search.visiblePatients" class="active-patient" ng-click="forwardPatient(patient)">
                     <img class="smallImages" ng-src="{{::patient.image}}" fallback-src='../images/blank-user.png'>
-
-                <div class="patient-name">{{::patient.name}}</div>
-                <div class="patient-id">{{::patient.identifier}}</div>
-                <i class="ipd-indication fa fa-bed" ng-if="::(patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true')"></i>
-            </li>
+                    <div class="patient-name">{{::patient.name}}</div>
+                    <div class="patient-id">{{::patient.identifier}}</div>
+                    <i class="ipd-indication fa fa-bed" ng-if="::(patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true')"></i>
+                </li>
             </ul>
         </resize>
         <div class="note-container" ng-if="search.noResultsMessage">
@@ -90,7 +88,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
-
