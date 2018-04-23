@@ -224,32 +224,3 @@ table.h-scroll {
 .table-scroll-x {
   overflow-x: scroll;
 }
-
-/*scroll investigation chart table*/
-table.investigation-chart {
-	max-height: 250px;
-	overflow: auto;
-	display: block;
-	border: 1px solid #ddd;
-	tr {
-		border: 1px solid #ddd;
-		td {
-			border-left: 1px solid #ddd;
-		}
-	}
-	thead {
-		th {
-			position: sticky;
-			top: 0px;
-			z-index: 10;
-			border-left: 1px solid #ddd;
-		}
-	}
-	tbody {
-		th {
-			position: sticky;
-			top: 0px;
-			border-left: 1px solid #ddd;
-		}
-	}
-}
