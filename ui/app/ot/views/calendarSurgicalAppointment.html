@@ -1,0 +1,11 @@
+<div ng-class="{'expanded' : toggleHeight, 'hide-surgical-appointment': !canTheSurgicalAppointmentBeShown() }"
+     ng-style="{ height: toggleHeight? auto : height + 'px', background : backgroundColor.color, borderColor : backgroundColor.borderColor }"
+     ng-blur="deselectSurgicalAppointment($event)" tabindex="1" ng-click="selectSurgicalAppointment($event)" class="surgical-block-appointment">
+    <button ng-click="toggleHeight =!toggleHeight"><i class="fa" ng-class="{'fa-angle-up' : toggleHeight, 'fa-angle-down': !toggleHeight}" aria-hidden="true"></i></button>
+    <p class="surgicalblock-patientname"> {{patient}}  <i ng-show="surgicalAppointment.status === 'COMPLETED'" class="fa fa-check" aria-hidden="true"></i> </p>
+    <p ng-if="surgicalAppointment.derivedAttributes.expectedStartDatetime"> Est Time: {{surgicalAppointment.derivedAttributes.expectedStartDatetime | bahmniTime}} - {{surgicalAppointment.derivedAttributes.expectedEndDatetime | bahmniTime}}</p>
+    <p ng-if="attributes.procedure"> Procedure - {{attributes.procedure}} </p>
+    <p ng-if="attributes.anaesthetist"> Anaesthetist - {{attributes.anaesthetist}} </p>
+    <p ng-if="attributes.notes"> Notes - {{attributes.notes}} </p>
+    <p ng-if="surgicalAppointment.actualStartDatetime"><br> Actual Time: {{surgicalAppointment.actualStartDatetime | bahmniTime}} - {{surgicalAppointment.actualEndDatetime | bahmniTime}}</p>
+</div>

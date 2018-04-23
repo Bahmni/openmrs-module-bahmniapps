@@ -9,6 +9,7 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
     self.searchResults = [];
     self.activePatients = [];
     self.navigated = false;
+    self.links = self.searchType && self.searchType.links ? self.searchType.links : [];
     self.searchColumns = self.searchType && self.searchType.searchColumns ? self.searchType.searchColumns : ["identifier", "name"];
     angular.forEach(searchTypes, function (searchType) {
         searchType.patientCount = "...";
@@ -22,6 +23,8 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
             self.searchType = searchType;
             self.activePatients = [];
             self.searchResults = [];
+            self.links = self.searchType && self.searchType.links ? self.searchType.links : [];
+            self.searchColumns = self.searchType && self.searchType.searchColumns ? self.searchType.searchColumns : ["identifier", "name"];
         }
         self.markPatientEntry();
     };
