@@ -15,7 +15,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
-                        <th class="normal" nowrap>
+                        <th class="normal">
                             <span bo-text="testOrderLabel.testName"></span>
                             <span ng-show="accessions.hasRange(testOrderLabel)" class="range">
                                 <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
