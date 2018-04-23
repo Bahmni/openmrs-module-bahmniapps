@@ -16,38 +16,35 @@ angular.module('bahmni.registration')
             $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
-            $scope.isClinical = false;
+            $scope.shouldShowSaveAndContinueButton = false;
 
             var savedButtonClicked = false;
 
             var isHref = false;
 
-            $rootScope.homeNavigate = function () {
+            $rootScope.onHomeNavigate = function () {
                 if ($scope.showSaveConfirmDialogConfig) {
                     event.preventDefault();
                     $scope.targetUrl = event.currentTarget.getAttribute('href');
-                    $scope.naviConfirmBox(event);
+                    isHref = true;
+                    $scope.confirmationPrompt(event);
                 }
             };
 
             var stateChangeListener = $rootScope.$on("$stateChangeStart", function (event, toState, toParams) {
-                $scope.naviConfirmBox(event, toState, toParams);
+                if ($scope.showSaveConfirmDialogConfig) {
+                    $scope.targetUrl = toState.name;
+                    isHref = false;
+                    $scope.confirmationPrompt(event, toState, toParams);
+                }
             });
 
-            $scope.naviConfirmBox = function (event, toState) {
+            $scope.confirmationPrompt = function (event, toState) {
                 if (savedButtonClicked === false) {
-                    if ($scope.showSaveConfirmDialogConfig) {
-                        if (event) {
-                            event.preventDefault();
-                            if ($scope.targetUrl) {
-                                isHref = true;
-                            } else {
-                                $scope.targetUrl = toState.name;
-                                isHref = false;
-                            }
-                        }
-                        ngDialog.openConfirm({template: "../common/ui-helper/views/saveConfirmation.html", scope: $scope});
+                    if (event) {
+                        event.preventDefault();
                     }
+                    ngDialog.openConfirm({template: "../common/ui-helper/views/saveConfirmation.html", scope: $scope});
                 }
             };
 

@@ -53,27 +53,27 @@ describe('PatientCommonController', function () {
 
     it('checks if the confirmation popup is prompted when the home button is clicked when config is true', function () {
         scope.showSaveConfirmDialogConfig = true;
-        scope.homeNavigate = jasmine.createSpy("homeNavigate");
-        scope.naviConfirmBox = jasmine.createSpy("naviConfirmBox");
-        var element = angular.element("<a ng-click='homeNavigate()'>");
+        scope.onHomeNavigate = jasmine.createSpy("onHomeNavigate");
+        scope.confirmationPrompt = jasmine.createSpy("confirmationPrompt");
+        var element = angular.element("<a ng-click='onHomeNavigate()'>");
         var compiled = $compile(element)(scope);
         compiled.triggerHandler('click');
-        expect(scope.homeNavigate).toHaveBeenCalled();
+        expect(scope.onHomeNavigate).toHaveBeenCalled();
         expect(scope.showSaveConfirmDialogConfig).toBe(true);
-        scope.naviConfirmBox();
-        expect(scope.naviConfirmBox).toHaveBeenCalled();
+        scope.confirmationPrompt();
+        expect(scope.confirmationPrompt).toHaveBeenCalled();
     });
 
     it('checks if the confirmation popup is not prompted when the home button is clicked when config is false', function () {
         scope.showSaveConfirmDialogConfig = false;
-        scope.homeNavigate = jasmine.createSpy("homeNavigate");
-        scope.naviConfirmBox = jasmine.createSpy("naviConfirmBox");
-        var element = angular.element("<a ng-click='homeNavigate()'>");
+        scope.onHomeNavigate = jasmine.createSpy("onHomeNavigate");
+        scope.confirmationPrompt = jasmine.createSpy("confirmationPrompt");
+        var element = angular.element("<a ng-click='onHomeNavigate()'>");
         var compiled = $compile(element)(scope);
         compiled.triggerHandler('click');
-        expect(scope.homeNavigate).toHaveBeenCalled();
+        expect(scope.onHomeNavigate).toHaveBeenCalled();
         expect(scope.showSaveConfirmDialogConfig).not.toBe(true);
-        expect(scope.naviConfirmBox).not.toHaveBeenCalled();
+        expect(scope.confirmationPrompt).not.toHaveBeenCalled();
     });
 
     it("should make calls for reason for death global property and concept sets", function () {
