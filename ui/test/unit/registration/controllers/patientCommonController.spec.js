@@ -51,7 +51,7 @@ describe('PatientCommonController', function () {
 
     });
 
-    it('checks if the confirmation popup is prompted when the home button is clicked when config is true', function () {
+    it('checks that the confirmation popup is prompted when the home button is clicked and the config is enabled', function () {
         scope.showSaveConfirmDialogConfig = true;
         scope.onHomeNavigate = jasmine.createSpy("onHomeNavigate");
         scope.confirmationPrompt = jasmine.createSpy("confirmationPrompt");
@@ -64,7 +64,7 @@ describe('PatientCommonController', function () {
         expect(scope.confirmationPrompt).toHaveBeenCalled();
     });
 
-    it('checks if the confirmation popup is not prompted when the home button is clicked when config is false', function () {
+    it('checks that the confirmation popup is not prompted when the home button is clicked and the config is disabled', function () {
         scope.showSaveConfirmDialogConfig = false;
         scope.onHomeNavigate = jasmine.createSpy("onHomeNavigate");
         scope.confirmationPrompt = jasmine.createSpy("confirmationPrompt");
