@@ -270,6 +270,7 @@ table.investigation-chart {
     }
     thead {
         th {
+            position: -webkit-sticky;
             position: sticky;
             top: 0px;
             left: 0px;
@@ -277,6 +278,7 @@ table.investigation-chart {
             border-left: 1px solid #ddd;
         }
         td {
+            position: -webkit-sticky;
             position: sticky;
             top: 0px;
             border-left: 1px solid #ddd;
@@ -284,6 +286,7 @@ table.investigation-chart {
     }
     tbody {
         th {
+            position: -webkit-sticky;
             position: sticky;
             top: 0px;
             left: 0px;
