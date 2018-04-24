@@ -1,0 +1,108 @@
+<form name="createSurgicalBlockForm">
+<div class="patient-info-fixed-postion-container ot-secondary-header">
+    <p class="navigation-links-buttons">
+        <span class="add-new-appointment" ng-hide="surgicalForm.id">{{'ADD_NEW_SURGICAL_BLOCK' | translate}}</span>
+        <span class="add-new-appointment" ng-show="surgicalForm.id">{{'EDIT_SURGICAL_BLOCK' | translate}}</span>
+        <input show-if-privilege="app:ot:write"  type="button" value="{{'DISCARD' | translate}}" class="ot-nav-back" ng-confirm-click="gotoCalendarPage()"/>
+        <input show-if-privilege="app:ot:write" type="submit" value="{{'SAVE' | translate}}" ng-click="save(surgicalForm)" class="ot-nav-save"/>
+    </p>
+</div>
+<div class="new-surgical-appointment" >
+    <p class="new-surgical-appointment-note">
+        <i class="fa fa-info-circle"></i>
+        {{'SURGICAL_BLOCK_BANNER' | translate}}
+    </p>    <section class="new-surgical-appointment-step1">
+        <div class="create-surgical-form">
+            <h4 class="create-surgical-title">{{'CREATE_SURGICAL_BLOCK' | translate}}</h4>
+            <div class="appointment-block">
+                <p class="surgeon-block">
+                    <label class="surgeon-block surgeon-text">{{'SURGEON' | translate}}<sup>*</sup></label>
+                    <select ng-options="surgeon as surgeon.person.display for surgeon in ::surgeons track by surgeon.uuid"
+                            ng-model="surgicalForm.provider"
+                            required>
+                        <option value=""> {{'OT_SELECT_SURGEON_KEY' | translate}} </option>
+                    </select>
+                </p>
+                <p class="location-block">
+                    <label>{{'LOCATION' | translate}}<sup>*</sup></label>
+                    <span ng-repeat="location in ::locations track by location.uuid">
+                        <label class="location-buttons" for="{{::location.display}}">
+                            <i ng-if="location.name == surgicalForm.location.name" class="fa fa-check" aria-hidden="true"></i>
+                            {{ location.display }}
+                            <input type="radio" id="{{::location.display}}" name="location" ng-value="location"
+                                   ng-model="surgicalForm.location" required/>
+                        </label>
+                    </span>
+                </p>
+                <p>
+                    <span class="start-time">
+                        <label>{{'OT_START_DATE_TIME_KEY' | translate}}<sup>*</sup></label>
+                        <input type="datetime-local" ng-model="surgicalForm.startDatetime" required
+                               ng-class="{'illegalValue' : !isStartDatetimeBeforeEndDatetime(surgicalForm.startDatetime, surgicalForm.endDatetime)}" ng-change="changeInStartDateTime()">
+                    </span>
+                    <span class="start-time">
+                        <label>{{'OT_END_DATE_TIME_KEY' | translate}}<sup>*</sup></label>
+                        <input type="datetime-local" ng-model="surgicalForm.endDatetime" ng-class="{'illegalValue' : !isStartDatetimeBeforeEndDatetime(surgicalForm.startDatetime,
+                         surgicalForm.endDatetime)}" required>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <button show-if-privilege="app:ot:write" class="ot-cancel-appoinment" ng-disabled="cancelDisabled()" ng-mousedown="cancelSurgicalBlock()">{{'OT_CANCEL_BLOCK' | translate}}</button>
+    </section>
+
+    <section class="new-surgical-appointment-step2">
+                <h4 class="create-surgical-title">{{'ADD_SURGERY_STEP' | translate}}
+                    <button  show-if-privilege="app:ot:write" ng-disabled="!isFormValid()" ng-click="addNewSurgicalAppointment()">
+                        {{'OT_ADD_SURGERY_KEY' | translate}}
+                    </button>
+                </h4>
+                <h5 ng-if="surgicalForm.uuid">{{'OT_REMAINING_BLOCK_DURATION_KEY' | translate}} : {{availableBlockDuration}}</h5>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>{{'SURGERY_DETAILS' | translate}}</th>
+                        <th>{{'ACTION' | translate}}</th>
+                    </tr>
+                    </thead>
+                    <tbody dnd-list="surgicalForm.surgicalAppointments">
+                    <tr ng-repeat="surgicalAppointment in surgicalForm.surgicalAppointments  track by $index"
+                        dnd-draggable="surgicalAppointment"
+                        dnd-moved="surgicalForm.surgicalAppointments.splice($index, 1)"
+                        dnd-effect-allowed="move"
+                        dnd-dragend="updateSortWeight()"
+                        ng-class="{
+                        'cancelled': surgicalAppointment.status === 'CANCELLED' || surgicalAppointment.status === 'POSTPONED',
+                        'unsaved': surgicalAppointment.id === undefined || surgicalAppointment.isDirty
+                        }"
+                    >
+                        <td>
+                            <i class="fa fa-arrows-v" aria-hidden="true"></i>
+
+                            <div class="surgery-details-wrapper" ng-class="{'cancelled' : surgicalAppointment.status === 'CANCELLED'}">
+                                <h4>{{getPatientName(surgicalAppointment)}} <i ng-show="surgicalAppointment.status === 'COMPLETED'" class="fa fa-check" aria-hidden="true"></i> </h4>
+                                <p>
+                                    <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.procedure.value" ><b>{{'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.procedure.value}}, </span>
+                                    <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value >=0 || surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value >= 0"><b> {{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value}} {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} : {{surgicalAppointment.surgicalAppointmentAttributes.estTimeMinutes.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}, </span>
+                                    <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.cleaningTime.value >=0"><b> {{'OT_SURGICAL_APPOINTMENT_CLEANING_TIME' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.cleaningTime.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}, </span>
+                                    <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.otherSurgeon.value.person.display"><b> {{'OT_SURGICAL_APPOINTMENT_OTHER_SURGEON' | translate}}</b> {{surgicalAppointment.surgicalAppointmentAttributes.otherSurgeon.value.person.display}}, </span>
+                                    <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.surgicalAssistant.value"><b> {{'OT_SURGICAL_APPOINTMENT_SURGICAL_ASSISTANT' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.surgicalAssistant.value}}, </span>
+                                    <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.anaesthetist.value"><b> {{'OT_SURGICAL_APPOINTMENT_ANAESTHETIST' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.anaesthetist.value}}, </span>
+                                    <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.scrubNurse.value"><b> {{'OT_SURGICAL_APPOINTMENT_SCRUB_NURSE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.scrubNurse.value}}, </span>
+                                    <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.circulatingNurse.value"><b> {{'OT_SURGICAL_APPOINTMENT_CIRCULATING_NURSE' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.circulatingNurse.value}}, </span>
+                                    <span ng-if="surgicalAppointment.surgicalAppointmentAttributes.notes.value"><b> {{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}</b> - {{surgicalAppointment.surgicalAppointmentAttributes.notes.value}}</span>
+                                </p>
+                            </div>
+                        </td>
+                        <td class="appointment-edit">
+                            <a id="edit-appointment" href   show-if-privilege="app:ot:write"  ng-click="editAppointment(surgicalAppointment)" ng-show="surgicalAppointment.status === 'SCHEDULED' || surgicalAppointment.status === 'COMPLETED'">{{'OT_SURGICAL_APPOINTMENT_EDIT' | translate}}</a>
+                            <a id="cancel-appointment" href  show-if-privilege="app:ot:write" ng-click="cancelAppointment(surgicalAppointment)" ng-show="surgicalAppointment.status === 'SCHEDULED'">{{'OT_SURGICAL_APPOINTMENT_CANCEL' | translate}}</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+        </form>
+
+

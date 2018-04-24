@@ -1,0 +1,408 @@
+.ot-header-wrapper {
+  margin-bottom: 108px;
+}
+
+.ot-secondary-header {
+  height: 55px;
+  background-color: white;
+  box-shadow: 0px 0px 0px;
+  border-bottom: 1px #cccecf solid;
+  .ot-surgical-button {
+    float: right;
+    font-size: 14px;
+    margin-right: 10px;
+    margin-top: 11px;
+    background: #99C915;
+    border: 1px solid #99c915;
+  }
+}
+
+.ot-scheduling-nav {
+  overflow: hidden;
+  margin: 10px 0 0 10px;
+  li {
+    overflow: hidden;
+    border-radius: 5px;
+    margin-right: 10px;
+    display: inline-block;
+    &:last-child {
+      margin: 0;
+    }
+    a {
+      display: inline-block;
+      color: #fff !important;
+      padding: 10px;
+    }
+    &.active {
+      background: rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+div[ng-app="ot"] {
+  .non-icon-back-btn {
+    padding: 12px 10px;
+  }
+}
+
+.navigation-links-buttons {
+  height: 55px;
+  float: right;
+  padding: 10px;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  input {
+    font-size: 14px;
+    border: none;
+    outline: none;
+    background: transparent;
+    float: right;
+    margin-left: 10px;
+    &:hover {
+      background: transparent;
+      opacity: 0.8;
+    }
+    &.ot-nav-save {
+      background: #99c915;
+      border: 1px solid #99c915;
+      color: #fff;
+    }
+    &.ot-nav-back {
+      border: 1px solid #cccecf;
+      color: #000;
+    }
+  }
+  span {
+    display: inline-block;
+    padding: 10px 0 0 10px;
+    font-size: 17px;
+    color: #000;
+  }
+}
+
+.ngdialog.surgical-appointment-dialog {
+  padding: 0;
+  .ngdialog-overlay {
+    background: transparent;
+  }
+  .ngdialog-content {
+    width: 500px;
+    top: 42px;
+    margin: 10px;
+    left: calc(100% - 510px);
+    height: calc(100% - 53px);
+    margin-bottom: 0;
+    border-radius: 0;
+    background: #eee;
+    box-shadow: -4px 5px 21px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    .appointment-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #484848;
+      margin: 0 0 10px;
+    }
+    .appointment-block {
+      p {
+        overflow: hidden;
+        margin-bottom: 10px;
+        label {
+          width: 125px;
+          float: left;
+          text-align: right;
+          margin-right: 10px;
+        }
+        .patient_name {
+          display: inline-block;
+          margin-top: 10px;
+          text-decoration: underline;
+        }
+        input.add {
+          background: #99c915;
+          border: 1px solid #99c915;
+          color: #fff;
+          font-size: 15px;
+        }
+        input.cancel {
+          background: #fff;
+          border: 1px solid #cccecf;
+          color: #000;
+          font-size: 15px;
+          margin: 0 65px 0 10px;
+        }
+        input[type=text] {
+          width: calc(100% - 200px);
+          padding: 10px;
+          border-radius: 3px;
+          position: relative;
+        }
+        > i {
+          right: 85px;
+          position: absolute;
+          top: 57px;
+          color: #cac9c9;
+        }
+        select {
+          height: 35px;
+          width: 273px;
+        }
+      }
+
+      input.add {
+        background: #99c915;
+        border: 1px solid #99c915;
+        color: #fff;
+        font-size: 15px;
+        margin-left: -20px;
+      }
+      input.cancel {
+        background: #fff;
+        border: 1px solid #cccecf;
+        color: #000;
+        font-size: 15px;
+        margin-left: 10px;
+      }
+      textarea {
+        width: calc(100% - 200px);
+        padding: 10px;
+        box-sizing: border-box;
+        min-height: 80px;
+        .text-section {
+          overflow: auto !important;
+        }
+      }
+    }
+
+  }
+}
+
+.ot-top-button-wrapper {
+  overflow: hidden;
+  position: relative;
+  padding: 10px 0;
+  background: #fff;
+  p {
+    display: inline-block;
+  }
+  .calendar-day-navigation {
+    float: left;
+    margin: 0 10px;
+    button {
+      background: #fff;
+      opacity: 1;
+      -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+      padding: 5px 10px;
+      color: #000;
+      border: 1px solid #95989a;
+      margin-right: 2px;
+    }
+  }
+  .calendar-current-day {
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 250px;
+    text-align: center;
+    bottom: 0;
+    height: 20px;
+    font-weight: 600;
+  }
+  .calendar-btn-container, .day-btn-container {
+    label {
+      -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+      padding: 6px 10px;
+      color: #000;
+      border: 1px solid #95989a;
+      margin-right: 0;
+      display: inline-block;
+      background: #fff;
+      border-radius: 3px;
+      &:hover {
+        background: #ececec;
+        opacity: 1;
+      }
+    }
+    input:checked + label {
+      background: #d6d6d6;
+    }
+    input[value = "List View"]:checked + label {
+      margin-right: 50px;
+    }
+    input {
+      visibility: hidden;
+      width: 0;
+      height: 0;
+    }
+  }
+  .calendar-btn-container {
+    float: right;
+    padding-right: 10px;
+  }
+  .day-btn-container {
+    float: left;
+  }
+}
+
+.ot-actual-time-form {
+  .ngdialog-content {
+    width: 415px;
+  }
+  .ot-actual-time-person-display {
+    font-size: 14px;
+    font-weight: bold;
+    color: #484848;
+    text-align: center;
+    margin: 0 0 5px;
+  }
+  .ot-actual-time-label {
+    text-align: center;
+    padding: 15px 0px 3px 0px;
+  }
+  .ot-actual-time-input {
+    word-spacing: 1px;
+    font-size: 18px;
+    font-weight: lighter;
+    border-radius: 6px;
+    padding: 0px 10px 0px 30px;
+    margin: 0px auto 0px !important;
+    display: block;
+  }
+  .ot-actual-time-notes {
+    min-height: 100px;
+    min-width: 350px;
+    margin: 0px auto;
+    display: block;
+    border-radius: 6px;
+  }
+
+  .ot-actual-time-buttons {
+    text-align: center;
+    .button {
+      margin: 20px 15px 5px;
+    }
+  }
+}
+
+.ot-cancel-dialog-form {
+  p {
+    padding: 0 10px;
+  }
+
+  .ot-cancel-dialog-label {
+    margin-bottom: 15px;
+  }
+  .ot-cancel-dialog-actions {
+    text-align: center;
+    margin-bottom: 10px;
+    label {
+      display: inline-block;
+      position: relative;
+      padding: 5px 10px;
+      border: 1px solid #aaa;
+      background: #fff;
+      margin: 0 5px 0 0;
+      border-radius: 3px;
+      color: #111111;
+      font-weight: normal;
+      cursor: pointer;
+      box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+      &:hover, &.selected {
+        background: #d6d6d6;
+      }
+      input {
+        opacity: 0;
+        position: absolute;
+        margin: auto;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        cursor: pointer;
+      }
+    }
+  }
+  .ot-cancel-dialog-notes {
+    min-height: 100px;
+    width: 100%;
+    display: block;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+  .ot-cancel-dialog-buttons {
+    text-align: center;
+    input {
+      border: 0;
+      outline: 0;
+      background: #f70909;
+      color: #fff;
+      box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+      &:hover {
+        background: #f70909;
+        opacity: 0.8;
+      }
+    }
+  }
+  .location {
+    sup {
+      color: #f70909;
+    }
+  }
+}
+
+.calendar-container {
+  overflow: hidden;
+  background: #fff;
+}
+
+.list-view-table-wrapper {
+  overflow: auto;
+  height: calc(100vh - 200px);
+  table {
+    tr {
+      white-space: nowrap;
+      &:focus {
+        outline: none;
+        background: #B3E5FC ;
+        border: 1px solid #0277BD ;
+      }
+    }
+    .list-view-notes {
+      white-space: normal;
+    }
+    .current-date {
+      background: #f0f5f5 ;
+    }
+    .status-postponed {
+      background: #fceab6;
+    }
+    .status-cancelled {
+      background: #fcb6b6;
+    }
+  }
+}
+
+.list-view-print-btn {
+  position: fixed;
+  right: 9px;
+  top: 117px;
+  z-index: 99999;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+  padding: 6px 10px;
+  color: #000;
+  border: 1px solid #95989a;
+  margin-right: 0;
+  display: inline-block;
+  background: #fff;
+  &:hover {
+    background: #ececec;
+    opacity: 1;
+  }
+}
+
+.patient-search-wrapper {
+  margin: 0 auto;
+  max-width: 1300px;
+}

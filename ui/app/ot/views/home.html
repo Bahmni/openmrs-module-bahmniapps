@@ -1,0 +1,118 @@
+<div class="patient-info-fixed-postion-container ot-secondary-header">
+    <button class="back-btn dashboard-link ot-surgical-button" show-if-privilege="app:ot:write" ng-click="goToNewSurgicalAppointment()">
+        {{'NEW_SURGICAL_BLOCK' | translate}}
+    </button>
+</div>
+<div class="ot-filter-section">
+    <div class="ot-filter-items location-block">
+        <h4>{{'OT_OPERATION_THEATRE_LABEL' | translate}}</h4>
+        <p ng-repeat="location in locations track by location.uuid">
+            <span>{{ location.display }}</span>
+            <label class="location-buttons" for="{{location.display}}">
+                <input type="checkbox" id="{{location.display}}" name="location"
+                       ng-model="filters.locations[location.name]" required/>
+            </label>
+        </p>
+    </div>
+    <div class="ot-filter-items surgeon-block">
+        <h4>{{'OT_SURGEON_KEY' | translate}}</h4>
+        <multi-select-autocomplete
+                input-items="surgeonList"
+                selected-values="filters.providers"
+                display-property="'name'"
+                key-property="'uuid'"
+                placeholder="'OT_ENTER_SURGEON_NAME_KEY'"
+                load-on-down-arrow="false"
+                auto-complete-min-length="1"></multi-select-autocomplete>
+    </div>
+    <div class="ot-filter-items patient-block">
+        <h4>{{'OT_PATIENT' | translate}}</h4>
+        <p>
+            <input type="text" id="patient-ot-filter" min-length=2 bahmni-autocomplete ng-model="patient"
+                   source="search"
+                   response-map="responseMap" on-select="onSelectPatient" ng-change="clearThePatientFilter()"
+                   strict-select="true"
+                   ng-class="{'illegalValue': isInvalid}" placeholder="{{'OT_ENTER_PATIENT_KEY' | translate }}"/>
+            <i class="fa fa-search" aria-hidden="true"></i>
+        </p>
+    </div>
+    <div class="ot-filter-items status-block">
+        <h4>{{'OT_APPOINTMENT_STATUS' | translate}}</h4>
+        <multi-select-autocomplete
+                input-items="appointmentStatusList"
+                selected-values="filters.statusList"
+                display-property="'name'"
+                key-property="'name'"
+                placeholder="'OT_ENTER_STATUS_KEY'"
+                load-on-down-arrow="false"
+                auto-complete-min-length="1"></multi-select-autocomplete>
+    </div>
+    <div class="surgical-action-wrapper">
+        <button ng-click="applyFilters()">{{'OT_APPLY_FILTERS' | translate}}</button>
+        <button ng-click="clearFilters()">{{'OT_CLEAR_FILTERS' | translate}}</button>
+    </div>
+</div>
+
+<div class="ot-top-button-wrapper">
+    <p class="calendar-day-navigation" ng-if="weekOrDay === 'day'">
+        <button ng-click="goToPreviousDate(viewDate)"><i class="fa fa-angle-left"></i></button>
+        <button ng-click="goToCurrentDate()">{{'OT_TODAY_KEY' | translate}}</button>
+        <button type="button" ng-click="goToNextDate(viewDate)"><i class="fa fa-angle-right"></i></button>
+    </p>
+    <p class="calendar-day-navigation" ng-if="weekOrDay === 'week'">
+        <button ng-click="goToPreviousWeek()"><i class="fa fa-angle-left"></i></button>
+        <button ng-click="goToCurrentWeek()">{{'OT_THIS_WEEK_KEY' | translate}}</button>
+        <button type="button" ng-click="goToNextWeek()"><i class="fa fa-angle-right"></i></button>
+    </p>
+
+    <p class="calendar-current-day" ng-if="weekOrDay === 'day'">
+        {{viewDate | date : 'dd MMM yyyy, EEE'}}
+    </p>
+
+    <p class="calendar-current-day" ng-if="weekOrDay === 'week'">
+        {{weekStartDate | date : 'dd MMM yyyy, EEE'}} to {{weekEndDate | date : 'dd MMM yyyy, EEE'}}
+    </p>
+
+
+    <p ng-show="view === 'List View'" class="day-btn-container">
+        <input type="radio" name="weekOrDay" id="week-button" ng-model="weekOrDay" value="week"
+               ng-click="goToCurrentWeek()" required/>
+        <label for="week-button">{{'OT_WEEK_KEY' | translate}}</label>
+        <input type="radio" name="weekOrDay" id="day-button" ng-model="weekOrDay" value="day"
+               ng-click="goToCurrentDate()" required/>
+        <label for="day-button">{{'OT_DAY_KEY' | translate}}</label>
+    </p>
+    <p class="calendar-btn-container">
+        <input type="radio" name="view" id="calendar-button" ng-model="view" value="Calendar"
+               ng-click="calendarView()" required/>
+        <label for="calendar-button">{{'OT_CALENDAR_KEY' | translate}}</label>
+
+        <input type="radio" name="view" id="list-view-button" ng-model="view" value="List View" ng-click="listView()" required/>
+        <label for="list-view-button">{{'OT_LIST_VIEW_KEY' | translate}}</label>
+    </p>
+</div>
+
+<div class="calander-container">
+    <ot-calendar ng-if="view === 'Calendar'"
+                 view-date="viewDate"
+                 day-view-start="calendarConfig.dayViewStart"
+                 day-view-end="calendarConfig.dayViewEnd"
+                 day-view-split="calendarConfig.dayViewSplit"
+                 filter-params="filterParams">
+    </ot-calendar>
+
+    <list-view ng-if="view === 'List View'"
+               week-start-date="weekStartDate"
+               week-end-date="weekEndDate"
+               view-date="viewDate"
+               week-or-day="weekOrDay"
+               filter-params="filterParams">
+    </list-view>
+
+</div>
+<div class="surgical-action-wrapper">
+    <button  show-if-privilege="app:ot:write" ng-disabled="addActualTimeDisabled" ng-mousedown="addActualTime()">{{'OT_ADD_ACTUAL_TIME_KEY' | translate}}</button>
+    <button  show-if-privilege="app:ot:write" ng-disabled="editDisabled" ng-mousedown="goToEdit($event)">{{'OT_EDIT_KEY' | translate}}</button>
+    <button  show-if-privilege="app:ot:write" ng-disabled="moveButtonDisabled" ng-mousedown="gotoMove()">{{'OT_MOVE_KEY' | translate}}</button>
+    <button  show-if-privilege="app:ot:write" ng-disabled="cancelDisabled" ng-mousedown="cancelSurgicalBlockOrSurgicalAppointment()">{{'OT_CANCEL_KEY' | translate}}</button>
+</div>

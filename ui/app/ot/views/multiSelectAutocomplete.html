@@ -1,0 +1,22 @@
+<div class="autocompleteMultiSelect provider-tag-selector">
+    <tags-input ng-model="selectedValues" display-property="{{displayProperty}}"
+                key-property="{{keyProperty}}"
+                placeholder="{{placeholder | translate}}"
+                ng-init="focusonthetest()"
+                on-tag-added="addItem($tag)"
+                on-tag-removed="removeItem($tag)"
+                add-from-autocomplete-only="true"
+                replace-spaces-with-dashes="false">
+        <auto-complete source="search($query)" load-on-down-arrow="{{loadOnDownArrow}}" load-on-focus="true" min-length="{{autoCompleteMinLength}}"></auto-complete>
+    </tags-input>
+    <div class="selected-values-wrapper">
+        <p ng-repeat="value in selectedValues track by value[keyProperty]">
+            <span ng-style="{background : value.otCalendarColor}">{{ value.name }}</span>
+            <label>
+                <i class="fa fa-times" aria-hidden="true"></i>
+                <input type="checkbox" id="{{value.keyProperty}}" ng-change="removeItem(value)"
+                       name="value[displayProperty]" ng-model="value[value[displayProperty]]" required/>
+            </label>
+        </p>
+    </div>
+</div>
