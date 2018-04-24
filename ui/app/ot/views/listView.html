@@ -1,0 +1,89 @@
+<div class="list-view-table-wrapper">
+    <button ng-click="printPage()" class="list-view-print-btn"><i class="fa fa-print" aria-hidden="true"></i></button>
+    <table>
+        <thead>
+        <tr>
+            <th ng-repeat="info in tableInfo" ng-click="info.sortInfo && sortSurgicalAppointmentsBy(info.sortInfo)">
+                {{ info.heading }}
+                <span ng-if="sortColumn == info.sortInfo">
+                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
+                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
+                </span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="appointment in surgicalAppointmentList" ng-click="selectSurgicalAppointment($event, appointment)"
+            ng-blur="deselectSurgicalAppointment($event)" tabindex="1" ng-class="{'current-date': isCurrentDateinWeekView(appointment.derivedAttributes.expectedStartDate),
+             'status-postponed': isStatusPostponed(appointment.status), 'status-cancelled': isStatusCancelled(appointment.status)}">
+            <td>
+                {{appointment.status}}
+            </td>
+            <td>
+                {{appointment.derivedAttributes.expectedStartDate | date : 'EEEE'}}
+            </td>
+            <td>
+                {{appointment.derivedAttributes.expectedStartDate | bahmniDate}}
+            </td>
+            <td>
+                {{appointment.derivedAttributes.patientIdentifier}}
+            </td>
+            <td>
+                {{appointment.derivedAttributes.patientName}}
+            </td>
+            <td>
+                {{appointment.derivedAttributes.patientAge}}
+            </td>
+            <td>
+                {{appointment.derivedAttributes.expectedStartTime | bahmniTime}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.estTimeHours.value}} {{'OT_SURGICAL_APPOINTMENT_HOURS' |
+                translate}} : {{appointment.surgicalAppointmentAttributes.estTimeMinutes.value}}
+                {{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}
+                + {{appointment.surgicalAppointmentAttributes.cleaningTime.value}} {{'OT_SURGICAL_APPOINTMENT_MINUTES' |
+                translate}}
+            </td>
+            <td>
+                {{appointment.actualStartDatetime | bahmniTime}} - {{appointment.actualEndDatetime | bahmniTime}}
+            </td>
+            <td>
+                {{appointment.surgicalBlock.location.name}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.procedure.value}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.notes.value}}
+            </td>
+            <td>
+                {{appointment.surgicalBlock.provider.person.display}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.otherSurgeon.value.person.display}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.surgicalAssistant.value}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.anaesthetist.value}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.scrubNurse.value}}
+            </td>
+            <td>
+                {{appointment.surgicalAppointmentAttributes.circulatingNurse.value}}
+            </td>
+            <td class="list-view-notes">
+                {{appointment.notes}}
+            </td>
+            <td>
+                {{appointment.bedLocation}}
+            </td>
+            <td>
+                {{appointment.bedNumber}}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

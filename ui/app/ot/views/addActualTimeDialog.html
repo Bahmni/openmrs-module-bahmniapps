@@ -1,0 +1,21 @@
+<form class="ot-actual-time-form" name="surgicalAppointmentForm" ng-submit="add()">
+    <h4 class="ot-actual-time-person-display"> {{'OT_SURGICAL_APPOINTMENT_ADD_ACTUAL_TIME_FOR' | translate}} {{patientDisplayLabel}}</h4>
+    <p>
+        <label class="ot-actual-time-label">{{'OT_START_TIME_KEY' | translate}}</label>
+        <input class= "ot-actual-time-input" ng-required="isActualTimeRequired()" type="time" ng-model="actualStartTime"/>
+    </p>
+
+    <p>
+        <label class="ot-actual-time-label">{{'OT_END_TIME_KEY' | translate}}</label>
+        <input class="ot-actual-time-input" ng-required="isActualTimeRequired()" type="time" ng-model="actualEndTime"/>
+    </p>
+    <p>
+        <label class="ot-actual-time-label">{{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}</label>
+        <textarea class="ot-actual-time-notes"  placeholder="{{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}" id="notesID" ng-model="notes" msd-elastic></textarea>
+    </p>
+    <p class="ot-actual-time-buttons">
+        <input type="submit" class="button" value="{{'OT_ADD_KEY' | translate}}"/>
+        <input type="button" class="button" value="{{'OT_CANCEL_KEY' | translate}}" ng-click="close()"/>
+    </p>
+
+</form>

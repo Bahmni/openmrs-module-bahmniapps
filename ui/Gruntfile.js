@@ -195,6 +195,7 @@ module.exports = function (grunt) {
                 '<%= yeoman.app %>/home/**/*.html',
                 '<%= yeoman.app %>/admin/**/*.html',
                 '<%= yeoman.app %>/registration/**/*.html',
+                '<%= yeoman.app %>/ot/**/*.html',
                 '<%= yeoman.app %>/document-upload/**/*.html',
                 '<%= yeoman.app %>/reports/**/*.html',
                 '<%= yeoman.app %>/appointments/**/*.html'
@@ -265,6 +266,7 @@ module.exports = function (grunt) {
                             'common/**/*.html',
                             'orders/**/*.html',
                             'home/**/*.html',
+                            'ot/**/*.html',
                             'admin/**/*.html',
                             'reports/**/*.html',
                             'registration/**/*.html',
@@ -405,6 +407,12 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
+                        src: ['ot.*.js'],
+                        dest: '<%= yeoman.dist %>/ot/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
                         src: ['reports.*.css'],
                         dest: '<%= yeoman.dist %>/reports/'
                     },
@@ -420,6 +428,7 @@ module.exports = function (grunt) {
                         src: ['document-upload.*.css'],
                         dest: '<%= yeoman.dist %>/document-upload/'
                     },
+                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['ot.*.css'], dest: '<%= yeoman.dist %>/ot/'},
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
@@ -475,6 +484,7 @@ module.exports = function (grunt) {
                     '<%= yeoman.dist %>/orders.min.js': '<%= yeoman.dist %>/orders.min.js',
                     '<%= yeoman.dist %>/reports.min.js': '<%= yeoman.dist %>/reports.min.js',
                     '<%= yeoman.dist %>/clinical.min.js': '<%= yeoman.dist %>/clinical.min.js',
+                    '<%= yeoman.dist %>/ot.min.js': '<%= yeoman.dist %>/ot.min.js',
                     '<%= yeoman.dist %>/appointments.min.js': '<%= yeoman.dist %>/appointments.min.js'
                 }
             },
