@@ -16,9 +16,9 @@ angular.module('bahmni.registration')
             $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
-            $scope.shouldShowSaveAndContinueButton = false;
+            $scope.showSaveAndContinueButton = false;
 
-            var savedButtonClicked = false;
+            var dontSaveButtonClicked = false;
 
             var isHref = false;
 
@@ -40,7 +40,7 @@ angular.module('bahmni.registration')
             });
 
             $scope.confirmationPrompt = function (event, toState) {
-                if (savedButtonClicked === false) {
+                if (dontSaveButtonClicked === false) {
                     if (event) {
                         event.preventDefault();
                     }
@@ -50,7 +50,7 @@ angular.module('bahmni.registration')
 
             $scope.continueWithoutSaving = function () {
                 ngDialog.close();
-                savedButtonClicked = true;
+                dontSaveButtonClicked = true;
                 if (isHref === true) {
                     $window.open($scope.targetUrl, '_self');
                 } else {
