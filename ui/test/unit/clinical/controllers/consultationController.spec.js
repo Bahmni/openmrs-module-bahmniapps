@@ -300,6 +300,24 @@ describe("ConsultationController", function () {
             stateParams.encounterUuid = "abdk-k1j2k3j2k-skfhsjfs";
             expect(scope.isInEditEncounterMode()).toBeTruthy();
         });
+
+        it("should get ipd configuration from config", function () {
+            createController();
+            appDescriptor = {
+                formatUrl: function (url) {
+                    return url;
+                },
+                getConfigValue: function () {
+                    return true;
+                }
+            };
+            scope.ipdButtonConfig = {forwardUrl:  "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", hideGoToIPDButton: false};
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+
+            expect(scope.ipdButtonConfig.forwardUrl).toEqual("../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}");
+            expect(scope.ipdButtonConfig.hideGoToIPDButton).toBeFalsy();
+        });
+
     });
 
     describe("tabUrl", function () {
@@ -674,4 +692,19 @@ describe("ConsultationController", function () {
             });
         });
     });
+
+    it("should generate the URL as mentioned in the config", function () {
+        appDescriptor = {
+            formatUrl: function (url) {
+                return url;
+            },
+            getConfigValue: function () {
+                return true;
+            }
+        };
+        scope.ipdButtonConfig = {forwardUrl:  "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}"};
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
+
+        expect(scope.generateBedManagementURL()).toEqual("../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}");
+    })
 });
