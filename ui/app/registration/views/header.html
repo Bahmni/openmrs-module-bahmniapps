@@ -1,6 +1,6 @@
 <header class="reg-header" ng-controller="NavigationController">
         <ul class="top-nav fl">
-            <a class="back-btn" accesskey="h" href="../home/index.html"><i class="fa fa-home"></i></a>
+            <a class="back-btn" accesskey="h" href="../home/index.html" ng-click="onHomeNavigate()"><i class="fa fa-home"></i></a>
             <li ng-repeat="extension in ::extensions">
                 <a ng-click="goTo(extension.url)" accesskey="{{::extension.shortcutKey | translate}}"><i class="{{::extension.icon}} fa fa-white small"></i>
                     <span class="nav-link" ng-bind-html="::extension | titleTranslate"></span></a>
