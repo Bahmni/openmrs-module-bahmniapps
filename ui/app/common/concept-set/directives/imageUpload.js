@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('imageUpload', ['visitDocumentService', 'messagingService', 'spinner', function (visitDocumentService, messagingService, spinner) {
+    .directive('imageUpload', ['visitDocumentService', 'messagingService', 'spinner', '$rootScope', function (visitDocumentService, messagingService, spinner, $rootScope) {
         var link = function (scope, element) {
             element.bind("change", function () {
                 var file = element[0].files[0];
@@ -14,6 +14,7 @@ angular.module('bahmni.common.conceptSet')
                             scope.url = response.data.url;
                             element.val(null);
                             if (fileType !== "video") {
+                                scope.observation.conceptUIConfig.required = false;
                                 cloneNew(scope.observation, scope.rootObservation);
                             }
                         }));
