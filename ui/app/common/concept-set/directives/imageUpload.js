@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('imageUpload', ['visitDocumentService', 'messagingService', 'spinner', '$rootScope', function (visitDocumentService, messagingService, spinner, $rootScope) {
+    .directive('imageUpload', ['visitDocumentService', 'messagingService', 'spinner', function (visitDocumentService, messagingService, spinner) {
         var link = function (scope, element) {
             element.bind("change", function () {
                 var file = element[0].files[0];
