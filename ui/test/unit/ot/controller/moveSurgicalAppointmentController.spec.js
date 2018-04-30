@@ -15,6 +15,17 @@ describe("moveSurgicalAppointmentController", function () {
         });
     });
 
+    //This function converts a date into locale specific date
+    var toDateString = function(dateValue){
+        //dateValue expected in the format -> 2017-08-18 20:00:00
+        return moment(dateValue,"YYYY-MM-DD HH:mm:ss").format();
+    };
+
+    var toDate = function(dateValue){
+        //dateValue expected in the format -> 2017-08-18 20:00:00
+        return moment(dateValue,"YYYY-MM-DD HH:mm:ss").toDate();
+    };
+
     var surgicalAppointment = {
         patient: {
             display: "EG101322M - Albert Hassan",
@@ -74,8 +85,29 @@ describe("moveSurgicalAppointmentController", function () {
             uuid: "cdcf3c4b-6149-4a69-8113-97f651fae024"
         }
     };
-    var surgicalBlock =  {id: 71, uuid: "cdcf3c4b-6149-4a69-8113-97f651fae024", provider: {uuid: "providerUuid", person: {uuid: "8ead3402-20e0-11e7-9532-000c290433a8", display: "Hanna Janho"}}, location: {"name": "OT 1", uuid: "locationUuid"}, startDatetime: "2017-08-18T02:00:00.000+0000", endDatetime: "2017-08-18T03:45:00.000+0000", surgicalAppointments: [surgicalAppointment, surgicalAppointment2]};
-    var surgicalBlock1 =  {id: 72, uuid: "cdcf3c4b-6149-4a69-8113-97f651fae025", provider: {person: {uuid: "8ead3402-20e0-11e7-9532-000c290433a8", display: "Hanna Janho1"}}, startDatetime: "2017-08-18T05:30:00.000+0000", endDatetime: "2017-08-18T08:30:00.000+0000", surgicalAppointments: [surgicalAppointment2], location: {"name": "OT 2"}};
+
+
+    var surgicalBlock = {
+        id: 71,
+        uuid: "cdcf3c4b-6149-4a69-8113-97f651fae024",
+        provider: {
+            uuid: "providerUuid",
+            person: {uuid: "8ead3402-20e0-11e7-9532-000c290433a8", display: "Hanna Janho"}
+        },
+        location: {"name": "OT 1", uuid: "locationUuid"},
+        startDatetime: toDateString("2017-08-18 02:00:00"),
+        endDatetime: toDateString("2017-08-18 03:45:00"),
+        surgicalAppointments: [surgicalAppointment, surgicalAppointment2]
+    };
+    var surgicalBlock1 = {
+        id: 72,
+        uuid: "cdcf3c4b-6149-4a69-8113-97f651fae025",
+        provider: {person: {uuid: "8ead3402-20e0-11e7-9532-000c290433a8", display: "Hanna Janho1"}},
+        startDatetime: toDateString("2017-08-18 05:30:00"),//"2017-08-18T05:30:00.000+0000",
+        endDatetime: toDateString("2017-08-18 08:30:00"),//"2017-08-18T08:30:00.000+0000",
+        surgicalAppointments: [surgicalAppointment2],
+        location: {"name": "OT 2"}
+    };
 
     var createController = function () {
         controller('moveSurgicalAppointmentController', {
@@ -116,7 +148,7 @@ describe("moveSurgicalAppointmentController", function () {
     it("should get the surgical blocks for that date when user selects a date", function () {
         scope.ngDialogData = {surgicalAppointment: surgicalAppointment, surgicalBlock: surgicalBlock};
         surgicalAppointmentService.getSurgicalBlocksInDateRange.and.returnValue(specUtil.simplePromise({data: {results: [surgicalBlock, surgicalBlock1]}}));
-        var dateForMovingSurgery = new Date("2017-08-18T00:00:00.0530");
+        var dateForMovingSurgery = toDate("2017-08-18 00:00:00");
         scope.dateForMovingSurgery = dateForMovingSurgery;
         createController();
         scope.changeInSurgeryDate();
@@ -124,7 +156,7 @@ describe("moveSurgicalAppointmentController", function () {
         expect(scope.availableBlocks.length).toBe(1);
         expect(scope.availableBlocks[0].uuid).toBe("cdcf3c4b-6149-4a69-8113-97f651fae025");
         expect(scope.availableSurgicalBlocksForGivenDate.length).toBe(1);
-        expect(scope.availableSurgicalBlocksForGivenDate[0].displayName).toBe("Hanna Janho1, OT 2 (11:00 am - 2:00 pm)");
+        expect(scope.availableSurgicalBlocksForGivenDate[0].displayName).toBe("Hanna Janho1, OT 2 (5:30 am - 8:30 am)");
         expect(scope.availableSurgicalBlocksForGivenDate[0].uuid).toBe("cdcf3c4b-6149-4a69-8113-97f651fae025");
         expect(scope.availableSurgicalBlocksForGivenDate[0].surgicalAppointment.sortWeight).toBe(1);
     });

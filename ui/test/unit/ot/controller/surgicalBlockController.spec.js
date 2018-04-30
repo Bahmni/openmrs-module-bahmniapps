@@ -272,6 +272,17 @@ describe("surgicalBlockController", function () {
         });
     });
 
+    //This function converts a date into locale specific date
+    var toDateString = function(dateValue){
+        //dateValue expected in the format -> 2017-08-18 20:00:00
+        return moment(dateValue,"YYYY-MM-DD HH:mm:ss").format();
+    };
+
+    var toDate = function(dateValue){
+        //dateValue expected in the format -> 2017-08-18 20:00:00
+        return moment(dateValue,"YYYY-MM-DD HH:mm:ss").toDate();
+    };
+
     var createController = function () {
         controller('surgicalBlockController', {
             $scope: scope,
@@ -702,10 +713,10 @@ describe("surgicalBlockController", function () {
 
     it('should populate end date if start date is entered and end date is undefined', function () {
         createController();
-        scope.surgicalForm.startDatetime = new Date("Mon Jul 03 2017 09:00:00 GMT+0530 (IST)");
+        scope.surgicalForm.startDatetime = toDate('2017-07-03 09:00:00');
         scope.surgicalForm.endDatetime = undefined;
         scope.changeInStartDateTime();
-        expect(scope.surgicalForm.endDatetime).toEqual(new Date("Mon Jul 03 2017 18:00:00 GMT+0530 (IST)"));
+        expect(scope.surgicalForm.endDatetime).toEqual(toDate('2017-07-03 18:00:00'));
     });
 
     it('should not populate end date if start date is entered and end date in already present', function () {
