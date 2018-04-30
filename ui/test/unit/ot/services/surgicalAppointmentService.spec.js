@@ -15,6 +15,17 @@ describe('surgicalAppointmentService', function () {
         }]);
     });
 
+    //This function converts a date into locale specific date
+    var toDateString = function(dateValue){
+        //dateValue expected in the format -> 2017-08-18 20:00:00
+        return moment(dateValue,"YYYY-MM-DD HH:mm:ss").format();
+    };
+
+    var toDate = function(dateValue){
+        //dateValue expected in the format -> 2017-08-18 20:00:00
+        return moment(dateValue,"YYYY-MM-DD HH:mm:ss").toDate();
+    };
+
     it('should retrieve providers', function (done) {
         var data = {results: [{answers: [{displayString: "sample name"}, {displayString: "sample name2"}, {displayString: "sample name3"}]}]};
         var surgeonsConcept = "FSTG, Name (s) of Surgeon 1";
@@ -73,9 +84,9 @@ describe('surgicalAppointmentService', function () {
 
     it('should get the surgical blocks in the given date range with custom representation', function (done) {
         var data = {id: 1, uuid: "surgicalBlockUuid", location:{uuid: "locationUuid", name: "OT1"}, provider: {uuid: "providerUuid", person: {given_name: "Given name", family_name: "Last name"},
-            startDatetime: "2039-08-26T12:00:00.000+0530", endDatetime: "2039-08-26T15:00:00.000+0530", surgicalAppointments: []}};
-        var startDatetime = "2039-08-26T12:00:00.000+0530";
-        var endDatetime = "2039-08-26T15:00:00.000+0530";
+            startDatetime: toDateString("2039-08-26 12:00:00"), endDatetime: toDateString("2039-08-26 15:00:00"), surgicalAppointments: []}};
+        var startDatetime = toDateString("2039-08-26 12:00:00");
+        var endDatetime = toDateString("2039-08-26 15:00:00");
 
         mockHttp.get.and.returnValue(specUtil.respondWith(data));
 

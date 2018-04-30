@@ -14,6 +14,16 @@ describe("otCalendarSurgicalBlock", function () {
         mockBackend = $httpBackend;
     }));
 
+    //This function converts a date into locale specific date
+    var toDateString = function(dateValue){
+        //dateValue expected in the format -> 2017-08-18 20:00:00
+        return moment(dateValue,"YYYY-MM-DD HH:mm:ss").format();
+    };
+
+    var toDate = function(dateValue){
+        //dateValue expected in the format -> 2017-08-18 20:00:00
+        return moment(dateValue,"YYYY-MM-DD HH:mm:ss").toDate();
+    };
 
     var surgicalBlock =
     {
@@ -22,15 +32,15 @@ describe("otCalendarSurgicalBlock", function () {
         location: {uuid: "3353ccb2-3086-11e7-b60e-0800274a5156", name: "location1"},
         person: {display: "Doctor Strange"},
         surgicalAppointments: [],
-        startDatetime: "2017-05-24T09:00:00.000+0530",
-        endDatetime: "2017-05-24T14:00:00.000+0530"
+        startDatetime: toDateString("2017-05-24 09:00:00"),
+        endDatetime: toDateString("2017-05-24 14:00:00")
     };
 
 
     it("should calculate the dimensions of the surgical block", function () {
         scope.surgicalBlock = surgicalBlock;
-        scope.calendarStartDatetime = new Date(moment('2017-05-24 09:00:00'));
-        scope.calendarEndDatetime = new Date(moment('2017-05-24 16:00:00'));
+        scope.calendarStartDatetime = toDate('2017-05-24 09:00:00');
+        scope.calendarEndDatetime = toDate('2017-05-24 16:00:00');
         scope.dayViewSplit = 30;
 
         mockBackend.expectGET('../ot/views/calendarSurgicalBlock.html').respond("<div>dummy</div>");
@@ -50,12 +60,12 @@ describe("otCalendarSurgicalBlock", function () {
             location: {uuid: "3353ccb2-3086-11e7-b60e-0800274a5156", name: "location1"},
             person: {display: "Doctor Strange"},
             surgicalAppointments: [],
-            startDatetime: "2017-05-24T09:00:00.000+0530",
-            endDatetime: "2017-05-24T14:00:00.000+0530"
+            startDatetime: toDateString("2017-05-24 09:00:00"),
+            endDatetime: toDateString("2017-05-24 14:00:00")
         };
         scope.surgicalBlock = surgicalBlock;
-        scope.calendarStartDatetime = new Date(moment('2017-05-24 09:00:00'));
-        scope.calendarEndDatetime = new Date(moment('2017-05-24 16:00:00'));
+        scope.calendarStartDatetime = toDate('2017-05-24 09:00:00');
+        scope.calendarEndDatetime = toDate('2017-05-24 16:00:00');
         scope.dayViewSplit = 30;
 
         mockBackend.expectGET('../ot/views/calendarSurgicalBlock.html').respond("<div>dummy</div>");

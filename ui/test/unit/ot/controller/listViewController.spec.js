@@ -406,8 +406,8 @@ describe('listViewController', function () {
         };
         createController();
         expect(scope.surgicalAppointmentList.length).toEqual(1);
-        expect(scope.surgicalAppointmentList[0].derivedAttributes.expectedStartTime).toEqual(moment("2017-06-22T09:00:00.000+0530").toDate());
-        expect(scope.surgicalAppointmentList[0].derivedAttributes.expectedStartDate).toEqual(moment("2017-06-22T00:00:00.000+0530").toDate());
+        expect(moment(scope.surgicalAppointmentList[0].derivedAttributes.expectedStartTime).utc().format()).toEqual("2017-06-22T03:30:00Z");
+        expect(scope.surgicalAppointmentList[0].derivedAttributes.expectedStartDate).toEqual(moment(results[0].startDatetime).startOf('day').toDate());
         expect(scope.surgicalAppointmentList[0].derivedAttributes.patientIdentifier).toEqual("EG100137M");
         expect(scope.surgicalAppointmentList[0].derivedAttributes.patientAge).toEqual("98");
         expect(scope.surgicalAppointmentList[0].status).toEqual("SCHEDULED");
