@@ -258,12 +258,14 @@
 
 /*scroll investigation chart table*/
 table.investigation-chart {
-    max-height: 250px;
     overflow: auto;
-    display: block;
+    display: table;
+    height: auto;
+    width: auto;
     border: 1px solid #ddd;
     tr {
         border: 1px solid #ddd;
+        position: relative;
         td {
             border-left: 1px solid #ddd;
         }
@@ -292,6 +294,14 @@ table.investigation-chart {
             left: 0px;
             border-left: 1px solid #ddd;
             text-align: left;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
     }
+}
+
+.expand-investigation-chart {
+    display: table;
+    width: 100%;
+    height:100%;
 }
