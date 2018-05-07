@@ -1,14 +1,15 @@
 'use strict';
 
 describe('AppointmentsCalendarViewController', function () {
-    var controller, scope, spinner, appointmentsService, translate, stateParams;
+    var controller, scope, spinner, appointmentsService, translate, stateParams, state;
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function ($controller, $rootScope, $stateParams) {
+        inject(function ($controller, $rootScope, $stateParams, $state) {
             controller = $controller;
             scope = $rootScope.$new();
             stateParams = $stateParams;
+			state = $state;
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             spinner.forPromise.and.callFake(function () {
                 return {
@@ -38,11 +39,12 @@ describe('AppointmentsCalendarViewController', function () {
 
     it('should get appointments for date', function () {
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
+		state.params = {getAppointments: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: []}));
         scope.getAppointmentsForDate(viewDate).then(function () {
             expect(scope.shouldReload).toBeFalsy();
             expect(stateParams.viewDate).toEqual(viewDate);
-        });
+        }); 
         expect(appointmentsService.getAllAppointments).toHaveBeenCalledWith({forDate: viewDate});
         expect(spinner.forPromise).toHaveBeenCalled();
     });
@@ -86,6 +88,7 @@ describe('AppointmentsCalendarViewController', function () {
             "status": "Scheduled",
             "comments": null
         }]}));
+		state.params = {getAppointments: true};
         scope.getAppointmentsForDate(viewDate);
         expect(scope.providerAppointments.resources.length).toBe(1);
         expect(scope.providerAppointments.resources[0].id).toBe('No provider appointments');
@@ -138,6 +141,7 @@ describe('AppointmentsCalendarViewController', function () {
                 "status": "CheckedIn"
             }
         ];
+		state.params = {getAppointments: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: allAppointments}));
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
@@ -217,6 +221,7 @@ describe('AppointmentsCalendarViewController', function () {
                 }
             }
         ];
+		state.params = {getAppointments: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: allAppointments}));
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
@@ -283,6 +288,7 @@ describe('AppointmentsCalendarViewController', function () {
                 "status": "CheckedIn"
             }
         ];
+		state.params = {getAppointments: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: allAppointments}));
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
@@ -353,6 +359,7 @@ describe('AppointmentsCalendarViewController', function () {
                 "status": "Scheduled"
             }
         ];
+		state.params = {getAppointments: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: allAppointments}));
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
@@ -405,6 +412,7 @@ describe('AppointmentsCalendarViewController', function () {
             "status": "Scheduled",
             "comments": null
         }];
+		state.params = {getAppointments: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
         createController();
         scope.getAppointmentsForDate("Wed Sep 06 2017 00:00:00 GMT+0530 (IST)");
@@ -451,6 +459,7 @@ describe('AppointmentsCalendarViewController', function () {
                 "status": "Scheduled",
                 "comments": null
             }];
+		state.params = {getAppointments: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
         createController();
         scope.getAppointmentsForDate("Wed Sep 06 2017 00:00:00 GMT+0530 (IST)");
