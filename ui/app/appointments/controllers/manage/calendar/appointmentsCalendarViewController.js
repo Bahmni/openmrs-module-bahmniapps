@@ -73,7 +73,7 @@ angular.module('bahmni.appointments')
                 return $state.params.filterParams;
             }, function (newValue, oldValue) {
                 if (newValue !== oldValue) {
-                    var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay || $state.params.appointmentData, $state.params.filterParams);
+                    var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay || $state.params.appointmentsData, $state.params.filterParams);
                     parseAppointments(filteredAppointments);
                 }
             }, true);
@@ -84,19 +84,19 @@ angular.module('bahmni.appointments')
                 var params = {forDate: viewDate};
                 $scope.$on('$stateChangeStart', function (event, toState, toParams) {
                     if (toState.tabName == 'list') {
-                        toParams.getAppointments = false;
+                        toParams.doFetchAppointmentsData = false;
                     }
                 });
-                if ($state.params.getAppointments) {
+                if ($state.params.doFetchAppointmentsData) {
                     return spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
                         $scope.allAppointmentsForDay = response.data;
                         var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay, $state.params.filterParams);
-                        $rootScope.appointmentData = filteredAppointments;
+                        $rootScope.appointmentsData = filteredAppointments;
                         return parseAppointments(filteredAppointments);
                     }));
                 } else {
-                    var filteredAppointments = appointmentsFilter($state.params.appointmentData, $state.params.filterParams);
-                    $state.params.getAppointments = true;
+                    var filteredAppointments = appointmentsFilter($state.params.appointmentsData, $state.params.filterParams);
+                    $state.params.doFetchAppointmentsData = true;
                     return parseAppointments(filteredAppointments);
                 }
             };

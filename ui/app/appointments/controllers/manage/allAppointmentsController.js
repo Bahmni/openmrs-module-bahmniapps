@@ -10,7 +10,7 @@ angular.module('bahmni.appointments')
             $scope.navigateTo = function (viewName) {
                 $scope.currentTab = viewName;
                 var path = 'home.manage.appointments.' + viewName;
-                $state.params.appointmentData = $rootScope.appointmentData;
+                $state.params.appointmentsData = $rootScope.appointmentsData;
                 $state.go(path, $state.params, {reload: false});
             };
 

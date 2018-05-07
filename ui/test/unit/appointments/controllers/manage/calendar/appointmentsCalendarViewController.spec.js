@@ -39,7 +39,7 @@ describe('AppointmentsCalendarViewController', function () {
 
     it('should get appointments for date', function () {
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
-		state.params = {getAppointments: true};
+		state.params = {doFetchAppointmentsData: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: []}));
         scope.getAppointmentsForDate(viewDate).then(function () {
             expect(scope.shouldReload).toBeFalsy();
@@ -88,7 +88,7 @@ describe('AppointmentsCalendarViewController', function () {
             "status": "Scheduled",
             "comments": null
         }]}));
-		state.params = {getAppointments: true};
+		state.params = {doFetchAppointmentsData: true};
         scope.getAppointmentsForDate(viewDate);
         expect(scope.providerAppointments.resources.length).toBe(1);
         expect(scope.providerAppointments.resources[0].id).toBe('No provider appointments');
@@ -141,7 +141,7 @@ describe('AppointmentsCalendarViewController', function () {
                 "status": "CheckedIn"
             }
         ];
-		state.params = {getAppointments: true};
+		state.params = {doFetchAppointmentsData: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: allAppointments}));
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
@@ -221,7 +221,7 @@ describe('AppointmentsCalendarViewController', function () {
                 }
             }
         ];
-		state.params = {getAppointments: true};
+		state.params = {doFetchAppointmentsData: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: allAppointments}));
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
@@ -288,7 +288,7 @@ describe('AppointmentsCalendarViewController', function () {
                 "status": "CheckedIn"
             }
         ];
-		state.params = {getAppointments: true};
+		state.params = {doFetchAppointmentsData: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: allAppointments}));
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
@@ -359,7 +359,7 @@ describe('AppointmentsCalendarViewController', function () {
                 "status": "Scheduled"
             }
         ];
-		state.params = {getAppointments: true};
+		state.params = {doFetchAppointmentsData: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: allAppointments}));
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         scope.getAppointmentsForDate(viewDate);
@@ -412,7 +412,7 @@ describe('AppointmentsCalendarViewController', function () {
             "status": "Scheduled",
             "comments": null
         }];
-		state.params = {getAppointments: true};
+		state.params = {doFetchAppointmentsData: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
         createController();
         scope.getAppointmentsForDate("Wed Sep 06 2017 00:00:00 GMT+0530 (IST)");
@@ -459,7 +459,7 @@ describe('AppointmentsCalendarViewController', function () {
                 "status": "Scheduled",
                 "comments": null
             }];
-		state.params = {getAppointments: true};
+		state.params = {doFetchAppointmentsData: true};
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
         createController();
         scope.getAppointmentsForDate("Wed Sep 06 2017 00:00:00 GMT+0530 (IST)");

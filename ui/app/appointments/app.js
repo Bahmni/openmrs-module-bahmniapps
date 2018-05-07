@@ -80,8 +80,8 @@ angular
                 tabName: 'calendar',
                 params: {
                     viewDate: null,
-                    getAppointments: true,
-                    appointmentData: null
+                    doFetchAppointmentsData: true,
+                    appointmentsData: null
                 },
                 views: {
                     'content@viewAppointments': {
@@ -130,8 +130,8 @@ angular
                 params: {
                     viewDate: null,
                     patient: null,
-                    getAppointments: true,
-                    appointmentData: null
+                    doFetchAppointmentsData: true,
+                    appointmentsData: null
                 },
                 views: {
                     'content@viewAppointments': {

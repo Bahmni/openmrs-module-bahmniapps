@@ -94,7 +94,7 @@ describe('AppointmentsListViewController', function () {
     it('should get appointments for date', function () {
         createController();
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
-		$state.params = {getAppointments: true};
+        $state.params = {doFetchAppointmentsData: true};
         scope.getAppointmentsForDate(viewDate);
         expect(stateparams.viewDate).toEqual(viewDate);
         expect(appointmentsService.getAllAppointments).toHaveBeenCalledWith({forDate: viewDate});
@@ -225,7 +225,7 @@ describe('AppointmentsListViewController', function () {
         stateparams.filterParams = {serviceUuids: ["02666cc6-5f3e-4920-856d-ab7e28d3dbdb"]};
         createController();
         var viewDate = new Date('2017-08-28T11:30:00.000Z');
-		$state.params = {getAppointments: true};
+		$state.params = {doFetchAppointmentsData: true};
         scope.getAppointmentsForDate(viewDate);
         expect(scope.appointments).toBe(appointments);
         expect(scope.filteredAppointments.length).toEqual(1);
@@ -331,7 +331,7 @@ describe('AppointmentsListViewController', function () {
         };
         createController();
         var viewDate = new Date('2017-08-28T11:30:00.000Z');
-		$state.params = {getAppointments: true};
+		$state.params = {doFetchAppointmentsData: true};
         scope.getAppointmentsForDate(viewDate);
         expect(scope.appointments).toBe(appointments);
         expect(scope.searchedPatient).toBeFalsy();
@@ -503,7 +503,7 @@ describe('AppointmentsListViewController', function () {
             _appointmentsFilter.and.callFake(function () {
                 return appointments;
             });
-			$state.params = {getAppointments: true};
+			$state.params = {doFetchAppointmentsData: true};
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
             createController();
             scope.getAppointmentsForDate(new Date(200000));
@@ -632,7 +632,7 @@ describe('AppointmentsListViewController', function () {
                 }
             };
             var appointments = [appointment1, appointment2];
-			$state.params = {getAppointments: true};
+			$state.params = {doFetchAppointmentsData: true};
             appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
             _appointmentsFilter.and.callFake(function () {
                 return appointments;
@@ -718,7 +718,7 @@ describe('AppointmentsListViewController', function () {
         it('should filter the appointments on change of filter params', function () {
             var appointment = {patient: {name: 'patient'}};
             scope.appointments = [appointment];
-			$state.params = {getAppointments: true};
+			$state.params = {doFetchAppointmentsData: true};
             _appointmentsFilter.and.callFake(function () {
                 return appointment;
             });
