@@ -50,36 +50,36 @@ describe("ensure that the directive edit-observation works properly", function (
         var encounterPromise = specUtil.createServicePromise('findByEncounterUuid');
         encounterPromise.then = function (successFn) {
             successFn({data: {
-              uuid: "encounter uuid one",
-              orders: [{uuid: "order1"}],
-              observations: [
-                {
-                  uuid: 'root-obs-uuid',
-                  concept: {
-                    name: 'Adverse Events Template',
-                    uuid: 'root-concept-uuid'
-                  },
-                  groupMembers: [
+                uuid: "encounter uuid one",
+                orders: [{uuid: "order1"}],
+                observations: [
                     {
-                      uuid: 'child1-obs-uuid',
-                      concept: {
-                        name: 'Adverse Event Details',
-                        uuid: 'child1-concept-uuid'
-                      },
-                      groupMembers: []
-                    },
-                    {
-                      uuid: 'child2-obs-uuid',
-                      concept: {
-                        name: 'Adverse Event Details',
-                        uuid: 'child2-concept-uuid'
-                      },
-                      groupMembers: []
-                    }
-                  ]
-                }],
-              drugOrders: [],
-              extensions: {mdrtbSpecimen: null}
+                        uuid: 'root-obs-uuid',
+                        concept: {
+                            name: 'Adverse Events Template',
+                            uuid: 'root-concept-uuid'
+                        },
+                        groupMembers: [
+                            {
+                                uuid: 'child1-obs-uuid',
+                                concept: {
+                                    name: 'Adverse Event Details',
+                                    uuid: 'child1-concept-uuid'
+                                },
+                                groupMembers: []
+                            },
+                            {
+                                uuid: 'child2-obs-uuid',
+                                concept: {
+                                    name: 'Adverse Event Details',
+                                    uuid: 'child2-concept-uuid'
+                                },
+                                groupMembers: []
+                            }
+                        ]
+                    }],
+                drugOrders: [],
+                extensions: {mdrtbSpecimen: null}
             }});
             return encounterPromise;
         };

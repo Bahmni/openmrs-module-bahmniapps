@@ -1,7 +1,6 @@
 'use strict';
 
 describe("Identifier Model", function () {
-
     describe('generate', function () {
         it("should void the saved identifier when identifier text field is blanked out", function () {
             var identifierType = {uuid: 'identifier-type-uuid'};
@@ -36,8 +35,7 @@ describe("Identifier Model", function () {
             patientIdentifier.registrationNumber = "abcd";
             patientIdentifier.generate();
             expect(patientIdentifier.voided).toBeFalsy();
-
-        })
+        });
     });
 
     describe("clearRegistrationNumber", function () {
@@ -103,7 +101,6 @@ describe("Identifier Model", function () {
     });
 
     describe('hasIdentifierSourceWithEmptyPrefix', function () {
-
         it("should return true if there is only one identifier source with blank prefix", function () {
             var identifierType = {identifierSources: [{name: "ABC", prefix: ""}]};
             var identifier = new Bahmni.Registration.Identifier(identifierType);
@@ -121,9 +118,7 @@ describe("Identifier Model", function () {
             var identifier = new Bahmni.Registration.Identifier(identifierType);
             expect(identifier.hasIdentifierSourceWithEmptyPrefix()).toBeFalsy();
         });
-
     });
-
 
     describe('map', function () {
         it('should map identifiers for all identifier types and initialise empty identifier if it does not exit for an identifier type', function () {
@@ -145,7 +140,6 @@ describe("Identifier Model", function () {
                 preferred: false,
                 voided: false
             }));
-
         });
 
         it('should map identifier with saved values', function () {
@@ -175,8 +169,6 @@ describe("Identifier Model", function () {
                 identifier: 'abcdefghi',
                 uuid: 'saved-identifier-uuid'
             }));
-
-        })
-
+        });
     });
 });

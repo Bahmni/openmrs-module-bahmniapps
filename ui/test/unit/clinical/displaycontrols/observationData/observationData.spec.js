@@ -21,7 +21,6 @@ describe("Observation data display control", function () {
         mockBackend = $httpBackend;
     }));
 
-
     it("getDisplayValue should return display in value if value is object", function () {
         var obs = observation;
         obs.value = {display: "test1"};
@@ -42,7 +41,6 @@ describe("Observation data display control", function () {
         expect(isoScope.hasGroupMembers).toBeTruthy();
     });
 
-
     it("hasGroupMembers should return false and not throw an error if group members are null", function () {
         var obs = observation;
         obs.groupMembers = null;
@@ -50,7 +48,7 @@ describe("Observation data display control", function () {
         expect(isoScope.hasGroupMembers()).toBeFalsy();
     });
 
-    var createIsoScope = function(obs)  {
+    var createIsoScope = function (obs) {
         scope.obs = obs;
         mockBackend.expectGET('../clinical/displaycontrols/observationData/views/observationData.html').respond("<div>dummy</div>");
         element = angular.element('<observation-data observation="obs"></observation-data>');
@@ -59,5 +57,4 @@ describe("Observation data display control", function () {
         mockBackend.flush();
         return element.isolateScope();
     };
-
 });

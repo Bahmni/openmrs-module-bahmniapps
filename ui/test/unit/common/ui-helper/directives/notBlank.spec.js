@@ -1,11 +1,11 @@
 'use strict';
 
-describe("Non Blank", function() {
+describe("Non Blank", function () {
     var element, scope, compile;
 
     beforeEach(module('bahmni.common.uiHelper'));
 
-    beforeEach(inject(function($compile, $rootScope) {
+    beforeEach(inject(function ($compile, $rootScope) {
         scope = $rootScope.$new();
         compile = $compile;
     }));

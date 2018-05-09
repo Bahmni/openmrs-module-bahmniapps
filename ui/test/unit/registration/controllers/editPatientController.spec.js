@@ -1,7 +1,6 @@
 'use strict';
 
 describe('EditPatientController', function () {
-
     var $aController, patient = {};
     var scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
     var rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
@@ -28,7 +27,7 @@ describe('EditPatientController', function () {
                 getConfigValue: function () {
                     return ["caste", "primaryRelative"];
                 }
-            }
+            };
         };
 
         patientServiceMock.get = function (uuid) {
@@ -36,14 +35,14 @@ describe('EditPatientController', function () {
                 then: function (successFn) {
                     successFn({data: "uuid"});
                 }
-            }
+            };
         };
         patientServiceMock.update = function (uuid) {
             return {
                 then: function (successFn) {
                     successFn({data: "uuid"});
                 }
-            }
+            };
         };
         openmrsPatientMapperMock.map = function (openmrsPatient) {
             return patient;
@@ -54,7 +53,7 @@ describe('EditPatientController', function () {
                 then: function (successFn) {
                     return ({data: {data: true}});
                 }
-            }
+            };
         };
         scopeMock.patientConfiguration = {identifierSources: []};
     });
@@ -70,7 +69,7 @@ describe('EditPatientController', function () {
             auditLogService: auditLogService
         });
 
-        expect(scopeMock.readOnlyFields["caste"]).toBeFalsy()
+        expect(scopeMock.readOnlyFields["caste"]).toBeFalsy();
         expect(scopeMock.readOnlyFields["primaryRelative"]).toBeFalsy();
 
         patient = {"caste": "someCaste", "relationships": []};
@@ -82,7 +81,7 @@ describe('EditPatientController', function () {
 
         scopeMock.update();
 
-        expect(scopeMock.readOnlyFields["caste"]).toBeTruthy()
+        expect(scopeMock.readOnlyFields["caste"]).toBeTruthy();
         expect(scopeMock.readOnlyFields["primaryRelative"]).toBeFalsy();
     });
 
@@ -155,7 +154,7 @@ describe('EditPatientController', function () {
                         return true;
                     }
                 }
-            }
+            };
         };
 
         var controller = $aController('EditPatientController', {

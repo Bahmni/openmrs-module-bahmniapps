@@ -17,16 +17,16 @@ describe("AppointmentsCreateController", function () {
     beforeEach(function () {
         appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['getServiceLoad', 'getService']);
         appointmentsServiceService.getServiceLoad.and.returnValue(specUtil.simplePromise({}));
-        appointmentsService = jasmine.createSpyObj('appointmentsService', ['save','search']);
+        appointmentsService = jasmine.createSpyObj('appointmentsService', ['save', 'search']);
         appointmentsService.save.and.returnValue(specUtil.simplePromise({}));
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appDescriptor = {
             getConfigValue: function (input) {
                 if (input === "patientSearchUrl") {
                     return "patientSearchUrl";
-                }
-                else
+                } else {
                     return true;
+                }
             },
             formatUrl: function (url) {
                 return url;
@@ -169,22 +169,22 @@ describe("AppointmentsCreateController", function () {
             createController();
             $scope.createAppointmentForm = {$invalid: false};
             var cancelledAppointment = {
-                date: moment().toDate(),
-                startTime: '09:00 am',
-                endTime: '09:30 am',
-                patient: {uuid: 'patientUuid'},
-                service: {uuid: 'serviceUuid'},
-                status: 'Cancelled',
-                uuid: 'uuid'
-            },
-            newAppointment = {
-                date: moment().toDate(),
-                startTime: '09:00 am',
-                endTime: '09:30 am',
-                patient: {uuid: 'patientUuid'},
-                service: {uuid: 'serviceUuid'},
-                uuid: 'newUuid'
-            };
+                    date: moment().toDate(),
+                    startTime: '09:00 am',
+                    endTime: '09:30 am',
+                    patient: {uuid: 'patientUuid'},
+                    service: {uuid: 'serviceUuid'},
+                    status: 'Cancelled',
+                    uuid: 'uuid'
+                },
+                newAppointment = {
+                    date: moment().toDate(),
+                    startTime: '09:00 am',
+                    endTime: '09:30 am',
+                    patient: {uuid: 'patientUuid'},
+                    service: {uuid: 'serviceUuid'},
+                    uuid: 'newUuid'
+                };
             $scope.patientAppointments = [cancelledAppointment];
             $state.params = {};
             $scope.appointment = newAppointment;
@@ -197,22 +197,22 @@ describe("AppointmentsCreateController", function () {
             createController();
             $scope.createAppointmentForm = {$invalid: false};
             var previousAppointment = {
-                date: moment().toDate(),
-                startTime: '09:15:00',
-                endTime: '12:20:00',
-                patient: {uuid: 'patientUuid'},
-                service: {uuid: 'serviceUuid'},
-                status: 'Scheduled',
-                uuid: 'uuid'
-            },
-            newAppointment = {
-                date: moment().toDate(),
-                startTime: '12:20:00',
-                endTime: '13:20:00',
-                patient: {uuid: 'patientUuid'},
-                service: {uuid: 'serviceUuid'},
-                uuid: 'newUuid'
-            };
+                    date: moment().toDate(),
+                    startTime: '09:15:00',
+                    endTime: '12:20:00',
+                    patient: {uuid: 'patientUuid'},
+                    service: {uuid: 'serviceUuid'},
+                    status: 'Scheduled',
+                    uuid: 'uuid'
+                },
+                newAppointment = {
+                    date: moment().toDate(),
+                    startTime: '12:20:00',
+                    endTime: '13:20:00',
+                    patient: {uuid: 'patientUuid'},
+                    service: {uuid: 'serviceUuid'},
+                    uuid: 'newUuid'
+                };
             previousAppointment = Bahmni.Appointments.Appointment.create(previousAppointment);
             $scope.patientAppointments = [previousAppointment];
             $state.params = {};
@@ -235,7 +235,7 @@ describe("AppointmentsCreateController", function () {
             appointmentsService.search.and.returnValue(specUtil.simplePromise(patientAppointments));
             $scope.patientAppointments = undefined;
             var patientUuid = 'uuid';
-            appointmentContext = {appointment: {patient:{uuid: patientUuid}}};
+            appointmentContext = {appointment: {patient: {uuid: patientUuid}}};
             var appointmentSearchParams = {patientUuid: patientUuid};
             createController();
 
@@ -494,7 +494,7 @@ describe("AppointmentsCreateController", function () {
             createController();
             $scope.isPastAppointment = false;
             $scope.appointment = { date: new Date('1970-01-01T11:30:00.000Z') };
-            $scope.selectedService= { startTime: '10:00', endTime: '13:00' };
+            $scope.selectedService = { startTime: '10:00', endTime: '13:00' };
             $scope.minDuration = 60;
             $scope.checkAvailability();
 
@@ -850,7 +850,6 @@ describe("AppointmentsCreateController", function () {
     });
 
     describe('isEditAllowed', function () {
-
         it('should not allow edit if it is past appointment irrespective of status', function () {
             appointmentContext.appointment = {startDateTime: moment().subtract(1, 'day').toDate(), status: 'Scheduled', uuid: 'appointmentUuid'};
             createController();
@@ -906,7 +905,6 @@ describe("AppointmentsCreateController", function () {
         });
     });
 
-
     describe('searchPatient', function () {
         it('should call patient service when there is no url defined ', function () {
             appDescriptor.getConfigValue = function (input) {
@@ -915,7 +913,7 @@ describe("AppointmentsCreateController", function () {
             appointmentContext.appointment = { uuid: 'appointmentUuid'};
             createController();
             $scope.appointment.patient = { label: "GAN" };
-            patientService.search.and.returnValue(specUtil.simplePromise({data: {name:"GAN111"}}));
+            patientService.search.and.returnValue(specUtil.simplePromise({data: {name: "GAN111"}}));
             $scope.search();
             expect(patientService.search).toHaveBeenCalledWith("GAN");
         });
@@ -924,7 +922,7 @@ describe("AppointmentsCreateController", function () {
             appointmentContext.appointment = { uuid: 'appointmentUuid'};
             createController();
             $scope.appointment.patient = { label: "GAN" };
-            patientService.search.and.returnValue(specUtil.simplePromise({data: {name:"GAN111"}}));
+            patientService.search.and.returnValue(specUtil.simplePromise({data: {name: "GAN111"}}));
             $scope.search();
             expect($http.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1patientSearchUrl');
             expect(patientService.search).not.toHaveBeenCalledWith();
@@ -941,10 +939,10 @@ describe("AppointmentsCreateController", function () {
     });
 
     it("should dropDown have times list which are having entered number in hours of the allowed list", function () {
-       createController();
+        createController();
         $scope.startTimes = ['10:00 am', '11:00 am', '12:00 pm', '01:00 pm', '02:00 pm'];
         $scope.showStartTimes = [];
-        $scope.appointment= { startTime: 2 };
+        $scope.appointment = { startTime: 2 };
 
         $scope.onKeyDownOnStartTime();
         expect($scope.showStartTimes).toEqual(['02:00 pm']);
@@ -954,9 +952,9 @@ describe("AppointmentsCreateController", function () {
         createController();
         $scope.endTimes = ['10:00 am', '11:00 am', '12:00 pm', '01:00 pm', '02:00 pm', '03:00 pm'];
         $scope.showEndTimes = [];
-        $scope.appointment= { endTime: 4 };
+        $scope.appointment = { endTime: 4 };
 
         $scope.onKeyDownOnEndTime();
         expect($scope.showEndTimes).toEqual($scope.endTimes);
-    })
+    });
 });

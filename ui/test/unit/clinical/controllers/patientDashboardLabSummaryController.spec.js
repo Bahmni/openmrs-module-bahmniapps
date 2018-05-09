@@ -1,7 +1,6 @@
 'use strict';
 
 describe("PatientDashboardLabSummaryController", function () {
-
     beforeEach(module('bahmni.clinical'));
 
     var scope;
@@ -12,13 +11,13 @@ describe("PatientDashboardLabSummaryController", function () {
         scope.ngDialogData = {
             expandedViewConfig: {a: 1, b: 2},
             patient: {uuid: "some uuid"}
-        }
+        };
         stateParams = {
             patientUuid: "some uuid"
         };
         $controller('PatientDashboardLabSummaryController', {
             $scope: scope,
-            $stateParams: stateParams,
+            $stateParams: stateParams
         });
     }));
 

@@ -1,7 +1,6 @@
 'use strict';
 
 describe("EncounterTransactionMapper", function () {
-
     describe("map", function () {
         var mapper;
 
@@ -13,109 +12,103 @@ describe("EncounterTransactionMapper", function () {
             var obs = {uuid: "obsUuid"};
             var defaultVisitType = "OPD";
             var consulation = { observations: obs, providers: [{uuid: "provider-uuid"}], visitUuid: null };
-            var patient = { uuid:"patientUuid"};
-            
+            var patient = { uuid: "patientUuid"};
+
             var encounterData = mapper.map(consulation, patient, null, {}, null, defaultVisitType, false);
 
             expect(encounterData.visitType).toBe(defaultVisitType);
             expect(encounterData.providers).toEqual([{uuid: "provider-uuid"}]);
         });
 
-        it('should not update encounterData with logged in location uuid in editEncounter mode', function(){
+        it('should not update encounterData with logged in location uuid in editEncounter mode', function () {
             var obs = {uuid: "obsUuid"};
             var defaultVisitType = "OPD";
             var consulation = { observations: obs, providers: [{uuid: "provider-uuid"}], locationUuid: "original-location-uuid" };
-            var patient = { uuid:"patientUuid"};
+            var patient = { uuid: "patientUuid"};
 
             var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {}, null, defaultVisitType, true);
 
             expect(encounterData.locationUuid).toBe("original-location-uuid");
-
         });
 
-        it('should update encounterData with logged in location uuid when not in editEncounter mode', function(){
+        it('should update encounterData with logged in location uuid when not in editEncounter mode', function () {
             var obs = {uuid: "obsUuid"};
             var defaultVisitType = "OPD";
             var consulation = { observations: obs, providers: [{uuid: "provider-uuid"}], locationUuid: "original-location-uuid" };
-            var patient = { uuid:"patientUuid"};
+            var patient = { uuid: "patientUuid"};
 
             var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {}, null, defaultVisitType, false);
 
             expect(encounterData.locationUuid).toBe("logged-in-location-uuid");
-
         });
 
-        it('should update encounterData with default visit type if visit uuid is not set and not in retrospective mode either', function(){
+        it('should update encounterData with default visit type if visit uuid is not set and not in retrospective mode either', function () {
             var obs = {uuid: "obsUuid"};
             var defaultVisitType = "OPD";
             var consulation = { observations: obs, providers: [{uuid: "provider-uuid"}], locationUuid: "original-location-uuid" };
-            var patient = { uuid:"patientUuid"};
+            var patient = { uuid: "patientUuid"};
 
             var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {}, null, defaultVisitType, false);
 
             expect(encounterData.visitType).toBe("OPD");
-
         });
 
-        it('should update encounterData with default retrospective visit type if it is in retrospective mode either', function(){
+        it('should update encounterData with default retrospective visit type if it is in retrospective mode either', function () {
             var obs = {uuid: "obsUuid"};
             var defaultRetrospectiveVisitType = "IPD";
             var consulation = { observations: obs, providers: [{uuid: "provider-uuid"}], locationUuid: "original-location-uuid" };
-            var patient = { uuid:"patientUuid"};
+            var patient = { uuid: "patientUuid"};
 
-            var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {encounterDate : "2015-04-01"}, defaultRetrospectiveVisitType, null, false);
+            var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {encounterDate: "2015-04-01"}, defaultRetrospectiveVisitType, null, false);
 
             expect(encounterData.visitType).toBe("IPD");
-
         });
 
-        it('should set program enrollment uuid as patient program uuid', function(){
+        it('should set program enrollment uuid as patient program uuid', function () {
             var obs = {uuid: "obsUuid"};
             var defaultRetrospectiveVisitType = "IPD";
             var consulation = { observations: obs, providers: [{uuid: "provider-uuid"}], locationUuid: "original-location-uuid" };
-            var patient = { uuid:"patientUuid"};
+            var patient = { uuid: "patientUuid"};
             var patientProgramUuid = "someNiceUuid";
 
-            var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {encounterDate : "2015-04-01"}, defaultRetrospectiveVisitType, null, false, patientProgramUuid);
+            var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {encounterDate: "2015-04-01"}, defaultRetrospectiveVisitType, null, false, patientProgramUuid);
 
             expect(encounterData.context.patientProgramUuid).toBe(patientProgramUuid);
-
         });
 
-        it("should set urgency value to order if the urgency button is clicked", function() {
+        it("should set urgency value to order if the urgency button is clicked", function () {
             var obs = {uuid: "obsUuid"};
             var defaultRetrospectiveVisitType = "IPD";
             var order = [{ concept: {uuid: "orders-uuid"}, isUrgent: true, uuid: undefined }];
             var consulation = { observations: obs, providers: [{uuid: "provider-uuid"}], locationUuid: "original-location-uuid", orders: order };
-            var patient = { uuid:"patientUuid"};
+            var patient = { uuid: "patientUuid"};
             var patientProgramUuid = "someNiceUuid";
 
-            var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {encounterDate : "2015-04-01"}, defaultRetrospectiveVisitType, null, false, patientProgramUuid);
+            var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {encounterDate: "2015-04-01"}, defaultRetrospectiveVisitType, null, false, patientProgramUuid);
 
             expect(encounterData.context.patientProgramUuid).toBe(patientProgramUuid);
             expect(encounterData.orders[0].urgency).toBe("STAT");
         });
 
-
-        it("should not set urgency value to order if the urgency button is not clicked", function() {
+        it("should not set urgency value to order if the urgency button is not clicked", function () {
             var obs = {uuid: "obsUuid"};
             var defaultRetrospectiveVisitType = "IPD";
             var order = [{ concept: {uuid: "orders-uuid"}, isUrgent: false, uuid: undefined }];
             var consulation = { observations: obs, providers: [{uuid: "provider-uuid"}], locationUuid: "original-location-uuid", orders: order };
-            var patient = { uuid:"patientUuid"};
+            var patient = { uuid: "patientUuid"};
             var patientProgramUuid = "someNiceUuid";
 
-            var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {encounterDate : "2015-04-01"}, defaultRetrospectiveVisitType, null, false, patientProgramUuid);
+            var encounterData = mapper.map(consulation, patient, "logged-in-location-uuid", {encounterDate: "2015-04-01"}, defaultRetrospectiveVisitType, null, false, patientProgramUuid);
 
             expect(encounterData.context.patientProgramUuid).toBe(patientProgramUuid);
             expect(encounterData.orders[0].urgency).toBe(undefined);
         });
 
-        it("should put followup conditions in consultation observations", function(){
-            var consultation  = {observations:[], followUpConditions: [{},{}]};
-            var patient = { uuid:"patientUuid"};
+        it("should put followup conditions in consultation observations", function () {
+            var consultation = {observations: [], followUpConditions: [{}, {}]};
+            var patient = { uuid: "patientUuid"};
 
-            var encounterData = mapper.map(consultation, patient, "logged-in-location-uuid", {encounterDate : "2015-04-01"});
+            var encounterData = mapper.map(consultation, patient, "logged-in-location-uuid", {encounterDate: "2015-04-01"});
 
             expect(encounterData.observations.length).toBe(2);
             expect(encounterData.observations[0]).toBe(consultation.followUpConditions[0]);

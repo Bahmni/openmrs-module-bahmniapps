@@ -74,8 +74,7 @@ describe('AppointmentsService', function () {
         appointmentsService.changeStatus(appointment, toStatus, onDate);
         var headers = {"Accept": "application/json", "Content-Type": "application/json"};
         var params = {withCredentials: true, headers: headers};
-        expect(mockHttp.post).toHaveBeenCalledWith(changeStatusUrl, {'toStatus': toStatus, 'onDate': onDate},  params);
+        expect(mockHttp.post).toHaveBeenCalledWith(changeStatusUrl, {'toStatus': toStatus, 'onDate': onDate}, params);
     });
 });
-
 

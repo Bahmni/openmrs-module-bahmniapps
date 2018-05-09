@@ -17,7 +17,6 @@ describe("PivotTableService", function () {
             "endDate": "endDate"
         };
         _$http = jasmine.createSpyObj('$http', ['get', 'post']);
-
     }));
 
     beforeEach(module(function ($provide) {
@@ -41,7 +40,6 @@ describe("PivotTableService", function () {
                 done();
             });
         });
-
     });
 
     var diseaseSummary = [

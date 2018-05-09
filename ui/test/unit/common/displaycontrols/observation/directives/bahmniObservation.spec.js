@@ -15,17 +15,17 @@ describe("BahmniObservation", function () {
             getConfigValue: function () {
                 return {
                     concept: ""
-                }
+                };
             }, getExtensions: function (a, b) {
                 return {
                     maxPatientsPerBed: 2
-                }
+                };
             },
-            getConfig: function(){
+            getConfig: function () {
 
             }
         });
-        formHierarchyService = jasmine.createSpyObj('formHierarchyService',['build']);
+        formHierarchyService = jasmine.createSpyObj('formHierarchyService', ['build']);
         formHierarchyService.build.and.returnValue(null);
 
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
@@ -35,13 +35,13 @@ describe("BahmniObservation", function () {
                 then: function () {
                     return {};
                 }
-            }
+            };
         });
 
         $provide.value('observationsService', observationsService);
         $provide.value('appService', appService);
         $provide.value('spinner', spinner);
-        $provide.value('formHierarchyService',formHierarchyService);
+        $provide.value('formHierarchyService', formHierarchyService);
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {
@@ -104,13 +104,13 @@ describe("BahmniObservation", function () {
                 getConfigValue: function () {
                     return {
                         showDetailsWithinDateRange: true
-                    }
+                    };
                 }, getExtensions: function (a, b) {
                     return {
                         maxPatientsPerBed: 2
-                    }
+                    };
                 },
-                getConfig: function(){
+                getConfig: function () {
 
                 }
             });
@@ -133,7 +133,7 @@ describe("BahmniObservation", function () {
 
         it("should fetch the only the specific observation if observation uuid is specified in config", function () {
             scope.patient = {uuid: '123'};
-            scope.config = {observationUuid : "observationUuid"};
+            scope.config = {observationUuid: "observationUuid"};
             scope.section = {};
             scope.enrollment = "uuid";
             observationsService.getByUuid.and.returnValue(specUtil.respondWithPromise(q, {data: {concept: {name: "obsConcept"}}}));
@@ -143,7 +143,6 @@ describe("BahmniObservation", function () {
             scope.$digest();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
-
 
             expect(observationsService.getByUuid).toHaveBeenCalledWith("observationUuid");
             expect(observationsService.getByUuid.calls.count()).toEqual(1);

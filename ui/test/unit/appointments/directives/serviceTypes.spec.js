@@ -100,7 +100,6 @@ describe('ServiceTypes', function () {
         expect(scope.service.serviceTypes[2].duration).toEqual(15);
     });
 
-
     it('should clear the serviceType duration on clearing the serviceType name', function () {
         scope.serviceType.name = "";
         scope.updateServiceTypeDuration();

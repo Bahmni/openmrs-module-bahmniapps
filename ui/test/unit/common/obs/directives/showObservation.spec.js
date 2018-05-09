@@ -1,7 +1,6 @@
 'use strict';
 
 describe("ensure that the directive show-observation works properly", function () {
-
     var scope, rootScope, filter, httpBackend, compile, q, ngDialog;
     var html = '<show-observation  show-details-button="showDetailsButton" patient="patient" observation="observation" show-date="showDate" show-time="showTime"></show-observation>';
 
@@ -10,8 +9,8 @@ describe("ensure that the directive show-observation works properly", function (
     var observation = {
         "value": 1,
         "concept": {"shortName": null, "name": "Other", "set": true, "units": null, "conceptClass": "Misc", "dataType": "N/A"},
-        "conceptUuid" : "otherUuid",
-        "observationDateTime" : obsDate
+        "conceptUuid": "otherUuid",
+        "observationDateTime": obsDate
     };
 
     var patient = {identifier: 'GAN1234', name: 'Ram Singh', uuid: 'p-uuid-1', activeVisitUuid: 'v-uuid-1'};
@@ -19,14 +18,14 @@ describe("ensure that the directive show-observation works properly", function (
     beforeEach(module('bahmni.common.obs'));
     beforeEach(module('bahmni.common.uiHelper'));
 
-    beforeEach(module(function($provide) {
+    beforeEach(module(function ($provide) {
         var conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConceptSetMembers']);
         ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
         $provide.value('conceptSetService', conceptSetService);
         $provide.value('ngDialog', ngDialog);
     }));
 
-    beforeEach(inject(function($filter, $compile, $httpBackend, $rootScope, $q){
+    beforeEach(inject(function ($filter, $compile, $httpBackend, $rootScope, $q) {
         filter = $filter;
         compile = $compile;
         httpBackend = $httpBackend;
@@ -35,7 +34,6 @@ describe("ensure that the directive show-observation works properly", function (
     }));
 
     it("should test print, toggle", function () {
-
         scope = rootScope.$new();
         scope.showDetailsButton = true;
         scope.patient = patient;
@@ -55,13 +53,12 @@ describe("ensure that the directive show-observation works properly", function (
 
         expect(compiledScope).not.toBeUndefined();
         expect(compiledScope.print).toBeFalsy();
-        compiledScope.toggle(observation)
+        compiledScope.toggle(observation);
         expect(observation.showDetails).toBeTruthy();
         expect(compiledScope.dateString(observation)).toBe(null);
     });
 
     it("dateString() should return only date", function () {
-
         scope = rootScope.$new();
         scope.showDetailsButton = true;
         scope.patient = patient;
@@ -84,7 +81,6 @@ describe("ensure that the directive show-observation works properly", function (
     });
 
     it("dateString() should return datetime", function () {
-
         scope = rootScope.$new();
         scope.showDetailsButton = true;
         scope.patient = patient;
@@ -114,7 +110,6 @@ describe("ensure that the directive show-observation works properly", function (
         scope.showDate = true;
         scope.showTime = true;
 
-
         httpBackend.expectGET("../common/obs/views/showObservation.html").respond("<div>dummy</div>");
 
         var compiledEle = compile(html)(scope);
@@ -134,6 +129,6 @@ describe("ensure that the directive show-observation works properly", function (
                 showClose: true,
                 data: {observation: scope.observation}
             }
-        )
+        );
     });
 });

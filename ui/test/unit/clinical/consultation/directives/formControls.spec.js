@@ -12,7 +12,7 @@ describe("Form Controls", function () {
                 spinner = jasmine.createSpyObj('spinner', ['forPromise']);
                 provide.value('formService', formService);
                 translate = {
-                    use: function(){ return 'en' }
+                    use: function () { return 'en'; }
                 };
                 provide.value('spinner', spinner);
                 provide.value('$translate', translate);
@@ -35,23 +35,23 @@ describe("Form Controls", function () {
         resetReactHelperFunctions();
     });
 
-    function fakeRenderHelperFunctions() {
+    function fakeRenderHelperFunctions () {
         window.renderWithControls = function () {
             renderHelper.renderWithControlsCalledTimes += 1;
         };
     }
 
-    function resetReactHelperFunctions() {
+    function resetReactHelperFunctions () {
         window.renderWithControls = renderHelper.renderWithControlsOriginal;
     }
 
-    function mockObservationService(data) {
+    function mockObservationService (data) {
         formService.getFormDetail.and.callFake(function () {
             return {
                 then: function (callback) {
                     return callback({ data: data });
                 }
-            }
+            };
         });
 
         formService.getFormTranslations.and.callFake(function () {
@@ -59,8 +59,8 @@ describe("Form Controls", function () {
                 then: function (callback) {
                     return callback({ concepts: { TEMPERATURE_2: 'Temperature' }});
                 }
-            }
-        })
+            };
+        });
     }
 
     it('should call formService.getFormDetail', function () {

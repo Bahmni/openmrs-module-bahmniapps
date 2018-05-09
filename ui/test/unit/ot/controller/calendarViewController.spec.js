@@ -1,7 +1,6 @@
 'use strict';
 
 describe("calendarViewController", function () {
-
     var controller, rootScope, scope, stateParams;
     var state = jasmine.createSpyObj('$state', ['go']);
     var patientService = jasmine.createSpyObj('patientService', ['search']);
@@ -50,7 +49,9 @@ describe("calendarViewController", function () {
             id: 60,
             provider: {uuid: "providerUuid1", display: "Doctor Strange"},
             location: {uuid: "uuid1", name: "location1"},
-            surgicalAppointments: [ {id: 48, surgicalAppointmentAttributes: []}],
+            surgicalAppointments: [
+                {id: 48, surgicalAppointmentAttributes: []}
+            ],
             startDatetime: "2001-10-04T09:00:00.000+0530",
             endDatetime: "2001-10-04T21:00:00.000+0530",
             uuid: "surgical-block1-uuid"
@@ -136,7 +137,6 @@ describe("calendarViewController", function () {
     });
 
     it('Should apply all the filters', function () {
-
         createController();
         scope.filters = {locations: {"location1": true, "location2": false}, providers: [{uuid: "providerUuid1"}],
             patient: {uuid: "patientUuid2", value: "firstName2 lastName2", identifier: "IQ10002"},
@@ -162,13 +162,13 @@ describe("calendarViewController", function () {
                 }
             ]
         },
-            {
-                "uuid": "spidermanUuid",
-                "person": {
-                    "display": "Spider Man"
-                },
-                "attributes": []
-            }];
+        {
+            "uuid": "spidermanUuid",
+            "person": {
+                "display": "Spider Man"
+            },
+            "attributes": []
+        }];
 
         var mappedSurgeons = [{name: "Bat Man", uuid: "batmanUuid", "Bat Man": false, otCalendarColor: "hsl(90, 100%, 90%)"}, {name: "Spider Man", uuid: "spidermanUuid", "Spider Man": false, otCalendarColor: "hsl(0, 100%, 90%)"}];
         state.filterParams = undefined;
@@ -197,13 +197,13 @@ describe("calendarViewController", function () {
                 }
             ]
         },
-            {
-                "uuid": "spidermanUuid",
-                "person": {
-                    "display": "Spider Man"
-                },
-                "attributes": []
-            }];
+        {
+            "uuid": "spidermanUuid",
+            "person": {
+                "display": "Spider Man"
+            },
+            "attributes": []
+        }];
         var mappedSurgeons = [{name: "Bat Man", uuid: "batmanUuid", "Bat Man": false, otCalendarColor: "hsl(90, 100%, 90%)"}, {name: "Spider Man", uuid: "spidermanUuid", "Spider Man": false, otCalendarColor: "hsl(0, 100%, 90%)"}];
 
         state.filterParams = {locations: {"location1": true, "location2": false}, providers: [{uuid: "providerUuid1"}],
@@ -231,7 +231,7 @@ describe("calendarViewController", function () {
         scope.surgicalBlockSelected = surgicalBlocks[0];
         scope.goToEdit(event);
         expect(state.go).toHaveBeenCalledWith("editSurgicalAppointment",
-            jasmine.objectContaining({surgicalBlockUuid : "surgical-block1-uuid"}));
+jasmine.objectContaining({surgicalBlockUuid: "surgical-block1-uuid"}));
     });
 
     it('should navigate to edit surgical block page  with surgical block and appointment details on clicking edit button', function () {
@@ -244,7 +244,7 @@ describe("calendarViewController", function () {
         scope.surgicalAppointmentSelected = surgicalBlocks[0].surgicalAppointments[0];
         scope.goToEdit(event);
         expect(state.go).toHaveBeenCalledWith("editSurgicalAppointment",
-            jasmine.objectContaining({surgicalBlockUuid : "surgical-block1-uuid", surgicalAppointmentId : 48}));
+jasmine.objectContaining({surgicalBlockUuid: "surgical-block1-uuid", surgicalAppointmentId: 48}));
     });
 
     it('should navigate to the cancel appointment dialog box when a cancel Appointment is clicked', function () {
@@ -269,7 +269,7 @@ describe("calendarViewController", function () {
     it('should navigate to the cancel block dialog box when a cancel block is clicked', function () {
         createController();
         scope.surgicalBlockSelected = surgicalBlocks[0];
-        scope.surgicalBlockSelected.provider = {person: {display:"something"}};
+        scope.surgicalBlockSelected.provider = {person: {display: "something"}};
         scope.cancelSurgicalBlockOrSurgicalAppointment();
 
         expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
@@ -296,26 +296,26 @@ describe("calendarViewController", function () {
         expect(state.weekEndDate).toEqual(new Date(moment().endOf('week').endOf('day')));
     });
 
-    it('should go to next week on click of right arrow in week view', function() {
-       createController();
-       scope.weekStartDate = new Date(moment().startOf('week'));
-       scope.weekEndDate = new Date(moment().endOf('week').endOf('day'));
-       scope.goToNextWeek();
-       expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().startOf('week')), 7));
-       expect(state.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().startOf('week')), 7));
-       expect(scope.weekEndDate ).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().endOf('week').endOf('day')), 7));
-       expect(state.weekEndDate ).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().endOf('week').endOf('day')), 7));
+    it('should go to next week on click of right arrow in week view', function () {
+        createController();
+        scope.weekStartDate = new Date(moment().startOf('week'));
+        scope.weekEndDate = new Date(moment().endOf('week').endOf('day'));
+        scope.goToNextWeek();
+        expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().startOf('week')), 7));
+        expect(state.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().startOf('week')), 7));
+        expect(scope.weekEndDate).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().endOf('week').endOf('day')), 7));
+        expect(state.weekEndDate).toEqual(Bahmni.Common.Util.DateUtil.addDays(new Date(moment().endOf('week').endOf('day')), 7));
     });
 
-    it('should go to previous week on click of left arrow in week view', function() {
-       createController();
-       scope.weekStartDate = new Date(moment().startOf('week'));
-       scope.weekEndDate = new Date(moment().endOf('week').endOf('day'));
-       scope.goToPreviousWeek();
-       expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().startOf('week')), 7));
-       expect(state.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().startOf('week')), 7));
-       expect(scope.weekEndDate ).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().endOf('week').endOf('day')), 7));
-       expect(state.weekEndDate ).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().endOf('week').endOf('day')), 7));
+    it('should go to previous week on click of left arrow in week view', function () {
+        createController();
+        scope.weekStartDate = new Date(moment().startOf('week'));
+        scope.weekEndDate = new Date(moment().endOf('week').endOf('day'));
+        scope.goToPreviousWeek();
+        expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().startOf('week')), 7));
+        expect(state.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().startOf('week')), 7));
+        expect(scope.weekEndDate).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().endOf('week').endOf('day')), 7));
+        expect(state.weekEndDate).toEqual(Bahmni.Common.Util.DateUtil.subtractDays(new Date(moment().endOf('week').endOf('day')), 7));
     });
 
     it('should set scope params to state params if state params are present', function () {
@@ -340,10 +340,10 @@ describe("calendarViewController", function () {
     });
 
     it('should go to calendar view on click of calendar button', function () {
-       createController();
-       scope.calendarView();
-       expect(scope.weekOrDay).toEqual('day');
-       expect(scope.view).toEqual('Calendar');
+        createController();
+        scope.calendarView();
+        expect(scope.weekOrDay).toEqual('day');
+        expect(scope.view).toEqual('Calendar');
     });
 
     it('should go to list view on click of list view button', function () {
@@ -358,7 +358,7 @@ describe("calendarViewController", function () {
         scope.view = 'Calendar';
         scope.filters = {statusList: []};
         scope.onSelectPatient(data);
-        expect(scope.filters.statusList).toEqual([ { name : 'SCHEDULED' }, { name : 'COMPLETED' } ]);
+        expect(scope.filters.statusList).toEqual([ { name: 'SCHEDULED' }, { name: 'COMPLETED' } ]);
     });
 
     it("should not change the filter status list when some status filters are applied on selection of patient ", function () {
@@ -388,7 +388,10 @@ describe("calendarViewController", function () {
         scope.view = 'Calendar';
         scope.$digest();
         expect(scope.applyFilters).toHaveBeenCalled();
-        expect(scope.appointmentStatusList).toEqual([{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed} ]);
+        expect(scope.appointmentStatusList).toEqual(
+            [
+                {name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed}
+            ]);
         expect(scope.filters.statusList).toEqual([{name: Bahmni.OT.Constants.completed}]);
     });
 
@@ -402,8 +405,8 @@ describe("calendarViewController", function () {
         scope.$digest();
         expect(scope.applyFilters).toHaveBeenCalled();
         expect(scope.appointmentStatusList).toEqual([{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed},
-            {name: Bahmni.OT.Constants.postponed}, {name: Bahmni.OT.Constants.cancelled}]);
-        expect(scope.filters.statusList).toEqual([{name: Bahmni.OT.Constants.scheduled},{name: Bahmni.OT.Constants.completed}, {name: Bahmni.OT.Constants.cancelled}]);
+{name: Bahmni.OT.Constants.postponed}, {name: Bahmni.OT.Constants.cancelled}]);
+        expect(scope.filters.statusList).toEqual([{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed}, {name: Bahmni.OT.Constants.cancelled}]);
     });
 
     it("move button should be disabled by default", function () {
@@ -434,39 +437,39 @@ describe("calendarViewController", function () {
     });
 
     it("should disable move button when user selects surgical block", function () {
-       createController();
-       scope.$emit("event:surgicalBlockSelect", {surgicalAppointments: []});
-       expect(scope.moveButtonDisabled).toBeTruthy();
-       expect(scope.editDisabled).toBeFalsy();
-       expect(scope.addActualTimeDisabled).toBeTruthy();
-       expect(scope.cancelDisabled).toBeFalsy();
+        createController();
+        scope.$emit("event:surgicalBlockSelect", {surgicalAppointments: []});
+        expect(scope.moveButtonDisabled).toBeTruthy();
+        expect(scope.editDisabled).toBeFalsy();
+        expect(scope.addActualTimeDisabled).toBeTruthy();
+        expect(scope.cancelDisabled).toBeFalsy();
     });
 
     it("should disable move button when user deselects surgical block", function () {
-       createController();
-       scope.$emit("event:surgicalBlockDeselect", {surgicalAppointments: []});
-       expect(scope.moveButtonDisabled).toBeTruthy();
-       expect(scope.editDisabled).toBeTruthy();
-       expect(scope.addActualTimeDisabled).toBeTruthy();
-       expect(scope.cancelDisabled).toBeTruthy();
+        createController();
+        scope.$emit("event:surgicalBlockDeselect", {surgicalAppointments: []});
+        expect(scope.moveButtonDisabled).toBeTruthy();
+        expect(scope.editDisabled).toBeTruthy();
+        expect(scope.addActualTimeDisabled).toBeTruthy();
+        expect(scope.cancelDisabled).toBeTruthy();
     });
 
     it("should disable move button when user selects surgical appointment but status is not Scheduled", function () {
-       createController();
-       scope.$emit("event:surgicalAppointmentSelect", {status: Bahmni.OT.Constants.completed}, {surgicalAppointments: []});
-       expect(scope.moveButtonDisabled).toBeTruthy();
-       expect(scope.editDisabled).toBeFalsy();
-       expect(scope.addActualTimeDisabled).toBeFalsy();
-       expect(scope.cancelDisabled).toBeTruthy();
+        createController();
+        scope.$emit("event:surgicalAppointmentSelect", {status: Bahmni.OT.Constants.completed}, {surgicalAppointments: []});
+        expect(scope.moveButtonDisabled).toBeTruthy();
+        expect(scope.editDisabled).toBeFalsy();
+        expect(scope.addActualTimeDisabled).toBeFalsy();
+        expect(scope.cancelDisabled).toBeTruthy();
     });
 
     it("should enable move button when user selects surgical appointment but status is Scheduled", function () {
-       createController();
-       scope.$emit("event:surgicalAppointmentSelect", {status: Bahmni.OT.Constants.scheduled}, {surgicalAppointments: []});
-       expect(scope.moveButtonDisabled).toBeFalsy();
-       expect(scope.editDisabled).toBeFalsy();
-       expect(scope.addActualTimeDisabled).toBeFalsy();
-       expect(scope.cancelDisabled).toBeFalsy();
+        createController();
+        scope.$emit("event:surgicalAppointmentSelect", {status: Bahmni.OT.Constants.scheduled}, {surgicalAppointments: []});
+        expect(scope.moveButtonDisabled).toBeFalsy();
+        expect(scope.editDisabled).toBeFalsy();
+        expect(scope.addActualTimeDisabled).toBeFalsy();
+        expect(scope.cancelDisabled).toBeFalsy();
     });
 
     it("should take stateParams viewDate when it is present", function () {
@@ -480,6 +483,6 @@ describe("calendarViewController", function () {
         createController();
         expect(scope.appointmentStatusList.length).toEqual(4);
         expect(scope.appointmentStatusList).toEqual([{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed},
-            {name: Bahmni.OT.Constants.postponed}, {name: Bahmni.OT.Constants.cancelled}]);
+{name: Bahmni.OT.Constants.postponed}, {name: Bahmni.OT.Constants.cancelled}]);
     });
 });

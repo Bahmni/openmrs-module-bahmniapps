@@ -13,18 +13,16 @@ describe("OrdersDisplayControl", function () {
             orderTypeService = jasmine.createSpyObj('orderTypeService', ['getOrderTypeUuid']);
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             translateFilter = jasmine.createSpy('translateFilter');
-            $provide.value('translateFilter',translateFilter);
+            $provide.value('translateFilter', translateFilter);
             $provide.value('orderService', orderService);
             $provide.value('orderTypeService', orderTypeService);
             $provide.value('spinner', spinner);
         });
 
-
         inject(function ($compile, $rootScope) {
             compile = $compile;
             scope = $rootScope.$new();
         });
-
     });
 
     var generateElement = function () {
@@ -90,7 +88,7 @@ describe("OrdersDisplayControl", function () {
         scope.$digest();
 
         var expectedDate = moment(orders[0].orderDate).format("DD MMM YY h:mm a");
-        expect(compiledElementScope.getTitle(orders[0])).toBe("Absconding on " + expectedDate + " by Surajkumar Surajkumar Surajkumar")
+        expect(compiledElementScope.getTitle(orders[0])).toBe("Absconding on " + expectedDate + " by Surajkumar Surajkumar Surajkumar");
     });
 
     it('should set hideIfEmpty flag if the orders observations are empty', function () {
@@ -103,7 +101,7 @@ describe("OrdersDisplayControl", function () {
         var compiledElementScope = element.isolateScope();
         scope.$digest();
 
-        expect(compiledElementScope.bahmniOrders[0].hideIfEmpty).toBe(true)
+        expect(compiledElementScope.bahmniOrders[0].hideIfEmpty).toBe(true);
     });
 
     it('should set showHeader flag if it is not present', function () {
@@ -134,13 +132,11 @@ describe("OrdersDisplayControl", function () {
     });
 
     it('should have children 1 section', function () {
-
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
         var element = generateElement();
 
         expect(element.children()[0]).toEqual('section');
     });
-
 
     it('1 section child should have children 1 h2 and 1 div', function () {
         scope.section.title = "testTitle";
@@ -191,13 +187,13 @@ describe("OrdersDisplayControl", function () {
         var secondOrderITags = $(bahmniObservations[1]).find('i');
         var secondOrderFulfillments = $(bahmniObservations[1]).find('ul')[0];
 
-        //firstOrder isOPen
+        // firstOrder isOPen
         expect(firstOrderITags[0]).toHaveClass('fa-caret-right');
         expect(firstOrderITags[1]).toHaveClass('fa-caret-down');
         expect(firstOrderITags[1]).not.toHaveClass('ng-hide');
         expect(firstOrderFulfillments).not.toHaveClass('ng-hide');
 
-        //secondOrder isOPen
+        // secondOrder isOPen
         expect(secondOrderITags[0]).toHaveClass('fa-caret-right');
         expect(secondOrderITags[0]).not.toHaveClass('ng-hide');
         expect(secondOrderITags[1]).toHaveClass('fa-caret-down');
@@ -205,7 +201,6 @@ describe("OrdersDisplayControl", function () {
     });
 
     describe("noOrdersMessage", function () {
-
         beforeEach(function () {
             scope.config = {};
             scope.patient = {};
@@ -216,11 +211,10 @@ describe("OrdersDisplayControl", function () {
         });
 
         it('should show the noOrdersMessage when there is no order', function () {
-
             orderService.getOrders.and.returnValue(specUtil.createFakePromise([]));
             var element = generateElement();
 
-          var topLevelSection = element.children()[0];
+            var topLevelSection = element.children()[0];
             expect(topLevelSection).toEqual('section');
 
             var noMessageSecion = $(topLevelSection).find('>div>div');
@@ -228,7 +222,6 @@ describe("OrdersDisplayControl", function () {
         });
 
         it('should not show the noOrdersMessage when there are orders', function () {
-
             orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
             var element = generateElement();
 

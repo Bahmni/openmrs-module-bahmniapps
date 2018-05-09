@@ -1,7 +1,7 @@
 'use strict';
 
 describe('AppointmentsDayCalendarController', function () {
-    var element,controller, scope, rootScope, appService, appDescriptor, $compile, httpBackend, $state, calendarViewPopUp;
+    var element, controller, scope, rootScope, appService, appDescriptor, $compile, httpBackend, $state, calendarViewPopUp;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -20,7 +20,6 @@ describe('AppointmentsDayCalendarController', function () {
             calendarViewPopUp = jasmine.createSpy('calendarViewPopUp');
         });
     });
-
 
     var createElement = function () {
         document.body.innerHTML += '<div class="app-calendar-container"></div>';
@@ -84,19 +83,19 @@ describe('AppointmentsDayCalendarController', function () {
     it('should not be selectable if date is a past date', function () {
         scope.date = new Date('1970-01-01T11:30:00.000Z');
         createController();
-        expect(scope.uiConfig.calendar.selectable).toBe(false)
+        expect(scope.uiConfig.calendar.selectable).toBe(false);
     });
 
     it('should be selectable if date is today', function () {
         scope.date = moment().startOf('day');
         createController();
-        expect(scope.uiConfig.calendar.selectable).toBe(true)
+        expect(scope.uiConfig.calendar.selectable).toBe(true);
     });
 
     it('should be selectable if date is future date', function () {
         scope.date = moment().add(1, 'year').toDate();
         createController();
-        expect(scope.uiConfig.calendar.selectable).toBe(true)
+        expect(scope.uiConfig.calendar.selectable).toBe(true);
     });
 
     it('should go to new appointment state on createAppointment only if the user has Manage privilege', function () {
@@ -108,7 +107,7 @@ describe('AppointmentsDayCalendarController', function () {
         $state.params = {};
         scope.createAppointment(startDateTime, endDateTime, undefined, undefined, resource);
         expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new',
-            $state.params,{reload:false});
+            $state.params, {reload: false});
     });
 
     it('should not go to new appointment state on createAppointment if the user does not have Manage privilege', function () {
@@ -123,7 +122,7 @@ describe('AppointmentsDayCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true },
+            scope: { appointments: event.appointments, checkinAppointment: jasmine.any(Function), enableCreateAppointment: true },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
@@ -134,7 +133,7 @@ describe('AppointmentsDayCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true },
+            scope: { appointments: event.appointments, checkinAppointment: jasmine.any(Function), enableCreateAppointment: true },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
@@ -145,7 +144,7 @@ describe('AppointmentsDayCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : false },
+            scope: { appointments: event.appointments, checkinAppointment: jasmine.any(Function), enableCreateAppointment: false },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
@@ -154,18 +153,17 @@ describe('AppointmentsDayCalendarController', function () {
         var startDateTime = moment();
         var endDateTime = moment().add(30, 'minutes');
         var resource = {id: 'Superman', title: 'Superman', provider: {name: "Superman", uuid: "7d162c29-3f12-11e4-adec-0800271c1b75"}};
-        var appointment =  {startDateTime: startDateTime, endDateTime: endDateTime, provider: resource.provider};
+        var appointment = {startDateTime: startDateTime, endDateTime: endDateTime, provider: resource.provider};
         createController();
-        scope.appointments ={};
+        scope.appointments = {};
         scope.uiConfig.calendar.resources = [{id: 'Jane', title: 'Jane'},
             {id: 'Austen', title: 'Austen'}];
         scope.$digest();
 
-        var event = { appointmentKind:"Scheduled",  title: "new patient(GAN203007)"};
+        var event = { appointmentKind: "Scheduled", title: "new patient(GAN203007)"};
         scope.appointments = {events: [event], resources: [{id: 'Jane', title: 'Jane'}]};
         scope.$digest();
         expect(scope.uiConfig.calendar.resources).toEqual(scope.appointments.resources);
         expect(scope.eventSources).toEqual([scope.appointments.events]);
-
-    })
+    });
 });

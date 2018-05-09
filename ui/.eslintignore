@@ -2,5 +2,4 @@ app/lib/
 app/components/
 dist/
 node_modules/
-test/
 **/*{.,-}min.js

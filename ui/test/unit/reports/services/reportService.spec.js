@@ -15,12 +15,12 @@ describe('Report Service', function () {
             $provide.value('$bahmniCookieStore', mockBahmniCookieStore);
             $provide.value('$http', mockHttp);
         });
-        //TODO: Fix error caused by $bahmniTranslateProvider while injecting the service
+        // TODO: Fix error caused by $bahmniTranslateProvider while injecting the service
         // inject(function (_reportService_) {
         //     reportService = _reportService_;
         // });
     });
 
     it("abdc", function () {
-    })
+    });
 });

@@ -5,7 +5,7 @@ describe("deleteAppointmentServiceController", function () {
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function($controller, $rootScope) {
+        inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
             controller = $controller;
         });

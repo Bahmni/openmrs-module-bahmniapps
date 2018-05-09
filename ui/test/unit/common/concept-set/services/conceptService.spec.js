@@ -9,7 +9,6 @@ describe("conceptService", function () {
             $provide.value('$http', http);
             $provide.value('$q', Q);
         });
-
     });
 
     var injectConceptService = function () {
@@ -20,7 +19,7 @@ describe("conceptService", function () {
         return conceptService;
     };
 
-    /*Mock of constructor Bahmni.Common.Domain.ConceptMapper*/
+    /* Mock of constructor Bahmni.Common.Domain.ConceptMapper */
     var originalConceptMapper, spyConceptMapperInstance;
     beforeEach(function () {
         spyConceptMapperInstance = jasmine.createSpyObj('ConceptMapperInstance', ['map']);
@@ -86,13 +85,13 @@ describe("conceptService", function () {
     describe("#getConceptByQuestion", function () {
         it("should get answers from openmrs concept api", function (done) {
             var request = {
-                term:"requestTerm",
-                answersConceptName:"requestCodedConceptName"
+                term: "requestTerm",
+                answersConceptName: "requestCodedConceptName"
             };
             var data = {
-                results:[]
+                results: []
             };
-            http.get.and.returnValue(specUtil.respondWith({data:data}));
+            http.get.and.returnValue(specUtil.respondWith({data: data}));
             var conceptService = injectConceptService();
             conceptService.getAnswersForConceptName(request).then(function (answers) {
                 var actualRequestArgs = http.get.calls.mostRecent().args;

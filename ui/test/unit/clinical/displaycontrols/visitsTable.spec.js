@@ -1,18 +1,18 @@
 'use strict';
 
 describe("Visits Table display control", function () {
-    var element, scope, $compile, mockBackend, conceptSetService, visitFormService,patientVisitHistoryService;
+    var element, scope, $compile, mockBackend, conceptSetService, visitFormService, patientVisitHistoryService;
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.clinical'));
-    beforeEach(module(function($provide) {
+    beforeEach(module(function ($provide) {
         conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
         visitFormService = jasmine.createSpyObj('visitFormService', ['formData']);
-        patientVisitHistoryService= jasmine.createSpyObj('patientVisitHistoryService', ['getVisitHistory']);
+        patientVisitHistoryService = jasmine.createSpyObj('patientVisitHistoryService', ['getVisitHistory']);
         $provide.value('$state', {});
         $provide.value('$bahmniCookieStore', {});
-        $provide.value('clinicalAppConfigService', {getObsIgnoreList: function(){return []}});
-        $provide.value('$bahmniTranslate', {use: function() {return "en"}});
+        $provide.value('clinicalAppConfigService', {getObsIgnoreList: function () { return []; }});
+        $provide.value('$bahmniTranslate', {use: function () { return "en"; }});
         $provide.value('conceptSetService', conceptSetService);
         $provide.value('visitFormService', visitFormService);
         $provide.value('patientVisitHistoryService', patientVisitHistoryService);
@@ -31,9 +31,9 @@ describe("Visits Table display control", function () {
         conceptSetService.getConcept.and.callFake(function () {
             return {
                 then: function (callback) {
-                    return callback(data)
+                    return callback(data);
                 }
-            }
+            };
         });
     };
 
@@ -41,9 +41,9 @@ describe("Visits Table display control", function () {
         visitFormService.formData.and.callFake(function () {
             return {
                 then: function (callback) {
-                    return callback(data)
+                    return callback(data);
                 }
-            }
+            };
         });
     };
 
@@ -51,12 +51,11 @@ describe("Visits Table display control", function () {
         patientVisitHistoryService.getVisitHistory.and.callFake(function () {
             return {
                 then: function (callback) {
-                    return callback(data)
+                    return callback(data);
                 }
-            }
+            };
         });
     };
-
 
     it("should show visit tables", function () {
         element = angular.element('<visits-table></visits-table>');
@@ -66,8 +65,7 @@ describe("Visits Table display control", function () {
         expect(element.scope().patientUuid).toBe("123");
     });
 
-
-    var allObsTemplateData = {"data": {"results": [{"display":"Baseline Template"},{"display":"Medication log Template"},{"display":"Followup Template"},{"display":"Outcome End of Treatment Template"}]}};
+    var allObsTemplateData = {"data": {"results": [{"display": "Baseline Template"}, {"display": "Medication log Template"}, {"display": "Followup Template"}, {"display": "Outcome End of Treatment Template"}]}};
     var formDataObj = {"data": {results: [
         {
             "uuid": "2625f662-a807-4682-844a-ccff002e669d",
@@ -88,5 +86,4 @@ describe("Visits Table display control", function () {
             "obsDatetime": "2015-11-18T16:26:30.000+0000"
         }
     ]}};
-
 });

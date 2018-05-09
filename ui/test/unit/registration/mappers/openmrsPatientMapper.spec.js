@@ -1,7 +1,6 @@
 'use strict';
 
 describe('OpenmrsPatientMapper', function () {
-
     var mapper, openmrsPatient, ageModule, patientConfiguration, date = new Date(), identifiersMock,
         identifierDetails, primaryIdentifier, extraIdentifiers;
     var dateUtil = Bahmni.Common.Util.DateUtil;
@@ -43,32 +42,32 @@ describe('OpenmrsPatientMapper', function () {
         });
 
         patientConfiguration = new Bahmni.Registration.PatientConfig([
-                {
-                    "uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75",
-                    "sortWeight": 2.0,
-                    "name": "caste",
-                    "description": "Caste",
-                    "format": "java.lang.String",
-                    "answers": []
-                },
-                {
-                    "uuid": "d3d93ab0-e796-11e2-852f-0800271c1999",
-                    "sortWeight": 2.0,
-                    "name": "date",
-                    "description": "Test Date",
-                    "format": "org.openmrs.util.AttributableDate"
-                },
-                {
-                    "uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75",
-                    "sortWeight": 2.0,
-                    "name": "class",
-                    "description": "Class",
-                    "format": "org.openmrs.Concept",
-                    "answers": [
+            {
+                "uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75",
+                "sortWeight": 2.0,
+                "name": "caste",
+                "description": "Caste",
+                "format": "java.lang.String",
+                "answers": []
+            },
+            {
+                "uuid": "d3d93ab0-e796-11e2-852f-0800271c1999",
+                "sortWeight": 2.0,
+                "name": "date",
+                "description": "Test Date",
+                "format": "org.openmrs.util.AttributableDate"
+            },
+            {
+                "uuid": "d3e6dc74-e796-11e2-852f-0800271c1b75",
+                "sortWeight": 2.0,
+                "name": "class",
+                "description": "Class",
+                "format": "org.openmrs.Concept",
+                "answers": [
                         {"description": "OBC", "uuid": "4da8141e-65d6-452e-9cfe-ce813bd11d52"}
-                    ]
-                }
-            ]
+                ]
+            }
+        ]
         );
 
         inject(['openmrsPatientMapper', '$rootScope', 'age', function (openmrsPatientMapper, $rootScope, age) {
@@ -97,9 +96,9 @@ describe('OpenmrsPatientMapper', function () {
                     "age": 0,
                     "birthdate": moment(date).format(),
                     "birthdateEstimated": false,
-                    "dead" : true,
-                    "causeOfDeath" : {
-                      "conceptUuid": "123"
+                    "dead": true,
+                    "causeOfDeath": {
+                        "conceptUuid": "123"
                     },
                     "preferredName": {
                         "uuid": "72573d85-7793-49c1-8c29-7647c0a6a425",
@@ -155,9 +154,8 @@ describe('OpenmrsPatientMapper', function () {
                     "name": "relationship"
                 }
             ]
-        }
+        };
     });
-
 
     it('should map values from the openmrs Patient to our patient object', function () {
         var age = {years: 2, months: 3, days: 25};
@@ -260,7 +258,7 @@ describe('OpenmrsPatientMapper', function () {
         expect(patient.hasRelationships).toBeTruthy();
     });
 
-  it('should map patient death details', function () {
+    it('should map patient death details', function () {
         var patient = mapper.map(openmrsPatient);
 
         expect(patient.dead).toBeTruthy();
@@ -268,6 +266,5 @@ describe('OpenmrsPatientMapper', function () {
             "conceptUuid": "123"
         });
         expect(patient.isDead).toBeTruthy();
-  });
-
+    });
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-describe("Provider Service",function () {
+describe("Provider Service", function () {
     var providerService, mockHttp;
     mockHttp = jasmine.createSpyObj('$http', ['get']);
     mockHttp.get.and.callFake(function (params) {
@@ -17,16 +17,16 @@ describe("Provider Service",function () {
         }]);
     });
 
-    it("should call http get with no params",function () {
-        var params = { method : 'GET', cache : false, params : {} };
+    it("should call http get with no params", function () {
+        var params = { method: 'GET', cache: false, params: {} };
         providerService.list({});
-        expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Common.Constants.providerUrl, params)
-    })
+        expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Common.Constants.providerUrl, params);
+    });
 
-    it("should call http get with custom params",function () {
+    it("should call http get with custom params", function () {
         var customParams = {v: "custom:(display,person,uuid)"};
-        var params = { method : 'GET', cache : false, params : customParams };
+        var params = { method: 'GET', cache: false, params: customParams };
         providerService.list(customParams);
-        expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Common.Constants.providerUrl, params)
-    })
+        expect(mockHttp.get).toHaveBeenCalledWith(Bahmni.Common.Constants.providerUrl, params);
+    });
 });

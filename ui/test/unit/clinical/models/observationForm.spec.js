@@ -2,13 +2,12 @@
 
 describe("ObservationForm", function () {
     var ObservationForm = Bahmni.ObservationForm;
-    var dummyUser = {isFavouriteObsTemplate: function(){}};
+    var dummyUser = {isFavouriteObsTemplate: function () {}};
     var event = { stopPropagation: function () {
         return;
     }};
 
     describe('init', function () {
-
         it("should have isOpen set to false if there are no obs recorded", function () {
             var observationForm = new ObservationForm('uuid', dummyUser, 'formName', '1', []);
             expect(observationForm.isOpen).toBe(false);
@@ -19,8 +18,8 @@ describe("ObservationForm", function () {
             var observations = [
                 {
                     value: 10,
-                    concept:{
-                        name:"Pulse"
+                    concept: {
+                        name: "Pulse"
                     },
                     formFieldPath: "formName.1/101"
                 }];
@@ -35,12 +34,12 @@ describe("ObservationForm", function () {
             expect(observationForm.formVersion).toBe('1');
         });
 
-        it("should have collapseInerSections to be false by default", function(){
+        it("should have collapseInerSections to be false by default", function () {
             var observationForm = new ObservationForm('uuid', dummyUser, 'form', '1', []);
             expect(observationForm.collapseInnerSections.value).toBe(false);
         });
 
-        it("should set collapseInerSections to true on call of minimizeInnerSections", function() {
+        it("should set collapseInerSections to true on call of minimizeInnerSections", function () {
             var observationForm = new ObservationForm('uuid', dummyUser, 'form', '1', []);
             expect(observationForm.collapseInnerSections.value).toBe(false);
 
@@ -48,7 +47,7 @@ describe("ObservationForm", function () {
             expect(observationForm.collapseInnerSections.value).toBe(true);
         });
 
-        it("should set collapseInerSections to false on call of maximizeInnerSections", function() {
+        it("should set collapseInerSections to false on call of maximizeInnerSections", function () {
             var observationForm = new ObservationForm('uuid', dummyUser, 'form', '1', []);
             expect(observationForm.collapseInnerSections.value).toBe(false);
 

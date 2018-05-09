@@ -5,7 +5,7 @@ describe("DiseaseTemplateController", function () {
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
-        scope.section={templateName:""};
+        scope.section = {templateName: ""};
         $controller('DiseaseTemplateController', {
             $scope: scope
         });
@@ -22,13 +22,12 @@ describe("DiseaseTemplateController", function () {
 
     describe("getDiseaseTemplateSection", function () {
         it("should return the matched section based on the name", function () {
-            scope.diseaseTemplates = [{name:"diabetes progress", "conceptNames":["concept one"]},
-                {name: "diabetes intake", "conceptNames":["concept two"]},
-                {name: "obstetrics", "conceptNames":["concept three"]}]
+            scope.diseaseTemplates = [{name: "diabetes progress", "conceptNames": ["concept one"]},
+                {name: "diabetes intake", "conceptNames": ["concept two"]},
+                {name: "obstetrics", "conceptNames": ["concept three"]}];
             var diseaseTemplateSection = scope.getDiseaseTemplateSection("diabetes progress");
             expect(diseaseTemplateSection).not.toBeUndefined();
             expect(diseaseTemplateSection.conceptNames[0]).toBe("concept one");
         });
     });
-
 });

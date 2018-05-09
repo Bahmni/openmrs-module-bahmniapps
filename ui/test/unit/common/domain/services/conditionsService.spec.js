@@ -8,7 +8,7 @@ describe("conditionsService", function () {
     beforeEach(function () {
         module('bahmni.common.domain');
         module(function ($provide) {
-            _$http = jasmine.createSpyObj('$http', ['post','get']);
+            _$http = jasmine.createSpyObj('$http', ['post', 'get']);
             _provide = $provide;
             _provide.value('$http', _$http);
         });
@@ -20,7 +20,7 @@ describe("conditionsService", function () {
     describe("save", function () {
         it("should map before saving", function (done) {
             var conditions = [{
-                unwantedProperty:'unwantedProperty'
+                unwantedProperty: 'unwantedProperty'
             }];
 
             _$http.post.and.returnValue(specUtil.respondWithPromise(Q, {data: []}));
@@ -33,8 +33,8 @@ describe("conditionsService", function () {
         });
     });
 
-    describe("getConditionHistory",function () {
-        it("should fetch from condition History Url",function (done) {
+    describe("getConditionHistory", function () {
+        it("should fetch from condition History Url", function (done) {
             _$http.get.and.returnValue(specUtil.respondWithPromise(Q, {data: []}));
 
             conditionsService.getConditionHistory('patientUuid').then(function () {
@@ -44,8 +44,8 @@ describe("conditionsService", function () {
         });
     });
 
-    describe("getFollowUpConditionConcept",function () {
-        it("should fetch from conceptSearchByFullNameUrl",function (done) {
+    describe("getFollowUpConditionConcept", function () {
+        it("should fetch from conceptSearchByFullNameUrl", function (done) {
             _$http.get.and.returnValue(specUtil.respondWithPromise(Q, {data: []}));
 
             conditionsService.getFollowUpConditionConcept().then(function () {

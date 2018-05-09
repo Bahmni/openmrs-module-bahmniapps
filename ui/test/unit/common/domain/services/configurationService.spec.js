@@ -1,8 +1,6 @@
 'use strict';
 
 describe('configurationService', function () {
-
-
     var _$http;
     var rootScope;
     beforeEach(module('bahmni.common.domain'));
@@ -25,102 +23,102 @@ describe('configurationService', function () {
     }));
 
     it('should fetch encounterConfig from backend', function () {
-        configurationservice.getConfigurations(['encounterConfig'])
+        configurationservice.getConfigurations(['encounterConfig']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.encounterConfigurationUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.callerContext).toEqual("REGISTRATION_CONCEPTS");
     });
 
     it('should fetch patientConfig from backend', function () {
-        configurationservice.getConfigurations(['patientConfig'])
+        configurationservice.getConfigurations(['patientConfig']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.patientConfigurationUrl);
     });
 
     it('should fetch patientAttributesConfig from backend', function () {
-        configurationservice.getConfigurations(['patientAttributesConfig'])
+        configurationservice.getConfigurations(['patientAttributesConfig']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.personAttributeTypeUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name,sortWeight,description,format,concept)");
     });
 
     it('should fetch dosageFrequencyConfig from backend', function () {
-        configurationservice.getConfigurations(['dosageFrequencyConfig'])
+        configurationservice.getConfigurations(['dosageFrequencyConfig']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conceptSearchByFullNameUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.name).toEqual(Bahmni.Common.Constants.dosageFrequencyConceptName);
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name,answers)");
     });
 
     it('should fetch dosageInstructionConfig from backend', function () {
-        configurationservice.getConfigurations(['dosageInstructionConfig'])
+        configurationservice.getConfigurations(['dosageInstructionConfig']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conceptSearchByFullNameUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.name).toEqual(Bahmni.Common.Constants.dosageInstructionConceptName);
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name,answers)");
     });
 
     it('should fetch stoppedOrderReasonConfig from backend', function () {
-        configurationservice.getConfigurations(['stoppedOrderReasonConfig'])
+        configurationservice.getConfigurations(['stoppedOrderReasonConfig']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conceptSearchByFullNameUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.name).toEqual(Bahmni.Common.Constants.stoppedOrderReasonConceptName);
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name,answers)");
     });
 
     it('should fetch consultationNoteConfig from backend', function () {
-        configurationservice.getConfigurations(['consultationNoteConfig'])
+        configurationservice.getConfigurations(['consultationNoteConfig']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conceptSearchByFullNameUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.name).toEqual(Bahmni.Common.Constants.consultationNoteConceptName);
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name,answers)");
     });
 
     it('should fetch radiologyObservationConfig from backend', function () {
-        configurationservice.getConfigurations(['radiologyObservationConfig'])
+        configurationservice.getConfigurations(['radiologyObservationConfig']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conceptSearchByFullNameUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.name).toEqual(Bahmni.Common.Constants.radiologyResultConceptName);
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name)");
     });
 
     it('should fetch labOrderNotesConfig from backend', function () {
-        configurationservice.getConfigurations(['labOrderNotesConfig'])
+        configurationservice.getConfigurations(['labOrderNotesConfig']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conceptSearchByFullNameUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.name).toEqual(Bahmni.Common.Constants.labOrderNotesConcept);
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name)");
     });
 
     it('should fetch radiologyImpressionConfig from backend', function () {
-        configurationservice.getConfigurations(['radiologyImpressionConfig'])
+        configurationservice.getConfigurations(['radiologyImpressionConfig']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conceptSearchByFullNameUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.name).toEqual(Bahmni.Common.Constants.impressionConcept);
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name)");
     });
 
     it('should fetch addressLevels from backend', function () {
-        configurationservice.getConfigurations(['addressLevels'])
+        configurationservice.getConfigurations(['addressLevels']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual("/openmrs/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form");
     });
 
     it('should fetch allTestsAndPanelsConcept from backend', function () {
-        configurationservice.getConfigurations(['allTestsAndPanelsConcept'])
+        configurationservice.getConfigurations(['allTestsAndPanelsConcept']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.conceptSearchByFullNameUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.name).toEqual(Bahmni.Common.Constants.allTestsAndPanelsConceptName);
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(uuid,name:(uuid,name),setMembers:(uuid,name:(uuid,name)))");
     });
 
     it('should fetch identifierTypesConfig from backend', function () {
-        configurationservice.getConfigurations(['identifierTypesConfig'])
+        configurationservice.getConfigurations(['identifierTypesConfig']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.idgenConfigurationURL);
     });
 
     it('should fetch relationshipTypes from backend', function () {
-        configurationservice.getConfigurations(['relationshipTypeConfig'])
+        configurationservice.getConfigurations(['relationshipTypeConfig']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.relationshipTypesUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.v).toEqual("custom:(aIsToB,bIsToA,uuid)");
     });
 
     it('should fetch genderMap from backend', function () {
-        configurationservice.getConfigurations(['genderMap'])
+        configurationservice.getConfigurations(['genderMap']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.globalPropertyUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.property).toEqual("mrs.genders");
     });
 
     it('should fetch loginLocationToVisitTypeMapping from backend', function () {
-        configurationservice.getConfigurations(['loginLocationToVisitTypeMapping'])
+        configurationservice.getConfigurations(['loginLocationToVisitTypeMapping']);
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.entityMappingUrl);
         expect(_$http.get.calls.mostRecent().args[1].params.mappingType).toEqual("loginlocation_visittype");
         expect(_$http.get.calls.mostRecent().args[1].params.s).toEqual("byEntityAndMappingType");

@@ -15,15 +15,15 @@ describe('surgicalAppointmentService', function () {
         }]);
     });
 
-    //This function converts a date into locale specific date
-    var toDateString = function(dateValue){
-        //dateValue expected in the format -> 2017-08-18 20:00:00
-        return moment(dateValue,"YYYY-MM-DD HH:mm:ss").format();
+    // This function converts a date into locale specific date
+    var toDateString = function (dateValue) {
+        // dateValue expected in the format -> 2017-08-18 20:00:00
+        return moment(dateValue, "YYYY-MM-DD HH:mm:ss").format();
     };
 
-    var toDate = function(dateValue){
-        //dateValue expected in the format -> 2017-08-18 20:00:00
-        return moment(dateValue,"YYYY-MM-DD HH:mm:ss").toDate();
+    var toDate = function (dateValue) {
+        // dateValue expected in the format -> 2017-08-18 20:00:00
+        return moment(dateValue, "YYYY-MM-DD HH:mm:ss").toDate();
     };
 
     it('should retrieve providers', function (done) {
@@ -48,7 +48,7 @@ describe('surgicalAppointmentService', function () {
         var data = {results: [{answers: [{displayString: "sample name"}, {displayString: "sample name2"}, {displayString: "sample name3"}]}]};
         var headers = {"Accept": "application/json", "Content-Type": "application/json"};
         var params = {v: 'full'};
-        var surgicalBlock = {location : {uuid: "123"}, provider : {uuid: "234"}, endDatetime : "2017-09-09T11:30:00Z", startDatetime : "2017-09-09T12:30:00Z"};
+        var surgicalBlock = {location: {uuid: "123"}, provider: {uuid: "234"}, endDatetime: "2017-09-09T11:30:00Z", startDatetime: "2017-09-09T12:30:00Z"};
 
         mockHttp.post.and.returnValue(specUtil.respondWith(data));
 
@@ -65,7 +65,7 @@ describe('surgicalAppointmentService', function () {
     });
 
     it('should get the surgical block with given block uuid', function (done) {
-        var data = {id: 1, uuid: "surgicalBlockUuid", location:{uuid: "locationUuid", name: "OT1"}, provider: {uuid: "providerUuid", person: {given_name: "Given name", family_name: "Last name"},
+        var data = {id: 1, uuid: "surgicalBlockUuid", location: {uuid: "locationUuid", name: "OT1"}, provider: {uuid: "providerUuid", person: {given_name: "Given name", family_name: "Last name"},
             startDatetime: "2039-08-26T12:00:00.000+0530", endDatetime: "2039-08-26T15:00:00.000+0530", surgicalAppointments: []}};
 
         mockHttp.get.and.returnValue(specUtil.respondWith(data));
@@ -83,7 +83,7 @@ describe('surgicalAppointmentService', function () {
     });
 
     it('should get the surgical blocks in the given date range with custom representation', function (done) {
-        var data = {id: 1, uuid: "surgicalBlockUuid", location:{uuid: "locationUuid", name: "OT1"}, provider: {uuid: "providerUuid", person: {given_name: "Given name", family_name: "Last name"},
+        var data = {id: 1, uuid: "surgicalBlockUuid", location: {uuid: "locationUuid", name: "OT1"}, provider: {uuid: "providerUuid", person: {given_name: "Given name", family_name: "Last name"},
             startDatetime: toDateString("2039-08-26 12:00:00"), endDatetime: toDateString("2039-08-26 15:00:00"), surgicalAppointments: []}};
         var startDatetime = toDateString("2039-08-26 12:00:00");
         var endDatetime = toDateString("2039-08-26 15:00:00");
@@ -97,7 +97,7 @@ describe('surgicalAppointmentService', function () {
 
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/surgicalBlock");
-        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({ startDatetime : '2039-08-26T12:00:00.000', endDatetime : '2039-08-26T15:00:00.000',includeVoided: false, v: "custom:(id,uuid," +
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({ startDatetime: '2039-08-26T12:00:00.000', endDatetime: '2039-08-26T15:00:00.000', includeVoided: false, v: "custom:(id,uuid," +
         "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
         "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,person:(age))," +
         "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,bedNumber,bedLocation,surgicalAppointmentAttributes))"});
@@ -108,7 +108,7 @@ describe('surgicalAppointmentService', function () {
         var data = {results: [{answers: [{displayString: "sample name"}, {displayString: "sample name2"}, {displayString: "sample name3"}]}]};
         var headers = {"Accept": "application/json", "Content-Type": "application/json"};
         var params = {v: 'full'};
-        var surgicalBlock = {uuid: "someUuid", location : {uuid: "123"}, provider : {uuid: "234"}, endDatetime : "2017-09-09T11:30:00Z", startDatetime : "2017-09-09T12:30:00Z"};
+        var surgicalBlock = {uuid: "someUuid", location: {uuid: "123"}, provider: {uuid: "234"}, endDatetime: "2017-09-09T11:30:00Z", startDatetime: "2017-09-09T12:30:00Z"};
 
         mockHttp.post.and.returnValue(specUtil.respondWith(data));
 
@@ -123,5 +123,4 @@ describe('surgicalAppointmentService', function () {
         expect(mockHttp.post.calls.mostRecent().args[2].withCredentials).toBeTruthy();
         expect(mockHttp.post.calls.mostRecent().args[2].headers).toEqual(headers);
     });
-
 });

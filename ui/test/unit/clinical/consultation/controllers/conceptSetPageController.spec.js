@@ -53,7 +53,7 @@ describe('ConceptSetPageController', function () {
         formService = jasmine.createSpyObj("formService", ["getFormList"]);
         spinner = jasmine.createSpyObj("spinner", ["forPromise"]);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
-        translate = jasmine.createSpyObj('$translate',['instant']);
+        translate = jasmine.createSpyObj('$translate', ['instant']);
     };
 
     beforeEach(initController);
@@ -71,7 +71,7 @@ describe('ConceptSetPageController', function () {
             configurations: configurations,
             $state: state,
             spinner: spinner,
-            $translate : translate
+            $translate: translate
         });
     };
 
@@ -79,9 +79,9 @@ describe('ConceptSetPageController', function () {
         conceptSetService.getConcept.and.callFake(function () {
             return {
                 then: function (callback) {
-                    return callback({"data" :conceptResponseData});
+                    return callback({"data": conceptResponseData});
                 }
-            }
+            };
         });
 
         conceptSetService.getObsTemplatesForProgram.and.callFake(function () {
@@ -89,7 +89,7 @@ describe('ConceptSetPageController', function () {
                 success: function (callback) {
                     return callback(entityMappingResponseData);
                 }
-            }
+            };
         });
     };
 
@@ -97,9 +97,9 @@ describe('ConceptSetPageController', function () {
         formService.getFormList.and.callFake(function () {
             return {
                 then: function (callback) {
-                    return callback({"data" :data});
+                    return callback({"data": data});
                 }
-            }
+            };
         });
     };
 
@@ -217,7 +217,6 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.selectedObsTemplate[0].isOpen).toBeTruthy();
             expect(scope.consultation.selectedObsTemplate[0].isLoaded).toBeTruthy();
             expect(scope.consultation.selectedObsTemplate[0].klass).toBe("active");
-
         });
 
         it("should load all obs templates according to the number of observations", function () {
@@ -238,7 +237,7 @@ describe('ConceptSetPageController', function () {
             mockConceptSetService(conceptResponseData);
             mockformService(data);
 
-            scope.patient = {}
+            scope.patient = {};
             scope.consultation.observations = [{
                 concept: {
                     name: "abcd",
@@ -326,7 +325,7 @@ describe('ConceptSetPageController', function () {
             };
             mockConceptSetService(conceptResponseData);
             mockformService({});
-            scope.patient = {}
+            scope.patient = {};
             scope.consultation.observations = [{
                 concept: {
                     name: "abcd",
@@ -356,23 +355,23 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.selectedObsTemplate[0].klass).toBe("active");
 
             scope.consultation.selectedObsTemplate[1].isAdded = true;
-            scope.addTemplate({label : "Followup Assessment", clone : function () {return {label : "Followup Assessment"}}});
+            scope.addTemplate({label: "Followup Assessment", clone: function () { return {label: "Followup Assessment"}; }});
             expect(scope.consultation.selectedObsTemplate.length).toEqual(3);
             expect(scope.consultation.selectedObsTemplate[2].klass).toBe("active");
 
-            scope.addTemplate({label : "Baseline", toggle : function () {}});
+            scope.addTemplate({label: "Baseline", toggle: function () {}});
             expect(scope.consultation.selectedObsTemplate.length).toEqual(4);
             var baselineTemplate = scope.consultation.selectedObsTemplate[2];
             expect(baselineTemplate.klass).toBe("active");
 
-            scope.addTemplate({label : "Baseline1", toggle : function () {}});
+            scope.addTemplate({label: "Baseline1", toggle: function () {}});
             expect(scope.consultation.selectedObsTemplate.length).toEqual(5);
             var baseline1Template = scope.consultation.selectedObsTemplate[3];
             expect(baseline1Template.klass).toBe("active");
             expect(messagingService.showMessage).toHaveBeenCalled();
         });
 
-        it("should sort templates based on the order it is saved and open the last visited template", function() {
+        it("should sort templates based on the order it is saved and open the last visited template", function () {
             var conceptResponseData = {
                 results: [
                     {
@@ -397,7 +396,7 @@ describe('ConceptSetPageController', function () {
                 uuid: "deadcafe"
             }];
 
-            scope.patient = {uuid: "patientUuid"}
+            scope.patient = {uuid: "patientUuid"};
 
             scope.consultation.observations = observations;
 
@@ -424,6 +423,6 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.selectedObsTemplate[1].isOpen).toBeTruthy();
             expect(scope.consultation.selectedObsTemplate[1].isLoaded).toBeTruthy();
             expect(scope.consultation.selectedObsTemplate[1].klass).toBe("active");
-        })
-    })
+        });
+    });
 });

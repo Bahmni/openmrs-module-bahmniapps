@@ -1,15 +1,13 @@
 'use strict';
 
 describe("grouping Observations", function () {
-
-    it("should return observation grouped in conceptSortWeight order", function(){
+    it("should return observation grouped in conceptSortWeight order", function () {
         var groupedObservation = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(observationsList);
         expect(groupedObservation[0].value[0].concept.name).toBe("Blood Pressure");
         expect(groupedObservation[0].value[1].concept.name).toBe("Dispensed");
         expect(groupedObservation[1].value[0].concept.name).toBe("Vitals");
         expect(groupedObservation[2].value[0].concept.name).toBe("RBS");
-    })
-
+    });
 });
 
 var observationsList = [

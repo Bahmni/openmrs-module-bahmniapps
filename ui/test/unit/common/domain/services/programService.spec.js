@@ -1,7 +1,6 @@
 'use strict';
 
 describe('programService', function () {
-
     var rootScope, mockBackend;
 
     var programService;
@@ -19,13 +18,13 @@ describe('programService', function () {
             getConfig: function () {
                 return {
                     program: ""
-                }
+                };
             },
             getConfigValue: function () {
                 return {
                     mandatoryProgramAttributes: "",
                     showProgramStateInTimeline: true
-                }
+                };
             }
         });
 
@@ -38,7 +37,7 @@ describe('programService', function () {
         inject(function (_$rootScope_, _programService_, $httpBackend) {
             rootScope = _$rootScope_;
             programService = _programService_;
-            mockBackend = $httpBackend
+            mockBackend = $httpBackend;
         });
     });
 
@@ -289,7 +288,6 @@ describe('programService', function () {
             }
         };
 
-
         mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)').respond(attributeType.data);
         mockBackend.whenGET(Bahmni.Common.Constants.programEnrollPatientUrl + '?patient=somePatientUuid&v=full').respond(data.data);
 
@@ -298,13 +296,11 @@ describe('programService', function () {
         });
 
         programService.getPatientPrograms(patientUuid).then(function (response) {
-
             expect(response.activePrograms[0].display).toEqual("End Fever Program");
             expect(response.endedPrograms[0].display).toEqual("End TB Program");
         });
 
         mockBackend.flush();
-
     });
 
     it('should enroll patient to a program', function () {
@@ -345,9 +341,7 @@ describe('programService', function () {
         programService.enrollPatientToAProgram(patientUuid, programUuid, dateEnrolled, workflowUuid, patientProgramAttributes, programAttributeTypes);
 
         mockBackend.flush();
-
     });
-
 
     it('should delete patient state', function () {
         var patientProgramUuid = "somePatientProgramUuid";
@@ -358,13 +352,9 @@ describe('programService', function () {
         mockBackend.when('DELETE', Bahmni.Common.Constants.programStateDeletionUrl + '/somePatientProgramUuid/state/someStateUuid').respond(function (method, url) {
             expect(url).toEqual(Bahmni.Common.Constants.programStateDeletionUrl + "/" + patientProgramUuid + "/state/" + patientStateUuid);
             return [200, {"reason": "User deleted the state."}, {}];
-
         });
         mockBackend.flush();
-
-
     });
-
 
     it('should retrieve list of program attribute types', function () {
         var programAttributeTypesJson = {
@@ -389,7 +379,6 @@ describe('programService', function () {
         };
 
         mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)').respond(programAttributeTypesJson);
-
 
         programService.getProgramAttributeTypes().then(function (programAttributeTypes) {
             expect(programAttributeTypes.length).toBe(2);
@@ -416,10 +405,8 @@ describe('programService', function () {
                 concept: {dataType: undefined},
                 excludeFrom: []
             }]);
-
         });
         mockBackend.flush();
-
     });
 
     describe("Program attributes", function () {
@@ -496,7 +483,6 @@ describe('programService', function () {
                     ]
                 });
 
-
             programService.getPatientPrograms(patientUuid).then(function (response) {
                 expect(response.activePrograms[0].attributes[0].name).toEqual("sample att description");
             });
@@ -541,9 +527,7 @@ describe('programService', function () {
             });
 
             mockBackend.flush();
-
-
-        })
+        });
     });
 
     it('test savePatientProgram', function () {
@@ -557,11 +541,9 @@ describe('programService', function () {
         });
         programService.savePatientProgram(patientProgramUuid, content);
         mockBackend.flush();
-
     });
 
     it('test updatePatientProgram', function () {
-
         var programAttributes = {
             "Sample Regex attribute": "123",
             "Sample date attribute": "2016-01-12T00:00:00.000+0000"
@@ -580,14 +562,14 @@ describe('programService', function () {
             {
                 "uuid": "6ccf5c9c-9f8c-4e46-b40b-c203b033f6d7",
                 "attributeType": {
-                    "uuid": "079b73c6-b854-11e5-9584-0800274a5156",
+                    "uuid": "079b73c6-b854-11e5-9584-0800274a5156"
                 },
                 "value": "123"
             },
             {
                 "uuid": "12cac096-ac84-419f-88c3-f140a3c13d98",
                 "attributeType": {
-                    "uuid": "07ae82e4-b854-11e5-9584-0800274a5156",
+                    "uuid": "07ae82e4-b854-11e5-9584-0800274a5156"
                 },
                 "value": "2016-01-12T00:00:00.000+0000"
             }
@@ -609,7 +591,7 @@ describe('programService', function () {
             "dateCompleted": moment("2016-01-12T05:30:00+0530").format('YYYY-MM-DDTHH:mm:ssZZ'),
             "dateEnrolled": moment("2016-01-01T00:00:00").format('YYYY-MM-DDTHH:mm:ssZZ'),
             "uuid": "Some UUID",
-            "voided" : false
+            "voided": false
         };
 
         mockBackend.whenPOST(Bahmni.Common.Constants.programEnrollPatientUrl + '/Some UUID').respond(function (method, url, data, headers) {
@@ -630,7 +612,7 @@ describe('programService', function () {
 
     it("should make a call to get specific program", function () {
         mockBackend.expectGET(Bahmni.Common.Constants.programEnrollPatientUrl + "?patient=patientUuid&patientProgramUuid=patientProgramUuid&v=full").respond(function () {
-            return [200, {}, {}]
+            return [200, {}, {}];
         });
         mockBackend.whenGET('/openmrs/ws/rest/v1/programattributetype?v=custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)').respond({
             "results": [
@@ -671,5 +653,4 @@ describe('programService', function () {
         programService.getEnrollmentInfoFor('patientUuid', 'custom:(uuid,dateEnrolled,program:(uuid),patient:(uuid))');
         mockBackend.flush();
     });
-
 });

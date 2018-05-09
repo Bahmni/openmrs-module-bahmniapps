@@ -5,7 +5,7 @@ describe("AllAppointmentServicesController", function () {
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function($controller, $rootScope, $location) {
+        inject(function ($controller, $rootScope, $location) {
             scope = $rootScope.$new();
             location = $location;
             controller = $controller;
@@ -16,7 +16,8 @@ describe("AllAppointmentServicesController", function () {
             appDescriptor.getConfigValue.and.returnValue(true);
             spinnerService = jasmine.createSpyObj('spinnerService', ['forPromise']);
             ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
-        })});
+        });
+    });
 
     var createController = function () {
         spinnerService.forPromise.and.callFake(function () {

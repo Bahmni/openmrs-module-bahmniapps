@@ -10,8 +10,8 @@ describe('focusOnInputErrors', function () {
         simpleHtml = '<concept-set-group patient="patient" consultation="consultation" observations="consultation.observations" focus-on-input-errors>' +
                         '<input value="" >' +
                         '<input value="1" class="illegalValue">' +
-                        '<input value="2" class="illegalValue">'
-                    '</concept-set-group>';
+                        '<input value="2" class="illegalValue">';
+    '</concept-set-group>';
 
     beforeEach(module('bahmni.common.uiHelper'), function () {
     });
@@ -23,7 +23,6 @@ describe('focusOnInputErrors', function () {
         scope = rootScope.$new();
         element = compile(simpleHtml)(scope);
         scope.$digest();
-
     }));
 
     it('should focus only on the first errored element', function () {

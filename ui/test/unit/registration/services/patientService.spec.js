@@ -5,7 +5,6 @@ describe('Patient resource', function () {
     var patient;
     var sessionService;
 
-
     var openmrsUrl = "http://blah";
     var patientConfiguration, identifiersMock, identifierDetails;
 
@@ -18,7 +17,7 @@ describe('Patient resource', function () {
                     'error': function (onError) {
                         onError();
                     }
-                }
+                };
             }
 
         }),
@@ -26,16 +25,15 @@ describe('Patient resource', function () {
             'success': function (onSuccess) {
                 return {
                     'then': function (thenMethod) {
-                        thenMethod()
+                        thenMethod();
                     },
                     'error': function (onError) {
-                        onError()
+                        onError();
                     }
-                }
+                };
             }
         })
     };
-
 
     beforeEach(function () {
         module('bahmni.common.models');
@@ -67,7 +65,6 @@ describe('Patient resource', function () {
             identifiersMock.create.and.returnValue(identifierDetails);
 
             $provide.value('identifiers', identifiersMock);
-
         });
 
         module(function ($provide) {
@@ -103,9 +100,7 @@ describe('Patient resource', function () {
             patientService = patientServiceInjectted;
             $rootScope.patientConfiguration = patientConfiguration;
         }]);
-
     });
-
 
     it('Should call url for search', function () {
         var query = 'john';
@@ -131,7 +126,6 @@ describe('Patient resource', function () {
         expect(mockHttp.get.calls.mostRecent().args[1].params.programAttributeFieldName).toBe(programAttributeFieldName);
         expect(mockHttp.get.calls.mostRecent().args[1].params.programAttributeFieldValue).toBe(programAttributeFieldValue);
         expect(results.$$state.value.name).toBe('john');
-
     });
 
     it('should make network call to serach by patient name or identifier for given query string and limit', function () {
@@ -177,5 +171,5 @@ describe('Patient resource', function () {
 
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe("http://blah/ws/rest/v1/patientprofile/someUuid");
-    })
+    });
 });

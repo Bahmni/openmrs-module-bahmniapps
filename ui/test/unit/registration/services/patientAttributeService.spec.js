@@ -1,7 +1,6 @@
 'use strict';
 
 describe('patientAttributeService', function () {
-
     var resultList = {"results": ["result1", "result2", "result3", "result4"]};
     var $http,
         mockHttp = {defaults: {headers: {common: {'X-Requested-With': 'present'}} },
@@ -15,7 +14,6 @@ describe('patientAttributeService', function () {
     }));
 
     describe("search", function () {
-
         it('Should get unique list of family names', inject(['patientAttributeService', function (patientAttributeService) {
             var key = "familyName";
             var query = "res";
@@ -40,7 +38,7 @@ describe('patientAttributeService', function () {
             expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
             expect(mockHttp.get.calls.mostRecent().args[1].params.key).toBe(key);
             expect(results).toBe(resultList);
-        }]))
+        }]));
 
         it('Should trim leading whitespaces', inject(['patientAttributeService', function (patientAttributeService) {
             var key = "caste";
@@ -53,6 +51,6 @@ describe('patientAttributeService', function () {
             expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query.trimLeft());
             expect(mockHttp.get.calls.mostRecent().args[1].params.key).toBe(key);
             expect(results).toBe(resultList);
-        }]))
+        }]));
     });
 });

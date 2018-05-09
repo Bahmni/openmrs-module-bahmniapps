@@ -1,6 +1,5 @@
 describe("DrugSchedule", function () {
-
-    describe("createSynonym",function () {
+    describe("createSynonym", function () {
         it("should return only the drug name when dosageForm does not exists", function () {
             var drug = {name: "Paracetamol 200mg", dosageForm: null};
             var drugSearchResult = Bahmni.Clinical.DrugSearchResult.createSynonym(drug);
@@ -42,12 +41,12 @@ describe("DrugSchedule", function () {
         });
     });
 
-    describe("getAllMatchingSynonyms",function () {
-        it("should return only the search results of drugs whose name matches with the search string",function () {
-            var drug = {name: "Paracetamol 200mg", dosageForm: null, concept:{
-                names:[
-                    {name:"paracetamoluse"},
-                    {name:"paracetamol"}
+    describe("getAllMatchingSynonyms", function () {
+        it("should return only the search results of drugs whose name matches with the search string", function () {
+            var drug = {name: "Paracetamol 200mg", dosageForm: null, concept: {
+                names: [
+                    {name: "paracetamoluse"},
+                    {name: "paracetamol"}
                 ]
             }};
 
@@ -58,11 +57,11 @@ describe("DrugSchedule", function () {
             expect(allMatchingSynonyms[0].label).toBe("paracetamoluse => Paracetamol 200mg");
         });
 
-        it("should return unique list of search results when more than one name is same",function () {
-            var drug = {name: "Paracetamol 200mg", dosageForm: null, concept:{
-                names:[
-                    {name:"paracetamoluse"},
-                    {name:"paracetamoluse"}
+        it("should return unique list of search results when more than one name is same", function () {
+            var drug = {name: "Paracetamol 200mg", dosageForm: null, concept: {
+                names: [
+                    {name: "paracetamoluse"},
+                    {name: "paracetamoluse"}
                 ]
             }};
 
@@ -71,15 +70,14 @@ describe("DrugSchedule", function () {
 
             expect(allMatchingSynonyms.length).toBe(1);
             expect(allMatchingSynonyms[0].label).toBe("paracetamoluse => Paracetamol 200mg");
-
         });
 
-        it("should return a sorted list of search results",function () {
-            var drug = {name: "Paracetamol 200mg", dosageForm: null, concept:{
-                names:[
-                    {name:"naracetamoluse"},
-                    {name:"paracetamoluse"},
-                    {name:"maracetamoluse"}
+        it("should return a sorted list of search results", function () {
+            var drug = {name: "Paracetamol 200mg", dosageForm: null, concept: {
+                names: [
+                    {name: "naracetamoluse"},
+                    {name: "paracetamoluse"},
+                    {name: "maracetamoluse"}
                 ]
             }};
 
@@ -90,7 +88,6 @@ describe("DrugSchedule", function () {
             expect(allMatchingSynonyms[0].label).toBe("maracetamoluse => Paracetamol 200mg");
             expect(allMatchingSynonyms[1].label).toBe("naracetamoluse => Paracetamol 200mg");
             expect(allMatchingSynonyms[2].label).toBe("paracetamoluse => Paracetamol 200mg");
-
         });
     });
 });

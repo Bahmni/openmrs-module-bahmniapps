@@ -1,7 +1,6 @@
 'use strict';
 
 describe('PatientCommonController', function () {
-
     var $aController, $httpBackend, scope, appService, rootScope, patientAttributeService;
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var $compile;
@@ -21,7 +20,6 @@ describe('PatientCommonController', function () {
             $compile = _$compile_;
         })
     );
-
 
     beforeEach(function () {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -48,7 +46,6 @@ describe('PatientCommonController', function () {
         $httpBackend.whenGET(Bahmni.Common.Constants.globalPropertyUrl + '?property=concept.reasonForDeath').respond({});
         $httpBackend.when('GET', Bahmni.Common.Constants.conceptUrl).respond({});
         $httpBackend.flush();
-
     });
 
     it('checks that the confirmation popup is prompted when the home button is clicked and the config is enabled', function () {
@@ -82,7 +79,6 @@ describe('PatientCommonController', function () {
     });
 
     it("should show caste same as last name if the configuration is set to true", function () {
-
         rootScope.patientConfiguration = {attributeTypes: [{name: 'Caste'}, {name: 'Class'}]};
 
         expect(scope.showCasteSameAsLastName()).toBeTruthy();
@@ -105,7 +101,6 @@ describe('PatientCommonController', function () {
     });
 
     it("showBirthTime should be false if set false", function () {
-
         appService.getAppDescriptor = function () {
             return {
                 getConfigValue: function (config) {
@@ -141,11 +136,11 @@ describe('PatientCommonController', function () {
                     hide: []
                 };
                 if (patient["age"].years < 18) {
-                    returnValues.show.push("additionalPatientInformation")
+                    returnValues.show.push("additionalPatientInformation");
                 } else {
-                    returnValues.hide.push("additionalPatientInformation")
+                    returnValues.hide.push("additionalPatientInformation");
                 }
-                return returnValues
+                return returnValues;
             };
 
             var showOrHideSectionOfCareTaker = function (patient) {
@@ -158,8 +153,8 @@ describe('PatientCommonController', function () {
                 } else {
                     returnValues.hide.push("caretaker");
                 }
-                return returnValues
-            }
+                return returnValues;
+            };
             Bahmni.Registration.AttributesConditions.rules = {
                 'age': function (patient) {
                     return showOrHideSection(patient);
@@ -214,7 +209,6 @@ describe('PatientCommonController', function () {
             $httpBackend.whenGET(Bahmni.Common.Constants.globalPropertyUrl + '?property=concept.reasonForDeath').respond({});
             $httpBackend.when('GET', Bahmni.Common.Constants.conceptUrl).respond({});
             $httpBackend.flush();
-
         };
         it("should show additional attributes section if age is less than 18 on page load", function () {
             scope.patient = {
@@ -228,7 +222,6 @@ describe('PatientCommonController', function () {
         });
 
         it("should hide additional attributes section if age is greater than 18 on page load", function () {
-
             scope.patient = {
                 'age': {
                     years: 20
@@ -260,14 +253,13 @@ describe('PatientCommonController', function () {
                 'age': {
                     years: 20
                 }
-            }
+            };
 
             createController();
             expect(sections.caretaker.canShow).toBeFalsy();
         });
 
         it("should show or hide caretaker attributes section if legalRepAlsoCaretaker value changes ", function () {
-
             scope.patient = {
                 'age': {
                     years: 20
@@ -302,10 +294,8 @@ describe('PatientCommonController', function () {
             };
             scope.handleUpdate('legalRepAlsoCaretaker');
             expect(sections.caretaker.canShow).toBeFalsy();
-
         });
         it("should hide additional attributes section if age is greater than 18 on value change", function () {
-
             scope.patient = {
                 'age': {
                     years: 10
@@ -330,8 +320,7 @@ describe('PatientCommonController', function () {
             };
             scope.handleUpdate('age');
             expect(sections.additionalPatientInformation.canShow).toBeTruthy();
-        })
-    })
-
-})
+        });
+    });
+});
 

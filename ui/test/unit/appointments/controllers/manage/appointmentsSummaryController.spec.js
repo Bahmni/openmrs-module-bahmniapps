@@ -1,6 +1,6 @@
 'use strict';
 
-describe ('appointmentsSummaryController', function () {
+describe('appointmentsSummaryController', function () {
     var controller, scope, appointmentsService, spinner, appService, appDescriptor, state, window;
 
     beforeEach(function () {
@@ -17,20 +17,19 @@ describe ('appointmentsSummaryController', function () {
             state = jasmine.createSpyObj('state', ['href', 'go']);
             state.params = {};
             window = jasmine.createSpyObj('window', ['open']);
-            appointmentsService.getAppointmentsSummary.and.returnValue(specUtil.simplePromise({response : "hello"}));
-
+            appointmentsService.getAppointmentsSummary.and.returnValue(specUtil.simplePromise({response: "hello"}));
         });
     });
 
     var createController = function () {
-       controller('AppointmentsSummaryController', {
-           $scope: scope,
-           appService: appService,
-           appointmentsService: appointmentsService,
-           spinner: spinner,
-           $state: state,
-           $window: window
-       });
+        controller('AppointmentsSummaryController', {
+            $scope: scope,
+            appService: appService,
+            appointmentsService: appointmentsService,
+            spinner: spinner,
+            $state: state,
+            $window: window
+        });
     };
 
     it('should initialize to viewDate in stateParams if provided', function () {
@@ -65,7 +64,7 @@ describe ('appointmentsSummaryController', function () {
     it('should Get all the appointments summary for current week on initialization', function () {
         createController();
         expect(appointmentsService.getAppointmentsSummary).toHaveBeenCalledWith({startDate: new Date(moment().startOf('week')),
-        endDate: new Date(moment().endOf('week').endOf('day'))});
+            endDate: new Date(moment().endOf('week').endOf('day'))});
         expect(spinner.forPromise).toHaveBeenCalled();
     });
 
@@ -102,11 +101,11 @@ describe ('appointmentsSummaryController', function () {
         var date = moment("2017-02-01").toDate();
         scope.goToListView(date, appointment.appointmentService);
         var params = {viewDate: date,
-            filterParams: {statusList: _.without(Bahmni.Appointments.Constants.appointmentStatusList, "Cancelled"),  serviceUuids : [ 'c526c72a-ae6a-446c-9337-42d1119bcb94' ]}};
+            filterParams: {statusList: _.without(Bahmni.Appointments.Constants.appointmentStatusList, "Cancelled"), serviceUuids: [ 'c526c72a-ae6a-446c-9337-42d1119bcb94' ]}};
         expect(state.go).toHaveBeenCalledWith('home.manage.appointments.list', params);
     });
 
-   it('should set the appointments to the response data', function () {
+    it('should set the appointments to the response data', function () {
         var appointments = [{
             "appointmentService": {
                 "appointmentServiceId": 1,

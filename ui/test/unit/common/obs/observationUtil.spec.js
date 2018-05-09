@@ -80,7 +80,7 @@ describe("ObservationUtil", function () {
             expect(mappedObservation[2].value).toBe(2);
             expect(mappedObservation[3].value).toBe(5);
             expect(mappedObservation[4].value).toBe(4);
-        })
+        });
     });
 
     describe("flatten", function () {
@@ -93,7 +93,7 @@ describe("ObservationUtil", function () {
                 groupMembers: [
                     {
                         concept: {name: "concept1"},
-                        getValues: function() {return ["Systolic", "Diastolic"]},
+                        getValues: function () { return ["Systolic", "Diastolic"]; },
                         selectedObs: {
                             Systolic: {
                                 value: {
@@ -173,7 +173,5 @@ describe("ObservationUtil", function () {
                 "concept1": '1'
             });
         });
-
-    })
-
+    });
 });

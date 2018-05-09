@@ -26,8 +26,8 @@ describe("Authentication", function () {
 
         var getProviderForUserPromise = specUtil.createServicePromise('getProviderForUser');
         getProviderForUserPromise.then = function (successFn) {
-           successFn(providers);
-           return getProviderForUserPromise;
+            successFn(providers);
+            return getProviderForUserPromise;
         };
 
         userService.getUser.and.returnValue(getUserPromise);
@@ -37,7 +37,6 @@ describe("Authentication", function () {
         $provide.value('userService', userService);
         $provide.value('$q', $q);
     }));
-
 
     describe("Should show error message ", function () {
         it("to the user when user doesn't select the location for the first time login", inject(['sessionService', '$rootScope', function (sessionService, $rootScope) {
@@ -51,29 +50,28 @@ describe("Authentication", function () {
         }]));
     });
 
-
     describe("loginUser", function () {
         it("should createSession and authenticate the user then save currentUser and cookie in the $bahmniCookieStore", inject(['sessionService', '$rootScope', '$http', function (sessionService, $rootScope, $http) {
             var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
             deferrable.promise = {
                 then: function (callback) {
-                    callback({authenticated: true})
+                    callback({authenticated: true});
                 }
             };
 
             $q.defer.and.returnValue(deferrable);
 
             var fakeHttpPromise = {
-                error: function(callback) {
-                    callback("Error")
+                error: function (callback) {
+                    callback("Error");
                 },
-                success: function(callback){
+                success: function (callback) {
                     return {
-                        error: function(callback) {
-                            callback("Error")
+                        error: function (callback) {
+                            callback("Error");
                         },
-                        success: function(callback){
-                            callback("Sucess")
+                        success: function (callback) {
+                            callback("Sucess");
                         }
                     };
                 }
@@ -85,31 +83,30 @@ describe("Authentication", function () {
             expect($bahmniCookieStore.put.calls.count()).toBe(2);
             expect($bahmniCookieStore.remove).toHaveBeenCalledWith(Bahmni.Common.Constants.locationCookieName);
         }]));
-
     });
 
     describe("loginUserWithOTP", function () {
-        it("should authenticate the user and show otp page", inject(['sessionService', '$rootScope', '$http',function (sessionService, $rootScope, $http) {
+        it("should authenticate the user and show otp page", inject(['sessionService', '$rootScope', '$http', function (sessionService, $rootScope, $http) {
             var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
             deferrable.promise = {
                 then: function (callback) {
-                    callback({firstFactAuthorization: true})
+                    callback({firstFactAuthorization: true});
                 }
             };
 
             $q.defer.and.returnValue(deferrable);
 
             var fakeHttpPromise = {
-                error: function(callback) {
-                    callback("Error")
+                error: function (callback) {
+                    callback("Error");
                 },
-                success: function(callback){
+                success: function (callback) {
                     return {
-                        error: function(callback) {
-                            callback("Error")
+                        error: function (callback) {
+                            callback("Error");
                         },
-                        success: function(callback){
-                            callback("Sucess")
+                        success: function (callback) {
+                            callback("Sucess");
                         }
                     };
                 }
@@ -122,28 +119,27 @@ describe("Authentication", function () {
             expect($bahmniCookieStore.remove).not.toHaveBeenCalledWith(Bahmni.Common.Constants.locationCookieName);
         }]));
 
-
-        it("should createSession and authenticate the user with OTP then save currentUser and cookie in the $bahmniCookieStore", inject(['sessionService', '$rootScope', '$http',function (sessionService, $rootScope, $http) {
+        it("should createSession and authenticate the user with OTP then save currentUser and cookie in the $bahmniCookieStore", inject(['sessionService', '$rootScope', '$http', function (sessionService, $rootScope, $http) {
             var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
             deferrable.promise = {
                 then: function (callback) {
-                    callback({authenticated: true})
+                    callback({authenticated: true});
                 }
             };
 
             $q.defer.and.returnValue(deferrable);
 
             var fakeHttpPromise = {
-                error: function(callback) {
-                    callback("Error")
+                error: function (callback) {
+                    callback("Error");
                 },
-                success: function(callback){
+                success: function (callback) {
                     return {
-                        error: function(callback) {
-                            callback("Error")
+                        error: function (callback) {
+                            callback("Error");
                         },
-                        success: function(callback){
-                            callback("Sucess")
+                        success: function (callback) {
+                            callback("Sucess");
                         }
                     };
                 }
@@ -156,36 +152,36 @@ describe("Authentication", function () {
             expect($bahmniCookieStore.remove).toHaveBeenCalledWith(Bahmni.Common.Constants.locationCookieName);
         }]));
 
-        it("should show login page if the user is locked out after too may invalid OTP attempts", inject(['sessionService', '$rootScope', '$http',function (sessionService, $rootScope, $http) {
+        it("should show login page if the user is locked out after too may invalid OTP attempts", inject(['sessionService', '$rootScope', '$http', function (sessionService, $rootScope, $http) {
             var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
             deferrable.promise = {
                 then: function (callback) {
-                    callback({authenticated: true})
+                    callback({authenticated: true});
                 }
             };
 
             $q.defer.and.returnValue(deferrable);
 
             var fakeHttpPromise = {
-                error: function(callback) {
-                    callback("Error")
+                error: function (callback) {
+                    callback("Error");
                 },
-                success: function(callback){
+                success: function (callback) {
                     callback();
                     return {
-                        error: function(callback) {
-                            callback("Error")
+                        error: function (callback) {
+                            callback("Error");
                         },
-                        success: function(callback){
-                            callback("Sucess")
+                        success: function (callback) {
+                            callback("Sucess");
                         }
                     };
                 }
             };
 
             var fakeHttpGetPromise = {
-                then: function(success, failure) {
-                    failure({"status" : 429});
+                then: function (success, failure) {
+                    failure({"status": 429});
                 }
             };
             spyOn($http, 'delete').and.returnValue(fakeHttpPromise);
@@ -203,8 +199,7 @@ describe("Authentication", function () {
             expect($http.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/session?v=custom:(uuid)&resendOTP=true', {
                 headers: {Authorization: 'Basic dXNlck5hbWU6cGFzc3dvcmQ='},
                 cache: false
-            })
+            });
         }]));
     });
-
 });

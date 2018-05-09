@@ -1,7 +1,7 @@
 'use strict';
 
 describe("PacsOrdersDisplayControl", function () {
-    var compile, scope, orderService, orderTypeService, spinner, orders,translateFilter, q, messagingService, $window;
+    var compile, scope, orderService, orderTypeService, spinner, orders, translateFilter, q, messagingService, $window;
 
     beforeEach(function () {
         module('bahmni.common.uiHelper');
@@ -19,9 +19,9 @@ describe("PacsOrdersDisplayControl", function () {
             $provide.value('orderService', orderService);
             $provide.value('orderTypeService', orderTypeService);
             $provide.value('spinner', spinner);
-            $provide.value('translateFilter',translateFilter);
-            $provide.value('messagingService',messagingService);
-            $provide.value('$window',$window);
+            $provide.value('translateFilter', translateFilter);
+            $provide.value('messagingService', messagingService);
+            $provide.value('$window', $window);
         });
         inject(function ($compile, $rootScope, $q) {
             compile = $compile;
@@ -68,7 +68,6 @@ describe("PacsOrdersDisplayControl", function () {
     });
 
     it('should have children 1 section', function () {
-
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
         var element = generateElement();
 
@@ -76,7 +75,6 @@ describe("PacsOrdersDisplayControl", function () {
     });
 
     it('section should have children 1 h2 and 1 section', function () {
-
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
         var element = generateElement();
 
@@ -102,7 +100,6 @@ describe("PacsOrdersDisplayControl", function () {
     });
 
     describe("noOrdersMessage", function () {
-
         beforeEach(function () {
             scope.config = {};
             scope.patient = {};
@@ -121,7 +118,6 @@ describe("PacsOrdersDisplayControl", function () {
         });
 
         it('should show the noOrdersMessage when there is no order', function () {
-
             orderService.getOrders.and.returnValue(specUtil.createFakePromise([]));
             var element = generateElement();
 
@@ -133,7 +129,6 @@ describe("PacsOrdersDisplayControl", function () {
         });
 
         it('should not show the noOrdersMessage when there are orders', function () {
-
             orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
             var element = generateElement();
 
@@ -145,15 +140,15 @@ describe("PacsOrdersDisplayControl", function () {
             expect($($(section.children()[1]).children()[1]).text()).not.toContain("No testOrder for this patient.");
         });
     });
-    describe("Pacs Image Link",function(){
-        beforeEach(function(){
+    describe("Pacs Image Link", function () {
+        beforeEach(function () {
             scope.config = {};
-            scope.patient = {uuid:"patientUuid", identifier: "GAN293345"};
+            scope.patient = {uuid: "patientUuid", identifier: "GAN293345"};
             scope.section = {title: "PACS Orders Summary"};
             scope.orderType = "pacsOrder";
             orders = [{
                 "concept": {
-                  "shortName": "Absconding"
+                    "shortName": "Absconding"
                 },
                 "orderDate": "2014-12-16T16:06:49.000+0530",
                 "provider": "someProvider",
@@ -161,8 +156,8 @@ describe("PacsOrdersDisplayControl", function () {
                 "bahmniObservations": []
             }];
         });
-        it('should set the pacs image link to given url template when it does not have any placeholder',function(){
-            scope.config.pacsImageUrl="http://localhost:8001/oviyam2/viewer.html?patientID={{patientID}}&accessionNumber={{orderNumber}}";
+        it('should set the pacs image link to given url template when it does not have any placeholder', function () {
+            scope.config.pacsImageUrl = "http://localhost:8001/oviyam2/viewer.html?patientID={{patientID}}&accessionNumber={{orderNumber}}";
 
             orderService.getOrders.and.callFake(function () {
                 var deferred = q.defer();
@@ -173,11 +168,11 @@ describe("PacsOrdersDisplayControl", function () {
 
             scope.$digest();
 
-            expect(orders[0].pacsImageUrl).toBe("http://localhost:8001/oviyam2/viewer.html?patientID=GAN293345&accessionNumber=ORD-2003")
+            expect(orders[0].pacsImageUrl).toBe("http://localhost:8001/oviyam2/viewer.html?patientID=GAN293345&accessionNumber=ORD-2003");
         });
 
-        it('should display message saying image not available when the image link is not servicable (when image is not available)', function(){
-            scope.config.pacsImageUrl="http://localhost:8001/oviyam2/viewer.html?patientID={{patientID}}&accessionNumber={{orderNumber}}";
+        it('should display message saying image not available when the image link is not servicable (when image is not available)', function () {
+            scope.config.pacsImageUrl = "http://localhost:8001/oviyam2/viewer.html?patientID={{patientID}}&accessionNumber={{orderNumber}}";
 
             orderService.getOrders.and.callFake(function () {
                 var deferred = q.defer();
@@ -185,7 +180,7 @@ describe("PacsOrdersDisplayControl", function () {
                 return deferred.promise;
             });
 
-            spyOn($, 'ajax').and.callFake(function(){
+            spyOn($, 'ajax').and.callFake(function () {
                 var d = $.Deferred();
                 d.reject({});
                 return d.promise();
@@ -195,11 +190,11 @@ describe("PacsOrdersDisplayControl", function () {
             var isolateScope = element.isolateScope();
             isolateScope.openImage(orders[0]);
 
-            expect(messagingService.showMessage).toHaveBeenCalledWith("info", "No image available yet for order: Absconding")
+            expect(messagingService.showMessage).toHaveBeenCalledWith("info", "No image available yet for order: Absconding");
         });
 
-        it('should open image in new tab  when the image link is  servicable (when image is available)', function(){
-            scope.config.pacsImageUrl="http://localhost:8001/oviyam2/viewer.html?patientID={{patientID}}&accessionNumber={{orderNumber}}";
+        it('should open image in new tab  when the image link is  servicable (when image is available)', function () {
+            scope.config.pacsImageUrl = "http://localhost:8001/oviyam2/viewer.html?patientID={{patientID}}&accessionNumber={{orderNumber}}";
 
             orderService.getOrders.and.callFake(function () {
                 var deferred = q.defer();
@@ -207,7 +202,7 @@ describe("PacsOrdersDisplayControl", function () {
                 return deferred.promise;
             });
 
-            spyOn($, 'ajax').and.callFake(function(){
+            spyOn($, 'ajax').and.callFake(function () {
                 var d = $.Deferred();
                 d.resolve({});
                 return d.promise();
@@ -217,8 +212,7 @@ describe("PacsOrdersDisplayControl", function () {
             var isolateScope = element.isolateScope();
             isolateScope.openImage(orders[0]);
 
-            expect($window.open).toHaveBeenCalledWith('http://localhost:8001/oviyam2/viewer.html?patientID=GAN293345&accessionNumber=ORD-2003', '_blank')
+            expect($window.open).toHaveBeenCalledWith('http://localhost:8001/oviyam2/viewer.html?patientID=GAN293345&accessionNumber=ORD-2003', '_blank');
         });
     });
-
 });

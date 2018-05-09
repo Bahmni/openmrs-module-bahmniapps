@@ -1,5 +1,4 @@
 describe("Dashboard Section", function () {
-
     var dashboardSection;
 
     it("should get the view template for observation section", function () {
@@ -24,7 +23,6 @@ describe("Dashboard Section", function () {
 
         dashboardSection = new Bahmni.Common.DisplayControl.Dashboard.Section(section);
         expect(dashboardSection.viewName).toBe("../common/displaycontrols/dashboard/views/sections/disposition.html");
-
     });
 
     it("should get the view template for labOrder section", function () {
@@ -37,14 +35,13 @@ describe("Dashboard Section", function () {
 
         dashboardSection = new Bahmni.Common.DisplayControl.Dashboard.Section(section);
         expect(dashboardSection.viewName).toBe("../clinical/dashboard/views/dashboardSections/labOrders.html");
-
     });
 
     it("should get the view template for custom control section", function () {
         var section = {
             "title": "Custom Display Control",
             "type": "custom",
-            "config":{
+            "config": {
 
             }
         };
@@ -56,7 +53,7 @@ describe("Dashboard Section", function () {
         var filter = function () {
             return function (key) {
                 return "Nutritional-Values";
-            }
+            };
         };
         var section = {
             "title": "Nutritional Values",
@@ -73,7 +70,7 @@ describe("Dashboard Section", function () {
         var filter = function () {
             return function (key) {
                 return "Nutritional-Values";
-            }
+            };
         };
         var section = {
             "title": "Custom Display Control",
@@ -84,5 +81,4 @@ describe("Dashboard Section", function () {
         dashboardSection = new Bahmni.Common.DisplayControl.Dashboard.Section(section, filter);
         expect(dashboardSection.id).toBeUndefined();
     });
-
 });

@@ -16,10 +16,9 @@ angular.module('stateMock').service("$state", function () {
         this.expectedTransitions.push(stateName);
     };
 
-
     this.ensureAllTransitionsHappened = function () {
         if (this.expectedTransitions.length > 0) {
             throw Error("Not all transitions happened!");
         }
-    }
+    };
 });

@@ -153,7 +153,7 @@ describe("AppointmentServiceController", function () {
             scope.services = [{name: 'Cardiology', uuid: 'c36006e5-9fbb-4f20-866b-0ece245615a6'}];
             scope.validateServiceName();
             expect(name.$setValidity).toHaveBeenCalledWith('uniqueServiceName', true);
-        })
+        });
     });
 
     describe('save', function () {

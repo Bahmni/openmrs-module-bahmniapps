@@ -67,7 +67,7 @@ describe("Specimen", function () {
 
             expect(specimen.isEmpty()).toBe(false);
         });
-    })
+    });
 
     describe("atLeastOneValueSet", function () {
         it("Should return false if result has no value", function () {
@@ -77,7 +77,7 @@ describe("Specimen", function () {
         });
 
         it("Should return true if result has value", function () {
-            var specimenData = {report: {results: [{value: "data"}]}}
+            var specimenData = {report: {results: [{value: "data"}]}};
             var specimen = new Bahmni.Clinical.Specimen(specimenData);
 
             expect(specimen.atLeastOneResult()).toBe(true);
@@ -152,8 +152,8 @@ describe("Specimen", function () {
                         ]
                     }
                 ]
-            }
-            specimen.sample = sampleMock
+            };
+            specimen.sample = sampleMock;
         });
 
         it("Should return true when additional attributes are filled", function () {
@@ -171,7 +171,7 @@ describe("Specimen", function () {
         specimen.dateCollected = undefined;
         specimen.identifier = undefined;
         specimen.uuid = "some uuid";
-        specimen.typeObservation = {type : "Some Type", dateCollected : "Some date"};
+        specimen.typeObservation = {type: "Some Type", dateCollected: "Some date"};
         specimen.sample = {
             "additionalAttributes": [
                 {
@@ -208,7 +208,6 @@ describe("Specimen", function () {
         it("Specimen should be voided ony if it is empty and existing", function () {
             specimen.uuid = null;
             expect(specimen.voidIfEmpty()).toBeFalsy();
-
         });
     });
 });

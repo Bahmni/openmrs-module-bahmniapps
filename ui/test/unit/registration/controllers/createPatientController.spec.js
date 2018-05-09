@@ -1,13 +1,13 @@
 'use strict';
 
-describe('CreatePatientController', function() {
+describe('CreatePatientController', function () {
     var $aController, q, scopeMock, rootScopeMock, stateMock, patientServiceMock, preferencesMock, spinnerMock,
         appServiceMock, ngDialogMock, ngDialogLocalScopeMock, httpBackend, http, sections, identifiersMock, messagingService;
 
     beforeEach(module('bahmni.registration'));
     beforeEach(module('bahmni.common.models'));
 
-    beforeEach(module(function($provide){
+    beforeEach(module(function ($provide) {
         identifiersMock = jasmine.createSpyObj('identifiers', ['create']);
         identifiersMock.create.and.returnValue({
             primaryIdentifier: {
@@ -24,10 +24,9 @@ describe('CreatePatientController', function() {
         });
 
         $provide.value('identifiers', identifiersMock);
-
     }));
     beforeEach(
-        inject(function($controller, $rootScope, $q, $httpBackend, $http) {
+        inject(function ($controller, $rootScope, $q, $httpBackend, $http) {
             $aController = $controller;
             rootScopeMock = $rootScope;
             q = $q;
@@ -37,7 +36,7 @@ describe('CreatePatientController', function() {
         })
     );
 
-    beforeEach(function() {
+    beforeEach(function () {
         stateMock = jasmine.createSpyObj('stateMock', ['go']);
         patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['create']);
         preferencesMock = jasmine.createSpyObj('preferencesMock', ['']);
@@ -62,13 +61,13 @@ describe('CreatePatientController', function() {
             }]
         };
 
-        scopeMock.$new = function() {
+        scopeMock.$new = function () {
             return ngDialogLocalScopeMock;
         };
 
-        appServiceMock.getAppDescriptor = function() {
+        appServiceMock.getAppDescriptor = function () {
             return {
-                getConfigValue: function(config) {
+                getConfigValue: function (config) {
                     if (config == 'patientInformation') {
                         return {
                             "defaults": {
@@ -104,7 +103,7 @@ describe('CreatePatientController', function() {
 
         }];
 
-        sections =  {
+        sections = {
             "additionalPatientInformation": {
                 attributes: [{
                     name: "education"
@@ -114,7 +113,7 @@ describe('CreatePatientController', function() {
             }
         };
 
-        rootScopeMock.patientConfiguration.getPatientAttributesSections = function() {
+        rootScopeMock.patientConfiguration.getPatientAttributesSections = function () {
             return sections;
         };
 
@@ -129,10 +128,10 @@ describe('CreatePatientController', function() {
             appService: appServiceMock,
             ngDialog: ngDialogMock,
             messagingService: messagingService
-    });
+        });
 
         scopeMock.actions = {
-            followUpAction: function() {
+            followUpAction: function () {
                 scopeMock.afterSave();
             }
         };
@@ -146,8 +145,7 @@ describe('CreatePatientController', function() {
         };
     });
 
-    it("should populate default fields in registration form", function() {
-
+    it("should populate default fields in registration form", function () {
         $aController('CreatePatientController', {
             $scope: scopeMock,
             $rootScope: rootScopeMock,
@@ -161,11 +159,10 @@ describe('CreatePatientController', function() {
 
         expect(scopeMock.patient["education"].conceptUuid).toBe("c2107f30-3f10-11e4-adec-0800271c1b75");
         expect(scopeMock.patient["education"].value).toBe("Uneducated");
-
     });
 
-    it("should expand the section if configured true via config", function() {
-        sections =  {
+    it("should expand the section if configured true via config", function () {
+        sections = {
             "additionalPatientInformation": {
                 attributes: [{
                     name: "caste"
@@ -176,7 +173,7 @@ describe('CreatePatientController', function() {
             }
         };
 
-        rootScopeMock.patientConfiguration.getPatientAttributesSections = function() {
+        rootScopeMock.patientConfiguration.getPatientAttributesSections = function () {
             return sections;
         };
 
@@ -194,8 +191,7 @@ describe('CreatePatientController', function() {
         expect(sections["additionalPatientInformation"].expand).toBeTruthy();
     });
 
-    it("should expand the section when there are any default values specified for an attribute in that section", function() {
-
+    it("should expand the section when there are any default values specified for an attribute in that section", function () {
         $aController('CreatePatientController', {
             $scope: scopeMock,
             $rootScope: rootScopeMock,
@@ -210,11 +206,10 @@ describe('CreatePatientController', function() {
         expect(sections["additionalPatientInformation"].expand).toBeTruthy();
     });
 
-    it("should do nothing if defaults are not specified", function() {
-
-        appServiceMock.getAppDescriptor = function() {
+    it("should do nothing if defaults are not specified", function () {
+        appServiceMock.getAppDescriptor = function () {
             return {
-                getConfigValue: function(config) {
+                getConfigValue: function (config) {
                     if (config == 'patientInformation') {
                         return {};
                     }
@@ -235,10 +230,9 @@ describe('CreatePatientController', function() {
         });
 
         expect(scopeMock.patient["education"]).toBeUndefined();
-
     });
 
-    it("should populate patient address levels", function() {
+    it("should populate patient address levels", function () {
         scopeMock.addressLevels = [{
             addressField: "stateProvince",
             name: "Division"
@@ -265,7 +259,7 @@ describe('CreatePatientController', function() {
         expect(scopeMock.patient.address[scopeMock.addressLevels[0].addressField]).toBe("Dhaka");
     });
 
-    it("should create a patient and go to edit page", function() {
+    it("should create a patient and go to edit page", function () {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
 
         patientServiceMock.create.and.returnValue(specUtil.respondWithPromise(q, {
@@ -291,10 +285,9 @@ describe('CreatePatientController', function() {
         expect(stateMock.go).toHaveBeenCalledWith("patient.edit", {
             patientUuid: 'patientUuid'
         });
-
     });
 
-    it("should create a patient with custom id and go to edit page", function() {
+    it("should create a patient with custom id and go to edit page", function () {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
 
         scopeMock.patient.hasOldIdentifier = true;
@@ -320,13 +313,13 @@ describe('CreatePatientController', function() {
         });
     });
 
-    it("should open the pop up when the custom identifier is greater then the next identifier in the sequence", function() {
+    it("should open the pop up when the custom identifier is greater then the next identifier in the sequence", function () {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
         scopeMock.patient.hasOldIdentifier = true;
 
-        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412,"[{\"sizeOfJump\":50, \"identifierType\": \"identifier-type-uuid\"}]");
-        patientServiceMock.create.and.callFake(function() {
+        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412, "[{\"sizeOfJump\":50, \"identifierType\": \"identifier-type-uuid\"}]");
+        patientServiceMock.create.and.callFake(function () {
             return http.post("/openmrs/ws/rest/v1/bahmnicore/patientprofile");
         });
 
@@ -337,12 +330,12 @@ describe('CreatePatientController', function() {
 
         expect(ngDialogMock.open).toHaveBeenCalledWith({
             template: 'views/customIdentifierConfirmation.html',
-            data: [{"sizeOfTheJump":50, "identifierName": "Bahmni Id"}],
+            data: [{"sizeOfTheJump": 50, "identifierName": "Bahmni Id"}],
             scope: ngDialogLocalScopeMock
         });
     });
 
-    it("should not open the pop up when the custom identifier is less then the next identifier in the sequence", function() {
+    it("should not open the pop up when the custom identifier is less then the next identifier in the sequence", function () {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
 
@@ -370,15 +363,14 @@ describe('CreatePatientController', function() {
         expect(scopeMock.patient.uuid).toBe("patientUuid");
     });
 
-
-    it("should create patient when the user says yes to the pop up", function() {
+    it("should create patient when the user says yes to the pop up", function () {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
 
         scopeMock.patient.hasOldIdentifier = true;
 
-        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412,"[{\"sizeOfJump\":50, \"identifierType\": \"identifier-type-uuid\"}]");
-        patientServiceMock.create.and.callFake(function() {
+        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412, "[{\"sizeOfJump\":50, \"identifierType\": \"identifier-type-uuid\"}]");
+        patientServiceMock.create.and.callFake(function () {
             return http.post("/openmrs/ws/rest/v1/bahmnicore/patientprofile");
         });
 
@@ -388,7 +380,7 @@ describe('CreatePatientController', function() {
 
         expect(ngDialogMock.open).toHaveBeenCalledWith({
             template: 'views/customIdentifierConfirmation.html',
-            data: [{"sizeOfTheJump":50, "identifierName": "Bahmni Id"}],
+            data: [{"sizeOfTheJump": 50, "identifierName": "Bahmni Id"}],
             scope: ngDialogLocalScopeMock
         });
 
@@ -412,14 +404,14 @@ describe('CreatePatientController', function() {
         expect(patientServiceMock.create).toHaveBeenCalledWith(scopeMock.patient, true);
     });
 
-    it("should not create patient when the user says no to the pop up", function() {
+    it("should not create patient when the user says no to the pop up", function () {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
 
         scopeMock.patient.hasOldIdentifier = true;
 
-        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412,"[{\"sizeOfJump\":50, \"identifierType\": \"identifier-type-uuid\"}]");
-        patientServiceMock.create.and.callFake(function() {
+        httpBackend.expectPOST("/openmrs/ws/rest/v1/bahmnicore/patientprofile").respond(412, "[{\"sizeOfJump\":50, \"identifierType\": \"identifier-type-uuid\"}]");
+        patientServiceMock.create.and.callFake(function () {
             return http.post("/openmrs/ws/rest/v1/bahmnicore/patientprofile");
         });
 
@@ -429,7 +421,7 @@ describe('CreatePatientController', function() {
 
         expect(ngDialogMock.open).toHaveBeenCalledWith({
             template: 'views/customIdentifierConfirmation.html',
-            data: [{"sizeOfTheJump":50, "identifierName": "Bahmni Id"}],
+            data: [{"sizeOfTheJump": 50, "identifierName": "Bahmni Id"}],
             scope: ngDialogLocalScopeMock
         });
 
@@ -438,35 +430,32 @@ describe('CreatePatientController', function() {
         expect(patientServiceMock.create.calls.count()).toEqual(1);
     });
 
-    it("should validate duplicate identifier entry in connect app and display error message", function(done) {
+    it("should validate duplicate identifier entry in connect app and display error message", function (done) {
         scopeMock.patient.identifierPrefix.prefix = "GAN";
         scopeMock.patient.registrationNumber = "1050";
 
         scopeMock.patient.hasOldIdentifier = true;
         var defer = q.defer();
-        patientServiceMock.create.and.callFake(function() {
+        patientServiceMock.create.and.callFake(function () {
             var deferred1 = q.defer();
-            deferred1.reject({isIdentifierDuplicate : true, message: "duplicate identifier"});
-            defer.resolve({data:"ds"});
+            deferred1.reject({isIdentifierDuplicate: true, message: "duplicate identifier"});
+            defer.resolve({data: "ds"});
             return deferred1.promise;
         });
 
         spinnerMock.forPromise.and.returnValue(defer.promise);
         scopeMock.create();
         scopeMock.$apply();
-            expect(patientServiceMock.create.calls.count()).toEqual(1);
-            expect(messagingService.showMessage).toHaveBeenCalled();
-            done();
-
-
-
+        expect(patientServiceMock.create.calls.count()).toEqual(1);
+        expect(messagingService.showMessage).toHaveBeenCalled();
+        done();
     });
 
     it("should return true if there is disablePhotoCapture config defined to be true", function () {
-        appServiceMock.getAppDescriptor = function() {
+        appServiceMock.getAppDescriptor = function () {
             return {
-                getConfigValue: function(config) {
-                    if(config == "disablePhotoCapture"){
+                getConfigValue: function (config) {
+                    if (config == "disablePhotoCapture") {
                         return true;
                     }
                 }
@@ -486,5 +475,4 @@ describe('CreatePatientController', function() {
         });
         expect(scopeMock.disablePhotoCapture).toBeTruthy();
     });
-
 });

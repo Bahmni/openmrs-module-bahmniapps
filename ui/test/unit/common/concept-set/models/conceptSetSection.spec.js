@@ -1,7 +1,6 @@
 'use strict';
 
 describe("ConceptSetSection", function () {
-
     var ConceptSetSection = Bahmni.ConceptSet.ConceptSetSection;
 
     var conceptSet = {
@@ -47,16 +46,16 @@ describe("ConceptSetSection", function () {
         it("should pass the context to the showIf function", function () {
             var context = {visitTypeName: 'OPD', patient: {gender: 'M'}};
             var extensionParams =
-            {
-                extensionParams: {
-                    showIf: ["if(context.visitTypeName === 'OPD' && context.patient.gender === 'M')",
-                        "return true;",
-                        "else",
-                        "return false;"
-                    ],
-                    conceptName: "vitals"
-                }
-            };
+                {
+                    extensionParams: {
+                        showIf: ["if(context.visitTypeName === 'OPD' && context.patient.gender === 'M')",
+                            "return true;",
+                            "else",
+                            "return false;"
+                        ],
+                        conceptName: "vitals"
+                    }
+                };
             var conceptSetSection = new ConceptSetSection(extensionParams, new Bahmni.Auth.User({}), {}, [], conceptSet);
 
             expect(conceptSetSection.isAvailable(context)).toBe(true);
@@ -64,41 +63,40 @@ describe("ConceptSetSection", function () {
     });
 
     var config =
-    {
-        extensionParams: {
-            default: true,
-            conceptName: "vitals"
-        }
-    };
+        {
+            extensionParams: {
+                default: true,
+                conceptName: "vitals"
+            }
+        };
 
     var noDefaultConfig =
-    {
-        extensionParams: {
-            conceptName: "vitals",
-            "section": {
-                "title": "Vitals",
-                "name": "vitals",
-                "isObservation": true,
-                "dashboardConfig": {
-                    "conceptNames": ["Vitals", "Second Vitals"],
-                    "numberOfVisits": 2
-                },
-                "expandedViewConfig": {
-                    "conceptNames": ["Height", "Weight", "BMI", "BMI STATUS"],
-                    "numberOfVisits": 2,
-                    "pivotTable": {
-                        "numberOfVisits": "4",
-                        "groupBy": "encounters",
-                        "obsConcepts": ["Height", "Weight", "BMI", "BMI STATUS"],
-                        "drugConcepts": "",
-                        "labConcepts": ""
+        {
+            extensionParams: {
+                conceptName: "vitals",
+                "section": {
+                    "title": "Vitals",
+                    "name": "vitals",
+                    "isObservation": true,
+                    "dashboardConfig": {
+                        "conceptNames": ["Vitals", "Second Vitals"],
+                        "numberOfVisits": 2
+                    },
+                    "expandedViewConfig": {
+                        "conceptNames": ["Height", "Weight", "BMI", "BMI STATUS"],
+                        "numberOfVisits": 2,
+                        "pivotTable": {
+                            "numberOfVisits": "4",
+                            "groupBy": "encounters",
+                            "obsConcepts": ["Height", "Weight", "BMI", "BMI STATUS"],
+                            "drugConcepts": "",
+                            "labConcepts": ""
+                        }
                     }
                 }
             }
-        }
-    };
+        };
     describe("isAdded", function () {
-
         it("should be true if concept set is configured to be default", function () {
             var conceptSetSection = new ConceptSetSection(config, new Bahmni.Auth.User({}), {}, [], conceptSet);
             expect(conceptSetSection.isAdded).toBe(true);
@@ -138,17 +136,17 @@ describe("ConceptSetSection", function () {
             ];
             var conceptSetSection = new ConceptSetSection(noDefaultConfig, new Bahmni.Auth.User({}), {}, observations, conceptSet);
             expect(conceptSetSection.isOpen).toBe(true);
-        })
+        });
     });
 
     describe("canToggle", function () {
         var extensions =
-        {
-            extensionParams: {
-                default: true,
-                conceptName: "vitals"
-            }
-        };
+            {
+                extensionParams: {
+                    default: true,
+                    conceptName: "vitals"
+                }
+            };
 
         it("should return false if conceptSet observations has value", function () {
             var observations = [
@@ -174,17 +172,16 @@ describe("ConceptSetSection", function () {
             var conceptSetSection = new ConceptSetSection(extensions, new Bahmni.Auth.User({}), {}, observations, conceptSet);
             expect(conceptSetSection.canToggle()).toBe(false);
         });
-
     });
 
     describe("toggleDisplay", function () {
         var config =
-        {
-            extensionParams: {
-                default: true,
-                conceptName: "vitals"
-            }
-        };
+            {
+                extensionParams: {
+                    default: true,
+                    conceptName: "vitals"
+                }
+            };
 
         it("should hide if open", function () {
             var conceptSetSection = new ConceptSetSection(config, new Bahmni.Auth.User({}), {}, [], conceptSet);
@@ -200,7 +197,6 @@ describe("ConceptSetSection", function () {
             conceptSetSection.toggleDisplay();
             expect(conceptSetSection.isOpen).toBe(true);
         });
-
     });
 
     describe("clone", function () {

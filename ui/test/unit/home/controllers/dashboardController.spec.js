@@ -1,8 +1,6 @@
 'use strict';
 
 describe('dashboardController', function () {
-
-
     var $aController, window, navigator;
     var scopeMock, rootScopeMock, _spinner, httpBackend, $q, state, $bahmniCookieStore, locationService, appServiceMock;
 
@@ -14,14 +12,14 @@ describe('dashboardController', function () {
         appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
         _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
-        $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get','remove','put']);
-        $bahmniCookieStore.get.and.callFake(function(cookieName) {
+        $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get', 'remove', 'put']);
+        $bahmniCookieStore.get.and.callFake(function (cookieName) {
             if (cookieName == Bahmni.Common.Constants.locationCookieName) {
-                return  {uuid: 1, display: "Location" };
+                return {uuid: 1, display: "Location" };
             }
         });
         appServiceMock.getAppDescriptor.and.returnValue({
-            getExtensions: function () { return {} }
+            getExtensions: function () { return {}; }
         });
         locationService.getAllByTag.and.returnValue(specUtil.createFakePromise({"data": {"results": {}}}));
     }));
@@ -39,7 +37,6 @@ describe('dashboardController', function () {
             state.current.data = {extensionPointId: 'org.bahmni.home.dashboard'};
             httpBackend.expectGET("../i18n/home/locale_en.json").respond({});
             httpBackend.expectGET("/bahmni_config/openmrs/i18n/home/locale_en.json").respond({});
-
         })
     );
 
@@ -61,7 +58,7 @@ describe('dashboardController', function () {
     afterEach(function () {
         window.__defineGetter__('navigator', function () {
             return navigator;
-        })
+        });
     });
 
     it("should return true, if the extension has exclusiveOnlineModule configuration set to true and Device is in online state", function () {
@@ -92,7 +89,7 @@ describe('dashboardController', function () {
             "icon": "fa-stethoscope",
             exclusiveOnlineModule: true
         };
-        window.navigator.__defineGetter__('onLine', function(){
+        window.navigator.__defineGetter__('onLine', function () {
             return false;
         });
         expect(scopeMock.isVisibleExtension(extension)).toBeFalsy();
@@ -143,7 +140,7 @@ describe('dashboardController', function () {
             exclusiveOfflineModule: true
         };
 
-        window.navigator.__defineGetter__('onLine', function(){
+        window.navigator.__defineGetter__('onLine', function () {
             return false;
         });
 
@@ -162,7 +159,7 @@ describe('dashboardController', function () {
             "icon": "fa-stethoscope",
             exclusiveOfflineModule: true
         };
-        window.navigator.__defineGetter__('onLine', function(){
+        window.navigator.__defineGetter__('onLine', function () {
             return true;
         });
         expect(scopeMock.isVisibleExtension(extension)).toBeFalsy();

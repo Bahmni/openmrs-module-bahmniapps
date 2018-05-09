@@ -18,12 +18,12 @@ describe('loginController', function () {
         currentUser.addDefaultLocale.and.returnValue(specUtil.simplePromise({data: ""}));
         currentUser.toContract.and.returnValue(specUtil.simplePromise({data: ""}));
         localeService.allowedLocalesList.and.returnValue(specUtil.simplePromise({data: ""}));
-        localeService.serverDateTime.and.returnValue(specUtil.simplePromise({data: { date: "Wed Aug 16 15:31:55 NZST 2017", offset: "+1200"  }}));
+        localeService.serverDateTime.and.returnValue(specUtil.simplePromise({data: { date: "Wed Aug 16 15:31:55 NZST 2017", offset: "+1200" }}));
         localeService.getLoginText.and.returnValue(specUtil.simplePromise({data: {homePage: {logo: "bahmni logo"}, loginPage: {showHeaderText: "bahmni emr", logo: "bahmni logo"}, helpLink: {url: "192.168.33.10/homepage"}}}));
         localeService.getLocalesLangs.and.returnValue(specUtil.createFakePromise(
             {locales: [{code: "en", nativeName: "English"}, {code: "es", nativeName: "Español"}]
             }));
-        localeService.setLocale.and.returnValue(specUtil.createFakePromise( {} ));
+        localeService.setLocale.and.returnValue(specUtil.createFakePromise({}));
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get', 'remove', 'put']);
         $bahmniCookieStore.get.and.callFake(function () { return {}; });
         initialData = {location: " "};

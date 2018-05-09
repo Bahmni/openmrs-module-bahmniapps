@@ -1,7 +1,6 @@
 'use strict';
 
 describe("AccessionNotesMapper", function () {
-
     describe("accessionNotesMapperTest", function () {
         var mapper;
         var _encounterConfig = new EncounterConfig();
@@ -78,8 +77,6 @@ describe("AccessionNotesMapper", function () {
             var resultantAccessions = mapper.map(encounters, accessions);
             expect(resultantAccessions[0].accessionNotes.length).toBe(0);
         });
-
-
 
         it('Should not add accessionNotes by datetime attribute', function () {
             var accessions = [

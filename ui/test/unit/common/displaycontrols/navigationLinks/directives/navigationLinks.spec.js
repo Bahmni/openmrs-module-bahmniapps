@@ -10,14 +10,14 @@ describe('NavigationalLinks DisplayControl', function () {
     var showLinks = ["home", "visit", "inpatient"];
     var customLinks = [
         {
-            "title":"CONSULTATION_PAGE_KEY",
+            "title": "CONSULTATION_PAGE_KEY",
             "url": "../clinical/#/consultation/patient/{{patientUuid}}/concept-set-group/observations/",
             "icon": "C"
         }
     ];
 
     var appDescriptor = {};
-    appDescriptor.formatUrl = function(){};
+    appDescriptor.formatUrl = function () {};
 
     beforeEach(module('bahmni.common.displaycontrol.navigationlinks'));
 
@@ -26,7 +26,7 @@ describe('NavigationalLinks DisplayControl', function () {
         $provide.value('spinner', spinner);
     }));
 
-    beforeEach(inject(function($filter, $compile, $httpBackend, $rootScope, $q){
+    beforeEach(inject(function ($filter, $compile, $httpBackend, $rootScope, $q) {
         filter = $filter;
         compile = $compile;
         httpBackend = $httpBackend;
@@ -35,7 +35,6 @@ describe('NavigationalLinks DisplayControl', function () {
         appService.loadMandatoryConfig.and.returnValue(specUtil.respondWith({data: mandatoryConfig}));
         appService.getAppDescriptor.and.returnValue(appDescriptor);
         q = $q;
-
 
         compileDirective = function (params, linkParams) {
             scope = rootScope.$new();
@@ -47,9 +46,8 @@ describe('NavigationalLinks DisplayControl', function () {
             httpBackend.flush();
             compiledScope = compiledEle.isolateScope();
             scope.$digest();
-        }
+        };
     }));
-
 
     it('should get the navigationLinks html', function () {
         var params = {showLinks: showLinks, customLinks: customLinks};

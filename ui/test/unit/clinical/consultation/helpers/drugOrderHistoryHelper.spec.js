@@ -1,6 +1,5 @@
 'use strict';
 
-
 describe("drug order history helper", function () {
     var drugOrderHistoryHelper;
     var sampleTreatment = function (uuid, startDate) {
@@ -25,7 +24,6 @@ describe("drug order history helper", function () {
         inject(['drugOrderHistoryHelper', function (helper) {
             drugOrderHistoryHelper = helper;
         }]);
-
     });
 
     it('should return only the inactive drugorders from the past', function () {
@@ -60,9 +58,9 @@ describe("drug order history helper", function () {
         var drug2 = sampleTreatment("uuid2");
         var inactive = drugOrderHistoryHelper.getInactiveDrugsFromPastVisit([drug1, drug2], undefined);
         expect(inactive).toEqual([]);
-    })
+    });
 
-    //it("should partition the drugs into past, present and future", function () {
+    // it("should partition the drugs into past, present and future", function () {
     //    var current = new Date();
     //
     //    var drug1 = sampleTreatment("uuid1", moment(current).subtract('days', 1).toDate());
@@ -86,6 +84,5 @@ describe("drug order history helper", function () {
     //
     //    var drugOrders = drugOrderHistoryHelper.getRefillableDrugOrders(activeDrugs, inactiveDrugs);
     //    expect(drugOrders).toEqual([drug2, drug3, drug1, inactiveDrug1, inactiveDrug2]);
-    //});
-
+    // });
 });

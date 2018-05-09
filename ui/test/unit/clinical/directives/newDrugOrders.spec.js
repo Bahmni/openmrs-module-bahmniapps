@@ -12,13 +12,11 @@ xdescribe("selectAllCheckbox()", function () {
             $provide.value('messagingService', messagingService);
         });
 
-
         inject(function ($compile, $rootScope) {
             compile = $compile;
             rootScope = $rootScope;
             scope = $rootScope.$new();
         });
-
     });
     var generateElement = function () {
         var unCompiledHtml =
@@ -49,7 +47,6 @@ xdescribe("selectAllCheckbox()", function () {
 
         scope.treatments.push(drugOrder);
         scope.showBulkChangeToggle = true;
-
 
         var element = generateElement();
 

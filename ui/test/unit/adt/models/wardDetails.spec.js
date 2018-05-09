@@ -1,8 +1,8 @@
 'use strict';
 
 describe('WardDetails', function () {
-    describe("create", function() {
-        var getDetails = function() {
+    describe("create", function () {
+        var getDetails = function () {
             return [
                 {
                     "Bed": "Bed 11",
@@ -55,9 +55,9 @@ describe('WardDetails', function () {
                     "Patient Uuid": "patient-uuid3"
                 }
             ];
-        }
+        };
 
-        it("should group all diagnosis for a patient", function() {
+        it("should group all diagnosis for a patient", function () {
             var wardDetails = Bahmni.ADT.WardDetails.create(getDetails());
 
             expect(wardDetails.length).toBe(3);
@@ -76,7 +76,7 @@ describe('WardDetails', function () {
             expect(wardDetails[2].Diagnosis.length).toBe(0);
         });
 
-        it("should remove duplicate diagnosis if one of them is marked as ruled out", function() {
+        it("should remove duplicate diagnosis if one of them is marked as ruled out", function () {
             var details = getDetails();
             details.push({
                 "Bed": "Bed 11",
@@ -102,7 +102,7 @@ describe('WardDetails', function () {
             expect(wardDetails[0].Diagnosis[1].ruledOut).toBeTruthy();
         });
 
-        it("should add patientUuid and VisitUuid as hiddenAttributes", function(){
+        it("should add patientUuid and VisitUuid as hiddenAttributes", function () {
             var wardDetails = Bahmni.ADT.WardDetails.create(getDetails());
             expect(wardDetails[0].hiddenAttributes.patientUuid).toBe("patient-uuid1");
             expect(wardDetails[0].hiddenAttributes.visitUuid).toBe("visit-uuid1");
@@ -112,7 +112,6 @@ describe('WardDetails', function () {
 
             expect(wardDetails[2].hiddenAttributes.patientUuid).toBe("patient-uuid3");
             expect(wardDetails[2].hiddenAttributes.visitUuid).toBe("visit-uuid3");
-
         });
     });
 });

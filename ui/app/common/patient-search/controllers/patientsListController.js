@@ -72,8 +72,7 @@ angular.module('bahmni.common.patientSearch')
                 return identifierHeading;
             } else if ($scope.search.searchType && $scope.search.searchType.links) {
                 return _.find($scope.search.searchType.links, {linkColumn: heading});
-            }
-            else if ($scope.search.searchType && $scope.search.searchType.linkColumn) {
+            } else if ($scope.search.searchType && $scope.search.searchType.linkColumn) {
                 return _.includes([$scope.search.searchType.linkColumn], heading);
             }
         };

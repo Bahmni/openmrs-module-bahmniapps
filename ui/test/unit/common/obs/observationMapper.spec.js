@@ -38,10 +38,10 @@ describe("ObservationMapper", function () {
                     "groupMembers": [
                         { "observationDateTime": "2014-10-20T11:30:47.000+0530", "value": {"shortName": null, "uuid": "1cfe9542-09cd-4969-8c92-3dcaf2685c6a",
                             "name": "Invasive Ductal Carcinoma", "conceptClass": "Misc", "dataType": "N/A"}, "type": "Coded",
-                            "concept": {"name": "Pathologic Diagnosis", "set": false, "units": null, "conceptClass": "Misc", "dataType": "Coded"}  },
+                            "concept": {"name": "Pathologic Diagnosis", "set": false, "units": null, "conceptClass": "Misc", "dataType": "Coded"} },
                         { "observationDateTime": "2014-10-20T11:30:47.000+0530", "value": {"shortName": null, "uuid": "4040c132-a66e-42ba-8359-5624747f34e3",
                             "name": "Invasive Lobular Carcinoma", "conceptClass": "Misc", "dataType": "N/A"}, "type": "Coded",
-                            "concept": {"name": "Pathologic Diagnosis", "set": false, "units": null, "conceptClass": "Misc", "dataType": "Coded"}  }
+                            "concept": {"name": "Pathologic Diagnosis", "set": false, "units": null, "conceptClass": "Misc", "dataType": "Coded"} }
                     ],
                     "value": "Invasive Ductal Carcinoma, Invasive Lobular Carcinoma",
                     "concept": {"shortName": null, "uuid": "134dc2f6-e045-4927-bf47-d18984a536b9", "name": "Histopathology", "conceptClass": "Misc", "dataType": "N/A"}
@@ -58,23 +58,23 @@ describe("ObservationMapper", function () {
         it("should map multiSelectObservations at any level", function () {
             var bahmniObservations = [
                 {
-                    "concept" : {
-                      "name" : "Grid's parent"  
+                    "concept": {
+                        "name": "Grid's parent"
                     },
-                    "groupMembers" : [
+                    "groupMembers": [
                         {
                             "groupMembers": [
                                 { "observationDateTime": "2014-10-20T11:30:47.000+0530", "value": {"shortName": null, "uuid": "1cfe9542-09cd-4969-8c92-3dcaf2685c6a",
                                     "name": "Invasive Ductal Carcinoma", "conceptClass": "Misc", "dataType": "N/A"}, "type": "Coded",
-                                    "concept": {"name": "Pathologic Diagnosis", "set": false, "units": null, "conceptClass": "Misc", "dataType": "Coded"}  },
+                                    "concept": {"name": "Pathologic Diagnosis", "set": false, "units": null, "conceptClass": "Misc", "dataType": "Coded"} },
                                 { "observationDateTime": "2014-10-20T11:30:47.000+0530", "value": {"shortName": null, "uuid": "4040c132-a66e-42ba-8359-5624747f34e3",
                                     "name": "Invasive Lobular Carcinoma", "conceptClass": "Misc", "dataType": "N/A"}, "type": "Coded",
-                                    "concept": {"name": "Pathologic Diagnosis", "set": false, "units": null, "conceptClass": "Misc", "dataType": "Coded"}  }
+                                    "concept": {"name": "Pathologic Diagnosis", "set": false, "units": null, "conceptClass": "Misc", "dataType": "Coded"} }
                             ],
                             "value": "Invasive Ductal Carcinoma, Invasive Lobular Carcinoma",
                             "concept": {"shortName": null, "uuid": "134dc2f6-e045-4927-bf47-d18984a536b9", "name": "Histopathology", "conceptClass": "Misc", "dataType": "N/A"}
                         }
-                    ] 
+                    ]
                 }
             ];
             var mappedObservation = new ObservationMapper().map(bahmniObservations, {"Pathologic Diagnosis": {"multiSelect": true}});
@@ -93,7 +93,7 @@ describe("ObservationMapper", function () {
                     "groupMembers": [
                         {
                             "value": {"shortName": null, "name": "ER-", "conceptClass": "Test", "dataType": "Numeric"}, "type": "Coded",
-                            "concept": {"shortName": null, "name": "Estrogen Receptor", "conceptClass": "Misc", "dataType": "Coded"} 
+                            "concept": {"shortName": null, "name": "Estrogen Receptor", "conceptClass": "Misc", "dataType": "Coded"}
                         },
                         {
                             "value": {"shortName": null, "name": "PR+", "conceptClass": "Test", "dataType": "Numeric"}, "type": "Coded",
@@ -112,7 +112,5 @@ describe("ObservationMapper", function () {
             expect(mappedObservation[0].groupMembers[0] instanceof Bahmni.Common.Obs.Observation).toBe(true);
             expect(mappedObservation[0].groupMembers[1] instanceof Bahmni.Common.Obs.Observation).toBe(true);
         });
-
     });
-
 });

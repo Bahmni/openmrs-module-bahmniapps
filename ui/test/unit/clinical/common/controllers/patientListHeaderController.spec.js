@@ -1,14 +1,12 @@
 'use strict';
 
 describe("PatientListHeaderController", function () {
-
     var scope, ngDialog,
         $bahmniCookieStore, locationService, $window, retrospectiveEntryService, translate,
         providerService, rootScope, thisController, locationsPromise;
     var date = "2015-01-11";
     var encounterProvider = {value: "Test", uuid: "Test_UUID"};
     translate = jasmine.createSpyObj('$translate', ['instant']);
-
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(inject(function ($rootScope) {
@@ -42,7 +40,7 @@ describe("PatientListHeaderController", function () {
             ]}});
         });
         providerService = jasmine.createSpyObj('providerService', ['search']);
-        ngDialog = jasmine.createSpyObj('ngDialog', ['open','close']);
+        ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
         $window = {location: { reload: jasmine.createSpy()} };
 
         thisController = $controller('PatientListHeaderController', {
@@ -57,7 +55,6 @@ describe("PatientListHeaderController", function () {
         });
         thisController.windowReload = function () {
         };
-
     }));
 
     it("should initialize the appropriate cookie date and change cookie on select", function () {
@@ -74,20 +71,19 @@ describe("PatientListHeaderController", function () {
             expect(retrospectiveEntryService.getRetrospectiveDate).toHaveBeenCalled();
             expect($bahmniCookieStore.put.calls.count()).toEqual(2);
         });
-
     });
 
     it("should map providersServer output", function () {
         var providers = scope.getProviderDataResults({
-            data : {
-                results : [
+            data: {
+                results: [
                     {
-                        uuid : 'uuid1',
-                        person : { display : 'msf1' }
+                        uuid: 'uuid1',
+                        person: { display: 'msf1' }
                     },
                     {
-                        uuid : 'uuid2',
-                        person : { display : 'msf2' }
+                        uuid: 'uuid2',
+                        person: { display: 'msf2' }
                     }
                 ]
             }
@@ -101,13 +97,10 @@ describe("PatientListHeaderController", function () {
     it("should close ngDialog on closePopUp", function () {
         scope.closePopUp();
         expect(ngDialog.close).toHaveBeenCalled();
-
     });
 
     it("should open ngDialog on popUpHandler", function () {
         scope.popUpHandler();
         expect(ngDialog.open).toHaveBeenCalled();
-
     });
-
 });

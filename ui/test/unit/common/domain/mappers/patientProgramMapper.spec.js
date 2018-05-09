@@ -22,9 +22,6 @@ describe("PatientProgramMapper", function () {
         var dateCompleted = "Fri Dec 11 2015 12:04:23 GMT+0530 (IST)";
 
         var mappedPatientProgram = mapper.map(patientProgram, [], dateCompleted);
-        expect(mappedPatientProgram.outcome).toEqual("outcome-uuid")
+        expect(mappedPatientProgram.outcome).toEqual("outcome-uuid");
     });
-
-
-
 });

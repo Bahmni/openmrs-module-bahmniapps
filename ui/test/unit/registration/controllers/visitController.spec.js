@@ -71,13 +71,13 @@ describe('VisitController', function () {
 
     var extensions = [{
         "id": "bahmni.registration.conceptSetGroup.feeInformation",
-            "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
-            "type": "forms",
-            "extensionParams": {
+        "extensionPointId": "org.bahmni.registration.conceptSetGroup.observations",
+        "type": "forms",
+        "extensionParams": {
             "formName": "Nutritional Values",
-                "conceptNames": ["Height", "Weight", "BMI Data", "BMI Status Data"],
-                "required":true,
-                "showLatest": true
+            "conceptNames": ["Height", "Weight", "BMI Data", "BMI Status Data"],
+            "required": true,
+            "showLatest": true
         },
         "order": 2,
         "requiredPrivilege": "Edit Visits"
@@ -111,7 +111,7 @@ describe('VisitController', function () {
         appService = jasmine.createSpyObj('appService', ['getDescription', 'getAppDescriptor']);
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue', 'getExtensions', 'formatUrl']);
         appService.getAppDescriptor.and.returnValue(appDescriptor);
-        appDescriptor.getExtensions.and.callFake(function(id, type){
+        appDescriptor.getExtensions.and.callFake(function (id, type) {
             if (type === "forms") return extensions;
             return [];
         });
@@ -139,7 +139,7 @@ describe('VisitController', function () {
         scope.currentProvider = {uuid: ''};
         patientMapper.map.and.returnValue(patient);
 
-        rootScope.currentUser = { privileges: [], isFavouriteObsTemplate: function() { return false; } };
+        rootScope.currentUser = { privileges: [], isFavouriteObsTemplate: function () { return false; } };
         visitService.search.and.returnValue(searchActiveVisits([]));
         auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
         auditLogService.log.and.returnValue(specUtil.simplePromise({}));
@@ -354,9 +354,9 @@ describe('VisitController', function () {
         expect(patientService.updateImage).toHaveBeenCalled();
     });
 
-    it('should check if it is a form template', function() {
-       createController();
-       expect(scope.isFormTemplate({formUuid :'someUuid' })).toEqual('someUuid');
-       expect(scope.isFormTemplate({name :'someName' })).toEqual(undefined);
+    it('should check if it is a form template', function () {
+        createController();
+        expect(scope.isFormTemplate({formUuid: 'someUuid' })).toEqual('someUuid');
+        expect(scope.isFormTemplate({name: 'someName' })).toEqual(undefined);
     });
 });

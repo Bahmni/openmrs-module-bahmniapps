@@ -113,7 +113,7 @@ module.exports = function (grunt) {
         },
         eslint: {
             options: {
-                fix: false,
+                fix: true,
                 quiet: true
             },
             target: [
@@ -122,7 +122,8 @@ module.exports = function (grunt) {
                 '!<%= yeoman.app %>/**/*.min.js',
                 '!<%= yeoman.app %>/components/**/*.js',
                 '!<%= yeoman.app %>/lib/**/*.js',
-                '!app/lib/**/*.js'
+                '!app/lib/**/*.js',
+                '<%= yeoman.test %>/**/*.js'
             ]
         },
         karma: {

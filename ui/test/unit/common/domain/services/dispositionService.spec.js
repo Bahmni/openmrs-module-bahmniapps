@@ -1,8 +1,6 @@
 'use strict';
 
 describe('dispositionService', function () {
-
-
     var _$http;
     var rootScope;
     beforeEach(module('bahmni.common.domain'));
@@ -86,5 +84,4 @@ describe('dispositionService', function () {
         dispositionService.getDispositionActions();
         expect(_$http.get).toHaveBeenCalled();
     });
-
 });

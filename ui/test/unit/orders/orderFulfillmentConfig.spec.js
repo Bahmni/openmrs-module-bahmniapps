@@ -1,19 +1,17 @@
 'use strict';
 
 describe('OrderFulfillmentConfig Factory', function () {
-
     var conceptSetServiceMock, orderFulfillmentConfig;
 
     beforeEach(function () {
         module('bahmni.orders');
 
         module(function ($provide) {
-            conceptSetServiceMock = jasmine.createSpyObj('conceptSetService',['getConcept']);
-            $provide.value('conceptSetService',conceptSetServiceMock);
+            conceptSetServiceMock = jasmine.createSpyObj('conceptSetService', ['getConcept']);
+            $provide.value('conceptSetService', conceptSetServiceMock);
 
-            var defaultMockData = {results:[{setMembers:[]}]};
+            var defaultMockData = {results: [{setMembers: []}]};
             conceptSetServiceMock.getConcept.and.returnValue(specUtil.createFakePromise(defaultMockData));
-
         });
 
         inject(function (_orderFulfillmentConfig_) {
@@ -43,18 +41,17 @@ describe('OrderFulfillmentConfig Factory', function () {
             name: conceptSetName,
             v: representation
         });
-
     });
 
-    it("Should return a config based on the fetched concept set members",function(done){
-        var data = {results:[{
-            setMembers:[{name:{name:"member1"}},{name:{name:"member2"}}]
+    it("Should return a config based on the fetched concept set members", function (done) {
+        var data = {results: [{
+            setMembers: [{name: {name: "member1"}}, {name: {name: "member2"}}]
         }]};
 
         conceptSetServiceMock.getConcept.and.returnValue(specUtil.createFakePromise(data));
 
-        orderFulfillmentConfig("Viral Fever").then(function(response){
-            var config=response.data;
+        orderFulfillmentConfig("Viral Fever").then(function (response) {
+            var config = response.data;
 
             expect(config).not.toBeFalsy();
 
@@ -63,10 +60,9 @@ describe('OrderFulfillmentConfig Factory', function () {
             expect(config.hideIfEmpty).toBeFalsy();
             expect(config.showHeader).toBeFalsy();
             expect(config.scope).toBe("latest");
-            expect(config.conceptNames).toEqual(["member1","member2"]);
+            expect(config.conceptNames).toEqual(["member1", "member2"]);
 
             done();
         });
     });
-
 });

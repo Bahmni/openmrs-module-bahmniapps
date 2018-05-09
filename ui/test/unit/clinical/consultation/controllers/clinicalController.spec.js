@@ -2,8 +2,8 @@
 
 describe('ClinicalController', function () {
     var scope, controller, rootScope;
-    var mockRetrospectiveEntryService= jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
-    var appService= jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    var mockRetrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     var mockAppDescriptor = jasmine.createSpyObj('appService', ['getConfigValue']);
     mockAppDescriptor.getConfigValue.and.returnValue(undefined);
 
@@ -12,11 +12,11 @@ describe('ClinicalController', function () {
 
     beforeEach(function () {
         module('bahmni.clinical');
-        var config =  {
-                "locales" : [
-                { "locale" : "fr", "css" : "offline-language-french"},
-                { "locale" : "es", "css": "offline-language-spanish"},
-                { "locale" : "pt", "css": "offline-language-portuguese-brazil"}
+        var config = {
+            "locales": [
+                { "locale": "fr", "css": "offline-language-french"},
+                { "locale": "es", "css": "offline-language-spanish"},
+                { "locale": "pt", "css": "offline-language-portuguese-brazil"}
             ]
         };
         mockRetrospectiveEntryService.getRetrospectiveEntry.and.returnValue();
@@ -36,14 +36,13 @@ describe('ClinicalController', function () {
         });
     });
 
-    function createController() {
+    function createController () {
         return controller('ClinicalController', {
             $scope: scope,
-            $rootScope:rootScope,
-            retrospectiveEntryService:mockRetrospectiveEntryService
+            $rootScope: rootScope,
+            retrospectiveEntryService: mockRetrospectiveEntryService
         });
     }
-
 
     describe('retrospectiveClass', function () {
         it("should make a call to retrospectiveEntryService.getRetrospectiveEntry", function () {
@@ -60,7 +59,7 @@ describe('ClinicalController', function () {
     describe('toggleControlPanel', function () {
         it("should toggle rootscope.showControlPanel", function () {
             createController();
-            expect(rootScope.showControlPanel).toBe(undefined)
+            expect(rootScope.showControlPanel).toBe(undefined);
             rootScope.toggleControlPanel();
             expect(rootScope.showControlPanel).toBeTruthy();
         });
@@ -69,7 +68,7 @@ describe('ClinicalController', function () {
         it("should set rootscope.showControlPanel to false", function () {
             createController();
             rootScope.toggleControlPanel();
-            expect(rootScope.showControlPanel).toBeTruthy()
+            expect(rootScope.showControlPanel).toBeTruthy();
             rootScope.collapseControlPanel();
             expect(rootScope.showControlPanel).toBeFalsy();
         });
@@ -79,7 +78,7 @@ describe('ClinicalController', function () {
         it("should return default css if current user locale is not defined", function () {
             createController();
             rootScope.currentUser = {
-                userProperties :{
+                userProperties: {
 
                 }
             };
@@ -95,11 +94,11 @@ describe('ClinicalController', function () {
         it("should return css corresponding to current user locale ", function () {
             createController();
             rootScope.currentUser = {
-                userProperties :{
-                    defaultLocale : "fr"
+                userProperties: {
+                    defaultLocale: "fr"
                 }
             };
-            expect( scope.getLocaleCSS()).toBe("offline-language-french");
+            expect(scope.getLocaleCSS()).toBe("offline-language-french");
         });
     });
 });

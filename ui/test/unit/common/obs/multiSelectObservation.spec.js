@@ -8,20 +8,19 @@ describe("Observation", function () {
         "Menstrual History": {
             "allowAddMore": true
         },
-        "M/C Days" : {
+        "M/C Days": {
             "multiSelect": true
         },
         "LMP": {
             "allowAddMore": true
         },
-        "Tuberculosis" : {
-            "multiSelect" : true,
-            "required" : true
+        "Tuberculosis": {
+            "multiSelect": true,
+            "required": true
         }
     };
 
     describe("display Value", function () {
-
         it("should return comma separated values for observation type multiSelect", function () {
             var observation = new MultiSelectObservation([
                 {"type": "Coded", "value": {"shortName": "Invasive Ductal Carcinoma", "name": "Invasive Ductal Carcinoma"}, "encounterDateTime": 1414486007000},
@@ -33,19 +32,16 @@ describe("Observation", function () {
     });
 
     describe("Concept Set MultiSelectObservations", function () {
-
         it("should test MultiSelectObservations", function () {
             var observation = new ConceptSetMultiSelectObservations(conceptSetUI);
             observation.map(groupMembers);
             expect(observation.multiSelectObservationsMap["M/C Days"].label).toBe("M/C Days");
-            
         });
     });
 
     describe("Concept Set MultiSelectObservation", function () {
-
         it("should test MultiSelectObservation", function () {
-            var observation = new ConceptSetMultiSelectObservation(groupMembers[0]["concept"],groupMembers,conceptSetUI);
+            var observation = new ConceptSetMultiSelectObservation(groupMembers[0]["concept"], groupMembers, conceptSetUI);
             expect(observation.cloneNew().label).toBe("M/C Days");
             expect(observation.isFormElement()).toBe(true);
             expect(observation.getControlType()).toBe("buttonselect");
@@ -56,17 +52,17 @@ describe("Observation", function () {
 
     describe("Concept Set MultiSelectObservation", function () {
         it("should test MultiSelectObservation has value", function () {
-            var observation = observationFactory(groupMembers[3]["concept"],selectedObs);
+            var observation = observationFactory(groupMembers[3]["concept"], selectedObs);
             expect(observation.label).toBe("Tuberculosis");
-            expect(observation.hasValue()).toBe(true);            
+            expect(observation.hasValue()).toBe(true);
         });
         it("should test MultiSelectObservation has non voided value", function () {
-            var observation = observationFactory(groupMembers[3]["concept"],selectedObs);
+            var observation = observationFactory(groupMembers[3]["concept"], selectedObs);
             expect(observation.label).toBe("Tuberculosis");
             expect(observation.hasNonVoidedValue()).toBe(false);
         });
         it("should test MultiSelectObservation is valid", function () {
-           var observation = observationFactory(groupMembers[3]["concept"],selectedObs);
+            var observation = observationFactory(groupMembers[3]["concept"], selectedObs);
             expect(observation.label).toBe("Tuberculosis");
             expect(observation.isValid(true, true)).toBe(false);
             expect(observation.isValid(false, true)).toBe(true);
@@ -74,13 +70,13 @@ describe("Observation", function () {
         });
     });
 
-    var groupMembers = [ 
+    var groupMembers = [
         {
             "concept": {
-              "name": "M/C Days",
-              "shortName": null,
-              "conceptClass": "Misc",
-              "answers": []
+                "name": "M/C Days",
+                "shortName": null,
+                "conceptClass": "Misc",
+                "answers": []
             },
             "label": "M/C Days",
             "possibleAnswers": [],
@@ -91,10 +87,10 @@ describe("Observation", function () {
         },
         {
             "concept": {
-              "name": "LMP",
-              "shortName": null,
-              "conceptClass": "Misc",
-              "answers": []
+                "name": "LMP",
+                "shortName": null,
+                "conceptClass": "Misc",
+                "answers": []
             },
             "label": "LMP",
             "possibleAnswers": [],
@@ -105,40 +101,39 @@ describe("Observation", function () {
         },
         {
             "concept": {
-              "name": "Tuberculosis",
-              "shortName": null,
-              "conceptClass": "Any",
-              "answers": []
+                "name": "Tuberculosis",
+                "shortName": null,
+                "conceptClass": "Any",
+                "answers": []
             },
             "label": "Tuberculosis",
             "possibleAnswers": [],
             "groupMembers": [],
             "isObservation": true,
             "uniqueId": "observation_57",
-            "conceptUIConfig": {"multiSelect": true, "required":true}
+            "conceptUIConfig": {"multiSelect": true, "required": true}
         }
-    ],
-    selectedObs = [
-        {   
-            "concept": {
-              "name": "Sputum Culture Result",
-              "shortName": null,
-              "conceptClass": "Any",
-              "answers": []
-            },
-            "possibleAnswers": [],
-            "groupMembers": [],
-            "isObservation": true,
-            "uniqueId": "observation_58",
-            "label": "Sputum Culture Result",
-            "voided": true
-        }
-    ];
+        ],
+        selectedObs = [
+            {
+                "concept": {
+                    "name": "Sputum Culture Result",
+                    "shortName": null,
+                    "conceptClass": "Any",
+                    "answers": []
+                },
+                "possibleAnswers": [],
+                "groupMembers": [],
+                "isObservation": true,
+                "uniqueId": "observation_58",
+                "label": "Sputum Culture Result",
+                "voided": true
+            }
+        ];
 
-    function observationFactory(concept, obs) {
-         var observation = new ConceptSetMultiSelectObservation(concept,groupMembers,conceptSetUI);
-         observation.selectedObs = obs;
-         return observation;
+    function observationFactory (concept, obs) {
+        var observation = new ConceptSetMultiSelectObservation(concept, groupMembers, conceptSetUI);
+        observation.selectedObs = obs;
+        return observation;
     }
-
 });

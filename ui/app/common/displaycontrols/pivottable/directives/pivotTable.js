@@ -64,8 +64,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                             scrollLeft: '20000px' }, 500);
                         tablescroll = $('table.pivot-table tbody').scrollLeft();
                         clearInterval(checkIfPivotTableLoaded);
-                    }
-                    else if ($('table.pivot-table tbody tr').length < 12) {
+                    } else if ($('table.pivot-table tbody tr').length < 12) {
                         $('.btn-scroll-right, .btn-scroll-left').attr("disabled", true);
                         clearInterval(checkIfPivotTableLoaded);
                     }

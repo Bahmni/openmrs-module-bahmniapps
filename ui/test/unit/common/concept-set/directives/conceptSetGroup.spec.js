@@ -18,11 +18,11 @@ describe("conceptSetGroup", function () {
             userService = jasmine.createSpyObj('userService', ['savePreferences']);
             conceptSetUiConfigService = jasmine.createSpyObj('conceptSetUiConfigService', ['getConfig']);
             clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getVisitTypeForRetrospectiveEntries']);
-            timeout = function(init) {
-                init()
+            timeout = function (init) {
+                init();
             };
             spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-            translate = jasmine.createSpyObj('$translate',['instant']);
+            translate = jasmine.createSpyObj('$translate', ['instant']);
             $provide.value('contextChangeHandler', contextChangeHandler);
             $provide.value('messagingService', messagingService);
             $provide.value('conceptSetService', conceptSetService);
@@ -46,19 +46,19 @@ describe("conceptSetGroup", function () {
         });
     });
     beforeEach(function () {
-        _provide.value('$stateParams', { encounterUuid : "uuid"});
+        _provide.value('$stateParams', { encounterUuid: "uuid"});
         scope.conceptSetGroupExtensionId = "";
         scope.context = {};
         scope.scrollingEnabled = true;
         scope.patient = {uuid: "patientUuid"};
         scope.consultation = {
-            observations : {
+            observations: {
                 primaryObs: {
                     concept: {},
                     value: ""
                 }
             },
-            selectedObsTemplate : [
+            selectedObsTemplate: [
                 {
                     "uuid": "conceptSet1",
                     "label": "Followup",
@@ -66,11 +66,11 @@ describe("conceptSetGroup", function () {
                         return {
                             "uuid": "conceptSet1",
                             "label": "Followup"
-                        }
+                        };
                     }
                 },
                 {
-                    "uuid" : "conceptSet2",
+                    "uuid": "conceptSet2",
                     "klass": "active",
                     "label": "Followup",
                     clone: function () {
@@ -78,19 +78,19 @@ describe("conceptSetGroup", function () {
                             "uuid": "conceptSet2",
                             "klass": "active",
                             "label": "Followup"
-                        }
+                        };
                     },
-                    "observations": [{uuid : "uuid"}]
+                    "observations": [{uuid: "uuid"}]
                 }
             ]
         };
 
         conceptSetUiConfigService.getConfig.and.returnValue({
-            "conceptSetName" : {"showPreviousButton" : true}
+            "conceptSetName": {"showPreviousButton": true}
         });
     });
 
-    var executeDirective  = function () {
+    var executeDirective = function () {
         httpBackend.expectGET("../common/concept-set/views/conceptSetGroup.html").respond('<div>dummy</div>');
 
         var html = '<concept-set-group patient="patient" consultation="consultation" observations="consultation.observations" all-templates="consultation.selectedObsTemplate" context="context" auto-scroll-enabled="::scrollingEnabled"></concept-set-group>';
@@ -100,10 +100,9 @@ describe("conceptSetGroup", function () {
         return element.isolateScope();
     };
 
-
     it("should conceptSetGroup controller be initialized", function () {
         var conceptSetName = "conceptSetName";
-        var event = jasmine.createSpyObj("event",["stopPropagation"])
+        var event = jasmine.createSpyObj("event", ["stopPropagation"]);
         var compiledElementScope = executeDirective();
         scope.$digest();
 
@@ -127,18 +126,18 @@ describe("conceptSetGroup", function () {
         scope.$digest();
 
         var selectConceptSetSection = {
-            name : "template",
-            hasSomeValue : function () {
-                return true;
+                name: "template",
+                hasSomeValue: function () {
+                    return true;
+                },
+                label: "formName"
             },
-            label : "formName"
-        },
-        previousLeftPanel = {
-            name : "previous",
-            isOpen : true,
-            isLoaded : true,
-            klass : "active"
-        };
+            previousLeftPanel = {
+                name: "previous",
+                isOpen: true,
+                isLoaded: true,
+                klass: "active"
+            };
         compiledElementScope.leftPanelConceptSet = previousLeftPanel;
 
         messagingService.showMessage.and.returnValue();
@@ -158,15 +157,15 @@ describe("conceptSetGroup", function () {
         scope.$digest();
 
         compiledElementScope.leftPanelConceptSet = {
-            name : "form",
-            isOpen : true,
-            isLoaded : true,
-            klass : "active"
+            name: "form",
+            isOpen: true,
+            isLoaded: true,
+            klass: "active"
         };
         spyOn(scope, '$broadcast');
         compiledElementScope.focusOnErrors();
         expect(scope.$broadcast).toHaveBeenCalled;
-        expect(messagingService.showMessage('error',"{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}")).toHaveBeenCalled;
+        expect(messagingService.showMessage('error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}")).toHaveBeenCalled;
     });
 
     it("focusOnErrors should show error message from selected concept set section", function () {
@@ -175,32 +174,32 @@ describe("conceptSetGroup", function () {
 
         spyOn(scope, '$broadcast');
         compiledElementScope.leftPanelConceptSet = {
-            name : "form",
-            isOpen : true,
-            isLoaded : true,
-            klass : "active",
-            errorMessage : "error message"
+            name: "form",
+            isOpen: true,
+            isLoaded: true,
+            klass: "active",
+            errorMessage: "error message"
         };
         compiledElementScope.focusOnErrors();
-        expect(messagingService.showMessage('error',"error message")).toHaveBeenCalled;
+        expect(messagingService.showMessage('error', "error message")).toHaveBeenCalled;
     });
 
     it("openActiveForm should open the form and scroll to top", function () {
         var compiledElementScope = executeDirective();
         var selectConceptSetSection = {
-                name : "activeForm",
-                hasSomeValue : function () {
-                    return true;
-                },
-                klass : 'active'
-            };
+            name: "activeForm",
+            hasSomeValue: function () {
+                return true;
+            },
+            klass: 'active'
+        };
         scope.$digest();
 
         compiledElementScope.leftPanelConceptSet = {
-            name : "alreadyOpenedForm",
-            isOpen : true,
-            isLoaded : true,
-            klass : "active"
+            name: "alreadyOpenedForm",
+            isOpen: true,
+            isLoaded: true,
+            klass: "active"
         };
         var conceptKlass = compiledElementScope.openActiveForm(selectConceptSetSection);
         expect(conceptKlass).toEqual("active");
@@ -231,12 +230,11 @@ describe("conceptSetGroup", function () {
         expect(compiledElementScope.allTemplates.length).toEqual(1);
     });
 
-    it("canRemove should return true only if it is unsaved template", function(){
+    it("canRemove should return true only if it is unsaved template", function () {
         var compiledElementScope = executeDirective();
 
         compiledElementScope.$digest();
         expect(compiledElementScope.canRemove(0)).toBeTruthy();
         expect(compiledElementScope.canRemove(1)).toBeFalsy();
-
     });
 });

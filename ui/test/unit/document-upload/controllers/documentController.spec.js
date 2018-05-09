@@ -1,7 +1,6 @@
 'use strict';
 
 describe("DocumentController", function () {
-
     var scope, translate;
     var documentController;
     var encounterService;
@@ -34,8 +33,7 @@ describe("DocumentController", function () {
                 },
                 "changed": true,
                 "comment": "abnormal LEG Foot AP"
-            }
-            ,
+            },
             {
                 "id": 642124,
                 "obsUuid": "dd24732d-a4f9-49be-af7f-6fc2c2c39f0c",
@@ -168,18 +166,18 @@ describe("DocumentController", function () {
                     "attributeType": {
                         "uuid": "d3d93ab0-e796-11e2-852f-0800271c1b75"
                     }
-                } ,
+                },
                 {
                     "uuid": "2a71ee67-3446-4f66-8267-82446bda2999",
                     "value": "1998-12-31T18:30:00.000+0000",
                     "attributeType": {
                         "uuid": "d3d93ab0-e796-11e2-852f-0800271c1999"
                     }
-                } ,
+                },
                 {
                     "uuid": "3da8141e-65d6-452e-9cfe-ce813bd11d52",
-                    "value":  {
-                        uuid : "4da8141e-65d6-452e-9cfe-ce813bd11d52",
+                    "value": {
+                        uuid: "4da8141e-65d6-452e-9cfe-ce813bd11d52",
                         display: "some-value"
                     },
                     "attributeType": {
@@ -202,12 +200,12 @@ describe("DocumentController", function () {
         visitDocumentService = jasmine.createSpyObj('visitDocumentService', ['save', 'saveFile', 'getFileType']);
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
         patientService = jasmine.createSpyObj('patientService', ['getPatient']);
-        encounterService = jasmine.createSpyObj('encounterService',['find', 'getEncountersForEncounterType']);
-        visitService = jasmine.createSpyObj('visitService',['getVisitType','search']);
-        messagingService = jasmine.createSpyObj('messagingService',['showMessage']);
+        encounterService = jasmine.createSpyObj('encounterService', ['find', 'getEncountersForEncounterType']);
+        visitService = jasmine.createSpyObj('visitService', ['getVisitType', 'search']);
+        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
     }));
 
-    /*Mock of constructor Bahmni.PatientMapper*/
+    /* Mock of constructor Bahmni.PatientMapper */
     var originalPatientMapper, spyPatientMapperInstance;
     beforeEach(function () {
         spyPatientMapperInstance = jasmine.createSpyObj('PatientMapperInstance', ['map']);
@@ -229,9 +227,9 @@ describe("DocumentController", function () {
         encounterService.find.and.callFake(function () {
             return {
                 then: function (callback) {
-                    return callback({data: data})
+                    return callback({data: data});
                 }
-            }
+            };
         });
     };
 
@@ -239,20 +237,20 @@ describe("DocumentController", function () {
         encounterService.getEncountersForEncounterType.and.returnValue(specUtil.simplePromise(data));
     };
 
-    var mockVisitService = function(data) {
+    var mockVisitService = function (data) {
         visitService.getVisitType.and.callFake(function () {
             return {
                 then: function (callback) {
-                    return callback({data: data})
+                    return callback({data: data});
                 }
-            }
+            };
         });
     };
 
-    var mockPatientService = function(data) {
+    var mockPatientService = function (data) {
         patientService.getPatient.and.returnValue(specUtil.simplePromise(data));
     };
-    var mockVisitServiceSearch = function(data) {
+    var mockVisitServiceSearch = function (data) {
         visitService.search.and.returnValue(specUtil.simplePromise(data));
     };
 
@@ -263,7 +261,7 @@ describe("DocumentController", function () {
         visit1 = createVisit(new Date("April 21, 2014"), new Date("April 24, 2014 23:59:59"), "visit uuid");
         visit2 = createVisit("April 25, 2014", "April 25, 2014 23:59:59");
 
-        mockVisitServiceSearch({data:{results: [visit1, visit2]}});
+        mockVisitServiceSearch({data: {results: [visit1, visit2]}});
         mockGetEncountersForEncounterType({results: []});
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
@@ -296,7 +294,6 @@ describe("DocumentController", function () {
                 messagingService: messagingService
             });
             scope.visits = [visit1, visit2];
-
         });
     };
 
@@ -403,7 +400,6 @@ describe("DocumentController", function () {
             newVisit.stopDatetime = "April 25, 2014";
             expect(scope.isNewVisitDateValid()).toBe(false);
 
-
             newVisit.startDatetime = "December 25, 2014";
             newVisit.stopDatetime = "";
             expect(scope.isNewVisitDateValid()).toBe(false);
@@ -411,13 +407,10 @@ describe("DocumentController", function () {
             newVisit.startDatetime = "December 25, 2013";
             newVisit.stopDatetime = "April 25, 2014";
             expect(scope.isNewVisitDateValid()).toBe(false);
-
         });
-
     });
 
     describe('patient document save', function () {
-
         var startDate = new Date("April 21, 2014");
         var stopDate = new Date("April 24, 2014 23:59:59");
 
@@ -455,10 +448,9 @@ describe("DocumentController", function () {
             scope.save(visit1);
 
             expect(visitDocumentService.save).toHaveBeenCalledWith(visitDocument);
-
         });
 
-        it('should save the existing visit data even there is invalid date entered under new visit section', function(){
+        it('should save the existing visit data even there is invalid date entered under new visit section', function () {
             setUp();
             visit1.visitType.display = 'OPD';
             var newVisit = new Bahmni.DocumentUpload.Visit();
@@ -473,13 +465,11 @@ describe("DocumentController", function () {
             scope.save(visit1);
 
             expect(visitDocumentService.save).toHaveBeenCalledWith(visitDocument);
-
         });
-
     });
 
     describe('can delete file ', function () {
-        beforeEach(function(){
+        beforeEach(function () {
             setUp();
         });
 
@@ -508,14 +498,13 @@ describe("DocumentController", function () {
             };
             scope.canDeleteFile(obs);
             expect(scope.canDeleteFile(obs)).toBeTruthy();
-        })
+        });
     });
 
     describe('Validate Order', function () {
         beforeEach(function () {
             setUp();
         });
-
 
         it('Should remove the current order when both orders are same', function () {
             var newVisit = new Bahmni.DocumentUpload.Visit();
@@ -539,11 +528,11 @@ describe("DocumentController", function () {
             expect(scope.currentVisit).toBe(newVisit);
         });
     });
-    
-    describe("OnSelect", function() {
+
+    describe("OnSelect", function () {
         it("should save the image file", function () {
             setUp();
-            visitDocumentService.saveFile.and.returnValue(specUtil.simplePromise({data: { url : "tes-file.jpeg" }}));
+            visitDocumentService.saveFile.and.returnValue(specUtil.simplePromise({data: { url: "tes-file.jpeg" }}));
             visitDocumentService.getFileType.and.returnValue("image");
             var newVisit = new Bahmni.DocumentUpload.Visit();
             appConfig.encounterType.and.returnValue("Radiology");
@@ -554,13 +543,12 @@ describe("DocumentController", function () {
 
             scope.onSelect(file, newVisit, fileName, "image/jpeg");
 
-            expect(visitDocumentService.saveFile).toHaveBeenCalledWith(file, "patient uuid" , appConfig.encounterType, fileName, fileType);
-
+            expect(visitDocumentService.saveFile).toHaveBeenCalledWith(file, "patient uuid", appConfig.encounterType, fileName, fileType);
         });
 
         it("should save the pdf file", function () {
             setUp();
-            visitDocumentService.saveFile.and.returnValue(specUtil.simplePromise({data: { url : "tes-file.pdf" }}));
+            visitDocumentService.saveFile.and.returnValue(specUtil.simplePromise({data: { url: "tes-file.pdf" }}));
             visitDocumentService.getFileType.and.returnValue("pdf");
             var newVisit = new Bahmni.DocumentUpload.Visit();
             appConfig.encounterType.and.returnValue("Radiology");
@@ -571,8 +559,7 @@ describe("DocumentController", function () {
 
             scope.onSelect(file, newVisit, fileName, "application/pdf");
 
-            expect(visitDocumentService.saveFile).toHaveBeenCalledWith(file, "patient uuid" , appConfig.encounterType, fileName, fileType);
-
+            expect(visitDocumentService.saveFile).toHaveBeenCalledWith(file, "patient uuid", appConfig.encounterType, fileName, fileType);
         });
 
         it("should show error message dialog box when user uploads a video", function () {
@@ -588,7 +575,6 @@ describe("DocumentController", function () {
             scope.onSelect(file, newVisit, fileName, "video/mp4");
 
             expect(messagingService.showMessage).toHaveBeenCalledWith('error', "File type is not supported");
-
         });
 
         it("should show error message dialog box when user uploads a file which is not image and pdf", function () {
@@ -605,7 +591,6 @@ describe("DocumentController", function () {
             scope.onSelect(file, newVisit, fileName, "document/csv");
 
             expect(messagingService.showMessage).toHaveBeenCalledWith('error', "File type is not supported");
-
         });
     });
 });

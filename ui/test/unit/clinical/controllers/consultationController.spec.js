@@ -634,7 +634,9 @@ describe("ConsultationController", function () {
                 postSaveHandler: new Bahmni.Clinical.Notifier(),
                 observations: []
             };
-            var conditions = [ {uuid: undefined, conditionNonCoded: "fever"}];
+            var conditions = [
+                {uuid: undefined, conditionNonCoded: "fever"}
+            ];
             scope.consultation["conditions"] = conditions;
             scope.patient = {
                 uuid: "patient-uuid"

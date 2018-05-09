@@ -1,7 +1,6 @@
 'use strict';
 
 describe("directive: stepper", function () {
-
     var element, $compile, scope, $exceptionHandler, observation;
     var html = '<stepper id="123" ng-model="observation.value" obs="observation" />';
 
@@ -11,8 +10,7 @@ describe("directive: stepper", function () {
         $exceptionHandlerProvider.mode('log');
     }));
 
-    var injectionFn = function($compile, $rootScope) {
-
+    var injectionFn = function ($compile, $rootScope) {
         scope = $rootScope.$new();
         scope.obs = observation;
         scope.observation = observation;
@@ -25,15 +23,13 @@ describe("directive: stepper", function () {
         scope.$apply();
     };
 
-    var beforeWithBounds = function() {
-
+    var beforeWithBounds = function () {
         observation = new Bahmni.ConceptSet.Observation({
             concept: {name: "someConcept", dataType: "Numeric", hiNormal: 100, lowNormal: 90, value: 95}
         }, null, {});
         observation.value = 95;
 
         inject(injectionFn);
-
     };
 
     it("Stepper With Bounds", function () {
@@ -50,13 +46,13 @@ describe("directive: stepper", function () {
         element.isolateScope().decrement();
         expect(scope.obs.value).toBe(90);
         element.isolateScope().decrement();
-        //Should not go below 90
+        // Should not go below 90
         expect(scope.obs.value).toBe(90);
         element.isolateScope().increment();
         expect(scope.obs.value).toBe(91);
     });
 
-    var beforeWithoutBounds = function() {
+    var beforeWithoutBounds = function () {
         html = '<stepper id="123" ng-model="observation.value" obs="observation" />';
         observation = new Bahmni.ConceptSet.Observation({
             concept: {name: "someConcept", dataType: "Numeric", value: 95}
@@ -79,7 +75,7 @@ describe("directive: stepper", function () {
         element.isolateScope().decrement();
         expect(scope.obs.value).toBe(90);
         element.isolateScope().decrement();
-        //Should not go below 90
+        // Should not go below 90
         expect(scope.obs.value).toBe(89);
         element.isolateScope().increment();
         expect(scope.obs.value).toBe(90);

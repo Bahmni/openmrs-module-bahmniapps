@@ -1,8 +1,7 @@
 'use strict';
 
 describe("EditObservationFormController", function () {
-
-    var scope, appService, appDescriptor, controller,_$window, rootScope, _$translate;
+    var scope, appService, appDescriptor, controller, _$window, rootScope, _$translate;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -10,7 +9,7 @@ describe("EditObservationFormController", function () {
         scope = $rootScope.$new();
         rootScope = $rootScope;
         scope.shouldPromptBrowserReload = true;
-        scope.resetContextChangeHandler = function()  {};
+        scope.resetContextChangeHandler = function () {};
         controller = $controller;
         appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -18,14 +17,13 @@ describe("EditObservationFormController", function () {
         _$translate = jasmine.createSpyObj('$translate', ['instant']);
     }));
 
-
-    var createController = function(appService){
+    var createController = function (appService) {
         return controller('EditObservationFormController', {
             $scope: scope,
             appService: appService,
-            $window:_$window,
-            $rootScope:rootScope,
-            $translate:_$translate
+            $window: _$window,
+            $rootScope: rootScope,
+            $translate: _$translate
         });
     };
 
@@ -77,5 +75,4 @@ describe("EditObservationFormController", function () {
             expect(scope.shouldPromptBrowserReload).toBeTruthy();
         });
     });
-
 });

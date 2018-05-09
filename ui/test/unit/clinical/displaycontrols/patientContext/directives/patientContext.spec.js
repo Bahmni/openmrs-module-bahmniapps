@@ -23,7 +23,7 @@ describe('patient context', function () {
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
         scope = $rootScope;
         scope.genderMap = {};
-        provide.value('$rootScope', $rootScope)
+        provide.value('$rootScope', $rootScope);
         $compile = _$compile_;
         scope.patient = {uuid: '123'};
         mockBackend = $httpBackend;
@@ -41,7 +41,7 @@ describe('patient context', function () {
                     then: function (callback) {
                         return callback({data: patientContext});
                     }
-                }
+                };
             });
 
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
@@ -70,7 +70,7 @@ describe('patient context', function () {
                     then: function (callback) {
                         return callback({data: {}});
                     }
-                }
+                };
             });
 
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
@@ -100,7 +100,7 @@ describe('patient context', function () {
                     then: function (callback) {
                         return callback({data: {}});
                     }
-                }
+                };
             });
 
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
@@ -130,7 +130,7 @@ describe('patient context', function () {
                     then: function (callback) {
                         return callback({data: {}});
                     }
-                }
+                };
             });
 
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
@@ -166,7 +166,7 @@ describe('patient context', function () {
                     then: function (callback) {
                         return callback({data: patientContext});
                     }
-                }
+                };
             });
 
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
@@ -199,7 +199,7 @@ describe('patient context', function () {
                     then: function (callback) {
                         return callback({data: patientContext});
                     }
-                }
+                };
             });
 
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
@@ -233,7 +233,7 @@ describe('patient context', function () {
                     then: function (callback) {
                         return callback({data: patientContext});
                     }
-                }
+                };
             });
 
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
@@ -267,7 +267,7 @@ describe('patient context', function () {
                     then: function (callback) {
                         return callback({data: patientContext});
                     }
-                }
+                };
             });
 
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
@@ -283,7 +283,7 @@ describe('patient context', function () {
             expect(Object.keys(compiledElementScope.patientContext.programAttributes).length).toEqual(0);
         });
 
-        it("should convert boolean values to 'yes' or 'no'", function() {
+        it("should convert boolean values to 'yes' or 'no'", function () {
             var patientContext = {
                 personAttributes: {'isUrban': {description: 'Urban', value: 'true'}, 'cool': {description: 'Cool', value: 'false'}},
                 programAttributes: {'isUrban': {description: 'Urban', value: 'true'}, 'cool': {description: 'Cool', value: 'false'}}
@@ -300,7 +300,7 @@ describe('patient context', function () {
                     then: function (callback) {
                         return callback({data: patientContext});
                     }
-                }
+                };
             });
 
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
@@ -318,7 +318,7 @@ describe('patient context', function () {
             expect(compiledElementScope.patientContext.programAttributes.cool.value).toEqual("No");
         });
 
-        it("should set showNameOnPrint to true by default", function(){
+        it("should set showNameOnPrint to true by default", function () {
             var patientContext = {
 
             };
@@ -340,7 +340,7 @@ describe('patient context', function () {
                     then: function (callback) {
                         return callback({data: patientContext});
                     }
-                }
+                };
             });
 
             var simpleHtml = '<patient-context patient="patient" show-name-and-image="clinicalDashBoardConfig.currentTab.printing.showNameAndImage"></patient-context>';
@@ -351,10 +351,9 @@ describe('patient context', function () {
             scope.$digest();
 
             expect(compiledElementScope.showNameAndImage).toBeTruthy();
-
         });
 
-        it("should set showNameOnPrint from config", function(){
+        it("should set showNameOnPrint from config", function () {
             var patientContext = {
 
             };
@@ -362,7 +361,7 @@ describe('patient context', function () {
             var patientContextConfig = {
 
             };
-             scope.clinicalDashBoardConfig = {
+            scope.clinicalDashBoardConfig = {
                 currentTab: {
                     "printing": {
                         "title": "Patient Dashboard",
@@ -380,7 +379,7 @@ describe('patient context', function () {
                     then: function (callback) {
                         return callback({data: patientContext});
                     }
-                }
+                };
             });
 
             var simpleHtml = '<patient-context patient="patient" show-name-and-image="clinicalDashBoardConfig.currentTab.printing.showNameAndImage"></patient-context>';
@@ -391,7 +390,6 @@ describe('patient context', function () {
             scope.$digest();
 
             expect(compiledElementScope.showNameAndImage).toBeFalsy();
-
         });
-    })
+    });
 });

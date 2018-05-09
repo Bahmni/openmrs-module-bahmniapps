@@ -1,7 +1,6 @@
 'use strict';
 
 describe("OrderController", function () {
-
     var scope, rootScope, ngDialog, appDescriptor;
 
     beforeEach(module('bahmni.common.conceptSet'));
@@ -30,11 +29,10 @@ describe("OrderController", function () {
                 };
             }
         };
-        appServiceMock.getAppDescriptor = function() { return appDescriptor };
+        appServiceMock.getAppDescriptor = function () { return appDescriptor; };
 
-        var translate = jasmine.createSpyObj('$translate',['instant']);
+        var translate = jasmine.createSpyObj('$translate', ['instant']);
         translate.instant.and.returnValue("Need Print for this order.");
-
 
         $controller('OrderController', {
             $scope: scope,
@@ -47,7 +45,7 @@ describe("OrderController", function () {
         });
     }));
 
-    it("should return true if it is in retrospective mode", function() {
+    it("should return true if it is in retrospective mode", function () {
         expect(scope.isRetrospectiveMode()).toBeTruthy();
     });
 
@@ -127,25 +125,24 @@ describe("OrderController", function () {
     describe("activateTab", function () {
         it("should update the selectedOrders when some other tab is activated", function () {
             scope.consultation.orders.push({
-                    "uuid": undefined,
-                    "concept": {
-                        "uuid": "ab137c0f-5a23-4314-ab8d-29b8ff91fbfb",
-                        "name": "ESR"
-                    },
-                    "isDiscontinued": false
-                }
+                "uuid": undefined,
+                "concept": {
+                    "uuid": "ab137c0f-5a23-4314-ab8d-29b8ff91fbfb",
+                    "name": "ESR"
+                },
+                "isDiscontinued": false
+            }
             );
             var radiologyOrderTab = _.find(scope.tabs, function (tab) {
-                return tab.name == 'Radiology Orders'
+                return tab.name == 'Radiology Orders';
             });
             scope.activateTab(radiologyOrderTab);
             expect(scope.selectedOrders.length).toBe(1);
         });
 
         it("should open the first left category by default on activating a tab", function () {
-
             var radiologyOrderTab = _.find(scope.tabs, function (tab) {
-                return tab.name == 'Radiology Orders'
+                return tab.name == 'Radiology Orders';
             });
             scope.activateTab(radiologyOrderTab);
 
@@ -210,7 +207,7 @@ describe("OrderController", function () {
     });
 
     it("should open notes popup", function () {
-        var order = {commentToFulfiller: "comment"}
+        var order = {commentToFulfiller: "comment"};
 
         scope.openNotesPopup(order);
 
@@ -221,14 +218,14 @@ describe("OrderController", function () {
         });
     });
 
-    describe("appendPrintNotes",function (){
-        it("should append needs print text in start of notes", function (){
-            var order = {uuid: "uuid",previousNote:"comment" };
+    describe("appendPrintNotes", function () {
+        it("should append needs print text in start of notes", function () {
+            var order = {uuid: "uuid", previousNote: "comment" };
             scope.appendPrintNotes(order);
             expect(scope.orderNoteText).toBe("Need Print for this order.comment");
         });
-        it("should not append needs print text in start of notes if its already there", function (){
-            var order = {uuid: "uuid",previousNote:"Need Print for this order.comment" };
+        it("should not append needs print text in start of notes if its already there", function () {
+            var order = {uuid: "uuid", previousNote: "Need Print for this order.comment" };
             scope.orderNoteText = "Need Print for this order.comment";
             scope.appendPrintNotes(order);
             expect(scope.orderNoteText).toBe("Need Print for this order.comment");
@@ -243,7 +240,7 @@ describe("OrderController", function () {
 
             expect(order.hasBeenModified).toBe(true);
             expect(ngDialog.close).toHaveBeenCalled();
-            expect(order.commentToFulfiller).toBe("comment")
+            expect(order.commentToFulfiller).toBe("comment");
         });
 
         it("should not set edited flag when the commentToFulfiller is same as previous note and close the popup", function () {
@@ -253,7 +250,7 @@ describe("OrderController", function () {
 
             expect(order.hasBeenModified).toBe(undefined);
             expect(ngDialog.close).toHaveBeenCalled();
-            expect(order.commentToFulfiller).toBe(order.previousNote)
+            expect(order.commentToFulfiller).toBe(order.previousNote);
         });
     });
 
@@ -333,18 +330,18 @@ describe("OrderController", function () {
         });
     });
 
-    describe("toggleOrderSelection", function() {
-        it("should add an order if it is not present", function() {
+    describe("toggleOrderSelection", function () {
+        it("should add an order if it is not present", function () {
             var someTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[0];
             scope.toggleOrderSelection(someTest);
 
-            var addedOrder = _.find(scope.consultation.orders, function(testOrder){
+            var addedOrder = _.find(scope.consultation.orders, function (testOrder) {
                 return testOrder.concept.uuid == someTest.uuid;
             });
             expect(addedOrder).not.toBeUndefined();
         });
 
-        it("should remove an order if it is present", function() {
+        it("should remove an order if it is present", function () {
             var someTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[0];
             var someOrder = Bahmni.Clinical.Order.create(someTest);
             scope.consultation.orders.push(someOrder);
@@ -354,7 +351,7 @@ describe("OrderController", function () {
             expect(scope.consultation.orders).not.toContain(someOrder);
         });
 
-        it("should remove all the child orders if its parent is added", function() {
+        it("should remove all the child orders if its parent is added", function () {
             var parentTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[1];
             var childTest = parentTest.setMembers[0];
             var childOrder = Bahmni.Clinical.Order.create(childTest);
@@ -365,7 +362,7 @@ describe("OrderController", function () {
             expect(scope.consultation.orders).not.toContain(childOrder);
         });
 
-        it("already saved order should be marked as discontinued if removed", function() {
+        it("already saved order should be marked as discontinued if removed", function () {
             var someTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[0];
             var someOrder = Bahmni.Clinical.Order.create(someTest);
             someOrder.uuid = "uuid1";
@@ -376,7 +373,7 @@ describe("OrderController", function () {
             expect(someOrder.isDiscontinued).toBeTruthy();
         });
 
-        it("should revise the discontinued order if the same order is added", function(){
+        it("should revise the discontinued order if the same order is added", function () {
             var someTest = allOrderables["\'Lab Samples\'"].setMembers[0].setMembers[0];
             var someOrder = Bahmni.Clinical.Order.create(someTest);
             someOrder.uuid = "uuid1";
@@ -386,7 +383,7 @@ describe("OrderController", function () {
             scope.toggleOrderSelection(someTest);
 
             expect(someOrder.isDiscontinued).toBeFalsy();
-        })
+        });
     });
 
     describe("search tests and panels", function () {
@@ -397,88 +394,86 @@ describe("OrderController", function () {
         });
     });
 
-
     var allOrderables = {
-            "\'Lab Samples\'": {
-                "conceptClass": {"name": "ConvSet"},
-                "name": {"name": "Lab Samples", "display": "Lab Samples"},
-                "uuid": "10517b93-aff1-11e3-be87-005056821db0",
-                "setMembers": [
-                    {
-                        "conceptClass": {
-                            "name": "ConvSet",
-                            "uuid": "7bba17a2-6c1d-11e4-a1f2-ba526e30a5ee"
+        "\'Lab Samples\'": {
+            "conceptClass": {"name": "ConvSet"},
+            "name": {"name": "Lab Samples", "display": "Lab Samples"},
+            "uuid": "10517b93-aff1-11e3-be87-005056821db0",
+            "setMembers": [
+                {
+                    "conceptClass": {
+                        "name": "ConvSet",
+                        "uuid": "7bba17a2-6c1d-11e4-a1f2-ba526e30a5ee"
+                    },
+                    "name": {"name": "Blood", "display": "Blood"},
+                    "uuid": "88024166-9bcd-11e3-927e-8840ab96f0f1",
+                    "setMembers": [
+                        {
+                            "conceptClass": {
+                                "name": "LabTest",
+                                "description": "Lab tests",
+                                "uuid": "7bba17a2-6c1d-11e4-a1f2-ba526e30a5ad"
+                            },
+                            "name": {"name": "Biochemistry", "display": "Biochemistry"},
+                            "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a",
+                            "setMembers": []
                         },
-                        "name": {"name": "Blood", "display": "Blood"},
-                        "uuid": "88024166-9bcd-11e3-927e-8840ab96f0f1",
-                        "setMembers": [
-                            {
-                                "conceptClass": {
-                                    "name": "LabTest",
-                                    "description": "Lab tests",
-                                    "uuid": "7bba17a2-6c1d-11e4-a1f2-ba526e30a5ad"
-                                },
-                                "name": {"name": "Biochemistry", "display": "Biochemistry"},
-                                "uuid": "3b5ea063-b6e5-48cd-b39d-dce69f00f26a",
-                                "setMembers": []
+                        {
+                            "conceptClass": {
+                                "name": "LabSet",
+                                "description": "Panel",
+                                "uuid": "8d492026-c2cc-11de-8d13-0010c6dffd0f"
                             },
-                            {
-                                "conceptClass": {
-                                    "name": "LabSet",
-                                    "description": "Panel",
-                                    "uuid": "8d492026-c2cc-11de-8d13-0010c6dffd0f"
-                                },
-                                "name": {"name": "Biochemistry1", "display": "Biochemistry1"},
-                                "uuid": "3c5ea063-b6e5-48cd-b39d-dce69f00f26a",
-                                "setMembers": [{
-                                    "name": {"name": "Packed Cell Volume (PCV)", "display": "Packed Cell Volume (PCV)"},
-                                    "uuid": "17a67549-0ba1-46bb-92eb-dca9f81fafa1",
-                                    "conceptClass": {
-                                        "name": "LabTest",
-                                        "description": "Lab tests",
-                                        "uuid": "7bba17a2-6c1d-11e4-a1f2-ba526e30a5ad"
-                                    }
-                                }]
-                            },
-                            {
+                            "name": {"name": "Biochemistry1", "display": "Biochemistry1"},
+                            "uuid": "3c5ea063-b6e5-48cd-b39d-dce69f00f26a",
+                            "setMembers": [{
                                 "name": {"name": "Packed Cell Volume (PCV)", "display": "Packed Cell Volume (PCV)"},
                                 "uuid": "17a67549-0ba1-46bb-92eb-dca9f81fafa1",
                                 "conceptClass": {
                                     "name": "LabTest",
                                     "description": "Lab tests",
                                     "uuid": "7bba17a2-6c1d-11e4-a1f2-ba526e30a5ad"
-                                },
-                                "setMembers": []
-                            }
-                        ]
-                    }
-                ]
-            },
-            "\'Radiology Orders\'": {
-                "conceptClass": {"name": "ConvSet"},
-                "name": {"name": "Radiology Orders", "display": "Radiology Orders"},
-                "uuid": "93b9c6fd-9bc6-11e3-927e-8840ab96f0f1",
-                "setMembers": [
-                    {
-                        "conceptClass": {"name": "ConvSet"},
-                        "name": {"name": "Special X Rays", "display": "Special X Rays"},
-                        "uuid": "20517b93-aff1-11e3-be87-005056821db0",
-                        "setMembers": [
-                            {
-                                "conceptClass": {
-                                    "name": "LabTest",
-                                    "description": "Lab tests",
-                                    "uuid": "7bba17a2-6c1d-11e4-a1f2-ba526e30a5ad"
-                                },
-                                "name": {"name": "ESR", "display": "ESR"},
-                                "uuid": "ab137c0f-5a23-4314-ab8d-29b8ff91fbfb",
-                                "setMembers": []
-                            }
-                        ]
-                    }
-                ]
+                                }
+                            }]
+                        },
+                        {
+                            "name": {"name": "Packed Cell Volume (PCV)", "display": "Packed Cell Volume (PCV)"},
+                            "uuid": "17a67549-0ba1-46bb-92eb-dca9f81fafa1",
+                            "conceptClass": {
+                                "name": "LabTest",
+                                "description": "Lab tests",
+                                "uuid": "7bba17a2-6c1d-11e4-a1f2-ba526e30a5ad"
+                            },
+                            "setMembers": []
+                        }
+                    ]
+                }
+            ]
+        },
+        "\'Radiology Orders\'": {
+            "conceptClass": {"name": "ConvSet"},
+            "name": {"name": "Radiology Orders", "display": "Radiology Orders"},
+            "uuid": "93b9c6fd-9bc6-11e3-927e-8840ab96f0f1",
+            "setMembers": [
+                {
+                    "conceptClass": {"name": "ConvSet"},
+                    "name": {"name": "Special X Rays", "display": "Special X Rays"},
+                    "uuid": "20517b93-aff1-11e3-be87-005056821db0",
+                    "setMembers": [
+                        {
+                            "conceptClass": {
+                                "name": "LabTest",
+                                "description": "Lab tests",
+                                "uuid": "7bba17a2-6c1d-11e4-a1f2-ba526e30a5ad"
+                            },
+                            "name": {"name": "ESR", "display": "ESR"},
+                            "uuid": "ab137c0f-5a23-4314-ab8d-29b8ff91fbfb",
+                            "setMembers": []
+                        }
+                    ]
+                }
+            ]
 
-            }
         }
-
+    };
 });

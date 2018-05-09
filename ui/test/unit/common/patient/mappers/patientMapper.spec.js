@@ -94,5 +94,4 @@ describe('patient mapper', function () {
 
         expect(patientMapper.mapBasic(patient).identifier).toEqual('BDH202048');
     });
-
 });

@@ -45,7 +45,6 @@ describe("Patient Profile display control", function () {
             return specUtil.respondWithPromise($q, {data: {}});
         });
         $provide.value('spinner', spinner);
-
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, _$q_, $httpBackend) {
@@ -56,7 +55,7 @@ describe("Patient Profile display control", function () {
         mockBackend.expectGET('/openmrs/ws/rest/v1/relationship?v=full').respond([]);
     }));
 
-    /*Mock of constructor Bahmni.PatientMapper*/
+    /* Mock of constructor Bahmni.PatientMapper */
     var originalPatientMapper, spyPatientMapperInstance;
     beforeEach(function () {
         spyPatientMapperInstance = jasmine.createSpyObj('PatientMapperInstance', ['map']);
@@ -172,9 +171,9 @@ describe("Patient Profile display control", function () {
         isoScope.visitUuid = "visit-uuid-00001";
         var ADMISSION_STATUS_ATTRIBUTE = "Admission Status";
         var attributes = [
-            {value:"Admitted",attributeType:{name:ADMISSION_STATUS_ATTRIBUTE}},
-            {attributeType:{name:"IPD"}},
-            {attributeType:{name:"OPD"}}
+            {value: "Admitted", attributeType: {name: ADMISSION_STATUS_ATTRIBUTE}},
+            {attributeType: {name: "IPD"}},
+            {attributeType: {name: "OPD"}}
         ];
         visitService.getVisit.and.returnValue(specUtil.respondWithPromise($q, {data: {attributes: attributes}}));
         isoScope.$apply();
@@ -191,5 +190,4 @@ describe("Patient Profile display control", function () {
         scope.$digest();
         return element.isolateScope();
     };
-
 });

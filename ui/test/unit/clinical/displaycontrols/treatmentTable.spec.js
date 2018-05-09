@@ -45,7 +45,7 @@ describe('Treatment Table DisplayControl', function () {
         var compiledElementScope = element.isolateScope();
         scope.$digest();
 
-        expect(compiledElementScope.isOtherActiveSection(otherActiveDrugOrderSection.visitDate)).toBe(true)
+        expect(compiledElementScope.isOtherActiveSection(otherActiveDrugOrderSection.visitDate)).toBe(true);
     });
 
     it("should return false if the section is not other active drug orders", function () {
@@ -64,8 +64,6 @@ describe('Treatment Table DisplayControl', function () {
         var compiledElementScope = element.isolateScope();
         scope.$digest();
 
-        expect(compiledElementScope.isOtherActiveSection(visitDrugOrder.visitDate)).toBe(false)
-    })
-
-
+        expect(compiledElementScope.isOtherActiveSection(visitDrugOrder.visitDate)).toBe(false);
+    });
 });

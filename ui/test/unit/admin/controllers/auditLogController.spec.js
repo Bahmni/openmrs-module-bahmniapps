@@ -42,7 +42,6 @@ describe("auditLogController", function () {
         inject(['$controller', '$rootScope', '$httpBackend', function ($controller, $rootScope, $httpBackend) {
             scope = $rootScope.$new();
             httpBackend = $httpBackend;
-
         }]);
         mockAuditLogService = jasmine.createSpyObj("auditLogService", ["getLogs"]);
         mockAuditLogService.getLogs.and.callFake(function () {
@@ -51,8 +50,7 @@ describe("auditLogController", function () {
         translate = jasmine.createSpyObj('$translate', ['instant']);
         translate.instant.and.callFake(function (key) {
             return translatedMessages[key];
-        })
-
+        });
     });
 
     afterEach(function () {
@@ -60,9 +58,8 @@ describe("auditLogController", function () {
         httpBackend.verifyNoOutstandingExpectation();
     });
 
-
     var setUp = function () {
-        inject(function ($controller) {
+        inject(['$controller', function ($controller) {
             $controller('auditLogController', {
                 $scope: scope,
                 spinner: _spinner,
@@ -70,7 +67,7 @@ describe("auditLogController", function () {
                 messagingService: messagingService,
                 $translate: translate
             });
-        });
+        }]);
     };
 
     it('should provide audit log after initialization', function () {
@@ -536,7 +533,6 @@ describe("auditLogController", function () {
         expect(log.userId).toBe("batman");
         expect(_spinner.forPromise).toHaveBeenCalled();
         expect(mockAuditLogService.getLogs).toHaveBeenCalledWith({startFrom: currentDate, username: "batman"});
-
     });
 
     it("should give all logs filter by given patient identifier", function () {

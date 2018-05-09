@@ -35,7 +35,6 @@ describe("Identifiers", function () {
                 }
             ]
         };
-
     }]));
 
     describe('create identifiers', function () {
@@ -57,7 +56,7 @@ describe("Identifiers", function () {
             expect(identifiersDetails.primaryIdentifier.selectedIdentifierSource).toEqual({
                 prefix: 'GAN'
             });
-        })
+        });
 
         it('should map first identifierPrefix found for extra identifiers', function () {
             var identifiersDetails = identifiersFactory.create();
@@ -65,6 +64,6 @@ describe("Identifiers", function () {
             expect(identifiersDetails.extraIdentifiers[0].selectedIdentifierSource).toEqual({
                 prefix: 'BAH'
             });
-        })
-    })
+        });
+    });
 });

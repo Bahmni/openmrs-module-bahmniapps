@@ -16,7 +16,7 @@ describe('DashboardSection', function () {
         scope = rootScope.$new();
     }));
 
-    function init(isHideEmptyDisplayControl) {
+    function init (isHideEmptyDisplayControl) {
         mockBackend.expectGET('../common/displaycontrols/dashboard/views/dashboardSection.html').respond("<div>dummy</div>");
         scope.section = {
             isDataAvailable: true,
@@ -34,7 +34,6 @@ describe('DashboardSection', function () {
         init(false);
         scope.$emit("no-data-present-event");
         expect(scope.section.isDataAvailable).toBeTruthy();
-
     });
     it('should change data availability check when hideEmptyDisplayControl is true', function () {
         init(true);

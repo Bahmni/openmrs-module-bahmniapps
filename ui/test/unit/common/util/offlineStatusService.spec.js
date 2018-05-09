@@ -13,7 +13,7 @@ describe("offlineStatusService", function () {
                     return {
                         "showNetworkStatusMessage": true,
                         "networkStatusCheckInterval": 9000
-                    }
+                    };
                 }
             }
         });
@@ -25,7 +25,6 @@ describe("offlineStatusService", function () {
             rootScope = $rootScope;
             offlineStatusService = _offlineStatusService_;
         });
-
     });
 
     it("should set offline options when config is set true", function () {
@@ -36,13 +35,12 @@ describe("offlineStatusService", function () {
         expect(Offline.options.checks).toEqual(xhrObject);
     });
 
-
     it("should set offline options when config is not given", function () {
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function (input) {
                 if (input === "networkConnectivity") {
                     return {
-                    }
+                    };
                 }
             }
         });
@@ -52,5 +50,4 @@ describe("offlineStatusService", function () {
         expect(interval).toHaveBeenCalledWith(offlineStatusService.checkOfflineStatus, 5000);
         expect(Offline.options.checks).toEqual(xhrObject);
     });
-
 });

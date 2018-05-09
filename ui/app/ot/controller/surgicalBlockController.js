@@ -75,7 +75,7 @@ angular.module('bahmni.ot')
                 spinner.forPromise(saveOrupdateSurgicalBlock(surgicalBlock)).then(function (response) {
                     $scope.surgicalForm = new Bahmni.OT.SurgicalBlockMapper().map(response.data, $scope.attributeTypes, $scope.surgeons);
                     $scope.surgicalForm.surgicalAppointments = surgicalAppointmentHelper.filterSurgicalAppointmentsByStatus(
-                        $scope.surgicalForm.surgicalAppointments, [Bahmni.OT.Constants.scheduled, Bahmni.OT.Constants.completed]);
+$scope.surgicalForm.surgicalAppointments, [Bahmni.OT.Constants.scheduled, Bahmni.OT.Constants.completed]);
                     messagingService.showMessage('info', "{{'OT_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
                     $state.go('editSurgicalAppointment', {surgicalBlockUuid: response.data.uuid});
                 });
@@ -134,8 +134,7 @@ angular.module('bahmni.ot')
                     surgicalAppointment.isBeingEdited = false;
                     surgicalAppointment.isDirty = true;
                     $scope.surgicalForm.surgicalAppointments[surgicalAppointment.sortWeight] = surgicalAppointment;
-                }
-                else {
+                } else {
                     messagingService.showMessage('error', "{{'OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION' | translate}}");
                 }
             };

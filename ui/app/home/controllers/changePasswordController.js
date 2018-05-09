@@ -20,8 +20,7 @@ angular.module('bahmni.home')
                     messagingService.showMessage("info", 'CHANGE_PASSWORD_SUCCESSFUL_MESSAGE');
                     clearPasswordFields();
                 });
-            }
-            else {
+            } else {
                 $scope.passwordDoesNotMatch = true;
             }
         };

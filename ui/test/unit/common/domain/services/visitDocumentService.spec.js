@@ -99,12 +99,12 @@ describe("visitDocumentService", function () {
                 voided: true,
                 obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d658f"
             },
-                {
-                    testUuid: "c4694ad6-3f13-11e4-adec-0800271c1b96",
-                    image: undefined,
-                    voided: true,
-                    obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d6590"
-                }]
+            {
+                testUuid: "c4694ad6-3f13-11e4-adec-0800271c1b96",
+                image: undefined,
+                voided: true,
+                obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d6590"
+            }]
         };
         _$http.post.and.returnValue(specUtil.respondWithPromise(Q, {data: {}}));
         visitDocumentService.save(visitDocuments);
@@ -127,12 +127,12 @@ describe("visitDocumentService", function () {
                 image: null,
                 voided: true,
                 obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d658f"
-            },{
+            }, {
                 testUuid: "c4694ad6-3f13-11e4-adec-0800271c1b96",
                 image: undefined,
                 voided: true,
                 obsUuid: "a42ebc4b-d90a-4e46-8286-5a62650d6590"
-            },{
+            }, {
                 testUuid: "c4694ad6-3f13-11e4-adec-0800271c1b97",
                 image: "200/196-Patient Document-00870da2-7ee3-4a53-9eeb-abd2f686afab.jpeg",
                 voided: true,
