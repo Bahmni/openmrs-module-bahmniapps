@@ -1,0 +1,20 @@
+<div class="ngdialog-close clearfix"></div>
+<div class="move-appointment">
+    <h4> {{'Moving ' + surgicalAppointment.patient.display + ' from ' + sourceSurgicalBlock.provider.person.display + ' - ' + sourceSurgicalBlock.location.name}}</h4>
+    <p>
+        <label>{{'DATE' | translate}}: </label>
+        <input type="date" ng-model="dateForMovingSurgery" ng-change="changeInSurgeryDate()"/>
+    </p>
+    <p ng-show="availableSurgicalBlocksForGivenDate.length">
+        <label>{{'DESTINATION_BLOCK' | translate}}: </label>
+        <select ng-options="surgicalBlockDetails.displayName for surgicalBlockDetails in availableSurgicalBlocksForGivenDate" required ng-model="destinationBlock">
+            <option value=""> {{'SELECT_BLOCK' | translate}} </option>
+        </select>
+    </p>
+    <p class="caution" ng-show="dateForMovingSurgery && availableSurgicalBlocksForGivenDate.length === 0">
+        <i class="fa fa-exclamation-circle small"></i>
+        <span>{{'NO_FREE_SLOT_AVAILABLE_FOR_THE_GIVEN_SURGEON_AND_DATE_MESSAGE' | translate}}</span>
+    </p>
+    <button ng-mousedown="cancel()">{{'OT_SURGICAL_APPOINTMENT_CANCEL' | translate}}</button>
+    <button ng-click="moveSurgicalAppointment()" ng-disabled="!dateForMovingSurgery || !destinationBlock"> {{'OT_SURGICAL_APPOINTMENT_MOVE' | translate}}</button>
+</div>

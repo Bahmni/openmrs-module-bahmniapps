@@ -1,0 +1,79 @@
+<form class="add-surgical-appointment-dialog-form" name="surgicalAppointmentForm" single-submit="createAppointmentAndAdd()">
+        <h4 class="appointment-title" ng-hide="ngDialogData.sortWeight >= 0">{{'ADD_SURGICAL_APPOINTMENT' | translate}}</h4>
+    <h4 class="appointment-title" ng-show="ngDialogData.sortWeight >= 0 ">{{'EDIT_SURGICAL_APPOINTMENT' | translate}}</h4>
+    <div class="appointment-block">
+        <p class="surgeon-block">
+            <label class="surgeon-block surgeon-text">{{'OT_PATIENT' | translate}} <span class="asterick">*</span></label>
+            <span ng-hide="isEditMode()">
+                <input type="text"
+                       id="patientID"
+                       min-length=2
+                       bahmni-autocomplete
+                       ng-model="patient"
+                       source="search"
+                       response-map="responseMap"
+                       on-select="onSelectPatient"
+                       strict-select="true"
+                       ng-class="{'illegalValue': isInvalid}"
+                       placeholder="{{'OT_ENTER_PATIENT_KEY' | translate }}"
+                       non-blank
+                />
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </span>
+            <span style="max-width: 300px" ng-hide="!isEditMode()" class="patient_name">
+                <a ng-click="goToForwardUrl()">{{::patient}}</a>
+            </span>
+        </p>
+        <p>
+            <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}}</label>
+            <textarea class="text-section" id="procedureID" ng-model="attributes.procedure.value" msd-elastic> </textarea>
+        </p>
+
+        <p>
+            <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}}</label>
+            <input type="number" id="estTimeHoursID" required ng-model="attributes.estTimeHours.value" string-to-number min="0" max="23" step="1">
+           {{'OT_SURGICAL_APPOINTMENT_HOURS' | translate}} :
+            <input type="number" id="estTimeMinutesID" required ng-model="attributes.estTimeMinutes.value" string-to-number
+                              min="0"
+                              max="59">{{'OT_SURGICAL_APPOINTMENT_MINUTES' | translate}}
+        </p>
+
+        <p>
+            <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_CLEANING_TIME' | translate}}</label>
+            <input type="number" id="cleaningTimeID" required ng-model="attributes.cleaningTime.value" string-to-number min="0" max="59"> min(s)
+        </p>
+        <p>
+            <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_OTHER_SURGEON' | translate}}</label>
+            <select ng-options="otherSurgeon as otherSurgeon.person.display for otherSurgeon in otherSurgeons track by otherSurgeon.uuid"
+                       ng-model="attributes.otherSurgeon.value">
+                <option value=""> {{'OT_SELECT_SURGEON_KEY' | translate}} </option>
+            </select>
+        </p>
+
+        <p>
+            <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_SURGICAL_ASSISTANT' | translate}}</label>
+            <input type="text" id="surgicalAssistant" ng-model="attributes.surgicalAssistant.value">
+        </p>
+
+        <p>
+            <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_ANAESTHETIST' | translate}}</label>
+            <input type="text" id="anaesthetistID" ng-model="attributes.anaesthetist.value">
+        </p>
+        <p>
+            <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_SCRUB_NURSE' | translate}}</label>
+            <input type="text" id="scrubNurseID" ng-model="attributes.scrubNurse.value">
+        </p>
+        <p>
+            <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_CIRCULATING_NURSE' | translate}}</label>
+            <input type="text" id="circulatingNurseID" ng-model="attributes.circulatingNurse.value">
+        </p>
+        <p>
+            <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}</label>
+            <textarea class="text-section" placeholder="{{'OT_ENTER_YOUR_NOTES' | translate}}" id="notesID" ng-model="attributes.notes.value" msd-elastic></textarea>
+        </p>
+        <p style="text-align:right; overflow: visible;">
+            <input type="submit" class="add" value="{{'OT_ADD_KEY' | translate}}"/>
+            <input type="button" class="cancel" value="{{'OT_CANCEL_KEY' | translate}}" ng-click="close()"/>
+        </p>
+    </div>
+</form>

@@ -64,6 +64,7 @@ module.exports = function (config) {
             'app/home/**/*.js',
             'app/ipd/**/*.js',
             'app/orders/**/*.js',
+            'app/ot/**/*.js',
             'app/reports/**/*.js',
             'app/registration/**/*.js',
             'app/appointments/**/*.js',

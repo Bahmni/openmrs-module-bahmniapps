@@ -1,4 +1,7 @@
 {
+  "SAVE_CONFIRMATION_DIALOG_MESSAGE_KEY": "You may have unsaved changes, please choose an option.",
+  "SAVE_CONFIRMATION_OPTION_DONT_SAVE_KEY" : "Don't Save",
+  "SAVE_CONFIRMATION_OPTION_CANCEL_KEY" : "Cancel",
   "REGISTRATION_TITLE_KEY": "Patient Registration",
   "REGISTRATION_LABEL_SCANNED" : "Scanned",
   "REGISTRATION_LABEL_PAPER" : "Paper",

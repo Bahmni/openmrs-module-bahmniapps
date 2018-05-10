@@ -18,6 +18,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return $state.current.name === 'patient.dashboard.show';
             };
             $scope.showComment = true;
+            $scope.showSaveAndContinueButton = true;
 
             $scope.visitHistory = visitHistory;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
@@ -182,7 +183,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                         event.preventDefault();
                         $scope.targetUrl = event.currentTarget.getAttribute('href');
                     }
-                    ngDialog.openConfirm({template: 'consultation/views/saveConfirmation.html', scope: $scope});
+                    ngDialog.openConfirm({template: '../common/ui-helper/views/saveConfirmation.html', scope: $scope});
                 }
             };
 

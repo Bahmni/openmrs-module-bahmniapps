@@ -1,0 +1,40 @@
+<div on-Scroll class="calendar">
+    <p class="calendar-overflow-hiding"></p>
+    <!-- Please dont remove or alter the below class name -->
+    <div class="calendar-location">
+        <p class="heading-cell" ng-repeat="location in locations">
+            {{location.name}}
+        </p>
+    </div>
+    <div class="table-block">
+        <!-- Please dont remove or alter the below class name -->
+        <div class="calendar-time-container">
+            <div ng-repeat="row in ::rows" class="calendar-time">
+                {{::row.date | bahmniTime}}
+            </div>
+        </div>
+        <div class="ot-block-container">
+            <div class="ot-block-wrapper">
+            <div class="ot-block" ng-repeat="(blockIndex, blocks) in surgicalBlocksByLocation">
+                <div ng-repeat="row in ::rows" class="calendar-cell">
+                </div>
+                <div ng-repeat="block in blocks | surgicalBlock:filterParams">
+                    <ot-calendar-surgical-block
+                            surgical-block="block" ng-if="!block.voided"
+                            calendar-start-datetime="::calendarStartDatetime"
+                            calendar-end-datetime="::calendarEndDatetime"
+                            day-view-split="::dayViewSplit"
+                            filter-params="filterParams"
+                    ></ot-calendar-surgical-block>
+                </div>
+                <hr class="current-day-line"
+                    ng-if="shouldDisplayCurrentTimeLine()"
+                    ng-style = "{top : currentTimeLineHeight + 'px'}">
+            </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
