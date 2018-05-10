@@ -112,7 +112,7 @@ describe('editTagsController', function () {
 
     it('should update the bedTagMaps for the selected bed, on click of update', function () {
         q.all = function () {
-            return specUtil.simplePromise({data: {}})
+            return specUtil.simplePromise({data: {}});
         };
         var bedTagStrictIsolation = bedTags[2];
         var mappedBedTagStictIsolation = {bedTag: bedTagStrictIsolation, uuid: strictIsolationTagMapUuid};

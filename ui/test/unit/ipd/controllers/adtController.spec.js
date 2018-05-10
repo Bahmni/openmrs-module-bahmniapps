@@ -37,7 +37,7 @@ describe("AdtController", function () {
             }, getExtensions: function (a, b) {
                 return {
                     maxPatientsPerBed: 2
-                }
+                };
             },
             getConfig: function(){
                 return {value: "#/bedManagement/bed/{{bedId}}"};
@@ -84,7 +84,7 @@ describe("AdtController", function () {
                 then: function () {
                     return {};
                 }
-            }
+            };
         });
 
         spyOn(scope, "$emit");
@@ -116,7 +116,7 @@ describe("AdtController", function () {
             }, getExtensions: function () {
                 return {
                     maxPatientsPerBed: 2
-                }
+                };
             },
             getConfig: function(){
             }
@@ -137,7 +137,7 @@ describe("AdtController", function () {
             }, getExtensions: function () {
                 return {
                     maxPatientsPerBed: 2
-                }
+                };
             },
             getConfig: function(){
             }
@@ -191,7 +191,7 @@ describe("AdtController", function () {
                 then: function (callback) {
                     return callback({});
                 }
-            }
+            };
         });
         createController();
 
@@ -274,7 +274,7 @@ describe("AdtController", function () {
             }, getExtensions: function () {
                 return {
                     maxPatientsPerBed: 2
-                }
+                };
             },
             getConfig: function(){
             }
@@ -301,7 +301,7 @@ describe("AdtController", function () {
             }, getExtensions: function () {
                 return {
                     maxPatientsPerBed: 2
-                }
+                };
             },
             getConfig: function(){
             }
@@ -354,7 +354,7 @@ describe("AdtController", function () {
                     var searchResponse = {
                         results: [{uuid: "visitUuid"}]
                     };
-                    return successFunction({data: searchResponse})
+                    return successFunction({data: searchResponse});
                 }
             };
         };
@@ -389,7 +389,7 @@ describe("AdtController", function () {
                     var searchResponse = {
                         results: [{uuid: "visitUuid"}]
                     };
-                    return successFunction({data: searchResponse})
+                    return successFunction({data: searchResponse});
                 }
             };
         };
@@ -433,7 +433,7 @@ describe("AdtController", function () {
                     var searchResponse = {
                         results: [{uuid: "visitUuid"}]
                     };
-                    return successFunction({data: searchResponse})
+                    return successFunction({data: searchResponse});
                 }
             };
         };
@@ -480,7 +480,7 @@ describe("AdtController", function () {
                     var searchResponse = {
                         results: [{uuid: "visitUuid"}]
                     };
-                    return successFunction({data: searchResponse})
+                    return successFunction({data: searchResponse});
                 }
             };
         };
@@ -590,7 +590,7 @@ describe("AdtController", function () {
                     var searchResponse = {
                         results: [{uuid: "visitUuid"}]
                     };
-                    return successFunction({data: searchResponse})
+                    return successFunction({data: searchResponse});
                 }
             };
         };

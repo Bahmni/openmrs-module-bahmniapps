@@ -28,7 +28,7 @@ describe("BedManagementService", function() {
     beforeEach(module('bahmni.ipd'));
 
     beforeEach(inject(['bedManagementService', function (bedManagementServiceInjected) {
-    	BedManagementService = bedManagementServiceInjected
+    	BedManagementService = bedManagementServiceInjected;
     }]));
 
 	describe("createLayoutGrid", function(){

@@ -3,7 +3,7 @@
 describe('bedTagMapService', function () {
     var bedTagMapService;
     var mockHttp = jasmine.createSpyObj('$http', ['get', 'post', 'delete']);
-    var bedTags = [{"id":1,"name":"Lost","uuid":"73e846d6-ed5f-11e6-a3c9-0800274a5156"},{"id":2,"name":"Oxygen","uuid":"74d2757a-ed5f-11e6-a3c9-0800274a5156"},{"id":3,"name":"Isolation","uuid":"76783641-ed5f-11e6-a3c9-0800274a5156"},{"id":4,"name":"Strict Isolation","uuid":"7739dc9f-ed5f-11e6-a3c9-0800274a5156"}]
+    var bedTags = [{"id":1,"name":"Lost","uuid":"73e846d6-ed5f-11e6-a3c9-0800274a5156"},{"id":2,"name":"Oxygen","uuid":"74d2757a-ed5f-11e6-a3c9-0800274a5156"},{"id":3,"name":"Isolation","uuid":"76783641-ed5f-11e6-a3c9-0800274a5156"},{"id":4,"name":"Strict Isolation","uuid":"7739dc9f-ed5f-11e6-a3c9-0800274a5156"}];
     var bedTagMapUuid = "bedTagMapUuid";
     mockHttp.get.and.callFake(function(param) {
         return specUtil.simplePromise(bedTags);
