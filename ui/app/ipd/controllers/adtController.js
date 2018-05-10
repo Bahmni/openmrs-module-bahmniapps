@@ -23,7 +23,7 @@ angular.module('bahmni.ipd')
 
             var getVisitTypeUuid = function (visitTypeName) {
                 var visitType = _.find(visitTypes, {name: visitTypeName});
-                return visitType && visitType.uuid || null;
+                return (visitType && visitType.uuid) || null;
             };
 
             var defaultVisitTypeUuid = getVisitTypeUuid($scope.defaultVisitTypeName);
