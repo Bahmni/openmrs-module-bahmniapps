@@ -13,7 +13,7 @@ angular.module('bahmni.ipd')
 
             var getSelectedRoom = function (roomName) {
                 var admissionRoom = _.filter($scope.ward.rooms, function (room) {
-                    return room.name == roomName;
+                    return room.name === roomName;
                 });
                 $scope.room = admissionRoom[0];
                 $scope.activeRoom = $scope.room.name;
@@ -51,7 +51,7 @@ angular.module('bahmni.ipd')
             });
 
             var goToBedManagement = function () {
-                if ($state.current.name == "bedManagement.bed") {
+                if ($state.current.name === "bedManagement.bed") {
                     var options = {};
                     options['context'] = {
                         department: {

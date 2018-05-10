@@ -74,7 +74,7 @@ angular.module('bahmni.ipd')
                 };
 
                 $scope.$watch("patient", function (oldValue, newValue) {
-                    if (oldValue != newValue) {
+                    if (oldValue !== newValue) {
                         return fetchLatestObsFor($scope.conceptSetName);
                     }
                 });

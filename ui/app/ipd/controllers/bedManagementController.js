@@ -17,7 +17,7 @@ angular.module('bahmni.ipd')
 
             var isDepartmentPresent = function (department) {
                 if (!department) return false;
-                return _.values(department).indexOf() == -1;
+                return _.values(department).indexOf() === -1;
             };
 
             var init = function () {
@@ -63,13 +63,13 @@ angular.module('bahmni.ipd')
 
             var getWardDetails = function (department) {
                 return _.filter($scope.wards, function (entry) {
-                    return entry.ward.uuid == department.uuid;
+                    return entry.ward.uuid === department.uuid;
                 });
             };
 
             var selectCurrentDepartment = function (department) {
                 _.each($scope.wards, function (wardElement) {
-                    if (wardElement.ward.uuid == department.uuid) {
+                    if (wardElement.ward.uuid === department.uuid) {
                         wardElement.ward.isSelected = true;
                         wardElement.ward.selected = true;
                     }
@@ -141,7 +141,7 @@ angular.module('bahmni.ipd')
             });
 
             var goToBedManagement = function () {
-                if ($state.current.name == "bedManagement.bed") {
+                if ($state.current.name === "bedManagement.bed") {
                     var options = {};
                     options['context'] = {
                         department: {
@@ -183,7 +183,7 @@ angular.module('bahmni.ipd')
             };
 
             $scope.canEditTags = function () {
-                return $rootScope.selectedBedInfo.bed && $state.current.name == "bedManagement.bed";
+                return $rootScope.selectedBedInfo.bed && $state.current.name === "bedManagement.bed";
             };
 
             $scope.editTagsOntheBed = function () {

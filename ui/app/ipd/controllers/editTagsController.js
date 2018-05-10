@@ -90,7 +90,7 @@ angular.module('bahmni.ipd').controller('editTagsController', ['$scope', '$rootS
             _.each(deltaDeSelected, function (bedTag) {
                 bedTagMapService.unAssignTagFromTheBed(bedTag.tagMapUuid).then(function () {
                     $rootScope.selectedBedInfo.bed.bedTagMaps = _.filter($rootScope.selectedBedInfo.bed.bedTagMaps, function (bedTagMap) {
-                        return bedTagMap.bedTag.uuid != bedTag.uuid;
+                        return bedTagMap.bedTag.uuid !== bedTag.uuid;
                     });
                 });
             });
@@ -119,4 +119,3 @@ angular.module('bahmni.ipd').controller('editTagsController', ['$scope', '$rootS
 
         init();
     }]);
-

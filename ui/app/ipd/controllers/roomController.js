@@ -22,14 +22,14 @@ angular.module('bahmni.ipd')
                         }
                     });
                     $rootScope.selectedBedInfo.bed = $scope.selectedBed;
-                    if ($state.current.name != "bedManagement.patient") {
+                    if ($state.current.name !== "bedManagement.patient") {
                         $scope.oldBedNumber = undefined;
                     }
                 }
             };
 
             $scope.toggleWardView = function () {
-                $rootScope.currentView = ($rootScope.currentView == "Grid") ? "List" : "Grid";
+                $rootScope.currentView = ($rootScope.currentView === "Grid") ? "List" : "Grid";
                 $scope.currentView = $rootScope.currentView;
             };
 
