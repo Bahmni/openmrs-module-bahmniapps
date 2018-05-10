@@ -242,14 +242,13 @@ describe("RecordsMapper", function () {
     it("should map radiology record observations", function () {
         var recordGroups = new Bahmni.Clinical.RecordsMapper().map(encounters);
 
-        var recordsForChest2Views = recordGroups.filter(function (group) { return group.conceptName =="Chest, 2 views (X-ray)" })[0];
-        var headSkullAP = recordGroups.filter(function (group) { return group.conceptName =="HEAD Skull AP" })[0];
-        var hipRightXRay = recordGroups.filter(function (group) { return group.conceptName =="Hip - Right, 2 views (X-ray)" })[0];
+        var recordsForChest2Views = recordGroups.filter(function (group) { return group.conceptName == "Chest, 2 views (X-ray)"; })[0];
+        var headSkullAP = recordGroups.filter(function (group) { return group.conceptName == "HEAD Skull AP"; })[0];
+        var hipRightXRay = recordGroups.filter(function (group) { return group.conceptName == "Hip - Right, 2 views (X-ray)"; })[0];
 
         expect(recordGroups.length).toBe(12);
         expect(recordsForChest2Views.records.length).toBe(3);
         expect(headSkullAP.records.length).toBe(2);
         expect(hipRightXRay.records.length).toBe(1);
-
-    })
+    });
 });

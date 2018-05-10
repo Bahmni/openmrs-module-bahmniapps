@@ -1,7 +1,6 @@
 'use strict';
 
 describe("ConceptWeightBasedSorter", function () {
-
     var allTestsAndPanels = {
         setMembers: [
             {name: {name: "Test1"}},

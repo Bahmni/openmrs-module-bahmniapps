@@ -1,11 +1,10 @@
 describe("loading config functionality", function () {
-
     var loadConfigService, mockHttp, $q = Q;
 
     beforeEach(module('bahmni.common.appFramework'));
-    beforeEach(module(function($provide) {
-        mockHttp = jasmine.createSpyObj('$http',['get']);
-        $provide.value('$http',mockHttp);
+    beforeEach(module(function ($provide) {
+        mockHttp = jasmine.createSpyObj('$http', ['get']);
+        $provide.value('$http', mockHttp);
         $provide.value('$q', $q);
     }));
 
@@ -15,7 +14,6 @@ describe("loading config functionality", function () {
         }]));
 
     it("should load config", function (done) {
-
         var config = {
             "value": {
                 "app.json": {
@@ -26,10 +24,9 @@ describe("loading config functionality", function () {
 
         mockHttp.get.and.returnValue(specUtil.respondWithPromise($q, config.value["app.json"]));
 
-        loadConfigService.loadConfig("something/app.json", "test").then(function(result){
+        loadConfigService.loadConfig("something/app.json", "test").then(function (result) {
             expect(result.id).toBe("bahmni.test");
             done();
         });
-
     });
 });

@@ -1,14 +1,14 @@
 'use strict';
 
 describe("LabConceptsMapper", function () {
-    var labConceptSet;    
+    var labConceptSet;
     var departmentsConceptSet;
-    var createTest = function(uuid, name) {
-        return { uuid: uuid, name: { name: name}, conceptClass: { name: Bahmni.Clinical.Constants.testConceptName}}  
-    }
+    var createTest = function (uuid, name) {
+        return { uuid: uuid, name: { name: name}, conceptClass: { name: Bahmni.Clinical.Constants.testConceptName}};
+    };
 
-    beforeEach(function(){
-        labConceptSet = { 
+    beforeEach(function () {
+        labConceptSet = {
             name: {name: Bahmni.Clinical.Constants.labConceptSetName},
             setMembers: [
                 {
@@ -31,26 +31,31 @@ describe("LabConceptsMapper", function () {
                     ]
                 }
             ]
-        };        
+        };
 
         departmentsConceptSet = {
             setMembers: [
                 {
                     name: { name: "Haematology"},
-                    setMembers: [ {uuid: "1-1-1"}, {uuid: "2-2-2"} ]
+                    setMembers: [
+                        {uuid: "1-1-1"},
+                        {uuid: "2-2-2"}
+                    ]
                 },
                 {
                     name: { name: "Clinical Pathology"},
-                    setMembers: [ {uuid: "3-3-3"}]
-                },
+                    setMembers: [
+                        {uuid: "3-3-3"}
+                    ]
+                }
             ]
         };
     });
 
-    describe("map", function(){
+    describe("map", function () {
         var mapper;
 
-        beforeEach(function(){
+        beforeEach(function () {
             mapper = new Bahmni.LabConceptsMapper();
         });
 
@@ -77,8 +82,8 @@ describe("LabConceptsMapper", function () {
             expect(tests[3].department).toEqual(undefined);
         });
 
-        it("should map the tests belonging to multiple panels as single test", function(){
-            var testConcept = createTest("1-1-1", "Test1")
+        it("should map the tests belonging to multiple panels as single test", function () {
+            var testConcept = createTest("1-1-1", "Test1");
             var panelConcept1 = {name: { name: "Panel1"}, setMembers: [testConcept], conceptClass: { name: Bahmni.Clinical.Constants.labSetConceptName}};
             var panelConcept2 = {name: { name: "Panel2"}, setMembers: [testConcept], conceptClass: { name: Bahmni.Clinical.Constants.labSetConceptName}};
             var sampleConcept = {name: { name: "Blood"}, conceptClass: { name: "ConvSet"}, setMembers: [panelConcept1, panelConcept2]};
@@ -90,8 +95,8 @@ describe("LabConceptsMapper", function () {
             expect(tests[0].panels.length).toBe(2);
         });
 
-        it("should map the tests belonging to multiple panels as single test", function(){
-            var testConcept = createTest("1-1-1", "Test1")
+        it("should map the tests belonging to multiple panels as single test", function () {
+            var testConcept = createTest("1-1-1", "Test1");
             var panelConcept1 = {name: { name: "Panel1"}, setMembers: [testConcept], conceptClass: { name: Bahmni.Clinical.Constants.labSetConceptName}};
             var sampleConcept = {name: { name: "Blood"}, conceptClass: { name: "ConvSet"}, setMembers: [panelConcept1, testConcept]};
             labConceptSet.setMembers = [sampleConcept];
@@ -103,13 +108,13 @@ describe("LabConceptsMapper", function () {
             expect(tests[0].sample.name).toBe(sampleConcept.name.name);
         });
 
-        it("should return zero tests when labConceptSet does not exist", function(){
+        it("should return zero tests when labConceptSet does not exist", function () {
             var tests = mapper.map(null, departmentsConceptSet);
 
             expect(tests.length).toBe(0);
         });
 
-        it("should map wthout categories when departmentsConceptSet does not exist", function(){
+        it("should map wthout categories when departmentsConceptSet does not exist", function () {
             var tests = mapper.map(labConceptSet, null);
 
             expect(tests.length).toBe(4);

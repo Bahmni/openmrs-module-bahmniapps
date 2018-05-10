@@ -3,7 +3,7 @@
 describe('Order Type Service', function () {
     var orderTypeService;
     var mockHttp = jasmine.createSpyObj('$http', ['get']);
-    mockHttp.get.and.callFake(function(param) {
+    mockHttp.get.and.callFake(function (param) {
         return specUtil.respondWith({"data": {results: [{display: 'Drug Order', uuid: 'DrugOrderUuid'}, {display: 'Test Order', uuid: 'TestOrderUuid'}]}});
     });
 
@@ -19,7 +19,7 @@ describe('Order Type Service', function () {
     });
 
     it('Cache order types after initial load', function (done) {
-        orderTypeService.loadAll().then(function() {
+        orderTypeService.loadAll().then(function () {
             expect(orderTypeService.orderTypes).not.toBeNull();
             expect(orderTypeService.orderTypes.length).toBe(2);
             done();
@@ -29,7 +29,7 @@ describe('Order Type Service', function () {
     });
 
     it('getOrderTypeUuid should return the uuid of existing OrderType', function (done) {
-        orderTypeService.loadAll().then(function() {
+        orderTypeService.loadAll().then(function () {
             expect(orderTypeService.getOrderTypeUuid("Drug Order")).toEqual("DrugOrderUuid");
             expect(orderTypeService.getOrderTypeUuid("Test Order")).toEqual("TestOrderUuid");
             done();
@@ -37,7 +37,7 @@ describe('Order Type Service', function () {
     });
 
     it('getOrderTypeUuid should return null for non existing OrderType', function (done) {
-        orderTypeService.loadAll().then(function() {
+        orderTypeService.loadAll().then(function () {
             expect(orderTypeService.getOrderTypeUuid("Random Order")).toBe(undefined);
             done();
         });

@@ -1,7 +1,6 @@
 'use strict';
 
 describe("PatientDashboardLabOrdersController", function () {
-
     beforeEach(module('bahmni.clinical'));
 
     var scope;
@@ -25,7 +24,7 @@ describe("PatientDashboardLabOrdersController", function () {
         controller = $controller;
         scope = $rootScope.$new();
         spinner.forPromise.and.callFake(function () {
-            return {}
+            return {};
         });
         stateParams = {
             patientUuid: "some uuid"
@@ -61,6 +60,5 @@ describe("PatientDashboardLabOrdersController", function () {
             var params = scope.dashboardConfig;
             expect(params.patientUuid).toBe("some uuid");
         });
-
     });
 });

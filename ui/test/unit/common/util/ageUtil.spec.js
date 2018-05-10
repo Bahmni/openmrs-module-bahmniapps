@@ -49,5 +49,4 @@ describe('AgeUtil', function () {
             expect(ageUtil.monthsToAgeString(133.33)).toEqual("11y 1m 10d");
         });
     });
-
 });

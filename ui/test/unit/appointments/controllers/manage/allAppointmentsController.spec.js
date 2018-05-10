@@ -43,10 +43,9 @@ describe('AllAppointmentsController', function () {
     });
 
     it("should get tabName from state.current", function () {
-        state.current = {tabName : 'calendar'};
+        state.current = {tabName: 'calendar'};
         createController();
         var tabName = scope.getCurrentAppointmentTabName();
         expect(tabName).toBe("calendar");
     });
-
 });

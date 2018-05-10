@@ -111,7 +111,6 @@ describe("DrugOrderUtil", function () {
             var continuousTreatments = Bahmni.Clinical.DrugOrder.Util.mergeContinuousTreatments([treatment1, treatment2]);
             expect(continuousTreatments.length).toBe(2);
         });
-
     });
 
     describe("sortDrugOrders", function () {
@@ -139,7 +138,6 @@ describe("DrugOrderUtil", function () {
             var sortedArray = Bahmni.Clinical.DrugOrder.Util.sortDrugOrders([treatment3, treatment1, treatment2]);
             expect(sortedArray).toEqual([treatment1, treatment2, treatment3]);
         });
-
     });
 
     describe("sortDrugOrdersInChronologicalOrder", function () {
@@ -167,7 +165,5 @@ describe("DrugOrderUtil", function () {
             var sortedArray = Bahmni.Clinical.DrugOrder.Util.sortDrugOrdersInChronologicalOrder([treatment3, treatment1, treatment2]);
             expect(sortedArray).toEqual([treatment1, treatment2, treatment3]);
         });
-
     });
-
 });

@@ -8,7 +8,7 @@ describe("ObservationNode", function () {
     var unknown = buildConcept("Chief Complaint Unknown", [], [], "Unknown", "Boolean");
     var chiefComplaintData = buildConcept("Chief Complaint Data", [chiefComplaint, duration, abnormal, unknown], [], "Concept Details");
 
-    function createSavedObs() {
+    function createSavedObs () {
         return [{
             "concept": chiefComplaintData,
             "label": "Chief Complaint Data",
@@ -50,8 +50,8 @@ describe("ObservationNode", function () {
         it("should return freeTextAutocomplete if configured", function () {
             var obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {
                 autocomplete: true,
-                nonCodedConceptName:"Non Coded Chief Complaint",
-                codedConceptName:"Chief Complaint"
+                nonCodedConceptName: "Non Coded Chief Complaint",
+                codedConceptName: "Chief Complaint"
             }});
             expect(obsNode.getControlType()).toBe("freeTextAutocomplete");
             expect(obsNode.primaryObs.concept.name).toEqual(chiefComplaint.name.name);
@@ -64,36 +64,36 @@ describe("ObservationNode", function () {
             expect(obsNode.getControlType()).toBe("autocomplete");
             obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {
                 autocomplete: true,
-                nonCodedConceptName:"Non Coded Chief Complaint"
+                nonCodedConceptName: "Non Coded Chief Complaint"
             }});
             expect(obsNode.getControlType()).toBe("autocomplete");
             obsNode = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {
                 autocomplete: true,
-                codedConceptName:"Chief Complaint"
+                codedConceptName: "Chief Complaint"
             }});
             expect(obsNode.getControlType()).toBe("autocomplete");
         });
 
-        it("should return html5data type if primaryObs datatype is Date,Numeric or Datetime",function(){
+        it("should return html5data type if primaryObs datatype is Date,Numeric or Datetime", function () {
             var obsNode = mapper.map(savedObs, rootConcept);
             obsNode.primaryObs.concept.dataType = "Date";
 
             expect(obsNode.getControlType()).toBe("html5InputDataType");
         });
-        
-        it("should return text datatype if primaryObs is of text datatype", function(){
+
+        it("should return text datatype if primaryObs is of text datatype", function () {
             var obsNode = mapper.map(savedObs, rootConcept);
             obsNode.primaryObs.concept.dataType = "Text";
 
             expect(obsNode.getControlType()).toBe("text");
         });
 
-        it("should return buttonselect if nothing is configured",function(){
+        it("should return buttonselect if nothing is configured", function () {
             var obsNode = mapper.map(savedObs, rootConcept);
             obsNode.primaryObs.concept.dataType = "N/A";
 
             expect(obsNode.getControlType()).toBe("buttonselect");
-        })
+        });
     });
 
     describe("PrimaryObs", function () {
@@ -111,8 +111,7 @@ describe("ObservationNode", function () {
         });
     });
 
-    describe("autocomplete isValid",function(){
-
+    describe("autocomplete isValid", function () {
         it("should be a valid observation if the value is selected from autocomplete", function () {
             var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
 
@@ -128,19 +127,18 @@ describe("ObservationNode", function () {
             var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
 
             observation.primaryObs.value = "someValue";
-            expect(observation.isValid()).toBeFalsy()
+            expect(observation.isValid()).toBeFalsy();
         });
-
     });
 
-    describe("onValueChanged", function(){
-        it("should set abnormalObs value and erroneousValue to undefined if primaryObs value is not present and abnormalObs is set", function(){
+    describe("onValueChanged", function () {
+        it("should set abnormalObs value and erroneousValue to undefined if primaryObs value is not present and abnormalObs is set", function () {
             var obsNode = mapper.map([{}], rootConcept, {"Chief Complaint Data": {freeTextAutocomplete: true}});
             expect(obsNode.abnormalObs.value).toBeUndefined();
-            expect(obsNode.abnormalObs.erroneousValue).toBeUndefined()
+            expect(obsNode.abnormalObs.erroneousValue).toBeUndefined();
         });
 
-        it("should call setAbnormal when primaryObs is numeric and has value and it is abnormal", function() {
+        it("should call setAbnormal when primaryObs is numeric and has value and it is abnormal", function () {
             var pulse = buildConcept("Pulse", [], [], "Misc", "Numeric");
             var abnormal = buildConcept("Pulse Abnormal", [], [], "Abnormal", "Boolean");
             var unknown = buildConcept("Pulse Unknown", [], [], "Unknown", "Boolean");
@@ -172,14 +170,14 @@ describe("ObservationNode", function () {
 
             expect(obsNode.abnormalObs.value).toBeTruthy();
             expect(obsNode.abnormalObs.erroneousValue).toBeFalsy();
-            expect(obsNode.unknownObs.value).toBeUndefined()
+            expect(obsNode.unknownObs.value).toBeUndefined();
         });
     });
 
     describe("Numeric allowDecimal", function () {
         var pulse = buildConcept("Pulse", [], [], "Misc", "Numeric");
         pulse.hiAbsolute = 100;
-        pulse.lowAbsolute =30;
+        pulse.lowAbsolute = 30;
         var abnormal = buildConcept("Pulse Abnormal", [], [], "Abnormal", "Boolean");
         var unknown = buildConcept("Pulse Unknown", [], [], "Unknown", "Boolean");
 
@@ -207,49 +205,44 @@ describe("ObservationNode", function () {
             "voided": false
         }];
 
-        it ("should be a valid observation if value is integer and allow decimal is false and value is within absolute range", function () {
+        it("should be a valid observation if value is integer and allow decimal is false and value is within absolute range", function () {
             pulse.allowDecimal = false;
             var observation = mapper.map(observations, pulseData, {});
             observation.primaryObs.value = 70;
             expect(observation.isValid()).toBeTruthy();
         });
 
-        it ("should be a valid observation if value is integer and allow decimal is true and value is within absolute range", function () {
+        it("should be a valid observation if value is integer and allow decimal is true and value is within absolute range", function () {
             pulse.allowDecimal = true;
             var observation = mapper.map(observations, pulseData, {});
             observation.primaryObs.value = 74;
             expect(observation.isValid()).toBeTruthy();
         });
 
-        it ("should be a valid observation if value is decimal and allow decimal is true and value is within absolute range", function () {
+        it("should be a valid observation if value is decimal and allow decimal is true and value is within absolute range", function () {
             pulse.allowDecimal = true;
             var observation = mapper.map(observations, pulseData, {});
             observation.primaryObs.value = 74.6;
             expect(observation.isValid()).toBeTruthy();
         });
 
-        it ("should be an invalid observation if value is decimal and allow decimal is false", function () {
+        it("should be an invalid observation if value is decimal and allow decimal is false", function () {
             pulse.allowDecimal = false;
             var observation = mapper.map(observations, pulseData, {});
             observation.primaryObs.value = 74.6;
             expect(observation.isValid()).toBeFalsy();
         });
 
-
-        it ("should be an invalid observation if value is integer and value is outside the absolute range", function () {
+        it("should be an invalid observation if value is integer and value is outside the absolute range", function () {
             pulse.allowDecimal = false;
             var observation = mapper.map(observations, pulseData, {});
             observation.primaryObs.value = 700;
             expect(observation.isValid()).toBeFalsy();
             expect(observation.primaryObs.erroneousValue).toBeTruthy();
         });
-
-
-
     });
 
     describe("observationNode", function () {
-
         it("should clone the  new observation", function () {
             var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
 
@@ -264,7 +257,7 @@ describe("ObservationNode", function () {
 
             expect(observation.value).toBe("free text");
         });
-        it("should set the duration, abnormal and unknown obs",function(){
+        it("should set the duration, abnormal and unknown obs", function () {
             var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
 
             expect(observation.durationObs.value).toBe(30);
@@ -272,76 +265,73 @@ describe("ObservationNode", function () {
             expect(observation.unknownObs.value).toBe(false);
         });
 
-        it("should get the display value for coded concept",function(){
+        it("should get the display value for coded concept", function () {
             var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
 
             expect(observation.displayValue().name).toBe("Headache");
         });
 
-        it("should update the observation with its first group member, if observation is not freetext autocomplete",function(){
+        it("should update the observation with its first group member, if observation is not freetext autocomplete", function () {
             var observation = mapper.map(savedObs, rootConcept);
 
             expect(observation.primaryObs.concept.name).toBe("Chief Complaint");
         });
     });
 
-    describe("validate ObservationNode",function () {
-
-        it("should validate the required observations",function(){
+    describe("validate ObservationNode", function () {
+        it("should validate the required observations", function () {
             savedObs[0].groupMembers[0].value = undefined;
-            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true,required:true}});
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true, required: true}});
 
-            expect(observation.isValid(true,true)).toBeFalsy();
+            expect(observation.isValid(true, true)).toBeFalsy();
 
             savedObs[0].groupMembers[0].value = headache;
-            expect(observation.isValid(true,true)).toBeTruthy();
+            expect(observation.isValid(true, true)).toBeTruthy();
         });
 
-        it("should validate the free text auto complete",function () {
+        it("should validate the free text auto complete", function () {
             var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
 
-            expect(observation.isValid(true,true)).toBeTruthy();
+            expect(observation.isValid(true, true)).toBeTruthy();
         });
 
-        it("should validate the observation date field",function () {
+        it("should validate the observation date field", function () {
             savedObs[0].groupMembers[0].concept.conceptClass.name = "Not computed";
 
             var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
             observation.primaryObs.concept.dataType = "Date";
-            observation.primaryObs.value = Bahmni.Common.Util.DateUtil.addDays(Bahmni.Common.Util.DateUtil.today(),2);
+            observation.primaryObs.value = Bahmni.Common.Util.DateUtil.addDays(Bahmni.Common.Util.DateUtil.today(), 2);
 
-            expect(observation.isValid(false,true)).toBeFalsy();
+            expect(observation.isValid(false, true)).toBeFalsy();
         });
 
-        it("should not throw exception if date field of type class computed",function(){
+        it("should not throw exception if date field of type class computed", function () {
             var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {autocomplete: true}});
             observation.primaryObs.concept.dataType = "Date";
 
-            expect(observation.isValid(false,true)).toBeTruthy();
+            expect(observation.isValid(false, true)).toBeTruthy();
         });
 
-        it("Should validate durationObs",function () {
+        it("Should validate durationObs", function () {
             savedObs[0].groupMembers[1].value = -30;
-            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {durationRequired:true}});
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {durationRequired: true}});
 
-            expect(observation.isValid(false,true)).toBeFalsy();
+            expect(observation.isValid(false, true)).toBeFalsy();
         });
-
     });
 
-    describe("Observation node config",function () {
-        it("should text the comment config",function(){
+    describe("Observation node config", function () {
+        it("should text the comment config", function () {
             var observation = mapper.map(savedObs, rootConcept);
 
             expect(observation.canHaveComment()).toBeTruthy();
 
-            observation = mapper.map(savedObs, rootConcept,{"Chief Complaint Data":{disableAddNotes:true}});
+            observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {disableAddNotes: true}});
             expect(observation.canHaveComment()).toBeFalsy();
-
         });
 
-        it("should test allow addmore configuration",function(){
-            var observation = mapper.map(savedObs, rootConcept,{"Chief Complaint Data":{allowAddMore:true}});
+        it("should test allow addmore configuration", function () {
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {allowAddMore: true}});
 
             expect(observation.canAddMore()).toBeTruthy();
 
@@ -349,30 +339,25 @@ describe("ObservationNode", function () {
             expect(observation.canAddMore()).toBeFalsy();
         });
 
-        it("should test stepper config for numeric observation",function(){
-            var observation = mapper.map(savedObs, rootConcept,{"Chief Complaint Data":{stepper:true}});
+        it("should test stepper config for numeric observation", function () {
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {stepper: true}});
             observation.primaryObs.concept.dataType = "Numeric";
 
             expect(observation.isStepperControl()).toBeTruthy();
             observation = mapper.map(savedObs, rootConcept);
             expect(observation.isStepperControl()).toBeFalsy();
-
         });
-        it("should test conciseText config",function(){
-            var observation = mapper.map(savedObs, rootConcept,{"Chief Complaint Data":{conciseText:true}});
+        it("should test conciseText config", function () {
+            var observation = mapper.map(savedObs, rootConcept, {"Chief Complaint Data": {conciseText: true}});
 
             expect(observation.isConciseText()).toBeTruthy();
             observation = mapper.map(savedObs, rootConcept);
 
             expect(observation.isConciseText()).toBeFalsy();
-
-        })
-
+        });
     });
 
-
-
-    function buildConcept(name, setMembers, answers, classname, datatype) {
+    function buildConcept (name, setMembers, answers, classname, datatype) {
         return {
             "name": {name: name},
             "set": setMembers && setMembers.length > 0,
@@ -381,6 +366,6 @@ describe("ObservationNode", function () {
             setMembers: setMembers,
             answers: answers,
             "uuid": name + "_uuid"
-        }
+        };
     }
 });

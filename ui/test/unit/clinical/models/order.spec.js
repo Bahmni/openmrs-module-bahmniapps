@@ -1,9 +1,9 @@
 'use strict';
 
 describe('Order', function () {
-    var testWithShortName = {names: [{"conceptNameType": "SHORT", "name": "TestShortName"}, {"conceptNameType": "FULLY_SPECIFIED", "name": "FullySpecifiedName"}],  
-                             uuid: "uuid"}
-    var testWithoutShortName = {names: [{"conceptNameType": "FULLY_SPECIFIED", "name": "FullySpecifiedName"}]}
+    var testWithShortName = {names: [{"conceptNameType": "SHORT", "name": "TestShortName"}, {"conceptNameType": "FULLY_SPECIFIED", "name": "FullySpecifiedName"}],
+        uuid: "uuid"};
+    var testWithoutShortName = {names: [{"conceptNameType": "FULLY_SPECIFIED", "name": "FullySpecifiedName"}]};
 
     it("should get short name as display name for test", function () {
         var order = Bahmni.Clinical.Order.create(testWithShortName);
@@ -24,9 +24,9 @@ describe('Order', function () {
 
     it("should create a revised order", function () {
         var originalOrder = {
-            concept : {},
-            uuid:'uuid',
-            commentToFulfiller:'notes'
+            concept: {},
+            uuid: 'uuid',
+            commentToFulfiller: 'notes'
         };
         var revisedOrder = Bahmni.Clinical.Order.revise(originalOrder);
         expect(revisedOrder.concept).toBe(originalOrder.concept);
@@ -35,5 +35,4 @@ describe('Order', function () {
         expect(revisedOrder.isDiscontinued).toBe(false);
         expect(revisedOrder.commentToFulfiller).toBe(originalOrder.commentToFulfiller);
     });
-
 });

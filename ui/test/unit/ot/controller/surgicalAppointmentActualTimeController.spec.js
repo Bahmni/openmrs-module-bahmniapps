@@ -1,12 +1,10 @@
 'use strict';
 describe("surgicalAppointmentActualTimeController", function () {
-
     var controller, scope;
     var ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgeons', 'saveSurgicalBlock', 'getSurgicalAppointmentAttributeTypes', 'getSurgicalBlockFor', 'updateSurgicalAppointment']);
     var surgicalAppointmentHelper = jasmine.createSpyObj('surgicalAppointmentHelper', ['getEstimatedDurationForAppointment']);
-
 
     beforeEach(function () {
         module('bahmni.ot');
@@ -43,20 +41,20 @@ describe("surgicalAppointmentActualTimeController", function () {
                     },
                     value: "30"
                 },
-                    {
-                        surgicalAppointmentAttributeType: {
-                            format: "java.lang.String",
-                            name: "estTimeHours"
-                        },
-                        value: "0"
+                {
+                    surgicalAppointmentAttributeType: {
+                        format: "java.lang.String",
+                        name: "estTimeHours"
                     },
-                    {
-                        surgicalAppointmentAttributeType: {
-                            format: "java.lang.String",
-                            name: "cleaningTime"
-                        },
-                        value: "15"
-                    }],
+                    value: "0"
+                },
+                {
+                    surgicalAppointmentAttributeType: {
+                        format: "java.lang.String",
+                        name: "cleaningTime"
+                    },
+                    value: "15"
+                }],
                 sortWeight: 0
             }]
         };
@@ -114,20 +112,20 @@ describe("surgicalAppointmentActualTimeController", function () {
                     },
                     value: "30"
                 },
-                    {
-                        surgicalAppointmentAttributeType: {
-                            format: "java.lang.String",
-                            name: "estTimeHours"
-                        },
-                        value: "0"
+                {
+                    surgicalAppointmentAttributeType: {
+                        format: "java.lang.String",
+                        name: "estTimeHours"
                     },
-                    {
-                        surgicalAppointmentAttributeType: {
-                            format: "java.lang.String",
-                            name: "cleaningTime"
-                        },
-                        value: "15"
-                    }],
+                    value: "0"
+                },
+                {
+                    surgicalAppointmentAttributeType: {
+                        format: "java.lang.String",
+                        name: "cleaningTime"
+                    },
+                    value: "15"
+                }],
                 sortWeight: 0
             }]
         };
@@ -161,20 +159,20 @@ describe("surgicalAppointmentActualTimeController", function () {
                 },
                 value: "30"
             },
-                {
-                    surgicalAppointmentAttributeType: {
-                        format: "java.lang.String",
-                        name: "estTimeHours"
-                    },
-                    value: "0"
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeHours"
                 },
-                {
-                    surgicalAppointmentAttributeType: {
-                        format: "java.lang.String",
-                        name: "cleaningTime"
-                    },
-                    value: "15"
-                }]
+                value: "0"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "cleaningTime"
+                },
+                value: "15"
+            }]
         };
         createController();
         scope.actualStartTime = new Date("Tue Jun 06 2017 10:00:00 GMT+0530 (IST)");
@@ -199,20 +197,20 @@ describe("surgicalAppointmentActualTimeController", function () {
                 },
                 value: "30"
             },
-                {
-                    surgicalAppointmentAttributeType: {
-                        format: "java.lang.String",
-                        name: "estTimeHours"
-                    },
-                    value: "0"
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeHours"
                 },
-                {
-                    surgicalAppointmentAttributeType: {
-                        format: "java.lang.String",
-                        name: "CleaningTime"
-                    },
-                    value: "15"
-                }]
+                value: "0"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "CleaningTime"
+                },
+                value: "15"
+            }]
         };
 
         createController();
@@ -244,20 +242,20 @@ describe("surgicalAppointmentActualTimeController", function () {
                 },
                 value: "30"
             },
-                {
-                    surgicalAppointmentAttributeType: {
-                        format: "java.lang.String",
-                        name: "estTimeHours"
-                    },
-                    value: "0"
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeHours"
                 },
-                {
-                    surgicalAppointmentAttributeType: {
-                        format: "java.lang.String",
-                        name: "CleaningTime"
-                    },
-                    value: "15"
-                }]
+                value: "0"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "CleaningTime"
+                },
+                value: "15"
+            }]
         };
 
         var appointmentForSave = {
@@ -303,20 +301,20 @@ describe("surgicalAppointmentActualTimeController", function () {
                 },
                 value: "30"
             },
-                {
-                    surgicalAppointmentAttributeType: {
-                        format: "java.lang.String",
-                        name: "estTimeHours"
-                    },
-                    value: "0"
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeHours"
                 },
-                {
-                    surgicalAppointmentAttributeType: {
-                        format: "java.lang.String",
-                        name: "CleaningTime"
-                    },
-                    value: "15"
-                }]
+                value: "0"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "CleaningTime"
+                },
+                value: "15"
+            }]
         };
         createController();
         scope.actualStartTime = new Date("2017-06-06T10:00:00.000+0530");

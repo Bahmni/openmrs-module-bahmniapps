@@ -39,7 +39,7 @@ describe("Observation Graph Model", function () {
             "numberOfVisits": 3
         });
 
-        var observationGraph = Bahmni.Clinical.ObservationGraph.create(obsServiceValues, {birthdate:"2000-01-01"}, config);
+        var observationGraph = Bahmni.Clinical.ObservationGraph.create(obsServiceValues, {birthdate: "2000-01-01"}, config);
 
         expect(observationGraph[0].name).toBe("Temperature");
         expect(observationGraph[0].units).toBe("Celsius");
@@ -56,14 +56,14 @@ describe("Observation Graph Model", function () {
             observationDateTime: "2015-01-01",
             value: 45,
             concept: {name: "Temperature", units: "Celsius"}
-        },{
+        }, {
             observationDateTime: "2015-02-03",
             value: 80,
             concept: {name: "Weight", units: "kg"}
         }];
 
         var config = new Bahmni.Clinical.ObservationGraphConfig({
-            "yAxisConcepts": ["Temperature","Weight"],
+            "yAxisConcepts": ["Temperature", "Weight"],
             "xAxisConcept": "observationDateTime",
             "numberOfVisits": 3
         });
@@ -87,7 +87,7 @@ describe("Observation Graph Model", function () {
         expect(observationGraph[1].values[0].age).toBeUndefined();
     });
 
-    it("should create model for growth chart", function() {
+    it("should create model for growth chart", function () {
         var obsServiceValues = [{
             observationDateTime: "2015-01-01",
             value: 3.4,
@@ -124,7 +124,7 @@ describe("Observation Graph Model", function () {
         expect(observationGraph[1].values[0].Age).toBeDefined();
     });
 
-    it("should create model without taking concept name text case (Uppercase/Lowercase) into account", function() {
+    it("should create model without taking concept name text case (Uppercase/Lowercase) into account", function () {
         var obsServiceValues = [{
             observationDateTime: "2015-02-03",
             value: 80,

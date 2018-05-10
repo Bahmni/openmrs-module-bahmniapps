@@ -1,35 +1,33 @@
 'use strict';
 
-describe("Concept Set group validation handler", function() {
+describe("Concept Set group validation handler", function () {
     var conceptSetSections = [
         {
             name: {name: "vitals1"},
-            isLoaded : true,
-            show : jasmine.createSpy()
+            isLoaded: true,
+            show: jasmine.createSpy()
         },
         {
             name: {name: "vitals2"},
-            isLoaded : true,
-            show : jasmine.createSpy()
+            isLoaded: true,
+            show: jasmine.createSpy()
         },
         {
             name: {name: "vitals3"},
-            isLoaded : true,
-            show : jasmine.createSpy()
+            isLoaded: true,
+            show: jasmine.createSpy()
         }
     ];
 
-    it("should push to a list of validations on add", function() {
-
+    it("should push to a list of validations on add", function () {
         var fun1 = function () {
-            return {allow : true};
+            return {allow: true};
         };
         var fun2 = "function3";
 
         var fun3 = function () {
-            return {allow : false, errorMessage : 'Error Message1'};
+            return {allow: false, errorMessage: 'Error Message1'};
         };
-
 
         var validationHandler = new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler(conceptSetSections);
         conceptSetSections[0].klass = "active";
@@ -52,13 +50,11 @@ describe("Concept Set group validation handler", function() {
         expect(conceptSetSections[1].errorMessage).toBeUndefined();
         expect(typeof conceptSetSections[2].validate).toBe('function');
         expect(typeof conceptSetSections[0].validate).toBe('function');
-
     });
 
-    it("shouldn't add validations & return true", function() {
-
+    it("shouldn't add validations & return true", function () {
         var fun1 = function () {
-            return {allow : true};
+            return {allow: true};
         };
 
         var validationHandler = new Bahmni.ConceptSet.ConceptSetGroupPanelViewValidationHandler([]);

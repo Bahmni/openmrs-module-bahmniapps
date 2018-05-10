@@ -1,9 +1,9 @@
 'use strict';
 
 describe('visitHeaderController', function () {
-    var scope, controller, rootScope,visitTabConfig;
-    var mockClinicalAppConfigService= jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink', 'getAllConsultationBoards']);
-    var mockLocation= jasmine.createSpyObj('$location', ['path', 'url']);
+    var scope, controller, rootScope, visitTabConfig;
+    var mockClinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink', 'getAllConsultationBoards']);
+    var mockLocation = jasmine.createSpyObj('$location', ['path', 'url']);
     var mockUrlHelper = {
         getPatientUrl: function () {
             return "/patient/somePatientUuid/dashboard";
@@ -26,7 +26,7 @@ describe('visitHeaderController', function () {
     ];
     var contextChangeHandler = {
         execute: function () {
-            return {allow: true}
+            return {allow: true};
         }, reset: function () {
         }
     };
@@ -41,7 +41,7 @@ describe('visitHeaderController', function () {
         spyOn(rootScope, '$broadcast');
     });
 
-    beforeEach(function() {
+    beforeEach(function () {
         mockClinicalAppConfigService.getConsultationBoardLink.and.returnValue("/patient/patient_uuid/dashboard/consultation");
         visitTabConfig = new Bahmni.Clinical.TabConfig(config);
         var boards = [{
@@ -59,27 +59,26 @@ describe('visitHeaderController', function () {
         mockClinicalAppConfigService.getAllConsultationBoards.and.returnValue(boards);
     });
 
-    function createController() {
+    function createController () {
         return controller('VisitHeaderController', {
             $scope: scope,
             $state: null,
-            $rootScope:rootScope,
-            clinicalAppConfigService:mockClinicalAppConfigService,
-            patientContext:{patient:{uuid:"patient_uuid"}},
-            visitHistory:null,
-            visitConfig:visitTabConfig,
-            $stateParams:{configName:"default"},
-            contextChangeHandler:contextChangeHandler,
-            $location:mockLocation,
-            urlHelper:mockUrlHelper
+            $rootScope: rootScope,
+            clinicalAppConfigService: mockClinicalAppConfigService,
+            patientContext: {patient: {uuid: "patient_uuid"}},
+            visitHistory: null,
+            visitConfig: visitTabConfig,
+            $stateParams: {configName: "default"},
+            contextChangeHandler: contextChangeHandler,
+            $location: mockLocation,
+            urlHelper: mockUrlHelper
         });
     }
-
 
     describe('switchTab', function () {
         it("should broadcast event:clearVisitBoard with the particular tab as param", function () {
             createController();
-            scope.switchTab( config[1]);
+            scope.switchTab(config[1]);
             expect(rootScope.$broadcast).toHaveBeenCalledWith('event:clearVisitBoard', config[1]);
         });
     });
@@ -88,7 +87,7 @@ describe('visitHeaderController', function () {
         it("should broadcast event:clearVisitBoard with the particular tab as param", function () {
             createController();
             scope.closeTab(config[1]);
-            expect(rootScope.$broadcast).toHaveBeenCalledWith('event:clearVisitBoard',  config[1]);
+            expect(rootScope.$broadcast).toHaveBeenCalledWith('event:clearVisitBoard', config[1]);
         });
     });
 
@@ -97,7 +96,7 @@ describe('visitHeaderController', function () {
             createController();
             scope.visitTabConfig.currentTab = config[0];
             scope.print();
-            expect(rootScope.$broadcast).toHaveBeenCalledWith('event:printVisitTab',config[0]);
+            expect(rootScope.$broadcast).toHaveBeenCalledWith('event:printVisitTab', config[0]);
         });
     });
 
@@ -110,7 +109,7 @@ describe('visitHeaderController', function () {
         it("should return true if current tab have printing configured", function () {
             createController();
             scope.visitTabConfig.currentTab = config[0];
-            scope.visitTabConfig.currentTab.printing = {"header":"Printing header"};
+            scope.visitTabConfig.currentTab.printing = {"header": "Printing header"};
             expect(scope.showPrint()).toBeTruthy();
         });
     });

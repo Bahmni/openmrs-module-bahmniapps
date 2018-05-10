@@ -44,33 +44,33 @@ describe("SpecimenMapper", function () {
                 report: {
                     results: [
                         {
-                        concept: {name: "Bacteriology Results", shortName: "Results"},
-                        groupMembers: [{
-                            concept: {
-                                name: "Date Of AFB Smear Done",
-                                shortName: "Date Of AFB Smear Done"
+                            concept: {name: "Bacteriology Results", shortName: "Results"},
+                            groupMembers: [{
+                                concept: {
+                                    name: "Date Of AFB Smear Done",
+                                    shortName: "Date Of AFB Smear Done"
+                                },
+                                value: "2016-03-07",
+                                observationDateTime: "2016-03-10T12:46:16.000+0530"
                             },
-                            value: "2016-03-07",
-                            observationDateTime: "2016-03-10T12:46:16.000+0530"
-                        },
-                        {
-                            concept: {
-                                name: "Smear test ID number",
-                                shortName: "Smear test ID number"
+                            {
+                                concept: {
+                                    name: "Smear test ID number",
+                                    shortName: "Smear test ID number"
+                                },
+                                value: 67,
+                                observationDateTime: "2016-03-05T12:45:33.000+0530"
                             },
-                            value: 67,
-                            observationDateTime: "2016-03-05T12:45:33.000+0530"
-                        },
-                        {
-                            concept: {
-                                name: "Smear result",
-                                shortName: "Smear result"
-                            },
-                            value:  "Negative",
-                            observationDateTime: "2016-03-14T12:45:24.000+0530"
-                        }],
-                        value: "2016-03-07, 67.0, Negative"
-                    }]
+                            {
+                                concept: {
+                                    name: "Smear result",
+                                    shortName: "Smear result"
+                                },
+                                value: "Negative",
+                                observationDateTime: "2016-03-14T12:45:24.000+0530"
+                            }],
+                            value: "2016-03-07, 67.0, Negative"
+                        }]
                 }
             };
 
@@ -108,8 +108,6 @@ describe("SpecimenMapper", function () {
             expect(specimen.specimenSource).toBe(undefined);
             expect(specimen.specimenCollectionDate).toBe(undefined);
             expect(specimen.voided).toBeTruthy();
-
         });
     });
-
 });

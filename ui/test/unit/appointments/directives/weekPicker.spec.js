@@ -33,7 +33,7 @@ describe('WeekPicker', function () {
     it('should call function provided to ngChange when data is changed with the ISO week day start standard', function () {
         scope.toggleChanged = jasmine.createSpy('toggleChanged');
         scope.viewDate = moment("2017-02-01").toDate();
-       createElement();
+        createElement();
         expect(scope.toggleChanged.calls.mostRecent().args[0])
             .toEqual(moment("2017-01-30").toDate());
         expect(scope.toggleChanged.calls.mostRecent().args[1])
@@ -50,7 +50,6 @@ describe('WeekPicker', function () {
         expect(scope.toggleChanged.calls.mostRecent().args[1])
             .toEqual(moment("2017-02-04").endOf('day').toDate());
     });
-
 
     it('should set the view date to next week when goToNextWeek is clicked', function () {
         scope.toggleChanged = jasmine.createSpy('toggleChanged');
@@ -71,7 +70,5 @@ describe('WeekPicker', function () {
         compiledElementScope.goToPreviousWeek();
         expect(compiledElementScope.viewDate).toEqual(moment("2017-01-25").toDate());
     });
-
-
 });
 

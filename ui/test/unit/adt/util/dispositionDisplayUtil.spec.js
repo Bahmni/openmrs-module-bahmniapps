@@ -2,13 +2,13 @@ describe('DispositionDisplayUtil', function () {
     describe("getEncounterToDisplay", function () {
         var encounterConfig = {
             getAdmissionEncounterTypeUuid: function () {
-                return "AdmissionEncounterTypeUuid"
+                return "AdmissionEncounterTypeUuid";
             },
             getTransferEncounterTypeUuid: function () {
-                return "TransferEncounterTypeUuid"
+                return "TransferEncounterTypeUuid";
             },
             getDischargeEncounterTypeUuid: function () {
-                return "DischargeEncounterTypeUuid"
+                return "DischargeEncounterTypeUuid";
             }
         };
 
@@ -23,7 +23,7 @@ describe('DispositionDisplayUtil', function () {
             };
 
             var encounterTypeUuid = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, visit);
-            expect(encounterTypeUuid).toEqual("TransferEncounterTypeUuid")
+            expect(encounterTypeUuid).toEqual("TransferEncounterTypeUuid");
         });
 
         it("should return admission encounter type if visit has no admission details.", function () {
@@ -37,7 +37,7 @@ describe('DispositionDisplayUtil', function () {
             };
 
             var encounterTypeUuid = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, visit);
-            expect(encounterTypeUuid).toEqual("AdmissionEncounterTypeUuid")
+            expect(encounterTypeUuid).toEqual("AdmissionEncounterTypeUuid");
         });
 
         it("should return discharge encounter type if the visit has dischargeDetails", function () {
@@ -51,7 +51,7 @@ describe('DispositionDisplayUtil', function () {
             };
 
             var encounterTypeUuid = Bahmni.ADT.DispositionDisplayUtil.getEncounterToDisplay(encounterConfig, visit);
-            expect(encounterTypeUuid).toEqual("DischargeEncounterTypeUuid")
+            expect(encounterTypeUuid).toEqual("DischargeEncounterTypeUuid");
         });
     });
 });

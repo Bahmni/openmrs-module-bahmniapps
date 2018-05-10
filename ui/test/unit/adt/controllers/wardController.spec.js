@@ -1,19 +1,17 @@
 'use strict';
 
-describe('WardController', function() {
-
+describe('WardController', function () {
     var controller;
     var rootScope;
     var scope;
-    var userService = jasmine.createSpyObj('userService',['savePreferences']);
+    var userService = jasmine.createSpyObj('userService', ['savePreferences']);
 
-
-    beforeEach(function() {
+    beforeEach(function () {
         module('bahmni.adt');
     });
 
-    beforeEach(function() {
-        inject(function($controller, $rootScope) {
+    beforeEach(function () {
+        inject(function ($controller, $rootScope) {
             controller = $controller;
             rootScope = $rootScope;
             scope = $rootScope.$new();
@@ -24,7 +22,7 @@ describe('WardController', function() {
         });
     });
 
-    it('should remember the state in user prefs during toggle state', function() {
+    it('should remember the state in user prefs during toggle state', function () {
         scope.readOnly = true;
         scope.ward = {ward: {name: 'ward1'}};
         rootScope.currentUser = jasmine.createSpyObj('currentUser', ['toggleFavoriteWard']);
@@ -35,7 +33,7 @@ describe('WardController', function() {
         expect(userService.savePreferences).toHaveBeenCalled();
     });
 
-    it('should toggle ward view', function(){
+    it('should toggle ward view', function () {
         scope.currentView == 'wardLayout';
 
         scope.toggleWardView();
@@ -44,5 +42,4 @@ describe('WardController', function() {
         scope.toggleWardView();
         expect(scope.currentView).toEqual('wardLayout');
     });
-
 });

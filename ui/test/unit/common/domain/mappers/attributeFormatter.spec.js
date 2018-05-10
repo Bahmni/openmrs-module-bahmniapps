@@ -46,9 +46,8 @@ describe('AttributeFormatter', function () {
         }
     ];
 
-
     var model = {
-        "caste": {"conceptUuid":"10","value":"ten"},
+        "caste": {"conceptUuid": "10", "value": "ten"},
         "class": "10",
         "testDate": "Fri Jan 01 1999 00:00:00",
         "isUrban": false
@@ -79,28 +78,28 @@ describe('AttributeFormatter', function () {
     });
 
     it('should map values from the openmrs patientAttributeTypes to attributes if already existing', function () {
-        var oldAttributes = [   {attributeType: {uuid: 'class-uuid'}, value: '12', uuid :"classAttribute"},
-                                {attributeType: {uuid: 'caste-uuid'}, value:"10", hydrated: 'castE', uuid :"casteAttribute"},
-                                {attributeType: {uuid: 'education-uuid'}, voided: true, uuid :"educationAttribute"},
-                                {attributeType: {uuid: 'isUrban-uuid'}, value: 'true', uuid :"isUrbanAttribute"}];
+        var oldAttributes = [ {attributeType: {uuid: 'class-uuid'}, value: '12', uuid: "classAttribute"},
+                                {attributeType: {uuid: 'caste-uuid'}, value: "10", hydrated: 'castE', uuid: "casteAttribute"},
+                                {attributeType: {uuid: 'education-uuid'}, voided: true, uuid: "educationAttribute"},
+                                {attributeType: {uuid: 'isUrban-uuid'}, value: 'true', uuid: "isUrbanAttribute"}];
 
-        var attributes = new Bahmni.Common.Domain.AttributeFormatter().getMrsAttributesForUpdate(model, patientAttributeTypes,oldAttributes);
+        var attributes = new Bahmni.Common.Domain.AttributeFormatter().getMrsAttributesForUpdate(model, patientAttributeTypes, oldAttributes);
         expect(attributes).toContain({
             attributeType: {uuid: 'caste-uuid'},
             hydratedObject: '10',
-            value:'OBC',
-            uuid :"casteAttribute"
+            value: 'OBC',
+            uuid: "casteAttribute"
         });
         expect(attributes).toContain({
             value: "10",
             attributeType: {uuid: 'class-uuid'},
-            uuid :"classAttribute"
+            uuid: "classAttribute"
         });
 
         expect(attributes).toContain({
             value: "false",
             attributeType: {uuid: 'isUrban-uuid'},
-            uuid :"isUrbanAttribute"
+            uuid: "isUrbanAttribute"
         });
 
         expect(attributes).toContain({
@@ -112,11 +111,11 @@ describe('AttributeFormatter', function () {
     it('should filter unchanged attributes from mapped the openmrs attributes', function () {
         var oldAttributes = [{attributeType: {uuid: 'caste-uuid'}, voided: true}];
 
-        var attributes = new Bahmni.Common.Domain.AttributeFormatter().getMrsAttributesForUpdate(model, patientAttributeTypes,oldAttributes);
+        var attributes = new Bahmni.Common.Domain.AttributeFormatter().getMrsAttributesForUpdate(model, patientAttributeTypes, oldAttributes);
         expect(attributes).toBeEmpty();
     });
 
-    it("should remove unfilled attributes", function(done) {
+    it("should remove unfilled attributes", function (done) {
         var formattedAttributes = [
             {
                 "attributeType": {"uuid": "5674699d-c5c7-4e2a-bc08-ff165939c1ff"},

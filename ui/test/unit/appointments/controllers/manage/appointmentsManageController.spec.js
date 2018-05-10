@@ -63,5 +63,5 @@ describe('AppointmentsManageController', function () {
         createController();
         var tabName = scope.getCurrentTabName();
         expect(tabName).toBe('summary');
-    })
+    });
 });

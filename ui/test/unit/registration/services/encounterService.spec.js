@@ -1,7 +1,6 @@
 'use strict';
 
 describe('EncounterService', function () {
-
     var $http,
         $bahmniCookieStore,
         configurations,
@@ -18,8 +17,8 @@ describe('EncounterService', function () {
                     ]
                 }]
             };
-            if(args.params.entityUuid == "no-mapping-program-uuid"){
-                data = {results: [{mappings: []}]}
+            if (args.params.entityUuid == "no-mapping-program-uuid") {
+                data = {results: [{mappings: []}]};
             }
         } else if (args && args.params.mappingType == "location_encountertype") {
             data = {
@@ -28,15 +27,15 @@ describe('EncounterService', function () {
                         {name: "OPD-Consultation", uuid: 2}
                     ]
                 }]
-            }
-            if(args.params.entityUuid == "no-mapping-location-uuid"){
-                data = {results: [{mappings: []}]}
+            };
+            if (args.params.entityUuid == "no-mapping-location-uuid") {
+                data = {results: [{mappings: []}]};
             }
         }
         if (params == Bahmni.Common.Constants.encounterTypeUrl + '/' + "Consultation") {
             data = {
                 name: "Consultation", uuid: 3
-            }
+            };
         }
         getPromise.resolve();
         return specUtil.respondWith({"data": data});
@@ -63,7 +62,6 @@ describe('EncounterService', function () {
     beforeEach(inject(['encounterService', function (encounterServiceInjected) {
         encounterService = encounterServiceInjected;
     }]));
-
 
     it('should create a encounter', inject(['encounterService', function (encounterService) {
         var openmrsUrl = 'http://blah.com';
@@ -102,7 +100,6 @@ describe('EncounterService', function () {
 
         expect(results.providers.length).toBe(1);
         expect(results.providers[0].uuid).toBe("provider-uuid");
-
     }]));
     it('should build encounter with provider from cookie store if there are no providers in encounter', inject(['encounterService', function (encounterService) {
         var openmrsUrl = 'http://blah.com';
@@ -144,7 +141,7 @@ describe('EncounterService', function () {
         expect(results.providers[0].uuid).toBe("existing-provider-uuid");
     }]));
 
-    it('should get encounter type as program encounter type if program uuid is given',function (done) {
+    it('should get encounter type as program encounter type if program uuid is given', function (done) {
         var programUuid = "program-uuid";
         var locationUuid = "location-uuid";
         encounterService.getEncounterType(programUuid, locationUuid).then(function (response) {
@@ -155,10 +152,9 @@ describe('EncounterService', function () {
             expect(mockHttp.get.calls.mostRecent().args[1].params.mappingType).toEqual("program_encountertype");
             done();
         });
-
     });
 
-    it('should set encounter type as default encounter type if there is no mapping for program encounter type',function (done) {
+    it('should set encounter type as default encounter type if there is no mapping for program encounter type', function (done) {
         var programUuid = "no-mapping-program-uuid";
         var locationUuid = "location-uuid";
         encounterService.getEncounterType(programUuid, locationUuid).then(function (response) {
@@ -168,7 +164,6 @@ describe('EncounterService', function () {
             expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.encounterTypeUrl + '/' + "Consultation");
             done();
         });
-
     });
 
     it('should get encounter type as location encounter type if program uuid is null and location uuid is given', function (done) {
@@ -184,7 +179,7 @@ describe('EncounterService', function () {
         });
     });
 
-    it('should set encounter type as default encounter type if there is no mapping for location encounter type',function (done) {
+    it('should set encounter type as default encounter type if there is no mapping for location encounter type', function (done) {
         var programUuid = null;
         var locationUuid = "no-mapping-location-uuid";
         encounterService.getEncounterType(programUuid, locationUuid).then(function (response) {
@@ -194,10 +189,9 @@ describe('EncounterService', function () {
             expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.encounterTypeUrl + '/' + "Consultation");
             done();
         });
-
     });
 
-    it('should get default encounter type if both program uuid and location uuid are null',  function (done) {
+    it('should get default encounter type if both program uuid and location uuid are null', function (done) {
         var programUuid = null;
         var locationUuid = null;
         encounterService.getEncounterType(programUuid, locationUuid).then(function (response) {
@@ -210,7 +204,7 @@ describe('EncounterService', function () {
         });
     });
 
-    it('should getEncountersForEncounterType be called with id,uuid,obsDatetime,value,comment to get the obs with those params in the encounters',  function (done) {
+    it('should getEncountersForEncounterType be called with id,uuid,obsDatetime,value,comment to get the obs with those params in the encounters', function (done) {
         var patientUuid = "patientUuid";
         var encounterTypeUuid = "encounterTypeUuid";
         var requestParams = {
@@ -230,16 +224,16 @@ describe('EncounterService', function () {
         });
     });
 
-    it('should call URL to delete file if Video or Image obs are voided', function() {
+    it('should call URL to delete file if Video or Image obs are voided', function () {
         var encounter = {
             "encounterTypeUuid": "b469afaa-c79a-11e2-b284-107d46e7b2c5",
             "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
             "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
             "observations": [
-                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
-                    "voided" : true, "groupMembers": []},
-                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
-                    "voided" : true, "groupMembers": []}
+                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass": "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided": true, "groupMembers": []},
+                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass": "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided": true, "groupMembers": []}
             ],
             providers: [{uuid: "existing-provider-uuid"}]
 
@@ -251,7 +245,6 @@ describe('EncounterService', function () {
         expect(mockHttp.delete).toHaveBeenCalledWith(Videourl, {withCredentials: true});
         expect(mockHttp.delete).toHaveBeenCalledWith(Imageurl, {withCredentials: true});
         mockHttp.delete.calls.reset();
-
     });
 
     it('should not call URL to delete file if Video or Image obs are not voided', function () {
@@ -260,10 +253,10 @@ describe('EncounterService', function () {
             "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
             "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
             "observations": [
-                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
-                    "voided" : false, "groupMembers": []},
-                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
-                    "voided" : true, "groupMembers": []}
+                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass": "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided": false, "groupMembers": []},
+                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass": "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided": true, "groupMembers": []}
             ],
             providers: [{uuid: "existing-provider-uuid"}]
 
@@ -283,10 +276,10 @@ describe('EncounterService', function () {
             "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
             "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
             "observations": [
-                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
-                    "voided" : true, "groupMembers": []},
-                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
-                    "voided" : true}
+                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass": "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided": true, "groupMembers": []},
+                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass": "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided": true}
             ],
             providers: [{uuid: "existing-provider-uuid"}]
 
@@ -306,10 +299,10 @@ describe('EncounterService', function () {
             "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
             "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
             "observations": [
-                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
-                    "voided" : true, "groupMembers": [{"value": "xxx", "uuid": "someUuid", "concept": {"name": "childConcept"}}]},
-                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
-                    "voided" : true, "groupMembers": []}
+                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass": "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided": true, "groupMembers": [{"value": "xxx", "uuid": "someUuid", "concept": {"name": "childConcept"}}]},
+                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass": "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided": true, "groupMembers": []}
             ],
             providers: [{uuid: "existing-provider-uuid"}]
 
@@ -329,12 +322,12 @@ describe('EncounterService', function () {
             "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
             "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
             "observations": [
-                {"value": null, "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
-                    "voided" : true, "groupMembers": []},
-                {"value": undefined, "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
-                    "voided" : true, "groupMembers": []},
-                {"value": "", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c7"},
-                    "voided" : true, "groupMembers": []}
+                {"value": null, "concept": {"name": "Video", "conceptClass": "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided": true, "groupMembers": []},
+                {"value": undefined, "concept": {"name": "Image", "conceptClass": "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided": true, "groupMembers": []},
+                {"value": "", "concept": {"name": "Image", "conceptClass": "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c7"},
+                    "voided": true, "groupMembers": []}
             ],
             providers: [{uuid: "existing-provider-uuid"}]
 
@@ -351,10 +344,10 @@ describe('EncounterService', function () {
             "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
             "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
             "observations": [
-                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass" : "non-Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
-                    "voided" : true, "groupMembers": []},
-                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "non-Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
-                    "voided" : true, "groupMembers": []}
+                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass": "non-Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided": true, "groupMembers": []},
+                {"value": "pathForImage", "concept": {"name": "Image", "conceptClass": "non-Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided": true, "groupMembers": []}
             ],
             providers: [{uuid: "existing-provider-uuid"}]
 
@@ -371,10 +364,10 @@ describe('EncounterService', function () {
             "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
             "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
             "observations": [
-                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
-                    "voided" : false, "groupMembers": []},
-                {"value": "someValue", "concept": {"name": "someObs", "conceptClass" : "someClass", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
-                    "voided" : true, "groupMembers": []}
+                {"value": "pathForVideo", "concept": {"name": "Video", "conceptClass": "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided": false, "groupMembers": []},
+                {"value": "someValue", "concept": {"name": "someObs", "conceptClass": "someClass", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided": true, "groupMembers": []}
             ],
             providers: [{uuid: "existing-provider-uuid"}]
 

@@ -5,7 +5,7 @@ describe('patientService', function () {
 
     beforeEach(function () {
         module('bahmni.common.patient');
-        module(function($provide) {
+        module(function ($provide) {
             sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
             $provide.value('sessionService', sessionService);
         });
@@ -13,7 +13,7 @@ describe('patientService', function () {
         inject(function (_$rootScope_, _patientService_, $httpBackend) {
             rootScope = _$rootScope_;
             patientService = _patientService_;
-            mockBackend = $httpBackend
+            mockBackend = $httpBackend;
         });
     });
 
@@ -33,5 +33,5 @@ describe('patientService', function () {
 
             mockBackend.flush();
         });
-    })
+    });
 });

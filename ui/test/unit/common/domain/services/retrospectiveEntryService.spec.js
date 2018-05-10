@@ -14,12 +14,11 @@ describe('retrospectiveEntryService', function () {
         retrospectiveEntryService = _retrospectiveEntryService_;
     }));
 
-
-    it("should initialise retrospective entry from the cookie", function(){
+    it("should initialise retrospective entry from the cookie", function () {
         var retrospectiveDateString = "2014-03-18";
-        $bahmniCookieStore.get.and.callFake(function(cookieName) {
+        $bahmniCookieStore.get.and.callFake(function (cookieName) {
             if (cookieName == Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName) {
-                return  retrospectiveDateString;
+                return retrospectiveDateString;
             }
         });
 
@@ -28,10 +27,10 @@ describe('retrospectiveEntryService', function () {
         expect(rootScope.retrospectiveEntry.encounterDate).toEqual(moment(retrospectiveDateString).toDate());
     });
 
-    it("should not initialise retrospective entry when there is no retrospective date cookie", function(){
-        $bahmniCookieStore.get.and.callFake(function(cookieName) {
+    it("should not initialise retrospective entry when there is no retrospective date cookie", function () {
+        $bahmniCookieStore.get.and.callFake(function (cookieName) {
             if (cookieName == Bahmni.Common.Constants.retrospectiveEntryEncounterDateCookieName) {
-                return  undefined;
+                return undefined;
             }
         });
 
@@ -40,7 +39,7 @@ describe('retrospectiveEntryService', function () {
         expect(rootScope.retrospectiveEntry).toEqual(undefined);
     });
 
-    it("should reset retrospective entry if the selected date is in past", function(){
+    it("should reset retrospective entry if the selected date is in past", function () {
         var date = moment("2015-06-12").toDate();
         rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(moment());
 
@@ -54,7 +53,7 @@ describe('retrospectiveEntryService', function () {
         expect(rootScope.retrospectiveEntry.encounterDate).toEqual(date);
     });
 
-    it("should delete retrospective entry if the selected date is today", function(){
+    it("should delete retrospective entry if the selected date is today", function () {
         var date = moment().toDate();
         rootScope.retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(moment());
 

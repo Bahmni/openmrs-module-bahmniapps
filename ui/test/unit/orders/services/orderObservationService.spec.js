@@ -3,22 +3,22 @@
 describe('Order Service', function () {
     var orderObservationService;
     var mockEncounterService = jasmine.createSpyObj('encounterService', ['create']);
-    mockEncounterService.create.and.callFake(function(param) {
+    mockEncounterService.create.and.callFake(function (param) {
         return specUtil.respondWith("success");
     });
 
     var orders = [{
-        bahmniObservations : [
-            {uuid : "observation1 uuuid", value: "33.0", valueAsString: "33.0"},
-            {uuid : "observation2 uuuid", value: "100.0", valueAsString: "100.0"},
-            {uuid : "observation3 uuuid", value: null, valueAsString: null},
+        bahmniObservations: [
+            {uuid: "observation1 uuuid", value: "33.0", valueAsString: "33.0"},
+            {uuid: "observation2 uuuid", value: "100.0", valueAsString: "100.0"},
+            {uuid: "observation3 uuuid", value: null, valueAsString: null},
             {value: null, valueAsString: null}
         ],
-        orderUuid : "orderUuid"
+        orderUuid: "orderUuid"
     }];
 
-    var patient = {uuid:"patientUuid"};
-    var locationUuid = "locationUuid"
+    var patient = {uuid: "patientUuid"};
+    var locationUuid = "locationUuid";
 
     beforeEach(function () {
         module('bahmni.common.orders');

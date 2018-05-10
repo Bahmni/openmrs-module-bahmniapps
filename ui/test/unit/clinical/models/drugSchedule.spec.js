@@ -39,7 +39,7 @@ describe("DrugSchedule", function () {
             var salbutamolDuringDichrageDisposition = createDrugOrder('Salbutamol', dischargeDate, '2014-04-29T11:52:59.000+0530');
             visit.drugOrders = [beclomateAfterDischarge, calpolAfterAdmissionBeforeDishcarge, amoxyBeforeAdmissionAfterDishcarge, paracetamolBeforeAdmission, salbutamolDuringDichrageDisposition];
 
-            var drugSchedule = DrugSchedule.create( admissionDate, dischargeDate, visit.drugOrders);
+            var drugSchedule = DrugSchedule.create(admissionDate, dischargeDate, visit.drugOrders);
 
             expect(drugSchedule.fromDate).toBe(admissionDate);
             expect(drugSchedule.toDate).toBe(dischargeDate);
@@ -78,7 +78,7 @@ describe("DrugSchedule", function () {
             var drugSchedule = DrugSchedule.create(admissionDate, dischargeDate, visit.drugOrders);
 
             expect(drugSchedule.fromDate).toBe(admissionDate);
-            expect(drugSchedule.toDate).toBe(DateUtil.now() );
+            expect(drugSchedule.toDate).toBe(DateUtil.now());
             expect(drugSchedule.drugOrders.length).toBe(2);
             expect(drugSchedule.drugOrders[0].drug.name).toBe('Calpol');
             expect(drugSchedule.drugOrders[1].drug.name).toBe('Amoxy');
@@ -154,15 +154,15 @@ describe("DrugSchedule", function () {
 
             expect(drugs[1].name).toBe('Rifampicin');
             expect(drugs[1].orders.length).toBe(1);
-        })
+        });
     });
 
-    describe("Drug", function() {
+    describe("Drug", function () {
         describe("getStatusOnDate", function () {
             it("should be stopped if the drug was stopped on that day", function () {
                 var calpolOrderStopped = createStoppedDrugOrder('Calpol', '2014-04-14T15:52:59.000+0530', '2014-04-15T15:52:59.000+0530');
-  
-                var drug = new DrugSchedule.Drug('Calpol', [calpolOrderStopped])
+
+                var drug = new DrugSchedule.Drug('Calpol', [calpolOrderStopped]);
 
                 expect(drug.getStatusOnDate(DateUtil.parse('2014-04-15'))).toBe('stopped');
                 expect(drug.getStatusOnDate(DateUtil.parse('2014-04-14'))).toBe('active');
@@ -172,8 +172,8 @@ describe("DrugSchedule", function () {
             it("should be stopped if the drug was revised and stopped on that day", function () {
                 var calpolOrderStopped = createStoppedDrugOrder('Calpol', '2014-04-14T15:52:59.000+0530', '2014-04-15T15:52:59.000+0530');
                 var calpolReOrderStopped = createStoppedDrugOrder('Calpol', '2014-04-15T15:52:59.000+0530', '2014-04-15T15:52:59.000+0530');
-  
-                var drug = new DrugSchedule.Drug('Calpol', [calpolOrderStopped, calpolReOrderStopped])
+
+                var drug = new DrugSchedule.Drug('Calpol', [calpolOrderStopped, calpolReOrderStopped]);
 
                 expect(drug.getStatusOnDate(DateUtil.parse('2014-04-15'))).toBe('stopped');
             });
@@ -181,8 +181,8 @@ describe("DrugSchedule", function () {
             it("should be active if the drug was revised on that day", function () {
                 var calpolOrderStopped = createStoppedDrugOrder('Calpol', '2014-04-14T15:52:59.000+0530', '2014-04-15T15:52:59.000+0530');
                 var calpolReOrder = createDrugOrder('Calpol', '2014-04-15T15:52:59.000+0530', '2014-04-16T15:52:59.000+0530');
-  
-                var drug = new DrugSchedule.Drug('Calpol', [calpolOrderStopped, calpolReOrder])
+
+                var drug = new DrugSchedule.Drug('Calpol', [calpolOrderStopped, calpolReOrder]);
 
                 expect(drug.getStatusOnDate(DateUtil.parse('2014-04-15'))).toBe('active');
                 expect(drug.getStatusOnDate(DateUtil.parse('2014-04-14'))).toBe('active');

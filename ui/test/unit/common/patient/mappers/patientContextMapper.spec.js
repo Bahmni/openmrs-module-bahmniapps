@@ -97,5 +97,5 @@ describe('patient context mapper', function () {
             identifier: 'BDH202048'
         };
         expect(patientContextMapper.map(patient)).toEqual(mappedPatient);
-    })
+    });
 });

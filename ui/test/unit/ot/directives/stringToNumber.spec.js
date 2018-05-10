@@ -3,7 +3,7 @@ describe("stringToNumber", function () {
 
     beforeEach(module('bahmni.ot'));
 
-    beforeEach(inject(function($compile, $rootScope) {
+    beforeEach(inject(function ($compile, $rootScope) {
         scope = $rootScope.$new();
         element = angular.element('<input type="number" ng-model="cleaningTime" string-to-number min="0" max="59">');
         element = $compile(element)(scope);
@@ -11,7 +11,7 @@ describe("stringToNumber", function () {
         scope.$digest();
     }));
 
-    it("should convert the string into number", function() {
+    it("should convert the string into number", function () {
         element.val("15");
         element.triggerHandler("input");
 
@@ -19,5 +19,4 @@ describe("stringToNumber", function () {
 
         expect(ngModelCtrl.$modelValue).toEqual(15);
     });
-
 });

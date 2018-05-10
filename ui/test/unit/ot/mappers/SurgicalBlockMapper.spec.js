@@ -390,8 +390,8 @@ describe("SurgicalBlockMapper", function () {
         surgicalBlock.endDatetime = "2017-05-25T18:00:00.000+0530";
         surgicalBlock.provider = {uuid: "providerUuid"};
         surgicalBlock.location = {uuid: "locationUuid"};
-        surgicalBlock.surgicalAppointments = [{id: "11", uuid: "appointmentUuid",status: undefined,
-            notes : undefined, voided: false, patient: {uuid: "patientUuid"}, sortWeight: 0, actualStartDatetime: "2017-05-25T10:00:00.000+0530", actualEndDatetime: "2017-05-25T12:00:00.000+0530", surgicalAppointmentAttributes: openmrsSurgicalAppointmentAttributes}];
+        surgicalBlock.surgicalAppointments = [{id: "11", uuid: "appointmentUuid", status: undefined,
+            notes: undefined, voided: false, patient: {uuid: "patientUuid"}, sortWeight: 0, actualStartDatetime: "2017-05-25T10:00:00.000+0530", actualEndDatetime: "2017-05-25T12:00:00.000+0530", surgicalAppointmentAttributes: openmrsSurgicalAppointmentAttributes}];
 
         var surgicalForm = {};
         surgicalForm.id = 10;
@@ -441,7 +441,6 @@ describe("SurgicalBlockMapper", function () {
         };
 
         var mappedAttributes = surgicalBlockMapper.mapAttributes(attributes, appointmentAttributeTypes);
-
 
         expect(_.keys(mappedAttributes).length).toBe(10);
         expect(mappedAttributes.cleaningTime.value).toBe(15);

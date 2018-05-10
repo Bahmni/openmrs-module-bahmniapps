@@ -12,7 +12,9 @@ describe("otCalendarController", function () {
             id: 60,
             provider: {uuid: "providerUuid1", display: "Doctor Strange"},
             location: {uuid: "uuid1", name: "location1"},
-            surgicalAppointments: [ {id: 48, surgicalAppointmentAttributes: []}],
+            surgicalAppointments: [
+                {id: 48, surgicalAppointmentAttributes: []}
+            ],
             startDatetime: "2001-10-04T09:00:00.000+0530",
             endDatetime: "2001-10-04T21:00:00.000+0530",
             uuid: "surgical-block1-uuid"

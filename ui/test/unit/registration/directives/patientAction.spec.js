@@ -50,17 +50,17 @@ describe('PatientAction', function () {
                 auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
                 auditLogService.log.and.returnValue(specUtil.simplePromise({}));
                 messageParams = {visitUuid: visitResponse.uuid, visitType: visitResponse.visitType.display};
-                provide.value('$state', state);
-                provide.value('$window', $window);
-                provide.value('spinner', spinner);
-                provide.value('appService', appService);
-                provide.value('$bahmniCookieStore', $bahmniCookieStore);
-                provide.value('$location', $location);
-                provide.value('visitService', visitService);
-                provide.value('encounterService', encounterService);
-                provide.value('sessionService', sessionService);
-                provide.value('messagingService', messagingService);
-                provide.value('auditLogService', auditLogService);
+                $provide.value('$state', state);
+                $provide.value('$window', $window);
+                $provide.value('spinner', spinner);
+                $provide.value('appService', appService);
+                $provide.value('$bahmniCookieStore', $bahmniCookieStore);
+                $provide.value('$location', $location);
+                $provide.value('visitService', visitService);
+                $provide.value('encounterService', encounterService);
+                $provide.value('sessionService', sessionService);
+                $provide.value('messagingService', messagingService);
+                $provide.value('auditLogService', auditLogService);
             });
         };
 
@@ -436,7 +436,7 @@ describe('PatientAction', function () {
 
         it("should set showStartVisitButton to true, if showStartVisitButton config is not present", function () {
             var configValues = {defaultVisitType: "IPD", forwardUrls: []};
-            var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues}, stateParams: {patientUuid: 'patientUuid'}, visitSearchResults: {data:{}}};
+            var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues}, stateParams: {patientUuid: 'patientUuid'}, visitSearchResults: {data: {}}};
             initProvider(input);
             injectDependencies();
             expect(scope.showStartVisitButton()).toBe(true);
@@ -444,7 +444,7 @@ describe('PatientAction', function () {
 
         it("should set showStartVisitButton to false, if showStartVisitButton config is false", function () {
             var configValues = {defaultVisitType: "IPD", forwardUrls: [], showStartVisitButton: false};
-            var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues}, stateParams: {patientUuid: 'patientUuid'}, visitSearchResults: {data:{}}};
+            var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues}, stateParams: {patientUuid: 'patientUuid'}, visitSearchResults: {data: {}}};
             initProvider(input);
             injectDependencies();
             expect(scope.showStartVisitButton()).toBe(false);
@@ -452,7 +452,7 @@ describe('PatientAction', function () {
 
         it("should set showStartVisitButton to false, if showStartVisitButton config is true", function () {
             var configValues = {defaultVisitType: "IPD", forwardUrls: [], showStartVisitButton: true};
-            var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues}, stateParams: {patientUuid: 'patientUuid'}, visitSearchResults: {data:{}}};
+            var input = {appDescriptor: {getExtensions: [], getConfigValue: configValues}, stateParams: {patientUuid: 'patientUuid'}, visitSearchResults: {data: {}}};
             initProvider(input);
             injectDependencies();
             expect(scope.showStartVisitButton()).toBe(true);

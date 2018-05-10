@@ -73,7 +73,7 @@ describe('AppointmentsCalendarViewController', function () {
                 "uuid": "d3f5062e-b92d-4c70-8d22-b199dcb65a2c",
                 "color": "#DC143C",
                 "creatorName": null
-            },"serviceType": {
+            }, "serviceType": {
                 "duration": 15,
                 "name": "maxillo",
                 "uuid": "de849ecd-47ad-4610-8080-20e7724b2df6"
@@ -361,10 +361,9 @@ describe('AppointmentsCalendarViewController', function () {
     });
 
     it('should return true when there are no appointments for the selected date', function () {
-        scope.providerAppointments= {events:[]};
-       createController();
-       scope.hasNoAppointments();
-
+        scope.providerAppointments = {events: []};
+        createController();
+        scope.hasNoAppointments();
     });
 
     it('should not include "No Provider" in resources when there are no appointments with "No Provider"', function () {
@@ -392,12 +391,12 @@ describe('AppointmentsCalendarViewController', function () {
                 "uuid": "d3f5062e-b92d-4c70-8d22-b199dcb65a2c",
                 "color": "#DC143C",
                 "creatorName": null
-            },"serviceType": {
+            }, "serviceType": {
                 "duration": 15,
                 "name": "maxillo",
                 "uuid": "de849ecd-47ad-4610-8080-20e7724b2df6"
             },
-            "provider": {display : "someName", uuid: "someUuid"},
+            "provider": {display: "someName", uuid: "someUuid"},
             "location": null,
             "startDateTime": 1504665900000,
             "endDateTime": 1504666800000,
@@ -415,46 +414,46 @@ describe('AppointmentsCalendarViewController', function () {
 
     it('should include "No Provider" in resources appointments when there are appointments with "No Provider"', function () {
         var appointments = [{
-                "uuid": "7f366f38-9d41-48e0-bffb-9497d55e3097",
-                "appointmentNumber": "0000",
-                "patient": {
-                    "identifier": "GAN203008",
-                    "name": "pramida tumma",
-                    "uuid": "56d5e8b1-b2b4-44f3-b953-fab5d12fd5ff"
+            "uuid": "7f366f38-9d41-48e0-bffb-9497d55e3097",
+            "appointmentNumber": "0000",
+            "patient": {
+                "identifier": "GAN203008",
+                "name": "pramida tumma",
+                "uuid": "56d5e8b1-b2b4-44f3-b953-fab5d12fd5ff"
+            },
+            "service": {
+                "appointmentServiceId": 1,
+                "name": "hell",
+                "description": "description",
+                "speciality": {
+                    "name": "Cardiology",
+                    "uuid": "bdbb1d1e-87c8-11e7-93b0-080027e99513"
                 },
-                "service": {
-                    "appointmentServiceId": 1,
-                    "name": "hell",
-                    "description": "description",
-                    "speciality": {
-                        "name": "Cardiology",
-                        "uuid": "bdbb1d1e-87c8-11e7-93b0-080027e99513"
-                    },
-                    "startTime": "",
-                    "endTime": "",
-                    "maxAppointmentsLimit": 12,
-                    "durationMins": 60,
-                    "location": {},
-                    "uuid": "d3f5062e-b92d-4c70-8d22-b199dcb65a2c",
-                    "color": "#DC143C",
-                    "creatorName": null
-                },"serviceType": {
+                "startTime": "",
+                "endTime": "",
+                "maxAppointmentsLimit": 12,
+                "durationMins": 60,
+                "location": {},
+                "uuid": "d3f5062e-b92d-4c70-8d22-b199dcb65a2c",
+                "color": "#DC143C",
+                "creatorName": null
+            }, "serviceType": {
                 "duration": 15,
                 "name": "maxillo",
                 "uuid": "de849ecd-47ad-4610-8080-20e7724b2df6"
             },
-                "provider": null,
-                "location": null,
-                "startDateTime": 1504665900000,
-                "endDateTime": 1504666800000,
-                "appointmentKind": "Scheduled",
-                "status": "Scheduled",
-                "comments": null
-            }];
+            "provider": null,
+            "location": null,
+            "startDateTime": 1504665900000,
+            "endDateTime": 1504666800000,
+            "appointmentKind": "Scheduled",
+            "status": "Scheduled",
+            "comments": null
+        }];
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: appointments}));
         createController();
         scope.getAppointmentsForDate("Wed Sep 06 2017 00:00:00 GMT+0530 (IST)");
         expect(scope.providerAppointments.resources.length).toEqual(1);
         expect(scope.providerAppointments.resources[0].provider.uuid).toEqual("no-provider-uuid");
-    })
+    });
 });

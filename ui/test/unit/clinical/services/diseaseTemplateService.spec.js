@@ -3,7 +3,7 @@
 describe("DiseaseTemplateService", function () {
     var _clinicalAppConfigService, _$http;
 
-    var mockHttp = function(method,data){
+    var mockHttp = function (method, data) {
         _$http[method].and.returnValue(specUtil.createFakePromise(data));
     };
     beforeEach(module('bahmni.clinical'));
@@ -14,7 +14,6 @@ describe("DiseaseTemplateService", function () {
         _clinicalAppConfigService.getAllConceptsConfig.and.returnValue({});
         _clinicalAppConfigService.getDiseaseTemplateConfig.and.returnValue({});
         _$http = jasmine.createSpyObj('$http', ['get', 'post']);
-        
     }));
 
     beforeEach(module(function ($provide) {
@@ -29,7 +28,7 @@ describe("DiseaseTemplateService", function () {
 
     describe("disease templates", function () {
         it('should fetch latest disease templates for a patient', function (done) {
-            mockHttp('post',diseaseTemplates);
+            mockHttp('post', diseaseTemplates);
 
             this.diseaseTemplateService.getLatestDiseaseTemplates("patientuuid").then(function (response) {
                 expect(response.length).toBe(1);
@@ -40,7 +39,7 @@ describe("DiseaseTemplateService", function () {
         });
 
         it('should fetch all disease template for the patient', function (done) {
-            mockHttp('post',diseaseTemplates[0]);
+            mockHttp('post', diseaseTemplates[0]);
 
             this.diseaseTemplateService.getAllDiseaseTemplateObs("patientuuid", "Breast Cancer").then(function (response) {
                 expect(response.name).toBe("Breast Cancer");
@@ -48,7 +47,6 @@ describe("DiseaseTemplateService", function () {
                 done();
             });
         });
-
     });
 
     var diseaseTemplates = [

@@ -20,7 +20,7 @@ describe("ObsGropingHelper", function () {
                 "dataType": "Coded",
                 "shortName": "Posture",
                 "conceptClass": "Misc",
-                "set": false,
+                "set": false
             },
             "valueAsString": "Sitting",
             "unknown": false,
@@ -33,7 +33,7 @@ describe("ObsGropingHelper", function () {
                 "dataType": "N/A",
                 "shortName": "Sitting",
                 "conceptClass": "Misc",
-                "set": false,
+                "set": false
             }
         },
         {
@@ -316,7 +316,6 @@ describe("ObsGropingHelper", function () {
         });
     });
 
-
     it("should not fail for empty set of observations", function () {
         var observations = [];
         var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService).groupObservations(observations);
@@ -358,7 +357,5 @@ describe("ObsGropingHelper", function () {
 
         expect(groupedObservationsArray[1].conceptSetName).toBe('Form2');
         expect(groupedObservationsArray[1].groupMembers.length).toBe(2);
-
-
     });
 });

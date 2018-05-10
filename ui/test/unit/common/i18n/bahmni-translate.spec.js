@@ -1,18 +1,20 @@
 'use strict';
 
-describe("bahmniTranslate", function(){
-    var filter,translate;
+describe("bahmniTranslate", function () {
+    var filter, translate;
 
-    beforeEach(module('bahmni.common.i18n', function($provide){
-        translate = jasmine.createSpyObj('$translate', [ 'storageKey','instant','storage','preferredLanguage']);
-        $provide.value('$translate',translate);
+    beforeEach(module('bahmni.common.i18n', function ($provide) {
+        translate = jasmine.createSpyObj('$translate', [
+            'storageKey', 'instant', 'storage', 'preferredLanguage'
+        ]);
+        $provide.value('$translate', translate);
     }));
 
-    beforeEach(inject(function(titleTranslateFilter){
+    beforeEach(inject(function (titleTranslateFilter) {
         filter = titleTranslateFilter;
     }));
 
-    it("send input as null and to be null", function(){
+    it("send input as null and to be null", function () {
         expect(filter(undefined)).toBe(undefined);
     });
 
@@ -50,11 +52,9 @@ describe("bahmniTranslate", function(){
 
     it("send dashboard,title, and display as part of the object and ensure that dashboard returns", function () {
         var input = {'title': 'consultaion',
-                     'dashboardName': 'general',
-                     'display': 'home'
-                         };
+            'dashboardName': 'general',
+            'display': 'home'
+        };
         expect(filter(input)).toEqual("general");
     });
-
-
 });

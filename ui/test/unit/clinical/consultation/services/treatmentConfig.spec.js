@@ -1,7 +1,6 @@
 'use strict';
 
 describe('treatmentConfig', function () {
-
     var treatmentConfig, medicationConfig, masterConfig, translate, configurationService;
     beforeEach(function () {
         medicationConfig = {
@@ -44,14 +43,12 @@ describe('treatmentConfig', function () {
                 }
             ]
         };
-
     });
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.appFramework'));
 
     var injectTreatmentConfig = function (configName) {
         module(function ($provide) {
-
             var treatmentService = jasmine.createSpyObj('treatmentService', ['getConfig', 'getNonCodedDrugConcept']);
             var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
             var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -82,7 +79,6 @@ describe('treatmentConfig', function () {
         inject(['treatmentConfig', function (_treatmentConfig) {
             treatmentConfig = _treatmentConfig(configName);
         }]);
-
     };
 
     it("should initialize treatment config based on tab name configured", function (done) {
@@ -223,5 +219,5 @@ describe('treatmentConfig', function () {
         treatmentConfig.then(function (config) {
             expect(config.showBulkChangeDuration()).toBeFalsy();
         }).catch(notifyError).finally(done);
-    })
+    });
 });

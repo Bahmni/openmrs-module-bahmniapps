@@ -11,7 +11,7 @@ describe('Diagnosis DisplayControl', function () {
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.common.displaycontrol.diagnosis'));
 
-    beforeEach(module( function ($provide) {
+    beforeEach(module(function ($provide) {
         var _spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then']);
         _spinner.forPromise.and.callFake(function () {
             var deferred = q.defer();
@@ -44,12 +44,10 @@ describe('Diagnosis DisplayControl', function () {
             var data = {"data": diagnosis};
             successFn(data);
             return getDiagnosesPromise;
-
         };
         _diagnosisService.getDiagnoses.and.returnValue(getDiagnosesPromise);
         $provide.value('diagnosisService', _diagnosisService);
     }));
-
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope, $q) {
         compile = $compile;
@@ -58,7 +56,7 @@ describe('Diagnosis DisplayControl', function () {
         q = $q;
     }));
 
-    function init() {
+    function init () {
         rootScope.diagnosisStatus = 'RULED OUT';
         scope = rootScope.$new();
         mockBackend.expectGET('../common/displaycontrols/diagnosis/views/diagnosisDisplayControl.html').respond("<div>dummy</div>");
@@ -87,7 +85,7 @@ describe('Diagnosis DisplayControl', function () {
         expect(diagnosis.showLatestDetails).toBeTruthy();
         expect(diagnosis.showDetails).toBeFalsy();
 
-        compiledElementScope.toggle(diagnosis, false)
+        compiledElementScope.toggle(diagnosis, false);
 
         expect(diagnosis.showLatestDetails).toBeFalsy();
         expect(diagnosis.showDetails).toBeTruthy();
@@ -103,6 +101,4 @@ describe('Diagnosis DisplayControl', function () {
         init();
         expect(compiledElementScope.allDiagnoses.length).toBe(1);
     });
-
-
 });

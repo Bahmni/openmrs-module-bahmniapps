@@ -24,16 +24,16 @@ describe("concept", function () {
         conceptSetService.getConcept.and.returnValue({
             then: function () {
                 return function () {
-                    return {}
-                }
+                    return {};
+                };
             }
         });
     });
 
-    it("should set hideAbnormalButton value from config first", function(){
+    it("should set hideAbnormalButton value from config first", function () {
         scope.conceptSetName = "conceptSetName";
         scope.hideAbnormalButton = "false";
-        scope.observation = {"conceptUIconfig" : {"hideAbnormalButton": true }};
+        scope.observation = {"conceptUIconfig": {"hideAbnormalButton": true }};
 
         httpBackend.expectGET('../common/concept-set/views/observation.html').respond('<div>dummy</div>');
         var html = '<concept concept-set-name = "conceptSetName" hide-abnormal-button="hideAbnormalButton"></concept>';
@@ -44,6 +44,5 @@ describe("concept", function () {
         var compiledElementScope = element.isolateScope();
 
         expect(compiledElementScope.hideAbnormalButton).toBeTruthy();
-
     });
 });

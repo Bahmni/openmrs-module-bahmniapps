@@ -13,7 +13,7 @@ describe('surgicalAppointmentHelper', function () {
     it('should filter the providers by name', function () {
         var providerNames = ["Provider1", "Provider2", "Provider5"];
         var providers = [{uuid: "uuid1", person: { display: "Provider1"}}, {uuid: "uuid2", person: { display: "Provider2"}},
-            {uuid: "uuid3", person: { display: "Provider3" }}, {uuid: "uuid4",  person: {display: "Provider4"}}, {uuid: "uuid5", person: { display: "Provider5"}}];
+            {uuid: "uuid3", person: { display: "Provider3" }}, {uuid: "uuid4", person: {display: "Provider4"}}, {uuid: "uuid5", person: { display: "Provider5"}}];
         var filteredProviders = surgicalAppointmentHelper.filterProvidersByName(providerNames, providers);
 
         expect(filteredProviders.length).toEqual(3);
@@ -25,7 +25,7 @@ describe('surgicalAppointmentHelper', function () {
     it('should remove the not existed provider names from the list', function () {
         var providerNames = ["Provider5", "Provider1", "Provider2", "Non Existed Name"];
         var providers = [{uuid: "uuid1", person: { display: "Provider1"}}, {uuid: "uuid2", person: { display: "Provider2"}},
-            {uuid: "uuid3", person: { display: "Provider3" }}, {uuid: "uuid4",  person: {provider: "Provider4"}}, {uuid: "uuid5", person: { display: "Provider5"}}];
+            {uuid: "uuid3", person: { display: "Provider3" }}, {uuid: "uuid4", person: {provider: "Provider4"}}, {uuid: "uuid5", person: { display: "Provider5"}}];
         var filteredProviders = surgicalAppointmentHelper.filterProvidersByName(providerNames, providers);
 
         expect(filteredProviders.length).toEqual(3);
@@ -44,14 +44,13 @@ describe('surgicalAppointmentHelper', function () {
     });
 
     it('should map the surgical appointment attribures values to name and shout get the appointment duration in minutes', function () {
-
         var surgicalAppointment = {
             id: 1,
             patient: { uuid: "patientUuid" },
             actualStartDateTime: null,
             actualEndDateTime: null,
             status: null,
-            surgicalAppointmentAttributes: [{id: 88, value: "procedure", surgicalAppointmentAttributeType: { name: "procedure" } },{id: 89, value: "1", surgicalAppointmentAttributeType: { name: "estTimeHours" } }, {id: 90, value: "15", surgicalAppointmentAttributeType: { name: "estTimeMinutes" } }, {id: 91, value: "30", surgicalAppointmentAttributeType: { name: "cleaningTime" } }]
+            surgicalAppointmentAttributes: [{id: 88, value: "procedure", surgicalAppointmentAttributeType: { name: "procedure" } }, {id: 89, value: "1", surgicalAppointmentAttributeType: { name: "estTimeHours" } }, {id: 90, value: "15", surgicalAppointmentAttributeType: { name: "estTimeMinutes" } }, {id: 91, value: "30", surgicalAppointmentAttributeType: { name: "cleaningTime" } }]
         };
 
         var appointmentDuration = surgicalAppointmentHelper.getEstimatedDurationForAppointment(surgicalAppointment);
@@ -103,7 +102,6 @@ describe('surgicalAppointmentHelper', function () {
         expect(filteredAppointments).toEqual(surgicalAppointments);
         expect(filteredAppointmentsWithEmptyStatusList).toEqual(surgicalAppointments);
     });
-
 
     it('should filter appointments by the status list', function () {
         var surgicalAppointments = [{
@@ -187,11 +185,11 @@ describe('surgicalAppointmentHelper', function () {
             "sortWeight": null,
             "surgicalAppointmentAttributes": []
         }];
-        var filteredAppointments = surgicalAppointmentHelper.filterSurgicalAppointmentsByPatient(surgicalAppointments, {uuid : '0c58967c-a415-48c8-9830-adcaa94b9d4f'});
+        var filteredAppointments = surgicalAppointmentHelper.filterSurgicalAppointmentsByPatient(surgicalAppointments, {uuid: '0c58967c-a415-48c8-9830-adcaa94b9d4f'});
         expect(filteredAppointments.length).toEqual(1);
         expect(filteredAppointments[0].id).toEqual(108);
     });
-    
+
     it('should calculate the duration of the appointment when some fields are empty', function () {
         var estTimInHours = "";
         var estTimInMinutes = "";
@@ -199,5 +197,5 @@ describe('surgicalAppointmentHelper', function () {
         var appointmentDuration = surgicalAppointmentHelper.getAppointmentDuration(estTimInHours, estTimInMinutes, cleaningTime);
 
         expect(appointmentDuration).toEqual(0);
-    })
+    });
 });

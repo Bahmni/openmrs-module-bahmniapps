@@ -13,7 +13,7 @@ describe("show if privilege directive", function () {
             "username": "superman",
             "privileges": [
                 {"name": "app:clinical:retrospective"},
-                {"name":"app:billing"}
+                {"name": "app:billing"}
             ]
         };
     }));

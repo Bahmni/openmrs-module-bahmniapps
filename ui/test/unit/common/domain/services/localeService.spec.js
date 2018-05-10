@@ -1,7 +1,6 @@
 'use strict';
 
 describe('localeService', function () {
-
     var localeService;
     var _$http;
     var localesList = "en, es, fr";
@@ -9,9 +8,9 @@ describe('localeService', function () {
     var loginText = "BAHMNI EMR LOGIN";
     var localeLangs = "locale codes language";
 
-    beforeEach(function(){
+    beforeEach(function () {
         module('bahmni.common.domain');
-        module(function ($provide){
+        module(function ($provide) {
             _$http = jasmine.createSpyObj('$http', ['get']);
             $provide.value('$http', _$http);
         });
@@ -21,8 +20,8 @@ describe('localeService', function () {
         });
     });
 
-    it('should fetch allowed list of locales', function(done){
-        _$http.get.and.callFake(function(param) {
+    it('should fetch allowed list of locales', function (done) {
+        _$http.get.and.callFake(function (param) {
             return specUtil.respondWith({"data": localesList});
         });
 
@@ -32,8 +31,8 @@ describe('localeService', function () {
         });
     });
 
-    it('should fetch default locale', function(done){
-        _$http.get.and.callFake(function(param) {
+    it('should fetch default locale', function (done) {
+        _$http.get.and.callFake(function (param) {
             return specUtil.respondWith({"data": defaultLocale});
         });
 
@@ -43,8 +42,8 @@ describe('localeService', function () {
         });
     });
 
-    it('should fetch default login page text', function(done){
-        _$http.get.and.callFake(function(param) {
+    it('should fetch default login page text', function (done) {
+        _$http.get.and.callFake(function (param) {
             return specUtil.respondWith({"data": loginText});
         });
 
@@ -54,8 +53,8 @@ describe('localeService', function () {
         });
     });
 
-    it('should fetch default locale languages', function(done){
-        _$http.get.and.callFake(function(param) {
+    it('should fetch default locale languages', function (done) {
+        _$http.get.and.callFake(function (param) {
             return specUtil.respondWith({"data": localeLangs});
         });
 

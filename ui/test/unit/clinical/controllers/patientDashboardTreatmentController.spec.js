@@ -1,7 +1,6 @@
 'use strict';
 
 describe("PatientDashboardTreatmentController", function () {
-
     beforeEach(module('bahmni.clinical'));
 
     var scope, ngDialog;

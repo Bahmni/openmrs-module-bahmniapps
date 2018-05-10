@@ -36,11 +36,11 @@ describe('AppointmentsFilterController', function () {
         data: {
             results: [{
                 "uuid": "f9badd80-ab76-11e2-9e96-0800200c9a66",
-                "person":{"display":"Jane"},
+                "person": {"display": "Jane"},
                 "display": "1-Jane"
             }, {
                 "uuid": "df17bca9-ff9b-4a73-bac7-f302fc688974",
-                "person":{"display":"June"},
+                "person": {"display": "June"},
                 "display": "2-June"
             }]
         }
@@ -65,9 +65,9 @@ describe('AppointmentsFilterController', function () {
             q.all.and.returnValue(specUtil.simplePromise({}));
             state.params = {filterParams: {}};
             state.current = {tabName: "list"};
-            $httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>')
-            $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>')
-            $httpBackend.expectGET('/openmrs/ws/rest/v1/provider?v=custom:(display,person,uuid)').respond('<div></div>')
+            $httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>');
+            $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>');
+            $httpBackend.expectGET('/openmrs/ws/rest/v1/provider?v=custom:(display,person,uuid)').respond('<div></div>');
         });
     });
 
@@ -86,11 +86,9 @@ describe('AppointmentsFilterController', function () {
         });
     };
 
-
-
     it("should get tabName from state.current", function () {
         state = {
-            params : {filterParams : {}},
+            params: {filterParams: {}},
             name: "home.manage.appointments.calendar",
             url: '/calendar',
             current: {
@@ -104,7 +102,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it("should map specialities to ivh tree", function () {
-        appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({data:[{
+        appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({data: [{
             appointmentServiceId: 1,
             name: "ortho",
             speciality: {
@@ -135,9 +133,9 @@ describe('AppointmentsFilterController', function () {
         expect(scope.selectedSpecialities[0].children[0].children[0].label).toBe("maxillo [15 min]");
     });
 
-    it("should map selected services to state params", function(){
+    it("should map selected services to state params", function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
-        appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({data:[{
+        appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({data: [{
             appointmentServiceId: 1,
             name: "ortho",
             speciality: {
@@ -295,7 +293,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should reset ivh Tree, reset the filter and apply them on appointments', function () {
-        state.params={};
+        state.params = {};
         state.params.filterParams = {serviceUuids: ["someServiceUuid"], serviceTypeUuid: ["serviceTypeUuid"], providerUuids: [], statusList: []};
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         appointmentsServiceService.getAllServicesWithServiceTypes.and.returnValue(specUtil.simplePromise({ data: [{
@@ -373,9 +371,9 @@ describe('AppointmentsFilterController', function () {
         expect(scope.selectedSpecialities[0].label).toBe("Cardiology");
         expect(scope.selectedSpecialities[0].children[0].label).toBe("ortho");
         expect(scope.selectedSpecialities[0].children[0].children[0].label).toBe("maxillo [15 min]");
-        expect(ivhTreeviewMgr.selectEach).toHaveBeenCalledWith(scope.selectedSpecialities,state.params.filterParams.serviceUuids);
+        expect(ivhTreeviewMgr.selectEach).toHaveBeenCalledWith(scope.selectedSpecialities, state.params.filterParams.serviceUuids);
     });
-    
+
     it('should set the selectedStatusList', function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         state.params.filterParams.statusList = ["Completed", "Scheduled"];
@@ -393,7 +391,7 @@ describe('AppointmentsFilterController', function () {
 
     it('should return false when filters are empty', function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
-        state.params.filterParams = {serviceUuids:[], providerUuids:[], statusList:[]};
+        state.params.filterParams = {serviceUuids: [], providerUuids: [], statusList: []};
         createController();
         var filterApplied = scope.isFilterApplied();
         expect(filterApplied).toBeFalsy();
@@ -401,7 +399,7 @@ describe('AppointmentsFilterController', function () {
 
     it('should return true when filters are not empty', function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
-        state.params.filterParams = {serviceUuids:["someServiceUuid"], providerUuids:[], statusList:[]};
+        state.params.filterParams = {serviceUuids: ["someServiceUuid"], providerUuids: [], statusList: []};
         createController();
         var filterApplied = scope.isFilterApplied();
         expect(filterApplied).toBeTruthy();
@@ -460,7 +458,7 @@ describe('AppointmentsFilterController', function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         createController();
         state.current = { tabName: "list" };
-        scope.selectedStatusList = [{name: "Cancelled", value: "Cancelled"} , { name: "Scheduled", value: "Scheduled"}];
+        scope.selectedStatusList = [{name: "Cancelled", value: "Cancelled"}, { name: "Scheduled", value: "Scheduled"}];
         scope.$digest();
         state.current.tabName = "calendar";
         scope.$digest();
@@ -478,7 +476,7 @@ describe('AppointmentsFilterController', function () {
         createController();
         state.current = { tabName: "calender" };
         scope.$digest();
-        scope.selectedStatusList = [{name: "Cancelled", value: "Cancelled"} , { name: "Scheduled", value: "Scheduled"}];
+        scope.selectedStatusList = [{name: "Cancelled", value: "Cancelled"}, { name: "Scheduled", value: "Scheduled"}];
         state.current.tabName = "list";
         scope.$digest();
         expect(scope.statusList.length).toBe(5);
@@ -490,7 +488,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should have "No Provider" in providers and should have providerUuids in selectedProviders when providerUuids are present in filterParams', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name: "someProvider", person: {display: "someProvider"}, uuid: "someProviderUuid", display: "someProvider"}]}}]));
         state.params.filterParams = {statusList: [], providerUuids: ['someProviderUuid', 'no-provider-uuid']};
         createController();
         expect(scope.providers.length).toEqual(2);
@@ -501,22 +499,22 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should reset searchText to undefined', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}]));
-       scope.searchText = "SomeText";
-       createController();
-       scope.resetSearchText();
-       expect(scope.searchText).toBeUndefined();
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name: "someProvider", person: {display: "someProvider"}, uuid: "someProviderUuid", display: "someProvider"}]}}]));
+        scope.searchText = "SomeText";
+        createController();
+        scope.resetSearchText();
+        expect(scope.searchText).toBeUndefined();
     });
 
     it('should have isSpecialitiesEnable and isServiceTypeEnabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name: "someProvider", person: {display: "someProvider"}, uuid: "someProviderUuid", display: "someProvider"}]}}]));
         createController();
         expect(scope.isSpecialityEnabled).toBeTruthy();
         expect(scope.isServiceTypeEnabled).toBeTruthy();
     });
 
     it('should not inclued specialities in ivhTreeView when specialities are not enabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", person : {display:"someProvider"},uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name: "someProvider", person: {display: "someProvider"}, uuid: "someProviderUuid", display: "someProvider"}]}}]));
         appDescriptor.getConfigValue.and.returnValue(false);
         createController();
         expect(scope.selectedSpecialities[0].label).toEqual('ortho');
@@ -524,7 +522,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should not inclued specialities in ivhTreeView when specialities are not enabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", person : {display:"someProvider"},uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name: "someProvider", person: {display: "someProvider"}, uuid: "someProviderUuid", display: "someProvider"}]}}]));
         appDescriptor.getConfigValue.and.returnValue(false);
         createController();
         scope.isSpecialityEnabled = false;
@@ -562,7 +560,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should not inclued serviceTypes and should include specialities in ivhTreeView when service types are not enabled and specialities are enabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name: "someProvider", person: {display: "someProvider"}, uuid: "someProviderUuid", display: "someProvider"}]}}]));
         appDescriptor.getConfigValue.and.returnValue(true);
         createController();
         scope.isSpecialityEnabled = true;
@@ -602,9 +600,8 @@ describe('AppointmentsFilterController', function () {
         expect(state.params.filterParams.serviceTypeUuids.length).toEqual(0);
     });
 
-
     it('should inclued serviceTypes and specialities in ivhTreeView when service types and specialities are enabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", person : {display:"someProvider"},uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name: "someProvider", person: {display: "someProvider"}, uuid: "someProviderUuid", display: "someProvider"}]}}]));
         appDescriptor.getConfigValue.and.returnValue(true);
         createController();
         scope.isSpecialityEnabled = true;
@@ -657,7 +654,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should not inclued specialities in ivhTreeView when specialities are not enabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name: "someProvider", person: {display: "someProvider"}, uuid: "someProviderUuid", display: "someProvider"}]}}]));
         appDescriptor.getConfigValue.and.returnValue(true);
         createController();
         scope.isSpecialityEnabled = false;
@@ -698,7 +695,7 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should not include specialities and service types in ivhTreeView when specialities and service types are not enabled', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider", person : {display:"someProvider"},uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name: "someProvider", person: {display: "someProvider"}, uuid: "someProviderUuid", display: "someProvider"}]}}]));
         appDescriptor.getConfigValue.and.returnValue(true);
         createController();
         scope.isSpecialityEnabled = false;

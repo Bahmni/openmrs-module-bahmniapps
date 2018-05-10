@@ -10,7 +10,7 @@ Bahmni.Tests.tehsilMother = {
                     "name": "Chattisgarh"
                 }
             }
-        }
+        };
     }
 };
 
@@ -18,15 +18,15 @@ Bahmni.Tests.villageMother = {
     build: function () {
         return {
             "name": "argaav",
-            "parent":  Bahmni.Tests.tehsilMother.build()
-        }
+            "parent": Bahmni.Tests.tehsilMother.build()
+        };
     }
 };
 
-Bahmni.Tests.genUUID = function() { return (Math.random() * Math.pow(10, 16)).toString(); };
+Bahmni.Tests.genUUID = function () { return (Math.random() * Math.pow(10, 16)).toString(); };
 
 Bahmni.Tests.openMRSConceptMother = {
-    build: function(conceptData) {
+    build: function (conceptData) {
         var concept = {
             uuid: conceptData.uuid || Bahmni.Tests.genUUID(),
             name: { name: conceptData.name || "conceptName"},
@@ -41,7 +41,7 @@ Bahmni.Tests.openMRSConceptMother = {
 };
 
 Bahmni.Tests.conceptMother = {
-    build: function(conceptData) {
+    build: function (conceptData) {
         var defaultConcept = {
             uuid: Bahmni.Tests.genUUID(),
             name: "conceptName",
@@ -55,7 +55,7 @@ Bahmni.Tests.conceptMother = {
 };
 
 Bahmni.Tests.observationMother = {
-    build: function(observationData) {
+    build: function (observationData) {
         var defaultObservation = {
             uuid: Bahmni.Tests.genUUID(),
             groupMembers: [],
@@ -83,10 +83,10 @@ Bahmni.Tests.drugOrderViewModelMother = {
         defaultModel.encounterDate = encounterDate;
         return defaultModel;
     },
-    buildWith: function(treatmentConfig, drugOrderViewModelData) { // TODO : Mujir/Bharti - remove this, use the method with encounterDate
+    buildWith: function (treatmentConfig, drugOrderViewModelData) { // TODO : Mujir/Bharti - remove this, use the method with encounterDate
         return buildWith(treatmentConfig, drugOrderViewModelData, undefined);
     },
-    buildWith: function(treatmentConfig, drugOrderViewModelData, encounterDate) {
+    buildWith: function (treatmentConfig, drugOrderViewModelData, encounterDate) {
         var defaultModel = new Bahmni.Clinical.DrugOrderViewModel(treatmentConfig, drugOrderViewModelData, encounterDate);
 
         defaultModel.instructions = drugOrderViewModelData.instructions || "Before Meals";
@@ -99,14 +99,14 @@ Bahmni.Tests.drugOrderViewModelMother = {
         defaultModel.effectiveStartDate = drugOrderViewModelData.effectiveStartDate || "21-12-2014";
         defaultModel.effectiveStopDate = drugOrderViewModelData.effectiveStopDate || "06-12-2014";
         defaultModel.drug = {
-            "form": drugOrderViewModelData.drug.form ||"Tablet",
+            "form": drugOrderViewModelData.drug.form || "Tablet",
             "uuid": drugOrderViewModelData.drug.uuid || "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
             "strength": drugOrderViewModelData.drug.strength || null,
-            "name": drugOrderViewModelData.drug.name ||"calpol 500mg"
+            "name": drugOrderViewModelData.drug.name || "calpol 500mg"
         };
         defaultModel.uuid = drugOrderViewModelData.uuid || null;
         defaultModel.previousOrderUuid = drugOrderViewModelData.previousOrderUuid || null;
-        defaultModel.encounterDate = drugOrderViewModelData.encounterDate||null;
+        defaultModel.encounterDate = drugOrderViewModelData.encounterDate || null;
         return defaultModel;
     }
 };

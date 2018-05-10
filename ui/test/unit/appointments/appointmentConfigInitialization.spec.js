@@ -2,7 +2,7 @@
 
 describe('AppointmentConfigInitialization', function () {
     var appointmentConfig, locationService, specialityService, appointmentsServiceService, providerService,
-        appService, spinner, locations, specialities, appointmentServices, providers, appDescriptor, appointmentContext ;
+        appService, spinner, locations, specialities, appointmentServices, providers, appDescriptor, appointmentContext;
 
     beforeEach(function () {
         locations = [{display: 'OPD', uuid: 1}, {display: 'Registration Desk', uuid: 2}];
@@ -19,7 +19,7 @@ describe('AppointmentConfigInitialization', function () {
         appointmentsServiceService.getService.and.returnValue(specUtil.simplePromise({data: appointmentServices[0]}));
 
         providerService = jasmine.createSpyObj('providerService', ['list']);
-        providers = [{person:{display: 'Superman'}}];
+        providers = [{person: {display: 'Superman'}}];
         providerService.list.and.returnValue(specUtil.simplePromise({data: {results: providers}}));
 
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -91,5 +91,4 @@ describe('AppointmentConfigInitialization', function () {
             done();
         });
     });
-
 });

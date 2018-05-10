@@ -28,13 +28,13 @@ describe('multiSelectAutocomplete', function () {
     };
 
     it('should remove item from selectedValues', function () {
-        scope.providers = [{name: "test1",person:{display:"test1"}, display: "test1", uuid: "test1"}];
+        scope.providers = [{name: "test1", person: {display: "test1"}, display: "test1", uuid: "test1"}];
         scope.keyProperty = "uuid";
         scope.selectedProviders = [];
 
         var item = {name: "item1", uuid: "item1"};
         var scope1 = createElement().isolateScope();
-        scope1.selectedValues = [{name: "item1", uuid: "item1"}, {name:"item2", uuid:"item2"}];
+        scope1.selectedValues = [{name: "item1", uuid: "item1"}, {name: "item2", uuid: "item2"}];
         scope1.removeItem(item);
         expect(scope1.selectedValues.length).toBe(1);
     });
@@ -46,7 +46,7 @@ describe('multiSelectAutocomplete', function () {
 
         var item = {name: "item1", uuid: "item1"};
         var scope1 = createElement().isolateScope();
-        scope1.selectedValues = [{name: "item1", uuid: "item1"}, {name:"item2", uuid:"item2"}];
+        scope1.selectedValues = [{name: "item1", uuid: "item1"}, {name: "item2", uuid: "item2"}];
         var results = scope1.search("1");
         expect(results.length).toBe(1);
         var results = scope1.search("item");

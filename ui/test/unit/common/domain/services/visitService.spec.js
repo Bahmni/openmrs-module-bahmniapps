@@ -13,12 +13,12 @@ describe('Registration Visit Service', function () {
             'success': function () {
                 return {
                     'then': function (thenMethod) {
-                        thenMethod()
+                        thenMethod();
                     },
                     'error': function (onError) {
-                        onError()
+                        onError();
                     }
-                }
+                };
             }
         })
     };
@@ -67,14 +67,13 @@ describe('Registration Visit Service', function () {
     });
 
     it("Should post visitUUId and bahmniEncounterTransaction to endVisitAndCreateEncounterUrl", function () {
-        var bahmniEncounterTransaction = {patientUuid: "uuid",visitTypeUuid: "3232"};
-        var visitUuid="1234";
-        visitService.endVisitAndCreateEncounter(visitUuid,bahmniEncounterTransaction);
+        var bahmniEncounterTransaction = {patientUuid: "uuid", visitTypeUuid: "3232"};
+        var visitUuid = "1234";
+        visitService.endVisitAndCreateEncounter(visitUuid, bahmniEncounterTransaction);
 
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.calls.mostRecent().args[0]).toBe(endVisitAndCreateEncounterUrl+"?visitUuid="+visitUuid);
+        expect(mockHttp.post.calls.mostRecent().args[0]).toBe(endVisitAndCreateEncounterUrl + "?visitUuid=" + visitUuid);
         expect(mockHttp.post.calls.mostRecent().args[1]).toBe(bahmniEncounterTransaction);
         expect(mockHttp.post.calls.mostRecent().args[2].withCredentials).toBeTruthy();
     });
-
 });

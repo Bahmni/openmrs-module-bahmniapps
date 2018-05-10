@@ -1,7 +1,6 @@
 'use strict';
 
 describe("DrugOrderHistoryController", function () {
-
     beforeEach(module('bahmni.clinical'));
 
     var scope, prescribedDrugOrders, activeDrugOrder, _treatmentService,
@@ -11,7 +10,7 @@ describe("DrugOrderHistoryController", function () {
         drugOrderHistoryConfig: {
             numberOfVisits: 4
         }
-    }
+    };
 
     var translate;
     beforeEach(module(function ($provide) {
@@ -89,7 +88,6 @@ describe("DrugOrderHistoryController", function () {
     });
 
     describe("when conditionally enable or disable order reason text for drug stoppage", function () {
-
         it("should enable reason text for all concepts when nothing is configured", function () {
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
 
@@ -97,7 +95,6 @@ describe("DrugOrderHistoryController", function () {
             scope.discontinue(drugOrder);
 
             expect(drugOrder.orderReasonNotesEnabled).toBe(true);
-
         });
 
         it("should enable reason text only for configured reason concepts", function () {
@@ -107,9 +104,9 @@ describe("DrugOrderHistoryController", function () {
                     if (conceptName == "Adverse event") {
                         drugOrder.orderReasonNotesEnabled = true;
                         return true;
-                    }
-                    else
+                    } else {
                         return false;
+                    }
                 }
             };
             drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
@@ -125,9 +122,9 @@ describe("DrugOrderHistoryController", function () {
                     if (conceptName == "Adverse event") {
                         drugOrder.orderReasonNotesEnabled = true;
                         return true;
-                    }
-                    else
+                    } else {
                         return false;
+                    }
                 }
             };
             drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
@@ -137,9 +134,7 @@ describe("DrugOrderHistoryController", function () {
             drugOrder.orderReasonConcept = {name: {name: "other event"}};
             scope.updateFormConditions(drugOrder);
             expect(drugOrder.orderReasonNotesEnabled).toBe(false);
-
         });
-
     });
 
     it('should broadcast refillDrugOrder event on refill', function () {
@@ -150,7 +145,7 @@ describe("DrugOrderHistoryController", function () {
 
     it('should broadcast reviseDrugOrder event on revise', function () {
         var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
-        scope.consultation.drugOrdersWithUpdatedOrderAttributes = {}
+        scope.consultation.drugOrdersWithUpdatedOrderAttributes = {};
         scope.revise(drugOrder, prescribedDrugOrders);
         expect(rootScope.$broadcast).toHaveBeenCalledWith('event:reviseDrugOrder', drugOrder, prescribedDrugOrders);
     });
@@ -210,7 +205,7 @@ describe("DrugOrderHistoryController", function () {
 
             initController();
             expect(scope.consultation.drugOrderGroups[0].drugOrders.length).toBe(1);
-        })
+        });
     });
 
     activeDrugOrder = {

@@ -1,21 +1,21 @@
 'use strict';
 
-describe("Concept Set group validation handler", function() {
+describe("Concept Set group validation handler", function () {
     var conceptSetSections = [
         {
             name: {name: "vitals"},
-            isLoaded : true,
-            show : jasmine.createSpy()
+            isLoaded: true,
+            show: jasmine.createSpy()
         }
     ];
 
-    it("should push to a list of validations on add & return false", function() {
+    it("should push to a list of validations on add & return false", function () {
         var fun1 = function () {
-            return {allow : true};
+            return {allow: true};
         };
 
         var fun2 = function () {
-            return {allow : false, errorMessage : 'Error Message1'};
+            return {allow: false, errorMessage: 'Error Message1'};
         };
 
         var validationHandler = new Bahmni.ConceptSet.ConceptSetGroupValidationHandler(conceptSetSections);
@@ -28,17 +28,17 @@ describe("Concept Set group validation handler", function() {
         expect(conceptSetSections[0].show).toHaveBeenCalled();
     });
 
-    it("should push to a list of validations on add", function() {
+    it("should push to a list of validations on add", function () {
         var fun1 = function () {
-            return {allow : true};
+            return {allow: true};
         };
 
         var fun2 = function () {
-            return {allow : true, errorMessage : 'Error Message1'};
+            return {allow: true, errorMessage: 'Error Message1'};
         };
 
         var fun3 = function () {
-            return {allow : true, errorMessage : 'Error Message2'};
+            return {allow: true, errorMessage: 'Error Message2'};
         };
 
         var validationHandler = new Bahmni.ConceptSet.ConceptSetGroupValidationHandler([]);

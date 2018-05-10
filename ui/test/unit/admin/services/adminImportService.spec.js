@@ -1,7 +1,7 @@
-describe("adminImportService", function() {
+describe("adminImportService", function () {
     var adminImportService;
     var mockHttp = jasmine.createSpyObj('$http', ['get']);
-    mockHttp.get.and.callFake(function(param) {
+    mockHttp.get.and.callFake(function (param) {
         return specUtil.respondWith("success");
     });
 
@@ -17,12 +17,12 @@ describe("adminImportService", function() {
     });
 
     it('service should retrieve', function (done) {
-        adminImportService.getAllStatus(12).then(function(response) {
+        adminImportService.getAllStatus(12).then(function (response) {
             expect(response).toEqual("success");
             done();
         });
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/bahmnicore/admin/upload/status");
-        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({numberOfDays:12});
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({numberOfDays: 12});
     });
 });

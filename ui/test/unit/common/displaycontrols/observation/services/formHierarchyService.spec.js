@@ -14,63 +14,63 @@ describe("FormHierarchyService", function () {
         $q = _$q_;
         $scope = _$rootScope_;
         allForms = {
-                "data": [
-                    {
-                        "version": "1",
-                        "name": "test section inside section",
-                        "uuid": "f2d48fb3-75c7-4ab5-93d0-413b9bdcd9cd"
-                    },
-                    {
-                        "version": "1",
-                        "name": "test section with an obs",
-                        "uuid": "7defedec-d983-4b59-a1a7-cb40cf6b0cf1"
-                    },
-                    {
-                        "version": "1",
-                        "name": "test section with an obs and outside obs",
-                        "uuid": "8930383a-69ec-4a27-a7f9-1238ae8a3b48"
-                    },
-                    {
-                        "version": "1",
-                        "name": "test section with obs group",
-                        "uuid": "1b734eb2-f9d0-479a-adb9-da10661343b6"
-                    },
-                    {
-                        "version": "1",
-                        "name": "test single",
-                        "uuid": "5fc39965-9788-4ffc-bfdb-10d7cf13ad3b"
-                    },
-                    {
-                        "version": "2",
-                        "name": "test section with an obs",
-                        "uuid": "version2"
-                    },
-                    {
-                        "version": "3",
-                        "name": "test single",
-                        "uuid": "0e6d396c-133c-45c3-8ca6-340b691ada4f"
-                    },
-                    {
-                        "version": "4",
-                        "name": "test single",
-                        "uuid": "24484918-aceb-461c-b81c-81102979b3b5"
-                    },
-                    {
-                        "version": "5",
-                        "name": "test single",
-                        "uuid": "6f458b2f-cf2e-463a-b49e-6bd4c8dcaaea"
-                    },
-                    {
-                        "version": "1",
-                        "name": "test single option id",
-                        "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebefeca"
-                    },
-                    {
-                        "version": "1",
-                        "name": "test add more",
-                        "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebea"
-                    }
-                ]
+            "data": [
+                {
+                    "version": "1",
+                    "name": "test section inside section",
+                    "uuid": "f2d48fb3-75c7-4ab5-93d0-413b9bdcd9cd"
+                },
+                {
+                    "version": "1",
+                    "name": "test section with an obs",
+                    "uuid": "7defedec-d983-4b59-a1a7-cb40cf6b0cf1"
+                },
+                {
+                    "version": "1",
+                    "name": "test section with an obs and outside obs",
+                    "uuid": "8930383a-69ec-4a27-a7f9-1238ae8a3b48"
+                },
+                {
+                    "version": "1",
+                    "name": "test section with obs group",
+                    "uuid": "1b734eb2-f9d0-479a-adb9-da10661343b6"
+                },
+                {
+                    "version": "1",
+                    "name": "test single",
+                    "uuid": "5fc39965-9788-4ffc-bfdb-10d7cf13ad3b"
+                },
+                {
+                    "version": "2",
+                    "name": "test section with an obs",
+                    "uuid": "version2"
+                },
+                {
+                    "version": "3",
+                    "name": "test single",
+                    "uuid": "0e6d396c-133c-45c3-8ca6-340b691ada4f"
+                },
+                {
+                    "version": "4",
+                    "name": "test single",
+                    "uuid": "24484918-aceb-461c-b81c-81102979b3b5"
+                },
+                {
+                    "version": "5",
+                    "name": "test single",
+                    "uuid": "6f458b2f-cf2e-463a-b49e-6bd4c8dcaaea"
+                },
+                {
+                    "version": "1",
+                    "name": "test single option id",
+                    "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebefeca"
+                },
+                {
+                    "version": "1",
+                    "name": "test add more",
+                    "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebea"
+                }
+            ]
         };
     }));
 
@@ -153,24 +153,24 @@ describe("FormHierarchyService", function () {
                     "formFieldPath": null,
                     "concept": {
                         "name": "SPO2 Data",
-                        "shortName": "SPO2",
+                        "shortName": "SPO2"
                     },
                     "valueAsString": "100.0",
-                    "conceptNameToDisplay": "SPO2",
+                    "conceptNameToDisplay": "SPO2"
                 }],
                 "formNamespace": null,
                 "formFieldPath": null,
                 "concept": {
                     "name": "Vitals",
-                    "shortName": "Vitals",
-                },
+                    "shortName": "Vitals"
+                }
             }, {
                 "groupMembers": [],
                 "formNamespace": "Bahmni",
                 "formFieldPath": "test.1/1-0",
                 "concept": {
                     "name": "HEAD Nose lateral",
-                    "shortName": "head nose lateral",
+                    "shortName": "head nose lateral"
                 }
             }]
         }];
@@ -207,7 +207,7 @@ describe("FormHierarchyService", function () {
                 }
 
             }]
-        }]
+        }];
 
         formHierarchyService.build(observations);
 
@@ -281,7 +281,6 @@ describe("FormHierarchyService", function () {
             }]
         }];
 
-
         formHierarchyService.build(observations);
 
         expect(observations[0].value.length).toBe(1);
@@ -296,7 +295,6 @@ describe("FormHierarchyService", function () {
 
         expect(firstValue.groupMembers[1].concept.shortName).toBe("HEIGHT");
         expect(firstValue.groupMembers[2].concept.shortName).toBe("WEIGHT");
-
     });
 
     it('should construct dummy obs group for multiple observations from different form', function () {
@@ -322,16 +320,16 @@ describe("FormHierarchyService", function () {
                 "formFieldPath": "test.2/1-0",
                 "concept": {
                     "shortName": "head nose lateral"
-                },
+                }
             }, {
                 "groupMembers": [],
                 "formNamespace": "Bahmni",
                 "formFieldPath": "test1.2/1-0",
                 "concept": {
                     "shortName": "head nose lateral"
-                },
+                }
             }]
-        }]
+        }];
 
         formHierarchyService.build(observations);
 
@@ -363,7 +361,7 @@ describe("FormHierarchyService", function () {
                         "conceptClass": "weight"
                     },
                     "valueAsString": "50.0"
-                },{
+                }, {
                     "groupMembers": [],
                     "formNamespace": "Bahmni",
                     "formFieldPath": "test section with an obs.1/1-1",
@@ -373,7 +371,7 @@ describe("FormHierarchyService", function () {
                         "conceptClass": "weight"
                     },
                     "valueAsString": "100.0"
-                },{
+                }, {
                     "groupMembers": [],
                     "formNamespace": "Bahmni",
                     "formFieldPath": "test section with an obs.1/1-2",
@@ -425,7 +423,6 @@ describe("FormHierarchyService", function () {
         expect(value.groupMembers[0].valueAsString).toBe("50.0");
         expect(value.groupMembers[1].valueAsString).toBe("100.0");
         expect(value.groupMembers[2].valueAsString).toBe("150.0");
-
     });
 
     it("should display information in sequence as input for add more obs controls", function () {
@@ -441,7 +438,7 @@ describe("FormHierarchyService", function () {
                         "conceptClass": "weight"
                     },
                     "valueAsString": "150.0"
-                },{
+                }, {
                     "groupMembers": [],
                     "formNamespace": "Bahmni",
                     "formFieldPath": "test section with an obs.1/1-1",
@@ -451,7 +448,7 @@ describe("FormHierarchyService", function () {
                         "conceptClass": "weight"
                     },
                     "valueAsString": "100.0"
-                },{
+                }, {
                     "groupMembers": [],
                     "formNamespace": "Bahmni",
                     "formFieldPath": "test section with an obs.1/1-0",
@@ -503,7 +500,6 @@ describe("FormHierarchyService", function () {
         expect(value.groupMembers[0].valueAsString).toBe("50.0");
         expect(value.groupMembers[1].valueAsString).toBe("100.0");
         expect(value.groupMembers[2].valueAsString).toBe("150.0");
-
     });
 
     it("should construct dummy obs group for single observation in section from form", function () {
@@ -551,7 +547,7 @@ describe("FormHierarchyService", function () {
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
-        allFormsDeferred.resolve(allForms)
+        allFormsDeferred.resolve(allForms);
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
@@ -568,7 +564,7 @@ describe("FormHierarchyService", function () {
     });
 
     it("should construct dummy obs group for section and non-inside section obs from form", function () {
-        //given
+        // given
         observations = [{
             "value": [{
                 "groupMembers": [{
@@ -626,11 +622,11 @@ describe("FormHierarchyService", function () {
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
-        allFormsDeferred.resolve(allForms)
+        allFormsDeferred.resolve(allForms);
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
-        //then
+        // then
         var dummyObsGroup = observations[0].value[0];
         expect(dummyObsGroup.concept.shortName).toBe("test section with an obs and outside obs");
 
@@ -645,11 +641,10 @@ describe("FormHierarchyService", function () {
         var layer2FirstGroupMember = layer1FirstGroupMember.groupMembers[0];
         expect(layer2FirstGroupMember.concept.shortName).toBe("HEIGHT");
         expect(layer2FirstGroupMember.valueAsString).toBe("30.0");
-
     });
 
     it("should construct dummy obs group for section inside section with obs from form", function () {
-        //given
+        // given
         observations = [{
             "value": [{
                 "groupMembers": [{
@@ -713,18 +708,17 @@ describe("FormHierarchyService", function () {
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
-        allFormsDeferred.resolve(allForms)
+        allFormsDeferred.resolve(allForms);
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
-        //then
+        // then
         var dummyObsGroup = observations[0].value[0];
         expect(dummyObsGroup.concept.shortName).toBe("test section inside section");
 
         var layer1FirstGroupMember = dummyObsGroup.groupMembers[0];
         expect(layer1FirstGroupMember.concept.shortName).toBe("Outer Section");
         expect(layer1FirstGroupMember.groupMembers.length).toBe(2);
-
 
         var layer2FirstGroupMember = layer1FirstGroupMember.groupMembers[0];
         expect(layer2FirstGroupMember.concept.shortName).toBe("HEIGHT");
@@ -740,7 +734,7 @@ describe("FormHierarchyService", function () {
     });
 
     it("should construct dummy obs group for section inside section with obs group from form", function () {
-        //given
+        // given
         observations = [{
             "value": [{
                 "groupMembers": [{
@@ -844,18 +838,17 @@ describe("FormHierarchyService", function () {
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
-        allFormsDeferred.resolve(allForms)
+        allFormsDeferred.resolve(allForms);
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
-        //then
+        // then
         var dummyObsGroup = observations[0].value[0];
         expect(dummyObsGroup.concept.shortName).toBe("test section with obs group");
 
         var layer1FirstGroupMember = dummyObsGroup.groupMembers[0];
         expect(layer1FirstGroupMember.concept.shortName).toBe("Outer Section");
         expect(layer1FirstGroupMember.groupMembers.length).toBe(2);
-
 
         var layer2FirstGroupMember = layer1FirstGroupMember.groupMembers[0];
         expect(layer2FirstGroupMember.concept.shortName).toBe("HEIGHT DATA");
@@ -931,7 +924,7 @@ describe("FormHierarchyService", function () {
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
-        allFormsDeferred.resolve(allForms)
+        allFormsDeferred.resolve(allForms);
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
@@ -940,7 +933,7 @@ describe("FormHierarchyService", function () {
     });
 
     it("should hide section information when there is no input in the section", function () {
-        //given
+        // given
         observations = [{
             "value": [{
                 "groupMembers": [{
@@ -988,11 +981,11 @@ describe("FormHierarchyService", function () {
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
-        allFormsDeferred.resolve(allForms)
+        allFormsDeferred.resolve(allForms);
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
-        //then
+        // then
         var dummyObsGroup = observations[0].value[0];
         expect(dummyObsGroup.concept.shortName).toBe("test section with an obs and outside obs");
         expect(dummyObsGroup.groupMembers.length).toBe(1);
@@ -1000,11 +993,9 @@ describe("FormHierarchyService", function () {
         var layer1SecondGroupMember = dummyObsGroup.groupMembers[0];
         expect(layer1SecondGroupMember.concept.shortName).toBe("WEIGHT");
         expect(layer1SecondGroupMember.valueAsString).toBe("50.0");
-
-
     });
     it("should show section information when there is input in the section and no input in the outside obs", function () {
-        //given
+        // given
         observations = [{
             "value": [{
                 "groupMembers": [{
@@ -1056,7 +1047,7 @@ describe("FormHierarchyService", function () {
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
-        //then
+        // then
         var dummyObsGroup = observations[0].value[0];
         expect(dummyObsGroup.concept.shortName).toBe("test section with an obs and outside obs");
         expect(dummyObsGroup.groupMembers.length).toBe(1);
@@ -1071,7 +1062,7 @@ describe("FormHierarchyService", function () {
     });
 
     it("should hide section information when there is no input in the section inside the section and input in outside obs", function () {
-        //given
+        // given
         observations = [{
             "value": [{
                 "groupMembers": [{
@@ -1098,22 +1089,22 @@ describe("FormHierarchyService", function () {
                             "label": {"type": "label", "value": "WEIGHT"},
                             "id": "3"
                         },
-                            {
+                        {
+                            "type": "section",
+                            "label": {"type": "label", "value": "Outer Section"},
+                            "id": "1",
+                            "controls": [{
                                 "type": "section",
-                                "label": {"type": "label", "value": "Outer Section"},
-                                "id": "1",
+                                "label": {"type": "label", "value": "Inner Section"},
+                                "id": "4",
                                 "controls": [{
-                                    "type": "section",
-                                    "label": {"type": "label", "value": "Inner Section"},
-                                    "id": "4",
-                                    "controls": [{
-                                        "type": "obsControl",
-                                        "label": {"type": "label", "value": "HEIGHT"},
-                                        "id": "2"
-                                    }]
+                                    "type": "obsControl",
+                                    "label": {"type": "label", "value": "HEIGHT"},
+                                    "id": "2"
                                 }]
-
                             }]
+
+                        }]
                     })
                 }]
             }
@@ -1125,11 +1116,11 @@ describe("FormHierarchyService", function () {
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
 
         formHierarchyService.build(observations);
-        allFormsDeferred.resolve(allForms)
+        allFormsDeferred.resolve(allForms);
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
-        //then
+        // then
         var dummyObsGroup = observations[0].value[0];
         expect(dummyObsGroup.concept.shortName).toBe("test section with an obs and outside obs");
         expect(dummyObsGroup.groupMembers.length).toBe(1);
@@ -1139,18 +1130,18 @@ describe("FormHierarchyService", function () {
         expect(layer1FirstGroupMember.valueAsString).toBe("50.0");
     });
 
-  it("should not fetch form details when observation is empty", function () {
-    //given
-    observations = [];
+    it("should not fetch form details when observation is empty", function () {
+    // given
+        observations = [];
 
-    spyOn(formService, "getAllForms");
-    spyOn(formService, "getFormDetail");
+        spyOn(formService, "getAllForms");
+        spyOn(formService, "getFormDetail");
 
-    formHierarchyService.build(observations);
-    $scope.$apply();
+        formHierarchyService.build(observations);
+        $scope.$apply();
 
-    //then
-    expect(formService.getAllForms.calls.any()).toEqual(false);
-    expect(formService.getFormDetail.calls.any()).toEqual(false);
-  });
+    // then
+        expect(formService.getAllForms.calls.any()).toEqual(false);
+        expect(formService.getFormDetail.calls.any()).toEqual(false);
+    });
 });

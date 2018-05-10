@@ -1,13 +1,13 @@
 describe("ObservationTemplate", function () {
     it("should group observations by encounterDateTime", function () {
-        var observationTemplate = new Bahmni.Clinical.ObservationTemplate({name : "Breast Cancer - Intake", shortName : "Breast Cancer - Intake -shortName"}, "1218997800000", bahmniObservations);
+        var observationTemplate = new Bahmni.Clinical.ObservationTemplate({name: "Breast Cancer - Intake", shortName: "Breast Cancer - Intake -shortName"}, "1218997800000", bahmniObservations);
         expect(observationTemplate.name).toBe("Breast Cancer - Intake");
         expect(observationTemplate.label).toBe("Breast Cancer - Intake -shortName");
         expect(observationTemplate.encounters.length).toBe(2);
     });
 
     it("should sort encounters by encounterDateTime", function () {
-        var observationTemplate = new Bahmni.Clinical.ObservationTemplate({name : "Breast Cancer - Intake", shortName : "Breast Cancer - Intake -shortName"}, "1218997800000", bahmniObservations);
+        var observationTemplate = new Bahmni.Clinical.ObservationTemplate({name: "Breast Cancer - Intake", shortName: "Breast Cancer - Intake -shortName"}, "1218997800000", bahmniObservations);
 
         expect(observationTemplate.encounters[0].encounterDateTime).toBe('1412158286000');
         expect(observationTemplate.encounters[0].observations.length).toBe(1);
@@ -16,7 +16,7 @@ describe("ObservationTemplate", function () {
         expect(observationTemplate.encounters[1].encounterDateTime).toBe('1412157286000');
         expect(observationTemplate.encounters[1].observations.length).toBe(1);
         expect(observationTemplate.encounters[1].observations[0].uuid).toBe('0f4dc38f-4588-49d9-a62c-ac045ddafa59');
-    })
+    });
 });
 
 var bahmniObservations = [

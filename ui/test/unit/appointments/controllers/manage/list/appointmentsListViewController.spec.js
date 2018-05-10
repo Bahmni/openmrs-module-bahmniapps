@@ -472,9 +472,9 @@ describe('AppointmentsListViewController', function () {
                     speciality: {name: "speciality2"},
                     location: {name: "location2"}
                 },
-                additionalInfo : {
-                    location : "Ward",
-                    bedNumber : "212"
+                additionalInfo: {
+                    location: "Ward",
+                    bedNumber: "212"
                 }
             };
             var otherAppointment = {
@@ -491,9 +491,9 @@ describe('AppointmentsListViewController', function () {
                     speciality: {name: "speciality1"},
                     location: {name: "location1"}
                 },
-                additionalInfo : {
-                    location : "Another ward",
-                    bedNumber : "214"
+                additionalInfo: {
+                    location: "Another ward",
+                    bedNumber: "214"
                 }
             };
             var appointments = [appointment, otherAppointment];
@@ -705,9 +705,9 @@ describe('AppointmentsListViewController', function () {
                 {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
-                createController();
+            createController();
 
-                expect(scope.tableInfo).toEqual(tableInfo);
+            expect(scope.tableInfo).toEqual(tableInfo);
         });
 
         it('should filter the appointments on change of filter params', function () {

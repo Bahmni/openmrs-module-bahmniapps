@@ -7,15 +7,12 @@ describe('monthyearpicker', function () {
         scope,
         translate;
 
-        translate = jasmine.createSpyObj('$translate', ['instant']);
+    translate = jasmine.createSpyObj('$translate', ['instant']);
     beforeEach(module('bahmni.common.uiHelper'), function ($provide) {
-
         $provide.value('$translate', translate);
-
     });
 
     beforeEach(module('pascalprecht.translate'));
-
 
     beforeEach(inject(function (_$compile_, $rootScope) {
         $compile = _$compile_;
@@ -23,7 +20,7 @@ describe('monthyearpicker', function () {
         scope = rootScope.$new();
     }));
 
-    function createDirective() {
+    function createDirective () {
         var elem, compiledElem;
         scope.modelValue = "2010-09-28";
 
@@ -78,7 +75,6 @@ describe('monthyearpicker', function () {
         isolatedScope.selectedMonth = "undefined";
         expect(isolatedScope.illegalMonth()).toBeFalsy();
         expect(isolatedScope.illegalYear()).toBeFalsy();
-
     });
 
     it('should set illegal year true if month is present and year is undefined or null', function () {
@@ -93,7 +89,6 @@ describe('monthyearpicker', function () {
         expect(isolatedScope.illegalYear()).toBeTruthy();
         isolatedScope.selectedYear = null;
         expect(isolatedScope.illegalYear()).toBeTruthy();
-
     });
 
     it('should set illegal month true if year is present and month is undefined or null', function () {
@@ -108,6 +103,5 @@ describe('monthyearpicker', function () {
         expect(isolatedScope.illegalMonth()).toBeTruthy();
         isolatedScope.selectedMonth = null;
         expect(isolatedScope.illegalMonth()).toBeTruthy();
-
     });
 });

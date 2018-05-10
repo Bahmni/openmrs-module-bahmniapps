@@ -71,7 +71,7 @@ module.exports = function (config) {
             'test/unit/**/*.js',
             "test/unit/common/util/dateTimeFormatter.spec.js"
         ],
-        exclude:[
+        exclude: [
             'app/components/moment/src/**/*.js'
         ],
         reporters: ['junit', (process.env.CI === 'true' ? 'dots' : 'progress'), 'coverage'],
@@ -86,8 +86,8 @@ module.exports = function (config) {
             'app/registration/**/*.js': ['coverage'],
             'app/reports/**/*.js': ['coverage'],
             'app/appointments/**/*.js': ['coverage'],
-            'app/common/displaycontrols/**/views/*.html':['ng-html2js'],
-            'app/common/concept-set/views/*.html':['ng-html2js'],
+            'app/common/displaycontrols/**/views/*.html': ['ng-html2js'],
+            'app/common/concept-set/views/*.html': ['ng-html2js'],
             'app/common/uicontrols/**/views/*.html': ['ng-html2js'],
             'app/clinical/**/**/*.html': ['ng-html2js']
         },
@@ -107,8 +107,8 @@ module.exports = function (config) {
             prependPrefix: '..',
             moduleName: 'ngHtml2JsPreprocessor'
         },
-        proxies:{
-            '/images/blank-user.gif' :'/base/app/images/blank-user.gif'
+        proxies: {
+            '/images/blank-user.gif': '/base/app/images/blank-user.gif'
         }
     });
 };

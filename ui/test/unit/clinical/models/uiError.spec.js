@@ -1,7 +1,6 @@
 'use strict';
 
 describe("UiErrorSpec", function () {
-
     var uiErrorSpec = Bahmni.Clinical.Error;
 
     it("maps error messages from the source error object", function () {

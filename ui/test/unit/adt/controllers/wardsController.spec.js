@@ -36,24 +36,23 @@ describe("WardsController", function () {
 
         module(function ($provide) {
             $provide.value('bedService', {});
-            $provide.value('userService', {})
+            $provide.value('userService', {});
         });
-
     });
 
     beforeEach(function () {
-        inject(function ($controller, $rootScope, _wardService_, bedService, userService) {
+        inject(function ($controller, $rootScope, _wardService_, _bedService, _userService) {
             scope = $rootScope.$new();
             rootScope = {
                 currentUser: {
                     isFavouriteWard: function (wardName) {
-                        return "General Ward" === wardName;
+                        return wardName === "General Ward";
                     }
                 }
             };
             wardService = _wardService_;
-            bedService = bedService;
-            userService = userService;
+            bedService = _bedService;
+            userService = _userService;
             createController = function () {
                 return $controller("WardsController", {
                     $scope: scope,
@@ -68,8 +67,5 @@ describe("WardsController", function () {
         createController();
         expect(wardService.getWardsList).toHaveBeenCalled();
     });
-
 });
-
-
 

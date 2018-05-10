@@ -14,52 +14,52 @@ describe("otCalendarSurgicalAppointment", function () {
     }));
     beforeEach(function () {
         surgicalAppointment = {
-                "patient": {uuid: "168eed46-dabe-4b7b-a0d6-a8e4ccc02510", display: "IQ100032 - Sri Rama"},
-                "notes": "notes",
-                "surgicalAppointmentAttributes": [{
-                    surgicalAppointmentAttributeType: {
-                        uuid: "25ef8484-3a1f-11e7-83f8-0800274a5156",
-                        name: "procedure"
-                    }, value: "procedure"
-                }, {
-                    surgicalAppointmentAttributeType: {
-                        uuid: "25efb2ef-3a1f-11e7-83f8-0800274a5156",
-                        name: "cleaningTime"
-                    }, value: "15"
-                }, {
-                    surgicalAppointmentAttributeType: {
-                        uuid: "25efa512-3a1f-11e7-83f8-0800274a5156",
-                        name: "estTimeMinutes"
-                    }, value: "1"
-                }, {
-                    surgicalAppointmentAttributeType: {
-                        uuid: "25ef9562-3a1f-11e7-83f8-0800274a5156",
-                        name: "estTimeHours"
-                    }, value: "2"
-                }, {
-                    surgicalAppointmentAttributeType: {
-                        uuid: "25efd013-3a1f-11e7-83f8-0800274a5156",
-                        name: "otherSurgeon"
-                    }, value: "18"
-                }, {
-                    surgicalAppointmentAttributeType: {
-                        uuid: "25efec33-3a1f-11e7-83f8-0800274a5156",
-                        name: "anaesthetist"
-                    }, value: "anaest"
-                }, {
-                    surgicalAppointmentAttributeType: {uuid: "25eff89a-3a1f-11e7-83f8-0800274a5156", name: "scrubNurse"},
-                    value: "scr"
-                }, {
-                    surgicalAppointmentAttributeType: {
-                        uuid: "25f0060e-3a1f-11e7-83f8-0800274a5156",
-                        name: "circulatingNurse"
-                    }, value: "cir"
+            "patient": {uuid: "168eed46-dabe-4b7b-a0d6-a8e4ccc02510", display: "IQ100032 - Sri Rama"},
+            "notes": "notes",
+            "surgicalAppointmentAttributes": [{
+                surgicalAppointmentAttributeType: {
+                    uuid: "25ef8484-3a1f-11e7-83f8-0800274a5156",
+                    name: "procedure"
+                }, value: "procedure"
+            }, {
+                surgicalAppointmentAttributeType: {
+                    uuid: "25efb2ef-3a1f-11e7-83f8-0800274a5156",
+                    name: "cleaningTime"
+                }, value: "15"
+            }, {
+                surgicalAppointmentAttributeType: {
+                    uuid: "25efa512-3a1f-11e7-83f8-0800274a5156",
+                    name: "estTimeMinutes"
+                }, value: "1"
+            }, {
+                surgicalAppointmentAttributeType: {
+                    uuid: "25ef9562-3a1f-11e7-83f8-0800274a5156",
+                    name: "estTimeHours"
+                }, value: "2"
+            }, {
+                surgicalAppointmentAttributeType: {
+                    uuid: "25efd013-3a1f-11e7-83f8-0800274a5156",
+                    name: "otherSurgeon"
+                }, value: "18"
+            }, {
+                surgicalAppointmentAttributeType: {
+                    uuid: "25efec33-3a1f-11e7-83f8-0800274a5156",
+                    name: "anaesthetist"
+                }, value: "anaest"
+            }, {
+                surgicalAppointmentAttributeType: {uuid: "25eff89a-3a1f-11e7-83f8-0800274a5156", name: "scrubNurse"},
+                value: "scr"
+            }, {
+                surgicalAppointmentAttributeType: {
+                    uuid: "25f0060e-3a1f-11e7-83f8-0800274a5156",
+                    name: "circulatingNurse"
+                }, value: "cir"
 
-                }],
-                 "derivedAttributes": {
-                    duration: 136
-                }
-            };
+            }],
+            "derivedAttributes": {
+                duration: 136
+            }
+        };
         scope.filterParams = {
             providers: [],
             locations: {"location1": false, "location2": true},
@@ -68,12 +68,10 @@ describe("otCalendarSurgicalAppointment", function () {
         };
     });
 
-
     it("should set the attributes of the surgical appointment", function () {
         scope.surgicalAppointment = surgicalAppointment;
         scope.backgroundColor = "#FFFFF";
         scope.heightPerMin = 2;
-
 
         mockBackend.expectGET('../ot/views/calendarSurgicalAppointment.html').respond("<div>dummy</div>");
         element = $compile(simpleHtml)(scope);
@@ -97,7 +95,6 @@ describe("otCalendarSurgicalAppointment", function () {
         scope.surgicalAppointment = surgicalAppointment;
         scope.backgroundColor = "#FFFFF";
         scope.heightPerMin = 1.5;
-
 
         mockBackend.expectGET('../ot/views/calendarSurgicalAppointment.html').respond("<div>dummy</div>");
         element = $compile(simpleHtml)(scope);
@@ -126,7 +123,7 @@ describe("otCalendarSurgicalAppointment", function () {
         };
         var surgicalBlock = {uuid: "surgicalBlockUuid"};
         scope.surgicalAppointment = surgicalAppointment;
-        scope.$parent.surgicalBlock =  surgicalBlock;
+        scope.$parent.surgicalBlock = surgicalBlock;
 
         mockBackend.expectGET('../ot/views/calendarSurgicalAppointment.html').respond("<div>dummy</div>");
         element = $compile(simpleHtml)(scope);

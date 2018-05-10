@@ -18,7 +18,7 @@ describe("PatientDashboardVisitsController", function () {
                         "maximumNoOfVisits": 8,
                         "groupByVisits": true
                     }
-                }
+                };
             }
         };
 
@@ -34,5 +34,4 @@ describe("PatientDashboardVisitsController", function () {
         expect(scope.dashboardConfig.title).toBe("visitDashboard");
         expect(scope.patientUuid).toBe("fc6ede09-f16f-4877-d2f5-ed8b2182ec11");
     });
-
 });

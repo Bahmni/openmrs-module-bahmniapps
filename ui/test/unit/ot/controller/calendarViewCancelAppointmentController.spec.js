@@ -22,10 +22,10 @@ describe("calendar view cancel appointment controller", function () {
     });
 
     var createController = function () {
-        scope.ngDialogData = {surgicalBlock: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}, {status: "CANCELLED", sortWeight: 1, patient: {display: "someName"}}], location: {name: "locationName"}}, surgicalAppointment: {status: "CANCELLED", sortWeight: 1, patient: {display: "someName"}}};
+        scope.ngDialogData = {surgicalBlock: {uuid: "blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}, {status: "CANCELLED", sortWeight: 1, patient: {display: "someName"}}], location: {name: "locationName"}}, surgicalAppointment: {status: "CANCELLED", sortWeight: 1, patient: {display: "someName"}}};
         controller('calendarViewCancelAppointmentController', {
             $scope: scope,
-            $translate : translate,
+            $translate: translate,
             $q: q,
             ngDialog: ngDialog,
             surgicalAppointmentService: surgicalAppointmentService,
@@ -37,14 +37,14 @@ describe("calendar view cancel appointment controller", function () {
 
     it("should update the status of the appointment with status", function () {
         surgicalAppointmentService.updateSurgicalAppointment.and.callFake(function () {
-            return specUtil.simplePromise({data: {patient: {uuid:"someUuid", display: "someName - I012345"}, status: 'CANCELLED', sortWeight : null}});
+            return specUtil.simplePromise({data: {patient: {uuid: "someUuid", display: "someName - I012345"}, status: 'CANCELLED', sortWeight: null}});
         });
         surgicalAppointmentService.updateSurgicalBlock.and.callFake(function () {
-            return specUtil.simplePromise({data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}});
+            return specUtil.simplePromise({data: {uuid: "blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}});
         });
-        q.all.and.returnValue(specUtil.simplePromise([{data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}}, {data: {patient: {uuid:"someUuid", display: "someName - I012345"}, status: 'CANCELLED', sortWeight : null}}]));
-        surgicalAppointmentHelper.getAppointmentAttributes.and.callFake(function () {return {};});
-        surgicalAppointmentHelper.getPatientDisplayLabel.and.callFake(function () {return "someName";});
+        q.all.and.returnValue(specUtil.simplePromise([{data: {uuid: "blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}}, {data: {patient: {uuid: "someUuid", display: "someName - I012345"}, status: 'CANCELLED', sortWeight: null}}]));
+        surgicalAppointmentHelper.getAppointmentAttributes.and.callFake(function () { return {}; });
+        surgicalAppointmentHelper.getPatientDisplayLabel.and.callFake(function () { return "someName"; });
         createController();
         scope.confirmCancelAppointment();
         expect(scope.ngDialogData.surgicalAppointment.sortWeight).toBe(null);
@@ -62,37 +62,35 @@ describe("calendar view cancel appointment controller", function () {
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
-
     it("should give cancelled message when the appointment is cancelled", function () {
         surgicalAppointmentService.updateSurgicalAppointment.and.callFake(function () {
-            return specUtil.simplePromise({data: {patient: {uuid:"someUuid", display: "someName - I012345"}, status: "CANCELLED"}});
+            return specUtil.simplePromise({data: {patient: {uuid: "someUuid", display: "someName - I012345"}, status: "CANCELLED"}});
         });
         surgicalAppointmentService.updateSurgicalBlock.and.callFake(function () {
-            return specUtil.simplePromise({data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}});
+            return specUtil.simplePromise({data: {uuid: "blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}});
         });
-        q.all.and.returnValue(specUtil.simplePromise([{data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}}, {data: {patient: {uuid:"someUuid", display: "someName - I012345"}, status: "CANCELLED"}}]));
-        surgicalAppointmentHelper.getAppointmentAttributes.and.callFake(function () {return {};});
-        surgicalAppointmentHelper.getPatientDisplayLabel.and.callFake(function () {return "someName";});
+        q.all.and.returnValue(specUtil.simplePromise([{data: {uuid: "blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}}, {data: {patient: {uuid: "someUuid", display: "someName - I012345"}, status: "CANCELLED"}}]));
+        surgicalAppointmentHelper.getAppointmentAttributes.and.callFake(function () { return {}; });
+        surgicalAppointmentHelper.getPatientDisplayLabel.and.callFake(function () { return "someName"; });
         createController();
         scope.confirmCancelAppointment();
         expect(q.all).toHaveBeenCalled();
-        expect(translate.instant).toHaveBeenCalledWith("OT_SURGICAL_APPOINTMENT_CANCELLED_MESSAGE")
+        expect(translate.instant).toHaveBeenCalledWith("OT_SURGICAL_APPOINTMENT_CANCELLED_MESSAGE");
     });
 
     it("should give postponed message when the appointment is postponed", function () {
         surgicalAppointmentService.updateSurgicalAppointment.and.callFake(function () {
-            return specUtil.simplePromise({data: {patient: {uuid:"someUuid", display: "someName - I022222"}, status: "POSTPONED" }});
+            return specUtil.simplePromise({data: {patient: {uuid: "someUuid", display: "someName - I022222"}, status: "POSTPONED" }});
         });
         surgicalAppointmentService.updateSurgicalBlock.and.callFake(function () {
-            return specUtil.simplePromise({data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}});
+            return specUtil.simplePromise({data: {uuid: "blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}});
         });
-        q.all.and.returnValue(specUtil.simplePromise([{data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}}, {data: {patient: {uuid:"someUuid", display: "someName - I022222"}, status: "POSTPONED" }}]));
-        surgicalAppointmentHelper.getAppointmentAttributes.and.callFake(function () {return {};});
-        surgicalAppointmentHelper.getPatientDisplayLabel.and.callFake(function () {return "someName";});
+        q.all.and.returnValue(specUtil.simplePromise([{data: {uuid: "blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}}, {data: {patient: {uuid: "someUuid", display: "someName - I022222"}, status: "POSTPONED" }}]));
+        surgicalAppointmentHelper.getAppointmentAttributes.and.callFake(function () { return {}; });
+        surgicalAppointmentHelper.getPatientDisplayLabel.and.callFake(function () { return "someName"; });
         createController();
         scope.confirmCancelAppointment();
         expect(q.all).toHaveBeenCalled();
-        expect(translate.instant).toHaveBeenCalledWith("OT_SURGICAL_APPOINTMENT_POSTPONED_MESSAGE")
+        expect(translate.instant).toHaveBeenCalledWith("OT_SURGICAL_APPOINTMENT_POSTPONED_MESSAGE");
     });
-
 });

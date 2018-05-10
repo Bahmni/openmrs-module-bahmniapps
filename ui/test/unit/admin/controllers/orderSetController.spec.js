@@ -1,7 +1,6 @@
 'use strict';
 
 describe("OrderSetController", function () {
-
     var scope, $state, spinner, deferred, q, orderSetService, orderTypeService, messagingService, _provider;
     beforeEach(module('bahmni.admin'));
     var orderTypes = [
@@ -65,7 +64,6 @@ describe("OrderSetController", function () {
 
         orderSetService.saveOrderSet.and.returnValue({});
 
-
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         messagingService = jasmine.createSpyObj('messageService', ['showMessage']);
 
@@ -73,10 +71,8 @@ describe("OrderSetController", function () {
         $provide.value('orderTypeService', orderTypeService);
         $provide.value('spinner', spinner);
         $provide.value('messagingService', messagingService);
-        $provide.value('$state', {params:{orderSetUuid: "new"}});
-
+        $provide.value('$state', {params: {orderSetUuid: "new"}});
     }));
-
 
     beforeEach(inject(function ($controller, $rootScope, $q) {
         scope = $rootScope.$new();
@@ -93,15 +89,15 @@ describe("OrderSetController", function () {
     };
 
     var orderSetData = {
-        data:{
-            orderSetMembers:[
-                {orderType:{uuid: "some_uuid1"}, concept:{name: "concept_name1"}, retired: false},
-                {orderType:{uuid: "some_uuid2"}, concept:{name: "concept_name2"}, retired: true},
-                {orderType:{uuid: "some_uuid3"}, concept:{name: "concept_name3"}},
-                {orderType:{uuid: "some_uuid4"}, concept:{name: "concept_name4"}},
-                {orderType:{uuid: "some_uuid5"}, concept:{name: "concept_name5"}},
-                {orderType:{uuid: "some_uuid6"}, concept:{name: "concept_name6"}},
-                {orderType:{uuid: "some_uuid6"}, concept:{display: "Aspirin"}}
+        data: {
+            orderSetMembers: [
+                {orderType: {uuid: "some_uuid1"}, concept: {name: "concept_name1"}, retired: false},
+                {orderType: {uuid: "some_uuid2"}, concept: {name: "concept_name2"}, retired: true},
+                {orderType: {uuid: "some_uuid3"}, concept: {name: "concept_name3"}},
+                {orderType: {uuid: "some_uuid4"}, concept: {name: "concept_name4"}},
+                {orderType: {uuid: "some_uuid5"}, concept: {name: "concept_name5"}},
+                {orderType: {uuid: "some_uuid6"}, concept: {name: "concept_name6"}},
+                {orderType: {uuid: "some_uuid6"}, concept: {display: "Aspirin"}}
             ]
         }
     };
@@ -110,14 +106,14 @@ describe("OrderSetController", function () {
         scope.$apply(setUp);
         scope.orderSet = {};
         scope.orderSet.orderSetMembers = [];
-        var event = {preventDefault : function(){}};
+        var event = {preventDefault: function () {}};
         scope.addOrderSetMembers(event);
         expect(scope.orderSet.orderSetMembers.length).toBe(1);
     });
 
     it("should retire already saved orderSetMember", function () {
         scope.$apply(setUp);
-        scope.orderSet.orderSetMembers= [orderSetData.data.orderSetMembers[0]];
+        scope.orderSet.orderSetMembers = [orderSetData.data.orderSetMembers[0]];
         scope.remove(scope.orderSet.orderSetMembers[0]);
 
         expect(scope.orderSet.orderSetMembers[0].retired).toBeTruthy();
@@ -126,27 +122,27 @@ describe("OrderSetController", function () {
     it("should remove newly added orderSetMember", function () {
         scope.$apply(setUp);
 
-        scope.orderSet.orderSetMembers= [{}];
+        scope.orderSet.orderSetMembers = [{}];
         scope.remove(scope.orderSet.orderSetMembers[0]);
 
         expect(scope.orderSet.orderSetMembers.length).toBe(0);
     });
 
-    it("should set concept uuid on selecting the concept by pressing down key and enter button", function(){
+    it("should set concept uuid on selecting the concept by pressing down key and enter button", function () {
         scope.$apply(setUp);
 
-        scope.orderSet.orderSetMembers= orderSetData.data.orderSetMembers;
-        scope.onSelect({'concept' : {'display':'Aspirin','uuid':'someUuid'},'label':'Aspirin','value':'Aspirin'});
+        scope.orderSet.orderSetMembers = orderSetData.data.orderSetMembers;
+        scope.onSelect({'concept': {'display': 'Aspirin', 'uuid': 'someUuid'}, 'label': 'Aspirin', 'value': 'Aspirin'});
 
         expect(scope.orderSet.orderSetMembers[6].concept.uuid).toBe('someUuid');
     });
 
-    it("shouldn't through any exception if the orderSetMember model value doesn't match the concept display in orderSetMembers", function(){
+    it("shouldn't through any exception if the orderSetMember model value doesn't match the concept display in orderSetMembers", function () {
         scope.$apply(setUp);
 
-        scope.orderSet.orderSetMembers= [orderSetData.data.orderSetMembers[0]];
-        scope.onSelect({'concept' : {'display':'Aspirin','uuid':'someUuid'},'label':'Aspirin','value':'Aspirin'});
+        scope.orderSet.orderSetMembers = [orderSetData.data.orderSetMembers[0]];
+        scope.onSelect({'concept': {'display': 'Aspirin', 'uuid': 'someUuid'}, 'label': 'Aspirin', 'value': 'Aspirin'});
 
         expect(scope.orderSet.orderSetMembers[0].concept.uuid).toBeUndefined();
-    })
+    });
 });

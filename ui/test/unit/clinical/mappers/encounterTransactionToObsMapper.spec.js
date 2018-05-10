@@ -1,24 +1,24 @@
 'use strict';
 
 describe("EncounterTransactionToObsMapper", function () {
-    var obsMatchingUuid = function(observations, uuid) {
-        return observations.filter(function(observation) {
+    var obsMatchingUuid = function (observations, uuid) {
+        return observations.filter(function (observation) {
             return observation.uuid === uuid;
         });
     };
 
     it("should give a list of obs from all encounter transaction objects in an array", function () {
         var encounterTransactions = [
-            {   providers: [{uuid: "provider"}],
+            { providers: [{uuid: "provider"}],
                 observations: [
                 {uuid: "a61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []},
                 {uuid: "b61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []}
-            ]},
+                ]},
             {
                 providers: [{uuid: "provider"}],
                 observations: [
                 {uuid: "c61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []}
-            ]}
+                ]}
         ];
 
         var observations = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions, []);
@@ -30,7 +30,7 @@ describe("EncounterTransactionToObsMapper", function () {
 
     it("should ignore voided observations", function () {
         var encounterTransactions = [
-            {   providers: [{uuid: "provider"}],
+            { providers: [{uuid: "provider"}],
                 observations: [
                     {uuid: "a61436b6-7813-42fd-8af2-eb5d23ed726c", voided: true, value: 100, groupMembers: []},
                     {uuid: "b61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []}
@@ -51,7 +51,7 @@ describe("EncounterTransactionToObsMapper", function () {
 
     it("should inject provider into each observation", function () {
         var encounterTransactions = [
-            {   providers: [{uuid: "provider1"}],
+            { providers: [{uuid: "provider1"}],
                 observations: [
                     {uuid: "a61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []},
                     {uuid: "b61436b6-7813-42fd-8af2-eb5d23ed726c", voided: false, value: 100, groupMembers: []}
@@ -70,7 +70,7 @@ describe("EncounterTransactionToObsMapper", function () {
         expect(obsMatchingUuid(observations, "c61436b6-7813-42fd-8af2-eb5d23ed726c")[0].provider.uuid).toBe("provider2");
     });
 
-    it("should create multiselectObservations in each observations list",function(){
+    it("should create multiselectObservations in each observations list", function () {
         var encounterTransactions = [
             {
                 "providers": [
@@ -130,13 +130,12 @@ describe("EncounterTransactionToObsMapper", function () {
                 ]
             }];
 
-        var observations = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions,[],{'May die coz of':{multiSelect:true,buttonSelect:true}});
+        var observations = new Bahmni.Clinical.EncounterTransactionToObsMapper().map(encounterTransactions, [], {'May die coz of': {multiSelect: true, buttonSelect: true}});
         expect(observations.length).toBe(1);
         var mappedObservations = observations[0].groupMembers;
         expect(mappedObservations.length).toBe(3);
         expect(mappedObservations[0].isMultiSelect).toBeTruthy();
         expect(_.values(mappedObservations[0].selectedObs).length).toBe(2);
     });
-
 });
 

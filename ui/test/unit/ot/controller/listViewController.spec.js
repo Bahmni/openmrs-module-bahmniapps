@@ -51,13 +51,13 @@ describe('listViewController', function () {
                 }
             ]
         },
-            {
-                "uuid": "spidermanUuid",
-                "person": {
-                    "display": "Spider Man"
-                },
-                "attributes": []
-            }];
+        {
+            "uuid": "spidermanUuid",
+            "person": {
+                "display": "Spider Man"
+            },
+            "attributes": []
+        }];
         rootScope.attributeTypes = [
             {
                 "uuid": "613ed1d6-3c7c-11e7-ba26-0800274a5156",
@@ -102,281 +102,278 @@ describe('listViewController', function () {
         ];
     };
 
-      var surgicalAppointmentsForOT2Block = [{
-          "id": 105,
-          "patient": {"uuid": "3ee5efbf-1267-43af-943d-d1ee8ced9285", "display": "EG100145M - Al Padas e", "person" : {"age": "25"}},
-          "actualStartDatetime": "2017-06-22T08:54:00.000+0530",
-          "actualEndDatetime": "2017-06-22T09:54:00.000+0530",
-          "status": "POSTPONED",
-          "notes": "psofdkjfsdfslfskfjsf",
-          "sortWeight": null,
-          "surgicalAppointmentAttributes": [{
-              surgicalAppointmentAttributeType: {
-                  format: "java.lang.String",
-                  name: "estTimeMinutes"
-              },
-              value: "30"
-          },
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "estTimeHours"
-                  },
-                  value: "0"
-              },
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "cleaningTime"
-                  },
-                  value: "15"
-              }
-          ]
-      }, {
-          "id": 96,
-          "patient": {
-              "uuid": "168eed46-dabe-4b7b-a0d6-a8e4ccc02510",
-              "display": "EG100104M - Al Padjhjvj hjhj hjjhhjhj",
-              "person": {
-                  "age": "45"
-              }
-          },
-          "actualStartDatetime": "2017-06-22T10:00:00.000+0530",
-          "actualEndDatetime": "2017-06-22T11:30:00.000+0530",
-          "status": "POSTPONED",
-          "notes": "postpone appointment",
-          "sortWeight": null,
-          "surgicalAppointmentAttributes": [
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "estTimeMinutes"
-                  },
-                  value: "0"
-              },
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "estTimeHours"
-                  },
-                  value: "1"
-              },
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "cleaningTime"
-                  },
-                  value: "15"
-              }
-          ]
-      }];
+    var surgicalAppointmentsForOT2Block = [{
+        "id": 105,
+        "patient": {"uuid": "3ee5efbf-1267-43af-943d-d1ee8ced9285", "display": "EG100145M - Al Padas e", "person": {"age": "25"}},
+        "actualStartDatetime": "2017-06-22T08:54:00.000+0530",
+        "actualEndDatetime": "2017-06-22T09:54:00.000+0530",
+        "status": "POSTPONED",
+        "notes": "psofdkjfsdfslfskfjsf",
+        "sortWeight": null,
+        "surgicalAppointmentAttributes": [{
+            surgicalAppointmentAttributeType: {
+                format: "java.lang.String",
+                name: "estTimeMinutes"
+            },
+            value: "30"
+        },
+        {
+            surgicalAppointmentAttributeType: {
+                format: "java.lang.String",
+                name: "estTimeHours"
+            },
+            value: "0"
+        },
+        {
+            surgicalAppointmentAttributeType: {
+                format: "java.lang.String",
+                name: "cleaningTime"
+            },
+            value: "15"
+        }
+        ]
+    }, {
+        "id": 96,
+        "patient": {
+            "uuid": "168eed46-dabe-4b7b-a0d6-a8e4ccc02510",
+            "display": "EG100104M - Al Padjhjvj hjhj hjjhhjhj",
+            "person": {
+                "age": "45"
+            }
+        },
+        "actualStartDatetime": "2017-06-22T10:00:00.000+0530",
+        "actualEndDatetime": "2017-06-22T11:30:00.000+0530",
+        "status": "POSTPONED",
+        "notes": "postpone appointment",
+        "sortWeight": null,
+        "surgicalAppointmentAttributes": [
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeMinutes"
+                },
+                value: "0"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeHours"
+                },
+                value: "1"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "cleaningTime"
+                },
+                value: "15"
+            }
+        ]
+    }];
 
-      var surgicalAppointmentsForOT1Block = [{
-          "id": 104,
-          "patient": {"uuid": "2300015f-95a3-4d47-933d-a81138ad0aa6", "display": "EG100137M - Al Pad Hassan", "person": {"age": "98"}},
-          "actualStartDatetime": "2017-06-22T09:00:00.000+0530",
-          "actualEndDatetime": "2017-06-22T13:00:00.000+0530",
-          "status": "SCHEDULED",
-          "notes": null,
-          "sortWeight": 0,
-          "surgicalAppointmentAttributes": [
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "estTimeMinutes"
-                  },
-                  value: "30"
-              },
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "estTimeHours"
-                  },
-                  value: "1"
-              },
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "cleaningTime"
-                  },
-                  value: "15"
-              }
-          ]
-      }];
+    var surgicalAppointmentsForOT1Block = [{
+        "id": 104,
+        "patient": {"uuid": "2300015f-95a3-4d47-933d-a81138ad0aa6", "display": "EG100137M - Al Pad Hassan", "person": {"age": "98"}},
+        "actualStartDatetime": "2017-06-22T09:00:00.000+0530",
+        "actualEndDatetime": "2017-06-22T13:00:00.000+0530",
+        "status": "SCHEDULED",
+        "notes": null,
+        "sortWeight": 0,
+        "surgicalAppointmentAttributes": [
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeMinutes"
+                },
+                value: "30"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeHours"
+                },
+                value: "1"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "cleaningTime"
+                },
+                value: "15"
+            }
+        ]
+    }];
 
-      var surgicalAppointmentsForOT3Block = [{
-          "id": 107,
-          "patient": {
-              "uuid": "2848a63a-b273-4d9d-8e10-1ad3e39ab1a6",
-              "display": "IQ100079F - XKHRQKVNNJKC UHNTLIXSNERE",
-              "person": {
-                  "age": "34"
-              }
-          },
-          "actualStartDatetime": "2017-06-22T08:30:00.000+0530",
-          "actualEndDatetime": "2017-06-22T09:30:00.000+0530",
-          "status": "POSTPONED",
-          "notes": "not ready",
-          "sortWeight": 0,
-          "surgicalAppointmentAttributes": [
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "estTimeMinutes"
-                  },
-                  value: "30"
-              },
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "estTimeHours"
-                  },
-                  value: "0"
-              },
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "cleaningTime"
-                  },
-                  value: "15"
-              }
-          ]
-      }, {
-          "id": 106,
-          "patient": {
-              "uuid": "9b41d661-df96-4815-aea1-ecc8278dd220",
-              "display": "IQ100072F - QXHTPLJYKLTF JVMSGICIQZVB",
-              "person": {
-                  "age": "34"
-              }
-          },
-          "actualStartDatetime": "2017-06-22T09:45:00.000+0530",
-          "actualEndDatetime": "2017-06-22T13:00:00.000+0530",
-          "status": "COMPLETED",
-          "notes": null,
-          "sortWeight": 0,
-          "surgicalAppointmentAttributes": [
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "estTimeMinutes"
-                  },
-                  value: "30"
-              },
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "estTimeHours"
-                  },
-                  value: "2"
-              },
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "cleaningTime"
-                  },
-                  value: "15"
-              }
-          ]
-      }, {
-          "id": 108,
-          "patient": {
-              "uuid": "0c58967c-a415-48c8-9830-adcaa94b9d4f",
-              "display": "IQ100074F - CUYCTOEPHJDP OCECDYHMGPSO",
-              "person": {
-                  "age": "56"
-              }
-          },
-          "actualStartDatetime": "2017-06-22T14:30:00.000+0530",
-          "actualEndDatetime": "2017-06-22T16:30:00.000+0530",
-          "status": "CANCELLED",
-          "notes": "Mistake",
-          "sortWeight": null,
-          "surgicalAppointmentAttributes": [
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "estTimeMinutes"
-                  },
-                  value: "30"
-              },
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "estTimeHours"
-                  },
-                  value: "1"
-              },
-              {
-                  surgicalAppointmentAttributeType: {
-                      format: "java.lang.String",
-                      name: "cleaningTime"
-                  },
-                  value: "0"
-              }
-          ]
-      }];
+    var surgicalAppointmentsForOT3Block = [{
+        "id": 107,
+        "patient": {
+            "uuid": "2848a63a-b273-4d9d-8e10-1ad3e39ab1a6",
+            "display": "IQ100079F - XKHRQKVNNJKC UHNTLIXSNERE",
+            "person": {
+                "age": "34"
+            }
+        },
+        "actualStartDatetime": "2017-06-22T08:30:00.000+0530",
+        "actualEndDatetime": "2017-06-22T09:30:00.000+0530",
+        "status": "POSTPONED",
+        "notes": "not ready",
+        "sortWeight": 0,
+        "surgicalAppointmentAttributes": [
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeMinutes"
+                },
+                value: "30"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeHours"
+                },
+                value: "0"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "cleaningTime"
+                },
+                value: "15"
+            }
+        ]
+    }, {
+        "id": 106,
+        "patient": {
+            "uuid": "9b41d661-df96-4815-aea1-ecc8278dd220",
+            "display": "IQ100072F - QXHTPLJYKLTF JVMSGICIQZVB",
+            "person": {
+                "age": "34"
+            }
+        },
+        "actualStartDatetime": "2017-06-22T09:45:00.000+0530",
+        "actualEndDatetime": "2017-06-22T13:00:00.000+0530",
+        "status": "COMPLETED",
+        "notes": null,
+        "sortWeight": 0,
+        "surgicalAppointmentAttributes": [
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeMinutes"
+                },
+                value: "30"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeHours"
+                },
+                value: "2"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "cleaningTime"
+                },
+                value: "15"
+            }
+        ]
+    }, {
+        "id": 108,
+        "patient": {
+            "uuid": "0c58967c-a415-48c8-9830-adcaa94b9d4f",
+            "display": "IQ100074F - CUYCTOEPHJDP OCECDYHMGPSO",
+            "person": {
+                "age": "56"
+            }
+        },
+        "actualStartDatetime": "2017-06-22T14:30:00.000+0530",
+        "actualEndDatetime": "2017-06-22T16:30:00.000+0530",
+        "status": "CANCELLED",
+        "notes": "Mistake",
+        "sortWeight": null,
+        "surgicalAppointmentAttributes": [
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeMinutes"
+                },
+                value: "30"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "estTimeHours"
+                },
+                value: "1"
+            },
+            {
+                surgicalAppointmentAttributeType: {
+                    format: "java.lang.String",
+                    name: "cleaningTime"
+                },
+                value: "0"
+            }
+        ]
+    }];
 
-
-
-       var results = [{
-           "id": 114,
-           "provider": {
-               "uuid": "1773ea11-1617-11e7-85a5-080027b18094",
-               "person": {"uuid": "17731354-1617-11e7-85a5-080027b18094", "display": "Yahya Kalilah"},
-               "attributes": [{
-                   "attributeType": {"display": "otCalendarColor"},
-                   "value": "360",
-                   "voided": false
-               }, {"attributeType": {"display": "otCalendarColor"}, "value": "260", "voided": true}]
-           },
-           "location": {"uuid": "3353e310-3086-11e7-b60e-0800274a5156", "name": "OT 2"},
-           "startDatetime": "2017-06-22T08:54:00.000+0530",
-           "endDatetime": "2017-06-22T16:54:00.000+0530",
-           "surgicalAppointments": surgicalAppointmentsForOT2Block,
-           "uuid": "7a6e123e-a824-4512-b50b-5c49bfbe71de"
-       }, {
-           "id": 119,
-           "provider": {
-               "uuid": "55b4ebe6-a00b-4ee1-8691-a71513bc3253",
-               "person": {"uuid": "e25196dc-9934-423a-99e9-0838bc8c9856", "display": "Eman Fawzi"},
-               "attributes": [{
-                   "attributeType": {"display": "color"},
-                   "value": "#DAECFE",
-                   "voided": false
-               }, {
-                   "attributeType": {"display": "otCalendarColor"},
-                   "value": "200",
-                   "voided": false
-               }, {
-                   "attributeType": {"display": "color"},
-                   "value": "#EFD7FE",
-                   "voided": true
-               }, {"attributeType": {"display": "otCalendarColor"}, "value": "#DAECFE", "voided": true}]
-           },
-           "location": {"uuid": "3353ccb2-3086-11e7-b60e-0800274a5156", "name": "OT 1"},
-           "startDatetime": "2017-06-22T09:00:00.000+0530",
-           "endDatetime": "2017-06-22T10:00:00.000+0530",
-           "surgicalAppointments": surgicalAppointmentsForOT1Block,
-           "uuid": "524cdff6-812c-4b54-ae9e-d3f1c1f00eb9"
-       }, {
-           "id": 120,
-           "provider": {
-               "uuid": "1799e06e-1617-11e7-85a5-080027b18094",
-               "person": {"uuid": "17990560-1617-11e7-85a5-080027b18094", "display": "Hanna Janho"},
-               "attributes": [{"attributeType": {"display": "otCalendarColor"}, "value": "270", "voided": false}]
-           },
-           "location": {"uuid": "3353f1c1-3086-11e7-b60e-0800274a5156", "name": "OT 3"},
-           "startDatetime": "2017-06-22T08:30:00.000+0530",
-           "endDatetime": "2017-06-22T17:00:00.000+0530",
-           "surgicalAppointments": surgicalAppointmentsForOT3Block,
-           "uuid": "c9bd5e83-62f7-4e03-a7b4-fd056c4dd67e"
-       }];
+    var results = [{
+        "id": 114,
+        "provider": {
+            "uuid": "1773ea11-1617-11e7-85a5-080027b18094",
+            "person": {"uuid": "17731354-1617-11e7-85a5-080027b18094", "display": "Yahya Kalilah"},
+            "attributes": [{
+                "attributeType": {"display": "otCalendarColor"},
+                "value": "360",
+                "voided": false
+            }, {"attributeType": {"display": "otCalendarColor"}, "value": "260", "voided": true}]
+        },
+        "location": {"uuid": "3353e310-3086-11e7-b60e-0800274a5156", "name": "OT 2"},
+        "startDatetime": "2017-06-22T08:54:00.000+0530",
+        "endDatetime": "2017-06-22T16:54:00.000+0530",
+        "surgicalAppointments": surgicalAppointmentsForOT2Block,
+        "uuid": "7a6e123e-a824-4512-b50b-5c49bfbe71de"
+    }, {
+        "id": 119,
+        "provider": {
+            "uuid": "55b4ebe6-a00b-4ee1-8691-a71513bc3253",
+            "person": {"uuid": "e25196dc-9934-423a-99e9-0838bc8c9856", "display": "Eman Fawzi"},
+            "attributes": [{
+                "attributeType": {"display": "color"},
+                "value": "#DAECFE",
+                "voided": false
+            }, {
+                "attributeType": {"display": "otCalendarColor"},
+                "value": "200",
+                "voided": false
+            }, {
+                "attributeType": {"display": "color"},
+                "value": "#EFD7FE",
+                "voided": true
+            }, {"attributeType": {"display": "otCalendarColor"}, "value": "#DAECFE", "voided": true}]
+        },
+        "location": {"uuid": "3353ccb2-3086-11e7-b60e-0800274a5156", "name": "OT 1"},
+        "startDatetime": "2017-06-22T09:00:00.000+0530",
+        "endDatetime": "2017-06-22T10:00:00.000+0530",
+        "surgicalAppointments": surgicalAppointmentsForOT1Block,
+        "uuid": "524cdff6-812c-4b54-ae9e-d3f1c1f00eb9"
+    }, {
+        "id": 120,
+        "provider": {
+            "uuid": "1799e06e-1617-11e7-85a5-080027b18094",
+            "person": {"uuid": "17990560-1617-11e7-85a5-080027b18094", "display": "Hanna Janho"},
+            "attributes": [{"attributeType": {"display": "otCalendarColor"}, "value": "270", "voided": false}]
+        },
+        "location": {"uuid": "3353f1c1-3086-11e7-b60e-0800274a5156", "name": "OT 3"},
+        "startDatetime": "2017-06-22T08:30:00.000+0530",
+        "endDatetime": "2017-06-22T17:00:00.000+0530",
+        "surgicalAppointments": surgicalAppointmentsForOT3Block,
+        "uuid": "c9bd5e83-62f7-4e03-a7b4-fd056c4dd67e"
+    }];
 
     surgicalAppointmentService.getSurgicalBlocksInDateRange.and.callFake(function () {
         return {data: {results: results}};
     });
-
 
     it("should sort the appointments by start date and by the location and by start time", function () {
         scope.viewDate = moment('2017-02-22').toDate();
@@ -574,7 +571,7 @@ describe('listViewController', function () {
         };
         var surgicalBlock = {uuid: "surgicalBlockUuid"};
         var appointment = surgicalAppointmentsForOT2Block[0];
-        appointment.surgicalBlock =  results[0];
+        appointment.surgicalBlock = results[0];
         createController();
         scope.selectSurgicalAppointment(event, appointment);
         expect(scope.$emit).toHaveBeenCalledWith("event:surgicalAppointmentSelect", appointment, appointment.surgicalBlock);

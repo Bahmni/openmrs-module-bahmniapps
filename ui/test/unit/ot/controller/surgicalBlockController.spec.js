@@ -89,7 +89,7 @@ describe("surgicalBlockController", function () {
             "value": {
                 "id": 47,
                 "person": {
-                    id:"patientUuid",
+                    id: "patientUuid",
                     display: "Eman"
                 }
             }
@@ -183,7 +183,6 @@ describe("surgicalBlockController", function () {
         }
     };
 
-
     var q = jasmine.createSpyObj('$q', ['all']);
     var state = jasmine.createSpyObj('$state', ['go']);
     var spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
@@ -201,49 +200,49 @@ describe("surgicalBlockController", function () {
             return ["provider1", "provider2"];
         }
         if (value == 'calendarView') {
-            return {dayViewStart: '08:00', dayViewEnd: '18:00', dayViewSplit: '60'}
+            return {dayViewStart: '08:00', dayViewEnd: '18:00', dayViewSplit: '60'};
         }
         return value;
     });
 
-    var appointmentAttributeTypes ={data: {results: [
-                {
-                    "uuid": "bde7e794-3f81-11e7-97ea-0800274a5156",
-                    "name": "procedure"
-                },
-                {
-                    "uuid": "bde80e15-3f81-11e7-97ea-0800274a5156",
-                    "name": "estTimeHours"
-                },
-                {
-                    "uuid": "bde85c99-3f81-11e7-97ea-0800274a5156",
-                    "name": "estTimeMinutes"
-                },
-                {
-                    "uuid": "bde8c614-3f81-11e7-97ea-0800274a5156",
-                    "name": "cleaningTime"
-                },
-                {
-                    "uuid": "bde8faf8-3f81-11e7-97ea-0800274a5156",
-                    "name": "otherSurgeon"
-                },
-                {
-                    "uuid": "bde92009-3f81-11e7-97ea-0800274a5156",
-                    "name": "surgicalAssistant"
-                },
-                {
-                    "uuid": "bde9429e-3f81-11e7-97ea-0800274a5156",
-                    "name": "anaesthetist"
-                },
-                {
-                    "uuid": "bde96224-3f81-11e7-97ea-0800274a5156",
-                    "name": "scrubNurse"
-                },
-                {
-                    "uuid": "bde9821c-3f81-11e7-97ea-0800274a5156",
-                    "name": "circulatingNurse"
-                }
-            ]}};
+    var appointmentAttributeTypes = {data: {results: [
+        {
+            "uuid": "bde7e794-3f81-11e7-97ea-0800274a5156",
+            "name": "procedure"
+        },
+        {
+            "uuid": "bde80e15-3f81-11e7-97ea-0800274a5156",
+            "name": "estTimeHours"
+        },
+        {
+            "uuid": "bde85c99-3f81-11e7-97ea-0800274a5156",
+            "name": "estTimeMinutes"
+        },
+        {
+            "uuid": "bde8c614-3f81-11e7-97ea-0800274a5156",
+            "name": "cleaningTime"
+        },
+        {
+            "uuid": "bde8faf8-3f81-11e7-97ea-0800274a5156",
+            "name": "otherSurgeon"
+        },
+        {
+            "uuid": "bde92009-3f81-11e7-97ea-0800274a5156",
+            "name": "surgicalAssistant"
+        },
+        {
+            "uuid": "bde9429e-3f81-11e7-97ea-0800274a5156",
+            "name": "anaesthetist"
+        },
+        {
+            "uuid": "bde96224-3f81-11e7-97ea-0800274a5156",
+            "name": "scrubNurse"
+        },
+        {
+            "uuid": "bde9821c-3f81-11e7-97ea-0800274a5156",
+            "name": "circulatingNurse"
+        }
+    ]}};
 
     var surgeonList = {data: {results: [{uuid: "uuid1", person: {display: "provider1"}}, {uuid: "uuid2", person: {display: "provider2"}}]}};
     surgicalAppointmentService.getSurgeons.and.callFake(function () {
@@ -261,7 +260,6 @@ describe("surgicalBlockController", function () {
 
     q.all.and.returnValue(specUtil.simplePromise([surgeonList, allTags, appointmentAttributeTypes]));
 
-
     beforeEach(function () {
         module('bahmni.ot');
         inject(function ($controller, $rootScope, _surgicalAppointmentHelper_, _surgicalBlockHelper_) {
@@ -272,15 +270,15 @@ describe("surgicalBlockController", function () {
         });
     });
 
-    //This function converts a date into locale specific date
-    var toDateString = function(dateValue){
-        //dateValue expected in the format -> 2017-08-18 20:00:00
-        return moment(dateValue,"YYYY-MM-DD HH:mm:ss").format();
+// This function converts a date into locale specific date
+    var toDateString = function (dateValue) {
+// dateValue expected in the format -> 2017-08-18 20:00:00
+        return moment(dateValue, "YYYY-MM-DD HH:mm:ss").format();
     };
 
-    var toDate = function(dateValue){
-        //dateValue expected in the format -> 2017-08-18 20:00:00
-        return moment(dateValue,"YYYY-MM-DD HH:mm:ss").toDate();
+    var toDate = function (dateValue) {
+// dateValue expected in the format -> 2017-08-18 20:00:00
+        return moment(dateValue, "YYYY-MM-DD HH:mm:ss").toDate();
     };
 
     var createController = function () {
@@ -399,7 +397,6 @@ describe("surgicalBlockController", function () {
         done();
     });
 
-
     it("should update a valid surgical form", function (done) {
         var surgicalBlock = {};
         surgicalBlock.id = 10;
@@ -430,7 +427,7 @@ describe("surgicalBlockController", function () {
         scope.save(scope.surgicalForm);
 
         expect(surgicalAppointmentService.updateSurgicalBlock).toHaveBeenCalled();
-        expect(surgicalAppointmentService.updateSurgicalBlock).toHaveBeenCalledWith(jasmine.objectContaining({id:10, voided: false, provider: surgicalBlock.provider, location: surgicalBlock.location}));
+        expect(surgicalAppointmentService.updateSurgicalBlock).toHaveBeenCalledWith(jasmine.objectContaining({id: 10, voided: false, provider: surgicalBlock.provider, location: surgicalBlock.location}));
         expect(messagingService.showMessage).toHaveBeenCalledWith('info', "{{'OT_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
         expect(state.go).toHaveBeenCalledWith('editSurgicalAppointment', {surgicalBlockUuid: surgicalBlock.uuid});
         done();
@@ -442,7 +439,6 @@ describe("surgicalBlockController", function () {
         expect(scope.getPatientName(surgicalAppointment)).toEqual("Ad hasan ( I02345 )");
         surgicalAppointment.patient.value = "Ad hasan Mohammed";
         expect(scope.getPatientName(surgicalAppointment)).toEqual("Ad hasan Mohammed");
-
     });
 
     it("should go to home page", function () {
@@ -513,7 +509,6 @@ describe("surgicalBlockController", function () {
         var newSurgicalAppointment = {id: "12", patient: {uuid: "patientUuid2"}, notes: "need more assistants and blood", sortWeight: 1, surgicalAppointmentAttributes: defaultSurgicalAppointmentAttributes};
 
         scope.surgicalForm.surgicalAppointments = [{id: "11", patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes}, newSurgicalAppointment];
-
 
         var clonedSurgicalAppointment = _.cloneDeep(newSurgicalAppointment);
         clonedSurgicalAppointment.surgicalAppointmentAttributes.estTimeHours.value = "1";
@@ -630,7 +625,7 @@ describe("surgicalBlockController", function () {
     it("should update the sort weight of surgical appointments with the index of the appointment", function () {
         createController();
         scope.surgicalForm = {};
-        scope.surgicalForm.surgicalAppointments = [{id:3, sortWeight:1},{id:1, sortWeight:0}, {id:2, sortWeight:2}];
+        scope.surgicalForm.surgicalAppointments = [{id: 3, sortWeight: 1}, {id: 1, sortWeight: 0}, {id: 2, sortWeight: 2}];
 
         scope.updateSortWeight(scope.surgicalForm);
 
@@ -693,20 +688,31 @@ describe("surgicalBlockController", function () {
             showClose: true,
             className: 'ngdialog-theme-default ng-dialog-adt-popUp',
             scope: scope,
-            data: { surgicalAppointment: surgicalAppointment, surgicalForm:  scope.surgicalForm, updateAvailableBlockDurationFn: jasmine.any(Function)}
+            data: { surgicalAppointment: surgicalAppointment, surgicalForm: scope.surgicalForm, updateAvailableBlockDurationFn: jasmine.any(Function)}
         }));
     });
 
     it('should disable the cancel block button when surgical block has completed appointments', function () {
         createController();
-        scope.surgicalForm = {id: 1, surgicalAppointments: [ {id:1, status: 'COMPLETED'}, {id:2, status:'CANCELLED'}]};
+        scope.surgicalForm = {
+            id: 1,
+            surgicalAppointments: [
+                {id: 1, status: 'COMPLETED'},
+                {id: 2, status: 'CANCELLED'}
+            ]
+        };
 
-        expect(scope.cancelDisabled()).toEqual({id:1, status: 'COMPLETED'});
+        expect(scope.cancelDisabled()).toEqual({id: 1, status: 'COMPLETED'});
     });
 
     it('should disable the cancel block button when surgical block is not saved', function () {
         createController();
-        scope.surgicalForm = {surgicalAppointments: [ {id:1, status: 'COMPLETED'}, {id:2, status:'CANCELLED'}]};
+        scope.surgicalForm = {
+            surgicalAppointments: [
+                {id: 1, status: 'COMPLETED'},
+                {id: 2, status: 'CANCELLED'}
+            ]
+        };
 
         expect(scope.cancelDisabled()).toBeTruthy();
     });
@@ -725,5 +731,5 @@ describe("surgicalBlockController", function () {
         scope.surgicalForm.startDatetime = new Date("Mon Jul 03 2017 09:00:00 GMT+0530 (IST)");
         scope.changeInStartDateTime();
         expect(scope.surgicalForm.endDatetime).toEqual(new Date("Mon Jul 03 2017 15:00:00 GMT+0530 (IST)"));
-    })
+    });
 });

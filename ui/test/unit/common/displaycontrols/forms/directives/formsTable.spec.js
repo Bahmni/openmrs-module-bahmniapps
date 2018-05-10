@@ -24,7 +24,7 @@ describe("Forms Table display control", function () {
                 then: function () {
                     return {};
                 }
-            }
+            };
         });
 
         $provide.value('$state', {});
@@ -34,11 +34,11 @@ describe("Forms Table display control", function () {
 
         $provide.value('$bahmniTranslate', {
             use: function () {
-                return "en"
+                return "en";
             }
         });
         $provide.value('appService', appService);
-        $provide.value('$state', {params: {enrollment: "patientProgramUuid"}})
+        $provide.value('$state', {params: {enrollment: "patientProgramUuid"}});
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {
@@ -55,9 +55,9 @@ describe("Forms Table display control", function () {
         conceptSetService.getConcept.and.callFake(function () {
             return {
                 then: function (callback) {
-                    return callback(data)
+                    return callback(data);
                 }
-            }
+            };
         });
     };
 
@@ -65,14 +65,13 @@ describe("Forms Table display control", function () {
         visitFormService.formData.and.callFake(function () {
             return {
                 then: function (callback) {
-                    return callback(data)
+                    return callback(data);
                 }
-            }
+            };
         });
     };
 
     describe("Initialization", function () {
-
         it("should get all obs templates to display for particular patient, on dashboard.", function () {
             var allObsTemplateData = {"data": {"results": [{"display": "Baseline Template"}, {"display": "Medication log Template"}, {"display": "Followup Template"}, {"display": "Outcome End of Treatment Template"}]}};
             var formDataObj = {
@@ -169,7 +168,6 @@ describe("Forms Table display control", function () {
             var compiledElementScope = element.isolateScope();
             scope.$digest();
 
-
             expect(compiledElementScope).not.toBeUndefined();
             var expected = [];
             expected.push(formDataObj.data.results[1]);
@@ -223,7 +221,6 @@ describe("Forms Table display control", function () {
             scope.$digest();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
-
 
             expect(compiledElementScope).not.toBeUndefined();
             var expected = [];
@@ -280,7 +277,6 @@ describe("Forms Table display control", function () {
                 "obsDatetime": "2015-10-18T16:26:31.000+0000"
             };
 
-
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
 
             mockConceptSetService(allObsTemplateData);
@@ -295,7 +291,7 @@ describe("Forms Table display control", function () {
             expect(compiledElementScope.getEditObsData(observation).observation).toEqual(observation);
             expect(compiledElementScope.getEditObsData(observation).conceptSetName).toEqual(observation.concept.displayString);
             expect(compiledElementScope.getEditObsData(observation).conceptDisplayName).toEqual(observation.concept.displayString);
-        })
+        });
     });
 
     describe("getConfigToFetchDataAndShow", function () {
@@ -313,7 +309,6 @@ describe("Forms Table display control", function () {
                 "obsDatetime": "2015-10-18T16:26:31.000+0000"
             };
 
-
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
 
             mockConceptSetService(allObsTemplateData);
@@ -330,7 +325,7 @@ describe("Forms Table display control", function () {
             expect(compiledElementScope.getConfigToFetchDataAndShow(observation).config.encounterUuid).toEqual(observation.encounterUuid);
             expect(compiledElementScope.getConfigToFetchDataAndShow(observation).config.showGroupDateTime).toEqual(false);
             expect(compiledElementScope.getConfigToFetchDataAndShow(observation).config.observationUuid).toEqual(observation.uuid);
-        })
+        });
     });
 
     describe("getDisplayName", function () {
@@ -347,7 +342,6 @@ describe("Forms Table display control", function () {
                 "display": "Medication log Template: 2015-11-01, Not defined",
                 "obsDatetime": "2015-10-18T16:26:31.000+0000"
             };
-
 
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
 
@@ -379,7 +373,6 @@ describe("Forms Table display control", function () {
                 "display": "Medication log Template: 2015-11-01, Not defined",
                 "obsDatetime": "2015-10-18T16:26:31.000+0000"
             };
-
 
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
 
@@ -413,7 +406,6 @@ describe("Forms Table display control", function () {
                 "obsDatetime": "2015-10-18T16:26:31.000+0000"
             };
 
-
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
 
             mockConceptSetService(allObsTemplateData);
@@ -446,7 +438,6 @@ describe("Forms Table display control", function () {
                 "obsDatetime": "2015-10-18T16:26:31.000+0000"
             };
 
-
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
 
             mockConceptSetService(allObsTemplateData);
@@ -459,6 +450,6 @@ describe("Forms Table display control", function () {
 
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.getDisplayName(observation)).toEqual(observation.concept.displayString);
-        })
-    })
+        });
+    });
 });

@@ -1,7 +1,6 @@
 'use strict';
 
 describe('MessagingService', function () {
-
     var messagingService, rootScope, args;
 
     var timeout = function (fn) {
@@ -18,7 +17,6 @@ describe('MessagingService', function () {
     beforeEach(inject(['messagingService', function (messagingServiceInjected) {
         messagingService = messagingServiceInjected;
     }]));
-
 
     it('should listen for serverError events', function () {
         expect(rootScope.$on).toHaveBeenCalled();
@@ -46,7 +44,6 @@ describe('MessagingService', function () {
         });
     });
 
-
     it('should clear all messages for a given level', function () {
         messagingService.messages = {error: ['a', 'b']};
 
@@ -55,7 +52,6 @@ describe('MessagingService', function () {
         expect(messagingService.messages['error']).toBeTruthy();
         expect(messagingService.messages['error']).toEqual([]);
     });
-
 
     it('should add messages and set isServerError to true', function () {
         messagingService.showMessage('info', 'message');

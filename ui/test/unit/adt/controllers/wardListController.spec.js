@@ -1,12 +1,10 @@
 'use strict';
 
 describe('WardListController', function () {
-
     var controller;
     var rootScope;
     var scope;
     var queryService, appService, window;
-
 
     beforeEach(function () {
         module('bahmni.adt');
@@ -45,5 +43,4 @@ describe('WardListController', function () {
 
         expect(window.location.toString().indexOf("/context.html#/patient/patient1/visit/visit2/")).not.toEqual(-1);
     });
-
 });

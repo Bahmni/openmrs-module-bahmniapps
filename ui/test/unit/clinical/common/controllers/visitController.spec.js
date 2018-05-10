@@ -26,7 +26,7 @@ describe('VisitController', function () {
             then: function () {
                 return stubAllPromise();
             }
-        }
+        };
     };
 
     beforeEach(module('bahmni.clinical'));
@@ -61,19 +61,19 @@ describe('VisitController', function () {
             }
         });
         scope.currentProvider = {uuid: ''};
-        controller =   $controller('VisitController', {
-                $scope: scope,
-                $state: state,
-                encounterService: encounterService,
-                clinicalAppConfigService: clinicalAppConfigService,
-                visitSummary: {},
-                configurations: configurations,
-                $timeout: $timeout,
-                printer: {},
-                visitConfig: visitTabConfig,
-                visitHistory:[],
-                $stateParams: {}
-            });
+        controller = $controller('VisitController', {
+            $scope: scope,
+            $state: state,
+            encounterService: encounterService,
+            clinicalAppConfigService: clinicalAppConfigService,
+            visitSummary: {},
+            configurations: configurations,
+            $timeout: $timeout,
+            printer: {},
+            visitConfig: visitTabConfig,
+            visitHistory: [],
+            $stateParams: {}
+        });
     }]));
 
     var defaultTab = {
@@ -94,8 +94,8 @@ describe('VisitController', function () {
 
     var pivotTableTab = {
         title: "pivot table",
-        pivotTable:{
-            conceptNames:["vitals"]
+        pivotTable: {
+            conceptNames: ["vitals"]
         }
     };
     var visitTabConfig = new Bahmni.Clinical.VisitTabConfig([defaultTab, pivotTableTab]);
@@ -121,9 +121,8 @@ describe('VisitController', function () {
 
         it('should check test result class for expected style', function () {
             var inputLine = {isSummary: true};
-            var expectedStyle =  {"pending-result": true, "header": true};
+            var expectedStyle = {"pending-result": true, "header": true};
             expect(scope.testResultClass(inputLine)).toEqual(expectedStyle);
         });
     });
-
 });

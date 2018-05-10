@@ -1,7 +1,6 @@
 'use strict';
 
 describe('formService', function () {
-
     var http;
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.appFramework'));
@@ -55,8 +54,7 @@ describe('formService', function () {
         var httpPromise = this.formService.getAllForms();
 
         expect(httpPromise).toEqual(response);
-        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/bahmniie/form/allForms", { params : { v : 'custom:(version,name,uuid)' } });
-
+        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/bahmniie/form/allForms", { params: { v: 'custom:(version,name,uuid)' } });
     });
 
     it('should call http service to return the form detail', function () {
@@ -70,7 +68,6 @@ describe('formService', function () {
             params: { v: "custom:(uuid,name)" }
         });
     });
-
 
     it('should call http service with default url to return the form translations', function () {
         var translationsUrl = '/openmrs/ws/rest/v1/bahmniie/form/translations';
@@ -89,5 +86,4 @@ describe('formService', function () {
         expect(httpPromise).toEqual(formTranslationResponse);
         expect(http.get).toHaveBeenCalledWith(customUrl);
     });
-
 });

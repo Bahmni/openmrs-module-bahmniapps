@@ -13,7 +13,7 @@ describe("Bacteriology Controller", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var initController = function() {
+    var initController = function () {
         inject(function ($controller, $rootScope) {
             controller = $controller;
             $scope = $rootScope.$new();
@@ -33,9 +33,8 @@ describe("Bacteriology Controller", function () {
                     then: function () {
                         return {};
                     }
-                }
+                };
             });
-
 
             conceptSetService.getConcept.and.returnValue({});
 
@@ -45,10 +44,10 @@ describe("Bacteriology Controller", function () {
             appDescriptor.getConfigValue.and.returnValue(true);
 
             spyOn($scope, '$broadcast');
-        })
+        });
     };
 
-    var createController = function() {
+    var createController = function () {
         return controller('BacteriologyController', {
             $scope: $scope,
             $rootScope: rootScope,
@@ -56,15 +55,15 @@ describe("Bacteriology Controller", function () {
             spinner: spinner,
             conceptSetService: conceptSetService,
             bacteriologyConceptSet: {},
-            appService:appService,
-            retrospectiveEntryService:retrospectiveEntryService
+            appService: appService,
+            retrospectiveEntryService: retrospectiveEntryService
         });
     };
 
     beforeEach(initController);
 
-    describe("Create specimen", function(){
-        it("should add a new specimen to the specimens list", function(){
+    describe("Create specimen", function () {
+        it("should add a new specimen to the specimens list", function () {
             createController();
             $scope.newSpecimens = [];
 
@@ -97,7 +96,7 @@ describe("Bacteriology Controller", function () {
             expect(existingSpecimen.voided).toBeTruthy();
         });
 
-        it("should remove specimen from saved specimens and new specimens",function () {
+        it("should remove specimen from saved specimens and new specimens", function () {
             createController();
             $scope.newSpecimens = [existingSpecimen];
             $scope.savedSpecimens = [existingSpecimen];
@@ -107,8 +106,7 @@ describe("Bacteriology Controller", function () {
             expect($scope.savedSpecimens).toEqual([]);
             expect($scope.newSpecimens[0]).not.toEqual(existingSpecimen);
             expect($scope.newSpecimens[0].dateCollected).toBeNull();
-
-        })
+        });
     });
 
     describe("Get Display Name", function () {
@@ -121,33 +119,33 @@ describe("Bacteriology Controller", function () {
 
         it("Should return the Specimen short name if it present, otherwise return Specimen name", function () {
             createController();
-            var specimenData ={ type: {name: "name"}};
+            var specimenData = { type: {name: "name"}};
 
             expect($scope.getDisplayName(specimenData)).toBe(specimenData.type.name);
         });
 
         it("Should return the return Specimen name, if Specimen short name is null", function () {
             createController();
-            var specimenData = { type: {shortName:null ,name: "name"}};
+            var specimenData = { type: {shortName: null, name: "name"}};
 
             expect($scope.getDisplayName(specimenData)).toBe(specimenData.type.name);
         });
 
         it("Should return the return Specimen name, if Specimen short name is empty", function () {
             createController();
-            var specimenData = { type: {shortName:"" ,name: "name"}};
+            var specimenData = { type: {shortName: "", name: "name"}};
 
             expect($scope.getDisplayName(specimenData)).toBe(specimenData.type.name);
         });
 
-        it("Should return freeText Type if sample type is Other", function(){
+        it("Should return freeText Type if sample type is Other", function () {
             createController();
-            var specimenData = { type: {shortName:"" ,name: "Other"}, typeFreeText:"Other Sample Type"};
+            var specimenData = { type: {shortName: "", name: "Other"}, typeFreeText: "Other Sample Type"};
             expect($scope.getDisplayName(specimenData)).toBe(specimenData.typeFreeText);
         });
     });
 
-    describe("Specimen type Others", function(){
+    describe("Specimen type Others", function () {
         var existingSpecimenOther = function () {
             return new Bahmni.Clinical.Specimen({
                 existingObs: "Existing Obs Uuid",
@@ -165,7 +163,6 @@ describe("Bacteriology Controller", function () {
             $scope.newSpecimens = [];
             $scope.editSpecimen(existingSpecimenOther());
             expect($scope.newSpecimens[0].showTypeFreeText).toBe(true);
-
         });
 
         it("should set showNonCodedSampleText to be true on call of handleUpdate", function () {
@@ -175,7 +172,6 @@ describe("Bacteriology Controller", function () {
             $scope.handleUpdate();
 
             expect($scope.newSpecimens[0].showTypeFreeText).toBe(true);
-
         });
 
         it("should set typeFreeText to null if specimen is not of type Other  ", function () {
@@ -185,9 +181,7 @@ describe("Bacteriology Controller", function () {
             $scope.handleUpdate();
 
             expect($scope.newSpecimens[0].typeFreeText).toBe(null);
-
         });
-
     });
 
     describe("initialization", function () {
@@ -196,12 +190,12 @@ describe("Bacteriology Controller", function () {
             expect($scope.$broadcast).toHaveBeenCalledWith('event:pageUnload');
         });
 
-        it("should add an empty specimen if there is no specimen", function(){
+        it("should add an empty specimen if there is no specimen", function () {
             createController();
             expect($scope.newSpecimens.length).toEqual(1);
         });
 
-        it("should not add an empty specimen if there are already specimens", function(){
+        it("should not add an empty specimen if there are already specimens", function () {
             $scope.consultation.newlyAddedSpecimens = [new Bahmni.Clinical.Specimen(null, $scope.samples), new Bahmni.Clinical.Specimen(null, $scope.samples)];
             createController();
             expect($scope.newSpecimens.length).toEqual(2);

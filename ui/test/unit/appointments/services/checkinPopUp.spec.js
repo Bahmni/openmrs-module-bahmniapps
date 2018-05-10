@@ -13,7 +13,7 @@ describe('checkinPopUp', function () {
         });
     });
 
-    beforeEach(inject(['$rootScope', 'checkinPopUp',function($rootScope, _checkinPopUp_) {
+    beforeEach(inject(['$rootScope', 'checkinPopUp', function ($rootScope, _checkinPopUp_) {
         rootScope = $rootScope;
         checkinPopUp = _checkinPopUp_;
     }]));
@@ -31,7 +31,7 @@ describe('checkinPopUp', function () {
         expect(ngDialog.open).toHaveBeenCalledWith({
             template: '../appointments/views/checkInPopUp.html',
             scope: popUpScope,
-                className: 'ngdialog-theme-default'
+            className: 'ngdialog-theme-default'
         });
     });
 
@@ -43,14 +43,13 @@ describe('checkinPopUp', function () {
     });
 
     it('should call confirmAction with correct parameter on checkIn', function () {
-        popUpScope.action = function(){};
-        var config = {scope:popUpScope };
+        popUpScope.action = function () {};
+        var config = {scope: popUpScope };
         spyOn(config.scope, "action");
         checkinPopUp(config);
         popUpScope.time = new Date();
-        var f = function(){};
+        var f = function () {};
         popUpScope.performAction(f);
         expect(config.scope.action).toHaveBeenCalledWith(popUpScope.time, f);
-    })
-
+    });
 });

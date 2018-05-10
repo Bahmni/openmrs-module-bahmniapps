@@ -56,5 +56,4 @@ describe('ValidationUtil', function () {
         var msg = ValidationUtil.validate(complexObject, objectConfiguration);
         expect(msg).toEqual([]);
     });
-
 });

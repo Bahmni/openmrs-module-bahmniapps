@@ -1,7 +1,7 @@
 'use strict';
 
-describe("ConceptSetObservationMapper", function() {
-    var buildConcept = function(name, setMembers, answers, classname, datatype) {
+describe("ConceptSetObservationMapper", function () {
+    var buildConcept = function (name, setMembers, answers, classname, datatype) {
         return {
             "name": {name: name},
             "set": setMembers && setMembers.length > 0,
@@ -10,11 +10,11 @@ describe("ConceptSetObservationMapper", function() {
             setMembers: setMembers,
             answers: answers,
             "uuid": name + "_uuid"
-        }
+        };
     };
     var mapper = new Bahmni.ConceptSet.ObservationMapper();
 
-    var savedObs = function() {
+    var savedObs = function () {
         var diabetesConcept = buildConcept("Diabetes", [], []);
         var hivConcept = buildConcept("HIV", [], []);
         var hyperTensionConcept = buildConcept("HyperTension", [], []);
@@ -32,13 +32,13 @@ describe("ConceptSetObservationMapper", function() {
                 "groupMembers": [],
                 "value": "90",
                 "voided": false
-            },{
+            }, {
                 "concept": comorbidityConcept,
                 "label": "Comorbidity",
                 "groupMembers": [],
                 "value": diabetesConcept,
                 "voided": false
-            },{
+            }, {
                 "concept": comorbidityConcept,
                 "label": "Comorbidity",
                 "groupMembers": [],
@@ -50,7 +50,7 @@ describe("ConceptSetObservationMapper", function() {
         }];
     };
 
-    it("should map observation tree", function() {
+    it("should map observation tree", function () {
         var rootConcept = savedObs()[0].concept;
         var mappedObs = mapper.map(savedObs(), rootConcept, {});
 
@@ -58,7 +58,7 @@ describe("ConceptSetObservationMapper", function() {
         expect(mappedObs.groupMembers[0].label).toEqual("Systolic");
     });
 
-    it("should map multiSelect Obs", function() {
+    it("should map multiSelect Obs", function () {
         var rootConcept = savedObs()[0].concept;
         var mappedObs = mapper.map(savedObs(), rootConcept, {"Comorbidity": {multiSelect: true}});
 
@@ -69,7 +69,7 @@ describe("ConceptSetObservationMapper", function() {
         expect(mappedObs.groupMembers[3].hidden).toBeTruthy();
     });
 
-    it("should map ObservationNode", function() {
+    it("should map ObservationNode", function () {
         var headache = buildConcept("Headache", [], []);
         var chiefComplaint = buildConcept("Chief Complaint", [], [], "Misc", "Coded");
         var duration = buildConcept("Chief Complaint Duration", [], [], "Duration", "Numeric");
@@ -84,7 +84,7 @@ describe("ConceptSetObservationMapper", function() {
                 "groupMembers": [],
                 "value": headache,
                 "voided": false
-            },{
+            }, {
                 "concept": duration,
                 "label": "Duration",
                 "groupMembers": [],
@@ -103,7 +103,7 @@ describe("ConceptSetObservationMapper", function() {
         expect(mappedObs.value).toEqual(headache.name);
     });
 
-    it("should map obsGroups as tabular observations if configured", function() {
+    it("should map obsGroups as tabular observations if configured", function () {
         var drug = buildConcept("Drug", [], []);
         var concentration = buildConcept("Concentration", [], []);
         var dstResult = buildConcept("DST Result", [drug, concentration], []);
@@ -196,7 +196,5 @@ describe("ConceptSetObservationMapper", function() {
         expect(obs.length).toBe(1);
         expect(obs[0].value).toBe("90, Diabetes, HyperTension");
         expect(obs[0].label).toBe("Vitals");
-
-    })
-
+    });
 });

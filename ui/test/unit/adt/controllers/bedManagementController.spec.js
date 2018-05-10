@@ -16,7 +16,7 @@ describe("BedManagementController", function () {
         });
     });
 
-    function createController() {
+    function createController () {
         return controller("BedManagementController", {
             $scope: scope,
             $rootScope: rootScope,
@@ -26,10 +26,10 @@ describe("BedManagementController", function () {
         });
     }
 
-    beforeEach(function() {
+    beforeEach(function () {
         wardService = jasmine.createSpyObj('wardService', ['getWardsList']);
         var getWardsListPromise = specUtil.createServicePromise('getWardsList');
-        getWardsListPromise.success = function(successFn) {
+        getWardsListPromise.success = function (successFn) {
             successFn({results: []});
             return getWardsListPromise;
         };
@@ -55,5 +55,4 @@ describe("BedManagementController", function () {
             expect(wardService.getWardsList.calls.count()).toBe(2);
         });
     });
-
 });

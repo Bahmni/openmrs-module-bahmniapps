@@ -1,8 +1,7 @@
 'use strict';
 
 describe("Recent patients", function () {
-    var element, scope, $compile, httpBackend, state, provide, patientService,sessionService;
-
+    var element, scope, $compile, httpBackend, state, provide, patientService, sessionService;
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(module(function ($provide) {
@@ -18,9 +17,8 @@ describe("Recent patients", function () {
         patientService = jasmine.createSpyObj('patientService', ['findPatients']);
         sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
         sessionService.getLoginLocationUuid.and.returnValue("uuid");
-        provide.value('patientService', patientService)
-        provide.value('sessionService', sessionService)
-
+        provide.value('patientService', patientService);
+        provide.value('sessionService', sessionService);
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
@@ -60,7 +58,7 @@ describe("Recent patients", function () {
 
         it("should not have any previous patient if he/she is the first patient", function () {
             scope.currentUser = {
-                    recentlyViewedPatients: [{"uuid": "abc"}]
+                recentlyViewedPatients: [{"uuid": "abc"}]
             };
             $compile(element)(scope);
             scope.$digest();
@@ -135,9 +133,7 @@ describe("Recent patients", function () {
     });
 
     describe("getActivePatients", function () {
-
         beforeEach(inject(function ($q) {
-
             var patients = {
                 data: [{
                     uuid: 'uuid1'
@@ -155,10 +151,9 @@ describe("Recent patients", function () {
             scope.getActivePatients();
             scope.$digest();
 
+            expect(patientService.findPatients).toHaveBeenCalledWith({q: 'emrapi.sqlSearch.activePatients', location_uuid: 'uuid'});
 
-            expect(patientService.findPatients).toHaveBeenCalledWith({q: 'emrapi.sqlSearch.activePatients',location_uuid : 'uuid'});
-
-            expect(scope.search.patientsCount()).toBe(1)
+            expect(scope.search.patientsCount()).toBe(1);
         });
 
         it("should not make a call to get active patients if it already fetched", function () {
@@ -166,10 +161,9 @@ describe("Recent patients", function () {
             scope.$digest();
             scope.getActivePatients();
 
-            expect(patientService.findPatients).toHaveBeenCalledWith({q: 'emrapi.sqlSearch.activePatients', location_uuid : 'uuid'});
+            expect(patientService.findPatients).toHaveBeenCalledWith({q: 'emrapi.sqlSearch.activePatients', location_uuid: 'uuid'});
             expect(patientService.findPatients.calls.count()).toBe(1);
-            expect(scope.search.patientsCount()).toBe(1)
-
+            expect(scope.search.patientsCount()).toBe(1);
         });
     });
 

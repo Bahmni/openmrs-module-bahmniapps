@@ -1,16 +1,15 @@
 'use strict';
 
-describe("Pattern Validate", function() {
-    var element, scope, compile,timeout;
+describe("Pattern Validate", function () {
+    var element, scope, compile, timeout;
 
     beforeEach(module('bahmni.common.uiHelper'));
 
-    beforeEach(inject(function($compile, $rootScope, $timeout) {
+    beforeEach(inject(function ($compile, $rootScope, $timeout) {
         scope = $rootScope.$new();
         compile = $compile;
-        timeout = $timeout
+        timeout = $timeout;
         element = angular.element('<input id="testId" pattern-validate></input>');
-
     }));
 
     it("should apply the pattern and title to the element if it is part of field validation", function () {
@@ -34,9 +33,8 @@ describe("Pattern Validate", function() {
     it("should not apply the pattern and title to the element if field validation is not present in scope", function () {
         compile(element)(scope);
         timeout.flush();
-        
+
         expect(element.attr('pattern')).not.toBe("[0-9]{3}");
         expect(element.attr('title')).not.toBe("Should contain 3 numbers");
     });
-
 });

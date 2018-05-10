@@ -26,7 +26,7 @@ describe("ReportsController", function () {
         };
     beforeEach(module('bahmni.reports'));
 
-    beforeEach(inject(function ($controller, $rootScope) {
+    beforeEach(inject(['$controller', '$rootScope', function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
 
@@ -65,7 +65,7 @@ describe("ReportsController", function () {
             $rootScope: rootScope,
             FileUploader: function () {}
         });
-    }));
+    }]));
 
     it("initializes report sets based on whether date range required or not", function () {
         expect(mockAppDescriptor.getConfigForPage).toHaveBeenCalledWith("reports");
@@ -336,7 +336,7 @@ describe("ReportsController", function () {
         expect(rootScope.reportsRequiringDateRange.length).toBe(2);
         expect(rootScope.reportsNotRequiringDateRange.length).toBe(1);
 
-        beforeEach(inject(function ($controller) {
+        beforeEach(inject(['$controller', function ($controller) {
             rootScope.default.reportsRequiringDateRange = {
                 startDate: '2014-02-01',
                 stopDate: '2015-02-01',
@@ -353,7 +353,7 @@ describe("ReportsController", function () {
                 $rootScope: rootScope,
                 FileUploader: function () {}
             });
-        }));
+        }]));
 
         expect(rootScope.reportsRequiringDateRange.length).toBe(2);
         expect(rootScope.reportsNotRequiringDateRange.length).toBe(1);
@@ -366,7 +366,7 @@ describe("ReportsController", function () {
         expect(rootScope.reportsRequiringDateRange.length).toBe(2);
         expect(rootScope.reportsNotRequiringDateRange.length).toBe(1);
 
-        beforeEach(inject(function ($controller) {
+        beforeEach(inject(['$controller', function ($controller) {
             rootScope.reportsNotRequiringDateRange[0].startDate = '2014-02-01';
             rootScope.reportsNotRequiringDateRange[0].stopDate = '2015-02-01';
             rootScope.reportsNotRequiringDateRange[0].responseType = 'text';
@@ -381,7 +381,7 @@ describe("ReportsController", function () {
                 $rootScope: rootScope,
                 FileUploader: function () {}
             });
-        }));
+        }]));
 
         expect(rootScope.reportsNotRequiringDateRange[0].startDate).toBe('2014-02-01');
         expect(rootScope.reportsNotRequiringDateRange[0].stopDate).toBe('2015-02-01');

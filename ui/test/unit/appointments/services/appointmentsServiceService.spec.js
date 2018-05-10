@@ -42,7 +42,7 @@ describe('AppointmentsServiceService', function () {
     });
 
     it("should get appointment services with speciality and service types", function () {
-       appointmentsServiceService.getAllServicesWithServiceTypes();
+        appointmentsServiceService.getAllServicesWithServiceTypes();
         var headers = {Accept: 'application/json', 'Content-Type': 'application/json'};
         var params = { withCredentials: true, headers: headers};
         expect(mockHttp.get).toHaveBeenCalledWith('/openmrs/ws/rest/v1/appointmentService/all/full', params);

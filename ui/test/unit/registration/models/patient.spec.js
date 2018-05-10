@@ -16,7 +16,6 @@ describe("Patient", function () {
         patient = patientFactory.create();
     });
 
-
     describe("calculateAge", function () {
         it("should update age as difference between dateofBirth and today in years, months and days", function () {
             patient.birthdate = new Date("06/25/1980");
@@ -86,9 +85,8 @@ describe("Patient", function () {
         });
     });
 
-
     describe('create identifiers', function () {
-        it('should assign identifiers created by identifiers factory to patient', function(){
+        it('should assign identifiers created by identifiers factory to patient', function () {
             var primaryIdentifier = new Bahmni.Registration.Identifier({uuid: 'primary-identifier-type-uuid'});
             var extraIdentifier1 = new Bahmni.Registration.Identifier({uuid: 'extra1-identifier-type-uuid'});
             var extraIdentifier2 = new Bahmni.Registration.Identifier({uuid: 'extra2-identifier-type-uuid'});
@@ -104,7 +102,6 @@ describe("Patient", function () {
             expect(patient.extraIdentifiers.length).toBe(2);
             expect(patient.extraIdentifiers).toEqual([extraIdentifier1, extraIdentifier2]);
             expect(patient.primaryIdentifier).toBe(primaryIdentifier);
-
         });
     });
 });

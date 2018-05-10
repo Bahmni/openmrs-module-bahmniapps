@@ -27,7 +27,7 @@ var specUtil = {
         return deferred.promise;
     },
 
-    respondWithPromise: function($q, data) {
+    respondWithPromise: function ($q, data) {
         var deferred = $q.defer();
         deferred.resolve(data);
         return deferred.promise;
@@ -35,35 +35,35 @@ var specUtil = {
 
 };
 
-specUtil.simplePromise = function(data) {
-    var SimplePromise = function(data) {
-        this.then = function(callback) {
+specUtil.simplePromise = function (data) {
+    var SimplePromise = function (data) {
+        this.then = function (callback) {
             return new SimplePromise(callback(data));
         };
-        this.success = function(callback){
+        this.success = function (callback) {
             return new SimplePromise(callback(data));
-        }
+        };
     };
     return new SimplePromise(data);
-}
+};
 
 specUtil.createFakePromise = function (data) {
-    var FakePromise = function(data){
-        this.data=data;
+    var FakePromise = function (data) {
+        this.data = data;
     };
-    FakePromise.prototype.then=function(callback){
-        return new FakePromise(callback({data:this.data}));
+    FakePromise.prototype.then = function (callback) {
+        return new FakePromise(callback({data: this.data}));
     };
-    FakePromise.prototype.success=function(resolve){
+    FakePromise.prototype.success = function (resolve) {
         resolve(this.data);
     };
-    FakePromise.prototype.error=function(reject){
+    FakePromise.prototype.error = function (reject) {
         reject(this.data);
     };
-    FakePromise.prototype.finally=function(callback){
+    FakePromise.prototype.finally = function (callback) {
         callback();
     };
-    FakePromise.prototype.catch=function(errorCallBack){
+    FakePromise.prototype.catch = function (errorCallBack) {
         errorCallBack(data);
     };
     return new FakePromise(data);
@@ -80,8 +80,8 @@ var notifyError = function (error) {
 //      103 -       .then(specUtil.debug(103))
 //      104 -       .then(...);
 specUtil.debug = function (lineNumber) {
-    return function(data){
-        console.log(lineNumber+" : here");
+    return function (data) {
+        console.log(lineNumber + " : here");
         return data;
     };
 };

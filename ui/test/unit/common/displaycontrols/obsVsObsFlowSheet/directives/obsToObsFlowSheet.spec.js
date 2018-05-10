@@ -51,8 +51,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
         q = $q;
     }));
 
-    describe('initialization', function() {
-        it("should make the right http call as specified by its input", function() {
+    describe('initialization', function () {
+        it("should make the right http call as specified by its input", function () {
             var scope = rootScope.$new();
 
             scope.section = {
@@ -85,7 +85,6 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             element.isolateScope();
             scope.$digest();
         });
-
     });
 
     describe('getHeaderName ', function () {
@@ -207,7 +206,6 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             };
 
             expect(compiledElementScope.getHeaderName(conceptWithAbbreviation)).toEqual("SCD");
-
         });
 
         it('should return the abbreviation name with units if units are specified', function () {
@@ -301,7 +299,6 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             };
 
             expect(compiledElementScope.getHeaderName(conceptWithAbbreviation)).toEqual("shortName");
-
         });
         it('should return the shortname with units if abbreviation is not specifed and units are specified ', function () {
             var scope = rootScope.$new();
@@ -376,9 +373,6 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             expect(compiledElementScope.getHeaderName(conceptWithAbbreviation)).toEqual("fullName (mg)");
         });
-
-
-
     });
 
     describe('commafy ', function () {
@@ -476,7 +470,6 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             expect(compiledElementScope.commafy(observations)).toEqual("7.2:9.3");
         });
-
 
         it('should return just the value if there is only one value', function () {
             var scope = rootScope.$new();
@@ -606,7 +599,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                     ConceptName: {
                         displayMonthAndYear: true
                     }
-                }
+                };
             });
 
             var scope = rootScope.$new();

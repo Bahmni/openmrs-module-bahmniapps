@@ -107,7 +107,6 @@ describe('DrugOrdersSection DisplayControl', function () {
     beforeEach(module(function ($provide) {
         treatmentService = jasmine.createSpyObj('treatmentService', ['getAllDrugOrdersFor', 'voidDrugOrder']);
         $provide.value('treatmentService', treatmentService);
-
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {
@@ -146,9 +145,9 @@ describe('DrugOrdersSection DisplayControl', function () {
 
         var compiledElementScope = element.isolateScope();
         scope.$digest();
-        var expectedColumns = ["drugName", "dosage", "startDate", "frequency", "route"]
+        var expectedColumns = ["drugName", "dosage", "startDate", "frequency", "route"];
         expect(compiledElementScope.columns.length).toBe(5);
-        expect(compiledElementScope.columns).toEqual(expectedColumns)
+        expect(compiledElementScope.columns).toEqual(expectedColumns);
     });
 
     it("should assign Drug Orders as default title if title is not specified in config", function () {
@@ -204,16 +203,13 @@ describe('DrugOrdersSection DisplayControl', function () {
             compiledElementScope.drugOrders[1].isDiscontinuedAllowed = false;
             compiledElementScope.drugOrders[1].isBeingEdited = true;
 
-
             scope.$broadcast("event:reviseDrugOrder", compiledElementScope.drugOrders[0]);
 
             expect(compiledElementScope.drugOrders[0].isDiscontinuedAllowed).toBeFalsy();
             expect(compiledElementScope.drugOrders[0].isBeingEdited).toBeTruthy();
             expect(compiledElementScope.drugOrders[1].isDiscontinuedAllowed).toBeTruthy();
             expect(compiledElementScope.drugOrders[1].isBeingEdited).toBeFalsy();
-
-
-        })
+        });
     });
 
     it('should broadcast discontinueDrugOrder event on discontinue and update form conditions', function () {
@@ -232,9 +228,7 @@ describe('DrugOrdersSection DisplayControl', function () {
         expect(compiledElementScope.updateFormConditions).toHaveBeenCalled();
     });
 
-
     describe("when conditionally enable or disable order reason text for drug stoppage", function () {
-
         it("should enable reason text for all concepts when nothing is configured", function () {
             element = $compile(simpleHtml)(scope);
             scope.$digest();
@@ -249,7 +243,6 @@ describe('DrugOrdersSection DisplayControl', function () {
             compiledElementScope.discontinue(drugOrder);
 
             expect(drugOrder.orderReasonNotesEnabled).toBe(true);
-
         });
 
         it("should enable reason text only for configured reason concepts", function () {
@@ -266,16 +259,15 @@ describe('DrugOrdersSection DisplayControl', function () {
                     if (conceptName == "Adverse event") {
                         drugOrder.orderReasonNotesEnabled = true;
                         return true;
-                    }
-                    else
+                    } else {
                         return false;
+                    }
                 }
             };
             drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
             compiledElementScope.discontinue(drugOrder);
 
             expect(drugOrder.orderReasonNotesEnabled).toBe(true);
-
         });
 
         it("should disable reason text only for unconfigured reason concepts", function () {
@@ -292,9 +284,9 @@ describe('DrugOrdersSection DisplayControl', function () {
                     if (conceptName == "Adverse event") {
                         drugOrder.orderReasonNotesEnabled = true;
                         return true;
-                    }
-                    else
+                    } else {
                         return false;
+                    }
                 }
             };
             drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
@@ -304,9 +296,7 @@ describe('DrugOrdersSection DisplayControl', function () {
             drugOrder.orderReasonConcept = {name: {name: "other event"}};
             compiledElementScope.updateFormConditions(drugOrder);
             expect(drugOrder.orderReasonNotesEnabled).toBe(false);
-
         });
-
     });
 
     describe("Column header Internationalization", function () {
@@ -334,7 +324,7 @@ describe('DrugOrdersSection DisplayControl', function () {
             scope.$digest();
             expect(compiledElementScope.columnHeaders.drugName).toBe("DRUG_DETAILS_DRUG_NAME");
         });
-    })
+    });
 
     describe("voidDrugOrder", function () {
         it('should broadcast sectionUpdated event on void', function () {
@@ -342,7 +332,7 @@ describe('DrugOrdersSection DisplayControl', function () {
             scope.$digest();
             mockBackend.flush();
 
-            treatmentService.voidDrugOrder.and.callFake(function() {
+            treatmentService.voidDrugOrder.and.callFake(function () {
                 return q.defer().promise;
             });
 

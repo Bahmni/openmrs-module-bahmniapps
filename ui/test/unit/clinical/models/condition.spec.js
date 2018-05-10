@@ -95,20 +95,20 @@ describe("condition", function () {
             expect(condition.isEmpty()).toBeFalsy();
 
             var condition = new Condition({
-                onSetDate:new Date()
+                onSetDate: new Date()
             });
             expect(condition.isEmpty()).toBeFalsy();
 
             var condition = new Condition({
-                status:'ACTIVE'
+                status: 'ACTIVE'
             });
             expect(condition.isEmpty()).toBeFalsy();
             var condition = new Condition({
-                additionalDetail:'some notes'
+                additionalDetail: 'some notes'
             });
             expect(condition.isEmpty()).toBeFalsy();
         });
-    })
+    });
 
     describe("isActive", function () {
         it("shouldn't be okay if status is INACTIVE", function () {
@@ -175,9 +175,8 @@ describe("condition", function () {
                 })
             ];
 
-            expect(Conditions.getPreviousActiveCondition(conditions[0],conditions)).toBe(conditions[2]);
+            expect(Conditions.getPreviousActiveCondition(conditions[0], conditions)).toBe(conditions[2]);
         });
-
     });
 
     describe("fromConditionHistories", function () {
@@ -209,7 +208,6 @@ describe("condition", function () {
             var latestConditions = Conditions.fromConditionHistories([conditionHistory]);
             expect(latestConditions.length).toBe(1);
             expect(latestConditions[0].uuid).toBe('003');
-
         });
         it("should take recently onSet condition", function () {
             var conditionHistory = {};
@@ -237,7 +235,6 @@ describe("condition", function () {
             var latestConditions = Conditions.fromConditionHistories([conditionHistory]);
             expect(latestConditions.length).toBe(1);
             expect(latestConditions[0].uuid).toBe('003');
-
         });
     });
 });

@@ -10,10 +10,10 @@ describe("Observation", function () {
             var noObservation = new Observation({"type": "Boolean", "value": false});
             expect(noObservation.getDisplayValue()).toBe("OBS_BOOLEAN_NO_KEY");
         });
-        it("should return translation keys for yes and no for Boolean observation", function(){
-           var yesObservation = new Observation({"concept": {name : "booleanConcept", "dataType": "Boolean"}, "value" : true});
-           expect(yesObservation.getDisplayValue()).toBe("OBS_BOOLEAN_YES_KEY");
-            var noObservation = new Observation({"concept": {name : "booleanConcept", "dataType": "Boolean"}, "value" : false});
+        it("should return translation keys for yes and no for Boolean observation", function () {
+            var yesObservation = new Observation({"concept": {name: "booleanConcept", "dataType": "Boolean"}, "value": true});
+            expect(yesObservation.getDisplayValue()).toBe("OBS_BOOLEAN_YES_KEY");
+            var noObservation = new Observation({"concept": {name: "booleanConcept", "dataType": "Boolean"}, "value": false});
             expect(noObservation.getDisplayValue()).toBe("OBS_BOOLEAN_NO_KEY");
         });
 
@@ -48,19 +48,18 @@ describe("Observation", function () {
             var observation = new Observation({"type": "Date", "value": "2012-12-10"});
             expect(observation.getDisplayValue()).toBe("10 Dec 12");
         });
-        it("should format date in months and years if config is set to display in months and years", function(){
-            var observation = new Observation({"type": "Date", "value": "2012-12-10"},{"displayMonthAndYear": true});
+        it("should format date in months and years if config is set to display in months and years", function () {
+            var observation = new Observation({"type": "Date", "value": "2012-12-10"}, {"displayMonthAndYear": true});
             expect((observation.getDisplayValue())).toBe("Dec 12");
         });
-        it("should format date in text to months and years if config is set to display in months and years", function(){
-            var observation = new Observation({"type": "text", "value": "2012-12-10"},{"displayMonthAndYear": true});
+        it("should format date in text to months and years if config is set to display in months and years", function () {
+            var observation = new Observation({"type": "text", "value": "2012-12-10"}, {"displayMonthAndYear": true});
             expect((observation.getDisplayValue())).toBe("Dec 12");
         });
     });
 
-
-    describe("is Image Concept", function(){
-        it("should return concept is image", function(){
+    describe("is Image Concept", function () {
+        it("should return concept is image", function () {
             var observation = new Observation({"type": "Text", "value": 'imageUrl1', concept: {conceptClass: 'Image'}});
             expect(observation.isImageConcept()).toBeTruthy();
         });

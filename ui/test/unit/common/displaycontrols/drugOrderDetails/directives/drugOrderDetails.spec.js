@@ -4,8 +4,8 @@ describe('Drug Order Details DisplayControl', function () {
     var drugOrderSections,
         $compile,
         mockBackend,
-        scope, q,treatmentService,
-        params,element,
+        scope, q, treatmentService,
+        params, element,
         simpleHtml = '<drug-order-details id="dashboard-drug-order-details" patient="patient" section="params"></drug-order-details>';
 
     var doseFractions = [
@@ -15,7 +15,7 @@ describe('Drug Order Details DisplayControl', function () {
         {"value": 0.75, "label": "¾"}
     ];
 
-    drugOrderSections =[
+    drugOrderSections = [
         {
             "action": "NEW",
             "uuid": "3279ccd2-9e57-4a4f-a79a-66e1538ea6c6",
@@ -35,7 +35,7 @@ describe('Drug Order Details DisplayControl', function () {
             "dosingInstructions": {
                 "administrationInstructions": "{\"instructions\":\"Immediately\"}"
             },
-            "dateStopped":"21-05-2012",
+            "dateStopped": "21-05-2012",
             "drug": {
                 "form": "Inhaler",
                 "strength": null,
@@ -55,13 +55,12 @@ describe('Drug Order Details DisplayControl', function () {
         });
     }));
 
-
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {
-        q= $q;
+        q = $q;
         scope = $rootScope;
         $compile = _$compile_;
-        scope.patient= {uuid:'123'};
-        scope.params = {dashboardConfig:{}};
+        scope.patient = {uuid: '123'};
+        scope.params = {dashboardConfig: {}};
         mockBackend = $httpBackend;
         mockBackend.expectGET('../common/displaycontrols/drugOrderDetails/views/drugOrderDetails.html').respond("<div>dummy</div>");
         treatmentService.getAllDrugOrdersFor.and.returnValue(specUtil.respondWithPromise(q, drugOrderSections));
@@ -70,24 +69,23 @@ describe('Drug Order Details DisplayControl', function () {
         mockBackend.flush();
     }));
 
-
     it("should return all configured drug orders taken by the patient", function () {
         var compiledElementScope = element.isolateScope();
         scope.$digest();
         expect(compiledElementScope.drugOrders.length).toBe(drugOrderSections.length);
     });
 
-    it("should toggle the showDetails when drugOrder is selected", function(){
+    it("should toggle the showDetails when drugOrder is selected", function () {
         var compiledElementScope = element.isolateScope();
         scope.$digest();
         var drugOrder = {};
         expect(drugOrder.showDetails).toBeFalsy();
-        compiledElementScope.toggle(drugOrder)
+        compiledElementScope.toggle(drugOrder);
         expect(drugOrder.showDetails).toBeTruthy();
     });
 
-    it("should filter inactive drug orders when configured to not show them", function(){
-        scope.params = {dashboardConfig:{showOnlyActive:true}};
+    it("should filter inactive drug orders when configured to not show them", function () {
+        scope.params = {dashboardConfig: {showOnlyActive: true}};
         element = $compile(simpleHtml)(scope);
         scope.$digest();
         var compiledElementScope = element.isolateScope();

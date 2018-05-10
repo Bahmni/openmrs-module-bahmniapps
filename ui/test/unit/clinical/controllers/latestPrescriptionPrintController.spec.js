@@ -1,7 +1,6 @@
 'use strict';
 
 describe("LatestPrescriptionPrintController", function () {
-
     beforeEach(module('bahmni.clinical'));
 
     var scope;
@@ -15,7 +14,7 @@ describe("LatestPrescriptionPrintController", function () {
         rootScope = $rootScope;
         scope = $rootScope.$new();
         spinner.forPromise.and.callFake(function (param) {
-            return {}
+            return {};
         });
 
         patientService = jasmine.createSpyObj('patientService', ['search']);
@@ -59,7 +58,7 @@ describe("LatestPrescriptionPrintController", function () {
                 expect(startDate).toBe("someStartDate");
                 expect(visitUuid).toBe("latestVisitUuid");
             };
-            var messageServiceExpectation = function (type, message){
+            var messageServiceExpectation = function (type, message) {
                 expect(type).toBe("info");
                 expect(message).toBe("Please close this tab.");
             };
@@ -68,14 +67,13 @@ describe("LatestPrescriptionPrintController", function () {
 
             expect(messagingService.showMessage).toHaveBeenCalled();
             expect(visitActionService.printPrescription).toHaveBeenCalled();
-
         });
 
         it("should show message when no active visit found", function () {
             scope.patient = {"uuid": "patientUuid"};
             scope.visitHistory = {};
 
-            var messageServiceExpectation = function (type, message){
+            var messageServiceExpectation = function (type, message) {
                 expect(type).toBe("error");
                 expect(message).toBe("No Active visit found for this patient.");
             };

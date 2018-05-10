@@ -199,7 +199,7 @@ describe('SearchPatientController', function () {
     describe("searchById", function () {
         it('should search by patient identifier when registrationNumber is present', function () {
             scope.searchParameters.registrationNumber = "20001";
-            var defaultSearchAddressField = undefined;
+            var defaultSearchAddressField;
             scope.searchById();
 
             expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined, {}, {}, false);

@@ -1,7 +1,6 @@
 'use strict';
 
 describe('UpdatePatientRequestMapper', function () {
-
     var patient;
     var patientAttributeTypes, identifiersMock, identifierDetails;
     var date = new Date();
@@ -37,7 +36,6 @@ describe('UpdatePatientRequestMapper', function () {
             identifiersMock.create.and.returnValue(identifierDetails);
 
             $provide.value('identifiers', identifiersMock);
-
         });
         inject(['patient', function (patientFactory) {
             patient = patientFactory.create();
@@ -148,15 +146,12 @@ describe('UpdatePatientRequestMapper', function () {
                 }]
             }
         };
-
     });
 
-
     it('should set voided flag when Empty value is selected for concept attribute type(dropdown)', function () {
-
         var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient, patient);
 
-        var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes, {uuid: "caste-attribute-uuid"})
+        var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes, {uuid: "caste-attribute-uuid"});
         expect(castePatientAttribute.voided).toBeTruthy();
     });
 
@@ -168,13 +163,11 @@ describe('UpdatePatientRequestMapper', function () {
             }
         });
 
-
         var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient, patient);
 
         var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes, {uuid: "caste-attribute-uuid"});
         expect(castePatientAttribute.hydratedObject).toBe("General-uuid");
     });
-
 
     it('should set voided flag to true when blank value is selected for an attribute of concept type', function () {
         angular.extend(patient, {
@@ -184,13 +177,11 @@ describe('UpdatePatientRequestMapper', function () {
             }
         });
 
-
         var mappedPatientData = updatePatientRequestMapper.mapFromPatient(patientAttributeTypes, openMrsPatient, patient);
 
         var castePatientAttribute = _.find(mappedPatientData.patient.person.attributes, {uuid: "caste-attribute-uuid"});
         expect(castePatientAttribute.voided).toBeTruthy();
     });
-
 
     describe("map identifiers", function () {
         it('should filter out empty new identifier objects', function () {
@@ -243,7 +234,6 @@ describe('UpdatePatientRequestMapper', function () {
                 preferred: false,
                 identifierType: "identifier-type2-uuid"
             });
-
-            })
-    })
+        });
+    });
 });

@@ -9,7 +9,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
     beforeEach(angular.mock.module('bahmni.registration'));
     beforeEach(angular.mock.inject(function () {
         success = jasmine.createSpy('Successful');
-        addressHierarchyService = jasmine.createSpyObj('addressHierarchyService', ['search', 'getNextAvailableParentName','getAddressDataResults']);
+        addressHierarchyService = jasmine.createSpyObj('addressHierarchyService', ['search', 'getNextAvailableParentName', 'getAddressDataResults']);
     }));
 
     var setupController = function (strictAutocompleteFromLevel) {
@@ -34,11 +34,10 @@ describe('TopDownAddressFieldsDirectiveController', function () {
     };
 
     describe("village selection", function () {
-        beforeEach(function(){
+        beforeEach(function () {
             setupController(undefined);
             scope.$digest();
         });
-
 
         it("should update tehsil, district and state", function () {
             var village = Bahmni.Tests.villageMother.build();
@@ -53,7 +52,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
         it("should not update tehsil, district and state when selected village does not have parents", function () {
             var village = Bahmni.Tests.villageMother.build();
             village.parent = null;
-            scope.address = {address3: "", countyDistrict: "", stateProvince: ""}
+            scope.address = {address3: "", countyDistrict: "", stateProvince: ""};
 
             scope.addressFieldSelected('cityVillage')({addressField: village});
 
@@ -64,7 +63,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
     });
 
     describe("Editing any auto complete field", function () {
-        beforeEach(function(){
+        beforeEach(function () {
             setupController(undefined);
             scope.$digest();
         });
@@ -79,7 +78,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             scope.clearFields("countyDistrict");
 
             expect(scope.address.cityVillage).toBe(null);
-            expect(scope.address.address3).toBe(null)
+            expect(scope.address.address3).toBe(null);
         });
 
         it("should update value of field on clear", function () {
@@ -99,7 +98,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
         it("should no update addressCode value on clear of field any field that doesnt have selectedUserGeneratedIds", function () {
             scope.address = {
                 address1: "",
-                address3: "address",
+                address3: "address"
             };
             scope.address.address1 = "addressLine";
 
@@ -109,20 +108,20 @@ describe('TopDownAddressFieldsDirectiveController', function () {
         });
     });
 
-    describe("getAddressEntryList", function() {
-        beforeEach(function(){
+    describe("getAddressEntryList", function () {
+        beforeEach(function () {
             setupController(undefined);
             scope.$digest();
         });
 
-        it("should retrieve addresses based on parent uuid when parent has been specified", function(done) {
+        it("should retrieve addresses based on parent uuid when parent has been specified", function (done) {
             addressHierarchyService.search.and.returnValue(specUtil.respondWith([
                 {
                     "name": "Bagerhat",
                     "uuid": "e12e5566-73b7-476e-8bc1-d6bce6df7fb5",
                     "parent": {
                         "name": "Khulna",
-                        "uuid": "76bc03a4-5e7f-486a-b67f-3f36b48b0387",
+                        "uuid": "76bc03a4-5e7f-486a-b67f-3f36b48b0387"
                     }
                 }
             ]));
@@ -140,7 +139,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             });
         });
 
-        it("should work with parent uuid when fields are cleared in between", function(done) {
+        it("should work with parent uuid when fields are cleared in between", function (done) {
             addressHierarchyService.search.and.returnValue(specUtil.respondWith([
                 {
                     "name": "Patharghata",
@@ -187,16 +186,15 @@ describe('TopDownAddressFieldsDirectiveController', function () {
                 done();
             });
         });
-
     });
 
-    describe('populateSelectedAddressUuids',function(){
-        beforeEach(function(){
-            setupController(undefined)
+    describe('populateSelectedAddressUuids', function () {
+        beforeEach(function () {
+            setupController(undefined);
         });
 
-        it("should not throw an error when response is not present",function(done){
-            scope.address.stateProvince="state";
+        it("should not throw an error when response is not present", function (done) {
+            scope.address.stateProvince = "state";
             addressHierarchyService.search.and.returnValue(specUtil.createFakePromise(undefined));
             scope.$digest();
             expect(addressHierarchyService.search).toHaveBeenCalledWith("stateProvince", "state", undefined);
@@ -204,23 +202,22 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             done();
         });
 
-        it("should recusive call for populateSelectedAddressUuids",function(done){
-            scope.address.stateProvince="Dhaka";
-            scope.address.countyDistrict="Gazipur";
-            scope.address.address3="Gazipur Sadar";
-            scope.address.cityVillage="Baria";
-            scope.address.address1="Ward No-02";
+        it("should recusive call for populateSelectedAddressUuids", function (done) {
+            scope.address.stateProvince = "Dhaka";
+            scope.address.countyDistrict = "Gazipur";
+            scope.address.address3 = "Gazipur Sadar";
+            scope.address.cityVillage = "Baria";
+            scope.address.address1 = "Ward No-02";
             addressHierarchyService.search.and.callFake(function (fileName, fieldValue, parentUuid) {
-                if(parentUuid == undefined)
+                if (parentUuid == undefined) {
                     return specUtil.createFakePromise([{uuid: "DhakaUuid"}]);
-                else if(parentUuid == "DhakaUuid")
-                    return specUtil.createFakePromise([{uuid: "GazipurUuid"}]);
-                else if(parentUuid == "GazipurUuid")
+                } else if (parentUuid == "DhakaUuid") { return specUtil.createFakePromise([{uuid: "GazipurUuid"}]); } else if (parentUuid == "GazipurUuid") {
                     return specUtil.createFakePromise([{uuid: "SadarUuid"}]);
-                else if(parentUuid == "SadarUuid")
+                } else if (parentUuid == "SadarUuid") {
                     return specUtil.createFakePromise([{uuid: "BariaUuid"}]);
-                else if(parentUuid == "BariaUuid")
+                } else if (parentUuid == "BariaUuid") {
                     return specUtil.createFakePromise([{uuid: "Ward02Uuid"}]);
+                }
             });
             scope.$digest();
 
@@ -234,7 +231,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
         });
     });
 
-    describe("clear fields when parent field is cleared", function() {
+    describe("clear fields when parent field is cleared", function () {
         it("should set selectedValue to null on editing the field", function () {
             scope.selectedValue = {
                 address3: "address",
@@ -245,12 +242,10 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             scope.removeAutoCompleteEntry("cityVillage")();
 
             expect(scope.selectedValue["cityVillage"]).toBeNull();
-
         });
-
     });
 
-    describe("initialize controller", function() {
+    describe("initialize controller", function () {
         it("should make all parent levels as strict autocomplete fields starting from configured address level", function () {
             setupController("countyDistrict");
             expect(scope.addressLevels[0].isStrictEntry).toBe(true);
@@ -267,7 +262,6 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             expect(scope.addressLevels[2].isStrictEntry).toBeFalsy();
             expect(scope.addressLevels[3].isStrictEntry).toBeFalsy();
             expect(scope.addressLevels[4].isStrictEntry).toBeFalsy();
-
         });
 
         it("should intialize selectedValue only for strict autocomplete fields", function () {
@@ -284,7 +278,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
                     "uuid": "e12e5566-73b7-476e-8bc1-d6bce6df7fb5",
                     "parent": {
                         "name": "Khulna",
-                        "uuid": "76bc03a4-5e7f-486a-b67f-3f36b48b0387",
+                        "uuid": "76bc03a4-5e7f-486a-b67f-3f36b48b0387"
                     }
                 }
             ]));
@@ -298,7 +292,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
         });
     });
 
-    describe("Enable & disable address fields", function() {
+    describe("Enable & disable address fields", function () {
         it("should enable all free text fields irrespective of parent has value or not", function () {
             setupController("countyDistrict");
 
@@ -307,8 +301,6 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             expect(scope.isReadOnly(scope.addressLevels[2])).toBeFalsy();
             expect(scope.isReadOnly(scope.addressLevels[3])).toBeFalsy();
             expect(scope.isReadOnly(scope.addressLevels[4])).toBeFalsy();
-
         });
-
     });
 });

@@ -3,7 +3,7 @@
 describe('Query Service', function () {
     var queryService;
     var mockHttp = jasmine.createSpyObj('$http', ['get']);
-    mockHttp.get.and.callFake(function(param) {
+    mockHttp.get.and.callFake(function (param) {
         return specUtil.respondWith("success");
     });
 
@@ -19,7 +19,7 @@ describe('Query Service', function () {
     });
 
     it('service should retrieve', function (done) {
-        queryService.getResponseFromQuery("someParams").then(function(response) {
+        queryService.getResponseFromQuery("someParams").then(function (response) {
             expect(response).toEqual("success");
             done();
         });

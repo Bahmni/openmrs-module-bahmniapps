@@ -1,7 +1,6 @@
 'use strict';
 
 describe('CreatePatientRequestMapper', function () {
-
     var patient;
     var patientAttributeTypes;
     var identifiersMock, identifierDetails;
@@ -10,7 +9,7 @@ describe('CreatePatientRequestMapper', function () {
     beforeEach(function () {
         module('bahmni.registration');
         module('bahmni.common.models');
-        module(function($provide){
+        module(function ($provide) {
             identifiersMock = jasmine.createSpyObj('identifiers', ['create']);
             identifierDetails = {
                 primaryIdentifier: {
@@ -85,11 +84,9 @@ describe('CreatePatientRequestMapper', function () {
                 "answers": []
             }
         ];
-
     });
 
     it('should map angular patient model to openmrs patient', function () {
-
         angular.extend(patient, {
             "givenName": "gname",
             "familyName": "fname",
@@ -169,7 +166,7 @@ describe('CreatePatientRequestMapper', function () {
         expect(openmrsPatient.patient.identifiers).toContain(
             {
                 "identifier": "GAN200011",
-                "identifierSourceUuid" : "dead-cafe",
+                "identifierSourceUuid": "dead-cafe",
                 "identifierPrefix": "GAN",
                 "identifierType": "identifier-type-uuid",
                 "preferred": true,
@@ -206,7 +203,6 @@ describe('CreatePatientRequestMapper', function () {
     });
 
     it('should map birthdate to age and birthdate', function () {
-
         angular.extend(patient, {
             "birthdate": date
         });
@@ -217,7 +213,6 @@ describe('CreatePatientRequestMapper', function () {
     });
 
     it('should not use age when birthdate is present', function () {
-
         angular.extend(patient, {
             "birthdate": date,
             "age": {
@@ -262,5 +257,4 @@ describe('CreatePatientRequestMapper', function () {
 
         expect(mappedPatientData.image).toBeFalsy();
     });
-
 });

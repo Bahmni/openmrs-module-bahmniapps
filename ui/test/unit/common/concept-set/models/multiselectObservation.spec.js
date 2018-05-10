@@ -1,7 +1,7 @@
 'use strict';
 
-describe("Multiselect Observation", function() {
-    var buildConcept = function(name, setMembers, answers) {
+describe("Multiselect Observation", function () {
+    var buildConcept = function (name, setMembers, answers) {
         return {
             "name": {name: name},
             "set": setMembers && setMembers.length > 0,
@@ -9,8 +9,8 @@ describe("Multiselect Observation", function() {
             setMembers: setMembers,
             answers: answers,
             "uuid": name + "_uuid"
-        }
-    }
+        };
+    };
     var diabetesConcept = buildConcept("Diabetes", [], []);
     var hyperTensionConcept = buildConcept("HyperTension", [], []);
     var hivConcept = buildConcept("HIV", [], []);
@@ -18,7 +18,7 @@ describe("Multiselect Observation", function() {
     var systolicConcept = buildConcept("Systolic", [], []);
     var vitalsConcept = buildConcept("Vitals", [systolicConcept, comorbidityConcept], []);
 
-    var savedObs = function() {
+    var savedObs = function () {
         return [{
             "concept": vitalsConcept,
             "label": "Vitals",
@@ -29,13 +29,13 @@ describe("Multiselect Observation", function() {
                 "groupMembers": [],
                 "value": "90",
                 "voided": false
-            },{
+            }, {
                 "concept": comorbidityConcept,
                 "label": "Comorbidity",
                 "groupMembers": [],
                 "value": {name: diabetesConcept.name.name, uuid: diabetesConcept.uuid},
                 "voided": false
-            },{
+            }, {
                 "concept": comorbidityConcept,
                 "label": "Comorbidity",
                 "groupMembers": [],
@@ -47,7 +47,7 @@ describe("Multiselect Observation", function() {
         }];
     };
 
-    var newObs = function() {
+    var newObs = function () {
         return [{
             "concept": vitalsConcept,
             "label": "Vitals",
@@ -58,7 +58,7 @@ describe("Multiselect Observation", function() {
                 "groupMembers": [],
                 "value": "90",
                 "voided": false
-            },{
+            }, {
                 "concept": comorbidityConcept,
                 "label": "Comorbidity",
                 "groupMembers": [],
@@ -70,8 +70,7 @@ describe("Multiselect Observation", function() {
         }];
     };
 
-
-    //it("should toggle selection of already saved observation",function(){
+    // it("should toggle selection of already saved observation",function(){
     //    var rootConcept = savedObs()[0].concept;
     //    var mapper = new Bahmni.ConceptSet.ObservationMapper();
     //    var mappedObs = mapper.map(savedObs(), rootConcept, {"Comorbidity": {multiSelect: true}});
@@ -84,9 +83,9 @@ describe("Multiselect Observation", function() {
     //    mappedObs.groupMembers[1].toggleSelection({name: hyperTensionConcept.name.name, uuid: hyperTensionConcept.uuid});
     //    expect(mappedObs.groupMembers[2].voided).toBeFalsy();
     //    expect(mappedObs.groupMembers[3].voided).toBeTruthy();
-    //});
+    // });
 
-    it("should toggle selection of newly selected observation",function(){
+    it("should toggle selection of newly selected observation", function () {
         var rootConcept = savedObs()[0].concept;
         var mapper = new Bahmni.ConceptSet.ObservationMapper();
         var mappedObs = mapper.map(savedObs(), rootConcept, {"Comorbidity": {multiSelect: true}});
@@ -99,7 +98,7 @@ describe("Multiselect Observation", function() {
         expect(mappedObs.groupMembers[4].voided).toBeFalsy();
     });
 
-    it("should add new obs when there are no saved obs",function(){
+    it("should add new obs when there are no saved obs", function () {
         var rootConcept = newObs()[0].concept;
         var mapper = new Bahmni.ConceptSet.ObservationMapper();
         var mappedObs = mapper.map(newObs(), rootConcept, {"Comorbidity": {multiSelect: true}});
@@ -115,7 +114,7 @@ describe("Multiselect Observation", function() {
         expect(mappedObs.groupMembers[3].voided).toBeFalsy();
     });
 
-    it("should clone and create new empty value observation",function(){
+    it("should clone and create new empty value observation", function () {
         var rootConcept = newObs()[0].concept;
         var mapper = new Bahmni.ConceptSet.ObservationMapper();
         var mappedObs = mapper.map(newObs(), rootConcept, {"Comorbidity": {multiSelect: true}});
@@ -131,7 +130,7 @@ describe("Multiselect Observation", function() {
         expect(clonedObs.groupMembers[1].voided).toBeFalsy();
     });
 
-    it("should return array of selected values", function() {
+    it("should return array of selected values", function () {
         var rootConcept = savedObs()[0].concept;
         var mapper = new Bahmni.ConceptSet.ObservationMapper();
         var mappedObs = mapper.map(savedObs(), rootConcept, {"Comorbidity": {multiSelect: true}});
@@ -142,5 +141,5 @@ describe("Multiselect Observation", function() {
 
         mappedObs.groupMembers[1].toggleSelection({name: hivConcept.name.name, uuid: hivConcept.uuid});
         expect(mappedObs.groupMembers[1].getValues()).toEqual(['HyperTension', 'Diabetes', 'HIV']);
-    })
+    });
 });

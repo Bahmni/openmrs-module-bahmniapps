@@ -17,12 +17,12 @@ describe("ProgramAttributes display control", function () {
             getConfig: function () {
                 return {
                     program: ""
-                }
+                };
             },
             getConfigValue: function () {
                 return {
                     mandatoryProgramAttributes: ""
-                }
+                };
             }
         });
 
@@ -122,7 +122,7 @@ describe("ProgramAttributes display control", function () {
             getConfig: function () {
                 return {
                     program: ""
-                }
+                };
             },
             getConfigValue: function (value) {
                 return {
