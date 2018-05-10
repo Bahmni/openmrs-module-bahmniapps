@@ -9,7 +9,7 @@ angular.module('bahmni.ipd')
                         if ($translate.instant(tagConfig.name) === "MultiTag") {
                             bed.bedTagMaps[0].bedTag.color = tagConfig.color;
                         }
-                    } else if (bed.bedTagMaps[0] !== undefined && $translate.instant(tagConfig.name) === bed.bedTagMaps[0].bedTag.name) {
+                    } else if (angular.isDefined(bed.bedTagMaps[0]) && $translate.instant(tagConfig.name) === bed.bedTagMaps[0].bedTag.name) {
                         bed.bedTagMaps[0].bedTag.color = tagConfig.color;
                     }
                 });

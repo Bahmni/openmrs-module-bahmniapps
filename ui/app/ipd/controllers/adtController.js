@@ -191,7 +191,7 @@ angular.module('bahmni.ipd')
             };
 
             $scope.admit = function () {
-                if ($rootScope.selectedBedInfo.bed === undefined) {
+                if (angular.isUndefined($rootScope.selectedBedInfo.bed)) {
                     messagingService.showMessage("error", "Please select a bed to admit patient");
                 } else if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName && !hideStartNewVisitPopUp) {
                     ngDialog.openConfirm({
@@ -259,7 +259,7 @@ angular.module('bahmni.ipd')
             };
 
             $scope.transfer = function () {
-                if ($rootScope.selectedBedInfo.bed === undefined || $rootScope.selectedBedInfo.bed.bedId === $rootScope.bedDetails.bedId) {
+                if (angular.isUndefined($rootScope.selectedBedInfo.bed) || $rootScope.selectedBedInfo.bed.bedId === $rootScope.bedDetails.bedId) {
                     messagingService.showMessage("error", "Please select a bed to transfer the patient");
                 } else {
                     ngDialog.openConfirm({
