@@ -108,7 +108,7 @@ angular.module('bahmni.ipd')
                     $scope.promiseResolved = false;
                     $scope.observations = [];
                     $scope.editMode = false;
-                    $scope.onBedManagement = ($state.current && $state.current.name == "bedManagement.bed");
+                    $scope.onBedManagement = ($state.current && $state.current.name === "bedManagement.bed");
                     return constructObservationTemplate($scope.conceptSetName).then(function (observation) {
                         $scope.observations[0] = observation;
                         toggleDisabledObservation(false);
