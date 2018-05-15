@@ -13,7 +13,7 @@
     <div class="dialog-button-group">
         <button id="modal-revise-button1" class="secondary-button" ng-click="continueWithoutSaving()">{{'SAVE_CONFIRMATION_OPTION_DONT_SAVE_KEY' | translate}}</button>
         <button id="modal-revise-button2" class="secondary-button" ng-click="cancelTransition()">{{'SAVE_CONFIRMATION_OPTION_CANCEL_KEY' | translate}}</button>
-        <button id="modal-revise-button3" class="secondary-button" ng-click="saveAndContinue()">{{'SAVE_CONFIRMATION_OPTION_SAVE_KEY' | translate}}</button>
+        <button id="modal-revise-button3" class="secondary-button" ng-click="saveAndContinue()" ng-show="showSaveAndContinueButton">{{'SAVE_CONFIRMATION_OPTION_SAVE_KEY' | translate}}</button>
     </div>
 
     <span class="ngdialog-end"></span>

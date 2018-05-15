@@ -12,7 +12,7 @@
                     <div class="col col1"><span class="table-head-title">{{ 'CONSULTATION_TAB_NEW_DIAGNOSES_LABEL'|translate }}</span></div>
                     <div class="col col2"><span class="table-head-title">{{ 'CONSULTATION_TAB_DIAGNOSES_STATUS_LABEL'|translate }}</span></div>
                     <div class="col col3"><span class="table-head-title"></span></div>
-                    <div class="col col4"><span class="table-head-title">{{ 'CONSULTATION_TAB_{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}_DIAGNOSES_LABEL'|translate }}</span></div>
+                    <div class="col col4"><span class="table-head-title">{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL_DIAGNOSES_LABEL'|translate }}</span></div>
                     <div class="col col5"><span class="table-head-title"></span></div>
                 </div>
                 <div class="table-body">
@@ -44,7 +44,7 @@
                             </div>
                             <div class="col col3"></div>
                             <div class="col col4">
-                                <i ng-show="diagnosis.{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}" class="fa fa-ok fl"></i>
+                                <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments"
                                         ng-click="diagnosis.showComment = !diagnosis.showComment"
                                         ng-class="{'has-notes': diagnosis.comments}">
@@ -101,7 +101,7 @@
                             </div>
                             <div class="col col3"></div>
                             <div class="col col4">
-                                <i ng-show="diagnosis.{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}" class="fa fa-ok fl"></i>
+                                <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments"
                                         toggle="diagnosis.showComment"
                                         ng-class="{'has-notes': diagnosis.comments}">
@@ -158,7 +158,7 @@
                             </div>
                             <div class="col col3"></div>
                             <div class="col col4">
-                                <i ng-show="diagnosis.{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}" class="fa fa-ok fl"></i>
+                                <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments"
                                         ng-click="diagnosis.showComment = !diagnosis.showComment"
                                         ng-class="{'has-notes': diagnosis.comments}">

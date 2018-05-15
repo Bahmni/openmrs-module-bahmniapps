@@ -25,6 +25,7 @@ angular.module('bahmni.common.util', [])
                     if (jsonCookie) {
                         return angular.fromJson(decodeURIComponent(jsonCookie));
                     }
+                    return null;
                 },
                 put: function (name, value, options) {
                     options = $.extend({}, self.defaultOptions, options);
