@@ -157,7 +157,7 @@ angular.module('opd.documentupload')
                 	}
                 	var topLevelConcept = response.data.results[0];
                     topLevelConceptUuid = topLevelConcept ? topLevelConcept.uuid : null;
-                    // setDefaultConcept(topLevelConcept);
+                    //setDefaultConcept(topLevelConcept);
                 });
             };
 
@@ -259,9 +259,9 @@ angular.module('opd.documentupload')
             };
 
             $scope.onConceptSelected = function (file) {
-                /* return function (selectedItem) {
+                /*return function (selectedItem) {
                     $scope.setConceptOnFile(file, selectedItem);
-                }; */
+                };*/
             	var filteredData;
             	$.each($scope.allConcepts, function (index, response) {
                     if (response.concept.name === file.concept.editableName) {
