@@ -94,6 +94,8 @@ describe('AppointmentsListViewController', function () {
     it('should not fetch appointments when doFetchAppointmentsData is set to false', function () {
         $state.params = {doFetchAppointmentsData: false};
         createController();
+        var viewDate = new Date('1970-01-01T11:30:00.000Z');
+        scope.getAppointmentsForDate(viewDate);
         expect(appointmentsService.getAllAppointments).not.toHaveBeenCalled();
         expect(spinner.forPromise).not.toHaveBeenCalled();
     });
