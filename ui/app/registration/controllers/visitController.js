@@ -230,7 +230,7 @@ angular.module('bahmni.registration')
             var isValid = function (mandatoryConcepts) {
                 var concept = mandatoryConcepts.filter(function (mandatoryConcept) {
                     if ((mandatoryConcept.isNumeric() && mandatoryConcept.value === 0) ||
-                        (mandatoryConcept.isBoolean && mandatoryConcept.value != null)) {
+                        (mandatoryConcept.isBoolean && mandatoryConcept.hasValue())) {
                         return false;
                     }
                     if (mandatoryConcept instanceof Bahmni.ConceptSet.Observation &&
