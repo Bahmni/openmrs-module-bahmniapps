@@ -1,53 +1,52 @@
-<section class="block section-grid">
+<section class="block section-grid expand-investigation-chart">
     <h2 ng-click="toggleChart()" class="section-title row-click">
         <i class="fa fa-caret-right" ng-hide="showChart"></i>
         <i class="fa fa-caret-down" ng-show="showChart"></i>
-        {{'INVESTIGATION_CHART_KEY' | translate }}
+        <span>{{'INVESTIGATION_CHART_KEY' | translate }}</span>
     </h2>
     <div>
         <div class="hidden-print">
-            <!-- Always hide this table on print -->
-            <table class="ipd-investigation h-scroll" bindonce="accessions" bm-show="showChart">
+            <table class="investigation-chart" bindonce="accessions" bm-show="showChart">
                 <thead>
-                <tr>
-                    <th>&nbsp;</th>
-                    <td class="normal" ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
-                        <span bo-text="testOrderLabel.testName"></span>
-                            <span ng-show="accessions.hasRange(testOrderLabel)" class="range">
-                                <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
-                            </span>
-                            <span bo-text="testOrderLabel.testUnitOfMeasurement" ng-show="accessions.hasUnits(testOrderLabel)" class="range" ></span>
-                    </td>
-                </tr>
+                    <tr>
+                        <th nowrap>&nbsp;</th>
+                        <td nowrap ng-repeat="dateLabel in accessions.getDateLabels()">{{dateLabel.date | bahmniDate}}</td>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="dateLabel in accessions.getDateLabels()">
-                    <td>{{dateLabel.date | bahmniDate}}</td>
-                    <td ng-repeat="testOrderLabel in accessions.getTestOrderLabels()"
-                        ng-class="{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}">
-                        <span ng-init="results = accessions.getResult(dateLabel, testOrderLabel)">
-                            <span bm-pop-over autoclose="true" class="test-result" ng-repeat="res in results">
-                                <span ng-class="{'referred-out': res.referredOut}">
-                                    <span class="referred">R</span>
-                                </span>
-                                <span ng-if="res.result" bm-pop-over-trigger
-                                      ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"
-                                      class="ipd-test-results fl" bo-text="res.result">
-                                </span>
-                                <span ng-if="res.uploadedFileName" class="upload-file-url">
-                                    <a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}"
-                                       stop-event-propagation="click" target="_blank">
-                                        <i class="fa fa-paperclip"></i>
-                                    </a>
-                                </span>
-                                <span class="tooltip" bm-pop-over-target>
-                                    <i class="fa fa-caret-left"></i>
-                                    <span ng-class="{'is-abnormal': res.abnormal}">{{res.result}}</span>
+                    <tr ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
+                        <th class="normal">
+                            <span bo-text="testOrderLabel.testName"></span>
+                            <span ng-show="accessions.hasRange(testOrderLabel)" class="range">
+                                <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
+                                <span bo-text="testOrderLabel.testUnitOfMeasurement"></span>
+                            </span>
+                        </th>
+                        <td ng-repeat="dateLabel in accessions.getDateLabels()" 
+                            ng-class="{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}">
+                            <span ng-init="results = accessions.getResult(dateLabel, testOrderLabel)">
+                                <span bm-pop-over autoclose="true" class="test-result" ng-repeat="res in results">
+                                    <span ng-class="{'referred-out': res.referredOut}">
+                                        <span class="referred">R</span>
+                                    </span>
+                                    <span ng-if="res.result" bm-pop-over-trigger
+                                          ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"
+                                          class="ipd-test-results fl" bo-text="res.result">1
+                                    </span>
+                                    <span ng-if="res.uploadedFileName" class="upload-file-url">
+                                        <a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}"
+                                           stop-event-propagation="click" target="_blank">
+                                            <i class="fa fa-paperclip"></i>
+                                        </a>
+                                    </span>
+                                    <span class="tooltip" bm-pop-over-target>
+                                        <i class="fa fa-caret-left"></i>
+                                        <span ng-class="{'is-abnormal': res.abnormal}">{{res.result}}</span>
+                                    </span>
                                 </span>
                             </span>
-                        </span>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -68,8 +67,8 @@
                         <span bo-text="testOrderLabel.testName"></span>
                         <span ng-show="accessions.hasRange(testOrderLabel)" class="range">
                             <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
+                            <span bo-text="testOrderLabel.testUnitOfMeasurement"></span>
                         </span>
-                        <span bo-text="testOrderLabel.testUnitOfMeasurement" ng-show="accessions.hasUnits(testOrderLabel)" class="range" ></span>
                     </th>
                     <td ng-repeat="dateLabel in accessions.getDateLabels()"
                         ng-class="{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}">
