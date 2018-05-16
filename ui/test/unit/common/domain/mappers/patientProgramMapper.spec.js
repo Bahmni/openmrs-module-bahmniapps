@@ -25,6 +25,14 @@ describe("PatientProgramMapper", function () {
         expect(mappedPatientProgram.outcome).toEqual("outcome-uuid")
     });
 
+    it('should not have time information in dateEnrolled', function () {
+        var patientProgram = {
+            uuid: "somePatientProgramUuid",
+            dateEnrolled: "Tue Apr 10 2018 00:00:00 GMT+0000 (UTC)"
+        };
 
-
+        var expectedDateEnrolled = moment(Bahmni.Common.Util.DateUtil.getDateWithoutTime(patientProgram.dateEnrolled)).format(Bahmni.Common.Constants.ServerDateTimeFormat);
+        var mappedPatientProgram = mapper.map(patientProgram, [], null);
+        expect(mappedPatientProgram.dateEnrolled).toEqual(expectedDateEnrolled);
+    })
 });
