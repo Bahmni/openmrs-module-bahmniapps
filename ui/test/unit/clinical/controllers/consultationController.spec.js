@@ -311,13 +311,12 @@ describe("ConsultationController", function () {
                     return true;
                 }
             };
-            scope.ipdButtonConfig = {forwardUrl:  "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", hideGoToIPDButton: false};
+            scope.ipdButtonConfig = {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", hideGoToIPDButton: false};
             appService.getAppDescriptor.and.returnValue(appDescriptor);
 
             expect(scope.ipdButtonConfig.forwardUrl).toEqual("../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}");
             expect(scope.ipdButtonConfig.hideGoToIPDButton).toBeFalsy();
         });
-
     });
 
     describe("tabUrl", function () {
@@ -702,9 +701,9 @@ describe("ConsultationController", function () {
                 return true;
             }
         };
-        scope.ipdButtonConfig = {forwardUrl:  "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}"};
+        scope.ipdButtonConfig = {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}"};
         appService.getAppDescriptor.and.returnValue(appDescriptor);
 
         expect(scope.generateBedManagementURL()).toEqual("../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}");
-    })
+    });
 });
