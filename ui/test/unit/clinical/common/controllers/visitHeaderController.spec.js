@@ -139,9 +139,7 @@ describe('visitHeaderController', function () {
             var stateParams = {configName:"program", programUuid: "programUuid", enrollment: "patientProgramUuid", patientUuid: "patientUuid"};
             createController(stateParams);
             scope.collapseControlPanel = jasmine.createSpy('collapseControlPanel');
-
             scope.openConsultation();
-
             expect(rootScope.hasVisitedConsultation).toBeTruthy();
             expect(scope.collapseControlPanel).toHaveBeenCalled();
             expect(mockLocation.url).toHaveBeenCalledWith('/program/patient/somePatientUuid/dashboard/bacteriology?programUuid=programUuid&enrollment=patientProgramUuid&tabConfigName=allMedicationTabConfig&priority=high');
