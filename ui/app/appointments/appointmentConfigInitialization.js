@@ -46,7 +46,7 @@ angular.module('bahmni.appointments').factory('appointmentConfigInitialization',
                     return providerService.list(params).then(function (response) {
                         return _.filter(response.data.results, function (provider) {
                             return _.find(provider.attributes, function (attribute) {
-                                return attribute.attributeType.display === 'Available for appointments' && attribute.value === true && attribute.voided === false && provider.retired === false;
+                                return attribute.attributeType.display === Bahmni.Appointments.Constants.availableForAppointments && attribute.value === true && attribute.voided === false && provider.retired === false;
                             });
                         });
                     });
