@@ -59,7 +59,7 @@ angular.module('bahmni.common.patient')
                     if ($scope.activeVisit) {
                         links.push({text: $translate.instant('CONTROL_PANEL_CONSULTATION_TEXT'), icon: "btn-consultation dashboard-btn", href: "#" + clinicalAppConfigService.getConsultationBoardLink()});
                     } else if (state.match("patient.visit")) {
-                        links.push({text: "Dashboard", icon: "btn-summary dashboard-btn", href: $scope.getDashboardLink()});
+                        links.push({text: $translate.instant('CONTROL_PANEL_DASHBOARD_TEXT'), icon: "btn-summary dashboard-btn", href: $scope.getDashboardLink()});
                     }
                     return links;
                 }

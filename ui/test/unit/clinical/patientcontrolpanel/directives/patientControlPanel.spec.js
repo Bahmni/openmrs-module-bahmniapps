@@ -113,7 +113,7 @@ describe('patientControlPanelTest', function () {
         scope.$digest();
 
         expect(compiledElementScope.links).not.toBeUndefined();
-        expect(compiledElementScope.links).toEqual([{text: "Dashboard", icon: "btn-summary dashboard-btn", href: "#/default/patient/patientUuid/dashboard"}]);
+        expect(compiledElementScope.links).toEqual([{text: "CONTROL_PANEL_DASHBOARD_TEXT", icon: "btn-summary dashboard-btn", href: "#/default/patient/patientUuid/dashboard"}]);
     });
 
     it('ensure links are correctly populated on patient dashboard page without an active visit', function () {
