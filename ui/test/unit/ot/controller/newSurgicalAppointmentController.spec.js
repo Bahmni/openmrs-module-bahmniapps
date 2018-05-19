@@ -524,4 +524,13 @@ describe("newSurgicalAppointmentController", function () {
         expect(scope.attributes.estTimeMinutes.value).toEqual(15);
     });
 
+    it("should remove isBeingEdit field for appointment which is selected when user clicks on cancel the changes", function () {
+        createController();
+        var appointment =  {sortWeight: 0, notes: "need more assistants", patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}};
+        scope.ngDialogData = { sortWeight: 0, notes: "need more assistants", patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}, isBeingEdited: true};
+        scope.surgicalForm  = {surgicalAppointments: [scope.ngDialogData, appointment]};
+        scope.close();
+        expect(scope.surgicalForm.surgicalAppointments[0].isBeingEdited).toBeUndefined();
+        expect(scope.ngDialogData.isBeingEdited).toBeUndefined();
+    });
 });

@@ -78,4 +78,11 @@ describe("surgical block view cancel appointment controller", function () {
         expect(ngDialog.close).toHaveBeenCalled();
         expect(scope.ngDialogData.surgicalAppointment.isBeingEdited).toBe(undefined);
     });
+
+    it("should delete isBeingEdited field while postpone/cancel the appointment", function () {
+        scope.ngDialogData.surgicalAppointment.patient =  {display: "EG100649M - Albert Hassan"};
+       createController();
+       scope.confirmCancelAppointment();
+       expect(scope.ngDialogData.surgicalAppointment.isBeingEdited).toBeUndefined();
+    });
 });
