@@ -10,38 +10,38 @@
                 <thead>
                     <tr>
                         <th nowrap>&nbsp;</th>
-                        <td nowrap ng-repeat="dateLabel in accessions.getDateLabels()">{{dateLabel.date | bahmniDate}}</td>
+                        <td nowrap ng-repeat="dateLabel in accessions.getDateLabels()">{{::dateLabel.date | bahmniDate}}</td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
                         <th class="normal">
                             <span bo-text="testOrderLabel.testName"></span>
-                            <span ng-show="accessions.hasRange(testOrderLabel)" class="range">
+                            <span ng-show="::accessions.hasRange(testOrderLabel)" class="range">
                                 <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
-                                <span bo-text="testOrderLabel.testUnitOfMeasurement"></span>
                             </span>
+                            <span bo-text="testOrderLabel.testUnitOfMeasurement" ng-show="::accessions.hasUnits(testOrderLabel)" class="range" ></span>
                         </th>
                         <td ng-repeat="dateLabel in accessions.getDateLabels()" 
-                            ng-class="{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}">
+                            ng-class="::{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}">
                             <span ng-init="results = accessions.getResult(dateLabel, testOrderLabel)">
                                 <span bm-pop-over autoclose="true" class="test-result" ng-repeat="res in results">
-                                    <span ng-class="{'referred-out': res.referredOut}">
+                                    <span ng-class="::{'referred-out': res.referredOut}">
                                         <span class="referred">R</span>
                                     </span>
-                                    <span ng-if="res.result" bm-pop-over-trigger
-                                          ng-class="{'is-abnormal': res.abnormal, 'one-result': results.length==1}"
+                                    <span ng-if="::res.result" bm-pop-over-trigger
+                                          ng-class="::{'is-abnormal': res.abnormal, 'one-result': results.length==1}"
                                           class="ipd-test-results fl" bo-text="res.result">1
                                     </span>
-                                    <span ng-if="res.uploadedFileName" class="upload-file-url">
-                                        <a class="uploaded-file" href="{{getUploadedFileUrl(res.uploadedFileName)}}"
+                                    <span ng-if="::res.uploadedFileName" class="upload-file-url">
+                                        <a class="uploaded-file" href="{{::getUploadedFileUrl(res.uploadedFileName)}}"
                                            stop-event-propagation="click" target="_blank">
                                             <i class="fa fa-paperclip"></i>
                                         </a>
                                     </span>
                                     <span class="tooltip" bm-pop-over-target>
                                         <i class="fa fa-caret-left"></i>
-                                        <span ng-class="{'is-abnormal': res.abnormal}">{{res.result}}</span>
+                                        <span ng-class="::{'is-abnormal': res.abnormal}">{{::res.result}}</span>
                                     </span>
                                 </span>
                             </span>
