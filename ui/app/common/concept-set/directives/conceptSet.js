@@ -238,6 +238,7 @@ angular.module('bahmni.common.conceptSet')
                 };
 
                 var runFormConditionForAllObsRecursively = function (formName, rootObservation) {
+                    rootObservation && rootObservation.groupMembers &&
                     rootObservation.groupMembers.forEach(function (observation) {
                         var conditionFn = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[observation.concept.name];
                         if (conditionFn != null) {
