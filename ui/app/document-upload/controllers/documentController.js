@@ -15,7 +15,7 @@ angular.module('opd.documentupload')
             var locationUuid = sessionService.getLoginLocationUuid();
 
             $scope.visits = [];
-            $scope.allConcepts = [];
+            $scope.fileTypeConcepts = [];
             $scope.toggleGallery = true;
             $scope.conceptNameInvalid = false;
 
@@ -107,31 +107,6 @@ angular.module('opd.documentupload')
                 });
             };
 
-            var setDefaultConcept = function (topLevelConcept) {
-                var concept;
-                if (topLevelConcept.setMembers.length === 1) {
-                    concept = topLevelConcept.setMembers[0];
-                    $scope.defaultConcept = {
-                        'concept': {
-                            uuid: concept.uuid,
-                            name: concept.name.name,
-                            editableName: concept.name.name
-                        }, 'value': concept.name.name
-                    };
-                } else if ($rootScope.appConfig.defaultOption) {
-                    concept = topLevelConcept.setMembers.filter(function (member) {
-                        return member.name.name === $rootScope.appConfig.defaultOption;
-                    })[0];
-                    $scope.defaultConcept = {
-                        'concept': {
-                            uuid: concept.uuid,
-                            name: concept.name.name,
-                            editableName: concept.name.name
-                        }, 'value': concept.name.name
-                    };
-                }
-            };
-
             var getTopLevelConcept = function () {
                 if ($rootScope.appConfig.topLevelConcept === null) {
                     topLevelConceptUuid = null;
@@ -152,12 +127,11 @@ angular.module('opd.documentupload')
                                     editableName: concept.name.name
                                 }
                             };
-                            $scope.allConcepts.push(conceptToAdd);
+                            $scope.fileTypeConcepts.push(conceptToAdd);
                         });
                     }
                     var topLevelConcept = response.data.results[0];
                     topLevelConceptUuid = topLevelConcept ? topLevelConcept.uuid : null;
-                    // setDefaultConcept(topLevelConcept);
                 });
             };
 
@@ -226,7 +200,6 @@ angular.module('opd.documentupload')
                     spinner.forPromise(visitDocumentService.saveFile(file, $rootScope.patient.uuid, $rootScope.appConfig.encounterType, fileName, fileType).then(function (response) {
                         var fileUrl = Bahmni.Common.Constants.documentsPath + '/' + response.data.url;
                         var savedFile = visit.addFile(fileUrl);
-                        // $scope.setConceptOnFile(savedFile, savedFile.concept.editableName);
                         $scope.toggleGallery = true;
                     }, function () {
                         messagingService.showMessage("error");
@@ -241,36 +214,11 @@ angular.module('opd.documentupload')
                 }
             };
 
-            $scope.setConceptOnFile = function (file, selectedItem) {
-                if (selectedItem) {
-                    file.concept = Object.create(selectedItem.concept);
-                    file.changed = true;
-                    if (!$scope.$$phase) {
-                        $scope.$apply();
-                    }
-                }
-            };
-
-            $scope.onEditConcept = function (file) {
-                return function () {
-                    file.concept.name = undefined;
-                    file.concept.uuid = undefined;
-                };
-            };
-
             $scope.onConceptSelected = function (file) {
-                /* return function (selectedItem) {
-                    $scope.setConceptOnFile(file, selectedItem);
-                }; */
-                var filteredData;
-                $.each($scope.allConcepts, function (index, response) {
-                    if (response.concept.name === file.concept.editableName) {
-                        filteredData = response.concept;
-                    }
+                var selectedItem = _.find($scope.fileTypeConcepts, function (fileType) {
+                    return _.get(fileType, 'concept.name') == _.get(file, 'concept.editableName');
                 });
-                if (filteredData) {
-                    file.concept = Object.create(filteredData);
-                }
+                file.concept = selectedItem.concept;
                 file.changed = true;
             };
 
