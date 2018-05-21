@@ -274,7 +274,7 @@ table.investigation-chart {
             position: -webkit-sticky;
             position: sticky;
             top: 40px;
-            left: 0px;
+            left: -1px;
             z-index: 10;
             border-left: 1px solid #ddd;
         }
@@ -296,7 +296,7 @@ table.investigation-chart {
         th {
             position: -webkit-sticky;
             position: sticky;
-            top: 0px;
+            top: 5px;
             left: 0px;
             border-left: 1px solid #ddd;
             text-align: left;
@@ -305,6 +305,7 @@ table.investigation-chart {
         }
     }
 }
+
 .expand-investigation-chart {
     display: table;
     width: 100%;
@@ -329,7 +330,7 @@ table.investigation-chart {
             position: sticky;
             top: 0px;
             z-index: 8;
-            left: 4px;
+            left: 5px;
         }
     }
 }
