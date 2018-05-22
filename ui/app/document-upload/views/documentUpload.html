@@ -89,11 +89,10 @@
                                      image="file" index="{{file.imageIndex}}"
                                      ng-src="{{file.thumbnail}}" width="100">
                                  <select id="{{'file'+$index}}" required ng-readonly="!canDeleteFile(file)"
-                                        class="concept-name" ng-class="{saved: visit.isSaved(file)}"
+                                        class="concept-name" blur-on-select="true" strict-select="true"
                                         response-map="getDataResults"
-                                        blur-on-select="true" ng-blur="visit.markAsUpdated()"
                                         ng-model="file.concept.editableName" ng-change="onConceptSelected(file)"
-                                        ng-disabled="file.voided" >
+                                        ng-disabled="file.voided">
                                         <option value="">Select document type</option>
                                         <option ng-repeat="c in fileTypeConcepts" value="{{c.concept.name}}">
                                              {{c.concept.name}}</option>
@@ -178,7 +177,7 @@
                                                response-map="getDataResults"
                                                blur-on-select="true" ng-blur="visit.markAsUpdated()"
                                                ng-model="file.concept.editableName" ng-change="onConceptSelected(file)"
-                                               ng-disabled="file.voided" >
+                                               ng-disabled="file.voided" strict-select="true">
                                                <option value="">Select document type</option>
                                                <option ng-repeat="c in fileTypeConcepts" value="{{c.concept.name}}">
                                                     {{c.concept.name}}</option>
