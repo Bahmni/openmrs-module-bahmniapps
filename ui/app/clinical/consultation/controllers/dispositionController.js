@@ -37,8 +37,8 @@ angular.module('bahmni.clinical')
             var dispositionPresent = _.find(dispositions, action);
             if (dispositionPresent) {
                 copyOfFinalDispositionActions.push(dispositionPresent);
-                return copyOfFinalDispositionActions;
             }
+            return copyOfFinalDispositionActions;
         };
 
         var filterDispositionActions = function (dispositions, visitSummary) {
