@@ -19,18 +19,17 @@ angular.module('bahmni.appointments')
             $scope.showStartTimes = [];
             $scope.showEndTimes = [];
 
-            var isProviderCurrentlyAvailableForAppointments = function (selectedProvider, config) {
-                var providers = config.providers;
-                return _.find(providers, function (provider) {
+            var isProviderNotAvailableForAppointments = function (selectedProvider) {
+                var providers = appointmentCreateConfig.providers;
+                return _.isUndefined(_.find(providers, function (provider) {
                     return selectedProvider.uuid === provider.uuid;
-                });
+                }));
             };
             var init = function () {
                 wireAutocompleteEvents();
-                var providerCurrentAvailability = false;
                 if (!_.isEmpty(appointmentContext) && !_.isEmpty(appointmentContext.appointment) && !_.isEmpty(appointmentContext.appointment.provider)) {
-                    providerCurrentAvailability = isProviderCurrentlyAvailableForAppointments(appointmentContext.appointment.provider, appointmentCreateConfig);
-                    if (_.isEmpty(providerCurrentAvailability)) {
+                    var isProviderNotAvailable = isProviderNotAvailableForAppointments(appointmentContext.appointment.provider);
+                    if (isProviderNotAvailable) {
                         appointmentContext.appointment.provider.person = {display: appointmentContext.appointment.provider.name};
                         appointmentCreateConfig.providers.push(appointmentContext.appointment.provider);
                     }
