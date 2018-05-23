@@ -39,7 +39,7 @@ describe("AdtController", function () {
                     maxPatientsPerBed: 2
                 };
             },
-            getConfig: function(){
+            getConfig: function () {
                 return {value: "#/bedManagement/bed/{{bedId}}"};
             },
             formatUrl: function (url, options) {
@@ -118,7 +118,7 @@ describe("AdtController", function () {
                     maxPatientsPerBed: 2
                 };
             },
-            getConfig: function(){
+            getConfig: function () {
             }
         });
 
@@ -139,7 +139,7 @@ describe("AdtController", function () {
                     maxPatientsPerBed: 2
                 };
             },
-            getConfig: function(){
+            getConfig: function () {
             }
         });
 
@@ -205,7 +205,7 @@ describe("AdtController", function () {
         scope.patient = {uuid: "123"};
         scope.adtObservations = [];
 
-        var stubTwoPromise = function(data) {
+        var stubTwoPromise = function (data) {
             return {
                 then: function (successFn) {
                     successFn({results: data});
@@ -242,7 +242,7 @@ describe("AdtController", function () {
                 }
             };
         };
-        var stubTwoPromise = function(data) {
+        var stubTwoPromise = function (data) {
             return {
                 then: function (successFn) {
                     successFn({results: data});
@@ -276,7 +276,7 @@ describe("AdtController", function () {
                     maxPatientsPerBed: 2
                 };
             },
-            getConfig: function(){
+            getConfig: function () {
             }
         });
 
@@ -303,7 +303,7 @@ describe("AdtController", function () {
                     maxPatientsPerBed: 2
                 };
             },
-            getConfig: function(){
+            getConfig: function () {
             }
         });
 
@@ -528,7 +528,7 @@ describe("AdtController", function () {
         scope.adtObservations = [];
         var encounterCreateResponse = {data: {patientUuid: '123', encounterUuid: "encounterUuid"}};
         encounterService.create.and.returnValue(specUtil.simplePromise(encounterCreateResponse));
-        bedService.assignBed.and.returnValue(specUtil.simplePromise({data:{}}));
+        bedService.assignBed.and.returnValue(specUtil.simplePromise({data: {}}));
 
         createController();
 
