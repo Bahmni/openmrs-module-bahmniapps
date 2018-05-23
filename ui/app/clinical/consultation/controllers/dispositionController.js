@@ -32,7 +32,7 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var pushDispositionAction = function (finalDispositionActions, dispositions, action) {
+        var getDispositionActions = function (finalDispositionActions, dispositions, action) {
             var copyOfFinalDispositionActions = _.cloneDeep(finalDispositionActions);
             var dispositionPresent = _.find(dispositions, action);
             if (dispositionPresent) {
@@ -48,14 +48,14 @@ angular.module('bahmni.clinical')
             });
             var isVisitOpen = visitSummary ? _.isEmpty(visitSummary.stopDateTime) : false;
             if (visitSummary && visitSummary.isDischarged() && isVisitOpen) {
-                finalDispositionActions = pushDispositionAction(finalDispositionActions, dispositions, { name: defaultDispositions[0]});
+                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[0]});
             }
             else if (visitSummary && visitSummary.isAdmitted() && isVisitOpen) {
-                finalDispositionActions = pushDispositionAction(finalDispositionActions, dispositions, { name: defaultDispositions[2]});
-                finalDispositionActions = pushDispositionAction(finalDispositionActions, dispositions, { name: defaultDispositions[3]});
+                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[2]});
+                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[3]});
             }
             else {
-                finalDispositionActions = pushDispositionAction(finalDispositionActions, dispositions, { name: defaultDispositions[1]});
+                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[1]});
             }
             return finalDispositionActions;
         };
