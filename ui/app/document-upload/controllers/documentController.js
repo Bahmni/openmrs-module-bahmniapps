@@ -19,7 +19,7 @@ angular.module('opd.documentupload')
             $scope.conceptNameInvalid = false;
 
             var setOrientationWarning = function () {
-                $scope.orientation_warning = (window.orientation && (window.orientation < 0 || window.orientation > 90));
+                $scope.orientationWarning = (window.orientation && (window.orientation < 0 || window.orientation > 90));
             };
             setOrientationWarning();
             var onOrientationChange = function () {

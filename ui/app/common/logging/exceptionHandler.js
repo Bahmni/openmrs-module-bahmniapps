@@ -27,8 +27,8 @@ angular.module('bahmni.common.logging')
         };
 
         var exposeException = function (exceptionDetails) {
-            window.angular_exception = window.angular_exception || [];
-            window.angular_exception.push(exceptionDetails);
+            window.angularException = window.angularException || [];
+            window.angularException.push(exceptionDetails);
         };
 
         return function (exception, cause) {

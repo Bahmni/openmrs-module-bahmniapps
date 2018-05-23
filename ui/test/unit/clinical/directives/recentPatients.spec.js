@@ -156,7 +156,7 @@ describe("Recent patients", function () {
             scope.$digest();
 
 
-            expect(patientService.findPatients).toHaveBeenCalledWith({q: 'emrapi.sqlSearch.activePatients',location_uuid : 'uuid'});
+            expect(patientService.findPatients).toHaveBeenCalledWith({q: 'emrapi.sqlSearch.activePatients',locationUuid : 'uuid'});
 
             expect(scope.search.patientsCount()).toBe(1)
         });
@@ -166,7 +166,7 @@ describe("Recent patients", function () {
             scope.$digest();
             scope.getActivePatients();
 
-            expect(patientService.findPatients).toHaveBeenCalledWith({q: 'emrapi.sqlSearch.activePatients', location_uuid : 'uuid'});
+            expect(patientService.findPatients).toHaveBeenCalledWith({q: 'emrapi.sqlSearch.activePatients', locationUuid : 'uuid'});
             expect(patientService.findPatients.calls.count()).toBe(1);
             expect(scope.search.patientsCount()).toBe(1)
 

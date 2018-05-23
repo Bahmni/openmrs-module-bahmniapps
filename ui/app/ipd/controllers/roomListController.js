@@ -9,7 +9,7 @@ angular.module('bahmni.ipd')
                 var params = {
                     q: wardListSqlSearchHandler,
                     v: "full",
-                    location_name: roomName
+                    locationName: roomName
                 };
 
                 return queryService.getResponseFromQuery(params).then(function (response) {
