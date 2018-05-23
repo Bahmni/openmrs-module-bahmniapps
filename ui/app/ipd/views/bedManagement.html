@@ -17,8 +17,9 @@
             </p>
             <p class="patient-attributes">
                 <label>{{'GENDER_KEY' | translate}}</label>
-                <span ng-show="patient.gender == 'M'">Male</span>
-                <span ng-show="patient.gender == 'F'">Female</span>
+                <span ng-show="patient.gender == 'M'">{{'GENDER_MALE_KEY' | translate}}</span>
+                <span ng-show="patient.gender == 'F'">{{'GENDER_FEMALE_KEY' | translate}}</span>
+                <span ng-show="patient.gender == 'O'">{{'GENDER_OTHER_KEY' | translate}}</span>
             </p>
         </div>
         <adt patient="patient" encounterConfig="encounterConfig" bed="bed"></adt>

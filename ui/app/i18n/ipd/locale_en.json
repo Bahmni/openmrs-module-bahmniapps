@@ -50,5 +50,8 @@
     "KEY_OCCUPIED": "Occupied",
     "BED_MANAGEMENT_KEY": "Bed Management",
     "ADMIT_HOME_KEY": "Admit",
-    "ADD_A_TAG_KEY": "Add a tag"
+    "ADD_A_TAG_KEY": "Add a tag",
+    "GENDER_MALE_KEY": "Male",
+    "GENDER_FEMALE_KEY": "Female",
+    "GENDER_OTHER_KEY": "Other"
 }
