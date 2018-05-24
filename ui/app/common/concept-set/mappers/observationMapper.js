@@ -109,10 +109,10 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             var configForConcept = conceptSetConfig[memberConcept.name.name] || {};
             var numberOfNodes = configForConcept.multiple || 1;
             for (var i = savedObservations.length - 1; i >= 0; i--) {
-                observationGroupMembers.push(mapObservation(memberConcept, savedObservations[i], conceptSetConfig, parentConcept));
+                observationGroupMembers.push(mapObservation(memberConcept, savedObservations[i], conceptSetConfig));
             }
             for (var i = 0; i < numberOfNodes - savedObservations.length; i++) {
-                observationGroupMembers.push(mapObservation(memberConcept, null, conceptSetConfig, parentConcept));
+                observationGroupMembers.push(mapObservation(memberConcept, null, conceptSetConfig));
             }
         });
         return observationGroupMembers;
