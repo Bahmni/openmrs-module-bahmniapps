@@ -29,3 +29,4 @@ node_modules
 **/.idea/*
 ui/common.background.min.js
 ui/common.offline.min.js
+ui/package-lock.json

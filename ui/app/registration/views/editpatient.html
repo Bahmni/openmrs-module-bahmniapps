@@ -1,29 +1,38 @@
 <div class="reg-body-wrapper">
-<div class="edit-patient simple-form-ui">
-    <form name="myForm"  single-submit="update()">
-        <div class="box-container box-container-default">
-            <legend class="registraion_legend first-registraion_legend" ng-class="{'removeLegend': patient.primaryIdentifier == undefined}">
-                <span class="mylegend"><strong>{{patient.primaryIdentifier.identifierType.name}}: <span id="patientIdentifierValue">{{patient.primaryIdentifier.identifier}}</span></strong></span>
-                <span ng-show= "isDigitized" class="right"><strong>{{::'REGISTRATION_LABEL_SCANNED' | translate}}</strong></span>
-            </legend>
-            <div class="photo-container-wrapper" ng-if="!disablePhotoCapture">
-                <span class="photo-container">
+    <div class="edit-patient simple-form-ui">
+        <form name="myForm" single-submit="update()">
+            <div class="box-container box-container-default">
+                <legend class="registraion_legend first-registraion_legend" ng-class="{'removeLegend': patient.primaryIdentifier == undefined}">
+                    <span class="mylegend">
+                        <strong>{{patient.primaryIdentifier.identifierType.name}}:
+                            <span id="patientIdentifierValue">{{patient.primaryIdentifier.identifier}}</span>
+                        </strong>
+                    </span>
+                    <span ng-show="isDigitized" class="right">
+                        <strong>{{::'REGISTRATION_LABEL_SCANNED' | translate}}</strong>
+                    </span>
+                </legend>
+                <div class="photo-container-wrapper" ng-if="!disablePhotoCapture">
+                    <span class="photo-container">
                         <img class="patient-image" ng-src="{{patient.image}}" fallback-src="../images/blank-user.gif">
                         <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
-                 </span>
-            </div>
-            <article class="form-field">
+                    </span>
+                </div>
+                <article class="form-field">
                     <div class="field-attribute">
-                    <label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
+                        <label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
                     </div>
 
                     <div class="field-value">
-                        <span class="uneditable-input text-only">{{patient.registrationDate | bahmniDate}}</span>
-                   </div>
+                        <span ng-if="displayNepaliDates" class="uneditable-input text-only">{{patient.registrationDate | npDate}}</span>
+                        <span ng-if="!displayNepaliDates" class="uneditable-input text-only">{{patient.registrationDate | bahmniDate}}</span>
+                    </div>
+                </article>
+            </div>
             </article>
-        </div>
-        <ng-include src="'views/patientcommon.html'"></ng-include>
-        <patient-action></patient-action>
+    </div>
+    <ng-include src="'views/patientcommon.html'"></ng-include>
+    <patient-action></patient-action>
     </form>
     <br>
 </div>

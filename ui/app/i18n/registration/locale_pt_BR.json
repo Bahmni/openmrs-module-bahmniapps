@@ -31,6 +31,8 @@
     "REGISTRATION_LABEL_DAYS": "Dias",
     "REGISTRATION_LABEL_NUMERIC_DAYS": "Dias deve ser 0-31",
     "REGISTRATION_LABEL_DOB": "Data de Nascimento",
+    "REGISTRATION_LABEL_DOB_AD":"Data de Nascimento (AD)",
+    "REGISTRATION_LABEL_DOB_BS":"Data de Nascimento (BS)",
     "REGISTRATION_LABEL_ESTIMATE": "Estimado",
     "REGISTRATION_LABEL_BIRTH_TIME": "Hora de Nascimento",
     "REGISTRATION_LABEL_ADDRESS_INFO": "Informação de Endereço",

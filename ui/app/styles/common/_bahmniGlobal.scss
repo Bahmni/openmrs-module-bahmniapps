@@ -376,3 +376,13 @@ u, .add-drug-btninput[value]:first-letter {
   position: relative;
   min-height: 2em;
 }
+input[readonly].nepali-datepicker {
+  cursor: text;
+  background-color: #FFF;
+  color: #363463;
+}
+input[readonly]:focus.nepali-datepicker {
+  outline: 2px solid #007FFF;
+  background-color: #FFFDF7;
+  cursor: text;
+}

@@ -10,7 +10,8 @@
                 </div>
                 <div class="col col3">
                     <strong class="till-text">{{ ::'REGISTRATION_LABEL_TILL' | translate}}</strong>
-                    <span>{{relationship.endDate | bahmniDate}}</span>
+                    <span ng-if="displayNepaliDates">{{relationship.endDate | npDate}}</span>
+                    <span ng-if="!displayNepaliDates">{{relationship.endDate | bahmniDate}}</span>
                 </div>
                 <div class="col col4">
                     <button type="button" class="small-btn row-remover" ng-confirm-click="removeRelationship(relationship)" id="relationRemoveBtn">
@@ -68,8 +69,11 @@
                     <div class="field-attribute showOn-small-screen">
                         <label>Till Date</label>
                     </div>
-                    <div class="field-value">
+                    <div ng-show="!enableNepaliCalendar"  class="field-value">
                         <input type="date" ng-model="newRelationship.endDate" ng-disabled="!newRelationship.relationshipType.uuid"/>
+                    </div>
+                    <div ng-show="enableNepaliCalendar"  class="field-value">
+                        <input class="nepali-datepicker" npdatepicker type="text" ng-model="newRelationship.endDateBS" ng-change="updateRelationshipDate(newRelationship)">
                     </div>
                 </div>
                 <div class="col col4">

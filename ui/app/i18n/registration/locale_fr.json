@@ -33,6 +33,8 @@
   "REGISTRATION_LABEL_DAYS":"Journées",
   "REGISTRATION_LABEL_NUMERIC_DAYS":"Entrez une valeur numérique entre 0 à 31",
   "REGISTRATION_LABEL_DOB":"Date d'anniversaire",
+  "REGISTRATION_LABEL_DOB_AD":"Date d'anniversaire (AD)",
+  "REGISTRATION_LABEL_DOB_BS":"Date d'anniversaire (BS)",
   "REGISTRATION_LABEL_ESTIMATE":"Estimation",
   "REGISTRATION_LABEL_BIRTH_TIME":"naissance Temps",
   "REGISTRATION_LABEL_ADDRESS_INFO":"adresse de l'information",

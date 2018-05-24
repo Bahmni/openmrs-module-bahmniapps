@@ -4,8 +4,11 @@
             <div class="field-attribute">
                 <label class="till-text">{{ ::'REGISTRATION_LABEL_DATE_DEATH' | translate}}</label>
             </div>
-            <div class="field-value">
+            <div ng-show="!enableNepaliCalendar" class="field-value">
                 <input type="date" ng-model="patient.deathDate" ng-change="selectIsDead()" max="{{::today}}"/>
+            </div>
+            <div ng-if="enableNepaliCalendar" class="field-value">
+                <input class="nepali-datepicker" npdatepicker max={{::npToday}} id="deathdate-bs" type="text" ng-model="patient.deathDateBS" ng-change="updateDeathInfo(); selectIsDead()">
             </div>
         </div>
         <div class="col col2">

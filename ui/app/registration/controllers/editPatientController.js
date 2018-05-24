@@ -10,6 +10,7 @@ angular.module('bahmni.registration')
             $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
             $scope.disablePhotoCapture = appService.getAppDescriptor().getConfigValue("disablePhotoCapture");
 
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue("displayNepaliDates");
             $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
 
             var setReadOnlyFields = function () {

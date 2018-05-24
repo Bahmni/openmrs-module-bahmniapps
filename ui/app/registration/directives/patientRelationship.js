@@ -11,8 +11,10 @@ angular.module('bahmni.registration')
             }
         };
     })
-    .controller('PatientRelationshipController', ['$window', '$scope', '$rootScope', 'spinner', 'patientService', 'providerService',
-        function ($window, $scope, $rootScope, spinner, patientService, providerService) {
+    .controller('PatientRelationshipController', ['$window', '$scope', '$rootScope', 'spinner', 'patientService', 'providerService', 'appService',
+        function ($window, $scope, $rootScope, spinner, patientService, providerService, appService) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue("displayNepaliDates");
+            $scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue("enableNepaliCalendar");
             $scope.addPlaceholderRelationship = function () {
                 $scope.patient.newlyAddedRelationships.push({});
             };
@@ -187,6 +189,14 @@ angular.module('bahmni.registration')
             var init = function () {
                 $scope.relationshipTypes = $rootScope.relationshipTypes;
                 $scope.patient.relationships = $scope.patient.relationships || [];
+            };
+
+            $scope.updateRelationshipDate = function (newRelationship) {
+                if (newRelationship.endDateBS) {
+                    var dateStr = newRelationship.endDateBS.split("-");
+                    var relationshipEndDateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
+                    newRelationship.endDate = relationshipEndDateAD;
+                }
             };
 
             init();
