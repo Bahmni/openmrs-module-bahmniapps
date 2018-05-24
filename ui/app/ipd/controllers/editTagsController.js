@@ -42,9 +42,9 @@ angular.module('bahmni.ipd').controller('editTagsController', ['$scope', '$rootS
             });
             return _.uniqBy(matchingAnswers, 'uuid');
         };
-        $scope.focusonthetest = function () {
-            var autoselectInput = $("input.input");
-            autoselectInput[0].focus();
+        $scope.focusOnTheTest = function () {
+            var autoSelectInput = $("input.input");
+            autoSelectInput[0].focus();
         };
         $scope.addItem = function (item) {
             var find = _.find(unAssignedTags, {uuid: item.uuid});

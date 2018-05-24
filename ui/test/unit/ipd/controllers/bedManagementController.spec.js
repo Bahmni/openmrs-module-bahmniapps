@@ -255,7 +255,7 @@ describe('BedManagementController', function () {
 
     it('Should open ngDialog for updating tags for the selected bed', function () {
         initController(rootScope, stateParams);
-        scope.editTagsOntheBed();
+        scope.editTagsOnTheBed();
         expect(ngDialog.openConfirm).toHaveBeenCalledWith({
             template: 'views/editTags.html',
             scope: scope,

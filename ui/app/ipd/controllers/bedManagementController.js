@@ -186,7 +186,7 @@ angular.module('bahmni.ipd')
                 return $rootScope.selectedBedInfo.bed && $state.current.name === "bedManagement.bed";
             };
 
-            $scope.editTagsOntheBed = function () {
+            $scope.editTagsOnTheBed = function () {
                 ngDialog.openConfirm({
                     template: 'views/editTags.html',
                     scope: $scope,
