@@ -5,7 +5,7 @@ angular.module('bahmni.common.uiHelper')
         function ($rootScope, $compile, $http, $timeout, $q, spinner) {
             var printHtml = function (html) {
                 var deferred = $q.defer();
-                var hiddenFrame = $('<iframe style="display: none"></iframe>').appendTo('body')[0];
+                var hiddenFrame = $('<iframe style="visibility: hidden"></iframe>').appendTo('body')[0];
                 hiddenFrame.contentWindow.printAndRemove = function () {
                     hiddenFrame.contentWindow.print();
                     $(hiddenFrame).remove();
