@@ -25,7 +25,7 @@ angular.module('bahmni.appointments')
                 spinner.forPromise($q.all([appointmentsServiceService.getAllServicesWithServiceTypes(), providerService.list(params)]).then(function (response) {
                     $scope.providers = _.filter(response[1].data.results, function (provider) {
                         return _.find(provider.attributes, function (attribute) {
-                            return attribute.attributeType.display === 'Available for appointments' && attribute.value === true && attribute.voided === false && provider.retired === false;
+                            return attribute.attributeType.display === Bahmni.Appointments.Constants.availableForAppointments && attribute.value && !attribute.voided && !provider.retired;
                         });
                     }).map(function (provider) {
                         provider.name = provider.person.display;
