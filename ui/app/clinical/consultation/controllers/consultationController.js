@@ -145,10 +145,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             var initialize = function () {
                 var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
-                $scope.adtNavigationConfig = {forwardUrl: Bahmni.Clinical.Constants.forwardUrl, title: $translate.instant("CLINICAL_GO_TO_DASHBOARD_LABEL"), privilege: Bahmni.Clinical.Constants.adtPrivilege };
+                $scope.adtNavigationConfig = {forwardUrl: Bahmni.Clinical.Constants.adtForwardUrl, title: $translate.instant("CLINICAL_GO_TO_DASHBOARD_LABEL"), privilege: Bahmni.Clinical.Constants.adtPrivilege };
                 $scope.availableBoards = $scope.availableBoards.concat(appExtensions);
                 $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog');
-                var adtNavigationConfig = appService.getAppDescriptor().getConfigValue('ipdButton');
+                var adtNavigationConfig = appService.getAppDescriptor().getConfigValue('adtNavigationConfig');
                 Object.assign($scope.adtNavigationConfig, adtNavigationConfig);
                 setCurrentBoardBasedOnPath();
             };

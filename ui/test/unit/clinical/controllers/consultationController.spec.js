@@ -259,10 +259,10 @@ describe("ConsultationController", function () {
                 return url;
             },
             getConfigValue: function (value) {
-                if(value !== 'ipdButton') {
-                    return true;
+                if(value === 'adtNavigationConfig') {
+                    return {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
                 }
-                return {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
+                return true;
             }
         };
         appService.getAppDescriptor.and.returnValue(appDescriptor);
@@ -317,13 +317,10 @@ describe("ConsultationController", function () {
                     return url;
                 },
                 getConfigValue: function (value) {
-                    console.log(value);
-                    if(value !== 'ipdButton') {
-                        console.log(value ,  " =====> ");
-                        return true;
+                    if(value === 'adtNavigationConfig') {
+                        return {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
                     }
-                    console.log(value, "-----");
-                    return {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
+                    return true;
                 }
             };
             scope.adtNavigationConfig = {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}"};
@@ -520,7 +517,7 @@ describe("ConsultationController", function () {
         it("should not broadcast page unload event if not configured to prompt", function () {
             appService.getAppDescriptor.and.returnValue({
                 getConfigValue: function (value) {
-                    if(value === 'ipdButton') {
+                    if(value === 'adtNavigationConfig') {
                         return {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
                     }
                     return false;
@@ -536,7 +533,7 @@ describe("ConsultationController", function () {
         it("should broadcast page unload event if configured to prompt", function () {
             appService.getAppDescriptor.and.returnValue({
                 getConfigValue: function (value) {
-                    if(value === 'ipdButton') {
+                    if(value === 'adtNavigationConfig') {
                         return {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
                     }
                     return true;
@@ -730,7 +727,7 @@ describe("ConsultationController", function () {
     it("should initialize with default adtNavigationConfig if we are not mentioning anything in config", function () {
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function (value) {
-                if(value === 'ipdButton') {
+                if(value === 'adtNavigationConfig') {
                     return {};
                 }
                 return true;
@@ -747,7 +744,7 @@ describe("ConsultationController", function () {
     it("should initialize with adtNavigationConfig if we mention in config", function () {
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function (value) {
-                if(value === 'ipdButton') {
+                if(value === 'adtNavigationConfig') {
                     return {privilege: "app:ipd", title: "Go to ADT Dashboard"};
                 }
                 return true;
