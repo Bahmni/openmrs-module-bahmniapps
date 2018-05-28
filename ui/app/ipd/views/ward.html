@@ -1,0 +1,24 @@
+<div class="room-info-wrapper clearfix">
+    <div class="room">
+        <div class="clearfix total-details room-details">
+            <div class="floor-header">{{'TOTAL_BEDS_KEY' | translate}} ( {{ ward.totalBeds }} )</div>
+            <div class="bed-status">
+                <span class="available">({{ ward.totalBeds - ward.occupiedBeds }}) {{'AVAILABLE_KEY' | translate}}</span>
+                <span class="occupied">({{ ward.occupiedBeds }}) {{'OCCUPIED_KEY' | translate}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="room" ng-repeat="room in ward.rooms" >
+        <div class="clearfix room-details" ng-click="onSelectRoom(room.name)" ng-class="{'room-selected': activeRoom == room.name}">
+            <div class="floor-header">{{ room.name }} ( {{ room.totalBeds }} )</div>
+            <div class="bed-status">
+                <span class="available">({{ room.availableBeds }}) {{'AVAILABLE_KEY' | translate}}</span>
+                <span class="occupied">({{ room.totalBeds - room.availableBeds }}) {{'OCCUPIED_KEY' | translate}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="bedLayout" ng-if="roomSelected">
+    <room room="room"></room>
+</div>

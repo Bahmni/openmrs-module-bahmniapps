@@ -3,7 +3,7 @@
 angular.module('bahmni.appointments')
     .directive('multiSelectAutocomplete', [function () {
         var link = function ($scope, element) {
-            $scope.focusonthetest = function () {
+            $scope.focusOnTheTest = function () {
                 var autoselectInput = $("input.input");
                 autoselectInput[0].focus();
                 $scope.selectedValues = $scope.selectedValues || [];

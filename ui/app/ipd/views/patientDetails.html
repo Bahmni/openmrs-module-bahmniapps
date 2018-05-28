@@ -1,0 +1,22 @@
+<div id="patient-details">
+    <h3>Patient details</h3>
+    <div class="clearfix">
+        <label>Patient ID : </label>
+        <a href="/bahmni/clinical/#/programs/patient/{{ patientUuid }}/consultationContext">
+            <span>{{ patient.identifier }}</span>
+        </a>
+    </div>
+    <div class="clearfix">
+        <label>Patient Name : </label>
+        <span>{{ patient.name }}</span>
+    </div>
+    <div class="clearfix">
+        <label>Age : </label>
+        <span>{{ patient.age }}</span>
+    </div>
+    <div class="clearfix">
+        <label>Gender : </label>
+        <span>{{ patient.gender }}</span>
+    </div>
+
+</div>
