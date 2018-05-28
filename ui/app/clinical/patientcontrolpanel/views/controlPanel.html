@@ -9,7 +9,11 @@
                 </a>
                 <div class="patient-handler">
                     <h4 class="patient-name">
-                        <a href="{{::getDashboardLink()}}" ng-click="changeContext($event)"><span bo-text="patient.name"></span></a><span ng-show="patient.genderText" ng-bind-html="' ('+patient.genderText+')'"></span></h4>
+                        <a href="{{::getDashboardLink()}}" ng-click="changeContext($event)">
+                            <span bo-text="patient.name"></span>
+                        </a>
+                        <span ng-show="patient.genderText" ng-bind-html="' ('+patient.genderText+')'"></span>
+                    </h4>
                     <h5 class="patient-identifier"><span bo-text="patient.identifier"></span></h5>
                 </div>
             </div>

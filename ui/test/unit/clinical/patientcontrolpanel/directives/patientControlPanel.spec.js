@@ -253,9 +253,9 @@ describe('patientControlPanelTest', function () {
         scope.$digest();
 
         expect(compiledElementScope.isInEditEncounterMode()).toBeTruthy();
-    })
+    });
 
-    it("goToDashBoard() should return the dashboardUrl with given program stateParams",function(){
+    it("goToDashBoard should return the dashboardUrl with given program stateParams", function() {
         stateParams = {
             configName: "programs",
             patientUuid: "patientUuid",
