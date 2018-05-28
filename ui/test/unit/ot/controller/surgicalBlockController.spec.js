@@ -725,5 +725,31 @@ describe("surgicalBlockController", function () {
         scope.surgicalForm.startDatetime = new Date("Mon Jul 03 2017 09:00:00 GMT+0530 (IST)");
         scope.changeInStartDateTime();
         expect(scope.surgicalForm.endDatetime).toEqual(new Date("Mon Jul 03 2017 15:00:00 GMT+0530 (IST)"));
-    })
+    });
+
+    it("should remove isBeingEdited field for other appointments which are not selected", function () {
+        createController();
+        scope.surgicalForm = {uuid: "someUUID", startDatetime:new Date("Mon Jul 03 2017 09:00:00 GMT+0530 (IST)"), endDatetime:new Date("Mon Jul 03 2017 15:00:00 GMT+0530 (IST)")};
+        var surgicalAppointment = {
+            id: 12,
+            patient: {uuid: "patientUuid"},
+            notes: "need more assistants",
+            sortWeight: 1,
+            surgicalAppointmentAttributes: []
+        };
+        scope.surgicalForm.surgicalAppointments = [
+            {
+                id: 11,
+                patient: {uuid: "patientUuid"},
+                notes: "need more assistants",
+                sortWeight: 0,
+                status: "SCHEDULED",
+                surgicalAppointmentAttributes: [],
+                isBeingEdited: true
+            },
+            surgicalAppointment
+        ];
+        scope.editAppointment(surgicalAppointment);
+        expect(scope.surgicalForm.surgicalAppointments[0].isBeingEdited).toBeUndefined();
+    });
 });

@@ -124,6 +124,8 @@ Bahmni.OT.SurgicalBlockMapper = function () {
                     attributes[attributeType.name].value = 0;
                 } else if (attributeType.name === "estTimeHours") {
                     attributes[attributeType.name].value = 0;
+                } else {
+                    attributes[attributeType.name].value = "";
                 }
             }
         });

@@ -22,11 +22,11 @@ angular.module('bahmni.ot').controller('calendarViewCancelAppointmentController'
             surgicalAppointment.surgicalBlock = {uuid: $scope.ngDialogData.surgicalBlock.uuid};
             surgicalAppointment.patient = {uuid: ngDialogSurgicalAppointment.patient.uuid};
             surgicalAppointment.sortWeight = null;
-            $q.all([updateSortWeightOfSurgicalAppointments(), surgicalAppointmentService.updateSurgicalAppointment(surgicalAppointment)]).then(function (response) {
-                ngDialogSurgicalAppointment.patient = response[1].data.patient;
-                ngDialogSurgicalAppointment.status = response[1].data.status;
-                ngDialogSurgicalAppointment.notes = response[1].data.notes;
-                ngDialogSurgicalAppointment.sortWeight = response[1].data.sortWeight;
+            $q.all([surgicalAppointmentService.updateSurgicalAppointment(surgicalAppointment), updateSortWeightOfSurgicalAppointments()]).then(function (response) {
+                ngDialogSurgicalAppointment.patient = response[0].data.patient;
+                ngDialogSurgicalAppointment.status = response[0].data.status;
+                ngDialogSurgicalAppointment.notes = response[0].data.notes;
+                ngDialogSurgicalAppointment.sortWeight = response[0].data.sortWeight;
                 var message = '';
                 if (ngDialogSurgicalAppointment.status === Bahmni.OT.Constants.postponed) {
                     message = $translate.instant("OT_SURGICAL_APPOINTMENT_POSTPONED_MESSAGE");
@@ -42,7 +42,7 @@ angular.module('bahmni.ot').controller('calendarViewCancelAppointmentController'
         var updateSortWeightOfSurgicalAppointments = function () {
             var surgicalBlock = _.cloneDeep($scope.ngDialogData.surgicalBlock);
             var surgicalAppointments = _.filter(surgicalBlock.surgicalAppointments, function (appointment) {
-                return appointment.uuid !== $scope.ngDialogData.surgicalAppointment.uuid;
+                return appointment.uuid !== $scope.ngDialogData.surgicalAppointment.uuid && appointment.status !== 'POSTPONED' && appointment.status !== 'CANCELLED';
             });
             surgicalBlock.surgicalAppointments = _.map(surgicalAppointments, function (appointment, index) {
                 appointment.sortWeight = index;

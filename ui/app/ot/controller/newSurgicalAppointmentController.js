@@ -85,8 +85,12 @@ angular.module('bahmni.ot')
 
             $scope.close = function () {
                 if ($scope.ngDialogData) {
+                    var appointment = _.find($scope.surgicalForm.surgicalAppointments, function (surgicalAppointment) {
+                        return surgicalAppointment.isBeingEdited;
+                    });
+
+                    delete $scope.surgicalForm.surgicalAppointments[appointment.sortWeight].isBeingEdited;
                     delete $scope.ngDialogData.isBeingEdited;
-                    delete $scope.ngDialogData.isDirty;
                 }
                 ngDialog.close();
             };
