@@ -32,9 +32,13 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var findAction = function (dispositions, action) {
-            var undoDischarge = _.find(dispositions, action);
-            return undoDischarge || {'name': ''};
+        var getDispositionActions = function (finalDispositionActions, dispositions, action) {
+            var copyOfFinalDispositionActions = _.cloneDeep(finalDispositionActions);
+            var dispositionPresent = _.find(dispositions, action);
+            if (dispositionPresent) {
+                copyOfFinalDispositionActions.push(dispositionPresent);
+            }
+            return copyOfFinalDispositionActions;
         };
 
         var filterDispositionActions = function (dispositions, visitSummary) {
@@ -43,16 +47,15 @@ angular.module('bahmni.clinical')
                 return defaultDispositions.indexOf(disposition.name) < 0;
             });
             var isVisitOpen = visitSummary ? _.isEmpty(visitSummary.stopDateTime) : false;
-
             if (visitSummary && visitSummary.isDischarged() && isVisitOpen) {
-                finalDispositionActions.push(findAction(dispositions, {name: "Undo Discharge"}));
+                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[0]});
             }
             else if (visitSummary && visitSummary.isAdmitted() && isVisitOpen) {
-                finalDispositionActions.push(findAction(dispositions, { name: "Transfer Patient"}));
-                finalDispositionActions.push(findAction(dispositions, { name: "Discharge Patient"}));
+                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[2]});
+                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[3]});
             }
             else {
-                finalDispositionActions.push(findAction(dispositions, { name: "Admit Patient"}));
+                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[1]});
             }
             return finalDispositionActions;
         };
