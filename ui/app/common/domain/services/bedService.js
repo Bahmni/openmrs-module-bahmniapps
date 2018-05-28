@@ -52,4 +52,10 @@ angular.module('bahmni.common.domain')
                 withCredentials: true
             });
         };
+
+        this.getCompleteBedDetailsByBedId = function (bedId) {
+            return $http.get(Bahmni.Common.Constants.bedFromVisit + "/" + bedId, {
+                withCredentials: true
+            });
+        };
     }]);
