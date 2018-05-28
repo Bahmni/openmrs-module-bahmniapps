@@ -42,7 +42,7 @@ describe("calendar view cancel appointment controller", function () {
         surgicalAppointmentService.updateSurgicalBlock.and.callFake(function () {
             return specUtil.simplePromise({data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}});
         });
-        q.all.and.returnValue(specUtil.simplePromise([{data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}}, {data: {patient: {uuid:"someUuid", display: "someName - I012345"}, status: 'CANCELLED', sortWeight : null}}]));
+        q.all.and.returnValue(specUtil.simplePromise([{data: {patient: {uuid:"someUuid", display: "someName - I012345"}, status: 'CANCELLED', sortWeight : null}}, {data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}}]));
         surgicalAppointmentHelper.getAppointmentAttributes.and.callFake(function () {return {};});
         surgicalAppointmentHelper.getPatientDisplayLabel.and.callFake(function () {return "someName";});
         createController();
@@ -70,7 +70,7 @@ describe("calendar view cancel appointment controller", function () {
         surgicalAppointmentService.updateSurgicalBlock.and.callFake(function () {
             return specUtil.simplePromise({data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}});
         });
-        q.all.and.returnValue(specUtil.simplePromise([{data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}}, {data: {patient: {uuid:"someUuid", display: "someName - I012345"}, status: "CANCELLED"}}]));
+        q.all.and.returnValue(specUtil.simplePromise([{data: {patient: {uuid:"someUuid", display: "someName - I012345"}, status: "CANCELLED"}}, {data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}}]));
         surgicalAppointmentHelper.getAppointmentAttributes.and.callFake(function () {return {};});
         surgicalAppointmentHelper.getPatientDisplayLabel.and.callFake(function () {return "someName";});
         createController();
@@ -86,7 +86,7 @@ describe("calendar view cancel appointment controller", function () {
         surgicalAppointmentService.updateSurgicalBlock.and.callFake(function () {
             return specUtil.simplePromise({data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}});
         });
-        q.all.and.returnValue(specUtil.simplePromise([{data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}}, {data: {patient: {uuid:"someUuid", display: "someName - I022222"}, status: "POSTPONED" }}]));
+        q.all.and.returnValue(specUtil.simplePromise([{data: {patient: {uuid:"someUuid", display: "someName - I022222"}, status: "POSTPONED" }}, {data: {uuid:"blockUuid", provider: {uuid: "providerUuid"}, surgicalAppointments: [{status: "CANCELLED", sortWeight: 0, patient: {display: "someName1"}}], location: {name: "locationName"}}}]));
         surgicalAppointmentHelper.getAppointmentAttributes.and.callFake(function () {return {};});
         surgicalAppointmentHelper.getPatientDisplayLabel.and.callFake(function () {return "someName";});
         createController();

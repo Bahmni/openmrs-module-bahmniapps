@@ -44,6 +44,9 @@ angular.module('bahmni.ot')
             };
 
             $scope.editAppointment = function (surgicalAppointment) {
+                _.forEach($scope.surgicalForm.surgicalAppointments, function (surgicalAppointment) {
+                    delete surgicalAppointment.isBeingEdited;
+                });
                 var clone = _.cloneDeep(surgicalAppointment);
                 surgicalAppointment.isBeingEdited = true;
                 $scope.addNewSurgicalAppointment(clone);
@@ -84,7 +87,7 @@ angular.module('bahmni.ot')
             var addOrUpdateTheSurgicalAppointment = function (surgicalAppointment) {
                 if (surgicalAppointment.sortWeight >= 0) {
                     var existingAppointment = _.find($scope.surgicalForm.surgicalAppointments, function (appointment) {
-                        return appointment.isBeingEdited === true && appointment.isDirty === true;
+                        return appointment.isBeingEdited === true;
                     });
                     existingAppointment.notes = surgicalAppointment.notes;
                     existingAppointment.patient = surgicalAppointment.patient;
@@ -133,7 +136,13 @@ angular.module('bahmni.ot')
                     ngDialog.close();
                     surgicalAppointment.isBeingEdited = false;
                     surgicalAppointment.isDirty = true;
-                    $scope.surgicalForm.surgicalAppointments[surgicalAppointment.sortWeight] = surgicalAppointment;
+
+                    var appointmentIndex;
+                    _.find($scope.surgicalForm.surgicalAppointments, function (appointment, index) {
+                        appointmentIndex = index;
+                        return surgicalAppointment.sortWeight === appointment.sortWeight;
+                    });
+                    $scope.surgicalForm.surgicalAppointments[appointmentIndex] = surgicalAppointment;
                 }
                 else {
                     messagingService.showMessage('error', "{{'OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION' | translate}}");
@@ -142,7 +151,7 @@ angular.module('bahmni.ot')
 
             $scope.updateSortWeight = function (surgicalBlock) {
                 var index = 0;
-                _.map(surgicalBlock.surgicalAppointments, function (appointment) {
+                _.map(surgicalBlock && surgicalBlock.surgicalAppointments, function (appointment) {
                     if (appointment.status !== 'POSTPONED' && appointment.status !== 'CANCELLED') {
                         appointment.sortWeight = index++;
                     }
