@@ -35,7 +35,6 @@ globals:
 
 rules:
   angular/controller-as: off
-  "camelcase": [2, {"properties": "always"}]
   angular/di: [error, array]
   indent: [error, 4]
   quotes: off

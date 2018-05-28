@@ -167,7 +167,7 @@ Bahmni.Graph.c3Chart = function () {
             zoom: {
                 enabled: true
             },
-            transitionDuration: 0,
+            transition_duration: 0,
             grid: createGridConfig(config)
         };
         c3Chart = c3.generate(c3Config);

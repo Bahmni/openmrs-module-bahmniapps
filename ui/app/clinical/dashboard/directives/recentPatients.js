@@ -48,7 +48,7 @@ angular.module('bahmni.clinical')
                     return;
                 }
                 var params = { q: Bahmni.Clinical.Constants.globalPropertyToFetchActivePatients,
-                    locationUuid: sessionService.getLoginLocationUuid()};
+                    location_uuid: sessionService.getLoginLocationUuid()};
                 patientService.findPatients(params).then(function (response) {
                     $scope.search.updatePatientList(response.data);
                 });
