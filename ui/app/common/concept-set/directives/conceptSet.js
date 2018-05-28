@@ -387,7 +387,7 @@ angular.module('bahmni.common.conceptSet')
                     var formCondition = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[conceptName];
                     if (formCondition) {
                         var flattenedObs = ObservationUtil.flattenObsToArray([rootObservation]);
-                        runFormConditionForObs(true, formName, formCondition, conceptName, flattenedObs);
+                        runFormConditionForAllObsRecursively(true, formName, formCondition, conceptName, flattenedObs);
                     }
                 });
 
