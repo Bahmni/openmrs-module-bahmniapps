@@ -303,7 +303,7 @@ describe('patientControlPanelTest', function () {
         expect(compiledElementScope.getDashboardLink()).toEqual("#/programs/patient/patientUuid/dashboard?programUuid=programUuid&enrollment=patientProgramUuid&dateEnrolled=dateEnrolled");
     });
 
-    it("goToDashBoard() should return the dashboardUrl with given default stateParams ", function () {
+    it("goToDashBoard should return the dashboardUrl with given default stateParams ", function () {
         stateParams = {
             configName: "default",
             patientUuid: "patientUuid",
