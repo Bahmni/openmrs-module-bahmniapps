@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.clinical').controller('ConsultationController',
-    ['$scope', '$rootScope', '$state', '$location', 'clinicalAppConfigService', 'diagnosisService', 'urlHelper', 'contextChangeHandler',
+    ['$scope', '$rootScope', '$state', '$location', '$translate', 'clinicalAppConfigService', 'diagnosisService', 'urlHelper', 'contextChangeHandler',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', '$q',
         'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig', 'appService',
         'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService',
-        function ($scope, $rootScope, $state, $location, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
+        function ($scope, $rootScope, $state, $location, $translate, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
                   ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService) {
@@ -146,8 +146,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             var initialize = function () {
                 var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
+                $scope.adtNavigationConfig = {forwardUrl: Bahmni.Clinical.Constants.adtForwardUrl, title: $translate.instant("CLINICAL_GO_TO_DASHBOARD_LABEL"), privilege: Bahmni.Clinical.Constants.adtPrivilege };
                 $scope.availableBoards = $scope.availableBoards.concat(appExtensions);
                 $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog');
+                var adtNavigationConfig = appService.getAppDescriptor().getConfigValue('adtNavigationConfig');
+                Object.assign($scope.adtNavigationConfig, adtNavigationConfig);
                 setCurrentBoardBasedOnPath();
             };
 
@@ -172,6 +175,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 }
                 setCurrentBoardBasedOnPath();
             });
+
+            $scope.adtNavigationURL = function (visitUuid) {
+                return appService.getAppDescriptor().formatUrl($scope.adtNavigationConfig.forwardUrl, {'patientUuid': $scope.patient.uuid, 'visitUuid': visitUuid});
+            };
 
             var cleanUpListenerErrorsOnForm = $scope.$on("event:errorsOnForm", function () {
                 $scope.showConfirmationPopUp = true;
