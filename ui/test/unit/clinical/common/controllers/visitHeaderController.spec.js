@@ -59,7 +59,7 @@ describe('visitHeaderController', function () {
         mockClinicalAppConfigService.getAllConsultationBoards.and.returnValue(boards);
     });
 
-    function createController() {
+    function createController(stateParams) {
         return controller('VisitHeaderController', {
             $scope: scope,
             $state: null,
@@ -68,7 +68,7 @@ describe('visitHeaderController', function () {
             patientContext:{patient:{uuid:"patient_uuid"}},
             visitHistory:null,
             visitConfig:visitTabConfig,
-            $stateParams:{configName:"default"},
+            $stateParams: stateParams  || {configName:"default"},
             contextChangeHandler:contextChangeHandler,
             $location:mockLocation,
             urlHelper:mockUrlHelper
@@ -133,6 +133,16 @@ describe('visitHeaderController', function () {
             expect(rootScope.hasVisitedConsultation).toBeTruthy();
             expect(scope.collapseControlPanel).toHaveBeenCalled();
             expect(mockLocation.url).toHaveBeenCalledWith('/default/patient/somePatientUuid/dashboard/bacteriology?tabConfigName=allMedicationTabConfig&priority=high');
+        });
+
+        it("should goto consultation from Visit page with given stateParams", function () {
+            var stateParams = {configName:"program", programUuid: "programUuid", enrollment: "patientProgramUuid", patientUuid: "patientUuid"};
+            createController(stateParams);
+            scope.collapseControlPanel = jasmine.createSpy('collapseControlPanel');
+            scope.openConsultation();
+            expect(rootScope.hasVisitedConsultation).toBeTruthy();
+            expect(scope.collapseControlPanel).toHaveBeenCalled();
+            expect(mockLocation.url).toHaveBeenCalledWith('/program/patient/somePatientUuid/dashboard/bacteriology?programUuid=programUuid&enrollment=patientProgramUuid&tabConfigName=allMedicationTabConfig&priority=high');
         });
     });
 });
