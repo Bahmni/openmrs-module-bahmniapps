@@ -4,12 +4,16 @@
 
         <div class="patient-info">
             <div>
-                <a class="patient-img" href="{{getDashboardLink()}}" ng-click="changeContext($event)">
+                <a class="patient-img" href="{{::getDashboardLink()}}" ng-click="changeContext($event)">
                     <img class="patient-image" ng-src="{{::patient.image}}" fallback-src="../images/blank-user.gif">
                 </a>
                 <div class="patient-handler">
                     <h4 class="patient-name">
-                    <a href="{{getDashboardLink()}}" ng-click="changeContext($event)"><span bo-text="patient.name"></span></a><span ng-show="patient.genderText" ng-bind-html="' ('+patient.genderText+')'"></span></h4>
+                        <a href="{{::getDashboardLink()}}" ng-click="changeContext($event)">
+                            <span bo-text="patient.name"></span>
+                        </a>
+                        <span ng-show="patient.genderText" ng-bind-html="' ('+patient.genderText+')'"></span>
+                    </h4>
                     <h5 class="patient-identifier"><span bo-text="patient.identifier"></span></h5>
                 </div>
             </div>
