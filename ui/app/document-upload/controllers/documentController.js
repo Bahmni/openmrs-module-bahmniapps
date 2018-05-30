@@ -214,6 +214,14 @@ angular.module('opd.documentupload')
                 }
             };
 
+            $scope.toInitFileConcept = function (file) {
+                if (file.concept && file.concept.editableName) {
+                    return;
+                }
+                file.concept = Object.create($scope.fileTypeConcepts[0].concept);
+                file.changed = true;
+            };
+
             $scope.onConceptSelected = function (file) {
                 var selectedItem = _.find($scope.fileTypeConcepts, function (fileType) {
                     return _.get(fileType, 'concept.name') == _.get(file, 'concept.editableName');

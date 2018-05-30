@@ -88,15 +88,15 @@
                                 <img ng-if="!isPdf(file)" bm-gallery-item visit-uuid="'new'" visit-order="0"
                                      image="file" index="{{file.imageIndex}}"
                                      ng-src="{{file.thumbnail}}" width="100">
-                                 <select id="{{'file'+$index}}" required ng-readonly="!canDeleteFile(file)"
-                                        class="concept-name" blur-on-select="true" strict-select="true"
-                                        response-map="getDataResults"
-                                        ng-model="file.concept.editableName" ng-change="onConceptSelected(file)"
-                                        ng-init="file.concept.editableName=fileTypeConcepts[0].concept.name"
-                                        ng-disabled="file.voided">
-                                        <option ng-repeat="c in fileTypeConcepts" value="{{c.concept.name}}">
-                                             {{c.concept.name}}</option>
-                                 </select>
+                                <select id="{{'file'+$index}}" required ng-readonly="!canDeleteFile(file)"
+                                    class="concept-name" response-map="getDataResults"
+                                    blur-on-select="true"
+                                    ng-model="file.concept.editableName" ng-change="onConceptSelected(file)"
+                                    ng-init="toInitFileConcept(file)" ng-disabled="file.voided">
+                                    <option ng-repeat="c in fileTypeConcepts" value="{{c.concept.name}}"
+                                        ng-selected="file.concept.editableName==c.concept.name">
+                                        {{c.concept.name}}</option>
+                                </select>
                                 <button type="button" toggle="show"
                                         class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': file.comment}">
                                     <i class="fa fa-file-o">
@@ -173,14 +173,14 @@
                                              ng-src="{{file.thumbnail}}" width="100"
                                              ng-class="{true:'transparent', false:'opaque'}[file.voided]"/>
                                         <select id="{{'file'+$index}}" required ng-readonly="!canDeleteFile(file)"
-                                               class="concept-name" ng-class="{saved: visit.isSaved(file)}"
-                                               response-map="getDataResults"
-                                               blur-on-select="true" ng-blur="visit.markAsUpdated()"
-                                               ng-model="file.concept.editableName" ng-change="onConceptSelected(file)"
-                                               ng-init="file.concept.editableName=fileTypeConcepts[0].concept.name"
-                                               ng-disabled="file.voided" strict-select="true">
-                                               <option ng-repeat="c in fileTypeConcepts" value="{{c.concept.name}}">
-                                                    {{c.concept.name}}</option>
+                                            class="concept-name" ng-class="{saved: visit.isSaved(file)}"
+                                            response-map="getDataResults"
+                                            blur-on-select="true" ng-blur="visit.markAsUpdated()"
+                                            ng-model="file.concept.editableName" ng-change="onConceptSelected(file)"
+                                            ng-init="toInitFileConcept(file)" ng-disabled="file.voided">
+                                            <option ng-repeat="c in fileTypeConcepts" value="{{c.concept.name}}"
+                                                ng-selected="file.concept.editableName==c.concept.name">
+                                                {{c.concept.name}}</option>
                                         </select>
                                         <button type="button" toggle="show"
                                                 class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': file.comment}">
