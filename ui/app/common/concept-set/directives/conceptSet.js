@@ -226,6 +226,22 @@ angular.module('bahmni.common.conceptSet')
                                         });
                                     }
                                 });
+                                _.each(conditions.show, function (subConditionConceptName) {
+                                    var conditionFn = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[subConditionConceptName];
+                                    if (conditionFn != null) {
+                                        runFormConditionForObs(true, formName, conditionFn, subConditionConceptName, flattenedObs);
+                                    }
+                                });
+                                _.each(conditions.hide, function (subConditionConceptName) {
+                                    var conditionFn = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[subConditionConceptName];
+                                    if (conditionFn != null) {
+                                        _.each(flattenedObs, function (obs) {
+                                            if (obs.concept.name == subConditionConceptName) {
+                                                runFormConditionForObs(false, formName, conditionFn, subConditionConceptName, flattenedObs);
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         }
                     });
@@ -387,7 +403,7 @@ angular.module('bahmni.common.conceptSet')
                     var formCondition = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[conceptName];
                     if (formCondition) {
                         var flattenedObs = ObservationUtil.flattenObsToArray([rootObservation]);
-                        runFormConditionForAllObsRecursively(true, formName, formCondition, conceptName, flattenedObs);
+                        runFormConditionForObs(true, formName, formCondition, conceptName, flattenedObs);
                     }
                 });
 

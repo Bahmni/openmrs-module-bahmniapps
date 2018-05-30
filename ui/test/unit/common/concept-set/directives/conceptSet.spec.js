@@ -67,7 +67,7 @@ describe("conceptSet", function () {
 
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function (value) {
-                return {defaults:{"Chief Complaint Notes":"default notes","History and Examination": "not default notes"}}
+                return {defaults:{"Chief Complaint Notes":"default notes","History and Examination": "not default notes", "Example Notes": "example notes", "Second Example Notes": "example notes"}}
             }
         });
 
@@ -122,7 +122,9 @@ describe("conceptSet", function () {
                     var chiefComplaint = formFieldValues['Chief Complaint Notes'];
                     if (chiefComplaint && patient.age === 10) {
                         return {
-                            disable: ["Chief Complaint Data"]
+                            disable: ["Chief Complaint Data"],
+                            hide: ["Example Notes"],
+                            show: ["Second Example Notes"]
                         }
                     } else {
                         return {
@@ -177,8 +179,15 @@ describe("conceptSet", function () {
         it("should update form conditions", function(){
 
             expect(compiledElementScope.rootObservation.groupMembers[1].disabled).toBeTruthy();
+        });
 
-        })
+        it("should hide 'Example Notes' while updating the form conditions", function(){
+            expect(compiledElementScope.rootObservation.groupMembers[2].hide).toBeTruthy();
+        });
+
+        it("should show 'Second Example Notes' while updating the form conditions", function(){
+            expect(compiledElementScope.rootObservation.groupMembers[3].hide).toBeFalsy();
+        });
 
     });
 
@@ -262,6 +271,62 @@ describe("conceptSet", function () {
                         },
                         "conceptClass": {
                             "uuid": "82516ba3-3f10-11e4-adec-0800271c1b75",
+                            "display": "N/A",
+                            "name": "N/A",
+                            "description": "Concept Details class",
+                            "retired": false
+                        },
+                        "descriptions": [],
+                        "answers": []
+                    },
+                    {
+                        "uuid": "c3949eb6-3f10-11e4-adec-0800271c1b76",
+                        "name": {
+                            "display": "Example Notes",
+                            "uuid": "c394a585-3f10-11e4-adec-0800271c1b76",
+                            "name": "Example Notes",
+                            "locale": "en",
+                            "localePreferred": true,
+                            "conceptNameType": "FULLY_SPECIFIED"
+                        },
+                        "datatype": {
+                            "uuid": "8d4a4c94-c2cc-11de-8d13-0010c6dffd01",
+                            "display": "N/A",
+                            "name": "N/A",
+                            "description": "Not associated with a datatype (e.g., term answers, sets)",
+                            "hl7Abbreviation": "ZZ",
+                            "retired": false
+                        },
+                        "conceptClass": {
+                            "uuid": "82516ba3-3f10-11e4-adec-0800271c1b75",
+                            "display": "N/A",
+                            "name": "N/A",
+                            "description": "Concept Details class",
+                            "retired": false
+                        },
+                        "descriptions": [],
+                        "answers": []
+                    },
+                    {
+                        "uuid": "c3949eb6-3f10-11e4-adec-0800271c1b77",
+                        "name": {
+                            "display": "Second Example Notes",
+                            "uuid": "c394a585-3f10-11e4-adec-0800271c1b77",
+                            "name": "Second Example Notes",
+                            "locale": "en",
+                            "localePreferred": true,
+                            "conceptNameType": "FULLY_SPECIFIED"
+                        },
+                        "datatype": {
+                            "uuid": "8d4a4c94-c2cc-11de-8d13-0010c6dffd02",
+                            "display": "N/A",
+                            "name": "N/A",
+                            "description": "Not associated with a datatype (e.g., term answers, sets)",
+                            "hl7Abbreviation": "ZZ",
+                            "retired": false
+                        },
+                        "conceptClass": {
+                            "uuid": "82516ba3-3f10-11e4-adec-0800271c1b77",
                             "display": "N/A",
                             "name": "N/A",
                             "description": "Concept Details class",
