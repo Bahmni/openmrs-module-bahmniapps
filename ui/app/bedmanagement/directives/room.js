@@ -8,6 +8,6 @@ angular.module('bahmni.ipd')
             scope: {
                 room: "="
             },
-            templateUrl: "../ipd/views/room.html"
+            templateUrl: "../bedmanagement/views/room.html"
         };
     }]);

@@ -10,6 +10,6 @@ angular.module('bahmni.ipd')
                 encounterConfig: "=?bind",
                 bed: "="
             },
-            templateUrl: "../ipd/views/adt.html"
+            templateUrl: "../bedmanagement/views/adt.html"
         };
     }]);

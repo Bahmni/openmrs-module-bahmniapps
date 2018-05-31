@@ -260,7 +260,7 @@ describe("ConsultationController", function () {
             },
             getConfigValue: function (value) {
                 if(value === 'adtNavigationConfig') {
-                    return {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
+                    return {forwardUrl: "../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
                 }
                 return true;
             }
@@ -318,15 +318,15 @@ describe("ConsultationController", function () {
                 },
                 getConfigValue: function (value) {
                     if(value === 'adtNavigationConfig') {
-                        return {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
+                        return {forwardUrl: "../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
                     }
                     return true;
                 }
             };
-            scope.adtNavigationConfig = {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}"};
+            scope.adtNavigationConfig = {forwardUrl: "../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}"};
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             createController();
-            expect(scope.adtNavigationConfig.forwardUrl).toEqual("../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}");
+            expect(scope.adtNavigationConfig.forwardUrl).toEqual("../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}");
         });
     });
 
@@ -518,7 +518,7 @@ describe("ConsultationController", function () {
             appService.getAppDescriptor.and.returnValue({
                 getConfigValue: function (value) {
                     if(value === 'adtNavigationConfig') {
-                        return {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
+                        return {forwardUrl: "../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
                     }
                     return false;
                 }
@@ -534,7 +534,7 @@ describe("ConsultationController", function () {
             appService.getAppDescriptor.and.returnValue({
                 getConfigValue: function (value) {
                     if(value === 'adtNavigationConfig') {
-                        return {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
+                        return {forwardUrl: "../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
                     }
                     return true;
                 }
@@ -718,10 +718,10 @@ describe("ConsultationController", function () {
                 return true;
             }
         };
-        scope.adtNavigationConfig = {forwardUrl: "../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}"};
+        scope.adtNavigationConfig = {forwardUrl: "../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}"};
         appService.getAppDescriptor.and.returnValue(appDescriptor);
 
-        expect(scope.adtNavigationURL()).toEqual("../ipd/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}");
+        expect(scope.adtNavigationURL()).toEqual("../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}");
     });
 
     it("should initialize with default adtNavigationConfig if we are not mentioning anything in config", function () {
