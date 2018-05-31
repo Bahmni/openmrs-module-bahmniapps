@@ -14,7 +14,7 @@ describe('BedManagementController', function () {
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     var appDescriptor = {
         formatUrl: function (url, options) {
-            return "../ipd/#/patient/PATIENT_UUID/visit/VISIT_UUID/dashboard";
+            return "../bedmanagement/#/patient/PATIENT_UUID/visit/VISIT_UUID/dashboard";
         }
     };
     appService.getAppDescriptor.and.returnValue(appDescriptor);
