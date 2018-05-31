@@ -22,8 +22,21 @@ angular.module('bahmni.appointments')
             var loginLocationUuid = sessionService.getLoginLocationUuid();
             $scope.minCharLengthToTriggerPatientSearch = appService.getAppDescriptor().getConfigValue('minCharLengthToTriggerPatientSearch') || 3;
 
+            var isProviderNotAvailableForAppointments = function (selectedProvider) {
+                var providers = appointmentCreateConfig.providers;
+                return _.isUndefined(_.find(providers, function (provider) {
+                    return selectedProvider.uuid === provider.uuid;
+                }));
+            };
             var init = function () {
                 wireAutocompleteEvents();
+                if (!_.isEmpty(appointmentContext) && !_.isEmpty(appointmentContext.appointment) && !_.isEmpty(appointmentContext.appointment.provider)) {
+                    var isProviderNotAvailable = isProviderNotAvailableForAppointments(appointmentContext.appointment.provider);
+                    if (isProviderNotAvailable) {
+                        appointmentContext.appointment.provider.person = {display: appointmentContext.appointment.provider.name};
+                        appointmentCreateConfig.providers.push(appointmentContext.appointment.provider);
+                    }
+                }
                 $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create(appointmentContext.appointment || {appointmentKind: 'Scheduled'}, appointmentCreateConfig);
                 $scope.selectedService = appointmentCreateConfig.selectedService;
                 $scope.isPastAppointment = $scope.isEditMode() ? Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')) : false;
