@@ -919,9 +919,7 @@ describe("AppointmentsCreateController", function () {
         var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
         appointmentContext.appointment = {provider: {name: 'someone', uuid: '3'}};
         appointmentCreateConfig.providers = allAvailableProviders;
-
         createController();
-
         expect(appointmentCreateConfig.providers.length).toBe(3);
         expect(appointmentCreateConfig.providers[0].name).toBe("superman");
         expect(appointmentCreateConfig.providers[1].name).toBe("mahmoud_h");
@@ -932,9 +930,7 @@ describe("AppointmentsCreateController", function () {
         var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
         appointmentContext = {};
         appointmentCreateConfig.providers = allAvailableProviders;
-
         createController();
-
         expect(appointmentCreateConfig.providers.length).toBe(2);
         expect(appointmentCreateConfig.providers[0].name).toBe("superman");
         expect(appointmentCreateConfig.providers[1].name).toBe("mahmoud_h");
