@@ -34,15 +34,29 @@ describe('AppointmentsFilterController', function () {
     };
     var providers = {
         data: {
-            results: [{
-                "uuid": "f9badd80-ab76-11e2-9e96-0800200c9a66",
-                "person":{"display":"Jane"},
-                "display": "1-Jane"
-            }, {
-                "uuid": "df17bca9-ff9b-4a73-bac7-f302fc688974",
-                "person":{"display":"June"},
-                "display": "2-June"
-            }]
+            results: [
+                {person: {display: 'Superman', uuid: "uuid5"}, attributes: []},
+                {
+                    person: {display: 'Unknown Provider', uuid: "uuid1"},
+                    attributes: [{attributeType: {display: "Available for appointments"}, value: true, voided: false}],
+                    uuid: "uuid1",
+                    retired: false
+                },
+                {
+                    person: {display: 'mohima', uuid: "uuid4"},
+                    attributes: [{attributeType: {display: "Available for appointments"}, value: true, voided: true}],
+                    retired: false
+                },
+                {
+                    person: {display: 'mahmoud_h', uuid: "uuid3"},
+                    attributes: [{attributeType: {display: "Available for appointments"}, value: false, voided: false}]
+                }, {
+                    person: {display: 'Saikumar', uuid: "uuid2"},
+                    attributes: [{attributeType: {display: "Available for appointments"}, value: true, voided: false}],
+                    uuid: "uuid1",
+                    retired: true
+                }
+            ]
         }
     };
 
@@ -67,7 +81,7 @@ describe('AppointmentsFilterController', function () {
             state.current = {tabName: "list"};
             $httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>')
             $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>')
-            $httpBackend.expectGET('/openmrs/ws/rest/v1/provider?v=custom:(display,person,uuid)').respond('<div></div>')
+            $httpBackend.expectGET('/openmrs/ws/rest/v1/provider?v=custom:(display,person,uuid,retired,attributes:(attributeType:(display),value,voided))').respond('<div></div>')
         });
     });
 
@@ -362,7 +376,7 @@ describe('AppointmentsFilterController', function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         createController();
         expect(scope.statusList.length).toBe(5);
-        expect(scope.providers.length).toBe(3);
+        expect(scope.providers.length).toBe(2);
     });
 
     it('should preselect the services to filter when services are not empty in filterParams', function () {
@@ -375,7 +389,7 @@ describe('AppointmentsFilterController', function () {
         expect(scope.selectedSpecialities[0].children[0].children[0].label).toBe("maxillo [15 min]");
         expect(ivhTreeviewMgr.selectEach).toHaveBeenCalledWith(scope.selectedSpecialities,state.params.filterParams.serviceUuids);
     });
-    
+
     it('should set the selectedStatusList', function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         state.params.filterParams.statusList = ["Completed", "Scheduled"];
@@ -490,13 +504,13 @@ describe('AppointmentsFilterController', function () {
     });
 
     it('should have "No Provider" in providers and should have providerUuids in selectedProviders when providerUuids are present in filterParams', function () {
-        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}]));
-        state.params.filterParams = {statusList: [], providerUuids: ['someProviderUuid', 'no-provider-uuid']};
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        state.params.filterParams = {statusList: [], providerUuids: ['uuid1', 'no-provider-uuid']};
         createController();
         expect(scope.providers.length).toEqual(2);
         expect(scope.providers[1].uuid).toEqual('no-provider-uuid');
         expect(scope.selectedProviders.length).toEqual(2);
-        expect(scope.selectedProviders[0].uuid).toEqual('someProviderUuid');
+        expect(scope.selectedProviders[0].uuid).toEqual('uuid1');
         expect(scope.selectedProviders[1].uuid).toEqual('no-provider-uuid');
     });
 
@@ -718,5 +732,17 @@ describe('AppointmentsFilterController', function () {
         expect(state.params.filterParams.serviceUuids.length).toEqual(1);
         expect(state.params.filterParams.serviceUuids[0]).toEqual('02666cc6-5f3e-4920-856d-ab7e28d3dbdb');
         expect(state.params.filterParams.serviceTypeUuids.length).toEqual(0);
+    });
+
+    it("should get providers only who are available for appointments", function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        createController();
+        expect(scope.providers.length).toBe(2)
+    });
+
+    it("should not include retired providers", function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
+        createController();
+        expect(scope.providers.length).toBe(2)
     });
 });
