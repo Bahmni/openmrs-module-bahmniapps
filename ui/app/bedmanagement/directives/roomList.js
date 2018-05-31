@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .directive('roomGrid', [function () {
+    .directive('roomList', [function () {
         return {
             restrict: 'E',
-            controller: 'RoomGridController',
+            controller: 'RoomListController',
             scope: {
                 room: "="
             },
-            templateUrl: "../ipd/views/roomGrid.html"
+            templateUrl: "../bedmanagement/views/roomList.html"
         };
     }]);

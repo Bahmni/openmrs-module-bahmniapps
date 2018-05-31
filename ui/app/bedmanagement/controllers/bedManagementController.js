@@ -11,7 +11,7 @@ angular.module('bahmni.ipd')
                 "dashboard": {
                     "name": "inpatient",
                     "translationKey": "PATIENT_ADT_PAGE_KEY",
-                    "url": "../ipd/#/patient/{{patientUuid}}/visit/{{visitUuid}}/dashboard"
+                    "url": "../bedmanagement/#/patient/{{patientUuid}}/visit/{{visitUuid}}/dashboard"
                 }
             };
 
