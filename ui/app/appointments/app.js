@@ -79,7 +79,9 @@ angular
                 url: '/calendar',
                 tabName: 'calendar',
                 params: {
-                    viewDate: null
+                    viewDate: null,
+                    doFetchAppointmentsData: true,
+                    appointmentsData: null
                 },
                 views: {
                     'content@viewAppointments': {
@@ -127,7 +129,9 @@ angular
                 tabName: 'list',
                 params: {
                     viewDate: null,
-                    patient: null
+                    patient: null,
+                    doFetchAppointmentsData: true,
+                    appointmentsData: null
                 },
                 views: {
                     'content@viewAppointments': {
