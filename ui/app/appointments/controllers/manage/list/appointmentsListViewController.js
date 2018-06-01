@@ -40,10 +40,21 @@ angular.module('bahmni.appointments')
                 $stateParams.viewDate = viewDate;
                 $scope.selectedAppointment = undefined;
                 var params = {forDate: viewDate};
-                spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
-                    $scope.appointments = response.data;
-                    $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
-                }));
+                $scope.$on('$stateChangeStart', function (event, toState, toParams) {
+                    if (toState.tabName == 'calendar') {
+                        toParams.doFetchAppointmentsData = false;
+                    }
+                });
+                if ($state.params.doFetchAppointmentsData) {
+                    spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
+                        $scope.appointments = response.data;
+                        $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
+                        $rootScope.appointmentsData = $scope.filteredAppointments;
+                    }));
+                } else {
+                    $scope.filteredAppointments = appointmentsFilter($state.params.appointmentsData, $stateParams.filterParams);
+                    $state.params.doFetchAppointmentsData = true;
+                }
             };
 
             $scope.displaySearchedPatient = function (appointments) {
@@ -108,7 +119,7 @@ angular.module('bahmni.appointments')
                 return $stateParams.filterParams;
             }, function (newValue, oldValue) {
                 if (newValue !== oldValue) {
-                    $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
+                    $scope.filteredAppointments = appointmentsFilter($scope.appointments || $state.params.appointmentsData, $stateParams.filterParams);
                 }
             }, true);
 
