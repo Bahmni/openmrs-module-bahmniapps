@@ -193,6 +193,7 @@ module.exports = function (grunt) {
                 '<%= yeoman.app %>/adt/**/*.html',
                 '<%= yeoman.app %>/common/**/*.html',
                 '<%= yeoman.app %>/orders/**/*.html',
+                '<%= yeoman.app %>/bedmanagement/**/*.html',
                 '<%= yeoman.app %>/home/**/*.html',
                 '<%= yeoman.app %>/admin/**/*.html',
                 '<%= yeoman.app %>/registration/**/*.html',
@@ -266,6 +267,7 @@ module.exports = function (grunt) {
                             'adt/**/*.html',
                             'common/**/*.html',
                             'orders/**/*.html',
+                            'bedmanagement/**/*.html',
                             'home/**/*.html',
                             'ot/**/*.html',
                             'admin/**/*.html',
@@ -346,6 +348,12 @@ module.exports = function (grunt) {
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
+                        src: ['bedmanagement.*.js'],
+                        dest: '<%= yeoman.dist %>/bedmanagement/'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
                         src: ['admin.*.js'],
                         dest: '<%= yeoman.dist %>/admin/'
                     },
@@ -387,6 +395,12 @@ module.exports = function (grunt) {
                         dest: '<%= yeoman.dist %>/clinical/'
                     },
                     {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.*.css'], dest: '<%= yeoman.dist %>/adt/'},
+                    {
+                        expand: true,
+                        cwd: '<%= yeoman.dist %>',
+                        src: ['bedmanagement.*.css'],
+                        dest: '<%= yeoman.dist %>/bedmanagement/'
+                    },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
@@ -480,6 +494,7 @@ module.exports = function (grunt) {
                     '<%= yeoman.dist %>/registration.min.js': '<%= yeoman.dist %>/registration.min.js',
                     '<%= yeoman.dist %>/admin.min.js': '<%= yeoman.dist %>/admin.min.js',
                     '<%= yeoman.dist %>/adt.min.js': '<%= yeoman.dist %>/adt.min.js',
+                    '<%= yeoman.dist %>/bedmanagement.min.js': '<%= yeoman.dist %>/bedmanagement.min.js',
                     '<%= yeoman.dist %>/document-upload.min.js': '<%= yeoman.dist %>/document-upload.min.js',
                     '<%= yeoman.dist %>/home.min.js': '<%= yeoman.dist %>/home.min.js',
                     '<%= yeoman.dist %>/orders.min.js': '<%= yeoman.dist %>/orders.min.js',
