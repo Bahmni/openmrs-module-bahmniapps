@@ -23,7 +23,7 @@ angular.module('bahmni.registration')
             var isHref = false;
 
             $rootScope.onHomeNavigate = function (event) {
-                if ($scope.showSaveConfirmDialogConfig) {
+                if ($scope.showSaveConfirmDialogConfig && $state.current.name != "patient.visit") {
                     event.preventDefault();
                     $scope.targetUrl = event.currentTarget.getAttribute('href');
                     isHref = true;
