@@ -112,6 +112,14 @@ angular.module('bahmni.registration')
                     $scope.getChosenRelationshipType(relationship) !== 'patient';
             };
 
+            $scope.duplicateRelationship = function (relationship) {
+                if (_.isEmpty(relationship.relationshipType) || _.isEmpty(relationship.personB)) {
+                    return false;
+                }
+                var existingRelatives = getAlreadyAddedRelationshipPersonUuid($scope.patient, relationship.relationshipType.uuid);
+                return _.get(_.countBy(existingRelatives, _.identity), relationship.personB.uuid, 0) > 1;
+            };
+
             var getPersonRelatedTo = function (relationship) {
                 return relationship.personA && relationship.personA.uuid === $scope.patient.uuid ? relationship.personB : relationship.personA;
             };
@@ -144,28 +152,30 @@ angular.module('bahmni.registration')
                 }
             };
 
-            var getDeletedRelationshipUuids = function (patient) {
-                return _.map(patient.deletedRelationships, function (relationship) {
-                    return relationship.personB.uuid;
-                });
+            var getDeletedRelationshipUuids = function (patient, relationTypeUuid) {
+                return getPersonUuidsForRelationship(patient.deletedRelationships, relationTypeUuid);
             };
 
-            var getNewlyAddedReltionshipPatientUuid = function (patient) {
+            var getNewlyAddedRelationshipPersonUuid = function (patient, relationTypeUuid) {
+                return getPersonUuidsForRelationship(patient.newlyAddedRelationships, relationTypeUuid);
+            };
+
+            var getPersonUuidsForRelationship = function (relationships, relationshipTypeUuid) {
                 var uuids = [];
-                _.each(patient.newlyAddedRelationships, function (relationship) {
-                    if (relationship.personB) {
+                _.each(relationships, function (relationship) {
+                    if (relationship.personB && relationship.relationshipType.uuid === relationshipTypeUuid) {
                         uuids.push(relationship.personB.uuid);
                     }
                 });
+
                 return uuids;
             };
 
-            var getAlreadyAddedRelationshipPatientUuids = function (patient) {
-                var uuids = _.concat(_.map(patient.relationships, function (relationship) {
-                    return relationship.personB.uuid;
-                }), getNewlyAddedReltionshipPatientUuid(patient));
+            var getAlreadyAddedRelationshipPersonUuid = function (patient, relationTypeUuid) {
+                var personUuids = _.concat(getPersonUuidsForRelationship(patient.relationships, relationTypeUuid),
+                    getNewlyAddedRelationshipPersonUuid(patient, relationTypeUuid));
 
-                return _.difference(uuids, getDeletedRelationshipUuids(patient));
+                return _.difference(personUuids, getDeletedRelationshipUuids(patient, relationTypeUuid));
             };
 
             $scope.clearProvider = function (relationship) {
@@ -176,23 +186,10 @@ angular.module('bahmni.registration')
                 return appService.getAppDescriptor().getConfigValue(configName) || defaultValue;
             };
 
-            var filterSearchResults = function (results, alreadyAddedUuids) {
-                return _.filter(results, function (patient) {
-                    return _.indexOf(alreadyAddedUuids, patient.uuid) === -1;
-                });
-            };
-
             $scope.searchByPatientIdentifierOrName = function (searchAttrs) {
                 var term = searchAttrs.term;
                 if (term && term.length >= getLimit("minCharRequireToSearch", 1)) {
-                    return patientService.searchByNameOrIdentifier(term, getLimit("possibleRelativeSearchLimit", Bahmni.Common.Constants.defaultPossibleRelativeSearchLimit)).then(function (res) {
-                        var results = res.data;
-                        if (!_.isEmpty(results.pageOfResults)) {
-                            results.pageOfResults = filterSearchResults(results.pageOfResults, getAlreadyAddedRelationshipPatientUuids($scope.patient));
-                        }
-
-                        return $q.when({data: results});
-                    });
+                    return patientService.searchByNameOrIdentifier(term, getLimit("possibleRelativeSearchLimit", Bahmni.Common.Constants.defaultPossibleRelativeSearchLimit));
                 }
                 return $q.when();
             };

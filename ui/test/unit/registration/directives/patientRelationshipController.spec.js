@@ -164,208 +164,68 @@ describe('PatientRelationshipController', function () {
             expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("possibleRelativeSearchLimit");
             done();
         });
+    });
 
-        describe("filter relationships", function () {
-            var response;
-            beforeEach(function () {
-                response = {
-                    data: {
-                        pageOfResults: [
-                            {
-                                "uuid": "5da6f388-12f6-406a-9f6a-30e051df788e",
-                                "identifier": "GAN200012",
-                                "givenName": "Test",
-                                "middleName": null,
-                                "familyName": "RefillDrugScenario",
-                                "gender": "M"
-                            },
-                            {
-                                "uuid": "a682dc32-ad96-476f-a7f4-5c4cad5d82be",
-                                "identifier": "GAN203012",
-                                "givenName": "Second",
-                                "middleName": "mid",
-                                "familyName": "sad",
-                                "gender": "M"
-                            },
-                            {
-                                "uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896",
-                                "identifier": "GAN203112",
-                                "givenName": "ttt",
-                                "middleName": "tt",
-                                "familyName": null,
-                                "gender": "M"
-                            }
-                        ]
-                    }
-                };
-            });
+    describe("duplicateRelationship", function () {
+        var newRelationship, alreadySavedRelationship;
+        beforeEach(function () {
+            newRelationship = {
+                patientIdentifier: "Doctor",
+                relationshipType: {"uuid": "uuid1"},
+                personB: {"uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896"},
+                endDate: "2015-07-12"
+            };
 
-            it("should filter the already existing relationships from response", function (done) {
-                mockAppDescriptor.getConfigValue.and.returnValue(undefined);
+            alreadySavedRelationship = {
+                p: "GAN200012",
+                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
+                personB: {"uuid": "5da6f388-12f6-406a-9f6a-30e051df788e"}
+            };
+        });
 
-                var expectedResponse = {
-                    data: {
-                        pageOfResults: [
-                            {
-                                "uuid": "a682dc32-ad96-476f-a7f4-5c4cad5d82be",
-                                "identifier": "GAN203012",
-                                "givenName": "Second",
-                                "middleName": "mid",
-                                "familyName": "sad",
-                                "gender": "M"
-                            },
-                            {
-                                "uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896",
-                                "identifier": "GAN203112",
-                                "givenName": "ttt",
-                                "middleName": "tt",
-                                "familyName": null,
-                                "gender": "M"
-                            }
-                        ]
-                    }
-                };
+        it("shouldGiveTrueAlreadyExistingRelationship", function () {
+            scope.patient.relationships = [alreadySavedRelationship];
+            scope.patient.newlyAddedRelationships = [newRelationship, newRelationship];
 
-                patientServiceMock.searchByNameOrIdentifier.and.returnValue(specUtil.respondWith(response));
-                var searchAttrs = {'term': 'search'};
+            expect(scope.duplicateRelationship(newRelationship)).toBeTruthy();
+        });
 
-                var relationship = {
-                    p: "GAN200012",
-                    relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
-                    personB: {"uuid": "5da6f388-12f6-406a-9f6a-30e051df788e"}
-                };
+        it("shouldGiveFalseIfRelationshipIsNotAlreadyPresent", function () {
+            scope.patient.relationships = [alreadySavedRelationship];
+            scope.patient.newlyAddedRelationships = [newRelationship];
 
-                scope.patient.relationships = [relationship];
-                scope.searchByPatientIdentifierOrName(searchAttrs).then(function (res) {
-                    var filteredResult = res.data;
+            expect(scope.duplicateRelationship(alreadySavedRelationship)).toBeFalsy();
+        });
 
-                    expect(patientServiceMock.searchByNameOrIdentifier).toHaveBeenCalledWith("search", Bahmni.Common.Constants.defaultPossibleRelativeSearchLimit);
-                    expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("minCharRequireToSearch");
-                    expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("possibleRelativeSearchLimit");
-                    expect(filteredResult.pageOfResults.length).toEqual(2);
-                    expect(filteredResult).toEqual(expectedResponse.data);
-                    done();
-                });
-            });
+        it("shouldNotConsiderDeletedRelationsDuringDuplicateRelationValidation", function () {
+            scope.patient.relationships = [alreadySavedRelationship, newRelationship];
+            scope.patient.deletedRelationships = [newRelationship];
+            scope.patient.newlyAddedRelationships = [newRelationship];
 
-            it("should filter the already existing and newly added relationships from response", function (done) {
-                mockAppDescriptor.getConfigValue.and.returnValue(undefined);
+            expect(scope.duplicateRelationship(newRelationship)).toBeFalsy();
+        });
 
-                var expectedResponse = {
-                    data: {
-                        pageOfResults: [
-                            {
-                                "uuid": "a682dc32-ad96-476f-a7f4-5c4cad5d82be",
-                                "identifier": "GAN203012",
-                                "givenName": "Second",
-                                "middleName": "mid",
-                                "familyName": "sad",
-                                "gender": "M"
-                            }
-                        ]
-                    }
-                };
+        it("shouldGiveFalseIfPersonIsPresentInMultipleRelationButRelationTypesAreDifferent", function () {
+            var patientRelationship2 = {
+                patientIdentifier: "Parent",
+                relationshipType: {"uuid": "uuid2"},
+                personB: {"uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896"},
+                endDate: "2015-07-12"
+            };
 
-                patientServiceMock.searchByNameOrIdentifier.and.returnValue(specUtil.respondWith(response));
-                var searchAttrs = {'term': 'search'};
+            scope.patient.newlyAddedRelationships = [newRelationship, patientRelationship2];
+            expect(scope.duplicateRelationship(newRelationship)).toBeFalsy();
+            expect(scope.duplicateRelationship(patientRelationship2)).toBeFalsy();
+        });
 
-                var relationship = {
-                    p: "GAN200012",
-                    relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
-                    personB: {"uuid": "5da6f388-12f6-406a-9f6a-30e051df788e"}
-                };
+        it("shouldGiveFlaseIfRelationTypeIsNotPresentInRelationship", function () {
+            alreadySavedRelationship.relationshipType = {};
+            expect(scope.duplicateRelationship(alreadySavedRelationship)).toBeFalsy();
+        });
 
-                scope.patient.relationships = [relationship];
-                var patientRelationship = {
-                    patientIdentifier: "Doctor",
-                    relationshipType: {"uuid": "uuid1"},
-                    personB: {"uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896"},
-                    endDate: "2015-07-12"
-                };
-                var currentEmptyRelationshipRow = {
-                    relationshipType: {"uuid": "uuid2"}
-                };
-                scope.patient.newlyAddedRelationships = [patientRelationship, currentEmptyRelationshipRow];
-
-                scope.searchByPatientIdentifierOrName(searchAttrs).then(function (res) {
-                    var filteredResult = res.data;
-
-                    expect(patientServiceMock.searchByNameOrIdentifier).toHaveBeenCalledWith("search", Bahmni.Common.Constants.defaultPossibleRelativeSearchLimit);
-                    expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("minCharRequireToSearch");
-                    expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("possibleRelativeSearchLimit");
-                    expect(filteredResult.pageOfResults.length).toEqual(1);
-                    expect(filteredResult).toEqual(expectedResponse.data);
-                    done();
-                });
-            });
-
-            it("should filter the already existing and newly added relationships from response except deleted relation", function (done) {
-                mockAppDescriptor.getConfigValue.and.returnValue(undefined);
-
-                var expectedResponse = {
-                    data: {
-                        pageOfResults: [
-                            {
-                                "uuid": "5da6f388-12f6-406a-9f6a-30e051df788e",
-                                "identifier": "GAN200012",
-                                "givenName": "Test",
-                                "middleName": null,
-                                "familyName": "RefillDrugScenario",
-                                "gender": "M"
-                            },
-                            {
-                                "uuid": "a682dc32-ad96-476f-a7f4-5c4cad5d82be",
-                                "identifier": "GAN203012",
-                                "givenName": "Second",
-                                "middleName": "mid",
-                                "familyName": "sad",
-                                "gender": "M"
-                            }
-                        ]
-                    }
-                };
-
-                patientServiceMock.searchByNameOrIdentifier.and.returnValue(specUtil.respondWith(response));
-                var searchAttrs = {'term': 'search'};
-
-                var relationship = {
-                    p: "GAN200012",
-                    relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
-                    personB: {"uuid": "5da6f388-12f6-406a-9f6a-30e051df788e"}
-                };
-
-                scope.patient.relationships = [relationship];
-                var patientRelationship = {
-                    patientIdentifier: "Doctor",
-                    relationshipType: {"uuid": "uuid1"},
-                    personB: {"uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896"},
-                    endDate: "2015-07-12"
-                };
-                var currentEmptyRelationshipRow = {
-                    relationshipType: {"uuid": "uuid2"}
-                };
-                scope.patient.newlyAddedRelationships = [patientRelationship, currentEmptyRelationshipRow];
-
-                var deletedRelationship = {
-                    patientIdentifier: "Doctor",
-                    relationshipType: {"uuid": "uuid1"},
-                    personB: {"uuid": "5da6f388-12f6-406a-9f6a-30e051df788e"},
-                    endDate: "2015-07-12"
-                };
-
-                scope.patient.deletedRelationships = [deletedRelationship];
-
-                scope.searchByPatientIdentifierOrName(searchAttrs).then(function (res) {
-                    var filteredResult = res.data;
-
-                    expect(patientServiceMock.searchByNameOrIdentifier).toHaveBeenCalledWith("search", Bahmni.Common.Constants.defaultPossibleRelativeSearchLimit);
-                    expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("minCharRequireToSearch");
-                    expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("possibleRelativeSearchLimit");
-                    expect(filteredResult.pageOfResults.length).toEqual(2);
-                    expect(filteredResult).toEqual(expectedResponse.data);
-                    done();
-                });
-            });
+        it("shouldGiveFlaseIfRelativeIsNotPresentInRelationship", function () {
+            alreadySavedRelationship.personB = {};
+            expect(scope.duplicateRelationship(alreadySavedRelationship)).toBeFalsy();
         });
     });
 
