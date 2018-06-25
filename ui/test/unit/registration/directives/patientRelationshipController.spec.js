@@ -223,9 +223,50 @@ describe('PatientRelationshipController', function () {
             expect(scope.duplicateRelationship(alreadySavedRelationship)).toBeFalsy();
         });
 
-        it("shouldGiveFlaseIfRelativeIsNotPresentInRelationship", function () {
+        it("shouldGiveFalseIfRelativeIsNotPresentInRelationship", function () {
             alreadySavedRelationship.personB = {};
             expect(scope.duplicateRelationship(alreadySavedRelationship)).toBeFalsy();
+        });
+    });
+
+    describe("isInvalidRelation", function () {
+        it("shouldGiveTrueIfTheRelationDoesNotHaveRelativeDetails", function () {
+            expect(scope.isInvalidRelation({})).toBeTruthy();
+            expect(scope.isInvalidRelation({personB:{}})).toBeTruthy();
+        });
+
+        it("shouldGiveTrueForDuplicateRelation", function () {
+            var newRelationship = {
+                patientIdentifier: "Doctor",
+                relationshipType: {"uuid": "uuid1"},
+                personB: {"uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896"},
+                endDate: "2015-07-12"
+            };
+
+            var alreadySavedRelationship = {
+                p: "GAN200012",
+                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
+                personB: {"uuid": "5da6f388-12f6-406a-9f6a-30e051df788e"}
+            };
+
+            scope.patient.relationships = [alreadySavedRelationship];
+            scope.patient.newlyAddedRelationships = [newRelationship, newRelationship];
+
+            expect(scope.isInvalidRelation(newRelationship)).toBeTruthy();
+        });
+
+        it("shouldGiveFalseIfItHasUniqueRelativeDetails", function () {
+            var newRelationship = {
+                patientIdentifier: "Doctor",
+                relationshipType: {"uuid": "uuid1"},
+                personB: {"uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896"},
+                endDate: "2015-07-12"
+            };
+
+
+            scope.patient.newlyAddedRelationships = [newRelationship];
+
+            expect(scope.isInvalidRelation(newRelationship)).toBeFalsy();
         });
     });
 

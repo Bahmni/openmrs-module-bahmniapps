@@ -112,6 +112,10 @@ angular.module('bahmni.registration')
                     $scope.getChosenRelationshipType(relationship) !== 'patient';
             };
 
+            $scope.isInvalidRelation = function (relation) {
+                return _.isEmpty(_.get(relation, "personB.uuid")) || $scope.duplicateRelationship(relation);
+            };
+
             $scope.duplicateRelationship = function (relationship) {
                 if (_.isEmpty(relationship.relationshipType) || _.isEmpty(relationship.personB)) {
                     return false;
