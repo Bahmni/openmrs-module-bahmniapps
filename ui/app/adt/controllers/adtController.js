@@ -90,7 +90,7 @@ angular.module('bahmni.adt')
 
             var getVisit = function () {
                 var visitUuid = $stateParams.visitUuid;
-                if (visitUuid !== 'null' && visitUuid !== '') {
+                if (visitUuid !== 'undefined' && visitUuid !== 'null' && visitUuid !== '') {
                     return visitService.getVisitSummary(visitUuid).then(function (response) {
                         $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
                     });
