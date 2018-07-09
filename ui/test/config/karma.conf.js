@@ -88,6 +88,7 @@ module.exports = function (config) {
             'app/reports/**/*.js': ['coverage'],
             'app/bedmanagement/**/*.js': ['coverage'],
             'app/appointments/**/*.js': ['coverage'],
+            'app/ot/**/*.js': ['coverage'],
             'app/common/displaycontrols/**/views/*.html':['ng-html2js'],
             'app/common/concept-set/views/*.html':['ng-html2js'],
             'app/common/uicontrols/**/views/*.html': ['ng-html2js'],
