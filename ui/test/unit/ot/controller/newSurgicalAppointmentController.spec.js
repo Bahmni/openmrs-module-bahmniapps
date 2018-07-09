@@ -365,7 +365,7 @@ describe("newSurgicalAppointmentController", function () {
         expect(scope.surgeons).toEqual([{name: "surgeon1", uuid: "surgeon1Uuid"},{name: "surgeon2", uuid: "surgeon2Uuid"}]);
     });
 
-    it("should open the patient dashboard when user click on patient name in edit mode", function () {
+    it("should open the patient program dashboard when user click on patient name in edit mode", function () {
         getAppDescriptor.getConfigValue.and.returnValue({
             link : "/bahmni/clinical/#/programs/patient/{{patientUuid}}/dashboard?dateEnrolled={{dateEnrolled}}&programUuid={{programUuid}}&enrollment={{enrollment}}&currentTab=DASHBOARD_TAB_GENERAL_KEY"
         });
@@ -380,6 +380,20 @@ describe("newSurgicalAppointmentController", function () {
         expect(scope.enrollmentInfo).toBe(enrollmentInfo);
         expect(getAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientDashboardUrl');
         expect(getAppDescriptor.formatUrl).toHaveBeenCalledWith("/bahmni/clinical/#/programs/patient/{{patientUuid}}/dashboard?dateEnrolled={{dateEnrolled}}&programUuid={{programUuid}}&enrollment={{enrollment}}&currentTab=DASHBOARD_TAB_GENERAL_KEY", jasmine.any(Object));
+        expect(_window.open).toHaveBeenCalledWith("formattedUrl");
+    });
+
+    it("should open the patient clinical dashboard when user click on patient name in edit mode", function () {
+        getAppDescriptor.getConfigValue.and.returnValue({
+            link : "/bahmni/clinical/#/default/patient/{{patientUuid}}/dashboard"
+        });
+        getAppDescriptor.formatUrl.and.returnValue("formattedUrl");
+        scope.patient = { uuid: "patientUuid", display: "patient-GAN2020" };
+        scope.ngDialogData = { id: "someId", patient: scope.patient };
+        createController();
+        scope.goToForwardUrl();
+        expect(getAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientDashboardUrl');
+        expect(getAppDescriptor.formatUrl).toHaveBeenCalledWith("/bahmni/clinical/#/default/patient/{{patientUuid}}/dashboard", jasmine.any(Object));
         expect(_window.open).toHaveBeenCalledWith("formattedUrl");
     });
 
