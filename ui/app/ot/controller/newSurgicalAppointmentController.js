@@ -97,18 +97,31 @@ angular.module('bahmni.ot')
 
             $scope.goToForwardUrl = function () {
                 var forwardUrl = appService.getAppDescriptor().getConfigValue('patientDashboardUrl');
-                if (!$scope.enrollmentInfo) {
+                if (isProgramDashboardUrlConfigured(forwardUrl) && !$scope.enrollmentInfo) {
                     messagingService.showMessage('error', forwardUrl.errorMessage);
                     return;
                 }
-                var params = {
-                    patientUuid: $scope.enrollmentInfo.patient.uuid,
-                    dateEnrolled: $scope.enrollmentInfo.dateEnrolled,
-                    programUuid: $scope.enrollmentInfo.program.uuid,
-                    enrollment: $scope.enrollmentInfo.uuid
-                };
+                var params = getDashboardParams(forwardUrl);
                 var formattedUrl = appService.getAppDescriptor().formatUrl(forwardUrl.link, params);
                 $window.open(formattedUrl);
+            };
+
+            var isProgramDashboardUrlConfigured = function (forwardUrl) {
+                return forwardUrl && forwardUrl.link && forwardUrl.link.includes('programs');
+            };
+
+            var getDashboardParams = function (forwardUrl) {
+                if (forwardUrl && forwardUrl.link && forwardUrl.link.includes('programs')) {
+                    return {
+                        patientUuid: $scope.enrollmentInfo.patient.uuid,
+                        dateEnrolled: $scope.enrollmentInfo.dateEnrolled,
+                        programUuid: $scope.enrollmentInfo.program.uuid,
+                        enrollment: $scope.enrollmentInfo.uuid
+                    };
+                }
+                return {
+                    patientUuid: $scope.selectedPatient.uuid
+                };
             };
 
             spinner.forPromise(init());
