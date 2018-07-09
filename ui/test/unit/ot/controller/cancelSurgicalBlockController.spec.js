@@ -42,7 +42,7 @@ describe("cancelSurgicalBlockController", function () {
     });
 
     var createController = function () {
-        controller('cancelSurgicalBlockPopUpController', {
+        controller('cancelSurgicalBlockController', {
             $scope: scope,
             $state: state,
             $translate: translate,

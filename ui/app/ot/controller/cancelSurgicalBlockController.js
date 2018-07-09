@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.ot').controller('cancelSurgicalBlockPopUpController', [
+angular.module('bahmni.ot').controller('cancelSurgicalBlockController', [
     '$scope', '$state', '$translate', 'ngDialog', 'surgicalAppointmentService', 'messagingService',
     function ($scope, $state, $translate, ngDialog, surgicalAppointmentService, messagingService) {
         var surgicalBlock = $scope.ngDialogData.surgicalBlock;
