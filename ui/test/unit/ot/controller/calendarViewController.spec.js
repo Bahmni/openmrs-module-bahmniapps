@@ -275,7 +275,7 @@ describe("calendarViewController", function () {
         expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining({
             template: "views/cancelSurgicalBlock.html",
             closeByDocument: false,
-            controller: "cancelSurgicalBlockPopUpController",
+            controller: "cancelSurgicalBlockController",
             className: 'ngdialog-theme-default ng-dialog-adt-popUp',
             showClose: true,
             data: {
