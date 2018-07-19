@@ -588,7 +588,7 @@ angular.module('bahmni.clinical')
                         var removableOrder = _.find(activeDrugOrders, {uuid: discontinuedDrug.uuid});
                         if (discontinuedDrug) {
                             removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
-                            removableOrder.dateActivated = discontinuedDrug.dateStopped;
+                            removableOrder.dateActivated = null;
                             removableOrder.scheduledDate = discontinuedDrug.dateStopped;
                             removableOrder.dateStopped = discontinuedDrug.dateStopped;
 
