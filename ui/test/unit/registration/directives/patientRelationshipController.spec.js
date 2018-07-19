@@ -9,6 +9,7 @@ describe('PatientRelationshipController', function () {
     mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
     var rootScope;
     var scope;
+    var $q;
 
     var patientServiceSearchPromise = specUtil.respondWith({data: {results: [{uuid: "123"}]}});
 
@@ -32,6 +33,7 @@ describe('PatientRelationshipController', function () {
     beforeEach(
         inject(function ($controller, $rootScope) {
             scope = $rootScope.$new();
+            $q = Q;
             scope.patient = {newlyAddedRelationships: [], relationships: [], deletedRelationships: []};
             rootScope = $rootScope;
             rootScope.relationshipTypes = [
@@ -49,6 +51,7 @@ describe('PatientRelationshipController', function () {
                 $scope: scope,
                 $rootScope: rootScope,
                 spinner: spinner,
+                $q: $q,
                 patientService: patientServiceMock,
                 providerService: providerServiceMock,
                 appService: mockAppService
@@ -160,6 +163,110 @@ describe('PatientRelationshipController', function () {
             expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("minCharRequireToSearch");
             expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith("possibleRelativeSearchLimit");
             done();
+        });
+    });
+
+    describe("duplicateRelationship", function () {
+        var newRelationship, alreadySavedRelationship;
+        beforeEach(function () {
+            newRelationship = {
+                patientIdentifier: "Doctor",
+                relationshipType: {"uuid": "uuid1"},
+                personB: {"uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896"},
+                endDate: "2015-07-12"
+            };
+
+            alreadySavedRelationship = {
+                p: "GAN200012",
+                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
+                personB: {"uuid": "5da6f388-12f6-406a-9f6a-30e051df788e"}
+            };
+        });
+
+        it("shouldGiveTrueAlreadyExistingRelationship", function () {
+            scope.patient.relationships = [alreadySavedRelationship];
+            scope.patient.newlyAddedRelationships = [newRelationship, newRelationship];
+
+            expect(scope.duplicateRelationship(newRelationship)).toBeTruthy();
+        });
+
+        it("shouldGiveFalseIfRelationshipIsNotAlreadyPresent", function () {
+            scope.patient.relationships = [alreadySavedRelationship];
+            scope.patient.newlyAddedRelationships = [newRelationship];
+
+            expect(scope.duplicateRelationship(alreadySavedRelationship)).toBeFalsy();
+        });
+
+        it("shouldNotConsiderDeletedRelationsDuringDuplicateRelationValidation", function () {
+            scope.patient.relationships = [alreadySavedRelationship, newRelationship];
+            scope.patient.deletedRelationships = [newRelationship];
+            scope.patient.newlyAddedRelationships = [newRelationship];
+
+            expect(scope.duplicateRelationship(newRelationship)).toBeFalsy();
+        });
+
+        it("shouldGiveFalseIfPersonIsPresentInMultipleRelationButRelationTypesAreDifferent", function () {
+            var patientRelationship2 = {
+                patientIdentifier: "Parent",
+                relationshipType: {"uuid": "uuid2"},
+                personB: {"uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896"},
+                endDate: "2015-07-12"
+            };
+
+            scope.patient.newlyAddedRelationships = [newRelationship, patientRelationship2];
+            expect(scope.duplicateRelationship(newRelationship)).toBeFalsy();
+            expect(scope.duplicateRelationship(patientRelationship2)).toBeFalsy();
+        });
+
+        it("shouldGiveFlaseIfRelationTypeIsNotPresentInRelationship", function () {
+            alreadySavedRelationship.relationshipType = {};
+            expect(scope.duplicateRelationship(alreadySavedRelationship)).toBeFalsy();
+        });
+
+        it("shouldGiveFalseIfRelativeIsNotPresentInRelationship", function () {
+            alreadySavedRelationship.personB = {};
+            expect(scope.duplicateRelationship(alreadySavedRelationship)).toBeFalsy();
+        });
+    });
+
+    describe("isInvalidRelation", function () {
+        it("shouldGiveTrueIfTheRelationDoesNotHaveRelativeDetails", function () {
+            expect(scope.isInvalidRelation({})).toBeTruthy();
+            expect(scope.isInvalidRelation({personB:{}})).toBeTruthy();
+        });
+
+        it("shouldGiveTrueForDuplicateRelation", function () {
+            var newRelationship = {
+                patientIdentifier: "Doctor",
+                relationshipType: {"uuid": "uuid1"},
+                personB: {"uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896"},
+                endDate: "2015-07-12"
+            };
+
+            var alreadySavedRelationship = {
+                p: "GAN200012",
+                relationshipType: {"uuid": "8d91a01c-c2cc-11de-8d13-0010c6dffd0f"},
+                personB: {"uuid": "5da6f388-12f6-406a-9f6a-30e051df788e"}
+            };
+
+            scope.patient.relationships = [alreadySavedRelationship];
+            scope.patient.newlyAddedRelationships = [newRelationship, newRelationship];
+
+            expect(scope.isInvalidRelation(newRelationship)).toBeTruthy();
+        });
+
+        it("shouldGiveFalseIfItHasUniqueRelativeDetails", function () {
+            var newRelationship = {
+                patientIdentifier: "Doctor",
+                relationshipType: {"uuid": "uuid1"},
+                personB: {"uuid": "7559e42e-cf8f-410a-9456-b2979c5c3896"},
+                endDate: "2015-07-12"
+            };
+
+
+            scope.patient.newlyAddedRelationships = [newRelationship];
+
+            expect(scope.isInvalidRelation(newRelationship)).toBeFalsy();
         });
     });
 
