@@ -111,5 +111,6 @@
   "CHOOSE_ANSWER_FROM_DROPDOWN_LABEL": "Choose Answer",
   "PROGRAM_DELETE_REASON_PLACEHOLDER": "Reason to delete the program",
   "DELETE_LABEL": "Delete",
-  "EDIT_LABEL": "Edit"
+  "EDIT_LABEL": "Edit",
+  "REGISTRATION_LABEL_RELATIONSHIP_EXISTS": "Given relationship already exists"
 }

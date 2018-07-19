@@ -48,9 +48,10 @@
                                ng-model="newRelationship.patientIdentifier" response-map="getPatientList" source="searchByPatientIdentifierOrName"
                                ng-change="clearPatient(newRelationship)" on-select="patientSelected(newRelationship)"
                                placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME_ID' | translate}}"
-                               ng-class="{'illegalValue': !newRelationship.personB.uuid}" is-invalid="!newRelationship.personB.uuid"/>
+                               ng-class="{'illegalValue': !newRelationship.personB.uuid||duplicateRelationship(newRelationship)}" is-invalid="isInvalidRelation(newRelationship)"/>
 
-                        <input type="text" ng-switch-when="provider" bahmni-autocomplete is-invalid="!newRelationship.personB.uuid"
+                        <input type="text" ng-switch-when="provider" bahmni-autocomplete is-invalid="isInvalidRelation(newRelationship)"
+                               ng-class="{'illegalValue': !newRelationship.personB.uuid || duplicateRelationship(newRelationship)}"
                                validation-message="{{ ::'REGISTRATION_LABEL_PROVIDER_AUTOCOMPLETE_LIST' | translate}}" on-edit="onEdit(newRelationship)"
                                ng-model="newRelationship.providerName" response-map="getProviderDataResults" source="getProviderList(relationship)"
                                ng-change="clearProvider(newRelationship)" on-select="providerSelected(newRelationship)" placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME' | translate}}" />
@@ -64,6 +65,7 @@
                     <span class="asterick showOn-desktop">*</span>
                     <span class="no-person" ng-show="showPersonNotFound(newRelationship)">{{ ::'REGISTRATION_LABEL_PERSON_NOT_FOUND' | translate}}</span>
                     <span ng-show="!showPersonNotFound(newRelationship)">{{newRelationship.content}}</span>
+                    <span class="no-person" ng-show="duplicateRelationship(newRelationship)">{{ ::'REGISTRATION_LABEL_RELATIONSHIP_EXISTS' | translate}}</span>
                 </div>
                 <div class="col col3 form-field">
                     <strong class="till-text">{{ ::'REGISTRATION_LABEL_TILL' | translate}}</strong>
