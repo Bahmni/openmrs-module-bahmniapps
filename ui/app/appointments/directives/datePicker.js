@@ -61,3 +61,4 @@ angular.module('bahmni.appointments')
             controller: controller
         };
     });
+

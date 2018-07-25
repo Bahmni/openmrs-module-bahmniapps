@@ -60,6 +60,7 @@ describe('DatePicker', function () {
         element.triggerHandler(e1);
         var e2 = $.Event("blur");
         element.triggerHandler(e2);
+
         expect(scope.viewDate).toEqual(scope.lastValidDate);
     });
 
