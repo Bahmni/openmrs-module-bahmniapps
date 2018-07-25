@@ -11,23 +11,43 @@ angular.module('bahmni.appointments')
                 $scope.lastValidDate = $scope.viewDate;
             };
 
+            var viewDateChange = function () {
+                if ($scope.lastValidDate !== $scope.viewDate) {
+                    $scope.lastValidDate = $scope.viewDate;
+                    $scope.onChange($scope.viewDate);
+                }
+            };
+
             $scope.goToPrevious = function () {
                 $scope.viewDate = $scope.viewDate && dateUtil.subtractDays($scope.viewDate, 1);
+                viewDateChange();
             };
 
             $scope.goToCurrent = function () {
                 $scope.viewDate = moment().startOf('day').toDate();
+                viewDateChange();
             };
 
             $scope.goToNext = function () {
                 $scope.viewDate = $scope.viewDate && dateUtil.addDays($scope.viewDate, 1);
+                viewDateChange();
             };
 
-            $scope.$watch("viewDate", function (viewDate) {
-                $scope.viewDate = viewDate || $scope.lastValidDate;
-                $scope.lastValidDate = $scope.viewDate;
-                $scope.onChange($scope.viewDate);
-            }, true);
+            $scope.keydownEvent = function () {
+                var keyCode;
+                if (event) {
+                    keyCode = (event.keyCode ? event.keyCode : event.which);
+                }
+                if (keyCode && (keyCode === 46 || keyCode === 8)) { // delete and backspace keys resp.
+                    event.preventDefault();
+                } else if (keyCode && keyCode === 13) { // Enter key
+                    viewDateChange();
+                }
+            };
+
+            $scope.blurEvent = function () {
+                viewDateChange();
+            };
             init();
         };
         return {
