@@ -31,11 +31,16 @@
                         <td ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'"
                             ng-class="{'is-abnormal-bold': row.columns[header.name][0].abnormal , 'obsTableEdit' : header.name === config.groupByConcept && isEditable }">
                             <span ng-if="row.columns[header.name][0].concept.conceptClass == 'Image'">
-                                <span class="has-link fl"
-                                      ng-dialog="dashboard/views/dashboardSections/imageDisplay.html"
-                                      ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit"
-                                      ng-dialog-data="{{ row.columns }}">
-                                     <img ng-src="{{ row.columns[header.name][0].value|thumbnail }}">
+                                <span ng-repeat="data in row.columns[header.name]">
+                                    <span class="has-link fl"  ng-if="!hasPDFAsValue(data)"
+                                          ng-dialog="dashboard/views/dashboardSections/imageDisplay.html"
+                                          ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit"
+                                          ng-dialog-data="{{data}}">
+                                        <img class="observation-image" ng-src="{{ data.value|thumbnail }}">
+                                    </span>
+                                    <a ng-href="/document_images/{{ data.value}}" target="_blank" ng-if="hasPDFAsValue(data)"  >
+                                        <img class="observation-image" ng-src="../../../../bahmni/images/pdfIcon.png">
+                                    </a>
                                 </span>
                             </span>
                             <span class="fl wrap-on-line-break"
