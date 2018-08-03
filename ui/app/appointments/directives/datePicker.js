@@ -8,11 +8,11 @@ angular.module('bahmni.appointments')
                 if (!$scope.viewDate) {
                     $scope.goToCurrent();
                 }
-                $scope.lastValidDate = $scope.viewDate;
+                viewDateChange();
             };
 
             var viewDateChange = function () {
-                if ($scope.lastValidDate !== $scope.viewDate) {
+                if (!$scope.lastValidDate || ($scope.lastValidDate && $scope.viewDate && $scope.lastValidDate.getTime() !== $scope.viewDate.getTime())) {
                     $scope.lastValidDate = $scope.viewDate;
                     $scope.onChange($scope.viewDate);
                 }
@@ -45,7 +45,7 @@ angular.module('bahmni.appointments')
                 }
             };
 
-            $scope.blurEvent = function () {
+            $scope.dateChanged = function () {
                 viewDateChange();
             };
             init();
@@ -61,4 +61,3 @@ angular.module('bahmni.appointments')
             controller: controller
         };
     });
-
