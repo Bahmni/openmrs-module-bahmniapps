@@ -82,15 +82,35 @@
                     </select>
                 </p>
                 <p>
-                    <label for="provider">
-                        {{'APPOINTMENT_PROVIDER' | translate}}
+                    <label for="eleNewProvider">
+                        {{'SELECT_APPOINTMENT_PROVIDER' | translate}}
                     </label>
-                    <select id="provider" ng-model="appointment.provider"
+                    <select id="eleNewProvider" ng-model="appointment.newProvider"
                             ng-options="provider.person.display for provider in appointmentCreateConfig.providers | orderBy:'person.display'"
-                            ng-disabled="isEditMode() && !isEditAllowed()">
+                            ng-disabled="isEditMode() && !isEditAllowed()" ng-change="addNewProvider()">
                         <option value="">{{ ::'PLACEHOLDER_CREATE_PROVIDER' | translate}}</option>
                     </select>
                 </p>
+
+                <div>
+                    <p>
+                        <label>
+                            {{'INVITED_PROVIDERS' | translate}}
+                        </label>
+                    </p>
+                    <div>
+                        <!--<input type="button" ng-repeat="appProvider in appointment.providers" value="{{ appProvider.name || appProvider.person.display }}"-->
+                        <!--ng-click="removeProviderFromAttendees(appProvider)"/>-->
+                        <ul>
+                            <li ng-repeat="appProvider in appointment.providers" ng-show="appProvider.response != 'CANCELLED'">
+                                <label>{{ appProvider.name || appProvider.person.display }}</label>
+                                <input type="button" value="{{'APPOINTMENT_PROVIDER_REMOVE_ACTION' | translate }}" ng-click="removeProviderFromAttendees(appProvider)"
+                                 ng-disabled="isEditMode() && !isEditAllowed()"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 <p>
                     <label for="date">
                         {{'APPOINTMENT_DATE' | translate}}<sup class="asterick">*</sup>
