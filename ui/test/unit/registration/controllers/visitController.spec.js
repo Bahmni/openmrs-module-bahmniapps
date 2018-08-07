@@ -5,6 +5,9 @@ describe('VisitController', function () {
         getEncounterPromise, getPatientPromise, stateParams, patientMapper, q, state, appService, appDescriptor,
         sessionService, messagingService, rootScope, visitService, visitController, location, window, bahmniCookieStore, auditLogService, messageParams, formService;
 
+    var compile, provide;
+    var html = '<div class="submit-btn-container"><button type="button" class="cancel" tabindex="-1" ng-click="cancelFunction()"></button><div class="right"><button ng-click="back()"></button><button single-click="clickFunction()" class="confirm"></button></div></div>';
+
     var stubAllPromise = function () {
         return {
             then: function () {
@@ -83,13 +86,20 @@ describe('VisitController', function () {
         "requiredPrivilege": "Edit Visits"
     }];
 
+    beforeEach(module('bahmni.common.uiHelper', function ($provide) {
+        provide = $provide;
+    }));
+
     beforeEach(module('bahmni.registration'));
     beforeEach(module('stateMock'));
     beforeEach(module('pascalprecht.translate'));
-    beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', '$state', '$translate', function ($injector, timeout, $q, $rootScope, $state) {
+    beforeEach(inject(['$compile', '$injector', '$timeout', '$q', '$rootScope', '$state', '$translate', function ($compile, $injector, timeout, $q, $rootScope, $state) {
         q = $q;
         location = jasmine.createSpyObj('$location', ['url']);
         rootScope = $rootScope;
+        compile = $compile;
+        provide.value('$rootScope', $rootScope);
+
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         stateParams = {patientUuid: '21308498-2502-4495-b604-7b704a55522d'};
         patient = {
@@ -359,4 +369,53 @@ describe('VisitController', function () {
        expect(scope.isFormTemplate({formUuid :'someUuid' })).toEqual('someUuid');
        expect(scope.isFormTemplate({name :'someName' })).toEqual(undefined);
     });
+
+    it("should not call save twice", function () {
+        var element = angular.element("<button single-click='clickFunction()'></button>");
+        var compiled = compile(element)(rootScope);
+        rootScope.$digest();
+
+        var deferred = q.defer();
+        rootScope.clickFunction = jasmine.createSpy('clickFunction');
+        rootScope.clickFunction.and.returnValue(deferred.promise);
+
+        expect(element).not.toBeUndefined();
+
+        compiled.triggerHandler('click');
+        expect(rootScope.clickFunction.calls.count()).toEqual(1);
+
+        compiled.triggerHandler('click');
+        deferred.resolve();
+        rootScope.$apply();
+        expect(rootScope.clickFunction.calls.count()).toEqual(1);
+
+        compiled.triggerHandler('click');
+        expect(rootScope.clickFunction.calls.count()).toEqual(2);
+    });
+
+    it("should not call save twice for a visit", function () {
+        var ele = angular.element(html);
+        var element = $(ele).find(".confirm");
+        var compiled = compile(element)(rootScope);
+        rootScope.$digest();
+
+        var deferred = q.defer();
+        rootScope.clickFunction = jasmine.createSpy('clickFunction');
+        rootScope.clickFunction.and.returnValue(deferred.promise);
+
+        expect(element).not.toBeUndefined();
+        expect(element.hasClass('confirm')).toBeTruthy();
+
+        compiled.triggerHandler('click');
+        expect(rootScope.clickFunction.calls.count()).toEqual(1);
+
+        compiled.triggerHandler('click');
+        deferred.resolve();
+        rootScope.$apply();
+        expect(rootScope.clickFunction.calls.count()).toEqual(1);
+
+        compiled.triggerHandler('click');
+        expect(rootScope.clickFunction.calls.count()).toEqual(2);
+    });
+
 });
