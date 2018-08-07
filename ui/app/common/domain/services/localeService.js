@@ -54,15 +54,4 @@ angular.module('bahmni.common.domain')
                 }
             });
         };
-
-        this.setLocale = function (locale) {
-            return $http.post(Bahmni.Common.Constants.RESTWS_V1 + '/session', {
-                method: "POST",
-                locale: locale,
-                withCredentials: true,
-                headers: {
-                    Accept: 'text/plain'
-                }
-            });
-        };
     }]);
