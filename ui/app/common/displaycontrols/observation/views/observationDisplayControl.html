@@ -24,7 +24,7 @@
                         </span>
                     </span>
 
-                    <ul bm-show="obsGroup.isOpen" ng-if="::print" class="print-observations visible-print">
+                    <ul ng-if="::print" class="print-observations visible-print">
                         <li ng-repeat="observation in ::obsGroup.value">
                             <ul>
                                 <show-observation show-details-button="::config.showDetailsButton" patient="::patient"
@@ -33,7 +33,7 @@
                             </ul>
                         </li>
                     </ul>
-                    <ul bm-show="obsGroup.isOpen" ng-if="::!print" class="print-observations hidden-print">
+                    <ul ng-if="obsGroup.isOpen" class="print-observations hidden-print">
                         <show-observation show-details-button="::config.showDetailsButton" patient="::patient"
                                           observation="::observation" ng-repeat="observation in ::obsGroup.value"
                                           level="2"></show-observation>
