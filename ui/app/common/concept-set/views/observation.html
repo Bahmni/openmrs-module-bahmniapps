@@ -218,7 +218,36 @@
                                         ng-blur="handleUpdate()"
                                         allow-future-dates="(observation.conceptUIConfig && observation.conceptUIConfig.allowFutureDates)"
                                         show-time="::true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
+
                     </div>
+
+                    <div data-ng-controller="nepaliDateFieldObservationControler" ng-switch-when="nepaliDate">
+                        <div class="field-value">
+                            <input class="nepali-datepicker" type="text" max="{{::npToday}}" ng-model="observation.nepaliDate" 
+                                ng-change="handleNepaliDateUpdate(observation); observation.handleUpdate();" observation="observation"
+                                ng-required="::dobMandatory" 
+                                npdatepicker>
+                            <input id="{{::observation.uniqueId}}" obs-constraints obs="::observation"
+                                ng-if="!observation.isNumeric() && !observation._isDateTimeDataType() && !observation.conceptUIConfig.displayMonthAndYear" ng-disabled="observation.disabled"
+                                ng-model="observation.value" ng-change="handleUpdate()"
+                                ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
+                                focus-me="::observation.isFocused" tabindex="1"/>
+                        </div>
+                    </div>
+
+                    <div ng-switch-when="nepaliDateTime">
+                            <div class="field-value">
+                                <input class="nepali-datepicker" type="text" max="{{::npToday}}" ng-model="observation.value" 
+                                ng-change=""  
+                                ng-required="::dobMandatory" 
+                                npdatepicker>
+                            </div>
+                            <datetimepicker model="observation.value"
+                                        observation="::observation"
+                                        ng-blur="handleUpdate()"
+                                        allow-future-dates="(observation.conceptUIConfig && observation.conceptUIConfig.allowFutureDates)"
+                                        show-time="::true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
+                        </div>
 
                     <div ng-switch-when="grid">
                         <div ng-repeat="member in ::observation.groupMembers track by $index" class="grid-row"

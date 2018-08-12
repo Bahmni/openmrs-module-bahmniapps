@@ -377,6 +377,12 @@
                 }
             }
             return this.value === "Invalid Datetime";
+        },
+
+        handleNepaliDateUpdate: function(){
+            console.log(this.primaryObs);
+            console.log("hehehehehehehhehehehe")
+            //TODO conversion
         }
 
     };
