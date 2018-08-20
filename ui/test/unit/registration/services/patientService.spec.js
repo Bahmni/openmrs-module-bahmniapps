@@ -1,10 +1,7 @@
 'use strict';
 
 describe('Patient resource', function () {
-    var patientService;
-    var patient;
-    var sessionService;
-
+    var patientService, patient, sessionService, patientServiceStrategy;
 
     var openmrsUrl = "http://blah";
     var patientConfiguration, identifiersMock, identifierDetails;
@@ -35,7 +32,6 @@ describe('Patient resource', function () {
             }
         })
     };
-
 
     beforeEach(function () {
         module('bahmni.common.models');
@@ -98,14 +94,14 @@ describe('Patient resource', function () {
             }
         ]);
 
-        inject(['patientService', '$rootScope', 'patient', '$q', function (patientServiceInjectted, $rootScope, patientFactory) {
+        inject(['patientService', '$rootScope', 'patient', 'patientServiceStrategy', function (patientServiceInjected, $rootScope, patientFactory, patientServiceStrategyInjected) {
             patient = patientFactory.create();
-            patientService = patientServiceInjectted;
+            patientService = patientServiceInjected;
             $rootScope.patientConfiguration = patientConfiguration;
+            patientServiceStrategy = patientServiceStrategyInjected;
         }]);
 
     });
-
 
     it('Should call url for search', function () {
         var query = 'john';
@@ -177,5 +173,64 @@ describe('Patient resource', function () {
 
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe("http://blah/ws/rest/v1/patientprofile/someUuid");
-    })
+    });
+
+    describe("similarSearch", function() {
+
+        it("Should call url for similar search", function () {
+            var name = "john";
+            var gender = "Male";
+
+            var results = patientService.searchSimilar(name, gender);
+
+            expect(mockHttp.get).toHaveBeenCalled();
+            expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/patient/similar");
+            expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe("john");
+            expect(mockHttp.get.calls.mostRecent().args[1].params.gender).toBe("Male");
+            expect(results.$$state.value.name).toBe("john");
+
+        });
+
+        it("should add the login location uuid to the config when triggering the search", function () {
+            var name = "john";
+            var gender = "Male";
+            var birthdate = "1963-12-15";
+            var expectedConfig = {
+                params: {
+                    q: "john",
+                    gender: "Male",
+                    birthdate: "1963-12-15",
+                    loginLocationUuid: "some uuid"
+                },
+                withCredentials : true
+            }
+            sessionService.getLoginLocationUuid.and.returnValue("some uuid");
+            spyOn(patientServiceStrategy, 'search');
+
+            patientService.searchSimilar(name, gender, birthdate);
+
+            expect(patientServiceStrategy.search).toHaveBeenCalledWith(expectedConfig, "similar");
+        });
+
+        it("should format the birthdate", function () {
+            var name = "john";
+            var gender = "Male";
+            var birthdate = moment("1963-12-15");
+            var expectedConfig = {
+                params: {
+                    q: "john",
+                    gender: "Male",
+                    birthdate: "1963-12-15",
+                    loginLocationUuid: "some uuid"
+                },
+                withCredentials : true
+            }
+            sessionService.getLoginLocationUuid.and.returnValue("some uuid");
+            spyOn(patientServiceStrategy, 'search');
+
+            patientService.searchSimilar(name, gender, birthdate);
+
+            expect(patientServiceStrategy.search).toHaveBeenCalledWith(expectedConfig, "similar");
+        });
+    });
 });
