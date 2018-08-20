@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner', '$location', 'ngDialog', '$window', '$state',
-        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner, $location, ngDialog, $window, $state) {
+    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'patientService', 'spinner', '$location', 'ngDialog', '$window', '$state',
+        function ($scope, $rootScope, $http, patientAttributeService, appService, patientService, spinner, $location, ngDialog, $window, $state) {
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             var personAttributes = [];
@@ -17,6 +17,8 @@ angular.module('bahmni.registration')
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
+
+            $scope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.result.action");
 
             var dontSaveButtonClicked = false;
 
@@ -188,5 +190,46 @@ angular.module('bahmni.registration')
             $scope.disableIsDead = function () {
                 return ($scope.patient.causeOfDeath || $scope.patient.deathDate) && $scope.patient.dead;
             };
-        }]);
 
+            var assembleSearchableName = function (givenName, middleName, familyName) {
+                return _.compact([givenName, middleName, familyName]).join(" ");
+            };
+
+            $scope.searchSimilarPatients = function () {
+                return patientService.searchSimilar(
+                    assembleSearchableName($scope.patient.givenName, $scope.patient.middleName, $scope.patient.familyName),
+                    $scope.patient.gender, $scope.patient.birthdate)
+                .then(function (response) {
+                    if (response.pageOfResults.length === 0) {
+                        $scope.hasSimilarSearchResults = false;
+                    } else {
+                        $scope.hasSimilarSearchResults = true;
+                        $scope.results = [];
+                        response.pageOfResults.forEach(function (patient) {
+                            var data = {
+                                uuid: patient.uuid,
+                                identifier: patient.identifier,
+                                givenName: patient.givenName,
+                                middleName: patient.middleName,
+                                familyName: patient.familyName,
+                                gender: patient.gender,
+                                age: patient.age,
+                                birthdate: Bahmni.Common.Util.DateUtil.formatDateWithoutTime(patient.birthDate),
+                                image: Bahmni.Common.Constants.patientImageUrlByPatientUuid + patient.uuid};
+                            $scope.results.push(data);
+                        });
+                    }
+                    return response;
+                });
+            };
+
+            $scope.forPatient = function (patient) {
+                $scope.selectedPatient = patient;
+                return $scope;
+            };
+
+            $scope.doExtensionAction = function (extension) {
+                var forwardTo = appService.getAppDescriptor().formatUrl(extension.url, { 'patientUuid': $scope.selectedPatient.uuid });
+                $location.url(forwardTo);
+            };
+        }]);

@@ -4,7 +4,7 @@
     </div>
     <div class="field-value">
         <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{::today}}"
-               ng-change="patient.calculateAge()" ng-blur="handleUpdate('birthdate')" ng-required="::dobMandatory">
+               ng-change="patient.calculateAge()" ng-blur="handleUpdate('birthdate'); searchSimilarPatients()" ng-required="::dobMandatory">
     </div>
     <div class="showOn-desktop-registration">
         <div class="field-value">
