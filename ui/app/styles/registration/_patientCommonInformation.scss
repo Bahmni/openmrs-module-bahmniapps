@@ -138,6 +138,28 @@ section.form-field-inline{
       }
     }
   }
+  .similar-patient-suggestion{
+    color: $bahmniSecondaryColor;
+    border-bottom: 1px $lightGray solid;
+    margin-right: 20em;
+    margin-left: 5em;
+
+    .white-bg{
+        background: white;
+    }
+
+    .similar-patient-table{
+      table, tr, td, th{
+        border: none;
+        background: none;
+        color: $bahmniSecondaryColor;
+      }
+
+      img{
+        max-width: 120px;
+      }
+    }
+  }
 }
 
 .age-wrapper{

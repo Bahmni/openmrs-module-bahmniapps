@@ -2,9 +2,10 @@
 
 describe('PatientCommonController', function () {
 
-    var $aController, $httpBackend, scope, appService, rootScope, patientAttributeService;
+    var $aController, $httpBackend, scope, appService, appDescriptor, patientService, rootScope, patientAttributeService;
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var $compile;
+    var searchPromise;
 
     beforeEach(module('bahmni.registration', 'ngDialog'));
 
@@ -22,9 +23,11 @@ describe('PatientCommonController', function () {
         })
     );
 
-
     beforeEach(function () {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        patientService = jasmine.createSpyObj('patientService', ['searchSimilar']);
+        searchPromise = specUtil.createServicePromise('similarSearch');
+        patientService.searchSimilar.and.returnValue(searchPromise);
 
         rootScope.genderMap = {};
 
@@ -34,15 +37,18 @@ describe('PatientCommonController', function () {
             return {
                 getConfigValue: function (config) {
                     return true;
+                },
+                getExtensions: function (path) {
+                    return [];
                 }
-
             };
         };
 
         $aController('PatientCommonController', {
             $scope: scope,
             $rootScope: rootScope,
-            appService: appService
+            appService: appService,
+            patientService: patientService
         });
 
         $httpBackend.whenGET(Bahmni.Common.Constants.globalPropertyUrl + '?property=concept.reasonForDeath').respond({});
@@ -112,6 +118,9 @@ describe('PatientCommonController', function () {
                     if (config == "showBirthTime") {
                         return false;
                     }
+                },
+                getExtensions: function (path) {
+                    return [];
                 }
             };
         };
@@ -122,7 +131,8 @@ describe('PatientCommonController', function () {
             http: $httpBackend,
             patientAttributeService: patientAttributeService,
             spinner: spinner,
-            appService: appService
+            appService: appService,
+            patientService: patientService
         });
         expect(scope.showBirthTime).toBe(false);
     });
@@ -130,7 +140,6 @@ describe('PatientCommonController', function () {
     describe("show or hide sections", function () {
         var sections;
         var createController = function () {
-            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
 
             rootScope.genderMap = {};
 
@@ -196,19 +205,11 @@ describe('PatientCommonController', function () {
                 }
             };
 
-            appService.getAppDescriptor = function () {
-                return {
-                    getConfigValue: function (config) {
-                        return true;
-                    }
-
-                };
-            };
-
             $aController('PatientCommonController', {
                 $scope: scope,
                 $rootScope: rootScope,
-                appService: appService
+                appService: appService,
+                patientService: patientService
             });
 
             $httpBackend.whenGET(Bahmni.Common.Constants.globalPropertyUrl + '?property=concept.reasonForDeath').respond({});
@@ -331,7 +332,59 @@ describe('PatientCommonController', function () {
             scope.handleUpdate('age');
             expect(sections.additionalPatientInformation.canShow).toBeTruthy();
         })
+
     })
 
-})
+    describe("search for similar patients", function() {
 
+        var responseContent = {totalCount:null, pageOfResults:[ {uuid:"c5fe8240-8af9-41ce-a319-980ab921be6d",
+                                                           birthDate:"1990-05-12", givenName:"John", middleName:"Peter", familyName:"Foo", gender:"O",
+                                                            dateCreated:1527070797000, hasBeenAdmitted:false, age:"28", identifier: "GAN203006"},
+                                                            {uuid:"c5fe8240-8af9-41ce-a319-980ab921be6d",
+                                                             birthDate:"1990-05-12", givenName:"Sue", middleName:"Maria", familyName:"Smith", gender:"F",
+                                                             dateCreated:1527070797000, hasBeenAdmitted:false, age:"46"}]};
+
+        it("should call search for similar patients with any given name parts and gender from the input fields", function() {
+            scope.patient = {
+                "givenName": "john",
+                "middleName": "peter",
+                "familyName": "bar",
+                "gender": "Male",
+                "birthdate": "1963-05-18"
+             };
+
+            scope.searchSimilarPatients();
+
+            expect(patientService.searchSimilar).toHaveBeenCalledWith("john peter bar", "Male", "1963-05-18");
+        });
+
+        it("should show and hide the similar search section depending on returned results", function () {
+            scope.searchSimilarPatients();
+            searchPromise.callThenCallBack(responseContent);
+
+            expect(scope.hasSimilarSearchResults).toBeTruthy();
+
+            scope.searchSimilarPatients();
+            searchPromise.callThenCallBack({totalCount:null, pageOfResults:[]});
+
+            expect(scope.hasSimilarSearchResults).toBeFalsy();
+        });
+
+        it("should map information from the search result", function () {
+            scope.searchSimilarPatients();
+            searchPromise.callThenCallBack(responseContent);
+
+            expect(scope.results[0].uuid).toBe("c5fe8240-8af9-41ce-a319-980ab921be6d");
+            expect(scope.results[0].identifier).toBe("GAN203006");
+            expect(scope.results[0].givenName).toBe("John");
+            expect(scope.results[0].middleName).toBe("Peter");
+            expect(scope.results[0].familyName).toBe("Foo");
+            expect(scope.results[0].gender).toBe("O");
+            expect(scope.results[0].age).toBe("28");
+            expect(scope.results[0].birthdate).toBe("12 May 90");
+            expect(scope.results[0].image).toBe(Bahmni.Common.Constants.patientImageUrlByPatientUuid + "c5fe8240-8af9-41ce-a319-980ab921be6d");
+            expect(scope.results[1].givenName).toBe("Sue");
+        });
+    });
+
+});
