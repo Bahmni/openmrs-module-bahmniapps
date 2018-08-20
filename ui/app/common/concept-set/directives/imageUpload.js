@@ -14,6 +14,7 @@ angular.module('bahmni.common.conceptSet')
                             scope.url = response.data.url;
                             element.val(null);
                             if (fileType !== "video") {
+                                scope.observation.conceptUIConfig.required = false;
                                 cloneNew(scope.observation, scope.rootObservation);
                             }
                         }));

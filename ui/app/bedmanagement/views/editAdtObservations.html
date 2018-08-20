@@ -1,0 +1,10 @@
+<div class="patient-attributes clearfix">
+    <span class="patient-attributes clearfix" ng-if="promiseResolved">
+        <concept-set concept-set-name="conceptSetName" observations="observations"></concept-set>
+        <button class="patient-details-edit" ng-hide="editMode || onBedManagement" ng-click="edit()" show-if-privilege="{{assignBedsPrivilege}}">{{'EDIT_KEY' | translate}}</button>
+    </span>
+    <div class="clearfix action-button">
+        <button ng-click="save()" ng-show="editMode">{{'SAVE_KEY' | translate}}</button>
+        <button ng-click="cancel()" ng-show="editMode">{{'CANCEL_KEY' | translate}}</button>
+    </div>
+</div>

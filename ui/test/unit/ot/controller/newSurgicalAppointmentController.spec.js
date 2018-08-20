@@ -141,7 +141,7 @@ describe("newSurgicalAppointmentController", function () {
                     surgicalAppointmentAttributeType: {
                         uuid: '25ef8484-3a1f-11e7-83f8-0800274a5156',
                         name: 'procedure'
-                    }
+                    }, value: ""
                 },
                 cleaningTime: {
                     surgicalAppointmentAttributeType: {
@@ -165,37 +165,37 @@ describe("newSurgicalAppointmentController", function () {
                     surgicalAppointmentAttributeType: {
                         uuid: '25efd013-3a1f-11e7-83f8-0800274a5156',
                         name: 'otherSurgeon'
-                    }
+                    }, value: ""
                 },
                 surgicalAssistant: {
                     surgicalAppointmentAttributeType: {
                         uuid: '25efdf1b-3a1f-11e7-83f8-0800274a5156',
                         name: 'surgicalAssistant'
-                    }
+                    }, value: ""
                 },
                 anaesthetist: {
                     surgicalAppointmentAttributeType: {
                         uuid: '25efec33-3a1f-11e7-83f8-0800274a5156',
                         name: 'anaesthetist'
-                    }
+                    }, value: ""
                 },
                 scrubNurse: {
                     surgicalAppointmentAttributeType: {
                         uuid: '25eff89a-3a1f-11e7-83f8-0800274a5156',
                         name: 'scrubNurse'
-                    }
+                    }, value: ""
                 },
                 circulatingNurse: {
                     surgicalAppointmentAttributeType: {
                         uuid: '25f0060e-3a1f-11e7-83f8-0800274a5156',
                         name: 'circulatingNurse'
-                    }
+                    }, value: ""
                 },
                 notes: {
                     surgicalAppointmentAttributeType: {
                         uuid: '25f0060e-3a1f-11e7-83f8-0800274a5156',
                         name: 'notes'
-                    }
+                    }, value: ""
                 }
             }
         };
@@ -212,9 +212,25 @@ describe("newSurgicalAppointmentController", function () {
     });
 
     it("should close the dialog when clicked on close", function () {
+        var ngDialogData = {
+            id: 1,
+            sortWeight: 0,
+            notes: "need more assistants",
+            patient: {
+                uuid: "patientUuid",
+                display: "firstName lastName",
+                person: {given_name: "firstName", family_name: "lastName"}
+            },
+            isBeingEdited: true,
+            isDirty: true
+        };
+        scope.ngDialogData = ngDialogData;
+        scope.surgicalForm = {surgicalAppointments: [ngDialogData]}
         createController();
         scope.close();
         expect(ngDialog.close).toHaveBeenCalled();
+        expect(ngDialog.isBeingEdited).toBe(undefined);
+        expect(scope.surgicalForm.surgicalAppointments[0].isBeingEdited).toBe(undefined);
     });
 
     it("should initialize scope variables for appointment with data from the dialogData in edit appointment mode", function () {
@@ -250,7 +266,7 @@ describe("newSurgicalAppointmentController", function () {
                 surgicalAppointmentAttributeType: {
                     uuid: '25ef8484-3a1f-11e7-83f8-0800274a5156',
                     name: 'procedure'
-                }
+                }, value: ""
             },
             cleaningTime: {
                 surgicalAppointmentAttributeType: {
@@ -274,37 +290,37 @@ describe("newSurgicalAppointmentController", function () {
                 surgicalAppointmentAttributeType: {
                     uuid: '25efd013-3a1f-11e7-83f8-0800274a5156',
                     name: 'otherSurgeon'
-                }
+                }, value: ""
             },
             surgicalAssistant: {
                 surgicalAppointmentAttributeType: {
                     uuid: '25efdf1b-3a1f-11e7-83f8-0800274a5156',
                     name: 'surgicalAssistant'
-                }
+                }, value: ""
             },
             anaesthetist: {
                 surgicalAppointmentAttributeType: {
                     uuid: '25efec33-3a1f-11e7-83f8-0800274a5156',
                     name: 'anaesthetist'
-                }
+                }, value: ""
             },
             scrubNurse: {
                 surgicalAppointmentAttributeType: {
                     uuid: '25eff89a-3a1f-11e7-83f8-0800274a5156',
                     name: 'scrubNurse'
-                }
+                }, value: ""
             },
             circulatingNurse: {
                 surgicalAppointmentAttributeType: {
                     uuid: '25f0060e-3a1f-11e7-83f8-0800274a5156',
                     name: 'circulatingNurse'
-                }
+                }, value: ""
             },
             notes: {
                 surgicalAppointmentAttributeType: {
                     uuid: '25f0060e-3a1f-11e7-83f8-0800274a5156',
                     name: 'notes'
-                }
+                }, value: ""
             }
         };
         scope.ngDialogData = ngDialogData;
@@ -349,7 +365,7 @@ describe("newSurgicalAppointmentController", function () {
         expect(scope.surgeons).toEqual([{name: "surgeon1", uuid: "surgeon1Uuid"},{name: "surgeon2", uuid: "surgeon2Uuid"}]);
     });
 
-    it("should open the patient dashboard when user click on patient name in edit mode", function () {
+    it("should open the patient program dashboard when user click on patient name in edit mode", function () {
         getAppDescriptor.getConfigValue.and.returnValue({
             link : "/bahmni/clinical/#/programs/patient/{{patientUuid}}/dashboard?dateEnrolled={{dateEnrolled}}&programUuid={{programUuid}}&enrollment={{enrollment}}&currentTab=DASHBOARD_TAB_GENERAL_KEY"
         });
@@ -364,6 +380,20 @@ describe("newSurgicalAppointmentController", function () {
         expect(scope.enrollmentInfo).toBe(enrollmentInfo);
         expect(getAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientDashboardUrl');
         expect(getAppDescriptor.formatUrl).toHaveBeenCalledWith("/bahmni/clinical/#/programs/patient/{{patientUuid}}/dashboard?dateEnrolled={{dateEnrolled}}&programUuid={{programUuid}}&enrollment={{enrollment}}&currentTab=DASHBOARD_TAB_GENERAL_KEY", jasmine.any(Object));
+        expect(_window.open).toHaveBeenCalledWith("formattedUrl");
+    });
+
+    it("should open the patient clinical dashboard when user click on patient name in edit mode", function () {
+        getAppDescriptor.getConfigValue.and.returnValue({
+            link : "/bahmni/clinical/#/default/patient/{{patientUuid}}/dashboard"
+        });
+        getAppDescriptor.formatUrl.and.returnValue("formattedUrl");
+        scope.patient = { uuid: "patientUuid", display: "patient-GAN2020" };
+        scope.ngDialogData = { id: "someId", patient: scope.patient };
+        createController();
+        scope.goToForwardUrl();
+        expect(getAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientDashboardUrl');
+        expect(getAppDescriptor.formatUrl).toHaveBeenCalledWith("/bahmni/clinical/#/default/patient/{{patientUuid}}/dashboard", jasmine.any(Object));
         expect(_window.open).toHaveBeenCalledWith("formattedUrl");
     });
 
@@ -412,7 +442,7 @@ describe("newSurgicalAppointmentController", function () {
                     surgicalAppointmentAttributeType: {
                         uuid: '25ef8484-3a1f-11e7-83f8-0800274a5156',
                         name: 'procedure'
-                    }
+                    }, value: ""
                 },
                 cleaningTime: {
                     surgicalAppointmentAttributeType: {
@@ -436,37 +466,37 @@ describe("newSurgicalAppointmentController", function () {
                     surgicalAppointmentAttributeType: {
                         uuid: '25efd013-3a1f-11e7-83f8-0800274a5156',
                         name: 'otherSurgeon'
-                    }
+                    }, value: ""
                 },
                 surgicalAssistant: {
                     surgicalAppointmentAttributeType: {
                         uuid: '25efdf1b-3a1f-11e7-83f8-0800274a5156',
                         name: 'surgicalAssistant'
-                    }
+                    }, value: ""
                 },
                 anaesthetist: {
                     surgicalAppointmentAttributeType: {
                         uuid: '25efec33-3a1f-11e7-83f8-0800274a5156',
                         name: 'anaesthetist'
-                    }
+                    }, value: ""
                 },
                 scrubNurse: {
                     surgicalAppointmentAttributeType: {
                         uuid: '25eff89a-3a1f-11e7-83f8-0800274a5156',
                         name: 'scrubNurse'
-                    }
+                    }, value: ""
                 },
                 circulatingNurse: {
                     surgicalAppointmentAttributeType: {
                         uuid: '25f0060e-3a1f-11e7-83f8-0800274a5156',
                         name: 'circulatingNurse'
-                    }
+                    }, value: ""
                 },
                 notes: {
                     surgicalAppointmentAttributeType: {
                         uuid: '25f0060e-3a1f-11e7-83f8-0800274a5156',
                         name: 'notes'
-                    }
+                    }, value: ""
                 }
             }
         };
@@ -508,4 +538,13 @@ describe("newSurgicalAppointmentController", function () {
         expect(scope.attributes.estTimeMinutes.value).toEqual(15);
     });
 
+    it("should remove isBeingEdit field for appointment which is selected when user clicks on cancel the changes", function () {
+        createController();
+        var appointment =  {sortWeight: 0, notes: "need more assistants", patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}};
+        scope.ngDialogData = { sortWeight: 0, notes: "need more assistants", patient: {uuid:"patientUuid", display: "firstName lastName", person: {given_name: "firstName", family_name: "lastName"}}, isBeingEdited: true};
+        scope.surgicalForm  = {surgicalAppointments: [scope.ngDialogData, appointment]};
+        scope.close();
+        expect(scope.surgicalForm.surgicalAppointments[0].isBeingEdited).toBeUndefined();
+        expect(scope.ngDialogData.isBeingEdited).toBeUndefined();
+    });
 });

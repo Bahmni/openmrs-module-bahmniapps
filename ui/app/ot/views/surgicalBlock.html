@@ -66,7 +66,7 @@
                     </tr>
                     </thead>
                     <tbody dnd-list="surgicalForm.surgicalAppointments">
-                    <tr ng-repeat="surgicalAppointment in surgicalForm.surgicalAppointments  track by $index"
+                    <tr ng-repeat="surgicalAppointment in surgicalForm.surgicalAppointments"
                         dnd-draggable="surgicalAppointment"
                         dnd-moved="surgicalForm.surgicalAppointments.splice($index, 1)"
                         dnd-effect-allowed="move"

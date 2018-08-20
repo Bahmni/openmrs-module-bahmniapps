@@ -226,6 +226,22 @@ angular.module('bahmni.common.conceptSet')
                                         });
                                     }
                                 });
+                                _.each(conditions.show, function (subConditionConceptName) {
+                                    var conditionFn = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[subConditionConceptName];
+                                    if (conditionFn) {
+                                        runFormConditionForObs(true, formName, conditionFn, subConditionConceptName, flattenedObs);
+                                    }
+                                });
+                                _.each(conditions.hide, function (subConditionConceptName) {
+                                    var conditionFn = Bahmni.ConceptSet.FormConditions.rules && Bahmni.ConceptSet.FormConditions.rules[subConditionConceptName];
+                                    if (conditionFn) {
+                                        _.each(flattenedObs, function (obs) {
+                                            if (obs.concept.name == subConditionConceptName) {
+                                                runFormConditionForObs(false, formName, conditionFn, subConditionConceptName, flattenedObs);
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         }
                     });

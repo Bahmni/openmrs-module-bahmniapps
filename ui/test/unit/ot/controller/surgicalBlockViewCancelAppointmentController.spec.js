@@ -51,7 +51,7 @@ describe("surgical block view cancel appointment controller", function () {
         scope.ngDialogData.surgicalAppointment.id = 30;
         expect(scope.ngDialogData.surgicalAppointment.sortWeight).toBe(null);
         expect(scope.ngDialogData.surgicalAppointment.status).toBe("CANCELLED");
-        expect(scope.ngDialogData.surgicalAppointment.isBeingEdited).toBe(null);
+        expect(scope.ngDialogData.surgicalAppointment.isBeingEdited).toBe(undefined);
         expect(scope.ngDialogData.surgicalAppointment.notes).toBe("notes");
         expect(scope.ngDialogData.updateAvailableBlockDurationFn).toHaveBeenCalled();
         expect(ngDialog.close).toHaveBeenCalled();
@@ -64,7 +64,7 @@ describe("surgical block view cancel appointment controller", function () {
         scope.confirmCancelAppointment();
         expect(scope.ngDialogData.surgicalAppointment.sortWeight).toBe(null);
         expect(scope.ngDialogData.surgicalAppointment.status).toBe("CANCELLED");
-        expect(scope.ngDialogData.surgicalAppointment.isBeingEdited).toBe(null);
+        expect(scope.ngDialogData.surgicalAppointment.isBeingEdited).toBe(undefined);
         expect(scope.ngDialogData.surgicalAppointment.notes).toBe("notes");
         expect(scope.ngDialogData.surgicalForm.surgicalAppointments.length).toBe(1);
         expect(scope.ngDialogData.updateAvailableBlockDurationFn).toHaveBeenCalled();
@@ -76,6 +76,13 @@ describe("surgical block view cancel appointment controller", function () {
         createController();
         scope.closeDialog();
         expect(ngDialog.close).toHaveBeenCalled();
-        expect(scope.ngDialogData.surgicalAppointment.isBeingEdited).toBe(null);
+        expect(scope.ngDialogData.surgicalAppointment.isBeingEdited).toBe(undefined);
+    });
+
+    it("should delete isBeingEdited field while postpone/cancel the appointment", function () {
+        scope.ngDialogData.surgicalAppointment.patient =  {display: "EG100649M - Albert Hassan"};
+       createController();
+       scope.confirmCancelAppointment();
+       expect(scope.ngDialogData.surgicalAppointment.isBeingEdited).toBeUndefined();
     });
 });

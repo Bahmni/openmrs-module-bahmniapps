@@ -6,7 +6,7 @@ describe('loginController', function () {
     beforeEach(module('bahmni.home'));
 
     beforeEach(function () {
-        localeService = jasmine.createSpyObj('localeService', ['getLoginText', 'allowedLocalesList', 'serverDateTime', 'getLocalesLangs', 'setLocale']);
+        localeService = jasmine.createSpyObj('localeService', ['getLoginText', 'allowedLocalesList', 'serverDateTime', 'getLocalesLangs']);
         sessionService = jasmine.createSpyObj('sessionService', ['loginUser', 'loadCredentials']);
         auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
         currentUser = jasmine.createSpyObj('currentUser', ['addDefaultLocale', 'toContract']);
@@ -23,7 +23,6 @@ describe('loginController', function () {
         localeService.getLocalesLangs.and.returnValue(specUtil.createFakePromise(
             {locales: [{code: "en", nativeName: "English"}, {code: "es", nativeName: "Español"}]
             }));
-        localeService.setLocale.and.returnValue(specUtil.createFakePromise( {} ));
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get', 'remove', 'put']);
         $bahmniCookieStore.get.and.callFake(function () { return {}; });
         initialData = {location: " "};

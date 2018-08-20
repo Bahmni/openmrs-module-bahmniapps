@@ -112,6 +112,18 @@ angular.module('bahmni.registration')
                     $scope.getChosenRelationshipType(relationship) !== 'patient';
             };
 
+            $scope.isInvalidRelation = function (relation) {
+                return _.isEmpty(_.get(relation, "personB.uuid")) || $scope.duplicateRelationship(relation);
+            };
+
+            $scope.duplicateRelationship = function (relationship) {
+                if (_.isEmpty(relationship.relationshipType) || _.isEmpty(relationship.personB)) {
+                    return false;
+                }
+                var existingRelatives = getAlreadyAddedRelationshipPersonUuid($scope.patient, relationship.relationshipType.uuid);
+                return _.get(_.countBy(existingRelatives, _.identity), relationship.personB.uuid, 0) > 1;
+            };
+
             var getPersonRelatedTo = function (relationship) {
                 return relationship.personA && relationship.personA.uuid === $scope.patient.uuid ? relationship.personB : relationship.personA;
             };
@@ -142,6 +154,32 @@ angular.module('bahmni.registration')
                 if (!relationship[fieldName]) {
                     delete relationship.personB;
                 }
+            };
+
+            var getDeletedRelationshipUuids = function (patient, relationTypeUuid) {
+                return getPersonUuidsForRelationship(patient.deletedRelationships, relationTypeUuid);
+            };
+
+            var getNewlyAddedRelationshipPersonUuid = function (patient, relationTypeUuid) {
+                return getPersonUuidsForRelationship(patient.newlyAddedRelationships, relationTypeUuid);
+            };
+
+            var getPersonUuidsForRelationship = function (relationships, relationshipTypeUuid) {
+                var uuids = [];
+                _.each(relationships, function (relationship) {
+                    if (relationship.personB && relationship.relationshipType.uuid === relationshipTypeUuid) {
+                        uuids.push(relationship.personB.uuid);
+                    }
+                });
+
+                return uuids;
+            };
+
+            var getAlreadyAddedRelationshipPersonUuid = function (patient, relationTypeUuid) {
+                var personUuids = _.concat(getPersonUuidsForRelationship(patient.relationships, relationTypeUuid),
+                    getNewlyAddedRelationshipPersonUuid(patient, relationTypeUuid));
+
+                return _.difference(personUuids, getDeletedRelationshipUuids(patient, relationTypeUuid));
             };
 
             $scope.clearProvider = function (relationship) {

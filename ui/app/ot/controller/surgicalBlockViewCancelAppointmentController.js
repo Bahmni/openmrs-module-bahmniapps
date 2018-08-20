@@ -22,7 +22,7 @@ angular.module('bahmni.ot').controller('surgicalBlockViewCancelAppointmentContro
             actualAppointment.status = $scope.appointment.status;
             actualAppointment.notes = $scope.appointment.notes;
             actualAppointment.sortWeight = null;
-            actualAppointment.isBeingEdited = null;
+            delete actualAppointment.isBeingEdited;
             $scope.ngDialogData.updateAvailableBlockDurationFn();
             ngDialog.close();
         };
@@ -31,7 +31,7 @@ angular.module('bahmni.ot').controller('surgicalBlockViewCancelAppointmentContro
             var actualAppointment = _.find($scope.ngDialogData.surgicalForm.surgicalAppointments, function (appointment) {
                 return appointment.isBeingEdited;
             });
-            actualAppointment.isBeingEdited = null;
+            delete actualAppointment.isBeingEdited;
             ngDialog.close();
         };
     }]);
