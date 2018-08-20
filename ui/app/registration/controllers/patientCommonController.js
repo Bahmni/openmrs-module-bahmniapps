@@ -24,8 +24,8 @@ angular.module('bahmni.registration')
 
             var isHref = false;
 
-            $rootScope.onHomeNavigate = function () {
-                if ($scope.showSaveConfirmDialogConfig) {
+            $rootScope.onHomeNavigate = function (event) {
+                if ($scope.showSaveConfirmDialogConfig && $state.current.name != "patient.visit") {
                     event.preventDefault();
                     $scope.targetUrl = event.currentTarget.getAttribute('href');
                     isHref = true;
@@ -34,7 +34,7 @@ angular.module('bahmni.registration')
             };
 
             var stateChangeListener = $rootScope.$on("$stateChangeStart", function (event, toState, toParams) {
-                if ($scope.showSaveConfirmDialogConfig) {
+                if ($scope.showSaveConfirmDialogConfig && (toState.url == "/search" || toState.url == "/patient/new")) {
                     $scope.targetUrl = toState.name;
                     isHref = false;
                     $scope.confirmationPrompt(event, toState, toParams);

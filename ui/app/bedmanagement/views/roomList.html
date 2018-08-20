@@ -1,0 +1,31 @@
+<div class="ward-details-container bed-layout-wrapper">
+    <span ng-if="tableDetails.length == 0" class="no-data-info">
+        There are no patient.
+    </span>
+    <div class="table-wrapper">
+    <table class="table ward-details-content ipd-ward-list-view" ng-if="tableDetails.length > 0">
+        <col width='130px' />
+        <thead>
+            <tr>
+                <th ng-repeat="heading in tableHeadings" ng-class="{'bed-detail-column' : $index == 0}" ng-click="sortTableDataBy(heading)">
+                    {{heading}}
+                    <span ng-if="sortColumn == heading">
+                        <i class="fa fa-caret-up" ng-show="reverseSort"></i>
+                        <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
+                    </span>
+                </th>
+            </tr>
+        </thead>
+        </table>
+    <table class="table ward-details-content ipd-ward-list-view" ng-if="tableDetails.length > 0">
+        <col width='130px' />
+        <tbody>
+            <tr ng-repeat="row in tableDetails">
+                <td ng-repeat="heading in tableHeadings">
+                    <span>{{row[heading]}}</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+</div>

@@ -1,0 +1,746 @@
+.bed-management-nav {
+  overflow: hidden;
+  margin: 7px 0 0 10px;
+  li {
+    overflow: hidden;
+    border-radius: 5px;
+    margin-right: 10px;
+    display: inline-block;
+    &:last-child {
+      margin: 0;
+    }
+    a {
+      display: inline-block;
+      color: #fff;
+    }
+    &.active {
+      background: rgba(0,0,0,0.2);
+    }
+  }
+}
+.idp-section {
+  padding-top: 52px;
+  padding-bottom: 0;
+  min-height: 300px;
+  .opd-content-wrapper {
+    max-width: 100%;
+    .patient-search-wrapper {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+  }
+  .left-pane {
+    position: fixed;
+    left: 0;
+    width: 320px;
+    height: 100%;
+    border-right: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    padding: 10px 0;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    background: #fff;
+    h6 {
+      color: #393939;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      padding: 0 10px;
+    }
+    .admitted-patient-info, .patient-bed-details, .ADT-container {
+      font-size: 13px;
+      padding: 0 15px;
+    }
+    .ADT-container {
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      #observations {
+        position: relative;
+        legend {
+          display: none;
+        }
+        .form-horizontal {
+          padding: 0;
+        }
+        .form-group {
+          padding: 0;
+          border: none;
+          margin: 0;
+          .form-field {
+            padding: 0;
+          }
+          .control-label {
+            margin: 0 0 5px 0;
+            text-align: left;
+          }
+          .field-value {
+            width: 100%;
+            textarea, input {
+              width: 100%;
+              margin: 0;
+              border-radius: 3px;
+              border-bottom: 1px solid #ddd;
+              box-sizing: border-box;
+            }
+            textarea {
+              resize: vertical;
+              margin-bottom: 10px;
+              min-height: 75px;
+            }
+            input {
+              margin-bottom: 5px;
+            }
+          }
+        }
+        .patient-details-edit {
+          position: absolute;
+          top: -6px;
+          right: 0;
+          padding: 5px 10px;
+          font-size: 13px;
+          color: #2b95ff;
+          background: transparent;
+          border: navajowhite;
+          border-radius: 3px;
+          &:hover {
+            background: #a7a7a7;
+            color: #fff;
+          }
+        }
+      }
+      .action-button {
+        padding: 0;
+        button {
+          width: 90px;
+          padding: 8px 0;
+          outline: none;
+          background: #e5e5e5;
+          border: 1px solid #b0b2b4;
+          color: #666;
+          margin-right: 5px;
+          &:last-child {
+            margin: 0;
+          }
+          &:hover {
+            background: #a7a7a7;
+            color: #fff;
+          }
+          &.adt-admit {
+            background: #99c915;
+            border-color: #99c915;
+            color: #fff;
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+          &[disabled]:hover {
+            opacity: 0.4;
+          }
+        }
+      }
+    }
+    .patient-bed-details {
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      .bed-tags-wrapper {
+        display: inline-block;
+        width: 225px;
+        vertical-align: top;
+        .bed-tags-preview {
+          padding: 5px;
+          border-radius: 50px;
+          display: inline-block;
+          background: #e6e6e6;
+          border: 1px solid #bfc0c2;
+          color: #6c6c6c;
+          margin: 0 5px 5px 0;
+        }
+      }
+    }
+  }
+  .right-pane {
+    margin-left: 320px;
+    width: calc(100% - 320px);
+    min-width: 840px;
+    background: #fff;
+    .bed-management-header {
+      padding: 10px 20px;
+      background: #e8e8e8;
+      position: fixed;
+      box-sizing: border-box;
+      z-index: 10;
+      width: calc(100% - 320px);
+      @media all and (max-width: 1299px) {
+        width: calc(100% - 310px);
+      }
+      h6 {
+        color: #393939;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .bed-type-selection {
+        border: 1px solid #d3d4d5;
+        border-radius: 3px;
+        display: inline-block;
+        button {
+          background: #fff;
+          outline: none;
+          border: none;
+          font-size: 14px;
+          color: #393939;
+          border-right: 1px solid #d3d4d5;
+          border-radius: 0;
+          &:first-child {
+            border-radius: 3px 0 0 3px;
+          }
+          &:last-child {
+            border-radius: 0 3px 3px 0;
+            border: none;
+          }
+          &.selected {
+            background: #a7a7a7;
+            color: #fff;
+          }
+        }
+      }
+    }
+    #bedLayout {
+      overflow-x: auto;
+    }
+  }
+  .room-info-wrapper {
+    background: #e8e8e8;
+    position: fixed;
+    top: 138px;
+    z-index: 10;
+    box-sizing: border-box;
+    width: calc(100% - 320px);
+    @media all and (max-width: 1299px) {
+      width: calc(100% - 310px);
+    }
+    .room {
+      display: inline-block;
+      .room-details {
+        padding: 10px 20px;
+        font-size: 10px;
+        .floor-header {
+          color: #298dd5;
+          font-weight: 500;
+          font-size: 14px;
+          text-align: center;
+          margin-bottom: 5px;
+        }
+        &:hover {
+          cursor: pointer;
+          background: #d8d8d8;
+          border-radius: 3px 3px 0 0;
+          .floor-header {
+            font-weight: bold;
+          }
+        }
+        &.room-selected {
+          background: #a7a7a7;
+          border-radius: 3px 3px 0 0;
+          .floor-header {
+            font-weight: 600;
+            color: #fff;
+          }
+        }
+        &.total-details {
+          border-right: 1px solid #ddd;
+          .floor-header {
+            color: #000;
+          }
+          &:hover {
+            cursor: default;
+            background: transparent;
+            .floor-header {
+              font-weight: 500;
+            }
+          }
+        }
+        .bed-status {
+          margin-top: 5px;
+          color: #fff;
+          text-align: center;
+          span {
+            padding: 3px 5px;
+            border-radius: 3px;
+          }
+        }
+      }
+    }
+  }
+  .bed-legends {
+    padding: 10px;
+    background: #fff;
+    border-bottom: 1px solid #d3d4d5;
+    border-top: 1px solid #d3d4d5;
+    margin-bottom: 10px;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: fixed;
+    width: calc(100% - 320px);
+    z-index: 10;
+    top: 193px;
+    @media all and (max-width: 1299px) {
+      width: calc(100% - 310px);
+    }
+    h4 {
+      font-size: 14px;
+      margin: 0;
+      color: #393939;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .bed-tag {
+      width: 35px;
+      height: 20px;
+      border-radius: 3px;
+      display: inline-block;
+      float: left;
+      margin: 2px;
+      box-sizing: border-box;
+      position: relative;
+
+      .bed-space {
+        width: 4px;
+        height: 11px;
+        margin: 4px 0 0 3px;
+        box-sizing: border-box;
+      }
+    }
+    .switch-bed-views {
+      background: transparent;
+      color: #999;
+      border: 1px solid #999;
+      padding: 0;
+      width: 25px;
+      display: inline-block;
+      height: 25px;
+      outline: none;
+      border-radius: 3px;
+      font-size: 14px;
+      margin: 0 0 0 10px;
+    }
+  }
+  .bed-layout-wrapper {
+    overflow: auto;
+    text-align: center;
+    margin-top: 195px;
+    position: relative;
+    .bed-layout-row {
+      display: inline-block;
+      .bed-layout-cells {
+        float: left;
+        .bed {
+          width: 100px;
+          height: 45px;
+          border-radius: 5px;
+          margin: 10px;
+          box-sizing: border-box;
+          position: relative;
+          text-align: center;
+        }
+
+      }
+    }
+    .highlight-bed:after {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border: 3px solid #2e96e0;
+      border-radius: 5px;
+    }
+
+    .highlight-old-bed:after {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border: 3px solid #777;
+      border-radius: 5px;
+    }
+  }
+  .bed-space {
+    width: 8px;
+    height: 30px;
+    margin: 7px;
+    margin-right: 0;
+    border-radius: 10px;
+    display: inline-block;
+    box-sizing: border-box;
+    float: left;
+  }
+  .bed-details {
+    display: inline-block;
+    font-size: 10px;
+    padding: 7px 0 0 0;
+  }
+}
+
+.adt {
+  .adt-disposition-action {
+    margin: 5px 5px 0 0;
+  }
+  select.disposition-action {
+    color: #363463;
+    display: block;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    background-color: #FFF;
+    border: 1px solid $lighterGray;
+  }
+  .patient-disposition-status {
+    color: green;
+    padding-top: 10px;
+  }
+  .form-horizontal fieldset label {
+    text-align: left;
+    margin-left: 0;
+    padding-bottom: 5px;
+  }
+  .form-group .field-value textarea {
+    width: 98%;
+    margin: 0 0 5px 0;
+  }
+  .submit-btn-container {
+    .admit_btn {
+      margin: 0 5px;
+    }
+  }
+}
+
+.patient-attributes {
+  label {
+    color: #65645F;
+    font-weight: 600;
+    display: inline-block;
+    vertical-align: top;
+  }
+  padding-bottom: 5px;
+}
+
+div[ng-app="ipd"] {
+  .non-icon-back-btn {
+    padding: 12px 10px;
+  }
+}
+
+div[ng-app="adt"] {
+  .ward-list {
+    .section-grid {
+      margin-bottom: 10px;
+    }
+    .section-title {
+      cursor: pointer;
+      padding: 0;
+      small {
+        color: beige;
+      }
+      span.ward-header {
+        display: inline-block;
+        width: 90%;
+        height: 37px;
+        padding: 10px;
+      }
+    }
+    .quick-links {
+      padding: 10px 0;
+    }
+  }
+  .ward-details-cell {
+    padding: 0;
+  }
+  .ward-details-container {
+    width: 100%;
+    max-width: $max-page-width;
+    overflow-x: auto;
+    table {
+      font-size: 14px;
+      thead tr th {
+        border: 1px solid #bebebe;
+        color: $black;
+        background: rgba(232, 232, 232, 1);
+        padding: 7px 10px;
+        &.bed-detail-column {
+          width: 60px;
+        }
+      }
+      tbody tr:nth-child(even) {
+        background: $clinicalFormFocusBg;
+      }
+    }
+    .no-data-info {
+      font-family: openSansBold;
+      padding: 10px 0;
+      display: inline-block;
+      text-align: center;
+      width: 100%;
+    }
+  }
+  .box {
+    @media screen and (max-width: 859px) {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+.drug-details {
+  margin-top: 15px;
+}
+
+.action-button {
+  padding: 10px 0;
+}
+
+.ipd-button-group {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.transfer-section {
+  margin: 20px;
+}
+
+.selected {
+  font-weight: 600;
+}
+
+#beds {
+  display: block;
+}
+
+.available {
+  background: #fff;
+  color: #0cbc3d;
+}
+
+.occupied {
+  background: #0cbc3d;
+  color: #fff;
+}
+
+.cell {
+  background: white;
+  border: 1px solid blue;
+}
+
+.OCCUPIED {
+  background: #0cbc3d;
+  color: white;
+  .bed-space {
+    background: white;
+  }
+}
+
+.AVAILABLE {
+  border: 1px solid #0cbc3d;
+  .bed-space {
+    border: 1px solid #0cbc3d;
+  }
+}
+
+.tagged {
+  color: #fff;
+  border: none;
+  .bed-space {
+    background: white;
+    border: none;
+  }
+}
+
+.ngdialog.ngdialog-theme-default.ng-dialog-adt-popUp {
+  .ngdialog-overlay {
+    background: transparent;
+  }
+  .ngdialog-content {
+    background: #fff;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.24);
+    border-radius: 0;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    h4 {
+      font-size: 14px;
+      font-weight: bold;
+      color: #484848;
+      margin: 0 0 10px;
+    }
+    .dialog-patient-name {
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      label {
+        color: #444;
+        font-weight: 500;
+      }
+    }
+    .discharge-wrapper .dialog-patient-name {
+      margin: 0;
+    }
+    .transfer-section {
+      margin: 0 0 10px 0;
+      overflow: hidden;
+      .transfer-container {
+        span {
+          padding: 0 5px;
+          display: inline-block;
+        }
+      }
+      &.transfer-bed-section {
+        p {
+          display: inline-block;
+          float: left;
+          text-align: center;
+          width: 40%;
+          b {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 13px;
+            font-weight: 500;
+          }
+          span {
+            display: block;
+            color: #42cb66;
+            font-size: 14px;
+          }
+          &.ipd-transfer-container {
+            width: 85px;
+            margin-top: 43px;
+            i {
+              font-size: 3em;
+              color: #848284;
+            }
+          }
+        }
+      }
+      &.discharge-bed-section {
+        font-size: 12px;
+        b {
+          font-weight: 500;
+        }
+        span {
+          padding: 0;
+          margin-right: 5px;
+        }
+      }
+      #adtNotes {
+        margin-bottom: 10px;
+      }
+    }
+    .all-tags-button {
+      margin-bottom: 5px;
+      button {
+        padding: 5px 8px;
+        background: #e5e5e5;
+        color: #666;
+        margin-right: 5px;
+        border-radius: 7px;
+        font-size: 12px;
+        &:hover {
+          background: #a7a7a7;
+          color: #fff;
+        }
+      }
+    }
+    .bed-tag-selector {
+      margin-bottom: 10px;
+      .tags {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        .tag-list li {
+          background: #e5e5e5;
+          color: #666;
+          font-size: 10px;
+          border-radius: 3px;
+        }
+      }
+    }
+    .ipd-button-group {
+      margin: 0;
+      button {
+        width: 90px;
+        padding: 5px 0;
+        background: #e5e5e5;
+        border: 1px solid #b0b2b4;
+        color: #666;
+        margin-right: 5px;
+        font-size: 12px;
+        &:hover {
+          background: #a7a7a7;
+          color: #fff;
+        }
+        &:active {
+          outline: none;
+        }
+      }
+    }
+    .form-horizontal {
+      fieldset label {
+        width: auto;
+      }
+      textarea {
+        min-width: 75%;
+        height: 70px;
+        margin-bottom: 15px;
+        resize: vertical;
+      }
+    }
+  }
+}
+
+.ipd-dashborad {
+  margin: -40px auto 0px auto;
+  width: 1300px;
+}
+
+@media all and (max-width: 1299px) {
+  .idp-section .right-pane {
+    margin-left: 310px;
+    width: calc(100% - 310px);
+  }
+}
+
+.ipd-ward-list-view {
+  th, td {
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid #bab8b8;
+    width: 130px;
+    min-width: 140px;
+    overflow: hidden;
+    word-break: break-all;
+  }
+  thead {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    th {
+      text-align: center;
+      font-weight: 900;
+      color: #4c4c4c;
+      background: #e2e1e1;
+      border-color: #949191;
+    }
+  }
+  tbody {
+    position: absolute;
+    height: calc(100% - 51px);
+    overflow-y: auto;
+    top: 51px
+  }
+}
+.table-wrapper {
+  height: calc(100vh - 240px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}

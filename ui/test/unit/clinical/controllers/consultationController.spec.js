@@ -88,6 +88,8 @@ describe("ConsultationController", function () {
         }
     };
     clinicalDashboardConfig = jasmine.createSpyObj('clinicalDashboardConfig', ['isCurrentTab']);
+    var translate = jasmine.createSpyObj('$translate', ['instant']);
+    appService = jasmine.createSpyObj('appService', ['getAppDescriptor', 'getConfigValue']);
     var boards = [
         {
             default: true,
@@ -121,6 +123,7 @@ describe("ConsultationController", function () {
             $rootScope: rootScope,
             $state: state,
             $location: location,
+            $translate: translate,
             clinicalAppConfigService: clinicalAppConfigService,
             urlHelper: urlHelper,
             contextChangeHandler: contextChangeHandler,
@@ -202,11 +205,6 @@ describe("ConsultationController", function () {
         };
         rootScope.currentProvider = { uuid: 'providerUuid' };
         scope.lastConsultationTabUrl = {url: {}};
-        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
-        appService.getAppDescriptor.and.returnValue(appDescriptor);
-        appDescriptor.getConfigValue.and.returnValue(true);
-
         q = jasmine.createSpyObj('q', ['all', 'defer']);
         visitConfig = {};
         configurations = {
@@ -256,6 +254,18 @@ describe("ConsultationController", function () {
             rootScope = $rootScope;
             controller = $controller;
         });
+        appDescriptor = {
+            formatUrl: function (url) {
+                return url;
+            },
+            getConfigValue: function (value) {
+                if(value === 'adtNavigationConfig') {
+                    return {forwardUrl: "../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
+                }
+                return true;
+            }
+        };
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
     });
     beforeEach(setUpServiceMocks);
     beforeEach(createController);
@@ -299,6 +309,24 @@ describe("ConsultationController", function () {
             expect(scope.isInEditEncounterMode()).toBeFalsy();
             stateParams.encounterUuid = "abdk-k1j2k3j2k-skfhsjfs";
             expect(scope.isInEditEncounterMode()).toBeTruthy();
+        });
+
+        it("should get ipd configuration from config", function () {
+            appDescriptor = {
+                formatUrl: function (url) {
+                    return url;
+                },
+                getConfigValue: function (value) {
+                    if(value === 'adtNavigationConfig') {
+                        return {forwardUrl: "../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
+                    }
+                    return true;
+                }
+            };
+            scope.adtNavigationConfig = {forwardUrl: "../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}"};
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            createController();
+            expect(scope.adtNavigationConfig.forwardUrl).toEqual("../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}");
         });
     });
 
@@ -488,7 +516,10 @@ describe("ConsultationController", function () {
     describe("open consultation", function () {
         it("should not broadcast page unload event if not configured to prompt", function () {
             appService.getAppDescriptor.and.returnValue({
-                getConfigValue: function () {
+                getConfigValue: function (value) {
+                    if(value === 'adtNavigationConfig') {
+                        return {forwardUrl: "../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
+                    }
                     return false;
                 }
             });
@@ -501,7 +532,10 @@ describe("ConsultationController", function () {
 
         it("should broadcast page unload event if configured to prompt", function () {
             appService.getAppDescriptor.and.returnValue({
-                getConfigValue: function () {
+                getConfigValue: function (value) {
+                    if(value === 'adtNavigationConfig') {
+                        return {forwardUrl: "../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}", "privilege": "app:adt"};
+                    }
                     return true;
                 }
             });
@@ -673,5 +707,53 @@ describe("ConsultationController", function () {
                 done();
             });
         });
+    });
+
+    it("should generate the URL as mentioned in the config", function () {
+        appDescriptor = {
+            formatUrl: function (url) {
+                return url;
+            },
+            getConfigValue: function () {
+                return true;
+            }
+        };
+        scope.adtNavigationConfig = {forwardUrl: "../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}"};
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
+
+        expect(scope.adtNavigationURL()).toEqual("../bedmanagement/#/bedManagement/patient/{{patientUuid}}/visit/{{visitUuid}}");
+    });
+
+    it("should initialize with default adtNavigationConfig if we are not mentioning anything in config", function () {
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (value) {
+                if(value === 'adtNavigationConfig') {
+                    return {};
+                }
+                return true;
+            }
+        });
+        translate.instant.and.returnValue("Go to IPD Dashboard");
+        createController();
+
+        expect(scope.adtNavigationConfig.privilege).toBe("app:adt");
+        expect(scope.adtNavigationConfig.title).toBe("Go to IPD Dashboard");
+        expect(scope.adtNavigationConfig.forwardUrl).toBe("../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/");
+    });
+
+    it("should initialize with adtNavigationConfig if we mention in config", function () {
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (value) {
+                if(value === 'adtNavigationConfig') {
+                    return {privilege: "app:ipd", title: "Go to ADT Dashboard"};
+                }
+                return true;
+            }
+        });
+        createController();
+
+        expect(scope.adtNavigationConfig.privilege).toBe("app:ipd");
+        expect(scope.adtNavigationConfig.title).toBe("Go to ADT Dashboard");
+        expect(scope.adtNavigationConfig.forwardUrl).toBe("../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/");
     });
 });

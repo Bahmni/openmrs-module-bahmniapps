@@ -2,7 +2,7 @@
 
 describe('PatientCommonController', function () {
 
-    var $aController, $httpBackend, scope, appService, appDescriptor, patientService, rootScope, patientAttributeService;
+    var $aController, $httpBackend, scope, appService, appDescriptor, patientService, rootScope, patientAttributeService, $state;
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var $compile;
     var searchPromise;
@@ -14,10 +14,11 @@ describe('PatientCommonController', function () {
     }));
 
     beforeEach(
-        inject(function ($controller, _$httpBackend_, $rootScope, _$compile_) {
+        inject(function ($controller, _$httpBackend_, $rootScope, _$compile_, _$state_) {
             $aController = $controller;
             $httpBackend = _$httpBackend_;
             scope = $rootScope.$new();
+            $state = _$state_;
             rootScope = $rootScope;
             $compile = _$compile_;
         })
@@ -57,8 +58,9 @@ describe('PatientCommonController', function () {
 
     });
 
-    it('checks that the confirmation popup is prompted when the home button is clicked and the config is enabled', function () {
+    it('checks that the confirmation popup is prompted when the home button is clicked and the config is enabled and current Page is not the Registration Second Page', function () {
         scope.showSaveConfirmDialogConfig = true;
+        $state.current.name = "patient.new";
         scope.onHomeNavigate = jasmine.createSpy("onHomeNavigate");
         scope.confirmationPrompt = jasmine.createSpy("confirmationPrompt");
         var element = angular.element("<a ng-click='onHomeNavigate()'>");
@@ -66,6 +68,7 @@ describe('PatientCommonController', function () {
         compiled.triggerHandler('click');
         expect(scope.onHomeNavigate).toHaveBeenCalled();
         expect(scope.showSaveConfirmDialogConfig).toBe(true);
+        expect($state.current.name).not.toBe("patient.visit");
         scope.confirmationPrompt();
         expect(scope.confirmationPrompt).toHaveBeenCalled();
     });
@@ -79,6 +82,20 @@ describe('PatientCommonController', function () {
         compiled.triggerHandler('click');
         expect(scope.onHomeNavigate).toHaveBeenCalled();
         expect(scope.showSaveConfirmDialogConfig).not.toBe(true);
+        expect(scope.confirmationPrompt).not.toHaveBeenCalled();
+    });
+
+it('checks that the confirmation popup is not prompted on the Registration second page when the home button is clicked and the config is enabled', function () {
+        scope.showSaveConfirmDialogConfig = true;
+        $state.current.name = "patient.visit";
+        scope.onHomeNavigate = jasmine.createSpy("onHomeNavigate");
+        scope.confirmationPrompt = jasmine.createSpy("confirmationPrompt");
+        var element = angular.element("<a ng-click='onHomeNavigate()'>");
+        var compiled = $compile(element)(scope);
+        compiled.triggerHandler('click');
+        expect(scope.onHomeNavigate).toHaveBeenCalled();
+        expect(scope.showSaveConfirmDialogConfig).toBe(true);
+        expect($state.current.name).toBe("patient.visit");
         expect(scope.confirmationPrompt).not.toHaveBeenCalled();
     });
 

@@ -28,10 +28,14 @@ angular.module('bahmni.ot').controller('moveSurgicalAppointmentController', ['$r
                     var blockEndTime = Bahmni.Common.Util.DateUtil.formatTime(surgicalBlock.endDatetime);
                     var providerName = surgicalBlock.provider.person.display;
                     var operationTheatre = surgicalBlock.location.name;
+                    var validAppointments = _.filter(surgicalBlock.surgicalAppointments, function (appointment) {
+                        return appointment.status !== 'POSTPONED' && appointment.status !== 'CANCELLED';
+                    });
+
                     var destinationBlockDetails = {
                         displayName: providerName + ", " + operationTheatre + " (" + blockStartTime + " - " + blockEndTime + ")",
                         uuid: surgicalBlock.uuid,
-                        surgicalAppointment: {sortWeight: surgicalBlock.surgicalAppointments.length}
+                        surgicalAppointment: {sortWeight: validAppointments.length}
                     };
                     return destinationBlockDetails;
                 });
@@ -45,7 +49,7 @@ angular.module('bahmni.ot').controller('moveSurgicalAppointmentController', ['$r
         var updateSortWeightOfSurgicalAppointments = function () {
             var surgicalBlock = _.cloneDeep($scope.sourceSurgicalBlock);
             var surgicalAppointments = _.filter(surgicalBlock.surgicalAppointments, function (appointment) {
-                return appointment.uuid !== $scope.surgicalAppointment.uuid;
+                return appointment.uuid !== $scope.ngDialogData.surgicalAppointment.uuid && appointment.status !== 'POSTPONED' && appointment.status !== 'CANCELLED';
             });
             surgicalBlock.surgicalAppointments = _.map(surgicalAppointments, function (appointment, index) {
                 appointment.sortWeight = index;

@@ -1,0 +1,24 @@
+<div class="bed-legends clearfix">
+    <div class="fr">
+        <div class="fl" ng-repeat="tag in defaultTags" style="margin-right: 5px;">
+            <div class="bed-tag fl {{tag}}">
+                <div class="bed-space"></div>
+            </div>
+            <div class="fl" style="margin-top: 5px; padding: 0 5px;">{{getTagName(tag)}}</div>
+        </div>
+        <div class="fl" ng-repeat="tag in $root.bedTagsColorConfig" style="margin-right: 5px;">
+            <div class="bed-tag fl {{tag.name}}" style="border: 1px solid {{tag.color}}; background: {{tag.color}};">
+                <div class="bed-space" style="background: #fff;"></div>
+            </div>
+            <div class="fl" style="margin-top: 5px; padding: 0 5px;">{{tag.name | translate}}</div>
+        </div>
+        <span class="quick-links">
+            <button class="switch-bed-views" ng-click="toggleWardView()"><span
+                    class="fa {{currentView == 'List' ? 'fa-th' : 'fa-list'}}"></span></button>
+        </span>
+    </div>
+</div>
+<div>
+    <room-grid room="room" bedTagsColorConfig="bedTagsColorConfig" ng-if="currentView == 'Grid'"></room-grid>
+    <room-list room="room" bedTagsColorConfig="bedTagsColorConfig" ng-if="currentView == 'List'"></room-list>
+</div>

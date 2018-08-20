@@ -1,0 +1,18 @@
+<div style="display: inline-block;" class="fl">
+    <a class="back-btn" accesskey="{{homeBackLink.accessKey}}"
+       ng-click="linkAction(homeBackLink.type, homeBackLink.value, homeBackLink.params)"
+       ng-class="{'non-icon-back-btn': !homeBackLink.icon}">
+        <i ng-if="homeBackLink.icon" class="fa {{homeBackLink.icon}}"></i>
+        <span ng-if="!homeBackLink.icon">{{ homeBackLink.name }}</span>
+    </a>
+</div>
+<ul class="bed-management-nav">
+    <li ng-repeat="link in navigationLinks"
+        ng-class="{'active' : isCurrentState(link), 'tab-removable': false}">
+        <a accesskey="{{link.accessKey}}" ng-click="linkAction(link.type, link.value, link.params)"
+           ng-class="{'non-icon-back-btn': !link.icon}">
+            <i ng-if="link.icon" class="fa {{link.icon}}"></i>
+            <span ng-if="!link.icon">{{ link.name | translate}}</span>
+        </a>
+    </li>
+</ul>

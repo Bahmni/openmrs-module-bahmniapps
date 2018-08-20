@@ -255,3 +255,82 @@
     margin-bottom: 10px;
   }
 }
+
+table.investigation-chart {
+    overflow: auto;
+    display: table;
+    height: auto;
+    width: auto;
+    border: 1px solid #ddd;
+    tr {
+        border: 1px solid #ddd;
+        position: relative;
+        td {
+            border-left: 1px solid #ddd;
+        }
+    }
+    thead {
+        th {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 40px;
+            left: -1px;
+            z-index: 10;
+            border-left: 1px solid #ddd;
+        }
+        td {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 40px;
+            z-index: 8;
+            border-left: 1px solid #ddd;
+            background: #eee;
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+            filter: alpha(opacity=90);
+            -moz-opacity: 0.90;
+            -khtml-opacity: 0.9;
+            opacity: 0.9;
+        }
+    }
+    tbody {
+        th {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 5px;
+            left: 0px;
+            border-left: 1px solid #ddd;
+            text-align: left;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+    }
+}
+
+.expand-investigation-chart {
+    display: table;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    >h2 {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0px;
+        z-index: 8;
+    }
+    h2 {
+        >span {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0px;
+            z-index: 8;
+            left: 22px;
+        }
+        >i {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0px;
+            z-index: 8;
+            left: 5px;
+        }
+    }
+}
