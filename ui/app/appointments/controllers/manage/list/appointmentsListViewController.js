@@ -2,9 +2,9 @@
 
 angular.module('bahmni.appointments')
     .controller('AppointmentsListViewController', ['$scope', '$state', '$rootScope', '$translate', '$stateParams', 'spinner',
-        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService',
+        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService', '$interval',
         function ($scope, $state, $rootScope, $translate, $stateParams, spinner, appointmentsService, appService,
-                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService) {
+                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, $interval) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
@@ -12,6 +12,7 @@ angular.module('bahmni.appointments')
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.searchedPatient = false;
+            var enableAutoRefresh = appService.getAppDescriptor().getConfigValue('enableAutoRefresh') || false;
             var oldPatientData = [];
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
@@ -36,6 +37,36 @@ angular.module('bahmni.appointments')
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
             };
 
+            var autoRefreshStatus = true;
+            var setAppointments = function (params) {
+                autoRefreshStatus = false;
+                return appointmentsService.getAllAppointments(params).then(function (response) {
+                    $scope.appointments = response.data;
+                    $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
+                    $rootScope.appointmentsData = $scope.filteredAppointments;
+                    autoRefreshStatus = true;
+                })
+            };
+
+            var autoRefreshInterval = function (){
+                if(!enableAutoRefresh){
+                    return;
+                }
+                var autoRefreshIntervalInMilliSeconds = appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInMilliSeconds');
+                return $interval(function () {
+                    if(autoRefreshStatus) {
+                        var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
+                        var params = {forDate: viewDate};
+                        setAppointments(params);
+                    }
+                }, autoRefreshIntervalInMilliSeconds)
+            }();
+
+            $scope.$on('$destroy', function () {
+                $interval.cancel(autoRefreshInterval);
+            });
+
+
             $scope.getAppointmentsForDate = function (viewDate) {
                 $stateParams.viewDate = viewDate;
                 $scope.selectedAppointment = undefined;
@@ -46,11 +77,7 @@ angular.module('bahmni.appointments')
                     }
                 });
                 if ($state.params.doFetchAppointmentsData) {
-                    spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
-                        $scope.appointments = response.data;
-                        $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
-                        $rootScope.appointmentsData = $scope.filteredAppointments;
-                    }));
+                    spinner.forPromise(setAppointments(params));
                 } else {
                     $scope.filteredAppointments = appointmentsFilter($state.params.appointmentsData, $stateParams.filterParams);
                     $state.params.doFetchAppointmentsData = true;

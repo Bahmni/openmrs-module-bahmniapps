@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsCalendarViewController', ['$scope', '$state', '$translate', 'spinner', 'appointmentsService', 'appointmentsFilter', '$rootScope',
-        function ($scope, $state, $translate, spinner, appointmentsService, appointmentsFilter, $rootScope) {
+    .controller('AppointmentsCalendarViewController', ['$scope', '$state', '$translate', 'spinner', 'appointmentsService', 'appointmentsFilter', '$rootScope', '$interval', 'appService',
+        function ($scope, $state, $translate, spinner, appointmentsService, appointmentsFilter, $rootScope, $interval, appService) {
+            var enableAutoRefresh = appService.getAppDescriptor().getConfigValue('enableAutoRefresh') || false;
             var init = function () {
                 $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
                 $scope.$on('filterClosedOpen', function (event, args) {
@@ -37,7 +38,11 @@ angular.module('bahmni.appointments')
                         resources.push({
                             id: $translate.instant("NO_PROVIDER_COLUMN_KEY"),
                             title: $translate.instant("NO_PROVIDER_COLUMN_KEY"),
-                            provider: {name: $translate.instant("NO_PROVIDER_COLUMN_KEY"), display: $translate.instant("NO_PROVIDER_COLUMN_KEY"), uuid: 'no-provider-uuid'}
+                            provider: {
+                                name: $translate.instant("NO_PROVIDER_COLUMN_KEY"),
+                                display: $translate.instant("NO_PROVIDER_COLUMN_KEY"),
+                                uuid: 'no-provider-uuid'
+                            }
                         });
                     }
 
@@ -82,6 +87,17 @@ angular.module('bahmni.appointments')
                 }
             }, true);
 
+            var autoRefreshStatus = true;
+            var setAppointments = function (params) {
+                autoRefreshStatus = false;
+                return appointmentsService.getAllAppointments(params).then(function (response) {
+                    $scope.allAppointmentsForDay = response.data;
+                    var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay, $state.params.filterParams);
+                    $rootScope.appointmentsData = filteredAppointments;
+                    autoRefreshStatus = true;
+                    return parseAppointments(filteredAppointments);
+                });
+            };
             $scope.getAppointmentsForDate = function (viewDate) {
                 $state.params.viewDate = viewDate;
                 $scope.shouldReload = false;
@@ -92,18 +108,31 @@ angular.module('bahmni.appointments')
                     }
                 });
                 if ($state.params.doFetchAppointmentsData) {
-                    return spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
-                        $scope.allAppointmentsForDay = response.data;
-                        var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay, $state.params.filterParams);
-                        $rootScope.appointmentsData = filteredAppointments;
-                        return parseAppointments(filteredAppointments);
-                    }));
+                    return spinner.forPromise(setAppointments(params));
                 } else {
                     var filteredAppointments = appointmentsFilter($state.params.appointmentsData, $state.params.filterParams);
                     $state.params.doFetchAppointmentsData = true;
                     return parseAppointments(filteredAppointments);
                 }
             };
+
+            var autoRefreshInterval = function () {
+                if (!enableAutoRefresh) {
+                    return;
+                }
+                var autoRefreshIntervalInMilliSeconds = appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInMilliSeconds');
+                return $interval(function () {
+                    if (autoRefreshStatus) {
+                        var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
+                        var params = {forDate: viewDate};
+                        setAppointments(params);
+                    }
+                }, autoRefreshIntervalInMilliSeconds)
+            }();
+
+            $scope.$on('$destroy', function () {
+                $interval.cancel(autoRefreshInterval);
+            });
 
             $scope.hasNoAppointments = function () {
                 return _.isEmpty($scope.providerAppointments) || _.isEmpty($scope.providerAppointments.events);
