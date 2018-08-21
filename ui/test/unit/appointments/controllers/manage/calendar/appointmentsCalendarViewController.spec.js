@@ -1,7 +1,7 @@
 'use strict';
 
 describe('AppointmentsCalendarViewController', function () {
-    var controller, scope, spinner, appointmentsService, translate, stateParams, state;
+    var controller, scope, spinner, appointmentsService, translate, stateParams, state, appService, appDescriptor;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -21,6 +21,9 @@ describe('AppointmentsCalendarViewController', function () {
             appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments']);
             translate = jasmine.createSpyObj('$translate', ['instant']);
             translate.instant.and.returnValue("No provider appointments");
+            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
         });
     });
 
@@ -29,7 +32,8 @@ describe('AppointmentsCalendarViewController', function () {
             $scope: scope,
             spinner: spinner,
             appointmentsService: appointmentsService,
-            $translate: translate
+            $translate: translate,
+            appService: appService
         });
     };
 
