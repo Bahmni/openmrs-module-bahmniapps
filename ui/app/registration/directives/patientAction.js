@@ -150,6 +150,7 @@ angular.module('bahmni.registration')
                         if (forwardUrl) {
                             var updatedForwardUrl = appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patientProfileData.patient.uuid});
                             $window.location.href = updatedForwardUrl;
+                            $window.location.reload();
                         } else {
                             goToVisitPage(patientProfileData);
                         }

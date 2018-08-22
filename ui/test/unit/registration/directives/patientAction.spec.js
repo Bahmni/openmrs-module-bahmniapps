@@ -13,6 +13,9 @@ describe('PatientAction', function () {
                 provide.value('$stateParams', input.stateParams);
                 state = jasmine.createSpyObj('$state', ['go']);
                 $window = jasmine.createSpyObj('$window', ['location']);
+                $window.location = {
+                    reload : jasmine.createSpy()
+                };
                 spinner = jasmine.createSpyObj('spinner', ['forPromise']);
                 spinner.forPromise.and.callFake(function () {
                     return;
@@ -221,6 +224,7 @@ describe('PatientAction', function () {
             scope.actions.followUpAction(patientProfileData);
             expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("startVisit");
+            expect($window.location.reload).toHaveBeenCalled();
             expect($window.location.href).toBe("../clinical/#/programs/patient/patientUuid/consultationContext");
             expect(auditLogService.log).toHaveBeenCalledWith(patientUuid, 'OPEN_VISIT', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
         });
@@ -364,6 +368,7 @@ describe('PatientAction', function () {
             scope.actions.followUpAction(patientProfileData);
             expect(messagingService.clearAll).toHaveBeenCalled();
             expect(scope.actions.submitSource).toBe("configAction");
+            expect($window.location.reload).toHaveBeenCalled();
             expect($window.location.href).toBe("../clinical/#/programs/patient/patientUuid/consultationContext");
             expect(auditLogService.log).toHaveBeenCalledWith(patientUuid, 'OPEN_VISIT', messageParams, 'MODULE_LABEL_REGISTRATION_KEY');
         });
