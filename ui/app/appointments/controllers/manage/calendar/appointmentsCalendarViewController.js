@@ -141,7 +141,7 @@ angular.module('bahmni.appointments')
                 }
             };
 
-            var autoRefreshInterval = function () {
+            var autoRefresh = (function () {
                 if (!enableAutoRefresh) {
                     return;
                 }
@@ -152,11 +152,13 @@ angular.module('bahmni.appointments')
                         var params = {forDate: viewDate};
                         setAppointments(params);
                     }
-                }, autoRefreshIntervalInMilliSeconds)
-            }();
+                }, autoRefreshIntervalInMilliSeconds);
+            })();
 
             $scope.$on('$destroy', function () {
-                $interval.cancel(autoRefreshInterval);
+                if (enableAutoRefresh) {
+                    $interval.cancel(autoRefresh);
+                }
             });
 
             $scope.hasNoAppointments = function () {
