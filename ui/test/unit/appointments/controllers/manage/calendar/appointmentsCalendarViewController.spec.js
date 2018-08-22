@@ -1,11 +1,11 @@
 'use strict';
 
 describe('AppointmentsCalendarViewController', function () {
-    var controller, scope, spinner, appointmentsService, translate, stateParams, state, appService, appDescriptor;
+    var controller, scope, spinner, appointmentsService, translate, stateParams, state, interval, appService, appDescriptor;
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function ($controller, $rootScope, $stateParams, $state) {
+        inject(function ($controller, $rootScope, $stateParams, $state, $interval) {
             controller = $controller;
             scope = $rootScope.$new();
             stateParams = $stateParams;
@@ -24,6 +24,7 @@ describe('AppointmentsCalendarViewController', function () {
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
+            interval = jasmine.createSpy('$interval', $interval).and.callThrough();
         });
     });
 
@@ -33,7 +34,8 @@ describe('AppointmentsCalendarViewController', function () {
             spinner: spinner,
             appointmentsService: appointmentsService,
             $translate: translate,
-            appService: appService
+            appService: appService,
+            $interval: interval
         });
     };
 
@@ -478,5 +480,84 @@ describe('AppointmentsCalendarViewController', function () {
         scope.getAppointmentsForDate("Wed Sep 06 2017 00:00:00 GMT+0530 (IST)");
         expect(scope.providerAppointments.resources.length).toEqual(1);
         expect(scope.providerAppointments.resources[0].provider.uuid).toEqual("no-provider-uuid");
-    })
+    });
+
+    it('should get config value for enableAutoRefresh', function () {
+        expect(appDescriptor.getConfigValue).toHaveBeenCalledWith('enableAutoRefresh');
+    });
+
+    it('should not call interval function when enableAutoRefresh is undefined', function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'enableAutoRefresh') {
+                return undefined;
+            }
+            return undefined;
+        });
+
+        createController();
+
+        expect(appDescriptor.getConfigValue).not.toHaveBeenCalledWith('autoRefreshIntervalInMilliSeconds');
+        expect(interval).not.toHaveBeenCalled();
+    });
+
+    it('should call interval function when enableAutoRefresh is true', function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'enableAutoRefresh') {
+                return true;
+            }
+            if (value === 'autoRefreshIntervalInMilliSeconds') {
+                return 1000;
+            }
+            return undefined;
+        });
+
+        createController();
+
+        expect(appDescriptor.getConfigValue).toHaveBeenCalledWith('autoRefreshIntervalInMilliSeconds');
+        expect(interval).toHaveBeenCalled();
+    });
+
+    it('should not call interval function when enableAutoRefresh is false', function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'enableAutoRefresh') {
+                return false;
+            }
+            return undefined;
+        });
+
+        createController();
+
+        expect(appDescriptor.getConfigValue).not.toHaveBeenCalledWith('autoRefreshIntervalInMilliSeconds');
+        expect(interval).not.toHaveBeenCalled();
+    });
+
+    it('should cancel interval when enableAutoRefresh is true', function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'enableAutoRefresh') {
+                return true;
+            }
+            return undefined;
+        });
+        spyOn(interval, 'cancel');
+        createController();
+
+        scope.$destroy();
+
+        expect(interval.cancel).toHaveBeenCalled();
+    });
+
+    it('should not cancel interval when enableAutoRefresh is false', function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'enableAutoRefresh') {
+                return false;
+            }
+            return undefined;
+        });
+        spyOn(interval, 'cancel');
+        createController();
+
+        scope.$destroy();
+
+        expect(interval.cancel).not.toHaveBeenCalled();
+    });
 });

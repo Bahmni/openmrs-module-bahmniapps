@@ -45,27 +45,28 @@ angular.module('bahmni.appointments')
                     $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
                     $rootScope.appointmentsData = $scope.filteredAppointments;
                     autoRefreshStatus = true;
-                })
+                });
             };
 
-            var autoRefreshInterval = function (){
-                if(!enableAutoRefresh){
+            var autoRefresh = (function () {
+                if (!enableAutoRefresh) {
                     return;
                 }
                 var autoRefreshIntervalInMilliSeconds = appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInMilliSeconds');
                 return $interval(function () {
-                    if(autoRefreshStatus) {
+                    if (autoRefreshStatus) {
                         var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
                         var params = {forDate: viewDate};
                         setAppointments(params);
                     }
-                }, autoRefreshIntervalInMilliSeconds)
-            }();
+                }, autoRefreshIntervalInMilliSeconds);
+            })();
 
             $scope.$on('$destroy', function () {
-                $interval.cancel(autoRefreshInterval);
+                if (enableAutoRefresh) {
+                    $interval.cancel(autoRefresh);
+                }
             });
-
 
             $scope.getAppointmentsForDate = function (viewDate) {
                 $stateParams.viewDate = viewDate;
