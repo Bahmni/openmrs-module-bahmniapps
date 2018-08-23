@@ -120,7 +120,9 @@ angular.module('bahmni.appointments')
                 if (!enableAutoRefresh) {
                     return;
                 }
-                var autoRefreshIntervalInMilliSeconds = appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInMilliSeconds');
+                var SECONDS_TO_MILLISECONDS_FACTOR = 1000;
+                var autoRefreshIntervalInSeconds = appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds');
+                var autoRefreshIntervalInMilliSeconds = autoRefreshIntervalInSeconds * SECONDS_TO_MILLISECONDS_FACTOR;
                 return $interval(function () {
                     if (autoRefreshStatus) {
                         var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
