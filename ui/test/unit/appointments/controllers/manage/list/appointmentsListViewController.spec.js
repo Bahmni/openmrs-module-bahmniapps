@@ -1142,7 +1142,7 @@ describe('AppointmentsListViewController', function () {
 
         createController();
 
-        expect(appDescriptor.getConfigValue).not.toHaveBeenCalledWith('autoRefreshIntervalInMilliSeconds');
+        expect(appDescriptor.getConfigValue).not.toHaveBeenCalledWith('autoRefreshIntervalInSeconds');
         expect(interval).not.toHaveBeenCalled();
     });
 
@@ -1151,15 +1151,15 @@ describe('AppointmentsListViewController', function () {
             if (value === 'enableAutoRefresh') {
                 return true;
             }
-            if (value === 'autoRefreshIntervalInMilliSeconds') {
-                return 1000;
+            if (value === 'autoRefreshIntervalInSeconds') {
+                return 10;
             }
             return undefined;
         });
 
         createController();
 
-        expect(appDescriptor.getConfigValue).toHaveBeenCalledWith('autoRefreshIntervalInMilliSeconds');
+        expect(appDescriptor.getConfigValue).toHaveBeenCalledWith('autoRefreshIntervalInSeconds');
         expect(interval).toHaveBeenCalled();
     });
 
@@ -1173,7 +1173,7 @@ describe('AppointmentsListViewController', function () {
 
         createController();
 
-        expect(appDescriptor.getConfigValue).not.toHaveBeenCalledWith('autoRefreshIntervalInMilliSeconds');
+        expect(appDescriptor.getConfigValue).not.toHaveBeenCalledWith('autoRefreshIntervalInSeconds');
         expect(interval).not.toHaveBeenCalled();
     });
 
