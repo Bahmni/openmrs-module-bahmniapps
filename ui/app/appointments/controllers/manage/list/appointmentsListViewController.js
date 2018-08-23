@@ -48,6 +48,27 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            var setAppointmentsInPatientSearch = function(patientUuid) {
+                appointmentsService.search({patientUuid: patientUuid}).then(function (response) {
+                    var appointmentsInDESCOrderBasedOnStartDateTime = _.sortBy(response.data, "startDateTime").reverse();
+                    setFilteredAppointmentsInPatientSearch(appointmentsInDESCOrderBasedOnStartDateTime);
+                });
+            };
+
+            var setAppointmentsInAutoRefresh = function () {
+                if (!autoRefreshStatus) {
+                    return;
+                }
+                if ($stateParams.isSearchEnabled) {
+                    setAppointmentsInPatientSearch($stateParams.patient.uuid);
+                }
+                else {
+                    var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
+                    var params = {forDate: viewDate};
+                    setAppointments(params);
+                }
+            };
+
             var autoRefresh = (function () {
                 if (!enableAutoRefresh) {
                     return;
@@ -55,13 +76,7 @@ angular.module('bahmni.appointments')
                 var SECONDS_TO_MILLISECONDS_FACTOR = 1000;
                 var autoRefreshIntervalInSeconds = appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds');
                 var autoRefreshIntervalInMilliSeconds = autoRefreshIntervalInSeconds * SECONDS_TO_MILLISECONDS_FACTOR;
-                return $interval(function () {
-                    if (autoRefreshStatus) {
-                        var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
-                        var params = {forDate: viewDate};
-                        setAppointments(params);
-                    }
-                }, autoRefreshIntervalInMilliSeconds);
+                return $interval(setAppointmentsInAutoRefresh, autoRefreshIntervalInMilliSeconds);
             })();
 
             $scope.$on('$destroy', function () {
@@ -87,12 +102,16 @@ angular.module('bahmni.appointments')
                 }
             };
 
-            $scope.displaySearchedPatient = function (appointments) {
-                oldPatientData = $scope.filteredAppointments;
+            var setFilteredAppointmentsInPatientSearch = function (appointments) {
                 $scope.filteredAppointments = appointments.map(function (appointmet) {
                     appointmet.date = appointmet.startDateTime;
                     return appointmet;
                 });
+            };
+
+            $scope.displaySearchedPatient = function (appointments) {
+                oldPatientData = $scope.filteredAppointments;
+                setFilteredAppointmentsInPatientSearch(appointments);
                 $scope.searchedPatient = true;
                 $stateParams.isFilterOpen = false;
                 $scope.isFilterOpen = false;
