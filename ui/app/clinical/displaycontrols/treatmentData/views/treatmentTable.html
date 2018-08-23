@@ -7,9 +7,11 @@
             <thead>
             <th colspan="4" ng-if="::!isOtherActiveSection(drugOrderSection.visitDate)">
                 {{::'VISIT_ON_TRANSLATION_KEY'|translate}} {{::drugOrderSection.visitDate | bahmniDate}}
+                <!-- {{::'VISIT_ON_TRANSLATION_KEY'|translate}} {{::drugOrderSection.visitDate | npDate}} -->
             </th>
             <th colspan="4" ng-if="::isOtherActiveSection(drugOrderSection.visitDate)">
-                {{::drugOrderSection.visitDate}}
+                <!-- {{::drugOrderSection.visitDate}} -->
+                {{::drugOrderSection.visitDate | npDate}}
             </th>
             </thead>
             <tbody treatment-table-row drug-order="::drugOrder" params="::params"
