@@ -123,7 +123,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         this.effectiveStartDate = null;
     } else {
         this.effectiveStartDate = this.effectiveStartDate || this.encounterDate;
-       console.log("this.effectiveStartDate==>"+this.effectiveStartDate);
         this.effectiveStartDateNepali = this.convertAdToBs(this.effectiveStartDate);
     }
     

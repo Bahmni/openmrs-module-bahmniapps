@@ -168,7 +168,7 @@
                             ng-change="handleNepaliDateUpdate(treatment)"  
                             treatment="treatment"
                             npdatepicker>
-                        <input id="start-date" ng-change="handleDateUpdate(treatment)" date-converter class="start-date " type="date"
+                        <input id="start-date" ng-show="!enableNepaliCalendar" ng-change="handleDateUpdate(treatment)" date-converter class="start-date " type="date"
                                ng-model="treatment.effectiveStartDate" required>
                     </div>
                 </article>
@@ -310,7 +310,7 @@
                             ng-change="handleOrderSetNepaliDateUpdate(newOrderSet)"  
                             newOrderSet="newOrderSet"
                             npdatepicker>
-                    <input type="date" ng-change="handleOrderSetDateUpdate(newOrderSet)" ng-model="newOrderSet.date" ng-disabled="isSearchDisabled"/>
+                    <input type="date" ng-show="!enableNepaliCalendar" ng-change="handleOrderSetDateUpdate(newOrderSet)" ng-model="newOrderSet.date" ng-disabled="isSearchDisabled"/>
                 </div>
             </article>
             <div class="orderSet-order-container clearfix">
