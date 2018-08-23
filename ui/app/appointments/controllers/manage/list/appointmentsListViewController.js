@@ -48,7 +48,7 @@ angular.module('bahmni.appointments')
                 });
             };
 
-            var setAppointmentsInPatientSearch = function(patientUuid) {
+            var setAppointmentsInPatientSearch = function (patientUuid) {
                 appointmentsService.search({patientUuid: patientUuid}).then(function (response) {
                     var appointmentsInDESCOrderBasedOnStartDateTime = _.sortBy(response.data, "startDateTime").reverse();
                     setFilteredAppointmentsInPatientSearch(appointmentsInDESCOrderBasedOnStartDateTime);
