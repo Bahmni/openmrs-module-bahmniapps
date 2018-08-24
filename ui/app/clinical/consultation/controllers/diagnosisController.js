@@ -370,21 +370,12 @@ angular.module('bahmni.clinical')
             };
 
             $scope.handleNepaliDateUpdate = function (consultation) {
-                console.log(consultation);
-                console.log("hehehehehehehhehehehe")
                 var conditionDateNepali = consultation.condition.onSetDateNepaliDate;
                 if (conditionDateNepali) {
                     var dateStr = conditionDateNepali.split("-");
                     var dateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
-                    console.log(dateAD)
                     var date = new Date(dateAD);
-                    var month = date.getMonth() + 1;
-                    if (month < 10) {
-                        month = '0' + month;
-                    }
-                    var conditionDate = date.getFullYear() + "-" + month + "-" + date.getDate();
-                    console.log(conditionDate);
-                    consultation.condition.onSetDate = conditionDate;
+                    consultation.condition.onSetDate = dateAD;
                 }
             };
 
