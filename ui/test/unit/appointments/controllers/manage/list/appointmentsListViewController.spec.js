@@ -1126,31 +1126,13 @@ describe('AppointmentsListViewController', function () {
         expect(scope.colorsForListView.Missed).toBe("Orange");
     });
 
-    it('should get config value for enableAutoRefresh', function () {
+    it('should get config value for autoRefreshIntervalInSeconds', function () {
         createController();
-        expect(appDescriptor.getConfigValue).toHaveBeenCalledWith('enableAutoRefresh');
+        expect(appDescriptor.getConfigValue).toHaveBeenCalledWith('autoRefreshIntervalInSeconds');
     });
 
-
-    it('should not call interval function when enableAutoRefresh is undefined', function () {
+    it('should call interval function when autoRefreshIntervalInSeconds is defined', function () {
         appDescriptor.getConfigValue.and.callFake(function (value) {
-            if (value === 'enableAutoRefresh') {
-                return undefined;
-            }
-            return undefined;
-        });
-
-        createController();
-
-        expect(appDescriptor.getConfigValue).not.toHaveBeenCalledWith('autoRefreshIntervalInSeconds');
-        expect(interval).not.toHaveBeenCalled();
-    });
-
-    it('should call interval function when enableAutoRefresh is true', function () {
-        appDescriptor.getConfigValue.and.callFake(function (value) {
-            if (value === 'enableAutoRefresh') {
-                return true;
-            }
             if (value === 'autoRefreshIntervalInSeconds') {
                 return 10;
             }
@@ -1159,28 +1141,26 @@ describe('AppointmentsListViewController', function () {
 
         createController();
 
-        expect(appDescriptor.getConfigValue).toHaveBeenCalledWith('autoRefreshIntervalInSeconds');
         expect(interval).toHaveBeenCalled();
     });
 
-    it('should not call interval function when enableAutoRefresh is false', function () {
+    it('should not call interval function when autoRefreshIntervalInSeconds is an invalid string', function () {
         appDescriptor.getConfigValue.and.callFake(function (value) {
-            if (value === 'enableAutoRefresh') {
-                return false;
+            if (value === 'autoRefreshIntervalInSeconds') {
+                return "invalid";
             }
             return undefined;
         });
 
         createController();
 
-        expect(appDescriptor.getConfigValue).not.toHaveBeenCalledWith('autoRefreshIntervalInSeconds');
         expect(interval).not.toHaveBeenCalled();
     });
 
-    it('should cancel interval when enableAutoRefresh is true', function () {
+    it('should cancel interval when autoRefreshIntervalInSeconds is defined', function () {
         appDescriptor.getConfigValue.and.callFake(function (value) {
-            if (value === 'enableAutoRefresh') {
-                return true;
+            if (value === 'autoRefreshIntervalInSeconds') {
+                return 10;
             }
             return undefined;
         });
@@ -1192,10 +1172,10 @@ describe('AppointmentsListViewController', function () {
         expect(interval.cancel).toHaveBeenCalled();
     });
 
-    it('should not cancel interval when enableAutoRefresh is false', function () {
+    it('should not cancel interval when autoRefreshIntervalInSeconds is undefined', function () {
         appDescriptor.getConfigValue.and.callFake(function (value) {
-            if (value === 'enableAutoRefresh') {
-                return false;
+            if (value === 'autoRefreshIntervalInSeconds') {
+                return undefined;
             }
             return undefined;
         });

@@ -12,7 +12,8 @@ angular.module('bahmni.appointments')
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.searchedPatient = false;
-            var enableAutoRefresh = appService.getAppDescriptor().getConfigValue('enableAutoRefresh') || false;
+            var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
+            var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var oldPatientData = [];
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
@@ -74,7 +75,6 @@ angular.module('bahmni.appointments')
                     return;
                 }
                 var SECONDS_TO_MILLISECONDS_FACTOR = 1000;
-                var autoRefreshIntervalInSeconds = appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds');
                 var autoRefreshIntervalInMilliSeconds = autoRefreshIntervalInSeconds * SECONDS_TO_MILLISECONDS_FACTOR;
                 return $interval(setAppointmentsInAutoRefresh, autoRefreshIntervalInMilliSeconds);
             })();
