@@ -3,7 +3,8 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentsCalendarViewController', ['$scope', '$state', '$translate', 'spinner', 'appointmentsService', 'appointmentsFilter', '$rootScope', '$interval', 'appService',
         function ($scope, $state, $translate, spinner, appointmentsService, appointmentsFilter, $rootScope, $interval, appService) {
-            var enableAutoRefresh = appService.getAppDescriptor().getConfigValue('enableAutoRefresh') || false;
+            var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
+            var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var init = function () {
                 $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
                 $scope.$on('filterClosedOpen', function (event, args) {
@@ -116,20 +117,22 @@ angular.module('bahmni.appointments')
                 }
             };
 
+            var setAppointmentsInAutoRefresh = function () {
+                if (!autoRefreshStatus) {
+                    return;
+                }
+                var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
+                var params = {forDate: viewDate};
+                setAppointments(params);
+            };
+
             var autoRefresh = (function () {
                 if (!enableAutoRefresh) {
                     return;
                 }
                 var SECONDS_TO_MILLISECONDS_FACTOR = 1000;
-                var autoRefreshIntervalInSeconds = appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds');
                 var autoRefreshIntervalInMilliSeconds = autoRefreshIntervalInSeconds * SECONDS_TO_MILLISECONDS_FACTOR;
-                return $interval(function () {
-                    if (autoRefreshStatus) {
-                        var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
-                        var params = {forDate: viewDate};
-                        setAppointments(params);
-                    }
-                }, autoRefreshIntervalInMilliSeconds);
+                return $interval(setAppointmentsInAutoRefresh, autoRefreshIntervalInMilliSeconds);
             })();
 
             $scope.$on('$destroy', function () {
