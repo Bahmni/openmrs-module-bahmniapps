@@ -280,10 +280,8 @@ Bahmni.Common.Util.DateUtil = {
         var currentNepaliDate = calendarFunctions.getBsDateByAdDate(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
         return calendarFunctions.bsDateFormat("%y-%m-%d", currentNepaliDate.bsYear, currentNepaliDate.bsMonth, currentNepaliDate.bsDate);
     },
-    isValid(dateRepresentation){
-        if (!moment(dateRepresentation).isValid()) {
-            return false;
-        }
-        return true;
+    isValid: function(date) {
+        var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
+        return moment(dateRepresentation).isValid();
     }
 };
