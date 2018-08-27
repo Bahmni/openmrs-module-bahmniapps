@@ -4,7 +4,6 @@ angular.module('bahmni.clinical')
     .directive('diseaseTemplate', ['appService', function (appService) {
         var controller = function ($scope) {
             $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
-            console.log($scope)
             $scope.dateTimeDisplayConfig = function (obsTemplate) {
                 var showDate = false;
                 var showTime = false;
