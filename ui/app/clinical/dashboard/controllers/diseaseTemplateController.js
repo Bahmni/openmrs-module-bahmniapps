@@ -6,7 +6,6 @@ angular.module('bahmni.clinical')
             var patient = $scope.patient;
             $scope.showDateTimeForIntake = false;
             $scope.showTimeForProgress = true;
-            console.log($scope)
             $scope.dialogData = {
                 "diseaseTemplateName": $scope.section.templateName,
                 "patient": patient,
