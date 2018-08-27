@@ -4,6 +4,7 @@ angular.module('bahmni.admin')
     .controller('CSVUploadController', ['$scope', 'FileUploader', 'appService', 'adminImportService', 'spinner',
         function ($scope, FileUploader, appService, adminImportService, spinner) {
             var adminCSVExtension = appService.getAppDescriptor().getExtensionById("bahmni.admin.csv");
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             var patientMatchingAlgorithm = adminCSVExtension.extensionParams.patientMatchingAlgorithm || "";
             var urlMap = {
                 "concept": {name: "Concept", url: Bahmni.Common.Constants.conceptImportUrl},
