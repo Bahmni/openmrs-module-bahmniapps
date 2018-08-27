@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('visitPaginator', ['$state', function ($state) {
+    .directive('visitPaginator', ['$state', 'appService', function ($state, appService) {
         var link = function ($scope) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             var visits = _.clone($scope.visits).reverse();
 
             var visitIndex = _.findIndex(visits, function (visitHistoryEntry) {
