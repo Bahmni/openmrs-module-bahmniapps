@@ -27,7 +27,8 @@
                     <span>{{::drugOrder.getFrequency()}}</span>
                 </td>
                 <td class="days">
-                    <span>{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
+                    <span ng-if="!displayNepaliDates">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
+                    <span ng-if="displayNepaliDates">{{::drugOrder.effectiveStartDate | npDate}}</span>
                 </td>
 
                 <td>

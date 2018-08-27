@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('treatmentChart', function () {
+    .directive('treatmentChart', ['appService', function (appService) {
         var controller = function ($scope) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             $scope.atLeastOneDrugForDay = function (day) {
                 var atLeastOneDrugForDay = false;
                 $scope.ipdDrugOrders.getIPDDrugs().forEach(function (drug) {
@@ -27,4 +28,4 @@ angular.module('bahmni.clinical')
             },
             controller: controller
         };
-    });
+    }]);
