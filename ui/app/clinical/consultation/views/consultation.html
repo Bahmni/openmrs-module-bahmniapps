@@ -34,7 +34,8 @@
                                 </div>
                                 <div ng-show="diagnosis.firstDiagnosis">
                                     <span class="time-stamp">
-                                        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                                        <span class="date" ng-if="!displayNepaliDates">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                                        <span class="date" ng-if="displayNepaliDates">{{diagnosis.firstDiagnosis.diagnosisDateTime | npDate}}</span>
                                         <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniTime}}</span>
                                     </span>
                                     <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">
@@ -91,7 +92,8 @@
                                 </div>
                                 <div ng-show="diagnosis.firstDiagnosis">
                                     <span class="time-stamp">
-                                        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                                        <span class="date" ng-if="!displayNepaliDates">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                                        <span class="date" ng-if="displayNepaliDates">{{diagnosis.firstDiagnosis.diagnosisDateTime | npDate}}</span>
                                         <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniTime}}</span>
                                     </span>
                                     <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">
@@ -148,7 +150,8 @@
                                 </div>
                                 <div ng-show="diagnosis.firstDiagnosis">
                                     <span class="time-stamp">
-                                        <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                                        <span class="date" ng-if="!displayNepaliDates">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                                        <span class="date" ng-if="displayNepaliDates">{{diagnosis.firstDiagnosis.diagnosisDateTime | npDate}}</span>
                                         <span class="time">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniTime}}</span>
                                     </span>
                                     <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">
@@ -247,7 +250,8 @@
             <ul class="block-content">
                 <li>
                     <div class="expander-row row-click">
-                        <span class="disposition-state">{{consultation.disposition.conceptName}} <span ng-if="consultation.disposition.dispositionDateTime">on</span> {{consultation.disposition.dispositionDateTime | bahmniDateTime }}</span>
+                        <span class="disposition-state" ng-if="!displayNepaliDates">{{consultation.disposition.conceptName}} <span ng-if="consultation.disposition.dispositionDateTime">on</span> {{consultation.disposition.dispositionDateTime | bahmniDateTime }}</span>
+                        <span class="disposition-state" ng-if="displayNepaliDates">{{consultation.disposition.conceptName}} <span ng-if="consultation.disposition.dispositionDateTime">on</span> {{consultation.disposition.dispositionDateTime | npDateTime }}</span>
                         <button class="toggle fr" ng-class="{'has-notes': consultation.disposition.additionalObs[0].value}" toggle="disposition.show">
                             <i class="fa fa-plus-circle"></i>
                             <i class="fa fa-minus-circle"></i>
