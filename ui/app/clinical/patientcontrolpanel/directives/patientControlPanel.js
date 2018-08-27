@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-.directive('patientControlPanel', ['$q', '$rootScope', '$stateParams', '$state', 'contextChangeHandler', 'encounterService', 'configurations', 'clinicalAppConfigService', '$bahmniCookieStore',
-    function ($q, $rootScope, $stateParams, $state, contextChangeHandler, encounterService, configurations, clinicalAppConfigService, $bahmniCookieStore) {
+.directive('patientControlPanel', ['$q', '$rootScope', '$stateParams', '$state', 'contextChangeHandler', 'encounterService', 'configurations', 'clinicalAppConfigService', '$bahmniCookieStore', 'appService',
+    function ($q, $rootScope, $stateParams, $state, contextChangeHandler, encounterService, configurations, clinicalAppConfigService, $bahmniCookieStore, appService) {
         var controller = function ($scope) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             $scope.activeVisit = $scope.visitHistory.activeVisit;
 
             var DateUtil = Bahmni.Common.Util.DateUtil;
