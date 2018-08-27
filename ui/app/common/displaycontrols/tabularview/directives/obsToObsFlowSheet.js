@@ -1,10 +1,12 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsToObsFlowSheet', ['$translate', 'spinner', 'observationsService', 'conceptSetService', '$q', 'conceptSetUiConfigService',
-    function ($translate, spinner, observationsService, conceptSetService, $q, conceptSetUiConfigService) {
+angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsToObsFlowSheet', ['$translate', 'spinner', 'observationsService', 'conceptSetService', '$q', 'conceptSetUiConfigService', 'appService',
+    function ($translate, spinner, observationsService, conceptSetService, $q, conceptSetUiConfigService, appService) {
         var link = function ($scope, element) {
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardConfig : $scope.section.expandedViewConfig;
             $scope.isEditable = $scope.config.isEditable;
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
+            
             var patient = $scope.patient;
 
             var getTemplateDisplayName = function () {
