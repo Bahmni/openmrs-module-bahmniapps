@@ -4,6 +4,7 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardAllDiseaseTemplateController', ['$scope', 'diseaseTemplateService', 'spinner', 'appService', '$stateParams',
         function ($scope, diseaseTemplateService, spinner, appService, $stateParams) {
             var init = function () {
+                $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 $scope.diseaseName = $scope.ngDialogData.diseaseTemplateName;
                 $scope.patient = $scope.ngDialogData.patient;
                 $scope.section = $scope.ngDialogData.section;

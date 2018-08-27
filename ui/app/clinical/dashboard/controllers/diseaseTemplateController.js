@@ -1,10 +1,12 @@
 'use strict';
 angular.module('bahmni.clinical')
-    .controller('DiseaseTemplateController', ['$scope',
-        function ($scope) {
+    .controller('DiseaseTemplateController', ['$scope', 'appService',
+        function ($scope, appService) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             var patient = $scope.patient;
             $scope.showDateTimeForIntake = false;
             $scope.showTimeForProgress = true;
+            console.log($scope)
             $scope.dialogData = {
                 "diseaseTemplateName": $scope.section.templateName,
                 "patient": patient,
