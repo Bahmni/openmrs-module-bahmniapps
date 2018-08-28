@@ -44,7 +44,8 @@
                 <p ng-if="image.commentOnUpload" class="image-preview-notes" ng-class="{'hide': accessImpression}">{{image.commentOnUpload}}</p>
                 <p>
                     <span class="image-provider">{{image.providerName}}</span>
-                    <span class="image-date">{{image.date | bahmniDateTime}}</span>
+                    <span ng-if="!displayNepaliDates" class="image-date">{{image.date | bahmniDateTime}}</span>
+                    <span ng-if="displayNepaliDates" class="image-date">{{image.date | npDateTime}}</span>
                     <span ng-if="getTotalLength() > 1" class="image-index">({{getCurrentIndex()}} of {{getTotalLength()}})</span>
                 </p>
             </div>
@@ -60,14 +61,18 @@
         </div>
         <section ng-show="isActive($index,album.tag)">
             <div ng-if="image.commentOnUpload">
-                <pre class="notes inline-notes"><strong>{{image.providerName}} ({{image.date |
+                <pre ng-if="!displayNepaliDates" class="notes inline-notes"><strong>{{image.providerName}} ({{image.date |
                     bahmniDate}}):</strong>{{image.commentOnUpload}}</pre>
+                <pre ng-if="displayNepaliDates" class="notes inline-notes"><strong>{{image.providerName}} ({{image.date |
+                    npDate}}):</strong>{{image.commentOnUpload}}</pre>
             </div>
 
             <ul class="impression">
                 <li ng-repeat="obs in image.sourceObs">
-                    <pre class="notes inline-notes"><strong>{{obs.providers[0].name}} ({{obs.observationDateTime |
+                    <pre ng-if="!displayNepaliDates" class="notes inline-notes"><strong>{{obs.providers[0].name}} ({{obs.observationDateTime |
                         bahmniDate}}):</strong>{{obs.value}}</pre>
+                    <pre ng-if="displayNepaliDates" class="notes inline-notes"><strong>{{obs.providers[0].name}} ({{obs.observationDateTime |
+                        npDate}}):</strong>{{obs.value}}</pre>
                 </li>
             </ul>
             <div class="impression-control">

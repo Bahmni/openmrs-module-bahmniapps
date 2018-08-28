@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('bahmni.common.gallery')
-    .directive('bmGalleryPane', ['$rootScope', '$document', 'observationsService', 'encounterService', 'spinner', 'configurations', 'ngDialog',
-        function ($rootScope, $document, observationsService, encounterService, spinner, configurations, ngDialog) {
+    .directive('bmGalleryPane', ['$rootScope', '$document', 'observationsService', 'encounterService', 'spinner', 'configurations', 'ngDialog', 'appService',
+        function ($rootScope, $document, observationsService, encounterService, spinner, configurations, ngDialog, appService) {
             var $body = $document.find('body');
-
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
+            
             $rootScope.$on('$stateChangeStart', function () {
                 close();
             });
