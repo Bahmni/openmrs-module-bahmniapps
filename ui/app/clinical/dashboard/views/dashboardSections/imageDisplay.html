@@ -6,8 +6,11 @@
                 <section class="block hierarchy">
                     <ul class="form-field">
                         <li ng-repeat="(key, value) in ngDialogData">
-                            <span class="tree-list-item row-click toggle-container concept-set-container-view" ng-if="value[0].concept.conceptClass != 'Image'">
+                            <span class="tree-list-item row-click toggle-container concept-set-container-view" ng-if="value[0].concept.conceptClass != 'Image' && !displayNepaliDates">
                                 {{key}} :  {{value[0].value | bahmniDate}}
+                            </span>
+                            <span class="tree-list-item row-click toggle-container concept-set-container-view" ng-if="value[0].concept.conceptClass != 'Image' && displayNepaliDates">
+                                {{key}} :  {{value[0].value | npDate}}
                             </span>
                         </li>
                         <li ng-repeat="(key, value) in ngDialogData" style="overflow:scroll;">
