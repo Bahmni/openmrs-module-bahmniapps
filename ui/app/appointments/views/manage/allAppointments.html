@@ -8,7 +8,7 @@
             <a ng-class="{'active': getCurrentTabName() === 'calendar'}" ng-if="enableCalendarView && !isSearchEnabled" ng-click="navigateTo('calendar')">
                 {{::'CALENDAR_VIEW' | translate}}
             </a>
-            <a show-if-privilege="{{manageAppointmentPrivilege}}" class="add-app-btn" ng-click="navigateTo(getCurrentTabName() + '.new')">
+            <a show-if-privilege="{{manageAppointmentPrivilege}},{{selfAppointmentPrivilege}}" class="add-app-btn" ng-click="navigateTo(getCurrentTabName() + '.new')">
                 {{::'ADD_NEW_APPOINTMENT' | translate }}
             </a>
         </p>
