@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsCreateController', ['$scope', '$q', '$window', '$state', '$translate', 'spinner', 'patientService',
+    .controller('AppointmentsCreateController', ['$scope', '$rootScope', '$q', '$window', '$state', '$translate', 'spinner', 'patientService',
         'appointmentsService', 'appointmentsServiceService', 'messagingService',
         'ngDialog', 'appService', '$stateParams', 'appointmentCreateConfig', 'appointmentContext', '$http', 'sessionService',
-        function ($scope, $q, $window, $state, $translate, spinner, patientService, appointmentsService, appointmentsServiceService,
+        function ($scope, $rootScope, $q, $window, $state, $translate, spinner, patientService, appointmentsService, appointmentsServiceService,
                   messagingService, ngDialog, appService, $stateParams, appointmentCreateConfig, appointmentContext, $http, sessionService) {
             $scope.isFilterOpen = $stateParams.isFilterOpen;
             $scope.showConfirmationPopUp = true;
@@ -14,7 +14,27 @@ angular.module('bahmni.appointments')
             $scope.timeRegex = Bahmni.Appointments.Constants.regexForTime;
             $scope.warning = {};
             $scope.minDuration = Bahmni.Appointments.Constants.minDurationForAppointment;
+
+            var isCurrentUserHasPrivilege = function (privilege) {
+                return !_.isUndefined(_.find($rootScope.currentUser.privileges, function (currentUserPrivilege) {
+                    return currentUserPrivilege.name === privilege;
+                }));
+            };
+
+            var getProviderForAppointmentPrivilegeUser = function (providers) {
+                if(isCurrentUserHasPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments)){
+                    return providers;
+                }
+                if (isCurrentUserHasPrivilege(Bahmni.Appointments.Constants.privilegeSelfAppointments)) {
+                    return _.filter(providers, function (provider) {
+                        return provider.uuid === $rootScope.currentProvider.uuid;
+                    });
+                }
+                return providers;
+            };
+
             $scope.appointmentCreateConfig = appointmentCreateConfig;
+            $scope.appointmentCreateConfig.providers = getProviderForAppointmentPrivilegeUser(appointmentCreateConfig.providers);
             $scope.enableEditService = appService.getAppDescriptor().getConfigValue('isServiceOnAppointmentEditable');
             $scope.showStartTimes = [];
             $scope.showEndTimes = [];
