@@ -22,7 +22,8 @@
                     <th ng-repeat="header in regimen.headers">{{getAbbreviation(header)}}</th>
                     <tr class="regimen-row" ng-repeat="row in regimen.rows">
                         <td class="current-month" ng-if="isMonthNumberRequired()">{{row.month}}</td>
-                        <td class="regimen-date">{{row.date | bahmniDate}}</td>
+                        <td class="regimen-date" ng-if="!displayNepaliDates" >{{row.date | bahmniDate}}</td>
+                        <td class="regimen-date" ng-if="displayNepaliDates" >{{row.date | npDate}}</td>
                         <td class="regimen-drug" id="{{(header.name).toValidId()}}" ng-repeat="header in regimen.headers" ng-class="{'stopped': row.drugs[header.name] == 'Stop', 'error': row.drugs[header.name] == 'Error'}">
                             <span ng-if="row.drugs[header.name] == 'Stop'">{{row.drugs[header.name]}}</span>
                             <span ng-if="row.drugs[header.name] != 'Stop'">{{ row.drugs[header.name] | decimalFilter}}</span>
