@@ -214,26 +214,7 @@ Bahmni.ConceptSet.Observation.prototype = {
     isButtonRadio: function () {
         return this.conceptUIConfig.buttonRadio;
     },
-
-    isNepaliDateFieldEnabled: function(){
-        //TODO check if nepali calendar is enabled
-        return this.getDataTypeName() === "Date" && true == true;
-    },
-
-    isNepaliDateTimeFieldEnabled: function(){
-        //TODO check if nepali calendar is enabled
-        return this.getDataTypeName() === "Datetime" && true == true;
-    },
-
     getControlType: function () {
-        if (this.isNepaliDateFieldEnabled()) {
-            return "nepaliDate";
-        }
-
-        if (this.isNepaliDateTimeFieldEnabled()) {
-            return "nepaliDateTime";
-        }
-
         if (this.hidden) {
             return "hidden";
         }
