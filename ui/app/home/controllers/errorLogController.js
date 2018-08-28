@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('ErrorLogController', ['$q', 'spinner', 'offlineService', 'offlineDbService', 'androidDbService', '$scope',
-        function ($q, spinner, offlineService, offlineDbService, androidDbService, $scope) {
+    .controller('ErrorLogController', ['$q', 'spinner', 'offlineService', 'offlineDbService', 'androidDbService', '$scope', 'appService',
+        function ($q, spinner, offlineService, offlineDbService, androidDbService, $scope, appService) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             $scope.errorLogs = [];
             $scope.showErrorLog = true;
             if (offlineService.isOfflineApp()) {
