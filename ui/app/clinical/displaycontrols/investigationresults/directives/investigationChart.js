@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('investigationChart', function () {
+    .directive('investigationChart', ['appService', function (appService) {
         var controller = function ($scope) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             var defaultParams = {
                 noLabOrdersMessage: "No Lab Orders for this patient."
             };
@@ -28,4 +29,4 @@ angular.module('bahmni.clinical')
             },
             templateUrl: "displaycontrols/investigationresults/views/investigationChart.html"
         };
-    });
+    }]);

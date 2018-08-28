@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('investigationTableRow', function () {
+    .directive('investigationTableRow', ['appService', function (appService) {
         var controller = function ($scope) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             var urlFrom = function (fileName) {
                     return Bahmni.Common.Constants.labResultUploadedFileNameUrl + fileName;
                 }, defaultParams = {
@@ -42,4 +43,4 @@ angular.module('bahmni.clinical')
             },
             templateUrl: "displaycontrols/investigationresults/views/investigationTableRow.html"
         };
-    });
+    }]);

@@ -9,7 +9,8 @@
                     <i class="fa fa-caret-down"></i>
                     <span class="hidden-print">Accession at </span>
                     <span class="visible-print">Sample at </span>
-                    <span bo-text="getAccessionDetailsFrom(labOrderResults).accessionDateTime | bahmniDateTime"></span>
+                    <span ng-if="!displayNepaliDates" bo-text="getAccessionDetailsFrom(labOrderResults).accessionDateTime | bahmniDateTime"></span>
+                    <span ng-if="displayNepaliDates" bo-text="getAccessionDetailsFrom(labOrderResults).accessionDateTime | npDateTime"></span>
                     <button class="toggle-btn fr" ng-if="showAccessionNotes(labOrderResults)" ng-click="toggle(labOrderResults)">
                         <i class="fa fa-envelope" ng-hide="!labOrders.show"></i>
                         <i class="fa fa-envelope-alt" ng-show="!labOrders.show"></i>
