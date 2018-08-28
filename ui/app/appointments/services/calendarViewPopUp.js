@@ -20,6 +20,7 @@ angular.module('bahmni.appointments')
                 popUpScope.scope = scope;
                 popUpScope.patient = scope.patientList.length === 1 ? scope.patientList[0] : undefined;
                 popUpScope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
+                popUpScope.selfAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeSelfAppointments;
                 popUpScope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
                 popUpScope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
 
@@ -45,6 +46,23 @@ angular.module('bahmni.appointments')
 
                 var closeConfirmBox = function (closeConfirmBox) {
                     closeConfirmBox();
+                };
+
+                var isCurrentUserHavePrivilege = function (privilege) {
+                    return !_.isUndefined(_.find($rootScope.currentUser.privileges, function (userPrivilege) {
+                        return userPrivilege.name === privilege;
+                    }));
+                };
+
+                popUpScope.isUserAllowedToPerform = function () {
+                    if (isCurrentUserHavePrivilege(popUpScope.manageAppointmentPrivilege)) {
+                        return true;
+                    }
+                    else if (isCurrentUserHavePrivilege(popUpScope.selfAppointmentPrivilege)) {
+                        return _.isNull(scope.appointments[0].provider) ||
+                            scope.appointments[0].provider.uuid === $rootScope.currentProvider.uuid
+                    }
+                    return false;
                 };
 
                 var changeStatus = function (appointment, toStatus, onDate, closeConfirmBox) {
@@ -90,6 +108,9 @@ angular.module('bahmni.appointments')
 
                 popUpScope.isValidAction = function (appointment, action) {
                     if (!appointment) {
+                        return false;
+                    }
+                    if (!popUpScope.isUserAllowedToPerform()) {
                         return false;
                     }
                     var allowedActions = popUpScope.allowedActionsByStatus.hasOwnProperty(appointment.status) ? popUpScope.allowedActionsByStatus[appointment.status] : [];
