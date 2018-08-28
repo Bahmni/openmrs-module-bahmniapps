@@ -1,7 +1,7 @@
 'use strict';
 
 describe("AppointmentsCreateController", function () {
-    var $scope, controller, appointmentsServiceService, q, $window, appService, ngDialog, messagingService, $state,
+    var $scope, rootScope, controller, appointmentsServiceService, q, $window, appService, ngDialog, messagingService, $state,
         spinner, appointmentsService, patientService, $translate, appDescriptor, $stateParams, appointmentCreateConfig,
         appointmentContext, $http;
 
@@ -44,6 +44,7 @@ describe("AppointmentsCreateController", function () {
         $stateParams = {};
         appointmentCreateConfig = {};
         appointmentContext = {};
+        rootScope = {currentUser: {privileges: []}};
     });
 
     var createController = function () {
@@ -56,6 +57,7 @@ describe("AppointmentsCreateController", function () {
         });
         return controller('AppointmentsCreateController', {
             $scope: $scope,
+            $rootScope: rootScope,
             $q: q,
             $state: $state,
             appointmentsServiceService: appointmentsServiceService,
@@ -976,6 +978,48 @@ describe("AppointmentsCreateController", function () {
         appointmentContext = {};
         appointmentCreateConfig.providers = allAvailableProviders;
         createController();
+        expect(appointmentCreateConfig.providers.length).toBe(2);
+        expect(appointmentCreateConfig.providers[0].name).toBe("superman");
+        expect(appointmentCreateConfig.providers[1].name).toBe("mahmoud_h");
+    });
+
+    it('should return current user if the user has selfAppointments privilege', function () {
+        var allAvailableProviders = [{name: 'mahmoud_h', uuid: '2'}, {name: 'currentUser', uuid: 'currentUserUuid'}];
+        appointmentCreateConfig.providers = allAvailableProviders;
+        rootScope = {
+            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeSelfAppointments}]},
+            currentProvider: {uuid: 'currentUserUuid'}
+        };
+
+        createController();
+
+        expect(appointmentCreateConfig.providers.length).toBe(1);
+        expect(appointmentCreateConfig.providers[0].name).toBe('currentUser');
+    });
+
+    it('should return all providers if the current user has manageAppointments privilege', function () {
+        var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
+        appointmentCreateConfig.providers = allAvailableProviders;
+        rootScope = {
+            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}]}
+        };
+
+        createController();
+
+        expect(appointmentCreateConfig.providers.length).toBe(2);
+        expect(appointmentCreateConfig.providers[0].name).toBe("superman");
+        expect(appointmentCreateConfig.providers[1].name).toBe("mahmoud_h");
+    });
+
+    it('should return all providers if the current user does not have selfAppointments privilege', function () {
+        var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
+        appointmentCreateConfig.providers = allAvailableProviders;
+        rootScope = {
+            currentUser: {privileges: []}
+        };
+
+        createController();
+
         expect(appointmentCreateConfig.providers.length).toBe(2);
         expect(appointmentCreateConfig.providers[0].name).toBe("superman");
         expect(appointmentCreateConfig.providers[1].name).toBe("mahmoud_h");
