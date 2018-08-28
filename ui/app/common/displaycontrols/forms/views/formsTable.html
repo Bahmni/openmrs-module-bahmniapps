@@ -19,8 +19,10 @@
                         <li ng-repeat="data in formData" class="clearfix">
                             <span>{{getDisplayName(data)}}</span>
                        <span class="fr formDataTime" ng-class="{'formDataDate': showFormsDate }">
-                            <span ng-hide="::showFormsDate">{{data.obsDatetime | bahmniDateTime}}</span>
-                            <span ng-show="::showFormsDate">{{data.obsDatetime | bahmniDate}}</span>
+                            <span ng-hide="::showFormsDate" ng-if="!displayNepaliDates">{{data.obsDatetime | bahmniDateTime}}</span>
+                            <span ng-hide="::showFormsDate" ng-if="displayNepaliDates">{{data.obsDatetime | npDateTime}}</span>
+                            <span ng-show="::showFormsDate" ng-if="!displayNepaliDates">{{data.obsDatetime | bahmniDate}}</span>
+                            <span ng-show="::showFormsDate" ng-if="displayNepaliDates">{{data.obsDatetime | npDate}}</span>
                             <span class="has-link fl formDataEdit"
                                   ng-dialog="../common/displaycontrols/forms/views/showObservationFormData.html"
                                   ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-view"
