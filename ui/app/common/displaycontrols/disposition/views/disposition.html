@@ -10,6 +10,9 @@
                 <td class="value">
                     {{::disposition.dispositionDateTime| bahmniDate}}
                 </td>
+                <td class="value" ng-if="">
+                    {{::disposition.dispositionDateTime| bahmniDate}}
+                </td>
                 <td class="toggle-btn" ng-if="::showDetailsButton(disposition)" toggle="disposition.show">
                     <button class="toggle fr" ng-class="::{'has-notes': getNotes(disposition)}">
                         <i class="fa fa-angle-down"></i>
