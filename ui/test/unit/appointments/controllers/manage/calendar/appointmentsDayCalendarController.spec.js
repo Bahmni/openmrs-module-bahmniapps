@@ -99,7 +99,7 @@ describe('AppointmentsDayCalendarController', function () {
         expect(scope.uiConfig.calendar.selectable).toBe(true)
     });
 
-    it('should go to new appointment state on createAppointment only if the user has Manage privilege', function () {
+    it('should go to new appointment state on createAppointment even if the user has Manage privilege', function () {
         rootScope.currentUser = {privileges: [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}]};
         createController();
         var startDateTime = moment();
@@ -110,6 +110,18 @@ describe('AppointmentsDayCalendarController', function () {
         expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new',
             $state.params,{reload:false});
     });
+
+    it('should go to new appointment state on createAppointment even if the user has selfManage privilege', function () {
+        rootScope.currentUser = {privileges: [{name: Bahmni.Appointments.Constants.privilegeSelfAppointments}]};
+        createController();
+        $state.params = {};
+
+        scope.createAppointment(null, null, undefined, undefined, null);
+
+        expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new',
+            $state.params,{reload:false});
+    });
+
 
     it('should not go to new appointment state on createAppointment if the user does not have Manage privilege', function () {
         rootScope.currentUser = {privileges: []};
