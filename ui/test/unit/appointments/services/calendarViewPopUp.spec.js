@@ -309,9 +309,13 @@ describe('CalendarViewPopUp', function () {
                 return value;
             });
             var config = {scope: {appointments: []}};
+            rootScope.currentUser = {privileges: [{
+                name: Bahmni.Appointments.Constants.privilegeManageAppointments
+            }]};
             calendarViewPopUp(config);
             expect(popUpScope.allowedActionsByStatus).toEqual({});
             var appointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
+
             expect(popUpScope.isValidAction(appointment, 'Completed')).toBeFalsy();
         });
 
@@ -323,8 +327,12 @@ describe('CalendarViewPopUp', function () {
                 return value;
             });
             var config = {scope: {appointments: []}};
+            rootScope.currentUser = {privileges: [{
+                    name: Bahmni.Appointments.Constants.privilegeManageAppointments
+                }]};
             calendarViewPopUp(config);
             var appointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
+
             expect(popUpScope.isValidAction(appointment, 'Completed')).toBeTruthy();
         });
 
@@ -336,9 +344,77 @@ describe('CalendarViewPopUp', function () {
                 return value;
             });
             var config = {scope: {appointments: []}};
+            rootScope.currentUser = {privileges: [{
+                    name: Bahmni.Appointments.Constants.privilegeManageAppointments
+                }]};
             calendarViewPopUp(config);
             var appointment = {uuid: 'appointmentUuid', status: 'Scheduled'};
+
             expect(popUpScope.isValidAction(appointment, 'Completed')).toBeFalsy();
         });
+
+        it('should return false if user does not have the required privileges', function () {
+            var config = {scope: {appointments: []}};
+            rootScope.currentUser = {privileges: []};
+            calendarViewPopUp(config);
+            var appointment = {};
+
+            expect(popUpScope.isValidAction(appointment, 'Completed')).toBeFalsy();
+        });
+
     });
+
+    describe('isUserAllowedToPerform', function () {
+        it('should return true if currentUser has manageAppointments privilege', function () {
+            var config = {scope: {appointments: []}};
+            rootScope.currentUser = {privileges: [{
+                    name: Bahmni.Appointments.Constants.privilegeManageAppointments
+                }]};
+            calendarViewPopUp(config);
+
+            expect(popUpScope.isUserAllowedToPerform()).toBeTruthy();
+        });
+
+        it('should return false if currentUser does not have manage/selfAppointment privileges', function () {
+            var config = {scope: {appointments: []}};
+            rootScope.currentUser = {privileges: []};
+            calendarViewPopUp(config);
+
+            expect(popUpScope.isUserAllowedToPerform()).toBeFalsy();
+        });
+
+        it('should return true if currentUser has selfAppointment privilege and selected appointment\'s provider is null', function () {
+            var config = {scope: {appointments: [
+                        {
+                            patient: {uuid: 'patientUuid'},
+                            provider: null
+                        }
+                    ]}};
+            rootScope.currentUser = {privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeSelfAppointments}
+                ]};
+            calendarViewPopUp(config);
+
+            expect(popUpScope.isUserAllowedToPerform()).toBeTruthy();
+        });
+
+        it('should return true if currentUser has selfAppointment privilege and is the provider of the selected appointment', function () {
+            var config = {scope: {appointments: [
+                        {
+                            patient: {uuid: 'patientUuid'},
+                            provider: {uuid: 'providerUuid'}
+                        }
+                    ]}};
+            rootScope.currentUser = {privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeSelfAppointments}
+                ]};
+            rootScope.currentProvider = {uuid: 'providerUuid'};
+            calendarViewPopUp(config);
+
+            expect(popUpScope.isUserAllowedToPerform()).toBeTruthy();
+        });
+    });
+
+
+
 });
