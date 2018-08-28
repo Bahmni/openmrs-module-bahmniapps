@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.uicontrols.programmanagment')
     .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService',
-        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox',
+        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox','appService',
         function ($scope, retrospectiveEntryService, $window, programService,
-                  spinner, messagingService, $stateParams, $q, confirmBox) {
+                  spinner, messagingService, $stateParams, $q, confirmBox, appService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
@@ -14,6 +14,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.outComesForProgram = [];
             $scope.configName = $stateParams.configName;
             $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             var id = "#programEnrollmentContainer";
 
             var updateActiveProgramsList = function () {
