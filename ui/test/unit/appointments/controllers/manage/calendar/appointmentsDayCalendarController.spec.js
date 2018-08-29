@@ -111,15 +111,34 @@ describe('AppointmentsDayCalendarController', function () {
             $state.params,{reload:false});
     });
 
-    it('should go to new appointment state on createAppointment even if the user has selfManage privilege', function () {
-        rootScope.currentUser = {privileges: [{name: Bahmni.Appointments.Constants.privilegeSelfAppointments}]};
+    it('should go to new appointment state on createAppointment even if the current user has selfManage privilege and current user is the provider', function () {
+        rootScope = {
+            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeSelfAppointments}]},
+            currentProvider: {uuid: 'currentUserUuid'}
+        };
         createController();
         $state.params = {};
+        var resource = {provider: {uuid: 'currentUserUuid'}};
 
-        scope.createAppointment(null, null, undefined, undefined, null);
+        scope.createAppointment(null, null, undefined, undefined, resource);
 
         expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new',
-            $state.params,{reload:false});
+            $state.params, {reload: false});
+    });
+
+    it('should go to new appointment state on createAppointment even if the current user has selfManage privilege and the appointment has no provider', function () {
+        rootScope = {
+            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeSelfAppointments}]},
+            currentProvider: {uuid: 'currentUserUuid'}
+        };
+        createController();
+        $state.params = {};
+        var resource = {provider: {uuid: 'no-provider-uuid'}};
+
+        scope.createAppointment(null, null, undefined, undefined, resource);
+
+        expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new',
+            $state.params, {reload: false});
     });
 
 
