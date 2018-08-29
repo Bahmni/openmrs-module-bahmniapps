@@ -2,6 +2,10 @@ module.exports = function (config) {
     config.set({
         basePath: '../..',
         frameworks: ['jasmine'],
+        client: {
+            jasmine: {
+              timeoutInterval: 20000
+        },
         browsers: ['Firefox'],
         browserNoActivityTimeout: 100000,
         autoWatch: false,
