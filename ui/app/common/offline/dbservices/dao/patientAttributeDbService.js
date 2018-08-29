@@ -5,6 +5,7 @@ angular.module('bahmni.common.offline')
         var insertAttributeTypes = function (db, personAttributeTypeList) {
             var table, queries = [];
             table = db.getSchema().table('patient_attribute_type');
+            db.delete().from(table).exec();
             for (var i = 0; i < personAttributeTypeList.length; i++) {
                 var row = table.createRow({
                     'attributeTypeId': i,

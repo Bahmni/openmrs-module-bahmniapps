@@ -13,6 +13,13 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                                 return diagnoses.diagnosisStatus !== $rootScope.diagnosisStatus;
                             });
                         }
+                        $scope.isDataPresent = function () {
+                            if ($scope.allDiagnoses && $scope.allDiagnoses.length == 0) {
+                                $scope.$emit("no-data-present-event");
+                                return false;
+                            }
+                            return true;
+                        };
                     });
                 };
                 $scope.title = $scope.config.title;

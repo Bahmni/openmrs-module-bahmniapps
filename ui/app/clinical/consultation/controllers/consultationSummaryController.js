@@ -20,6 +20,12 @@ angular.module('bahmni.clinical')
 
         var groupObservations = function () {
             var allObservations = $scope.consultation.observations;
+            allObservations = _.filter(allObservations, function (obs) {
+                if ($scope.followUpConditionConcept && obs.concept.uuid === $scope.followUpConditionConcept.uuid) {
+                    return false;
+                }
+                return true;
+            });
             return new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService).groupObservations(allObservations);
         };
 

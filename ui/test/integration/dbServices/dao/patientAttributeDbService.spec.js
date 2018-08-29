@@ -28,7 +28,6 @@ describe('patientAttributeDbService tests', function () {
         var personAttributeTypeJSON = JSON.parse(readFixtures('patientAttributeType.json'));
         schemaBuilder.connect().then(function (db) {
             return patientAttributeDbService.insertAttributeTypes(db, personAttributeTypeJSON.data.results).then(function () {
-                var attributeTypeTable = db.getSchema().table('patient_attribute_type');
                 return patientAttributeDbService.getAttributeTypes(db).then(function (attributeTypeMap) {
                     return patientDbService.insertPatientData(db, patientJson).then(function (uuid) {
                         var patient = patientJson.patient;
@@ -64,5 +63,36 @@ describe('patientAttributeDbService tests', function () {
         });
     });
 
+    it("Should delete existing attribute types before inserting new attribute types", function(done){
+        var schemaBuilder = lf.schema.create('BahmniTest', 1);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.Patient);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttribute);
+        Bahmni.Tests.OfflineDbUtils.createTable(schemaBuilder, Bahmni.Common.Offline.SchemaDefinitions.PatientAttributeType);
+        jasmine.getFixtures().fixturesPath = 'base/test/data';
+        var personAttributeTypeJSON = JSON.parse(readFixtures('patientAttributeType.json'));
+        schemaBuilder.connect().then(function (db) {
+            var attributeType = {
+                "name": "spouse name",
+                "uuid": "a10fe690-1c44-4ba8-a244-8fe51f8861f7",
+                "format": "java.lang.String"
+            };
+            var personAttributeTypeJsonBefore = JSON.parse(readFixtures('patientAttributeType.json'));
+            personAttributeTypeJsonBefore.data.results.push(attributeType);
+            return patientAttributeDbService.insertAttributeTypes(db, personAttributeTypeJsonBefore.data.results).then(function () {
+                return patientAttributeDbService.insertAttributeTypes(db, personAttributeTypeJSON.data.results).then(function () {
+                    return patientAttributeDbService.getAttributeTypes(db).then(function (attributeTypeMap) {
+                        expect(_.some(attributeTypeMap, function(attributeType){
+                            return attributeType.uuid === "35e98d04-3981-4257-a593-fadd81bfc109";
+                        })).toBeTruthy();
+                        expect(_.some(attributeTypeMap, function(attributeType){
+                            return attributeType.uuid === 'a10fe690-1c44-4ba8-a244-8fe51f8861f7';
+                        })).toBeFalsy();
+                        done();
+                    });
+                });
+            });
+        });
+        });
 
-});
+
+    });

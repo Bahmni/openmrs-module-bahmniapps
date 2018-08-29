@@ -2,7 +2,7 @@
     <div class="input-container" show-if-privilege="{{locationPickerPrivilege}}">
         <label class="retro-date-label">Location</label>
         <select ng-model="selectedLocationUuid">
-            <option ng-repeat="location in locations" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
+            <option ng-repeat="location in locations | orderBy:'display'" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
                 {{location.display}}
             </option>
         </select>

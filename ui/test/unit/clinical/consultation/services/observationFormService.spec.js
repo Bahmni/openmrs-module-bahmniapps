@@ -27,6 +27,17 @@ describe('observationFormService', function () {
         });
     });
 
+    it('should call http service to return all the forms with name, version and uuid', function () {
+        var response = { data: { resources: [{ value: 'form1' }] } };
+        http.get.and.returnValue(response);
+
+        var httpPromise = this.observationFormService.getAllForms();
+
+        expect(httpPromise).toEqual(response);
+        expect(http.get).toHaveBeenCalledWith("/openmrs/ws/rest/v1/form", { params : { v : 'custom:(version,name,uuid)' } });
+
+    });
+
     it('should call http service to return the form detail', function () {
         var response = { data: { resources: [{ value: 'form1' }] } };
         http.get.and.returnValue(response);
@@ -38,4 +49,5 @@ describe('observationFormService', function () {
             params: { v: "custom:(uuid,name)" }
         });
     });
+
 });

@@ -210,5 +210,24 @@ describe('EncounterService', function () {
         });
     });
 
+    it('should getEncountersForEncounterType be called with id,uuid,obsDatetime,value,comment to get the obs with those params in the encounters',  function (done) {
+        var patientUuid = "patientUuid";
+        var encounterTypeUuid = "encounterTypeUuid";
+        var requestParams = {
+            params: {
+                patient: patientUuid,
+                encounterType: encounterTypeUuid,
+                v: "custom:(uuid,provider,visit:(uuid,startDatetime,stopDatetime),obs:(uuid,concept:(uuid,name),groupMembers:(id,uuid,obsDatetime,value,comment)))"
+            },
+            withCredentials: true
+        };
+
+        encounterService.getEncountersForEncounterType(patientUuid, encounterTypeUuid).then(function (response) {
+            expect(mockHttp.get).toHaveBeenCalled();
+            expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.encounterUrl);
+            expect(mockHttp.get.calls.mostRecent().args[1]).toEqual(requestParams);
+            done();
+        });
+    });
 
 });

@@ -19,12 +19,22 @@ angular.module('bahmni.common.obs')
 
             var init = function () {
                 var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
-                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept(), configurations.stoppedOrderReasonConfig());
+                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept());
 
                 return encounterService.findByEncounterUuid($scope.observation.encounterUuid).then(function (reponse) {
                     var encounterTransaction = reponse.data;
                     $scope.encounter = consultationMapper.map(encounterTransaction);
-                    $scope.editableObservations = shouldEditSpecificObservation() ? [findEditableObs(ObservationUtil.flattenObsToArray($scope.encounter.observations))] : $scope.encounter.observations;
+                    $scope.editableObservations = [];
+                    if (shouldEditSpecificObservation()) {
+                        var editableObs = findEditableObs(ObservationUtil.flattenObsToArray($scope.encounter.observations));
+                        if (editableObs) {
+                            $scope.editableObservations.push(editableObs);
+                        } else {
+                            messagingService.showMessage('error', "{{'CLINICAL_FORM_EDIT_ERROR_MESSAGE_KEY' | translate}}");
+                        }
+                    } else {
+                        $scope.editableObservations = $scope.encounter.observations;
+                    }
                     $scope.patient = {uuid: $scope.encounter.patientUuid};
                 });
             };

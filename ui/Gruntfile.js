@@ -8,8 +8,6 @@ module.exports = function (grunt) {
     var yeomanConfig = {
         app: 'app',
         dist: 'dist',
-        chromeApp: '../../bahmni-offline/chrome/app/',
-        androidApp: '../../bahmni-offline/android/www/app/',
         test: 'test',
         root: '.',
         nodeModules: 'node_modules'
@@ -96,38 +94,6 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            offlineDist: {
-                files: [
-                    {
-                        dot: true,
-                        src: [
-                            '.tmp',
-                            '<%= yeoman.dist %>/*',
-                            '!<%= yeoman.dist %>/.git*'
-                        ]
-                    }
-                ]
-            },
-            chromeApp: {
-                files: [
-                    {
-                        dot: true,
-                        src: [
-                            '<%= yeoman.chromeApp %>/*'
-                        ]
-                    }
-                ]
-            },
-            androidApp: {
-                files: [
-                    {
-                        dot: true,
-                        src: [
-                            '<%= yeoman.androidApp %>/*'
-                        ]
-                    }
-                ]
-            },
             coverage: [
                 'coverage'
             ],
@@ -167,25 +133,26 @@ module.exports = function (grunt) {
             unit: {
                 configFile: 'test/config/karma.conf.js'
             },
-            chrome: {
-                configFile: 'test/config/karma.chrome.conf.js'
-            },
-            android: {
-                configFile: 'test/config/karma.android.conf.js'
-            },
             auto: {
                 configFile: 'test/config/karma.conf.js',
                 singleRun: false,
-                autoWatch: true
+                autoWatch: true,
+                reporters: ['junit', 'progress'],
+                preprocessors: {
+                    'app/common/displaycontrols/**/views/*.html': ['ng-html2js'],
+                    'app/common/concept-set/views/*.html': ['ng-html2js'],
+                    'app/common/uicontrols/**/views/*.html': ['ng-html2js'],
+                    'app/clinical/**/**/*.html': ['ng-html2js']
+                }
             }
         },
         coverage: {
             options: {
                 thresholds: {
-                    statements: 67.9,
-                    branches: 57.3,
-                    functions: 60.3,
-                    lines: 67.9
+                    statements: 68.9,
+                    branches: 58.1,
+                    functions: 61.3,
+                    lines: 68.9
                 },
                 dir: 'coverage',
                 root: '.'
@@ -334,48 +301,6 @@ module.exports = function (grunt) {
                             'clinical/config/*.json',
                             'i18n/**/*.json',
                             'lib/**/*'
-                        ]
-                    }
-                ]
-            },
-            offlineDist: {
-                files: [
-                    {
-                        expand: true,
-                        dot: true,
-                        cwd: '<%= yeoman.app %>',
-                        dest: '<%= yeoman.dist %>',
-                        src: [
-                            '*.{ico,txt,html,js}',
-                            '*/**/*'
-                        ]
-                    }
-                ]
-            },
-            chromeApp: {
-                files: [
-                    {
-                        expand: true,
-                        dot: true,
-                        cwd: '<%= yeoman.dist %>',
-                        dest: '<%= yeoman.chromeApp %>',
-                        src: [
-                            '*.{ico,txt,html,js}',
-                            '*/**/*'
-                        ]
-                    }
-                ]
-            },
-            androidApp: {
-                files: [
-                    {
-                        expand: true,
-                        dot: true,
-                        cwd: '<%= yeoman.dist %>',
-                        dest: '<%= yeoman.androidApp %>',
-                        src: [
-                            '*.{ico,txt,html,js}',
-                            '*/**/*'
                         ]
                     }
                 ]
@@ -565,26 +490,6 @@ module.exports = function (grunt) {
                         ONLINE: true
                     }
                 }
-            },
-            chrome: {
-                src: ['<%= yeoman.dist %>/**/index.html'],
-                options: {
-                    inline: true,
-                    context: {
-                        CHROME: true,
-                        OFFLINE: true
-                    }
-                }
-            },
-            android: {
-                src: '<%= yeoman.dist %>/**/index.html',
-                options: {
-                    inline: true,
-                    context: {
-                        ANDROID: true,
-                        OFFLINE: true
-                    }
-                }
             }
         }
     });
@@ -610,11 +515,6 @@ module.exports = function (grunt) {
         'usemin'
     ]);
 
-    grunt.registerTask('devbundle', [
-        'clean:offlineDist',
-        'copy:offlineDist'
-    ]);
-
     grunt.registerTask('build', [
         'npm-install',
         'bower-install',
@@ -627,15 +527,8 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('dev', ['build', 'test']);
-    grunt.registerTask('devchrome', ['devbundle', 'preprocess:chrome', 'toggleComments', 'clean:chromeApp', 'copy:chromeApp']);
-    grunt.registerTask('devandroid', ['devbundle', 'preprocess:android', 'toggleComments', 'clean:androidApp', 'copy:androidApp']);
-
     grunt.registerTask('default', ['bundle', 'uglify-and-rename', 'test', 'preprocess:web']);
-
     grunt.registerTask('web', ['test', 'preprocess:web']);
-    grunt.registerTask('chrome', ['karma:chrome', 'preprocess:chrome']);
-    grunt.registerTask('android', ['karma:android', 'preprocess:android']);
-
     grunt.registerTask('bower-install', 'install dependencies using bower', function () {
         var exec = require('child_process').exec;
         var cb = this.async();

@@ -60,7 +60,6 @@ angular.module('bahmni.reports')
         };
 
         $scope.downloadReport = function (report) {
-            console.log($scope.config);
             if (validateReport(report)) {
                 reportService.generateReport(report);
                 if (report.responseType === 'application/vnd.ms-excel-custom') {

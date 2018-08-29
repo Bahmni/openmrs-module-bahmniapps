@@ -1,8 +1,7 @@
 <section class="concept-set-conatiner block treatment-section">
     <h2 ng-if="::params.translationKey" class="section-title">{{::params | titleTranslate}} </h2>
     <div>
-        <p class="placeholder-text" ng-if="::(drugOrderSections && drugOrderSections.length == 0)">
-            {{::'NO_TREATMENTS_MESSAGE' | translate}} </p>
+        <p class="placeholder-text" ng-if="!isDataPresent()">{{::'NO_TREATMENTS_MESSAGE' | translate}} </p>
         <table ng-repeat="drugOrderSection in ::drugOrderSections | orderBy: drugOrderSection.visitDate"
                class="repeated-table drug-order-table">
             <thead>

@@ -16,7 +16,7 @@ angular.module('bahmni.common.domain')
                     if (providerData && providerData.uuid) {
                         encounter.providers.push({"uuid": providerData.uuid});
                     } else if ($rootScope.currentProvider && $rootScope.currentProvider.uuid) {
-                        encounter.providers.push({"uuid": $rootScope.currentProvider.uuid });
+                        encounter.providers.push({"uuid": $rootScope.currentProvider.uuid});
                     }
                 }
                 return encounter;
@@ -88,7 +88,7 @@ angular.module('bahmni.common.domain')
             };
 
             var stripExtraConceptInfo = function (obs) {
-                obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType };
+                obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType};
                 obs.groupMembers = obs.groupMembers || [];
                 obs.groupMembers.forEach(function (groupMember) {
                     stripExtraConceptInfo(groupMember);
@@ -136,7 +136,7 @@ angular.module('bahmni.common.domain')
                     params: {
                         patient: patientUuid,
                         encounterType: encounterTypeUuid,
-                        v: "custom:(uuid,provider,visit:(uuid,startDatetime,stopDatetime),obs:(uuid,concept:(uuid,name),groupMembers:(id,uuid,obsDatetime,value)))"
+                        v: "custom:(uuid,provider,visit:(uuid,startDatetime,stopDatetime),obs:(uuid,concept:(uuid,name),groupMembers:(id,uuid,obsDatetime,value,comment)))"
                     },
                     withCredentials: true
                 });

@@ -36,7 +36,8 @@ Bahmni.DocumentUpload.Visit = function () {
                                 visitUuid: encounter.visit.uuid,
                                 encounterUuid: encounter.uuid,
                                 provider: providerMapper.map(encounter.provider),
-                                concept: {uuid: observation.concept.uuid, editableName: conceptName, name: conceptName}
+                                concept: {uuid: observation.concept.uuid, editableName: conceptName, name: conceptName},
+                                comment: member.comment
                             }));
                         });
                     }

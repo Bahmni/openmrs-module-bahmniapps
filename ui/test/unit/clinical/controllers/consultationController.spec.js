@@ -3,8 +3,90 @@
 describe("ConsultationController", function () {
 
     var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService,
-        stateParams, appService, ngDialog, q, appDescriptor, controller, visitConfig, _window_, clinicalDashboardConfig, sessionService;
+        stateParams, appService, ngDialog, q, appDescriptor, controller, visitConfig, _window_, clinicalDashboardConfig,
+        sessionService, conditionsService, encounterService, configurations, diagnosisService, messagingService, spinnerMock;
 
+    var encounterData =     {
+            "bahmniDiagnoses": [],
+            "observations": [
+                {
+                    "encounterDateTime": 1492592793000,
+                    "visitStartDateTime": null,
+                    "groupMembers": [
+                        {
+                            "encounterDateTime": 1492592793000,
+                            "groupMembers": [],
+                            "type": "Boolean",
+                            "encounterUuid": "2ade5330-2e81-40e8-aa24-43d84ad4e3b2",
+                            "obsGroupUuid": "ad986314-114c-4770-be60-e44eacbc30dc",
+                            "conceptNameToDisplay": "Smoking History",
+                            "observationDateTime": "2017-04-19T14:38:26.000+0530",
+                            "voided": false,
+                            "concept": {
+                                "uuid": "c2a43174-c9db-4e54-8516-17372c83537f",
+                                "name": "Smoking History",
+                                "dataType": "Boolean",
+                                "shortName": "Smoking History"
+                            },
+                            "valueAsString": "Yes",
+                            "conceptUuid": "c2a43174-c9db-4e54-8516-17372c83537f",
+                            "uuid": "5d1483c0-222d-46a8-92b1-64361395dc4c",
+                            "value": true,
+                            "comment": null
+                        }
+                    ],
+                    "providers": [
+                        {
+                            "uuid": "c19c914b-a9f0-4f2b-a148-20e72788d314",
+                            "name": "nurseOne nurseOne",
+                            "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+                        }
+                    ],
+                    "encounterUuid": "2ade5330-2e81-40e8-aa24-43d84ad4e3b2",
+                    "parentConceptUuid": null,
+                    "conceptNameToDisplay": "History and Examination",
+                    "orderUuid": null,
+                    "observationDateTime": "2017-04-19T14:38:26.000+0530",
+                    "voided": false,
+                    "concept": {
+                        "uuid": "c393fd1d-3f10-11e4-adec-0800271c1b75",
+                        "name": "History and Examination",
+                        "dataType": "N/A",
+                        "shortName": "History and Examination",
+                        "conceptClass": "Misc",
+                        "set": true
+                    },
+                    "valueAsString": "true",
+                    "conceptUuid": "c393fd1d-3f10-11e4-adec-0800271c1b75",
+                    "uuid": "ad986314-114c-4770-be60-e44eacbc30dc",
+                    "value": "true"
+                }
+            ],
+            "encounterType": "FIELD",
+            "visitType": null,
+            "patientId": "GAN203128",
+            "patientUuid": "c699a5e8-c08a-451f-6793-1cf925a7a204",
+            "drugOrders": [],
+            "encounterTypeUuid": "71e22322-dda5-4194-af60-29e2202a5b3f",
+            "locationUuid": "c1f25be5-3f10-11e4-adec-0800271c1b75",
+            "encounterDateTime": "2017-04-19T14:36:33.000+0530",
+            "encounterUuid": "2ade5330-2e81-40e8-aa24-43d84ad4e3b2",
+            "visitUuid": "fe429540-c977-49ad-8ed8-6c3e39fa706d",
+            "visitTypeUuid": "c5fb299e-4dcf-41ee-a98c-210fe2d4d6d0",
+            "locationName": "Subcenter 1 (BAM)",
+            "orders": [],
+            "providers": [
+                {
+                    "uuid": "c19c914b-a9f0-4f2b-a148-20e72788d314",
+                    "name": "nurseOne nurseOne",
+                    "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+                }
+            ],
+            "context": {},
+            "extensions": {
+                "mdrtbSpecimen": []
+            }
+    };
     clinicalDashboardConfig = jasmine.createSpyObj('clinicalDashboardConfig',['isCurrentTab']);
     var boards = [
         {
@@ -51,7 +133,13 @@ describe("ConsultationController", function () {
             appService: appService,
             clinicalDashboardConfig: clinicalDashboardConfig,
             ngDialog: ngDialog,
-            visitConfig : visitConfig
+            visitConfig : visitConfig,
+            conditionsService: conditionsService,
+            encounterService: encounterService,
+            configurations : configurations,
+            diagnosisService : diagnosisService,
+            messagingService : messagingService,
+            spinner : spinnerMock
         });
     };
     var setUpServiceMocks = function () {
@@ -81,7 +169,6 @@ describe("ConsultationController", function () {
                 return "uuid";
             }
         };
-
         stateParams = {configName: 'default'};
         state = {
             name: "patient.dashboard.show",
@@ -92,6 +179,9 @@ describe("ConsultationController", function () {
                 enrollment: "somePatientProgramUuid"
             },
             go: function () {
+            },
+            transitionTo : function (state, paramOne) {
+                return {};
             }
         };
         contextChangeHandler = {
@@ -117,6 +207,41 @@ describe("ConsultationController", function () {
 
         q = jasmine.createSpyObj('q', ['all', 'defer']);
         visitConfig = {};
+        configurations = {
+            dosageFrequencyConfig: function(){
+                return {};
+            },
+            dosageInstructionConfig :function(){
+                return {};
+            },
+            consultationNoteConcept:function(){
+                return {};
+            },
+            labOrderNotesConcept: function(){
+                return {};
+            },
+            stoppedOrderReasonConfig: function(){
+                return {};
+            }
+        };
+        conditionsService = jasmine.createSpyObj('conditionalService', ['save','getConditions']);
+        conditionsService.save.and.returnValue(specUtil.simplePromise({}));
+        conditionsService.getConditions.and.returnValue([{uuid:"condition-uuid", conditionNonCoded : "fever"}]);
+        encounterService = jasmine.createSpyObj('encounterService', ['getEncounterType', 'create']);
+        encounterService.getEncounterType.and.returnValue(specUtil.simplePromise({}));
+        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        diagnosisService = jasmine.createSpyObj('diagnosisService', ['populateDiagnosisInformation']);
+        encounterService.create.and.returnValue(specUtil.createFakePromise(encounterData));
+        encounterService.create.and.callFake(function() {
+           var deferred  = Q.defer();
+            deferred.resolve({data: encounterData});
+            return deferred.promise;
+        });
+        spinnerMock = {
+            forPromise : function (promise, element) {
+                    return promise;
+            }
+        }
     };
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.offline'));
@@ -469,11 +594,87 @@ describe("ConsultationController", function () {
     });
 
     describe("save",function(){
-        it("should test presave promise",function(){
-
-            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}],preSaveHandler: new Bahmni.Clinical.Notifier(),observations:[]};
-
-            scope.save();
+        it("should save encounter data",function(done){
+            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}],preSaveHandler: new Bahmni.Clinical.Notifier(),postSaveHandler: new Bahmni.Clinical.Notifier(),observations:[], conditions: [{condition: {}}]};
+            scope.patient = {
+                uuid: "patient-uuid"
+            };
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+            scope.save({toState:{}}).then(function() {
+                expect(encounterService.create).toHaveBeenCalled();
+                expect(conditionsService.save).toHaveBeenCalledWith(scope.consultation.conditions, "patient-uuid");
+                expect(messagingService.showMessage).toHaveBeenCalledWith('info',"{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
+                done();
+            });
         });
+
+        it("should not save encounter data if there errors in form",function(done){
+            scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}],preSaveHandler: new Bahmni.Clinical.Notifier(),postSaveHandler: new Bahmni.Clinical.Notifier(),observations:[], conditions: [{condition: {}}], observationForms:[{component: {getValue : function() {
+                return {errors : {}};
+            }}}]};
+            scope.patient = {
+                uuid: "patient-uuid"
+            };
+            scope.$parent = {
+                $parent: {
+                    $broadcast: function () {
+                        return {};
+                    }
+                }
+            };
+            spyOn(scope.$parent.$parent, '$broadcast');
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
+            scope.save({toState:{}}).then(function() {
+                expect(scope.$parent.$parent.$broadcast).toHaveBeenCalledWith('event:errorsOnForm');
+                done();
+            });
+        });
+
+        it("should save conditions to consultation after encounter save", function(done) {
+            scope.consultation = {
+                discontinuedDrugs: [{dateStopped: new Date()}],
+                preSaveHandler: new Bahmni.Clinical.Notifier(),
+                postSaveHandler: new Bahmni.Clinical.Notifier(),
+                observations: []
+            };
+            var conditions = [ {uuid:undefined, conditionNonCoded : "fever"}];
+            scope.consultation["conditions"] = conditions;
+            scope.patient = {
+                uuid: "patient-uuid"
+            };
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.simplePromise(scope.consultation));
+            scope.save({toState:{}}).then(function() {
+                expect(encounterService.create).toHaveBeenCalled();
+                expect(conditionsService.save).toHaveBeenCalledWith(conditions, "patient-uuid");
+                expect(messagingService.showMessage).toHaveBeenCalledWith('info',"{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
+                expect(scope.$parent.consultation.conditions[0].uuid).toEqual("condition-uuid");
+                done();
+            });
+        });
+
+        it("should throw error if save conditions failed after encounter save", function(done) {
+            scope.consultation = {
+                discontinuedDrugs: [{dateStopped: new Date()}],
+                preSaveHandler: new Bahmni.Clinical.Notifier(),
+                postSaveHandler: new Bahmni.Clinical.Notifier(),
+                observations: [],
+                conditions: [ {uuid:undefined, conditionNonCoded : "fever"}]
+            };
+            scope.patient = {
+                uuid: "patient-uuid"
+            };
+            diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.simplePromise(scope.consultation));
+            conditionsService.save.and.callFake(function() {
+                var deferred1 = Q.defer();
+                deferred1.reject("error");
+                return deferred1.promise;
+            });
+            scope.save({toState:{}}).then(function() {
+                expect(encounterService.create).toHaveBeenCalled();
+                expect(conditionsService.save).toHaveBeenCalledWith(scope.consultation.conditions, "patient-uuid");
+                expect(scope.$parent.consultation.conditions[0].uuid).toEqual(undefined);
+                done();
+            });
+        })
     })
 });

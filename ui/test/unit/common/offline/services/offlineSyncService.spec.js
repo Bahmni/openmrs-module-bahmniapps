@@ -371,6 +371,92 @@ describe('OfflineSyncService', function () {
             expect(offlineDbService.insertAddressHierarchy.calls.count()).toBe(0);
         });
 
+        it("should skip attribute if it's attribute type is retired or attribute is voided", function () {
+            var categories = [
+                'transactionalData'
+            ];
+            var patientEvent = {
+                object: 'patientUrl',
+                category: 'patient',
+                uuid: 'uuid1'
+            };
+
+            var responsePatient = patient;
+            var attributeOne = {
+                attributeType: {
+                    uuid: "attributeUuidOne",
+                    retired: true
+                },
+                voided: false,
+                value: {
+                    display: "attributeNameOne",
+                    uuid: "attributeValueUuidTwo"
+                }
+            };
+            var attributeTwo = {
+                attributeType: {
+                    uuid: "attributeUuidTwo",
+                    retired: false
+                },
+                voided: true,
+                value: {
+                    display: "attributeNameOne",
+                    uuid: "attributeValueUuidTwo"
+                }
+            };
+            responsePatient.person.attributes.push(attributeOne);
+            responsePatient.person.attributes.push(attributeTwo);
+            var marker = {markerName: 'transactionalData', filters: [202020]};
+
+            spyOn(offlineService, 'getItem').and.returnValue(categories);
+            spyOn(offlineService, 'setItem').and.callThrough();
+            spyOn(offlineDbService, 'getMarker').and.callThrough(function(){ return {
+                then: function () {
+                    return marker;
+                }
+            }});
+            spyOn(eventLogService, 'getEventsFor').and.callFake(function (category) {
+                return {
+                    then: function (callback) {
+                        if(!marker.lastReadEventUuid)
+                        return callback({
+                            data: { events:[patientEvent], pendingEventsCount: 3}
+                        });
+                    }
+                }
+            });
+            spyOn(eventLogService, 'getDataForUrl').and.callFake(function (url) {
+                return {
+                    then: function (callback) {
+                        return callback({data: responsePatient});
+                    }
+                };
+            });
+            spyOn(offlineDbService, 'insertMarker').and.callFake(function(name,uuid,filters){
+                marker.lastReadEventUuid = uuid;
+                return {lastReadTime: new Date()}
+            });
+            spyOn(offlineDbService, 'createPatient').and.callThrough();
+
+            offlineSyncService.sync();
+            $rootScope.$digest();
+
+            expect(offlineDbService.getMarker.calls.count()).toBe(3);
+
+            categories.forEach(function (category) {
+                expect(offlineDbService.getMarker).toHaveBeenCalledWith(category);
+                expect(eventLogService.getEventsFor).toHaveBeenCalledWith(category, {
+                    markerName: category,
+                    filters: [202020]
+                });
+
+                expect(offlineDbService.insertMarker).toHaveBeenCalledWith(category, "uuid1", [202020]);
+                expect(offlineDbService.insertMarker.calls.count()).toBe(1);
+            });
+            expect(eventLogService.getDataForUrl).toHaveBeenCalledWith(patientEvent.object);
+            expect(offlineDbService.createPatient).toHaveBeenCalledWith({patient:patient});
+        });
+
 
         it('should insert log in case of error in response and should stop syncing further', function () {
             var categories = [
@@ -656,8 +742,6 @@ describe('OfflineSyncService', function () {
             expect(offlineDbService.getMarker.calls.count()).toBe(6);
         });
 
-
-
         it('should read patient events from the last read uuid for the catchment', function () {
             var categories = [
                 'transactionalData'
@@ -747,6 +831,19 @@ describe('OfflineSyncService', function () {
                 uuid: 'uuid1'
             };
 
+            var identifier = {
+                "uuid": "identifer-uuid",
+                "identifier": "SecodaryIdentifier",
+                "identifierSourceUuid": "identifier-source-uuid",
+                "identifierType": {
+                    "uuid": "identifier-type-uuid",
+                    "display": "Bahmni Sec Id",
+                    "retired": true
+                },
+                "voided": false
+            };
+            patient.identifiers.push(identifier);
+
             var marker = {markerName: 'transactionalData', filters: [202020]};
 
             spyOn(offlineService, 'getItem').and.returnValue(categories);
@@ -777,6 +874,8 @@ describe('OfflineSyncService', function () {
             expect(patient.identifiers[0].identifierType.primary).toBeTruthy();
             expect(patient.identifiers[1].identifierType.primary).not.toBeUndefined();
             expect(patient.identifiers[1].identifierType.primary).toBeFalsy();
+            expect(patient.identifiers[2].identifierType.primary).not.toBeUndefined();
+            expect(patient.identifiers[2].identifierType.primary).toBeFalsy();
         });
     });
 });

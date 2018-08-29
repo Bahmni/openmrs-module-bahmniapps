@@ -1,7 +1,7 @@
 <section id="admissionDetails" class="block">
     <h2 class="section-title"> {{::params | titleTranslate}}</h2>
     <div>
-        <div ng-if="!visitSummary.admissionDetails && !visitSummary.dischargeDetails">
+        <div ng-if="!isDataPresent()">
             <div class="placeholder-text">{{::'NO_ADMISSION_DETAILS_MESSAGE' | translate}}</div>
         </div>
         <table class="dashboard-table history-diagnosis" ng-if="::visitSummary.admissionDetails || visitSummary.dischargeDetails">

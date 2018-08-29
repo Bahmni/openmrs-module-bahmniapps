@@ -34,17 +34,6 @@ fi
 grunt web
 cd dist && zip -r ../target/${ZIP_FILE_NAME}.zip *
 
-cd ..
-rm -rf dist
-cp -r cacheChromeDist dist
-grunt chrome
-cd dist && zip -r ../target/${ZIP_FILE_NAME}_chrome.zip *
-
-cd ..
-rm -rf dist
-cp -r cacheAndroidDist dist
-grunt android
-cd dist && zip -r ../target/${ZIP_FILE_NAME}_android.zip *
 
 if [ -n $XVFB_PID ]; then
     echo "Killing Xvfb process $XVFB_PID"

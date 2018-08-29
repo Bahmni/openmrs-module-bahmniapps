@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col col1">
+        <div class="fl diagnosis-name">{{ condition.displayString() }}</div>
+        <div ng-if="condition.activeSince" class="fr diagnosis-date">
+            {{'CONDITION_LIST_ACTIVE_SINCE'|translate}} {{condition.activeSince | bahmniDate}}
+        </div>
+    </div>
+    <div class="col col2 notes-subscriber">
+        <span class="subscriber-name">
+            <span ng-if="condition.creator">{{'CONDITION_LIST_CREATED_BY'|translate}} {{condition.creator}}</span>
+        </span>
+        <span class="diagnosis-notes">{{condition.additionalDetail}}</span>
+    </div>
+    <div class="col col4 diagnosis-actions" ng-if="condition.isActive()">
+        <a ng-click="markAs(condition,'INACTIVE')" class="fr">
+            {{'CONDITION_LIST_SET_AS_INACTIVE'|translate}}
+        </a>
+        <a ng-click="markAs(condition,'HISTORY_OF')" class="fr">
+            {{'CONDITION_LIST_SET_AS_HISTORY_OF'|translate}}
+        </a>
+        <a class="fr"
+           ng-click="addConditionAsFollowUp(condition)"
+           ng-class="{'followUp':condition.isFollowUp}"
+           ng-if="condition.uuid">
+            {{'CONDITION_LIST_FOLLOW_UP'|translate}}
+        </a>
+    </div>
+</div>

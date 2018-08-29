@@ -112,6 +112,10 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
 
         addObservationsToEncounter();
 
+        if (consultation.followUpConditions) {
+            [].push.apply(consultation.observations, consultation.followUpConditions);
+        }
+
         return encounterData;
     };
 };

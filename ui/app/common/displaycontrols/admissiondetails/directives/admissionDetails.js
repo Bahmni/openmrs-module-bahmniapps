@@ -27,6 +27,14 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
                     onReady($scope);
                 }
             });
+
+            $scope.isDataPresent = function () {
+                if (!$scope.visitSummary || (!$scope.visitSummary.admissionDetails && !$scope.visitSummary.dischargeDetails)) {
+                    return $scope.$emit("no-data-present-event") && false;
+                }
+
+                return true;
+            };
         };
         return {
             restrict: 'E',

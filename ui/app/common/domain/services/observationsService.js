@@ -33,6 +33,13 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        this.getRevisedObsByUuid = function (observationUuid) {
+            return $http.get(Bahmni.Common.Constants.observationsUrl, {
+                params: {observationUuid: observationUuid, revision: "latest"},
+                withCredentials: true
+            });
+        };
+
         this.fetchForEncounter = function (encounterUuid, conceptNames) {
             return $http.get(Bahmni.Common.Constants.observationsUrl, {
                 params: {encounterUuid: encounterUuid, concept: conceptNames},

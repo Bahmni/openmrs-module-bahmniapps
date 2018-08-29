@@ -12,7 +12,7 @@
                 <span ng-show="recordGroup.records.length > 1">({{recordGroup.records.length}})</span>
             </li>
         </ul>
-        <div ng-hide="recordGroups.length">
+        <div ng-hide="isDataPresent()">
             <div class="placeholder-text">{{'NO_DOCUMENTS_MESSAGE' | translate}}</div>
         </div>
     </div>

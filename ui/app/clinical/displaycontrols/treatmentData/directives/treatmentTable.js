@@ -6,6 +6,13 @@ angular.module('bahmni.clinical')
             $scope.isOtherActiveSection = function (dateString) {
                 return dateString === Bahmni.Clinical.Constants.otherActiveDrugOrders;
             };
+
+            $scope.isDataPresent = function () {
+                if ($scope.drugOrderSections && $scope.drugOrderSections.length == 0) {
+                    return $scope.$emit("no-data-present-event") && false;
+                }
+                return true;
+            };
         };
 
         return {

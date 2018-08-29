@@ -35,6 +35,8 @@ angular.module('bahmni.common.displaycontrol.forms')
                 };
 
                 var init = function () {
+                    $scope.noFormFoundMessage = "No Form found for this patient";
+                    $scope.isFormFound = false;
                     return $q.all([getAllObservationTemplates(), obsFormData()]).then(function (results) {
                         $scope.observationTemplates = results[0].data.results[0].setMembers;
                         var sortedFormDataByDate = sortedFormDataByLatestDate(results[1].data.results);
@@ -42,6 +44,11 @@ angular.module('bahmni.common.displaycontrol.forms')
                             $scope.formData = filterFormData(sortedFormDataByDate);
                         } else {
                             $scope.formData = sortedFormDataByDate;
+                        }
+
+                        if ($scope.formData.length == 0) {
+                            $scope.isFormFound = true;
+                            $scope.$emit("no-data-present-event");
                         }
                     });
                 };

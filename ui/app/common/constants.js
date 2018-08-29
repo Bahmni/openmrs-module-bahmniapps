@@ -247,9 +247,9 @@ Bahmni.Common = Bahmni.Common || {};
         offlineMetadataUrl: hostUrl + "/offlineMetadata.json",
         faviconUrl: hostUrl + "/bahmni/favicon.ico",
         platformType: {
-            chrome: 'chrome',
-            android: 'android',
-            chromeApp: 'chrome-app',
+            chrome: 'other',
+            android: 'other',
+            chromeApp: 'other',
             other: 'other'
         },
         numericDataType: "Numeric",
@@ -271,7 +271,14 @@ Bahmni.Common = Bahmni.Common || {};
         uuidRegex: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
         offlineBahmniEncounterUrl: "/openmrs/ws/rest/v1/bahmnicore/bahmniencounter/",
         eventlogFilterUrl: hostUrl + "/openmrs/ws/rest/v1/eventlog/filter",
-        bahmniConnectMetaDataDb: "metaData"
+        bahmniConnectMetaDataDb: "metaData",
+        serverDateTimeUrl: "/cgi-bin/systemdate",
+        loginText: "/bahmni_config/openmrs/apps/home/whiteLabel.json",
+        auditLogUrl: BAHMNI_CORE + "/auditlog",
+        conditionUrl: EMRAPI + '/condition',
+        conditionHistoryUrl: EMRAPI + '/conditionhistory',
+        followUpConditionConcept: 'Follow-up Condition',
+        localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json"
     };
 })();
 

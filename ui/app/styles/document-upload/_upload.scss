@@ -107,7 +107,7 @@
           clear: both;
           overflow: auto;
           border-bottom: 1px solid $lightestGray;
-          padding-top: 10px;
+          padding:10px 0;
           &:last-child {
             border-bottom: 0;
           }
@@ -148,8 +148,15 @@
           .file {
             overflow: auto;
             float: left;
+            width: 95%;
+            padding-right: 10px;
+            box-sizing: border-box;
             @media screen and (max-width: 480px) {
               width: 80%;
+            }
+            .obs-comment-section{
+              box-sizing: border-box;
+              width:100% ;
             }
           }
           .file-actions {
@@ -165,8 +172,11 @@
           }
           .file-remove {
             float: right;
-            .row-remover span.fa-undo {
-              color: $darkGray;
+            .row-remover{
+              margin-top:0;
+              span.fa-undo {
+                color: $darkGray;
+              }
             }
           }
         }
