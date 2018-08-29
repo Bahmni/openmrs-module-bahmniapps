@@ -54,6 +54,7 @@
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{selfAppointmentPrivilege}}" style="background: #8BC34A"
                 ng-show="scope.enableCreateAppointment"
+                ng-disabled="!isUserAllowedToPerform()"
                 ng-click="navigateTo('new')">
             {{::'ADD_NEW_APPOINTMENT' | translate}}
         </button>
