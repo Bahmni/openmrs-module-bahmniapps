@@ -91,10 +91,10 @@ angular.module('bahmni.admin')
 
             $scope.today = DateUtil.today();
             $scope.maxDate = DateUtil.getDateWithoutTime($scope.today);
-            $scope.updateAdDate = function(startDateBs) {
+            $scope.updateAdDate = function (startDateBs) {
                 var dateStr = startDateBs.split("-");
                 var dateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
-                $scope.startDate =  new Date(dateAD);
+                $scope.startDate = new Date(dateAD);
             };
             $scope.runReport = function () {
                 if ($("#startDate").hasClass("ng-invalid-max")) {

@@ -280,10 +280,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 return _.get(currentState, 'state.concept.display');
             };
 
-            $scope.updateAdDate = function(programEnrollmentDateBs) {
+            $scope.updateAdDate = function (programEnrollmentDateBs) {
                 var dateStr = programEnrollmentDateBs.split("-");
                 var dateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
-                $scope.programEnrollmentDate =  new Date(dateAD);
+                $scope.programEnrollmentDate = new Date(dateAD);
             };
 
             $scope.getMaxAllowedDate = function (states) {
