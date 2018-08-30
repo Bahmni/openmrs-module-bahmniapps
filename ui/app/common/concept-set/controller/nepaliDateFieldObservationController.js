@@ -1,7 +1,6 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet').controller('nepaliDateFieldObservationController', ['$scope', 'conceptSetService', function ($scope, conceptSetService) {
-
     $scope.npToday = Bahmni.Common.Util.DateUtil.npToday();
 
     $scope.handleNepaliDateUpdate = function (observation) {
@@ -22,7 +21,7 @@ angular.module('bahmni.common.conceptSet').controller('nepaliDateFieldObservatio
         if (observation.value) {
             var date = observation.value.split("-");
             var bsDate = calendarFunctions.getBsDateByAdDate(parseInt(date[0]), parseInt(date[1]), parseInt(date[2]));
-            var obsBsDate = calendarFunctions.bsDateFormat("%y-%m-%d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate)
+            var obsBsDate = calendarFunctions.bsDateFormat("%y-%m-%d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate);
             observation.nepaliDate = obsBsDate;
         }
     };
@@ -32,7 +31,7 @@ angular.module('bahmni.common.conceptSet').controller('nepaliDateFieldObservatio
         if (observation.value) {
             var date = observation.value.split("-");
             var bsDate = calendarFunctions.getBsDateByAdDate(parseInt(date[0]), parseInt(date[1]), parseInt(date[2]));
-            var obsBsDate = calendarFunctions.bsDateFormat("%y-%m-%d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate)
+            var obsBsDate = calendarFunctions.bsDateFormat("%y-%m-%d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate);
             observation.nepaliDate = obsBsDate;
             var date = moment(observation.value).toDate();
             observation.selectedTime = date;
@@ -60,7 +59,6 @@ angular.module('bahmni.common.conceptSet').controller('nepaliDateFieldObservatio
     $scope.updateNepaliDateTime = function (observation) {
         if (valueCompletelyFilled(observation)) {
             observation.value = getSelectedDateStr(observation.selectedDate) + " " + getSelectedTimeStr(observation.selectedTime);
-
         }
-    }
+    };
 }]);

@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.drugOrdersSection')
     .directive('drugOrdersSection', ['treatmentService', 'spinner', '$rootScope', 'appService',
-        function (treatmentService, spinner, $rootScope) {
+        function (treatmentService, spinner, $rootScope, appService) {
             var controller = function ($scope) {
                 $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 var DateUtil = Bahmni.Common.Util.DateUtil;

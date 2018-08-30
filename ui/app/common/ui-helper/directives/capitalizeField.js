@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.uiHelper').directive('capitalizeField', function ($parse) {
+angular.module('bahmni.common.uiHelper').directive('capitalizeField', ['$parse', function ($parse) {
     return {
         require: 'ngModel',
         link: function (scope, element, attrs, ngModelController) {
@@ -19,4 +19,4 @@ angular.module('bahmni.common.uiHelper').directive('capitalizeField', function (
             capitalize($parse(attrs.ngModel)(scope));
         }
     };
-});
+}]);

@@ -3,7 +3,7 @@
 angular.module('bahmni.common.conceptSet')
     .controller('ConceptSetGroupController', ['$scope', 'contextChangeHandler', 'spinner', 'messagingService',
         'conceptSetService', '$rootScope', 'sessionService', 'encounterService', 'treatmentConfig',
-        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams', '$translate','appService',
+        'retrospectiveEntryService', 'userService', 'conceptSetUiConfigService', '$timeout', 'clinicalAppConfigService', '$stateParams', '$translate', 'appService',
         function ($scope, contextChangeHandler, spinner, messagingService, conceptSetService, $rootScope, sessionService,
                   encounterService, treatmentConfig, retrospectiveEntryService, userService,
                   conceptSetUiConfigService, $timeout, clinicalAppConfigService, $stateParams, $translate, appService) {

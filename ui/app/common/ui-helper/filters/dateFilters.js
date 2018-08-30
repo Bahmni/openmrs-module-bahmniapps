@@ -23,22 +23,22 @@ angular.module('bahmni.common.uiHelper')
     };
 }).filter('npDate', function () {
     return function (date) {
-        if (date !== null && date !== undefined && date !== '' && date != NaN && Bahmni.Common.Util.DateUtil.isValid(date)) {
+        if (date !== null && date !== undefined && date !== '' && !isNan(date) && Bahmni.Common.Util.DateUtil.isValid(date)) {
             date = isNaN(Number(date)) ? date : Number(date);
             var adDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(date).split("-");
             var bsDate = calendarFunctions.getBsDateByAdDate(parseInt(adDate[0]), parseInt(adDate[1]), parseInt(adDate[2]));
             return calendarFunctions.bsDateFormat("%y %M, %d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate);
-        } 
+        }
         return date;
     };
 }).filter('npDateTime', function () {
     return function (date) {
-        if (date !== null && date !== undefined && date !== '' && date != NaN && Bahmni.Common.Util.DateUtil.isValid(date)) {
+        if (date !== null && date !== undefined && date !== '' && !isNan(date) && Bahmni.Common.Util.DateUtil.isValid(date)) {
             date = isNaN(Number(date)) ? date : Number(date);
             var adDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(date).split("-");
             var bsDate = calendarFunctions.getBsDateByAdDate(parseInt(adDate[0]), parseInt(adDate[1]), parseInt(adDate[2]));
-            return calendarFunctions.bsDateFormat("%y %M, %d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate) +" "+ Bahmni.Common.Util.DateUtil.formatTime(date);
+            return calendarFunctions.bsDateFormat("%y %M, %d", bsDate.bsYear, bsDate.bsMonth, bsDate.bsDate) + " " + Bahmni.Common.Util.DateUtil.formatTime(date);
         }
-        return date; 
+        return date;
     };
 });

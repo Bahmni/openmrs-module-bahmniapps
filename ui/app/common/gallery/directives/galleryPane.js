@@ -5,7 +5,6 @@ angular.module('bahmni.common.gallery')
         function ($rootScope, $document, observationsService, encounterService, spinner, configurations, ngDialog, appService) {
             var $body = $document.find('body');
             $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
-            
             $rootScope.$on('$stateChangeStart', function () {
                 close();
             });

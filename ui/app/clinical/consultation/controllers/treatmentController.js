@@ -3,7 +3,6 @@
 angular.module('bahmni.clinical')
     .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', 'treatmentConfig', '$stateParams', 'appService',
         function ($scope, clinicalAppConfigService, treatmentConfig, $stateParams, appService) {
-
             $scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue('enableNepaliCalendar');
             $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             $scope.npToday = Bahmni.Common.Util.DateUtil.npToday();
@@ -67,7 +66,7 @@ angular.module('bahmni.clinical')
                     return calendarFunctions.bsDateFormat("%y-%m-%d", nepaliDate.bsYear, nepaliDate.bsMonth, nepaliDate.bsDate);
                 }
                 return '';
-            }
+            };
 
             init();
         }

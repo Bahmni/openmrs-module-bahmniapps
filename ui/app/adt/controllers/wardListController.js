@@ -3,7 +3,6 @@
 angular.module('bahmni.adt')
     .controller('WardListController', ['$scope', 'queryService', 'spinner', '$q', '$window', '$stateParams', 'appService', '$rootScope',
         function ($scope, queryService, spinner, $q, $window, $stateParams, appService, $rootScope) {
-
             $scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue('enableNepaliCalendar');
             $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             $scope.npToday = Bahmni.Common.Util.DateUtil.npToday();

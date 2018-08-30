@@ -5,7 +5,6 @@ angular.module('bahmni.common.displaycontrol.conditionsList')
     .directive('conditionsList', ['conditionsService', 'ngDialog', 'appService', function (conditionsService, ngDialog, appService) {
         var controller = function ($scope) {
             $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
-                
             $scope.statuses = ['ACTIVE', 'HISTORY_OF'];
 
             $scope.openSummaryDialog = function () {

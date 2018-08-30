@@ -93,7 +93,6 @@ angular.module('bahmni.clinical')
             scope: {
                 treatments: "=",
                 treatmentConfig: "="
-                
             },
             controller: controller
         };

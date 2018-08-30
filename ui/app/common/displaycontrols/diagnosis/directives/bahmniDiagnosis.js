@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.diagnosis')
-    .directive('bahmniDiagnosis', ['diagnosisService', '$q', 'spinner', '$rootScope', '$filter','appService',
+    .directive('bahmniDiagnosis', ['diagnosisService', '$q', 'spinner', '$rootScope', '$filter', 'appService',
         function (diagnosisService, $q, spinner, $rootScope, $filter, appService) {
             var controller = function ($scope) {
                 $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');

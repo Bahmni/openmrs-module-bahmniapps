@@ -117,7 +117,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     this.convertAdToBs = function (date) {
         var nepaliDate = calendarFunctions.getBsDateByAdDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
         return calendarFunctions.bsDateFormat("%y-%m-%d", nepaliDate.bsYear, nepaliDate.bsMonth, nepaliDate.bsDate);
-    }
+    };
 
     if (inputOptionsConfig.defaultStartDate === false && !this.effectiveStartDate) {
         this.effectiveStartDate = null;
@@ -125,7 +125,6 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         this.effectiveStartDate = this.effectiveStartDate || this.encounterDate;
         this.effectiveStartDateNepali = this.convertAdToBs(this.effectiveStartDate);
     }
-    
     this.isUniformFrequency = true;
     this.showExtraInfo = false;
 

@@ -20,7 +20,6 @@ angular.module('bahmni.clinical')
             $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             $scope.npToday = Bahmni.Common.Util.DateUtil.npToday();
 
-
             _.forEach($scope.consultation.conditions, function (condition) {
                 condition.isFollowUp = _.some($scope.consultation.followUpConditions, {value: condition.uuid});
             });

@@ -35,7 +35,6 @@
             function (patientService, spinner, $sce, $rootScope, $stateParams, $window, $translate, configurations, $q, visitService, appService) {
                 var controller = function ($scope) {
                     $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
-            
                     $scope.isProviderRelationship = function (relationship) {
                         return _.includes($rootScope.relationshipTypeMap.provider, relationship.relationshipType.aIsToB);
                     };
