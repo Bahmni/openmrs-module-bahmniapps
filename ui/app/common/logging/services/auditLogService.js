@@ -2,7 +2,6 @@
 angular.module('bahmni.common.logging')
     .service('auditLogService', ['$http', '$translate', 'appService', function ($http, $translate, appService) {
         var DateUtil = Bahmni.Common.Util.DateUtil;
-        var displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
 
         var convertToLocalDate = function (date) {
             var localDate = DateUtil.parseLongDateToServerFormat(date);
@@ -13,7 +12,7 @@ angular.module('bahmni.common.logging')
             params = params || {};
             return $http.get(Bahmni.Common.Constants.auditLogUrl, {params: params}).then(function (response) {
                 return response.data.map(function (log) {
-                    if (!displayNepaliDates) {
+                    if (!appService.getAppDescriptor().getConfigValue('displayNepaliDates')) {
                         log.dateCreated = convertToLocalDate(log.dateCreated);
                     }
                     log.displayMessage = $translate.instant(log.message, log);

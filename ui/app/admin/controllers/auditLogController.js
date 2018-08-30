@@ -31,7 +31,6 @@ angular.module('bahmni.admin')
             };
 
             var updatePage = function (logs, defaultFirstIndex, defaultLastIndex, message) {
-                console.log(logs)
                 if (logs.length) {
                     $scope.logs = logs;
                 }
