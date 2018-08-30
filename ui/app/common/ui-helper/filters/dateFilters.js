@@ -23,7 +23,7 @@ angular.module('bahmni.common.uiHelper')
     };
 }).filter('npDate', function () {
     return function (date) {
-        if (date !== null && date !== undefined && date !== '' && !isNaN(date) && Bahmni.Common.Util.DateUtil.isValid(date)) {
+        if (date !== null && date !== undefined && date !== '' && Bahmni.Common.Util.DateUtil.isValid(date)) {
             date = isNaN(Number(date)) ? date : Number(date);
             var adDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(date).split("-");
             var bsDate = calendarFunctions.getBsDateByAdDate(parseInt(adDate[0]), parseInt(adDate[1]), parseInt(adDate[2]));
@@ -33,7 +33,7 @@ angular.module('bahmni.common.uiHelper')
     };
 }).filter('npDateTime', function () {
     return function (date) {
-        if (date !== null && date !== undefined && date !== '' && !isNaN(date) && Bahmni.Common.Util.DateUtil.isValid(date)) {
+        if (date !== null && date !== undefined && date !== '' && Bahmni.Common.Util.DateUtil.isValid(date)) {
             date = isNaN(Number(date)) ? date : Number(date);
             var adDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(date).split("-");
             var bsDate = calendarFunctions.getBsDateByAdDate(parseInt(adDate[0]), parseInt(adDate[1]), parseInt(adDate[2]));
