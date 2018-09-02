@@ -216,7 +216,7 @@
                         <div data-ng-controller="nepaliDateFieldObservationController" ng-if="enableNepaliCalendar">
                             <div class="field-value">
                                 <input class="nepali-datepicker" ng-init="initializeNepaliDateTime(observation)"  type="text" max="{{::npToday}}" ng-model="observation.nepaliDate" 
-                                    ng-change="handleNepaliDateUpdate(observation); updateNepaliDateTime(observation);"  
+                                    ng-change="handleNepaliDateTimeUpdate(observation); updateNepaliDateTime(observation);"  
                                     observation="::observation"
                                     allow-future-dates="{{::observation.allowFutureDate}}"
                                     npdatepicker>

@@ -5,14 +5,28 @@ angular.module('bahmni.common.conceptSet').controller('nepaliDateFieldObservatio
 
     $scope.handleNepaliDateUpdate = function (observation) {
         if (observation.nepaliDate) {
-            var dateStr = observation.nepaliDate.split("-");
-            var dateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
-            var date = new Date(dateAD);
+            var date = dateUpdateCommon(observation);
             var month = date.getMonth() + 1;
             if (month < 10) {
                 month = '0' + month;
             }
             observation.value = date.getFullYear() + "-" + month + "-" + date.getDate();
+        }
+    };
+
+    $scope.handleNepaliDateTimeUpdate = function (observation) {
+        if (observation.nepaliDate) {
+            if (observation.nepaliDate) {
+                observation.selectedDate = dateUpdateCommon(observation);
+            }
+        }
+    };
+
+    var dateUpdateCommon = function (observation) {
+        if (observation.nepaliDate) {
+            var dateStr = observation.nepaliDate.split("-");
+            var dateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
+            return new Date(dateAD);
         }
     };
 
@@ -40,7 +54,7 @@ angular.module('bahmni.common.conceptSet').controller('nepaliDateFieldObservatio
     };
 
     var valueCompletelyFilled = function (observation) {
-        return (observation.value != null && observation.selectedTime != null);
+        return (observation.selectedDate != null && observation.selectedTime != null);
     };
     var getSelectedDateStr = function (selectedDate) {
         return selectedDate != null ? moment(selectedDate).format("YYYY-MM-DD") : "";
