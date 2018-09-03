@@ -141,6 +141,17 @@ describe('AppointmentsDayCalendarController', function () {
             $state.params, {reload: false});
     });
 
+    it('should go to new appointment state on createAppointment if resource is undefined', function () {
+        var resource = undefined;
+        $state.params = {};
+        createController();
+
+        scope.createAppointment(null, null, undefined, undefined, resource);
+
+        expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new',
+            $state.params, {reload: false});
+    });
+
 
     it('should not go to new appointment state on createAppointment if the user does not have Manage privilege', function () {
         rootScope.currentUser = {privileges: []};
