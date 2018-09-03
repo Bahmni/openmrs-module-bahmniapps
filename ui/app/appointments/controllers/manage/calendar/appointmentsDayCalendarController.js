@@ -68,7 +68,7 @@ angular.module('bahmni.appointments')
                 };
 
                 $scope.createAppointment = function (start, end, jsEvent, view, resource) {
-                    if (!isUserPrivilegedToCreateAppointment(resource.provider)) {
+                    if (resource && !isUserPrivilegedToCreateAppointment(resource.provider)) {
                         return;
                     }
                     var params = $state.params;
