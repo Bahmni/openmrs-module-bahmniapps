@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointments List</title>
+    <style>
+        h4, p, h5 {
+            text-align: center;
+            margin: 0 0 10px 0;
+        }
+        table {
+            border: none;
+            width: 100%;
+        }
+        table th, table td {
+            border: 1px solid #444;
+            border-left: none;
+            text-align: center;
+        }
+        table th:first-child {
+            border-left: 1px solid #444;
+        }
+        table td:first-child {
+            border-left: 1px solid #444;
+        }
+        .notes {
+            max-width: 250px;
+            word-break: break-all;
+        }
+        .width-change {
+            min-width: 70px;
+        }
+
+        li {
+            text-align: left;
+            padding-left: 2px;
+        }
+    </style>
+
+</head>
+<body>
+
+
+
+    <div>
+        <div>
+            <h4>{{::'APPOINTMENT_LIST' | translate}}</h4>
+            <h5 ng-if="!searchedPatient">{{::'APPOINTMENT_DATE' | translate}} {{::startDate | bahmniDate}}</h5>
+            <table cellpadding="2" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>{{::'APPOINTMENT_PATIENT_ID' |translate}}</th>
+                    <th class="table-mid-width">{{::'APPOINTMENT_PATIENT_NAME' |translate}}</th>
+                    <th ng-if="searchedPatient" class="width-change">{{::'APPOINTMENT_DATE' |translate}}</th>
+                    <th class="width-change">{{::'APPOINTMENT_START_TIME_KEY' |translate}}</th>
+                    <th class="width-change">{{::'APPOINTMENT_END_TIME_KEY' |translate}}</th>
+                    <th class="table-mid-width">{{::'APPOINTMENT_PROVIDER' |translate}}</th>
+                    <th>{{::'APPOINTMENT_SERVICE' |translate}}</th>
+                    <th class="table-mid-width" ng-if="enableServiceTypes">{{::'APPOINTMENT_SERVICE_TYPE_FULL' |translate}}</th>
+                    <th class="table-mid-width">{{::'APPOINTMENT_SERVICE_LOCATION_KEY' |translate}}</th>
+                    <th>{{::'APPOINTMENT_STATUS' |translate}}</th>
+                    <!--<th class="notes">{{::'APPOINTMENT_COMMENTS' |translate}}</th>-->
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="appointment in filteredAppointments">
+                    <td>{{::appointment.patient.identifier}}</td>
+                    <td class="table-mid-width">{{::appointment.patient.name | titleCase}}</td>
+                    <td ng-if="searchedPatient">{{::appointment.startDateTime | bahmniDate}}</td>
+                    <td>{{::appointment.startDateTime | bahmniTime}}</td>
+                    <td>{{::appointment.endDateTime | bahmniTime}}</td>
+                    <td class="table-mid-width">
+                        <ul>
+                            <li type="1" ng-repeat="appProvider in appointment.providers" ng-if="appProvider.response != 'CANCELLED'">
+                                <label>{{::appProvider.name}}</label>
+                            </li>
+                        </ul>
+                    </td>
+                    <td>{{::appointment.service.name}}</td>
+                    <td class="table-mid-width" ng-if="enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
+                    <td class="table-mid-width">{{::appointment.location.name}}</td>
+                    <td>{{::appointment.status}}</td>
+                    <!--<td class="notes">{{::appointment.comments}}</td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
