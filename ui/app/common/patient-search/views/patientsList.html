@@ -80,14 +80,13 @@
             <ul>
 
                 <li ng-repeat="patient in search.visiblePatients" class="active-patient" ng-click="forwardPatient(patient)">
-                <img class="smallImages" ng-src="{{::patient.image}}" fallback-src='../images/blank-user.png'>
-                <div class="patient-name">{{::patient.name}}</div>
-                <div class="patient-id">{{::patient.identifier}}</div>
-                <i class="ipd-indication fa fa-bed" ng-if="::(patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true')">
-                <p ng-if="::(patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true')">{{::patient.bedNumber}}</p>
-                </i>
-
-            </li>
+                    <img class="smallImages" ng-src="{{::patient.image}}" fallback-src='../images/blank-user.png'>
+                    <div class="patient-name">{{::patient.name}}</div>
+                    <div class="patient-id">{{::patient.identifier}}</div>
+                    <i class="ipd-indication fa fa-bed" ng-if="::(patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true')">
+                        <p ng-if="::(patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true')">{{::patient.bedNumber}}</p>
+                    </i>
+                </li>
             </ul>
         </resize>
         <div class="note-container" ng-if="search.noResultsMessage">

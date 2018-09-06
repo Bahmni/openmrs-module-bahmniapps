@@ -45,7 +45,6 @@
                         var patientMapper = new Bahmni.PatientMapper(configurations.patientConfig(), $rootScope, $translate);
                         return patientService.getPatient($scope.patientUuid).then(function (response) {
                             var openMrsPatient = response.data;
-                            console.log(openMrsPatient);
                             $scope.patient = patientMapper.map(openMrsPatient);
                         });
                     };
@@ -59,9 +58,7 @@
                         var ADMISSION_STATUS_ATTRIBUTE = "Admission Status";
                         return visitService.getVisit($scope.visitUuid, REP).then(function (response) {
                             var attributes = response.data.attributes;
-                           console.log(attributes);
                             var admissionStatus = _.find(attributes, {attributeType: {name: ADMISSION_STATUS_ATTRIBUTE}});
-                           console.log(admissionStatus);
                             $scope.hasBeenAdmitted = isAdmitted(admissionStatus);
                         });
                     };
@@ -77,10 +74,8 @@
 
 
                     var getBedNumber = function(patientUuid, visitUuid) {
-                    console.log("reached here in bed Number");
                     bedService.getAssignedBedForPatient(patientUuid, visitUuid).then(function (bedDetails) {
                         $scope.bedDetails = bedDetails;
-                        console.log($scope.bedDetails.bedNumber);
                         });
         
                     };
