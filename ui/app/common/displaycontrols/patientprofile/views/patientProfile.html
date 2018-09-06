@@ -20,7 +20,10 @@
                              <span class="patient-address">
                                  {{::addressLine}}
                              </span>
-                             <i class="ipd-indication fa fa-bed" ng-if="::hasBeenAdmitted"></i>
+                             <i class="ipd-indication fa fa-bed" ng-if="::hasBeenAdmitted">                    
+                                <p ng-bind-html="::bedDetails.bedNumber"></p>
+                            </i>
+
                          </div>
                      </td>
                 </tr>

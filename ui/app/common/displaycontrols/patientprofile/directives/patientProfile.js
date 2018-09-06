@@ -31,10 +31,9 @@
     };
     angular.module('bahmni.common.displaycontrol.patientprofile')
         .directive('patientProfile', ['patientService', 'spinner', '$sce', '$rootScope', '$stateParams', '$window', '$translate',
-            'configurations', '$q', 'visitService', 'appService',
-            function (patientService, spinner, $sce, $rootScope, $stateParams, $window, $translate, configurations, $q, visitService, appService) {
-                var controller = function ($scope) {
-                    $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
+            'configurations', '$q', 'visitService','sessionService', 'bedService',
+            function (patientService, spinner, $sce, $rootScope, $stateParams, $window, $translate, configurations, $q, visitService, sessionService, bedService) {
+                var controller = function ($scope,sessionService) {
                     $scope.isProviderRelationship = function (relationship) {
                         return _.includes($rootScope.relationshipTypeMap.provider, relationship.relationshipType.aIsToB);
                     };
@@ -46,6 +45,7 @@
                         var patientMapper = new Bahmni.PatientMapper(configurations.patientConfig(), $rootScope, $translate);
                         return patientService.getPatient($scope.patientUuid).then(function (response) {
                             var openMrsPatient = response.data;
+                            console.log(openMrsPatient);
                             $scope.patient = patientMapper.map(openMrsPatient);
                         });
                     };
@@ -59,16 +59,30 @@
                         var ADMISSION_STATUS_ATTRIBUTE = "Admission Status";
                         return visitService.getVisit($scope.visitUuid, REP).then(function (response) {
                             var attributes = response.data.attributes;
+                           console.log(attributes);
                             var admissionStatus = _.find(attributes, {attributeType: {name: ADMISSION_STATUS_ATTRIBUTE}});
+                           console.log(admissionStatus);
                             $scope.hasBeenAdmitted = isAdmitted(admissionStatus);
                         });
                     };
+                     
                     var setHasBeenAdmittedOnVisitUuidChange = function () {
                         $scope.$watch('visitUuid', function (visitUuid) {
                             if (!_.isEmpty(visitUuid)) {
                                 assignAdmissionDetails();
-                            }
+                                getBedNumber($scope.patientUuid, visitUuid);
+                            };
                         });
+                    };
+
+
+                    var getBedNumber = function(patientUuid, visitUuid) {
+                    console.log("reached here in bed Number");
+                    bedService.getAssignedBedForPatient(patientUuid, visitUuid).then(function (bedDetails) {
+                        $scope.bedDetails = bedDetails;
+                        console.log($scope.bedDetails.bedNumber);
+                        });
+        
                     };
                     var setDirectiveAsReady = function () {
                         $scope.isDirectiveReady = true;
@@ -89,7 +103,6 @@
                 var link = function ($scope, element) {
                     spinner.forPromise($scope.initialization, element);
                 };
-
                 return {
                     restrict: 'E',
                     controller: controller,
