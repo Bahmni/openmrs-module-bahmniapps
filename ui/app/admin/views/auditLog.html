@@ -6,7 +6,8 @@
         <article id="startFrom">
             <p>
                 <label for="startFrom">Start From </label>
-                <input id="startDate" type="date" ng-model="startDate" max="{{::maxDate}}">
+                <input ng-show="!enableNepaliCalendar" id="startDate" type="date" ng-model="startDate" max="{{::maxDate}}">
+                <input ng-if="enableNepaliCalendar" ng-change="updateAdDate(startDateBs)" class="nepali-datepicker" type="text" ng-model="startDateBs" max="{{::npToday}}" npdatepicker>
                 <input id="startTime" type="time" ng-model="startDate">
             </p>
             <p>
@@ -41,7 +42,8 @@
             <tbody ng-repeat="log in logs">
             <tr>
                 <td>{{:: log.auditLogId | translate }}</td>
-                <td>{{:: log.dateCreated | translate }}</td>
+                <td ng-if="!displayNepaliDates">{{:: log.dateCreated | translate }}</td>
+                <td ng-if="displayNepaliDates">{{:: log.dateCreated | npDateTime }}</td>
                 <td>{{:: log.eventType | translate }}</td>
                 <td>{{:: log.userId | translate }}</td>
                 <td>{{:: log.patientId | translate }}</td>

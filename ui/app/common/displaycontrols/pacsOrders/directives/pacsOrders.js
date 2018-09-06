@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.pacsOrders')
-    .directive('pacsOrders', ['orderService', 'orderTypeService', 'spinner', 'messagingService', '$window',
-        function (orderService, orderTypeService, spinner, messagingService, $window) {
+    .directive('pacsOrders', ['orderService', 'orderTypeService', 'spinner', 'messagingService', '$window', 'appService',
+        function (orderService, orderTypeService, spinner, messagingService, $window, appService) {
             var controller = function ($scope) {
+                $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($scope.orderType);
 
                 var includeAllObs = true;

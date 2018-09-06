@@ -12,7 +12,9 @@
             <td>District: <span class="value">{{patient.address.countyDistrict}}</span></td>
         </tr>
         <tr>
-            <td colspan="3">Visit Date: <span class="value">{{visitDate | bahmniDate}}</span></td>
+            <td colspan="3">Visit Date: <span class="value" ng-if="!displayNepaliDates">{{visitDate | bahmniDate}}</span>
+                <span class="value" ng-if="displayNepaliDates">{{visitDate | npDate}}</span>
+            </td>
         </tr>
     </table>
 </div>

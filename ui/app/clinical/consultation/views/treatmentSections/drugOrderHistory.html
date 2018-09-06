@@ -7,7 +7,8 @@
 			<div class="tab" ng-repeat="drugOrderGroup in consultation.drugOrderGroups">
 				<input class="tab-radio" id="{{'drug-orders-tab-' + $index}}" name="tab-group-1" type="radio" ng-checked="drugOrderGroup.selected" ng-class="{}" tabindex="-1">
 				<label class="tab-label" for="{{'drug-orders-tab-' + $index}}">
-                    <span>{{drugOrderGroup.label | bahmniDate}}</span>
+                    <span ng-if="!displayNepaliDates">{{drugOrderGroup.label | bahmniDate}}</span>
+                    <span ng-if="displayNepaliDates">{{drugOrderGroup.label | npDate}}</span>
                     <i class="fa fa-star current-visit-icon" title="Current visit" ng-if="drugOrderGroup.isCurrentVisit"></i>
                 </label>
                 <button class="secondary-button refill-drugs-btn fr" ng-click="refillAll(drugOrderGroup.drugOrders)" ng-if="!drugOrderGroupsEmpty()">Refill All</button>
@@ -51,9 +52,11 @@
                                     </div>
 								</div>
                                 <div class="start-date fr">
-                                    <span ng-if="showEffectiveFromDate(drugOrderGroup.visitStartDate, drugOrder.effectiveStartDate)"> started on {{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                                    <span ng-if="showEffectiveFromDate(drugOrderGroup.visitStartDate, drugOrder.effectiveStartDate) && displayNepaliDates"> started on {{drugOrder.effectiveStartDate | npDate}}</span>
+                                    <span ng-if="showEffectiveFromDate(drugOrderGroup.visitStartDate, drugOrder.effectiveStartDate) && !displayNepaliDates"> started on {{drugOrder.effectiveStartDate | bahmniDate}}</span>
                                     <span class="stop-date">
-                                        <div ng-if="drugOrder.isDiscontinuedOrStopped()">Stopped on {{drugOrder.dateStopped | bahmniDate}}</div>
+                                        <div ng-if="drugOrder.isDiscontinuedOrStopped() && displayNepaliDates">Stopped on {{drugOrder.dateStopped | npDate}}</div>
+                                        <div ng-if="drugOrder.isDiscontinuedOrStopped() && !displayNepaliDates">Stopped on {{drugOrder.dateStopped | bahmniDate}}</div>
                                         <div ng-if="drugOrder.orderReasonText && drugOrder.isDiscontinuedOrStopped()">due to {{drugOrder.orderReasonText}}</div>
                                         <div ng-if="getOrderReasonConcept(drugOrder) && drugOrder.isDiscontinuedOrStopped()">({{getOrderReasonConcept(drugOrder)}})</div>
                                     </span>
@@ -62,7 +65,8 @@
                                     {{drugOrder.additionalInstructions}}
                                     <div class="footer-note fr">
                                         <span class="time-stamp">
-                                            <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
+                                            <span class="time" ng-if="displayNepaliDates">{{drugOrder.dateActivated | npDate}}</span>   
+                                            <span class="time" ng-if="!displayNepaliDates">{{drugOrder.dateActivated | bahmniDate}}</span>
                                         </span>
                                         <span class="provider">
                                             <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"></provider-directive>
@@ -76,6 +80,11 @@
                                                 <label class="control-label">Stop Date</label>
                                             </div>
                                             <div class="field-value">
+                                                <input ng-if="enableNepaliCalendar" class="nepali-datepicker" type="text" ng-model="drugOrder.dateStoppedNepali" 
+                                                    ng-change="handleNepaliDateUpdate(treatment)"  
+                                                    drugOrder="drugOrder"
+                                                    max="{{npToday}}"
+                                                    npdatepicker>
                                                 <input id="date-stopped" type="date" min="{{getMinDateForDiscontinue(drugOrder)}}"
                                                        max="{{scheduledDate}}" ng-model="drugOrder.dateStopped"
                                                        required="required">

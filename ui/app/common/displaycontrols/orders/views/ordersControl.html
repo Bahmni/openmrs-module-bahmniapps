@@ -20,7 +20,8 @@
                         <span class="fr order-sub-heading-container">
                             <span class="order-sub-heading fl">
                                 <span class="provider-name fl">{{ ::bahmniOrder.provider}} </span>
-                                <span class="provider-date fr">{{ ::bahmniOrder.orderDate | bahmniDateTime }}</span>
+                                <span class="provider-date fr" ng-if="!displayNepaliDates">{{ ::bahmniOrder.orderDate | bahmniDateTime }}</span>
+                                <span class="provider-date fr" ng-if="displayNepaliDates">{{ ::bahmniOrder.orderDate | npDateTime }}</span>
                               </span>
                             <i ng-class="::{'visible-true':bahmniOrder.hasObservations}" class="fa fa-tasks"></i>
                         </span>

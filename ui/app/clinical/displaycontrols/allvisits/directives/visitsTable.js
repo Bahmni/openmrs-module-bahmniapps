@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q',
-        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q) {
+    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', 'appService',
+        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, appService) {
             var controller = function ($scope) {
+                $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 var emitNoDataPresentEvent = function () {
                     $scope.$emit("no-data-present-event");
                 };

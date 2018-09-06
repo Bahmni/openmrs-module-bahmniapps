@@ -9,10 +9,12 @@
         <span ng-if="::(params.showRoute == true)" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutDuration()}}</span>
         <span ng-if="::!(params.showRoute == true)" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutRouteAndDuration()}}</span>
         <span>{{::drugOrder.getSpanDetails()}}</span>
-        <span ng-if="::drugOrder.isDiscontinuedOrStopped()" ng-class="::{'discontinued-text':drugOrder.isDiscontinuedOrStopped()}">Stopped on {{::drugOrder.effectiveStopDate | bahmniDate}}</span>
+        <span ng-if="::drugOrder.isDiscontinuedOrStopped()" ng-class="::{'discontinued-text':drugOrder.isDiscontinuedOrStopped()} && !displayNepaliDates">Stopped on {{::drugOrder.effectiveStopDate | bahmniDate}}</span>
+        <span ng-if="::drugOrder.isDiscontinuedOrStopped()" ng-class="::{'discontinued-text':drugOrder.isDiscontinuedOrStopped()} && displayNepaliDates">Stopped on {{::drugOrder.effectiveStopDate | npDate}}</span>
     </td>
     <td class="days">
-        <span class="fr">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
+        <span class="fr" ng-if="!displayNepaliDates">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
+        <span class="fr" ng-if="displayNepaliDates">{{::drugOrder.effectiveStartDate | npDate}}</span>
     </td>
 
     <td class="toggle-btn" toggle="drugOrder.showDetails" ng-if="::((params.showDetailsButton == true) && !drugOrder.additionalInstructions)">

@@ -5,11 +5,17 @@
         <table ng-repeat="drugOrderSection in ::drugOrderSections | orderBy: drugOrderSection.visitDate"
                class="repeated-table drug-order-table">
             <thead>
-            <th colspan="4" ng-if="::!isOtherActiveSection(drugOrderSection.visitDate)">
+            <th colspan="4" ng-if="::!isOtherActiveSection(drugOrderSection.visitDate) && !displayNepaliDates">
                 {{::'VISIT_ON_TRANSLATION_KEY'|translate}} {{::drugOrderSection.visitDate | bahmniDate}}
             </th>
-            <th colspan="4" ng-if="::isOtherActiveSection(drugOrderSection.visitDate)">
+            <th colspan="4" ng-if="::!isOtherActiveSection(drugOrderSection.visitDate) && displayNepaliDates">
+                {{::'VISIT_ON_TRANSLATION_KEY'|translate}} {{::drugOrderSection.visitDate | npDate}}
+            </th>
+            <th colspan="4" ng-if="::isOtherActiveSection(drugOrderSection.visitDate) && !displayNepaliDates">
                 {{::drugOrderSection.visitDate}}
+            </th>
+            <th colspan="4" ng-if="::isOtherActiveSection(drugOrderSection.visitDate) && displayNepaliDates">
+                {{::drugOrderSection.visitDate | npDate}}
             </th>
             </thead>
             <tbody treatment-table-row drug-order="::drugOrder" params="::params"

@@ -1,8 +1,9 @@
 'use strict';
 
-angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('chronicTreatmentChart', ['$translate', 'spinner', 'drugService',
-    function ($translate, spinner, drugService) {
+angular.module('bahmni.common.displaycontrol.chronicTreatmentChart').directive('chronicTreatmentChart', ['$translate', 'spinner', 'drugService', 'appService',
+    function ($translate, spinner, drugService, appService) {
         var link = function ($scope, element) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             $scope.config = $scope.isOnDashboard ? $scope.section.dashboardConfig : $scope.section.expandedViewConfig;
             var patient = $scope.patient;
 

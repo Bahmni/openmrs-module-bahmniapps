@@ -211,15 +211,35 @@
                     <div ng-switch-when="buttonselect">
                         <div ng-include src="'../common/concept-set/views/observationDataTypes/buttonSelectType.html'"></div>
                     </div>
-
+                    
                     <div ng-switch-when="datetime">
-                        <datetimepicker model="observation.value"
-                                        observation="::observation"
-                                        ng-blur="handleUpdate()"
-                                        allow-future-dates="(observation.conceptUIConfig && observation.conceptUIConfig.allowFutureDates)"
-                                        show-time="::true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
+                        <div data-ng-controller="nepaliDateFieldObservationController" ng-if="enableNepaliCalendar">
+                            <div class="field-value">
+                                <input class="nepali-datepicker" ng-init="initializeNepaliDateTime(observation)"  type="text" max="{{::npToday}}" ng-model="observation.nepaliDate" 
+                                    ng-change="handleNepaliDateTimeUpdate(observation); updateNepaliDateTime(observation);"  
+                                    observation="::observation"
+                                    allow-future-dates="{{::observation.allowFutureDate}}"
+                                    npdatepicker>
+                            </div>
+                            <div>
+                                <input type="time" ng-change="updateNepaliDateTime(observation)" observation="::observation" ng-class= "{'illegalValue': !isValid(observation, selectedTime)}" ng-model="observation.selectedTime" ng-disabled="observation.disabled" />
+                            </div>
+                            <datetimepicker model="observation.value" hidden
+                                observation="::observation"
+                                ng-blur="handleUpdate()"
+                                allow-future-dates="(observation.conceptUIConfig && observation.conceptUIConfig.allowFutureDates)"
+                                show-time="::true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
+                        </div>
+                        <div ng-if="!enableNepaliCalendar">
+                            <datetimepicker model="observation.value"
+                                observation="::observation"
+                                ng-blur="handleUpdate()"
+                                allow-future-dates="(observation.conceptUIConfig && observation.conceptUIConfig.allowFutureDates)"
+                                show-time="::true" illegal-value="!observation.isValid(atLeastOneValueIsSet, conceptSetRequired)"></datetimepicker>
+                        </div>
                     </div>
-
+                 
+                    
                     <div ng-switch-when="grid">
                         <div ng-repeat="member in ::observation.groupMembers track by $index" class="grid-row"
                              ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}">

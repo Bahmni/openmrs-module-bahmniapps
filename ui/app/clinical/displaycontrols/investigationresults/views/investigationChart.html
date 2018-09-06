@@ -22,7 +22,8 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="dateLabel in accessions.getDateLabels()">
-                    <td>{{dateLabel.date | bahmniDate}}</td>
+                    <td ng-if="!displayNepaliDates">{{dateLabel.date | bahmniDate}}</td>
+                    <td ng-if="displayNepaliDates">{{dateLabel.date | npDate}}</td>
                     <td ng-repeat="testOrderLabel in accessions.getTestOrderLabels()"
                         ng-class="{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}">
                         <span ng-init="results = accessions.getResult(dateLabel, testOrderLabel)">
@@ -58,7 +59,8 @@
                 <tr>
                     <th>&nbsp;</th>
                     <th class="normal" ng-repeat="dateLabel in accessions.getDateLabels()">
-                        <span>{{dateLabel.date | bahmniDate}}</span>
+                        <span ng-if="!displayNepaliDates">{{dateLabel.date | bahmniDate}}</span>
+                        <span ng-if="displayNepaliDates">{{dateLabel.date | npDate}}</span>
                     </th>
                 </tr>
                 </thead>

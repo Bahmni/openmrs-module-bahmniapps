@@ -25,6 +25,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.clinicalDashboardConfig = clinicalDashboardConfig;
             $scope.lastvisited = null;
 
+            $scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue('enableNepaliCalendar');
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
+
             $scope.openConsultationInNewTab = function () {
                 $window.open('#' + $scope.consultationBoardLink, '_blank');
             };

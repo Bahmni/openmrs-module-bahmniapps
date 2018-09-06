@@ -4,6 +4,7 @@ angular.module('bahmni.common.displaycontrol.forms')
     .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService', 'appService', '$state',
         function (conceptSetService, spinner, $q, visitFormService, appService, $state) {
             var controller = function ($scope) {
+                $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 $scope.shouldPromptBrowserReload = true;
                 $scope.showFormsDate = appService.getAppDescriptor().getConfigValue("showFormsDate");
                 var getAllObservationTemplates = function () {

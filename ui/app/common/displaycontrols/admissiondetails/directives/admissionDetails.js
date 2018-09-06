@@ -1,8 +1,9 @@
 "use strict";
 
 angular.module('bahmni.common.displaycontrol.admissiondetails')
-    .directive('admissionDetails', ['bedService', function (bedService) {
+    .directive('admissionDetails', ['bedService', 'appService', function (bedService, appService) {
         var controller = function ($scope) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             $scope.showDetailsButton = function (encounter) {
                 return $scope.params && $scope.params.showDetailsButton && !encounter.notes;
             };

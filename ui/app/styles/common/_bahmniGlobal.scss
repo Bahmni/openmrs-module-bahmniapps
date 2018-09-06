@@ -386,3 +386,6 @@ input[readonly]:focus.nepali-datepicker {
   background-color: #FFFDF7;
   cursor: text;
 }
+body div.nepali-date-picker {
+  z-index: 99999;
+}

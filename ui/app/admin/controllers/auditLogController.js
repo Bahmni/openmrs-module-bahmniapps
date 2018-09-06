@@ -1,9 +1,12 @@
 'use strict';
 
 angular.module('bahmni.admin')
-    .controller('auditLogController', ['$scope', 'spinner', 'auditLogService', 'messagingService', '$translate',
-        function ($scope, spinner, auditLogService, messagingService, $translate) {
+    .controller('auditLogController', ['$scope', 'spinner', 'auditLogService', 'messagingService', '$translate', 'appService',
+        function ($scope, spinner, auditLogService, messagingService, $translate, appService) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
+            $scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue('enableNepaliCalendar');
             var DateUtil = Bahmni.Common.Util.DateUtil;
+            $scope.npToday = DateUtil.npToday();
             var defaultMessage = "";
 
             var getTranslatedMessage = function (key) {
@@ -38,6 +41,8 @@ angular.module('bahmni.admin')
             var getDate = function () {
                 var date = $scope.startDate || $scope.today;
                 $scope.startDate = date;
+                var dateBs = $scope.startDateBs || $scope.npToday;
+                $scope.startDateBs = dateBs;
                 return date;
             };
 
@@ -86,6 +91,11 @@ angular.module('bahmni.admin')
 
             $scope.today = DateUtil.today();
             $scope.maxDate = DateUtil.getDateWithoutTime($scope.today);
+            $scope.updateAdDate = function (startDateBs) {
+                var dateStr = startDateBs.split("-");
+                var dateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
+                $scope.startDate = new Date(dateAD);
+            };
             $scope.runReport = function () {
                 if ($("#startDate").hasClass("ng-invalid-max")) {
                     messagingService.showMessage("error", getTranslatedMessage("INVALID_DATE"));

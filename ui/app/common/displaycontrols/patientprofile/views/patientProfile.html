@@ -26,7 +26,13 @@
                 </tr>
                 <tr ng-if="::showBirthDate" >
                     <td class="name">Date of Birth</td>
-                    <td class="value">{{::patient.birthdate | bahmniDate}}
+                    <td class="value">
+                        <span ng-if="!displayNepaliDates">
+                            {{::patient.birthdate | bahmniDate}}
+                        </span>
+                        <span ng-if="displayNepaliDates">
+                                {{::patient.birthdate | npDate}}
+                        </span>
                         <span ng-if="::patient.birthdateEstimated" class="patient-estimated-text"> (est.)</span>
                     </td>
                 </tr>
@@ -34,7 +40,8 @@
                     ng-show="::config.patientAttributes.length" ng-class="attribute">
                     <td class="name">{{::patient[attribute].label}}</td>
                     <td class="value" ng-if="::!patient[attribute].isDateField">{{::(patient[attribute].value.display || patient[attribute].value) | booleanFilter}}</td>
-                    <td class="value" ng-if="::patient[attribute].isDateField">{{::patient[attribute].value | bahmniDate}}</td>
+                    <td class="value" ng-if="::patient[attribute].isDateField && !displayNepaliDates">{{::patient[attribute].value | bahmniDate}}</td>
+                    <td class="value" ng-if="::patient[attribute].isDateField && displayNepaliDates">{{::patient[attribute].value | npDate}}</td>
                 </tr>
                 <tr ng-if="::relationships && relationships.length > 0">
                     <td>Relationships</td>

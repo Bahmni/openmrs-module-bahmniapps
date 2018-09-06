@@ -7,8 +7,11 @@
                 <td class="name">
                     <span class="disposition-state">{{::disposition.conceptName}}</span>
                 </td>
-                <td class="value">
+                <td class="value" ng-if="!displayNepaliDates">
                     {{::disposition.dispositionDateTime| bahmniDate}}
+                </td>
+                <td class="value" ng-if="displayNepaliDates">
+                    {{::disposition.dispositionDateTime| npDate}}
                 </td>
                 <td class="toggle-btn" ng-if="::showDetailsButton(disposition)" toggle="disposition.show">
                     <button class="toggle fr" ng-class="::{'has-notes': getNotes(disposition)}">

@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('treatmentTable', function () {
+    .directive('treatmentTable', ['appService', function (appService) {
         var controller = function ($scope) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             $scope.isOtherActiveSection = function (dateString) {
                 return dateString === Bahmni.Clinical.Constants.otherActiveDrugOrders;
             };
@@ -23,4 +24,4 @@ angular.module('bahmni.clinical')
             },
             controller: controller
         };
-    });
+    }]);

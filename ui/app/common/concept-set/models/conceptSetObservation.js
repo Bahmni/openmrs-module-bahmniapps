@@ -214,7 +214,6 @@ Bahmni.ConceptSet.Observation.prototype = {
     isButtonRadio: function () {
         return this.conceptUIConfig.buttonRadio;
     },
-
     getControlType: function () {
         if (this.hidden) {
             return "hidden";

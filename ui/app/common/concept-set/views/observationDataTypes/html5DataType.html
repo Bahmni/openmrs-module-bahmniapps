@@ -7,10 +7,23 @@
        focus-me="::observation.isFocused" tabindex="1"/>
 
 <input id="{{::observation.uniqueId}}" obs-constraints obs="::observation"
-       ng-if="!observation.isNumeric() && !observation._isDateTimeDataType() && !observation.conceptUIConfig.displayMonthAndYear" ng-disabled="observation.disabled"
+       ng-if="!observation.isNumeric() && !observation._isDateTimeDataType() && !observation.conceptUIConfig.displayMonthAndYear && !enableNepaliCalendar" ng-disabled="observation.disabled"
        ng-model="observation.value" ng-change="handleUpdate()"
        ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
        focus-me="::observation.isFocused" tabindex="1"/>
+<div ng-if="!observation.isNumeric() && !observation._isDateTimeDataType() && !observation.conceptUIConfig.displayMonthAndYear && enableNepaliCalendar" data-ng-controller="nepaliDateFieldObservationController">
+    <div class="field-value">
+        <input class="nepali-datepicker" ng-init="initializeNepaliDate(observation)" type="text" max="{{::npToday}}" ng-model="observation.nepaliDate" 
+                            ng-change="handleNepaliDateUpdate(observation)" observation="::observation"
+                            allow-future-dates="{{::observation.allowFutureDate}}"
+                            npdatepicker>
+        <input id="{{::observation.uniqueId}}" obs-constraints obs="::observation" hidden
+                            ng-disabled="observation.disabled"
+                            ng-model="observation.value" ng-change="handleUpdate()"
+                            ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
+                            focus-me="::observation.isFocused" tabindex="1"/>
+    </div>
+</div>       
 <stepper id="{{::observation.uniqueId}}"
          ng-model="observation.value" ng-blur="handleUpdate()" obs="observation"
          ng-class="{'is-abnormal': observation.abnormalObs.value, 'illegalValue': !observation.isValid(atLeastOneValueIsSet, conceptSetRequired)}"

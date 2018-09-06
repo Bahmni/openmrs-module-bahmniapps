@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.drugOrdersSection')
-    .directive('drugOrdersSection', ['treatmentService', 'spinner', '$rootScope',
-        function (treatmentService, spinner, $rootScope) {
+    .directive('drugOrdersSection', ['treatmentService', 'spinner', '$rootScope', 'appService',
+        function (treatmentService, spinner, $rootScope, appService) {
             var controller = function ($scope) {
+                $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 var DateUtil = Bahmni.Common.Util.DateUtil;
                 $scope.showAdditionalInstructions = true;
                 $scope.toggle = true;

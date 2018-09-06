@@ -7,13 +7,13 @@
                 </div>
                 <div class="field-value" id="patientNameLocal">
                     <input type="text" id="givenNameLocal" ng-model="patient.givenNameLocal" pattern-validate
-                           placeholder="{{::patientConfiguration.local()['placeholderForGivenName']}}" focus-me="true">
+                           placeholder="{{::patientConfiguration.local()['placeholderForGivenName']}}" focus-me="true" capitalize-field>
                     <input ng-show="::showMiddleName" type="text" id="middleNameLocal"
                            ng-model="patient.middleNameLocal"
                            pattern-validate
-                           placeholder="{{::patientConfiguration.local()['placeholderForMiddleName']}}">
+                           placeholder="{{::patientConfiguration.local()['placeholderForMiddleName']}}" capitalize-field>
                     <input type="text" id="familyNameLocal" ng-model="patient.familyNameLocal" pattern-validate
-                           placeholder="{{::patientConfiguration.local()['placeholderForFamilyName']}}">
+                           placeholder="{{::patientConfiguration.local()['placeholderForFamilyName']}}" capitalize-field>
                 </div>
             </article>
             <article class="form-field patient-name-wrapper">
@@ -30,12 +30,12 @@
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
+                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" capitalize-field>
 
                   <input data-ng-switch-default
                          type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
+                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" capitalize-field>
               </span>
 
               <span data-ng-switch="::isAutoComplete('givenName')"
@@ -45,12 +45,12 @@
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" focus-me="true">
+                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" focus-me="true" capitalize-field>
 
                   <input data-ng-switch-default
                          type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" focus-me="true">
+                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" focus-me="true" capitalize-field>
               </span>
 
               <span ng-show="::showMiddleName" data-ng-switch="::isAutoComplete('middleName')">
@@ -59,12 +59,12 @@
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
+                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}" capitalize-field>
 
                   <input data-ng-switch-default
                          type="text" id="middleName" ng-model="patient.middleName" pattern-validate
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
+                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}" capitalize-field>
               </span>
 
               <span data-ng-switch="::isAutoComplete('familyName')">
@@ -73,12 +73,12 @@
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}">
+                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" capitalize-field>
 
                   <input data-ng-switch-default
                          type="text" id="familyName" ng-model="patient.familyName" non-blank pattern-validate
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}">
+                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" capitalize-field>
               </span>
 
                     <!--<span class="input-label-inline caste-lastname" ng-show="showCasteSameAsLastName()">

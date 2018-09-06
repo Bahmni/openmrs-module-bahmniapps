@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.common.obs')
-    .directive('showObservation', function () {
+    .directive('showObservation', ['appService', function (appService) {
         var controller = function ($scope, $rootScope, $filter) {
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             $scope.toggle = function (observation) {
                 observation.showDetails = !observation.showDetails;
             };
@@ -11,8 +12,10 @@ angular.module('bahmni.common.obs')
 
             $scope.dateString = function (observation) {
                 var filterName;
-                if ($scope.showDate && $scope.showTime) {
+                if ($scope.showDate && $scope.showTime && !$scope.displayNepaliDates) {
                     filterName = 'bahmniDateTime';
+                } else if ($scope.showDate && $scope.showTime && $scope.displayNepaliDates) {
+                    filterName = 'npDateTime';
                 } else if (!$scope.showDate && ($scope.showTime || $scope.showTime === undefined)) {
                     filterName = 'bahmniTime';
                 } else {
@@ -33,4 +36,4 @@ angular.module('bahmni.common.obs')
             controller: controller,
             template: '<ng-include src="\'../common/obs/views/showObservation.html\'" />'
         };
-    });
+    }]);

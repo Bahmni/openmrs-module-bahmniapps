@@ -36,8 +36,11 @@
                             , {{::'MEDICATION_AS_NEEDED' | translate}}
                         </span>
                     </span>
-                        <span ng-if="columnName === 'startDate'">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
-                        <span ng-if="columnName === 'stopDate' && drugOrder.isDiscontinuedOrStopped()">{{::drugOrder.effectiveStopDate | bahmniDate}}</span>
+                        <span ng-if="columnName === 'startDate' && !displayNepaliDates">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
+                        <span ng-if="columnName === 'startDate' && displayNepaliDates">{{::drugOrder.effectiveStartDate | npDate}}</span>
+                        
+                        <span ng-if="columnName === 'stopDate' && drugOrder.isDiscontinuedOrStopped() && !displayNepaliDates">{{::drugOrder.effectiveStopDate | bahmniDate}}</span>
+                        <span ng-if="columnName === 'stopDate' && drugOrder.isDiscontinuedOrStopped() && displayNepaliDates">{{::drugOrder.effectiveStopDate | npDate}}</span>
                     <span ng-if="columnName === 'stopReason' && drugOrder.orderReasonConcept && drugOrder.isDiscontinuedOrStopped()">
                         {{::drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}}
                         <span ng-if="drugOrder.orderReasonText"> - {{::drugOrder.orderReasonText}}</span>
@@ -84,7 +87,8 @@
                             <span class="additionalInstructions fl">{{::drugOrder.additionalInstructions}}</span>
                             <div class="footer-note fl">
                             <span class="time-stamp">
-                                <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
+                                <span class="time" ng-if="!displayNepaliDates">{{drugOrder.dateActivated | bahmniDate}}</span>
+                                <span class="time" ng-if="displayNepaliDates">{{drugOrder.dateActivated | npDate}}</span>
                             </span>
                             <span class="provider">
                                 <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"></provider-directive>

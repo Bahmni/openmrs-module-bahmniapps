@@ -11,7 +11,14 @@
         <tbody>
             <tr ng-repeat="row in tableDetails">
                 <td ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'">
-                    <span ng-if="heading != 'Diagnosis' && heading != 'Id'">{{row[heading]}}</span>
+                    <span ng-if="heading != 'Diagnosis' && heading != 'Id' && heading != 'Admission Time' && heading != 'Disposition Time'">{{row[heading]}}</span>
+                    
+                    <span ng-if="displayNepaliDates && heading == 'Admission Time'">{{row[heading] | npDateTime}}</span>
+                    <span ng-if="!displayNepaliDates && heading == 'Admission Time'">{{row[heading] | bahmniDate}} {{row[heading] | bahmniTime}}</span>
+
+                    <span ng-if="displayNepaliDates && heading == 'Disposition Time'">{{row[heading] | npDateTime}}</span>
+                    <span ng-if="!displayNepaliDates && heading == 'Disposition Time'">{{row[heading] | bahmniDate}} {{row[heading] | bahmniTime}}</span>
+                    
                     <a ng-if="heading =='Id'" ng-click="gotoPatientDashboard(row['hiddenAttributes'].patientUuid, row['hiddenAttributes'].visitUuid)">
                         {{row[heading]}}
                     </a>

@@ -1,9 +1,12 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService',
-        function (RecursionHelper, spinner, $filter, messagingService) {
+    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService', 'appService',
+        function (RecursionHelper, spinner, $filter, messagingService, appService) {
             var link = function (scope) {
+                scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
+                scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue('enableNepaliCalendar');
+
                 var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig && scope.observation.conceptUIConfig['hideAbnormalButton'];
 
                 scope.now = moment().format("YYYY-MM-DD hh:mm:ss");

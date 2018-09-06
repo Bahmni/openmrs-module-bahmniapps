@@ -13,6 +13,7 @@ angular.module('bahmni.clinical')
             $scope.visitSummary = visitSummary;
             $scope.enrollment = $stateParams.enrollment;
             $scope.isDashboardPrinting = false;
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
 
             $scope.stateChange = function () {

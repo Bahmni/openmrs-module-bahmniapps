@@ -26,7 +26,8 @@
                                    class="order">{{::diagnosis.order}}</span>
                 <span id="status" class="status">{{::diagnosis.diagnosisStatus}}</span>
                 <span class="toggle-btn-date-wrapper">
-                <span id="diagnosisDate" class="date">{{::diagnosis.diagnosisDateTime | bahmniDate}}</span>
+                <span id="diagnosisDate" ng-if="!displayNepaliDates" class="date">{{::diagnosis.diagnosisDateTime | bahmniDate}}</span>
+                <span id="diagnosisDate" ng-if="displayNepaliDates" class="date">{{::diagnosis.diagnosisDateTime | npDate}}</span>
                 <span class="toggle-btn" toggle="diagnosis.showDetails"
                       ng-show="::(!diagnosis.comments && (config.showDetailsButton == true))">
                     <button class="toggle fr" ng-class="::{'has-notes': diagnosis.comments}">
@@ -44,8 +45,10 @@
                       class="order">{{::diagnosis.latestDiagnosis.order}}</span>
                 <span id="status" class="status">{{::diagnosis.latestDiagnosis.diagnosisStatus}}</span>
                 <span class="toggle-btn-date-wrapper">
-                    <span id="diagnosisDate"
+                    <span ng-if="!displayNepaliDates" id="diagnosisDate"
                           class="date">{{::diagnosis.latestDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                    <span ng-if="displayNepaliDates" id="diagnosisDate"
+                        class="date">{{::diagnosis.latestDiagnosis.diagnosisDateTime | npDate}}</span>
                     <span class="toggle-btn" toggle="diagnosis.showDetails"
                           ng-show="::(!diagnosis.comments && (config.showDetailsButton == true))">
                     <button class="toggle fr" ng-class="::{'has-notes': diagnosis.comments}">

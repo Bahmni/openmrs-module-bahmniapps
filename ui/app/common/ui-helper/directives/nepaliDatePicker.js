@@ -5,8 +5,11 @@ angular.module('bahmni.common.uiHelper')
         return {
             restrict: 'A',
             require: 'ngModel',
-            link: function (scope, element, attrs, ngModelCtrl) {
+            link: function ($scope, element, attrs, ngModelCtrl) {
                 $timeout(function () {
+                    if (attrs.allowFutureDates) {
+                        attrs.max = "";
+                    }
                     element.nepaliDatePicker({
                         dateFormat: "%y-%m-%d",
                         closeOnDateSelect: true,

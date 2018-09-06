@@ -35,7 +35,11 @@
                                ng-class="{'illegalValue': !(consultation.condition.status || consultation.condition.isEmpty())}"/>
             </div>
             <div class="col col3">
-                <input date-converter class="form-field" type="date"
+                <input ng-if="enableNepaliCalendar" class="nepali-datepicker" type="text" max="{{::npToday}}" ng-model="consultation.condition.onSetDateNepaliDate" 
+                    ng-change="handleNepaliDateUpdate(consultation)"  
+                    consultation="consultation"
+                    npdatepicker>
+                <input date-converter class="form-field" type="date" ng-if="!enableNepaliCalendar"
                        max="{{todayWithoutTime}}"
                        ng-model="consultation.condition.onSetDate">
                 <button type="button" toggle="consultation.condition.showNotes" class="comment-toggle fr"

@@ -1,9 +1,10 @@
 "use strict";
 
 angular.module('bahmni.common.displaycontrol.disposition')
-    .directive('disposition', ['dispositionService', 'spinner',
-        function (dispositionService, spinner) {
+    .directive('disposition', ['dispositionService', 'spinner', 'appService',
+        function (dispositionService, spinner, appService) {
             var controller = function ($scope) {
+                $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 var fetchDispositionByPatient = function (patientUuid, numOfVisits) {
                     return dispositionService.getDispositionByPatient(patientUuid, numOfVisits)
                         .then(handleDispositionResponse);

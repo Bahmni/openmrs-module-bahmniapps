@@ -23,7 +23,8 @@
             <tr ng-repeat="errorLog in errorLogs | orderBy: '-logDateTime' track by errorLog.uuid ">
                 <td>{{::errorLog.failedRequestUrl}}</td>
                 <td>{{::errorLog.responseStatus}}</td>
-                <td>{{::errorLog.logDateTime | bahmniDateTime }}</td>
+                <td ng-if="!displayNepaliDates">{{::errorLog.logDateTime | bahmniDateTime }}</td>
+                <td ng-if="displayNepaliDates">{{::errorLog.logDateTime | npDateTime }}</td>
                 <td>
                     <pre class="stackTrace" ng-class="{'stackTraceMore' : !showErrorLog}">{{ ::errorLog.stackTrace | json:4 }}</pre>
                    <div class="read-wrap clearfix">

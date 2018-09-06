@@ -13,7 +13,8 @@
                 <span bo-show="drugOrder.getDescription()"
                       bo-text="drugOrder.getDescription()"></span>
             <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
-            <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
+            <span ng-if="drugOrder.isDiscontinuedOrStopped() && !displayNepaliDates" class="fr">stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
+            <span ng-if="drugOrder.isDiscontinuedOrStopped() && displayNepaliDates" class="fr">stopped on {{drugOrder.effectiveStopDate | npDate}}</span>
         </td>
         <td class="toggle-btn">
             <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
@@ -28,7 +29,8 @@
 
             <div class="footer-note right">
                     <span class="time-stamp">
-                      <span class="date">{{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                      <span class="date" ng-if="!displayNepaliDates">{{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                      <span class="date" ng-if="displayNepaliDates">{{drugOrder.effectiveStartDate | npDate}}</span>
                       <span class="time">{{drugOrder.effectiveStartDate | bahmniTime}}</span>
                     </span>
                 <span class="provider" bo-text="drugOrder.provider.name"></span>
@@ -55,7 +57,8 @@
                 <span bo-show="drugOrder.getDescription()"
                       bo-text="drugOrder.getDescription()"></span>
                 <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
-                <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
+                <span ng-if="drugOrder.isDiscontinuedOrStopped() && !displayNepaliDates" class="fr">stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
+                <span ng-if="drugOrder.isDiscontinuedOrStopped() && displayNepaliDates" class="fr">stopped on {{drugOrder.effectiveStopDate | npDate}}</span>
             </td>
             <td class="toggle-btn">
                 <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
@@ -70,7 +73,8 @@
 
                 <div class="footer-note right">
                     <span class="time-stamp">
-                      <span class="date">{{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                      <span class="date" ng-if="!displayNepaliDates">{{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                      <span class="date" ng-if="displayNepaliDates">{{drugOrder.effectiveStartDate | npDate}}</span>
                       <span class="time">{{drugOrder.effectiveStartDate | bahmniTime}}</span>
                     </span>
                     <span class="provider" bo-text="drugOrder.provider.name"></span>
@@ -98,7 +102,8 @@
                 <span bo-show="drugOrder.getDescription()"
                       bo-text="drugOrder.getDescription()"></span>
                 <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
-                <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
+                <span ng-if="drugOrder.isDiscontinuedOrStopped() && !displayNepaliDates" class="fr">stopped on {{drugOrder.effectiveStopDate | bahmniDate}}</span>
+                <span ng-if="drugOrder.isDiscontinuedOrStopped() && displayNepaliDates" class="fr">stopped on {{drugOrder.effectiveStopDate | npDate}}</span>
             </td>
             <td class="toggle-btn">
                 <button class="toggle fr" ng-class="{'has-notes': drugOrder.additionalInstructions}">
@@ -113,7 +118,8 @@
 
                 <div class="footer-note right">
                     <span class="time-stamp">
-                      <span class="date">{{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                      <span class="date" ng-if="!displayNepaliDates">{{drugOrder.effectiveStartDate | bahmniDate}}</span>
+                      <span class="date" ng-if="displayNepaliDates">{{drugOrder.effectiveStartDate | npDate}}</span>
                       <span class="time">{{drugOrder.effectiveStartDate | bahmniTime}}</span>
                     </span>
                     <span class="provider" bo-text="drugOrder.provider.name"></span>

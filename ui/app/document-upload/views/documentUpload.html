@@ -130,9 +130,11 @@
                 <i ng-if="isCurrentVisit(visit)" class="fa fa-minus-circle state"></i>
                 Visit:
                 <small>From:</small>
-                <span>{{visit.startDatetime | bahmniDate}}</span>
+                <span ng-if="!displayNepaliDates">{{visit.startDatetime | bahmniDate}}</span>
+                <span ng-if="displayNepaliDates">{{visit.startDatetime | npDate}}</span>
                 <small ng-if="visit.stopDatetime">To:</small>
-                <span ng-if="visit.stopDatetime">{{visit.stopDatetime | bahmniDate}}</span>
+                <span ng-if="visit.stopDatetime && !displayNepaliDates">{{visit.stopDatetime | bahmniDate}}</span>
+                <span ng-if="visit.stopDatetime && displayNepaliDates">{{visit.stopDatetime | npDate}}</span>
                 <span ng-if="visit.hasFiles()" class="containsImageMarker" title="Visit has images"><i
                         class="fa fa-picture-o"></i></span>
                 <span ng-if="!visit.stopDatetime" class="currentVisitMarker" title="Current Visit"><i

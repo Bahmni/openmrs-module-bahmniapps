@@ -6,6 +6,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
         function (bacteriologyResultsService, appService, $q, spinner, $filter, ngDialog, bacteriologyTabInitialization, $controller,
                   consultationInitialization, messagingService, $rootScope, $translate) {
             var controller = function ($scope) {
+                $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 var shouldPromptBeforeClose = true;
                 var init = function () {
                     $scope.title = "bacteriology results";

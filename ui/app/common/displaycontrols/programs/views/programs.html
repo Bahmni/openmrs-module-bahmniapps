@@ -6,8 +6,11 @@
             <div ng-repeat="program in activePrograms" ng-if="::hasPatientAnyActivePrograms()">
                 <div class="program-basic-details">
                     <span class="program-name fl">{{::program.display}}</span>
-                <span class="program-dates fr">
+                <span class="program-dates fr"  ng-if="!displayNepaliDates">
                     <strong>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY'| translate }}</strong> : {{::program.dateEnrolled | bahmniDate}}
+                </span>
+                <span class="program-dates fr" ng-if="displayNepaliDates">
+                    <strong>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY'| translate }}</strong> : {{::program.dateEnrolled | npDate}}
                 </span>
                 </div>
                 <div class="program-attributes">
@@ -34,8 +37,10 @@
                         <tbody>
                         <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated'">
                             <td>{{::state.state.concept.display}}</td>
-                            <td>{{::state.startDate | bahmniDate}}</td>
-                            <td>{{::state.endDate | bahmniDate}}</td>
+                            <td ng-if="!displayNepaliDates">{{::state.startDate | bahmniDate}}</td>
+                            <td ng-if="displayNepaliDates">{{::state.startDate | npDate}}</td>
+                            <td ng-if="!displayNepaliDates">{{::state.endDate | bahmniDate}}</td>
+                            <td ng-if="displayNepaliDates">{{::state.endDate | npDate}}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -52,11 +57,17 @@
                 <div class="program-basic-details">
                     <div class="clearfix">
                         <span class="program-name fl">{{::program.display}} Treatment</span>
-                        <span class="program-dates fr">
+                        <span class="program-dates fr" ng-if="!displayNepaliDates">
                             <span class="program-start-date">
                                 <strong>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY'| translate }}</strong> : {{::program.dateEnrolled | bahmniDate}}
                             </span>
                             <strong>{{::'PROGRAM_MANAGEMENT_STOP_DATE_KEY' | translate }}</strong> : {{::program.dateCompleted | bahmniDate}}
+                        </span>
+                        <span class="program-dates fr" ng-if="!displayNepaliDates">
+                            <span class="program-start-date">
+                                <strong>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY'| translate }}</strong> : {{::program.dateEnrolled | npDate}}
+                            </span>
+                            <strong>{{::'PROGRAM_MANAGEMENT_STOP_DATE_KEY' | translate }}</strong> : {{::program.dateCompleted | npDate}}
                         </span>
                     </div>
                     <div class="outcome-container">
@@ -92,8 +103,10 @@
                         <tbody>
                         <tr ng-repeat="state in program.states| orderBy:'auditInfo.dateCreated'">
                             <td>{{::state.state.concept.display}}</td>
-                            <td>{{::state.startDate | bahmniDate}}</td>
-                            <td>{{::state.endDate | bahmniDate}}</td>
+                            <td ng-if="!displayNepaliDates">{{::state.startDate | bahmniDate}}</td>
+                            <td ng-if="displayNepaliDates">{{::state.startDate | npDate}}</td>
+                            <td ng-if="!displayNepaliDates">{{::state.endDate | bahmniDate}}</td>
+                            <td ng-if="displayNepaliDates">{{::state.endDate | npDate}}</td>
                         </tr>
                         </tbody>
                     </table>

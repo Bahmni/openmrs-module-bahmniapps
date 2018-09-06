@@ -2,7 +2,12 @@
     <div class="col col1">
         <div class="fl diagnosis-name">{{ condition.displayString() }}</div>
         <div ng-if="condition.activeSince" class="fr diagnosis-date">
-            {{'CONDITION_LIST_ACTIVE_SINCE'|translate}} {{condition.activeSince | bahmniDate}}
+            <span ng-if="!displayNepaliDates">
+                {{'CONDITION_LIST_ACTIVE_SINCE'|translate}} {{condition.activeSince | bahmniDate}}
+            </span>
+            <span ng-if="displayNepaliDates">
+                    {{'CONDITION_LIST_ACTIVE_SINCE'|translate}} {{condition.activeSince | npDate}}
+                </span>
         </div>
     </div>
     <div class="col col2 notes-subscriber">

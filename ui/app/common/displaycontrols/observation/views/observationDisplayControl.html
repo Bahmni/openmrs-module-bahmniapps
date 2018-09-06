@@ -19,8 +19,11 @@
                     <span ng-if="showGroupDateTime" class="tree-list-item row-click toggle-container" toggle="obsGroup.isOpen">
                         <i class="fa fa-caret-right"></i>
                         <i class="fa fa-caret-down"></i>
-                        <span class="obs-date">
+                        <span class="obs-date" ng-if="!displayNepaliDates">
                             {{::obsGroup.date | bahmniDateTime}}
+                        </span>
+                        <span class="obs-date" ng-if="displayNepaliDates">
+                            {{::obsGroup.date | npDateTime}}
                         </span>
                     </span>
 

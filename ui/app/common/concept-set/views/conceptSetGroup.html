@@ -14,7 +14,8 @@
                         <a ng-click="showLeftPanelConceptSet(conceptSet)">
                             <span class="concept-set-name" ng-class="{'concept-set-name-extra':conceptSet.isValid === false}">
                                 {{conceptSet.label}}
-                                <span ng-if="conceptSet.observations[0].observationDateTime"> ( {{conceptSet.observations[0].observationDateTime|bahmniDate}} )</span>
+                                <span ng-if="conceptSet.observations[0].observationDateTime && displayNepaliDates"> ( {{conceptSet.observations[0].observationDateTime|npDate}} )</span>
+                                <span ng-if="conceptSet.observations[0].observationDateTime && !displayNepaliDates"> ( {{conceptSet.observations[0].observationDateTime|bahmniDate}} )</span>
                             </span>
                         </a>
                         <div class="button-wrap">

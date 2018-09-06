@@ -8,8 +8,11 @@
                 <span class="tree-list-item">
                         {{obsTemplate.label}} 
 
-                    <span class="fr visit-start-date">
+                    <span class="fr visit-start-date" ng-if="!displayNepaliDates">
                         {{obsTemplate.visitStartDate | bahmniDate}}
+                    </span>
+                    <span class="fr visit-start-date" ng-if="displayNepaliDates">
+                        {{obsTemplate.visitStartDate | npDate}}
                     </span>
                 </span>
 
@@ -24,8 +27,11 @@
                 <ul>
                     <li ng-repeat="encounter in obsTemplate.encounters">
                         <span ng-if="showGroupDateTime" class="tree-list-item disease-date" ng-if="!isIntakeTemplate(obsTemplate)">
-                            <span>
+                            <span ng-if="!displayNepaliDates">
                                 {{encounter.encounterDateTime | bahmniDate}}
+                            </span>
+                            <span ng-if="displayNepaliDates">
+                                {{encounter.encounterDateTime | npDate}}
                             </span>
                         </span>
                         <ul ng-class="{'is-intake-template':isIntakeTemplate(obsTemplate)}">

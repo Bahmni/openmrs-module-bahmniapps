@@ -164,7 +164,11 @@
                         <label class="start-date-label ">{{ ::treatmentConfig.translate('startDate', 'MEDICATION_LABEL_START_DATE') }} </label>
                     </div>
                     <div class="field-value">
-                        <input id="start-date" date-converter class="start-date " type="date"
+                        <input ng-if="enableNepaliCalendar" class="abc nepali-datepicker" type="text" ng-model="treatment.effectiveStartDateNepali" 
+                            ng-change="handleNepaliDateUpdate(treatment)"  
+                            treatment="treatment"
+                            npdatepicker>
+                        <input id="start-date" ng-show="!enableNepaliCalendar" ng-change="handleDateUpdate(treatment)" date-converter class="start-date " type="date"
                                ng-model="treatment.effectiveStartDate" required>
                     </div>
                 </article>
@@ -302,7 +306,11 @@
                     <label>Start Date</label>
                 </div>
                 <div class="field-value">
-                    <input type="date" ng-model="newOrderSet.date" ng-disabled="isSearchDisabled"/>
+                        <input ng-if="enableNepaliCalendar" class="nepali-datepicker" type="text" ng-model="newOrderSet.nepaliDate" 
+                            ng-change="handleOrderSetNepaliDateUpdate(newOrderSet)"  
+                            newOrderSet="newOrderSet"
+                            npdatepicker>
+                    <input type="date" ng-show="!enableNepaliCalendar" ng-change="handleOrderSetDateUpdate(newOrderSet)" ng-model="newOrderSet.date" ng-disabled="isSearchDisabled"/>
                 </div>
             </article>
             <div class="orderSet-order-container clearfix">

@@ -114,12 +114,17 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     this.isNonCodedDrug = this.isNonCodedDrug || false;
     this.isDurationRequired = inputOptionsConfig.duration && inputOptionsConfig.duration.required == false ? false : true;
 
+    this.convertAdToBs = function (date) {
+        var nepaliDate = calendarFunctions.getBsDateByAdDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
+        return calendarFunctions.bsDateFormat("%y-%m-%d", nepaliDate.bsYear, nepaliDate.bsMonth, nepaliDate.bsDate);
+    };
+
     if (inputOptionsConfig.defaultStartDate === false && !this.effectiveStartDate) {
         this.effectiveStartDate = null;
     } else {
         this.effectiveStartDate = this.effectiveStartDate || this.encounterDate;
+        this.effectiveStartDateNepali = this.convertAdToBs(this.effectiveStartDate);
     }
-
     this.isUniformFrequency = true;
     this.showExtraInfo = false;
 
@@ -499,6 +504,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         newDrugOrder.orderSetUuid = self.orderSetUuid;
         newDrugOrder.orderGroupUuid = undefined;
         newDrugOrder.isNewOrderSet = false;
+        newDrugOrder.effectiveStartDateNepali = self.convertAdToBs(newDrugOrder.effectiveStartDate);
         return newDrugOrder;
     };
 
@@ -524,6 +530,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
         if (newDrugOrder.effectiveStartDate <= today()) {
             newDrugOrder.effectiveStartDate = today();
+            newDrugOrder.effectiveStartDateNepali = self.convertAdToBs(newDrugOrder.effectiveStartDate);
         }
 
         modifyForReverseSyncIfRequired(newDrugOrder);

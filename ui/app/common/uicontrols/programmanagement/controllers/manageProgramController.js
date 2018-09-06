@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.uicontrols.programmanagment')
     .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService',
-        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox',
+        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox', 'appService',
         function ($scope, retrospectiveEntryService, $window, programService,
-                  spinner, messagingService, $stateParams, $q, confirmBox) {
+                  spinner, messagingService, $stateParams, $q, confirmBox, appService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
@@ -14,7 +14,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.outComesForProgram = [];
             $scope.configName = $stateParams.configName;
             $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
+            $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
+            $scope.enableNepaliCalendar = appService.getAppDescriptor().getConfigValue('enableNepaliCalendar');
             var id = "#programEnrollmentContainer";
+            $scope.npToday = DateUtil.npToday();
 
             var updateActiveProgramsList = function () {
                 spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid).then(function (programs) {
@@ -63,6 +66,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.programSelected = null;
                 $scope.patientProgramAttributes = {};
                 $scope.programEnrollmentDate = null;
+                $scope.programEnrollmentDateBs = "";
 
                 updateActiveProgramsList();
             };
@@ -73,6 +77,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.workflowStateSelected = null;
                 $scope.patientProgramAttributes = {};
                 $scope.programEnrollmentDate = null;
+                $scope.programEnrollmentDateBs = "";
                 updateActiveProgramsList();
                 if ($scope.patientProgram) {
                     $scope.patientProgram.editing = false;
@@ -273,6 +278,12 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.getCurrentStateDisplayName = function (program) {
                 var currentState = getActivePatientProgramState(program.states);
                 return _.get(currentState, 'state.concept.display');
+            };
+
+            $scope.updateAdDate = function (programEnrollmentDateBs) {
+                var dateStr = programEnrollmentDateBs.split("-");
+                var dateAD = calendarFunctions.getAdDateByBsDate(calendarFunctions.getNumberByNepaliNumber(dateStr[0]), calendarFunctions.getNumberByNepaliNumber(dateStr[1]), calendarFunctions.getNumberByNepaliNumber(dateStr[2]));
+                $scope.programEnrollmentDate = new Date(dateAD);
             };
 
             $scope.getMaxAllowedDate = function (states) {

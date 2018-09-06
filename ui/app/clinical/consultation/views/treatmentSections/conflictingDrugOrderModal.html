@@ -3,11 +3,17 @@
 
 	<span class="ngdialog-close"></span>
 	<div class="drug-details" ng-if="alreadyActiveSimilarOrder.effectiveStopDate">
-		<p><strong class="drug-name">{{alreadyActiveSimilarOrder.getDisplayName()}}</strong> from <strong>{{alreadyActiveSimilarOrder.effectiveStartDate | bahmniDate}}</strong> to <strong>{{alreadyActiveSimilarOrder.effectiveStopDate | bahmniDate}}</strong> is conflicting with drug order you are trying to add. You can revise or refill instead.</p>
+		<p><strong class="drug-name">{{alreadyActiveSimilarOrder.getDisplayName()}}</strong> from 
+			<strong ng-if="displayNepaliDates">{{alreadyActiveSimilarOrder.effectiveStartDate | npDate}}</strong>
+			<strong ng-if="!displayNepaliDates">{{alreadyActiveSimilarOrder.effectiveStartDate | bahmniDate}}</strong> to 
+			<strong ng-if="displayNepaliDates">{{alreadyActiveSimilarOrder.effectiveStopDate | npDate}}</strong>
+			<strong ng-if="!displayNepaliDates">{{alreadyActiveSimilarOrder.effectiveStopDate | bahmniDate}}</strong> is conflicting with drug order you are trying to add. You can revise or refill instead.</p>
 	</div>
 
 	<div class="drug-details" ng-if="!alreadyActiveSimilarOrder.effectiveStopDate">
-	    <p><strong class="drug-name">{{alreadyActiveSimilarOrder.getDisplayName()}}</strong> from <strong>{{alreadyActiveSimilarOrder.effectiveStartDate | bahmniDate}}</strong> is conflicting with drug order you are trying to add. You can stop the active drug order and create a new one.</p>
+		<p><strong class="drug-name">{{alreadyActiveSimilarOrder.getDisplayName()}}</strong> from 
+			<strong ng-if="displayNepaliDates">{{alreadyActiveSimilarOrder.effectiveStartDate | npDate}}</strong>
+			<strong ng-if="!displayNepaliDates">{{alreadyActiveSimilarOrder.effectiveStartDate | bahmniDate}}</strong> is conflicting with drug order you are trying to add. You can stop the active drug order and create a new one.</p>
 	</div>
 
 	<div class="dialog-button-group" ng-if="alreadyActiveSimilarOrder.effectiveStopDate">

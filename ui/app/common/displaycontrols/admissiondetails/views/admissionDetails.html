@@ -14,8 +14,11 @@
                 <td class="name">
                     <span class="disposition-state">Admission Date</span>
                 </td>
-                <td class="value" ng-if="::visitSummary.admissionDetails">
+                <td class="value" ng-if="::visitSummary.admissionDetails && !displayNepaliDates">
                     {{::visitSummary.admissionDetails.date | bahmniDate}}
+                </td>
+                <td class="value" ng-if="::visitSummary.admissionDetails && displayNepaliDates">
+                    {{::visitSummary.admissionDetails.date | npDate}}
                 </td>
                 <td ng-if="showDetailsButton(visitSummary.admissionDetails)">
                     <button class="toggle fr"
@@ -37,9 +40,12 @@
                 <td class="name">
                     <span class="disposition-state">Discharge Date</span>
                 </td>
-                <td class="value">
+                <td class="value" ng-if="!displayNepaliDates">
                     {{::visitSummary.dischargeDetails.date| bahmniDate}}
                 </td>
+                <td class="value" ng-if="displayNepaliDates">
+                        {{::visitSummary.dischargeDetails.date| npDate}}
+                    </td>
                 <td ng-if="showDetailsButton(visitSummary.dischargeDetails)">
                     <button class="toggle fr"
                             toggle="visitSummary.dischargeDetails.show">

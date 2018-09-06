@@ -23,8 +23,11 @@
                 <label>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY' | translate}}:  </label>
             </div>
             <div class="field-value">
-                <span>
+                <span ng-if="!displayNepaliDates">
                     {{::patientProgram.dateEnrolled | bahmniDate}}
+                </span>
+                <span ng-if="displayNepaliDates">
+                    {{::patientProgram.dateEnrolled | npDate}}
                 </span>
             </div>
         </div>
@@ -33,8 +36,11 @@
                 <label>{{::'PROGRAM_MANAGEMENT_STOP_DATE_KEY' | translate}}: </label>
             </div>
             <div class="field-value">
-                <span>
+                <span ng-if="!displayNepaliDates">
                     {{::patientProgram.dateCompleted | bahmniDate}}
+                </span>
+                <span ng-if="displayNepaliDates">
+                    {{::patientProgram.dateCompleted | npDate}}
                 </span>
             </div>
         </div>
@@ -53,14 +59,23 @@
             <tr ng-repeat="state in patientProgram.states| orderBy:'auditInfo.dateCreated':true"
                 ng-if="state.voided != true">
                 <td>{{state.state.concept.display}}</td>
-                <td ng-if="state.endDate">{{::state.startDate | bahmniDate}} {{::'PROGRAM_MANAGEMENT_TO_KEY' |
+                <td ng-if="state.endDate && !displayNepaliDates">{{::state.startDate | bahmniDate}} {{::'PROGRAM_MANAGEMENT_TO_KEY' |
                     translate}} {{::state.endDate | bahmniDate}}
                 </td>
-                <td ng-if="!state.endDate">{{::'PROGRAM_MANAGEMENT_STARTED_ON_KEY' | translate}} {{::state.startDate
+                <td ng-if="state.endDate && displayNepaliDates">{{::state.startDate | npDate}} {{::'PROGRAM_MANAGEMENT_TO_KEY' |
+                    translate}} {{::state.endDate | npDate}}
+                </td>
+                <td ng-if="!state.endDate && !displayNepaliDates">{{::'PROGRAM_MANAGEMENT_STARTED_ON_KEY' | translate}} {{::state.startDate
                     | bahmniDate}}
                 </td>
-                <td>{{::'PROGRAM_MANAGEMENT_BY_KEY' | translate}} {{state.auditInfo.creator.display}}
+                <td ng-if="!state.endDate && displayNepaliDates">{{::'PROGRAM_MANAGEMENT_STARTED_ON_KEY' | translate}} {{::state.startDate
+                    | npDate}}
+                </td>
+                <td ng-if="!displayNepaliDates">{{::'PROGRAM_MANAGEMENT_BY_KEY' | translate}} {{state.auditInfo.creator.display}}
                     {{::'PROGRAM_MANAGEMENT_ON_KEY' | translate}} {{::state.auditInfo.dateCreated | bahmniDate}}
+                </td>
+                <td ng-if="displayNepaliDates">{{::'PROGRAM_MANAGEMENT_BY_KEY' | translate}} {{state.auditInfo.creator.display}}
+                    {{::'PROGRAM_MANAGEMENT_ON_KEY' | translate}} {{::state.auditInfo.dateCreated | npDate}}
                 </td>
             </tr>
             </tbody>

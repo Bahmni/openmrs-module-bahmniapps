@@ -50,12 +50,14 @@
             <li ng-hide="isInEditEncounterMode()">
                 <label for="retro-date-widget"  class="retro-date-widget" >{{"ENTERING_DATA_FOR_TRANSLATION_KEY"| translate}}</label>
                 <br>
-                <label class="retro-date-widget disabled-date">{{(consultation.encounterDateTime || today)| bahmniDate}}</label>
+                <label class="retro-date-widget disabled-date" ng-if="!displayNepaliDates">{{(consultation.encounterDateTime || today)| bahmniDate}}</label>
+                <label class="retro-date-widget disabled-date" ng-if="displayNepaliDates">{{(consultation.encounterDateTime || today)| npDate}}</label>
             </li>
             <li ng-show="isInEditEncounterMode()">
                 <label for="retro-date-widget"  class="retro-date-widget" >{{"EDITITNG_DATA_FOR_ENCOUNTER_TRANSLATION_KEY" | translate}}</label>
                 <br>
-                <label class="retro-date-widget disabled-date">{{consultation.encounterDateTime| bahmniDateTime}}</label>
+                <label class="retro-date-widget disabled-date" ng-if="!displayNepaliDates">{{consultation.encounterDateTime| bahmniDateTime}}</label>
+                <label class="retro-date-widget disabled-date" ng-if="displayNepaliDates">{{consultation.encounterDateTime| npDateTime}}</label>
             </li>
         </ul>
         <ul show-if-privilege="{{encounterProviderPrivilege}}" ng-if="isValidProvider() && !isInEditEncounterMode()">
