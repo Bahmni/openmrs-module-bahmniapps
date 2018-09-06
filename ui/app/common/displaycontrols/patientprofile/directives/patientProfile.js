@@ -30,7 +30,7 @@
         return _.get(admissionStatus, 'value') === "Admitted";
     };
     angular.module('bahmni.common.displaycontrol.patientprofile')
-        .directive('patientProfile', ['patientService', 'spinner', '$sce', '$rootScope', '$stateParams', '$window', '$translate', 'configurations', '$q', 'visitService','sessionService', 'bedService', function (patientService, spinner, $sce, $rootScope, $stateParams, $window, $translate, configurations, $q, visitService, sessionService, bedService) {
+        .directive('patientProfile', ['patientService', 'spinner', '$sce', '$rootScope', '$stateParams', '$window', '$translate', 'configurations', '$q', 'visitService', 'sessionService', 'bedService', function (patientService, spinner, $sce, $rootScope, $stateParams, $window, $translate, configurations, $q, visitService, sessionService, bedService) {
             var controller = function ($scope, sessionService) {
                 $scope.isProviderRelationship = function (relationship) {
                     return _.includes($rootScope.relationshipTypeMap.provider, relationship.relationshipType.aIsToB);
@@ -56,10 +56,14 @@
                     var ADMISSION_STATUS_ATTRIBUTE = "Admission Status";
                     return visitService.getVisit($scope.visitUuid, REP).then(function (response) {
                         var attributes = response.data.attributes;
-                        var admissionStatus = _.find(attributes, {attributeType: {name: ADMISSION_STATUS_ATTRIBUTE}});
+                        var admissionStatus = _.find(attributes, {
+                            attributeType: {
+                                name: ADMISSION_STATUS_ATTRIBUTE
+                            }
+                        });
                         $scope.hasBeenAdmitted = isAdmitted(admissionStatus);
                     });
-                };            
+                };
                 var setHasBeenAdmittedOnVisitUuidChange = function () {
                     $scope.$watch('visitUuid', function (visitUuid) {
                         if (!_.isEmpty(visitUuid)) {
@@ -68,7 +72,7 @@
                         }
                     });
                 };
-                var getBedNumber = function(patientUuid, visitUuid) {
+                var getBedNumber = function (patientUuid, visitUuid) {
                     bedService.getAssignedBedForPatient(patientUuid, visitUuid).then(function (bedDetails) {
                         $scope.bedDetails = bedDetails;
                     });
@@ -78,29 +82,29 @@
                 };
                 var onDirectiveReady = function () {
                     $scope.addressLine = getAddress($scope);
-                        $scope.patientAttributeTypes = $sce.trustAsHtml(getPatientAttributeTypes($scope));
-                        $scope.showBirthDate = $scope.config.showDOB !== false;
-                        $scope.showBirthDate = $scope.showBirthDate && !!$scope.patient.birthdate;
-                    };
-                    var initPromise = $q.all([assignPatientDetails(), assignRelationshipDetails()]);
-                    initPromise.then(onDirectiveReady);
-                    initPromise.then(setHasBeenAdmittedOnVisitUuidChange);
-                    initPromise.then(setDirectiveAsReady);
-                    $scope.initialization = initPromise;
+                    $scope.patientAttributeTypes = $sce.trustAsHtml(getPatientAttributeTypes($scope));
+                    $scope.showBirthDate = $scope.config.showDOB !== false;
+                    $scope.showBirthDate = $scope.showBirthDate && !!$scope.patient.birthdate;
                 };
-                var link = function ($scope, element) {
-                    spinner.forPromise($scope.initialization, element);
-                };
-                return {
-                    restrict: 'E',
-                    controller: controller,
-                    link: link,
-                    scope: {
-                        patientUuid: "@",
-                        visitUuid: "@",
-                        config: "="
-                    },
-                    templateUrl: "../common/displaycontrols/patientprofile/views/patientProfile.html"
-                };
+                var initPromise = $q.all([assignPatientDetails(), assignRelationshipDetails()]);
+                initPromise.then(onDirectiveReady);
+                initPromise.then(setHasBeenAdmittedOnVisitUuidChange);
+                initPromise.then(setDirectiveAsReady);
+                $scope.initialization = initPromise;
+            };
+            var link = function ($scope, element) {
+                spinner.forPromise($scope.initialization, element);
+            };
+            return {
+                restrict: 'E',
+                controller: controller,
+                link: link,
+                scope: {
+                    patientUuid: "@",
+                    visitUuid: "@",
+                    config: "="
+                },
+                templateUrl: "../common/displaycontrols/patientprofile/views/patientProfile.html"
+            };
         }]);
 })();
