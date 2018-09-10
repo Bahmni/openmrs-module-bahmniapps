@@ -798,7 +798,8 @@ describe('AppointmentsListViewController', function () {
                 filteredAppointments: scope.filteredAppointments,
                 startDate: stateparams.viewDate,
                 enableServiceTypes: scope.enableServiceTypes,
-                enableSpecialities: scope.enableSpecialities
+                enableSpecialities: scope.enableSpecialities,
+                display: scope.display
             });
     });
 
@@ -859,7 +860,8 @@ describe('AppointmentsListViewController', function () {
                 filteredAppointments: scope.filteredAppointments,
                 startDate: stateparams.viewDate,
                 enableServiceTypes: scope.enableServiceTypes,
-                enableSpecialities: scope.enableSpecialities
+                enableSpecialities: scope.enableSpecialities,
+                display: scope.display,
             });
     });
 
@@ -958,6 +960,19 @@ describe('AppointmentsListViewController', function () {
         var jsonObject = {"array": [1, 2, 3], "boolean": true, "null": null, "number": 123, "object": {"a": "b", "c": "d", "e": "f"}, "string": "Hello World"};
         var display = scope.display(jsonObject);
         var jsonString = 'array:[1,\t2,\t3],\tboolean:true,\tnull:null,\tnumber:123,\tobject:a:b,\tc:d,\te:f,\tstring:Hello World';
+        expect(display).toEqual(jsonString);
+    });
+
+    it('should get display of a string if json object contains language details', function () {
+        $translate.instant.and.callFake(function (value) {
+            return value;
+        });
+        createController();
+        var jsonObject = {"language": "English", "otherLanguage": "French"};
+        var jsonString = "English, French";
+
+        var display = scope.display(jsonObject);
+
         expect(display).toEqual(jsonString);
     });
 
