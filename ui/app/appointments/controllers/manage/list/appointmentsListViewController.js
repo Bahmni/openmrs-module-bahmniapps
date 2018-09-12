@@ -14,6 +14,8 @@ angular.module('bahmni.appointments')
             $scope.searchedPatient = false;
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
+            var autoRefreshStatus = true;
+            const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
             var oldPatientData = [];
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
@@ -38,7 +40,6 @@ angular.module('bahmni.appointments')
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
             };
 
-            var autoRefreshStatus = true;
             var setAppointments = function (params) {
                 autoRefreshStatus = false;
                 return appointmentsService.getAllAppointments(params).then(function (response) {
@@ -65,8 +66,7 @@ angular.module('bahmni.appointments')
                 }
                 else {
                     var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
-                    var params = {forDate: viewDate};
-                    setAppointments(params);
+                    setAppointments({forDate: viewDate});
                 }
             };
 
@@ -74,7 +74,6 @@ angular.module('bahmni.appointments')
                 if (!enableAutoRefresh) {
                     return;
                 }
-                var SECONDS_TO_MILLISECONDS_FACTOR = 1000;
                 var autoRefreshIntervalInMilliSeconds = autoRefreshIntervalInSeconds * SECONDS_TO_MILLISECONDS_FACTOR;
                 return $interval(setAppointmentsInAutoRefresh, autoRefreshIntervalInMilliSeconds);
             })();
