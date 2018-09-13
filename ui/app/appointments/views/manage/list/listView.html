@@ -62,7 +62,8 @@
             {{::'UNDO_CHECK_IN_APPOINTMENT' | translate}}
         </button>
         <button ng-if="isResetAppointmentStatusFeatureEnabled()"
-                show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}">
+                show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
+                ng-disabled="!allowResetAppointmentStatus()">
             {{::'RESET_APPOINTMENT' | translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"

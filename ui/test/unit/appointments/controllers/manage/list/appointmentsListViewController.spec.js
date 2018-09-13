@@ -1242,6 +1242,7 @@ describe('AppointmentsListViewController', function () {
     });
 
     describe('Reset appointment status functionality', function () {
+
         it('should return true when enableResetAppointmentStatusesFor is not undefined', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
                 if (value === 'enableResetAppointmentStatusesFor') {
@@ -1265,6 +1266,76 @@ describe('AppointmentsListViewController', function () {
 
             expect(scope.isResetAppointmentStatusFeatureEnabled()).toBeFalsy();
         });
+
+        it('should return false if user does not have manageAppointment and self privilege but has reset privilege', function () {
+            rootScope.currentUser = {
+                privileges: [{name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}]
+            };
+            createController();
+
+            expect(scope.allowResetAppointmentStatus()).toBeFalsy();
+        });
+
+        it('should return false if user does not have resetAppointmentStatus privilege', function () {
+            rootScope.currentUser = {
+                privileges: []
+            };
+            createController();
+
+            expect(scope.allowResetAppointmentStatus()).toBeFalsy();
+        });
+
+        it('should return false if user has required privileges but did not select appointment', function () {
+            rootScope.currentUser = {
+                privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeManageAppointments},
+                    {name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}
+                ]
+            };
+            scope.selectedAppointment = undefined;
+            createController();
+
+            expect(scope.allowResetAppointmentStatus()).toBeFalsy();
+        });
+
+        it('should return false if select appointment status is not listed in configured reset statuses for', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowResetAppointmentStatusesFor') {
+                    return [];
+                }
+                return undefined;
+            });
+            rootScope.currentUser = {
+                privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeManageAppointments},
+                    {name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}
+                ]
+            };
+            scope.selectedAppointment = {status: 'Cancelled'};
+            createController();
+
+            expect(scope.allowResetAppointmentStatus()).toBeFalsy();
+        });
+
+        it('should return false if configured reset statuses is not a list', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'allowResetAppointmentStatusesFor') {
+                    return "Cancelled";
+                }
+                return undefined;
+            });
+            rootScope.currentUser = {
+                privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeManageAppointments},
+                    {name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}
+                ]
+            };
+            scope.selectedAppointment = {status: 'Cancelled'};
+            createController();
+
+            expect(scope.allowResetAppointmentStatus()).toBeFalsy();
+        });
+
     });
 
 });

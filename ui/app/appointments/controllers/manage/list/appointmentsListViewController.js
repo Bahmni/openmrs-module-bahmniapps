@@ -14,6 +14,7 @@ angular.module('bahmni.appointments')
             $scope.enableResetAppointmentStatusesFor = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatusesFor');
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
+            $scope.resetAppointmentStatusPrivilege = Bahmni.Appointments.Constants.privilegeResetAppointmentStatus;
             $scope.searchedPatient = false;
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
@@ -342,6 +343,17 @@ angular.module('bahmni.appointments')
             $scope.isResetAppointmentStatusFeatureEnabled = function () {
                 return !(_.isNull($scope.enableResetAppointmentStatusesFor) ||
                     _.isUndefined($scope.enableResetAppointmentStatusesFor));
+            };
+
+            var isSelectedAppointmentStatusAllowedToReset = function () {
+                return _.isArray($scope.enableResetAppointmentStatusesFor) &&
+                    _.includes($scope.enableResetAppointmentStatusesFor, $scope.selectedAppointment.status);
+            };
+
+            $scope.allowResetAppointmentStatus = function () {
+                return $scope.isUserAllowedToPerform() &&
+                    isCurrentUserHavePrivilege($scope.resetAppointmentStatusPrivilege) && $scope.selectedAppointment &&
+                    isSelectedAppointmentStatusAllowedToReset();
             };
 
             init();

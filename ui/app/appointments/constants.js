@@ -33,6 +33,7 @@ Bahmni.Appointments.Constants = (function () {
         privilegeManageAppointments: 'app:appointments:manageAppointmentsTab',
         privilegeForAdmin: 'app:appointments:adminTab',
         privilegeOwnAppointments: 'Manage Own Appointments',
+        privilegeResetAppointmentStatus: 'Reset Appointment Status',
         availableForAppointments: 'Available for appointments',
         weekDays: {"Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6, "Sunday": 7 },
         providerResponses: { ACCEPTED: "ACCEPTED", REJECTED: "REJECTED", TENTATIVE: "TENTATIVE", CANCELLED: "CANCELLED", AWAITING: "AWAITING" }
