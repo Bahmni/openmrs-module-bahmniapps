@@ -11,6 +11,7 @@ angular.module('bahmni.appointments')
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
+            $scope.enableResetAppointmentStatusesFor = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatusesFor');
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
             $scope.searchedPatient = false;
@@ -336,6 +337,11 @@ angular.module('bahmni.appointments')
                     return maxAppointmentProviders > 1 ? true : appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId);
                 }
                 return false;
+            };
+
+            $scope.isResetAppointmentStatusFeatureEnabled = function () {
+                return !(_.isNull($scope.enableResetAppointmentStatusesFor) ||
+                    _.isUndefined($scope.enableResetAppointmentStatusesFor));
             };
 
             init();

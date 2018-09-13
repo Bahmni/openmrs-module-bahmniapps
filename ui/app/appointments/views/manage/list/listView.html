@@ -54,11 +54,16 @@
         ng-disabled="!isEditAllowed()">
             {{::'EDIT_APPOINTMENT' |translate}}
         </button>
-        <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
+        <button ng-if="!isResetAppointmentStatusFeatureEnabled()"
+                show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
                 ng-show="isAllowedAction('CheckedIn')"
                 ng-disabled="!allowUndoCheckIn()"
                 ng-click="undoCheckIn()">
             {{::'UNDO_CHECK_IN_APPOINTMENT' | translate}}
+        </button>
+        <button ng-if="isResetAppointmentStatusFeatureEnabled()"
+                show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}">
+            {{::'RESET_APPOINTMENT' | translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
                 ng-show="isAllowedAction('CheckedIn')"
