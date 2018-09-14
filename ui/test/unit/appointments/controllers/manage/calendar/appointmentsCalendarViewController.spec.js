@@ -73,6 +73,14 @@ describe('AppointmentsCalendarViewController', function () {
         expect(spinner.forPromise).toHaveBeenCalled();
     });
 
+    it('should not get appointments for date if weekView is set to true', function () {
+        scope.weekView = true;
+        var viewDate = new Date('1970-01-01T11:30:00.000Z');
+        scope.getAppointmentsForDate(viewDate);
+        expect(appointmentsService.getAllAppointments).not.toHaveBeenCalledWith({forDate: viewDate});
+        expect(spinner.forPromise).not.toHaveBeenCalled();
+    });
+
     it('should push "No provider appointments" resource when there are appointments with no provider', function () {
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({data: [{
@@ -611,5 +619,12 @@ describe('AppointmentsCalendarViewController', function () {
         scope.getAppointmentsForWeek(null, null);
         expect(spinner.forPromise).not.toHaveBeenCalled();
         expect(appointmentsService.searchAppointments).not.toHaveBeenCalled();
+    });
+
+    it('should update viewDate of state params while fetching appointments for week when weekView is true', function() {
+        scope.weekView = true;
+        appointmentsService.searchAppointments.and.returnValue(specUtil.simplePromise({}));
+        scope.getAppointmentsForWeek(null, null);
+        expect(state.params.viewDate).toBe(scope.startDate);
     });
 });

@@ -19,7 +19,8 @@ angular.module('bahmni.appointments')
                         scope: {
                             appointments: event.appointments,
                             checkinAppointment: checkinAppointment,
-                            enableCreateAppointment: isSelectable()
+                            enableCreateAppointment: isSelectable(),
+                            weekView: true
                         },
                         className: "ngdialog-theme-default delete-program-popup app-dialog-container"
                     });

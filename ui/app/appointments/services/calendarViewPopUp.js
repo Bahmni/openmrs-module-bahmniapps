@@ -22,6 +22,9 @@ angular.module('bahmni.appointments')
 
                 popUpScope.navigateTo = function (state, appointment) {
                     var params = $state.params;
+                    if (!_.isUndefined(scope.weekView)) {
+                        params.weekView = scope.weekView;
+                    }
                     if (state === 'edit') {
                         ngDialog.close(dialog.id, false);
                         params.uuid = appointment.uuid;
@@ -35,7 +38,7 @@ angular.module('bahmni.appointments')
                         };
                         $state.go('home.manage.appointments.calendar.new', params, {reload: false});
                     } else {
-                        $state.go($state.current, $state.params, {reload: true});
+                        $state.go($state.current, params, {reload: true});
                     }
                     popUpScope.$destroy();
                 };
