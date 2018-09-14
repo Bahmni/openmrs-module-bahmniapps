@@ -325,7 +325,26 @@ angular.module('bahmni.appointments')
                 return _.includes(allowedActions, action);
             };
 
-            $scope.allowUndoCheckIn = function () {
+            var isCurrentUserHavePrivilege = function (privilege) {
+                return !_.isUndefined(_.find($rootScope.currentUser.privileges, function (userPrivilege) {
+                    return userPrivilege.name === privilege;
+                }));
+            };
+
+            $scope.isUserAllowedToPerform = function () {
+                if (isCurrentUserHavePrivilege($scope.manageAppointmentPrivilege)) {
+                    return true;
+                }
+                else if (isCurrentUserHavePrivilege($scope.ownAppointmentPrivilege)) {
+                    if ($scope.selectedAppointment) {
+                        return _.isNull($scope.selectedAppointment.provider) ||
+                            $scope.selectedAppointment.provider.uuid === $rootScope.currentProvider.uuid;
+                    }
+                }
+                return false;
+            };
+
+            $scope.isUndoCheckInAllowed = function () {
                 if (!_.isUndefined($scope.selectedAppointment)) {
                     return appointmentCommonService.isUserAllowedToPerformEdit($scope.selectedAppointment.providers, $rootScope.currentUser.privileges, $rootScope.currentProvider.uuid) && $scope.selectedAppointment &&
                         $scope.selectedAppointment.status === 'CheckedIn';
@@ -350,7 +369,7 @@ angular.module('bahmni.appointments')
                     _.includes($scope.enableResetAppointmentStatusesFor, $scope.selectedAppointment.status);
             };
 
-            $scope.allowResetAppointmentStatus = function () {
+            $scope.isResetAppointmentStatusAllowed = function () {
                 return $scope.isUserAllowedToPerform() &&
                     isCurrentUserHavePrivilege($scope.resetAppointmentStatusPrivilege) && $scope.selectedAppointment &&
                     isSelectedAppointmentStatusAllowedToReset();

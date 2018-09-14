@@ -1120,7 +1120,7 @@ describe('AppointmentsListViewController', function () {
         });
     });
 
-    it('return true for allowUndoCheckIn if user allowed to do and selected appointment status is checkedIn', function () {
+    it('return true for isUndoCheckInAllowed if user allowed to do and selected appointment status is checkedIn', function () {
         rootScope.currentUser = {
             privileges: [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}]
         };
@@ -1128,7 +1128,7 @@ describe('AppointmentsListViewController', function () {
         rootScope.currentProvider = {};
         createController();
 
-        expect(scope.allowUndoCheckIn()).toBeTruthy();
+        expect(scope.isUndoCheckInAllowed()).toBeTruthy();
     });
 
     it('should get colors for config', function () {
@@ -1273,7 +1273,7 @@ describe('AppointmentsListViewController', function () {
             };
             createController();
 
-            expect(scope.allowResetAppointmentStatus()).toBeFalsy();
+            expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
         });
 
         it('should return false if user does not have resetAppointmentStatus privilege', function () {
@@ -1282,7 +1282,7 @@ describe('AppointmentsListViewController', function () {
             };
             createController();
 
-            expect(scope.allowResetAppointmentStatus()).toBeFalsy();
+            expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
         });
 
         it('should return false if user has required privileges but did not select appointment', function () {
@@ -1295,7 +1295,7 @@ describe('AppointmentsListViewController', function () {
             scope.selectedAppointment = undefined;
             createController();
 
-            expect(scope.allowResetAppointmentStatus()).toBeFalsy();
+            expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
         });
 
         it('should return false if select appointment status is not listed in configured reset statuses for', function () {
@@ -1314,7 +1314,7 @@ describe('AppointmentsListViewController', function () {
             scope.selectedAppointment = {status: 'Cancelled'};
             createController();
 
-            expect(scope.allowResetAppointmentStatus()).toBeFalsy();
+            expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
         });
 
         it('should return false if configured reset statuses is not a list', function () {
@@ -1333,7 +1333,7 @@ describe('AppointmentsListViewController', function () {
             scope.selectedAppointment = {status: 'Cancelled'};
             createController();
 
-            expect(scope.allowResetAppointmentStatus()).toBeFalsy();
+            expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
         });
 
     });
