@@ -16,6 +16,7 @@ Bahmni.Appointments.Constants = (function () {
         getAppointmentByUuid: hostURL + '/appointment/',
         getAllAppointmentsUrl: hostURL + '/appointment/all',
         searchAppointmentUrl: hostURL + '/appointment/search',
+        searchAppointmentsUrl: hostURL + '/appointments/search',
         getAppointmentsSummaryUrl: hostURL + '/appointment/appointmentSummary',
         defaultServiceTypeDuration: 15,
         defaultCalendarSlotLabelInterval: "01:00",
