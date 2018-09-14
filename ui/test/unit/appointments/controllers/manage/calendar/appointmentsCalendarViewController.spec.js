@@ -52,6 +52,15 @@ describe('AppointmentsCalendarViewController', function () {
         expect(spinner.forPromise).not.toHaveBeenCalled();
     });
 
+    it('should set doFetchAppointmentsData to false when weekView is set to false and state is changed to List View', function () {
+        state.params = {doFetchAppointmentsData: true};
+        appointmentsService.getAllAppointments.and.returnValue(specUtil.simplePromise({}));
+        var viewDate = new Date('1970-01-01T11:30:00.000Z');
+        scope.getAppointmentsForDate(viewDate);
+        scope.$broadcast('$stateChangeStart', {tabName:'list'}, state.params);
+        expect(state.params.doFetchAppointmentsData).toBeFalsy();
+    });
+
     it('should get appointments for date', function () {
         var viewDate = new Date('1970-01-01T11:30:00.000Z');
         state.params = {doFetchAppointmentsData: true};
