@@ -1300,7 +1300,7 @@ describe('AppointmentsListViewController', function () {
 
         it('should return false if select appointment status is not listed in configured reset statuses for', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
-                if (value === 'allowResetAppointmentStatusesFor') {
+                if (value === 'enableResetAppointmentStatusesFor') {
                     return [];
                 }
                 return undefined;
@@ -1319,7 +1319,7 @@ describe('AppointmentsListViewController', function () {
 
         it('should return false if configured reset statuses is not a list', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
-                if (value === 'allowResetAppointmentStatusesFor') {
+                if (value === 'enableResetAppointmentStatusesFor') {
                     return "Cancelled";
                 }
                 return undefined;
@@ -1336,6 +1336,24 @@ describe('AppointmentsListViewController', function () {
             expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
         });
 
+        it('should return false if selected appointment is Scheduled and allowResetAppointmentStatusesFor has Scheduled', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'enableResetAppointmentStatusesFor') {
+                    return ["Cancelled", "Scheduled"];
+                }
+                return undefined;
+            });
+            rootScope.currentUser = {
+                privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeManageAppointments},
+                    {name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}
+                ]
+            };
+
+            scope.selectedAppointment = {status: 'Scheduled'};
+            createController();
+            expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
+        });
     });
 
 });

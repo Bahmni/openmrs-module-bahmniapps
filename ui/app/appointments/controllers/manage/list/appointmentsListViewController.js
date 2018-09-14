@@ -371,7 +371,9 @@ angular.module('bahmni.appointments')
 
             $scope.isResetAppointmentStatusAllowed = function () {
                 return $scope.isUserAllowedToPerform() &&
-                    isCurrentUserHavePrivilege($scope.resetAppointmentStatusPrivilege) && $scope.selectedAppointment &&
+                    isCurrentUserHavePrivilege($scope.resetAppointmentStatusPrivilege) &&
+                    $scope.selectedAppointment &&
+                    $scope.selectedAppointment.status != 'Scheduled' &&
                     isSelectedAppointmentStatusAllowedToReset();
             };
 
