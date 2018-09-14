@@ -41,6 +41,7 @@ angular.module('bahmni.appointments')
 
             $scope.toggleWeekView = function () {
                 $scope.weekView = !$scope.weekView;
+                $state.params.weekView = $scope.weekView;
                 fetchAppointmentsData();
             };
 

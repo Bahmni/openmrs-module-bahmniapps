@@ -22,9 +22,6 @@ angular.module('bahmni.appointments')
 
                 popUpScope.navigateTo = function (state, appointment) {
                     var params = $state.params;
-                    if (!_.isUndefined(scope.weekView)) {
-                        params.weekView = scope.weekView;
-                    }
                     if (state === 'edit') {
                         ngDialog.close(dialog.id, false);
                         params.uuid = appointment.uuid;

@@ -165,7 +165,7 @@ describe('AppointmentsDayCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true, weekView: false },
+            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
@@ -176,7 +176,7 @@ describe('AppointmentsDayCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true, weekView: false },
+            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
@@ -187,7 +187,7 @@ describe('AppointmentsDayCalendarController', function () {
         var event = {appointments: []};
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : false, weekView: false },
+            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : false },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
