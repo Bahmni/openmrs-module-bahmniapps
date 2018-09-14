@@ -1334,7 +1334,7 @@ describe('AppointmentsListViewController', function () {
             createController();
 
             expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
-        });
+        })
 
         it('should return false if selected appointment is Scheduled and allowResetAppointmentStatusesFor has Scheduled', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
@@ -1352,8 +1352,30 @@ describe('AppointmentsListViewController', function () {
 
             scope.selectedAppointment = {status: 'Scheduled'};
             createController();
+
             expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
         });
+
+        it('should return true if user have required privileges and selected appointment status is in reset configuration list', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'enableResetAppointmentStatusesFor') {
+                    return ["Cancelled", "Missed"];
+                }
+                return undefined;
+            });
+            rootScope.currentUser = {
+                privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeManageAppointments},
+                    {name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}
+                ]
+            };
+
+            scope.selectedAppointment = {status: 'Cancelled'};
+            createController();
+
+            expect(scope.isResetAppointmentStatusAllowed()).toBeTruthy();
+        });
+
     });
 
 });
