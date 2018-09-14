@@ -1376,6 +1376,46 @@ describe('AppointmentsListViewController', function () {
             expect(scope.isResetAppointmentStatusAllowed()).toBeTruthy();
         });
 
+        it('should show a pop up on click of reset button', function () {
+            var translatedMessage = "Are you sure, you want to reset the status to 'Scheduled'?";
+            $translate.instant.and.returnValue(translatedMessage);
+            confirmBox.and.callFake(function (config) {
+                expect($translate.instant).toHaveBeenCalledWith('APPOINTMENT_RESET_CONFIRM_MESSAGE');
+                expect(config.scope.message).toEqual(translatedMessage);
+                expect(config.scope.no).toEqual(jasmine.any(Function));
+                expect(config.scope.yes).toEqual(jasmine.any(Function));
+                expect(config.actions).toEqual([{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}]);
+                expect(config.className).toEqual('ngdialog-theme-default');
+            });
+            createController();
+            scope.selectedAppointment = {uuid: 'appointmentUuid'};
+
+            scope.resetStatus();
+
+            expect(confirmBox).toHaveBeenCalled();
+        });
+
+        it('should change status on confirmation on reset', function () {
+            var appointment = {uuid: 'appointmentUuid', status: 'Missed'};
+            var message = "Successfully changed appointment status to Scheduled";
+            appointmentsService.changeStatus.and.returnValue(specUtil.simplePromise({data: {uuid: 'appointmentUuid', status: 'Scheduled'}}));
+            $translate.instant.and.returnValue(message);
+            createController();
+            scope.selectedAppointment = appointment;
+
+            scope.resetStatus();
+
+            confirmBox.and.callFake(function (config) {
+                var close = jasmine.createSpy('close');
+                config.scope.yes(close).then(function () {
+                    expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, 'Scheduled', null);
+                    expect(scope.selectedAppointment.status).toBe('Scheduled');
+                    expect(close).toHaveBeenCalled();
+                    expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
+                });
+            });
+        });
+
     });
 
 });

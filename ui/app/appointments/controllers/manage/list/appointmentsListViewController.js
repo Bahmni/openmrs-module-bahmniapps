@@ -267,6 +267,23 @@ angular.module('bahmni.appointments')
                 showPopUp(scope);
             };
 
+            $scope.resetStatus = function () {
+                var resetStatus = function (closeConfirmBox) {
+                    return appointmentsService.changeStatus($scope.selectedAppointment.uuid, 'Scheduled', null).then(function (response) {
+                        $scope.selectedAppointment.status = response.data.status;
+                        var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
+                            toStatus: response.data.status
+                        });
+                        closeConfirmBox();
+                        messagingService.showMessage('info', message);
+                    });
+                };
+                var scope = {};
+                scope.message = $translate.instant('APPOINTMENT_RESET_CONFIRM_MESSAGE');
+                scope.yes = resetStatus;
+                showPopUp(scope);
+            };
+
             var changeStatus = function (toStatus, onDate, closeConfirmBox) {
                 var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
                     toStatus: toStatus
