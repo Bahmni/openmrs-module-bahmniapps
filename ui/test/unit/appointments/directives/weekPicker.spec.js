@@ -15,7 +15,7 @@ describe('WeekPicker', function () {
     }));
 
     var createElement = function () {
-        var html = '<week-picker view-date="viewDate" on-change="toggleChanged" week-start="weekStart"></week-picker>';
+        var html = '<week-picker view-date="viewDate" on-change="toggleChanged" week-start="weekStart" show-buttons="true"></week-picker>';
 
         var element = compile(angular.element(html))(scope);
         scope.$digest();

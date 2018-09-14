@@ -45,7 +45,8 @@ angular.module('bahmni.appointments')
             scope: {
                 viewDate: "=",
                 onChange: "=",
-                weekStart: "=?"
+                weekStart: "=?",
+                showButtons: "="
             },
             templateUrl: "../appointments/views/manage/weekPicker.html",
             controller: controller

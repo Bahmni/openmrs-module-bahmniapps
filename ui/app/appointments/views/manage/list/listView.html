@@ -1,6 +1,7 @@
 <div ng-class="{'app-filter-open': isFilterOpen}">
     <div ng-if="!searchedPatient">
-        <date-picker view-date="startDate" last-valid-date="lastValidDate" on-change="getAppointmentsForDate"></date-picker>
+        <date-picker view-date="startDate" last-valid-date="lastValidDate" on-change="getAppointmentsForDate"
+                     show-buttons="false"></date-picker>
     </div>
     <p class="app-patient-search">
     <a ng-click="goBackToPreviousView()" ng-show="searchedPatient">{{::'RESET_KEY' | translate}} {{::'PATIENT_LIST_VIEW_SEARCH_HEADER' | translate}}</a>

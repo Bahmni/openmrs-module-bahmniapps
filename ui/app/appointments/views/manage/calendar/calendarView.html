@@ -1,8 +1,15 @@
 <div ng-class="{'app-filter-open': isFilterOpen}">
     <div class="app-calendar-container" ng-class="{'app-filter-open': isFilterOpen}">
-        <date-picker view-date="startDate" last-valid-date="lastValidDate" on-change="getAppointmentsForDate"></date-picker>
+        <date-picker ng-show="!weekView" view-date="startDate" last-valid-date="lastValidDate"
+                         on-change="getAppointmentsForDate" show-buttons="true"></date-picker>
+        <week-picker ng-show="weekView" view-date="startDate" on-change="getAppointmentsForWeek"
+                     show-buttons="true"></week-picker>
+
         <p class="calendar-no-appointment" ng-if="hasNoAppointments()">{{::'NO_APPOINTMENT_CALENDAR_VIEW' | translate}}</p>
-        <day-calendar ng-if="shouldReload" date="startDate" appointments="providerAppointments"></day-calendar>
+        <day-calendar ng-if="shouldReload && !weekView" date="startDate"
+                      appointments="providerAppointments"></day-calendar>
+        <week-calendar ng-if="shouldReload && weekView" date="startDate"
+                      appointments="providerAppointments"></week-calendar>
     </div>
     <div ui-view="content@appointment"></div>
     <div class="appointment-action-btn-container calendar-view-btn-container"></div>

@@ -55,4 +55,21 @@
   .fc-unthemed .fc-today {
     background: transparent;
   }
+
+  .app-date-nav {
+    span {
+      position: relative;
+    }
+    label {
+      cursor: pointer;
+      position: absolute;
+      background: #F8F8F8;
+      top: -3px;
+      left: 16px;
+      padding: 5px;
+    }
+    input {
+      width: 155px;
+    }
+  }
 }
