@@ -1377,7 +1377,7 @@ describe('AppointmentsListViewController', function () {
         });
 
         it('should show a pop up on click of reset button', function () {
-            var translatedMessage = "Are you sure, you want to reset the status to 'Scheduled'?";
+            var translatedMessage = "Are you sure, you want to reset the status to Scheduled?";
             $translate.instant.and.returnValue(translatedMessage);
             confirmBox.and.callFake(function (config) {
                 expect($translate.instant).toHaveBeenCalledWith('APPOINTMENT_RESET_CONFIRM_MESSAGE');
