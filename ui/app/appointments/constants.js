@@ -23,6 +23,7 @@ Bahmni.Appointments.Constants = (function () {
         defaultCalendarSlotDuration: "00:30",
         defaultCalendarStartTime: "08:00",
         defaultCalendarEndTime: "19:00",
+        defaultWeekDays: [0,1,2,3,4,5,6],
         defaultExpandServiceFilter: -1,
         collapseServiceFilter: 0,
         minDurationForAppointment: 30,
