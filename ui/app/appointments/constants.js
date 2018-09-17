@@ -26,6 +26,7 @@ Bahmni.Appointments.Constants = (function () {
         defaultWeekDays: [0,1,2,3,4,5,6],
         defaultExpandServiceFilter: -1,
         collapseServiceFilter: 0,
+        defaultFirstDay: 1,
         minDurationForAppointment: 30,
         appointmentStatusList: [ "Scheduled", "CheckedIn", "Completed", "Cancelled", "Missed" ],
         regexForTime: /^(?:(?:1[0-2]|0?[1-9]):[0-5]\d\s*[AaPp][Mm])?$/,

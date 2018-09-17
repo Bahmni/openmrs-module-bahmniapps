@@ -55,6 +55,7 @@ describe('AppointmentsWeekCalendarController', function () {
         expect(scope.uiConfig.calendar.businessHours.dow.toString()).toBe(Bahmni.Appointments.Constants.defaultWeekDays.toString());
         expect(scope.uiConfig.calendar.slotDuration).toBe(Bahmni.Appointments.Constants.defaultCalendarSlotDuration);
         expect(scope.uiConfig.calendar.slotLabelInterval).toBe(Bahmni.Appointments.Constants.defaultCalendarSlotLabelInterval);
+        expect(scope.uiConfig.calendar.firstDay).toBe(Bahmni.Appointments.Constants.defaultFirstDay);
     });
 
     it('should init uiConfig with configured values', function () {

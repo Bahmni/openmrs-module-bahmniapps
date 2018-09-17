@@ -10,7 +10,7 @@ angular.module('bahmni.appointments')
             var init = function () {
                 $scope.weekView = $state.params.weekView;
                 if ($scope.weekView) {
-                    $state.params.viewDate = moment($state.params.viewDate).isoWeekday(moment().isoWeekday()).toDate();
+                    $state.params.viewDate = getStartDate($state.params.viewDate);
                 }
                 $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
                 $scope.$on('filterClosedOpen', function (event, args) {
@@ -44,7 +44,7 @@ angular.module('bahmni.appointments')
 
             $scope.toggleWeekView = function () {
                 if ($scope.weekView) {
-                    $scope.startDate = moment($scope.startDate).isoWeekday(moment().isoWeekday()).toDate();
+                    $scope.startDate = getStartDate($scope.startDate);
                 }
                 $scope.weekView = !$scope.weekView;
                 $state.params.weekView = $scope.weekView;
@@ -100,13 +100,17 @@ angular.module('bahmni.appointments')
             var fetchAppointmentsData = function () {
                 var viewDate = $scope.startDate || moment().startOf('day').toDate();
                 if ($scope.weekView) {
-                    var weekStartDate = moment(viewDate).startOf('week').toDate();
-                    var weekEndDate = moment(viewDate).endOf('week').toDate();
+                    var weekStartDate = moment(viewDate).isoWeekday(1).toDate();
+                    var weekEndDate = moment(weekStartDate).add(6, 'days').toDate();
                     $scope.getAppointmentsForWeek(weekStartDate, weekEndDate);
                 }
                 else {
                     $scope.getAppointmentsForDate(viewDate);
                 }
+            };
+
+            var getStartDate = function (date) {
+                return moment(date).isoWeekday(moment().isoWeekday()).toDate();
             };
 
             var parseAppointments = function (allAppointments, filterParams) {
@@ -201,8 +205,8 @@ angular.module('bahmni.appointments')
                 var viewDate = $scope.startDate || moment().startOf('day').toDate();
                 var params = {forDate: viewDate};
                 if ($scope.weekView) {
-                    var weekStartDate = moment(viewDate).startOf('week').toDate();
-                    var weekEndDate = moment(viewDate).endOf('week').toDate();
+                    var weekStartDate = moment(viewDate).isoWeekday(1).toDate();
+                    var weekEndDate = moment(weekStartDate).add(6, 'days').toDate();
                     params = {startDate: weekStartDate, endDate: weekEndDate};
                 }
                 setAppointments(params);
