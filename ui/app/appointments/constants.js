@@ -11,7 +11,7 @@ Bahmni.Appointments.Constants = (function () {
         getAllSpecialitiesUrl: hostURL + '/speciality/all',
         createAppointmentUrl: hostURL + '/appointment',
         getAppointmentsForServiceTypeUrl: hostURL + '/appointment/futureAppointmentsForServiceType/',
-        changeAppointmentStatusUrl: hostURL + '/appointment/{{appointmentUuid}}/changeStatus',
+        changeAppointmentStatusUrl: hostURL + '/appointment/{{appointmentUuid}}/status-change',
         getAppointmentByUuid: hostURL + '/appointment/',
         getAllAppointmentsUrl: hostURL + '/appointment/all',
         searchAppointmentUrl: hostURL + '/appointment/search',
