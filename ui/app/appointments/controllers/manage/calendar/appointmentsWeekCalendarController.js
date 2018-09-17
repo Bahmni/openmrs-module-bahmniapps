@@ -19,7 +19,7 @@ angular.module('bahmni.appointments')
                         scope: {
                             appointments: event.appointments,
                             checkinAppointment: checkinAppointment,
-                            enableCreateAppointment: isSelectable()
+                            enableCreateAppointment: true
                         },
                         className: "ngdialog-theme-default delete-program-popup app-dialog-container"
                     });
@@ -80,10 +80,6 @@ angular.module('bahmni.appointments')
                     $state.go('home.manage.appointments.calendar.new', params, {reload: false});
                 };
 
-                var isSelectable = function () {
-                    return !(Bahmni.Common.Util.DateUtil.isBeforeDate($scope.date, moment().startOf('day')));
-                };
-
                 $scope.uiConfig = {
                     calendar: {
                         height: document.getElementsByClassName('app-calendar-container')[0].clientHeight,
@@ -98,7 +94,11 @@ angular.module('bahmni.appointments')
                             dow: Bahmni.Appointments.Constants.defaultWeekDays
                         },
                         scrollTime: appService.getAppDescriptor().getConfigValue('startOfDay') || Bahmni.Appointments.Constants.defaultCalendarStartTime,
-                        selectable: isSelectable(),
+                        selectable: true,
+                        selectConstraint: {
+                            start: moment().startOf('day'),
+                            end: moment().add(100, 'year')
+                        },
                         select: $scope.createAppointment,
                         slotLabelInterval: appService.getAppDescriptor().getConfigValue('calendarSlotLabelInterval') || Bahmni.Appointments.Constants.defaultCalendarSlotLabelInterval,
                         slotDuration: appService.getAppDescriptor().getConfigValue('calendarSlotDuration') || Bahmni.Appointments.Constants.defaultCalendarSlotDuration,

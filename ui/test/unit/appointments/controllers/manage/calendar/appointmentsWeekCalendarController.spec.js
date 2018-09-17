@@ -83,24 +83,6 @@ describe('AppointmentsWeekCalendarController', function () {
         expect(scope.uiConfig.calendar.slotLabelInterval).toBe(calendarSlotLabelInterval);
     });
 
-    it('should not be selectable if date is a past date', function () {
-        scope.date = new Date('1970-01-01T11:30:00.000Z');
-        createController();
-        expect(scope.uiConfig.calendar.selectable).toBe(false)
-    });
-
-    it('should be selectable if date is today', function () {
-        scope.date = moment().startOf('day');
-        createController();
-        expect(scope.uiConfig.calendar.selectable).toBe(true)
-    });
-
-    it('should be selectable if date is future date', function () {
-        scope.date = moment().add(1, 'year').toDate();
-        createController();
-        expect(scope.uiConfig.calendar.selectable).toBe(true)
-    });
-
     it('should go to new appointment state on createAppointment even if the user has Manage privilege', function () {
         rootScope.currentUser = {privileges: [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}]};
         createController();
@@ -161,7 +143,8 @@ describe('AppointmentsWeekCalendarController', function () {
         expect($state.go).not.toHaveBeenCalled();
     });
 
-    it('should call calendarView pop up on eventClick with appointments and enableCreateAppointment true for current date', function () {
+    it('should call calendarView pop up on eventClick with appointments and enableCreateAppointment true for' +
+        ' current date', function () {
         createController();
         scope.date = moment().toDate();
         var event = {appointments: []};
@@ -179,17 +162,6 @@ describe('AppointmentsWeekCalendarController', function () {
         scope.alertOnEventClick(event);
         expect(calendarViewPopUp).toHaveBeenCalledWith({
             scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : true },
-            className: "ngdialog-theme-default delete-program-popup app-dialog-container"
-        });
-    });
-
-    it('should call calendarView pop up on eventClick with appointments and enableCreateAppointment false for past dates', function () {
-        createController();
-        scope.date = moment().subtract(1, 'day').toDate();
-        var event = {appointments: []};
-        scope.alertOnEventClick(event);
-        expect(calendarViewPopUp).toHaveBeenCalledWith({
-            scope : { appointments : event.appointments, checkinAppointment : jasmine.any(Function), enableCreateAppointment : false },
             className: "ngdialog-theme-default delete-program-popup app-dialog-container"
         });
     });
