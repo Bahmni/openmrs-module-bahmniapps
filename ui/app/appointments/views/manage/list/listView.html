@@ -64,7 +64,7 @@
         <button ng-if="isResetAppointmentStatusFeatureEnabled()"
                 show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
                 ng-disabled="!isResetAppointmentStatusAllowed()"
-                ng-click="resetStatus()">
+                ng-click="reset()">
             {{::'RESET_APPOINTMENT' | translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"

@@ -249,35 +249,24 @@ angular.module('bahmni.appointments')
             };
 
             $scope.undoCheckIn = function () {
-                var undoCheckIn = function (closeConfirmBox) {
-                    return appointmentsService.undoCheckIn($scope.selectedAppointment.uuid).then(function (response) {
-                        ngDialog.close();
-                        $scope.selectedAppointment.status = response.data.status;
-                        var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
-                            toStatus: response.data.status
-                        });
-                        closeConfirmBox();
-                        messagingService.showMessage('info', message);
-                    });
-                };
-
                 var scope = {};
                 scope.message = $translate.instant('APPOINTMENT_UNDO_CHECKIN_CONFIRM_MESSAGE');
-                scope.yes = undoCheckIn;
+                scope.yes = resetStatus;
                 showPopUp(scope);
             };
 
-            $scope.resetStatus = function () {
-                var resetStatus = function (closeConfirmBox) {
-                    return appointmentsService.changeStatus($scope.selectedAppointment.uuid, 'Scheduled', null).then(function (response) {
-                        $scope.selectedAppointment.status = response.data.status;
-                        var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
-                            toStatus: response.data.status
-                        });
-                        closeConfirmBox();
-                        messagingService.showMessage('info', message);
+            var resetStatus = function (closeConfirmBox) {
+                return appointmentsService.changeStatus($scope.selectedAppointment.uuid, 'Scheduled', null).then(function (response) {
+                    $scope.selectedAppointment.status = response.data.status;
+                    var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
+                        toStatus: response.data.status
                     });
-                };
+                    closeConfirmBox();
+                    messagingService.showMessage('info', message);
+                });
+            };
+
+            $scope.reset = function () {
                 var scope = {};
                 scope.message = $translate.instant('APPOINTMENT_RESET_CONFIRM_MESSAGE');
                 scope.yes = resetStatus;
