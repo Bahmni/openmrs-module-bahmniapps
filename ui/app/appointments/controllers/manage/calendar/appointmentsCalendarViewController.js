@@ -43,6 +43,9 @@ angular.module('bahmni.appointments')
             };
 
             $scope.toggleWeekView = function () {
+                if ($scope.weekView) {
+                    $scope.startDate = moment($scope.startDate).isoWeekday(moment().isoWeekday()).toDate();
+                }
                 $scope.weekView = !$scope.weekView;
                 $state.params.weekView = $scope.weekView;
                 fetchAppointmentsData();
