@@ -1122,7 +1122,10 @@ describe('AppointmentsListViewController', function () {
 
     it('return true for isUndoCheckInAllowed if user allowed to do and selected appointment status is checkedIn', function () {
         rootScope.currentUser = {
-            privileges: [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}]
+            privileges: [
+                {name: Bahmni.Appointments.Constants.privilegeManageAppointments},
+                {name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}
+            ]
         };
         scope.selectedAppointment = {status: 'CheckedIn'};
         rootScope.currentProvider = {};
@@ -1130,6 +1133,18 @@ describe('AppointmentsListViewController', function () {
 
         expect(scope.isUndoCheckInAllowed()).toBeTruthy();
     });
+
+    it('return false for isUndoCheckInAllowed if user does not have privilege and selected appointment status is checkedIn', function () {
+            rootScope.currentUser = {
+                privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeManageAppointments}
+                ]
+            };
+            scope.selectedAppointment = {status: 'CheckedIn'};
+            createController();
+
+            expect(scope.isUndoCheckInAllowed()).toBeFalsy();
+        });
 
     it('should get colors for config', function () {
         var colors = { Cancelled: "Red", Missed: "Orange" };

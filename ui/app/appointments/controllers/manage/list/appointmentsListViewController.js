@@ -351,10 +351,10 @@ angular.module('bahmni.appointments')
             };
 
             $scope.isUndoCheckInAllowed = function () {
-                if (!_.isUndefined($scope.selectedAppointment)) {
-                    return appointmentCommonService.isUserAllowedToPerformEdit($scope.selectedAppointment.providers, $rootScope.currentUser.privileges, $rootScope.currentProvider.uuid) && $scope.selectedAppointment &&
-                        $scope.selectedAppointment.status === 'CheckedIn';
-                }
+                return $scope.isUserAllowedToPerform() &&
+                    isCurrentUserHavePrivilege($scope.resetAppointmentStatusPrivilege) &&
+                    $scope.selectedAppointment &&
+                    $scope.selectedAppointment.status === 'CheckedIn';
             };
 
             $scope.isEditAllowed = function () {
