@@ -8,8 +8,11 @@ angular.module('bahmni.appointments')
             var autoRefreshStatus = true;
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
             var init = function () {
-                $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
                 $scope.weekView = $state.params.weekView;
+                if ($scope.weekView) {
+                    $state.params.viewDate = moment($state.params.viewDate).isoWeekday(moment().isoWeekday()).toDate();
+                }
+                $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
                 $scope.$on('filterClosedOpen', function (event, args) {
                     $scope.isFilterOpen = args.filterViewStatus;
                 });

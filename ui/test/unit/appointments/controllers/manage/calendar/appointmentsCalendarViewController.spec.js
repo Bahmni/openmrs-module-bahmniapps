@@ -25,6 +25,7 @@ describe('AppointmentsCalendarViewController', function () {
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             interval = jasmine.createSpy('$interval', $interval).and.callThrough();
+            state.params = {weekView: false, viewDate: null};
         });
     });
 
@@ -626,5 +627,19 @@ describe('AppointmentsCalendarViewController', function () {
         appointmentsService.searchAppointments.and.returnValue(specUtil.simplePromise({}));
         scope.getAppointmentsForWeek(null, null);
         expect(state.params.viewDate).toBe(scope.startDate);
+    });
+
+    it('should set viewDate in state params when weekView set to true', function () {
+        expect(state.params.viewDate).toBeNull();
+        state.params.weekView = true;
+        createController();
+        expect(state.params.viewDate).toBeDefined();
+    });
+
+    it('should not set viewDate in state params when weekView set to false', function () {
+        expect(state.params.viewDate).toBeNull();
+        state.params.weekView = false;
+        createController();
+        expect(state.params.viewDate).toBeNull();
     });
 });
