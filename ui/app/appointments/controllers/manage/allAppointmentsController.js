@@ -6,7 +6,7 @@ angular.module('bahmni.appointments')
             $scope.enableCalendarView = appService.getAppDescriptor().getConfigValue('enableCalendarView');
             $scope.isSearchEnabled = false;
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
-            $scope.selfAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeSelfAppointments;
+            $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
 
             $scope.navigateTo = function (viewName) {
                 $scope.currentTab = viewName;

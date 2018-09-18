@@ -54,16 +54,16 @@ angular.module('bahmni.appointments')
                     uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
                 };
 
-                function isSelfAppointmentUserPrivilegedToCreateAppointment(privilege, provider) {
+                function isOwnAppointmentUserPrivilegedToCreateAppointment (privilege, provider) {
                     const NO_PROVIDER_UUID = 'no-provider-uuid';
-                    return (privilege.name === Bahmni.Appointments.Constants.privilegeSelfAppointments &&
+                    return (privilege.name === Bahmni.Appointments.Constants.privilegeOwnAppointments &&
                         (provider.uuid === NO_PROVIDER_UUID || provider.uuid === $rootScope.currentProvider.uuid));
                 }
 
                 var isUserPrivilegedToCreateAppointment = function (provider) {
                     return _.find($rootScope.currentUser.privileges, function (privilege) {
                         return privilege.name === Bahmni.Appointments.Constants.privilegeManageAppointments ||
-                            isSelfAppointmentUserPrivilegedToCreateAppointment(privilege, provider);
+                            isOwnAppointmentUserPrivilegedToCreateAppointment(privilege, provider);
                     });
                 };
 

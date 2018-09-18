@@ -20,7 +20,7 @@ angular.module('bahmni.appointments')
                 popUpScope.scope = scope;
                 popUpScope.patient = scope.patientList.length === 1 ? scope.patientList[0] : undefined;
                 popUpScope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
-                popUpScope.selfAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeSelfAppointments;
+                popUpScope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
                 popUpScope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
                 popUpScope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
 
@@ -58,9 +58,9 @@ angular.module('bahmni.appointments')
                     if (isCurrentUserHavePrivilege(popUpScope.manageAppointmentPrivilege)) {
                         return true;
                     }
-                    else if (isCurrentUserHavePrivilege(popUpScope.selfAppointmentPrivilege)) {
+                    else if (isCurrentUserHavePrivilege(popUpScope.ownAppointmentPrivilege)) {
                         return _.isNull(scope.appointments[0].provider) ||
-                            scope.appointments[0].provider.uuid === $rootScope.currentProvider.uuid
+                            scope.appointments[0].provider.uuid === $rootScope.currentProvider.uuid;
                     }
                     return false;
                 };

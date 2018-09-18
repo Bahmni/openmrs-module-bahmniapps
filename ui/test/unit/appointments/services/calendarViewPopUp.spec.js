@@ -375,7 +375,7 @@ describe('CalendarViewPopUp', function () {
             expect(popUpScope.isUserAllowedToPerform()).toBeTruthy();
         });
 
-        it('should return false if currentUser does not have manage/selfAppointment privileges', function () {
+        it('should return false if currentUser does not have manage/ownAppointment privileges', function () {
             var config = {scope: {appointments: []}};
             rootScope.currentUser = {privileges: []};
             calendarViewPopUp(config);
@@ -383,7 +383,7 @@ describe('CalendarViewPopUp', function () {
             expect(popUpScope.isUserAllowedToPerform()).toBeFalsy();
         });
 
-        it('should return true if currentUser has selfAppointment privilege and selected appointment\'s provider is null', function () {
+        it('should return true if currentUser has ownAppointment privilege and selected appointment\'s provider is null', function () {
             var config = {scope: {appointments: [
                         {
                             patient: {uuid: 'patientUuid'},
@@ -391,14 +391,14 @@ describe('CalendarViewPopUp', function () {
                         }
                     ]}};
             rootScope.currentUser = {privileges: [
-                    {name: Bahmni.Appointments.Constants.privilegeSelfAppointments}
+                    {name: Bahmni.Appointments.Constants.privilegeOwnAppointments}
                 ]};
             calendarViewPopUp(config);
 
             expect(popUpScope.isUserAllowedToPerform()).toBeTruthy();
         });
 
-        it('should return true if currentUser has selfAppointment privilege and is the provider of the selected appointment', function () {
+        it('should return true if currentUser has ownAppointment privilege and is the provider of the selected appointment', function () {
             var config = {scope: {appointments: [
                         {
                             patient: {uuid: 'patientUuid'},
@@ -406,7 +406,7 @@ describe('CalendarViewPopUp', function () {
                         }
                     ]}};
             rootScope.currentUser = {privileges: [
-                    {name: Bahmni.Appointments.Constants.privilegeSelfAppointments}
+                    {name: Bahmni.Appointments.Constants.privilegeOwnAppointments}
                 ]};
             rootScope.currentProvider = {uuid: 'providerUuid'};
             calendarViewPopUp(config);

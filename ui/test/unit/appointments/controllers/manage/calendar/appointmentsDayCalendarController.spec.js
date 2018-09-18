@@ -111,9 +111,9 @@ describe('AppointmentsDayCalendarController', function () {
             $state.params,{reload:false});
     });
 
-    it('should go to new appointment state on createAppointment even if the current user has selfManage privilege and current user is the provider', function () {
+    it('should go to new appointment state on createAppointment even if the current user has ownManage privilege and current user is the provider', function () {
         rootScope = {
-            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeSelfAppointments}]},
+            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}]},
             currentProvider: {uuid: 'currentUserUuid'}
         };
         createController();
@@ -126,9 +126,9 @@ describe('AppointmentsDayCalendarController', function () {
             $state.params, {reload: false});
     });
 
-    it('should go to new appointment state on createAppointment even if the current user has selfManage privilege and the appointment has no provider', function () {
+    it('should go to new appointment state on createAppointment even if the current user has ownManage privilege and the appointment has no provider', function () {
         rootScope = {
-            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeSelfAppointments}]},
+            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}]},
             currentProvider: {uuid: 'currentUserUuid'}
         };
         createController();

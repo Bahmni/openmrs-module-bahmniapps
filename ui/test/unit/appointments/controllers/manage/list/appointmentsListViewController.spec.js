@@ -1132,7 +1132,7 @@ describe('AppointmentsListViewController', function () {
             expect(scope.isUserAllowedToPerform()).toBeTruthy();
         });
 
-        it('should return false if logged user does not have manageAppointments or selfAppointments privileges', function () {
+        it('should return false if logged user does not have manageAppointments or ownAppointments privileges', function () {
             rootScope.currentUser = {
                 privileges: []
             };
@@ -1141,12 +1141,12 @@ describe('AppointmentsListViewController', function () {
             expect(scope.isUserAllowedToPerform()).toBeFalsy();
         });
 
-        describe('if logged user has selfAppointments privilege', function () {
+        describe('if logged user has ownAppointments privilege', function () {
 
             beforeEach(function () {
-                scope.selfAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeSelfAppointments;
+                scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
                 rootScope.currentUser = {
-                    privileges: [{name: Bahmni.Appointments.Constants.privilegeSelfAppointments}]
+                    privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}]
                 };
             });
 
