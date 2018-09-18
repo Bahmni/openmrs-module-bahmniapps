@@ -55,7 +55,7 @@ describe('AppointmentsWeekCalendarController', function () {
         expect(scope.uiConfig.calendar.businessHours.dow.toString()).toBe(Bahmni.Appointments.Constants.defaultWeekDays.toString());
         expect(scope.uiConfig.calendar.slotDuration).toBe(Bahmni.Appointments.Constants.defaultCalendarSlotDuration);
         expect(scope.uiConfig.calendar.slotLabelInterval).toBe(Bahmni.Appointments.Constants.defaultCalendarSlotLabelInterval);
-        expect(scope.uiConfig.calendar.firstDay).toBe(Bahmni.Appointments.Constants.defaultFirstDay);
+        expect(scope.uiConfig.calendar.firstDay).toBe(Bahmni.Appointments.Constants.defaultWeekStartDay);
     });
 
     it('should init uiConfig with configured values', function () {
@@ -63,6 +63,7 @@ describe('AppointmentsWeekCalendarController', function () {
         var endOfDay = '00:17:30';
         var calendarSlotDuration = '00:10';
         var calendarSlotLabelInterval = '00:12';
+        var weekStartDay = 3;
         appDescriptor.getConfigValue.and.callFake(function (key) {
             if (key === 'startOfDay') {
                 return startOfDay;
@@ -72,6 +73,8 @@ describe('AppointmentsWeekCalendarController', function () {
                 return calendarSlotDuration;
             } else if (key === 'calendarSlotLabelInterval') {
                 return calendarSlotLabelInterval;
+            } else if (key === 'startOfWeek'){
+                return weekStartDay;
             }
         });
         scope.date = new Date('1970-01-01T11:30:00.000Z');
@@ -81,6 +84,7 @@ describe('AppointmentsWeekCalendarController', function () {
         expect(scope.uiConfig.calendar.businessHours.end).toBe(endOfDay);
         expect(scope.uiConfig.calendar.slotDuration).toBe(calendarSlotDuration);
         expect(scope.uiConfig.calendar.slotLabelInterval).toBe(calendarSlotLabelInterval);
+        expect(scope.uiConfig.calendar.firstDay).toBe(weekStartDay);
     });
 
     it('should go to new appointment state on createAppointment even if the user has Manage privilege', function () {
