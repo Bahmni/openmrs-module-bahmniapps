@@ -18,7 +18,7 @@
             </span>
             <span ng-if="displayNepaliDates" ng-switch="observation.type">
                 <pre class="left" ng-switch-when="Datetime">{{::observation.getDisplayValue() | npDateTime}}</pre>
-                <pre class="left" ng-switch-when="Date">{{::observation.getDisplayValue() | npDate}} hello</pre>
+                <pre class="left" ng-switch-when="Date">{{::observation.getDisplayValue() | npDate}}</pre>
                 <pre class="left" ng-switch-default>{{::observation.getDisplayValue() | titleTranslate}}</pre>
             </span>    
               
