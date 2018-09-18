@@ -8,7 +8,7 @@ angular.module('bahmni.appointments')
             var autoRefreshStatus = true;
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
             var init = function () {
-                $scope.weekView = $state.params.weekView;
+                $scope.weekView = $rootScope.weekView || $state.params.weekView;
                 if ($scope.weekView) {
                     $state.params.viewDate = getStartDate($state.params.viewDate);
                 }
@@ -47,6 +47,7 @@ angular.module('bahmni.appointments')
                     $scope.startDate = getStartDate($scope.startDate);
                 }
                 $scope.weekView = !$scope.weekView;
+                $rootScope.weekView = $scope.weekView;
                 $state.params.weekView = $scope.weekView;
                 fetchAppointmentsData();
             };
