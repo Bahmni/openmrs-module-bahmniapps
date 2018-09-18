@@ -80,6 +80,7 @@ angular.module('bahmni.appointments')
                 $state.params.viewDate = $scope.startDate;
                 $scope.shouldReload = false;
                 var data = {startDate: startDate, endDate: endDate};
+                $state.params.doFetchAppointmentsData = true;
                 return spinner.forPromise(setAppointments(data));
             };
 
