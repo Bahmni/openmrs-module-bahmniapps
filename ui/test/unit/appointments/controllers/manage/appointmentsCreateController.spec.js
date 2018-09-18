@@ -983,11 +983,11 @@ describe("AppointmentsCreateController", function () {
         expect(appointmentCreateConfig.providers[1].name).toBe("mahmoud_h");
     });
 
-    it('should return current user if the user has selfAppointments privilege', function () {
+    it('should return current user if the user has ownAppointments privilege', function () {
         var allAvailableProviders = [{name: 'mahmoud_h', uuid: '2'}, {name: 'currentUser', uuid: 'currentUserUuid'}];
         appointmentCreateConfig.providers = allAvailableProviders;
         rootScope = {
-            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeSelfAppointments}]},
+            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}]},
             currentProvider: {uuid: 'currentUserUuid'}
         };
 
@@ -1011,7 +1011,7 @@ describe("AppointmentsCreateController", function () {
         expect(appointmentCreateConfig.providers[1].name).toBe("mahmoud_h");
     });
 
-    it('should return all providers if the current user does not have selfAppointments privilege', function () {
+    it('should return all providers if the current user does not have ownAppointments privilege', function () {
         var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
         appointmentCreateConfig.providers = allAvailableProviders;
         rootScope = {

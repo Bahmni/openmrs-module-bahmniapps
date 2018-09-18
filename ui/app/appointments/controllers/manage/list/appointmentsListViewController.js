@@ -11,7 +11,7 @@ angular.module('bahmni.appointments')
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
-            $scope.selfAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeSelfAppointments;
+            $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
             $scope.searchedPatient = false;
             var oldPatientData = [];
             $scope.$on('filterClosedOpen', function (event, args) {
@@ -246,15 +246,15 @@ angular.module('bahmni.appointments')
                     return userPrivilege.name === privilege;
                 }));
             };
-            
+
             $scope.isUserAllowedToPerform = function () {
                 if (isCurrentUserHavePrivilege($scope.manageAppointmentPrivilege)) {
                     return true;
                 }
-                else if (isCurrentUserHavePrivilege($scope.selfAppointmentPrivilege)) {
+                else if (isCurrentUserHavePrivilege($scope.ownAppointmentPrivilege)) {
                     if ($scope.selectedAppointment) {
                         return _.isNull($scope.selectedAppointment.provider) ||
-                            $scope.selectedAppointment.provider.uuid === $rootScope.currentProvider.uuid
+                            $scope.selectedAppointment.provider.uuid === $rootScope.currentProvider.uuid;
                     }
                 }
                 return false;

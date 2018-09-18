@@ -23,36 +23,36 @@
     <p><b>{{::'APPOINTMENT_SLOT' | translate}}:</b> {{scope.appointments[0].startDateTime | bahmniTime}} -
         {{scope.appointments[0].endDateTime | bahmniTime}}</p>
     <p class="app-dialog-btn-wrap">
-        <button show-if-privilege="{{manageAppointmentPrivilege}},{{selfAppointmentPrivilege}}" style="background: #039BE5"
+        <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" style="background: #039BE5"
                 ng-disabled="!patient || !isUserAllowedToPerform()"
                 ng-click="navigateTo('edit', scope.patientAppointmentMap[patient.uuid])">
             {{::'EDIT_APPOINTMENT' | translate}}
         </button>
-        <button show-if-privilege="{{manageAppointmentPrivilege}},{{selfAppointmentPrivilege}}" style="background: #009688"
+        <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" style="background: #009688"
                 ng-show="isAllowedAction('CheckedIn')"
                 ng-disabled="!patient || !isValidAction(scope.patientAppointmentMap[patient.uuid], 'CheckedIn')"
                 ng-click="checkinAppointment(scope.patientAppointmentMap[patient.uuid])">
             {{::'CHECK_IN_APPOINTMENT' | translate}}
         </button>
-        <button show-if-privilege="{{manageAppointmentPrivilege}},{{selfAppointmentPrivilege}}" style="background: #43A047"
+        <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" style="background: #43A047"
                 ng-show="isAllowedAction('Completed')"
                 ng-disabled="!patient || !isValidAction(scope.patientAppointmentMap[patient.uuid], 'Completed')"
                 ng-click="confirmAction(scope.patientAppointmentMap[patient.uuid], 'Completed')">
             {{::'COMPLETE_APPOINTMENT' | translate}}
         </button>
-        <button show-if-privilege="{{manageAppointmentPrivilege}},{{selfAppointmentPrivilege}}" style="background: #FF9800"
+        <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" style="background: #FF9800"
                 ng-show="isAllowedAction('Missed')"
                 ng-disabled="!patient || !isValidAction(scope.patientAppointmentMap[patient.uuid], 'Missed')"
                 ng-click="confirmAction(scope.patientAppointmentMap[patient.uuid], 'Missed')">
             {{::'MISSED_APPOINTMENT' | translate}}
         </button>
-        <button show-if-privilege="{{manageAppointmentPrivilege}},{{selfAppointmentPrivilege}}" style="background: #DD2C00"
+        <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" style="background: #DD2C00"
                 ng-show="isAllowedAction('Cancelled')"
                 ng-disabled="!patient || !isValidAction(scope.patientAppointmentMap[patient.uuid], 'Cancelled')"
                 ng-click="confirmAction(scope.patientAppointmentMap[patient.uuid], 'Cancelled')">
             {{::'CANCEL_APPOINTMENT' | translate}}
         </button>
-        <button show-if-privilege="{{manageAppointmentPrivilege}},{{selfAppointmentPrivilege}}" style="background: #8BC34A"
+        <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" style="background: #8BC34A"
                 ng-show="scope.enableCreateAppointment"
                 ng-disabled="!isUserAllowedToPerform()"
                 ng-click="navigateTo('new')">
