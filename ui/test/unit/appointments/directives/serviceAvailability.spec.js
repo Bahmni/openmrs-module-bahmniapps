@@ -55,7 +55,7 @@ describe('ServiceAvailability', function () {
     };
 
     it('should init availability and startOfWeek', function () {
-        appDescriptor.getConfigValue.and.returnValue(3);
+        appDescriptor.getConfigValue.and.returnValue("Tuesday");
         expect(scope.availability).toBeUndefined();
         var element = createElement();
         var compiledElementScope = element.isolateScope();

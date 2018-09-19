@@ -34,6 +34,7 @@ Bahmni.Appointments.Constants = (function () {
         privilegeForAdmin: 'app:appointments:adminTab',
         privilegeOwnAppointments: 'Manage Own Appointments',
         availableForAppointments: 'Available for appointments',
+        weekDays: {"Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6, "Sunday": 7 },
         providerResponses: { ACCEPTED: "ACCEPTED", REJECTED: "REJECTED", TENTATIVE: "TENTATIVE", CANCELLED: "CANCELLED", AWAITING: "AWAITING" }
     };
 })();

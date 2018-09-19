@@ -63,7 +63,7 @@ describe('AppointmentsWeekCalendarController', function () {
         var endOfDay = '00:17:30';
         var calendarSlotDuration = '00:10';
         var calendarSlotLabelInterval = '00:12';
-        var weekStartDay = 3;
+        var weekStartDay = "Wednesday";
         appDescriptor.getConfigValue.and.callFake(function (key) {
             if (key === 'startOfDay') {
                 return startOfDay;
@@ -84,7 +84,7 @@ describe('AppointmentsWeekCalendarController', function () {
         expect(scope.uiConfig.calendar.businessHours.end).toBe(endOfDay);
         expect(scope.uiConfig.calendar.slotDuration).toBe(calendarSlotDuration);
         expect(scope.uiConfig.calendar.slotLabelInterval).toBe(calendarSlotLabelInterval);
-        expect(scope.uiConfig.calendar.firstDay).toBe(weekStartDay);
+        expect(scope.uiConfig.calendar.firstDay).toBe(3);
     });
 
     it('should go to new appointment state on createAppointment even if the user has Manage privilege', function () {

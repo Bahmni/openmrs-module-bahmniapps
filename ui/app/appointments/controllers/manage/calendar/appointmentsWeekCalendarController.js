@@ -110,7 +110,8 @@ angular.module('bahmni.appointments')
                         eventResize: $scope.alertOnResize,
                         eventRender: $scope.eventRender,
                         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-                        firstDay: appService.getAppDescriptor().getConfigValue('startOfWeek') || Bahmni.Appointments.Constants.defaultWeekStartDay
+                        firstDay: Bahmni.Appointments.Constants.weekDays[appService.getAppDescriptor().getConfigValue('startOfWeek')]
+                            || Bahmni.Appointments.Constants.defaultWeekStartDay
                     }
                 };
 
