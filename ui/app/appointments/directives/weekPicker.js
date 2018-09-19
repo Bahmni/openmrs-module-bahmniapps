@@ -23,13 +23,18 @@ angular.module('bahmni.appointments')
             };
 
             var setWeekStartDate = function (date) {
-                var weekStartDayStandard = $scope.weekStart ? $scope.weekStart : 'isoWeek';
-                $scope.weekStartDate = moment(date).startOf(weekStartDayStandard).toDate();
+                var daysToBeSubtracted = daysToSubtract(date, $scope.weekStart);
+                $scope.weekStartDate = moment(date).subtract(daysToBeSubtracted, 'days').toDate();
+            };
+
+            var daysToSubtract = function (date, weekStart) {
+                return moment(date).isoWeekday() >= weekStart ?
+                    moment(date).isoWeekday() - weekStart :
+                    7 + moment(date).isoWeekday() - weekStart;
             };
 
             var setWeekEndDate = function (date) {
-                var weekStartDayStandard = $scope.weekStart ? $scope.weekStart : 'isoWeek';
-                $scope.weekEndDate = moment(date).endOf(weekStartDayStandard).toDate();
+                $scope.weekEndDate = moment($scope.weekStartDate).add(6, 'days').endOf('day').toDate();
             };
 
             $scope.$watch("viewDate", function (viewDate) {

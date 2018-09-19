@@ -7,7 +7,7 @@ angular.module('bahmni.appointments')
                 $scope.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
                 $scope.weekStartDate = moment($scope.viewDate).startOf('week').toDate();
                 $scope.weekEndDate = moment($scope.viewDate).endOf('week').toDate();
-                $scope.weekStart = appService.getAppDescriptor().getConfigValue('weekStart');
+                $scope.weekStart = appService.getAppDescriptor().getConfigValue('startOfWeek');
                 $scope.getAppointmentsSummaryForAWeek($scope.weekStartDate, $scope.weekEndDate);
             };
 

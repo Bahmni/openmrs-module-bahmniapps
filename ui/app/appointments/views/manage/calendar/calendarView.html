@@ -3,7 +3,7 @@
         <date-picker ng-show="!weekView" view-date="startDate" last-valid-date="lastValidDate"
                          on-change="getAppointmentsForDate" show-buttons="true"></date-picker>
         <week-picker ng-show="weekView" view-date="startDate" on-change="getAppointmentsForWeek"
-                     show-buttons="true"></week-picker>
+                     show-buttons="true" week-start="weekStart"></week-picker>
 
         <p class="calendar-no-appointment" ng-if="hasNoAppointments()">{{::'NO_APPOINTMENT_CALENDAR_VIEW' | translate}}</p>
         <day-calendar ng-if="shouldReload && !weekView" date="startDate"

@@ -10,13 +10,14 @@ angular.module('bahmni.appointments')
             var init = function () {
                 $scope.weekView = $rootScope.weekView || $state.params.weekView;
                 if ($scope.weekView) {
-                    $state.params.viewDate = getStartDate($state.params.viewDate);
+                    $state.params.viewDate = getViewDate($state.params.viewDate);
                 }
                 $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
                 $scope.$on('filterClosedOpen', function (event, args) {
                     $scope.isFilterOpen = args.filterViewStatus;
                 });
                 $scope.isFilterOpen = $state.params.isFilterOpen;
+                $scope.weekStart = appService.getAppDescriptor().getConfigValue('startOfWeek');
             };
 
             var createProviderEventForAppointment = function (provider, appointment, eventList) {
@@ -44,7 +45,7 @@ angular.module('bahmni.appointments')
 
             $scope.toggleWeekView = function () {
                 if ($scope.weekView) {
-                    $scope.startDate = getStartDate($scope.startDate);
+                    $scope.startDate = getViewDate($scope.startDate);
                 }
                 $scope.weekView = !$scope.weekView;
                 $rootScope.weekView = $scope.weekView;
@@ -102,8 +103,8 @@ angular.module('bahmni.appointments')
             var fetchAppointmentsData = function () {
                 var viewDate = $scope.startDate || moment().startOf('day').toDate();
                 if ($scope.weekView) {
-                    var weekStartDate = moment(viewDate).isoWeekday(1).toDate();
-                    var weekEndDate = moment(weekStartDate).add(6, 'days').toDate();
+                    var weekStartDate = getWeekStartDate(viewDate);
+                    var weekEndDate = getWeekEndDate(weekStartDate);
                     $scope.getAppointmentsForWeek(weekStartDate, weekEndDate);
                 }
                 else {
@@ -111,8 +112,29 @@ angular.module('bahmni.appointments')
                 }
             };
 
-            var getStartDate = function (date) {
-                return moment(date).isoWeekday(moment().isoWeekday()).toDate();
+            var getWeekStartDate = function (date) {
+                var daysToBeSubtracted = daysToSubtract(date, $scope.weekStart);
+                return moment(date).subtract(daysToBeSubtracted, 'days').toDate();
+            };
+
+            var getWeekEndDate = function (date) {
+                return moment(date).add(6, 'days').toDate();
+            };
+
+            var getViewDate = function (date) {
+                var weekStartDate = getWeekStartDate(date);
+                var weekEndDate = getWeekEndDate(weekStartDate);
+                var isoWeekdayForToday = moment().isoWeekday();
+                var weekStart = $scope.weekStart;
+                var daysBetweenTodayAndWeekStart = weekStart - isoWeekdayForToday;
+                if (daysBetweenTodayAndWeekStart > 0) {
+                    var daysToSubtract = daysBetweenTodayAndWeekStart - 1;
+                    return moment(weekEndDate).subtract(daysToSubtract, 'days').toDate();
+                }
+                else {
+                    var daysToAdd = Math.abs(daysBetweenTodayAndWeekStart);
+                    return moment(weekStartDate).add(daysToAdd, 'days').toDate();
+                }
             };
 
             var parseAppointments = function (allAppointments, filterParams) {
@@ -184,6 +206,12 @@ angular.module('bahmni.appointments')
                 }
             };
 
+            var daysToSubtract = function (date, weekStart) {
+                return moment(date).isoWeekday() >= weekStart ?
+                    moment(date).isoWeekday() - weekStart :
+                    7 + moment(date).isoWeekday() - weekStart;
+            };
+
             var setAppointments = function (params) {
                 autoRefreshStatus = false;
                 if (!$scope.weekView) {
@@ -207,8 +235,8 @@ angular.module('bahmni.appointments')
                 var viewDate = $scope.startDate || moment().startOf('day').toDate();
                 var params = {forDate: viewDate};
                 if ($scope.weekView) {
-                    var weekStartDate = moment(viewDate).isoWeekday(1).toDate();
-                    var weekEndDate = moment(weekStartDate).add(6, 'days').toDate();
+                    var weekStartDate = getWeekStartDate(viewDate);
+                    var weekEndDate = getWeekEndDate(weekStartDate);
                     params = {startDate: weekStartDate, endDate: weekEndDate};
                 }
                 setAppointments(params);
