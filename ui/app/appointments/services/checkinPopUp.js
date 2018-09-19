@@ -16,8 +16,8 @@ angular.module('bahmni.common.uiHelper')
                 className: config.className || 'ngdialog-theme-default'
             });
 
-            scope.performAction = function (close) {
-                scope.action(scope.time, close);
+            scope.performAction = function (close, time) {
+                scope.action(time, close);
             };
         };
         return confirmBox;

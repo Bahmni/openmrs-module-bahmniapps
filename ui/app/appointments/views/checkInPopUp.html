@@ -10,7 +10,7 @@
         {{::'CHECK_IN_APPOINTMENT_TIME_VALIDATION' | translate}}
     </p>
     <p class="app-check-in-btn">
-        <button style="background: #8BC34A; color: #fff" ng-click="performAction(close);" ng-disabled="!time">
+        <button style="background: #8BC34A; color: #fff" ng-click="performAction(close, time);" ng-disabled="!time">
             {{::'YES_KEY' | translate}}
         </button>
         <button ng-click="close()">
