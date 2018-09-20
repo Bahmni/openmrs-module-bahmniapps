@@ -36,7 +36,7 @@
     "STATUS_KEY": "Status:",
     "TAGS_KEY": "Tags:",
     "EDIT_KEY": "Edit",
-    "ADMISSION_MASTER": "Admission Master",
+    "ADMISSION_MASTER": "Ward View",
     "SAVE_KEY": "Save",
     "CANCEL_KEY": "Cancel",
     "BED_TAGGING_KEY": "Bed Tagging",
@@ -49,9 +49,12 @@
     "KEY_AVAILABLE": "Available",
     "KEY_OCCUPIED": "Occupied",
     "BED_MANAGEMENT_KEY": "Bed Management",
-    "ADMIT_HOME_KEY": "Admit",
+    "ADMIT_HOME_KEY": "Patient List",
     "ADD_A_TAG_KEY": "Add a tag",
     "GENDER_MALE_KEY": "Male",
     "GENDER_FEMALE_KEY": "Female",
-    "GENDER_OTHER_KEY": "Other"
+    "GENDER_OTHER_KEY": "Other",
+    "ADMISSION_DATE_LABEL": "Admission Date",
+    "DOB_LABEL": "Date of Birth",
+    "PATIENT_BED_MANAGEMENT_PAGE_KEY": "Patient Bed Management" 
 }

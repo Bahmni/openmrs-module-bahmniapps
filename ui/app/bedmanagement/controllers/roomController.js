@@ -6,7 +6,7 @@ angular.module('bahmni.ipd')
             var init = function () {
                 $scope.defaultTags = ['AVAILABLE', 'OCCUPIED'];
                 var appDescriptor = appService.getAppDescriptor();
-                $rootScope.bedTagsColorConfig = appDescriptor.getConfigValue("colorForTags");
+                $rootScope.bedTagsColorConfig = appDescriptor.getConfigValue("colorForTags") || [];
                 $rootScope.currentView = $rootScope.currentView || "Grid";
                 $scope.currentView = $rootScope.currentView;
 
