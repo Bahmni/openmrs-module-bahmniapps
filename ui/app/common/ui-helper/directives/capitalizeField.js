@@ -20,4 +20,3 @@ angular.module('bahmni.common.uiHelper').directive('capitalizeField', ['$parse',
         }
     };
 }]);
-2
