@@ -5,7 +5,7 @@ angular.module('bahmni.common.uiHelper').directive('capitalizeField', ['$parse',
         require: 'ngModel',
         link: function (scope, element, attrs, ngModelController) {
             var capitalize = function (inputValue) {
-                if (inputValue === undefined) {
+                if (!inputValue) {
                     inputValue = '';
                 }
                 var capitalized = inputValue.charAt(0).toUpperCase() + inputValue.substring(1);
@@ -20,3 +20,4 @@ angular.module('bahmni.common.uiHelper').directive('capitalizeField', ['$parse',
         }
     };
 }]);
+2
