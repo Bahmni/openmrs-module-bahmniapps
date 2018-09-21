@@ -68,7 +68,7 @@ describe('ServiceAvailability', function () {
         var element = createElement();
         var compiledElementScope = element.isolateScope();
 
-        expect(compiledElementScope.startOfWeek).toBe(2);
+        expect(compiledElementScope.startOfWeek).toBe(1);
     });
 
     describe('checkState', function () {
