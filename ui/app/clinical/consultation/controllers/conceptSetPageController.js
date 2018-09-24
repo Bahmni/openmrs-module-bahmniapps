@@ -89,10 +89,10 @@ angular.module('bahmni.clinical')
                 if (age < 1 && monthDifference >= 2) {
                     availableTemplates = availableTemplates.concat(categories.infant);
                 }
-                if (age <= 2 && monthDifference < 1 && dayDifference <= 28) {
+                if (age <= 2 && monthDifference < 1 && dayDifference < 1) {
                     availableTemplates = availableTemplates.concat(categories.toddler);
                 }
-                if ((age < 5) || (age === 5 && monthDifference < 1 && dayDifference <= 28)) {
+                if ((age < 5) || (age === 5 && monthDifference < 1 && dayDifference < 1)) {
                     availableTemplates = availableTemplates.concat(categories.preschooler);
                 }
             };
