@@ -37,7 +37,6 @@ angular.module('bahmni.clinical')
                         } else {
                             createConceptSections(allTemplates);
                         }
-                        
                         if ($state.params.programUuid) {
                             showOnlyTemplatesFilledInProgram();
                         }
@@ -57,11 +56,10 @@ angular.module('bahmni.clinical')
                 }
             };
 
-
             /**
              * This section creates an array of available templates based on patient data.
              */
-            var getAvailableTemplates = function() {
+            var getAvailableTemplates = function () {
                 if ($scope.context && filterObsTemplate) {
                     var categories = obsConfig.categories;
                     var patient = $scope.context.patient;
