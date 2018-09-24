@@ -23,6 +23,7 @@ angular.module('bahmni.appointments')
                     $scope.appointments = response.data;
                     setWeekDatesInfo();
                 }));
+                $state.params.viewDate = $scope.viewDate;
             };
 
             $scope.goToListView = function (date, service) {
