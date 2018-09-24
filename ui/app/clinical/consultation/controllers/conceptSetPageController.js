@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService',
         'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner',
-        'contextChangeHandler', '$q', '$translate', 'observationFormService',
+        'contextChangeHandler', '$q', '$translate', 'observationFormService', 'appService',
         function ($scope, $rootScope, $stateParams, conceptSetService,
                   clinicalAppConfigService, messagingService, configurations, $state, spinner,
-                  contextChangeHandler, $q, $translate, observationFormService) {
+                  contextChangeHandler, $q, $translate, observationFormService, appService) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
@@ -18,15 +18,26 @@ angular.module('bahmni.clinical')
             var fields = ['uuid', 'name:(name,display)', 'names:(uuid,conceptNameType,name)'];
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
             var allConceptSections = [];
+            var filterObsTemplate = appService.getAppDescriptor().getConfigValue("filterObservationTemplates");
+            var obsConfig = appService.getAppDescriptor().getConfigForPage('observation');
+            var availableTemplates = [];
+            var DateUtil = Bahmni.Common.Util.DateUtil;
 
             var init = function () {
+                getAvailableTemplates();
                 if (!($scope.allTemplates !== undefined && $scope.allTemplates.length > 0)) {
                     spinner.forPromise(conceptSetService.getConcept({
                         name: "All Observation Templates",
                         v: "custom:" + customRepresentation
                     }).then(function (response) {
                         var allTemplates = response.data.results[0].setMembers;
-                        createConceptSections(allTemplates);
+                        if (filterObsTemplate) {
+                            var filteredTemplates = allTemplates.filter(template => availableTemplates.includes(template.name.name));
+                            createConceptSections(filteredTemplates);
+                        } else {
+                            createConceptSections(allTemplates);
+                        }
+                        
                         if ($state.params.programUuid) {
                             showOnlyTemplatesFilledInProgram();
                         }
@@ -43,6 +54,41 @@ angular.module('bahmni.clinical')
                             concatObservationForms();
                         }
                     }));
+                }
+            };
+
+
+            /**
+             * This section creates an array of available templates based on patient data.
+             */
+            var getAvailableTemplates = function() {
+                if ($scope.context && filterObsTemplate) {
+                    var categories = obsConfig.categories;
+                    var patient = $scope.context.patient;
+                    var gender = patient.gender;
+                    if (gender === "F") {
+                        availableTemplates = availableTemplates.concat(categories.female);
+                    } else if (gender === "M") {
+                        availableTemplates = availableTemplates.concat(categories.male);
+                    }
+                    var age = parseInt(patient.age);
+                    var ageDifference = DateUtil.diffInYearsMonthsDays(patient.birthdate, DateUtil.now());
+                    if (age < 1 && ageDifference.month < 2) {
+                        availableTemplates = availableTemplates.concat(categories.lessThanTwoMonths);
+                    } else if (age < 1 && ageDifference.month >= 2) {
+                        availableTemplates = availableTemplates.concat(categories.lessThanTwoMonths);
+                        availableTemplates = availableTemplates.concat(categories.infant);
+                    } else if (age <= 2) {
+                        availableTemplates = availableTemplates.concat(categories.lessThanTwoMonths);
+                        availableTemplates = availableTemplates.concat(categories.infant);
+                        availableTemplates = availableTemplates.concat(categories.toddler);
+                    } else if (age <= 5) {
+                        availableTemplates = availableTemplates.concat(categories.lessThanTwoMonths);
+                        availableTemplates = availableTemplates.concat(categories.infant);
+                        availableTemplates = availableTemplates.concat(categories.toddler);
+                        availableTemplates = availableTemplates.concat(categories.preschooler);
+                    }
+                    availableTemplates = availableTemplates.concat(categories.common);
                 }
             };
 
@@ -124,6 +170,7 @@ angular.module('bahmni.clinical')
 
             $scope.filterTemplates = function () {
                 $scope.uniqueTemplates = _.uniqBy($scope.allTemplates, 'label');
+
                 if ($scope.consultation.searchParameter) {
                     $scope.uniqueTemplates = _.filter($scope.uniqueTemplates, function (template) {
                         return _.includes(template.label.toLowerCase(), $scope.consultation.searchParameter.toLowerCase());
