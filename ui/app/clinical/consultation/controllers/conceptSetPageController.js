@@ -63,30 +63,37 @@ angular.module('bahmni.clinical')
                 if ($scope.context && filterObsTemplate) {
                     var categories = obsConfig.categories;
                     var patient = $scope.context.patient;
-                    var gender = patient.gender;
-                    if (gender === "F") {
-                        availableTemplates = availableTemplates.concat(categories.female);
-                    } else if (gender === "M") {
-                        availableTemplates = availableTemplates.concat(categories.male);
-                    }
-                    var age = parseInt(patient.age);
-                    var ageDifference = DateUtil.diffInYearsMonthsDays(patient.birthdate, DateUtil.now());
-                    if (age < 1 && ageDifference.month < 2) {
-                        availableTemplates = availableTemplates.concat(categories.lessThanTwoMonths);
-                    } else if (age < 1 && ageDifference.month >= 2) {
-                        availableTemplates = availableTemplates.concat(categories.lessThanTwoMonths);
-                        availableTemplates = availableTemplates.concat(categories.infant);
-                    } else if (age <= 2) {
-                        availableTemplates = availableTemplates.concat(categories.lessThanTwoMonths);
-                        availableTemplates = availableTemplates.concat(categories.infant);
-                        availableTemplates = availableTemplates.concat(categories.toddler);
-                    } else if (age <= 5) {
-                        availableTemplates = availableTemplates.concat(categories.lessThanTwoMonths);
-                        availableTemplates = availableTemplates.concat(categories.infant);
-                        availableTemplates = availableTemplates.concat(categories.toddler);
-                        availableTemplates = availableTemplates.concat(categories.preschooler);
-                    }
+                    filterUsingGender(categories, patient);
+                    filterUsingAge(categories, patient);
                     availableTemplates = availableTemplates.concat(categories.common);
+                }
+            };
+
+            var filterUsingGender = function (categories, patient) {
+                var gender = patient.gender;
+                if (gender === "F") {
+                    availableTemplates = availableTemplates.concat(categories.female);
+                } else if (gender === "M") {
+                    availableTemplates = availableTemplates.concat(categories.male);
+                }
+            };
+
+            var filterUsingAge = function (categories, patient) {
+                var age = parseInt(patient.age);
+                var ageDifference = DateUtil.diffInYearsMonthsDays(patient.birthdate, DateUtil.now());
+                var monthDifference = parseInt(ageDifference.months);
+                var dayDifference = parseInt(ageDifference.days);
+                if (age < 1 && monthDifference < 2) {
+                    availableTemplates = availableTemplates.concat(categories.lessThanTwoMonths);
+                } 
+                if (age < 1 && monthDifference >= 2) {
+                    availableTemplates = availableTemplates.concat(categories.infant);
+                }
+                if (age <= 2 && monthDifference < 1 && dayDifference <= 28) {
+                    availableTemplates = availableTemplates.concat(categories.toddler);
+                }
+                if ((age < 5) || (age === 5 && monthDifference < 1 && dayDifference <= 28)) {
+                    availableTemplates = availableTemplates.concat(categories.preschooler);
                 }
             };
 
