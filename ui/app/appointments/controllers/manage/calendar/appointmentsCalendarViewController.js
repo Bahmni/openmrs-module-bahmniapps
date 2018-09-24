@@ -9,10 +9,11 @@ angular.module('bahmni.appointments')
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
             var init = function () {
                 $scope.weekView = $rootScope.weekView || $state.params.weekView;
+                $state.params.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
                 if ($scope.weekView) {
                     $state.params.viewDate = getViewDate($state.params.viewDate);
                 }
-                $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
+                $scope.startDate = $state.params.viewDate;
                 $scope.$on('filterClosedOpen', function (event, args) {
                     $scope.isFilterOpen = args.filterViewStatus;
                 });
