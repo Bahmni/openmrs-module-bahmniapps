@@ -116,7 +116,7 @@ describe('AppointmentsCalendarViewController', function () {
                 "uuid": "e53c9655-d56f-4234-b9fd-46bbb74daffa",
                 "patient": {
                     "identifier": "GAN200000",
-                    "name": "Test DrugDataOne",
+                    "name": "ATest DrugDataOne",
                     "uuid": "d95bf6c9-d1c6-41dc-aecf-1c06bd71386c"
                 },
                 "service": {
@@ -124,10 +124,12 @@ describe('AppointmentsCalendarViewController', function () {
                     "uuid": "2c8ed7e9-f726-49ac-add0-cfc019e7eae7",
                     "color": "#FF8C00"
                 },
-                "provider": {
+                "providers": [ {
+                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75",
                     "name": "Superman",
-                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75"
-                },
+                    "comments":"available",
+                    "response":"ACCEPTED"
+                }],
                 "startDateTime": 1502442000000,
                 "endDateTime": 1502443200000,
                 "status": "Scheduled",
@@ -138,8 +140,8 @@ describe('AppointmentsCalendarViewController', function () {
             {
                 "uuid": "e53c9655-d56f-4234-b9fd-46bbb74daffa",
                 "patient": {
-                    "identifier": "GAN200000",
-                    "name": "Test DrugDataTwo",
+                    "identifier": "GAN200001",
+                    "name": "BTest DrugDataTwo",
                     "uuid": "d95bf6c9-d1c6-41dc-aecf-1c06bd71386c"
                 },
                 "service": {
@@ -147,10 +149,12 @@ describe('AppointmentsCalendarViewController', function () {
                     "uuid": "324ed7e9-f726-49ac-add0-cfc019e7eae7",
                     "color": "#A9A9A9"
                 },
-                "provider": {
+                "providers": [{
+                    "uuid": "7155e93a-3f12-11e4-adec-0800271c1b75",
                     "name": "Batman",
-                    "uuid": "7155e93a-3f12-11e4-adec-0800271c1b75"
-                },
+                    "comments":"available",
+                    "response":"ACCEPTED"
+                }],
                 "startDateTime": 1502442002000,
                 "endDateTime": 1502443200400,
                 "status": "CheckedIn"
@@ -163,15 +167,15 @@ describe('AppointmentsCalendarViewController', function () {
 
         var resources = scope.providerAppointments.resources;
         var sortedAppointments = _.sortBy(allAppointments, function (appointment) {
-            return appointment.provider.name.toLowerCase();
+            return appointment.patient.identifier.toLowerCase();
         });
         expect(resources.length).toBe(2);
-        expect(resources[0]).toEqual({id: sortedAppointments[0].provider.name, title: sortedAppointments[0].provider.name, provider: sortedAppointments[0].provider });
-        expect(resources[1]).toEqual({id: sortedAppointments[1].provider.name, title: sortedAppointments[1].provider.name, provider: sortedAppointments[1].provider});
+        expect(resources[0]).toEqual({id: sortedAppointments[1].providers[0].name, title: sortedAppointments[1].providers[0].name, provider: sortedAppointments[1].providers[0] });
+        expect(resources[1]).toEqual({id: sortedAppointments[0].providers[0].name, title: sortedAppointments[0].providers[0].name, provider: sortedAppointments[0].providers[0] });
 
         var events = scope.providerAppointments.events;
         expect(events.length).toBe(2);
-        expect(events[0].resourceId).toBe(allAppointments[0].provider.name);
+        expect(events[0].resourceId).toBe(allAppointments[0].providers[0].name);
         expect(events[0].start).toBe(allAppointments[0].startDateTime);
         expect(events[0].end).toBe(allAppointments[0].endDateTime);
         expect(events[0].color).toBe(allAppointments[0].service.color);
@@ -180,7 +184,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(events[0].appointments).toEqual([allAppointments[0]]);
         expect(events[0].className).toEqual('appointmentIcons Scheduled bed-accom');
 
-        expect(events[1].resourceId).toBe(allAppointments[1].provider.name);
+        expect(events[1].resourceId).toBe(allAppointments[1].providers[0].name);
         expect(events[1].start).toBe(allAppointments[1].startDateTime);
         expect(events[1].end).toBe(allAppointments[1].endDateTime);
         expect(events[1].color).toBe(allAppointments[1].service.color);
@@ -204,10 +208,12 @@ describe('AppointmentsCalendarViewController', function () {
                     "uuid": "2c8ed7e9-f726-49ac-add0-cfc019e7eae7",
                     "color": "#FF8C00"
                 },
-                "provider": {
+                "providers": [ {
+                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75",
                     "name": "Superman",
-                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75"
-                },
+                    "comments":"available",
+                    "response":"ACCEPTED"
+                }],
                 "startDateTime": 1502442000000,
                 "endDateTime": 1502443200000,
                 "status": "Scheduled"
@@ -224,10 +230,12 @@ describe('AppointmentsCalendarViewController', function () {
                     "uuid": "2c8ed7e9-f726-49ac-add0-cfc019e7eae7",
                     "color": "#FF8C00"
                 },
-                "provider": {
+                "providers": [ {
+                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75",
                     "name": "Superman",
-                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75"
-                },
+                    "comments":"available",
+                    "response":"ACCEPTED"
+                }],
                 "startDateTime": 1502442000000,
                 "endDateTime": 1502443200000,
                 "status": "CheckedIn",
@@ -242,10 +250,10 @@ describe('AppointmentsCalendarViewController', function () {
         scope.getAppointmentsForDate(viewDate);
         var resources = scope.providerAppointments.resources;
         expect(resources.length).toBe(1);
-        expect(resources[0]).toEqual({id: allAppointments[0].provider.name, title: allAppointments[0].provider.name, provider: allAppointments[0].provider});
+        expect(resources[0]).toEqual({id: 'Superman', title: 'Superman', provider: allAppointments[0].providers[0]});
         var events = scope.providerAppointments.events;
         expect(events.length).toBe(1);
-        expect(events[0].resourceId).toBe(allAppointments[0].provider.name);
+        expect(events[0].resourceId).toBe(allAppointments[0].providers[0].name);
         expect(events[0].start).toBe(allAppointments[0].startDateTime);
         expect(events[0].end).toBe(allAppointments[0].endDateTime);
         expect(events[0].color).toBe(allAppointments[0].service.color);
@@ -271,10 +279,12 @@ describe('AppointmentsCalendarViewController', function () {
                     "uuid": "2c8ed7e9-f726-49ac-add0-cfc019e7eae7",
                     "color": "#FF8C00"
                 },
-                "provider": {
+                "providers": [ {
+                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75",
                     "name": "Superman",
-                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75"
-                },
+                    "comments":"available",
+                    "response":"ACCEPTED"
+                }],
                 "startDateTime": 1502442000000,
                 "endDateTime": 1502443200000,
                 "status": "Scheduled",
@@ -294,10 +304,12 @@ describe('AppointmentsCalendarViewController', function () {
                     "uuid": "324ed7e9-f726-49ac-add0-cfc019e7eae7",
                     "color": "#A9A9A9"
                 },
-                "provider": {
+                "providers": [ {
+                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75",
                     "name": "Superman",
-                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75"
-                },
+                    "comments":"available",
+                    "response":"ACCEPTED"
+                }],
                 "startDateTime": 1502442000000,
                 "endDateTime": 1502443200000,
                 "status": "CheckedIn"
@@ -309,10 +321,10 @@ describe('AppointmentsCalendarViewController', function () {
         scope.getAppointmentsForDate(viewDate);
         var resources = scope.providerAppointments.resources;
         expect(resources.length).toBe(1);
-        expect(resources[0]).toEqual({id: allAppointments[0].provider.name, title: allAppointments[0].provider.name, provider: allAppointments[0].provider});
+        expect(resources[0]).toEqual({id: allAppointments[0].providers[0].name, title: allAppointments[0].providers[0].name, provider: allAppointments[0].providers[0]});
         var events = scope.providerAppointments.events;
         expect(events.length).toBe(2);
-        expect(events[0].resourceId).toBe(allAppointments[0].provider.name);
+        expect(events[0].resourceId).toBe(allAppointments[0].providers[0].name);
         expect(events[0].start).toBe(allAppointments[0].startDateTime);
         expect(events[0].end).toBe(allAppointments[0].endDateTime);
         expect(events[0].color).toBe(allAppointments[0].service.color);
@@ -321,7 +333,7 @@ describe('AppointmentsCalendarViewController', function () {
         expect(events[0].className).toEqual('appointmentIcons Scheduled bed-accom');
         expect(events[0].appointments).toEqual([allAppointments[0]]);
 
-        expect(events[1].resourceId).toBe(allAppointments[1].provider.name);
+        expect(events[1].resourceId).toBe(allAppointments[1].providers[0].name);
         expect(events[1].start).toBe(allAppointments[1].startDateTime);
         expect(events[1].end).toBe(allAppointments[1].endDateTime);
         expect(events[1].color).toBe(allAppointments[1].service.color);
@@ -345,10 +357,12 @@ describe('AppointmentsCalendarViewController', function () {
                     "uuid": "2c8ed7e9-f726-49ac-add0-cfc019e7eae7",
                     "color": "#FF8C00"
                 },
-                "provider": {
+                "providers": [ {
+                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75",
                     "name": "Superman",
-                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75"
-                },
+                    "comments":"available",
+                    "response":"ACCEPTED"
+                }],
                 "startDateTime": 1502442000000,
                 "endDateTime": 1502443200000,
                 "status": "Cancelled"
@@ -365,10 +379,12 @@ describe('AppointmentsCalendarViewController', function () {
                     "uuid": "2c8ed7e9-f726-49ac-add0-cfc019e7eae7",
                     "color": "#FF8C00"
                 },
-                "provider": {
+                "providers": [ {
+                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75",
                     "name": "Superman",
-                    "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75"
-                },
+                    "comments":"available",
+                    "response":"ACCEPTED"
+                }],
                 "startDateTime": 1502442000000,
                 "endDateTime": 1502443200000,
                 "status": "Scheduled"
@@ -419,7 +435,12 @@ describe('AppointmentsCalendarViewController', function () {
                 "name": "maxillo",
                 "uuid": "de849ecd-47ad-4610-8080-20e7724b2df6"
             },
-            "provider": {display : "someName", uuid: "someUuid"},
+            "providers": [ {
+                "uuid": "8135e93a-3f12-11e4-adec-0800271c1b75",
+                "name": "Trevor",
+                "comments":"available",
+                "response":"ACCEPTED"
+            }],
             "location": null,
             "startDateTime": 1504665900000,
             "endDateTime": 1504666800000,
@@ -433,7 +454,7 @@ describe('AppointmentsCalendarViewController', function () {
         scope.getAppointmentsForDate("Wed Sep 06 2017 00:00:00 GMT+0530 (IST)");
         // createController();
         expect(scope.providerAppointments.resources.length).toEqual(1);
-        expect(scope.providerAppointments.resources[0].provider.uuid).toEqual("someUuid");
+        expect(scope.providerAppointments.resources[0].provider.name).toEqual("Trevor");
     });
 
     it('should include "No Provider" in resources appointments when there are appointments with "No Provider"', function () {

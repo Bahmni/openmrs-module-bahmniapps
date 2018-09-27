@@ -111,6 +111,15 @@ angular.module('bahmni.appointments')
                 }
             };
 
+            $scope.getProviderNamesForAppointment = function (appointment) {
+                if (appointment.providers != undefined) {
+                    return appointment.providers.filter(function (p) { return p.response != 'CANCELLED'; }).map(function (p) { return p.name; }).join(',');
+                    // app.provider = app.providers.length > 0 ? app.providers[0] : null;
+                } else {
+                    return '';
+                }
+            };
+
             var setFilteredAppointmentsInPatientSearch = function (appointments) {
                 $scope.filteredAppointments = appointments.map(function (appointmet) {
                     appointmet.date = appointmet.startDateTime;
@@ -208,7 +217,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.printPage = function () {
-                var printTemplateUrl = appService.getAppDescriptor().getConfigValue("printListViewTemplateUrl") || 'views/manage/list/listView.html';
+                var printTemplateUrl = appService.getAppDescriptor().getConfigValue("printListViewTemplateUrl") || 'views/manage/list/defaultListPrint.html';
                 printer.print(printTemplateUrl, {
                     searchedPatient: $scope.searchedPatient,
                     filteredAppointments: $scope.filteredAppointments,

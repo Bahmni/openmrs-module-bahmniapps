@@ -840,7 +840,7 @@ describe('AppointmentsListViewController', function () {
                 "creatorName": null
             },
             "serviceType": null,
-            "provider": null,
+            "providers": null,
             "location": null,
             "startDateTime": 1503891000000,
             "endDateTime": 1503900900000,
@@ -855,7 +855,7 @@ describe('AppointmentsListViewController', function () {
         createController();
         scope.searchedPatient = true;
         scope.printPage();
-        expect(printer.print).toHaveBeenCalledWith("views/manage/list/listView.html",
+        expect(printer.print).toHaveBeenCalledWith("views/manage/list/defaultListPrint.html",
             {
                 searchedPatient: scope.searchedPatient,
                 filteredAppointments: scope.filteredAppointments,

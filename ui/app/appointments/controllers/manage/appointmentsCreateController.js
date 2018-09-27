@@ -22,6 +22,8 @@ angular.module('bahmni.appointments')
             var loginLocationUuid = sessionService.getLoginLocationUuid();
             $scope.minCharLengthToTriggerPatientSearch = appService.getAppDescriptor().getConfigValue('minCharLengthToTriggerPatientSearch') || 3;
 
+            $scope.maxAppointmentProviders = appService.getAppDescriptor().getConfigValue("maxAppointmentProviders") || 1;
+
             var isProviderNotAvailableForAppointments = function (selectedProvider) {
                 var providers = appointmentCreateConfig.providers;
                 return _.isUndefined(_.find(providers, function (provider) {
@@ -38,10 +40,50 @@ angular.module('bahmni.appointments')
                     }
                 }
                 $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create(appointmentContext.appointment || {appointmentKind: 'Scheduled'}, appointmentCreateConfig);
+                $scope.appointment.newProvider = null;
                 $scope.selectedService = appointmentCreateConfig.selectedService;
                 $scope.isPastAppointment = $scope.isEditMode() ? Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')) : false;
                 if ($scope.appointment.patient) {
                     $scope.onSelectPatient($scope.appointment.patient);
+                }
+            };
+
+            $scope.allowProviderAddition = function () {
+                if ($scope.appointment.providers != undefined) {
+                    return $scope.appointment.providers.length < $scope.maxAppointmentProviders;
+                } else {
+                    return $scope.maxAppointmentProviders > 0;
+                }
+            };
+
+            $scope.addNewProvider = function () {
+                if ($scope.appointment.providers == undefined) {
+                    $scope.appointment.providers = [];
+                }
+
+                if ($scope.allowProviderAddition()) {
+                    var pList = $scope.appointment.providers.filter(function (provider) {
+                        return provider.uuid === $scope.appointment.newProvider.uuid;
+                    });
+
+                    if (pList.length === 0) {
+                        var p = {
+                            uuid: $scope.appointment.newProvider.uuid,
+                            response: "ACCEPTED",
+                            name: $scope.appointment.newProvider.name || $scope.appointment.newProvider.person.display,
+                            comments: null
+                        };
+                        $scope.appointment.providers.push(p);
+                    }
+                }
+
+                $scope.appointment.newProvider = null;
+            };
+
+            $scope.removeProviderFromAttendees = function (appProvider) {
+                var index = $scope.appointment.providers.indexOf(appProvider);
+                if (index > -1) {
+                    $scope.appointment.providers.splice(index, 1);
                 }
             };
 
