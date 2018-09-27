@@ -46,7 +46,17 @@ angular.module('bahmni.appointments')
                     $scope.appointments = response.data;
                     $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
                     $rootScope.appointmentsData = $scope.filteredAppointments;
+                    updateSelectedAppointment();
                     autoRefreshStatus = true;
+                });
+            };
+
+            var updateSelectedAppointment = function () {
+                if ($scope.selectedAppointment === undefined) {
+                    return;
+                }
+                $scope.selectedAppointment = _.find($scope.filteredAppointments, function (appointment) {
+                    return appointment.uuid === $scope.selectedAppointment.uuid;
                 });
             };
 
