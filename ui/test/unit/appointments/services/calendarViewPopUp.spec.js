@@ -43,24 +43,7 @@ describe('CalendarViewPopUp', function () {
         rootScope.$new.and.returnValue(popUpScope);
     });
 
-    it('construct patients list and group appointments by patients', function () {
-        var appointments = [
-            {
-                patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"}
-            },
-            {
-                patient: {identifier: "GAN102018", name: "patient2", uuid: "96a2b38c-18d8-4603-94cd-e2f806251870"}
-            }
-        ];
-        var config = {scope: {appointments: appointments}};
-        calendarViewPopUp(config);
-        expect(popUpScope.scope.patientList).toEqual([appointments[0].patient, appointments[1].patient]);
-        expect(popUpScope.scope.patientAppointmentMap[appointments[0].patient.uuid]).toBe(appointments[0]);
-        expect(popUpScope.scope.patientAppointmentMap[appointments[1].patient.uuid]).toBe(appointments[1]);
-        expect(popUpScope.patient).toBeUndefined();
-    });
-
-    it('should assign patient when there is a single appointment', function () {
+    it('should assign appointment when there is a single appointment', function () {
         var appointments = [
             {
                 patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"}
@@ -68,7 +51,7 @@ describe('CalendarViewPopUp', function () {
         ];
         var config = {scope: {appointments: appointments}};
         calendarViewPopUp(config);
-        expect(popUpScope.patient).toBe(appointments[0].patient);
+        expect(popUpScope.appointment).toBe(appointments[0]);
     });
 
     it('should open ngDialog with properties', function () {
@@ -127,7 +110,6 @@ describe('CalendarViewPopUp', function () {
         var appointment = {uuid: 'appointUuid', patient: {uuid: 'patientUuid'}};
         var config = {scope: {appointments: [appointment]}};
         calendarViewPopUp(config);
-        popUpScope.patient = {uuid: 'patientUuid'};
         popUpScope.navigateTo('edit', appointment);
         expect(ngDialog.close).toHaveBeenCalledWith(dialog.id, false);
         expect($state.params.uuid).toBe(appointment.uuid);
