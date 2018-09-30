@@ -85,7 +85,7 @@ angular.module('bahmni.clinical')
                 var dayDifference = parseInt(ageDifference.days);
                 if (age < 1 && monthDifference < 2) {
                     availableTemplates = availableTemplates.concat(categories.lessThanTwoMonths);
-                } 
+                }
                 if (age < 1 && monthDifference >= 2) {
                     availableTemplates = availableTemplates.concat(categories.infant);
                 }
