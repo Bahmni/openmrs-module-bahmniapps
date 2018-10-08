@@ -46,9 +46,6 @@ angular.module('bahmni.appointments')
             };
 
             $scope.toggleWeekView = function () {
-                if ($scope.weekView) {
-                    $scope.startDate = getViewDate($scope.startDate);
-                }
                 $scope.weekView = !$scope.weekView;
                 $rootScope.weekView = $scope.weekView;
                 $state.params.weekView = $scope.weekView;
