@@ -5,8 +5,10 @@ angular.module('bahmni.appointments')
         function ($scope, $state, $window, spinner, appointmentsService, appService) {
             var init = function () {
                 $scope.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
-                var weekStartDay = appService.getAppDescriptor().getConfigValue('startOfWeek') || Bahmni.Appointments.Constants.defaultWeekStartDayName;
-                $scope.weekStart = Bahmni.Appointments.Constants.weekDays[weekStartDay];
+                var weekStartDay = appService.getAppDescriptor().getConfigValue('startOfWeek')
+                    || Bahmni.Appointments.Constants.defaultWeekStartDayName;
+                $scope.weekStart = Bahmni.Appointments.Constants.weekDays[weekStartDay]
+                    || Bahmni.Appointments.Constants.defaultWeekStartDay;
             };
 
             $scope.getAppointmentsSummaryForAWeek = function (startDate, endDate) {
