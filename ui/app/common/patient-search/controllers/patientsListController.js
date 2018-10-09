@@ -77,7 +77,7 @@ angular.module('bahmni.common.patientSearch')
         };
 
         $scope.isHeadingOfOrderPlacedOn = function (heading) {
-            return _.isMatch(Bahmni.Common.PatientSearch.Constants.orderPlacedOnHeading, heading);
+            return _.isEqual(Bahmni.Common.PatientSearch.Constants.orderPlacedOnHeading, heading);
         };
 
         $scope.getPrintableHeadings = function (patients) {
