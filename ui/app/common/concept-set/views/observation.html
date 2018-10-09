@@ -417,13 +417,20 @@
                 </button>
             </span>
             </legend>
-            <div ng-if="::observation.isComputed()">
+            <div ng-if="::observation.isComputed()" bm-pop-over>
+                <div class=" concept-tooltip-description" bm-pop-over-target
+                     ng-if="::getBooleanResult(observation.concept.description)">
+                    <i class="fa fa-caret-down"></i>
+                    <span class="details" ng-bind-html="::observation.concept.description"></span>
+                </div>
                 <label class="control-label" for="{{::observation.uniqueId}}">
                     <span ng-bind="::observation.label"></span>
                     <i class="fa fa-question-circle concept-tooltip-trigger" bm-pop-over-trigger
-                       ng-if="::getBooleanResult(observation.primaryObs.concept.description)"></i>
+                       ng-if="::getBooleanResult(observation.concept.description)"></i>
                 </label>
-                <span>{{observation.value}}</span>
+                <div class="compuptedValue" ng-class="{'is-abnormal': observation.abnormalObs.value}">
+                    {{observation.value}}
+                </div>
             </div>
             <div class="form-group" ng-if="::!observation.isComputed()">
                 <div ng-hide="isCollapsibleSet() && collapse">

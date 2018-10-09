@@ -11,6 +11,8 @@ describe('EditPatientController', function () {
     var appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
     var openmrsPatientMapperMock = jasmine.createSpyObj('openmrsPatientMapper', ['map']);
     var encounterServiceMock = jasmine.createSpyObj('encounterService', ['getDigitized']);
+    var auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
+    auditLogService.log.and.returnValue(specUtil.simplePromise({}));
 
     beforeEach(module('bahmni.registration'));
 
@@ -64,7 +66,8 @@ describe('EditPatientController', function () {
             openmrsPatientMapper: openmrsPatientMapperMock,
             encounterService: encounterServiceMock,
             spinner: spinnerMock,
-            appService: appServiceMock
+            appService: appServiceMock,
+            auditLogService: auditLogService
         });
 
         expect(scopeMock.readOnlyFields["caste"]).toBeFalsy()
@@ -106,7 +109,8 @@ describe('EditPatientController', function () {
             encounterService: encounterServiceMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            $rootScope: rootScopeMock
+            $rootScope: rootScopeMock,
+            auditLogService: auditLogService
         });
 
         expect(sections["additionalPatientInformation"].expand).toBeTruthy();
@@ -136,7 +140,8 @@ describe('EditPatientController', function () {
             encounterService: encounterServiceMock,
             spinner: spinnerMock,
             appService: appServiceMock,
-            $rootScope: rootScopeMock
+            $rootScope: rootScopeMock,
+            auditLogService: auditLogService
         });
 
         expect(sections["additionalPatientInformation"].expand).toBeTruthy();
@@ -159,7 +164,8 @@ describe('EditPatientController', function () {
             openmrsPatientMapper: openmrsPatientMapperMock,
             encounterService: encounterServiceMock,
             spinner: spinnerMock,
-            appService: appServiceMock
+            appService: appServiceMock,
+            auditLogService: auditLogService
         });
 
         expect(scopeMock.disablePhotoCapture).toBeTruthy();

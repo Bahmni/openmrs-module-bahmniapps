@@ -607,13 +607,15 @@ angular.module('bahmni.clinical')
             };
 
             var putCalculatedDose = function (orderTemplate) {
+                var visitUuid = treatmentConfig.orderSet.calculateDoseOnlyOnCurrentVisitValues ? $scope.activeVisit.uuid : undefined;
                 var calculatedDose = orderSetService.getCalculatedDose(
                     $scope.patient.uuid,
                     orderTemplate.concept.name,
                     orderTemplate.dosingInstructions.dose,
                     orderTemplate.dosingInstructions.doseUnits,
                     $scope.newOrderSet.name,
-                    orderTemplate.dosingInstructions.dosingRule
+                    orderTemplate.dosingInstructions.dosingRule,
+                    visitUuid
                 );
                 if (calculatedDose.$$state.status == 0) $scope.isSearchDisabled = false;
                 return calculatedDose.then(function (calculatedDosage) {

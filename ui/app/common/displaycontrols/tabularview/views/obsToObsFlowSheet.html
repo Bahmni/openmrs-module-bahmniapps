@@ -38,7 +38,7 @@
                                      <img ng-src="{{ row.columns[header.name][0].value|thumbnail }}">
                                 </span>
                             </span>
-                            <span class="fl"
+                            <span class="fl wrap-on-line-break"
                                   ng-if="row.columns[header.name][0].concept.conceptClass != 'Image'"
                                   ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{::commafy(row.columns[header.name])}}</span>
                             <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
@@ -65,7 +65,7 @@
                             <hint concept-details="header"/>
                         </td>
                         <td ng-repeat="row in obsTable.rows" ng-class="{'is-abnormal-bold': row.columns[header.name][0].abnormal , 'obsTableEdit' : header.name === config.groupByConcept && isEditable }">
-                        <span class="fl" ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{::commafy(row.columns[header.name])}}</span>
+                        <span class="fl wrap-on-line-break" ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{::commafy(row.columns[header.name])}}</span>
                         <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
                                 <span class="has-link fl"
                                       ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"

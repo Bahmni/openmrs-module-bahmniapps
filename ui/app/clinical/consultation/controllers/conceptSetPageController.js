@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService',
         'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner',
-        'contextChangeHandler', '$q', '$translate', 'observationFormService', 'appService',
+        'contextChangeHandler', '$q', '$translate', 'appService', 'formService',
         function ($scope, $rootScope, $stateParams, conceptSetService,
                   clinicalAppConfigService, messagingService, configurations, $state, spinner,
-                  contextChangeHandler, $q, $translate, observationFormService, appService) {
+                  contextChangeHandler, $q, $translate, appService, formService) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
@@ -43,7 +43,7 @@ angular.module('bahmni.clinical')
 
                         // Retrieve Form Details
                         if (!($scope.consultation.observationForms !== undefined && $scope.consultation.observationForms.length > 0)) {
-                            spinner.forPromise(observationFormService.getFormList($scope.consultation.encounterUuid)
+                            spinner.forPromise(formService.getFormList($scope.consultation.encounterUuid)
                                 .then(function (response) {
                                     $scope.consultation.observationForms = getObservationForms(response.data);
                                     concatObservationForms();

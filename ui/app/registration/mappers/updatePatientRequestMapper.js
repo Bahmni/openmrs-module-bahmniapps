@@ -17,7 +17,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                             givenName: patient.givenName,
                             middleName: patient.middleName,
                             familyName: patient.familyName,
-                            display: patient.givenName + " " + patient.familyName,
+                            display: patient.givenName + (patient.familyName ? " " + patient.familyName : ""),
                             "preferred": true
                         }
                     ],

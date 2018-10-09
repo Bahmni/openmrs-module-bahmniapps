@@ -83,5 +83,8 @@
   "REGISTRATION_START_VISIT": "Start {{ visitType }} visit",
   "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
   "MESSAGE_DIALOG_OPTION_OKAY": "OK",
-  "NO_LOCATION_TAGGED_TO_VISIT_LOCATION": "No location tagged to Visit Location Found"
+  "NO_LOCATION_TAGGED_TO_VISIT_LOCATION": "No location tagged to Visit Location Found",
+  "REGISTRATION_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
+  "OBS_BOOLEAN_YES_KEY":"Yes",
+  "OBS_BOOLEAN_NO_KEY":"No"
 }

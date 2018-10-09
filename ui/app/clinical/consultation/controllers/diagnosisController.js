@@ -81,6 +81,7 @@ angular.module('bahmni.clinical')
                 $scope.canDeleteDiagnosis = findPrivilege(Bahmni.Common.Constants.deleteDiagnosisPrivilege);
                 $scope.allowOnlyCodedDiagnosis = appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis") &&
                                                  appService.getAppDescriptor().getConfig("allowOnlyCodedDiagnosis").value;
+                $scope.hideConditions = appService.getAppDescriptor().getConfigValue("hideConditions");
                 addPlaceHolderDiagnosis();
                 diagnosisService.getDiagnosisConceptSet().then(function (result) {
                     $scope.diagnosisMetaData = result.data.results[0];

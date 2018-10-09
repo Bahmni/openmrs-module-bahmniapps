@@ -37,10 +37,23 @@ var EncounterConfig = (function () {
             }
             return visitTypesArray;
         },
+        getEncounterTypes: function () {
+            var encounterTypesArray = [];
+            for (var name in this.encounterTypes) {
+                encounterTypesArray.push({name: name, uuid: this.encounterTypes[name]});
+            }
+            return encounterTypesArray;
+        },
         getVisitTypeByUuid: function (uuid) {
             var visitTypes = this.getVisitTypes();
             return visitTypes.filter(function (visitType) {
                 return visitType.uuid === uuid;
+            })[0];
+        },
+        getEncounterTypeByUuid: function (uuid) {
+            var encounterType = this.getEncounterTypes();
+            return encounterType.filter(function (encounterType) {
+                return encounterType.uuid === uuid;
             })[0];
         }
     };

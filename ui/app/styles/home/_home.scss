@@ -490,6 +490,16 @@ body {
   left: 0;
   width: 100%;
 }
+.bottom-banner-wrapper {
+  position: fixed;
+  text-align: center;
+  bottom: 10px;
+  width: 100%;
+  img {
+    max-width: 35%;
+    height: auto;
+  }
+}
 .power-by {
   position: absolute;
   width: 100%;

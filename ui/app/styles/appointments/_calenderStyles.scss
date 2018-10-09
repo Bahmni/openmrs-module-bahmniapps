@@ -1,0 +1,58 @@
+.app-calendar-container {
+  .section-grid {
+    border: none;
+  }
+  .fc-head {
+    .fc-widget-header {
+      border-bottom: none;
+    }
+  table {
+    border-collapse: separate;
+    border: none;
+    tr {
+      border: none;
+      background: transparent;
+      td {
+        border: none;
+      }
+      th {
+        border-top: none;
+        border-bottom: 1px solid #ddd;
+        &:first-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+  }
+  thead {
+    tr {
+      border-bottom: none;
+      th {
+        background: transparent;
+        border-right: none;
+        padding: 10px;
+        text-align: center;
+        &.fc-resource-cell {
+          border-bottom: 1px solid #ddd;
+        }
+      }
+    }
+  }
+  .fc-slats tr {
+    border: none;
+    background: transparent;
+    td:first-child {
+      border-top: none;
+    }
+    &.fc-minor td {
+      border-top: none;
+    }
+  }
+  .fc-body > tr > .fc-widget-content {
+    border-top: none;
+  }
+  .fc-unthemed .fc-today {
+    background: transparent;
+  }
+}

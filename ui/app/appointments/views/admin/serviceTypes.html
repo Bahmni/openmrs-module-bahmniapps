@@ -1,0 +1,23 @@
+<div class="switch-wrapper">
+    <span>{{'ADD_SERVICE_APPOINTMENT_TYPE' | translate}}</span>
+</div>
+<form class="create-service-type" name="serviceTypesForm">
+    <p class="caution" ng-show="serviceTypesForm.serviceTypeName.$error.uniqueServiceTypeName">
+        <i class="fa fa-exclamation-circle small"></i>
+        <span>{{'DUPLICATE_SERVICE_APPOINTMENT_TYPE_ERROR_MESSAGE' | translate}}</span>
+    </p>
+    <p>
+        <label>{{'ADD_NEW_TYPE'| translate}}</label>
+        <input placeholder="{{ ::'PLACEHOLDER_SERVICE_TYPE_NAME' | translate }}" type="text"
+               ng-model="serviceType.name" id="serviceTypeName" name="serviceTypeName" ng-change="updateServiceTypeDuration()">
+
+        <label class="duration-label">{{'APPOINTMENT_SERVICE_DURATION_KEY' | translate}}</label>
+        <input placeholder="{{ 'PLACEHOLDER_SERVICE_DURATION' | translate }}" class="duration-box"
+               type="number" ng-model="serviceType.duration" min="0"/>
+        <button type="button" ng-disabled="!serviceType.name" ng-click="addServiceType(serviceType)"> {{ 'ADD' | translate }} </button>
+    </p>
+    <p class="newly-added-service-wrapper">
+                        <span class="newly-added-service" ng-repeat="type in service.serviceTypes" ng-class="{'disabled': type.voided}">
+                            {{type.name}} {{type.duration}}<i class="fa fa-times" aria-hidden="true" ng-click="deleteServiceType(type)"></i></span>
+    </p>
+</form>

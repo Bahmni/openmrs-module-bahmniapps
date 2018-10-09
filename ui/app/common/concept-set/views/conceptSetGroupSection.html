@@ -37,6 +37,6 @@
         </concept-set>
     </div>
     <div ng-if="isFormTemplate(conceptSet)" id={{::conceptSet.formUuid}}>
-        <form-controls form="conceptSet"></form-controls>
+        <form-controls form="conceptSet" patient="patient" validate-form="false"></form-controls>
     </div>
 </div>

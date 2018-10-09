@@ -16,7 +16,6 @@
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
         <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.bootstrap.min.css"/>
         <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.min.css"/>
-        <link rel="stylesheet" href="../components/offline/themes/offline-theme-dark.css"/>
         <link rel="stylesheet" href="../components/nepali-date-picker/dist/nepaliDatePicker.min.css"/>
 
         <!-- build:css clinical.min.css -->
@@ -66,8 +65,6 @@
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
         <script src="../components/angular-file-upload/dist/angular-file-upload.min.js"></script>
         <script src="../components/angular-elastic/elastic.js"></script>
-        <script src="../components/hustle/hustle.js"></script>
-        <script src="../components/offline/offline.min.js"></script>
         <script src="../components/react/react.min.js"></script>
         <script src="../components/react/react-dom.min.js"></script>
         <script src="../lib/angular-workers/dist/angular-workers.js"></script>
@@ -76,62 +73,14 @@
         <script src="../components/bahmni-form-controls/bundle.js"></script>
         <script src="../components/nepali-date-picker/dist/jquery.nepaliDatePicker.min.js"></script>
 
-        <!-- build:js ../common.offline.min.js -->
+        <!-- build:js clinical.min.js -->
         <script src="../common/constants.js"></script>
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../common/util/init.js"></script>
         <script src="../common/models/init.js"></script>
         <script src="../common/models/age.js"></script>
-        <script src="../common/offline/init.js"></script>
-        <script src="../common/offline/offlineService.js"></script>
-        <script src="../common/offline/services/dbNameService.js"></script>
-        <script src="../common/offline/initializeOfflineSchema.js"></script>
-        <script src="../common/offline/offlineDbInitialization.js"></script>
-        <script src="../common/offline/offlineConfigInitialization.js"></script>
-        <script src="../common/offline/offlineReferenceDataInitialization.js"></script>
-        <script src="../common/offline/offlineLocationInitialization.js"></script>
-        <script src="../common/offline/offlineSyncInitialization.js"></script>
-        <script src="../common/offline/services/eventLogService.js"></script>
-        <script src="../common/offline/services/offlineSyncService.js"></script>
-        <script src="../common/offline/services/networkStatusService.js"></script>
-        <script src="../common/offline/dbservices/dao/androidDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineSearchDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/patientAddressDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/patientAttributeDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/patientDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/patientIdentifierDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/encounterDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/errorLogDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineMarkerDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineAddressHierarchyDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/labOrderResultsDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/offlineConfigDbService.js"></script>
-        <script src="../common/offline/schemaDefinitions.js"></script>
-        <script src="../common/offline/chromeMigrations/migration_1.js"></script>
-        <script src="../common/offline/models/UUID.js"></script>
-        <script src="../common/offline/models/AddressFields.js"></script>
-        <script src="../common/offline/dbservices/dao/referenceDataDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/locationDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/encounterDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/visitDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/observationDbService.js"></script>
-        <script src="../common/offline/dbservices/dao/conceptDbService.js"></script>
-        <script src="../common/offline/services/dbNameService.js"></script>
-        <script src="../common/offline/offlineDbInitialization.js"></script>
-        <script src="../common/offline/scheduler/scheduledSync.js"></script>
-        <script src="../common/offline/scheduler/scheduledJob.js"></script>
-        <script src="../common/offline/offlinePush.js"></script>
-        <script src="../common/offline/offlinePull.js"></script>
-        <script src="../common/offline/scheduler/MultiStageWorker.js"></script>
-        <script src="../common/offline/services/schedulerService.js"></script>
-        <script src="../components/hustle/hustle.js"></script>
-        <script src="../common/offline/scheduler/eventQueue.js"></script>
-        <script src="../common/offline/services/appUpdateService.js"></script>
-        <!-- endbuild -->
+        <script src="../common/models/auditLogEventDetails.js"></script>
 
-
-        <!-- build:js clinical.min.js -->
         <script src="../common/constants.js"></script>
         <script src="../common/route-errorhandler/init.js"></script>
         <script src="../common/util/init.js"></script>
@@ -144,14 +93,9 @@
         <script src="../common/util/stringFormat.js"></script>
         <script src="../common/util/offlineStatusService.js"></script>
         <script src="../common/util/dynamicResourceLoader.js"></script>
-        <script src="../components/lovefield/dist/lovefield.min.js"></script>
-
-
 
         <script src="../common/models/init.js"></script>
         <script src="../common/models/age.js"></script>
-
-
 
         <script src="../common/auth/init.js"></script>
         <script src="../common/auth/user.js"></script>
@@ -257,6 +201,7 @@
         <script src="../common/concept-set/directives/conceptSetGroup.js"></script>
         <script src="../common/concept-set/controller/multiSelectObservationSearchController.js"></script>
         <script src="../common/concept-set/directives/conceptSet.js"></script>
+        <script src="../common/concept-set/directives/formControls.js"></script>
         <script src="../common/concept-set/directives/concept.js"></script>
         <script src="../common/concept-set/directives/buttonSelect.js"></script>
         <script src="../common/concept-set/directives/stepper.js"></script>
@@ -272,6 +217,7 @@
         <script src="../common/concept-set/models/observationNode.js"></script>
         <script src="../common/concept-set/models/tabularObservations.js"></script>
         <script src="../common/concept-set/models/customRepresentationBuilder.js"></script>
+        <script src="../common/concept-set/models/observationForm.js"></script>
         <script src="../common/concept-set/mappers/observationMapper.js"></script>
         <script src="../common/concept-set/services/conceptService.js"></script>
         <script src="../common/concept-set/services/conceptSetUiConfigService.js"></script>
@@ -423,7 +369,6 @@
         <script src="consultation/models/selectable.js"></script>
         <script src="consultation/models/Specimen.js"></script>
         <script src="consultation/models/drugOrderOptions.js"></script>
-        <script src="consultation/models/observationForm.js"></script>
         <script src="consultation/helpers/urlHelper.js"></script>
         <script src="consultation/helpers/drugOrderHistoryHelper.js"></script>
         <script src="consultation/helpers/reactHelper.js"></script>
@@ -447,8 +392,6 @@
         <script src="consultation/directives/newDrugOrders.js"></script>
         <script src="consultation/directives/newOrderGroup.js"></script>
         <script src="consultation/directives/investigationsSelector.js"></script>
-        <script src="consultation/directives/observationForm.js"></script>
-        <script src="consultation/directives/formControls.js"></script>
         <script src="consultation/controllers/clinicalController.js"></script>
         <script src="consultation/controllers/consultationSummaryController.js"></script>
         <script src="consultation/controllers/diagnosisController.js"></script>
@@ -550,16 +493,11 @@
         <script src="consultation/consultationInitialization.js"></script>
         <script src="visitSummaryInitialization.js"></script>
         <script src="constants.js"></script>
-        <script src="../common/offline/scheduler/eventQueue.js"></script>
-        <script src="../common/offline/services/chrome/chromeAppInfoStrategy.js"></script>
         <script src="app.js"></script>
         <!-- endbuild -->
 
-
-
-        <!-- @ifdef ONLINE -->
         <!-- build:js clinical.min.web.js -->
-        <script src="consultation/services/observationFormService.js"></script>
+        <script src="../common/services/formService.js"></script>
         <script src="../common/domain/services/visitService.js"></script>
         <script src="../common/domain/services/diagnosisService.js"></script>
         <script src="../common/domain/services/conditionsService.js"></script>
@@ -579,87 +517,10 @@
         <script src="common/services/treatmentService.js"></script>
         <script src="common/models/auditLogEventDetails.js"></script>
 
-
         <!-- endbuild -->
-        <!-- @endif -->
 
-        <!-- @ifdef ONLINE -->
         <script src="/bahmni_config/openmrs/apps/customDisplayControl/js/customControl.js"></script>
         <script src="/bahmni_config/openmrs/apps/clinical/formConditions.js"></script>
         <script src="/implementation_config/openmrs/apps/clinical/formConditions.js"></script>
-        <!-- @endif -->
-
-        <!-- @ifdef OFFLINE -->
-        <!-- build:js ../common.background.min.js -->
-        <!-- comments:toggle html -->
-        <!--<script src="../components/hustle/hustle.js"></script>-->
-        <!--<script src="../components/lovefield/dist/lovefield.min.js"></script>-->
-        <!--<script src="../common/offline/scheduler/eventQueue.js"></script>-->
-        <!--<script src="../common/offline/scheduler/scheduledSync.js"></script>-->
-        <!--<script src="../common/offline/scheduler/backgroundWorker.js"></script>-->
-        <!--<script src="../common/logging/offline/offlineLoggingService.js"></script>-->
-        <!-- endcomments -->
-        <!-- endbuild -->
-        <!-- @endif -->
-
-
-        <!-- @ifdef CHROME -->
-        <!-- build:js clinical.min.chrome.js -->
-        <!-- comments:toggle html -->
-        <!--<script src="consultation/offline/offlineObservationFormService.js"></script>-->
-        <!--<script src="../common/domain/offline/chrome/chromeVisitService.js"></script>-->
-        <!--<script src="../common/domain/offline/chrome/chromeEncounterService.js"></script>-->
-        <!--<script src="../common/patient/offline/chrome/chromePatientService.js"></script>-->
-        <!--<script src="../common/orders/offline/chrome/chromeOrderTypeService.js"></script>-->
-        <!--<script src="../common/domain/offline/chrome/chromeLocationService.js"></script>-->
-        <!--<script src="../common/domain/offline/chrome/chromeConfigurationService.js"></script>-->
-        <!--<script src="../common/app-framework/offline/chrome/chromeLoadConfigService.js"></script>-->
-        <!--<script src="dashboard/services/offline/chrome/chromeDiseaseTemplateService.js"></script>-->
-        <!--<script src="displaycontrols/investigationresults/offline/offlineLabOrderResultsService.js"></script>-->
-        <!--<script src="displaycontrols/investigationresults/offline/chrome/chromeLabOrderResultsService.js"></script>-->
-        <!--<script src="../common/domain/offline/offlineEncounterService.js"></script>-->
-        <!--<script src="../common/domain/offline/offlineDiagnosisService.js"></script>-->
-        <!--<script src="../common/domain/offline/chrome/chromeObservationService.js"></script>-->
-        <!--<script src="../common/domain/offline/offlineObservationService.js"></script>-->
-        <!--<script src="../common/concept-set/offline/chrome/offlineConceptSetService.js"></script>-->
-        <!--<script src="../common/util/dateTimeFormatter.js"></script>-->
-        <!--<script src="../common/logging/offline/chromeLoggingService.js"></script>-->
-        <!--<script src="common/offline/offlineTreatmentService.js"></script>-->
-        <!--<script src="../common/offline/services/chrome/chromeAppInfoStrategy.js"></script>-->
-        <!--<script src="../common/ui-helper/controllers/chromeAppUpdateController.js"></script>-->
-        <!-- endcomments -->
-        <!-- endbuild -->
-        <!-- @endif -->
-
-
-        <!-- @ifdef ANDROID -->
-        <!-- build:js clinical.min.android.js -->
-        <!-- comments:toggle html -->
-        <!--<script src="consultation/offline/offlineObservationFormService.js"></script>-->
-        <!--<script src="../common/domain/offline/android/androidVisitService.js"></script>-->
-        <!--<script src="../common/domain/offline/android/androidEncounterService.js"></script>-->
-        <!--<script src="../common/patient/offline/android/androidPatientService.js"></script>-->
-        <!--<script src="../common/orders/offline/android/androidOrderTypeService.js"></script>-->
-        <!--<script src="../common/domain/offline/android/androidLocationService.js"></script>-->
-        <!--<script src="../common/domain/offline/android/androidConfigurationService.js"></script>-->
-        <!--<script src="../common/app-framework/offline/android/androidLoadConfigService.js"></script>-->
-        <!--<script src="dashboard/services/offline/android/androidDiseaseTemplateService.js"></script>-->
-        <!--<script src="displaycontrols/investigationresults/offline/offlineLabOrderResultsService.js"></script>-->
-        <!--<script src="displaycontrols/investigationresults/offline/android/androidLabOrderResultsService.js"></script>-->
-        <!--<script src="../common/domain/offline/offlineEncounterService.js"></script>-->
-        <!--<script src="../common/domain/offline/offlineDiagnosisService.js"></script>-->
-        <!--<script src="../common/domain/offline/offlineObservationService.js"></script>-->
-        <!--<script src="../common/domain/offline/android/androidObservationService.js"></script>-->
-        <!--<script src="../common/concept-set/offline/chrome/offlineConceptSetService.js"></script>-->
-        <!--<script src="../common/util/androidDateTimeFormatter.js"></script>-->
-        <!--<script src="../common/logging/offline/androidLoggingService.js"></script>-->
-        <!--<script src="common/offline/offlineTreatmentService.js"></script>-->
-        <!--<script src="../common/offline/services/android/androidAppInfoStrategy.js"></script>-->
-        <!--<script src="../common/ui-helper/controllers/androidAppUpdateController.js"></script>-->
-        <!-- endcomments -->
-        <!-- endbuild -->
-
-        <!-- @endif -->
-
     </body>
 </html>

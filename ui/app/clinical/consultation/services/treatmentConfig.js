@@ -113,6 +113,7 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                     var allTabConfigs = medicationJson.tabConfig || {};
                     var tabConfig = allTabConfigs[tabConfigName] || {};
                     tabConfig.inputOptionsConfig = tabConfig.inputOptionsConfig || {};
+                    tabConfig.orderSet = tabConfig.orderSet || {};
                     var showDoseFractions = tabConfig.inputOptionsConfig.showDoseFractions;
                     tabConfig.inputOptionsConfig.showDoseFractions = showDoseFractions ? showDoseFractions : false;
                     tabConfig.drugOrderHistoryConfig = tabConfig.drugOrderHistoryConfig || {};

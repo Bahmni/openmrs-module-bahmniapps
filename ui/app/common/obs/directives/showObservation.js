@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.obs')
-    .directive('showObservation', ['appService', function (appService) {
+    .directive('showObservation', ['appService', 'ngDialog', function (appService, ngDialog) {
         var controller = function ($scope, $rootScope, $filter) {
             $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             $scope.toggle = function (observation) {
@@ -22,6 +22,17 @@ angular.module('bahmni.common.obs')
                     return null;
                 }
                 return $filter(filterName)(observation.observationDateTime);
+            };
+            $scope.openVideoInPopup = function (observation) {
+                ngDialog.open({
+                    template: "../common/obs/views/showVideo.html",
+                    closeByDocument: false,
+                    className: 'ngdialog-theme-default',
+                    showClose: true,
+                    data: {
+                        observation: observation
+                    }
+                });
             };
         };
         return {

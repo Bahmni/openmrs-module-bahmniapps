@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope) {
+    .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, auditLogService) {
         $scope.uploader = new FileUploader({
             url: Bahmni.Common.Constants.uploadReportTemplateUrl,
             removeAfterUpload: true,
@@ -66,7 +66,12 @@ angular.module('bahmni.reports')
                     report.reportTemplateLocation = undefined;
                     report.responseType = _.values($scope.formats)[0];
                 }
+                log(report.name);
             }
+        };
+
+        var log = function (reportName) {
+            auditLogService.log(undefined, 'RUN_REPORT', {reportName: reportName}, "MODULE_LABEL_REPORTS_KEY");
         };
 
         $scope.scheduleReport = function (report) {
@@ -80,6 +85,7 @@ angular.module('bahmni.reports')
                     report.reportTemplateLocation = undefined;
                     report.responseType = _.values($scope.formats)[0];
                 }
+                log(report.name);
             }
         };
 

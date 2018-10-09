@@ -7,20 +7,9 @@
                      show-if-privilege="{{retrospectivePrivilege}},{{onBehalfOfPrivilege}},{{locationPickerPrivilege}}"
                      ng-if="getTitle()">
                     <div class="retro-date-widget-header fr">
-                        <button ng-click="popUpHandler()">{{ getTitle() }}</button>
+                        <button ng-click="popUpHandler()">{{ getTitle() | translate }}</button>
                     </div>
                 </div>
-                <div ng-if="isOfflineApp" class="offline-sync fl" ng-controller="AppUpdateController">
-                    <button class="btn" ng-if="isUpdateAvailable()" ng-click="update()">Update</button>
-                </div>
-
-                <button class="btn offline-sync fl" ng-click="sync()"  ng-show="isOfflineApp && !isSyncing ">
-                    {{::'HEADER_LABEL_SYNC_KEY' | translate}}
-                </button>
-                <button class="btn offline-sync fl offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
-                    <!-- <i class="fa fa-refresh"></i> -->
-                    <img src="../images/sync.gif" />
-                </button>
             </div>
             <div ui-view="additional-header"></div>
         </header>

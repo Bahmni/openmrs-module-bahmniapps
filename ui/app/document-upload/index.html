@@ -58,8 +58,6 @@
         <script src="../common/route-errorhandler/init.js"></script>
         <script src="../common/util/httpErrorInterceptor.js"></script>
 
-        <script src="../common/offline/init.js"></script>
-        <script src="../common/offline/offlineService.js"></script>
         <script src="../common/models/init.js"></script>
 
         <script src="../common/auth/init.js"></script>
@@ -89,6 +87,12 @@
         <script src="../common/domain/init.js"></script>
 
         <!-- Mujir/Vikash - to remove -->
+        <script src="../common/logging/init.js"></script>
+        <script src="../common/logging/exceptionHandler.js"></script>
+        <script src="../common/logging/services/loggingService.js"></script>
+        <script src="../common/domain/services/configurationService.js"></script>
+        <script src="../common/logging/services/auditLogService.js"></script>
+
         <script src="../common/domain/models/retrospectiveEntry.js"></script>
         <script src="../common/domain/services/retrospectiveEntryService.js"></script>
 
@@ -135,10 +139,6 @@
         <script src="../common/ui-helper/directives/fallbackSrc.js"></script>
         <script src="../common/ui-helper/directives/toggle.js"></script>
 
-        <script src="../common/logging/init.js"></script>
-        <script src="../common/logging/exceptionHandler.js"></script>
-        <script src="../common/logging/services/loggingService.js"></script>
-
         <script src="../common/i18n/init.js"></script>
         <script src="../common/i18n/bahmni-translate.js"></script>
         <script src="../common/i18n/services/mergeLocaleFilesService.js"></script>
@@ -148,6 +148,7 @@
 
         <script src="app.js"></script>
         <script src="init.js"></script>
+        <script src="../common/models/auditLogEventDetails.js"></script>
         <script src="initialization.js"></script>
         <script src="constants.js"></script>
         <script src="models/visit.js"></script>

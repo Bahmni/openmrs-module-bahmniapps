@@ -46,4 +46,19 @@ describe("VisitTabConfigService", function () {
             done();
         });
     });
+
+    it("should override the mandatory section config if config section is present", function (done) {
+        var section4 = {type: "mandatory section 2", config:{key: "value"}};
+        var config = [
+            {a: "apple", defaultSections: true, sections: [section1, section4]},
+            {b: "ball"}
+        ];
+        appService.loadConfig.and.returnValue(specUtil.respondWith(config));
+        var load = visitTabConfigService.load();
+        load.then(function(response) {
+            expect(response.tabs[0].sections[0]).not.toEqual({type: "mandatory section 2"});
+            expect(response.tabs).toEqual([{a: "apple", defaultSections: true, sections: [section4, section3, section1]}, {b: "ball"}]);
+            done();
+        });
+    })
 });

@@ -323,9 +323,9 @@ concept-set {
         top: 50%;
         height: 100%;
         width: auto;
-        -webkit-transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
-        transform: translate(-50%,-50%);
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
       }
     }
     .placeholder {
@@ -604,7 +604,7 @@ concept-set {
   position: relative;
   .left-panel-toggle {
     display: none;
-    @media screen and (max-width: 1024px){
+    @media screen and (max-width: 1024px) {
       display: inline-block;
       color: #669999;
       border: 1px solid;
@@ -675,6 +675,7 @@ concept-set {
             display: block;
             width: auto;
             margin-right: 25px;
+            word-break: break-all;
             &.concept-set-name-extra {
               margin-right: 52px;
             }
@@ -774,10 +775,8 @@ concept-set {
         margin-left: 193px;
       }
       @media screen and (max-width: 1024px) {
-        margin-left: 163px;
-      }
-      @media screen and (max-width: 850px) {
-        margin-left: 150px;
+        margin-left: 10px;
+        margin-top: -10px;
       }
       .input.duration-value {
         @media screen and (max-width: 1200px) {
@@ -796,9 +795,6 @@ concept-set {
   }
   form .form-field textarea, .form .form-field textarea {
     width: 500px;
-    @media screen and (max-width: 1200px) {
-      width: 300px;
-    }
   }
   table .field-value-buttonSelectType {
     width: 47%;
@@ -816,4 +812,9 @@ concept-set {
   width: auto;
   vertical-align: top;
   margin-left: 34px;
+}
+
+.ngdialog .ngdialog-content .video-dialog {
+  width: 100%;
+  height: auto;
 }

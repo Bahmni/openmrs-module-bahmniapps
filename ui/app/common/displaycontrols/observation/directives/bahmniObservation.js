@@ -39,7 +39,14 @@ angular.module('bahmni.common.displaycontrol.observation')
                             $scope.bahmniObservations[0].isOpen = true;
                         }
                     }
-                    formHierarchyService.build($scope.bahmniObservations);
+
+                    var formObservations = _.filter(observations, function (obs) {
+                        return obs.formFieldPath;
+                    });
+
+                    if (formObservations.length > 0) {
+                        formHierarchyService.build($scope.bahmniObservations);
+                    }
                 };
 
                 var fetchObservations = function () {
@@ -57,7 +64,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                                 mapObservation(response.data, $scope.config);
                             });
                         } else if ($scope.enrollment) {
-                            $scope.initialization = observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope).then(function (response) {
+                            $scope.initialization = observationsService.fetchForPatientProgram($scope.enrollment, $scope.config.conceptNames, $scope.config.scope, $scope.config.obsIgnoreList).then(function (response) {
                                 mapObservation(response.data, $scope.config);
                             });
                         } else {

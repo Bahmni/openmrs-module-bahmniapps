@@ -218,7 +218,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 scope.delete = _.partial(voidPatientProgram, patientProgram, _);
                 confirmBox({
                     scope: scope,
-                    actions: ['cancel', 'delete'],
+                    actions: [{name: 'cancel', display: 'cancel'}, {name: 'delete', display: 'delete'}],
                     className: "ngdialog-theme-default delete-program-popup"
                 });
             };
@@ -239,6 +239,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.setWorkflowStates = function (program) {
+                $scope.patientProgramAttributes = {};
                 $scope.programWorkflowStates = $scope.getStates(program);
             };
 
@@ -296,6 +297,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     }
                 }
                 return minStartDate;
+            };
+
+            $scope.isIncluded = function (attribute) {
+                return !($scope.programSelected && _.includes(attribute.excludeFrom, $scope.programSelected.name));
             };
 
             init();

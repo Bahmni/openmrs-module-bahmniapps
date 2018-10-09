@@ -27,7 +27,6 @@ Please visit https://bahmni.atlassian.net/wiki/display/BAH/Working+on+Bahmni+Ope
     |   |-- home
     |	|-- i18n
     |   |-- images
-    |   |-- offline
     |   |-- orders
     |   |-- registration
     |   |-- reports

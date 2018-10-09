@@ -129,7 +129,8 @@ describe("AddTreatmentController", function () {
             {name: "Week(s)", factor: 7},
             {name: "Month(s)", factor: 30}
         ],
-        inputOptionsConfig: {}
+        inputOptionsConfig: {},
+        orderSet: {}
     };
 
     var initController = function () {

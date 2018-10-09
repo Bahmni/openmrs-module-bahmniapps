@@ -21,6 +21,11 @@
                     <span>{{::drugOrder.getDoseAndUnits()}}</span>
                 </td>
                 <td>
+                    <span ng-show="drugOrder.quantity && drugOrder.quantity > 0">
+                        <span>{{::drugOrder.quantity}} </span><span>{{::drugOrder.quantityUnit}}</span>
+                    </span>
+                </td>
+                <td>
                     <span>{{::drugOrder.route}}</span>
                 </td>
                 <td>
@@ -30,11 +35,12 @@
                     <span ng-if="!displayNepaliDates">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
                     <span ng-if="displayNepaliDates">{{::drugOrder.effectiveStartDate | npDate}}</span>
                 </td>
-
+                <td>
+                    <span>{{::drugOrder.instructions || ""}}</span>
+                </td>
                 <td>
                     <span>{{::drugOrder.additionalInstructions || ""}}</span>
                 </td>
-
                 <td class="toggle-btn"
                     ng-if="::section.dashboardConfig.showDetailsButton">
                     <button class="toggle fr" toggle="drugOrder.showDetails">

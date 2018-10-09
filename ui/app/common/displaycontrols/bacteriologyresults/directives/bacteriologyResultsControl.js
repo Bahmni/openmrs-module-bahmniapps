@@ -8,6 +8,15 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
             var controller = function ($scope) {
                 $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
                 var shouldPromptBeforeClose = true;
+
+                var expandAllSpecimensIfDashboardIsBeingPrinted = function () {
+                    if ($rootScope.isBeingPrinted) {
+                        _.each($scope.specimens, function (specimen) {
+                            specimen.isOpen = true;
+                        });
+                    }
+                };
+
                 var init = function () {
                     $scope.title = "bacteriology results";
                     var params = {
@@ -18,6 +27,7 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         $scope.bacteriologyTabData = data;
                         bacteriologyResultsService.getBacteriologyResults(params).then(function (response) {
                             handleResponse(response);
+                            expandAllSpecimensIfDashboardIsBeingPrinted();
                         });
                     });
                     return $scope.initializationPromise;
@@ -39,10 +49,12 @@ angular.module('bahmni.common.displaycontrol.bacteriologyresults')
                         _.forEach($scope.observations, function (observation) {
                             $scope.specimens.push(specimenMapper.mapObservationToSpecimen(observation, $scope.allSamples, conceptsConfig, dontSortByObsDateTime));
                         });
+                    } else {
+                        $scope.specimens = [];
                     }
 
                     $scope.isDataPresent = function () {
-                        if (!$scope.specimens) {
+                        if (!$scope.specimens || !$scope.specimens.length) {
                             return $scope.$emit("no-data-present-event") && false;
                         }
                         return true;

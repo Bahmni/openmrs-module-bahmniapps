@@ -3,7 +3,7 @@
         <label class="retro-date-label">Location</label>
         <select ng-model="selectedLocationUuid">
             <option ng-repeat="location in locations | orderBy:'display'" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
-                {{location.display}}
+                {{location.display | translate}}
             </option>
         </select>
     </div>

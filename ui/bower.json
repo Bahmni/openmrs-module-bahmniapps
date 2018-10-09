@@ -20,7 +20,7 @@
     "jquery-ui": "1.10.2",
     "jquery.cookie": "1.4.0",
     "ngInfiniteScroll": "1.3.1",
-    "moment": "2.6.0",
+    "moment": "2.18.1",
     "purl": "2.3.1",
     "keyboardjs": "RobertWHurst/KeyboardJS",
     "angularjs-nvd3-directives": "v0.0.7",
@@ -29,7 +29,6 @@
     "angular-ui-router": "0.2.18",
     "fastclick": "1.0.2",
     "lodash": "4.3.0",
-    "lovefield": "~2.1.7",
     "ngDialog": "0.3.12",
     "angular-file-upload": "*",
     "stacktrace-js": "0.6.4",
@@ -42,13 +41,15 @@
     "angular-translate-handler-log": "*",
     "angular-cookies": "1.4.9",
     "angular-elastic": "~2.5.0",
-    "hustle": "https://github.com/DWB-eHealth/hustle.git#4e7e3bd",
+    "angular-ui-calendar": "1.0.2",
+    "fullcalendar-scheduler": "1.3.2",
     "crypto-js": "3.1.5",
     "ng-tags-input": "^3.1.1",
-    "ngReact":"^0.3.0",
+    "ngReact": "^0.3.0",
     "offline": "0.7.14",
     "react": "^15.3.2",
-    "nepali-date-picker": "^2.0.0"
+    "nepali-date-picker": "^2.0.1",
+    "angular-ivh-treeview": "^1.1.0"
   },
   "devDependencies": {
     "angular-mocks": "1.4.9",
@@ -61,6 +62,7 @@
     "angular": "1.4.9",
     "d3": "~3.4.13",
     "jquery": "1.9.1",
-    "angular-translate": "2.7.2"
+    "angular-translate": "2.7.2",
+    "moment": "2.18.1"
   }
 }

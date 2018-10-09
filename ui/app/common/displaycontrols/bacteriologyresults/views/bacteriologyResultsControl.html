@@ -15,12 +15,16 @@
                         </span>
 
                         <span ng-if="!displayNepaliDates" class="specimenCollectionDate fr">
-                            <i class="fa fa-pencil fl" ng-click="editBacteriologySample(specimen)"></i>
-                            {{specimen.specimenCollectionDate | bahmniDate}}
+                            <span class="specimenCollectionDate fr" >
+                                <i show-if-privilege="app:clinical:bacteriologyTab" class="fa fa-pencil fl" ng-click="editBacteriologySample(specimen)"></i>
+                                {{specimen.specimenCollectionDate | bahmniDate}}
+                            </span>
                         </span>
                         <span ng-if="displayNepaliDates" class="specimenCollectionDate fr">
-                            <i class="fa fa-pencil fl" ng-click="editBacteriologySample(specimen)"></i>
-                            {{specimen.specimenCollectionDate | npDate}}
+                            <span class="specimenCollectionDate fr" >
+                                <i class="fa fa-pencil fl" ng-click="editBacteriologySample(specimen)"></i>
+                                {{specimen.specimenCollectionDate | npDate}}
+                            </span>
                         </span>
                     </span>
 

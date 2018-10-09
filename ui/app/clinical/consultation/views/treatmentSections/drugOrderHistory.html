@@ -45,7 +45,7 @@
                                         <button class="refill-btn" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
                                             Refill
                                         </button>
-                                        <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" toggle="drugOrder.showAdditionalInstructions">
+                                        <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)">
                                             <i class="fa fa-plus-circle" ng-hide="drugOrder.showAdditionalInstructions"></i>
                                             <i class="fa fa-minus-circle" ng-show="drugOrder.showAdditionalInstructions"></i>
                                         </button>

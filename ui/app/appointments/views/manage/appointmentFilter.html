@@ -1,0 +1,74 @@
+<div class="appointment-container" ng-if="!isSearchEnabled && !isFilterOpen">
+    <div class="appointment-btn-container">
+         <span class="app-filter-btn-wrapper" ng-click="expandFilter()">
+            <a class="app-filter-btn">
+                <i class="fa fa-filter" ng-class="{'colorForFilter': isFilterApplied()}" aria-hidden="true"></i> {{::'FILTER_KEY' |translate}}
+            </a>
+        </span>
+    </div>
+</div>
+<div class="appointment-filter" ng-show="isFilterOpen">
+    <a ng-click="minimizeFilter()"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+
+    <p >
+        <input class="app-search-service" type="text" ng-model="searchText" ng-class="{'disabled': showSelected}" ng-disabled="showSelected"
+               placeholder="{{::'SEARCH_KEY' | translate}}"/>
+        <i ng-if="!searchText" class="fa fa-search app-filter-search" aria-hidden="true"></i>
+        <i ng-if="searchText" class="fa fa-times app-filter-search" aria-hidden="true" ng-click="showSelected || resetSearchText()"></i>
+        <input type="checkbox" ng-model="showSelected" ng-click="filterSelected()" id="id-name--1" name="set-name"
+               class="switch-input">
+        <label for="id-name--1" class="switch-label">{{::'APPOINTMENT_SHOW_SELECTED_KEY' |translate}} </label>
+    </p>
+    <div class="app-filter-speciality">
+        <div ivh-treeview="selectedSpecialities"
+             ivh-treeview-filter="filterSelectedValues || searchText "
+             ivh-treeview-expand-to-depth="-1"
+             ivh-treeview-id-attribute="'value'"
+             ivh-treeview-on-cb-change="setSelectedSpecialities(ivhTree)"
+             ivh-treeview-twistie-expanded-tpl="'-'"
+             ivh-treeview-twistie-leaf-tpl="'-'"
+             ivh-treeview-twistie-collapsed-tpl="'+'">
+            <script type="text/ng-template">
+                <div title="{{trvw.label(node)}}">
+                 <span ivh-treeview-toggle>
+                 <span ivh-treeview-twistie></span>
+                 </span>
+                    <span ng-if="trvw.useCheckboxes()" ivh-treeview-checkbox></span>
+                    <span class="ivh-treeview-node-label" ivh-treeview-toggle>
+                        <span ng-if="!node.color">{{trvw.label(node)}}</span>
+                        <span ng-if="node.color"><i ng-style="{'background': node.color}"></i>{{trvw.label(node)}} </span>
+                    </span>
+                    <div ivh-treeview-children></div>
+                </div>
+            </script>
+        </div>
+
+    </div>
+    <div class="appointment-filter-items provider-block">
+        <label>{{::'APPOINTMENT_PROVIDER' |translate}}</label>
+        <multi-select-autocomplete
+                input-items="providers"
+                selected-values="selectedProviders"
+                display-property="'name'"
+                key-property="'uuid'"
+                placeholder="::'APPOINTMENT_ENTER_PROVIDER_NAME_KEY'"
+                load-on-down-arrow="true"
+                auto-complete-min-length="1"></multi-select-autocomplete>
+
+    </div>
+    <div class="appointment-filter-items status-block">
+        <label>{{::'APPOINTMENT_STATUS_KEY' |translate}}</label>
+        <multi-select-autocomplete
+                input-items="statusList"
+                selected-values="selectedStatusList"
+                display-property="'name'"
+                key-property="'name'"
+                placeholder="::'APPOINTMENT_ENTER_STATUS_NAME_KEY'"
+                load-on-down-arrow="true"
+                auto-complete-min-length="1"></multi-select-autocomplete>
+    </div>
+    <p class="app-filter-action-btn">
+        <button ng-click="resetFilter()">{{::'RESET_KEY' |translate}}</button>
+        <button ng-click="applyFilter()">{{::'APPLY_FILTER_KEY' |translate}}</button>
+    </p>
+</div>

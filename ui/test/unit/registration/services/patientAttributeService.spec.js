@@ -8,13 +8,9 @@ describe('patientAttributeService', function () {
             get: jasmine.createSpy('Http get').and.returnValue(resultList)
         };
 
-    var mockofflineService = jasmine.createSpyObj('offlineService', ['isOfflineApp']);
-    mockofflineService.isOfflineApp.and.returnValue(false);
-
     beforeEach(module('bahmni.registration'));
     beforeEach(module(function ($provide) {
         $provide.value('$http', mockHttp);
-        $provide.value('offlineService', mockofflineService);
         $provide.value('$q', {});
     }));
 

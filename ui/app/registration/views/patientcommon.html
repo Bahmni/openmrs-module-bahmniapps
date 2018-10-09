@@ -67,18 +67,18 @@
                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}" capitalize-field>
               </span>
 
-              <span data-ng-switch="::isAutoComplete('familyName')">
+              <span ng-show="::showLastName" data-ng-switch="::isAutoComplete('familyName')">
                   <input data-ng-switch-when="true"
-                         type="text" id="familyName" ng-model="$parent.patient.familyName" non-blank pattern-validate
+                         type="text" id="familyName" ng-model="$parent.patient.familyName"  pattern-validate
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" capitalize-field>
+                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory" capitalize-field>
 
                   <input data-ng-switch-default
-                         type="text" id="familyName" ng-model="patient.familyName" non-blank pattern-validate
+                         type="text" id="familyName" ng-model="patient.familyName"  pattern-validate
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" capitalize-field>
+                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory" capitalize-field>
               </span>
 
                     <!--<span class="input-label-inline caste-lastname" ng-show="showCasteSameAsLastName()">
@@ -133,7 +133,7 @@
                 <ng-include src="'views/age.html'"></ng-include>
             </div>
         </section>
-        <legend class="registraion_legend" ng-if="::!addressHierarchyConfigs.showAddressFieldsTopDown">
+        <legend class="registraion_legend">
             <span class="mylegend"> {{ ::'REGISTRATION_LABEL_ADDRESS_INFO' | translate}}</span>
         </legend>
 

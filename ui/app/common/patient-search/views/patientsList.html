@@ -63,11 +63,14 @@
                                 <i class="ipd-indication fa fa-bed" ng-if="::(row.hasBeenAdmitted===true||row.hasBeenAdmitted==='true')"></i>
 
                             </span>
-                            <span ng-if="::(!isHeadingOfIdentifier(heading) && !isHeadingOfName(heading) && !displayNepaliDates)">
-                            {{::row[heading]}}
+                            <span ng-if="::(isHeadingOfOrderPlacedOn(heading) && !displayNepaliDates)">
+                                {{::row[heading]}}
                             </span>
-                            <span ng-if="::(!isHeadingOfIdentifier(heading) && !isHeadingOfName(heading) && displayNepaliDates)">
+                            <span ng-if="::(isHeadingOfOrderPlacedOn(heading) && displayNepaliDates)">
                                 {{::row[heading] | npDateTime}}
+                            </span>
+                            <span ng-if="::(!isHeadingOfIdentifier(heading) && !isHeadingOfName(heading) && !isHeadingOfOrderPlacedOn(heading))">
+                                {{::row[heading]}}
                             </span>
                         </td>
                     </tr>

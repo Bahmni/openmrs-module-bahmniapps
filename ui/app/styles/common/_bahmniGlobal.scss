@@ -346,7 +346,7 @@ u, .add-drug-btninput[value]:first-letter {
   background-color: #ffffff;
 }
 
-.video{
+.video, .video-dialog{
   width:280px;
   height: 190px;
   display: table;
@@ -388,4 +388,7 @@ input[readonly]:focus.nepali-datepicker {
 }
 body div.nepali-date-picker {
   z-index: 99999;
+}
+.ngdialog.ngdialog-theme-default .ngdialog-close {
+  z-index: 999;
 }

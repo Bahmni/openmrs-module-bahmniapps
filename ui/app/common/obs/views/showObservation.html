@@ -1,5 +1,5 @@
 <li ng-class="::{'is-text': observation.type == 'Text', 'has-child' : observation.groupMembers.length > 0 ,'video-concept':observation.isVideoConcept(), 'image-preview': observation.isImageConcept()}" >
-    <div ng-class="::{'is-abnormal': (observation.abnormal ==  true)}" class="tree-list-item clearfix" bm-gallery patient="patient">
+    <div ng-class="::{'is-abnormal': (observation.abnormal ==  true || observation.interpretation === 'ABNORMAL')}" class="tree-list-item clearfix" bm-gallery patient="patient">
         <span ng-hide="observation.isImageConcept()" ng-if="::(!observation.isImageConcept() || (observation.isImageConcept() && !print))" class="testUnderPanel left">
             <label>{{::(observation.concept.shortName || observation.concept.name)}}</label>
             <hint concept-details="::{
@@ -30,11 +30,10 @@
         <a  ng-if="::(observation.isImageConcept() && observation.hasPDFAsValue() && !print)" ng-href="/document_images/{{observation.value}}" target="_blank" class="pdf-link">
             <img src="../images/pdfIcon.png" alt="pdf" />
         </a>
-        <div ng-if="::(observation.isVideoConcept())" class="hidden-print">
-            <video class="video" controls class="img-concept" preload="metadata">
-                <source ng-src="{{'/document_images/' + observation.value}}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+        <div ng-if="::(observation.isVideoConcept())" class="hidden-print obs-video-thumb-container">
+            <img src="{{::observation.value|thumbnail:'jpg'}}">
+            <button class="obs-play-btn" ng-click="openVideoInPopup(observation)"><i class="fa fa-play-circle" aria-hidden="true"></i>
+            </button>
         </div>
         <button ng-hide="observation.isImageConcept()" class="toggle fr" ng-if="observation.isFormElement() && showDetailsButton && !observation.comment" ng-class="{'has-notes': observation.comment}"
                 toggle="observation.showDetails">

@@ -43,3 +43,10 @@ source_file = ui/app/i18n/reports/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
+
+[bahmni.appointments-app]
+file_filter = ui/app/i18n/appointments/locale_<lang>.json
+source_file = ui/app/i18n/appointments/locale_en.json
+source_lang = en
+type = KEYVALUEJSON
+

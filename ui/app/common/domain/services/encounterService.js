@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('encounterService', ['$http', '$q', '$rootScope', 'configurations', '$bahmniCookieStore', 'offlineService',
-        function ($http, $q, $rootScope, configurations, $bahmniCookieStore, offlineService) {
+    .service('encounterService', ['$http', '$q', '$rootScope', 'configurations', '$bahmniCookieStore',
+        function ($http, $q, $rootScope, configurations, $bahmniCookieStore) {
             this.buildEncounter = function (encounter) {
                 encounter.observations = encounter.observations || [];
                 encounter.observations.forEach(function (obs) {
@@ -87,7 +87,20 @@ angular.module('bahmni.common.domain')
                 });
             };
 
+            function isObsConceptClassVideoOrImage (obs) {
+                return (obs.concept.conceptClass === 'Video' || obs.concept.conceptClass === 'Image');
+            }
+
+            var deleteIfImageOrVideoObsIsVoided = function (obs) {
+                if (obs.voided && obs.groupMembers && !obs.groupMembers.length && obs.value
+                    && isObsConceptClassVideoOrImage(obs)) {
+                    var url = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + obs.value;
+                    $http.delete(url, {withCredentials: true});
+                }
+            };
+
             var stripExtraConceptInfo = function (obs) {
+                deleteIfImageOrVideoObsIsVoided(obs);
                 obs.concept = {uuid: obs.concept.uuid, name: obs.concept.name, dataType: obs.concept.dataType};
                 obs.groupMembers = obs.groupMembers || [];
                 obs.groupMembers.forEach(function (groupMember) {
@@ -143,9 +156,6 @@ angular.module('bahmni.common.domain')
             };
 
             this.getDigitized = function (patientUuid) {
-                if (offlineService.isOfflineApp()) {
-                    return $q.when({"data": {"results": []}});
-                }
                 var patientDocumentEncounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
                 return $http.get(Bahmni.Common.Constants.encounterUrl, {
                     params: {

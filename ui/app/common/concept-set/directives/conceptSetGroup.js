@@ -183,7 +183,7 @@ angular.module('bahmni.common.conceptSet')
                 return data.formUuid;
             };
 
-            $timeout(init);
+            init();
         }])
     .directive('conceptSetGroup', function () {
         return {

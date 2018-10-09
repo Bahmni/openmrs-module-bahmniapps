@@ -283,5 +283,8 @@ Bahmni.Common.Util.DateUtil = {
     isValid: function (date) {
         var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
         return moment(dateRepresentation).isValid();
+    },
+    isBeforeTime: function (time, otherTime) {
+        return moment(time, 'hh:mm a').format('YYYY-MM-DD');
     }
 };

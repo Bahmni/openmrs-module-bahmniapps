@@ -27,21 +27,6 @@
             <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel, 'hide-ipad': availableBoards }">
                 <i class="fa fa-bars fa-white fa-large"></i>
             </button>
-            <div class="fr">
-                <div ng-if="isOfflineApp" class="offline-sync fl" ng-controller="AppUpdateController">
-                    <button class="btn" ng-if="isUpdateAvailable()" ng-click="update()">Update</button>
-                </div>
-
-                <div class="fr offlin-sync-wrapper" ng-controller="PatientListHeaderController">
-                    <button class="btn fl  offline-sync" ng-click="sync()" ng-show="isOfflineApp && !isSyncing">
-                        {{::'HEADER_LABEL_SYNC_KEY' | translate}}
-                    </button>
-                    <button class="btn fl offline-sync offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
-                        <!-- <i class="fa fa-refresh"></i> -->
-                        <img src="../images/sync.gif" />
-                    </button>
-                </div>
-            </div>
             <button class="confirm save-consultation" ng-show="availableBoards" single-click="save()" accesskey="{{'SAVE_ACCESS_KEY' | translate}}" ng-class="{'hideSaveText':availableBoards.length > 6}">
                 <i class="fa fa-save"></i>
                 <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
@@ -116,7 +101,7 @@
                 <div class="dashboard-date-picker" ng-controller="PatientListHeaderController">
                     <div class="retro-date-widget-wrapper fr">
                         <div class="retro-date-widget-header fr">
-                            <button ng-click="popUpHandler()" show-if-privilege="{{retrospectivePrivilege}},{{onBehalfOfPrivilege}},{{locationPickerPrivilege}}" ng-if="getTitle()">{{ getTitle() }}</button>
+                            <button ng-click="popUpHandler()" show-if-privilege="{{retrospectivePrivilege}},{{onBehalfOfPrivilege}},{{locationPickerPrivilege}}" ng-if="getTitle()">{{ getTitle() | translate }}</button>
 
                         </div>
                     </div>
@@ -128,19 +113,6 @@
                     accesskey="{{'CONSULTATION_SHORTCUT_KEY' | translate}}"
                     ng-bind-html="'CONSULTATION_TAB_KEY' | translate">
                  </a>
-
-                <div class="fl offlin-sync-wrap" ng-controller="PatientListHeaderController">
-                     <div ng-if="isOfflineApp" class="offline-sync fl" ng-controller="AppUpdateController">
-                        <button class="btn" ng-if="isUpdateAvailable()" ng-click="update()">Update</button>
-                     </div>
-                    <button class="btn fl  offline-sync" ng-click="sync()" ng-show="isOfflineApp && !isSyncing">
-                      {{::'HEADER_LABEL_SYNC_KEY' | translate}}
-                    </button>
-                    <button class="btn fl offline-sync offline-sync-image" ng-show="isOfflineApp && isSyncing" disabled>
-                      <!-- <i class="fa fa-refresh"></i> -->
-                      <img src="../images/sync.gif" />
-                    </button>
-                </div>
                 <a class="btn--right btn--success " title="Open in new window"
                    ng-if="visitHistory.activeVisit || retrospectiveEntry"
                    ng-click="openConsultationInNewTab()"><i class="fa fa-external-link"></i></a>

@@ -7,6 +7,10 @@
         <link rel="stylesheet" href="../components/nepali-date-picker/dist/nepaliDatePicker.min.css"/>
         <!-- build:css orders.min.css -->
         <link rel="stylesheet" href="../styles/clinical.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
+        <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
+
         <!-- endbuild -->
         <title>Orders</title>
     </head>
@@ -59,8 +63,6 @@
         <script src="../common/util/stringFormat.js"></script>
         <script src="../common/util/httpErrorInterceptor.js"></script>
 
-        <script src="../common/offline/init.js"></script>
-        <script src="../common/offline/offlineService.js"></script>
         <script src="../common/models/init.js"></script>
 
         <script src="../common/auth/init.js"></script>
@@ -80,6 +82,11 @@
         <script src="../common/domain/models/retrospectiveEntry.js"></script>
         <script src="../common/domain/encounterConfig.js"></script>
         <script src="../common/domain/observationFilter.js"></script>
+
+        <script src="../common/logging/init.js"></script>
+        <script src="../common/logging/exceptionHandler.js"></script>
+        <script src="../common/logging/services/loggingService.js"></script>
+        <script src="../common/logging/services/auditLogService.js"></script>
 
         <script src="../common/domain/services/retrospectiveEntryService.js"></script>
         <script src="../common/domain/services/encounterService.js"></script>
@@ -133,6 +140,9 @@
         <script src="../common/patient/directives/patientSummary.js"></script>
         <script src="../common/ui-helper/directives/fallbackSrc.js"></script>
 
+        <script src="../common/gallery/init.js"></script>
+        <script src="../common/gallery/directives/galleryPane.js"></script>
+
         <script src="../common/ui-helper/init.js"></script>
         <script src="../common/ui-helper/spinner.js"></script>
         <script src="../common/ui-helper/printer.js"></script>
@@ -167,10 +177,6 @@
         <script src="../common/util/dateUtil.js"></script>
         <script src="../common/util/dateTimeFormatter.js"></script>
 
-        <script src="../common/logging/init.js"></script>
-        <script src="../common/logging/exceptionHandler.js"></script>
-        <script src="../common/logging/services/loggingService.js"></script>
-
         <script src="../common/patient-search/init.js"></script>
         <script src="../common/patient-search/constants.js"></script>
         <script src="../common/patient-search/models/search.js"></script>
@@ -191,7 +197,7 @@
         <script src="../common/displaycontrols/observation/directives/bahmniObservation.js"></script>
         <script src="../common/displaycontrols/observation/helpers/groupingFunctions.js"></script>
         <script src="../common/displaycontrols/observation/services/formHierarchyBuildService.js"></script>
-        <script src="../clinical/consultation/services/observationFormService.js"></script>
+        <script src="../common/services/formService.js"></script>
 
         <script src="../common/obs/init.js"></script>
         <script src="../common/obs/directives/showObservation.js"></script>

@@ -1,0 +1,58 @@
+<ng-form name="availabilityForm">
+    <fieldset ng-disabled="isReadOnly()" ng-class="{'disabled unsaved': isReadOnly()}">
+        <p name="availabilityTime" ng-model="availability" time-validator>
+            <label class="ava-input-fields">
+                <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_START_TIME_KEY' | translate}}</span>
+                <input type="time" ng-model="availability.startTime"/>
+            </label>
+            <label class="ava-input-fields">
+                <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_END_TIME_KEY' | translate}}</span>
+                <input type="time" ng-model="availability.endTime">
+            </label>
+        </p>
+        <div class="weekday-selector-wrapper">
+        <label class="ava-input-fields">
+            <span>{{'APPOINTMENT_SERVICE_AVAILABILITY_MAX_LOAD_KEY' | translate}}</span>
+            <input class="max-load" type="number" min="0" ng-model="availability.maxAppointmentsLimit"
+                   ng-disabled="disableMaxLoad" ng-change="clearValueIfInvalid()" ng-class="{'disabled': disableMaxLoad}">
+
+        </label>
+        <weekday-selector class="service-ava-days"
+                          ng-model="availability.days" week-starts-index="startOfWeek"
+                          ng-disabled="isReadOnly()"></weekday-selector>
+        </div>
+    </fieldset>
+
+    <p class="app-ava-btn-container">
+        <button type="button" ng-disabled="!isValid()" ng-click="add()" ng-if="isNew()">
+            {{'ADD_AVAILABILITY' |translate}}
+        </button>
+    </p>
+
+    <p class="app-ava-btn-container" ng-if="isEdit()">
+        <button class="update-ava" type="button" ng-disabled="!isValid()" ng-click="update()">
+            <i class="fa fa-check"></i>
+        </button>
+        <button class="cancel-ava" type="button" ng-click="cancel()">
+            <i class="fa fa-times"></i>
+        </button>
+    </p>
+
+    <p class="app-ava-btn-container" ng-if="isReadOnly()">
+        <button class="edit-ava" type="button" ng-click="enableEdit()">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+        </button>
+        <button class="delete-ava" type="button" ng-click="confirmDelete()">
+            <i class="fa fa-trash-o"></i>
+        </button>
+    </p>
+    <p class="caution" ng-show="availabilityForm.availabilityTime.$error.timeSequence">
+        <i class="fa fa-exclamation-circle small"></i>
+        <span> {{'TIME_SEQUENCE_ERROR_MESSAGE' | translate}} </span>
+    </p>
+    <p class="caution" ng-if="doesOverlap">
+        <i class="fa fa-exclamation-circle small"></i>
+        <span> {{'OVERLAPPING_AVAILABILITY_ERROR_MESSAGE' | translate}} </span>
+    </p>
+</ng-form>
+

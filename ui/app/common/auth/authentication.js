@@ -26,12 +26,8 @@ angular.module('authentication')
                 $window.location = "../home/index.html#/login";
             });
         });
-    }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', 'offlineService', function ($rootScope, $http, $q, $bahmniCookieStore, userService, offlineService) {
+    }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', function ($rootScope, $http, $q, $bahmniCookieStore, userService) {
         var sessionResourcePath = Bahmni.Common.Constants.RESTWS_V1 + '/session?v=custom:(uuid)';
-        var offlineApp = offlineService.isOfflineApp();
-        var authenticationResponse = 'authenticationResponse';
-        var previousUser = 'previousUser';
-        var previousUserInfo = 'previousUserInfo';
 
         var getAuthFromServer = function (username, password, otp) {
             var btoa = otp ? username + ':' + password + ':' + otp : username + ':' + password;
@@ -57,13 +53,7 @@ angular.module('authentication')
                     if (response.status == 204) {
                         deferrable.resolve({"firstFactAuthorization": true});
                     }
-                    var data = response.data;
-                    if (offlineApp) {
-                        if (data.authenticated == true) {
-                            offlineService.setItem(authenticationResponse, data);
-                        }
-                    }
-                    deferrable.resolve(data);
+                    deferrable.resolve(response.data);
                 }, function (response) {
                     if (response.status == 401) {
                         deferrable.reject('LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY');
@@ -72,24 +62,10 @@ angular.module('authentication')
                     } else if (response.status == 429) { // Too many requests
                         deferrable.reject('LOGIN_LABEL_MAX_FAILED_ATTEMPTS');
                     }
-                    if (offlineApp && offlineService.getItem(authenticationResponse)) {
-                        deferrable.resolve(offlineService.getItem(authenticationResponse));
-                    } else {
-                        deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
-                    }
-                });
-            }).error(function (data, status) {
-                if (offlineApp && offlineService.getItem(authenticationResponse) &&
-                    offlineService.getItem(Bahmni.Common.Constants.LoginInformation) &&
-                    offlineService.validateLoginInfo({username: username, password: password})) {
-                    deferrable.resolve(offlineService.getItem(authenticationResponse));
-                } else if (offlineApp && parseInt(status / 100) == 5) {
-                    var errorInfo = {forOffline: true};
-                    errorInfo.openmrsServerDownError = Bahmni.Common.Constants.offlineErrorMessages.openmrsServerDownError;
-                    deferrable.reject(errorInfo);
-                } else {
                     deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
-                }
+                });
+            }).error(function () {
+                deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
             });
             return deferrable.promise;
         };
@@ -116,15 +92,10 @@ angular.module('authentication')
 
         this.destroy = function () {
             var deferrable = $q.defer();
-            if (offlineApp) {
+            destroySessionFromServer().then(function () {
                 sessionCleanup();
                 deferrable.resolve();
-            } else {
-                destroySessionFromServer().then(function () {
-                    sessionCleanup();
-                    deferrable.resolve();
-                });
-            }
+            });
             return deferrable.promise;
         };
 
@@ -144,19 +115,12 @@ angular.module('authentication')
                     deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
                 }
             }, function (errorInfo) {
-                if (offlineApp && !offlineService.getItem(authenticationResponse)) {
-                    errorInfo.forOffline ? deferrable.reject(errorInfo.openmrsServerDownError) : deferrable.reject(Bahmni.Common.Constants.offlineErrorMessages.networkErrorForFirstTimeLogin);
-                } else {
-                    deferrable.reject(errorInfo);
-                }
+                deferrable.reject(errorInfo);
             });
             return deferrable.promise;
         };
 
         this.get = function () {
-            if (offlineApp) {
-                return $q.when({data: offlineService.getItem('authenticationResponse')});
-            }
             return $http.get(sessionResourcePath, { cache: false });
         };
 
@@ -175,10 +139,6 @@ angular.module('authentication')
                     if (!_.isEmpty(providers.results) && hasAnyActiveProvider(providers.results)) {
                         $rootScope.currentUser = new Bahmni.Auth.User(data.results[0]);
                         $rootScope.currentUser.currentLocation = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
-                        if (offlineApp) {
-                            offlineService.setItem(previousUser, $rootScope.currentUser);
-                            offlineService.setItem(previousUserInfo, data.results[0]);
-                        }
                         $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0]);
                         deferrable.resolve(data.results[0]);
                     } else {
@@ -191,14 +151,8 @@ angular.module('authentication')
                    deferrable.reject("COULD_NOT_GET_PROVIDER");
                });
             }, function () {
-                if (offlineApp) {
-                    $rootScope.currentUser = offlineService.getItem(previousUser);
-                    $rootScope.$broadcast('event:user-credentialsLoaded', offlineService.getItem(previousUserInfo));
-                    deferrable.resolve();
-                } else {
-                    self.destroy();
-                    deferrable.reject('Could not get roles for the current user.');
-                }
+                self.destroy();
+                deferrable.reject('Could not get roles for the current user.');
             });
             return deferrable.promise;
         };
@@ -220,12 +174,6 @@ angular.module('authentication')
         };
 
         this.loadProviders = function (userInfo) {
-            if (offlineApp) {
-                var data = offlineService.getItem('providerData');
-                var provider = (data.results.length > 0) ? data.results[0] : undefined;
-                $rootScope.currentProvider = provider;
-                return $q.when(data);
-            }
             return $http.get(Bahmni.Common.Constants.providerUrl, {
                 method: "GET",
                 params: {
@@ -255,19 +203,17 @@ angular.module('authentication')
         return {
             authenticateUser: authenticateUser
         };
-    }]).directive('logOut', ['sessionService', 'offlineService', '$window', function (sessionService, offlineService, $window) {
+    }]).directive('logOut', ['sessionService', '$window', 'configurationService', 'auditLogService', function (sessionService, $window, configurationService, auditLogService) {
         return {
             link: function (scope, element) {
                 element.bind('click', function () {
                     scope.$apply(function () {
-                        sessionService.destroy().then(
-                            function () {
-                                if (offlineService.isOfflineApp()) {
-                                    $window.location.reload();
-                                }
-                                $window.location = "../home/index.html#/login";
-                            }
-                        );
+                        auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
+                            sessionService.destroy().then(
+                                function () {
+                                    $window.location = "../home/index.html#/login";
+                                });
+                        });
                     });
                 });
             }

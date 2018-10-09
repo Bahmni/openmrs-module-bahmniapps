@@ -47,6 +47,9 @@ angular.module('bahmni.common.displaycontrol.programs')
                         return attribute.value;
                     }
                 };
+                $scope.isIncluded = function (attributeType, program) {
+                    return !(program.program && _.includes(attributeType.excludeFrom, program.program.name));
+                };
                 var isDateFormat = function (format) {
                     return format == "org.openmrs.customdatatype.datatype.DateDatatype";
                 };

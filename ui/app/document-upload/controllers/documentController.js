@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('opd.documentupload')
-    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService', 'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll', '$translate', 'messagingService', 'appService',
-        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService, $rootScope, $http, $q, $timeout, sessionService, $anchorScroll, $translate, messagingService, appService) {
+    .controller('DocumentController', ['$scope', '$stateParams', 'visitService', 'patientService', 'encounterService',
+        'spinner', 'visitDocumentService', '$rootScope', '$http', '$q', '$timeout', 'sessionService', '$anchorScroll',
+        '$translate', 'messagingService', 'appService',
+        function ($scope, $stateParams, visitService, patientService, encounterService, spinner, visitDocumentService,
+                  $rootScope, $http, $q, $timeout, sessionService, $anchorScroll, $translate, messagingService, appService) {
             $scope.displayNepaliDates = appService.getAppDescriptor().getConfigValue('displayNepaliDates');
             var encounterTypeUuid;
             var topLevelConceptUuid;
@@ -56,34 +59,17 @@ angular.module('opd.documentupload')
                 };
             };
 
-            var compareVisitStartWithExistingStop = function (newVisitStart, existingVisit) {
-                if (newVisitStart >= existingVisit.startDatetime && DateUtil.isInvalid(existingVisit.stopDatetime)) {
-                    return true;
-                }
-                return (newVisitStart <= existingVisit.stopDatetime || DateUtil.isSameDate(newVisitStart, existingVisit.stopDatetime));
-            };
-
-            var compareVisitStopWithExistingStart = function (newVisitStop, existingVisitStart) {
-                return (newVisitStop >= existingVisitStart || DateUtil.isSameDate(newVisitStop, existingVisitStart));
-            };
-
             var isVisitInSameRange = function (newVisitWithoutTime, existingVisit) {
-                if (DateUtil.isInvalid(existingVisit.stopDatetime)) {
-                    return (compareVisitStartWithExistingStop(newVisitWithoutTime.startDatetime, existingVisit) ||
-                    compareVisitStopWithExistingStart(newVisitWithoutTime.stopDatetime, existingVisit.startDatetime));
-                } else {
-                    return (compareVisitStartWithExistingStop(newVisitWithoutTime.startDatetime, existingVisit) &&
-                    compareVisitStopWithExistingStart(newVisitWithoutTime.stopDatetime, existingVisit.startDatetime));
-                }
+                return existingVisit.startDatetime <= newVisitWithoutTime.stopDatetime && (newVisitWithoutTime.startDatetime <= existingVisit.stopDatetime || DateUtil.isInvalid(existingVisit.stopDatetime));
             };
 
             $scope.isNewVisitDateValid = function () {
                 var filterExistingVisitsInSameDateRange = function (existingVisit) {
-                    return isVisitInSameRange(newVisitWithoutTime, existingVisit);
+                    return !DateUtil.isInvalid(newVisitWithoutTime.startDatetime) ? isVisitInSameRange(newVisitWithoutTime, existingVisit) : false;
                 };
                 var newVisitWithoutTime = {};
                 newVisitWithoutTime.startDatetime = DateUtil.getDate($scope.newVisit.startDatetime);
-                newVisitWithoutTime.stopDatetime = $scope.newVisit.stopDatetime ? DateUtil.getDate($scope.newVisit.stopDatetime) : newVisitWithoutTime.startDatetime;
+                newVisitWithoutTime.stopDatetime = $scope.newVisit.stopDatetime ? DateUtil.getDate($scope.newVisit.stopDatetime) : DateUtil.now();
                 var visitStartStopDateTime = $scope.visits.map(getVisitStartStopDateTime);
                 var existingVisitsInSameRange = visitStartStopDateTime.filter(filterExistingVisitsInSameDateRange);
                 $scope.isDateValid = existingVisitsInSameRange.length === 0;
@@ -369,7 +355,6 @@ angular.module('opd.documentupload')
                 if (isExistingVisit(visit) || $scope.isNewVisitDateValid()) {
                     visitDocument = createVisitDocument(visit);
                 }
-
                 return spinner.forPromise(visitDocumentService.save(visitDocument).then(function (response) {
                     return encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (encounterResponse) {
                         var savedVisit = $scope.visits[$scope.visits.indexOf(visit)];

@@ -7,6 +7,10 @@ angular.module('bahmni.admin')
             return appService.initApp('admin');
         };
 
-        return spinner.forPromise(initApp());
+        var checkPrivilege = function () {
+            return appService.checkPrivilege("app:admin");
+        };
+
+        return spinner.forPromise(initApp().then(checkPrivilege));
     }
 ]);

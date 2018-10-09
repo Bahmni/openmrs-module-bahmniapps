@@ -8,6 +8,7 @@ Bahmni.Common.PatientSearch.Constants = {
     tabularViewIgnoreHeadingsList: ["display", "uuid", "image", "$$hashKey", "activeVisitUuid", "hasBeenAdmitted", "forwardUrl", "programUuid", "enrollment"],
     identifierHeading: ["ID", "Id", "id", "identifier", "DQ_COLUMN_TITLE_ACTION"],
     nameHeading: ["NAME", "Name", "name"],
+    orderPlacedOnHeading: "Order Placed on",
     patientTileHeight: 100,
     patientTileWidth: 100,
     printIgnoreHeadingsList: ["DQ_COLUMN_TITLE_ACTION"],

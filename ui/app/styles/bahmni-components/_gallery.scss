@@ -96,7 +96,12 @@
     }
   }
   .pdf-link {
-    display: none;
+    text-align: right;
+    display: block;
+    margin-right: 10px;
+    i {
+      font-size: 16px;
+    }
     @media screen and (max-width: 1024px) {
       display: block;
       float: right;
@@ -287,7 +292,6 @@
 .ngdialog.ngdialog-theme-default {
   padding: 0;
   .ngdialog-content {
-    width: 70%;
     background: #fff;
     .template-header {
       h5 {
@@ -365,4 +369,5 @@
 }
 .gallery-open .ngdialog.ngdialog-theme-default .ngdialog-content {
   padding: 0;
+  width: 70%;
 }

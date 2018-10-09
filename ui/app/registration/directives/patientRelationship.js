@@ -95,7 +95,7 @@ angular.module('bahmni.registration')
                     }
                     relationship.content = getPatientGenderAndAge(patients[0]);
                     var personUuid = patients[0]['uuid'];
-                    var personName = patients[0]['givenName'] + " " + patients[0]['familyName'];
+                    var personName = patients[0]['givenName'] + (patients[0]['familyName'] ? " " + patients[0].familyName : "");
 
                     relationship.personB = {'display': personName, 'uuid': personUuid};
                 });
