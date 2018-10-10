@@ -27,6 +27,7 @@ Bahmni.Appointments.Constants = (function () {
         regexForTime: /^(?:(?:1[0-2]|0?[1-9]):[0-5]\d\s*[AaPp][Mm])?$/,
         privilegeManageAppointments: 'app:appointments:manageAppointmentsTab',
         privilegeForAdmin: 'app:appointments:adminTab',
+        privilegeSelfAppointments: 'app:appointments:manageSelfAppointmentsOnly',
         availableForAppointments: 'Available for appointments'
     };
 })();

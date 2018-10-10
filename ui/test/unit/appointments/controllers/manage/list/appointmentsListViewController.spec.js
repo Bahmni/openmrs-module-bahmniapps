@@ -1,13 +1,14 @@
 'use strict';
 
 describe('AppointmentsListViewController', function () {
-    var controller, scope, stateparams, spinner, appointmentsService, appService, appDescriptor, _appointmentsFilter,
-        printer, confirmBox, $translate, $state, messagingService;
+    var controller, scope, rootScope, stateparams, spinner, appointmentsService, appService, appDescriptor, _appointmentsFilter,
+        printer, confirmBox, $translate, $state, messagingService, interval;
 
     beforeEach(function () {
         module('bahmni.appointments');
         inject(function ($controller, $rootScope, $stateParams, $httpBackend) {
             scope = $rootScope.$new();
+            rootScope = $rootScope.$new();
             controller = $controller;
             stateparams = $stateParams;
             _appointmentsFilter = jasmine.createSpy('appointmentsFilter');
@@ -39,6 +40,7 @@ describe('AppointmentsListViewController', function () {
     var createController = function () {
         controller('AppointmentsListViewController', {
             $scope: scope,
+            $rootScope: rootScope,
             spinner: spinner,
             appointmentsService: appointmentsService,
             appService: appService,
@@ -1038,6 +1040,13 @@ describe('AppointmentsListViewController', function () {
     });
 
     describe('isValidAction', function () {
+
+        beforeEach(function () {
+            rootScope.currentUser = {
+                privileges: [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}]
+            };
+        });
+
         it('should init with empty object if config is undefined', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
                 if (value === 'allowedActionsByStatus') {
@@ -1070,6 +1079,7 @@ describe('AppointmentsListViewController', function () {
             });
             createController();
             scope.selectedAppointment = undefined;
+
             expect(scope.isValidAction('Missed')).toBeFalsy();
         });
 
@@ -1082,6 +1092,7 @@ describe('AppointmentsListViewController', function () {
             });
             createController();
             scope.selectedAppointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
+
             expect(scope.allowedActionsByStatus).toEqual({});
             expect(scope.isValidAction('Completed')).toBeFalsy();
         });
@@ -1095,6 +1106,7 @@ describe('AppointmentsListViewController', function () {
             });
             createController();
             scope.selectedAppointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
+
             expect(scope.isValidAction('Completed')).toBeTruthy();
         });
 
@@ -1107,8 +1119,76 @@ describe('AppointmentsListViewController', function () {
             });
             createController();
             scope.selectedAppointment = {uuid: 'appointmentUuid', status: 'Scheduled'};
+
             expect(scope.isValidAction('Completed')).toBeFalsy();
         });
+    });
+
+    describe('isUserAllowedToPerform', function () {
+
+        it('should return true if logged user has manageAppointments privilege', function () {
+            rootScope.currentUser = {
+                privileges: [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}]
+            };
+            createController();
+
+            expect(scope.isUserAllowedToPerform()).toBeTruthy();
+        });
+
+        it('should return false if logged user does not have manageAppointments or selfAppointments privileges', function () {
+            rootScope.currentUser = {
+                privileges: []
+            };
+            createController();
+
+            expect(scope.isUserAllowedToPerform()).toBeFalsy();
+        });
+
+        describe('if logged user has selfAppointments privilege', function () {
+
+            beforeEach(function () {
+                scope.selfAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeSelfAppointments;
+                rootScope.currentUser = {
+                    privileges: [{name: Bahmni.Appointments.Constants.privilegeSelfAppointments}]
+                };
+            });
+
+            it('should return false if no appointment is selected', function () {
+                rootScope.currentProvider = {};
+                scope.selectedAppointment = undefined;
+                createController();
+
+                expect(scope.isUserAllowedToPerform()).toBeFalsy();
+            });
+
+            it('should return true if selected appointment provider is empty', function () {
+                rootScope.currentProvider = {};
+                scope.selectedAppointment = {provider: null};
+                createController();
+
+                expect(scope.isUserAllowedToPerform()).toBeTruthy();
+            });
+
+            it('should return true if selected appointment provider is same as logged user', function () {
+                rootScope.currentProvider = {uuid: 'providerUuid'};
+                scope.selectedAppointment = {provider: {uuid: 'providerUuid'}};
+                createController();
+
+                expect(scope.isUserAllowedToPerform()).toBeTruthy();
+            });
+
+        });
+
+    });
+
+    it('return true for allowUndoCheckIn if user allowed to do and selected appointment status is checkedIn', function () {
+        rootScope.currentUser = {
+            privileges: [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}]
+        };
+        scope.selectedAppointment = {status: 'CheckedIn'};
+        createController();
+
+        expect(scope.allowUndoCheckIn()).toBeTruthy();
     });
 
     it('should get colors for config', function () {
