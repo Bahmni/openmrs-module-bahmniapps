@@ -11,6 +11,7 @@ angular.module('bahmni.appointments')
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
+            $scope.selfAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeSelfAppointments;
             $scope.searchedPatient = false;
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
@@ -305,12 +306,36 @@ angular.module('bahmni.appointments')
             };
 
             $scope.isValidAction = function (action) {
-                if (!$scope.selectedAppointment) {
+                if (!$scope.isUserAllowedToPerform() || !$scope.selectedAppointment) {
                     return false;
                 }
                 var status = $scope.selectedAppointment.status;
                 var allowedActions = $scope.allowedActionsByStatus.hasOwnProperty(status) ? $scope.allowedActionsByStatus[status] : [];
                 return _.includes(allowedActions, action);
+            };
+
+            var isCurrentUserHavePrivilege = function (privilege) {
+                return !_.isUndefined(_.find($rootScope.currentUser.privileges, function (userPrivilege) {
+                    return userPrivilege.name === privilege;
+                }));
+            };
+            
+            $scope.isUserAllowedToPerform = function () {
+                if (isCurrentUserHavePrivilege($scope.manageAppointmentPrivilege)) {
+                    return true;
+                }
+                else if (isCurrentUserHavePrivilege($scope.selfAppointmentPrivilege)) {
+                    if ($scope.selectedAppointment) {
+                        return _.isNull($scope.selectedAppointment.provider) ||
+                            $scope.selectedAppointment.provider.uuid === $rootScope.currentProvider.uuid
+                    }
+                }
+                return false;
+            };
+
+            $scope.allowUndoCheckIn = function () {
+                return $scope.isUserAllowedToPerform() && $scope.selectedAppointment &&
+                    $scope.selectedAppointment.status === 'CheckedIn';
             };
 
             init();
