@@ -79,20 +79,25 @@ angular.module('bahmni.clinical')
             };
 
             var filterUsingAge = function (categories, patient) {
+                var INFANT_AGE_RANGE = 1;
+                var TODDLER_AGE_RANGE = 2;
+                var PRE_SCHOOLER_AGE_RANGE = 5;
+                var LESS_THAN_TWO_MONTHS_RANGE = 2;
                 var age = parseInt(patient.age);
                 var ageDifference = DateUtil.diffInYearsMonthsDays(patient.birthdate, DateUtil.now());
                 var monthDifference = parseInt(ageDifference.months);
                 var dayDifference = parseInt(ageDifference.days);
-                if (age < 1 && monthDifference < 2) {
+
+                if (age < INFANT_AGE_RANGE && monthDifference < LESS_THAN_TWO_MONTHS_RANGE) {
                     availableTemplates = availableTemplates.concat(categories.lessThanTwoMonths);
                 }
-                if (age < 1 && monthDifference >= 2) {
+                if (age < INFANT_AGE_RANGE && monthDifference >= LESS_THAN_TWO_MONTHS_RANGE) {
                     availableTemplates = availableTemplates.concat(categories.infant);
                 }
-                if (age <= 2 && monthDifference < 1 && dayDifference < 1) {
+                if (age <= TODDLER_AGE_RANGE && monthDifference < 1 && dayDifference < 1) {
                     availableTemplates = availableTemplates.concat(categories.toddler);
                 }
-                if ((age < 5) || (age === 5 && monthDifference < 1 && dayDifference < 1)) {
+                if ((age < PRE_SCHOOLER_AGE_RANGE) || (age === PRE_SCHOOLER_AGE_RANGE && monthDifference < 1 && dayDifference < 1)) {
                     availableTemplates = availableTemplates.concat(categories.preschooler);
                 }
             };
