@@ -72,7 +72,8 @@ describe('CreatePatientController', function() {
                     if (config == 'patientInformation') {
                         return {
                             "defaults": {
-                                "education": "Uneducated"
+                                "education": "Uneducated",
+                                "date": "today"
                             }
                         };
                     }
@@ -102,7 +103,13 @@ describe('CreatePatientController', function() {
                 description: "5th Pass and Below"
             }]
 
-        }];
+            },
+            {
+                uuid: "date-uuid",
+                name: "date",
+                description: "Date Field",
+                format: "org.openmrs.util.AttributableDate"
+            }];
 
         sections =  {
             "additionalPatientInformation": {
@@ -110,6 +117,8 @@ describe('CreatePatientController', function() {
                     name: "education"
                 }, {
                     foo: "bar"
+                }, {
+                    name: "date"
                 }]
             }
         };
@@ -146,7 +155,7 @@ describe('CreatePatientController', function() {
         };
     });
 
-    it("should populate default fields in registration form", function() {
+    it("should populate default field education in registration form", function() {
 
         $aController('CreatePatientController', {
             $scope: scopeMock,
@@ -161,6 +170,23 @@ describe('CreatePatientController', function() {
 
         expect(scopeMock.patient["education"].conceptUuid).toBe("c2107f30-3f10-11e4-adec-0800271c1b75");
         expect(scopeMock.patient["education"].value).toBe("Uneducated");
+
+    });
+
+    it("should populate default date as today in registration form", function () {
+
+        $aController('CreatePatientController', {
+            $scope: scopeMock,
+            $rootScope: rootScopeMock,
+            $state: stateMock,
+            patientService: patientServiceMock,
+            preferences: preferencesMock,
+            spinner: spinnerMock,
+            appService: appServiceMock,
+            ngDialog: ngDialogMock
+        });
+
+        expect(scopeMock.patient["date"].toLocaleDateString()).toBe(new Date().toLocaleDateString());
 
     });
 
