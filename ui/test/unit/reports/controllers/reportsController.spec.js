@@ -412,4 +412,29 @@ describe("ReportsController", function () {
 
         expect(mockAuditLogService.log.calls.count()).toBe(0);
     });
+
+    it('should return true if the user has the given privilege', function (){
+        rootScope.currentUser = {
+            privileges: [{name: 'app:reports'},{name: 'app:registration'}]
+        };
+
+        expect(scope.hasPrivilege('app:registration')).toBe(true);
+    });
+
+    it('should return false if the user do not have  the given privilege', function (){
+        rootScope.currentUser = {
+            privileges: [{name: 'app:reports'}]
+        };
+
+        expect(scope.hasPrivilege('app:registration')).toBe(false);
+    });
+
+    it('should return true if the given privilege is undefined', function (){
+        rootScope.currentUser = {
+            privileges: [{name: 'app:reports'}]
+        };
+
+        expect(scope.hasPrivilege(undefined)).toBe(true);
+    });
+
 });

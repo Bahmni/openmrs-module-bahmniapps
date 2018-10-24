@@ -32,7 +32,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="report in ::reportsRequiringDateRange">
+            <tr ng-repeat="report in ::reportsRequiringDateRange" ng-if="hasPrivilege(report.requiredPrivilege)">
                 <td>{{:: report.name }}</td>
                 <td class="reports-start-date">
                     <input date-converter class="form-field start-date" type="date" max="{{report.stopDate | date:'yyyy-MM-dd'}}"
@@ -84,7 +84,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="report in ::reportsNotRequiringDateRange">
+            <tr ng-repeat="report in ::reportsNotRequiringDateRange" ng-if="hasPrivilege(report.requiredPrivilege)">
                 <td>{{:: report.name }}</td>
                 <td class="reports-format">
                     <select ng-model="report.responseType" ng-options="type as label for (label , type) in ::formats">

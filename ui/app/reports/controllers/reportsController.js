@@ -110,5 +110,15 @@ angular.module('bahmni.reports')
             initializeFormats();
         };
 
+        $scope.hasPrivilege = function (privilegeName) {
+            if (_.isUndefined(privilegeName)) {
+                return true;
+            }
+            var privilegeNames = $rootScope.currentUser.privileges.map(function (privilege) {
+                return privilege.name;
+            });
+            return privilegeNames.includes(privilegeName);
+        };
+
         initialization();
     }]);
