@@ -383,13 +383,13 @@ describe('CalendarViewPopUp', function () {
             expect(popUpScope.isUserAllowedToPerform()).toBeFalsy();
         });
 
-        it('should return true if currentUser has ownAppointment privilege and selected appointment\'s provider is null', function () {
+        it('should return true if currentUser has ownAppointment privilege and selected appointment\'s providers list is empty', function () {
             var config = {scope: {appointments: [
-                        {
-                            patient: {uuid: 'patientUuid'},
-                            provider: null
-                        }
-                    ]}};
+                            {
+                                patient: {uuid: 'patientUuid'},
+                                providers: []
+                            }
+                        ]}};
             rootScope.currentUser = {privileges: [
                     {name: Bahmni.Appointments.Constants.privilegeOwnAppointments}
                 ]};
@@ -398,11 +398,11 @@ describe('CalendarViewPopUp', function () {
             expect(popUpScope.isUserAllowedToPerform()).toBeTruthy();
         });
 
-        it('should return true if currentUser has ownAppointment privilege and is the provider of the selected appointment', function () {
+        it('should return true if currentUser has ownAppointment privilege and is the provider in the selected appointment\'s providers list', function () {
             var config = {scope: {appointments: [
                         {
                             patient: {uuid: 'patientUuid'},
-                            provider: {uuid: 'providerUuid'}
+                            providers: [{uuid: 'providerUuid'}]
                         }
                     ]}};
             rootScope.currentUser = {privileges: [
