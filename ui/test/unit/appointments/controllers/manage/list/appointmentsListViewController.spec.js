@@ -1158,17 +1158,17 @@ describe('AppointmentsListViewController', function () {
                 expect(scope.isUserAllowedToPerform()).toBeFalsy();
             });
 
-            it('should return true if selected appointment provider is empty', function () {
+            it('should return true if selected appointment providers list is empty', function () {
                 rootScope.currentProvider = {};
-                scope.selectedAppointment = {provider: null};
+                scope.selectedAppointment = {providers: []};
                 createController();
 
                 expect(scope.isUserAllowedToPerform()).toBeTruthy();
             });
 
-            it('should return true if selected appointment provider is same as logged user', function () {
+            it('should return true if selected appointment providers list has logged user', function () {
                 rootScope.currentProvider = {uuid: 'providerUuid'};
-                scope.selectedAppointment = {provider: {uuid: 'providerUuid'}};
+                scope.selectedAppointment = {providers: [{uuid: 'providerUuid'}]};
                 createController();
 
                 expect(scope.isUserAllowedToPerform()).toBeTruthy();

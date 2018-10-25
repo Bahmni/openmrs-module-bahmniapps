@@ -324,11 +324,11 @@ angular.module('bahmni.appointments')
                 if (isCurrentUserHavePrivilege($scope.manageAppointmentPrivilege)) {
                     return true;
                 }
-                else if (isCurrentUserHavePrivilege($scope.ownAppointmentPrivilege)) {
-                    if ($scope.selectedAppointment) {
-                        return _.isNull($scope.selectedAppointment.provider) ||
-                            $scope.selectedAppointment.provider.uuid === $rootScope.currentProvider.uuid;
-                    }
+                else if (isCurrentUserHavePrivilege($scope.ownAppointmentPrivilege) && $scope.selectedAppointment) {
+                    return _.isEmpty($scope.selectedAppointment.providers) ||
+                        !_.isUndefined(_.find($scope.selectedAppointment.providers, function (provider) {
+                            return provider.uuid === $rootScope.currentProvider.uuid;
+                        }));
                 }
                 return false;
             };
