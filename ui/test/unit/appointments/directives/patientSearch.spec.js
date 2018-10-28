@@ -91,4 +91,13 @@ describe("Patient Search", function () {
         expect(appointmentsService.search).toHaveBeenCalledWith({patientUuid: patient.uuid});
         expect(scope.displaySearchedPatient).toHaveBeenCalled();
     });
+
+     it('should build response map with only given name when family name is null for given patients', function () {
+            var element = createElement();
+            var compiledScope = element.isolateScope();
+            var patients = [{givenName: 'testOne', familyName: null, identifier: 'GAN2018'}, {givenName: 'testTwo', familyName: null, identifier: 'GAN2017'}];
+            var response = compiledScope.responseMap(patients);
+            expect(response[0].label).toEqual("testOne (GAN2018)");
+            expect(response[1].label).toEqual("testTwo (GAN2017)");
+     });
 });
