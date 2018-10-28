@@ -2,9 +2,9 @@
 
 angular.module('bahmni.appointments')
     .controller('AppointmentsListViewController', ['$scope', '$state', '$rootScope', '$translate', '$stateParams', 'spinner',
-        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService',
+        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService', '$interval',
         function ($scope, $state, $rootScope, $translate, $stateParams, spinner, appointmentsService, appService,
-                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService) {
+                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, $interval) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
@@ -12,6 +12,10 @@ angular.module('bahmni.appointments')
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.searchedPatient = false;
+            var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
+            var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
+            var autoRefreshStatus = true;
+            const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
             var oldPatientData = [];
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
@@ -36,6 +40,60 @@ angular.module('bahmni.appointments')
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
             };
 
+            var setAppointments = function (params) {
+                autoRefreshStatus = false;
+                return appointmentsService.getAllAppointments(params).then(function (response) {
+                    $scope.appointments = response.data;
+                    $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
+                    $rootScope.appointmentsData = $scope.filteredAppointments;
+                    updateSelectedAppointment();
+                    autoRefreshStatus = true;
+                });
+            };
+
+            var updateSelectedAppointment = function () {
+                if ($scope.selectedAppointment === undefined) {
+                    return;
+                }
+                $scope.selectedAppointment = _.find($scope.filteredAppointments, function (appointment) {
+                    return appointment.uuid === $scope.selectedAppointment.uuid;
+                });
+            };
+
+            var setAppointmentsInPatientSearch = function (patientUuid) {
+                appointmentsService.search({patientUuid: patientUuid}).then(function (response) {
+                    var appointmentsInDESCOrderBasedOnStartDateTime = _.sortBy(response.data, "startDateTime").reverse();
+                    setFilteredAppointmentsInPatientSearch(appointmentsInDESCOrderBasedOnStartDateTime);
+                });
+            };
+
+            var setAppointmentsInAutoRefresh = function () {
+                if (!autoRefreshStatus) {
+                    return;
+                }
+                if ($stateParams.isSearchEnabled) {
+                    setAppointmentsInPatientSearch($stateParams.patient.uuid);
+                }
+                else {
+                    var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
+                    setAppointments({forDate: viewDate});
+                }
+            };
+
+            var autoRefresh = (function () {
+                if (!enableAutoRefresh) {
+                    return;
+                }
+                var autoRefreshIntervalInMilliSeconds = autoRefreshIntervalInSeconds * SECONDS_TO_MILLISECONDS_FACTOR;
+                return $interval(setAppointmentsInAutoRefresh, autoRefreshIntervalInMilliSeconds);
+            })();
+
+            $scope.$on('$destroy', function () {
+                if (enableAutoRefresh) {
+                    $interval.cancel(autoRefresh);
+                }
+            });
+
             $scope.getAppointmentsForDate = function (viewDate) {
                 $stateParams.viewDate = viewDate;
                 $scope.selectedAppointment = undefined;
@@ -46,11 +104,7 @@ angular.module('bahmni.appointments')
                     }
                 });
                 if ($state.params.doFetchAppointmentsData) {
-                    spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
-                        $scope.appointments = response.data;
-                        $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
-                        $rootScope.appointmentsData = $scope.filteredAppointments;
-                    }));
+                    spinner.forPromise(setAppointments(params));
                 } else {
                     $scope.filteredAppointments = appointmentsFilter($state.params.appointmentsData, $stateParams.filterParams);
                     $state.params.doFetchAppointmentsData = true;
@@ -66,12 +120,16 @@ angular.module('bahmni.appointments')
                 }
             };
 
-            $scope.displaySearchedPatient = function (appointments) {
-                oldPatientData = $scope.filteredAppointments;
+            var setFilteredAppointmentsInPatientSearch = function (appointments) {
                 $scope.filteredAppointments = appointments.map(function (appointmet) {
                     appointmet.date = appointmet.startDateTime;
                     return appointmet;
                 });
+            };
+
+            $scope.displaySearchedPatient = function (appointments) {
+                oldPatientData = $scope.filteredAppointments;
+                setFilteredAppointmentsInPatientSearch(appointments);
                 $scope.searchedPatient = true;
                 $stateParams.isFilterOpen = false;
                 $scope.isFilterOpen = false;
