@@ -1,11 +1,11 @@
 'use strict';
 
 describe('AppointmentsCalendarViewController', function () {
-    var controller, scope, spinner, appointmentsService, translate, stateParams, state;
+    var controller, scope, spinner, appointmentsService, translate, stateParams, state, interval, appService, appDescriptor;
 
     beforeEach(function () {
         module('bahmni.appointments');
-        inject(function ($controller, $rootScope, $stateParams, $state) {
+        inject(function ($controller, $rootScope, $stateParams, $state, $interval) {
             controller = $controller;
             scope = $rootScope.$new();
             stateParams = $stateParams;
@@ -21,6 +21,10 @@ describe('AppointmentsCalendarViewController', function () {
             appointmentsService = jasmine.createSpyObj('appointmentsService', ['getAllAppointments']);
             translate = jasmine.createSpyObj('$translate', ['instant']);
             translate.instant.and.returnValue("No provider appointments");
+            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            interval = jasmine.createSpy('$interval', $interval).and.callThrough();
         });
     });
 
@@ -29,7 +33,9 @@ describe('AppointmentsCalendarViewController', function () {
             $scope: scope,
             spinner: spinner,
             appointmentsService: appointmentsService,
-            $translate: translate
+            $translate: translate,
+            appService: appService,
+            $interval: interval
         });
     };
 
@@ -495,5 +501,65 @@ describe('AppointmentsCalendarViewController', function () {
         scope.getAppointmentsForDate("Wed Sep 06 2017 00:00:00 GMT+0530 (IST)");
         expect(scope.providerAppointments.resources.length).toEqual(1);
         expect(scope.providerAppointments.resources[0].provider.uuid).toEqual("no-provider-uuid");
-    })
+    });
+
+    it('should get config value for autoRefreshIntervalInSeconds', function () {
+        expect(appDescriptor.getConfigValue).toHaveBeenCalledWith('autoRefreshIntervalInSeconds');
+    });
+
+    it('should call interval function when autoRefreshIntervalInSeconds is defined', function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'autoRefreshIntervalInSeconds') {
+                return 10;
+            }
+            return undefined;
+        });
+
+        createController();
+
+        expect(interval).toHaveBeenCalled();
+    });
+
+    it('should not call interval function when autoRefreshIntervalInSeconds is an invalid string', function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'autoRefreshIntervalInSeconds') {
+                return "invalid";
+            }
+            return undefined;
+        });
+
+        createController();
+
+        expect(interval).not.toHaveBeenCalled();
+    });
+
+    it('should cancel interval when autoRefreshIntervalInSeconds is defined', function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'autoRefreshIntervalInSeconds') {
+                return 10;
+            }
+            return undefined;
+        });
+        spyOn(interval, 'cancel');
+        createController();
+
+        scope.$destroy();
+
+        expect(interval.cancel).toHaveBeenCalled();
+    });
+
+    it('should not cancel interval when autoRefreshIntervalInSeconds is undefined', function () {
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'autoRefreshIntervalInSeconds') {
+                return undefined;
+            }
+            return undefined;
+        });
+        spyOn(interval, 'cancel');
+        createController();
+
+        scope.$destroy();
+
+        expect(interval.cancel).not.toHaveBeenCalled();
+    });
 });
