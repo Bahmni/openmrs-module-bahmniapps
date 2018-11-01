@@ -16,9 +16,9 @@ angular.module('bahmni.registration')
                 return $rootScope.patientConfiguration.attributeTypes;
             };
 
-            $scope.checkIfEmptyAgeFields = function() {
+            $scope.checkIfEmptyAgeFields = function () {
                 return !($scope.patient.age.years || $scope.patient.age.months || $scope.patient.age.days);
-            }
+            };
 
             var prepopulateDefaultsInFields = function () {
                 var personAttributeTypes = getPersonAttributeTypes();
