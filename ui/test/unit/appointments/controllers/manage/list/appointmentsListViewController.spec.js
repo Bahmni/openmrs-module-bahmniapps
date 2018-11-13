@@ -164,7 +164,6 @@ describe('AppointmentsListViewController', function () {
                 "creatorName": null
             },
             "serviceType": null,
-            "provider": null,
             "location": null,
             "startDateTime": 1503891000000,
             "endDateTime": 1503900900000,
@@ -194,7 +193,6 @@ describe('AppointmentsListViewController', function () {
                 "creatorName": null
             },
             "serviceType": null,
-            "provider": null,
             "location": null,
             "startDateTime": 1503887400000,
             "endDateTime": 1503889200000,
@@ -224,7 +222,7 @@ describe('AppointmentsListViewController', function () {
                 "creatorName": null
             },
             "serviceType": null,
-            "provider": {"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"},
+            "providers": [{"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75", "response": "ACCEPTED"}],
             "location": null,
             "startDateTime": 1503923400000,
             "endDateTime": 1503925200000,
@@ -267,7 +265,6 @@ describe('AppointmentsListViewController', function () {
                 "creatorName": null
             },
             "serviceType": null,
-            "provider": null,
             "location": null,
             "startDateTime": 1503891000000,
             "endDateTime": 1503900900000,
@@ -297,7 +294,6 @@ describe('AppointmentsListViewController', function () {
                 "creatorName": null
             },
             "serviceType": null,
-            "provider": null,
             "location": null,
             "startDateTime": 1503887400000,
             "endDateTime": 1503889200000,
@@ -327,7 +323,7 @@ describe('AppointmentsListViewController', function () {
                 "creatorName": null
             },
             "serviceType": null,
-            "provider": {"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"},
+            "providers": [{"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75", "response": "ACCEPTED"}],
             "location": null,
             "startDateTime": 1503923400000,
             "endDateTime": 1503925200000,
@@ -379,7 +375,6 @@ describe('AppointmentsListViewController', function () {
                     "creatorName": null
                 },
                 "serviceType": null,
-                "provider": null,
                 "location": null,
                 "startDateTime": 1503891000000,
                 "endDateTime": 1503900900000,
@@ -409,7 +404,6 @@ describe('AppointmentsListViewController', function () {
                     "creatorName": null
                 },
                 "serviceType": null,
-                "provider": null,
                 "location": null,
                 "startDateTime": 1503887400000,
                 "endDateTime": 1503889200000,
@@ -439,7 +433,7 @@ describe('AppointmentsListViewController', function () {
                     "creatorName": null
                 },
                 "serviceType": null,
-                "provider": {"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"},
+                "providers": [{"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75", "response": "ACCEPTED"}],
                 "location": null,
                 "startDateTime": 1503923400000,
                 "endDateTime": 1503925200000,
@@ -477,7 +471,7 @@ describe('AppointmentsListViewController', function () {
                 comments: "comment2",
                 status: "Scheduled",
                 appointmentKind: "Scheduled",
-                provider: {name: "provider2"},
+                providers: [{"name": "provider2", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75", "response": "ACCEPTED"}],
                 endDateTime: 200000,
                 startDateTime: 300000,
                 service: {
@@ -496,7 +490,7 @@ describe('AppointmentsListViewController', function () {
                 comments: "comment1",
                 status: "Completed",
                 appointmentKind: "Completed",
-                provider: {name: "provider1"},
+                providers: [{"name": "provider1", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b76", "response": "ACCEPTED"}],
                 endDateTime: 100000,
                 startDateTime: 200000,
                 service: {
@@ -553,8 +547,8 @@ describe('AppointmentsListViewController', function () {
             scope.sortAppointmentsBy('provider.name');
             expect(scope.sortColumn).toEqual('provider.name');
             expect(scope.filteredAppointments.length).toEqual(2);
-            expect(scope.filteredAppointments[0].provider.name).toEqual("provider1");
-            expect(scope.filteredAppointments[1].provider.name).toEqual("provider2");
+            expect(scope.filteredAppointments[0].providers[0].name).toEqual("provider1");
+            expect(scope.filteredAppointments[1].providers[0].name).toEqual("provider2");
 
             scope.filteredAppointments = [appointment, otherAppointment];
             scope.reverseSort = false;
@@ -617,7 +611,7 @@ describe('AppointmentsListViewController', function () {
                 comments: "comments1",
                 status: "Completed",
                 appointmentKind: "Completed",
-                provider: {name: "provider1"},
+                providers: [{"name": "provider1", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75", "response": "ACCEPTED"}],
                 endDateTime: 100000,
                 startDateTime: 200000,
                 service: {
@@ -632,7 +626,7 @@ describe('AppointmentsListViewController', function () {
                 comments: "comments2",
                 status: "Scheduled",
                 appointmentKind: "Scheduled",
-                provider: {name: "provider2"},
+                providers: [{"name": "provider2", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b76", "response": "ACCEPTED"}],
                 endDateTime: 200000,
                 startDateTime: 300000,
                 service: {
@@ -673,7 +667,7 @@ describe('AppointmentsListViewController', function () {
                 comments: "comments2",
                 status: "Scheduled",
                 appointmentKind: "Scheduled",
-                provider: {name: "provider2"},
+                providers: [{"name": "provider2", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b76", "response": "ACCEPTED"}],
                 startDateTime: 16007753800000,
                 service: {
                     name: "service2",
@@ -687,7 +681,7 @@ describe('AppointmentsListViewController', function () {
                 comments: "comments1",
                 status: "Completed",
                 appointmentKind: "Completed",
-                provider: {name: "provider1"},
+                providers: [{"name": "provider1", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75", "response": "ACCEPTED"}],
                 startDateTime: 1508322600000,
                 service: {
                     name: "service1",
@@ -779,7 +773,6 @@ describe('AppointmentsListViewController', function () {
                 "creatorName": null
             },
             "serviceType": null,
-            "provider": null,
             "location": null,
             "startDateTime": 1503891000000,
             "endDateTime": 1503900900000,

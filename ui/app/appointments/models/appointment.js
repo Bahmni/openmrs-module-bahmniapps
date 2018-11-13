@@ -20,7 +20,7 @@ Bahmni.Appointments.Appointment = (function () {
                     if (p.uuid != undefined) {
                         providerList.push({
                             uuid: p.uuid,
-                            response: "ACCEPTED",
+                            response: p.response,
                             comments: p.comments
                         });
                     }

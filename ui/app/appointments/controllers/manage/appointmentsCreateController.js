@@ -50,7 +50,9 @@ angular.module('bahmni.appointments')
 
             $scope.allowProviderAddition = function () {
                 if ($scope.appointment.providers != undefined) {
-                    return $scope.appointment.providers.length < $scope.maxAppointmentProviders;
+                    return $scope.appointment.providers.filter(function (p) {
+                        return p.response !== Bahmni.Appointments.Constants.providerResponses.CANCELLED;
+                    }).length < $scope.maxAppointmentProviders;
                 } else {
                     return $scope.maxAppointmentProviders > 0;
                 }
@@ -69,11 +71,15 @@ angular.module('bahmni.appointments')
                     if (pList.length === 0) {
                         var p = {
                             uuid: $scope.appointment.newProvider.uuid,
-                            response: "ACCEPTED",
+                            response: Bahmni.Appointments.Constants.providerResponses.ACCEPTED,
                             name: $scope.appointment.newProvider.name || $scope.appointment.newProvider.person.display,
                             comments: null
                         };
                         $scope.appointment.providers.push(p);
+                    }
+
+                    if (pList.length === 1) {
+                        pList[0].response = Bahmni.Appointments.Constants.providerResponses.ACCEPTED;
                     }
                 }
 
