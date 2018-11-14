@@ -14,6 +14,20 @@ angular.module('bahmni.common.conceptSet')
             return $http.get(Bahmni.Common.Constants.formUrl + '/' + formUuid, {params: params});
         };
 
+        const getUrlWithUuid = function (url, patientUuid) {
+            return url.replace('{patientUuid}', patientUuid);
+        };
+
+        var getAllPatientForms = function (patientUuid, numberOfVisits, patientProgramUuid) {
+            const patientFormsUrl = getUrlWithUuid(Bahmni.Common.Constants.patientFormsUrl, patientUuid);
+            const params = {
+                numberOfVisits: numberOfVisits,
+                formType: 'v2',
+                patientProgramUuid: patientProgramUuid
+            };
+            return $http.get(patientFormsUrl, {params: params});
+        };
+
         var getFormTranslations = function (url, form) {
             if (url && url !== Bahmni.Common.Constants.formTranslationsUrl) {
                 return $http.get(url);
@@ -25,6 +39,7 @@ angular.module('bahmni.common.conceptSet')
             getFormList: getFormList,
             getAllForms: getAllForms,
             getFormDetail: getFormDetail,
-            getFormTranslations: getFormTranslations
+            getFormTranslations: getFormTranslations,
+            getAllPatientForms: getAllPatientForms
         };
     }]);
