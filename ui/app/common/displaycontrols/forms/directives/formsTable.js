@@ -3,7 +3,7 @@
 angular.module('bahmni.common.displaycontrol.forms')
     .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService', 'appService', '$state',
         function (conceptSetService, spinner, $q, visitFormService, appService, $state) {
-            var controller = function ($scope) {
+            var defaultController = function ($scope) {
                 $scope.shouldPromptBrowserReload = true;
                 $scope.showFormsDate = appService.getAppDescriptor().getConfigValue("showFormsDate");
                 var getAllObservationTemplates = function () {
@@ -103,7 +103,12 @@ angular.module('bahmni.common.displaycontrol.forms')
 
             return {
                 restrict: 'E',
-                controller: controller,
+                controller: function ($scope, $controller) {
+                    if ($scope.section.type && $scope.section.type === "formsV2") {
+                        return $controller("versionedFormController", {$scope: $scope});
+                    }
+                    return defaultController($scope);
+                },
                 link: link,
                 templateUrl: "../common/displaycontrols/forms/views/formsTable.html",
                 scope: {
