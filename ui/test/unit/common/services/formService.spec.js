@@ -33,7 +33,7 @@ describe('FormService', function () {
             done();
         });
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/patient/patientUuid/forms");
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/bahmnicore/patient/patientUuid/forms");
         expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual(params);
     });
 });
