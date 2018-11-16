@@ -96,6 +96,18 @@ angular.module('bahmni.appointments')
                     return _.includes(allowedActions, action);
                 };
 
+                popUpScope.getAppointmentProviderNames = function (appointment) {
+                    if (appointment.providers) {
+                        var providerNames = appointment.providers.filter(function (p) {
+                            return p.response !== Bahmni.Appointments.Constants.providerResponses.CANCELLED;
+                        }).map(function (p) {
+                            return p.name;
+                        }).join(', ');
+                        return providerNames;
+                    }
+                    return '';
+                };
+
                 dialog = ngDialog.open({
                     template: '../appointments/views/manage/calendar/popUp.html',
                     scope: popUpScope,
