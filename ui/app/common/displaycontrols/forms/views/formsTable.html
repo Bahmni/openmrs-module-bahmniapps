@@ -22,7 +22,7 @@
                             <span ng-hide="::showFormsDate">{{data.obsDatetime || data.encounterDateTime | bahmniDateTime}}</span>
                             <span ng-show="::showFormsDate">{{
                                 data.obsDatetime || data.encounterDateTime | bahmniDate}}</span>
-                            <span ng-hide="section.type === 'formsV2'" class="has-link fl formDataEdit"
+                            <span class="has-link fl formDataEdit"
                                   ng-dialog="../common/displaycontrols/forms/views/showObservationFormData.html"
                                   ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-view"
                                   ng-dialog-data="{{getConfigToFetchDataAndShow(data)}}">
