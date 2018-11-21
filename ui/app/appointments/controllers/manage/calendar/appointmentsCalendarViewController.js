@@ -48,7 +48,9 @@ angular.module('bahmni.appointments')
                         .filter(function (appointment) {
                             return !_.isEmpty(appointment.providers);
                         }).map(function (appointment) {
-                            return appointment.providers;
+                            return appointment.providers.filter(function (p) {
+                                return p.response !== Bahmni.Appointments.Constants.providerResponses.CANCELLED;
+                            });
                             // return appointment.provider;
                         }).reduce(function (list, p) {
                             if (p != undefined) {
@@ -71,7 +73,7 @@ angular.module('bahmni.appointments')
                         .value();
 
                     var hasAppointmentsWithNoProvidersSpecified = _.find(appointments, function (appointment) {
-                        return _.isEmpty(appointment.providers);
+                        return _.every(appointment.providers, {"response": Bahmni.Appointments.Constants.providerResponses.CANCELLED }) || _.isEmpty(appointment.providers);
                     });
 
                     if (hasAppointmentsWithNoProvidersSpecified) {
@@ -83,17 +85,18 @@ angular.module('bahmni.appointments')
                     }
 
                     var events = appointments.reduce(function (result, appointment) {
-                        if (appointment.providers && !_.isEmpty(appointment.providers)) {
+                        var appProviderList = appointment.providers && !_.isEmpty(appointment.providers) ?
+                            appointment.providers.filter(function (ap) { return ap.response != Bahmni.Appointments.Constants.providerResponses.CANCELLED; }) : [];
+
+                        appProviderList.forEach(function (ap) {
                             if (filterParams && !_.isEmpty(filterParams.providerUuids)) {
-                                appointment.providers.forEach(function (ap) {
-                                    filterParams.providerUuids.find(function (uuid) { return uuid === ap.uuid; }) && createProviderEventForAppointment(ap, appointment, result);
-                                });
+                                filterParams.providerUuids.find(function (uuid) { return uuid === ap.uuid; }) && createProviderEventForAppointment(ap, appointment, result);
                             } else {
-                                appointment.providers.forEach(function (ap) {
-                                    createProviderEventForAppointment(ap, appointment, result);
-                                });
+                                createProviderEventForAppointment(ap, appointment, result);
                             }
-                        } else {
+                        });
+
+                        if (appProviderList.length == 0) {
                             createProviderEventForAppointment(null, appointment, result);
                         }
                         return result;
