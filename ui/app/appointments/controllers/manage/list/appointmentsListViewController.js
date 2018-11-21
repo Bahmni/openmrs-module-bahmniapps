@@ -198,11 +198,26 @@ angular.module('bahmni.appointments')
                     });
                     sortColumn = "additionalInformation";
                 }
+
                 var emptyObjects = _.filter($scope.filteredAppointments, function (appointment) {
                     return !_.property(sortColumn)(appointment);
                 });
+
+                if (sortColumn === "provider.name") {
+                    emptyObjects = $scope.filteredAppointments.filter(function (fa) {
+                        return _.every(fa.providers, {"response": Bahmni.Appointments.Constants.providerResponses.CANCELLED }) || _.isEmpty(fa.providers);
+                    });
+                }
+
                 var nonEmptyObjects = _.difference($scope.filteredAppointments, emptyObjects);
                 var sortedNonEmptyObjects = _.sortBy(nonEmptyObjects, function (appointment) {
+                    if (sortColumn === "provider.name") {
+                        var firstProvider = appointment.providers.find(function (p) {
+                            return p.response !== Bahmni.Appointments.Constants.providerResponses.CANCELLED;
+                        });
+                        return firstProvider.name.toLowerCase();
+                    }
+
                     if (angular.isNumber(_.get(appointment, sortColumn))) {
                         return _.get(appointment, sortColumn);
                     }
