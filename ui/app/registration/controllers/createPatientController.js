@@ -135,7 +135,7 @@ angular.module('bahmni.registration')
                         var data = _.map(response.data, function (data) {
                             return {
                                 sizeOfTheJump: data.sizeOfJump,
-                                identifierName: _.find($rootScope.patientConfiguration.identifierTypes, {uuid: data.identifierType}).name
+                                identifierName: _.find($rootScope.patientConfiguration.identifierTypes, { uuid: data.identifierType }).name
                             };
                         });
                         getConfirmationViaNgDialog({
@@ -161,8 +161,32 @@ angular.module('bahmni.registration')
                 return deferred.promise;
             };
 
+            var validatePatientName = function () {
+                var givenName = $scope.patient.givenName
+                var nameMatched = false;
+
+                if (givenName && givenName.length >= 1) {
+                    patientService.searchByNameOrIdentifier(givenName, 5).then(function (response) {
+
+                        if (response.data) {
+                            console.log(response.data);
+                            messagingService.showMessage("error", "Name exists!");
+                            errorMessage = undefined; 
+                            return $q.when({});
+                        }
+
+                    });
+                }
+
+                return nameMatched;
+
+            }
+
             $scope.create = function () {
+                
+                validatePatientName()
                 addNewRelationships();
+
                 var errorMessages = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
                 if (errorMessages.length > 0) {
                     errorMessages.forEach(function (errorMessage) {
@@ -176,7 +200,9 @@ angular.module('bahmni.registration')
                         errorMessage = undefined;
                     }
                 });
-            };
+
+
+            }
 
             $scope.afterSave = function () {
                 messagingService.showMessage("info", "REGISTRATION_LABEL_SAVED");
