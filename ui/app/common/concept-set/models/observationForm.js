@@ -16,7 +16,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
             var observationFormField = observation.formFieldPath ?
                 Bahmni.Common.Util.FormFieldPathUtil.getFormNameAndVersion(observation.formFieldPath) : null;
             if (observationFormField && observationFormField.formName === formName
-                && observationFormField.formVersion === formVersion) {
+                && observationFormField.formVersion == formVersion) {
                 self.observations.push(observation);
             }
         });

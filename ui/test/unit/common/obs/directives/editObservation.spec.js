@@ -2,7 +2,7 @@
 
 describe("ensure that the directive edit-observation works properly", function () {
     var scope, filter, _spinner, rootScope, httpBackend, compile, q, state, ngDialog, configurations, encounterResponse,
-        encounterServiceMock, contextChangeHandler, auditLogServiceMock, messageServiceMock;
+        encounterServiceMock, contextChangeHandler, auditLogServiceMock, messageServiceMock, formService;
     var html = '<edit-observation  concept-set-name="History and Examinations" observation="observation" ></edit-observation>';
     var observation = {
         encounterUuid: "encounter uuid one"
@@ -47,6 +47,7 @@ describe("ensure that the directive edit-observation works properly", function (
             }
         };
         encounterServiceMock = jasmine.createSpyObj('encounterService', ['findByEncounterUuid', 'create']);
+        formService = jasmine.createSpyObj('formService', ['getAllForms']);
         var encounterPromise = specUtil.createServicePromise('findByEncounterUuid');
         encounterPromise.then = function (successFn) {
             successFn({data: {
@@ -95,6 +96,7 @@ describe("ensure that the directive edit-observation works properly", function (
         $provide.value('ngDialog', ngDialog);
         $provide.value('messagingService', messageServiceMock);
         $provide.value('encounterService', encounterServiceMock);
+        $provide.value('formService', formService);
         $provide.value('configurations', configurations);
         $provide.value('auditLogService', auditLogServiceMock);
     }));

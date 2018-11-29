@@ -6,7 +6,10 @@
                 <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
             </button>
         </div>
-        <div class="concept-set-container" id="scrollOnEdit">
+        <div ng-if="isFormBuilderForm && formDetails.formUuid" class="concept-set-container" id="{{formDetails.formUuid}}">
+            <form-controls form="formDetails" patient='patient' validate-form="false"></form-controls>
+        </div>
+        <div ng-if="!isFormBuilderForm()" class="concept-set-container" id="scrollOnEdit">
             <concept-set  patient="::patient"
                           concept-set-name="::conceptSetName"
                           observations="editableObservations" show-title="::false" ng-if="encounter">

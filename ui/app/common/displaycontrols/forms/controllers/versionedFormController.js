@@ -77,4 +77,12 @@ angular.module('bahmni.common.displaycontrol.forms')
                     }
                 };
             };
+
+            $scope.getEditObsData = function (observation) {
+                return {
+                    observation: observation,
+                    conceptSetName: $scope.getDisplayName(observation),
+                    conceptDisplayName: $scope.getDisplayName(observation)
+                };
+            };
         }]);
