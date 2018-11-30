@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .directive('bahmniObservation', ['encounterService','observationsService', 'appService', '$q', 'spinner', '$rootScope', 'formHierarchyService', '$translate',
-        function (encounterService,observationsService, appService, $q, spinner, $rootScope, formHierarchyService, $translate) {
+    .directive('bahmniObservation', ['encounterService', 'observationsService', 'appService', '$q', 'spinner', '$rootScope', 'formHierarchyService', '$translate',
+        function (encounterService, observationsService, appService, $q, spinner, $rootScope, formHierarchyService, $translate) {
             var controller = function ($scope) {
                 $scope.print = $rootScope.isBeingPrinted || false;
 
@@ -50,13 +50,14 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                 var fetchObservations = function () {
                     if ($scope.config.formType === Bahmni.Common.Constants.forms2Type) {
-                        console.log("FormFieldPath",Bahmni.Common.Util);
                         var getFormNameAndVersion = Bahmni.Common.Util.FormFieldPathUtil.getFormNameAndVersion;
                         encounterService.findByEncounterUuid($scope.config.encounterUuid).then(function (reponse) {
                             var encounterTransaction = reponse.data;
                             var observationsForSelectedForm = encounterTransaction.observations.filter((obs) => {
-                                var obsFormNameAndVersion = getFormNameAndVersion(obs.formFieldPath)
-                                return obsFormNameAndVersion.formName === $scope.config.formName
+                                if (obs.formFieldPath) {
+                                    var obsFormNameAndVersion = getFormNameAndVersion(obs.formFieldPath);
+                                    return obsFormNameAndVersion.formName === $scope.config.formName;
+                                }
                             });
                             mapObservation(observationsForSelectedForm);
                         });

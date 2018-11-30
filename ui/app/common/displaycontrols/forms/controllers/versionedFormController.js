@@ -73,9 +73,8 @@ angular.module('bahmni.common.displaycontrol.forms')
                         showGroupDateTime: false,
                         encounterUuid: data.encounterUuid,
                         observationUuid: data.uuid,
-                        formType : $scope.section.type
-                    },
-                   
+                        formType: $scope.section.type
+                    }
                 };
             };
         }]);
