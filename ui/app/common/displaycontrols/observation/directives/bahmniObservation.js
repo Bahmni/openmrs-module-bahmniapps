@@ -55,7 +55,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                         var getFormNameAndVersion = Bahmni.Common.Util.FormFieldPathUtil.getFormNameAndVersion;
                         encounterService.findByEncounterUuid($scope.config.encounterUuid).then(function (reponse) {
                             var encounterTransaction = reponse.data;
-                            var observationsForSelectedForm = encounterTransaction.observations.filter((obs) => {
+                            var observationsForSelectedForm = _.filter(encounterTransaction.observations, function (obs) {
                                 if (obs.formFieldPath) {
                                     var obsFormNameAndVersion = getFormNameAndVersion(obs.formFieldPath);
                                     return obsFormNameAndVersion.formName === $scope.config.formName;
