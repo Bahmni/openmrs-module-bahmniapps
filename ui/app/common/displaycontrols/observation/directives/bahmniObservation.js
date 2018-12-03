@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .directive('bahmniObservation', ['encounterService', 'observationsService', 'appService', '$q', 'spinner', '$rootScope', 'formHierarchyService', '$translate',
-        function (encounterService, observationsService, appService, $q, spinner, $rootScope, formHierarchyService, $translate) {
+    .directive('bahmniObservation', ['encounterService', 'observationsService', 'appService', '$q', 'spinner', '$rootScope',
+         'formRecordTreeBuildService','$translate',
+        function (encounterService, observationsService, appService, $q, spinner, $rootScope,
+                  formRecordTreeBuildService, $translate) {
             var controller = function ($scope) {
                 $scope.print = $rootScope.isBeingPrinted || false;
 
@@ -44,7 +46,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     });
 
                     if (formObservations.length > 0) {
-                        formHierarchyService.build($scope.bahmniObservations);
+                        formRecordTreeBuildService.build($scope.bahmniObservations);
                     }
                 };
 
