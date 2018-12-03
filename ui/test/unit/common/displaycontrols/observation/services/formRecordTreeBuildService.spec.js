@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 describe("FormRecordTreeBuildService", function () {
     var formRecordTreeBuildService;
@@ -10,7 +10,7 @@ describe("FormRecordTreeBuildService", function () {
     var formDetailDeferred;
     var allFormsDeferred;
 
-    beforeEach(module('bahmni.common.displaycontrol.observation'));
+    beforeEach(module("bahmni.common.displaycontrol.observation"));
     beforeEach(inject(function (_formRecordTreeBuildService_, _$q_, _$rootScope_, _formService_) {
         formRecordTreeBuildService = _formRecordTreeBuildService_;
         formService = _formService_;
@@ -115,7 +115,7 @@ describe("FormRecordTreeBuildService", function () {
         expect(value.groupMembers[0].concept.shortName).toBe("Sickling Test");
     });
 
-    it('should construct obs group for multiple observations from one form', function () {
+    it("should construct obs group for multiple observations from one form", function () {
         var obsOne = {
             "groupMembers": [],
             "formNamespace": "Bahmni",
@@ -143,13 +143,13 @@ describe("FormRecordTreeBuildService", function () {
         expect(observations[0].value.length).toBe(1);
 
         var value = observations[0].value[0];
-        expect(value.concept.shortName).toBe('test');
+        expect(value.concept.shortName).toBe("test");
         expect(value.groupMembers.length).toBe(2);
         expect(value.groupMembers[0].concept.shortName).toBe("HEIGHT");
         expect(value.groupMembers[1].concept.shortName).toBe("head nose lateral");
     });
 
-    it('should construct obs group for obsGroup observations from one form', function () {
+    it("should construct obs group for obsGroup observations from one form", function () {
         var obsGroupOne = {
             "groupMembers": [{
                 "groupMembers": [{
@@ -217,7 +217,7 @@ describe("FormRecordTreeBuildService", function () {
 
         expect(observations[0].value.length).toBe(1);
         var value = observations[0].value[0];
-        expect(value.concept.shortName).toBe('formWithObsGroupAndObs');
+        expect(value.concept.shortName).toBe("formWithObsGroupAndObs");
 
         expect(value.groupMembers.length).toBe(3);
         expect(value.groupMembers[0].concept.shortName).toBe("Vitals");
@@ -229,7 +229,7 @@ describe("FormRecordTreeBuildService", function () {
 
     });
 
-    it('should construct obs group for multiple observations from different form', function () {
+    it("should construct obs group for multiple observations from different form", function () {
         observations = [{
             "key": "1488790440000",
             "value": [{
@@ -268,19 +268,19 @@ describe("FormRecordTreeBuildService", function () {
         expect(observations[0].value.length).toBe(2);
 
         var firstValue = observations[0].value[0];
-        expect(firstValue.concept.shortName).toBe('form');
+        expect(firstValue.concept.shortName).toBe("form");
         expect(firstValue.groupMembers.length).toBe(2);
         expect(firstValue.groupMembers[0].concept.shortName).toBe("HEIGHT");
         expect(firstValue.groupMembers[1].concept.shortName).toBe("head nose lateral");
 
         var secondValue = observations[0].value[1];
-        expect(secondValue.concept.shortName).toBe('formOne');
+        expect(secondValue.concept.shortName).toBe("formOne");
         expect(secondValue.groupMembers.length).toBe(2);
         expect(secondValue.groupMembers[0].concept.shortName).toBe("HEIGHT");
         expect(secondValue.groupMembers[1].concept.shortName).toBe("head nose lateral");
     });
 
-    it('should get form name from form group members', function () {
+    it("should get form name from form group members", function () {
 
         var obsOne = {
             "groupMembers": [],
@@ -309,11 +309,11 @@ describe("FormRecordTreeBuildService", function () {
 
         var formName = formRecordTreeBuildService.getFormName(groupMembers);
 
-        expect(formName).toBe('testSectionWithAnObs');
+        expect(formName).toBe("testSectionWithAnObs");
 
     });
 
-    it('should get form version from form group members', function () {
+    it("should get form version from form group members", function () {
 
         var obsOne = {
             "groupMembers": [],
@@ -342,15 +342,15 @@ describe("FormRecordTreeBuildService", function () {
 
         var formVersion = formRecordTreeBuildService.getFormVersion(groupMembers);
 
-        expect(formVersion).toBe('1');
+        expect(formVersion).toBe("1");
 
     });
 
-    it('should get form information from allFormsResponse data by using form name and form version', function () {
+    it("should get form information from allFormsResponse data by using form name and form version", function () {
 
-        var form = formRecordTreeBuildService.getFormByFormName(allFormsResponse.data, 'test add more', '1');
+        var form = formRecordTreeBuildService.getFormByFormName(allFormsResponse.data, "test add more", "1");
 
-        expect(form.uuid).toBe('f63f4dc6-c591-4d8f-8f33-d6435ebea');
+        expect(form.uuid).toBe("f63f4dc6-c591-4d8f-8f33-d6435ebea");
 
     });
 
@@ -632,12 +632,12 @@ describe("FormRecordTreeBuildService", function () {
         expect(value.groupMembers.length).toBe(2);
 
         var sectionValue = value.groupMembers[0];
-        expect(sectionValue.concept.shortName).toBe('SectionOne');
+        expect(sectionValue.concept.shortName).toBe("SectionOne");
         expect(sectionValue.groupMembers[0].concept.shortName).toBe("WEIGHT");
         expect(sectionValue.groupMembers[0].valueAsString).toBe("54");
 
         var addMoreSection = value.groupMembers[1];
-        expect(addMoreSection.concept.shortName).toBe('SectionAddMore');
+        expect(addMoreSection.concept.shortName).toBe("SectionAddMore");
         expect(addMoreSection.groupMembers[0].concept.shortName).toBe("WEIGHT");
         expect(addMoreSection.groupMembers[0].valueAsString).toBe("55");
 
@@ -1100,16 +1100,16 @@ describe("FormRecordTreeBuildService", function () {
         expect(formGroup.groupMembers.length).toBe(1);
 
         var memberObsGroup = formGroup.groupMembers[0];
-        expect(memberObsGroup.concept.shortName).toBe('ObsGroupOne');
+        expect(memberObsGroup.concept.shortName).toBe("ObsGroupOne");
         expect(memberObsGroup.groupMembers.length).toBe(2);
 
         var memberObsOne = memberObsGroup.groupMembers[0];
-        expect(memberObsOne.concept.shortName).toBe('HEIGHT');
-        expect(memberObsOne.valueAsString).toBe('170.0');
+        expect(memberObsOne.concept.shortName).toBe("HEIGHT");
+        expect(memberObsOne.valueAsString).toBe("170.0");
 
         var memberObsTwo = memberObsGroup.groupMembers[1];
-        expect(memberObsTwo.concept.shortName).toBe('WEIGHT');
-        expect(memberObsTwo.valueAsString).toBe('55.0');
+        expect(memberObsTwo.concept.shortName).toBe("WEIGHT");
+        expect(memberObsTwo.valueAsString).toBe("55.0");
 
     });
 
@@ -1250,16 +1250,16 @@ describe("FormRecordTreeBuildService", function () {
         expect(formGroup.groupMembers.length).toBe(1);
 
         var memberSection = formGroup.groupMembers[0];
-        expect(memberSection.concept.shortName).toBe('SectionOne');
+        expect(memberSection.concept.shortName).toBe("SectionOne");
         expect(memberSection.groupMembers.length).toBe(1);
 
         var memberObsGroup = memberSection.groupMembers[0];
-        expect(memberObsGroup.concept.shortName).toBe('ObsGroupOne');
+        expect(memberObsGroup.concept.shortName).toBe("ObsGroupOne");
         expect(memberObsGroup.groupMembers.length).toBe(2);
 
         var memberObsOne = memberObsGroup.groupMembers[1];
-        expect(memberObsOne.concept.shortName).toBe('WEIGHT');
-        expect(memberObsOne.valueAsString).toBe('55.0');
+        expect(memberObsOne.concept.shortName).toBe("WEIGHT");
+        expect(memberObsOne.valueAsString).toBe("55.0");
 
     });
 
@@ -1439,31 +1439,31 @@ describe("FormRecordTreeBuildService", function () {
         expect(formGroup.groupMembers.length).toBe(2);
 
         var memberSectionOne = formGroup.groupMembers[0];
-        expect(memberSectionOne.concept.shortName).toBe('SectionOne');
+        expect(memberSectionOne.concept.shortName).toBe("SectionOne");
         expect(memberSectionOne.groupMembers.length).toBe(1);
 
         var memberObsGroupOne = memberSectionOne.groupMembers[0];
-        expect(memberObsGroupOne.concept.shortName).toBe('ObsGroupOne');
+        expect(memberObsGroupOne.concept.shortName).toBe("ObsGroupOne");
         expect(memberObsGroupOne.groupMembers.length).toBe(1);
 
         var memberObsOne = memberObsGroupOne.groupMembers[0];
-        expect(memberObsOne.concept.shortName).toBe('HEIGHT');
-        expect(memberObsOne.valueAsString).toBe('170.0');
+        expect(memberObsOne.concept.shortName).toBe("HEIGHT");
+        expect(memberObsOne.valueAsString).toBe("170.0");
 
         var memberSectionTwo = formGroup.groupMembers[1];
-        expect(memberSectionTwo.concept.shortName).toBe('SectionAddMore');
+        expect(memberSectionTwo.concept.shortName).toBe("SectionAddMore");
         expect(memberSectionTwo.groupMembers.length).toBe(1);
 
         var memberObsGroupTwo = memberSectionTwo.groupMembers[0];
-        expect(memberObsGroupTwo.concept.shortName).toBe('ObsGroupOne');
+        expect(memberObsGroupTwo.concept.shortName).toBe("ObsGroupOne");
         expect(memberObsGroupTwo.groupMembers.length).toBe(1);
 
         var memberObsTwo = memberObsGroupTwo.groupMembers[0];
-        expect(memberObsTwo.concept.shortName).toBe('HEIGHT');
-        expect(memberObsTwo.valueAsString).toBe('175.0');
+        expect(memberObsTwo.concept.shortName).toBe("HEIGHT");
+        expect(memberObsTwo.valueAsString).toBe("175.0");
     });
 
-    it('should construct form for section inside section with obs', function () {
+    it("should construct form for section inside section with obs", function () {
         var obsOne = {
             "groupMembers": [],
             "formFieldPath": "sectionInSectionWithObs.1/4-0",
@@ -1608,7 +1608,7 @@ describe("FormRecordTreeBuildService", function () {
 
     });
 
-    it('should construct form for section inside section with obs having add more', function () {
+    it("should construct form for section inside section with obs having add more", function () {
         var obsOne = {
             "groupMembers": [],
             "formFieldPath": "sectionInSectionWithObsAddMore.1/4-0",

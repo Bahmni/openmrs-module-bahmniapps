@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.observation')
     .directive('bahmniObservation', ['encounterService', 'observationsService', 'appService', '$q', 'spinner', '$rootScope',
-         'formRecordTreeBuildService','$translate',
+        'formRecordTreeBuildService', '$translate',
         function (encounterService, observationsService, appService, $q, spinner, $rootScope,
                   formRecordTreeBuildService, $translate) {
             var controller = function ($scope) {
@@ -63,6 +63,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                             });
                             mapObservation(observationsForSelectedForm);
                         });
+                        $scope.title = $scope.config.formName;
                     }
                     else {
                         if ($scope.observations) {

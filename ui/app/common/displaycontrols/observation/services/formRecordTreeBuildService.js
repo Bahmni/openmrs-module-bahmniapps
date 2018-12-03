@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
     .service('formRecordTreeBuildService', ['formService', function (formService) {
@@ -64,7 +64,6 @@ angular.module('bahmni.common.displaycontrol.observation')
                                 forms.push(self.updateObservationsWithRecordTree(metadata, form));
                             }
                             observation.value = forms;
-
                         });
                     });
                 });
@@ -111,7 +110,6 @@ angular.module('bahmni.common.displaycontrol.observation')
                     self.createGroupMembersForForm(record, sectionGroup, obsList);
                     obsGroup.groupMembers.push(sectionGroup);
                 }
-
             });
         };
 
