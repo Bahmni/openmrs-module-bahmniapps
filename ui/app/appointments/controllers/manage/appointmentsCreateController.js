@@ -14,6 +14,8 @@ angular.module('bahmni.appointments')
             $scope.timeRegex = Bahmni.Appointments.Constants.regexForTime;
             $scope.warning = {};
             $scope.minDuration = Bahmni.Appointments.Constants.minDurationForAppointment;
+            var ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
+            var manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
 
             var isCurrentUserHasPrivilege = function (privilege) {
                 return !_.isUndefined(_.find($rootScope.currentUser.privileges, function (currentUserPrivilege) {
@@ -561,5 +563,19 @@ angular.module('bahmni.appointments')
                 $state.go('^', $state.params, {reload: true});
             };
 
+            var isCurrentUserHavePrivilege = function (privilege) {
+                return !_.isUndefined(_.find($rootScope.currentUser.privileges, function (userPrivilege) {
+                    return userPrivilege.name === privilege;
+                }));
+            };
+
+            $scope.isUserAllowedToRemoveProvider = function (providerUuid) {
+                if (isCurrentUserHavePrivilege(ownAppointmentPrivilege) &&
+                    !isCurrentUserHavePrivilege(manageAppointmentPrivilege) &&
+                    $rootScope.currentProvider.uuid !== providerUuid) {
+                    return false;
+                }
+                return $scope.isEditAllowed();
+            };
             return init();
         }]);

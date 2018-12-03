@@ -851,6 +851,50 @@ describe("AppointmentsCreateController", function () {
         expect($state.go).toHaveBeenCalledWith('^', $state.params, {reload: true});
     });
 
+    describe('isUserAllowedToRemoveProvider', function() {
+        it('should allow the user with Manage Own Appointment privilege to remove self from the appointment', function () {
+            var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}]};
+            appointmentCreateConfig.providers = allAvailableProviders;
+
+            rootScope = {
+                currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '2'},
+                currentProvider: {uuid: '2'}
+            };
+
+            createController();
+            expect($scope.isUserAllowedToRemoveProvider('2')).toBeTruthy();
+        });
+
+        it('should not allow the user with Manage Own Appointment privilege to remove other providers from the appointment', function () {
+            var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}]};
+            appointmentCreateConfig.providers = allAvailableProviders;
+
+            rootScope = {
+                currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '2'},
+                currentProvider: {uuid: '2'}
+            };
+
+            createController();
+            expect($scope.isUserAllowedToRemoveProvider('1')).toBeFalsy();
+        });
+
+        it('should allow the user with Manage Appointments privilege to remove other providers from the appointment', function () {
+            var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}]};
+            appointmentCreateConfig.providers = allAvailableProviders;
+
+            rootScope = {
+                currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}], uuid: '2'},
+                currentProvider: {uuid: '2'}
+            };
+
+            createController();
+            expect($scope.isUserAllowedToRemoveProvider('1')).toBeTruthy();
+        });
+    });
+
     describe('isEditAllowed', function () {
 
         it('should not allow edit if it is past appointment irrespective of status', function () {

@@ -105,7 +105,7 @@
                             <li ng-repeat="appProvider in appointment.providers" ng-show="appProvider.response != 'CANCELLED'">
                                 <label>{{ appProvider.name || appProvider.person.display }}</label>
                                 <input type="button" value="{{'APPOINTMENT_PROVIDER_REMOVE_ACTION' | translate }}" ng-click="removeProviderFromAttendees(appProvider)"
-                                 ng-disabled="isEditMode() && !isEditAllowed()"/>
+                                 ng-disabled="isEditMode() && !isUserAllowedToRemoveProvider(appProvider.uuid)"/>
                             </li>
                         </ul>
                     </div>
