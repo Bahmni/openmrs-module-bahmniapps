@@ -93,11 +93,40 @@ angular.module('bahmni.common.displaycontrol.observation')
         self.updateObservationsWithRecordTree = function (metadata, form) {
             var recordTree = getRecordTree(metadata, form.groupMembers);
             recordTree = JSON.parse(JSON.stringify(recordTree));
-            self.createGroupMembersForForm(recordTree, form, form.groupMembers);
+            self.createGroupMembers(recordTree, form, form.groupMembers);
             return form;
         };
 
-        self.createGroupMembersForForm = function (recordTree, obsGroup, obsList) {
+        self.createColumnGroupsForTable = function (record, columns, tableGroup, obsList) {
+            _.forEach(columns, function (column, index) {
+                var obsGroup = {
+                    "groupMembers": [],
+                    "concept": {
+                        "shortName": "",
+                        "conceptClass": null
+                    }
+                };
+                obsGroup.concept.shortName = column.control.value;
+                var columnRecord = self.getColumnObs(index, record);
+                column.children = columnRecord;
+                self.createGroupMembers(column, obsGroup, obsList);
+                if (obsGroup.groupMembers.length > 0) {
+                    tableGroup.groupMembers.push(obsGroup);
+                }
+            });
+        };
+
+        self.getColumnObs = function (columnIndex, record) {
+            var columnChildren = [];
+            _.map(record.children, function (child) {
+                if (child.control.properties && child.control.properties.location.column === columnIndex) {
+                    columnChildren.push(child);
+                }
+            });
+            return columnChildren;
+        };
+
+        self.createGroupMembers = function (recordTree, obsGroup, obsList) {
             _.forEach(recordTree.children, function (record) {
                 if (record.control.type === 'obsControl' || record.control.type === 'obsGroupControl') {
                     var recordObservations = self.getRecordObservations(record.formFieldPath, obsList);
@@ -105,11 +134,23 @@ angular.module('bahmni.common.displaycontrol.observation')
                         obsGroup.groupMembers.push(recordObservation);
                     });
                 }
-                if (record.control.type === 'section') {
-                    var sectionGroup = self.createObsGroupForSection(record);
-                    self.createGroupMembersForForm(record, sectionGroup, obsList);
+                else if (record.control.type === 'section') {
+                    var sectionGroup = self.createObsGroup(record);
+                    self.createGroupMembers(record, sectionGroup, obsList);
                     obsGroup.groupMembers.push(sectionGroup);
                 }
+                else if (record.control.type === "table") {
+                    var tableGroup = self.createObsGroup(record);
+                    var columns = self.getTableColumns(record);
+                    self.createColumnGroupsForTable(record, columns, tableGroup, obsList);
+                    obsGroup.groupMembers.push(tableGroup);
+                }
+            });
+        };
+
+        self.getTableColumns = function (record) {
+            return _.filter(record.children, function (child) {
+                return child.control.type === "label";
             });
         };
 
@@ -119,7 +160,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             });
         };
 
-        self.createObsGroupForSection = function (record) {
+        self.createObsGroup = function (record) {
             var obsGroup = {
                 "groupMembers": [],
                 "concept": {

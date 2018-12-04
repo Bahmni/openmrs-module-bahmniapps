@@ -72,6 +72,16 @@ describe("FormRecordTreeBuildService", function () {
                     "version": "1",
                     "name": "sectionInSectionWithObsAddMore",
                     "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebea"
+                },
+                {
+                    "version": "1",
+                    "name": "tableForm",
+                    "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebea"
+                },
+                {
+                    "version": "2",
+                    "name": "tableForm",
+                    "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebea"
                 }
             ]
         };
@@ -1907,6 +1917,302 @@ describe("FormRecordTreeBuildService", function () {
         var recordObservations = formRecordTreeBuildService.getRecordObservations("sectionInSectionWithObsAddMore.1/2-1/3-0", obsList);
         expect(recordObservations[0]).toBe(obsThree);
         expect(obsList.length).toBe(2);
+    });
+
+    it('should construct form for table with two columns having one obs each', function () {
+        var obsOne = {
+            "groupMembers": [],
+            "formFieldPath": "tableForm.1/4-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "HEIGHT",
+                "dataType": "Numeric",
+                "shortName": "HEIGHT"
+            },
+            "valueAsString": "170.0"
+        };
+        var obsTwo = {
+            "groupMembers": [],
+            "formFieldPath": "tableForm.1/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "WEIGHT",
+                "dataType": "Numeric",
+                "shortName": "WEIGHT"
+            },
+            "valueAsString": "55.0"
+        };
+
+        observations = [{
+            "value": [obsOne, obsTwo]
+        }];
+
+        var formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "sectionInSectionWithObsAddMore"
+                    })
+                }]
+            }
+        };
+
+        var recordTree = {
+            "children": [
+                {
+                    "active": true,
+                    "children": [
+                        {
+                            "active": true,
+                            "control": {
+                                "label": {
+                                    "id": "2",
+                                    "value": "Column1"
+                                },
+                                "value": "Column1",
+                                "type": "label"
+                            },
+                            "formFieldPath": "tableForm.1/2-0",
+                            "showAddMore": false
+                        },
+                        {
+                            "active": true,
+                            "control": {
+                                "label": {
+                                    "id": "3",
+                                    "value": "Column2"
+                                },
+                                "value": "Column2",
+                                "type": "label"
+                            },
+                            "formFieldPath": "tableForm.1/3-0",
+                            "showAddMore": false
+                        },
+                        {
+                            "control": {
+                                "label": {
+                                    "id": "5",
+                                    "value": "WEIGHT",
+                                    "type": "label",
+                                    "units": "(cms)"
+                                },
+                                "type": "obsControl",
+                                "concept": {
+                                    "name": "WEIGHT",
+                                    "units": "(cms)"
+                                },
+                                "id": "5",
+                                "properties": {
+                                    "location": {
+                                        "column": 0,
+                                        "row": 0
+                                    }
+                                }
+                            },
+                            "formFieldPath": "tableForm.1/5-0",
+                            "valueAsString": "55.0"
+                        },
+                        {
+                            "control": {
+                                "concept": {
+                                    "name": "HEIGHT",
+                                    "units": "(cms)"
+                                },
+                                "id": "4",
+                                "label": {
+                                    "id": "4",
+                                    "type": "label",
+                                    "units": "(cms)",
+                                    "value": "HEIGHT"
+                                },
+                                "properties": {
+                                    "location": {
+                                        "column": 1,
+                                        "row": 0
+                                    }
+                                },
+                                "type": "obsControl"
+                            },
+                            "formFieldPath": "tableForm.1/4-0",
+                            "valueAsString": "170.0"
+                        }
+                    ],
+                    "control": {
+                        "label": {
+                            "id": "1",
+                            "value": "Table"
+                        },
+                        "type": "table"
+                    },
+                    "formFieldPath": "tableForm.1/1-0",
+                    "showAddMore": false
+                }
+            ],
+            "formFieldPath": ""
+        };
+
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        window.getRecordTree = function () {
+            return recordTree;
+        };
+
+        formRecordTreeBuildService.build(observations);
+        allFormsDeferred.resolve(allFormsResponse);
+        formDetailDeferred.resolve(formDetails);
+        $scope.$apply();
+
+        var formGroup = observations[0].value[0];
+        expect(formGroup.concept.shortName).toBe("tableForm");
+        expect(formGroup.groupMembers.length).toBe(1);
+
+
+        var tableGroup = formGroup.groupMembers[0];
+        expect(tableGroup.concept.shortName).toBe("Table");
+        expect(tableGroup.groupMembers.length).toBe(2);
+
+        var firstColumnGroup = tableGroup.groupMembers[0];
+        expect(firstColumnGroup.concept.shortName).toBe("Column1");
+        expect(firstColumnGroup.groupMembers.length).toBe(1);
+
+        var obsInColumnOne = firstColumnGroup.groupMembers[0];
+        expect(obsInColumnOne.concept.shortName).toBe("WEIGHT");
+        expect(obsInColumnOne.valueAsString).toBe("55.0");
+
+        var secondColumnGroup = tableGroup.groupMembers[1];
+        expect(secondColumnGroup.concept.shortName).toBe("Column2");
+        expect(secondColumnGroup.groupMembers.length).toBe(1);
+
+        var obsInColumnTwo = secondColumnGroup.groupMembers[0];
+        expect(obsInColumnTwo.concept.shortName).toBe("HEIGHT");
+        expect(obsInColumnTwo.valueAsString).toBe("170.0");
+
+    });
+
+    it('should construct form for table with two columns having one obs in only one column', function () {
+        var obsOne = {
+            "groupMembers": [],
+            "formFieldPath": "tableForm.2/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "WEIGHT",
+                "dataType": "Numeric",
+                "shortName": "WEIGHT"
+            },
+            "valueAsString": "55.0"
+        };
+
+        observations = [{
+            "value": [obsOne]
+        }];
+
+        var formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "sectionInSectionWithObsAddMore"
+                    })
+                }]
+            }
+        };
+
+        var recordTree = {
+            "children": [
+                {
+                    "active": true,
+                    "children": [
+                        {
+                            "active": true,
+                            "control": {
+                                "label": {
+                                    "id": "2",
+                                    "value": "Column1"
+                                },
+                                "value": "Column1",
+                                "type": "label"
+                            },
+                            "formFieldPath": "tableForm.2/2-0",
+                            "showAddMore": false
+                        },
+                        {
+                            "active": true,
+                            "control": {
+                                "label": {
+                                    "id": "3",
+                                    "value": "Column2"
+                                },
+                                "value": "Column2",
+                                "type": "label"
+                            },
+                            "formFieldPath": "tableForm.2/3-0",
+                            "showAddMore": false
+                        },
+                        {
+                            "control": {
+                                "label": {
+                                    "id": "5",
+                                    "value": "WEIGHT",
+                                    "type": "label",
+                                    "units": "(cms)"
+                                },
+                                "type": "obsControl",
+                                "concept": {
+                                    "name": "WEIGHT",
+                                    "units": "(cms)"
+                                },
+                                "id": "5",
+                                "properties": {
+                                    "location": {
+                                        "column": 0,
+                                        "row": 0
+                                    }
+                                }
+                            },
+                            "formFieldPath": "tableForm.2/5-0",
+                            "valueAsString": "55.0"
+                        }
+                    ],
+                    "control": {
+                        "label": {
+                            "id": "1",
+                            "value": "Table"
+                        },
+                        "type": "table"
+                    },
+                    "formFieldPath": "tableForm.2/1-0",
+                    "showAddMore": false
+                }
+            ],
+            "formFieldPath": ""
+        };
+
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        window.getRecordTree = function () {
+            return recordTree;
+        };
+
+        formRecordTreeBuildService.build(observations);
+        allFormsDeferred.resolve(allFormsResponse);
+        formDetailDeferred.resolve(formDetails);
+        $scope.$apply();
+
+        var formGroup = observations[0].value[0];
+        expect(formGroup.concept.shortName).toBe("tableForm");
+        expect(formGroup.groupMembers.length).toBe(1);
+
+        var tableGroup = formGroup.groupMembers[0];
+        expect(tableGroup.concept.shortName).toBe("Table");
+        expect(tableGroup.groupMembers.length).toBe(1);
+
+        var firstColumnGroup = tableGroup.groupMembers[0];
+        expect(firstColumnGroup.concept.shortName).toBe("Column1");
+        expect(firstColumnGroup.groupMembers.length).toBe(1);
+
+        var obsInColumnOne = firstColumnGroup.groupMembers[0];
+        expect(obsInColumnOne.concept.shortName).toBe("WEIGHT");
+        expect(obsInColumnOne.valueAsString).toBe("55.0");
+
     });
 
 });
