@@ -581,6 +581,14 @@ angular.module('bahmni.appointments')
                 return $scope.isEditAllowed();
             };
 
+            $scope.isNoProviderAppointment = function () {
+                return $scope.appointment.providers.length === 0;
+            };
+
+            var isAppointmentWithSomeProviderButNotCurrentUser = function () {
+                return _.isUndefined($scope.isCurrentProviderPartOfAppointment()) && !$scope.isNoProviderAppointment();
+            };
+
             $scope.isCurrentProviderPartOfAppointment = function () {
                 return _.find($scope.appointment.providers, function (provider) {
                     return provider.uuid === $rootScope.currentProvider.uuid;
@@ -589,7 +597,7 @@ angular.module('bahmni.appointments')
 
             $scope.isFieldEditNotAllowed = function () {
                 if ($scope.isUserManageOwnAppointmentPrivilegedOnly() && (isAppointmentWithMultipleProvider()
-                    || _.isUndefined($scope.isCurrentProviderPartOfAppointment()))) {
+                    || isAppointmentWithSomeProviderButNotCurrentUser())) {
                     return true;
                 }
                 return !$scope.isEditAllowed();

@@ -1126,6 +1126,48 @@ describe("AppointmentsCreateController", function () {
         });
     });
 
+    describe('isNoProviderAppointment', function () {
+        it('should return true if appointment does not have any provider', function () {
+            var allAvailableProviders = [{name: 'superman', uuid: '1'}, {
+                name: 'mahmoud_h',
+                uuid: '2'
+            }, {name: 'mahmoud', uuid: '3'}];
+            appointmentCreateConfig.providers = allAvailableProviders;
+            appointmentContext.appointment = {
+                startDateTime: moment().toDate(),
+                status: 'Scheduled',
+                providers: []
+            };
+            rootScope = {
+                currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '3'},
+                currentProvider: {uuid: '3'}
+            };
+            createController();
+
+            expect($scope.isNoProviderAppointment()).toBeTruthy();
+        });
+
+        it('should return false if appointment has any provider', function () {
+            var allAvailableProviders = [{name: 'superman', uuid: '1'}, {
+                name: 'mahmoud_h',
+                uuid: '2'
+            }, {name: 'mahmoud', uuid: '3'}];
+            appointmentCreateConfig.providers = allAvailableProviders;
+            appointmentContext.appointment = {
+                startDateTime: moment().toDate(),
+                status: 'Scheduled',
+                providers: [{name: 'superman', uuid: '1'}]
+            };
+            rootScope = {
+                currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '3'},
+                currentProvider: {uuid: '3'}
+            };
+            createController();
+
+            expect($scope.isNoProviderAppointment()).toBeFalsy();
+        });
+    });
+
     describe('isFieldEditNotAllowed', function () {
         it('should not allow to edit the appointment fields if appointment has multiple providers and logged in user has manage own appointments privilege', function () {
             var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'},{name: 'mahmoud', uuid: '3'}];
