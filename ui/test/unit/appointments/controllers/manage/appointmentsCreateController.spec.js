@@ -1068,4 +1068,61 @@ describe("AppointmentsCreateController", function () {
         expect(appointmentCreateConfig.providers[0].name).toBe("superman");
         expect(appointmentCreateConfig.providers[1].name).toBe("mahmoud_h");
     });
+
+    describe('isCurrentProviderPartOfAppointment', function () {
+        it('should enable notes if current provider is provider for the appointment and has manage own appointments privilege', function () {
+            var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
+            appointmentCreateConfig.providers = allAvailableProviders;
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}]};
+            rootScope = {
+                currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '2'},
+                currentProvider: {uuid: '2'}
+            };
+            createController();
+
+            expect($scope.isCurrentProviderPartOfAppointment()).toBeTruthy();
+        });
+
+        it('should disable notes if current provider is provider for the appointment and has manage own appointments privilege', function () {
+            var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'},{name: 'mahmoud', uuid: '3'}];
+            appointmentCreateConfig.providers = allAvailableProviders;
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}]};
+            rootScope = {
+                currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '3'},
+                currentProvider: {uuid: '3'}
+            };
+            createController();
+
+            expect($scope.isCurrentProviderPartOfAppointment()).toBeFalsy();
+        });
+    });
+
+    describe('isUserManageOwnAppointmentPrivilegedOnly', function () {
+        it('should return true if current provider has only manage own appointment privilege and does not have manage appointment privilege', function () {
+            var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
+            appointmentCreateConfig.providers = allAvailableProviders;
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}]};
+            rootScope = {
+                currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}]},
+                currentProvider: {uuid: '2'}
+            };
+            createController();
+
+            expect($scope.isUserManageOwnAppointmentPrivilegedOnly()).toBeTruthy();
+        });
+
+        it('should return false if current provider does not have only manage own appointment privilege', function () {
+            var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
+            appointmentCreateConfig.providers = allAvailableProviders;
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}]};
+            rootScope = {
+                currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments},
+                        {name: Bahmni.Appointments.Constants.privilegeManageAppointments}]},
+                currentProvider: {uuid: '2'}
+            };
+            createController();
+
+            expect($scope.isUserManageOwnAppointmentPrivilegedOnly()).toBeFalsy();
+        });
+    });
 });

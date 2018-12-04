@@ -568,14 +568,23 @@ angular.module('bahmni.appointments')
                     return userPrivilege.name === privilege;
                 }));
             };
+            $scope.isUserManageOwnAppointmentPrivilegedOnly = function () {
+                return (isCurrentUserHavePrivilege(ownAppointmentPrivilege) &&
+                        !isCurrentUserHavePrivilege(manageAppointmentPrivilege));
+            };
 
             $scope.isUserAllowedToRemoveProvider = function (providerUuid) {
-                if (isCurrentUserHavePrivilege(ownAppointmentPrivilege) &&
-                    !isCurrentUserHavePrivilege(manageAppointmentPrivilege) &&
+                if ($scope.isUserManageOwnAppointmentPrivilegedOnly() &&
                     $rootScope.currentProvider.uuid !== providerUuid) {
                     return false;
                 }
                 return $scope.isEditAllowed();
+            };
+
+            $scope.isCurrentProviderPartOfAppointment = function () {
+                return _.find($scope.appointment.providers, function (provider) {
+                    return provider.uuid === $rootScope.currentProvider.uuid;
+                });
             };
             return init();
         }]);
