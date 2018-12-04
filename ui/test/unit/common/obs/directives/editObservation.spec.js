@@ -209,5 +209,81 @@ describe("ensure that the directive edit-observation works properly", function (
         expect(auditLogServiceMock.log).toHaveBeenCalledWith(compiledScope.patient.uuid, "EDIT_ENCOUNTER", messageParams, "MODULE_LABEL_CLINICAL_KEY");
         expect(compiledScope.encounter.orders.length).toBe(0);
     });
+
+    it('should return false if observation formType is not defined', function () {
+        scope = rootScope.$new();
+        scope.observation = observation;
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+        var compiledEle = compile(html)(scope);
+        var compiledScope = compiledEle.isolateScope();
+        httpBackend.flush();
+        scope.$digest();
+
+        expect(compiledScope.isFormBuilderForm()).toBeFalsy();
+    });
+
+    it('should return true if observation formType is v2', function () {
+        scope = rootScope.$new();
+        scope.observation = observation;
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+        var compiledEle = compile(html)(scope);
+        var compiledScope = compiledEle.isolateScope();
+        httpBackend.flush();
+        scope.observation = Object.assign({}, observation, {formType: 'v2'});
+        scope.$digest();
+
+        expect(compiledScope.isFormBuilderForm()).toBeTruthy();
+    });
+
+    it('should return false if observation formType is not v2', function () {
+        scope = rootScope.$new();
+        scope.observation = observation;
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+        var compiledEle = compile(html)(scope);
+        var compiledScope = compiledEle.isolateScope();
+        httpBackend.flush();
+        scope.observation = Object.assign({}, observation, {formType: 'v3'});
+        scope.$digest();
+
+        expect(compiledScope.isFormBuilderForm()).toBeFalsy();
+    });
+
+    it('should set formDetails for given observation when the observation formType is v2', function () {
+        var allForms = [{name: 'EditForm', version: '3', uuid: 'editFormUuid'}];
+        formService.getAllForms.and.returnValue(specUtil.respondWithPromise(q, {data: allForms}));
+        rootScope.currentUser = {isFavouriteObsTemplate: function(){}};
+        scope = rootScope.$new();
+        scope.observation = Object.assign({}, observation, {formType: 'v2', formName: 'EditForm', formVersion: '3'});
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+
+        var compiledEle = compile(html)(scope);
+        var compiledScope = compiledEle.isolateScope();
+        httpBackend.flush();
+        scope.$digest();
+
+        expect(formService.getAllForms).toHaveBeenCalled();
+        var formDetails = compiledScope.formDetails;
+        expect(formDetails).toBeDefined();
+        expect(formDetails.formName).toBe('EditForm');
+        expect(formDetails.formVersion).toBe('3');
+        expect(formDetails.formUuid).toBe('editFormUuid');
+        expect(formDetails.observations.length).toBe(0);
+    });
+
+    it('should not set formDetails for given observation when the observation formType is not v2', function () {
+        scope = rootScope.$new();
+        scope.observation = Object.assign({}, observation, {formType: 'v3', formName: 'EditForm', formVersion: '3'});
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+
+        var compiledEle = compile(html)(scope);
+        var compiledScope = compiledEle.isolateScope();
+        httpBackend.flush();
+        scope.$digest();
+
+        expect(formService.getAllForms).not.toHaveBeenCalled();
+        expect(compiledScope.formDetails).not.toBeDefined();
+
+    });
+
 });
 

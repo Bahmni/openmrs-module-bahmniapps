@@ -19,10 +19,6 @@ angular.module('bahmni.common.obs')
                     return contextChangeHandler.execute();
                 };
 
-                $scope.isFormBuilderForm = function () {
-                    return $scope.observation.formType === "v2";
-                };
-
                 var init = function () {
                     var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
                         configurations.consultationNoteConcept(), configurations.labOrderNotesConcept());
@@ -48,7 +44,9 @@ angular.module('bahmni.common.obs')
                     });
                 };
 
-                spinner.forPromise(init());
+                $scope.isFormBuilderForm = function () {
+                    return $scope.observation.formType === "v2";
+                };
 
                 var setFormDetails = function () {
                     formService.getAllForms().then(function (response) {
@@ -144,6 +142,8 @@ angular.module('bahmni.common.obs')
                     });
                     return tempOrders;
                 };
+
+                spinner.forPromise(init());
             };
 
             return {
