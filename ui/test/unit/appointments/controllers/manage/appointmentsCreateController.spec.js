@@ -1125,4 +1125,42 @@ describe("AppointmentsCreateController", function () {
             expect($scope.isUserManageOwnAppointmentPrivilegedOnly()).toBeFalsy();
         });
     });
+
+    describe('isFieldEditNotAllowed', function () {
+        it('should not allow to edit the appointment fields if appointment has multiple providers and logged in user has manage own appointments privilege', function () {
+            var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'},{name: 'mahmoud', uuid: '3'}];
+            appointmentCreateConfig.providers = allAvailableProviders;
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}]};
+            rootScope = {
+            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '3'},
+            currentProvider: {uuid: '3'}};
+            createController();
+
+            expect($scope.isFieldEditNotAllowed()).toBeTruthy();
+        });
+
+        it('should allow to edit the appointment fields if appointment has only logged in user having manage own appointments privilege as the provider', function () {
+            var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'},{name: 'mahmoud', uuid: '3'}];
+            appointmentCreateConfig.providers = allAvailableProviders;
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'superman', uuid: '3'} ]};
+            rootScope = {
+                currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '3'},
+                currentProvider: {uuid: '3'}};
+            createController();
+
+            expect($scope.isFieldEditNotAllowed()).toBeFalsy();
+        });
+
+        it('should not allow to edit the appointment fields if logged user has manage own privilege but appointment has other multiple providers', function () {
+            var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'},{name: 'mahmoud', uuid: '3'}];
+            appointmentCreateConfig.providers = allAvailableProviders;
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'mahmoud_h', uuid: '2'}]};
+            rootScope = {
+                currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '3'},
+                currentProvider: {uuid: '3'}};
+            createController();
+
+            expect($scope.isFieldEditNotAllowed()).toBeTruthy();
+        });
+    });
 });

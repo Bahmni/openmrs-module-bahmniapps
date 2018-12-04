@@ -586,5 +586,17 @@ angular.module('bahmni.appointments')
                     return provider.uuid === $rootScope.currentProvider.uuid;
                 });
             };
+
+            $scope.isFieldEditNotAllowed = function () {
+                if ($scope.isUserManageOwnAppointmentPrivilegedOnly() && (isAppointmentWithMultipleProvider()
+                    || _.isUndefined($scope.isCurrentProviderPartOfAppointment()))) {
+                    return true;
+                }
+                return !$scope.isEditAllowed();
+            };
+
+            var isAppointmentWithMultipleProvider = function () {
+                return $scope.appointment.providers.length > 1;
+            };
             return init();
         }]);
