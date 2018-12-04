@@ -282,8 +282,48 @@ describe("ensure that the directive edit-observation works properly", function (
 
         expect(formService.getAllForms).not.toHaveBeenCalled();
         expect(compiledScope.formDetails).not.toBeDefined();
-
     });
 
+    it('should get called for observations from formDetails component when observation formType is v2 while saving', function () {
+        var component = jasmine.createSpyObj('component', ['getValue']);
+        component.getValue.and.returnValue({observations: [{encounterUuid:'9e90667f'}] });
+        scope = rootScope.$new();
+        scope.observation = observation;
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+        var compiledEle = compile(html)(scope);
+        var compiledScope = compiledEle.isolateScope();
+        httpBackend.flush();
+        scope.observation = Object.assign({}, observation, {formType: 'v2', formName: 'EditForm', formVersion: '3'});
+        compiledScope.formDetails = {component: component};
+        scope.$digest();
+
+        expect(component.getValue).not.toHaveBeenCalled();
+
+        compiledScope.save();
+
+        expect(component.getValue).toHaveBeenCalled();
+        expect(component.getValue.calls.count()).toBe(1);
+    });
+
+    it('should not get called for observations from formDetails component when observation formType is not v2 while' +
+        ' saving', function () {
+        var component = jasmine.createSpyObj('component', ['getValue']);
+        component.getValue.and.returnValue({observations: [{encounterUuid:'9e90667f'}] });
+        scope = rootScope.$new();
+        scope.observation = observation;
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+        var compiledEle = compile(html)(scope);
+        var compiledScope = compiledEle.isolateScope();
+        httpBackend.flush();
+        scope.observation = Object.assign({}, observation, {formType: 'v3', formName: 'EditForm', formVersion: '3'});
+        compiledScope.formDetails = {component: component};
+        scope.$digest();
+
+        expect(component.getValue).not.toHaveBeenCalled();
+
+        compiledScope.save();
+
+        expect(component.getValue).not.toHaveBeenCalled();
+    });
 });
 

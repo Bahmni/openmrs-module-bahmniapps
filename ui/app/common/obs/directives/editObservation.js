@@ -108,6 +108,9 @@ angular.module('bahmni.common.obs')
                         var allObservations = updateEditedObservation($scope.encounter.observations);
                         $scope.encounter.observations = [getEditedObservation(allObservations)];
                     }
+                    if ($scope.isFormBuilderForm()) {
+                        $scope.encounter.observations = $scope.formDetails.component.getValue().observations;
+                    }
                     $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
                     $scope.encounter.orders = addOrdersToEncounter();
                     $scope.encounter.extensions = {};
