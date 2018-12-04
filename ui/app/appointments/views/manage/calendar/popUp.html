@@ -25,7 +25,7 @@
         {{scope.appointments[0].endDateTime | bahmniTime}}</p>
     <p class="app-dialog-btn-wrap">
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" style="background: #039BE5"
-                ng-disabled="!patient || !isUserAllowedToPerform()"
+                ng-disabled="!patient"
                 ng-click="navigateTo('edit', scope.patientAppointmentMap[patient.uuid])">
             {{::'EDIT_APPOINTMENT' | translate}}
         </button>
