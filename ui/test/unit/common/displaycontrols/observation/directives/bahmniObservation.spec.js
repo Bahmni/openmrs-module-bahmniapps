@@ -91,7 +91,7 @@ describe("BahmniObservation", function () {
 
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.config).not.toBeUndefined();
-            expect(encounterService.findByEncounterUuid).toHaveBeenCalledWith(scope.config.encounterUuid);
+            expect(encounterService.findByEncounterUuid).toHaveBeenCalledWith(scope.config.encounterUuid, { includeAll : false });
             expect(encounterService.findByEncounterUuid.calls.count()).toEqual(1);
             expect(observationsService.fetch.calls.count()).toEqual(0);
             expect(observationsService.fetchForPatientProgram.calls.count()).toEqual(0);
