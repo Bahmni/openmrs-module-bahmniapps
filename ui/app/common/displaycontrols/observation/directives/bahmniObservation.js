@@ -12,6 +12,16 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                 var mapObservation = function (observations) {
                     var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
+                    _.forEach(observations, function (obs) {
+                        if (obs.type === "Coded" && obs.formFieldPath) {
+                            if (!conceptsConfig[obs.concept.name]) {
+                                conceptsConfig[obs.concept.name] = {multiSelect: true};
+                            }
+                            else {
+                                conceptsConfig[obs.concept.name].multiSelect = true;
+                            }
+                        }
+                    });
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
 
                     if ($scope.config.conceptNames) {
@@ -42,7 +52,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
 
                     var formObservations = _.filter(observations, function (obs) {
-                        return obs.formFieldPath;
+                        return obs.formFieldPath || (obs.type === "multiSelect" && obs.groupMembers[0].formFieldPath);
                     });
 
                     if (formObservations.length > 0) {

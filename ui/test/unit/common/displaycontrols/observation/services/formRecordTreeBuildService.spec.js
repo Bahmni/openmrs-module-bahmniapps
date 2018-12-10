@@ -82,6 +82,16 @@ describe("FormRecordTreeBuildService", function () {
                     "version": "2",
                     "name": "tableForm",
                     "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebea"
+                },
+                {
+                    "version": "1",
+                    "name": "CodedForm",
+                    "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebea"
+                },
+                {
+                    "version": "2",
+                    "name": "CodedForm",
+                    "uuid": "f63f4dc6-c591-4d8f-8f33-d6435ebea"
                 }
             ]
         };
@@ -1841,7 +1851,7 @@ describe("FormRecordTreeBuildService", function () {
         expect(formService.getFormDetail.calls.any()).toBeFalsy();
     });
 
-    it("should not make call to updateObservationsWithRecordTree when no metadata response comes", function(){
+    it("should not make call to updateObservationsWithRecordTree when no metadata response comes", function () {
         var obsOne = {
             "groupMembers": [],
             "formNamespace": "Bahmni",
@@ -1856,8 +1866,7 @@ describe("FormRecordTreeBuildService", function () {
 
         var formDetailsResponse = {
             "data": {
-                "resources": [{
-                }]
+                "resources": [{}]
             }
 
         };
@@ -1876,7 +1885,7 @@ describe("FormRecordTreeBuildService", function () {
 
     });
 
-    it("should remove obs from obsList of given formFieldPath", function(){
+    it("should remove obs from obsList of given formFieldPath", function () {
         var obsOne = {
             "groupMembers": [],
             "formFieldPath": "sectionInSectionWithObsAddMore.1/4-0",
@@ -2213,6 +2222,110 @@ describe("FormRecordTreeBuildService", function () {
         expect(obsInColumnOne.concept.shortName).toBe("WEIGHT");
         expect(obsInColumnOne.valueAsString).toBe("55.0");
 
+    });
+
+    it('should construct form for multiselect coded observation', function () {
+        var obsOne = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.1/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Susceptible"
+        };
+
+        var obsTwo = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.1/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Resistant"
+        };
+
+        var multiSelectObs = {
+            "type": "multiSelect",
+            "concept": {
+                "name": "MD, Medical History",
+                "dataType": "Coded",
+                "shortName": "Medical History",
+                "conceptClass": "Question"
+            },
+            "groupMembers": [obsOne, obsTwo],
+            "conceptConfig": {
+                "multiSelect": true
+            },
+            "providers": []
+        };
+
+        observations = [{
+            "value": [multiSelectObs]
+        }];
+
+        var formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "CodedForm"
+                    })
+                }]
+            }
+        };
+
+        var recordTree = {
+            "formFieldPath": "",
+            "children": [
+                {
+                    "valueMapper": {},
+                    "control": {
+                        "type": "obsControl",
+                        "label": {
+                            "translationKey": "MD,_MEDICAL_HISTORY_6",
+                            "id": "6",
+                            "units": "",
+                            "type": "label",
+                            "value": "MD, Medical History"
+                        },
+                        "properties": {
+                            "multiSelect": true
+                        },
+                        "id": "6",
+                        "concept": {
+                            "name": "MD, Medical History"
+                        }
+                    },
+                    "formFieldPath": "CodedForm.1/5-0",
+                    "showAddMore": true
+                }
+            ]
+        };
+
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        window.getRecordTree = function () {
+            return recordTree;
+        };
+
+        formRecordTreeBuildService.build(observations);
+        allFormsDeferred.resolve(allFormsResponse);
+        formDetailDeferred.resolve(formDetails);
+        $scope.$apply();
+
+        var formGroup = observations[0].value[0];
+        expect(formGroup.concept.shortName).toBe("CodedForm");
+        expect(formGroup.groupMembers.length).toBe(1);
+
+        var obsMemberOne = formGroup.groupMembers[0];
+        expect(obsMemberOne.concept.shortName).toBe("MD, Medical History");
+        expect(obsMemberOne.groupMembers.length).toBe(2);
+        expect(obsMemberOne.groupMembers[0].valueAsString).toBe("Susceptible");
+        expect(obsMemberOne.groupMembers[1].valueAsString).toBe("Resistant");
     });
 
 });

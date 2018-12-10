@@ -5,8 +5,37 @@ angular.module('bahmni.common.displaycontrol.observation')
         var self = this;
 
         self.build = function (bahmniObservations) {
-            var obs = self.createObsGroupForForm(bahmniObservations);
+            var obs = self.preProcessMultipleSelectObsToObs(bahmniObservations);
+            obs = self.createObsGroupForForm(obs);
             updateObservationsWithMetadata(obs);
+        };
+
+        self.preProcessMultipleSelectObsToObs = function (observations) {
+            _.forEach(observations, function (obs) {
+                _.forEach(obs.value, function (value) {
+                    if (value.type === "multiSelect") {
+                        var clonedGroupMembers = _.cloneDeep(value.groupMembers);
+                        _.forEach(clonedGroupMembers, function (member) {
+                            if (member) {
+                                var obsWithSameFormFieldPath = self.getRecordObservations(member.formFieldPath, value.groupMembers);
+                                if (obsWithSameFormFieldPath.length > 1) {
+                                    var multiSelectObject = new Bahmni.Common.Obs.MultiSelectObservation(obsWithSameFormFieldPath, {multiSelect: true});
+                                    multiSelectObject.formFieldPath = obsWithSameFormFieldPath[0].formFieldPath;
+                                    multiSelectObject.encounterUuid = obsWithSameFormFieldPath[0].encounterUuid;
+                                    obs.value.push(multiSelectObject);
+                                }
+                                else if (obsWithSameFormFieldPath.length === 1) {
+                                    obs.value.push(obsWithSameFormFieldPath[0]);
+                                }
+                            }
+                        });
+                    }
+                });
+                _.remove(obs.value, function (member) {
+                    return member.type === "multiSelect" && !member.formFieldPath;
+                });
+            });
+            return observations;
         };
 
         self.createObsGroupForForm = function (observations) {
@@ -30,7 +59,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     obsGroup.encounterUuid = value.encounterUuid;
                     var previousObsGroupFound;
                     _.forEach(newValues, function (newValue) {
-                        if (obsGroup.concept.shortName == newValue.concept.shortName) {
+                        if (obsGroup.concept.shortName === newValue.concept.shortName) {
                             newValue.groupMembers.push(value);
                             previousObsGroupFound = true;
                         }
