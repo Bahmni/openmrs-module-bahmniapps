@@ -30,6 +30,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                             }
                         });
                     }
+                    else if (value.groupMembers.length > 0) {
+                        value = self.preProcessMultipleSelectObsToObs([{"value": value.groupMembers}]);
+                    }
                 });
                 _.remove(obs.value, function (member) {
                     return member.type === "multiSelect" && !member.formFieldPath;
