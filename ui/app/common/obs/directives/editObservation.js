@@ -66,12 +66,16 @@ angular.module('bahmni.common.obs')
                     });
                 };
 
+                var showErrorMessage = function (errMsg) {
+                    var errorMessage = errMsg ? errMsg : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
+                    messagingService.showMessage('error', errorMessage);
+                };
+
                 var isFormValid = function () {
                     var contxChange = contextChange();
                     var shouldAllow = contxChange["allow"];
                     if (!shouldAllow) {
-                        var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
-                        messagingService.showMessage('error', errorMessage);
+                        showErrorMessage(contxChange["errorMessage"]);
                     }
                     return shouldAllow;
                 };
@@ -108,8 +112,14 @@ angular.module('bahmni.common.obs')
                         var allObservations = updateEditedObservation($scope.encounter.observations);
                         $scope.encounter.observations = [getEditedObservation(allObservations)];
                     }
+
                     if ($scope.isFormBuilderForm()) {
-                        $scope.encounter.observations = $scope.formDetails.component.getValue().observations;
+                        var editedObservation = $scope.formDetails.component.getValue();
+                        if (editedObservation.errors) {
+                            showErrorMessage();
+                            return;
+                        }
+                        $scope.encounter.observations = editedObservation.observations;
                     }
                     $scope.encounter.observations = new Bahmni.Common.Domain.ObservationFilter().filter($scope.encounter.observations);
                     $scope.encounter.orders = addOrdersToEncounter();

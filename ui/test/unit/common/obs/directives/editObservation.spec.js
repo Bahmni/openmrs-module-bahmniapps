@@ -325,5 +325,43 @@ describe("ensure that the directive edit-observation works properly", function (
 
         expect(component.getValue).not.toHaveBeenCalled();
     });
+
+    it('should display error message when formDetails component has error', function () {
+        var component = jasmine.createSpyObj('component', ['getValue']);
+        component.getValue.and.returnValue({errors: ["Please Fill Mandatory Field"], observations: [{encounterUuid:'9e9066c'}] });
+        scope = rootScope.$new();
+        scope.observation = observation;
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+        var compiledEle = compile(html)(scope);
+        var compiledScope = compiledEle.isolateScope();
+        scope.observation = Object.assign({}, observation, {formType: 'v2', formName: 'EditForm', formVersion: '3'});
+        compiledScope.formDetails = {component: component};
+        httpBackend.flush();
+        scope.$digest();
+        spyOn(rootScope, '$broadcast');
+
+        compiledScope.save();
+
+        expect(messageServiceMock.showMessage).toHaveBeenCalledWith( 'error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
+    });
+
+    it('should display saveSuccess message when formDetails component has no errors', function () {
+        var component = jasmine.createSpyObj('component', ['getValue']);
+        component.getValue.and.returnValue({observations: [{encounterUuid:'9e90667f'}] });
+        scope = rootScope.$new();
+        scope.observation = observation;
+        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
+        var compiledEle = compile(html)(scope);
+        var compiledScope = compiledEle.isolateScope();
+        scope.observation = Object.assign({}, observation, {formType: 'v2', formName: 'EditForm', formVersion: '3'});
+        compiledScope.formDetails = {component: component};
+        httpBackend.flush();
+        scope.$digest();
+        spyOn(rootScope, '$broadcast');
+
+        compiledScope.save();
+
+        expect(messageServiceMock.showMessage).toHaveBeenCalledWith('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
+    });
 });
 
