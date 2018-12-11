@@ -177,7 +177,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                     var tableGroup = self.createObsGroup(record);
                     var columns = self.getTableColumns(record);
                     self.createColumnGroupsForTable(record, columns, tableGroup, obsList);
-                    obsGroup.groupMembers.push(tableGroup);
+                    if (tableGroup.groupMembers.length > 0) {
+                        obsGroup.groupMembers.push(tableGroup);
+                    }
                 }
             });
         };
