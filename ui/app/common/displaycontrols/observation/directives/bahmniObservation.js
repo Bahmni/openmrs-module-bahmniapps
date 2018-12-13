@@ -10,8 +10,7 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                 $scope.showGroupDateTime = $scope.config.showGroupDateTime !== false;
 
-                var mapObservation = function (observations) {
-                    var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
+                var setMultiSelectToCodedConcept = function (observations, conceptsConfig) {
                     _.forEach(observations, function (obs) {
                         if (obs.type === "Coded" && obs.formFieldPath) {
                             if (!conceptsConfig[obs.concept.name]) {
@@ -21,7 +20,15 @@ angular.module('bahmni.common.displaycontrol.observation')
                                 conceptsConfig[obs.concept.name].multiSelect = true;
                             }
                         }
+                        else if (obs.groupMembers && obs.groupMembers.length > 0) {
+                            setMultiSelectToCodedConcept(obs.groupMembers, conceptsConfig);
+                        }
                     });
+                };
+
+                var mapObservation = function (observations) {
+                    var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
+                    setMultiSelectToCodedConcept(observations, conceptsConfig);
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
 
                     if ($scope.config.conceptNames) {
