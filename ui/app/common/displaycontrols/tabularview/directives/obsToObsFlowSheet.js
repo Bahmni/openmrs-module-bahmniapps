@@ -8,6 +8,11 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
             var patient = $scope.patient;
 
             var getTemplateDisplayName = function () {
+                if ($scope.config.formNames) {
+                    // Todo: Handle it in Edit ObsToObs FlowSheet card
+                    return;
+                }
+
                 return conceptSetService.getConcept({
                     name: $scope.config.templateName,
                     v: "custom:(uuid,names,displayString)"
@@ -36,7 +41,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
                     $scope.config.groupByConcept, $scope.config.orderByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits,
                     $scope.config.initialCount, $scope.config.latestCount, $scope.config.type, $scope.section.startDate,
-                    $scope.section.endDate, $scope.enrollment).success(function (data) {
+                    $scope.section.endDate, $scope.enrollment, $scope.config.formNames).success(function (data) {
                         var obsInFlowSheet = data;
                         var groupByElement = _.find(obsInFlowSheet.headers, function (header) {
                             return header.name === $scope.config.groupByConcept;
