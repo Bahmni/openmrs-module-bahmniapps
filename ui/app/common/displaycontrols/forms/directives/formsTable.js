@@ -103,7 +103,7 @@ angular.module('bahmni.common.displaycontrol.forms')
             return {
                 restrict: 'E',
                 controller: function ($scope, $controller) {
-                    if ($scope.section.type && $scope.section.type === Bahmni.Common.Constants.forms2Type) {
+                    if ($scope.section.type && $scope.section.type === Bahmni.Common.Constants.formBuilderDisplayControlType) {
                         return $controller("versionedFormController", {$scope: $scope});
                     }
                     return defaultController($scope);

@@ -45,7 +45,7 @@ angular.module('bahmni.common.obs')
                 };
 
                 $scope.isFormBuilderForm = function () {
-                    return $scope.observation.formType === "v2";
+                    return $scope.observation.formType === Bahmni.Common.Constants.formBuilderType;
                 };
 
                 var setFormDetails = function () {
