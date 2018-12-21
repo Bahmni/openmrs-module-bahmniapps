@@ -5,40 +5,42 @@ angular.module('bahmni.common.displaycontrol.observation')
         var self = this;
 
         self.build = function (bahmniObservations) {
-            var obs = self.preProcessMultipleSelectObsToObs(bahmniObservations);
-            obs = self.createObsGroupForForm(obs);
+            _.forEach(bahmniObservations, function (obs) {
+                obs.value = self.preProcessMultiSelectObs(obs.value);
+            });
+            var obs = self.createObsGroupForForm(bahmniObservations);
             updateObservationsWithMetadata(obs);
         };
 
-        self.preProcessMultipleSelectObsToObs = function (observations) {
-            _.forEach(observations, function (obs) {
-                _.forEach(obs.value, function (value) {
-                    if (value.type === "multiSelect") {
-                        var clonedGroupMembers = _.cloneDeep(value.groupMembers);
-                        _.forEach(clonedGroupMembers, function (member) {
-                            if (member) {
-                                var obsWithSameFormFieldPath = self.getRecordObservations(member.formFieldPath, value.groupMembers);
-                                if (obsWithSameFormFieldPath.length > 1) {
-                                    var multiSelectObject = new Bahmni.Common.Obs.MultiSelectObservation(obsWithSameFormFieldPath, {multiSelect: true});
-                                    multiSelectObject.formFieldPath = obsWithSameFormFieldPath[0].formFieldPath;
-                                    multiSelectObject.encounterUuid = obsWithSameFormFieldPath[0].encounterUuid;
-                                    obs.value.push(multiSelectObject);
-                                }
-                                else if (obsWithSameFormFieldPath.length === 1) {
-                                    obs.value.push(obsWithSameFormFieldPath[0]);
-                                }
-                            }
-                        });
+        self.createMultiSelectObservation = function (observations) {
+            var multiSelectObject = new Bahmni.Common.Obs.MultiSelectObservation(observations, {multiSelect: true});
+            multiSelectObject.formFieldPath = observations[0].formFieldPath;
+            multiSelectObject.encounterUuid = observations[0].encounterUuid;
+            return multiSelectObject;
+        };
+
+        self.preProcessMultiSelectObs = function (value) {
+            var clonedGroupMembers = _.cloneDeep(value);
+            _.forEach(clonedGroupMembers, function (member) {
+                if (member && member.groupMembers.length === 0) {
+                    var obsWithSameFormFieldPath = self.getRecordObservations(member.formFieldPath, value);
+                    if (obsWithSameFormFieldPath.length > 1) {
+                        var multiSelectObject = self.createMultiSelectObservation(obsWithSameFormFieldPath);
+                        value.push(multiSelectObject);
                     }
-                    else if (value.groupMembers.length > 0) {
-                        value = self.preProcessMultipleSelectObsToObs([{"value": value.groupMembers}]);
+                    else if (obsWithSameFormFieldPath.length === 1) {
+                        value.push(obsWithSameFormFieldPath[0]);
                     }
-                });
-                _.remove(obs.value, function (member) {
-                    return member.type === "multiSelect" && !member.formFieldPath;
-                });
+                }
+                else if (member.groupMembers.length > 0) {
+                    var obsGroups = self.getRecordObservations(member.formFieldPath, value);
+                    _.forEach(obsGroups, function (obsGroup) {
+                        obsGroup.groupMembers = self.preProcessMultiSelectObs(obsGroup.groupMembers);
+                        value.push(obsGroup);
+                    });
+                }
             });
-            return observations;
+            return value;
         };
 
         self.createObsGroupForForm = function (observations) {

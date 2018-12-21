@@ -10,25 +10,10 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                 $scope.showGroupDateTime = $scope.config.showGroupDateTime !== false;
 
-                var setMultiSelectToCodedConcept = function (observations, conceptsConfig) {
-                    _.forEach(observations, function (obs) {
-                        if (obs.type === "Coded" && obs.formFieldPath) {
-                            if (!conceptsConfig[obs.concept.name]) {
-                                conceptsConfig[obs.concept.name] = {multiSelect: true};
-                            }
-                            else {
-                                conceptsConfig[obs.concept.name].multiSelect = true;
-                            }
-                        }
-                        else if (obs.groupMembers && obs.groupMembers.length > 0) {
-                            setMultiSelectToCodedConcept(obs.groupMembers, conceptsConfig);
-                        }
-                    });
-                };
-
                 var mapObservation = function (observations) {
-                    var conceptsConfig = appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
-                    setMultiSelectToCodedConcept(observations, conceptsConfig);
+                    var conceptsConfig = $scope.config.formType === Bahmni.Common.Constants.forms2Type ? {} :
+                        appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
+
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
 
                     if ($scope.config.conceptNames) {
@@ -59,7 +44,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
 
                     var formObservations = _.filter(observations, function (obs) {
-                        return obs.formFieldPath || (obs.type === "multiSelect" && obs.groupMembers[0].formFieldPath);
+                        return obs.formFieldPath;
                     });
 
                     if (formObservations.length > 0) {

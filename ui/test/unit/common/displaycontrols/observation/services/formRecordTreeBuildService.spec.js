@@ -2224,7 +2224,7 @@ describe("FormRecordTreeBuildService", function () {
 
     });
 
-    it('should construct form for multiselect coded observation', function () {
+    it('should construct form for multi select observation', function () {
         var obsOne = {
             "groupMembers": [],
             "formFieldPath": "CodedForm.1/5-0",
@@ -2249,23 +2249,8 @@ describe("FormRecordTreeBuildService", function () {
             "valueAsString": "Resistant"
         };
 
-        var multiSelectObs = {
-            "type": "multiSelect",
-            "concept": {
-                "name": "MD, Medical History",
-                "dataType": "Coded",
-                "shortName": "Medical History",
-                "conceptClass": "Question"
-            },
-            "groupMembers": [obsOne, obsTwo],
-            "conceptConfig": {
-                "multiSelect": true
-            },
-            "providers": []
-        };
-
         observations = [{
-            "value": [multiSelectObs]
+            "value": [obsOne, obsTwo]
         }];
 
         var formDetails = {
@@ -2323,12 +2308,13 @@ describe("FormRecordTreeBuildService", function () {
 
         var obsMemberOne = formGroup.groupMembers[0];
         expect(obsMemberOne.concept.shortName).toBe("MD, Medical History");
+        expect(obsMemberOne.type).toBe("multiSelect");
         expect(obsMemberOne.groupMembers.length).toBe(2);
         expect(obsMemberOne.groupMembers[0].valueAsString).toBe("Susceptible");
         expect(obsMemberOne.groupMembers[1].valueAsString).toBe("Resistant");
     });
 
-    it('should construct form for multiselect coded observation inside obsGroup', function () {
+    it('should construct form for multi select observation inside obsGroup', function () {
         var obsOne = {
             "groupMembers": [],
             "formFieldPath": "CodedForm.1/1-0/5-0",
@@ -2353,21 +2339,6 @@ describe("FormRecordTreeBuildService", function () {
             "valueAsString": "Resistant"
         };
 
-        var multiSelectObs = {
-            "type": "multiSelect",
-            "concept": {
-                "name": "MD, Medical History",
-                "dataType": "Coded",
-                "shortName": "Medical History",
-                "conceptClass": "Question"
-            },
-            "groupMembers": [obsOne, obsTwo],
-            "conceptConfig": {
-                "multiSelect": true
-            },
-            "providers": []
-        };
-
         var obsGroupOne = {
             "type": null,
             "formFieldPath": "CodedForm.1/1-0",
@@ -2378,10 +2349,8 @@ describe("FormRecordTreeBuildService", function () {
                 "conceptClass": "Misc",
                 "set": true
             },
-            "groupMembers": [multiSelectObs]
+            "groupMembers": [obsOne, obsTwo]
         };
-
-
 
         observations = [{
             "value": [obsGroupOne]
@@ -2468,7 +2437,191 @@ describe("FormRecordTreeBuildService", function () {
 
         var obsMemberOne = obsGroup.groupMembers[0];
         expect(obsMemberOne.concept.shortName).toBe("MD, Medical History");
+        expect(obsMemberOne.type).toBe("multiSelect");
         expect(obsMemberOne.groupMembers[0].valueAsString).toBe("Susceptible");
+        expect(obsMemberOne.groupMembers[1].valueAsString).toBe("Resistant");
+    });
+
+    it('should construct form for multi select observation inside obsGroup having add more', function () {
+        var obsOne = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.1/1-0/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Susceptible"
+        };
+
+        var obsTwo = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.1/1-0/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Resistant"
+        };
+
+        var obsThree = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.1/1-1/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Resistant"
+        };
+
+        var obsFour = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.1/1-1/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Susceptible"
+        };
+
+        var obsGroupOne = {
+            "type": null,
+            "formFieldPath": "CodedForm.1/1-0",
+            "concept": {
+                "name": "Obs Group ",
+                "dataType": "N/A",
+                "shortName": "My Obs Group",
+                "conceptClass": "Misc",
+                "set": true
+            },
+            "groupMembers": [obsOne, obsTwo]
+        };
+
+        var obsGroupTwo = {
+            "type": null,
+            "formFieldPath": "CodedForm.1/1-1",
+            "concept": {
+                "name": "Obs Group ",
+                "dataType": "N/A",
+                "shortName": "My Obs Group Add More",
+                "conceptClass": "Misc",
+                "set": true
+            },
+            "groupMembers": [obsThree, obsFour]
+        };
+
+        observations = [{
+            "value": [obsGroupOne, obsGroupTwo]
+        }];
+
+        var formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "CodedForm"
+                    })
+                }]
+            }
+        };
+
+        var recordTree = {
+            "formFieldPath": "",
+            "children": [
+                {
+                    "control": {
+                        "type": "obsGroupControl",
+                        "label": {
+                            "type": "label",
+                            "value": "My Obs Group",
+                            "id": "1"
+                        },
+                        "id": "1",
+                        "children": [
+                            {
+                                "control": {
+                                    "type": "obsControl",
+                                    "concept": {
+                                        "name": "MD, Medical History"
+                                    },
+                                    "label": {
+                                        "type": "label",
+                                        "value": "Resistant",
+                                        "id": "5"
+                                    },
+                                    "id": "5"
+                                },
+                                "formFieldPath": "CodedForm.1/1-0/5-0"
+                            },
+                            {
+                                "control": {
+                                    "type": "obsControl",
+                                    "concept": {
+                                        "name": "MD, Medical History"
+                                    },
+                                    "label": {
+                                        "type": "label",
+                                        "value": "Susceptible",
+                                        "id": "5"
+                                    },
+                                    "id": "5"
+                                },
+                                "formFieldPath": "CodedForm.1/1-0/5-0"
+                            }
+                        ],
+                        "formFieldPath": "CodedForm.1/1-0"
+                    }
+                }
+            ]
+        };
+
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        window.getRecordTree = function () {
+            return recordTree;
+        };
+
+        formRecordTreeBuildService.build(observations);
+        allFormsDeferred.resolve(allFormsResponse);
+        formDetailDeferred.resolve(formDetails);
+        $scope.$apply();
+
+        var formGroup = observations[0].value[0];
+
+        expect(formGroup.concept.shortName).toBe("CodedForm");
+        expect(formGroup.groupMembers.length).toBe(2);
+
+        var obsGroup1 = formGroup.groupMembers[0];
+
+        expect(obsGroup1.concept.shortName).toBe("My Obs Group");
+        expect(obsGroup1.groupMembers.length).toBe(1);
+
+        var multiSelectOne = obsGroup1.groupMembers[0];
+
+        expect(multiSelectOne.concept.shortName).toBe("MD, Medical History");
+        expect(multiSelectOne.type).toBe("multiSelect");
+        expect(multiSelectOne.formFieldPath).toBe("CodedForm.1/1-0/5-0");
+        expect(multiSelectOne.groupMembers[0].valueAsString).toBe("Susceptible");
+        expect(multiSelectOne.groupMembers[1].valueAsString).toBe("Resistant");
+
+        var obsGroup2 = formGroup.groupMembers[1];
+
+        expect(obsGroup2.concept.shortName).toBe("My Obs Group Add More");
+        expect(obsGroup2.groupMembers.length).toBe(1);
+
+        var multiSelectTwo = obsGroup2.groupMembers[0];
+
+        expect(multiSelectTwo.concept.shortName).toBe("MD, Medical History");
+        expect(multiSelectTwo.formFieldPath).toBe("CodedForm.1/1-1/5-0");
+        expect(multiSelectTwo.type).toBe("multiSelect");
+        expect(multiSelectTwo.groupMembers[0].valueAsString).toBe("Resistant");
+        expect(multiSelectTwo.groupMembers[1].valueAsString).toBe("Susceptible");
     });
 
 });
