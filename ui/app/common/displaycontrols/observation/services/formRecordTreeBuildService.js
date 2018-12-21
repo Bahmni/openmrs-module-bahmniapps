@@ -194,7 +194,7 @@ angular.module('bahmni.common.displaycontrol.observation')
 
         self.getRecordObservations = function (obsFormFieldPath, obsList) {
             return _.remove(obsList, function (obs) {
-                return obs.formFieldPath === obsFormFieldPath;
+                return obs.formFieldPath && obs.formFieldPath === obsFormFieldPath;
             });
         };
 
