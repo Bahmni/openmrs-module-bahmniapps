@@ -112,14 +112,14 @@ angular.module('bahmni.common.displaycontrol.observation')
 
         self.getFormName = function (members) {
             var member = _.find(members, function (member) {
-                return member.formFieldPath !== undefined;
+                return member.formFieldPath !== null;
             });
             return member ? member.formFieldPath.split('.')[0] : undefined;
         };
 
         self.getFormVersion = function (members) {
             var member = _.find(members, function (member) {
-                return member.formFieldPath !== undefined;
+                return member.formFieldPath !== null;
             });
             return member ? member.formFieldPath.split('.')[1].split('/')[0] : undefined;
         };

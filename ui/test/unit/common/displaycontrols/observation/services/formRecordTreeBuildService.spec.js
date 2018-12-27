@@ -2624,4 +2624,120 @@ describe("FormRecordTreeBuildService", function () {
         expect(multiSelectTwo.groupMembers[1].valueAsString).toBe("Susceptible");
     });
 
+    it('should return form name when list of form group members are passed', function () {
+        var obsOne = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.1/1-0/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Susceptible"
+        };
+
+        var obsTwo = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.1/1-0/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Resistant"
+        };
+        var members = [obsOne, obsTwo];
+        var formName = formRecordTreeBuildService.getFormName(members);
+        expect(formName).toBe('CodedForm');
+    });
+
+    it('should return form version when list of form group members are passed with form field paths as null', function () {
+        var obsOne = {
+            "groupMembers": [],
+            "formFieldPath": null,
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Susceptible"
+        };
+
+        var obsTwo = {
+            "groupMembers": [],
+            "formFieldPath": null,
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Resistant"
+        };
+        var members = [obsOne, obsTwo];
+        var formName = formRecordTreeBuildService.getFormName(members);
+        expect(formName).toBe(undefined);
+    });
+
+    it('should return form name when list of form group members are passed', function () {
+        var obsOne = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.5/1-0/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Susceptible"
+        };
+
+        var obsTwo = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.5/1-0/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Resistant"
+        };
+        var members = [obsOne, obsTwo];
+        var formVersion = formRecordTreeBuildService.getFormVersion(members);
+        expect(formVersion).toBe('5');
+    });
+
+    it('should return form name when list of form group members are passed with form field paths as null', function () {
+        var obsOne = {
+            "groupMembers": [],
+            "formFieldPath": null,
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Susceptible"
+        };
+
+        var obsTwo = {
+            "groupMembers": [],
+            "formFieldPath": null,
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Resistant"
+        };
+        var members = [obsOne, obsTwo];
+        var formVersion = formRecordTreeBuildService.getFormVersion(members);
+        expect(formVersion).toBe(undefined);
+    });
+
 });
