@@ -61,7 +61,7 @@ angular.module('bahmni.appointments')
                     else if (isCurrentUserHavePrivilege(popUpScope.ownAppointmentPrivilege)) {
                         return _.isEmpty(scope.appointments[0].providers) ||
                             !_.isUndefined(_.find(scope.appointments[0].providers, function (provider) {
-                                return provider.uuid === $rootScope.currentProvider.uuid;
+                                return provider.uuid === $rootScope.currentProvider.uuid && provider.response === "ACCEPTED";
                             }));
                     }
                     return false;

@@ -1168,7 +1168,7 @@ describe('AppointmentsListViewController', function () {
 
             it('should return true if selected appointment providers list has logged user', function () {
                 rootScope.currentProvider = {uuid: 'providerUuid'};
-                scope.selectedAppointment = {providers: [{uuid: 'providerUuid'}]};
+                scope.selectedAppointment = {providers: [{uuid: 'providerUuid', response: 'ACCEPTED'}]};
                 createController();
 
                 expect(scope.isUserAllowedToPerform()).toBeTruthy();

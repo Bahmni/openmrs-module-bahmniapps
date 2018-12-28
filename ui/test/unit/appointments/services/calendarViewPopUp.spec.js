@@ -402,7 +402,7 @@ describe('CalendarViewPopUp', function () {
             var config = {scope: {appointments: [
                         {
                             patient: {uuid: 'patientUuid'},
-                            providers: [{uuid: 'providerUuid'}]
+                            providers: [{uuid: 'providerUuid', response: 'ACCEPTED'}]
                         }
                     ]}};
             rootScope.currentUser = {privileges: [
