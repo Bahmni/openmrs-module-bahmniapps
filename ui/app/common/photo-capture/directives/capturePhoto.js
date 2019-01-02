@@ -72,7 +72,7 @@ angular.module('bahmni.common.photoCapture')
                     navigator.getUserMedia(
                         {video: true, audio: false},
                         function (localMediaStream) {
-                            captureVideo.src = $window.URL.createObjectURL(localMediaStream);
+                            captureVideo.srcObject = localMediaStream;
                             captureActiveStream = localMediaStream;
                             captureDialogElement.dialog('open');
                         },
