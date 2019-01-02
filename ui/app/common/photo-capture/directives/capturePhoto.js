@@ -68,7 +68,17 @@ angular.module('bahmni.common.photoCapture')
                 }
                 dialogOpen = true;
                 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-                if (navigator.getUserMedia) {
+                if (navigator.mediaDevices) {
+                    navigator.mediaDevices.getUserMedia({video: true, audio: false})
+                    .then(function (localMediaStream) {
+                          captureVideo.srcObject = localMediaStream;
+                          captureActiveStream = localMediaStream;
+                          captureDialogElement.dialog('open');
+                      }).catch(function (e) { 
+                        alert("Could not get access to web camera. Please allow access to web camera");
+                      });
+                }
+                else if (navigator.getUserMedia) {
                     navigator.getUserMedia(
                         {video: true, audio: false},
                         function (localMediaStream) {
