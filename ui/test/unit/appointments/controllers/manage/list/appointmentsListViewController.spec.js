@@ -1262,4 +1262,31 @@ describe('AppointmentsListViewController', function () {
         expect(interval.cancel).not.toHaveBeenCalled();
     });
 
+    describe('isEditAllowed', function () {
+        it('should return true if maxAppointmentProviders config value is greater than 1', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'maxAppointmentProviders') {
+                    return 3;
+                }
+                return undefined;
+            });
+            createController();
+
+            expect(scope.isEditAllowed()).toBeTruthy();
+        });
+
+        it('should return false if maxAppointmentProviders config value is 1 and logged provider is not in appointment', function () {
+            rootScope.currentUser = {};
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'maxAppointmentProviders') {
+                    return 1;
+                }
+                return undefined;
+            });
+            createController();
+
+            expect(scope.isEditAllowed()).toBe(false);
+        });
+    });
+
 });

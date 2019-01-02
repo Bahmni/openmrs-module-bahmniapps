@@ -415,6 +415,27 @@ describe('CalendarViewPopUp', function () {
         });
     });
 
+    describe('isEditAllowed', function () {
+        it('should return true if maxAppointmentProviders config value is greater than 1', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return 3;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
 
+            expect(popUpScope.isEditAllowed()).toBeTruthy();
+        });
+
+        it('should return false if maxAppointmentProviders config value is 1 and logged provider is not in appointment', function () {
+            rootScope.currentUser = {};
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return 1;
+            });
+            var config = {scope: {appointments: []}};
+            calendarViewPopUp(config);
+            console.log(popUpScope.isEditAllowed());
+            expect(popUpScope.isEditAllowed()).toBe(false);
+        });
+    });
 
 });

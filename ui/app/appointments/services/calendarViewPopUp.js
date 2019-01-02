@@ -8,6 +8,7 @@ angular.module('bahmni.appointments')
                 var popUpScope = $rootScope.$new();
                 var dialog;
                 var scope = config.scope;
+                var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
                 scope.patientList = scope.appointments.map(function (appt) {
                     return appt.patient;
                 });
@@ -65,6 +66,10 @@ angular.module('bahmni.appointments')
                             }));
                     }
                     return false;
+                };
+
+                popUpScope.isEditAllowed = function () {
+                    return maxAppointmentProviders > 1 ? true : popUpScope.isUserAllowedToPerform();
                 };
 
                 var changeStatus = function (appointment, toStatus, onDate, closeConfirmBox) {

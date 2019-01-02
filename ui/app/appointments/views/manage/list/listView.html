@@ -49,7 +49,8 @@
     </div>
     <div ui-view="content@appointment"></div>
     <fieldset class="appointment-action-btn-container" ng-disabled="!selectedAppointment" ng-class="{'disabled': !selectedAppointment}">
-        <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" ng-click="editAppointment()">
+        <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}" ng-click="editAppointment()"
+        ng-disabled="!isEditAllowed()">
             {{::'EDIT_APPOINTMENT' |translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
