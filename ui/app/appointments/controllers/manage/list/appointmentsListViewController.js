@@ -307,7 +307,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.isValidAction = function (action) {
-                if (!$scope.isUserAllowedToPerform() || !$scope.selectedAppointment) {
+                if (!$scope.isUserAllowedToPerformEdit() || !$scope.selectedAppointment) {
                     return false;
                 }
                 var status = $scope.selectedAppointment.status;
@@ -321,7 +321,7 @@ angular.module('bahmni.appointments')
                 }));
             };
 
-            $scope.isUserAllowedToPerform = function () {
+            $scope.isUserAllowedToPerformEdit = function () {
                 if (isCurrentUserHavePrivilege($scope.manageAppointmentPrivilege)) {
                     return true;
                 }
@@ -335,12 +335,12 @@ angular.module('bahmni.appointments')
             };
 
             $scope.allowUndoCheckIn = function () {
-                return $scope.isUserAllowedToPerform() && $scope.selectedAppointment &&
+                return $scope.isUserAllowedToPerformEdit() && $scope.selectedAppointment &&
                     $scope.selectedAppointment.status === 'CheckedIn';
             };
 
             $scope.isEditAllowed = function () {
-                return maxAppointmentProviders > 1 ? true : $scope.isUserAllowedToPerform();
+                return maxAppointmentProviders > 1 ? true : $scope.isUserAllowedToPerformEdit();
             };
 
             init();

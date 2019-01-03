@@ -55,7 +55,7 @@ angular.module('bahmni.appointments')
                     }));
                 };
 
-                popUpScope.isUserAllowedToPerform = function () {
+                popUpScope.isUserAllowedToPerformEdit = function () {
                     if (isCurrentUserHavePrivilege(popUpScope.manageAppointmentPrivilege)) {
                         return true;
                     }
@@ -69,7 +69,7 @@ angular.module('bahmni.appointments')
                 };
 
                 popUpScope.isEditAllowed = function () {
-                    return maxAppointmentProviders > 1 ? true : popUpScope.isUserAllowedToPerform();
+                    return maxAppointmentProviders > 1 ? true : popUpScope.isUserAllowedToPerformEdit();
                 };
 
                 var changeStatus = function (appointment, toStatus, onDate, closeConfirmBox) {
@@ -117,7 +117,7 @@ angular.module('bahmni.appointments')
                     if (!appointment) {
                         return false;
                     }
-                    if (!popUpScope.isUserAllowedToPerform()) {
+                    if (!popUpScope.isUserAllowedToPerformEdit()) {
                         return false;
                     }
                     var allowedActions = popUpScope.allowedActionsByStatus.hasOwnProperty(appointment.status) ? popUpScope.allowedActionsByStatus[appointment.status] : [];

@@ -364,7 +364,7 @@ describe('CalendarViewPopUp', function () {
 
     });
 
-    describe('isUserAllowedToPerform', function () {
+    describe('isUserAllowedToPerformEdit', function () {
         it('should return true if currentUser has manageAppointments privilege', function () {
             var config = {scope: {appointments: []}};
             rootScope.currentUser = {privileges: [{
@@ -372,7 +372,7 @@ describe('CalendarViewPopUp', function () {
                 }]};
             calendarViewPopUp(config);
 
-            expect(popUpScope.isUserAllowedToPerform()).toBeTruthy();
+            expect(popUpScope.isUserAllowedToPerformEdit()).toBeTruthy();
         });
 
         it('should return false if currentUser does not have manage/ownAppointment privileges', function () {
@@ -380,7 +380,7 @@ describe('CalendarViewPopUp', function () {
             rootScope.currentUser = {privileges: []};
             calendarViewPopUp(config);
 
-            expect(popUpScope.isUserAllowedToPerform()).toBeFalsy();
+            expect(popUpScope.isUserAllowedToPerformEdit()).toBeFalsy();
         });
 
         it('should return true if currentUser has ownAppointment privilege and selected appointment\'s providers list is empty', function () {
@@ -395,7 +395,7 @@ describe('CalendarViewPopUp', function () {
                 ]};
             calendarViewPopUp(config);
 
-            expect(popUpScope.isUserAllowedToPerform()).toBeTruthy();
+            expect(popUpScope.isUserAllowedToPerformEdit()).toBeTruthy();
         });
 
         it('should return true if currentUser has ownAppointment privilege and is the provider in the selected appointment\'s providers list', function () {
@@ -411,7 +411,7 @@ describe('CalendarViewPopUp', function () {
             rootScope.currentProvider = {uuid: 'providerUuid'};
             calendarViewPopUp(config);
 
-            expect(popUpScope.isUserAllowedToPerform()).toBeTruthy();
+            expect(popUpScope.isUserAllowedToPerformEdit()).toBeTruthy();
         });
     });
 

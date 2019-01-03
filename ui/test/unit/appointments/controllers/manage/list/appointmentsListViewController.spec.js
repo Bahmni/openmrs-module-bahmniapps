@@ -1121,7 +1121,7 @@ describe('AppointmentsListViewController', function () {
         });
     });
 
-    describe('isUserAllowedToPerform', function () {
+    describe('isUserAllowedToPerformEdit', function () {
 
         it('should return true if logged user has manageAppointments privilege', function () {
             rootScope.currentUser = {
@@ -1129,7 +1129,7 @@ describe('AppointmentsListViewController', function () {
             };
             createController();
 
-            expect(scope.isUserAllowedToPerform()).toBeTruthy();
+            expect(scope.isUserAllowedToPerformEdit()).toBeTruthy();
         });
 
         it('should return false if logged user does not have manageAppointments or ownAppointments privileges', function () {
@@ -1138,7 +1138,7 @@ describe('AppointmentsListViewController', function () {
             };
             createController();
 
-            expect(scope.isUserAllowedToPerform()).toBeFalsy();
+            expect(scope.isUserAllowedToPerformEdit()).toBeFalsy();
         });
 
         describe('if logged user has ownAppointments privilege', function () {
@@ -1155,7 +1155,7 @@ describe('AppointmentsListViewController', function () {
                 scope.selectedAppointment = undefined;
                 createController();
 
-                expect(scope.isUserAllowedToPerform()).toBeFalsy();
+                expect(scope.isUserAllowedToPerformEdit()).toBeFalsy();
             });
 
             it('should return true if selected appointment providers list is empty', function () {
@@ -1163,7 +1163,7 @@ describe('AppointmentsListViewController', function () {
                 scope.selectedAppointment = {providers: []};
                 createController();
 
-                expect(scope.isUserAllowedToPerform()).toBeTruthy();
+                expect(scope.isUserAllowedToPerformEdit()).toBeTruthy();
             });
 
             it('should return true if selected appointment providers list has logged user', function () {
@@ -1171,7 +1171,7 @@ describe('AppointmentsListViewController', function () {
                 scope.selectedAppointment = {providers: [{uuid: 'providerUuid', response: 'ACCEPTED'}]};
                 createController();
 
-                expect(scope.isUserAllowedToPerform()).toBeTruthy();
+                expect(scope.isUserAllowedToPerformEdit()).toBeTruthy();
             });
 
         });
