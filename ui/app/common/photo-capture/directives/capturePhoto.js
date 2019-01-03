@@ -67,9 +67,18 @@ angular.module('bahmni.common.photoCapture')
                     return;
                 }
                 dialogOpen = true;
-                navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-                if (navigator.getUserMedia) {
-                    navigator.getUserMedia(
+                var navigatorUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+                if (navigator.mediaDevices) {
+                    navigator.mediaDevices.getUserMedia({video: true, audio: false})
+                    .then(function (localMediaStream) {
+                        captureVideo.srcObject = localMediaStream;
+                        captureActiveStream = localMediaStream;
+                        captureDialogElement.dialog('open');
+                    }).catch(function (e) {
+                        alert("Could not get access to web camera. Please allow access to web camera");
+                    });
+                } else if (navigatorUserMedia) {
+                    navigatorUserMedia(
                         {video: true, audio: false},
                         function (localMediaStream) {
                             captureVideo.src = $window.URL.createObjectURL(localMediaStream);
