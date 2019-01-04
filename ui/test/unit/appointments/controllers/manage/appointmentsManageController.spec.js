@@ -40,16 +40,33 @@ describe('AppointmentsManageController', function () {
 
     it("should navigate to appointments tab calendar view if configured", function () {
         state.params = {};
+        state.current = {tabName: 'summary'};
+
         scope.navigateTo('appointments');
+
         expect(state.go).toHaveBeenCalledWith('home.manage.appointments.calendar', state.params, {reload: false});
     });
 
     it("should navigate to appointments tab list view if calendar view is not configured", function () {
         appDescriptor.getConfigValue.and.returnValue(false);
-        createController();
         state.params = {};
+        state.current = {tabName: 'summary'};
+        createController();
+
         scope.navigateTo('appointments');
+
         expect(state.go).toHaveBeenCalledWith('home.manage.appointments.list', state.params, {reload: false});
+    });
+
+    it("should not change appointmentsList tab view if user already in appointmentsList tab", function () {
+        state.params = {};
+        state.current = {tabName: 'list'};
+        createController();
+
+        scope.navigateTo('appointments');
+
+        expect(state.go).not.toHaveBeenCalledWith('home.manage.appointments.calendar', state.params, {reload: false});
+        expect(state.go).not.toHaveBeenCalledWith('home.manage.appointments.list', state.params, {reload: false});
     });
 
     it('should get tabName from state.current', function () {
