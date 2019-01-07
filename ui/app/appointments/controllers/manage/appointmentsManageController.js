@@ -6,12 +6,17 @@ angular.module('bahmni.appointments')
             $scope.enableCalendarView = appService.getAppDescriptor().getConfigValue('enableCalendarView');
 
             $scope.navigateTo = function (viewName) {
-                if (viewName === 'appointments' && ($state.current.tabName === 'calendar' || $state.current.tabName === 'list')) {
+                if (isCurrentAndNextViewAreAppointmentListView(viewName)) {
                     return;
                 }
                 var stateName = 'home.manage.' + ((viewName === 'appointments') ? getAppointmentsTab() : viewName);
                 $state.go(stateName, $state.params, {reload: false});
             };
+
+            var isCurrentAndNextViewAreAppointmentListView = function (viewName) {
+                return viewName === 'appointments' && ($state.current.tabName === 'calendar' || $state.current.tabName === 'list');
+            };
+
             var getAppointmentsTab = function () {
                 return 'appointments.' + ($scope.enableCalendarView ? 'calendar' : 'list');
             };
