@@ -43,6 +43,43 @@ describe('CalendarViewPopUp', function () {
         rootScope.$new.and.returnValue(popUpScope);
     });
 
+    it('should differentiate between appointments when there are group appointments with same patient and same provider while changing the status of appointments', function () {
+        var appointments = [
+            {   uuid: 'appointUuid1',
+                patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"},
+                provider:{uuid:'provider1'},
+                status: 'Scheduled',
+                startDateTime: moment(),
+                endDateTime: moment().add(30, 'minutes')
+
+            },
+            {   uuid: 'appointUuid2',
+                patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"},
+                provider:{uuid:'provider1'},
+                status: 'Scheduled',
+                startDateTime: moment(),
+                endDateTime: moment().add(30, 'minutes'),
+            }
+        ];
+        var toStatus = 'Cancelled';
+        var message = "Successfully changed appointment status to Cancelled";
+        appointmentsService.changeStatus.and.returnValue(specUtil.simplePromise({}));
+        $translate.instant.and.returnValue(message);
+        confirmBox.and.callFake(function (config) {
+            var close = jasmine.createSpy('close');
+            config.scope.yes(close).then(function () {
+                expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointments[0].uuid, toStatus, undefined);
+                expect(appointments[0].status).toBe(toStatus);
+                expect(close).toHaveBeenCalled();
+                expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
+            });
+        });
+        var config = {scope: {appointments: []}};
+        calendarViewPopUp(config);
+        popUpScope.confirmAction(appointments[0], toStatus);
+        popUpScope.confirmAction(appointments[1], 'Scheduled');
+    });
+
     it('should assign appointment when there is a single appointment', function () {
         var appointments = [
             {
