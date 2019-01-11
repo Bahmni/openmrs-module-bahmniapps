@@ -43,24 +43,44 @@ describe('CalendarViewPopUp', function () {
         rootScope.$new.and.returnValue(popUpScope);
     });
 
-    it('construct patients list and group appointments by patients', function () {
+    it('should differentiate between appointments when there are group appointments with same patient and same provider while changing the status of appointments', function () {
         var appointments = [
-            {
-                patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"}
+            {   uuid: 'appointUuid1',
+                patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"},
+                provider:{uuid:'provider1'},
+                status: 'Scheduled',
+                startDateTime: moment(),
+                endDateTime: moment().add(30, 'minutes')
+
             },
-            {
-                patient: {identifier: "GAN102018", name: "patient2", uuid: "96a2b38c-18d8-4603-94cd-e2f806251870"}
+            {   uuid: 'appointUuid2',
+                patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"},
+                provider:{uuid:'provider1'},
+                status: 'Scheduled',
+                startDateTime: moment(),
+                endDateTime: moment().add(30, 'minutes'),
             }
         ];
-        var config = {scope: {appointments: appointments}};
+        var toStatus = 'Cancelled';
+        var message = "Successfully changed appointment status to Cancelled";
+        appointmentsService.changeStatus.and.returnValue(specUtil.simplePromise({}));
+        $translate.instant.and.returnValue(message);
+        confirmBox.and.callFake(function (config) {
+            var close = jasmine.createSpy('close');
+            config.scope.yes(close).then(function () {
+                expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointments[0].uuid, toStatus, undefined);
+                expect(appointments[0].status).toBe(toStatus);
+                expect(close).toHaveBeenCalled();
+                expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
+            });
+        });
+        var config = {scope: {appointments: []}};
         calendarViewPopUp(config);
-        expect(popUpScope.scope.patientList).toEqual([appointments[0].patient, appointments[1].patient]);
-        expect(popUpScope.scope.patientAppointmentMap[appointments[0].patient.uuid]).toBe(appointments[0]);
-        expect(popUpScope.scope.patientAppointmentMap[appointments[1].patient.uuid]).toBe(appointments[1]);
-        expect(popUpScope.patient).toBeUndefined();
+        popUpScope.confirmAction(appointments[0], toStatus);
+        popUpScope.confirmAction(appointments[1], 'Scheduled');
     });
 
-    it('should assign patient when there is a single appointment', function () {
+    it('should assign appointment when there is a single appointment', function () {
         var appointments = [
             {
                 patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"}
@@ -68,7 +88,7 @@ describe('CalendarViewPopUp', function () {
         ];
         var config = {scope: {appointments: appointments}};
         calendarViewPopUp(config);
-        expect(popUpScope.patient).toBe(appointments[0].patient);
+        expect(popUpScope.appointment).toBe(appointments[0]);
     });
 
     it('should open ngDialog with properties', function () {
@@ -127,7 +147,6 @@ describe('CalendarViewPopUp', function () {
         var appointment = {uuid: 'appointUuid', patient: {uuid: 'patientUuid'}};
         var config = {scope: {appointments: [appointment]}};
         calendarViewPopUp(config);
-        popUpScope.patient = {uuid: 'patientUuid'};
         popUpScope.navigateTo('edit', appointment);
         expect(ngDialog.close).toHaveBeenCalledWith(dialog.id, false);
         expect($state.params.uuid).toBe(appointment.uuid);

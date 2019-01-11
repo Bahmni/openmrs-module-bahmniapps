@@ -2,20 +2,20 @@
     <div class="ngdialog-close clearfix"></div>
 
     <p>
-        <label for="patient">
-            <b>{{::'APPOINTMENT_CREATE_PATIENT_NAME' |translate}}:</b> <span ng-if="scope.patientList.length === 1">{{ patient.name }} ({{ patient.identifier }})</span>
+        <label for="appointment">
+            <b>{{::'APPOINTMENT_CREATE_PATIENT_NAME' |translate}}:</b> <span ng-if="scope.appointments.length === 1">{{ appointment.patient.name }} ({{ appointment.patient.identifier }})</span>
         </label>
-        <select id="patient" ng-model="patient" ng-show="scope.patientList.length > 1"
-                ng-options="patient as patient.name + ' (' + patient.identifier + ')' for patient in scope.patientList">
+        <select id="appointment" ng-model="appointment" ng-show="scope.appointments.length > 1"
+                ng-options="appointment as appointment.patient.name + ' (' + appointment.patient.identifier + ')' for appointment in scope.appointments">
             <option value="">{{ ::'PLACEHOLDER_SELECT_PATIENT' | translate}}</option>
         </select>
     </p>
-    <div ng-if="patient">
-        <p><b>{{::'APPOINTMENT_SERVICE' | translate}}:</b> {{scope.patientAppointmentMap[patient.uuid].service.name}}</p>
-        <p ng-show="scope.patientAppointmentMap[patient.uuid].serviceType"><b>{{::'APPOINTMENT_SERVICE_TYPE_FULL' |
-            translate}}:</b> {{scope.patientAppointmentMap[patient.uuid].serviceType.name}}</p>
-        <p ng-show="scope.patientAppointmentMap[patient.uuid].status"><b>{{::'APPOINTMENT_STATUS' | translate}}:</b>
-            {{scope.patientAppointmentMap[patient.uuid].status}}</p>
+    <div ng-if="appointment">
+        <p><b>{{::'APPOINTMENT_SERVICE' | translate}}:</b> {{appointment.service.name}}</p>
+        <p ng-show="appointment.serviceType"><b>{{::'APPOINTMENT_SERVICE_TYPE_FULL' |
+            translate}}:</b> {{appointment.serviceType.name}}</p>
+        <p ng-show="appointment.status"><b>{{::'APPOINTMENT_STATUS' | translate}}:</b>
+            {{appointment.status}}</p>
     </div>
     <p ng-if="scope.appointments[0].providers">
         <b>{{::'APPOINTMENT_PROVIDER' | translate}}:</b> {{getAppointmentProviderNames(scope.appointments[0])}}
@@ -25,32 +25,32 @@
         {{scope.appointments[0].endDateTime | bahmniTime}}</p>
     <p class="app-dialog-btn-wrap">
         <button show-if-privilege="{{manageAppointmentPrivilege}}" style="background: #039BE5"
-                ng-disabled="!patient"
-                ng-click="navigateTo('edit', scope.patientAppointmentMap[patient.uuid])">
+                ng-disabled="!appointment"
+                ng-click="navigateTo('edit', appointment)">
             {{::'EDIT_APPOINTMENT' | translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}}" style="background: #009688"
                 ng-show="isAllowedAction('CheckedIn')"
-                ng-disabled="!patient || !isValidAction(scope.patientAppointmentMap[patient.uuid], 'CheckedIn')"
-                ng-click="checkinAppointment(scope.patientAppointmentMap[patient.uuid])">
+                ng-disabled="!appointment || !isValidAction(appointment, 'CheckedIn')"
+                ng-click="checkinAppointment(appointment)">
             {{::'CHECK_IN_APPOINTMENT' | translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}}" style="background: #43A047"
                 ng-show="isAllowedAction('Completed')"
-                ng-disabled="!patient || !isValidAction(scope.patientAppointmentMap[patient.uuid], 'Completed')"
-                ng-click="confirmAction(scope.patientAppointmentMap[patient.uuid], 'Completed')">
+                ng-disabled="!appointment || !isValidAction(appointment, 'Completed')"
+                ng-click="confirmAction(appointment, 'Completed')">
             {{::'COMPLETE_APPOINTMENT' | translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}}" style="background: #FF9800"
                 ng-show="isAllowedAction('Missed')"
-                ng-disabled="!patient || !isValidAction(scope.patientAppointmentMap[patient.uuid], 'Missed')"
-                ng-click="confirmAction(scope.patientAppointmentMap[patient.uuid], 'Missed')">
+                ng-disabled="!appointment || !isValidAction(appointment, 'Missed')"
+                ng-click="confirmAction(appointment, 'Missed')">
             {{::'MISSED_APPOINTMENT' | translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}}" style="background: #DD2C00"
                 ng-show="isAllowedAction('Cancelled')"
-                ng-disabled="!patient || !isValidAction(scope.patientAppointmentMap[patient.uuid], 'Cancelled')"
-                ng-click="confirmAction(scope.patientAppointmentMap[patient.uuid], 'Cancelled')">
+                ng-disabled="!appointment || !isValidAction(appointment, 'Cancelled')"
+                ng-click="confirmAction(appointment, 'Cancelled')">
             {{::'CANCEL_APPOINTMENT' | translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}}" style="background: #8BC34A"
