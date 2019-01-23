@@ -50,19 +50,21 @@ angular.module('bahmni.registration')
                         };
                     }).value();
                 };
-
+                
+                var isDateTypeAndDefaultValueToday = function (personAttributeType) {
+                    return isDateType(personAttributeType) && isDefaultValueToday(personAttributeType);
+                };
+                
                 var isDateType = function (personAttributeType) {
                     return personAttributeType.format === "org.openmrs.util.AttributableDate";
                 };
 
                 var isDefaultValueToday = function (personAttributeType) {
-                    if (defaults[personAttributeType.name].toUpperCase() === "today".toUpperCase()) {
+                    if (defaults[personAttributeType.name].toLowerCase() === "today") {
                         return true;
                     }
-                    else {
-                        $scope.patient[personAttributeType.name] = '';
-                        return false;
-                    }
+                    $scope.patient[personAttributeType.name] = '';
+                    return false;
                 };
 
                 var setDefaultTodayDate = function (personAttributeType) {
@@ -74,7 +76,7 @@ angular.module('bahmni.registration')
                     .each(setDefaultAnswer).value();
 
                 _.chain(defaultsWithAnswers).filter(isConcept).each(setDefaultConcept).value();
-                _.chain(defaultsWithAnswers).filter(isDateType).filter(isDefaultValueToday).each(setDefaultTodayDate).value();
+                _.chain(defaultsWithAnswers).filter(isDateTypeAndDefaultValueToday).each(setDefaultTodayDate).value();
             };
 
             var expandSectionsWithDefaultValue = function () {
