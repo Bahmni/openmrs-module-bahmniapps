@@ -187,7 +187,6 @@ describe('CreatePatientController', function() {
         });
 
         expect(scopeMock.patient["date"].toLocaleDateString()).toBe(new Date().toLocaleDateString());
-
     });
 
     it("should expand the section if configured true via config", function() {
