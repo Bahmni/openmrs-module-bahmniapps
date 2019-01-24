@@ -131,7 +131,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                     isOnDashboard: "=?",
                     observations: "=?",
                     message: "=?",
-                    enrollment: "=?"
+                    enrollment: "=?",
+                    hasNoHierarchy: "@"
                 }
             };
         }]);
