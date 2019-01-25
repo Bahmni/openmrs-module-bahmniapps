@@ -2,10 +2,10 @@
 
 angular.module('bahmni.appointments')
     .controller('AppointmentsCreateController', ['$scope', '$rootScope', '$q', '$window', '$state', '$translate', 'spinner', 'patientService',
-        'appointmentsService', 'appointmentsServiceService', 'messagingService',
+        'appointmentsService', 'appointmentsServiceService', 'messagingService', 'appointmentCommonService',
         'ngDialog', 'appService', '$stateParams', 'appointmentCreateConfig', 'appointmentContext', '$http', 'sessionService',
         function ($scope, $rootScope, $q, $window, $state, $translate, spinner, patientService, appointmentsService, appointmentsServiceService,
-                  messagingService, ngDialog, appService, $stateParams, appointmentCreateConfig, appointmentContext, $http, sessionService) {
+                  messagingService, appointmentCommonService, ngDialog, appService, $stateParams, appointmentCreateConfig, appointmentContext, $http, sessionService) {
             $scope.isFilterOpen = $stateParams.isFilterOpen;
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
@@ -16,18 +16,13 @@ angular.module('bahmni.appointments')
             $scope.minDuration = Bahmni.Appointments.Constants.minDurationForAppointment;
             var ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
             var manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
-
-            var isCurrentUserHasPrivilege = function (privilege) {
-                return !_.isUndefined(_.find($rootScope.currentUser.privileges, function (currentUserPrivilege) {
-                    return currentUserPrivilege.name === privilege;
-                }));
-            };
+            var currentUserPrivileges = $rootScope.currentUser.privileges;
 
             var getProviderForAppointmentPrivilegeUser = function (providers) {
-                if (isCurrentUserHasPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments)) {
+                if (appointmentCommonService.isCurrentUserHasPrivilege(manageAppointmentPrivilege, currentUserPrivileges)) {
                     return providers;
                 }
-                if (isCurrentUserHasPrivilege(Bahmni.Appointments.Constants.privilegeOwnAppointments)) {
+                if (appointmentCommonService.isCurrentUserHasPrivilege(ownAppointmentPrivilege, currentUserPrivileges)) {
                     return _.filter(providers, function (provider) {
                         return provider.uuid === $rootScope.currentProvider.uuid;
                     });
@@ -563,14 +558,9 @@ angular.module('bahmni.appointments')
                 $state.go('^', $state.params, {reload: true});
             };
 
-            var isCurrentUserHavePrivilege = function (privilege) {
-                return !_.isUndefined(_.find($rootScope.currentUser.privileges, function (userPrivilege) {
-                    return userPrivilege.name === privilege;
-                }));
-            };
             $scope.isUserManageOwnAppointmentPrivilegedOnly = function () {
-                return (isCurrentUserHavePrivilege(ownAppointmentPrivilege) &&
-                        !isCurrentUserHavePrivilege(manageAppointmentPrivilege));
+                return (appointmentCommonService.isCurrentUserHasPrivilege(ownAppointmentPrivilege, currentUserPrivileges) &&
+                        !appointmentCommonService.isCurrentUserHasPrivilege(manageAppointmentPrivilege, currentUserPrivileges));
             };
 
             $scope.isUserAllowedToRemoveProvider = function (providerUuid) {

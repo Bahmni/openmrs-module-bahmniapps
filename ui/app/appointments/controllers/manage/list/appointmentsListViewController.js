@@ -2,9 +2,9 @@
 
 angular.module('bahmni.appointments')
     .controller('AppointmentsListViewController', ['$scope', '$state', '$rootScope', '$translate', '$stateParams', 'spinner',
-        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService', '$interval',
+        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService', 'appointmentCommonService', '$interval',
         function ($scope, $state, $rootScope, $translate, $stateParams, spinner, appointmentsService, appService,
-                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, $interval) {
+                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, appointmentCommonService, $interval) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
@@ -19,6 +19,8 @@ angular.module('bahmni.appointments')
             var autoRefreshStatus = true;
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
             var oldPatientData = [];
+            var currentUserPrivileges = $rootScope.currentUser.privileges;
+            var currentProviderUuId = $rootScope.currentProvider.uuid;
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
             });
@@ -306,41 +308,34 @@ angular.module('bahmni.appointments')
                 return _.includes($scope.allowedActions, action);
             };
 
-            $scope.isValidAction = function (action) {
-                if (!$scope.isUserAllowedToPerformEdit() || !$scope.selectedAppointment) {
-                    return false;
+            $scope.isValidActionAndIsUserAllowedToPerformEdit = function (action) {
+                if (!_.isUndefined($scope.selectedAppointment)) {
+                    var appointmentProvider = $scope.selectedAppointment.providers;
+                    return !appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId)
+                        ? false : isValidAction(action);
                 }
+                return false;
+            };
+
+            var isValidAction = function (action) {
                 var status = $scope.selectedAppointment.status;
                 var allowedActions = $scope.allowedActionsByStatus.hasOwnProperty(status) ? $scope.allowedActionsByStatus[status] : [];
                 return _.includes(allowedActions, action);
             };
 
-            var isCurrentUserHavePrivilege = function (privilege) {
-                return !_.isUndefined(_.find($rootScope.currentUser.privileges, function (userPrivilege) {
-                    return userPrivilege.name === privilege;
-                }));
-            };
-
-            $scope.isUserAllowedToPerformEdit = function () {
-                if (isCurrentUserHavePrivilege($scope.manageAppointmentPrivilege)) {
-                    return true;
-                }
-                else if (isCurrentUserHavePrivilege($scope.ownAppointmentPrivilege) && $scope.selectedAppointment) {
-                    return _.isEmpty($scope.selectedAppointment.providers) ||
-                        !_.isUndefined(_.find($scope.selectedAppointment.providers, function (provider) {
-                            return provider.uuid === $rootScope.currentProvider.uuid && provider.response === "ACCEPTED";
-                        }));
-                }
-                return false;
-            };
-
             $scope.allowUndoCheckIn = function () {
-                return $scope.isUserAllowedToPerformEdit() && $scope.selectedAppointment &&
-                    $scope.selectedAppointment.status === 'CheckedIn';
+                if (!_.isUndefined($scope.selectedAppointment)) {
+                    return appointmentCommonService.isUserAllowedToPerformEdit($scope.selectedAppointment.providers, $rootScope.currentUser.privileges, $rootScope.currentProvider.uuid) && $scope.selectedAppointment &&
+                        $scope.selectedAppointment.status === 'CheckedIn';
+                }
             };
 
             $scope.isEditAllowed = function () {
-                return maxAppointmentProviders > 1 ? true : $scope.isUserAllowedToPerformEdit();
+                if (!_.isUndefined($scope.selectedAppointment)) {
+                    var appointmentProvider = $scope.selectedAppointment.providers;
+                    return maxAppointmentProviders > 1 ? true : appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId);
+                }
+                return false;
             };
 
             init();

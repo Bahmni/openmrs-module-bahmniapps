@@ -2,13 +2,17 @@
 
 angular.module('bahmni.appointments')
     .service('calendarViewPopUp', ['$rootScope', 'ngDialog', '$state', '$translate', 'appointmentsService',
-        'confirmBox', 'checkinPopUp', 'appService', 'messagingService',
-        function ($rootScope, ngDialog, $state, $translate, appointmentsService, confirmBox, checkinPopUp, appService, messagingService) {
+        'confirmBox', 'checkinPopUp', 'appService', 'messagingService', 'appointmentCommonService',
+        function ($rootScope, ngDialog, $state, $translate, appointmentsService, confirmBox, checkinPopUp, appService, messagingService, appointmentCommonService) {
             var calendarViewPopUp = function (config) {
                 var popUpScope = $rootScope.$new();
                 var dialog;
                 var scope = config.scope;
                 var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
+                var appointmentProvider = scope.appointments[0].providers;
+                var currentUserPrivileges = $rootScope.currentUser.privileges;
+                var currentProviderUuId = $rootScope.currentProvider.uuid;
+
                 scope.patientList = scope.appointments.map(function (appt) {
                     return appt.patient;
                 });
@@ -49,27 +53,13 @@ angular.module('bahmni.appointments')
                     closeConfirmBox();
                 };
 
-                var isCurrentUserHavePrivilege = function (privilege) {
-                    return !_.isUndefined(_.find($rootScope.currentUser.privileges, function (userPrivilege) {
-                        return userPrivilege.name === privilege;
-                    }));
-                };
-
                 popUpScope.isUserAllowedToPerformEdit = function () {
-                    if (isCurrentUserHavePrivilege(popUpScope.manageAppointmentPrivilege)) {
-                        return true;
-                    }
-                    else if (isCurrentUserHavePrivilege(popUpScope.ownAppointmentPrivilege)) {
-                        return _.isEmpty(scope.appointments[0].providers) ||
-                            !_.isUndefined(_.find(scope.appointments[0].providers, function (provider) {
-                                return provider.uuid === $rootScope.currentProvider.uuid && provider.response === "ACCEPTED";
-                            }));
-                    }
-                    return false;
+                    return appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId);
                 };
 
                 popUpScope.isEditAllowed = function () {
-                    return maxAppointmentProviders > 1 ? true : popUpScope.isUserAllowedToPerformEdit();
+                    return maxAppointmentProviders > 1 ? true :
+                        appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId);
                 };
 
                 var changeStatus = function (appointment, toStatus, onDate, closeConfirmBox) {
@@ -113,13 +103,13 @@ angular.module('bahmni.appointments')
                     return _.includes(popUpScope.allowedActions, action);
                 };
 
-                popUpScope.isValidAction = function (appointment, action) {
-                    if (!appointment) {
-                        return false;
-                    }
-                    if (!popUpScope.isUserAllowedToPerformEdit()) {
-                        return false;
-                    }
+                popUpScope.isValidActionAndIsUserAllowedToPerformEdit = function (appointment, action) {
+                    return !appointment ? false :
+                        !appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId)
+                            ? false : isValidAction(appointment, action);
+                };
+
+                var isValidAction = function (appointment, action) {
                     var allowedActions = popUpScope.allowedActionsByStatus.hasOwnProperty(appointment.status) ? popUpScope.allowedActionsByStatus[appointment.status] : [];
                     return _.includes(allowedActions, action);
                 };

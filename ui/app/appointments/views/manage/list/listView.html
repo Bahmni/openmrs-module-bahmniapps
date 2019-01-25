@@ -61,25 +61,25 @@
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
                 ng-show="isAllowedAction('CheckedIn')"
-                ng-disabled="!isValidAction('CheckedIn')"
+                ng-disabled="!isValidActionAndIsUserAllowedToPerformEdit('CheckedIn')"
                 ng-click="checkinAppointment()">
                 {{::'CHECK_IN_APPOINTMENT' | translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
                 ng-show="isAllowedAction('Completed')"
-                ng-disabled="!isValidAction('Completed')"
+                ng-disabled="!isValidActionAndIsUserAllowedToPerformEdit('Completed')"
                 ng-click="confirmAction('Completed')">
                 {{::'COMPLETE_APPOINTMENT' |translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
                 ng-show="isAllowedAction('Missed')"
-                ng-disabled="!isValidAction('Missed')"
+                ng-disabled="!isValidActionAndIsUserAllowedToPerformEdit('Missed')"
                 ng-click="confirmAction('Missed')">
                 {{::'MISSED_APPOINTMENT' | translate}}
         </button>
         <button show-if-privilege="{{manageAppointmentPrivilege}},{{ownAppointmentPrivilege}}"
                 ng-show="isAllowedAction('Cancelled')"
-                ng-disabled="!isValidAction('Cancelled')"
+                ng-disabled="!isValidActionAndIsUserAllowedToPerformEdit('Cancelled')"
                 ng-click="confirmAction('Cancelled')">
                 {{::'CANCEL_APPOINTMENT' | translate}}
         </button>
