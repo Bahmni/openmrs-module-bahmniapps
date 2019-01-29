@@ -22,7 +22,7 @@
     <div class="app-filter-speciality">
         <div ivh-treeview="selectedSpecialities"
              ivh-treeview-filter="filterSelectedValues || searchText "
-             ivh-treeview-expand-to-depth="-1"
+             ivh-treeview-expand-to-depth="isCollapsed"
              ivh-treeview-id-attribute="'value'"
              ivh-treeview-on-cb-change="setSelectedSpecialities(ivhTree)"
              ivh-treeview-twistie-expanded-tpl="'-'"
