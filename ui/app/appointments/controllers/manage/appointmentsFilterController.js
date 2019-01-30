@@ -7,7 +7,7 @@ angular.module('bahmni.appointments')
                 $scope.isSpecialityEnabled = appService.getAppDescriptor().getConfigValue('enableSpecialities');
                 $scope.isServiceTypeEnabled = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
                 $scope.isFilterOpen = $state.params.isFilterOpen;
-                $scope.isCollapsed = appService.getAppDescriptor().getConfigValue('collapseServiceFilter') == true ?
+                $scope.expandToDepth = appService.getAppDescriptor().getConfigValue('collapseServiceFilter') == true ?
                     Bahmni.Appointments.Constants.collapseServiceFilter : Bahmni.Appointments.Constants.defaultExpandServiceFilter;
                 $scope.isSearchEnabled = $state.params.isSearchEnabled;
                 $scope.statusList = _.map(Bahmni.Appointments.Constants.appointmentStatusList, function (status) {
@@ -86,7 +86,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.$watch("searchText", function () {
-                if ($scope.isCollapsed == Bahmni.Appointments.Constants.collapseServiceFilter) {
+                if ($scope.expandToDepth == Bahmni.Appointments.Constants.collapseServiceFilter) {
                     expandCollapsedFilter();
                 }
             });
@@ -141,7 +141,7 @@ angular.module('bahmni.appointments')
             };
 
             var collapseExpandedFilterOnFilterReset = function () {
-                if ($scope.isCollapsed == Bahmni.Appointments.Constants.collapseServiceFilter) {
+                if ($scope.expandToDepth == Bahmni.Appointments.Constants.collapseServiceFilter) {
                     ivhTreeviewMgr.collapseRecursive($scope.selectedSpecialities, $scope.selectedSpecialities);
                 }
             };
