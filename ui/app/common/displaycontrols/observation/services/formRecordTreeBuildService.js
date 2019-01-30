@@ -86,6 +86,10 @@ angular.module('bahmni.common.displaycontrol.observation')
                 _.forEach(observations, function (observation) {
                     var forms = [];
                     _.forEach(observation.value, function (form) {
+                        if (form.concept.conceptClass) {
+                            forms.push(form);
+                            return;
+                        }
                         var observationForm = self.getFormByFormName(allForms, self.getFormName(form.groupMembers), self.getFormVersion(form.groupMembers));
                         if (!observationForm) {
                             return;
