@@ -58,14 +58,14 @@ describe('versionedFormController', function () {
         expect(scope.getDisplayName(formData)).toEqual('Test Form');
     });
 
-    it('should set isFormFound to true when data is empty', function () {
-        var formDataObj = {"data": []};
+    it('should set formsNotFound to true when data is empty', function () {
+        const formDataObj = {"data": []};
         mockFormService(formDataObj);
         createController();
         scope.$digest();
 
         expect(formService.getAllPatientForms.calls.count()).toEqual(1);
-        expect(scope.isFormFound).toBe(true);
+        expect(scope.formsNotFound).toBe(true);
     });
 
     it('should filter forms based on formGroup given in config', function () {

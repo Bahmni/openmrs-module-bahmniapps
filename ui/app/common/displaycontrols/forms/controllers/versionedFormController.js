@@ -35,12 +35,11 @@ angular.module('bahmni.common.displaycontrol.forms')
             }
 
             var init = function () {
-                $scope.noFormFoundMessage = "No Form found for this patient";
-                $scope.isFormFound = false;
+                $scope.formsNotFound = false;
                 return $q.all([formService.getAllPatientForms($scope.patient.uuid,
                     $scope.section.dashboardConfig.maximumNoOfVisits, $state.params.enrollment)]).then(function (result) {
                         if (!(result[0] && result[0].data.length)) {
-                            $scope.isFormFound = true;
+                            $scope.formsNotFound = true;
                             $scope.$emit("no-data-present-event");
                         } else {
                             var sortedFormDataByDate = sortFormDataByLatestDate(filterForms(result[0].data));
