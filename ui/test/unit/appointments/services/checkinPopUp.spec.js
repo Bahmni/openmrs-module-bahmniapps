@@ -48,9 +48,8 @@ describe('checkinPopUp', function () {
         spyOn(config.scope, "action");
         checkinPopUp(config);
         popUpScope.time = new Date();
-        var f = function(){};
-        popUpScope.performAction(f);
-        expect(config.scope.action).toHaveBeenCalledWith(popUpScope.time, f);
+        popUpScope.performAction();
+        expect(config.scope.action).toHaveBeenCalled();
     })
 
 });
