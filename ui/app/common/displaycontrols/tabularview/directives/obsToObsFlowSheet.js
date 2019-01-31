@@ -23,7 +23,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                 });
             };
 
-            const removeEmptyRecords = function (records) {
+            var removeEmptyRecords = function (records) {
                 records.headers = _.filter(records.headers, function (header) {
                     return !(_.every(records.rows, function (record) {
                         return _.isEmpty(record.columns[header.name]);
