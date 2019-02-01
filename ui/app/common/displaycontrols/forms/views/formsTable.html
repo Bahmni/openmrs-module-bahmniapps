@@ -8,7 +8,7 @@
         <i class="fa fa-external-link"></i>
     </h2>
     <div>
-        <p class="placeholder-text" ng-if="isFormFound">{{::noFormFoundMessage}}</p>
+        <p class="placeholder-text" ng-if="formsNotFound">{{ 'NO_FORM_FOUND_FOR_PATIENT' | translate }}</p>
         <ul class="form-field" class="ng-isolate-scope" id="visitDisplayTable">
             <li>
                 <div class="placeholder-text" ng-if="formData.length == 0">
@@ -19,15 +19,16 @@
                         <li ng-repeat="data in formData" class="clearfix">
                             <span>{{getDisplayName(data)}}</span>
                        <span class="fr formDataTime" ng-class="{'formDataDate': showFormsDate }">
-                            <span ng-hide="::showFormsDate">{{data.obsDatetime | bahmniDateTime}}</span>
-                            <span ng-show="::showFormsDate">{{data.obsDatetime | bahmniDate}}</span>
-                            <span class="has-link fl formDataEdit"
+                            <span ng-hide="::showFormsDate">{{data.obsDatetime || data.encounterDateTime | bahmniDateTime}}</span>
+                            <span ng-show="::showFormsDate">{{
+                                data.obsDatetime || data.encounterDateTime | bahmniDate}}</span>
+                            <span ng-hide="section.type === 'formsV2'" class="has-link fl formDataEdit"
                                   ng-dialog="../common/displaycontrols/forms/views/showObservationFormData.html"
                                   ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-view"
                                   ng-dialog-data="{{getConfigToFetchDataAndShow(data)}}">
                                 <i class="fa fa-eye"></i>
                             </span>
-                            <span class="has-link fl formDataEdit"
+                            <span ng-hide="section.type === 'formsV2'" class="has-link fl formDataEdit"
                                   ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
                                   ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit"
                                   ng-dialog-data="{{getEditObsData(data)}}"
