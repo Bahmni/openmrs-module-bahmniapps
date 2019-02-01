@@ -10,8 +10,7 @@ ZIP_FILE_NAME=bahmniapps
 mkdir -p $ROOT_DIR/target
 rm -rf $ROOT_DIR/target/${ZIP_FILE_NAME}*.zip
 
-npm install
-bower install
+yarn install
 grunt bundle
 grunt uglify-and-rename
 

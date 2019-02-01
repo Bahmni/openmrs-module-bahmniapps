@@ -556,8 +556,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build', [
-        'npm-install',
-        'bower-install',
+        'yarn-install',
         'bundle'
     ]);
 
@@ -569,19 +568,11 @@ module.exports = function (grunt) {
     grunt.registerTask('dev', ['build', 'test']);
     grunt.registerTask('default', ['bundle', 'uglify-and-rename', 'test', 'preprocess:web']);
     grunt.registerTask('web', ['test', 'preprocess:web']);
-    grunt.registerTask('bower-install', 'install dependencies using bower', function () {
-        var exec = require('child_process').exec;
-        var cb = this.async();
-        exec('bower install', function (err, stdout) {
-            console.log(stdout);
-            cb(!err);
-        });
-    });
 
     grunt.registerTask('npm-install', 'install dependencies using npm', function () {
         var exec = require('child_process').exec;
         var cb = this.async();
-        exec('npm install', function (err, stdout) {
+        exec('yarn install', function (err, stdout) {
             console.log(stdout);
             cb(!err);
         });
