@@ -11,8 +11,8 @@ mkdir -p $ROOT_DIR/target
 rm -rf $ROOT_DIR/target/${ZIP_FILE_NAME}*.zip
 
 yarn install
-grunt bundle
-grunt uglify-and-rename
+yarn run bundle
+yarn run uglify-and-rename
 
 cd $ROOT_DIR
 

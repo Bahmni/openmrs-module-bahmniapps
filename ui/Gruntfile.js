@@ -114,7 +114,7 @@ module.exports = function (grunt) {
         },
         eslint: {
             options: {
-                fix: false,
+                fix: grunt.option('fix'),
                 quiet: true
             },
             target: [
@@ -569,7 +569,7 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['bundle', 'uglify-and-rename', 'test', 'preprocess:web']);
     grunt.registerTask('web', ['test', 'preprocess:web']);
 
-    grunt.registerTask('npm-install', 'install dependencies using npm', function () {
+    grunt.registerTask('yarn-install', 'install dependencies using yarn', function () {
         var exec = require('child_process').exec;
         var cb = this.async();
         exec('yarn install', function (err, stdout) {

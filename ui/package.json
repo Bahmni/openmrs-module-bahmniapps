@@ -102,7 +102,18 @@
   },
   "scripts": {
     "test": "karma start test/config/karma.conf.js",
-    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'app/components', 'junction') } catch (e){ console.info(e.message) } \""
+    "test:watch": "grunt karma:watch",
+    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'app/components', 'junction') } catch (e){ console.info(e.message) } \"",
+    "default": "grunt",
+    "build": "grunt build",
+    "dev": "grunt dev",
+    "clean": "grunt clean",
+    "lint": "grunt eslint",
+    "lint:fix": "grunt eslint --fix=true",
+    "coverage": "grunt coverage",
+    "compass": "grunt compass",
+    "bundle": "grunt bundle",
+    "uglify-and-rename": "grunt uglify-and-rename"
   },
   "repository": {
     "type": "git",
