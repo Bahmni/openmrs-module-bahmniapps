@@ -534,8 +534,6 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.renameTask('regarde', 'watch');
-
     grunt.registerTask('test', ['karma:unit', 'coverage']);
 
     grunt.registerTask('bundle', [
