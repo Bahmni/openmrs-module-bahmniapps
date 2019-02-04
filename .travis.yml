@@ -3,7 +3,6 @@ dist: trusty
 language: node_js
 
 before_install:
-  - node --version
   - npm --version
   - npm config set spin false
 
@@ -14,12 +13,11 @@ before_install:
 
 install:
   - npm install -g yarn
-  - npm install -g grunt-cli
   - gem install compass
   - cd ui && yarn
   - cat npm-debug.log || true
 
-script: grunt bundle && grunt uglify-and-rename && grunt web
+script: yarn run ci
 
 cache:
   directories:

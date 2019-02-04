@@ -113,7 +113,8 @@
     "coverage": "grunt coverage",
     "compass": "grunt compass",
     "bundle": "grunt bundle",
-    "uglify-and-rename": "grunt uglify-and-rename"
+    "uglify-and-rename": "grunt uglify-and-rename",
+    "ci": "grunt bundle && grunt uglify-and-rename && grunt web"
   },
   "repository": {
     "type": "git",
