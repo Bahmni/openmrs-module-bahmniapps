@@ -104,7 +104,7 @@
     "test": "karma start test/config/karma.conf.js",
     "test:watch": "grunt karma:watch",
     "watch": "grunt watch",
-    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'app/components', 'junction') } catch (e){ console.info(e.message) } \"",
+    "postinstall": "node -e \"try { require('fs').symlinkSync('../node_modules/@bower_components', 'app/components', 'junction') } catch (e){ console.info(e.message) } \"",
     "default": "grunt",
     "build": "grunt build",
     "dev": "grunt dev",
