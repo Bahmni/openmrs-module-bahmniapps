@@ -40,16 +40,16 @@
         <i class="fa fa-comments left"></i>
         <pre class="left">{{ test.notes }}</pre>
         <div class="footer-note right">
-            <span>{{ test.accessionDateTime | bahmniDate}}&nbsp;</span>
-            <span class="provider" ng-show="test.provider" bo-text="test.provider"></span>
+            <span ng-show="test.provider" bo-text="test.provider">&nbsp;</span>
+            <span>{{ test.resultDateTime | bahmniDateTime}}</span>
         </div>
     </td>
 </tr>
 <tr ng-if="test.showDetails">
     <td colspan="3" class="notes inline-notes">
         <div class="footer-note right">
-            <span>{{ test.accessionDateTime | bahmniDate}}&nbsp;</span>
-            <span class="provider" ng-show="test.provider" bo-text="test.provider"></span>
+            <span ng-show="test.provider" bo-text="test.provider">&nbsp;</span>
+            <span>{{ test.resultDateTime | bahmniDateTime}}</span>
         </div>
     </td>
 </tr>
