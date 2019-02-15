@@ -14,6 +14,8 @@ angular.module('bahmni.appointments')
                 return _.isEmpty(appointmentProviders) ||
                     !_.isUndefined(_.find(appointmentProviders, function (provider) {
                         return provider.uuid === currentProviderUuId && provider.response === "ACCEPTED";
+                    })) || _.isUndefined(_.find(appointmentProviders, function (provider) {
+                        return provider.response == "ACCEPTED";
                     }));
             };
 
