@@ -9,7 +9,7 @@ angular.module('bahmni.appointments')
                 var dialog;
                 var scope = config.scope;
                 var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
-                var appointmentProvider = scope.appointments[0].providers;
+                var appointmentProviders = scope.appointments[0].providers;
                 var currentUserPrivileges = $rootScope.currentUser.privileges;
                 var currentProviderUuId = $rootScope.currentProvider.uuid;
 
@@ -45,12 +45,12 @@ angular.module('bahmni.appointments')
                 };
 
                 popUpScope.isUserAllowedToPerformEdit = function () {
-                    return appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId);
+                    return appointmentCommonService.isUserAllowedToPerformEdit(appointmentProviders, currentUserPrivileges, currentProviderUuId);
                 };
 
                 popUpScope.isEditAllowed = function () {
                     return maxAppointmentProviders > 1 ? true :
-                        appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId);
+                        appointmentCommonService.isUserAllowedToPerformEdit(appointmentProviders, currentUserPrivileges, currentProviderUuId);
                 };
 
                 var changeStatus = function (appointment, toStatus, onDate, closeConfirmBox) {
@@ -96,7 +96,7 @@ angular.module('bahmni.appointments')
 
                 popUpScope.isValidActionAndIsUserAllowedToPerformEdit = function (appointment, action) {
                     return !appointment ? false :
-                        !appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId)
+                        !appointmentCommonService.isUserAllowedToPerformEdit(appointmentProviders, currentUserPrivileges, currentProviderUuId)
                             ? false : isValidAction(appointment, action);
                 };
 

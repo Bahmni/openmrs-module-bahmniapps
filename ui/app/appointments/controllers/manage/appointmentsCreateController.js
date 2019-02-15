@@ -14,15 +14,12 @@ angular.module('bahmni.appointments')
             $scope.timeRegex = Bahmni.Appointments.Constants.regexForTime;
             $scope.warning = {};
             $scope.minDuration = Bahmni.Appointments.Constants.minDurationForAppointment;
-            var ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
-            var manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
-            var currentUserPrivileges = $rootScope.currentUser.privileges;
 
-            var getProviderForAppointmentPrivilegeUser = function (providers) {
-                if (appointmentCommonService.isCurrentUserHasPrivilege(manageAppointmentPrivilege, currentUserPrivileges)) {
+            var providerListForCurrentUser = function (providers) {
+                if (appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments, $rootScope.currentUser.privileges)) {
                     return providers;
                 }
-                if (appointmentCommonService.isCurrentUserHasPrivilege(ownAppointmentPrivilege, currentUserPrivileges)) {
+                if (appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeOwnAppointments, $rootScope.currentUser.privileges)) {
                     return _.filter(providers, function (provider) {
                         return provider.uuid === $rootScope.currentProvider.uuid;
                     });
@@ -31,7 +28,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.appointmentCreateConfig = appointmentCreateConfig;
-            $scope.appointmentCreateConfig.providers = getProviderForAppointmentPrivilegeUser(appointmentCreateConfig.providers);
+            $scope.appointmentCreateConfig.providers = providerListForCurrentUser(appointmentCreateConfig.providers);
             $scope.enableEditService = appService.getAppDescriptor().getConfigValue('isServiceOnAppointmentEditable');
             $scope.showStartTimes = [];
             $scope.showEndTimes = [];
@@ -559,8 +556,8 @@ angular.module('bahmni.appointments')
             };
 
             $scope.isUserManageOwnAppointmentPrivilegedOnly = function () {
-                return (appointmentCommonService.isCurrentUserHasPrivilege(ownAppointmentPrivilege, currentUserPrivileges) &&
-                        !appointmentCommonService.isCurrentUserHasPrivilege(manageAppointmentPrivilege, currentUserPrivileges));
+                return (appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeOwnAppointments, $rootScope.currentUser.privileges) &&
+                        !appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments, $rootScope.currentUser.privileges));
             };
 
             $scope.isUserAllowedToRemoveProvider = function (providerUuid) {

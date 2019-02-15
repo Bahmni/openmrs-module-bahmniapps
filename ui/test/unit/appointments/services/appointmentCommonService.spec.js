@@ -11,17 +11,17 @@ describe('AppointmentCommonService', function () {
         appointmentCommonService = appointmentCommonServiceInjected;
     }]));
 
-    describe('isCurrentUserHasPrivilege', function () {
+    describe('isCurrentUserHavingPrivilege', function () {
         it('should return true if current user does not have the given privilege ', function () {
             var privilege = 'testPrivilege';
             var currentUserPrivileges = [{name: Bahmni.Appointments.Constants.privilegeManageAppointments},
                 {name: 'testPrivilege'}];
-            expect(appointmentCommonService.isCurrentUserHasPrivilege(privilege, currentUserPrivileges)).toBeTruthy();
+            expect(appointmentCommonService.isCurrentUserHavingPrivilege(privilege, currentUserPrivileges)).toBeTruthy();
         });
         it('should return false if current user does not have the given privilege ', function () {
             var privilege = 'testPrivilege';
             var currentUserPrivileges = [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}];
-            expect(appointmentCommonService.isCurrentUserHasPrivilege(privilege, currentUserPrivileges)).toBeFalsy();
+            expect(appointmentCommonService.isCurrentUserHavingPrivilege(privilege, currentUserPrivileges)).toBeFalsy();
         });
     });
 
