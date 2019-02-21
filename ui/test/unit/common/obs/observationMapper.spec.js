@@ -197,4 +197,73 @@ describe("ObservationMapper", function () {
 
     });
 
+    it("should not group form one and form two multiSelect Obs", function () {
+        var bahmniObservations = [
+            {
+                "observationDateTime": "2014-10-20T11:30:47.000+0530", "value": {
+                    "shortName": null, "uuid": "4040c132-a66e-42ba-8359-5624747f34e3",
+                    "name": "Invasive Lobular Carcinoma", "conceptClass": "Misc", "dataType": "N/A"
+                }, "type": "Coded",
+                "concept": {
+                    "name": "Pathologic Diagnosis",
+                    "set": false,
+                    "units": null,
+                    "conceptClass": "Misc",
+                    "dataType": "Coded"
+                }
+            },
+            {
+                "observationDateTime": "2014-10-20T11:30:47.000+0530", "value": {
+                    "shortName": null, "uuid": "4040c132-a66e-42ba-8359-5624747f34e3",
+                    "name": "Invasive Ductal Carcinoma", "conceptClass": "Misc", "dataType": "N/A"
+                }, "type": "Coded",
+                "concept": {
+                    "name": "Pathologic Diagnosis",
+                    "set": false,
+                    "units": null,
+                    "conceptClass": "Misc",
+                    "dataType": "Coded"
+                }
+            },
+            {
+                "observationDateTime": "2014-10-20T11:30:47.000+0530", "value": {
+                    "shortName": null, "uuid": "4040c132-a66e-42ba-8359-5624747f34e3",
+                    "name": "Invasive Lobular Carcinoma", "conceptClass": "Misc", "dataType": "N/A"
+                }, "type": "Coded",
+                "concept": {
+                    "name": "Pathologic Diagnosis",
+                    "set": false,
+                    "units": null,
+                    "conceptClass": "Misc",
+                    "dataType": "Coded"
+                },
+                "formFieldPath": "form2.1/2-0"
+            },
+            {
+                "observationDateTime": "2014-10-20T11:30:47.000+0530", "value": {
+                    "shortName": null, "uuid": "4040c132-a66e-42ba-8359-5624747f34e3",
+                    "name": "Invasive Ductal Carcinoma", "conceptClass": "Misc", "dataType": "N/A"
+                }, "type": "Coded",
+                "concept": {
+                    "name": "Pathologic Diagnosis",
+                    "set": false,
+                    "units": null,
+                    "conceptClass": "Misc",
+                    "dataType": "Coded"
+                },
+                "formFieldPath": "form2.1/2-0"
+            }
+        ];
+        var mappedObservation = new ObservationMapper().map(bahmniObservations,
+            {"Pathologic Diagnosis": {"multiSelect": true}});
+        expect(mappedObservation.length).toBe(3);
+        expect(mappedObservation[0] instanceof Bahmni.Common.Obs.MultiSelectObservation).toBe(true);
+        expect(mappedObservation[0].groupMembers.length).toBe(2);
+        expect(mappedObservation[1] instanceof Bahmni.Common.Obs.Observation).toBe(true);
+        expect(mappedObservation[1].groupMembers.length).toBe(0);
+        expect(mappedObservation[1].formFieldPath).toBe("form2.1/2-0");
+        expect(mappedObservation[2] instanceof Bahmni.Common.Obs.Observation).toBe(true);
+        expect(mappedObservation[2].groupMembers.length).toBe(0);
+        expect(mappedObservation[2].formFieldPath).toBe("form2.1/2-0");
+    });
 });

@@ -28,7 +28,7 @@ Bahmni.Common.Obs.ObservationMapper = function () {
 
     var mapUIObservations = function (observations, allConceptsConfig) {
         var groupedObservations = _.groupBy(observations, function (observation) {
-            return observation + "#" + observation.concept.name;
+            return observation.formFieldPath + "#" + observation.concept.name;
         });
         var mappedObservations = [];
         $.each(groupedObservations, function (i, obsGroup) {
