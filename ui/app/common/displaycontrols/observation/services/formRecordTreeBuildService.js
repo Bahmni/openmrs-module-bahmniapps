@@ -144,7 +144,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                         "conceptClass": null
                     }
                 };
-                obsGroup.concept.shortName = column.control.value;
+                obsGroup.concept.shortName = column.value;
                 var columnRecord = self.getColumnObs(index, record);
                 column.children = columnRecord;
                 self.createGroupMembers(column, obsGroup, obsList);
@@ -181,7 +181,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                 }
                 else if (record.control.type === "table") {
                     var tableGroup = self.createObsGroup(record);
-                    var columns = self.getTableColumns(record);
+                    var columns = record.control.columnHeaders;
                     self.createColumnGroupsForTable(record, columns, tableGroup, obsList);
                     if (tableGroup.groupMembers.length > 0) {
                         obsGroup.groupMembers.push(tableGroup);
@@ -191,8 +191,8 @@ angular.module('bahmni.common.displaycontrol.observation')
         };
 
         self.getTableColumns = function (record) {
-            return _.filter(record.children, function (child) {
-                return child.control.type === "label";
+            return _.filter(record.control.columnHeaders, function (child) {
+                return child.type === "label";
             });
         };
 

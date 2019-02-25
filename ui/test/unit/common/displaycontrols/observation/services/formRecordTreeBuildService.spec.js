@@ -1972,32 +1972,6 @@ describe("FormRecordTreeBuildService", function () {
                     "active": true,
                     "children": [
                         {
-                            "active": true,
-                            "control": {
-                                "label": {
-                                    "id": "2",
-                                    "value": "Column1"
-                                },
-                                "value": "Column1",
-                                "type": "label"
-                            },
-                            "formFieldPath": "tableForm.1/2-0",
-                            "showAddMore": false
-                        },
-                        {
-                            "active": true,
-                            "control": {
-                                "label": {
-                                    "id": "3",
-                                    "value": "Column2"
-                                },
-                                "value": "Column2",
-                                "type": "label"
-                            },
-                            "formFieldPath": "tableForm.1/3-0",
-                            "showAddMore": false
-                        },
-                        {
                             "control": {
                                 "label": {
                                     "id": "5",
@@ -2051,7 +2025,25 @@ describe("FormRecordTreeBuildService", function () {
                             "id": "1",
                             "value": "Table"
                         },
-                        "type": "table"
+                        "type": "table",
+                        "columnHeaders" :[
+                            {
+                                "label": {
+                                    "id": "2",
+                                    "value": "Column1"
+                                },
+                                "value": "Column1",
+                                "type": "label"
+                            },
+                            {
+                                "label": {
+                                    "id": "3",
+                                    "value": "Column2"
+                                },
+                                "value": "Column2",
+                                "type": "label"
+                            }
+                        ],
                     },
                     "formFieldPath": "tableForm.1/1-0",
                     "showAddMore": false
@@ -2131,32 +2123,6 @@ describe("FormRecordTreeBuildService", function () {
                     "active": true,
                     "children": [
                         {
-                            "active": true,
-                            "control": {
-                                "label": {
-                                    "id": "2",
-                                    "value": "Column1"
-                                },
-                                "value": "Column1",
-                                "type": "label"
-                            },
-                            "formFieldPath": "tableForm.2/2-0",
-                            "showAddMore": false
-                        },
-                        {
-                            "active": true,
-                            "control": {
-                                "label": {
-                                    "id": "3",
-                                    "value": "Column2"
-                                },
-                                "value": "Column2",
-                                "type": "label"
-                            },
-                            "formFieldPath": "tableForm.2/3-0",
-                            "showAddMore": false
-                        },
-                        {
                             "control": {
                                 "label": {
                                     "id": "5",
@@ -2186,10 +2152,29 @@ describe("FormRecordTreeBuildService", function () {
                             "id": "1",
                             "value": "Table"
                         },
-                        "type": "table"
+                        "type": "table",
+                        columnHeaders: [
+                            {
+                                "label": {
+                                    "id": "2",
+                                    "value": "Column1"
+                                },
+                                "value": "Column1",
+                                "type": "label"
+                            },
+                            {
+                                "label": {
+                                    "id": "3",
+                                    "value": "Column2"
+                                },
+                                "value": "Column2",
+                                "type": "label"
+                            },
+                        ]
                     },
                     "formFieldPath": "tableForm.2/1-0",
-                    "showAddMore": false
+                    "showAddMore": false,
+
                 }
             ],
             "formFieldPath": ""
