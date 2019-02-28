@@ -5,8 +5,13 @@ angular.module('bahmni.registration')
         'messagingService', '$translate', '$filter',
         function ($rootScope, $scope, $location, $window, spinner, patientService, appService, messagingService, $translate, $filter) {
             $scope.results = [];
-            $scope.extraIdentifierTypes = _.filter($rootScope.patientConfiguration.identifierTypes, function (identifierType) {
-                return !identifierType.primary;
+            $scope.orderByField = 'givenName';
+            $scope.reverseSort = false;
+            $scope.isExtraIdentifier = false;
+            $scope.idColumns = 'NID';
+            var extraIdentifiersToDisplay = appService.getAppDescriptor().getConfigValue("extraIdentifiersToDisplay") || [];
+            $scope.extraIdentifierTypes = _.filter($rootScope.patientConfiguration.identifierTypes, function (identifierType, index) {
+                return extraIdentifiersToDisplay.indexOf(identifierType.name) !== -1;
             });
             var searching = false;
             var maxAttributesFromConfig = 5;
