@@ -78,6 +78,43 @@
     }
   }
 }
+
+th a,
+td a { 
+  display: block;
+}
+
+
+
+.sort-pos {
+    float:right;
+}
+
+.sort-by-asc
+{
+    right: 3px;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border: solid 5px transparent;
+    margin: 4px 4px 0 3px;
+    background: transparent;
+    border-bottom: solid 7px #F80;
+    border-top-width: 0;
+}
+
+.sort-by-desc
+{
+    right: 3px;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border: solid 5px transparent;
+    margin: 4px 4px 0 3px;
+    background: transparent;
+    border-top: solid 7px #F80;
+    border-bottom-width: 0;
+}
 .registraition-search-results-container{
   padding: 5px;
   overflow-x: auto;
