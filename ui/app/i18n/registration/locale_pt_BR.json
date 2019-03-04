@@ -17,6 +17,8 @@
     "REGISTRATION_LABEL_PATIENT_FIRSTNAME": "Primeiro Nome",
     "REGISTRATION_LABEL_PATIENT_MIDDLE_NAME": "Nome do Meio",
     "REGISTRATION_LABEL_PATIENT_LAST_NAME": "Sobrenome",
+    "REGISTRATION_LABEL_PATIENT_NICK_NAME" :"Alcunha",
+    "REGISTRATION_NICK_NAME": "Alcunha",
     "REGISTRATION_LABEL_PATIENT_ENTER_NAME": "Inserir primeiro nome do paciente.",
     "REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME": "Inserir nome do meio do paciente.",
     "REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME": "Inserir sobrenome do paciente.",

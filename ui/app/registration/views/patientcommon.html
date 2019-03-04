@@ -81,6 +81,17 @@
                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
               </span>
 
+              <span>
+                <section class="form-field-inline clearfix"
+                                ng-repeat="attributeRow in ::patientConfiguration.customAttributeRows()">
+                  <article class="form-field" ng-repeat="attribute in ::attributeRow" ng-if = "attribute.name == 'NICK_NAME'" ng-class="::{'right-form-field' : $index%2 != 0}">
+                    <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                                               is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                                               get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                  </article>
+                </section>
+              <span>
+
                     <!--<span class="input-label-inline caste-lastname" ng-show="showCasteSameAsLastName()">
                         <input type="checkbox" id="casteSameAsLastNameCheck" ng-model="patient.sameAsLastName"
                                ng-change="setCasteAsLastName()">
@@ -229,7 +240,7 @@
         <section class="form-field-inline clearfix"
                  ng-repeat="attributeRow in ::patientConfiguration.customAttributeRows()">
             <article class="form-field" ng-repeat="attribute in ::attributeRow"
-                     ng-class="::{'right-form-field' : $index%2 != 0}">
+                     ng-class="::{'right-form-field' : $index%2 != 0}" ng-if = "attribute.name != 'NICK_NAME'">
                 <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                                  is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                                  get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
