@@ -17,10 +17,41 @@ angular.module('bahmni.registration')
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
+            $scope.isBirthDateEstimatedDisabled = false;
+            $scope.isDOBDisabled = false;
 
             var dontSaveButtonClicked = false;
 
             var isHref = false;
+
+            $scope.updateBirthDateEstimated = function () {
+                if ($scope.patient.birthdate) {
+                    $scope.isBirthDateEstimatedDisabled = true;
+                }
+                else {
+                    $scope.isBirthDateEstimatedDisabled = false;
+                }
+            };
+
+            $scope.updateDOB = function () {
+                if ($scope.patient.birthdateEstimated) {
+                    $scope.isDOBDisabled = true;
+                }
+                else {
+                    $scope.isDOBDisabled = false;
+                }
+            };
+
+            $scope.$watch('patient.birthdateEstimated', function (newValue, oldValue) {
+                if (newValue != oldValue) {
+                    if (newValue == true) {
+                        $scope.isDOBDisabled = true;
+                    }
+                    else {
+                        $scope.isBirthDateEstimatedDisabled = true;
+                    }
+                }
+            });
 
             $rootScope.onHomeNavigate = function (event) {
                 if ($scope.showSaveConfirmDialogConfig && $state.current.name != "patient.visit") {

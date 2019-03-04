@@ -125,8 +125,8 @@
         </section>
         <section class="age-wrapper">
             <div ng-if="::!dobMandatory">
-                <ng-include src="'views/age.html'"></ng-include>
                 <ng-include src="'views/dob.html'"></ng-include>
+                <ng-include src="'views/age.html'"></ng-include>
             </div>
             <div ng-if="::dobMandatory">
                 <ng-include src="'views/dob.html'"></ng-include>
