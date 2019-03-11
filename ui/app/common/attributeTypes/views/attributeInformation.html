@@ -13,9 +13,25 @@
                    ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-blur="::handleUpdate(attribute.name)">
 
             <input data-ng-switch-default
-                   type="text" pattern-validate id="{{::attribute.name}}"
+                   type="text" pattern-validate id="{{::attribute.name}}" ng-if="attribute.name != 'PRIMARY_CONTACT_NUMBER_1' && attribute.name != 'ALTERNATIVE_CONTACT_NUMBER_1' && attribute.name != 'ALTERNATIVE_CONTACT_NUMBER_2'"
                    ng-model="targetModel[attribute.name]" data-item-type="personAttribute"
                    ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-blur="::handleUpdate(attribute.name)">
+
+            <input data-ng-switch-default ng-if="attribute.name == 'PRIMARY_CONTACT_NUMBER_1'"
+                   type="text" pattern-validate id="{{::attribute.name}}"
+                   ng-model="targetModel[attribute.name]" data-item-type="personAttribute" ng-init="targetModel[attribute.name]= '+258 '"
+                   ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-blur="::handleUpdate(attribute.name)">
+
+            <input data-ng-switch-default ng-if="attribute.name == 'ALTERNATIVE_CONTACT_NUMBER_1'"
+                   type="text" pattern-validate id="{{::attribute.name}}"
+                   ng-model="targetModel[attribute.name]" data-item-type="personAttribute" ng-init="targetModel[attribute.name]= '+258 '"
+                   ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-blur="::handleUpdate(attribute.name)">
+
+            <input data-ng-switch-default ng-if="attribute.name == 'ALTERNATIVE_CONTACT_NUMBER_2'"
+                   type="text" pattern-validate id="{{::attribute.name}}"
+                   ng-model="targetModel[attribute.name]" data-item-type="personAttribute" ng-init="targetModel[attribute.name]= '+258 '"
+                   ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-blur="::handleUpdate(attribute.name)">
+
         </span>
     </div>
     <div class="left" data-ng-switch-when="org.openmrs.Concept">
