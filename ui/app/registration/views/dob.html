@@ -4,7 +4,7 @@
     </div>
     <div class="field-value">
         <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{::today}}" ng-disabled="isDOBDisabled"
-               ng-change="patient.calculateAge();updateBirthDateEstimated()" ng-blur="handleUpdate('birthdate')" ng-required="::dobMandatory">
+               ng-change="patient.calculateAge();updateBirthDateEstimated();checkDuplicatePatients()" ng-blur="handleUpdate('birthdate')" ng-required="::dobMandatory">
     </div>
     
     <div class="showOn-small-screen-registration clearfix">

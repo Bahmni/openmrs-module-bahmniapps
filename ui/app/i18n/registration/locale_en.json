@@ -117,5 +117,9 @@
   "PROGRAM_DELETE_REASON_PLACEHOLDER": "Reason to delete the program",
   "DELETE_LABEL": "Delete",
   "EDIT_LABEL": "Edit",
-  "REGISTRATION_LABEL_RELATIONSHIP_EXISTS": "Given relationship already exists"
+  "REGISTRATION_LABEL_RELATIONSHIP_EXISTS": "Given relationship already exists",
+  "REGISTRATION_LABEL_SIMILAR_PATIENT_FOUND": "Similar Patients Found",
+  "NICK_NAME": "Nick Name",
+  "PRIMARY_CONTACT_NUMBER_1": "Primary Contact Number",
+  "PATIENT_STATUS": "Patient Status"
 }
