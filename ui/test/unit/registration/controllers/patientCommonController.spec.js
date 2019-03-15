@@ -5,6 +5,7 @@ describe('PatientCommonController', function () {
     var $aController, $httpBackend, scope, appService, rootScope, patientAttributeService, $state;
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var $compile;
+    var patientService = jasmine.createSpyObj('patientService', ['checkDuplicatePatients']);
 
     beforeEach(module('bahmni.registration', 'ngDialog'));
 
@@ -34,6 +35,9 @@ describe('PatientCommonController', function () {
             return {
                 getConfigValue: function (config) {
                     return true;
+                },
+                getExtensions: function() {
+                    return [];
                 }
 
             };
@@ -42,7 +46,8 @@ describe('PatientCommonController', function () {
         $aController('PatientCommonController', {
             $scope: scope,
             $rootScope: rootScope,
-            appService: appService
+            appService: appService,
+            patientService: patientService
         });
 
         $httpBackend.whenGET(Bahmni.Common.Constants.globalPropertyUrl + '?property=concept.reasonForDeath').respond({});
@@ -50,6 +55,7 @@ describe('PatientCommonController', function () {
         $httpBackend.flush();
 
     });
+
 
     it('checks that the confirmation popup is prompted when the home button is clicked and the config is enabled and current Page is not the Registration Second Page', function () {
         scope.showSaveConfirmDialogConfig = true;
@@ -128,6 +134,9 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                     if (config == "showBirthTime") {
                         return false;
                     }
+                },
+                getExtensions: function() {
+                    return [];
                 }
             };
         };
@@ -138,7 +147,8 @@ it('checks that the confirmation popup is not prompted on the Registration secon
             http: $httpBackend,
             patientAttributeService: patientAttributeService,
             spinner: spinner,
-            appService: appService
+            appService: appService,
+            patientService: patientService
         });
         expect(scope.showBirthTime).toBe(false);
     });
@@ -216,7 +226,10 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                 return {
                     getConfigValue: function (config) {
                         return true;
-                    }
+                    },
+                getExtensions: function() {
+                    return [];
+                }
 
                 };
             };
@@ -224,7 +237,8 @@ it('checks that the confirmation popup is not prompted on the Registration secon
             $aController('PatientCommonController', {
                 $scope: scope,
                 $rootScope: rootScope,
-                appService: appService
+                appService: appService,
+                patientService: patientService
             });
 
             $httpBackend.whenGET(Bahmni.Common.Constants.globalPropertyUrl + '?property=concept.reasonForDeath').respond({});

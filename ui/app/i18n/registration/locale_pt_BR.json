@@ -89,5 +89,9 @@
     "NO_LOCATION_TAGGED_TO_VISIT_LOCATION": "No location tagged to Visit Location Found",
     "REGISTRATION_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
     "OBS_BOOLEAN_YES_KEY": "Yes",
-    "OBS_BOOLEAN_NO_KEY": "No"
+    "OBS_BOOLEAN_NO_KEY": "No",
+    "REGISTRATION_LABEL_SIMILAR_PATIENT_FOUND": "Pacientes similares encontrados",
+    "NICK_NAME": "Alcunha",
+    "PRIMARY_CONTACT_NUMBER_1": "Contacto Pricipal",
+    "PATIENT_STATUS": "Paciente Estado"
 }

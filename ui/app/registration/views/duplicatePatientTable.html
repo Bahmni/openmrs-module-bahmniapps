@@ -1,0 +1,30 @@
+<div class="registraition-search-results-container" ng-show="duplicatePatientCount > 0">
+    <h6>{{::'REGISTRATION_LABEL_SIMILAR_PATIENT_FOUND' | translate}}</h6>
+        <table class="table">
+            <thead>
+            <tr>
+                <th><strong>{{ ::'REGISTRATION_LABEL_ID' | translate}}</strong></th>
+                <th ng-repeat = "type in ::extraIdentifierTypes track by $index"><strong>{{type.name}}</strong></th>
+                <th><strong>{{ ::'REGISTRATION_LABEL_NAME' | translate}}</strong></th>
+                <th><strong>{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}</strong></th>
+                <th ng-repeat = "field in ::personSearchResultsConfig"><strong>{{field | translate}}</strong></th>
+                <th><strong>{{ ::'REGISTRATION_LABEL_DOB' | translate}}</strong></th>
+            </tr>
+            </thead>
+            <tbody>
+                
+            <tr ng-repeat="result in duplicatePatients | limitTo : 5">
+                
+                <td>
+                    <a ng-click="forPatient(result).doExtensionAction(searchActions[0])">
+                        {{result.identifier }}
+                    </a>
+                </td>
+                <td>{{result.givenName}}</td>
+                <td>{{result.familyName}}</td>
+                <td ng-repeat = "field in ::personSearchResultsConfig">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
+                <td>{{result.birthDate | date : 'dd-MM-yyyy'}}</td>
+            </tr>
+            </tbody>
+        </table>
+</div>

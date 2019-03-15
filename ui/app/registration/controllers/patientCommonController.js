@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner', '$location', 'ngDialog', '$window', '$state',
-        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner, $location, ngDialog, $window, $state) {
+    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner', '$location', 'ngDialog', '$window', '$state', 'patientService',
+        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner, $location, ngDialog, $window, $state, patientService) {
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             var personAttributes = [];
@@ -23,6 +23,44 @@ angular.module('bahmni.registration')
             var dontSaveButtonClicked = false;
 
             var isHref = false;
+
+            $rootScope.duplicatePatients;
+            $rootScope.duplicatePatientCount = 0;
+            $rootScope.personSearchResultsConfig = ["NICK_NAME", "PRIMARY_CONTACT_NUMBER_1", "PATIENT_STATUS"];
+            $rootScope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.result.action");
+
+            $scope.checkDuplicatePatients = function () {
+                var patientGivenName = $scope.patient.givenName || '';
+                var patientLastName = $scope.patient.familyName || '';
+                var gender = $scope.patient.gender || '';
+                var birthDate = $scope.patient.birthdate || '';
+
+                if (birthDate != '') {
+                    birthDate = new Date(birthDate);
+                }
+                var queryParams = patientGivenName + ' ' + patientLastName;
+                if (queryParams.length > 1) {
+                    patientService.searchDuplicatePatients(queryParams, gender, birthDate).then(function (response) {
+                        $rootScope.duplicatePatients = response.pageOfResults;
+                        _.map($rootScope.duplicatePatients, function (result) {
+                            result.customAttribute = result.customAttribute && JSON.parse(result.customAttribute);
+                        });
+                        $rootScope.duplicatePatientCount = $rootScope.duplicatePatients.length;
+                    });
+                } else {
+                    $rootScope.duplicatePatientCount = 0;
+                }
+            };
+
+            $rootScope.forPatient = function (patient) {
+                $scope.selectedPatient = patient;
+                return $scope;
+            };
+
+            $rootScope.doExtensionAction = function (extension) {
+                var forwardTo = appService.getAppDescriptor().formatUrl(extension.url, { 'patientUuid': $scope.selectedPatient.uuid });
+                $location.url(forwardTo);
+            };
 
             $scope.updateBirthDateEstimated = function () {
                 if ($scope.patient.birthdate) {

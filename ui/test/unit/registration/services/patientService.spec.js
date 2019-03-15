@@ -134,6 +134,23 @@ describe('Patient resource', function () {
 
     });
 
+    it('Should call url for duplicate patient search', function () {
+        var query = 'jo';
+        var gender = 'M';
+        var birthDate = 'Wed Mar 13 2010 00:00:00 GMT+0530 (IST)';
+        var patientSearchResultsConfig = ['NICK_NAME', 'PRIMARY_CONTACT_NUMBER_1', 'PATIENT_STATUS'];
+        var results = patientService.searchDuplicatePatients(query, gender, birthDate, patientSearchResultsConfig);
+
+        expect(mockHttp.get).toHaveBeenCalled();
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniDuplicateSearchUrl+"/patient");
+        expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.gender).toBe(gender);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.birthDate).toBe(birthDate);
+        expect(mockHttp.get.calls.mostRecent().args[1].params.patientSearchResultsConfig).toEqual(patientSearchResultsConfig);
+        expect(results.$$state.value.name).toBe('john');
+
+    });
+
     it('should make network call to serach by patient name or identifier for given query string and limit', function () {
         var query = "demo";
         patientService.searchByNameOrIdentifier(query, 100);
