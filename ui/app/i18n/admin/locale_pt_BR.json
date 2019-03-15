@@ -1,9 +1,9 @@
 {
-    "userName": "Nome de Usuário",
+    "userName": "Nome do Utilizador",
     "password": "Senha",
-    "location": "Local",
+    "location": "Sector",
     "login": "Entrar",
-    "selectLocation": "Selecionar Local",
+    "selectLocation": "Selecionar Sector",
     "clinical_key": "Clínico",
     "MESSAGE_DIALOG_OPTION_COPY": "Erro de Cópia",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK"
