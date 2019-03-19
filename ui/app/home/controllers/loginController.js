@@ -51,6 +51,7 @@ angular.module('bahmni.home')
                 $scope.headerText = response.data.loginPage.showHeaderText;
                 $scope.titleText = response.data.loginPage.showTitleText;
                 $scope.helpLink = response.data.helpLink.url;
+                $scope.misauLink = response.data.misauLink.url;
             });
 
             localeService.getLocalesLangs().then(function (response) {

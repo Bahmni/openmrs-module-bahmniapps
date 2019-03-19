@@ -1,12 +1,15 @@
 <div class="clint-logo-wrapper">
     <img class="implementor-logo" src={{logo}} >
-    <span ng-if="titleText" class="title_text"> {{'LOGIN_PAGE_TITLE_TEXT' | translate }} </span>
+    
+    <div ng-if="headerText" style="top:150px" class="emr-login-text">
+        <p style="margin-bottom: 15px;"><b>{{'LOGIN_PAGE_HEADER_TEXT_1'| translate}} </b></p>
+        <p style="margin-bottom: 15px;"><b>{{'LOGIN_PAGE_HEADER_TEXT_2'| translate}} </b></p>
+        <p><b>{{'LOGIN_PAGE_HEADER_TEXT_3'| translate}} </b></p>
+    </div>
 </div>
 
 <div class="login" ng-hide="showOTP">
-    <div ng-if="headerText" class="emr-login-text">
-        <b>{{'LOGIN_PAGE_HEADER_TEXT'| translate}} </b>
-    </div>
+	
     <header class="reg-header">
         <div class="left">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</div>
         <div class="right locale-wrapper">
@@ -125,5 +128,5 @@
 
 <div class="power-by">
     <img src="./../images/bahmniLogoFull.png" alt="Bahmni" />
-    <a href={{helpLink}}> Bahmni Help</a>
+    <a href={{misauLink}}> Ministério da Saúde (MISAU)</a> O nosso maior valor é a vida.
 </div>
