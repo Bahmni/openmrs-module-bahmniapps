@@ -28,6 +28,8 @@ angular.module('bahmni.registration')
             $rootScope.duplicatePatientCount = 0;
             $rootScope.personSearchResultsConfig = ["NICK_NAME", "PRIMARY_CONTACT_NUMBER_1", "PATIENT_STATUS"];
             $rootScope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.result.action");
+            $scope.isSectorSelectShown = false;
+            $scope.isATIPSelectShown = false;
 
             $scope.checkDuplicatePatients = function () {
                 var patientGivenName = $scope.patient.givenName || '';
@@ -213,6 +215,36 @@ angular.module('bahmni.registration')
                 var ruleFunction = Bahmni.Registration.AttributesConditions.rules && Bahmni.Registration.AttributesConditions.rules[attribute];
                 if (ruleFunction) {
                     executeRule(ruleFunction);
+                }
+            };
+
+            $scope.handleLocationChange = function () {
+                if ($scope.patient['LOCATION_OF_TEST'].value == 'LOCATION_SECTOR') {
+                    $scope.isSectorSelectShown = true;
+                }
+                else if ($scope.patient['LOCATION_OF_TEST'].value == 'LOCATION_HEALTH_FACILITY') {
+                    $scope.patient['SECTOR_SELECT'] = null;
+                    $scope.patient['ATIP_SELECT'] = null;
+                    $scope.isSectorSelectShown = false;
+                    $scope.isATIPSelectShown = false;
+                }
+                else {
+                    console.log($scope.patient);
+                    $scope.patient['SECTOR_SELECT'] = null;
+                    $scope.patient['ATIP_SELECT'] = null;
+                    $scope.isSectorSelectShown = false;
+                    $scope.isATIPSelectShown = false;
+                }
+            };
+
+            $scope.handleSectorChange = function () {
+                if ($scope.patient['SECTOR_SELECT'].value == 'ATIP') {
+                    $scope.isATIPSelectShown = true;
+                }
+                else {
+                    $scope.isATIPSelectShown = false;
+                    $scope.patient['ATIP_SELECT'] = null;
+
                 }
             };
 
