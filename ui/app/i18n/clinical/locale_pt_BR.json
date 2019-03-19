@@ -205,6 +205,18 @@
     "CONDITION_LIST_ACTIVE_SINCE": "condition from",
     "CONDITION_LIST_NO_CONDITIONS": "No Conditions available",
     "CONDITION_LIST_NO_RETRO_MODE": "<strong>Conditions cannot</strong> be edited in retrospective mode",
-    "GENDER_MALE":"Masculino",
-    "GENDER_FEMALE":"Feminino"
+    "DOB_LABEL": "Data de nascimento",
+    "DELETE_LABEL": "Excluir",
+    "EDIT_LABEL": "Editar",
+    "RETROSPECTIVE_POPUP_LOCATION_LABEL": "localização",
+    "RETROSPECTIVE_POPUP_ON_BEHALF_LABEL": "Digite em nome",
+    "RETROSPECTIVE_POPUP_DATA_FOR_LABEL": "Insira dados para",
+    "OKAY_LABEL": "OK",
+    "GENDER_MALE": "Masculino",
+    "GENDER_FEMALE": "Feminino",
+    "ID Number":"Número do Identificador",
+    "Treatment Date":"Data de Tratamento",
+    "Co-morbidities":"Co-morbidades",
+    "Patient Stage":"Estagio do Paciente",
+    "Doctor-In-Charge":"Doutor em serviço"
 }
