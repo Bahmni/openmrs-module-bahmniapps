@@ -98,7 +98,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope, $translate) {
         if (genderChar == null) {
             return null;
         }
-        return "<span>" + $rootScope.genderMap[angular.uppercase(genderChar)] + "</span>";
+        return "<span>" + $translate.instant($rootScope.genderMap[angular.uppercase(genderChar)]) + "</span>";
     };
 
     var getPatientBloodGroupText = function (openmrsPatient) {
