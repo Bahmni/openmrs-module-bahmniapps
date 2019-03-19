@@ -121,5 +121,7 @@
   "REGISTRATION_LABEL_SIMILAR_PATIENT_FOUND": "Similar Patients Found",
   "NICK_NAME": "Nick Name",
   "PRIMARY_CONTACT_NUMBER_1": "Primary Contact Number",
-  "PATIENT_STATUS": "Patient Status"
+  "PATIENT_STATUS": "Patient Status",
+  "GENDER_MALE":"Male",
+  "GENDER_FEMALE":"Female"
 }

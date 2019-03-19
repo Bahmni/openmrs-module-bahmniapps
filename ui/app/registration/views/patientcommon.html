@@ -121,7 +121,7 @@
 
                 <div class="field-value">
                     <select id="gender" ng-model="patient.gender" required="required" title="{{ 'REGISTRATION_LABEL_SELECT_GENDER'|translate }}"
-                            ng-options="genderMap[genderCode] for genderCode in genderCodes track by genderCode" ng-change="handleUpdate('gender');checkDuplicatePatients()">
+                            ng-options="genderMap[genderCode] | translate for genderCode in genderCodes track by genderCode" ng-change="handleUpdate('gender');checkDuplicatePatients()">
                         <option value="">{{ ::'REGISTRATION_LABEL_SELECT_GENDER' | translate}}</option>
                     </select>
                     <!--<div class="selectGender">
