@@ -13,7 +13,7 @@
                    ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-blur="::handleUpdate(attribute.name)">
 
             <input data-ng-switch-default
-                   ng-if = "attribute.name != 'NICK_NAME'"
+                   ng-if = "attribute.name != 'NICK_NAME' && attribute.name != 'PRIMARY_CONTACT_NUMBER_1' && attribute.name != 'ALTERNATIVE_CONTACT_NUMBER_1' && attribute.name != 'ALTERNATIVE_CONTACT_NUMBER_2'"
                    type="text" pattern-validate id="{{::attribute.name}}"
                    ng-model="targetModel[attribute.name]" data-item-type="personAttribute"
                    ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-blur="::handleUpdate(attribute.name)">
