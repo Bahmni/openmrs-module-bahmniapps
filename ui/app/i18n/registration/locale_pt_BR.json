@@ -100,7 +100,7 @@
     "TYPE_OF_REGISTRATION":"Tipo de Registo",
     "NEW_PATIENT":"Novo Paciente",
     "TRANSFERRED_PATIENT":"Transferido",
-    "REGISTRATION_LABEL_BIRTH_DATE":"Data de Nascimento"
+    "REGISTRATION_LABEL_BIRTH_DATE":"Data de Nascimento",
     "REGISTRATION_HEALTH_FACILITY_CODE":"Cód. US",
     "REGISTRATION_SERVICE_CODE":"Serviço",
     "REGISTRATION_NID_YEAR":"Ano",
