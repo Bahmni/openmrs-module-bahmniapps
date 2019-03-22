@@ -123,5 +123,9 @@
   "PRIMARY_CONTACT_NUMBER_1": "Primary Contact Number",
   "PATIENT_STATUS": "Patient Status",
   "GENDER_MALE":"Male",
-  "GENDER_FEMALE":"Female"
+  "GENDER_FEMALE":"Female",
+  "REGISTRATION_HEALTH_FACILITY_CODE":"H.F. Code",
+  "REGISTRATION_SERVICE_CODE":"Service Code",
+  "REGISTRATION_NID_YEAR":"Year",
+  "REGISTRATION_SEQUENTIAL_CODE":"Sequential Code"
 }
