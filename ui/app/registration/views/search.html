@@ -85,7 +85,10 @@
                 <td>{{::result.familyName}}</td>
                 <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
                 <td>{{::result.gender}}</td>
-                <td>{{::result.birthDate}}</td>
+
+                <td>{{::result.birthDate | date:'dd/MM/y'}}</td>
+                <td>{{::result.age}}</td>
+
                 <!-- <td ng-repeat = "field in ::addressSearchResultsConfig.fields">{{::result.addressFieldValue[field] || ""}}</td> -->
                 <td>{{::result.dateCreated | bahmniDate}}</td>
                 <td ng-if="::programAttributesSearchConfig.show">{{getProgramAttributeValues(result) | bahmniDateInStrictMode}}</td>
