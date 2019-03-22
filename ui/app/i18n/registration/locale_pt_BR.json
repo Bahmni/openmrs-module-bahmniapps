@@ -96,5 +96,8 @@
     "PATIENT_STATUS": "Estado do Paciente",
     "GENDER_MALE":"Masculino",
     "GENDER_FEMALE":"Feminino",
-    "REGISTRATION_ADDTIONAL_IDENTIFIERS":"Identificadores Adicionais"
+    "REGISTRATION_ADDTIONAL_IDENTIFIERS":"Identificadores Adicionais",
+    "TYPE_OF_REGISTRATION":"Tipo de Registo",
+    "NEW_PATIENT":"Novo Paciente",
+    "TRANSFERRED_PATIENT":"Transferido"
 }

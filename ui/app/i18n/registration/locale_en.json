@@ -123,5 +123,8 @@
   "PRIMARY_CONTACT_NUMBER_1": "Primary Contact Number",
   "PATIENT_STATUS": "Patient Status",
   "GENDER_MALE":"Male",
-  "GENDER_FEMALE":"Female"
+  "GENDER_FEMALE":"Female",
+  "TYPE_OF_REGISTRATION":"Type Of Registration",
+  "NEW_PATIENT":"New Patient",
+  "TRANSFERRED_PATIENT":"Transferred In"
 }
