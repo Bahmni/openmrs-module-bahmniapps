@@ -27,6 +27,19 @@ angular.module('bahmni.registration')
             var successCallBack = function (openmrsPatient) {
                 $scope.openMRSPatient = openmrsPatient["patient"];
                 $scope.patient = openmrsPatientMapper.map(openmrsPatient);
+                if ($scope.patient.hasOwnProperty('LOCATION_OF_TEST')) {
+                    if ($scope.patient['LOCATION_OF_TEST'].value == 'LOCATION_SECTOR') {
+                        $scope.isSectorSelectShown = true;
+                        if ($scope.patient.hasOwnProperty('SECTOR_SELECT')) {
+                            if ($scope.patient['SECTOR_SELECT'].value == 'ATIP') {
+                                $scope.isATIPSelectShown = true;
+                            }
+                        }
+                    }
+                    else if ($scope.patient['LOCATION_OF_TEST'].value == 'LOCATION_HEALTH_FACILITY') {
+                        $scope.isHealthFacilityShown = true;
+                    }
+                }
                 setReadOnlyFields();
                 expandDataFilledSections();
                 $scope.patientLoaded = true;
@@ -93,5 +106,42 @@ angular.module('bahmni.registration')
             $scope.afterSave = function () {
                 auditLogService.log($scope.patient.uuid, Bahmni.Registration.StateNameEvenTypeMap['patient.edit'], undefined, "MODULE_LABEL_REGISTRATION_KEY");
                 messagingService.showMessage("info", "REGISTRATION_LABEL_SAVED");
+            };
+
+            $scope.handleLocationChange = function () {
+                if ($scope.patient['LOCATION_OF_TEST'].value == 'LOCATION_SECTOR') {
+                    $scope.isSectorSelectShown = true;
+                    $scope.isHealthFacilityShown = false;
+                    $scope.patient['HEALTH_FACILITY_NAME'] = null;
+                    $scope.patient['HEALTH_FACILITY_PROVINCE'] = null;
+                    $scope.patient['HEALTH_FACILITY_DISTRICT'] = null;
+                }
+                else if ($scope.patient['LOCATION_OF_TEST'].value == 'LOCATION_HEALTH_FACILITY') {
+                    $scope.isHealthFacilityShown = true;
+                    $scope.patient['SECTOR_SELECT'] = null;
+                    $scope.patient['ATIP_SELECT'] = null;
+                    $scope.isSectorSelectShown = false;
+                    $scope.isATIPSelectShown = false;
+                }
+                else {
+                    $scope.patient['SECTOR_SELECT'] = null;
+                    $scope.patient['ATIP_SELECT'] = null;
+                    $scope.patient['HEALTH_FACILITY_NAME'] = null;
+                    $scope.patient['HEALTH_FACILITY_PROVINCE'] = null;
+                    $scope.patient['HEALTH_FACILITY_DISTRICT'] = null;
+                    $scope.isSectorSelectShown = false;
+                    $scope.isATIPSelectShown = false;
+                    $scope.isHealthFacilityShown = false;
+                }
+            };
+
+            $scope.handleSectorChange = function () {
+                if ($scope.patient['SECTOR_SELECT'].value == 'ATIP') {
+                    $scope.isATIPSelectShown = true;
+                }
+                else {
+                    $scope.isATIPSelectShown = false;
+                    $scope.patient['ATIP_SELECT'] = null;
+                }
             };
         }]);

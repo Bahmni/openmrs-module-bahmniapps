@@ -2,8 +2,8 @@
 
     <button class="app-view-prev" ng-click="goToPreviousWeek()"><i class="fa fa-angle-left"></i></button>
     <span>
-        <label for="weeklyDate">{{weekStartDate | date:'d MMM'}} - {{weekEndDate | date:'d MMM'}}</label>
-        <input id="weeklyDate" type="date" ng-model="viewDate" required/>
+        <label for="weeklyDate">{{weekStartDate | date:'dd/MM/y'}} - {{weekEndDate | date:'dd/MM/y'}}</label>
+        <input type="date" ng-model="viewDate" required/>
     </span>
     <button type="button" ng-click="goToNextWeek()"><i class="fa fa-angle-right"></i></button>
 </div>
