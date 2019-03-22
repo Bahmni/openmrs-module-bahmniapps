@@ -60,11 +60,12 @@
                 <th><strong><a href="#"  ng-click="orderByField='identifier'; reverseSort = !reverseSort">{{ ::'REGISTRATION_LABEL_ID' | translate}}<span  class="sort-pos" ng-show="orderByField == 'identifier'"><span ng-show="!reverseSort"><i class="sort-by-asc"></i></span><span ng-show="reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th>
                 <th ng-repeat = "type in ::extraIdentifierTypes track by $index"><strong><a href="#" ng-click="$parent.orderByField= 'extraIdentifiers';$parent.idColumns = type.name; $parent.reverseSort = !$parent.reverseSort">{{type.name}}<span  class="sort-pos" ng-show="$parent.orderByField == 'extraIdentifiers'"><span ng-show="!$parent.reverseSort"><i class="sort-by-asc"></i></span><span ng-show="$parent.reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th>
                 <th><strong><a href="#"  ng-click="orderByField='givenName'; reverseSort = !reverseSort">{{ ::'REGISTRATION_LABEL_NAME' | translate}}<span  class="sort-pos" ng-show="orderByField == 'givenName'"><span ng-show="!reverseSort"><i class="sort-by-asc"></i></span><span ng-show="reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th>
-                <th><strong><a href="#"  ng-click="orderByField='familyName'; reverseSort = !reverseSort">Last Name<span  class="sort-pos" ng-show="orderByField == 'familyName'"><span ng-show="!reverseSort"><i class="sort-by-asc"></i></span><span ng-show="reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th>
-                <th class="sort-by" ng-repeat = "field in ::personSearchResultsConfig.fields track by $index"><strong>{{ ::field | translate}}</strong></th>
+                <th><strong><a href="#"  ng-click="orderByField='familyName'; reverseSort = !reverseSort">{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}<span  class="sort-pos" ng-show="orderByField == 'familyName'"><span ng-show="!reverseSort"><i class="sort-by-asc"></i></span><span ng-show="reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th>
+                <th class="sort-by" ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field == 'NICK_NAME'"><strong>{{ ::field | translate}}</strong></th>
                 <th><strong><a href="#"  ng-click="orderByField='gender'; reverseSort = !reverseSort">{{ ::'REGISTRATION_LABEL_GENDER' | translate}}<span  class="sort-pos" ng-show="orderByField == 'gender'"><span ng-show="!reverseSort"><i class="sort-by-asc"></i></span><span ng-show="reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th>
-                <th><strong><a href="#"  ng-click="orderByField='birthDate'; reverseSort = !reverseSort">Birth Date<span  class="sort-pos" ng-show="orderByField == 'birthDate'"><span ng-show="!reverseSort"><i class="sort-by-asc"></i></span><span ng-show="reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th> 
-                <!-- <th ng-repeat = "field in ::addressSearchResultsConfig.fields"><strong>{{::convertToTableHeader(getAddressColumnName(field))}}</strong></th> -->
+                <th><strong><a href="#"  ng-click="orderByField='birthDate'; reverseSort = !reverseSort">{{ ::'REGISTRATION_LABEL_BIRTH_DATE' | translate}}<span  class="sort-pos" ng-show="orderByField == 'birthDate'"><span ng-show="!reverseSort"><i class="sort-by-asc"></i></span><span ng-show="reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th> 
+                <th class="sort-by" ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field == 'PRIMARY_CONTACT_NUMBER_1'"><strong>{{ ::field | translate}}</strong></th>
+                <th class="sort-by" ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field == 'PATIENT_STATUS'"><strong>{{ ::field | translate}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
                 <th ng-if="::programAttributesSearchConfig.show"><strong>{{::convertToTableHeader(programAttributesSearchConfig.label)}}</strong></th>
             </tr>
@@ -83,13 +84,15 @@
 
                 <td>{{::result.givenName}}</td>
                 <td>{{::result.familyName}}</td>
-                <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
+                <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field=='NICK_NAME'">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
                 <td>{{::result.gender}}</td>
 
                 <td>{{::result.birthDate | date:'dd/MM/y'}}</td>
                 <td>{{::result.age}}</td>
 
                 <!-- <td ng-repeat = "field in ::addressSearchResultsConfig.fields">{{::result.addressFieldValue[field] || ""}}</td> -->
+                <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field=='PRIMARY_CONTACT_NUMBER_1'">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
+                <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field=='PATIENT_STATUS'">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
                 <td>{{::result.dateCreated | bahmniDate}}</td>
                 <td ng-if="::programAttributesSearchConfig.show">{{getProgramAttributeValues(result) | bahmniDateInStrictMode}}</td>
             </tr>

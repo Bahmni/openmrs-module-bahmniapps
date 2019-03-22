@@ -92,11 +92,12 @@
     "OBS_BOOLEAN_NO_KEY": "Não",
     "REGISTRATION_LABEL_SIMILAR_PATIENT_FOUND": "Foram encontrados Pacientes similares",
     "NICK_NAME": "Alcunha",
-    "PRIMARY_CONTACT_NUMBER_1": "Contacto Pricipal",
+    "PRIMARY_CONTACT_NUMBER_1": "Contacto Principal",
     "PATIENT_STATUS": "Estado do Paciente",
     "GENDER_MALE":"Masculino",
     "GENDER_FEMALE":"Feminino",
     "REGISTRATION_ADDTIONAL_IDENTIFIERS":"Identificadores Adicionais",
+    "REGISTRATION_LABEL_BIRTH_DATE":"Data de Nascimento"
     "REGISTRATION_HEALTH_FACILITY_CODE":"Cód. US",
     "REGISTRATION_SERVICE_CODE":"Serviço",
     "REGISTRATION_NID_YEAR":"Ano",
