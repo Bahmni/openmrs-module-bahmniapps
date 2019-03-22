@@ -485,8 +485,8 @@ body {
   font-size: 22px;
   font-weight: 900;
   color: $bahmniSecondaryColor;
-  position: absolute;
-  top: -25px;
+  position: relative;
+  top: 10px;
   left: 0;
   width: 100%;
 }
@@ -529,7 +529,7 @@ body {
   img {
     max-width: 200px;
     vertical-align: middle;
-    max-height: 120px;
+    max-height: 90px;
   }
   span {
     vertical-align: middle;
