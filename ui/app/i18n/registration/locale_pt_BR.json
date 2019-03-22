@@ -96,5 +96,9 @@
     "PATIENT_STATUS": "Estado do Paciente",
     "GENDER_MALE":"Masculino",
     "GENDER_FEMALE":"Feminino",
-    "REGISTRATION_ADDTIONAL_IDENTIFIERS":"Identificadores Adicionais"
+    "REGISTRATION_ADDTIONAL_IDENTIFIERS":"Identificadores Adicionais",
+    "REGISTRATION_HEALTH_FACILITY_CODE":"Cód. US",
+    "REGISTRATION_SERVICE_CODE":"Serviço",
+    "REGISTRATION_NID_YEAR":"Ano",
+    "REGISTRATION_SEQUENTIAL_CODE":"Sequência"
 }

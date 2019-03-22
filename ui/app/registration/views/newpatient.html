@@ -23,28 +23,38 @@
                                 <span ng-show="::patient.primaryIdentifier.identifierType.required && !patient.primaryIdentifier.hasIdentifierSources()" class="asterick">*</span>
                             </label>
                         </div>
-                        <div ng-show="::(patient.primaryIdentifier.hasIdentifierSources() && !patient.primaryIdentifier.hasIdentifierSourceWithEmptyPrefix())" class="field-value" id="patientID">
-                            <select id="identifierPrefix" ng-model="patient.primaryIdentifier.selectedIdentifierSource"
-                                    ng-options="identifierSource.prefix for identifierSource in ::patient.primaryIdentifier.identifierType.identifierSources" ng-change="patient.primaryIdentifier.generate()"
-                                    required>
-                            </select>
+                        <div class="input-prepend">
+                            <span class="add-on">{{ ::'REGISTRATION_HEALTH_FACILITY_CODE' | translate}}</span>
+                            <input type="text" id="registrationNumber" ng-model="NID.healthFacilityCode"
+                                   pattern-validate
+                                   focus-on="patient.primaryIdentifier.hasOldIdentifier"
+                                   ng-blur="buildFinalNID()" minlength="8" maxlength="8" size=8 required>
                         </div>
 
-                        <div class="field-value field-value-has-identifier">
-                            <input type="text" id="registrationNumber" ng-model="patient.primaryIdentifier.registrationNumber"
-                                   placeholder="{{:: patient.primaryIdentifier.identifierType.description}}" non-blank="patient.primaryIdentifier.isIdentifierRequired()" pattern-validate
-                                   ng-change="patient.primaryIdentifier.generate()" focus-on="patient.primaryIdentifier.hasOldIdentifier"
-                                   ng-show="patient.primaryIdentifier.hasOldIdentifier || !patient.primaryIdentifier.hasIdentifierSources()" >
-                            <div ng-show="::patient.primaryIdentifier.hasIdentifierSources() && showEnterID" class="fl">
-                                <div class="field-attribute hasOldIdentifier-field-attribute">
-                                    <label for="hasOldIdentifier" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' | translate}}</label>
-                                </div>
-                                <div class="field-value">
-                                    <input class="input-label-inline" ng-show="::showEnterID" type="checkbox" id="hasOldIdentifier" ng-model="patient.primaryIdentifier.hasOldIdentifier"
-                                           ng-change="patient.primaryIdentifier.clearRegistrationNumber()">
-                                </div>
-                            </div>
+                        <div class="input-prepend">
+                            <span class="add-on">{{ ::'REGISTRATION_SERVICE_CODE' | translate}}</span>
+                            <input type="text" id="registrationNumber" ng-model="NID.serviceCode"
+                                   pattern-validate
+                                   focus-on="patient.primaryIdentifier.hasOldIdentifier"
+                                   disabled size="2" ng-init="NID.serviceCode='01'">
                         </div>
+
+                        <div class="input-prepend">
+                            <span class="add-on">{{ ::'REGISTRATION_NID_YEAR' | translate}}</span>
+                            <input type="text" id="registrationNumber" ng-model="NID.year"
+                                   pattern-validate
+                                   focus-on="patient.primaryIdentifier.hasOldIdentifier"
+                                   ng-blur="buildFinalNID()" minlength="4" maxlength="4" size="4" required>
+                        </div>
+
+                        <div class="input-prepend">
+                            <span class="add-on">{{ ::'REGISTRATION_SEQUENTIAL_CODE' | translate}}</span>
+                            <input type="text" id="registrationNumber" ng-model="NID.sequentialCode"
+                                   pattern-validate
+                                   focus-on="patient.primaryIdentifier.hasOldIdentifier"
+                                   ng-blur="buildFinalNID()" minlength="5" maxlength="5" size="5" required>
+                        </div>
+
                     </article>
                 </section>
             </div>
