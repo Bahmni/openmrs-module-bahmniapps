@@ -8,6 +8,15 @@
                 <legend class="registraion_legend first-registraion_legend">
                     <span class="mylegend"><strong>{{::'REGISTRATION_LABEL_NEW_PATIENT' | translate}}</strong></span>
                 </legend>
+                <span class="form-field-inline clearfix" ng-repeat="attribute in ::patientConfiguration.attributeTypes">
+                    <article class="form-field" ng-if="attribute.name == 'TYPE_OF_REGISTRATION'" 
+                    ng-class="::{'right-form-field' : $index%2 != 0}">
+                            <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation" 
+                                is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList" 
+                                on-change="checkDuplicatePatients()"
+                                get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                    </article>
+                 </span>
                 <section class="clearfix">
                     <div class="photo-container-wrapper" ng-if="!disablePhotoCapture">
                         <span class="pull-right photo-container">

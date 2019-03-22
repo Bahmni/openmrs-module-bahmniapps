@@ -124,7 +124,10 @@
   "PATIENT_STATUS": "Patient Status",
   "GENDER_MALE":"Male",
   "GENDER_FEMALE":"Female",
-  "REGISTRATION_LABEL_BIRTH_DATE":"Birth Date"
+  "TYPE_OF_REGISTRATION":"Type Of Registration",
+  "NEW_PATIENT":"New Patient",
+  "TRANSFERRED_PATIENT":"Transferred In",
+  "REGISTRATION_LABEL_BIRTH_DATE":"Birth Date",
   "REGISTRATION_HEALTH_FACILITY_CODE":"H.F. Code",
   "REGISTRATION_SERVICE_CODE":"Service Code",
   "REGISTRATION_NID_YEAR":"Year",
