@@ -44,8 +44,23 @@
     </div>
     <div class="left" data-ng-switch-when="org.openmrs.Concept">
         <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
+                ng-show="attribute.name != 'LOCATION_OF_TEST' && attribute.name != 'SECTOR_SELECT'" 
                 ng-options="a.conceptId as a.description for a in ::attribute.answers"
                 ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name)">
+            <option value=""></option>
+        </select>
+
+        <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
+                ng-show="attribute.name == 'LOCATION_OF_TEST'"
+                ng-options="a.conceptId as a.description for a in ::attribute.answers"
+                ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name);handleLocationChange()">
+            <option value=""></option>
+        </select>
+
+        <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
+                ng-show="attribute.name == 'SECTOR_SELECT'"
+                ng-options="a.conceptId as a.description for a in ::attribute.answers"
+                ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name);handleSectorChange()">
             <option value=""></option>
         </select>
     </div>

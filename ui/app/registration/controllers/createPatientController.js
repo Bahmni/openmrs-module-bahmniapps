@@ -11,10 +11,22 @@ angular.module('bahmni.registration')
             $scope.disablePhotoCapture = appService.getAppDescriptor().getConfigValue("disablePhotoCapture");
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
             $scope.today = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime(dateUtil.now());
+            $scope.isSectorSelectShown = false;
+            $scope.isATIPSelectShown = false;
+            $scope.isHealthFacilityShown = false;
+            $scope.NID = {};
 
             var getPersonAttributeTypes = function () {
                 return $rootScope.patientConfiguration.attributeTypes;
             };
+
+            $scope.buildFinalNID = function () {
+                $scope.patient.primaryIdentifier.registrationNumber = $scope.NID.healthFacilityCode + $scope.NID.serviceCode + $scope.NID.year + $scope.NID.sequentialCode;
+            };
+
+            $scope.$watch('patient.primaryIdentifier.registrationNumber', function () {
+                $scope.patient.primaryIdentifier.generate();
+            });
 
             var prepopulateDefaultsInFields = function () {
                 var personAttributeTypes = getPersonAttributeTypes();
@@ -101,22 +113,6 @@ angular.module('bahmni.registration')
                 $scope.patient.relationships = newRelationships;
             };
 
-            var getConfirmationViaNgDialog = function (config) {
-                var ngDialogLocalScope = config.scope.$new();
-                ngDialogLocalScope.yes = function () {
-                    ngDialog.close();
-                    config.yesCallback();
-                };
-                ngDialogLocalScope.no = function () {
-                    ngDialog.close();
-                };
-                ngDialog.open({
-                    template: config.template,
-                    data: config.data,
-                    scope: ngDialogLocalScope
-                });
-            };
-
             var copyPatientProfileDataToScope = function (response) {
                 var patientProfileData = response.data;
                 $scope.patient.uuid = patientProfileData.patient.uuid;
@@ -138,14 +134,7 @@ angular.module('bahmni.registration')
                                 identifierName: _.find($rootScope.patientConfiguration.identifierTypes, {uuid: data.identifierType}).name
                             };
                         });
-                        getConfirmationViaNgDialog({
-                            template: 'views/customIdentifierConfirmation.html',
-                            data: data,
-                            scope: $scope,
-                            yesCallback: function () {
-                                return createPatient(true);
-                            }
-                        });
+                        createPatient(true);
                     }
                     if (response.isIdentifierDuplicate) {
                         errorMessage = response.message;
@@ -183,6 +172,43 @@ angular.module('bahmni.registration')
                 $state.go("patient.edit", {
                     patientUuid: $scope.patient.uuid
                 });
+            };
+
+            $scope.handleLocationChange = function () {
+                if ($scope.patient['LOCATION_OF_TEST'].value == 'LOCATION_SECTOR') {
+                    $scope.isSectorSelectShown = true;
+                    $scope.isHealthFacilityShown = false;
+                    $scope.patient['HEALTH_FACILITY_NAME'] = null;
+                    $scope.patient['HEALTH_FACILITY_PROVINCE'] = null;
+                    $scope.patient['HEALTH_FACILITY_DISTRICT'] = null;
+                }
+                else if ($scope.patient['LOCATION_OF_TEST'].value == 'LOCATION_HEALTH_FACILITY') {
+                    $scope.isHealthFacilityShown = true;
+                    $scope.patient['SECTOR_SELECT'] = null;
+                    $scope.patient['ATIP_SELECT'] = null;
+                    $scope.isSectorSelectShown = false;
+                    $scope.isATIPSelectShown = false;
+                }
+                else {
+                    $scope.patient['SECTOR_SELECT'] = null;
+                    $scope.patient['ATIP_SELECT'] = null;
+                    $scope.patient['HEALTH_FACILITY_NAME'] = null;
+                    $scope.patient['HEALTH_FACILITY_PROVINCE'] = null;
+                    $scope.patient['HEALTH_FACILITY_DISTRICT'] = null;
+                    $scope.isSectorSelectShown = false;
+                    $scope.isATIPSelectShown = false;
+                    $scope.isHealthFacilityShown = false;
+                }
+            };
+
+            $scope.handleSectorChange = function () {
+                if ($scope.patient['SECTOR_SELECT'].value == 'ATIP') {
+                    $scope.isATIPSelectShown = true;
+                }
+                else {
+                    $scope.isATIPSelectShown = false;
+                    $scope.patient['ATIP_SELECT'] = null;
+                }
             };
         }
     ]);
