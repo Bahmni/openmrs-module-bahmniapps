@@ -11,6 +11,9 @@ angular.module('bahmni.registration')
             $scope.disablePhotoCapture = appService.getAppDescriptor().getConfigValue("disablePhotoCapture");
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
             $scope.today = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime(dateUtil.now());
+            $scope.isSectorSelectShown = false;
+            $scope.isATIPSelectShown = false;
+            $scope.isHealthFacilityShown = false;
             $scope.NID = {};
 
             var getPersonAttributeTypes = function () {
@@ -169,6 +172,43 @@ angular.module('bahmni.registration')
                 $state.go("patient.edit", {
                     patientUuid: $scope.patient.uuid
                 });
+            };
+
+            $scope.handleLocationChange = function () {
+                if ($scope.patient['LOCATION_OF_TEST'].value == 'LOCATION_SECTOR') {
+                    $scope.isSectorSelectShown = true;
+                    $scope.isHealthFacilityShown = false;
+                    $scope.patient['HEALTH_FACILITY_NAME'] = null;
+                    $scope.patient['HEALTH_FACILITY_PROVINCE'] = null;
+                    $scope.patient['HEALTH_FACILITY_DISTRICT'] = null;
+                }
+                else if ($scope.patient['LOCATION_OF_TEST'].value == 'LOCATION_HEALTH_FACILITY') {
+                    $scope.isHealthFacilityShown = true;
+                    $scope.patient['SECTOR_SELECT'] = null;
+                    $scope.patient['ATIP_SELECT'] = null;
+                    $scope.isSectorSelectShown = false;
+                    $scope.isATIPSelectShown = false;
+                }
+                else {
+                    $scope.patient['SECTOR_SELECT'] = null;
+                    $scope.patient['ATIP_SELECT'] = null;
+                    $scope.patient['HEALTH_FACILITY_NAME'] = null;
+                    $scope.patient['HEALTH_FACILITY_PROVINCE'] = null;
+                    $scope.patient['HEALTH_FACILITY_DISTRICT'] = null;
+                    $scope.isSectorSelectShown = false;
+                    $scope.isATIPSelectShown = false;
+                    $scope.isHealthFacilityShown = false;
+                }
+            };
+
+            $scope.handleSectorChange = function () {
+                if ($scope.patient['SECTOR_SELECT'].value == 'ATIP') {
+                    $scope.isATIPSelectShown = true;
+                }
+                else {
+                    $scope.isATIPSelectShown = false;
+                    $scope.patient['ATIP_SELECT'] = null;
+                }
             };
         }
     ]);
