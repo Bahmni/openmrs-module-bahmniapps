@@ -123,5 +123,6 @@
   "PRIMARY_CONTACT_NUMBER_1": "Primary Contact Number",
   "PATIENT_STATUS": "Patient Status",
   "GENDER_MALE":"Male",
-  "GENDER_FEMALE":"Female"
+  "GENDER_FEMALE":"Female",
+  "REGISTRATION_LABEL_BIRTH_DATE":"Birth Date"
 }
