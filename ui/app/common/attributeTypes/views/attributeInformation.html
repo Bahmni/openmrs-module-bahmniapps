@@ -44,6 +44,26 @@
     </div>
 
     <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name != 'LOCATION_OF_TEST' && attribute.name != 'SECTOR_SELECT'">
+
+    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name == 'PATIENT_OCCUPATION'" style="position: absolute">
+        <input type="text"
+               class="ui-autocomplete-input"
+               id="{{::attribute.name}}"
+               name="{{::attribute.name}}"
+               ng-model="targetModel[attribute.name].value"
+               ng-keyup="suggest(targetModel[attribute.name])"
+               ng-required="{{::attribute.required}}">
+        <ul class="ui-front ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all" ng-if="showTag" ng-hide="hideList"
+            style="position:absolute; top:30px;  width:192px">
+            <li class="ui-menu-item" role="presentation" ng-repeat="info in filterOcuppation"
+                ng-click="hideSuggestions(info)">
+                <a class="ui-corner-all" tabindex="-1">{{info.description}}</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name != 'TYPE_OF_REGISTRATION' && attribute.name != 'PATIENT_OCCUPATION'">
         <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
                 ng-options="a.conceptId as a.description | translate for a in ::attribute.answers"
                 ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name)">
