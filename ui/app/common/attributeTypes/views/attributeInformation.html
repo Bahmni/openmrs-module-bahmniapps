@@ -42,7 +42,8 @@
 
         </span>
     </div>
-    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name != 'TYPE_OF_REGISTRATION'">
+
+    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name != 'LOCATION_OF_TEST' && attribute.name != 'SECTOR_SELECT'">
         <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
                 ng-options="a.conceptId as a.description | translate for a in ::attribute.answers"
                 ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name)">
@@ -50,24 +51,17 @@
         </select>
     </div>
 
-    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name == 'TYPE_OF_REGISTRATION'">
+    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name == 'LOCATION_OF_TEST'">
         <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
                 ng-options="a.conceptId as a.description | translate for a in ::attribute.answers"
-                ng-show="attribute.name != 'LOCATION_OF_TEST' && attribute.name != 'SECTOR_SELECT'" 
-                ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name)">
-            <option value=""></option>
-        </select>
-
-        <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
-                ng-show="attribute.name == 'LOCATION_OF_TEST'"
-                ng-options="a.conceptId as a.description for a in ::attribute.answers"
                 ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name);handleLocationChange()">
             <option value=""></option>
         </select>
-
+    </div>
+        
+    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name == 'SECTOR_SELECT'">
         <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
-                ng-show="attribute.name == 'SECTOR_SELECT'"
-                ng-options="a.conceptId as a.description for a in ::attribute.answers"
+                ng-options="a.conceptId as a.description | translate for a in ::attribute.answers"
                 ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name);handleSectorChange()">
             <option value=""></option>
         </select>

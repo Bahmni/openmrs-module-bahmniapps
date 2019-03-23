@@ -131,5 +131,13 @@
   "REGISTRATION_HEALTH_FACILITY_CODE":"H.F. Code",
   "REGISTRATION_SERVICE_CODE":"Service Code",
   "REGISTRATION_NID_YEAR":"Year",
-  "REGISTRATION_SEQUENTIAL_CODE":"Sequential Code"
+  "REGISTRATION_SEQUENTIAL_CODE":"Sequential Code",
+  "LOCATION_OF_TEST":"Location Of Test",
+  "LOCATION_SECTOR":"Sector",
+  "LOCATION_HEALTH_FACILITY":"Health Facility",
+  "SECTOR_SELECT":"Sector",
+  "ATIP_SELECT":"ATIP",
+  "HEALTH_FACILITY_NAME":"Health Facility Name",
+  "HEALTH_FACILITY_DISTRICT":"Health Facility District",
+  "HEALTH_FACILITY_PROVINCE":"Health Facility Province"
 }

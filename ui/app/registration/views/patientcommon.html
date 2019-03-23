@@ -240,7 +240,7 @@
         <section class="form-field-inline clearfix"
                  ng-repeat="attributeRow in ::patientConfiguration.customAttributeRows()">
             <article class="form-field" ng-repeat="attribute in ::attributeRow"
-                     ng-class="::{'right-form-field' : $index%2 != 0}" ng-if = "attribute.name != 'NICK_NAME'">
+                     ng-class="::{'right-form-field' : $index%2 != 0}" ng-if = "attribute.name != 'NICK_NAME' && attribute.name != 'TYPE_OF_REGISTRATION'">
                 <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                                  is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                                  get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
@@ -265,7 +265,7 @@
               </span>
                 </legend>
                 <section class="form-field-inline clearfix" ng-show="section.expand">
-                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name != 'LOCATION_OF_TEST' && attribute.name != 'SECTOR_SELECT' && attribute.name != 'ATIP_SELECT' && attribute.name != 'HEALTH_FACILITY_NAME' && attribute.name != 'HEALTH_FACILITY_DISTRICT' && attribute.name != 'HEALTH_FACILITY_PROVINCE'"
+                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name != 'LOCATION_OF_TEST' && attribute.name != 'SECTOR_SELECT' && attribute.name != 'ATIP_SELECT' && attribute.name != 'HEALTH_FACILITY_NAME' && attribute.name != 'HEALTH_FACILITY_DISTRICT' && attribute.name != 'HEALTH_FACILITY_PROVINCE' "
                              ng-class="::{'right-form-field' : $index%2 != 0}">
                         <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                                          is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
