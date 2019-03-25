@@ -104,5 +104,13 @@
     "REGISTRATION_HEALTH_FACILITY_CODE":"Cód. US",
     "REGISTRATION_SERVICE_CODE":"Serviço",
     "REGISTRATION_NID_YEAR":"Ano",
-    "REGISTRATION_SEQUENTIAL_CODE":"Sequência"
+    "REGISTRATION_SEQUENTIAL_CODE":"Sequência",
+    "LOCATION_OF_TEST":"Local de Realização do Teste",
+    "LOCATION_SECTOR":"Sector",
+    "LOCATION_HEALTH_FACILITY":"Unidade Sanitária",
+    "SECTOR_SELECT":"Sector",
+    "ATIP_SELECT":"ATIP",
+    "HEALTH_FACILITY_NAME":"Unidade Sanitária Nome",
+    "HEALTH_FACILITY_DISTRICT":"Unidade Sanitária Distrito",
+    "HEALTH_FACILITY_PROVINCE":"Unidade Sanitária Província"
 }
