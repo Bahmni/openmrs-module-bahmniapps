@@ -249,7 +249,7 @@
     </div>
 
     <div ng-repeat="section in ::patientConfiguration.getOrderedPatientAttributesSections()"
-         class="additional-info-wrapper">
+         class="additional-info-wrapper" ng-if="section.title!='patientHIVTestInformation'">
         <div ng-if="section.canShow">
             <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
                 <legend class="additional-attribute" toggle="section.expand">
@@ -265,23 +265,70 @@
               </span>
                 </legend>
                 <section class="form-field-inline clearfix" ng-show="section.expand">
-                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name != 'LOCATION_OF_TEST' && attribute.name != 'SECTOR_SELECT' && attribute.name != 'ATIP_SELECT' && attribute.name != 'HEALTH_FACILITY_NAME' && attribute.name != 'HEALTH_FACILITY_DISTRICT' && attribute.name != 'HEALTH_FACILITY_PROVINCE' "
+                    <article class="form-field" ng-repeat="attribute in ::section.attributes" 
+                             ng-class="::{'right-form-field' : $index%2 != 0}">
+                        <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                                         is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                                         get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                    </article>
+                </section>
+            </div>
+        </div>
+    </div>
+
+
+<div ng-repeat="section in ::patientConfiguration.getOrderedPatientAttributesSections()"
+         class="additional-info-wrapper" ng-if="section.title=='patientHIVTestInformation'">
+        <div ng-if="section.canShow">
+            <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
+                <legend class="additional-attribute" toggle="section.expand">
+              <span>
+                  <i class="fa fa-caret-right"></i>
+                  <i class="fa fa-caret-down"></i>
+                  <strong>
+                      <a ng-if="::section.translationKey" href accesskey="{{::section.shortcutKey | translate}}"
+                         ng-bind-html="::section.translationKey | translate">
+                      </a>
+                      <a ng-if="::(section.title && !section.translationKey)" href>{{::'REGISTRATION_TITLE_ADDITIONAL_PATIENT' | translate}}</a>
+                  </strong>
+              </span>
+                </legend>
+                <section class="form-field-inline clearfix" ng-show="section.expand">
+                  <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name != 'LOCATION_OF_TEST' && attribute.name != 'SECTOR_SELECT' && attribute.name != 'ATIP_SELECT' && attribute.name != 'HEALTH_FACILITY_NAME' && attribute.name != 'HEALTH_FACILITY_DISTRICT' && attribute.name != 'HEALTH_FACILITY_PROVINCE' "
                              ng-class="::{'right-form-field' : $index%2 != 0}">
                         <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                                          is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                                          get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                     </article>
 
-                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name == 'LOCATION_OF_TEST'"
+                    <div class="testlocation"><b>{{'LOCATION_OF_TEST' | translate}}</b></div>
+
+                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name == 'HEALTH_FACILITY_NAME'"
                              ng-class="::{'right-form-field' : $index%2 != 0}">
                         <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                                          is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                                          get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"
-                                         handle-location-change="handleLocationChange"></attribute-types>
+                                         ></attribute-types>
+                    </article>
+
+                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name == 'HEALTH_FACILITY_DISTRICT'"
+                             ng-class="::{'right-form-field' : $index%2 != 0}">
+                        <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                                         is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                                         get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"
+                                         ></attribute-types>
+                    </article>
+
+                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name == 'HEALTH_FACILITY_PROVINCE'"
+                             ng-class="::{'right-form-field' : $index%2 != 0}">
+                        <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                                         is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                                         get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"
+                                         ></attribute-types>
                     </article>
 
                     <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name == 'SECTOR_SELECT'"
-                             ng-class="::{'right-form-field' : $index%2 != 0}" ng-show="isSectorSelectShown">
+                             ng-class="::{'right-form-field' : $index%2 != 0}" >
                         <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                                          is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                                          get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"
@@ -295,34 +342,15 @@
                                          get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"
                                          ></attribute-types>
                     </article>
-
-                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name == 'HEALTH_FACILITY_NAME'"
-                             ng-class="::{'right-form-field' : $index%2 != 0}" ng-show="isHealthFacilityShown">
-                        <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
-                                         is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
-                                         get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"
-                                         ></attribute-types>
-                    </article>
-
-                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name == 'HEALTH_FACILITY_DISTRICT'"
-                             ng-class="::{'right-form-field' : $index%2 != 0}" ng-show="isHealthFacilityShown">
-                        <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
-                                         is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
-                                         get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"
-                                         ></attribute-types>
-                    </article>
-
-                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name == 'HEALTH_FACILITY_PROVINCE'"
-                             ng-class="::{'right-form-field' : $index%2 != 0}" ng-show="isHealthFacilityShown">
-                        <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
-                                         is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
-                                         get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"
-                                         ></attribute-types>
-                    </article>
                 </section>
             </div>
         </div>
     </div>
+
+
+
+
+
     <div class="box-container" ng-if="::(relationshipTypes.length > 0)">
         <legend class="additional-attribute" ng-show="::relationshipTypes" toggle="patient.hasRelationships">
           <span>

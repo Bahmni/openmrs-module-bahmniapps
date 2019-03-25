@@ -27,17 +27,9 @@ angular.module('bahmni.registration')
             var successCallBack = function (openmrsPatient) {
                 $scope.openMRSPatient = openmrsPatient["patient"];
                 $scope.patient = openmrsPatientMapper.map(openmrsPatient);
-                if ($scope.patient.hasOwnProperty('LOCATION_OF_TEST')) {
-                    if ($scope.patient['LOCATION_OF_TEST'].value == 'LOCATION_SECTOR') {
-                        $scope.isSectorSelectShown = true;
-                        if ($scope.patient.hasOwnProperty('SECTOR_SELECT')) {
-                            if ($scope.patient['SECTOR_SELECT'].value == 'ATIP') {
-                                $scope.isATIPSelectShown = true;
-                            }
-                        }
-                    }
-                    else if ($scope.patient['LOCATION_OF_TEST'].value == 'LOCATION_HEALTH_FACILITY') {
-                        $scope.isHealthFacilityShown = true;
+                if ($scope.patient.hasOwnProperty('SECTOR_SELECT')) {
+                    if ($scope.patient['SECTOR_SELECT'].value == 'ATIP') {
+                        $scope.isATIPSelectShown = true;
                     }
                 }
                 setReadOnlyFields();

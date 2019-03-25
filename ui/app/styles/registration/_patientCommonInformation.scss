@@ -12,6 +12,14 @@
   }
 }
 
+.testlocation {
+    position: relative;
+    display: flex;
+    width: 100%;
+    padding: 1%;
+    justify-content: space-around;
+}
+
 form .form-field{
   @media (max-width : 768px) {
     .field-value {
