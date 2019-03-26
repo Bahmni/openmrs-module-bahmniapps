@@ -23,7 +23,7 @@
 	"LOGIN_LABEL_RESEND_OTP": "Reenviar OTP",
 	"LOGIN_LABEL_RESEND_SUCCESS": "Foi enviada uma nova OTP para o seu número de telefone registado.",
 	"LOGIN_LABEL_SELECT_LOCALE_KEY": "Seleccionar Língua",
-	"LOGIN_LABEL_SELECT_LOCATION_KEY": "Seleccionar Local",
+	"LOGIN_LABEL_SELECT_LOCATION_KEY": "Seleccionar Sector",
 	"LOGIN_LABEL_SUBMIT_KEY": "Submeter",
 	"LOGIN_LABEL_USERNAME_KEY": "Nome do Utilizador",
 	"LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY": "OTP incorrecto. Por favor introduza o OTP novamente.",

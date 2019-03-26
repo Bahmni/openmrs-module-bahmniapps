@@ -25,7 +25,7 @@
     "REGISTRATION_LABEL_PATIENT_ENTER_REGISTRATION": "Inserir número de registo do paciente",
     "REGISTSobrenomeRATION_LABEL_CASTE_SAME_LAST_NAME": "Mesmo sobrenome como Casta",
     "REGISTRATION_LABEL_GENDER": "Sexo",
-    "REGISTRATION_LABEL_SELECT_GENDER": "Selecionar Sexo",
+    "REGISTRATION_LABEL_SELECT_GENDER": "Seleccionar Sexo",
     "REGISTRATION_LABEL_AGE": "Idade",
     "OBS_UNKNOWN_TRANSLATE_KEY": "Desconhecido",
     "REGISTRATION_LABEL_CITY": "Bairro",
@@ -110,7 +110,7 @@
     "LOCATION_HEALTH_FACILITY":"Unidade Sanitária",
     "SECTOR_SELECT":"Sector",
     "ATIP_SELECT":"ATIP",
-    "HEALTH_FACILITY_NAME":"Unidade Sanitária Nome",
-    "HEALTH_FACILITY_DISTRICT":"Unidade Sanitária Distrito",
-    "HEALTH_FACILITY_PROVINCE":"Unidade Sanitária Província"
+    "HEALTH_FACILITY_NAME":"Unidade Sanitária",
+    "HEALTH_FACILITY_DISTRICT":"Distrito",
+    "HEALTH_FACILITY_PROVINCE":"Província"
 }
