@@ -51,8 +51,8 @@
                ng-model="targetModel[attribute.name].value"
                ng-keyup="suggest(targetModel[attribute.name])"
                ng-required="{{::attribute.required}}">
-        <ul class="ui-front ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all" ng-if="showTag" ng-hide="hideList"
-            style="position:absolute; top:30px;  width:192px">
+        <ul class="ui-front ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all" ng-if="showTag && filterOcuppation.length > 0" ng-hide="hideList"
+            style="position:absolute; top:31px;  width:192px">
             <li class="ui-menu-item" role="presentation" ng-repeat="info in filterOcuppation"
                 ng-click="hideSuggestions(info)">
                 <a class="ui-corner-all" tabindex="-1">{{info.description}}</a>

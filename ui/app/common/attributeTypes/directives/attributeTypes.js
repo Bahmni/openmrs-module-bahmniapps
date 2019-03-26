@@ -44,12 +44,14 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                 $scope.hideList = false;
                 $scope.showTag = true;
                 var output = [];
+                if(string.value.length >=2){
                 angular.forEach($scope.suggestions, function (suggestion) {
                     if (suggestion.description.toLowerCase().indexOf(string.value.toLowerCase()) >= 0) {
                         output.push(suggestion);
                     }
                 });
                 $scope.filterOcuppation = output;
+                }
             };
 
             $scope.hideSuggestions = function (object) {
