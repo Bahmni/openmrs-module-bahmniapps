@@ -81,6 +81,11 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                             $scope.hideList = true;
                         }
                     }, 500);
+                } else {
+                    $rootScope.canSave = true;
+                    $scope.hideList = true;
+                    $scope.targetModel[$scope.attribute.name].value = "";
+                    $scope.targetModel[$scope.attribute.name].conceptUuid = null;
                 }
             };
         }
