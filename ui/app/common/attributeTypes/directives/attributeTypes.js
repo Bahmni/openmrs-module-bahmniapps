@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', ['messagingService',function (messagingService) {
+angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', ['messagingService', function (messagingService) {
     return {
         scope: {
             targetModel: '=',
@@ -46,13 +46,13 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                 $scope.hideList = false;
                 $scope.showTag = true;
                 var output = [];
-                if(string.value.length >=2){
-                angular.forEach($scope.suggestions, function (suggestion) {
-                    if (suggestion.description.toLowerCase().indexOf(string.value.toLowerCase()) >= 0) {
-                        output.push(suggestion);
-                    }
-                });
-                $scope.filterOcuppation = output;
+                if (string.value.length >= 2) {
+                    angular.forEach($scope.suggestions, function (suggestion) {
+                        if (suggestion.description.toLowerCase().indexOf(string.value.toLowerCase()) >= 0) {
+                            output.push(suggestion);
+                        }
+                    });
+                    $scope.filterOcuppation = output;
                 }
             };
 
@@ -64,8 +64,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
             };
 
             $scope.validateField = function () {
-
-                if($scope.targetModel[$scope.attribute.name] !== undefined && $scope.targetModel[$scope.attribute.name].value !== "") {
+                if ($scope.targetModel[$scope.attribute.name] !== undefined && $scope.targetModel[$scope.attribute.name].value !== "") {
                     var alert = true;
                     $timeout(function () {
                         for (var i = 0; i < $scope.suggestions.length; i++) {
@@ -80,9 +79,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                         }
                     }, 500);
                 }
-
             };
-
         }
     };
 }]);
