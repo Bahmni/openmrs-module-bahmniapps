@@ -106,7 +106,9 @@
   "APPOINTMENT_STATUS": "Status",
   "APPOINTMENT_COMMENTS": "Comments",
   "CHECK_IN_APPOINTMENT": "Check-in",
+  "CHECKEDIN_APPOINTMENT":"Checked-in",
   "COMPLETE_APPOINTMENT": "Complete",
+  "COMPLETED_APPOINTMENT":"Completed",
   "MISSED_APPOINTMENT": "Missed",
   "EDIT_APPOINTMENT": "Edit",
   "CANCEL_APPOINTMENT": "Cancel",
@@ -153,5 +155,6 @@
   "YEARS_LABEL": "Years",
   "CHOOSE_ANSWER_FROM_DROPDOWN_LABEL": "Choose Answer",
   "DELETE_LABEL": "Delete",
-  "EDIT_LABEL": "Edit"
+  "EDIT_LABEL": "Edit",
+  "SCHEDULED_APPOINTMENT":"Agendada"
 }
