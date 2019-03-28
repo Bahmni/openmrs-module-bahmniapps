@@ -15,13 +15,14 @@ angular.module('bahmni.registration')
             $scope.isATIPSelectShown = false;
             $scope.isHealthFacilityShown = false;
             $scope.NID = {};
+            $scope.currentYear = new Date().getFullYear();
 
             var getPersonAttributeTypes = function () {
                 return $rootScope.patientConfiguration.attributeTypes;
             };
 
             $scope.buildFinalNID = function () {
-                $scope.patient.primaryIdentifier.registrationNumber = $scope.NID.healthFacilityCode + $scope.NID.serviceCode + $scope.NID.year + $scope.NID.sequentialCode;
+                $scope.patient.primaryIdentifier.registrationNumber = $scope.NID.healthFacilityCode +'/'+ $scope.NID.serviceCode +'/'+ $scope.NID.year +'/'+ $scope.NID.sequentialCode;
             };
 
             $scope.$watch('patient.primaryIdentifier.registrationNumber', function () {
