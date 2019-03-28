@@ -27,6 +27,10 @@ angular.module('bahmni.registration')
             var successCallBack = function (openmrsPatient) {
                 $scope.openMRSPatient = openmrsPatient["patient"];
                 $scope.patient = openmrsPatientMapper.map(openmrsPatient);
+                if ($scope.patient.birthdateEstimated == false) {
+                    $scope.isBirthDateEstimatedDisabled = true;
+                    $scope.isAgeDisabled = true;
+                }
                 if ($scope.patient.hasOwnProperty('SECTOR_SELECT')) {
                     if ($scope.patient['SECTOR_SELECT'].value == 'ATIP') {
                         $scope.isATIPSelectShown = true;
