@@ -26,16 +26,10 @@
                 <td>{{::appointment.patient.identifier}}</td>
                 <td class="table-mid-width">{{::appointment.patient.name | titleCase}}</td>
                 <td>{{::appointment.startDateTime | bahmniDate}}</td>
-                <td>{{::appointment.startDateTime | bahmniTime}}</td>
-                <td>{{::appointment.endDateTime | bahmniTime}}</td>
-                <td class="table-mid-width">{{::appointment.provider.name}}</td>
                 <td ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
                 <td class="table-mid-width">{{::appointment.service.name}}</td>
                 <td class="table-mid-width" ng-show="::enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
                 <td>{{appointment.status}}</td>
-                <td>{{:: isWalkIn(appointment.appointmentKind)}}</td>
-                <td class="table-mid-width">{{::appointment.location.name}}</td>
-                <td class="table-mid-width">{{display(appointment.additionalInfo)}}</td>
                 <td>{{::appointment.comments}}</td>
             </tr>
             </tbody>
