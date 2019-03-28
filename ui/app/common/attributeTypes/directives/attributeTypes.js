@@ -17,7 +17,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
         },
         templateUrl: '../common/attributeTypes/views/attributeInformation.html',
         restrict: 'E',
-        controller: function ($scope, $timeout) {
+        controller: function ($scope, $timeout, $rootScope) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.getAutoCompleteList = $scope.getAutoCompleteList();
             $scope.getDataResults = $scope.getDataResults();
@@ -32,6 +32,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
 
             $scope.showTag = false;
             $scope.borderColor = "1px solid #d1d1d1";
+            $rootScope.canSave = true;
 
             $scope.appendConceptNameToModel = function (attribute) {
                 var attributeValueConceptType = $scope.targetModel[attribute.name];
@@ -61,6 +62,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                 $scope.targetModel[$scope.attribute.name].value = object.description;
                 $scope.targetModel[$scope.attribute.name].conceptUuid = object.conceptId;
                 $scope.hideList = true;
+                $rootScope.canSave = true;
             };
 
             $scope.validateField = function () {
@@ -75,6 +77,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                         if (alert) {
                             $scope.borderColor = "1px solid #ff5252";
                             messagingService.showMessage("error", "INVALID_OCCUPATION");
+                            $rootScope.canSave = false;
                             $scope.hideList = true;
                         }
                     }, 500);
