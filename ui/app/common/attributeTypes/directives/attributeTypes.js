@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [function () {
+angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', ['messagingService',function (messagingService) {
     return {
         scope: {
             targetModel: '=',
@@ -17,7 +17,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
         },
         templateUrl: '../common/attributeTypes/views/attributeInformation.html',
         restrict: 'E',
-        controller: function ($scope) {
+        controller: function ($scope, $timeout) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.getAutoCompleteList = $scope.getAutoCompleteList();
             $scope.getDataResults = $scope.getDataResults();
@@ -31,6 +31,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
             $scope.suggestions = $scope.attribute.answers;
 
             $scope.showTag = false;
+            $scope.borderColor = "1px solid #d1d1d1";
 
             $scope.appendConceptNameToModel = function (attribute) {
                 var attributeValueConceptType = $scope.targetModel[attribute.name];
@@ -41,6 +42,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
             };
 
             $scope.suggest = function (string) {
+                $scope.borderColor = "1px solid #d1d1d1";
                 $scope.hideList = false;
                 $scope.showTag = true;
                 var output = [];
@@ -60,6 +62,27 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                 $scope.targetModel[$scope.attribute.name].conceptUuid = object.conceptId;
                 $scope.hideList = true;
             };
+
+            $scope.validateField = function () {
+
+                if($scope.targetModel[$scope.attribute.name] !== undefined && $scope.targetModel[$scope.attribute.name].value !== "") {
+                    var alert = true;
+                    $timeout(function () {
+                        for (var i = 0; i < $scope.suggestions.length; i++) {
+                            if ($scope.targetModel[$scope.attribute.name].value.toLowerCase() === $scope.suggestions[i].description.toLowerCase()) {
+                                alert = false;
+                            }
+                        }
+                        if (alert) {
+                            $scope.borderColor = "1px solid #ff5252";
+                            messagingService.showMessage("error", "INVALID_OCCUPATION");
+                            $scope.hideList = true;
+                        }
+                    }, 500);
+                }
+
+            };
+
         }
     };
 }]);
