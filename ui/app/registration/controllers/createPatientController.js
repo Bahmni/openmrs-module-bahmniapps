@@ -22,7 +22,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.buildFinalNID = function () {
-                $scope.patient.primaryIdentifier.registrationNumber = $scope.NID.healthFacilityCode +'/'+ $scope.NID.serviceCode +'/'+ $scope.NID.year +'/'+ $scope.NID.sequentialCode;
+                $scope.patient.primaryIdentifier.registrationNumber = $scope.NID.healthFacilityCode + '/' + $scope.NID.serviceCode + '/' + $scope.NID.year + '/' + $scope.NID.sequentialCode;
             };
 
             $scope.$watch('patient.primaryIdentifier.registrationNumber', function () {
