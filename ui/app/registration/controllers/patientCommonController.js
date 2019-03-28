@@ -17,8 +17,6 @@ angular.module('bahmni.registration')
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
-            $scope.isBirthDateEstimatedDisabled = false;
-            $scope.isDOBDisabled = false;
 
             var dontSaveButtonClicked = false;
 
@@ -65,9 +63,11 @@ angular.module('bahmni.registration')
             $scope.updateBirthDateEstimated = function () {
                 if ($scope.patient.birthdate) {
                     $scope.isBirthDateEstimatedDisabled = true;
+                    $scope.isAgeDisabled = true;
                 }
                 else {
                     $scope.isBirthDateEstimatedDisabled = false;
+                    $scope.isAgeDisabled = false;
                 }
             };
 
@@ -86,7 +86,7 @@ angular.module('bahmni.registration')
                         $scope.isDOBDisabled = true;
                     }
                     else {
-                        $scope.isBirthDateEstimatedDisabled = true;
+                        $scope.isBirthDateEstimatedDisabled = false;
                     }
                 }
             });
