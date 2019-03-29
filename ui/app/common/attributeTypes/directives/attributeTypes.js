@@ -66,7 +66,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
             };
 
             $scope.validateField = function () {
-                if ($scope.targetModel[$scope.attribute.name] !== undefined && $scope.targetModel[$scope.attribute.name].value !== "") {
+                if ($scope.targetModel[$scope.attribute.name] !== undefined && $scope.targetModel[$scope.attribute.name].value !== "" && $scope.targetModel[$scope.attribute.name] !== null) {
                     var alert = true;
                     $timeout(function () {
                         for (var i = 0; i < $scope.suggestions.length; i++) {
@@ -84,8 +84,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                 } else {
                     $rootScope.canSave = true;
                     $scope.hideList = true;
-                    $scope.targetModel[$scope.attribute.name].value = "";
-                    $scope.targetModel[$scope.attribute.name].conceptUuid = null;
+                    $scope.targetModel[$scope.attribute.name] = { value: "", conceptUuid: null };
                 }
             };
         }
