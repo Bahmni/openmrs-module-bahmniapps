@@ -257,7 +257,7 @@ describe("calendarViewController", function () {
             template: "views/cancelAppointment.html",
             closeByDocument: false,
             controller: "calendarViewCancelAppointmentController",
-            className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+            className: 'ngdialog-theme-default ng-dialog-adt-popUp ot-dialog',
             showClose: true,
             data: {
                 surgicalBlock: scope.surgicalBlockSelected,
@@ -276,7 +276,7 @@ describe("calendarViewController", function () {
             template: "views/cancelSurgicalBlock.html",
             closeByDocument: false,
             controller: "cancelSurgicalBlockController",
-            className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+            className: 'ngdialog-theme-default ng-dialog-adt-popUp ot-dialog',
             showClose: true,
             data: {
                 surgicalBlock: scope.surgicalBlockSelected,
@@ -424,7 +424,7 @@ describe("calendarViewController", function () {
             template: "views/moveAppointment.html",
             closeByDocument: false,
             controller: "moveSurgicalAppointmentController",
-            className: 'ngdialog-theme-default ng-dialog-adt-popUp',
+            className: 'ngdialog-theme-default ng-dialog-adt-popUp ot-dialog',
             showClose: true,
             data: {
                 surgicalBlock: scope.surgicalBlockSelected,
