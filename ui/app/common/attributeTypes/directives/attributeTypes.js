@@ -63,9 +63,10 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                 $scope.targetModel[$scope.attribute.name].conceptUuid = object.conceptId;
                 $scope.hideList = true;
                 $rootScope.canSave = true;
+                $scope.borderColor = "1px solid #d1d1d1";
             };
 
-            $scope.validateField = function () {
+            $scope.validateField = function (isMouse) {
                 if ($scope.targetModel[$scope.attribute.name] !== undefined && $scope.targetModel[$scope.attribute.name].value !== "" && $scope.targetModel[$scope.attribute.name] !== null) {
                     var alert = true;
                     $timeout(function () {
@@ -76,14 +77,16 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                         }
                         if (alert) {
                             $scope.borderColor = "1px solid #ff5252";
-                            messagingService.showMessage("error", "INVALID_OCCUPATION");
+                            if (!isMouse) {
+                                messagingService.showMessage("error", "INVALID_OCCUPATION");
+                                $scope.hideList = true;
+                            }
                             $rootScope.canSave = false;
-                            $scope.hideList = true;
                         }
                     }, 500);
                 } else {
                     $rootScope.canSave = true;
-                    $scope.hideList = true;
+                    if (!isMouse) { $scope.hideList = true; }
                     $scope.targetModel[$scope.attribute.name] = { value: "", conceptUuid: null };
                 }
             };
