@@ -134,6 +134,7 @@ angular.module('authentication')
                 });
                 return deferrable.promise;
             }
+            this.getHealthFacilityInfo();
             userService.getUser(currentUser).then(function (data) {
                 userService.getProviderForUser(data.results[0].uuid).then(function (providers) {
                     if (!_.isEmpty(providers.results) && hasAnyActiveProvider(providers.results)) {
@@ -172,6 +173,18 @@ angular.module('authentication')
                 headers: {'Content-Type': 'application/json'}
             });
         };
+
+    this.getHealthFacilityInfo = function (){
+        return $http.get(Bahmni.Common.Constants.globalPropertyUrl,{
+            method: 'GET',
+            params: {
+                property: 'healthFacility.info'
+            },
+            cache:true
+        }).success(function (data) {
+            $rootScope.healthFacility = data;
+        });
+    };
 
         this.loadProviders = function (userInfo) {
             return $http.get(Bahmni.Common.Constants.providerUrl, {
