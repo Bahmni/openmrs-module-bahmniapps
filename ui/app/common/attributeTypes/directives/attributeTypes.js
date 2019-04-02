@@ -54,6 +54,8 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                         }
                     });
                     $scope.filterOcuppation = output;
+                } else {
+                    $scope.hideList = true;
                 }
             };
 
