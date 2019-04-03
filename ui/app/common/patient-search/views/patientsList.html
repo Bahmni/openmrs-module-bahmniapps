@@ -17,6 +17,7 @@
         </ul>
     </div>
     <div class="tab-content" ng-if="::search.searchTypes.length">
+        <div class="patient-list-spinner"></div>
         <span ng-if="search.isCurrentSearchLookUp()">
             <form name="filterPatients" ng-submit="filterPatientsAndSubmit()">
                 <div class="search-wrapper">
