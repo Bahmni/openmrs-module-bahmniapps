@@ -174,17 +174,17 @@ angular.module('authentication')
             });
         };
 
-    this.getHealthFacilityInfo = function (){
-        return $http.get(Bahmni.Common.Constants.globalPropertyUrl,{
-            method: 'GET',
-            params: {
-                property: 'healthFacility.info'
-            },
-            cache:true
-        }).success(function (data) {
-            $rootScope.healthFacility = data;
-        });
-    };
+        this.getHealthFacilityInfo = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                method: 'GET',
+                params: {
+                    property: 'healthFacility.info'
+                },
+                cache: true
+            }).success(function (data) {
+                $rootScope.healthFacility = data;
+            });
+        };
 
         this.loadProviders = function (userInfo) {
             return $http.get(Bahmni.Common.Constants.providerUrl, {
