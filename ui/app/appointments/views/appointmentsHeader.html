@@ -16,10 +16,10 @@
                 </button>
                 <ul>
                     <li>
-                        <i class="fa fa-map-marker fa-white small"></i><span>{{:: currentUser.currentLocation | translate}}</span>
+                        <i class="fa fa-map-marker fa-white small"></i><span style="font-weight: bold">{{:: currentUser.currentLocation | translate}}</span>
                     </li>
                     <li>
-                        <a><i class="fa fa-power-off fa-white small"></i><span class="nav-link">Logout</span></a>
+                        <a class="list-item">  <i class="fa fa-power-off fa-white small"></i><span class="nav-link">Logout</span></a>
                     </li>
                 </ul>
             </div>
@@ -50,6 +50,12 @@
         position: relative;
         height: 51px;
 
+    }
+
+    .list-item {
+        color: #fff;
+        font-weight: bold;
+        cursor:pointer
     }
 
 </style>
