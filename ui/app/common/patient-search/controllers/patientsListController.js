@@ -4,6 +4,8 @@ angular.module('bahmni.common.patientSearch')
 .controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner',
     '$stateParams', '$bahmniCookieStore', 'printer', 'configurationService',
     function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, printer, configurationService) {
+        const DEFAULT_DEBOUNCE_INTERVAL = 2000;
+        var programConfig = appService.getAppDescriptor().getConfigValue("program");
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSearchType);
             $scope.search = new Bahmni.Common.PatientSearch.Search(_.without(searchTypes, undefined));
@@ -11,9 +13,14 @@ angular.module('bahmni.common.patientSearch')
             $scope.$watch('search.searchType', function (currentSearchType) {
                 _.isEmpty(currentSearchType) || fetchPatients(currentSearchType);
             });
-            _.each($scope.search.searchTypes, function (searchType) {
-                _.isEmpty(searchType) || ($scope.search.searchType != searchType && getPatientCount(searchType));
-            });
+            if (programConfig && programConfig.runPatientSearchInSerial) {
+                getPatientCountBySearchTypeIndex(0);
+            }
+            else {
+                _.each($scope.search.searchTypes, function (searchType) {
+                    _.isEmpty(searchType) || ($scope.search.searchType != searchType && getPatientCount(searchType));
+                });
+            }
             if ($rootScope.currentSearchType != null) {
                 $scope.search.switchSearchType($rootScope.currentSearchType);
             }
@@ -113,10 +120,19 @@ angular.module('bahmni.common.patientSearch')
             };
         };
 
+        var debounceGetPatientCount = _.debounce(function (currentSearchType) {
+            getPatientCount(currentSearchType);
+        }, (programConfig && programConfig.debouncePatientSearchApiInterval) || DEFAULT_DEBOUNCE_INTERVAL, {});
+
         var fetchPatients = function (currentSearchType) {
             $rootScope.currentSearchType = currentSearchType;
             if ($scope.search.isCurrentSearchLookUp()) {
-                getPatientCount(currentSearchType);
+                if (programConfig && programConfig.debouncePatientSearchApi) {
+                    debounceGetPatientCount(currentSearchType);
+                }
+                else {
+                    getPatientCount(currentSearchType);
+                }
             }
         };
 
@@ -141,6 +157,30 @@ angular.module('bahmni.common.patientSearch')
             }
             if (link.url && link.url !== null) {
                 $window.open(appService.getAppDescriptor().formatUrl(link.url, options, true), link.newTab ? "_blank" : "_self");
+            }
+        };
+        var getPatientCountBySearchTypeIndex = function (index) {
+            if (index === $scope.search.searchTypes.length) {
+                return;
+            }
+            var searchType = $scope.search.searchTypes[index];
+            if (searchType.handler) {
+                var params = {
+                    q: searchType.handler,
+                    v: "full",
+                    location_uuid: $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid,
+                    provider_uuid: $rootScope.currentProvider.uuid
+                };
+                if (searchType.additionalParams) {
+                    params["additionalParams"] = searchType.additionalParams;
+                }
+                patientService.findPatients(params).then(function (response) {
+                    searchType.patientCount = response.data.length;
+                    if ($scope.search.isSelectedSearch(searchType)) {
+                        $scope.search.updatePatientList(response.data);
+                    }
+                    return getPatientCountBySearchTypeIndex(index + 1);
+                });
             }
         };
         initialize();
