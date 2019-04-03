@@ -50,10 +50,10 @@
 
                         <div class="input-prepend">
                             <span class="add-on">{{ ::'REGISTRATION_NID_YEAR' | translate}}</span>
-                            <input type="text" id="registrationNumber" ng-model="NID.year"
+                            <input type="number" ng-model="NID.year"
                                    pattern-validate
                                    focus-on="patient.primaryIdentifier.hasOldIdentifier"
-                                   ng-blur="buildFinalNID()" minlength="4" maxlength="4" size="4" required>
+                                   ng-blur="buildFinalNID()" min="0" max="{{currentYear}}" required>
                         </div>
 
                         <div class="input-prepend">
