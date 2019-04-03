@@ -2,26 +2,25 @@
     <header class="reg-header">
         <div class="reg-header-right fr">
             <form class="change-location fl">
-                <select  ng-model="selectedLocationUuid" ng-change="onLocationChange()">
-                    <option ng-repeat="location in locations | orderBy:'display'" ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
+                <select ng-model="selectedLocationUuid" ng-change="onLocationChange()">
+                    <option ng-repeat="location in locations | orderBy:'display'"
+                            ng-selected="isCurrentLocation(location)" value="{{location.uuid}}">
                         {{location.display | translate}}
                     </option>
                 </select>
             </form>
-            <!-- Mujir/Vikash - to be introduced when we do retrospective entry for registration and other modules -->
-            <!--<input class="retro-date-widget fr" type="date"/>-->
-
+            <span class="btn-facility-info fl">
+            <span class="health-facility-section"><img src="./../images/flag_of_mozambique.png" alt="flag" height="20px"
+                                                       width="30px" style="float:left; padding-top: 3px"/>
+                <div style="float: left; margin-left: 8px; padding-top: 8px"><span>{{::healthFacility.name}} - {{::healthFacility.code}}</span></div>
+            </span>
+            </span>
             <button class="btn-user-info fr">
                 <i class="fa fa-user-md fa-white small"></i>
+                <span>{{::currentUser.person.display}}</span>
                 <i class="fa fa-caret-down fa-white mini"></i>
             </button>
             <ul>
-                <li ng-show=currentUser.username>
-                    <a class="disabled">
-                        <i class="fa fa-user-md fa-white small"></i>
-                        <span ng-bind="currentUser.username"></span>
-                    </a>
-                </li>
                 <li>
                     <i class="fa fa-key fa-white small"></i>
                     <a ng-click="changePassword()"><span>{{'CHANGE_PASSWORD' | translate}}</span></a>
@@ -41,8 +40,37 @@
     <div class="apps">
         <ul>
             <li ng-repeat="extn in appExtensions">
-                <a id="{{extn.id}}" ng-href="{{extn.url}}" class="button app big" target="{{extn.target?extn.target:'_self'}}" ng-if="isVisibleExtension(extn)"><i class="{{extn.icon}}"></i>{{extn | titleTranslate}}</a>
+                <a id="{{extn.id}}" ng-href="{{extn.url}}" class="button app big"
+                   target="{{extn.target?extn.target:'_self'}}" ng-if="isVisibleExtension(extn)"><i
+                        class="{{extn.icon}}"></i>{{extn | titleTranslate}}</a>
             </li>
         </ul>
     </div>
 </div>
+<style>
+    .health-facility-section {
+        color: #fff;
+        font-weight: 600;
+
+    }
+
+    .btn-facility-info {
+        background: #00796d;
+        padding: 12px;
+        border: none;
+        border-radius: 0;
+        height: 27px;
+        margin: 0;
+        color: #FFFFFF;
+        position: relative;
+    }
+
+    .btn-user-info {
+        color: #fff;
+        float: left;
+        position: relative;
+        height: 51px;
+
+    }
+
+</style>
