@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [function () {
+angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', ['messagingService', function (messagingService) {
     return {
         scope: {
             targetModel: '=',
@@ -17,7 +17,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
         },
         templateUrl: '../common/attributeTypes/views/attributeInformation.html',
         restrict: 'E',
-        controller: function ($scope) {
+        controller: function ($scope, $timeout, $rootScope) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.getAutoCompleteList = $scope.getAutoCompleteList();
             $scope.getDataResults = $scope.getDataResults();
@@ -31,6 +31,8 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
             $scope.suggestions = $scope.attribute.answers;
 
             $scope.showTag = false;
+            $scope.borderColor = "1px solid #d1d1d1";
+            $rootScope.canSave = true;
 
             $scope.appendConceptNameToModel = function (attribute) {
                 var attributeValueConceptType = $scope.targetModel[attribute.name];
@@ -41,15 +43,20 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
             };
 
             $scope.suggest = function (string) {
+                $scope.borderColor = "1px solid #d1d1d1";
                 $scope.hideList = false;
                 $scope.showTag = true;
                 var output = [];
-                angular.forEach($scope.suggestions, function (suggestion) {
-                    if (suggestion.description.toLowerCase().indexOf(string.value.toLowerCase()) >= 0) {
-                        output.push(suggestion);
-                    }
-                });
-                $scope.filterOcuppation = output;
+                if (string.value.length >= 2) {
+                    angular.forEach($scope.suggestions, function (suggestion) {
+                        if (suggestion.description.toLowerCase().indexOf(string.value.toLowerCase()) >= 0) {
+                            output.push(suggestion);
+                        }
+                    });
+                    $scope.filterOcuppation = output;
+                } else {
+                    $scope.hideList = true;
+                }
             };
 
             $scope.hideSuggestions = function (object) {
@@ -57,6 +64,33 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                 $scope.targetModel[$scope.attribute.name].value = object.description;
                 $scope.targetModel[$scope.attribute.name].conceptUuid = object.conceptId;
                 $scope.hideList = true;
+                $rootScope.canSave = true;
+                $scope.borderColor = "1px solid #d1d1d1";
+            };
+
+            $scope.validateField = function (isMouse) {
+                if ($scope.targetModel[$scope.attribute.name] !== undefined && $scope.targetModel[$scope.attribute.name].value !== "" && $scope.targetModel[$scope.attribute.name] !== null) {
+                    var alert = true;
+                    $timeout(function () {
+                        for (var i = 0; i < $scope.suggestions.length; i++) {
+                            if ($scope.targetModel[$scope.attribute.name].value.toLowerCase() === $scope.suggestions[i].description.toLowerCase()) {
+                                alert = false;
+                            }
+                        }
+                        if (alert) {
+                            $scope.borderColor = "1px solid #ff5252";
+                            if (!isMouse) {
+                                messagingService.showMessage("error", "INVALID_OCCUPATION");
+                                $scope.hideList = true;
+                            }
+                            $rootScope.canSave = false;
+                        }
+                    }, 500);
+                } else {
+                    $rootScope.canSave = true;
+                    if (!isMouse) { $scope.hideList = true; }
+                    $scope.targetModel[$scope.attribute.name] = { value: "", conceptUuid: null };
+                }
             };
         }
     };

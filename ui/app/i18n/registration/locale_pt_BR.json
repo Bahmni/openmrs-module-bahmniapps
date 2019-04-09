@@ -112,5 +112,6 @@
     "ATIP_SELECT":"ATIP",
     "HEALTH_FACILITY_NAME":"Unidade Sanitária",
     "HEALTH_FACILITY_DISTRICT":"Distrito",
-    "HEALTH_FACILITY_PROVINCE":"Província"
+    "HEALTH_FACILITY_PROVINCE":"Província",
+    "INVALID_OCCUPATION": "Selecione uma ocupação válida"
 }
