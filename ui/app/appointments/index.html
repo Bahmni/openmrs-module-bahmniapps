@@ -11,7 +11,7 @@
         <!-- build:css appointments.min.css -->
         <link rel="stylesheet" href="../styles/appointmentScheduling.css">
         <link rel="stylesheet" href="../components/fullcalendar/dist/fullcalendar.min.css"/>
-        <link rel="stylesheet" href="../components/fullcalendar-scheduler/dist/scheduler.min.css"/>
+        <link rel="stylesheet" href="../components/http://errors.angularjs.org/1.4.9/$injector/unpr?p0=auditLogServiceProvider%20%3C-%20auditLogService%20%3C-%20logOutDirectivefullcalendar-scheduler/dist/scheduler.min.css"/>
         <link rel="stylesheet" href="../components/angular-ivh-treeview/dist/ivh-treeview.css"/>
         <link rel="stylesheet" href="../components/angular-ivh-treeview/dist/ivh-treeview-theme-basic.css"/>
         <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.bootstrap.min.css"/>
@@ -168,6 +168,11 @@
         <script src="controllers/manage/appointmentsSummaryController.js" ></script>
         <script src="controllers/manage/appointmentsFilterController.js"></script>
         <script src="filters/appointmentsFilter.js"></script>
+
+
+        <script src="../common/logging/services/loggingService.js"></script>
+        <script src="../common/models/auditLogEventDetails.js"></script>
+        <script src="../common/logging/services/auditLogService.js"></script>
         <!-- endbuild -->
     </body>
 </html>

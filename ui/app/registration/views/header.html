@@ -8,15 +8,20 @@
         </ul>
         <div class="reg-header-right fr">
             <div ui-view="headerExtension" class="print-action-items fl"></div>
-
+            <span class="btn-facility-info fr">
+            <span class="health-facility-section"><img src="./../images/flag_of_mozambique.png" alt="flag" height="20px" width="30px" style="float:left; padding-top: 3px" />
+                <div style="float: left; margin-left: 8px; padding-top: 8px"><span>{{::healthFacility.name}} - {{::healthFacility.code}}</span></div>
+            </span>
+            </span>
             <button class="btn-user-info fr">
                 <i class="fa fa-user-md fa-white small"></i>
+                <span>{{::currentUser.person.display}}</span>
                 <i class="fa fa-caret-down fa-white mini"></i>
             </button>
             <ul>
-                <li>
+               <!-- <li>
                     <a><i class="fa fa-user fa-white small"></i><span>{{:: currentUser.username}}</span></a>
-                </li>
+                </li>-->
                 <li>
                     <i class="fa fa-map-marker fa-white small"></i><span>{{:: currentUser.currentLocation | translate}}</span>
                 </li>
@@ -26,3 +31,9 @@
             </ul>
         </div>
 </header>
+
+<style>
+    .health-facility-section {color:#fff;font-weight: 600; font-size: 15px; cursor:pointer;  text-transform: uppercase; }
+    .btn-facility-info {background:#00796d; padding:12px; border:none; border-radius:0; height: 27px; margin:0; color: #FFFFFF; float:left}
+
+</style>

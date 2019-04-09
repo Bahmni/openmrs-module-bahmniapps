@@ -6,5 +6,7 @@
     "selectLocation": "Selecionar Sector",
     "clinical_key": "Clínico",
     "MESSAGE_DIALOG_OPTION_COPY": "Erro de Cópia",
-    "MESSAGE_DIALOG_OPTION_OKAY": "OK"
+    "MESSAGE_DIALOG_OPTION_OKAY": "OK",
+    "HEADER_LABEL_LOGOUT_KEY": "Sair",
+    "CHANGE_PASSWORD": "Alterar Senha"
 }
