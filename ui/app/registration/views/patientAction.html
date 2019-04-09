@@ -29,6 +29,10 @@
             </button>
         </span>
     </span>
-    <button type="submit" class="right submit-btn" ng-click="setSubmitSource('save')"
+
+    <button type="submit" class="right submit-btn" ng-click="setSubmitSource('save')" disabled ng-if="!canSave"
+            accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
+
+    <button type="submit" class="right submit-btn" ng-click="setSubmitSource('save')" ng-if="canSave"
             accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
 </div>

@@ -11,7 +11,63 @@
                     </div>
                 </div>
             </div>
+            <div class="reg-header-right fr">
+                <span class="btn-facility-info fl">
+            <span class="health-facility-section"><img src="./../images/flag_of_mozambique.png" alt="flag" height="20px"
+                                                       width="30px" style="float:left; padding-top: 3px"/>
+                <div style="float: left; margin-left: 8px; padding-top: 8px"><span>{{::healthFacility.name}} - {{::healthFacility.code}}</span></div>
+            </span>
+            </span>
+                <button class="btn-user-info fr" style="position: relative">
+                    <i class="fa fa-user-md fa-white small"></i>
+                    <span>{{::currentUser.person.display}}</span>
+                    <i class="fa fa-caret-down fa-white mini"></i>
+                </button>
+                <ul>
+                    <li lass="list-item" ng-show=currentUser.currentLocation>
+                        <a class="disabled">
+                            <i class="fa fa-map-marker fa-white small"></i>
+                            <span  style="font-weight: bold" ng-bind="currentUser.currentLocation | translate"></span>
+                        </a>
+                    </li>
+                    <li lass="list-item">
+                        <a log-out class="list-item"><i class="fa fa-power-off fa-white small"></i><span class="nav-link">{{'HEADER_LABEL_LOGOUT_KEY' | translate}}</span></a>
+                    </li>
+                </ul>
+            </div>
             <div ui-view="additional-header"></div>
         </header>
     </div>
 </div>
+<style>
+    .health-facility-section {
+        color: #fff;
+        font-weight: 600;
+
+    }
+
+    .btn-facility-info {
+        background: #00796d;
+        padding: 12px;
+        border: none;
+        border-radius: 0;
+        height: 27px;
+        margin: 0;
+        color: #FFFFFF;
+        position: relative;
+    }
+
+    .btn-user-info {
+        color: #fff;
+        float: left;
+        position: relative;
+        height: 51px;
+    }
+
+    .list-item {
+        color: #fff;
+        font-weight: bold;
+        cursor:pointer
+    }
+
+</style>

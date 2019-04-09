@@ -140,5 +140,6 @@
   "HEALTH_FACILITY_NAME":"Health Facility Name",
   "HEALTH_FACILITY_DISTRICT":"Health Facility District",
   "HEALTH_FACILITY_PROVINCE":"Health Facility Province",
-  "BIRTHDATE_ESTIMATED": "Estimated"
+  "BIRTHDATE_ESTIMATED": "Estimated",
+  "INVALID_OCCUPATION": "Invalid occupation"
 }

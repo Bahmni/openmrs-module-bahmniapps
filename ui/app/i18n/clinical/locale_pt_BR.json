@@ -218,5 +218,7 @@
     "Treatment Date":"Data de Tratamento",
     "Co-morbidities":"Co-morbidades",
     "Patient Stage":"Estagio do Paciente",
-    "Doctor-In-Charge":"Doutor em serviço"
+    "Doctor-In-Charge":"Doutor em serviço",
+    "HEADER_LABEL_LOGOUT_KEY": "Sair",
+    "CHANGE_PASSWORD": "Alterar Senha"
 }

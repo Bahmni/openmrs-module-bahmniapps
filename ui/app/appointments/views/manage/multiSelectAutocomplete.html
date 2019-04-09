@@ -11,7 +11,7 @@
     </tags-input>
     <div class="selected-values-wrapper">
         <p ng-repeat="value in selectedValues track by value[keyProperty]">
-            <span ng-style="{background : value.otCalendarColor}" title="{{ value.name }}">{{ value.name }}</span>
+            <span ng-style="{background : value.otCalendarColor}" title="{{ value.name }}">{{ (value.name + '_APPOINTMENT').toUpperCase() | translate }}</span>
             <label>
                 <i class="fa fa-times" aria-hidden="true"></i>
                 <input type="checkbox" id="{{value.keyProperty}}" ng-change="removeItem(value)"
