@@ -157,6 +157,21 @@
                  field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
                  strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
 
+         <legend class="registraion_legend">
+            <span class="mylegend"> {{ ::'REGISTRATION_CONTACT_INFORMATION' | translate}}</span>
+        </legend>
+
+        <section>
+            <section class="form-field-inline clearfix" ng-repeat="section in ::patientConfiguration.getOrderedPatientAttributesSections()" ng-show="section.expand" ng-if="section.title == 'patientContactInformation'">
+                <article class="form-field" ng-repeat="attribute in ::section.attributes" 
+                         ng-class="::{'right-form-field' : $index%2 != 0}">
+                    <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                                     is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                                     get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                </article>
+            </section>
+        </section>
+
         <legend class="registraion_legend" ng-if="patient.extraIdentifiers.length>0">
             <span class="mylegend">{{ ::'REGISTRATION_ADDTIONAL_IDENTIFIERS' | translate}}</span>
         </legend>
@@ -249,7 +264,7 @@
     </div>
 
     <div ng-repeat="section in ::patientConfiguration.getOrderedPatientAttributesSections()"
-         class="additional-info-wrapper" ng-if="section.title!='patientHIVTestInformation'">
+         class="additional-info-wrapper" ng-if="section.title!='patientHIVTestInformation' &&  section.title!='patientContactInformation'">
         <div ng-if="section.canShow">
             <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
                 <legend class="additional-attribute" toggle="section.expand">
