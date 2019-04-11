@@ -141,5 +141,9 @@
   "HEALTH_FACILITY_DISTRICT":"Health Facility District",
   "HEALTH_FACILITY_PROVINCE":"Health Facility Province",
   "BIRTHDATE_ESTIMATED": "Estimated",
-  "INVALID_OCCUPATION": "Invalid occupation"
+  "INVALID_OCCUPATION": "Invalid occupation",
+  "FOLLOWUP_APSS_CONSULTATION":"Follow Up APSS&PP Consultation",
+  "FIRST_APSS_CONSULTATION":"First APSS&PP Consultation",
+  "FIRST_CLINICAL_CONSULTATION":"First Clinical Consultation",
+  "FOLLOWUP_CLINICAL_CONSULTATION":"Follow Up Clinical Consultation"
 }

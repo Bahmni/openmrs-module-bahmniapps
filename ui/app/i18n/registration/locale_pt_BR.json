@@ -114,5 +114,9 @@
     "HEALTH_FACILITY_DISTRICT":"Distrito",
     "HEALTH_FACILITY_PROVINCE":"Província",
     "BIRTHDATE_ESTIMATED": "Estimado",
-    "INVALID_OCCUPATION": "Selecione uma ocupação válida"
+    "INVALID_OCCUPATION": "Selecione uma ocupação válida",
+    "FOLLOWUP_APSS_CONSULTATION":"Consulta Seguimento APSS&PP",
+    "FIRST_APSS_CONSULTATION":"1a Consula APSS&PP",
+    "FIRST_CLINICAL_CONSULTATION":"1a Consulta Clínica",
+    "FOLLOWUP_CLINICAL_CONSULTATION":"Consulta Seguimento Clinica"
 }
