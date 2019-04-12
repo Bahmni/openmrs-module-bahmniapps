@@ -398,9 +398,9 @@
     font-size: 14px;
     padding: 8px;
     border: 1px solid #ddd;
-    width: 90px;
-    min-width: 90px;
-    max-width: 90px;
+    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
     overflow: hidden;
     text-align: center;
     word-wrap: break-word;
@@ -410,8 +410,8 @@
       max-width: 180px;
     }
     &:last-child {
-      width: 540px;
-      min-width: 540px;
+      width: 180px;
+      min-width: 180px;
       max-width: 540px;
     }
   }
