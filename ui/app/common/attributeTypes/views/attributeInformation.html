@@ -44,7 +44,7 @@
     </div>
 
     <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name == 'PATIENT_OCCUPATION'" style="position: absolute">
-        <input type="text"
+        <input type="text" autocomplete="off"
                class="ui-autocomplete-input"
                id="{{::attribute.name}}"
                name="{{::attribute.name}}"
