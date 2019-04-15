@@ -114,5 +114,13 @@
     "HEALTH_FACILITY_DISTRICT":"Distrito",
     "HEALTH_FACILITY_PROVINCE":"Província",
     "BIRTHDATE_ESTIMATED": "Estimado",
-    "INVALID_OCCUPATION": "Selecione uma ocupação válida"
+    "INVALID_OCCUPATION": "Selecione uma ocupação válida",
+    "VERY SEVERELY UNDERWEIGHT": "Desnutrição Aguda grave",
+    "SEVERELY UNDERWEIGHT": "Desnutrição Aguda moderada",
+    "UNDERWEIGHT": "Desnutrição",
+    "NORMAL": "Normal",
+    "OVERWEIGHT": "Sobrepeso",
+    "OBESE": "Obesidade",
+    "SEVERELY OBESE": "Obesidade Aguda",
+    "VERY SEVERELY OBESE": "Obesidade Aguda Grave"
 }

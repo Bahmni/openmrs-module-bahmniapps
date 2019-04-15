@@ -141,5 +141,13 @@
   "HEALTH_FACILITY_DISTRICT":"Health Facility District",
   "HEALTH_FACILITY_PROVINCE":"Health Facility Province",
   "BIRTHDATE_ESTIMATED": "Estimated",
-  "INVALID_OCCUPATION": "Invalid occupation"
+  "INVALID_OCCUPATION": "Invalid occupation",
+  "VERY SEVERELY UNDERWEIGHT": "Very Severely Underweight",
+  "SEVERELY UNDERWEIGHT": "Severely Underweight",
+  "UNDERWEIGHT": "Underweight",
+  "NORMAL": "Normal",
+  "OVERWEIGHT": "Overweight",
+  "OBESE": "Obese",
+  "SEVERELY OBESE": "Severely Obese",
+  "VERY SEVERELY OBESE": "Very Severely Obese"
 }
