@@ -33,7 +33,6 @@ angular.module('bahmni.common.obs')
                 });
             };
             $scope.recalculateBMIData = function () {
-                //console.log($scope.observation);
 
                 if ($scope.observation.concept.name === "WEIGHT"){
                     $scope.patient.weight= $scope.observation.value;
@@ -47,8 +46,11 @@ angular.module('bahmni.common.obs')
                     $scope.observation.value = "--";
                 }
 
-                if ($scope.observation.concept.name === "BMI Status Data" && $scope.patient.age.years < 5){
+                if ($scope.observation.concept.name === "BMI Status Data"){
+                    $scope.observation.value = $scope.observation.value.toUpperCase();
+                }
 
+                if ($scope.observation.concept.name === "BMI Status Data" && $scope.patient.age.years < 5){
                     var dataSource = " ";
                     if($scope.patient.gender === "M"){
                     dataSource = "twoToFiveMale";
@@ -62,7 +64,7 @@ angular.module('bahmni.common.obs')
                             dataSource = "zeroToTwoFemale";
                         }
                     }
-                    console.log(dataSource);
+
 
                     for (var i =0; i < childrensBMI[dataSource].length; i++) {
                      if ($scope.patient.height === childrensBMI[dataSource][i].height){
@@ -84,26 +86,25 @@ angular.module('bahmni.common.obs')
 
                          var severe_malnutrition = parseFloat(childrensBMI[dataSource][i].severe_malnutrition.replace(",","."));
 
-                         console.log(childrensBMI[dataSource][i]);
 
                          if($scope.patient.weight > severe_obese) {
-                             $scope.observation.value = "Very Severely Obese";
+                             $scope.observation.value = "OBESE";
                              $scope.observation.abnormal = true;
                          }
                          if($scope.patient.weight <=  severe_malnutrition) {
-                             $scope.observation.value = "Severe Malnutrition";
+                             $scope.observation.value = "VERY SEVERELY UNDERWEIGHT";
                              $scope.observation.abnormal = true;
                          }
                          if($scope.patient.weight > obeseMin && $scope.observation.weight <= obeseMax) {
-                             $scope.observation.value = "Overweight";
+                             $scope.observation.value = "OVERWEIGHT";
                              $scope.observation.abnormal = true;
                          }
                          if($scope.patient.weight > normalMin && $scope.observation.weight <= normalMax) {
-                             $scope.observation.value = "Normal";
+                             $scope.observation.value = "NORMAL";
                              $scope.observation.abnormal = false;
                          }
                          if($scope.patient.weight > malnutritionMin && $scope.observation.weight <= malnutritionMax) {
-                             $scope.observation.value = "Malnutrition";
+                             $scope.observation.value = "SEVERELY UNDERWEIGHT";
                              $scope.observation.abnormal = true;
                          }
 
