@@ -3,6 +3,7 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentsCalendarViewController', ['$scope', '$state', '$translate', 'spinner', 'appointmentsService', 'appointmentsFilter', '$rootScope', 'appService',
         function ($scope, $state, $translate, spinner, appointmentsService, appointmentsFilter, $rootScope, appService) {
+            $scope.appointmentBlocks = appService.getAppDescriptor().getConfigValue('appointmentBlocks');
             var init = function () {
                 $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
                 $scope.$on('filterClosedOpen', function (event, args) {
