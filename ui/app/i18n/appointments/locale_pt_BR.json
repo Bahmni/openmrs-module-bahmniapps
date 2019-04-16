@@ -158,5 +158,11 @@
   "YEARS_LABEL": "Anos",
   "YES_KEY": "Sim",
   "HEADER_LABEL_LOGOUT_KEY": "Sair",
-  "CHANGE_PASSWORD": "Alterar Senha"
+  "CHANGE_PASSWORD": "Alterar Senha",
+  "APPOINTMENT_SELECT_BLOCK_KEY":"Selecione o bloco",
+  "APP_BLOCK_1":"Bloco 1",
+  "APP_BLOCK_2":"Bloco 2",
+  "APP_BLOCK_3":"Bloco 3",
+  "APP_BLOCK_4":"Bloco Extra",
+  "APPOINTMENT_BLOCK":"Block"
 }

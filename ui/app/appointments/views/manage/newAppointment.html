@@ -105,53 +105,13 @@
                     <span> {{'APPOINTMENT_CREATION_DATE_WARNING' | translate}} </span>
                 </p>
                 <p>
-                    <input type="hidden"
-                           id="startTimeID"
-                           min-length=1
-                           bahmni-autocomplete
-                           ng-model="appointment.startTime"
-                           source="timeSource"
-                           ng-class="{'illegalValue': isInvalid}"
-                           placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
-                           non-blank
-                           ng-pattern="timeRegex"
-                           ng-model-options="{allowInvalid: true}"
-                           ng-disabled='(!appointment.date || (isEditMode() && !isEditAllowed()))'
-                           ng-init="appointment.startTime='12:00 am'"
-                           required/>
-                    <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
-                </p>
-
-                <p>
-                    <input type="hidden"
-                           id="endTimeID"
-                           min-length=1
-                           bahmni-autocomplete
-                           ng-model="appointment.endTime"
-                           source="endTimeSlots"
-                           ng-class="{'illegalValue': isInvalid}"
-                           placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
-                           non-blank
-                           ng-disabled='(!appointment.date || (isEditMode() && !isEditAllowed()))'
-                           ng-pattern="timeRegex"
-                           ng-model-options="{allowInvalid: true}"
-                           ng-init="appointment.endTime='11:59 pm'"
-                           required/>
-                </p>
-                <p class="app-ava-slots"
-                   ng-if="currentLoad || maxAppointmentsLimit || (maxAppointmentsLimit && currentLoad)">
-                    <span ng-if="maxAppointmentsLimit"><span style="color: #5cb85c;">{{maxAppointmentsLimit-currentLoad}} {{'APPOINTMENT_CREATE_SLOT' | translate}} {{'APPOINTMENT_CREATE_AVAL' | translate}}</span>
-                        {{'APPOINTMENT_CREATE_OUTOF' | translate}} <span style="color: #0275d8;">{{maxAppointmentsLimit}} {{'APPOINTMENT_CREATE_SLOT' | translate}}</span><span
-                                ng-if="maxAppointmentsLimit && currentLoad">, </span></span>
-                    <span style="color: #f0ad4e;" ng-if="currentLoad">{{currentLoad}} {{'APPOINTMENT_CREATE_SLOT' | translate}} {{'APPOINTMENT_CREATE_BOOKED' | translate}}</span>
-                </p>
-                <p class="warning-message" ng-if="warning.endTime">
-                    <i class="fa fa-exclamation-triangle"></i>
-                    <span> {{'APPOINTMENT_CREATION_END_TIME_WARNING' | translate}} </span>
-                </p>
-                <p class="warning-message" ng-if="warning.outOfRange">
-                    <i class="fa fa-exclamation-triangle"></i>
-                    <span> {{'APPOINTMENT_CREATION_OUT_OF_RANGE_WARNING' | translate}} </span>
+                    <label for="startTimeID">
+                        {{'APPOINTMENT_SELECT_BLOCK_KEY' | translate}}<sup class="asterick">*</sup>
+                    </label>
+                    <select id="appointmentBlock" ng-change="setBlockTimes()" ng-model="selectedAppointmentBlock"
+                            ng-options="appointmentBlock.name | translate for appointmentBlock in appointmentBlocks">
+                        <option value=""></option>
+                    </select>
                 </p>
                 <p class="walk-in-app">
                     <input type="checkbox" ng-model="appointment.appointmentKind" ng-true-value="'WalkIn'"

@@ -21,6 +21,13 @@ angular.module('bahmni.appointments')
             var patientSearchURL = appService.getAppDescriptor().getConfigValue('patientSearchUrl');
             var loginLocationUuid = sessionService.getLoginLocationUuid();
             $scope.minCharLengthToTriggerPatientSearch = appService.getAppDescriptor().getConfigValue('minCharLengthToTriggerPatientSearch') || 3;
+            $scope.appointmentBlocks = appService.getAppDescriptor().getConfigValue('appointmentBlocks');
+            $scope.selectedAppointmentBlock;
+
+            $scope.setBlockTimes = function () {
+                $scope.appointment.startTime = $scope.selectedAppointmentBlock.startTime;
+                $scope.appointment.endTime = $scope.selectedAppointmentBlock.endTime;
+            };
 
             var isProviderNotAvailableForAppointments = function (selectedProvider) {
                 var providers = appointmentCreateConfig.providers;

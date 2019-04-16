@@ -156,5 +156,11 @@
   "CHOOSE_ANSWER_FROM_DROPDOWN_LABEL": "Choose Answer",
   "DELETE_LABEL": "Delete",
   "EDIT_LABEL": "Edit",
-  "SCHEDULED_APPOINTMENT":"Agendada"
+  "SCHEDULED_APPOINTMENT":"Agendada",
+  "APPOINTMENT_SELECT_BLOCK_KEY":"Select Block",
+  "APP_BLOCK_1":"Block 1",
+  "APP_BLOCK_2":"Block 2",
+  "APP_BLOCK_3":"Block 3",
+  "APP_BLOCK_4":"Block Extra",
+  "APPOINTMENT_BLOCK":"Block"
 }
