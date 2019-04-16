@@ -122,5 +122,6 @@
     "OVERWEIGHT": "Sobrepeso",
     "OBESE": "Obesidade",
     "SEVERELY OBESE": "Obesidade Aguda",
-    "VERY SEVERELY OBESE": "Obesidade Aguda Grave"
+    "VERY SEVERELY OBESE": "Obesidade Aguda Grave",
+    "REGISTRATION_LABEL_ENTER_VALID_WEIGHT": "O valor peso não deve ter mais de 2 casas decimais"
 }
