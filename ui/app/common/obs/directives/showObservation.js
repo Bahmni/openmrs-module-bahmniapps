@@ -50,6 +50,7 @@ angular.module('bahmni.common.obs')
 
                 if ($scope.observation.concept.name === "BMI Status Data" && $scope.patient.age.years < 5) {
                     var dataSource = " ";
+                    var isValidHeight = false;
                     if ($scope.patient.gender === "M") {
                         dataSource = "twoToFiveMale";
                         if ($scope.patient.age.years < 2) {
@@ -64,6 +65,7 @@ angular.module('bahmni.common.obs')
 
                     for (var i = 0; i < childrensBMI[dataSource].length; i++) {
                         if ($scope.patient.height === childrensBMI[dataSource][i].height) {
+                            isValidHeight = true;
                             var severeObese = parseFloat(childrensBMI[dataSource][i].severe_obese.replace(",", "."));
 
                             var obeseSplit = childrensBMI[dataSource][i].obese.split("-");
@@ -102,6 +104,7 @@ angular.module('bahmni.common.obs')
                             }
                         }
                     }
+                    if(!isValidHeight) { $scope.observation.value = "--";}
                 }
             };
 
