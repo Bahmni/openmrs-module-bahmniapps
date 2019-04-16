@@ -179,11 +179,18 @@ angular.module('bahmni.registration')
             };
 
             var validate = function () {
+                var isWeightValid = validateWeight();
                 var isFormValidated = mandatoryValidate();
                 var deferred = $q.defer();
                 var contxChange = contextChangeHandler.execute();
                 var allowContextChange = contxChange["allow"];
                 var errorMessage;
+                if (!isWeightValid) {
+                    errorMessage = "REGISTRATION_LABEL_ENTER_VALID_WEIGHT";
+                    messagingService.showMessage('error', errorMessage);
+                    deferred.reject("Some fields are not valid");
+                    return deferred.promise;
+                }
                 if (!isObservationFormValid()) {
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
@@ -202,6 +209,18 @@ angular.module('bahmni.registration')
                     deferred.resolve();
                     return deferred.promise;
                 }
+            };
+
+            var validateWeight = function () {
+                var weight = $scope.observations[0].groupMembers[1].value + "";
+
+                if (weight.includes(".")) {
+                    var decimals = weight.split(".");
+                    if (decimals[1].length > 2) {
+                        return false;
+                    }
+                }
+                return true;
             };
 
             // Start :: Registration Page validation
