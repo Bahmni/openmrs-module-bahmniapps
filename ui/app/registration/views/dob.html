@@ -3,7 +3,7 @@
         <label for="birthdate">{{ ::'REGISTRATION_LABEL_DOB' | translate}}<span class="asterick" ng-show="::dobMandatory">*</span></label>
     </div>
     <div class="field-value">
-        <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{::today}}" ng-disabled="isDOBDisabled"
+        <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{::today}}" ng-disabled="patient.birthdateEstimated"
                ng-change="patient.calculateAge();updateBirthDateEstimated();checkDuplicatePatients()" ng-blur="handleUpdate('birthdate')" ng-required="::dobMandatory">
     </div>
     
