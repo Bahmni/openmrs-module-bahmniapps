@@ -90,6 +90,7 @@ describe("AppointmentsCreateController", function () {
         createController();
         $scope.appointment.service = {uuid: 'serviceUuid'};
         var service = {name: 'Knee', description: 'treatment', uuid: 'serviceUuid', location: {}, durationMins: 45, serviceTypes: [{name: 'type1', duration: 15}]};
+        $scope.appointment.service = service;
         appointmentsServiceService.getService.and.returnValue(specUtil.simplePromise({data: service}));
         $scope.onServiceChange();
         expect(appointmentsServiceService.getService).toHaveBeenCalledWith($scope.appointment.service.uuid);
@@ -105,6 +106,51 @@ describe("AppointmentsCreateController", function () {
         $scope.onServiceChange();
         expect(appointmentsServiceService.getService).toHaveBeenCalledWith($scope.appointment.service.uuid);
         expect($scope.minDuration).toEqual(Bahmni.Appointments.Constants.minDurationForAppointment);
+    });
+
+    it('should delete previous serviceType if selected on service change', function () {
+        createController();
+        $scope.appointment.serviceType = {uuid: 'serviceType', duration: 20};
+        $scope.minDuration = 20;
+        var service = {name: 'Knee', description: 'treatment', uuid: 'serviceUuid', location: {}, durationMins: 45};
+        appointmentsServiceService.getService.and.returnValue(specUtil.simplePromise({data: service}));
+        $scope.onServiceChange();
+
+        expect($scope.appointment.serviceType).toBeUndefined();
+        expect($scope.minDuration).toEqual(20);
+    });
+
+    it('should assign default value when there is no duration for serviceType and previous minDuration is 20', function () {
+        createController();
+        $scope.minDuration = 20;
+        var serviceType = {uuid: 'serviceType'};
+        $scope.appointment.serviceType = serviceType;
+        $scope.onServiceTypeChange();
+
+        expect($scope.minDuration).toBe(Bahmni.Appointments.Constants.minDurationForAppointment);
+    });
+
+    it('should change the duration of time slot based on serviceType when start time is changed', function () {
+        createController();
+        $scope.minDuration = 10;
+        var service = {uuid: 'serviceType', durationMins: 20};
+        $scope.appointment.service = service;
+        $scope.onSelectStartTime();
+
+        expect($scope.minDuration).toBe(20);
+    });
+
+    it('should change the duration of time slot based on serviceType when service and service type is available and ' +
+        'when start time is changed', function () {
+        createController();
+        $scope.minDuration = 10;
+        var service = {uuid: 'service', duration: 15};
+        var serviceType = {uuid: 'serviceType', duration: 20};
+        $scope.appointment.serviceType = serviceType;
+        $scope.appointment.service = service;
+        $scope.onSelectStartTime();
+
+        expect($scope.minDuration).toBe(20);
     });
 
     describe('confirmationDialogOnStateChange', function () {
