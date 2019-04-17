@@ -186,6 +186,8 @@ angular.module('bahmni.registration')
                 var allowContextChange = contxChange["allow"];
                 var errorMessage;
                 if (!isWeightValid) {
+                    angular.element("#weight_observation").css("border", "2px solid #ff3434");
+                    angular.element("#weight_observation").css("background", "#ffcdcd");
                     errorMessage = "REGISTRATION_LABEL_ENTER_VALID_WEIGHT";
                     messagingService.showMessage('error', errorMessage);
                     deferred.reject("Some fields are not valid");
@@ -212,8 +214,17 @@ angular.module('bahmni.registration')
             };
 
             var validateWeight = function () {
-                var weight = $scope.observations[0].groupMembers[1].value + "";
-
+                var weight = "";
+                for (var i = 0; i < $scope.observations.length; i++) {
+                    if ($scope.observations[i].conceptSetName === "Nutritional Values") {
+                        var conceptSet = $scope.observations[i];
+                        for (var x = 0; x < conceptSet.groupMembers.length; x++) {
+                            if (conceptSet.groupMembers[x].concept.name === "WEIGHT") {
+                                weight = conceptSet.groupMembers[x].value + "";
+                            }
+                        }
+                    }
+                }
                 if (weight.includes(".")) {
                     var decimals = weight.split(".");
                     if (decimals[1].length > 2) {
