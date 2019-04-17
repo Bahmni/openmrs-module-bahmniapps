@@ -104,7 +104,7 @@ angular.module('bahmni.common.obs')
                             }
                         }
                     }
-                    if(!isValidHeight) { $scope.observation.value = "--";}
+                    if (!isValidHeight) { $scope.observation.value = "--"; }
                 }
             };
 
