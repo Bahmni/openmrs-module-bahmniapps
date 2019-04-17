@@ -246,6 +246,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.onSelectStartTime = function (data) {
+                setMinDuration();
                 $scope.warning.startTime = !isAppointmentTimeWithinServiceAvailability($scope.appointment.startTime);
                 if (moment($scope.appointment.startTime, 'hh:mm a', true).isValid()) {
                     $scope.appointment.endTime = moment($scope.appointment.startTime, 'hh:mm a').add($scope.minDuration, 'm').format('hh:mm a');
@@ -307,6 +308,7 @@ angular.module('bahmni.appointments')
 
             $scope.onServiceChange = function () {
                 clearAvailabilityInfo();
+                delete $scope.appointment.serviceType;
                 delete $scope.weeklyAvailabilityOnSelectedDate;
                 if ($scope.appointment.service) {
                     setServiceDetails($scope.appointment.service).then(function () {
@@ -315,9 +317,15 @@ angular.module('bahmni.appointments')
                 }
             };
 
+            function setMinDuration () {
+                $scope.minDuration = Bahmni.Appointments.Constants.minDurationForAppointment;
+                $scope.minDuration = $scope.appointment.serviceType ? $scope.appointment.serviceType.duration || $scope.minDuration
+                    : $scope.appointment.service ? $scope.appointment.service.durationMins || $scope.minDuration : $scope.minDuration;
+            }
+
             $scope.onServiceTypeChange = function () {
                 if ($scope.appointment.serviceType) {
-                    $scope.minDuration = $scope.appointment.serviceType.duration || $scope.minDuration;
+                    setMinDuration();
                     clearAvailabilityInfo();
                     $scope.onSelectStartTime();
                 }
