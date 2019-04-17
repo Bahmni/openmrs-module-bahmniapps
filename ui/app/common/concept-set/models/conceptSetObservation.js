@@ -278,6 +278,20 @@ Bahmni.ConceptSet.Observation.prototype = {
         }
     },
 
+    validateWeight: function () {
+        var weight = this.value + "";
+        if (weight.includes(".")) {
+            var decimals = weight.split(".");
+            if (decimals[1].length > 2) {
+                angular.element("#weight_observation").css("border", "2px solid #ff3434");
+                angular.element("#weight_observation").css("background", "#ffcdcd");
+            } else {
+                angular.element("#weight_observation").css("border", "1px solid #d1d1d1");
+                angular.element("#weight_observation").css("background", "#fff");
+            }
+        }
+    },
+
     isConciseText: function () {
         return this.conceptUIConfig.conciseText == true;
     },
