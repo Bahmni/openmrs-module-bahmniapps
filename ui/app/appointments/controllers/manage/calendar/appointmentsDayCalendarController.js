@@ -55,7 +55,7 @@ angular.module('bahmni.appointments')
                 };
 
                 function isOwnAppointmentUserPrivilegedToCreateAppointment (privilege, provider) {
-                    const NO_PROVIDER_UUID = 'no-provider-uuid';
+                    var NO_PROVIDER_UUID = 'no-provider-uuid';
                     return (privilege.name === Bahmni.Appointments.Constants.privilegeOwnAppointments &&
                         (provider.uuid === NO_PROVIDER_UUID || provider.uuid === $rootScope.currentProvider.uuid));
                 }
