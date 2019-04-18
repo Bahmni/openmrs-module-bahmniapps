@@ -158,5 +158,9 @@
   "YEARS_LABEL": "Anos",
   "YES_KEY": "Sim",
   "HEADER_LABEL_LOGOUT_KEY": "Sair",
-  "CHANGE_PASSWORD": "Alterar Senha"
+  "CHANGE_PASSWORD": "Alterar Senha",
+  "COMPLETED_APPOINTMENT": "Realizada",
+  "SCHEDULED_APPOINTMENT":"Pesquisar",
+  "CANCELLED_APPOINTMENT ":"Cancelar",
+  "CHECKEDIN_APPOINTMENT":"Introduza um horário de entrada válido."
 }
