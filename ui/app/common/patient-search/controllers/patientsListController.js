@@ -20,7 +20,7 @@ angular.module('bahmni.common.patientSearch')
                 }
             });
             if (programConfig && programConfig.runPatientSearchInSerial) {
-                getPatientCountBySearchTypeIndex(0);
+                getPatientCountSeriallyBySearchIndex(0);
             }
             else {
                 _.each($scope.search.searchTypes, function (searchType) {
@@ -170,7 +170,7 @@ angular.module('bahmni.common.patientSearch')
                 $window.open(appService.getAppDescriptor().formatUrl(link.url, options, true), link.newTab ? "_blank" : "_self");
             }
         };
-        var getPatientCountBySearchTypeIndex = function (index) {
+        var getPatientCountSeriallyBySearchIndex = function (index) {
             if (index === $scope.search.searchTypes.length) {
                 return;
             }
@@ -190,7 +190,7 @@ angular.module('bahmni.common.patientSearch')
                     if ($scope.search.isSelectedSearch(searchType)) {
                         $scope.search.updatePatientList(response.data);
                     }
-                    return getPatientCountBySearchTypeIndex(index + 1);
+                    return getPatientCountSeriallyBySearchIndex(index + 1);
                 });
             }
         };
