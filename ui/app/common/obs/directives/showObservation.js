@@ -86,25 +86,28 @@ angular.module('bahmni.common.obs')
                                 $scope.observation.value = "OBESE";
                                 $scope.observation.abnormal = true;
                             }
-                            if ($scope.patient.weight <= severeMalnutrition) {
-                                $scope.observation.value = "VERY SEVERELY UNDERWEIGHT";
+                            if ($scope.patient.weight >= obeseMin && $scope.patient.weight <= obeseMax) {
+                                $scope.observation.value = "UNDERWEIGHT";
                                 $scope.observation.abnormal = true;
                             }
-                            if ($scope.patient.weight > obeseMin && $scope.observation.weight <= obeseMax) {
-                                $scope.observation.value = "OVERWEIGHT";
-                                $scope.observation.abnormal = true;
-                            }
-                            if ($scope.patient.weight > normalMin && $scope.observation.weight <= normalMax) {
+                            if ($scope.patient.weight >= normalMin && $scope.patient.weight <= normalMax) {
                                 $scope.observation.value = "NORMAL";
                                 $scope.observation.abnormal = false;
+                                console.log("passou do normal");
                             }
-                            if ($scope.patient.weight > malnutritionMin && $scope.observation.weight <= malnutritionMax) {
+                            if ($scope.patient.weight >= malnutritionMin && $scope.patient.weight <= malnutritionMax) {
                                 $scope.observation.value = "SEVERELY UNDERWEIGHT";
+                                $scope.observation.abnormal = true;
+                            }
+                            if ($scope.patient.weight < severeMalnutrition) {
+                                $scope.observation.value = "VERY SEVERELY UNDERWEIGHT";
                                 $scope.observation.abnormal = true;
                             }
                         }
                     }
-                    if (!isValidHeight) { $scope.observation.value = "--"; }
+                    if (!isValidHeight) {
+                        $scope.observation.value = "--";
+                    }
                 }
             };
 
