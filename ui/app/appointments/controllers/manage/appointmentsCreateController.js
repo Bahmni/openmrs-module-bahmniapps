@@ -578,7 +578,7 @@ angular.module('bahmni.appointments')
 
             $scope.isCurrentProviderPartOfAppointment = function () {
                 return _.find($scope.appointment.providers, function (provider) {
-                    return provider.uuid === $rootScope.currentProvider.uuid;
+                    return provider.uuid === $rootScope.currentProvider.uuid && provider.response != Bahmni.Appointments.Constants.providerResponses.CANCELLED;
                 });
             };
 
