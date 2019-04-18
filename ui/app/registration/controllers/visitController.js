@@ -227,7 +227,7 @@ angular.module('bahmni.registration')
                 }
                 if (weight.includes(".")) {
                     var decimals = weight.split(".");
-                    if (decimals[1].length > 2) {
+                    if (decimals[1].length > 1) {
                         return false;
                     }
                 }

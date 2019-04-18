@@ -42,6 +42,7 @@ angular.module('bahmni.common.obs')
 
                 if ($scope.observation.concept.name === "BMI Data" && $scope.patient.age.years < 5) {
                     $scope.observation.value = "--";
+                    $scope.observation.abnormal = false;
                 }
 
                 if ($scope.observation.concept.name === "BMI Status Data") {
@@ -87,7 +88,7 @@ angular.module('bahmni.common.obs')
                                 $scope.observation.abnormal = true;
                             }
                             if ($scope.patient.weight >= obeseMin && $scope.patient.weight <= obeseMax) {
-                                $scope.observation.value = "UNDERWEIGHT";
+                                $scope.observation.value = "OVERWEIGHT";
                                 $scope.observation.abnormal = true;
                             }
                             if ($scope.patient.weight >= normalMin && $scope.patient.weight <= normalMax) {

@@ -531,6 +531,15 @@ var childrensBMI = {
     ],
     "twoToFiveMale": [
         {
+            "height": 65,
+            "severe_obese": "9,6",
+            "obese": "8,9-9,6",
+            "normal": "6,3-8,8",
+            "malnutrition": "5,9-6,2",
+            "severe_malnutrition": "5,9",
+            "FIELD7": ""
+        },
+        {
             "height": 66,
             "severe_obese": "9,9",
             "obese": "9,2-9,9",

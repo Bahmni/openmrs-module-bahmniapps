@@ -282,7 +282,7 @@ Bahmni.ConceptSet.Observation.prototype = {
         var weight = this.value + "";
         if (weight.includes(".")) {
             var decimals = weight.split(".");
-            if (decimals[1].length > 2) {
+            if (decimals[1].length > 1) {
                 angular.element("#weight_observation").css("border", "2px solid #ff3434");
                 angular.element("#weight_observation").css("background", "#ffcdcd");
             } else {
