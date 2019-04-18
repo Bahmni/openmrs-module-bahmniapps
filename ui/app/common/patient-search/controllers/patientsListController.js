@@ -5,7 +5,7 @@ angular.module('bahmni.common.patientSearch')
     '$stateParams', '$bahmniCookieStore', 'printer', 'configurationService',
     function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, printer, configurationService) {
         const DEFAULT_DEBOUNCE_INTERVAL = 2000;
-        var programConfig = appService.getAppDescriptor().getConfigValue("program");
+        var patientSearchConfig = appService.getAppDescriptor().getConfigValue("patientSearch");
         var patientListSpinner;
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSearchType);
@@ -19,7 +19,7 @@ angular.module('bahmni.common.patientSearch')
                     spinner.hide(patientListSpinner, $(".tab-content"));
                 }
             });
-            if (programConfig && programConfig.runPatientSearchInSerial) {
+            if (patientSearchConfig && patientSearchConfig.runPatientSearchInSerial) {
                 getPatientCountSeriallyBySearchIndex(0);
             }
             else {
@@ -129,7 +129,7 @@ angular.module('bahmni.common.patientSearch')
 
         var debounceGetPatientCount = _.debounce(function (currentSearchType, patientListSpinner) {
             getPatientCount(currentSearchType, patientListSpinner);
-        }, (programConfig && programConfig.debouncePatientSearchApiInterval) || DEFAULT_DEBOUNCE_INTERVAL, {});
+        }, (patientSearchConfig && patientSearchConfig.debouncePatientSearchApiInterval) || DEFAULT_DEBOUNCE_INTERVAL, {});
 
         var fetchPatients = function (currentSearchType) {
             if (patientListSpinner !== undefined) {
@@ -138,7 +138,7 @@ angular.module('bahmni.common.patientSearch')
             $rootScope.currentSearchType = currentSearchType;
             if ($scope.search.isCurrentSearchLookUp()) {
                 patientListSpinner = spinner.show($(".tab-content"));
-                if (programConfig && programConfig.debouncePatientSearchApi) {
+                if (patientSearchConfig && patientSearchConfig.debouncePatientSearchApi) {
                     debounceGetPatientCount(currentSearchType, patientListSpinner);
                 }
                 else {
