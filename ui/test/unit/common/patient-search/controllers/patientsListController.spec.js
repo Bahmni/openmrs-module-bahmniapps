@@ -190,26 +190,26 @@ describe("PatientsListController", function () {
                 expect(searchType.patientCount).toEqual(4);
             });
 
-            it('should call _.each when runPatientSearchInSerial is false', function () {
-                getAppDescriptor.getConfigValue.and.returnValue({"runPatientSearchInSerial": false});
+            it('should call _.each when serializeSearch is false', function () {
+                getAppDescriptor.getConfigValue.and.returnValue({"serializeSearch": false});
                 spyOn(_, 'each');
                 scope.$apply(setUp);
 
                 expect(_.each).toHaveBeenCalled();
             });
 
-            it('should not call _.each when runPatientSearchInSerial is true', function () {
-                getAppDescriptor.getConfigValue.and.returnValue({"runPatientSearchInSerial": true});
+            it('should not call _.each when serializeSearch is true', function () {
+                getAppDescriptor.getConfigValue.and.returnValue({"serializeSearch": true});
                 spyOn(_, 'each');
                 scope.$apply(setUp);
 
                 expect(_.each).not.toHaveBeenCalled();
             });
 
-            it('should call function returned from debounce when debouncePatientSearchApi is true', function () {
+            it('should call function returned from debounce when debounceSearch is true', function () {
                 getAppDescriptor.getConfigValue.and.returnValue({
-                    "debouncePatientSearchApi": true,
-                    "debouncePatientSearchApiInterval": 2000
+                    "debounceSearch": true,
+                    "fetchDelay": 2000
                 });
                 var debounceReturnFunc = jasmine.createSpy();
                 spyOn(_, 'debounce').and.returnValue(debounceReturnFunc);
@@ -220,9 +220,9 @@ describe("PatientsListController", function () {
             });
 
             it('should call function returned from debounce with Default interval when ' +
-                'debouncePatientSearchApiInterval is not provided', function () {
+                'fetchDelay is not provided', function () {
                 getAppDescriptor.getConfigValue.and.returnValue({
-                    "debouncePatientSearchApi": true,
+                    "debounceSearch": true,
                 });
                 var debounceReturnFunc = jasmine.createSpy();
                 spyOn(_, 'debounce').and.returnValue(debounceReturnFunc);
@@ -232,10 +232,10 @@ describe("PatientsListController", function () {
                 expect(debounceReturnFunc).toHaveBeenCalled()
             });
 
-            it('should not call function returned from debounce when debouncePatientSearchApi is false', function () {
+            it('should not call function returned from debounce when debounceSearch is false', function () {
                 getAppDescriptor.getConfigValue.and.returnValue({
-                    "debouncePatientSearchApi": false,
-                    "debouncePatientSearchApiInterval": 2000
+                    "debounceSearch": false,
+                    "fetchDelay": 2000
                 });
                 var debounceReturnFunc = jasmine.createSpy();
                 spyOn(_, 'debounce').and.returnValue(debounceReturnFunc);
