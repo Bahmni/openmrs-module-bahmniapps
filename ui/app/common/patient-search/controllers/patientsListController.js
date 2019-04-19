@@ -4,6 +4,9 @@ angular.module('bahmni.common.patientSearch')
 .controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner',
     '$stateParams', '$bahmniCookieStore', 'printer', 'configurationService',
     function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, printer, configurationService) {
+        const DEFAULT_FETCH_DELAY = 2000;
+        var patientSearchConfig = appService.getAppDescriptor().getConfigValue("patientSearch");
+        var patientListSpinner;
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSearchType);
             $scope.search = new Bahmni.Common.PatientSearch.Search(_.without(searchTypes, undefined));
@@ -11,9 +14,19 @@ angular.module('bahmni.common.patientSearch')
             $scope.$watch('search.searchType', function (currentSearchType) {
                 _.isEmpty(currentSearchType) || fetchPatients(currentSearchType);
             });
-            _.each($scope.search.searchTypes, function (searchType) {
-                _.isEmpty(searchType) || ($scope.search.searchType != searchType && getPatientCount(searchType));
+            $scope.$watch('search.activePatients', function (activePatientsList) {
+                if (activePatientsList.length > 0) {
+                    spinner.hide(patientListSpinner, $(".tab-content"));
+                }
             });
+            if (patientSearchConfig && patientSearchConfig.serializeSearch) {
+                getPatientCountSeriallyBySearchIndex(0);
+            }
+            else {
+                _.each($scope.search.searchTypes, function (searchType) {
+                    _.isEmpty(searchType) || ($scope.search.searchType != searchType && getPatientCount(searchType, null));
+                });
+            }
             if ($rootScope.currentSearchType != null) {
                 $scope.search.switchSearchType($rootScope.currentSearchType);
             }
@@ -36,7 +49,7 @@ angular.module('bahmni.common.patientSearch')
                 $scope.forwardPatient($scope.search.searchResults[0]);
             }
         };
-        var getPatientCount = function (searchType) {
+        var getPatientCount = function (searchType, patientListSpinner) {
             if (searchType.handler) {
                 var params = { q: searchType.handler, v: "full",
                     location_uuid: $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid,
@@ -49,6 +62,7 @@ angular.module('bahmni.common.patientSearch')
                     if ($scope.search.isSelectedSearch(searchType)) {
                         $scope.search.updatePatientList(response.data);
                     }
+                    spinner.hide(patientListSpinner, $(".tab-content"));
                 });
             }
         };
@@ -113,10 +127,23 @@ angular.module('bahmni.common.patientSearch')
             };
         };
 
+        var debounceGetPatientCount = _.debounce(function (currentSearchType, patientListSpinner) {
+            getPatientCount(currentSearchType, patientListSpinner);
+        }, (patientSearchConfig && patientSearchConfig.fetchDelay) || DEFAULT_FETCH_DELAY, {});
+
         var fetchPatients = function (currentSearchType) {
+            if (patientListSpinner !== undefined) {
+                spinner.hide(patientListSpinner, $(".tab-content"));
+            }
             $rootScope.currentSearchType = currentSearchType;
             if ($scope.search.isCurrentSearchLookUp()) {
-                getPatientCount(currentSearchType);
+                patientListSpinner = spinner.show($(".tab-content"));
+                if (patientSearchConfig && patientSearchConfig.debounceSearch) {
+                    debounceGetPatientCount(currentSearchType, patientListSpinner);
+                }
+                else {
+                    getPatientCount(currentSearchType, patientListSpinner);
+                }
             }
         };
 
@@ -141,6 +168,30 @@ angular.module('bahmni.common.patientSearch')
             }
             if (link.url && link.url !== null) {
                 $window.open(appService.getAppDescriptor().formatUrl(link.url, options, true), link.newTab ? "_blank" : "_self");
+            }
+        };
+        var getPatientCountSeriallyBySearchIndex = function (index) {
+            if (index === $scope.search.searchTypes.length) {
+                return;
+            }
+            var searchType = $scope.search.searchTypes[index];
+            if (searchType.handler) {
+                var params = {
+                    q: searchType.handler,
+                    v: "full",
+                    location_uuid: $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid,
+                    provider_uuid: $rootScope.currentProvider.uuid
+                };
+                if (searchType.additionalParams) {
+                    params["additionalParams"] = searchType.additionalParams;
+                }
+                patientService.findPatients(params).then(function (response) {
+                    searchType.patientCount = response.data.length;
+                    if ($scope.search.isSelectedSearch(searchType)) {
+                        $scope.search.updatePatientList(response.data);
+                    }
+                    return getPatientCountSeriallyBySearchIndex(index + 1);
+                });
             }
         };
         initialize();

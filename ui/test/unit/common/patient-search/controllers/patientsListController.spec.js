@@ -65,10 +65,17 @@ describe("PatientsListController", function () {
                 }
             });
             configurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
-            _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+            _spinner = jasmine.createSpyObj('spinner', ['forPromise', 'show', 'hide']);
             _spinner.forPromise.and.callFake(function (promiseParam) {
                 return promiseParam;
             });
+            _spinner.show.and.callFake(function (){
+                return null;
+            });
+            _spinner.hide.and.callFake(function (){
+                return null;
+            });
+
 
             getAppDescriptor = jasmine.createSpyObj('getAppDescriptor', ['getExtensions', 'getConfigValue', 'formatUrl']);
             getAppDescriptor.getExtensions.and.returnValue(appExtensions);
@@ -181,6 +188,61 @@ describe("PatientsListController", function () {
                 findPatientsPromise.callThenCallBack({data: patients});
 
                 expect(searchType.patientCount).toEqual(4);
+            });
+
+            it('should call _.each when serializeSearch is false', function () {
+                getAppDescriptor.getConfigValue.and.returnValue({"serializeSearch": false});
+                spyOn(_, 'each');
+                scope.$apply(setUp);
+
+                expect(_.each).toHaveBeenCalled();
+            });
+
+            it('should not call _.each when serializeSearch is true', function () {
+                getAppDescriptor.getConfigValue.and.returnValue({"serializeSearch": true});
+                spyOn(_, 'each');
+                scope.$apply(setUp);
+
+                expect(_.each).not.toHaveBeenCalled();
+            });
+
+            it('should call function returned from debounce when debounceSearch is true', function () {
+                getAppDescriptor.getConfigValue.and.returnValue({
+                    "debounceSearch": true,
+                    "fetchDelay": 2000
+                });
+                var debounceReturnFunc = jasmine.createSpy();
+                spyOn(_, 'debounce').and.returnValue(debounceReturnFunc);
+                scope.$apply(setUp);
+
+                expect(_.debounce).toHaveBeenCalledWith(jasmine.any(Function), 2000, jasmine.any(Object));
+                expect(debounceReturnFunc).toHaveBeenCalled()
+            });
+
+            it('should call function returned from debounce with Default interval when ' +
+                'fetchDelay is not provided', function () {
+                getAppDescriptor.getConfigValue.and.returnValue({
+                    "debounceSearch": true,
+                });
+                var debounceReturnFunc = jasmine.createSpy();
+                spyOn(_, 'debounce').and.returnValue(debounceReturnFunc);
+                scope.$apply(setUp);
+
+                expect(_.debounce).toHaveBeenCalledWith(jasmine.any(Function), 2000, jasmine.any(Object));
+                expect(debounceReturnFunc).toHaveBeenCalled()
+            });
+
+            it('should not call function returned from debounce when debounceSearch is false', function () {
+                getAppDescriptor.getConfigValue.and.returnValue({
+                    "debounceSearch": false,
+                    "fetchDelay": 2000
+                });
+                var debounceReturnFunc = jasmine.createSpy();
+                spyOn(_, 'debounce').and.returnValue(debounceReturnFunc);
+                scope.$apply(setUp);
+
+                expect(_.debounce).toHaveBeenCalledWith(jasmine.any(Function), 2000, jasmine.any(Object));
+                expect(debounceReturnFunc).not.toHaveBeenCalled()
             });
 
             it('should call window open when forward url is given', function(){

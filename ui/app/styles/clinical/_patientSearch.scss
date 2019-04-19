@@ -51,6 +51,14 @@
       cursor: not-allowed;
     }
   }
+
+  .patient-list-spinner {
+    top: 32px;
+    margin-top: -32px;
+    position: relative;
+    min-height: 2em;
+  }
+
 }
 
 .patient-search-wrapper {
@@ -82,7 +90,7 @@
       }
     }
   }
-  
+
   .tabs {
     margin-top: 5px;
   }
@@ -109,7 +117,7 @@
         }
         @media screen and (max-width: 1013px) {
           width: 136px;
-        }        
+        }
         @media screen and (max-width: 1005px) {
           width: 135px;
         }
