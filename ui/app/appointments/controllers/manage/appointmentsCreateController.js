@@ -568,7 +568,7 @@ angular.module('bahmni.appointments')
                 return $scope.isEditAllowed();
             };
 
-            $scope.isNoProviderAppointment = function () {
+            $scope.doesAppointmentHaveProvider = function () {
                 return $scope.appointment.providers.length === 0
                 || _.isUndefined(_.find($scope.appointment.providers, function (provider) {
                     return provider.response === Bahmni.Appointments.Constants.providerResponses.ACCEPTED;
@@ -576,7 +576,7 @@ angular.module('bahmni.appointments')
             };
 
             var isAppointmentWithSomeProviderButNotCurrentUser = function () {
-                return _.isUndefined($scope.isCurrentProviderPartOfAppointment()) && !$scope.isNoProviderAppointment();
+                return _.isUndefined($scope.isCurrentProviderPartOfAppointment()) && !$scope.doesAppointmentHaveProvider();
             };
 
             $scope.isCurrentProviderPartOfAppointment = function () {
