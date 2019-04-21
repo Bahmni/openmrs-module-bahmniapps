@@ -570,7 +570,7 @@ angular.module('bahmni.appointments')
 
             $scope.isNoProviderAppointment = function () {
                 return $scope.appointment.providers.length === 0
-                ||_.isUndefined(_.find($scope.appointment.providers, function (provider) {
+                || _.isUndefined(_.find($scope.appointment.providers, function (provider) {
                     return provider.response === Bahmni.Appointments.Constants.providerResponses.ACCEPTED;
                 }));
             };
