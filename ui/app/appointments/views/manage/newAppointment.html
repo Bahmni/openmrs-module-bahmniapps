@@ -200,7 +200,7 @@
                         {{'APPOINTMENT_CREATE_NOTES' | translate}}
                     </label>
                     <textarea placeholder="{{ ::'PLACEHOLDER_CREATE_NOTES' | translate }}" id="notes"
-                              ng-model="appointment.comments" ng-disabled="isEditMode() && isUserManageOwnAppointmentPrivilegedOnly() && !isCurrentProviderPartOfAppointment() && !isNoProviderAppointment()"></textarea>
+                              ng-model="appointment.comments" ng-disabled="isEditMode() && canManageOwnAppointmentOnly() && !isCurrentProviderPartOfAppointment() && !isNoProviderAppointment()"></textarea>
                 </p>
             </section>
             <a class="create-appointment-action-btn" ui-sref="^">{{::'APPOINTMENT_CREATE_CANCEL' | translate }}</a>
