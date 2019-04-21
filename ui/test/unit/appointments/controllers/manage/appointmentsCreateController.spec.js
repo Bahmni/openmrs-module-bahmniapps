@@ -1097,7 +1097,7 @@ describe("AppointmentsCreateController", function () {
         });
     });
 
-    describe('isUserManageOwnAppointmentPrivilegedOnly', function () {
+    describe('canManageOwnAppointmentOnly', function () {
         it('should return true if current provider has only manage own appointment privilege and does not have manage appointment privilege', function () {
             var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'}];
             appointmentCreateConfig.providers = allAvailableProviders;
@@ -1108,7 +1108,7 @@ describe("AppointmentsCreateController", function () {
             };
             createController();
 
-            expect($scope.isUserManageOwnAppointmentPrivilegedOnly()).toBeTruthy();
+            expect($scope.canManageOwnAppointmentOnly()).toBeTruthy();
         });
 
         it('should return false if current provider does not have only manage own appointment privilege', function () {
@@ -1122,7 +1122,7 @@ describe("AppointmentsCreateController", function () {
             };
             createController();
 
-            expect($scope.isUserManageOwnAppointmentPrivilegedOnly()).toBeFalsy();
+            expect($scope.canManageOwnAppointmentOnly()).toBeFalsy();
         });
     });
 
