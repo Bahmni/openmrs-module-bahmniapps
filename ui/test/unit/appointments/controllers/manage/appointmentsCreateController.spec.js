@@ -1126,7 +1126,7 @@ describe("AppointmentsCreateController", function () {
         });
     });
 
-    describe('isNoProviderAppointment', function () {
+    describe('doesAppointmentHaveProvider', function () {
         it('should return true if appointment does not have any provider', function () {
             var allAvailableProviders = [{name: 'superman', uuid: '1'}, {
                 name: 'mahmoud_h',
@@ -1144,7 +1144,7 @@ describe("AppointmentsCreateController", function () {
             };
             createController();
 
-            expect($scope.isNoProviderAppointment()).toBeTruthy();
+            expect($scope.doesAppointmentHaveProvider()).toBeTruthy();
         });
 
         it('should return false if appointment has any provider', function () {
@@ -1164,7 +1164,7 @@ describe("AppointmentsCreateController", function () {
             };
             createController();
 
-            expect($scope.isNoProviderAppointment()).toBeFalsy();
+            expect($scope.doesAppointmentHaveProvider()).toBeFalsy();
         });
     });
 
