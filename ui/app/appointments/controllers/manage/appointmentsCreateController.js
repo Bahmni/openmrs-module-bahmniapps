@@ -555,13 +555,13 @@ angular.module('bahmni.appointments')
                 $state.go('^', $state.params, {reload: true});
             };
 
-            $scope.isUserManageOwnAppointmentPrivilegedOnly = function () {
+            $scope.canManageOwnAppointmentOnly = function () {
                 return (appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeOwnAppointments, $rootScope.currentUser.privileges) &&
                         !appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments, $rootScope.currentUser.privileges));
             };
 
             $scope.isUserAllowedToRemoveProvider = function (providerUuid) {
-                if ($scope.isUserManageOwnAppointmentPrivilegedOnly() &&
+                if ($scope.canManageOwnAppointmentOnly() &&
                     $rootScope.currentProvider.uuid !== providerUuid) {
                     return false;
                 }
@@ -586,7 +586,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.isFieldEditNotAllowed = function () {
-                if ($scope.isUserManageOwnAppointmentPrivilegedOnly() && (isAppointmentWithMultipleProvider()
+                if ($scope.canManageOwnAppointmentOnly() && (isAppointmentWithMultipleProvider()
                     || isAppointmentWithSomeProviderButNotCurrentUser())) {
                     return true;
                 }
