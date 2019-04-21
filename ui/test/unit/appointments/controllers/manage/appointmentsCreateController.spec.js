@@ -1156,7 +1156,7 @@ describe("AppointmentsCreateController", function () {
             appointmentContext.appointment = {
                 startDateTime: moment().toDate(),
                 status: 'Scheduled',
-                providers: [{name: 'superman', uuid: '1'}]
+                providers: [{name: 'superman', uuid: '1',response: 'ACCEPTED'}]
             };
             rootScope = {
                 currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '3'},
@@ -1196,7 +1196,7 @@ describe("AppointmentsCreateController", function () {
         it('should not allow to edit the appointment fields if logged user has manage own privilege but appointment has other multiple providers', function () {
             var allAvailableProviders = [{name: 'superman', uuid: '1'}, {name: 'mahmoud_h', uuid: '2'},{name: 'mahmoud', uuid: '3'}];
             appointmentCreateConfig.providers = allAvailableProviders;
-            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'mahmoud_h', uuid: '2'}]};
+            appointmentContext.appointment = {startDateTime: moment().toDate(), status: 'Scheduled', providers: [{name: 'mahmoud_h', uuid: '2', response: 'ACCEPTED'}]};
             rootScope = {
                 currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}], uuid: '3'},
                 currentProvider: {uuid: '3'}};
