@@ -162,5 +162,12 @@
   "APP_BLOCK_2":"Block 2",
   "APP_BLOCK_3":"Block 3",
   "APP_BLOCK_4":"Block Extra",
-  "APPOINTMENT_BLOCK":"Block"
+  "APPOINTMENT_BLOCK":"Block",
+  "SCHEDULED_APPOINTMENT":"Scheduled",
+  "CANCELLED_APPOINTMENT": "Cancelled",
+  "CHANGE_PASSWORD": "Change Password",
+  "APPOINTMENT_PROVIDER_REMOVE_ACTION":"Remove",
+  "INVITED_PROVIDERS": "Guests",
+  "HEADER_LABEL_LOGOUT_KEY": "Exit",
+  "SELECT_APPOINTMENT_PROVIDER": "Select Provider"
 }
