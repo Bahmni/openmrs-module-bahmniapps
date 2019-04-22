@@ -2,21 +2,25 @@
 
 angular.module('bahmni.appointments')
     .controller('AppointmentsListViewController', ['$scope', '$state', '$rootScope', '$translate', '$stateParams', 'spinner',
-        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService', '$interval',
+        'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService', 'appointmentCommonService', '$interval',
         function ($scope, $state, $rootScope, $translate, $stateParams, spinner, appointmentsService, appService,
-                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, $interval) {
+                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService, appointmentCommonService, $interval) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
+            var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
+            $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
             $scope.searchedPatient = false;
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
             var oldPatientData = [];
+            var currentUserPrivileges = $rootScope.currentUser.privileges;
+            var currentProviderUuId = $rootScope.currentProvider.uuid;
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
             });
@@ -304,13 +308,34 @@ angular.module('bahmni.appointments')
                 return _.includes($scope.allowedActions, action);
             };
 
-            $scope.isValidAction = function (action) {
-                if (!$scope.selectedAppointment) {
-                    return false;
+            $scope.isValidActionAndIsUserAllowedToPerformEdit = function (action) {
+                if (!_.isUndefined($scope.selectedAppointment)) {
+                    var appointmentProvider = $scope.selectedAppointment.providers;
+                    return !appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId)
+                        ? false : isValidAction(action);
                 }
+                return false;
+            };
+
+            var isValidAction = function (action) {
                 var status = $scope.selectedAppointment.status;
                 var allowedActions = $scope.allowedActionsByStatus.hasOwnProperty(status) ? $scope.allowedActionsByStatus[status] : [];
                 return _.includes(allowedActions, action);
+            };
+
+            $scope.allowUndoCheckIn = function () {
+                if (!_.isUndefined($scope.selectedAppointment)) {
+                    return appointmentCommonService.isUserAllowedToPerformEdit($scope.selectedAppointment.providers, $rootScope.currentUser.privileges, $rootScope.currentProvider.uuid) && $scope.selectedAppointment &&
+                        $scope.selectedAppointment.status === 'CheckedIn';
+                }
+            };
+
+            $scope.isEditAllowed = function () {
+                if (!_.isUndefined($scope.selectedAppointment)) {
+                    var appointmentProvider = $scope.selectedAppointment.providers;
+                    return maxAppointmentProviders > 1 ? true : appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId);
+                }
+                return false;
             };
 
             init();

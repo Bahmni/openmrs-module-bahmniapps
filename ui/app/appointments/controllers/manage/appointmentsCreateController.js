@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsCreateController', ['$scope', '$q', '$window', '$state', '$translate', 'spinner', 'patientService',
-        'appointmentsService', 'appointmentsServiceService', 'messagingService',
+    .controller('AppointmentsCreateController', ['$scope', '$rootScope', '$q', '$window', '$state', '$translate', 'spinner', 'patientService',
+        'appointmentsService', 'appointmentsServiceService', 'messagingService', 'appointmentCommonService',
         'ngDialog', 'appService', '$stateParams', 'appointmentCreateConfig', 'appointmentContext', '$http', 'sessionService',
-        function ($scope, $q, $window, $state, $translate, spinner, patientService, appointmentsService, appointmentsServiceService,
-                  messagingService, ngDialog, appService, $stateParams, appointmentCreateConfig, appointmentContext, $http, sessionService) {
+        function ($scope, $rootScope, $q, $window, $state, $translate, spinner, patientService, appointmentsService, appointmentsServiceService,
+                  messagingService, appointmentCommonService, ngDialog, appService, $stateParams, appointmentCreateConfig, appointmentContext, $http, sessionService) {
             $scope.isFilterOpen = $stateParams.isFilterOpen;
             $scope.showConfirmationPopUp = true;
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
@@ -14,7 +14,21 @@ angular.module('bahmni.appointments')
             $scope.timeRegex = Bahmni.Appointments.Constants.regexForTime;
             $scope.warning = {};
             $scope.minDuration = Bahmni.Appointments.Constants.minDurationForAppointment;
+
+            var providerListForCurrentUser = function (providers) {
+                if (appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments, $rootScope.currentUser.privileges)) {
+                    return providers;
+                }
+                if (appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeOwnAppointments, $rootScope.currentUser.privileges)) {
+                    return _.filter(providers, function (provider) {
+                        return provider.uuid === $rootScope.currentProvider.uuid;
+                    });
+                }
+                return providers;
+            };
+
             $scope.appointmentCreateConfig = appointmentCreateConfig;
+            $scope.appointmentCreateConfig.providers = providerListForCurrentUser(appointmentCreateConfig.providers);
             $scope.enableEditService = appService.getAppDescriptor().getConfigValue('isServiceOnAppointmentEditable');
             $scope.showStartTimes = [];
             $scope.showEndTimes = [];
@@ -549,5 +563,46 @@ angular.module('bahmni.appointments')
                 $state.go('^', $state.params, {reload: true});
             };
 
+            $scope.canManageOwnAppointmentOnly = function () {
+                return (appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeOwnAppointments, $rootScope.currentUser.privileges) &&
+                        !appointmentCommonService.isCurrentUserHavingPrivilege(Bahmni.Appointments.Constants.privilegeManageAppointments, $rootScope.currentUser.privileges));
+            };
+
+            $scope.isUserAllowedToRemoveProvider = function (providerUuid) {
+                if ($scope.canManageOwnAppointmentOnly() &&
+                    $rootScope.currentProvider.uuid !== providerUuid) {
+                    return false;
+                }
+                return $scope.isEditAllowed();
+            };
+
+            $scope.doesAppointmentHaveProvider = function () {
+                return $scope.appointment.providers.length === 0
+                || _.isUndefined(_.find($scope.appointment.providers, function (provider) {
+                    return provider.response === Bahmni.Appointments.Constants.providerResponses.ACCEPTED;
+                }));
+            };
+
+            var isAppointmentWithSomeProviderButNotCurrentUser = function () {
+                return _.isUndefined($scope.isCurrentProviderPartOfAppointment()) && !$scope.doesAppointmentHaveProvider();
+            };
+
+            $scope.isCurrentProviderPartOfAppointment = function () {
+                return _.find($scope.appointment.providers, function (provider) {
+                    return provider.uuid === $rootScope.currentProvider.uuid && provider.response != Bahmni.Appointments.Constants.providerResponses.CANCELLED;
+                });
+            };
+
+            $scope.isFieldEditNotAllowed = function () {
+                if ($scope.canManageOwnAppointmentOnly() && (isAppointmentWithMultipleProvider()
+                    || isAppointmentWithSomeProviderButNotCurrentUser())) {
+                    return true;
+                }
+                return !$scope.isEditAllowed();
+            };
+
+            var isAppointmentWithMultipleProvider = function () {
+                return $scope.appointment.providers.length > 1;
+            };
             return init();
         }]);

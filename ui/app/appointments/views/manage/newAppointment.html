@@ -76,7 +76,7 @@
                     </label>
                     <select id="location" ng-model="appointment.location"
                             ng-options="location.display for location in appointmentCreateConfig.locations | orderBy:'display'"
-                            ng-disabled="isEditMode() && !isEditAllowed()">
+                            ng-disabled="isEditMode() && isFieldEditNotAllowed()">
                         <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}
                         </option>
                     </select>
@@ -105,7 +105,7 @@
                             <li ng-repeat="appProvider in appointment.providers" ng-show="appProvider.response != 'CANCELLED'">
                                 <label>{{ appProvider.name || appProvider.person.display }}</label>
                                 <input type="button" value="{{'APPOINTMENT_PROVIDER_REMOVE_ACTION' | translate }}" ng-click="removeProviderFromAttendees(appProvider)"
-                                 ng-disabled="isEditMode() && !isEditAllowed()"/>
+                                 ng-disabled="isEditMode() && !isUserAllowedToRemoveProvider(appProvider.uuid)"/>
                             </li>
                         </ul>
                     </div>
@@ -119,7 +119,7 @@
                             ng-model="appointment.date"
                             ng-change="appointment.service && checkAvailability()"
                             placeholder="Pick appointment date"
-                            ng-disabled="isEditMode() && !isEditAllowed()"/>
+                            ng-disabled="isEditMode() && isFieldEditNotAllowed()"/>
                     <span class="slots-remaining"></span>
                 </p>
                 <p class="warning-message" ng-if="warning.appointmentDate">
@@ -144,7 +144,7 @@
                            non-blank
                            ng-pattern="timeRegex"
                            ng-model-options="{allowInvalid: true}"
-                           ng-disabled='(!appointment.date || (isEditMode() && !isEditAllowed()))'
+                           ng-disabled="(!appointment.date || (isEditMode() && isFieldEditNotAllowed()))"
                            required/>
                     <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
                 </p>
@@ -169,7 +169,7 @@
                            ng-class="{'illegalValue': isInvalid}"
                            placeholder="{{'PLACEHOLDER_APPOINTMENT_TIME_FORMAT' | translate }}"
                            non-blank
-                           ng-disabled='(!appointment.date || (isEditMode() && !isEditAllowed()))'
+                           ng-disabled='(!appointment.date || (isEditMode() && isFieldEditNotAllowed()))'
                            ng-pattern="timeRegex"
                            ng-model-options="{allowInvalid: true}"
                            required/>
@@ -192,7 +192,7 @@
                 </p>
                 <p class="walk-in-app">
                     <input type="checkbox" ng-model="appointment.appointmentKind" ng-true-value="'WalkIn'"
-                           ng-false-value="'Scheduled'" ng-disabled="isEditMode() && !isEditAllowed()">
+                           ng-false-value="'Scheduled'" ng-disabled="isEditMode() && isFieldEditNotAllowed()">
                     <span class="walk-in-text">{{'APPOINTMENT_CREATE_WALK_IN' | translate}}</span>
                 </p>
                 <p>
@@ -200,7 +200,7 @@
                         {{'APPOINTMENT_CREATE_NOTES' | translate}}
                     </label>
                     <textarea placeholder="{{ ::'PLACEHOLDER_CREATE_NOTES' | translate }}" id="notes"
-                              ng-model="appointment.comments"></textarea>
+                              ng-model="appointment.comments" ng-disabled="isEditMode() && canManageOwnAppointmentOnly() && !isCurrentProviderPartOfAppointment() && !doesAppointmentHaveProvider()"></textarea>
                 </p>
             </section>
             <a class="create-appointment-action-btn" ui-sref="^">{{::'APPOINTMENT_CREATE_CANCEL' | translate }}</a>

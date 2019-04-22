@@ -41,6 +41,15 @@ describe('CalendarViewPopUp', function () {
     beforeEach(function () {
         spyOn(rootScope, '$new');
         rootScope.$new.and.returnValue(popUpScope);
+        rootScope.currentProvider = {};
+        rootScope.currentUser = {};
+        var appointments = [
+            {
+                patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"}
+            }
+        ];
+        rootScope.config = {scope: {appointments: appointments}};
+
     });
 
     it('should differentiate between appointments when there are group appointments with same patient and same provider while changing the status of appointments', function () {
@@ -74,8 +83,7 @@ describe('CalendarViewPopUp', function () {
                 expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
             });
         });
-        var config = {scope: {appointments: []}};
-        calendarViewPopUp(config);
+        calendarViewPopUp(rootScope.config);
         popUpScope.confirmAction(appointments[0], toStatus);
         popUpScope.confirmAction(appointments[1], 'Scheduled');
     });
@@ -92,7 +100,12 @@ describe('CalendarViewPopUp', function () {
     });
 
     it('should open ngDialog with properties', function () {
-        var config = {scope: {appointments: []}};
+        var appointments = [
+            {
+                patient: {identifier: "GAN203012", name: "patient1", uuid: "03dba27a-dbd3-464a-8713-24345aa51e1e"}
+            }
+        ];
+        var config = {scope: {appointments: appointments}};
         calendarViewPopUp(config);
         expect(ngDialog.open).toHaveBeenCalledWith({
             template: '../appointments/views/manage/calendar/popUp.html',
@@ -107,8 +120,7 @@ describe('CalendarViewPopUp', function () {
             dialog.closePromise();
             expect($state.go).toHaveBeenCalledWith($state.current, $state.params, {reload: true});
         });
-        var config = {scope: {appointments: []}};
-        calendarViewPopUp(config);
+        calendarViewPopUp(rootScope.config);
     });
 
     it('closePromise should reload current state if value is not false', function () {
@@ -117,8 +129,8 @@ describe('CalendarViewPopUp', function () {
             dialog.closePromise();
             expect($state.go).not.toHaveBeenCalled();
         });
-        var config = {scope: {appointments: []}};
-        calendarViewPopUp(config);
+
+        calendarViewPopUp(rootScope.config);
     });
 
     it('should go to new appointment state on navigateTo new', function () {
@@ -156,8 +168,7 @@ describe('CalendarViewPopUp', function () {
     it('should reload current state on navigateTo any other', function () {
         $state.params = {};
         $state.current = 'home.manage.appointments.calendar';
-        var config = {scope: {appointments: []}};
-        calendarViewPopUp(config);
+        calendarViewPopUp(rootScope.config);
         popUpScope.navigateTo();
         expect($state.go).toHaveBeenCalledWith($state.current, $state.params, {reload: true});
     });
@@ -176,8 +187,8 @@ describe('CalendarViewPopUp', function () {
             expect(config.actions).toEqual([{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}]);
             expect(config.className).toEqual('ngdialog-theme-default');
         });
-        var config = {scope: {appointments: []}};
-        calendarViewPopUp(config);
+
+        calendarViewPopUp(rootScope.config);
         popUpScope.confirmAction(appointment, toStatus, onDate);
         expect(confirmBox).toHaveBeenCalled();
     });
@@ -197,8 +208,7 @@ describe('CalendarViewPopUp', function () {
                 expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
             });
         });
-        var config = {scope: {appointments: []}};
-        calendarViewPopUp(config);
+        calendarViewPopUp(rootScope.config);
         popUpScope.confirmAction(appointment, toStatus);
     });
 
@@ -210,8 +220,7 @@ describe('CalendarViewPopUp', function () {
             config.scope.no(close);
             expect(close).toHaveBeenCalled();
         });
-        var config = {scope: {appointments: []}};
-        calendarViewPopUp(config);
+        calendarViewPopUp(rootScope.config);
         popUpScope.confirmAction(appointment, toStatus);
     });
 
@@ -223,8 +232,7 @@ describe('CalendarViewPopUp', function () {
                 }
                 return value;
             });
-            var config = {scope: {appointments: []}};
-            calendarViewPopUp(config);
+            calendarViewPopUp(rootScope.config);
             expect(popUpScope.allowedActions).toEqual([]);
         });
 
@@ -236,8 +244,7 @@ describe('CalendarViewPopUp', function () {
                 }
                 return value;
             });
-            var config = {scope: {appointments: []}};
-            calendarViewPopUp(config);
+            calendarViewPopUp(rootScope.config);
             expect(popUpScope.allowedActions).toEqual(allowedActionsConfig);
         });
 
@@ -248,8 +255,7 @@ describe('CalendarViewPopUp', function () {
                 }
                 return value;
             });
-            var config = {scope: {appointments: []}};
-            calendarViewPopUp(config);
+            calendarViewPopUp(rootScope.config);
             expect(popUpScope.isAllowedAction('Missed')).toBeFalsy();
             expect(popUpScope.isAllowedAction('Completed')).toBeFalsy();
             expect(popUpScope.isAllowedAction('Random')).toBeFalsy();
@@ -262,8 +268,7 @@ describe('CalendarViewPopUp', function () {
                 }
                 return value;
             });
-            var config = {scope: {appointments: []}};
-            calendarViewPopUp(config);
+            calendarViewPopUp(rootScope.config);
             expect(popUpScope.isAllowedAction('Completed')).toBeTruthy();
             expect(popUpScope.isAllowedAction('CheckedIn')).toBeTruthy();
         });
@@ -275,14 +280,13 @@ describe('CalendarViewPopUp', function () {
                 }
                 return value;
             });
-            var config = {scope: {appointments: []}};
-            calendarViewPopUp(config);
+            calendarViewPopUp(rootScope.config);
             expect(popUpScope.isAllowedAction('Missed')).toBeFalsy();
             expect(popUpScope.isAllowedAction('Random')).toBeFalsy();
         });
     });
 
-    describe('isValidAction', function () {
+    describe('isValidActionAndIsUserAllowedToPerformEdit', function () {
         it('should init with empty object if config is undefined', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
                 if (value === 'allowedActionsByStatus') {
@@ -290,8 +294,7 @@ describe('CalendarViewPopUp', function () {
                 }
                 return value;
             });
-            var config = {scope: {appointments: []}};
-            calendarViewPopUp(config);
+            calendarViewPopUp(rootScope.config);
             expect(popUpScope.allowedActionsByStatus).toEqual({});
         });
 
@@ -303,8 +306,7 @@ describe('CalendarViewPopUp', function () {
                 }
                 return value;
             });
-            var config = {scope: {appointments: []}};
-            calendarViewPopUp(config);
+            calendarViewPopUp(rootScope.config);
             expect(popUpScope.allowedActionsByStatus).toEqual(allowedActionsByStatus);
         });
 
@@ -315,9 +317,8 @@ describe('CalendarViewPopUp', function () {
                 }
                 return value;
             });
-            var config = {scope: {appointments: []}};
-            calendarViewPopUp(config);
-            expect(popUpScope.isValidAction(undefined, 'Missed')).toBeFalsy();
+            calendarViewPopUp(rootScope.config);
+            expect(popUpScope.isValidActionAndIsUserAllowedToPerformEdit(undefined, 'Missed')).toBeFalsy();
         });
 
         it('should return false if allowedActionsByStatus is undefined', function () {
@@ -327,11 +328,14 @@ describe('CalendarViewPopUp', function () {
                 }
                 return value;
             });
-            var config = {scope: {appointments: []}};
-            calendarViewPopUp(config);
+            rootScope.currentUser = {privileges: [{
+                name: Bahmni.Appointments.Constants.privilegeManageAppointments
+            }]};
+            calendarViewPopUp(rootScope.config);
             expect(popUpScope.allowedActionsByStatus).toEqual({});
             var appointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
-            expect(popUpScope.isValidAction(appointment, 'Completed')).toBeFalsy();
+
+            expect(popUpScope.isValidActionAndIsUserAllowedToPerformEdit(appointment, 'Completed')).toBeFalsy();
         });
 
         it('should return true if action exists in allowedActionsByStatus', function () {
@@ -341,10 +345,12 @@ describe('CalendarViewPopUp', function () {
                 }
                 return value;
             });
-            var config = {scope: {appointments: []}};
-            calendarViewPopUp(config);
+            rootScope.currentUser = {privileges: [{
+                    name: Bahmni.Appointments.Constants.privilegeManageAppointments
+                }]};
+            calendarViewPopUp(rootScope.config);
             var appointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
-            expect(popUpScope.isValidAction(appointment, 'Completed')).toBeTruthy();
+            expect(popUpScope.isValidActionAndIsUserAllowedToPerformEdit(appointment, 'Completed')).toBeTruthy();
         });
 
         it('should return false if action does not exist in allowedActionsByStatus', function () {
@@ -354,10 +360,40 @@ describe('CalendarViewPopUp', function () {
                 }
                 return value;
             });
-            var config = {scope: {appointments: []}};
-            calendarViewPopUp(config);
+            rootScope.currentUser = {privileges: [{
+                    name: Bahmni.Appointments.Constants.privilegeManageAppointments
+                }]};
+            calendarViewPopUp(rootScope.config);
             var appointment = {uuid: 'appointmentUuid', status: 'Scheduled'};
-            expect(popUpScope.isValidAction(appointment, 'Completed')).toBeFalsy();
+
+            expect(popUpScope.isValidActionAndIsUserAllowedToPerformEdit(appointment, 'Completed')).toBeFalsy();
+        });
+
+        it('should return false if user does not have the required privileges', function () {
+            calendarViewPopUp(rootScope.config);
+            var appointment = {};
+
+            expect(popUpScope.isValidActionAndIsUserAllowedToPerformEdit(appointment, 'Completed')).toBeFalsy();
         });
     });
+
+    describe('isEditAllowed', function () {
+        it('should return true if maxAppointmentProviders config value is greater than 1', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return 3;
+            });
+            calendarViewPopUp(rootScope.config);
+
+            expect(popUpScope.isEditAllowed()).toBeTruthy();
+        });
+
+        it('should return false if maxAppointmentProviders config value is 1 and logged provider is not in appointment', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                return 1;
+            });
+            calendarViewPopUp(rootScope.config);
+            expect(popUpScope.isEditAllowed()).toBe(false);
+        });
+    });
+
 });
