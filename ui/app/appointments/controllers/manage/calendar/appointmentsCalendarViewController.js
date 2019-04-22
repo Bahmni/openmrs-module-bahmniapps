@@ -50,6 +50,7 @@ angular.module('bahmni.appointments')
                         event.end = appointment.endDateTime;
                         event.color = appointment.service.color;
                         event.serviceName = appointment.service.name;
+                        event.blockName = $translate.instant(appointment.block);
                         var existingEvent = _.find(result, event);
                         var patientName = appointment.patient.name + " (" + appointment.patient.identifier + ")";
                         var isBedAssigned = appointment.additionalInfo && appointment.additionalInfo.BED_NUMBER_KEY;

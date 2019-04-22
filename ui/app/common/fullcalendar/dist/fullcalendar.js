@@ -7501,7 +7501,7 @@ TimeGrid.mixin({
 						' data-start="' + htmlEscape(startTimeText) + '"' +
 						' data-full="' + htmlEscape(fullTimeText) + '"' +
 						'>' +
-							'<span>' + htmlEscape(timeText) + '</span>' +
+							'<span>' + event.blockName + '</span>' +
 						'</div>' :
 						''
 						) +
