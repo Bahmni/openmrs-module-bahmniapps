@@ -9,7 +9,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                 obs.value = self.preProcessMultiSelectObs(obs.value);
             });
             var obs = self.createObsGroupForForm(bahmniObservations);
-            updateObservationsWithMetadata(obs);
+            updateObservationsWithFormDefinition(obs);
         };
 
         self.createMultiSelectObservation = function (observations) {
@@ -80,7 +80,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             return observations;
         };
 
-        var updateObservationsWithMetadata = function (observations) {
+        var updateObservationsWithFormDefinition = function (observations) {
             formService.getAllForms().then(function (response) {
                 var allForms = response.data;
                 _.forEach(observations, function (observation) {
@@ -97,9 +97,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                         formService.getFormDetail(observationForm.uuid, {v: "custom:(resources:(value))"}).then(function (response) {
                             var formDetailsAsString = _.get(response, 'data.resources[0].value');
                             if (formDetailsAsString) {
-                                var metadata = JSON.parse(formDetailsAsString);
-                                metadata.version = observationForm.version;
-                                forms.push(self.updateObservationsWithRecordTree(metadata, form));
+                                var formDef = JSON.parse(formDetailsAsString);
+                                formDef.version = observationForm.version;
+                                forms.push(self.updateObservationsWithRecordTree(formDef, form));
                             }
                             observation.value = forms;
                         });
@@ -128,8 +128,8 @@ angular.module('bahmni.common.displaycontrol.observation')
             return member ? member.formFieldPath.split('.')[1].split('/')[0] : undefined;
         };
 
-        self.updateObservationsWithRecordTree = function (metadata, form) {
-            var recordTree = getRecordTree(metadata, form.groupMembers);
+        self.updateObservationsWithRecordTree = function (formDef, form) {
+            var recordTree = getRecordTree(formDef, form.groupMembers);
             recordTree = JSON.parse(JSON.stringify(recordTree));
             self.createGroupMembers(recordTree, form, form.groupMembers);
             return form;

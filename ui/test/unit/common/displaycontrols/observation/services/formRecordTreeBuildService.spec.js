@@ -1851,7 +1851,7 @@ describe("FormRecordTreeBuildService", function () {
         expect(formService.getFormDetail.calls.any()).toBeFalsy();
     });
 
-    it("should not make call to updateObservationsWithRecordTree when no metadata response comes", function () {
+    it("should not make call to updateObservationsWithRecordTree where no form definition response comes", function () {
         var obsOne = {
             "groupMembers": [],
             "formNamespace": "Bahmni",
