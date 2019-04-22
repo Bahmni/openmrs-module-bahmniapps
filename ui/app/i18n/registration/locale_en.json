@@ -28,7 +28,6 @@
   "REGISTRATION_LABEL_PATIENT_ENTER_REGISTRATION" : "Enter patient's registration number",
   "REGISTRATION_LABEL_CASTE_SAME_LAST_NAME" : "Caste same as Last Name",
   "REGISTRATION_LABEL_GENDER" : "Gender",
-  "REGISTRATION_LABEL_SELECT_GENDER" : "Select Gender",
   "REGISTRATION_LABEL_AGE" : "Age",
   "OBS_UNKNOWN_TRANSLATE_KEY" :"Unknown",
   "REGISTRATION_LABEL_CITY": "Village",
@@ -150,5 +149,9 @@
   "OBESE": "Obese",
   "SEVERELY OBESE": "Severely Obese",
   "VERY SEVERELY OBESE": "Very Severely Obese",
-  "REGISTRATION_LABEL_ENTER_VALID_WEIGHT": "Weight value should not contain more than 2 decimals"
+  "REGISTRATION_LABEL_ENTER_VALID_WEIGHT": "Weight value should not contain more than 2 decimals",
+  "FOLLOWUP_APSS_CONSULTATION":"Follow Up APSS&PP Consultation",
+  "FIRST_APSS_CONSULTATION":"First APSS&PP Consultation",
+  "FIRST_CLINICAL_CONSULTATION":"First Clinical Consultation",
+  "FOLLOWUP_CLINICAL_CONSULTATION":"Follow Up Clinical Consultation"
 }
