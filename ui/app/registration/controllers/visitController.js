@@ -179,11 +179,20 @@ angular.module('bahmni.registration')
             };
 
             var validate = function () {
+                var isWeightValid = validateWeight();
                 var isFormValidated = mandatoryValidate();
                 var deferred = $q.defer();
                 var contxChange = contextChangeHandler.execute();
                 var allowContextChange = contxChange["allow"];
                 var errorMessage;
+                if (!isWeightValid) {
+                    angular.element("#weight_observation").css("border", "2px solid #ff3434");
+                    angular.element("#weight_observation").css("background", "#ffcdcd");
+                    errorMessage = "REGISTRATION_LABEL_ENTER_VALID_WEIGHT";
+                    messagingService.showMessage('error', errorMessage);
+                    deferred.reject("Some fields are not valid");
+                    return deferred.promise;
+                }
                 if (!isObservationFormValid()) {
                     deferred.reject("Some fields are not valid");
                     return deferred.promise;
@@ -202,6 +211,27 @@ angular.module('bahmni.registration')
                     deferred.resolve();
                     return deferred.promise;
                 }
+            };
+
+            var validateWeight = function () {
+                var weight = "";
+                for (var i = 0; i < $scope.observations.length; i++) {
+                    if ($scope.observations[i].conceptSetName === "Nutritional Values") {
+                        var conceptSet = $scope.observations[i];
+                        for (var x = 0; x < conceptSet.groupMembers.length; x++) {
+                            if (conceptSet.groupMembers[x].concept.name === "WEIGHT") {
+                                weight = conceptSet.groupMembers[x].value + "";
+                            }
+                        }
+                    }
+                }
+                if (weight.includes(".")) {
+                    var decimals = weight.split(".");
+                    if (decimals[1].length > 1) {
+                        return false;
+                    }
+                }
+                return true;
             };
 
             // Start :: Registration Page validation
