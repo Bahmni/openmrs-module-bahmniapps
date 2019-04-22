@@ -131,5 +131,25 @@ describe('versionedFormController', function () {
         scope.$digest();
 
         expect(scope.dialogData).toEqual(expectedDialogData);
-    })
+    });
+
+    it('should get EditObs data for given formData', function () {
+        var formData = {
+            formName: "EditForm",
+            formVersion: "V2"
+        };
+        var expectedEditObsData = {
+            observation: formData,
+            conceptSetName: "EditForm",
+            conceptDisplayName: "EditForm"
+        };
+        createController();
+        scope.$digest();
+
+        var actualEditObsData = scope.getEditObsData(formData);
+
+        expect(actualEditObsData).toEqual(expectedEditObsData);
+    });
+
+
 });
