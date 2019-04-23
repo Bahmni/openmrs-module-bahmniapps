@@ -15,7 +15,7 @@ angular.module('bahmni.common.patientSearch')
                 _.isEmpty(currentSearchType) || fetchPatients(currentSearchType);
             });
             $scope.$watch('search.activePatients', function (activePatientsList) {
-                if (activePatientsList.length > 0) {
+                if (activePatientsList.length > 0 && patientListSpinner) {
                     spinner.hide(patientListSpinner, $(".tab-content"));
                 }
             });
@@ -62,7 +62,9 @@ angular.module('bahmni.common.patientSearch')
                     if ($scope.search.isSelectedSearch(searchType)) {
                         $scope.search.updatePatientList(response.data);
                     }
-                    spinner.hide(patientListSpinner, $(".tab-content"));
+                    if (patientListSpinner) {
+                        spinner.hide(patientListSpinner, $(".tab-content"));
+                    }
                 });
             }
         };
