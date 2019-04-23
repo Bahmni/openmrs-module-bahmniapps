@@ -398,15 +398,15 @@
     font-size: 14px;
     padding: 8px;
     border: 1px solid #ddd;
-    width: 180px;
-    min-width: 180px;
-    max-width: 180px;
+    width: 200px;
+    min-width: 200px;
+    max-width: 200px;
     overflow: hidden;
     text-align: center;
     word-wrap: break-word;
     &.table-mid-width {
-      width: 180px;
-      min-width: 180px;
+      width: 200px;
+      min-width: 200px;
       max-width: 180px;
     }
     &:last-child {
