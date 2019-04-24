@@ -5436,9 +5436,6 @@ var DayTableMixin = FC.DayTableMixin = {
 		return '' +
 			'<div class="fc-row ' + view.widgetHeaderClass + '">' +
 				'<table>' +
-					'<thead>' +
-						this.renderHeadTrHtml() +
-					'</thead>' +
 				'</table>' +
 			'</div>';
 	},
