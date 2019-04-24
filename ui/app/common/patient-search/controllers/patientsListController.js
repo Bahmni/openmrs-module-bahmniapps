@@ -15,8 +15,8 @@ angular.module('bahmni.common.patientSearch')
                 _.isEmpty(currentSearchType) || fetchPatients(currentSearchType);
             });
             $scope.$watch('search.activePatients', function (activePatientsList) {
-                if (activePatientsList.length > 0) {
-                    spinner.hide(patientListSpinner, $(".tab-content"));
+                if (activePatientsList.length > 0 && patientListSpinner) {
+                    hideSpinner(spinner, patientListSpinner, $(".tab-content"));
                 }
             });
             if (patientSearchConfig && patientSearchConfig.serializeSearch) {
@@ -62,9 +62,16 @@ angular.module('bahmni.common.patientSearch')
                     if ($scope.search.isSelectedSearch(searchType)) {
                         $scope.search.updatePatientList(response.data);
                     }
-                    spinner.hide(patientListSpinner, $(".tab-content"));
+                    if (patientListSpinner) {
+                        hideSpinner(spinner, patientListSpinner, $(".tab-content"));
+                    }
                 });
             }
+        };
+
+        var hideSpinner = function (spinnerObj, data, container) {
+            spinnerObj.hide(data, container);
+            $(container).children('div:first-child').hide();
         };
 
         $scope.getHeadings = function (patients) {
@@ -131,13 +138,18 @@ angular.module('bahmni.common.patientSearch')
             getPatientCount(currentSearchType, patientListSpinner);
         }, (patientSearchConfig && patientSearchConfig.fetchDelay) || DEFAULT_FETCH_DELAY, {});
 
+        var showSpinner = function (spinnerObj, container) {
+            $(container).children('div:first-child').show();
+            return spinnerObj.show(container);
+        };
+
         var fetchPatients = function (currentSearchType) {
             if (patientListSpinner !== undefined) {
-                spinner.hide(patientListSpinner, $(".tab-content"));
+                hideSpinner(spinner, patientListSpinner, $(".tab-content"));
             }
             $rootScope.currentSearchType = currentSearchType;
             if ($scope.search.isCurrentSearchLookUp()) {
-                patientListSpinner = spinner.show($(".tab-content"));
+                patientListSpinner = showSpinner(spinner, $(".tab-content"));
                 if (patientSearchConfig && patientSearchConfig.debounceSearch) {
                     debounceGetPatientCount(currentSearchType, patientListSpinner);
                 }

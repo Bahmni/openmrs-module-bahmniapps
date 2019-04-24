@@ -53,8 +53,9 @@
   }
 
   .patient-list-spinner {
+    display: none;
     top: 32px;
-    margin-top: -32px;
+    margin-top: -28px;
     position: relative;
     min-height: 2em;
   }
