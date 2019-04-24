@@ -26,6 +26,7 @@
                 <td>{{::appointment.patient.identifier}}</td>
                 <td>{{::appointment.patient.name | titleCase}}</td>
                 <td>{{::appointment.startDateTime | bahmniDate}}</td>
+                <td>{{::appointment.block | translate}}</td>
                 <td ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
                 <td>{{::appointment.service.name}}</td>
                 <td ng-show="::enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>

@@ -12,6 +12,7 @@ angular.module('bahmni.appointments')
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.searchedPatient = false;
+            $scope.appointmentBlocks = appService.getAppDescriptor().getConfigValue('appointmentBlocks');
             var oldPatientData = [];
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
@@ -19,6 +20,7 @@ angular.module('bahmni.appointments')
             $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
+                {heading: 'APPOINTMENT_BLOCK', sortInfo: 'date', enable: true},
                 {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes},
@@ -43,12 +45,26 @@ angular.module('bahmni.appointments')
                     spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
                         $scope.appointments = response.data;
                         $scope.filteredAppointments = appointmentsFilter($scope.appointments, $stateParams.filterParams);
+                        $scope.filteredAppointments = getAppointmentsBlock($scope.filteredAppointments);
                         $rootScope.appointmentsData = $scope.filteredAppointments;
                     }));
                 } else {
                     $scope.filteredAppointments = appointmentsFilter($state.params.appointmentsData, $stateParams.filterParams);
                     $state.params.doFetchAppointmentsData = true;
                 }
+            };
+
+            var getAppointmentsBlock = function (appointments) {
+                appointments = _.map(appointments, function (obj) {
+                    var startTime = moment(obj.startDateTime).format("hh:mm a");
+                    _.map($scope.appointmentBlocks, function (object) {
+                        if (object.startTime == startTime) {
+                            obj.block = object.name;
+                        }
+                    });
+                    return obj;
+                });
+                return appointments;
             };
 
             $scope.displaySearchedPatient = function (appointments) {

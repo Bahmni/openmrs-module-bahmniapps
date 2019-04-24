@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsCalendarViewController', ['$scope', '$state', '$translate', 'spinner', 'appointmentsService', 'appointmentsFilter', '$rootScope',
-        function ($scope, $state, $translate, spinner, appointmentsService, appointmentsFilter, $rootScope) {
+    .controller('AppointmentsCalendarViewController', ['$scope', '$state', '$translate', 'spinner', 'appointmentsService', 'appointmentsFilter', '$rootScope', 'appService',
+        function ($scope, $state, $translate, spinner, appointmentsService, appointmentsFilter, $rootScope, appService) {
+            $scope.appointmentBlocks = appService.getAppDescriptor().getConfigValue('appointmentBlocks');
             var init = function () {
                 $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
                 $scope.$on('filterClosedOpen', function (event, args) {
@@ -49,11 +50,12 @@ angular.module('bahmni.appointments')
                         event.end = appointment.endDateTime;
                         event.color = appointment.service.color;
                         event.serviceName = appointment.service.name;
+                        event.blockName = $translate.instant(appointment.block);
                         var existingEvent = _.find(result, event);
                         var patientName = appointment.patient.name + " (" + appointment.patient.identifier + ")";
                         var isBedAssigned = appointment.additionalInfo && appointment.additionalInfo.BED_NUMBER_KEY;
                         if (existingEvent) {
-                            existingEvent.title = [existingEvent.title, patientName].join(', ');
+                            existingEvent.title = [existingEvent.title, patientName].join('\n');
                             existingEvent.className = 'appointmentIcons multiplePatients' + (isBedAssigned ? ' bed-accom' : '');
                             existingEvent.appointments.push(appointment);
                         } else {
@@ -95,6 +97,7 @@ angular.module('bahmni.appointments')
                     return spinner.forPromise(appointmentsService.getAllAppointments(params).then(function (response) {
                         $scope.allAppointmentsForDay = response.data;
                         var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay, $state.params.filterParams);
+                        filteredAppointments = getAppointmentsBlock(filteredAppointments);
                         $rootScope.appointmentsData = filteredAppointments;
                         return parseAppointments(filteredAppointments);
                     }));
@@ -103,6 +106,19 @@ angular.module('bahmni.appointments')
                     $state.params.doFetchAppointmentsData = true;
                     return parseAppointments(filteredAppointments);
                 }
+            };
+
+            var getAppointmentsBlock = function (appointments) {
+                appointments = _.map(appointments, function (obj) {
+                    var startTime = moment(obj.startDateTime).format("hh:mm a");
+                    _.map($scope.appointmentBlocks, function (object) {
+                        if (object.startTime == startTime) {
+                            obj.block = object.name;
+                        }
+                    });
+                    return obj;
+                });
+                return appointments;
             };
 
             $scope.hasNoAppointments = function () {
