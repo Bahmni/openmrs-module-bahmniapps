@@ -70,27 +70,6 @@
                 </p>
 
                 <p>
-                    <label for="location">
-                        {{'APPOINTMENT_SERVICE_LOCATION_KEY' | translate}}
-                    </label>
-                    <select id="location" ng-model="appointment.location"
-                            ng-options="location.display for location in appointmentCreateConfig.locations | orderBy:'display'"
-                            ng-disabled="isEditMode() && !isEditAllowed()">
-                        <option value="">{{ ::'PLACEHOLDER_SERVICE_LOCATION' | translate}}
-                        </option>
-                    </select>
-                </p>
-                <p>
-                    <label for="provider">
-                        {{'APPOINTMENT_PROVIDER' | translate}}
-                    </label>
-                    <select id="provider" ng-model="appointment.provider"
-                            ng-options="provider.person.display for provider in appointmentCreateConfig.providers | orderBy:'person.display'"
-                            ng-disabled="isEditMode() && !isEditAllowed()">
-                        <option value="">{{ ::'PLACEHOLDER_CREATE_PROVIDER' | translate}}</option>
-                    </select>
-                </p>
-                <p>
                     <label for="date">
                         {{'APPOINTMENT_DATE' | translate}}<sup class="asterick">*</sup>
                     </label>
