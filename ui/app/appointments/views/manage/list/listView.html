@@ -65,11 +65,5 @@
                 ng-click="confirmAction('Missed')">
                 {{::'MISSED_APPOINTMENT' | translate}}
         </button>
-        <button show-if-privilege="{{manageAppointmentPrivilege}}"
-                ng-show="isAllowedAction('Cancelled')"
-                ng-disabled="!isValidAction('Cancelled')"
-                ng-click="confirmAction('Cancelled')">
-                {{::'CANCEL_APPOINTMENT' | translate}}
-        </button>
     </fieldset>
 </div>
