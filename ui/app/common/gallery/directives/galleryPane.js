@@ -133,7 +133,7 @@ angular.module('bahmni.common.gallery')
                             });
                         });
                     }
-                    ngDialog.openConfirm({template: '../common/gallery/views/gallery.html', scope: $scope, closeByEscape: true});
+                    ngDialog.openConfirm({template: '../common/gallery/views/gallery.html', scope: $scope, closeByEscape: true, className: 'gallery-dialog ngdialog-theme-default'});
                 };
 
                 var fetchObsRelationship = function (image) {
