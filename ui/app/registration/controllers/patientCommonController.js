@@ -15,6 +15,33 @@ angular.module('bahmni.registration')
             $scope.genderCodes = Object.keys($rootScope.genderMap);
             $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
+
+            $scope.mozambicanIdentifiers = appService.getAppDescriptor().getConfigValue("mozambicanIdentifiers", []);
+            $scope.foreignerIdentifiers = appService.getAppDescriptor().getConfigValue("foreignerIdentifiers", []);
+
+
+           
+
+            $scope.allMozambicanIdentifiers = _.map($scope.patient.extraIdentifiers, function (obj, index) {
+                if (_.includes($scope.mozambicanIdentifiers, obj.identifierType.name)) {
+                    return obj;
+                }
+            });
+
+            $scope.allMozambicanIdentifiers = _.filter($scope.allMozambicanIdentifiers);
+            
+
+            $scope.allForeignerIdentifiers = _.map($scope.patient.extraIdentifiers, function (obj, index) {
+                if (_.includes($scope.foreignerIdentifiers, obj.identifierType.name)) {
+                    return obj;
+                }
+            });
+
+            $scope.allForeignerIdentifiers = _.filter($scope.allForeignerIdentifiers);
+           
+
+            $scope.nationalityIdentifiers = [];
+
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
 
@@ -113,7 +140,7 @@ angular.module('bahmni.registration')
                     if (event) {
                         event.preventDefault();
                     }
-                    ngDialog.openConfirm({template: "../common/ui-helper/views/saveConfirmation.html", scope: $scope});
+                    ngDialog.openConfirm({ template: "../common/ui-helper/views/saveConfirmation.html", scope: $scope });
                 }
             };
 
@@ -257,5 +284,52 @@ angular.module('bahmni.registration')
             $scope.disableIsDead = function () {
                 return ($scope.patient.causeOfDeath || $scope.patient.deathDate) && $scope.patient.dead;
             };
+
+
+           
+            $scope.nationality = function () {
+
+                if ($scope.patient.NATIONALITY == undefined) {
+                    $scope.patient.NATIONALITY = "";
+                }
+                else {
+                    $scope.nationalityChoice = $scope.patient.NATIONALITY.value;
+                    console.log($scope.nationalityChoice);
+
+                    if ($scope.nationalityChoice == 'Mocambicano') {
+                    $scope.nationalityIdentifiers = $scope.allMozambicanIdentifiers;
+                        console.log($scope.nationalityIdentifiers);
+                    }
+
+                    else if ($scope.nationalityChoice == 'Estrangeiro') { 
+                        $scope.nationalityIdentifiers = $scope.allForeignerIdentifiers;
+                        console.log($scope.nationalityIdentifiers);
+                     }
+                    ;
+
+                }
+            };
+
+            console.log($scope.patient.NATIONALITY);
+
+
+
+
+
+            $scope.patientDocuments = [1];
+
+            $scope.addDocumentRow = function () {
+                $scope.patientDocuments.push(1);
+                console.log($scope.patientDocuments);
+            };
+
+            $scope.removeDocumentRow = function (index) {
+                $scope.patientDocuments.splice(index, 1);
+                console.log($scope.patientDocuments);
+                console.log(index);
+            };
+
+
+
         }]);
 

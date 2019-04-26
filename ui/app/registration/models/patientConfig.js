@@ -1,7 +1,7 @@
 'use strict';
 
 Bahmni.Registration.PatientConfig = (function () {
-    function PatientConfig (patientAttributeTypes, identifierTypes, patientInformation) {
+    function PatientConfig(patientAttributeTypes, identifierTypes, patientInformation) {
         this.attributeTypes = patientAttributeTypes;
         this.identifierTypes = identifierTypes;
         var patientAttributesSections = {};
@@ -26,11 +26,11 @@ Bahmni.Registration.PatientConfig = (function () {
         }
     }
 
-    function isHiddenPatientAttribute (hiddenAttributes, item) { // Ignore hidden fields from patientInformation configuration
+    function isHiddenPatientAttribute(hiddenAttributes, item) { // Ignore hidden fields from patientInformation configuration
         return hiddenAttributes && hiddenAttributes.indexOf(item.name) > -1;
     }
 
-    function isAttributeInOtherSection (patientInformation, patientAttributesSections, item) {
+    function isAttributeInOtherSection(patientInformation, patientAttributesSections, item) {
         return _.find(patientInformation, function (section, key) {
             return _.find(section.attributes, function (attribute) {
                 if (attribute === item.name) {
@@ -55,7 +55,7 @@ Bahmni.Registration.PatientConfig = (function () {
         });
     }
 
-    function isItemAMandatoryField (item) {
+    function isItemAMandatoryField(item) {
         var mandatoryPatientAttributes = ["healthCenter", "givenNameLocal", "middleNameLocal", "familyNameLocal"];
         return mandatoryPatientAttributes.indexOf(item.name) > -1;
     }
@@ -114,9 +114,9 @@ Bahmni.Registration.PatientConfig = (function () {
             })[0];
 
             if (givenName && middleName && familyName) {
-                return { "showNameField": true, "labelForNameField": givenName.description, "placeholderForGivenName": givenName.description, "placeholderForMiddleName": middleName.description, "placeholderForFamilyName": familyName.description};
+                return { "showNameField": true, "labelForNameField": givenName.description, "placeholderForGivenName": givenName.description, "placeholderForMiddleName": middleName.description, "placeholderForFamilyName": familyName.description };
             }
-            return {"showNameField": false};
+            return { "showNameField": false };
         }
 
     };
