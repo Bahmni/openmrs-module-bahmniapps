@@ -285,10 +285,6 @@
            </section>
         </section>
 
-        <legend class="registraion_legend" ng-if="patientConfiguration.customAttributeRows().length > 0">
-            <span class="mylegend">{{ ::'REGISTRATION_LABEL_OTHER_INFO' | translate}}</span>
-        </legend>
-
         <section class="form-field-inline clearfix"
                  ng-repeat="attributeRow in ::patientConfiguration.customAttributeRows()">
             <article class="form-field" ng-repeat="attribute in ::attributeRow"
