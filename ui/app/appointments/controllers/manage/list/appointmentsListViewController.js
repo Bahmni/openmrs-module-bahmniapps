@@ -20,7 +20,7 @@ angular.module('bahmni.appointments')
             $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
-                {heading: 'APPOINTMENT_BLOCK', sortInfo: 'date', enable: true},
+                {heading: 'APPOINTMENT_BLOCK', sortInfo: 'block', enable: true},
                 {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes},
