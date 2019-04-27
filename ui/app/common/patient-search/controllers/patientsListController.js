@@ -16,7 +16,7 @@ angular.module('bahmni.common.patientSearch')
             });
             $scope.$watch('search.activePatients', function (activePatientsList) {
                 if (activePatientsList.length > 0 && patientListSpinner) {
-                    spinner.hide(patientListSpinner, $(".tab-content"));
+                    hideSpinner(spinner, patientListSpinner, $(".tab-content"));
                 }
             });
             if (patientSearchConfig && patientSearchConfig.serializeSearch) {
@@ -63,10 +63,15 @@ angular.module('bahmni.common.patientSearch')
                         $scope.search.updatePatientList(response.data);
                     }
                     if (patientListSpinner) {
-                        spinner.hide(patientListSpinner, $(".tab-content"));
+                        hideSpinner(spinner, patientListSpinner, $(".tab-content"));
                     }
                 });
             }
+        };
+
+        var hideSpinner = function (spinnerObj, data, container) {
+            spinnerObj.hide(data, container);
+            $(container).children('div:first-child').hide();
         };
 
         $scope.getHeadings = function (patients) {
@@ -133,13 +138,18 @@ angular.module('bahmni.common.patientSearch')
             getPatientCount(currentSearchType, patientListSpinner);
         }, (patientSearchConfig && patientSearchConfig.fetchDelay) || DEFAULT_FETCH_DELAY, {});
 
+        var showSpinner = function (spinnerObj, container) {
+            $(container).children('div:first-child').show();
+            return spinnerObj.show(container);
+        };
+
         var fetchPatients = function (currentSearchType) {
             if (patientListSpinner !== undefined) {
-                spinner.hide(patientListSpinner, $(".tab-content"));
+                hideSpinner(spinner, patientListSpinner, $(".tab-content"));
             }
             $rootScope.currentSearchType = currentSearchType;
             if ($scope.search.isCurrentSearchLookUp()) {
-                patientListSpinner = spinner.show($(".tab-content"));
+                patientListSpinner = showSpinner(spinner, $(".tab-content"));
                 if (patientSearchConfig && patientSearchConfig.debounceSearch) {
                     debounceGetPatientCount(currentSearchType, patientListSpinner);
                 }
