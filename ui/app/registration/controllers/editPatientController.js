@@ -24,9 +24,39 @@ angular.module('bahmni.registration')
                 });
             };
 
+            
+
+
             var successCallBack = function (openmrsPatient) {
                 $scope.openMRSPatient = openmrsPatient["patient"];
                 $scope.patient = openmrsPatientMapper.map(openmrsPatient);
+                console.log($scope.patient);
+                
+            /*    $rootScope.nationalityChoice2  = $scope.patient.NATIONALITY.value;
+                console.log($rootScope.nationalityChoice2);
+
+                $rootScope.$watch('nationalityChoice2', function () {
+
+                    var mozAttributes = ['BI', 'NUIT', 'NUIC', 'Cedula de Nascimento', 'Cartao de Eleitor', 'Passaporte Mocambicano'];
+            var foreignAttributes = ['DIRE', 'NUIT', 'Passaporte Estrangeiro'];
+
+            
+                    if ($rootScope.nationalityChoice2 == 'Mocambicano' || $rootScope.nationalityChoice2 == 'Mozambican') {
+    
+                        $scope.nationalityDocs = mozAttributes;
+                        console.log($scope.nationalityDocs);
+                    }
+    
+                    else if ($rootScope.nationalityChoice2 == 'Estrangeiro' || $rootScope.nationalityChoice2 == 'Foreigner') {
+    
+    
+                        $scope.nationalityDocs = foreignAttributes;
+                        console.log($scope.nationalityDocs);
+                    }
+                    
+                });*/
+
+
                 if ($scope.patient.birthdateEstimated == false) {
                     $scope.isBirthDateEstimatedDisabled = true;
                     $scope.isAgeDisabled = true;

@@ -16,31 +16,6 @@ angular.module('bahmni.registration')
             $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
 
-            $scope.mozambicanIdentifiers = appService.getAppDescriptor().getConfigValue("mozambicanIdentifiers", []);
-            $scope.foreignerIdentifiers = appService.getAppDescriptor().getConfigValue("foreignerIdentifiers", []);
-
-
-           
-
-            $scope.allMozambicanIdentifiers = _.map($scope.patient.extraIdentifiers, function (obj, index) {
-                if (_.includes($scope.mozambicanIdentifiers, obj.identifierType.name)) {
-                    return obj;
-                }
-            });
-
-            $scope.allMozambicanIdentifiers = _.filter($scope.allMozambicanIdentifiers);
-            
-
-            $scope.allForeignerIdentifiers = _.map($scope.patient.extraIdentifiers, function (obj, index) {
-                if (_.includes($scope.foreignerIdentifiers, obj.identifierType.name)) {
-                    return obj;
-                }
-            });
-
-            $scope.allForeignerIdentifiers = _.filter($scope.allForeignerIdentifiers);
-           
-
-            $scope.nationalityIdentifiers = [];
 
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
@@ -237,6 +212,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.handleUpdate = function (attribute) {
+              
                 var ruleFunction = Bahmni.Registration.AttributesConditions.rules && Bahmni.Registration.AttributesConditions.rules[attribute];
                 if (ruleFunction) {
                     executeRule(ruleFunction);
@@ -285,32 +261,50 @@ angular.module('bahmni.registration')
                 return ($scope.patient.causeOfDeath || $scope.patient.deathDate) && $scope.patient.dead;
             };
 
+            var mozAttributes = ['BI', 'NUIT', 'NUIC', 'Cedula de Nascimento', 'Cartao de Eleitor', 'Passaporte Mocambicano'];
+            var foreignAttributes = ['DIRE', 'NUIT', 'Passaporte Estrangeiro'];
 
-           
+
+
+
+
             $scope.nationality = function () {
 
                 if ($scope.patient.NATIONALITY == undefined) {
                     $scope.patient.NATIONALITY = "";
                 }
                 else {
-                    $scope.nationalityChoice = $scope.patient.NATIONALITY.value;
+                    $scope.nationalityChoice = $rootScope.nationalityChoice2 || $scope.patient.NATIONALITY.value;
                     console.log($scope.nationalityChoice);
 
-                    if ($scope.nationalityChoice == 'Mocambicano') {
-                    $scope.nationalityIdentifiers = $scope.allMozambicanIdentifiers;
-                        console.log($scope.nationalityIdentifiers);
+                    if ($scope.nationalityChoice == 'Mocambicano' || $scope.nationalityChoice == 'Mozambican') {
+
+                        $scope.nationalityDocs = mozAttributes;
+                        console.log($scope.nationalityDocs);
                     }
 
-                    else if ($scope.nationalityChoice == 'Estrangeiro') { 
-                        $scope.nationalityIdentifiers = $scope.allForeignerIdentifiers;
-                        console.log($scope.nationalityIdentifiers);
-                     }
+                    else if ($scope.nationalityChoice == 'Estrangeiro' || $scope.nationalityChoice == 'Foreigner') {
+
+
+                        $scope.nationalityDocs = foreignAttributes;
+                        console.log($scope.nationalityDocs);
+                    }
                     ;
 
                 }
             };
 
-            console.log($scope.patient.NATIONALITY);
+
+
+
+            $scope.nationalityAttribute = function () {
+
+                $scope.patient.attribute = $scope.nationalAttribute;
+                console.log($scope.patient.attribute)
+
+            };
+
+
 
 
 
