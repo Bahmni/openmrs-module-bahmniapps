@@ -175,7 +175,7 @@
                 <!--NEW PATIENT-->
                 <div ng-if="patient.uuid == undefined">
 
-                    <section ng-repeat="documentRow in patientDocuments track by $index">
+                    <section ng-repeat="documentRow in patientDocuments">
                         <article class="form-field" ng-repeat="attribute in ::attributeRow"
                             ng-class="::{'right-form-field' : $index%2 != 0}" ng-if="attribute.name == 'BI'"
                             ng-show="::attribute.name==nationalAttribute">
@@ -264,7 +264,7 @@
                 <!--EXISTING PATIENT-->
                 <div ng-if="patient.uuid != undefined">
 
-                    <section ng-repeat="documentRow in patientDocuments track by $index">
+                    <section>
                         <article class="form-field" ng-repeat="attribute in ::attributeRow"
                             ng-class="::{'right-form-field' : $index%2 != 0}" ng-if="attribute.name == 'BI'"  
                             ng-show="patient.NATIONALITY.value=='Mocambicano' || patient.NATIONALITY.value=='Mozambican'">
@@ -352,16 +352,16 @@
             
          
 
-                <section class="form-field form-field-gender"  ng-show="patient.uuid==undefined">
+                <section class="form-field-inline clearfix" ng-class="::{'right-form-field' : $index%2 != 0}"  ng-show="patient.uuid==undefined">
                         <article class="form-field">
                             <div class="field-value">
 
                                     <select id="nationalAttribute" ng-model="nationalAttribute" required="required"
                                     ng-Options="nationalAttribute for nationalAttribute in nationalityDocs"
                                     ng-Click="nationalityAttribute()"></select>
-            
+          
                                 <button type="button" class="comment-toggle fr ng-scope ng-isolate-scope" tabindex="-1"
-                                    style="margin-left: 30px; height:27px" ng-click="removeDocumentRow($index)">
+                                    style="margin-left: 30px; height:27px" ng-hide="patientDocuments.length==0" ng-click="removeDocumentRow($index)">
                                     <i class="fa-remove fa fa-red small"></i>
                                 </button>
             

@@ -310,18 +310,45 @@ angular.module('bahmni.registration')
 
 
 
-            $scope.patientDocuments = [1];
+          /*  $scope.patientDocuments = [1];
 
             $scope.addDocumentRow = function () {
                 $scope.patientDocuments.push(1);
+                
                 console.log($scope.patientDocuments);
             };
 
             $scope.removeDocumentRow = function (index) {
                 $scope.patientDocuments.splice(index, 1);
+
                 console.log($scope.patientDocuments);
                 console.log(index);
             };
+*/
+
+$scope.patientDocuments = [];
+
+$scope.addDocumentRow = function () {
+
+
+    $scope.patientDocuments.push($scope.nationalAttribute);
+
+    //$scope.nationalityDocs.splice($scope.nationalityDocs.indexOf($scope.nationalAttribute),1);
+
+    console.log($scope.patientDocuments);
+};
+
+$scope.removeDocumentRow = function () {
+    $scope.patientDocuments.splice($scope.patientDocuments.indexOf($scope.nationalAttribute),1);
+    $scope.patient[$scope.nationalAttribute]="";
+
+    console.log($scope.patient);
+    console.log($scope.nationalAttribute);
+    console.log($scope.patientDocuments.indexOf($scope.nationalAttribute));
+
+    console.log($scope.patientDocuments);
+ 
+};
 
 
 
