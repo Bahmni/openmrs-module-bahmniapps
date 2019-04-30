@@ -7,6 +7,10 @@ angular.module('bahmni.registration')
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             var personAttributes = [];
             var caste;
+            var mozAttributes = ['BI', 'NUIT', 'NUIC', 'Cedula de Nascimento', 'Cartao de Eleitor', 'Passaporte Mocambicano'];
+            var foreignAttributes = ['DIRE', 'NUIT', 'Passaporte Estrangeiro'];
+            $scope.patientDocuments = [];
+
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
             $scope.showLastName = appService.getAppDescriptor().getConfigValue("showLastName");
             $scope.isLastNameMandatory = $scope.showLastName && appService.getAppDescriptor().getConfigValue("isLastNameMandatory");
@@ -15,13 +19,9 @@ angular.module('bahmni.registration')
             $scope.genderCodes = Object.keys($rootScope.genderMap);
             $scope.dobMandatory = appService.getAppDescriptor().getConfigValue("dobMandatory") || false;
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
-
-
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
-
             var dontSaveButtonClicked = false;
-
             var isHref = false;
 
             $rootScope.duplicatePatients;
@@ -212,7 +212,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.handleUpdate = function (attribute) {
-              
+
                 var ruleFunction = Bahmni.Registration.AttributesConditions.rules && Bahmni.Registration.AttributesConditions.rules[attribute];
                 if (ruleFunction) {
                     executeRule(ruleFunction);
@@ -261,10 +261,6 @@ angular.module('bahmni.registration')
                 return ($scope.patient.causeOfDeath || $scope.patient.deathDate) && $scope.patient.dead;
             };
 
-            var mozAttributes = ['BI', 'NUIT', 'NUIC', 'Cedula de Nascimento', 'Cartao de Eleitor', 'Passaporte Mocambicano'];
-            var foreignAttributes = ['DIRE', 'NUIT', 'Passaporte Estrangeiro'];
-
-
 
 
 
@@ -274,7 +270,7 @@ angular.module('bahmni.registration')
                     $scope.patient.NATIONALITY = "";
                 }
                 else {
-                    $scope.nationalityChoice = $rootScope.nationalityChoice2 || $scope.patient.NATIONALITY.value;
+                    $scope.nationalityChoice = $scope.patient.NATIONALITY.value;
                     console.log($scope.nationalityChoice);
 
                     if ($scope.nationalityChoice == 'Mocambicano' || $scope.nationalityChoice == 'Mozambican') {
@@ -284,87 +280,69 @@ angular.module('bahmni.registration')
                     }
 
                     else if ($scope.nationalityChoice == 'Estrangeiro' || $scope.nationalityChoice == 'Foreigner') {
-
-
                         $scope.nationalityDocs = foreignAttributes;
                         console.log($scope.nationalityDocs);
-                    }
-                    ;
-
+                    };
                 }
             };
 
 
+            $scope.$watch('patient.NATIONALITY.value', function (newValue, oldValue) {
+                if (newValue != oldValue) {
+                    if (oldValue == undefined) {
 
+                        $scope.nationality();
+                        console.log(oldValue);
+                        console.log(newValue);
+
+                    }
+                    else {
+                        var i;
+
+                        for (i = 0; i < $scope.nationalityDocs.length; i++) {
+                            console.log($scope.patient[$scope.nationalityDocs[i]]);
+                            $scope.patient[$scope.nationalityDocs[i]] = "";
+                            console.log($scope.patient[$scope.nationalityDocs[i]]);
+                        }
+
+                        $scope.patientDocuments = [];
+                        $scope.nationality();
+
+                    }
+                }
+            });
 
             $scope.nationalityAttribute = function () {
-
                 $scope.patient.attribute = $scope.nationalAttribute;
                 console.log($scope.patient.attribute)
-
             };
 
 
-
-
-
-
-
-          /*  $scope.patientDocuments = [1];
 
             $scope.addDocumentRow = function () {
-                $scope.patientDocuments.push(1);
-                
-                console.log($scope.patientDocuments);
+                if ($scope.patientDocuments.includes($scope.nationalAttribute)) {
+                    alert("Selecione outro documento");
+                }
+                else {
+                    $scope.patientDocuments.push($scope.nationalAttribute);
+                } console.log($scope.patientDocuments);
             };
 
-            $scope.removeDocumentRow = function (index) {
-                $scope.patientDocuments.splice(index, 1);
 
+
+            $scope.removeDocumentRow = function (document) {
+                if ($scope.patientDocuments.includes(document)) {
+                    $scope.patientDocuments.splice($scope.patientDocuments.indexOf(document), 1);
+                    $scope.patient[$scope.document] = "";
+
+                }
+                else {
+
+                    alert("Remova outro documento");
+                }
                 console.log($scope.patientDocuments);
-                console.log(index);
+
             };
-*/
-
-$scope.patientDocuments = [];
-
-$scope.addDocumentRow = function () {
-
-
-   
-
-    if ( $scope.patientDocuments.includes($scope.nationalAttribute)) {
-
-        alert("Selecione outro documento");
-
-    }
-else {
-
-    $scope.patientDocuments.push($scope.nationalAttribute);
-
-}
- 
-    console.log($scope.patientDocuments);
-};
-
-$scope.removeDocumentRow = function () {
-   
-   
-    if ( $scope.patientDocuments.includes($scope.nationalAttribute)) {
-
-        $scope.patientDocuments.splice($scope.patientDocuments.indexOf($scope.nationalAttribute),1);
-        $scope.patient[$scope.nationalAttribute]="";
-
-    }
-else {
-
-    alert("Remova outro documento");
-}
- console.log($scope.patientDocuments);
- 
-};
-
-
 
         }]);
 
