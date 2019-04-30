@@ -352,16 +352,25 @@
             
          
 
-                <section class="form-field-inline clearfix" ng-class="::{'right-form-field' : $index%2 != 0}"  ng-show="patient.uuid==undefined">
-                        <article class="form-field">
-                            <div class="field-value">
-
+                <section class="form-field-inline clearfix"  ng-show="patient.uuid==undefined && patient.NATIONALITY.value!= undefined">
+                        <article class="form-field ng-scope right-form-field">
+                             
+                            <div class="field-attribute ng-scope" ng-if="attribute.name != 'NICK_NAME'">
+                                        <label for="nationalAttribute" class="ng-binding"> <span ng-show="isForm" class="ng-hide"></span>
+                                    
+                                            <span class="asterick ng-hide" ng-show="false"></span></label>
+                                    </div>
+                                
+                                    <div class="field-value ">
+                                  
+                              
+                                 <div class="left ng-scope">
                                     <select id="nationalAttribute" ng-model="nationalAttribute" required="required"
                                     ng-Options="nationalAttribute for nationalAttribute in nationalityDocs"
                                     ng-Click="nationalityAttribute()"></select>
           
                                 <button type="button" class="comment-toggle fr ng-scope ng-isolate-scope" tabindex="-1"
-                                    style="margin-left: 30px; height:27px" ng-hide="patientDocuments.length==0" ng-click="removeDocumentRow($index)">
+                                    style="margin-left: 30px; height:27px" ng-hide="patientDocuments.length==0" ng-click="removeDocumentRow(nationalAttribute)">
                                     <i class="fa-remove fa fa-red small"></i>
                                 </button>
             
@@ -369,6 +378,8 @@
                                     style="margin-left: 30px; height:27px" ng-click="addDocumentRow()">
                                     <i class="fa-plus fa fa-green small"></i>
                                 </button>
+                            </div>
+                            
                             </div>
                         </article>
                     </section>

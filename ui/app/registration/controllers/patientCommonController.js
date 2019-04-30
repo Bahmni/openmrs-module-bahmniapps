@@ -331,22 +331,36 @@ $scope.patientDocuments = [];
 $scope.addDocumentRow = function () {
 
 
+   
+
+    if ( $scope.patientDocuments.includes($scope.nationalAttribute)) {
+
+        alert("Selecione outro documento");
+
+    }
+else {
+
     $scope.patientDocuments.push($scope.nationalAttribute);
 
-    //$scope.nationalityDocs.splice($scope.nationalityDocs.indexOf($scope.nationalAttribute),1);
-
+}
+ 
     console.log($scope.patientDocuments);
 };
 
 $scope.removeDocumentRow = function () {
-    $scope.patientDocuments.splice($scope.patientDocuments.indexOf($scope.nationalAttribute),1);
-    $scope.patient[$scope.nationalAttribute]="";
+   
+   
+    if ( $scope.patientDocuments.includes($scope.nationalAttribute)) {
 
-    console.log($scope.patient);
-    console.log($scope.nationalAttribute);
-    console.log($scope.patientDocuments.indexOf($scope.nationalAttribute));
+        $scope.patientDocuments.splice($scope.patientDocuments.indexOf($scope.nationalAttribute),1);
+        $scope.patient[$scope.nationalAttribute]="";
 
-    console.log($scope.patientDocuments);
+    }
+else {
+
+    alert("Remova outro documento");
+}
+ console.log($scope.patientDocuments);
  
 };
 
