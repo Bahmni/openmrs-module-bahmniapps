@@ -181,7 +181,7 @@
 
                         <article class="form-field" ng-repeat="attribute in ::attributeRow"
                             ng-class="::{'right-form-field' : $index%2 != 0}" ng-if="attribute.name == 'BI'"
-                            ng-show="::attribute.name==nationalAttribute">
+                            ng-show="::attribute.name==patient.attribute">
                             <attribute-types target-model="patient" attribute="::attribute"
                                 field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
                                 get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
@@ -200,7 +200,7 @@
 
                         <article class="form-field" ng-repeat="attribute in ::attributeRow"
                             ng-class="::{'right-form-field' : $index%2 != 0}" ng-if="attribute.name == 'NUIT'"
-                            ng-show="::attribute.name==nationalAttribute">
+                            ng-show="::attribute.name==patient.attribute">
                             <attribute-types target-model="patient" attribute="::attribute"
                                 field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
                                 get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
@@ -218,7 +218,7 @@
 
                         <article class="form-field" ng-repeat="attribute in ::attributeRow"
                             ng-class="::{'right-form-field' : $index%2 != 0}" ng-if="attribute.name == 'NUIC'"
-                            ng-show="::attribute.name==nationalAttribute">
+                            ng-show="::attribute.name==patient.attribute">
                             <attribute-types target-model="patient" attribute="::attribute"
                                 field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
                                 get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
@@ -235,7 +235,7 @@
 
                         <article class="form-field" ng-repeat="attribute in ::attributeRow"
                             ng-class="::{'right-form-field' : $index%2 != 0}"
-                            ng-if="attribute.name == 'Cartao de Eleitor'" ng-show="::attribute.name==nationalAttribute">
+                            ng-if="attribute.name == 'Cartao de Eleitor'" ng-show="::attribute.name==patient.attribute">
                             <attribute-types target-model="patient" attribute="::attribute"
                                 field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
                                 get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
@@ -253,7 +253,7 @@
                         <article class="form-field" ng-repeat="attribute in ::attributeRow"
                             ng-class="::{'right-form-field' : $index%2 != 0}"
                             ng-if="attribute.name == 'Cedula de Nascimento'"
-                            ng-show="::attribute.name==nationalAttribute">
+                            ng-show="::attribute.name==patient.attribute">
                             <attribute-types target-model="patient" attribute="::attribute"
                                 field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
                                 get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
@@ -270,7 +270,7 @@
 
                         <article class="form-field" ng-repeat="attribute in ::attributeRow"
                             ng-class="::{'right-form-field' : $index%2 != 0}" ng-if="attribute.name == 'DIRE'"
-                            ng-show="::attribute.name==nationalAttribute">
+                            ng-show="::attribute.name==patient.attribute">
                             <attribute-types target-model="patient" attribute="::attribute"
                                 field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
                                 get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
@@ -288,7 +288,7 @@
                         <article class="form-field" ng-repeat="attribute in ::attributeRow"
                             ng-class="::{'right-form-field' : $index%2 != 0}"
                             ng-if="attribute.name == 'Passaporte Mocambicano'"
-                            ng-show="::attribute.name==nationalAttribute">
+                            ng-show="::attribute.name==patient.attribute">
                             <attribute-types target-model="patient" attribute="::attribute"
                                 field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
                                 get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
@@ -306,7 +306,7 @@
                         <article class="form-field" ng-repeat="attribute in ::attributeRow"
                             ng-class="::{'right-form-field' : $index%2 != 0}"
                             ng-if="attribute.name == 'Passaporte Estrangeiro'"
-                            ng-show="::attribute.name==nationalAttribute">
+                            ng-show="::attribute.name==patient.attribute">
                             <attribute-types target-model="patient" attribute="::attribute"
                                 field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
                                 get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
@@ -421,7 +421,7 @@
                 <article class="form-field ng-scope right-form-field">
 
                     <div class="field-attribute ng-scope" ng-if="attribute.name != 'NICK_NAME'">
-                        <label for="nationalAttribute" class="ng-binding"> <span ng-show="isForm"
+                        <label for="nationalAttribute" class="ng-binding" ng-hide="nationalityDocs==0"> {{ ::'REGISTRATION_LABEL_DOCUMENT' | translate}} <span ng-show="isForm"
                                 class="ng-hide"></span>
 
                             <span class="asterick ng-hide" ng-show="false"></span></label>
@@ -430,11 +430,11 @@
 
                         <div class="left ng-scope">
                             <select id="nationalAttribute" ng-model="nationalAttribute" required="required"
-                                ng-Options="nationalAttribute for nationalAttribute in nationalityDocs"
-                                ng-Click="nationalityAttribute()"></select>
+                                ng-Options="nationalAttribute for nationalAttribute in nationalityDocs" ng-hide="nationalityDocs==0"
+                                ng-Click="nationalityAttribute()" ></select>
 
-                            <button type="button" class="comment-toggle fr ng-scope ng-isolate-scope" tabindex="-1"
-                                style="margin-left: 30px; height:27px" ng-click="addDocumentRow()">
+                            <button type="button" class="comment-toggle fr ng-scope ng-isolate-scope" tabindex="-1" ng-hide="nationalAttribute==undefined"
+                                style="margin-left: 30px; height:27px" ng-click="addDocumentRow();removeDoc()">
                                 <i class="fa-plus fa fa-green small"></i>
                             </button>
                         </div>
