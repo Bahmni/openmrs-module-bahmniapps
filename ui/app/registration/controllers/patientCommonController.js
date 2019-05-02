@@ -276,11 +276,15 @@ angular.module('bahmni.registration')
                     if ($scope.nationalityChoice == 'Mocambicano' || $scope.nationalityChoice == 'Mozambican') {
 
                         $scope.nationalityDocs = mozAttributes;
+                       // $scope.dropDown = $scope.nationalityDocs;
+
                         console.log($scope.nationalityDocs);
                     }
 
                     else if ($scope.nationalityChoice == 'Estrangeiro' || $scope.nationalityChoice == 'Foreigner') {
                         $scope.nationalityDocs = foreignAttributes;
+                       // $scope.dropDown = $scope.nationalityDocs;
+
                         console.log($scope.nationalityDocs);
                     };
                 }
@@ -325,6 +329,9 @@ angular.module('bahmni.registration')
                 }
                 else {
                     $scope.patientDocuments.push($scope.nationalAttribute);
+
+                   //$scope.dropDown.splice($scope.dropDown.indexOf($scope.nationalAttribute), 1);
+
                 } console.log($scope.patientDocuments);
             };
 
