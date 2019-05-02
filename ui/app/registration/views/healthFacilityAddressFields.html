@@ -1,0 +1,77 @@
+<section class="form-field-inline" ng-repeat="addressLevels in ::addressLevelsChunks">
+    <article class="form-field" ng-repeat="addressLevel in ::addressLevels"
+             ng-class="::{'right-form-field': $index % 2 != 0 }">
+        <div ng-if="addressLevel.name === 'province_locale' || addressLevel.name === 'district_locale' || addressLevel.name === 'country_locale'">
+        <div class="field-attribute"><label for="{{::addressLevel.addressField}}">{{::addressLevel.name | translate}}<span
+                class="asterick">*</span></label>
+        </div>
+        <div class="field-value" ng-if="addressLevel.name === 'province_locale'">
+            <input type="text"
+                   autocomplete="off"
+                   id="{{::addressLevel.addressField}}"
+                   pattern-validate
+                   non-blank="::addressLevel.required"
+                   ng-model="healthFacilityProvince"
+                   bahmni-autocomplete
+                   source="getAddressEntryList(addressLevel.addressField)"
+                   response-map="getAddressDataResults"
+                   on-select="addressFieldSelected(addressLevel.addressField)"
+                   ng-change="clearFields(addressLevel.addressField)"
+                   min-length="1"
+                   strict-select="addressLevel.isStrictEntry"
+                   initial-value="selectedValue[addressLevel.addressField]"
+                   is-invalid="addressFieldInvalid"
+                   ng-class="{'illegalValue': addressFieldInvalid}"
+                   on-edit="removeAutoCompleteEntry(addressLevel.addressField)"
+                   required/>
+        </div>
+
+
+
+            <div class="field-value" ng-if="addressLevel.name === 'country_locale'">
+                <input type="text"
+                       autocomplete="off"
+                       id="{{::addressLevel.addressField}}"
+                       pattern-validate
+                       non-blank="::addressLevel.required"
+                       ng-model="healthFacilityCountry"
+                       bahmni-autocomplete
+                       source="getAddressEntryList(addressLevel.addressField)"
+                       response-map="getAddressDataResults"
+                       on-select="addressFieldSelected(addressLevel.addressField)"
+                       ng-change="clearFields(addressLevel.addressField)"
+                       min-length="1"
+                       strict-select="addressLevel.isStrictEntry"
+                       initial-value="selectedValue[addressLevel.addressField]"
+                       is-invalid="addressFieldInvalid"
+                       ng-class="{'illegalValue': addressFieldInvalid}"
+                       on-edit="removeAutoCompleteEntry(addressLevel.addressField)"
+                       required/>
+            </div>
+
+
+            <div class="field-value" ng-if="addressLevel.name === 'district_locale'">
+                <input type="text"
+                       autocomplete="off"
+                       id="{{::addressLevel.addressField}}"
+                       pattern-validate
+                       non-blank="::addressLevel.required"
+                       ng-model="healthFacilityDistrict"
+                       bahmni-autocomplete
+                       source="getAddressEntryList(addressLevel.addressField)"
+                       response-map="getAddressDataResults"
+                       on-select="addressFieldSelected(addressLevel.addressField)"
+                       ng-change="clearFields(addressLevel.addressField)"
+                       min-length="1"
+                       strict-select="addressLevel.isStrictEntry"
+                       initial-value="selectedValue[addressLevel.addressField]"
+                       is-invalid="addressFieldInvalid"
+                       ng-class="{'illegalValue': addressFieldInvalid}"
+                       on-edit="removeAutoCompleteEntry(addressLevel.addressField)"
+                       required/>
+            </div>
+
+
+        </div>
+    </article>
+</section>
