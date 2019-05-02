@@ -10,7 +10,6 @@ angular.module('bahmni.registration')
             var mozAttributes = ['BI', 'NUIT', 'NUIC', 'Cedula de Nascimento', 'Cartao de Eleitor', 'Passaporte Mocambicano'];
             var foreignAttributes = ['DIRE', 'NUIT', 'Passaporte Estrangeiro'];
             $scope.patientDocuments = [];
-
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
             $scope.showLastName = appService.getAppDescriptor().getConfigValue("showLastName");
             $scope.isLastNameMandatory = $scope.showLastName && appService.getAppDescriptor().getConfigValue("isLastNameMandatory");
@@ -23,12 +22,10 @@ angular.module('bahmni.registration')
             $scope.showSaveAndContinueButton = false;
             var dontSaveButtonClicked = false;
             var isHref = false;
-
             $rootScope.duplicatePatients;
             $rootScope.duplicatePatientCount = 0;
             $rootScope.personSearchResultsConfig = ["NICK_NAME", "PRIMARY_CONTACT_NUMBER_1", "PATIENT_STATUS"];
             $rootScope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.result.action");
-
             $scope.checkDuplicatePatients = function () {
                 var patientGivenName = $scope.patient.givenName || '';
                 var patientLastName = $scope.patient.familyName || '';
@@ -212,7 +209,6 @@ angular.module('bahmni.registration')
             };
 
             $scope.handleUpdate = function (attribute) {
-
                 var ruleFunction = Bahmni.Registration.AttributesConditions.rules && Bahmni.Registration.AttributesConditions.rules[attribute];
                 if (ruleFunction) {
                     executeRule(ruleFunction);
@@ -261,63 +257,42 @@ angular.module('bahmni.registration')
                 return ($scope.patient.causeOfDeath || $scope.patient.deathDate) && $scope.patient.dead;
             };
 
-
-
-
             $scope.nationality = function () {
-
                 if ($scope.patient.NATIONALITY == undefined) {
                     $scope.patient.NATIONALITY = "";
                 }
                 else {
                     $scope.nationalityChoice = $scope.patient.NATIONALITY.value;
-                    console.log($scope.nationalityChoice);
-
                     if ($scope.nationalityChoice == 'Mocambicano' || $scope.nationalityChoice == 'Mozambican') {
-
                         $scope.nationalityDocs = mozAttributes;
-                         }
-
+                    }
                     else if ($scope.nationalityChoice == 'Estrangeiro' || $scope.nationalityChoice == 'Foreigner') {
                         $scope.nationalityDocs = foreignAttributes;
-                        
-
-
-                    };
+                    }
                 }
             };
-
 
             $scope.$watch('patient.NATIONALITY.value', function (newValue, oldValue) {
                 if (newValue != oldValue) {
                     if (oldValue == undefined) {
-
                         $scope.nationality();
-
-
                     }
                     else {
                         var i;
-
                         for (i = 0; i < $scope.nationalityDocs.length; i++) {
-
                             $scope.patient[$scope.nationalityDocs[i]] = "";
-
                         }
 
                         $scope.patientDocuments = [];
                         $scope.nationality();
-
                     }
                 }
             });
 
             $scope.nationalityAttribute = function () {
                 $scope.patient.attribute = $scope.nationalAttribute;
-                $scope.docRemoved= $scope.nationalAttribute;
+                $scope.docRemoved = $scope.nationalAttribute;
             };
-
-
 
             $scope.addDocumentRow = function () {
                 if ($scope.patientDocuments.includes($scope.nationalAttribute)) {
@@ -325,30 +300,22 @@ angular.module('bahmni.registration')
                 }
                 else {
                     $scope.patientDocuments.push($scope.nationalAttribute);
-               }
+                }
             };
 
-            $scope.removeDoc = function()
-            {
+            $scope.removeDoc = function () {
                 $scope.nationalityDocs.splice($scope.nationalityDocs.indexOf($scope.docRemoved), 1);
             };
-
 
             $scope.removeDocumentRow = function (document) {
                 if ($scope.patientDocuments.includes(document)) {
                     $scope.patientDocuments.splice($scope.patientDocuments.indexOf(document), 1);
-                    $scope.patient[$scope.document] = "";
-                    
                     $scope.nationalityDocs.push(document);
-
+                    $scope.patient[document] = "";
                 }
                 else {
-
                     alert("Remova outro documento");
                 }
-
-
             };
-
         }]);
 

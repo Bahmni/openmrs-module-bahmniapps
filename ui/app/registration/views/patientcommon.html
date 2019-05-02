@@ -347,7 +347,8 @@
                         </article>
 
                         <article class="form-field" ng-repeat="attribute in ::attributeRow"
-                            ng-class="::{'right-form-field' : $index%2 != 0}" ng-if="attribute.name == 'NUIC'">
+                            ng-class="::{'right-form-field' : $index%2 != 0}" ng-if="attribute.name == 'NUIC'"
+                            ng-show="patient.NATIONALITY.value=='Mocambicano' || patient.NATIONALITY.value=='Mozambican'">
                             <attribute-types target-model="patient" attribute="::attribute"
                                 field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
                                 get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
@@ -429,7 +430,7 @@
                     <div class="form-field">
 
                         <div class="left ng-scope">
-                            <select id="nationalAttribute" ng-model="nationalAttribute" required="required"
+                            <select id="nationalAttribute" ng-model="nationalAttribute" 
                                 ng-Options="nationalAttribute for nationalAttribute in nationalityDocs" ng-hide="nationalityDocs==0"
                                 ng-Click="nationalityAttribute()" ></select>
 

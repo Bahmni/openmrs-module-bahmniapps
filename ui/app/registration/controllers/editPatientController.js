@@ -4,7 +4,7 @@ angular.module('bahmni.registration')
     .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper',
         '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope', 'auditLogService',
         function ($scope, patientService, encounterService, $stateParams, openmrsPatientMapper, $window, $q, spinner,
-                  appService, messagingService, $rootScope, auditLogService) {
+            appService, messagingService, $rootScope, auditLogService) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             var uuid = $stateParams.patientUuid;
             $scope.patient = {};
@@ -24,15 +24,12 @@ angular.module('bahmni.registration')
                 });
             };
 
-            
-
-
             var successCallBack = function (openmrsPatient) {
                 $scope.openMRSPatient = openmrsPatient["patient"];
                 $scope.patient = openmrsPatientMapper.map(openmrsPatient);
                 console.log($scope.patient);
-                
-             if ($scope.patient.birthdateEstimated == false) {
+
+                if ($scope.patient.birthdateEstimated == false) {
                     $scope.isBirthDateEstimatedDisabled = true;
                     $scope.isAgeDisabled = true;
                 }
