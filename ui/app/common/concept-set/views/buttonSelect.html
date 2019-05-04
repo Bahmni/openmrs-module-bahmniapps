@@ -3,11 +3,19 @@
     <div class="btn-tooltip-wrapper fl" ng-repeat="answer in ::observation.getPossibleAnswers() track by $index" ng-class="{'active': isSet(answer)}">
         <button type="button" class="grid-row-element"
                 ng-disabled="observation.disabled"
+                ng-if="getAnswerDisplayName(answer) == 'Yes'"
                 title="{{::getAnswerDisplayName(answer) | titleTranslate}}"
                 ng-class="{'active': isSet(answer), 'is-abnormal': abnormalObs.value && isSet(answer)}"
                 ng-click="select(answer)" tabindex="1">
-            <i class="fa fa-ok"></i>{{::getAnswerDisplayName(answer) | titleTranslate}}
+            <i class="fa fa-ok"></i>{{::'PATIENT_OBS_INFORMATION_YES' | translate}}
         </button>
-        <!--<span class="">{{::getAnswerDisplayName(answer) | titleTranslate}}</span>-->
+        <button type="button" class="grid-row-element"
+                ng-disabled="observation.disabled"
+                ng-if="getAnswerDisplayName(answer) == 'No'"
+                title="{{::getAnswerDisplayName(answer) | titleTranslate}}"
+                ng-class="{'active': isSet(answer), 'is-abnormal': abnormalObs.value && isSet(answer)}"
+                ng-click="select(answer)" tabindex="1">
+            <i class="fa fa-ok"></i>{{::'PATIENT_OBS_INFORMATION_NO' | translate}}
+        </button>
     </div>
 </div>
