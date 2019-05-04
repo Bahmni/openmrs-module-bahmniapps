@@ -6,8 +6,7 @@
                 title="{{::getAnswerDisplayName(answer) | titleTranslate}}"
                 ng-class="{'active': isSet(answer), 'is-abnormal': abnormalObs.value && isSet(answer)}"
                 ng-click="select(answer)" tabindex="1">
-            <i class="fa fa-ok"></i>{{::getAnswerDisplayName(answer) | titleTranslate}}
+            <i class="fa fa-ok"></i>{{::getAnswerDisplayName(answer) | translate}}
         </button>
-        <!--<span class="">{{::getAnswerDisplayName(answer) | titleTranslate}}</span>-->
     </div>
 </div>
