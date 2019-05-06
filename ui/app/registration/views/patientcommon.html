@@ -415,6 +415,14 @@
                     </section>
                 </div>
 
+        <section>
+            <section class="form-field-inline clearfix" ng-repeat="section in ::patientConfiguration.getOrderedPatientAttributesSections()" ng-show="section.expand" ng-if="section.title == 'patientProfessionInformation'">
+                <article class="form-field" ng-repeat="attribute in ::section.attributes"
+                         ng-class="::{'right-form-field' : $index%2 != 0}">
+                    <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                                     is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                                     get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                </article>
             </section>
 
 
@@ -437,13 +445,13 @@
                                 ng-Options="nationalAttribute for nationalAttribute in nationalityDocs" ng-hide="nationalityDocs==0"
                                 ng-Click="nationalityAttribute()" ></select>
 
-                            <button type="button" class="comment-toggle fr ng-scope ng-isolate-scope" tabindex="-1" ng-hide="nationalAttribute==undefined"
-                                style="margin-left: 30px; height:27px" ng-click="addDocumentRow();removeDoc()">
-                                <i class="fa-plus fa fa-green small"></i>
-                            </button>
-                        </div>
-
-                    </div>
+        <section>
+            <section class="form-field-inline clearfix" ng-repeat="section in ::patientConfiguration.getOrderedPatientAttributesSections()" ng-show="section.expand" ng-if="section.title == 'patientContactInformation'">
+                <article class="form-field" ng-repeat="attribute in ::section.attributes" 
+                         ng-class="::{'right-form-field' : $index%2 != 0}">
+                    <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                                     is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                                     get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                 </article>
             </section>
 
@@ -676,13 +684,12 @@
 
                     <div class="testlocation"><b>{{'LOCATION_OF_TEST' | translate}}</b></div>
 
-                    <article class="form-field" ng-repeat="attribute in ::section.attributes"
-                        ng-if="attribute.name == 'HEALTH_FACILITY_NAME'"
-                        ng-class="::{'right-form-field' : $index%2 != 0}">
-                        <attribute-types target-model="patient" attribute="::attribute"
-                            field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
-                            get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
-                            is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name == 'HEALTH_FACILITY_NAME'"
+                             ng-class="::{'right-form-field' : $index%2 != 0}">
+                        <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                                         is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                                         get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"
+                                         ></attribute-types>
                     </article>
 
                     <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name == 'HEALTH_FACILITY_DISTRICT'"
@@ -700,6 +707,11 @@
                                          get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"
                                          ></attribute-types>
                     </article>
+
+
+                    <!--<section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.address"
+                             field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
+                             strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>-->
 
                     <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name == 'SECTOR_SELECT'"
                              ng-class="::{'right-form-field' : $index%2 != 0}" >

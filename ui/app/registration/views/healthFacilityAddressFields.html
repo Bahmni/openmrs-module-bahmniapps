@@ -1,7 +1,7 @@
 <section class="form-field-inline" ng-repeat="addressLevels in ::addressLevelsChunks">
     <article class="form-field" ng-repeat="addressLevel in ::addressLevels"
              ng-class="::{'right-form-field': $index % 2 != 0 }">
-        <div ng-if="addressLevel.name === 'province_locale' || addressLevel.name === 'district_locale' || addressLevel.name === 'country_locale'">
+        <div ng-if="addressLevel.name === 'province_locale' || addressLevel.name === 'district_locale' || addressLevel.name === 'HEALTH_FACILITY'">
         <div class="field-attribute"><label for="{{::addressLevel.addressField}}">{{::addressLevel.name | translate}}<span
                 class="asterick">*</span></label>
         </div>
@@ -28,13 +28,13 @@
 
 
 
-            <div class="field-value" ng-if="addressLevel.name === 'country_locale'">
+            <div class="field-value" ng-if="addressLevel.name === 'HEALTH_FACILITY'">
                 <input type="text"
                        autocomplete="off"
                        id="{{::addressLevel.addressField}}"
                        pattern-validate
                        non-blank="::addressLevel.required"
-                       ng-model="healthFacilityCountry"
+                       ng-model="healthFacilityName"
                        bahmni-autocomplete
                        source="getAddressEntryList(addressLevel.addressField)"
                        response-map="getAddressDataResults"
