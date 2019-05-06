@@ -13,7 +13,7 @@ angular.module('bahmni.registration')
             }
         };
     })
-    .controller('HealthFacilityAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', function ($scope, addressHierarchyService) {
+    .controller('HealthFacilityAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService','$timeout', function ($scope, addressHierarchyService, $timeout) {
         $scope.addressFieldInvalid = false;
         var selectedAddressUuids = {};
         var selectedUserGeneratedIds = {};
@@ -50,9 +50,18 @@ angular.module('bahmni.registration')
         };
 
         $scope.addressFieldSelected = function (fieldName) {
-            if(fieldName === "address7" && ($scope.$parent.$parent.patient.HEALTH_FACILITY_NAME !== undefined)  ) { $scope.healthFacilityName = $scope.$parent.$parent.patient.HEALTH_FACILITY_NAME; }
-            if(fieldName === "stateProvince" && ($scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE !== undefined)) { $scope.healthFacilityProvince = $scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE;}
-            if(fieldName === "cityVillage" && ($scope.$parent.$parent.patient.HEALTH_FACILITY_DISTRICT !== undefined)) { $scope.healthFacilityDistrict = $scope.$parent.$parent.patient.HEALTH_FACILITY_DISTRICT; }
+
+            $timeout(function () {
+                if (fieldName === "address7" && ($scope.$parent.$parent.patient.HEALTH_FACILITY_NAME !== undefined)) {
+                    $scope.healthFacilityName = $scope.$parent.$parent.patient.HEALTH_FACILITY_NAME;
+                }
+                if (fieldName === "stateProvince" && ($scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE !== undefined)) {
+                    $scope.healthFacilityProvince = $scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE;
+                }
+                if (fieldName === "cityVillage" && ($scope.$parent.$parent.patient.HEALTH_FACILITY_DISTRICT !== undefined)) {
+                    $scope.healthFacilityDistrict = $scope.$parent.$parent.patient.HEALTH_FACILITY_DISTRICT;
+                }
+            }, 200);
             return function (addressFieldItem) {
 
                 if(fieldName === "address7" ) { $scope.$parent.patient.HEALTH_FACILITY_NAME = addressFieldItem.value; }
@@ -77,8 +86,6 @@ angular.module('bahmni.registration')
                         $scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE = parent.name;
                         $scope.healthFacilityProvince = parent.name;
                     }
-                    /*$scope.address[parentField] = parent.name;
-                    $scope.selectedValue[parentField] = parent.name;*/
                     parent = parent.parent;
                 });
             };
