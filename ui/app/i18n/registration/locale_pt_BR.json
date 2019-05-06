@@ -82,7 +82,7 @@
     "REGISTRATON_LATEST_KEY": "Últimos",
     "DISPLAY_CONTROL_ERROR_MESSAGE_KEY": "Nenhum {{ displayControl }} para este paciente",
     "REGISTRATION_LABEL_NUMBER": "Número de Registo",
-    "REGISTRATION_START_VISIT": "Iniciar {{ visitType }} visita",
+    "REGISTRATION_START_VISIT": "Iniciar {{ visitType }}",
     "MESSAGE_DIALOG_OPTION_COPY": "Erro de Cópia",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
     "NO_LOCATION_TAGGED_TO_VISIT_LOCATION": "Não foi encontrado nenhum local para o Sector da Marcação",
