@@ -3,24 +3,20 @@
                  week-start="weekStart"></week-picker>-->
 
             
-                 
-                 <label for="input1">Please pick a start date:</label>
+                
+                 <label for="input1">Please insert a start date:</label>
                  <input type="date" id="input1" name="input" ng-model="startDate"
                  placeholder="YYYY-MM-DD" required />
 
  
-                 <label for="input2">Please pick a end date:</label>
+                 <label for="input2">and an end date:</label>
                  <input type="date" id="input2" name="input" ng-model="endDate"
                  placeholder="YYYY-MM-DD" required />
 
-                 <button type="submit" ng-click="getAppointmentsSummaryForAWeek(startDate,endDate)" >Go</button>
-
+                 <button type="submit" ng-show="startDate!=undefined && endDate!=undefined" ng-click="getAppointmentsSummaryForAWeek(startDate,endDate)" >Go</button>
                
-      
-
-
-
-   <!-- <div class="app-summary-table-container" ng-hide="weekDatesInfo==undefined">
+               
+       <!-- <div class="app-summary-table-container" ng-hide="weekDatesInfo==undefined">
         <table class="table-header">
             <thead>
             <tr>
@@ -58,16 +54,20 @@
             <table class="table-header">
                 <thead>
                 <tr>
-                    <th></th>
-                    <th ng-repeat="appointment in appointments" >
-                            {{appointment.appointmentService.name}}
-                    </th>
+                       
+                    <th>
+                    <td ng-repeat="appointment in appointments"> {{appointment.appointmentService.name}}</td>
+                              
                     <td>{{ 'TOTAL_KEY' | translate }}</td>
+                    </th>
+                  
                 </tr>
                 </thead>
            
                 <tbody>
+                  
                 <tr ng-repeat="dateInfo in weekDatesInfo">
+               <br>
                     <td>
                             {{dateInfo.date | date:'dd/MM/y'}}
                     </td>
@@ -83,10 +83,7 @@
                         </td>
 
                 </tr>
-                <tr>
-                   
-                  
-                </tr>
+            
                 </tbody>
             </table>
         </div> 

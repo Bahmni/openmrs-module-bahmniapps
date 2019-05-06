@@ -3,21 +3,16 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentsSummaryController', ['$scope', '$state', '$window', 'spinner', 'appointmentsService', 'appService',
         function ($scope, $state, $window, spinner, appointmentsService, appService) {
-            //var init = function () {
-           //     $scope.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
-          //      $scope.weekStart = appService.getAppDescriptor().getConfigValue('weekStart');
+            // var init = function () {
+            //     $scope.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
+            //      $scope.weekStart = appService.getAppDescriptor().getConfigValue('weekStart');
 
-         //   };
-
-
+            //   };
             $scope.weekStartDate = $scope.startDate;
             $scope.weekEndDate = $scope.startDate;
-
             $scope.getAppointmentsSummaryForAWeek = function (startDate, endDate) {
-
                 console.log($scope.startDate);
                 console.log($scope.endDate);
-
                 $scope.weekStartDate = startDate;
                 $scope.weekEndDate = endDate;
                 var params = {
@@ -66,5 +61,5 @@ angular.module('bahmni.appointments')
                 console.log($scope.weekDatesInfo);
             };
 
-            //return init();
+            // return init();
         }]);
