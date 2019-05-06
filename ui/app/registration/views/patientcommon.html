@@ -155,6 +155,7 @@
             <section ng-repeat="attributeRow in ::patientConfiguration.customAttributeRows()">
                 <!--class="form-field-inline clearfix"-->
 
+                <article>
                 <article class="form-field" ng-repeat="attribute in ::attributeRow"
                     ng-class="::{'right-form-field' : $index%2 != 0}" ng-if="attribute.name == 'MARITAL_STATUS'">
                     <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
@@ -172,6 +173,7 @@
                         is-read-only="isReadOnly" handle-update="handleUpdate">
                     </attribute-types>
                 </article>
+            </article>
 
 
                 <!--NEW PATIENT-->
@@ -339,7 +341,7 @@
 
                         <article class="form-field" ng-repeat="attribute in ::attributeRow"
                             ng-class="::{'right-form-field' : $index%2 != 0}" ng-if="attribute.name == 'NUIT'"
-                            ng-show="patient.NATIONALITY.value=='Mocambicano' || patient.NATIONALITY.value=='Mozambican'">
+                            ng-show="patient.NATIONALITY.value=='Mocambicano' || patient.NATIONALITY.value=='Mozambican' || patient.NATIONALITY.value=='Estrangeiro' || patient.NATIONALITY.value=='Foreigner'">
                             <attribute-types target-model="patient" attribute="::attribute"
                                 field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
                                 get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
