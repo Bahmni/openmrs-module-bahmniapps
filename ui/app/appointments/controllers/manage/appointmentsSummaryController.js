@@ -3,16 +3,16 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentsSummaryController', ['$scope', '$state', '$window', 'spinner', 'appointmentsService', 'appService',
         function ($scope, $state, $window, spinner, appointmentsService, appService) {
-            /* var init = function () {
-                 $scope.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
-                 $scope.weekStartDate = moment($scope.viewDate).startOf('week').toDate();
-                 $scope.weekEndDate = moment($scope.viewDate).endOf('week').toDate();
-                 $scope.weekStart = appService.getAppDescriptor().getConfigValue('weekStart');
-                 $scope.getAppointmentsSummaryForAWeek($scope.weekStartDate, $scope.weekEndDate);
-             }; */
-
+           /* var init = function () {
+                $scope.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
+                $scope.weekStartDate = moment($scope.viewDate).startOf('week').toDate();
+                $scope.weekEndDate = moment($scope.viewDate).endOf('week').toDate();
+                $scope.weekStart = appService.getAppDescriptor().getConfigValue('weekStart');
+                $scope.getAppointmentsSummaryForAWeek($scope.weekStartDate, $scope.weekEndDate);
+            }; */
             $scope.weekStartDate = $scope.startDate;
             $scope.weekEndDate = $scope.endDate;
+
             $scope.getAppointmentsSummaryForAWeek = function (startDate, endDate) {
                 console.log($scope.startDate);
                 console.log($scope.endDate);
@@ -46,7 +46,7 @@ angular.module('bahmni.appointments')
             var setWeekDatesInfo = function () {
                 $scope.weekDatesInfo = [];
                 for (var i = $scope.weekStartDate;
-                    Bahmni.Common.Util.DateUtil.isBeforeDate(i, $scope.weekEndDate);// || Bahmni.Common.Util.DateUtil.isSameDate(i, $scope.weekEndDate)
+                    Bahmni.Common.Util.DateUtil.isBeforeDate(i, $scope.weekEndDate);
                     i = Bahmni.Common.Util.DateUtil.addDays(i, 1)) {
                     var weekDate = { date: moment(i).format("YYYY-MM-DD") };
                     weekDate.total = _.reduce($scope.appointments, function (total, appointment) {
