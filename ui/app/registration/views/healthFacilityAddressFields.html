@@ -1,11 +1,11 @@
 <section class="form-field-inline" ng-repeat="addressLevels in ::addressLevelsChunks">
     <article class="form-field" ng-repeat="addressLevel in ::addressLevels"
              ng-class="::{'right-form-field': $index % 2 != 0 }">
-        <div ng-if="addressLevel.name === 'province_locale' || addressLevel.name === 'district_locale' || addressLevel.name === 'HEALTH_FACILITY'">
+        <div ng-if="addressLevel.name === 'HF_NAME' || addressLevel.name === 'HF_DISTRICT' || addressLevel.name === 'HF_PROVINCE'">
         <div class="field-attribute"><label for="{{::addressLevel.addressField}}">{{::addressLevel.name | translate}}<span
                 class="asterick">*</span></label>
         </div>
-        <div class="field-value" ng-if="addressLevel.name === 'province_locale'">
+        <div class="field-value" ng-if="addressLevel.name === 'HF_PROVINCE'">
             <input type="text"
                    autocomplete="off"
                    id="{{::addressLevel.addressField}}"
@@ -28,7 +28,7 @@
 
 
 
-            <div class="field-value" ng-if="addressLevel.name === 'HEALTH_FACILITY'">
+            <div class="field-value" ng-if="addressLevel.name === 'HF_NAME'">
                 <input type="text"
                        autocomplete="off"
                        id="{{::addressLevel.addressField}}"
@@ -50,7 +50,7 @@
             </div>
 
 
-            <div class="field-value" ng-if="addressLevel.name === 'district_locale'">
+            <div class="field-value" ng-if="addressLevel.name === 'HF_DISTRICT'">
                 <input type="text"
                        autocomplete="off"
                        id="{{::addressLevel.addressField}}"
