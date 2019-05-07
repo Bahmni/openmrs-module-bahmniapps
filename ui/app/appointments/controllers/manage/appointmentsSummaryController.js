@@ -3,13 +3,16 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentsSummaryController', ['$scope', '$state', '$window', 'spinner', 'appointmentsService', 'appService',
         function ($scope, $state, $window, spinner, appointmentsService, appService) {
-            // var init = function () {
-            //     $scope.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
-            //      $scope.weekStart = appService.getAppDescriptor().getConfigValue('weekStart');
-
-            //   };
+           /* var init = function () {
+                $scope.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
+                $scope.weekStartDate = moment($scope.viewDate).startOf('week').toDate();
+                $scope.weekEndDate = moment($scope.viewDate).endOf('week').toDate();
+                $scope.weekStart = appService.getAppDescriptor().getConfigValue('weekStart');
+                $scope.getAppointmentsSummaryForAWeek($scope.weekStartDate, $scope.weekEndDate);
+            }; */
             $scope.weekStartDate = $scope.startDate;
-            $scope.weekEndDate = $scope.startDate;
+            $scope.weekEndDate = $scope.endDate;
+
             $scope.getAppointmentsSummaryForAWeek = function (startDate, endDate) {
                 console.log($scope.startDate);
                 console.log($scope.endDate);
@@ -57,6 +60,7 @@ angular.module('bahmni.appointments')
                         };
                     }, { all: 0, missed: 0 });
                     $scope.weekDatesInfo.push(weekDate);
+                    console.log(weekDate);
                 }
                 console.log($scope.weekDatesInfo);
             };

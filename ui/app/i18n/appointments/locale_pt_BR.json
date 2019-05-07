@@ -168,5 +168,8 @@
   "COMPLETED_APPOINTMENT": "Realizada",
   "SCHEDULED_APPOINTMENT":"Agendada",
   "CANCELLED_APPOINTMENT ":"Cancelar",
-  "CHECKEDIN_APPOINTMENT":"Introduza um horário de entrada válido."
+  "CHECKEDIN_APPOINTMENT":"Introduza um horário de entrada válido.",
+  "APPOINTMENT_SUMMARY_SEARCH_LABEL": "Por favor insira um prazo para a pesquisa de marcações:",
+  "APPOINTMENT_SUMMARY_START_LABEL": "Inicio:",
+  "APPOINTMENT_SUMMARY_END_LABEL": "Fim:"
 }
