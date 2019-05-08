@@ -713,6 +713,10 @@
                              field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
                              strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>-->
 
+                    <section health-facility-address-fields data-address-levels="::addressLevels" data-address="patient.address"
+                             field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
+                             strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
+
                     <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="attribute.name == 'SECTOR_SELECT'"
                              ng-class="::{'right-form-field' : $index%2 != 0}" >
                         <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"

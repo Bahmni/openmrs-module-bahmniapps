@@ -135,5 +135,8 @@
     "REGISTRATION_LABEL_NATIONALITY": "Nacionalidade",
     "REGISTRATION_LABEL_DOCUMENT": "Documento",
     "REGISTRATION_PROFESSIONAL_INFORMATION":"Informação profissional",
-    "HEALTH_FACILITY": "Unidade Sanitária"
+    "HEALTH_FACILITY": "Unidade Sanitária",
+    "HF_NAME": "Unidade Sanitária",
+    "HF_PROVINCE": "Província",
+    "HF_DISTRICT": "Distrito"
 }
