@@ -6,7 +6,7 @@
         <form name="myForm" class="form-horizontal well" single-submit="create()">
             <div class="box-container box-container-default">
                 <legend class="registraion_legend first-registraion_legend">
-                    <span class="mylegend"><strong>{{::'REGISTRATION_LABEL_NEW_PATIENT' | translate}}</strong></span>
+                    <span class="mylegend"><strong>{{::'REGISTRATION_PATIENT_DETAILS' | translate}}</strong></span>
                 </legend>
                 <span class="form-field-inline clearfix" ng-repeat="attribute in ::patientConfiguration.attributeTypes">
                     <article class="form-field" ng-if="attribute.name == 'TYPE_OF_REGISTRATION'" 
