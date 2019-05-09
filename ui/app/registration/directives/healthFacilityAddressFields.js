@@ -22,7 +22,6 @@ angular.module('bahmni.registration')
         $scope.healthFacilityProvince = "";
         $scope.healthFacilityDistrict = "";
 
-
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
         var addressLevelUIOrderBasedOnConfig = $scope.addressLevels;
         $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelUIOrderBasedOnConfig, 2);
@@ -62,7 +61,6 @@ angular.module('bahmni.registration')
                 }
             }, 200);
             return function (addressFieldItem) {
-
                 if (fieldName === "address7") {
                     $scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE = addressFieldItem.value;
                 }
@@ -72,7 +70,6 @@ angular.module('bahmni.registration')
                 if (fieldName === "address10") {
                     $scope.$parent.patient.HEALTH_FACILITY_NAME = addressFieldItem.value;
                 }
-                
                 var parentFields = addressLevelsNamesInDescendingOrder.slice(addressLevelsNamesInDescendingOrder.indexOf(fieldName) + 1);
 
                 var parent = addressFieldItem.addressField.parent;
@@ -81,25 +78,20 @@ angular.module('bahmni.registration')
                         return;
                     }
                     if (parentField === "address8") {
-                        console.log(parentField);
                         $scope.$parent.$parent.patient.HEALTH_FACILITY_DISTRICT = parent.name;
                         document.getElementById("address8").value = parent.name;
                         $scope.healthFacilityDistrict = parent.name;
                         parent = parent.parent;
-
                     }
                     if (parentField === "address7") {
-                        console.log(parentField);
                         $scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE = parent.name;
                         document.getElementById("address7").value = parent.name;
                         $scope.healthFacilityProvince = parent.name;
                         parent = parent.parent;
-
                     }
                 });
                 $scope.$apply();
             };
-
         };
 
         $scope.findParentField = function (fieldName) {
@@ -150,9 +142,7 @@ angular.module('bahmni.registration')
 
         $scope.getAddressDataResults = addressHierarchyService.getAddressDataResults;
 
-
         $scope.removeSelection = function (event, fieldName) {
-
             if (event.keyCode === 8) {
                 $timeout(function () {
                     if (fieldName === "address7") {
@@ -168,12 +158,9 @@ angular.module('bahmni.registration')
                         $scope.$parent.$parent.patient.HEALTH_FACILITY_NAME = "";
                         document.getElementById("address10").value = "";
                         $scope.healthFacilityName = "";
-
                     }
-
                 }, 200);
             }
-
         };
 
         $scope.removeAutoCompleteEntry = function (fieldName) {
@@ -200,6 +187,7 @@ angular.module('bahmni.registration')
                 addressLevel.isStrictEntry = $scope.strictAutocompleteFromLevel == addressLevel.addressField || isStrictEntry;
                 isStrictEntry = addressLevel.isStrictEntry;
             });
+            $scope.addressLevels.reverse();
             $scope.addressLevels.reverse();
 
             // wait for address to be resolved in edit patient scenario
