@@ -1,8 +1,7 @@
 <div class="app-summary-container">
 
     <div class="app-date-nav">
-        <h1> {{'APPOINTMENT_SUMMARY_SEARCH_LABEL' | translate}}</h1>
-
+        
         {{'APPOINTMENT_SUMMARY_START_LABEL' | translate}}<input type="date" id="input1" name="input"
             ng-model="startDate" placeholder="YYYY-MM-DD" required />
 
@@ -11,7 +10,7 @@
 
 
         <button type="submit" ng-show="startDate!=undefined && endDate!=undefined"
-            ng-click="getAppointmentsSummaryPeriod(startDate,endDate)" ng-disabled="endDate==startDate">Go</button>
+            ng-click="getAppointmentsSummaryPeriod(startDate,endDate)" ng-disabled="endDate==startDate"> {{'APPOINTMENT_SUMMARY_BUTTON_LABEL' | translate}}</button>
        
         <div ng-show="weekDatesInfo==''" style="color:red">{{'APPOINTMENT_SUMMARY_END_ALERT' | translate}}</div>
     </div>

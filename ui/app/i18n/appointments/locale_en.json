@@ -169,7 +169,7 @@
   "INVITED_PROVIDERS": "Guests",
   "HEADER_LABEL_LOGOUT_KEY": "Exit",
   "SELECT_APPOINTMENT_PROVIDER": "Select Provider",
-  "APPOINTMENT_SUMMARY_SEARCH_LABEL": "Please insert a period for the appointment search:",
+  "APPOINTMENT_SUMMARY_BUTTON_LABEL": "Search",
   "APPOINTMENT_SUMMARY_START_LABEL": "Start:",
   "APPOINTMENT_SUMMARY_END_LABEL": "End:",
   "APPOINTMENT_SUMMARY_END_ALERT": "End Date should be later than Start Date."

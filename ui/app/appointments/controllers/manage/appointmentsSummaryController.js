@@ -3,18 +3,24 @@
 angular.module('bahmni.appointments')
     .controller('AppointmentsSummaryController', ['$scope', '$state', '$window', 'spinner', 'appointmentsService', 'appService',
         function ($scope, $state, $window, spinner, appointmentsService, appService) {
-           
+            var init = function () {
+                $scope.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
+                $scope.weekStartDate = moment($scope.viewDate).startOf('week').toDate();
+                $scope.weekEndDate = moment($scope.viewDate).endOf('week').toDate();
+                $scope.weekStart = appService.getAppDescriptor().getConfigValue('weekStart');
+                $scope.getAppointmentsSummaryPeriod($scope.weekStartDate, $scope.weekEndDate);
+            };
             $scope.periodStartDate = $scope.startDate;
             $scope.periodEndDate = $scope.endDate;
             $scope.minDay = Bahmni.Common.Util.DateUtil.addDays($scope.startDate, 1);
 
             $scope.$watch('startDate', function (newValue, oldValue) {
                 if (newValue != oldValue) {
-                        $scope.minDay = Bahmni.Common.Util.DateUtil.addDays($scope.startDate, 1);
-                    }
-                });
-            
-                $scope.getAppointmentsSummaryPeriod = function (startDate, endDate) {
+                    $scope.minDay = Bahmni.Common.Util.DateUtil.addDays($scope.startDate, 1);
+                }
+            });
+
+            $scope.getAppointmentsSummaryPeriod = function (startDate, endDate) {
                 $scope.periodStartDate = startDate;
                 $scope.periodEndDate = endDate;
                 var params = {
@@ -61,4 +67,5 @@ angular.module('bahmni.appointments')
                     $scope.weekDatesInfo.push(weekDate);
                 }
             };
+            init();
         }]);
