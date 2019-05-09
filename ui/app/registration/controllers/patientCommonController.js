@@ -7,8 +7,8 @@ angular.module('bahmni.registration')
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             var personAttributes = [];
             var caste;
-            var mozAttributes = ['BI', 'NUIT', 'NUIC', 'Cedula de Nascimento', 'Cartao de Eleitor', 'Passaporte Mocambicano'];
-            var foreignAttributes = ['DIRE', 'NUIT', 'Passaporte Estrangeiro'];
+            var mozAttributes = ['BI', 'NUIT', 'NUIC', 'Cedula_de_Nascimento', 'Cartao_de_Eleitor', 'Passaporte_Mocambicano'];
+            var foreignAttributes = ['DIRE', 'NUIT', 'Passaporte_Estrangeiro'];
             $scope.patientDocuments = [];
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
             $scope.showLastName = appService.getAppDescriptor().getConfigValue("showLastName");
@@ -291,6 +291,7 @@ angular.module('bahmni.registration')
 
             $scope.nationalityAttribute = function () {
                 $scope.patient.attribute = $scope.nationalAttribute;
+                console.log($scope.nationalAttribute);
                 $scope.docRemoved = $scope.nationalAttribute;
             };
 
