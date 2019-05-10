@@ -1,0 +1,133 @@
+<table class="custom-table no-border"  style="overflow-x:auto !important;">
+    <tr>
+        <td>
+            <section class="form-field-inline" ng-repeat="addressLevels in ::addressLevelsChunks">
+                <article class="form-field custom-field" ng-repeat="addressLevel in ::addressLevels"
+                         ng-class="::{'right-form-field': $index % 2 != 0 }">
+                    <div ng-if="addressLevel.name === 'HF_PROVINCE'">
+                        <div class="field-attribute"><label for="{{::addressLevel.addressField}}">{{::addressLevel.name
+                            | translate}}<span
+                                    class="asterick"
+                                    ng-show="::addressLevel.required">*</span></label>
+                        </div>
+
+                        <div class="field-value" ng-if="addressLevel.name === 'HF_PROVINCE'">
+                            <input type="text"
+                                   autocomplete="off"
+                                   id="{{::addressLevel.addressField}}"
+                                   pattern-validate
+                                   non-blank="::addressLevel.required"
+                                   ng-model="healthFacilityProvince"
+                                   bahmni-autocomplete
+                                   source="getAddressEntryList(addressLevel.addressField)"
+                                   response-map="getAddressDataResults"
+                                   on-select="addressFieldSelected(addressLevel.addressField)"
+                                   min-length="1"
+                                   strict-select="addressLevel.isStrictEntry"
+                                   initial-value="selectedValue[addressLevel.addressField]"
+                                   is-invalid="addressFieldInvalid"
+                                   ng-class="{'illegalValue': addressFieldInvalid}"
+                                   ng-keydown="removeSelection($event, addressLevel.addressField)"
+                                   required/>
+                        </div>
+
+                    </div>
+                </article>
+            </section>
+        </td>
+        <td>
+            <section class="form-field-inline" ng-repeat="addressLevels in ::addressLevelsChunks">
+                <article class="form-field custom-field" ng-repeat="addressLevel in ::addressLevels"
+                         ng-class="::{'right-form-field': $index % 2 != 0 }">
+                    <div ng-if="addressLevel.name === 'HF_DISTRICT'">
+                        <div class="field-attribute"><label for="{{::addressLevel.addressField}}">{{::addressLevel.name
+                            | translate}}<span
+                                    class="asterick"
+                                    ng-show="::addressLevel.required">*</span></label>
+                        </div>
+
+                        <div class="field-value" ng-if="addressLevel.name === 'HF_DISTRICT'">
+                            <input type="text"
+                                   autocomplete="off"
+                                   id="{{::addressLevel.addressField}}"
+                                   pattern-validate
+                                   non-blank="::addressLevel.required"
+                                   ng-model="healthFacilityDistrict"
+                                   bahmni-autocomplete
+                                   source="getAddressEntryList(addressLevel.addressField)"
+                                   response-map="getAddressDataResults"
+                                   on-select="addressFieldSelected(addressLevel.addressField)"
+                                   min-length="1"
+                                   strict-select="addressLevel.isStrictEntry"
+                                   initial-value="selectedValue[addressLevel.addressField]"
+                                   is-invalid="addressFieldInvalid"
+                                   ng-class="{'illegalValue': addressFieldInvalid}"
+                                   ng-keydown="removeSelection($event, addressLevel.addressField)"
+                                   required/>
+                        </div>
+
+
+                    </div>
+                </article>
+            </section>
+        </td>
+    </tr>
+</table>
+
+<section class="form-field-inline" ng-repeat="addressLevels in ::addressLevelsChunks">
+    <article class="form-field" ng-repeat="addressLevel in ::addressLevels"
+             ng-class="::{'right-form-field': $index % 2 != 0 }">
+        <div ng-if="addressLevel.name === 'HF_NAME'">
+            <div class="field-attribute" style="float: left;"><label for="{{::addressLevel.addressField}}">{{::addressLevel.name
+                | translate}}<span
+                        class="asterick"
+                        ng-show="::addressLevel.required">*</span></label>
+            </div>
+
+            <div class="field-value" ng-if="addressLevel.name === 'HF_NAME'">
+                <input type="text"
+                       autocomplete="off"
+                       id="{{::addressLevel.addressField}}"
+                       pattern-validate
+                       non-blank="::addressLevel.required"
+                       ng-model="healthFacilityName"
+                       bahmni-autocomplete
+                       source="getAddressEntryList(addressLevel.addressField)"
+                       response-map="getAddressDataResults"
+                       on-select="addressFieldSelected(addressLevel.addressField)"
+                       min-length="1"
+                       strict-select="addressLevel.isStrictEntry"
+                       initial-value="selectedValue[addressLevel.addressField]"
+                       is-invalid="addressFieldInvalid"
+                       ng-class="{'illegalValue': addressFieldInvalid}"
+                       ng-keydown="removeSelection($event, addressLevel.addressField)"
+                       required/>
+            </div>
+
+        </div>
+    </article>
+</section>
+
+
+<style>
+    .custom-field {
+        display: inline !important;
+        float: left !important;
+        width: 73% !important;
+        margin-left: 3px !important;
+        padding-left: -10px;
+    }
+
+    .custom-table {
+
+        border: none !important;
+    }
+
+    td {
+        border: none !important
+    }
+
+    table tr {
+        border-bottom: none !important;
+    }
+</style>
