@@ -31,7 +31,8 @@ angular.module('bahmni.appointments')
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
             };
-
+            
+            
             $scope.getAppointmentsForDate = function (viewDate) {
                 $stateParams.viewDate = viewDate;
                 $scope.selectedAppointment = undefined;

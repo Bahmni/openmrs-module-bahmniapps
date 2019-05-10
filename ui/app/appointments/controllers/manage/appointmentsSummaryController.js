@@ -10,8 +10,10 @@ angular.module('bahmni.appointments')
                 $scope.weekStart = appService.getAppDescriptor().getConfigValue('weekStart');
                 $scope.getAppointmentsSummaryPeriod($scope.weekStartDate, $scope.weekEndDate);
             };
+
             $scope.periodStartDate = $scope.startDate;
             $scope.periodEndDate = $scope.endDate;
+            
             $scope.minDay = Bahmni.Common.Util.DateUtil.addDays($scope.startDate, 1);
 
             $scope.$watch('startDate', function (newValue, oldValue) {
