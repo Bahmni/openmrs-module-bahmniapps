@@ -11,9 +11,7 @@ angular.module('bahmni.registration')
             $scope.actions = {};
             $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
             $scope.disablePhotoCapture = appService.getAppDescriptor().getConfigValue("disablePhotoCapture");
-
             $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
-
             var setReadOnlyFields = function () {
                 $scope.readOnlyFields = {};
                 var readOnlyFields = appService.getAppDescriptor().getConfigValue("readOnlyFields");
@@ -27,8 +25,111 @@ angular.module('bahmni.registration')
             var successCallBack = function (openmrsPatient) {
                 $scope.openMRSPatient = openmrsPatient["patient"];
                 $scope.patient = openmrsPatientMapper.map(openmrsPatient);
-                console.log($scope.patient);
+                var mozAttributes = ['BI', 'NUIT', 'NUIC', 'Cedula_de_Nascimento', 'Cartao_de_Eleitor', 'Passaporte_Mocambicano'];
+                var foreignAttributes = ['DIRE', 'NUIT', 'Passaporte_Estrangeiro'];
+                $scope.editPatientDocuments = [];
+                var nationalityVar = function () {
+                    if ($scope.patient.NATIONALITY == undefined) {
+                        $scope.patient.NATIONALITY = "";
+                    }
+                    else {
+                        $scope.nationalityChoice = $scope.patient.NATIONALITY.value;
+                        if ($scope.nationalityChoice == 'Mocambicano' || $scope.nationalityChoice == 'Mozambican') {
+                            $scope.nationalityDocs = mozAttributes;
+                            $scope.existDocs = $scope.nationalityDocs;
+                        }
+                        else if ($scope.nationalityChoice == 'Estrangeiro' || $scope.nationalityChoice == 'Foreigner') {
+                            $scope.nationalityDocs = foreignAttributes;
+                            $scope.existDocs = $scope.nationalityDocs;
+                        }
+                    }
+                };
+                nationalityVar();
 
+                $scope.nationality = function () {
+                    if ($scope.patient.NATIONALITY == undefined) {
+                        $scope.patient.NATIONALITY = "";
+                    }
+                    else {
+                        $scope.nationalityChoice = $scope.patient.NATIONALITY.value;
+                        if ($scope.nationalityChoice == 'Mocambicano' || $scope.nationalityChoice == 'Mozambican') {
+                            var mozAttributes = ['BI', 'NUIT', 'NUIC', 'Cedula_de_Nascimento', 'Cartao_de_Eleitor', 'Passaporte_Mocambicano'];
+                            $scope.nationalityDocs = mozAttributes;
+                            $scope.existDocs = $scope.nationalityDocs;
+                        }
+                        else if ($scope.nationalityChoice == 'Estrangeiro' || $scope.nationalityChoice == 'Foreigner') {
+                            var foreignAttributes = ['DIRE', 'NUIT', 'Passaporte_Estrangeiro'];
+                            $scope.nationalityDocs = foreignAttributes;
+                            $scope.existDocs = $scope.nationalityDocs;
+                        }
+                    }
+                };
+                var existingPatientDocs = function () {
+                    if ($scope.nationalityDocs == undefined) {
+                        $scope.nationalityDocs = "";
+                    }
+                    else {
+                        var i = 0;
+                        for (i = 0; i < $scope.nationalityDocs.length; i++) {
+                            _.each($scope.nationalityDocs, function (doc) {
+                                if ($scope.patient[doc] == undefined) { }
+                                else {
+                                    if ($scope.patient[doc].length > 0) {
+                                        $scope.editPatientDocuments.push(doc);
+                                        $scope.nationalityDocs.splice($scope.nationalityDocs.indexOf(doc), 1);
+                                        $scope.existDocs = $scope.nationalityDocs;
+                                    }
+                                }
+                            });
+                        }
+                    }
+                };
+
+                existingPatientDocs();
+                $scope.$watch('patient.NATIONALITY.value', function (newValue, oldValue) {
+                    if (newValue != oldValue) {
+                        if (oldValue == undefined) {
+                            $scope.nationality();
+                        }
+                        else {
+                            var i;
+                            for (i = 0; i < $scope.nationalityDocs.length; i++) {
+                                $scope.patient[$scope.nationalityDocs[i]] = "";
+                            }
+
+                            $scope.editPatientDocuments = [];
+                            $scope.nationality();
+                        }
+                    }
+                });
+                $scope.nationalityEditAttribute = function (document) {
+                    $scope.attributeChoice = document;
+                    $scope.patient.attribute = $scope.attributeChoice;
+                    $scope.docRemoved = $scope.attributeChoice;
+                };
+                $scope.addEditDocRow = function () {
+                    if ($scope.editPatientDocuments.includes($scope.attributeChoice)) {
+                        alert("Selecione outro documento");
+                    }
+                    else {
+                        $scope.editPatientDocuments.push($scope.attributeChoice);
+                    }
+                };
+
+                $scope.removeEditDoc = function () {
+                    $scope.existDocs.splice($scope.existDocs.indexOf($scope.docRemoved), 1);
+                };
+
+                $scope.removeEditDocRow = function (document) {
+                    if ($scope.editPatientDocuments.includes(document)) {
+                        $scope.editPatientDocuments.splice($scope.editPatientDocuments.indexOf(document), 1);
+                        $scope.existDocs.push(document);
+                        $scope.patient[document] = "";
+                    }
+                    else {
+                        alert("Remova outro documento");
+                    }
+                };
                 if ($scope.patient.birthdateEstimated == false) {
                     $scope.isBirthDateEstimatedDisabled = true;
                     $scope.isAgeDisabled = true;
