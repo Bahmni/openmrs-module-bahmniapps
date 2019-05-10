@@ -156,7 +156,7 @@
             <section ng-repeat="attributeRow in ::patientConfiguration.customAttributeRows()">
                 <!--class="form-field-inline clearfix"-->
 
-             
+             <section>
                 <article class="form-field" ng-repeat="attribute in ::attributeRow"
                     ng-class="::{'right-form-field' : $index%2 != 0}" ng-if="attribute.name == 'MARITAL_STATUS'">
                     <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
@@ -204,9 +204,10 @@
                         is-read-only="isReadOnly" handle-update="handleUpdate">
                     </attribute-types>
                 </article>
+            </section>
             
 
-
+<div>
                 <!--NEW PATIENT-->
                 <div ng-if="patient.uuid == undefined">
 
@@ -504,7 +505,8 @@
                             </button>
                         </div>
                     </article>
-                    
+                </div>
+            </div>
                   
                     </section>
 
