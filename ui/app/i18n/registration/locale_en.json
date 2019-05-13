@@ -167,5 +167,6 @@
   "REGISTRATION_PROFESSIONAL_INFORMATION":"Professional Information",
   "REGISTRATION_LABEL_US_REG_DATE": "Health Facility Registration Date",
   "REGISTRATION_LABEL_PASSPORT_MOZ": "Mozambican Passport",
-  "REGISTRATION_LABEL_PASSPORT_FOR": "Foreigner Passport"
+  "REGISTRATION_LABEL_PASSPORT_FOR": "Foreigner Passport",
+  "TRANSFERED_OUT_FROM": "Provenance"
 }
