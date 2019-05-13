@@ -115,7 +115,7 @@
                 <div class="field-attribute">
                     <label for="gender">{{ ::'REGISTRATION_LABEL_GENDER' | translate}} <span
                             class="asterick">*</span></label>
-                </div>
+                </div>trans
 
                 <div class="field-value">
                     <select id="gender" ng-model="patient.gender" required="required"
@@ -751,8 +751,11 @@
                         <attribute-types target-model="patient" attribute="::attribute"
                             field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
                             get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
-                            is-read-only="isReadOnly" handle-update="handleUpdate" ng-if="attribute.name !== 'PATIENT_STATUS'"></attribute-types>
+                            is-read-only="isReadOnly" handle-update="handleUpdate" ng-if="attribute.name !== 'PATIENT_STATUS' && attribute.name !== 'TRANSFERRED_OUT_HF_NAME'"></attribute-types>
                     </article>
+                    <section health-facility-address-fields data-address-levels="::addressLevels" data-address="patient.address"
+                             field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
+                             strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
                 </section>
             </div>
         </div>
