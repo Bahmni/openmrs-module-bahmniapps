@@ -172,5 +172,6 @@
   "APPOINTMENT_SUMMARY_BUTTON_LABEL": "Search",
   "APPOINTMENT_SUMMARY_START_LABEL": "Start:",
   "APPOINTMENT_SUMMARY_END_LABEL": "End:",
-  "APPOINTMENT_SUMMARY_END_ALERT": "End Date should be later than Start Date."
+  "APPOINTMENT_SUMMARY_END_ALERT": "End Date should be later than Start Date.",
+  "APPOINTMENT_CREATE_SAVE_ADD_NEW": "Save and add New Visit"
 }
