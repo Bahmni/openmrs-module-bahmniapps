@@ -173,9 +173,68 @@
                     </attribute-types>
                 </article>
 
+            </section>
 
 
-                <div style="position: relative">
+<section>
+                    <!--NEW PATIENT-->
+                    <div ng-show="patient.uuid==undefined && patient.NATIONALITY.value!= undefined">
+    
+                        <article class="form-field ng-scope right-form-field">
+    
+                            <div class="field-attribute ng-scope">
+                                <label for="nationalAttribute" class="ng-binding" ng-hide="nationalityDocs==0">
+                                    {{ ::'REGISTRATION_LABEL_DOCUMENT' | translate}} <span ng-show="isForm"
+                                        class="ng-hide"></span></label>
+                            </div>
+                            <div class="form-field">
+    
+                                <div class="left ng-scope">
+                                    <select id="nationalAttribute" ng-model="nationalAttribute"
+                                        ng-Options="nationalAttribute for nationalAttribute in nationalityDocs"
+                                        ng-hide="nationalityDocs==0" ng-Click="nationalityAttribute()"></select>
+    
+                                    <button type="button" class="comment-toggle fr ng-scope ng-isolate-scope" tabindex="-1"
+                                        ng-hide="nationalAttribute==undefined" style="margin-left: 30px; height:27px"
+                                        ng-click="addDocumentRow();removeDoc()">
+                                        <i class="fa-plus fa fa-green small"></i>
+                                    </button>
+                                </div>
+    
+                            </div>
+                        </article>
+                    </div>
+    
+                    <!--EXISTING PATIENT-->
+                    <div ng-show="patient.uuid!=undefined && patient.NATIONALITY.value!= undefined">
+    
+                        <article class="form-field ng-scope right-form-field">
+                            <div class="field-attribute ng-scope">
+                                <label for="docSelect" class="ng-binding" ng-hide="existDocs==0">
+                                    {{ ::'REGISTRATION_LABEL_DOCUMENT' | translate}} <span ng-show="isForm"
+                                        class="ng-hide"></span></label>
+                            </div>
+                            <div class="form-field">
+                                <div class="left ng-scope">
+                                    <select id="docSelect" ng-model="attributeChoice"
+                                        ng-Options="attributeChoice for attributeChoice in existDocs" ng-hide="existDocs==0"
+                                        ng-Click="nationalityEditAttribute(attributeChoice)"></select>
+    
+                                    <button type="button" class="comment-toggle fr ng-scope ng-isolate-scope" tabindex="-1"
+                                        ng-hide="existDocs==0" style="margin-left: 30px; height:27px"
+                                        ng-click="addEditDocRow();removeEditDoc();">
+                                        <i class="fa-plus fa fa-green small"></i>
+                                    </button>
+                                </div>
+    
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+
+                <section ng-repeat="attributeRow in ::patientConfiguration.customAttributeRows()">
+                
                     <!--NEW PATIENT-->
                     <div ng-if="patient.uuid == undefined">
 
@@ -483,68 +542,13 @@
                             </div>
                         </article>
                     </div>
-                </div>
+             
 
             </section>
 
 
-            <section>
-                <!--NEW PATIENT-->
-                <div ng-show="patient.uuid==undefined && patient.NATIONALITY.value!= undefined">
 
-                    <article class="form-field ng-scope right-form-field">
-
-                        <div class="field-attribute ng-scope">
-                            <label for="nationalAttribute" class="ng-binding" ng-hide="nationalityDocs==0">
-                                {{ ::'REGISTRATION_LABEL_DOCUMENT' | translate}} <span ng-show="isForm"
-                                    class="ng-hide"></span></label>
-                        </div>
-                        <div class="form-field">
-
-                            <div class="left ng-scope">
-                                <select id="nationalAttribute" ng-model="nationalAttribute"
-                                    ng-Options="nationalAttribute for nationalAttribute in nationalityDocs"
-                                    ng-hide="nationalityDocs==0" ng-Click="nationalityAttribute()"></select>
-
-                                <button type="button" class="comment-toggle fr ng-scope ng-isolate-scope" tabindex="-1"
-                                    ng-hide="nationalAttribute==undefined" style="margin-left: 30px; height:27px"
-                                    ng-click="addDocumentRow();removeDoc()">
-                                    <i class="fa-plus fa fa-green small"></i>
-                                </button>
-                            </div>
-
-                        </div>
-                    </article>
-                </div>
-
-                <!--EXISTING PATIENT-->
-                <div ng-show="patient.uuid!=undefined && patient.NATIONALITY.value!= undefined">
-
-                    <article class="form-field ng-scope right-form-field">
-                        <div class="field-attribute ng-scope">
-                            <label for="docSelect" class="ng-binding" ng-hide="existDocs==0">
-                                {{ ::'REGISTRATION_LABEL_DOCUMENT' | translate}} <span ng-show="isForm"
-                                    class="ng-hide"></span></label>
-                        </div>
-                        <div class="form-field">
-                            <div class="left ng-scope">
-                                <select id="docSelect" ng-model="attributeChoice"
-                                    ng-Options="attributeChoice for attributeChoice in existDocs" ng-hide="existDocs==0"
-                                    ng-Click="nationalityEditAttribute(attributeChoice)"></select>
-
-                                <button type="button" class="comment-toggle fr ng-scope ng-isolate-scope" tabindex="-1"
-                                    ng-hide="existDocs==0" style="margin-left: 30px; height:27px"
-                                    ng-click="addEditDocRow();removeEditDoc();">
-                                    <i class="fa-plus fa fa-green small"></i>
-                                </button>
-                            </div>
-
-                        </div>
-                    </article>
-                </div>
-            </section>
-
-        </section>
+     
 
 
 
