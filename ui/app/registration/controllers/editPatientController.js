@@ -75,16 +75,11 @@ angular.module('bahmni.registration')
                                 if ($scope.patient[doc] == undefined) { }
                                 else {
                                     if ($scope.patient[doc].length > 0) {
-                                        console.log(doc);
                                         $scope.editPatientDocuments.push(doc);
                                         $scope.nationalityDocs.splice($scope.nationalityDocs.indexOf(doc), 1);
                                         $scope.existDocs = $scope.nationalityDocs;
                                     }
                                 }
-                                console.log($scope.patient);
-                                console.log($scope.editPatientDocuments);
-                                console.log($scope.nationalityDocs);
-
                             });
                         }
                     }
