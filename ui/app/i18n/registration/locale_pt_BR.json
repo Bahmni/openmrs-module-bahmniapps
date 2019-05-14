@@ -137,5 +137,6 @@
     "HEALTH_FACILITY": "Unidade Sanitária",
     "HF_NAME": "Unidade Sanitária",
     "HF_PROVINCE": "Província",
-    "HF_DISTRICT": "Distrito"
+    "HF_DISTRICT": "Distrito",
+    "REGISTRATION_LABEL_US_REG_DATE": "Data de Registo na US"
 }

@@ -151,6 +151,10 @@ angular.module('bahmni.registration')
                     });
                     section.expand = section.expanded || (notNullAttribute ? true : false);
                 });
+                
+                if ($scope.patient.US_REG_DATE == undefined) {
+                    $scope.patient.US_REG_DATE = dateUtil.today();
+                }
             };
 
             (function () {
