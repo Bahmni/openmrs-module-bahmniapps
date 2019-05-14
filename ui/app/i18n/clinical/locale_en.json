@@ -328,5 +328,8 @@
     "INVESTIGATIONS_SELECTIONS_HEADER_LABEL": "Selection",
     "CLINICAL_GO_TO_DASHBOARD_LABEL": "Go to IPD dashboard",
     "GENDER_MALE":"Male",
-    "GENDER_FEMALE":"Female"
+    "GENDER_FEMALE":"Female",
+    "VISIT_STATUS_FINISHED":"Finished",
+    "VISIT_STATUS_ABSENT":"Absent",
+    "VISIT_STATUS_PROGRESS":"In Progress"
 }
