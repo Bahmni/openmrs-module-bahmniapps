@@ -728,9 +728,9 @@
     </div>
 
     <div ng-repeat="section in ::patientConfiguration.getOrderedPatientAttributesSections()"
-        class="additional-info-wrapper" ng-if="section.title!='patientHIVTestInformation' &&  section.title!='patientContactInformation' 
+        class="additional-info-wrapper" ng-if="section.title!='patientHIVTestInformation' &&  section.title!='patientContactInformation'
          &&  section.title!='patientProfessionInformation'">
-        <div ng-if="section.canShow">
+        <div ng-if="section.canShow && patient.TYPE_OF_REGISTRATION.value === 'TRANSFERRED_PATIENT'">
             <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
                 <legend class="additional-attribute" toggle="section.expand">
                     <span>
