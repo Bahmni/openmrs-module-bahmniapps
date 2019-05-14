@@ -324,5 +324,8 @@
 "Patient Stage":"Estagio do Paciente",
 "Doctor-In-Charge":"Doutor em serviço",
 "HEADER_LABEL_LOGOUT_KEY": "Sair",
-"CHANGE_PASSWORD": "Alterar Senha"
+"CHANGE_PASSWORD": "Alterar Senha",
+"VISIT_STATUS_FINISHED":"Acabado",
+"VISIT_STATUS_ABSENT":"Ausente",
+"VISIT_STATUS_PROGRESS":"Em progresso"
  }
