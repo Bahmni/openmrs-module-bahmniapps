@@ -70,16 +70,21 @@ angular.module('bahmni.registration')
                     }
                     else {
                         var i = 0;
-                        for (i = 0; i < $scope.nationalityDocs.length; i++) {
+                        for (i = 0; i <= $scope.nationalityDocs.length; i++) {
                             _.each($scope.nationalityDocs, function (doc) {
                                 if ($scope.patient[doc] == undefined) { }
                                 else {
                                     if ($scope.patient[doc].length > 0) {
+                                        console.log(doc);
                                         $scope.editPatientDocuments.push(doc);
                                         $scope.nationalityDocs.splice($scope.nationalityDocs.indexOf(doc), 1);
                                         $scope.existDocs = $scope.nationalityDocs;
                                     }
                                 }
+                                console.log($scope.patient);
+                                console.log($scope.editPatientDocuments);
+                                console.log($scope.nationalityDocs);
+
                             });
                         }
                     }
