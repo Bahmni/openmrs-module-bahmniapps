@@ -63,7 +63,7 @@
     </div>
 
 
-    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name != 'LOCATION_OF_TEST' && attribute.name != 'SECTOR_SELECT' && attribute.name != 'PATIENT_OCCUPATION'">
+    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name != 'LOCATION_OF_TEST' && attribute.name != 'TYPE_OF_REGISTRATION' && attribute.name != 'SECTOR_SELECT' && attribute.name != 'PATIENT_OCCUPATION'">
         <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
                 ng-options="a.conceptId as a.description | translate for a in ::attribute.answers"
                 ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name)">
@@ -73,6 +73,13 @@
 
     <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name == 'LOCATION_OF_TEST'">
         <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
+                ng-options="a.conceptId as a.description | translate for a in ::attribute.answers"
+                ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name);handleLocationChange()">
+            <option value=""></option>
+        </select>
+    </div>
+    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name == 'TYPE_OF_REGISTRATION'">
+        <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid" ng-disabled="attribute.enabled"
                 ng-options="a.conceptId as a.description | translate for a in ::attribute.answers"
                 ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name);handleLocationChange()">
             <option value=""></option>
