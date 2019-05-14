@@ -7,10 +7,10 @@
     <div class="field-value" ng-if="addressLevel.name === 'HF_PROVINCE'" >
         <input type="text"
                autocomplete="off"
-               id="{{::addressLevel.addressField}}"
+               id="{{::addressLevel.addressField  +'_transference'}}"
                pattern-validate
                non-blank="::addressLevel.required"
-               ng-model="healthFacilityProvince"
+               ng-model="provenanceHealthFacilityProvince"
                bahmni-autocomplete
                source="getAddressEntryList(addressLevel.addressField)"
                response-map="getAddressDataResults"
@@ -20,7 +20,6 @@
                strict-select="true"
                initial-value="selectedValue[addressLevel.addressField]"
                is-invalid="addressFieldInvalid"
-               ng-class="{'illegalValue': addressFieldInvalid}"
                ng-keydown="removeSelection($event, addressLevel.addressField)"
                required/>
     </div>
@@ -29,10 +28,10 @@
     <div class="field-value" ng-if="addressLevel.name === 'HF_DISTRICT'">
         <input type="text"
                autocomplete="off"
-               id="{{::addressLevel.addressField}}"
+               id="{{::addressLevel.addressField +'_transference'}}"
                pattern-validate
                non-blank="::addressLevel.required"
-               ng-model="healthFacilityDistrict"
+               ng-model="provenanceHealthFacilityDistrict"
                bahmni-autocomplete
                source="getAddressEntryList(addressLevel.addressField)"
                response-map="getAddressDataResults"
@@ -42,19 +41,17 @@
                strict-select="true"
                initial-value="selectedValue[addressLevel.addressField]"
                is-invalid="addressFieldInvalid"
-               ng-class="{'illegalValue': addressFieldInvalid}"
                ng-keydown="removeSelection($event, addressLevel.addressField)"
                required/>
     </div>
 
-
     <div class="field-value" ng-if="addressLevel.name === 'HF_NAME'" >
         <input type="text"
                autocomplete="off"
-               id="{{::addressLevel.addressField}}"
+               id="{{::addressLevel.addressField +'_transference'}}"
                pattern-validate
                non-blank="::addressLevel.required"
-               ng-model="healthFacilityName"
+               ng-model="provenanceHealthFacilityName"
                bahmni-autocomplete
                source="getAddressEntryList(addressLevel.addressField)"
                response-map="getAddressDataResults"
@@ -64,7 +61,6 @@
                strict-select="true"
                initial-value="selectedValue[addressLevel.addressField]"
                is-invalid="addressFieldInvalid"
-               ng-class="{'illegalValue': addressFieldInvalid}"
                ng-keydown="removeSelection($event, addressLevel.addressField)"
                required/>
     </div>
