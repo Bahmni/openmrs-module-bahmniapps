@@ -70,7 +70,7 @@ angular.module('bahmni.registration')
                     }
                     else {
                         var i = 0;
-                        for (i = 0; i < $scope.nationalityDocs.length; i++) {
+                        for (i = 0; i <= $scope.nationalityDocs.length; i++) {
                             _.each($scope.nationalityDocs, function (doc) {
                                 if ($scope.patient[doc] == undefined) { }
                                 else {
