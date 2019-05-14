@@ -47,6 +47,7 @@ angular.module('bahmni.appointments')
                 $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create(appointmentContext.appointment || { appointmentKind: 'Scheduled' }, appointmentCreateConfig);
                 $scope.selectedService = appointmentCreateConfig.selectedService;
                 $scope.isPastAppointment = $scope.isEditMode() ? Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')) : false;
+                $scope.appointment.patient = $state.params.patient;
                 if ($scope.appointment.patient) {
                     $scope.onSelectPatient($scope.appointment.patient);
                 }
@@ -89,7 +90,7 @@ angular.module('bahmni.appointments')
                     return;
                 }
                 $scope.validatedAppointment = Bahmni.Appointments.Appointment.create($scope.appointment);
-                
+
                 var conflictingAppointments = getConflictingAppointments($scope.validatedAppointment);
                 if (conflictingAppointments.length === 0) {
                     saveAppointmentContinue($scope.validatedAppointment);
@@ -494,27 +495,19 @@ angular.module('bahmni.appointments')
                     params.viewDate = moment($scope.appointment.date).startOf('day').toDate();
                     params.isFilterOpen = true;
                     params.isSearchEnabled = params.isSearchEnabled && $scope.isEditMode();
+                    params.patient = undefined;
                     $state.go('^', params, { reload: true });
                 }));
             };
-
             var saveAppointmentContinue = function (appointment) {
-                console.log(appointment);
                 return spinner.forPromise(appointmentsService.save(appointment).then(function () {
                     messagingService.showMessage('info', 'APPOINTMENT_SAVE_SUCCESS');
                     $scope.showConfirmationPopUp = false;
                     var params = $state.params;
-                    //params.viewDate = moment($scope.appointment.date).startOf('day').toDate();
                     params.isFilterOpen = true;
                     params.isSearchEnabled = params.isSearchEnabled && $scope.isEditMode();
-                    params.patientUuid = appointment.patientUuid;
-                    params.patientID = appointment.patient.label;
-                    //params.appointment.patient.label= $scope.appointment.patient.label;
-                    //params.patientUuid = patientService.getPatient(patientUuid);
-                    console.log(appointment.patientUuid);
-                    console.log(appointment.patient.label);
-                    //$state.go('^', params, {reload: true});
-                    $state.go('home.manage.appointments.list.edit', params, { reload: false });
+                    params.patient = $scope.appointment.patient;
+                    $state.go('home.manage.appointments.list.new', params, { reload: true });
                 }));
             };
 
@@ -540,6 +533,8 @@ angular.module('bahmni.appointments')
             };
 
             $scope.navigateToPreviousState = function () {
+                var params = $state.params;
+                params.patient = undefined;
                 $state.go('^', $state.params, { reload: true });
             };
 
