@@ -36,11 +36,9 @@ angular.module('bahmni.registration')
                     return;
                 }
                 var defaults = patientInformation.defaults;
-                
                 if ($scope.patient.US_REG_DATE == undefined) {
                     $scope.patient.US_REG_DATE = dateUtil.today();
                 }
-                
                 var defaultVariableNames = _.keys(defaults);
 
                 var hasDefaultAnswer = function (personAttributeType) {
