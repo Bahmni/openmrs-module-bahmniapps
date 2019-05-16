@@ -717,13 +717,14 @@
                 ng-class="::{'right-form-field' : $index%2 != 0}"
                 ng-if="attribute.name != 'NICK_NAME' && attribute.name != 'TYPE_OF_REGISTRATION' && attribute.name != 'education' && attribute.name != 'MARITAL_STATUS' && attribute.name != 'NATIONALITY'
                     && attribute.name != 'BI' && attribute.name != 'NUIC' && attribute.name != 'NUIT' && attribute.name != 'DIRE' && attribute.name != 'Cedula_de_Nascimento'
-                    && attribute.name != 'Cartao_de_Eleitor' && attribute.name != 'Cedula_de_Nascimento' && attribute.name != 'Passaporte_Mocambicano' && attribute.name != 'Passaporte_Estrangeiro'">
+                    && attribute.name != 'Cartao_de_Eleitor' && attribute.name != 'Cedula_de_Nascimento' && attribute.name != 'Passaporte_Mocambicano' && attribute.name != 'Passaporte_Estrangeiro' && attribute.name != 'US_REG_DATE'">
                 <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                     is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                     get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate">
                 </attribute-types>
             </article>
         </section>
+
     </div>
 
     <div ng-repeat="section in ::patientConfiguration.getOrderedPatientAttributesSections()"

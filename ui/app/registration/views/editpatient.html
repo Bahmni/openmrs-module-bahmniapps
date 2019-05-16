@@ -22,7 +22,17 @@
                                 get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                     </article>
             </span>
-            <article class="form-field">
+
+            <span class="form-field-inline clearfix" ng-repeat="attribute in ::patientConfiguration.attributeTypes">
+                <article class="form-field" ng-if="attribute.name == 'US_REG_DATE'" 
+                ng-class="::{'right-form-field' : $index%2 != 0}">
+                        <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation" 
+                            is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList" 
+                            on-change="checkDuplicatePatients()"
+                            get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                </article>
+        </span>
+            <!--<article class="form-field">
                     <div class="field-attribute">
                     <label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
                     </div>
@@ -30,7 +40,7 @@
                     <div class="field-value">
                         <span class="uneditable-input text-only">{{patient.registrationDate | bahmniDate}}</span>
                    </div>
-            </article>
+            </article>-->
         </div>
         <ng-include src="'views/patientcommon.html'"></ng-include>
         <patient-action></patient-action>

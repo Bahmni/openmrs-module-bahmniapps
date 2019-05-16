@@ -58,7 +58,9 @@ angular.module('bahmni.registration')
                             $scope.existDocs = $scope.nationalityDocs;
                         }
                         else if ($scope.nationalityChoice == 'Estrangeiro' || $scope.nationalityChoice == 'Foreigner') {
-                            var foreignAttributes = ['DIRE', 'NUIT', 'Passaporte_Estrangeiro'];
+                            // var foreignAttributes = ['DIRE', 'NUIT', 'Passaporte_Estrangeiro'];
+                            var foreignAttributes = [{id:'DIRE',label:'DIRE'}, {id:'NUIT',label:'NUIT'}, {id:'Passaporte_Estrangeiro',label:'Passaporte Estrangeiro'}];
+
                             $scope.nationalityDocs = foreignAttributes;
                             $scope.existDocs = $scope.nationalityDocs;
                         }
@@ -108,11 +110,13 @@ angular.module('bahmni.registration')
                     $scope.docRemoved = $scope.attributeChoice;
                 };
                 $scope.addEditDocRow = function () {
-                    if ($scope.editPatientDocuments.includes($scope.attributeChoice)) {
+                    if ($scope.editPatientDocuments.includes($scope.attributeChoice.id)
+                    /*$scope.editPatientDocuments.includes($scope.attributeChoice)*/) {
                         alert("Selecione outro documento");
                     }
                     else {
-                        $scope.editPatientDocuments.push($scope.attributeChoice);
+                        $scope.editPatientDocuments.push($scope.attributeChoice.id)
+                            /*$scope.editPatientDocuments.push($scope.attributeChoice)*/;
                     }
                 };
 
@@ -123,7 +127,10 @@ angular.module('bahmni.registration')
                 $scope.removeEditDocRow = function (document) {
                     if ($scope.editPatientDocuments.includes(document)) {
                         $scope.editPatientDocuments.splice($scope.editPatientDocuments.indexOf(document), 1);
-                        $scope.existDocs.push(document);
+                        $scope.attributeChoice.id=document;
+                        console.log($scope.attributeChoice.id);
+                        //$scope.existDocs.push(document);
+                        $scope.existDocs.push($scope.attributeChoice);
                         $scope.patient[document] = "";
                     }
                     else {
@@ -151,6 +158,10 @@ angular.module('bahmni.registration')
                     });
                     section.expand = section.expanded || (notNullAttribute ? true : false);
                 });
+                
+                if ($scope.patient.US_REG_DATE == undefined) {
+                    $scope.patient.US_REG_DATE = dateUtil.today();
+                }
             };
 
             (function () {
