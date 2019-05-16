@@ -24,7 +24,7 @@ angular.module('bahmni.registration')
             var isHref = false;
             $rootScope.duplicatePatients;
             $rootScope.duplicatePatientCount = 0;
-            $rootScope.personSearchResultsConfig = ["NICK_NAME", "PRIMARY_CONTACT_NUMBER_1", "PATIENT_STATUS","US_REG_DATE"];
+            $rootScope.personSearchResultsConfig = ["NICK_NAME", "PRIMARY_CONTACT_NUMBER_1", "PATIENT_STATUS", "US_REG_DATE"];
             $rootScope.searchActions = appService.getAppDescriptor().getExtensions("org.bahmni.registration.patient.search.result.action");
             $scope.checkDuplicatePatients = function () {
                 var patientGivenName = $scope.patient.givenName || '';
@@ -274,7 +274,6 @@ angular.module('bahmni.registration')
                 }
             };
 
-
             $scope.$watch('patient.NATIONALITY.value', function (newValue, oldValue) {
                 if (newValue != oldValue) {
                     if (oldValue == undefined) {
@@ -297,50 +296,22 @@ angular.module('bahmni.registration')
             };
 
             $scope.addDocumentRow = function () {
-                if ($scope.patientDocuments.includes($scope.nationalAttribute.id)
-                /*$scope.patientDocuments.includes($scope.nationalAttribute)*/) {
+                if ($scope.patientDocuments.includes($scope.nationalAttribute)) {
                     alert("Selecione outro documento");
                 }
                 else {
-                    $scope.patientDocuments.push($scope.nationalAttribute.id);
-                    /*  $scope.patientDocuments.push($scope.nationalAttribute); */
-                    $scope.nationalityDocs.splice($scope.docRemoved, 1);
+                    $scope.patientDocuments.push($scope.nationalAttribute);
                 }
             };
 
-            /* $scope.removeDoc = function () {
-                 // $scope.nationalityDocs.splice($scope.nationalityDocs.indexOf($scope.docRemoved), 1);
-                 $scope.nationalityDocs.splice($scope.docRemoved, 1);
-             };*/
+            $scope.removeDoc = function () {
+                $scope.nationalityDocs.splice($scope.docRemoved, 1);
+            };
 
             $scope.removeDocumentRow = function (document) {
-
                 if ($scope.patientDocuments.includes(document)) {
                     $scope.patientDocuments.splice($scope.patientDocuments.indexOf(document), 1);
-
-                    /*var found = $scope.docList.find(function(document){return document;});
-                    console.log(found);
-                    $scope.nationalityDocs.push(found);*/
-
-                    /* for (var i=0;i<$scope.docList.length;i++)
-                   {
-                       if($scope.docList[i]==document)
-                       {
-                           console.log("esta a ser cumprido");
-                           $scope.nationalityDocs.push($scope.docList[i]);
-                       }
-                    
-                   }*/
-
-
-
-                   
-                  
-                    console.log(document);
-                  
-                    $scope.nationalityDocs.push(document.Object.create($scope.docList));
-
-
+                    $scope.nationalityDocs.push(document);
                     $scope.patient[document] = "";
                 }
                 else {
