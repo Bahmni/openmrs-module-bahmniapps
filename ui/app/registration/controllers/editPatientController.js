@@ -37,10 +37,12 @@ angular.module('bahmni.registration')
                         if ($scope.nationalityChoice == 'Mocambicano' || $scope.nationalityChoice == 'Mozambican') {
                             $scope.nationalityDocs = mozAttributes;
                             $scope.existDocs = $scope.nationalityDocs;
+                            $scope.nationalityDocs=[];
                         }
                         else if ($scope.nationalityChoice == 'Estrangeiro' || $scope.nationalityChoice == 'Foreigner') {
                             $scope.nationalityDocs = foreignAttributes;
                             $scope.existDocs = $scope.nationalityDocs;
+                            $scope.nationalityDocs=[];
                         }
                     }
                 };
@@ -56,11 +58,13 @@ angular.module('bahmni.registration')
                             var mozAttributes = ['BI', 'Cartao_de_Eleitor', 'Cedula_de_Nascimento', 'NUIT', 'NUIC', 'Passaporte_Mocambicano'];
                             $scope.nationalityDocs = mozAttributes;
                             $scope.existDocs = $scope.nationalityDocs;
+                            $scope.nationalityDocs=[];
                         }
                         else if ($scope.nationalityChoice == 'Estrangeiro' || $scope.nationalityChoice == 'Foreigner') {
                             var foreignAttributes = ['DIRE', 'NUIT', 'Passaporte_Estrangeiro'];
                             $scope.nationalityDocs = foreignAttributes;
                             $scope.existDocs = $scope.nationalityDocs;
+                            $scope.nationalityDocs=[];
                         }
                     }
                 };
@@ -93,7 +97,7 @@ angular.module('bahmni.registration')
                         }
                         else {
                             var i;
-                            for (i = 0; i < $scope.nationalityDocs.length; i++) {
+                            for (i = 0; i <= $scope.nationalityDocs.length; i++) {
                                 $scope.patient[$scope.nationalityDocs[i]] = "";
                             }
 
