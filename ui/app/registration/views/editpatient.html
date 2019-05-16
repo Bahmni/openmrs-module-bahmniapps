@@ -13,10 +13,11 @@
                  </span>
             </div>
             <span class="form-field-inline clearfix" ng-repeat="attribute in ::patientConfiguration.attributeTypes">
-                    <article class="form-field" ng-if="attribute.name == 'TYPE_OF_REGISTRATION'" 
+                    <article class="form-field" ng-if="attribute.name == 'TYPE_OF_REGISTRATION'"
                     ng-class="::{'right-form-field' : $index%2 != 0}">
-                            <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation" 
-                                is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList" 
+                        <span hidden>{{attribute.enabled = true}}</span>
+                            <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                                is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                                 on-change="checkDuplicatePatients()"
                                 get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                     </article>
