@@ -19,6 +19,7 @@
                         <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
                 </span>
                 </th>
+                <th ng-show="searchedPatient">{{::'APPOINTMENT_DATE' | translate}}</td>
             </tr>
             </thead>
             <tbody>
@@ -31,6 +32,7 @@
                 <td ng-show="::enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
                 <td>{{ (appointment.status + '_APPOINTMENT').toUpperCase() | translate }}</td>
                 <td>{{::appointment.comments}}</td>
+                <td ng-show="searchedPatient">{{::appointment.startDateTime | bahmniDate}}</td>
             </tr>
             </tbody>
         </table>
