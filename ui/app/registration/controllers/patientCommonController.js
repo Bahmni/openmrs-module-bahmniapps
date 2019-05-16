@@ -265,11 +265,11 @@ angular.module('bahmni.registration')
                     $scope.nationalityChoice = $scope.patient.NATIONALITY.value;
                     if ($scope.nationalityChoice == 'Mocambicano' || $scope.nationalityChoice == 'Mozambican') {
                         $scope.nationalityDocs = mozAttributes;
-                        $scope.patientDocuments=[];
+                        $scope.patientDocuments = [];
                     }
                     else if ($scope.nationalityChoice == 'Estrangeiro' || $scope.nationalityChoice == 'Foreigner') {
                         $scope.nationalityDocs = foreignAttributes;
-                        $scope.patientDocuments=[];
+                        $scope.patientDocuments = [];
                     }
                 }
             };
