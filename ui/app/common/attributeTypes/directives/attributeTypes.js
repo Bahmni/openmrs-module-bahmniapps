@@ -55,6 +55,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                     return answer.conceptId === attributeValueConceptType.conceptUuid;
                 });
                 attributeValueConceptType.value = concept && concept.fullySpecifiedName;
+                $rootScope.typeOfRegistrationSelected = attributeValueConceptType.value;
             };
 
             $scope.suggest = function (string) {
