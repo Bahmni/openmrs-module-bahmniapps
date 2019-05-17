@@ -128,5 +128,7 @@
     "FIRST_CLINICAL_CONSULTATION":"1a Consulta Clínica",
     "FOLLOWUP_CLINICAL_CONSULTATION":"Consulta Seguimento Clinica",
     "REGISTRATION_PERSONAL_INFORMATION":"Detalhes pessoais",
-    "REGISTRATION_PROFESSIONAL_INFORMATION":"Informação profissional"
+    "REGISTRATION_PROFESSIONAL_INFORMATION":"Informação profissional",
+    "FATHER_NAME": "Nome do Pai",
+    "MOTHER_NAME": "Nome da Mãe"
 }
