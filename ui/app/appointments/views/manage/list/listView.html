@@ -19,20 +19,19 @@
                         <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
                 </span>
                 </th>
-                <th ng-show="searchedPatient">{{::'APPOINTMENT_DATE' | translate}}</td>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="appointment in filteredAppointments" ng-click="select(appointment)" ng-style="{'background-color': colorsForListView[appointment.status]}" ng-class="{'selected' : isSelected(appointment)}">
                 <td>{{::appointment.patient.identifier}}</td>
                 <td>{{::appointment.patient.name | titleCase}}</td>
+                <td ng-show="searchedPatient">{{::appointment.startDateTime | bahmniDate}}</td>
                 <td>{{::appointment.block | translate}}</td>
                 <td ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
                 <td>{{::appointment.service.name}}</td>
                 <td ng-show="::enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
                 <td>{{ (appointment.status + '_APPOINTMENT').toUpperCase() | translate }}</td>
                 <td>{{::appointment.comments}}</td>
-                <td ng-show="searchedPatient">{{::appointment.startDateTime | bahmniDate}}</td>
             </tr>
             </tbody>
         </table>
