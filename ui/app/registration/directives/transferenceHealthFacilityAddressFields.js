@@ -1,10 +1,10 @@
 'use strict';
 angular.module('bahmni.registration')
-    .directive('healthFacilityAddressFields', function () {
+    .directive('transferenceHealthFacilityAddressFields', function () {
         return {
             restrict: 'AE',
-            templateUrl: 'views/healthFacilityAddressFields.html',
-            controller: 'HealthFacilityAddressFieldsDirectiveController',
+            templateUrl: 'views/transferenceHealthFacilityAddressFields.html',
+            controller: 'TransferenceHealthFacilityAddressFieldsDirectiveController',
             scope: {
                 address: '=',
                 addressLevels: '=',
@@ -13,14 +13,14 @@ angular.module('bahmni.registration')
             }
         };
     })
-    .controller('HealthFacilityAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', '$timeout', function ($scope, addressHierarchyService, $timeout) {
+    .controller('TransferenceHealthFacilityAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', '$timeout', function ($scope, addressHierarchyService, $timeout) {
         $scope.addressFieldInvalid = false;
         var selectedAddressUuids = {};
         var selectedUserGeneratedIds = {};
 
-        $scope.healthFacilityName = "";
-        $scope.healthFacilityProvince = "";
-        $scope.healthFacilityDistrict = "";
+        $scope.provenanceHealthFacilityProvince = "";
+        $scope.provenanceHealthFacilityProvince = "";
+        $scope.provenanceHealthFacilityDistrict = "";
 
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
         var addressLevelUIOrderBasedOnConfig = $scope.addressLevels;
@@ -50,25 +50,25 @@ angular.module('bahmni.registration')
 
         $scope.addressFieldSelected = function (fieldName) {
             $timeout(function () {
-                if (fieldName === "address7" && ($scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE !== undefined)) {
-                    $scope.healthFacilityProvince = $scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE;
+                if (fieldName === "address7" && ($scope.$parent.$parent.patient.TRANSFERENCE_HF_PROVINCE !== undefined)) {
+                    $scope.provenanceHealthFacilityProvince = $scope.$parent.$parent.patient.TRANSFERENCE_HF_PROVINCE;
                 }
-                if (fieldName === "address8" && ($scope.$parent.$parent.patient.HEALTH_FACILITY_DISTRICT !== undefined)) {
-                    $scope.healthFacilityDistrict = $scope.$parent.$parent.patient.HEALTH_FACILITY_DISTRICT;
+                if (fieldName === "address8" && ($scope.$parent.$parent.patient.TRANSFERENCE_HF_DISTRICT !== undefined)) {
+                    $scope.provenanceHealthFacilityDistrict = $scope.$parent.$parent.patient.TRANSFERENCE_HF_DISTRICT;
                 }
-                if (fieldName === "address10" && ($scope.$parent.$parent.patient.HEALTH_FACILITY_NAME !== undefined)) {
-                    $scope.healthFacilityName = $scope.$parent.$parent.patient.HEALTH_FACILITY_NAME;
+                if (fieldName === "address10" && ($scope.$parent.$parent.patient.TRANSFERENCE_HF_NAME !== undefined)) {
+                    $scope.provenanceHealthFacilityName = $scope.$parent.$parent.patient.TRANSFERENCE_HF_NAME;
                 }
             }, 200);
             return function (addressFieldItem) {
                 if (fieldName === "address7") {
-                    $scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE = addressFieldItem.value;
+                    $scope.$parent.$parent.patient.TRANSFERENCE_HF_PROVINCE = addressFieldItem.value;
                 }
                 if (fieldName === "address8") {
-                    $scope.$parent.$parent.patient.HEALTH_FACILITY_DISTRICT = addressFieldItem.value;
+                    $scope.$parent.$parent.patient.TRANSFERENCE_HF_DISTRICT = addressFieldItem.value;
                 }
                 if (fieldName === "address10") {
-                    $scope.$parent.patient.HEALTH_FACILITY_NAME = addressFieldItem.value;
+                    $scope.$parent.patient.TRANSFERENCE_HF_NAME = addressFieldItem.value;
                 }
                 var parentFields = addressLevelsNamesInDescendingOrder.slice(addressLevelsNamesInDescendingOrder.indexOf(fieldName) + 1);
 
@@ -78,15 +78,15 @@ angular.module('bahmni.registration')
                         return;
                     }
                     if (parentField === "address8") {
-                        $scope.$parent.$parent.patient.HEALTH_FACILITY_DISTRICT = parent.name;
-                        document.getElementById("address8").value = parent.name;
-                        $scope.healthFacilityDistrict = parent.name;
+                        $scope.$parent.$parent.patient.TRANSFERENCE_HF_DISTRICT = parent.name;
+                        document.getElementById("address8_transference").value = parent.name;
+                        $scope.provenanceHealthFacilityDistrict = parent.name;
                         parent = parent.parent;
                     }
                     if (parentField === "address7") {
-                        $scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE = parent.name;
-                        document.getElementById("address7").value = parent.name;
-                        $scope.healthFacilityProvince = parent.name;
+                        $scope.$parent.$parent.patient.TRANSFERENCE_HF_PROVINCE = parent.name;
+                        document.getElementById("address7_transference").value = parent.name;
+                        $scope.provenanceHealthFacilityProvince = parent.name;
                         parent = parent.parent;
                     }
                 });
@@ -121,9 +121,9 @@ angular.module('bahmni.registration')
                 return false;
             }
             if (parentFieldName && !parentValue) {
-                return true;
+                return false;
             }
-            return parentFieldName && parentValue && parentValueInvalid;
+            return true;
         };
 
         var isParentValueInvalid = function (parentId) {
@@ -146,18 +146,18 @@ angular.module('bahmni.registration')
             if (event.keyCode === 8) {
                 $timeout(function () {
                     if (fieldName === "address7") {
-                        $scope.$parent.$parent.patient.HEALTH_FACILITY_DISTRICT = "";
-                        document.getElementById("address8").value = "";
-                        $scope.healthFacilityDistrict = "";
-                        $scope.$parent.$parent.patient.HEALTH_FACILITY_NAME = "";
-                        document.getElementById("address10").value = "";
-                        $scope.healthFacilityName = "";
+                        $scope.$parent.$parent.patient.TRANSFERENCE_HF_DISTRICT = "";
+                        document.getElementById("address8_transference").value = " ";
+                        $scope.provenanceHealthFacilityDistrict = " ";
+                        $scope.$parent.$parent.patient.TRANSFERENCE_HF_NAME = "";
+                        document.getElementById("address10_transference").value = " ";
+                        $scope.provenanceHealthFacilityName = "";
                     }
 
                     if (fieldName === "address8") {
-                        $scope.$parent.$parent.patient.HEALTH_FACILITY_NAME = "";
-                        document.getElementById("address10").value = "";
-                        $scope.healthFacilityName = "";
+                        $scope.$parent.$parent.patient.TRANSFERENCE_HF_NAME = "";
+                        document.getElementById("address10_transference").value = " ";
+                        $scope.provenanceHealthFacilityName = " ";
                     }
                 }, 200);
             }
@@ -166,16 +166,16 @@ angular.module('bahmni.registration')
         $scope.removeAutoCompleteEntry = function (fieldName) {
             return function () {
                 if (fieldName === "address7") {
-                    $scope.$parent.$parent.patient.HEALTH_FACILITY_DISTRICT = "";
-                    $scope.healthFacilityDistrict = "";
+                    $scope.$parent.$parent.patient.TRANSFERENCE_HF_DISTRICT = "";
+                    $scope.provenanceHealthFacilityDistrict = "";
 
-                    $scope.$parent.$parent.patient.HEALTH_FACILITY_NAME = "";
-                    $scope.healthFacilityName = "";
+                    $scope.$parent.$parent.patient.TRANSFERENCE_HF_NAME = "";
+                    $scope.provenanceHealthFacilityName = "";
                 }
 
                 if (fieldName === "address8") {
-                    $scope.$parent.$parent.patient.HEALTH_FACILITY_NAME = "";
-                    $scope.healthFacilityName = "";
+                    $scope.$parent.$parent.patient.TRANSFERENCE_HF_NAME = "";
+                    $scope.provenanceHealthFacilityName = "";
                 }
                 $scope.selectedValue[fieldName] = null;
             };

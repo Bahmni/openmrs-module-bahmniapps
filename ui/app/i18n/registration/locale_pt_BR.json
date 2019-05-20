@@ -137,5 +137,6 @@
     "HF_DISTRICT": "Distrito",
     "REGISTRATION_LABEL_US_REG_DATE": "Data de Registo na US",
     "REGISTRATION_LABEL_PASSPORT_MOZ": "Passporte Mocambicano",
-    "REGISTRATION_LABEL_PASSPORT_FOR": "Passaporte Estrangeiro"
+    "REGISTRATION_LABEL_PASSPORT_FOR": "Passaporte Estrangeiro",
+    "TRANSFERED_OUT_FROM": "Proveniência"
 }

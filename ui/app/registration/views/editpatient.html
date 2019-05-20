@@ -24,7 +24,7 @@
             </span>
             <span class="form-field-inline clearfix" ng-repeat="attribute in ::patientConfiguration.attributeTypes">
                      <article class="form-field" ng-if="attribute.name == 'PATIENT_STATUS'"
-                              ng-class="::{'right-form-field' : $index%2 != 0}" style="margin-bottom: 5px">
+                              ng-class="::{'right-form-field' : $index%2 != 0}">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                                              is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                                              on-change="checkDuplicatePatients()"
