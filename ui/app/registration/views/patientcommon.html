@@ -758,14 +758,6 @@
                     <section transference-health-facility-address-fields data-address-levels="::addressLevels" data-address="patient.address"
                              field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
                              strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
-                    <article class="form-field" ng-repeat="attribute in ::section.attributes"
-                             ng-class="::{'right-form-field' : $index%2 != 0}">
-                        <attribute-types target-model="patient" attribute="::attribute"
-                                         field-validation="::fieldValidation" is-auto-complete="isAutoComplete"
-                                         get-auto-complete-list="getAutoCompleteList" get-data-results="getDataResults"
-                                         is-read-only="isReadOnly" handle-update="handleUpdate" ng-if="attribute.name =='PATIENT_STATUS'">
-                        </attribute-types>
-                    </article>
                 </section>
             </div>
         </div>
