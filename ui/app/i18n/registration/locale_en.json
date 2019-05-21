@@ -155,6 +155,9 @@
   "FIRST_CLINICAL_CONSULTATION":"First Clinical Consultation",
   "FOLLOWUP_CLINICAL_CONSULTATION":"Follow Up Clinical Consultation",
   "REGISTRATION_PERSONAL_INFORMATION":"Personal Details",
+  "REGISTRATION_PROFESSIONAL_INFORMATION":"Professional Information",
+  "FATHER_NAME": "Father Name",
+  "MOTHER_NAME": "Mother Name",
   "HF_NAME": "Health Facility",
   "HF_PROVINCE": "Province",
   "HF_DISTRICT": "District",
@@ -167,5 +170,6 @@
   "REGISTRATION_PROFESSIONAL_INFORMATION":"Professional Information",
   "REGISTRATION_LABEL_US_REG_DATE": "Health Facility Registration Date",
   "REGISTRATION_LABEL_PASSPORT_MOZ": "Mozambican Passport",
-  "REGISTRATION_LABEL_PASSPORT_FOR": "Foreigner Passport"
+  "REGISTRATION_LABEL_PASSPORT_FOR": "Foreigner Passport",
+  "TRANSFERED_OUT_FROM": "Provenance"
 }

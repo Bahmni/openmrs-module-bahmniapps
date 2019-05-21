@@ -7,14 +7,15 @@
     <div class="field-value" ng-if="addressLevel.name === 'HF_PROVINCE'" >
         <input type="text"
                autocomplete="off"
-               id="{{::addressLevel.addressField}}"
+               id="{{::addressLevel.addressField  +'_transference'}}"
                pattern-validate
                non-blank="::addressLevel.required"
-               ng-model="healthFacilityProvince"
+               ng-model="provenanceHealthFacilityProvince"
                bahmni-autocomplete
                source="getAddressEntryList(addressLevel.addressField)"
                response-map="getAddressDataResults"
                on-select="addressFieldSelected(addressLevel.addressField)"
+               ng-change="clearFields(addressLevel.addressField)"
                min-length="1"
                strict-select="true"
                initial-value="selectedValue[addressLevel.addressField]"
@@ -27,14 +28,15 @@
     <div class="field-value" ng-if="addressLevel.name === 'HF_DISTRICT'">
         <input type="text"
                autocomplete="off"
-               id="{{::addressLevel.addressField}}"
+               id="{{::addressLevel.addressField +'_transference'}}"
                pattern-validate
-               non-blank="addressLevel.required"
-               ng-model="healthFacilityDistrict"
+               non-blank="::addressLevel.required"
+               ng-model="provenanceHealthFacilityDistrict"
                bahmni-autocomplete
                source="getAddressEntryList(addressLevel.addressField)"
                response-map="getAddressDataResults"
                on-select="addressFieldSelected(addressLevel.addressField)"
+               ng-change="clearFields(addressLevel.addressField)"
                min-length="1"
                strict-select="true"
                initial-value="selectedValue[addressLevel.addressField]"
@@ -46,14 +48,15 @@
     <div class="field-value" ng-if="addressLevel.name === 'HF_NAME'" >
         <input type="text"
                autocomplete="off"
-               id="{{::addressLevel.addressField}}"
+               id="{{::addressLevel.addressField +'_transference'}}"
                pattern-validate
                non-blank="::addressLevel.required"
-               ng-model="healthFacilityName"
+               ng-model="provenanceHealthFacilityName"
                bahmni-autocomplete
                source="getAddressEntryList(addressLevel.addressField)"
                response-map="getAddressDataResults"
                on-select="addressFieldSelected(addressLevel.addressField)"
+               ng-change="clearFields(addressLevel.addressField)"
                min-length="1"
                strict-select="true"
                initial-value="selectedValue[addressLevel.addressField]"

@@ -4,7 +4,7 @@ angular.module('bahmni.appointments')
     .controller('AppointmentsListViewController', ['$scope', '$state', '$rootScope', '$translate', '$stateParams', 'spinner',
         'appointmentsService', 'appService', 'appointmentsFilter', 'printer', 'checkinPopUp', 'confirmBox', 'ngDialog', 'messagingService',
         function ($scope, $state, $rootScope, $translate, $stateParams, spinner, appointmentsService, appService,
-                  appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService) {
+            appointmentsFilter, printer, checkinPopUp, confirmBox, ngDialog, messagingService) {
             $scope.enableSpecialities = appService.getAppDescriptor().getConfigValue('enableSpecialities');
             $scope.enableServiceTypes = appService.getAppDescriptor().getConfigValue('enableServiceTypes');
             $scope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
@@ -17,6 +17,7 @@ angular.module('bahmni.appointments')
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
             });
+          
             $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_DATE', sortInfo: 'startDateTime', class: true, enable: true},
@@ -26,6 +27,7 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes},
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
+          
             var init = function () {
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
@@ -34,7 +36,7 @@ angular.module('bahmni.appointments')
             $scope.getAppointmentsForDate = function (viewDate) {
                 $stateParams.viewDate = viewDate;
                 $scope.selectedAppointment = undefined;
-                var params = {forDate: viewDate};
+                var params = { forDate: viewDate };
                 $scope.$on('$stateChangeStart', function (event, toState, toParams) {
                     if (toState.tabName == 'calendar') {
                         toParams.doFetchAppointmentsData = false;
@@ -67,6 +69,7 @@ angular.module('bahmni.appointments')
             };
 
             $scope.displaySearchedPatient = function (appointments) {
+                getAppointmentsBlock(appointments);
                 oldPatientData = $scope.filteredAppointments;
                 $scope.filteredAppointments = appointments.map(function (appointmet) {
                     appointmet.date = appointmet.startDateTime;
@@ -222,7 +225,7 @@ angular.module('bahmni.appointments')
                 };
                 confirmBox({
                     scope: popUpScope,
-                    actions: [{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}],
+                    actions: [{ name: 'yes', display: 'YES_KEY' }, { name: 'no', display: 'NO_KEY' }],
                     className: "ngdialog-theme-default"
                 });
             };
