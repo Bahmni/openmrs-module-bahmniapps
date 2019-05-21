@@ -36,6 +36,9 @@ angular.module('bahmni.registration')
                     return;
                 }
                 var defaults = patientInformation.defaults;
+                if ($scope.patient.US_REG_DATE == undefined) {
+                    $scope.patient.US_REG_DATE = dateUtil.today();
+                }
                 var defaultVariableNames = _.keys(defaults);
 
                 var hasDefaultAnswer = function (personAttributeType) {
@@ -132,7 +135,7 @@ angular.module('bahmni.registration')
                         var data = _.map(response.data, function (data) {
                             return {
                                 sizeOfTheJump: data.sizeOfJump,
-                                identifierName: _.find($rootScope.patientConfiguration.identifierTypes, {uuid: data.identifierType}).name
+                                identifierName: _.find($rootScope.patientConfiguration.identifierTypes, { uuid: data.identifierType }).name
                             };
                         });
                         createPatient(true);

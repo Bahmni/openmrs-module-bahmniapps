@@ -63,10 +63,11 @@
                 <th><strong><a href="#"  ng-click="orderByField='familyName'; reverseSort = !reverseSort">{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}<span  class="sort-pos" ng-show="orderByField == 'familyName'"><span ng-show="!reverseSort"><i class="sort-by-asc"></i></span><span ng-show="reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th>
                 <th class="sort-by" ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field == 'NICK_NAME'"><strong>{{ ::field | translate}}</strong></th>
                 <th><strong><a href="#"  ng-click="orderByField='gender'; reverseSort = !reverseSort">{{ ::'REGISTRATION_LABEL_GENDER' | translate}}<span  class="sort-pos" ng-show="orderByField == 'gender'"><span ng-show="!reverseSort"><i class="sort-by-asc"></i></span><span ng-show="reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th>
-                <th><strong><a href="#"  ng-click="orderByField='birthDate'; reverseSort = !reverseSort">{{ ::'REGISTRATION_LABEL_BIRTH_DATE' | translate}}<span  class="sort-pos" ng-show="orderByField == 'birthDate'"><span ng-show="!reverseSort"><i class="sort-by-asc"></i></span><span ng-show="reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th> 
+                <th><strong><a href="#"  ng-click="orderByField='birthDate'; reverseSort = !reverseSort">{{ ::'REGISTRATION_LABEL_BIRTH_DATE' | translate}}<span  class="sort-pos" ng-show="orderByField == 'birthDate'"><span ng-show="!reverseSort"><i class="sort-by-asc"></i></span><span ng-show="reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th>
+                <th><strong><a href="#"  ng-click="orderByField='age'; reverseSort = !reverseSort">{{ ::'REGISTRATION_LABEL_AGE' | translate}}<span  class="sort-pos" ng-show="orderByField == 'age'"><span ng-show="!reverseSort"><i class="sort-by-asc"></i></span><span ng-show="reverseSort"><i class="sort-by-desc"></i></span></span></a></strong></th>  
                 <th class="sort-by" ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field == 'PRIMARY_CONTACT_NUMBER_1'"><strong>{{ ::field | translate}}</strong></th>
                 <th class="sort-by" ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field == 'PATIENT_STATUS'"><strong>{{ ::field | translate}}</strong></th>
-                <th><strong>{{ ::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
+                <th><strong>{{ ::'REGISTRATION_LABEL_US_REG_DATE' | translate}}</strong></th>
                 <th ng-if="::programAttributesSearchConfig.show"><strong>{{::convertToTableHeader(programAttributesSearchConfig.label)}}</strong></th>
             </tr>
             </thead>
@@ -90,10 +91,12 @@
                 <td ng-if="!result.birthdateEstimated">{{::result.birthDate | date:'dd/MM/y'}}</td>
                 <td ng-if="result.birthdateEstimated">{{::result.birthDate | date:'dd/MM/y'}}&nbsp;&nbsp;&nbsp;({{::'BIRTHDATE_ESTIMATED' | translate}})</td>
 
+                <td ng-if="result.age">{{::result.age }}</td>
+
                 <!-- <td ng-repeat = "field in ::addressSearchResultsConfig.fields">{{::result.addressFieldValue[field] || ""}}</td> -->
                 <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field=='PRIMARY_CONTACT_NUMBER_1'">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
                 <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field=='PATIENT_STATUS'">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
-                <td>{{::result.dateCreated | bahmniDate}}</td>
+                <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field=='US_REG_DATE'">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
                 <td ng-if="::programAttributesSearchConfig.show">{{getProgramAttributeValues(result) | bahmniDateInStrictMode}}</td>
             </tr>
             </tbody>
