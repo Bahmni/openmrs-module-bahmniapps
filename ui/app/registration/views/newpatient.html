@@ -58,12 +58,22 @@
                                     class="asterick">*</span>
                             </label>
                         </div>
-                        <div class="input-prepend">
+                        <div class="input-prepend" ng-if="typeOfRegistrationSelected != 'NEW_PATIENT'">
                             <span class="add-on">{{ ::'REGISTRATION_HEALTH_FACILITY_CODE' | translate}}</span>
                             <input type="text" id="registrationNumber" ng-model="NID.healthFacilityCode"
-                                pattern-validate focus-on="patient.primaryIdentifier.hasOldIdentifier"
-                                ng-blur="buildFinalNID()" minlength="8" maxlength="8" size=8 required>
+                                   pattern-validate onfocus="this.value=''"
+                                   focus-on="patient.primaryIdentifier.hasOldIdentifier"
+                                   ng-blur="buildFinalNID()" minlength="8" maxlength="8" size=8 required>
                         </div>
+
+                        <div class="input-prepend" ng-if="typeOfRegistrationSelected == 'NEW_PATIENT'">
+                            <span class="add-on">{{ ::'REGISTRATION_HEALTH_FACILITY_CODE' | translate}}</span>
+                            <input type="text" id="registrationNumber" ng-model="NID.healthFacilityCode"
+                                   pattern-validate ng-value="NID.healthFacilityCode = healthFacility.code" ng-disabled="true"
+                                   focus-on="patient.primaryIdentifier.hasOldIdentifier"
+                                   ng-blur="buildFinalNID()" minlength="8" maxlength="8" size=8 required>
+                        </div>
+
 
                         <div class="input-prepend">
                             <span class="add-on">{{ ::'REGISTRATION_SERVICE_CODE' | translate}}</span>
