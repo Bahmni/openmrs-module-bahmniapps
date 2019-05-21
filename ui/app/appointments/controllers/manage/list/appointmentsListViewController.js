@@ -17,14 +17,17 @@ angular.module('bahmni.appointments')
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
             });
-            $scope.tableInfo = [{ heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true },
-            { heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true },
-            { heading: 'APPOINTMENT_BLOCK', sortInfo: 'block', enable: true },
-            { heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities },
-            { heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true },
-            { heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes },
-            { heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true },
-            { heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true }];
+          
+            $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
+                {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_DATE', sortInfo: 'startDateTime', class: true, enable: true},
+                {heading: 'APPOINTMENT_BLOCK', sortInfo: 'block', enable: true},
+                {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
+                {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
+                {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes},
+                {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
+                {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
+          
             var init = function () {
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
