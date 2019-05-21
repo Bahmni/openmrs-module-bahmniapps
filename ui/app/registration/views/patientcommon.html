@@ -549,18 +549,18 @@
 
             </section>
 
+                <article class="form-field" ng-repeat="attribute in ::attributeRow" ng-if = "attribute.name == 'MOTHER_NAME'" ng-class="::{'right-form-field' : $index%2 != 0}">
+                    <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                                     is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                                     get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                </article>
 
-
-     
-
-
-
-
-
-
-
-
-
+                <article class="form-field" ng-repeat="attribute in ::attributeRow" ng-if = "attribute.name == 'FATHER_NAME'" ng-class="::{'right-form-field' : $index%2 != 0}">
+                    <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                                     is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                                     get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                </article>
+        </section>
 
         <legend class="registraion_legend">
             <span class="mylegend"> {{ ::'REGISTRATION_PROFESSIONAL_INFORMATION' | translate}}</span>
@@ -592,12 +592,6 @@
 
             </section>
         </section>
-
-
-
-
-
-
 
         <legend class="registraion_legend">
             <span class="mylegend"> {{ ::'REGISTRATION_LABEL_ADDRESS_INFO' | translate}}</span>
