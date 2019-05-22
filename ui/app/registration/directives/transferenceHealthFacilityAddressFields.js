@@ -18,7 +18,7 @@ angular.module('bahmni.registration')
         var selectedAddressUuids = {};
         var selectedUserGeneratedIds = {};
 
-        $scope.provenanceHealthFacilityProvince = "";
+        $scope.provenanceHealthFacilityName = "";
         $scope.provenanceHealthFacilityProvince = "";
         $scope.provenanceHealthFacilityDistrict = "";
 
@@ -61,6 +61,7 @@ angular.module('bahmni.registration')
                 }
             }, 200);
             return function (addressFieldItem) {
+                selectedAddressUuids[fieldName] = addressFieldItem.addressField.uuid;
                 if (fieldName === "address7") {
                     $scope.$parent.$parent.patient.TRANSFERENCE_HF_PROVINCE = addressFieldItem.value;
                 }
@@ -155,6 +156,9 @@ angular.module('bahmni.registration')
                     }
 
                     if (fieldName === "address8") {
+                        if ($scope.provenanceHealthFacilityName !== "") {
+                            selectedAddressUuids = {};
+                        }
                         $scope.$parent.$parent.patient.TRANSFERENCE_HF_NAME = "";
                         document.getElementById("address10_transference").value = " ";
                         $scope.provenanceHealthFacilityName = " ";

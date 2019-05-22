@@ -61,6 +61,7 @@ angular.module('bahmni.registration')
                 }
             }, 200);
             return function (addressFieldItem) {
+                selectedAddressUuids[fieldName] = addressFieldItem.addressField.uuid;
                 if (fieldName === "address7") {
                     $scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE = addressFieldItem.value;
                 }
@@ -155,6 +156,9 @@ angular.module('bahmni.registration')
                     }
 
                     if (fieldName === "address8") {
+                        if ($scope.healthFacilityName !== "") {
+                            selectedAddressUuids = {};
+                        }
                         $scope.$parent.$parent.patient.HEALTH_FACILITY_NAME = "";
                         document.getElementById("address10").value = "";
                         $scope.healthFacilityName = "";
