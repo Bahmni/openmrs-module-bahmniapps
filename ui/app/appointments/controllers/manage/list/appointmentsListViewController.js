@@ -19,13 +19,14 @@ angular.module('bahmni.appointments')
             });
             $scope.tableInfo = [{ heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true },
             { heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true },
-            { heading: 'APPOINTMENT_DATE', sortInfo: 'startDateTime', class: true, enable: true },
+            { heading: 'APPOINTMENT_DATE', sortInfo: 'appointment.startDateTime', class: true, enable: false },
             { heading: 'APPOINTMENT_BLOCK', sortInfo: 'block', enable: true },
             { heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities },
             { heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true },
             { heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes },
             { heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true },
             { heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true }];
+
             var init = function () {
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
@@ -74,6 +75,7 @@ angular.module('bahmni.appointments')
                     return appointmet;
                 });
                 $scope.searchedPatient = true;
+                $scope.tableInfo[2].enable = true;
                 $stateParams.isFilterOpen = false;
                 $scope.isFilterOpen = false;
                 $stateParams.isSearchEnabled = true;
@@ -85,6 +87,7 @@ angular.module('bahmni.appointments')
 
             $scope.goBackToPreviousView = function () {
                 $scope.searchedPatient = false;
+                $scope.tableInfo[2].enable = false;
                 $scope.filteredAppointments = oldPatientData;
                 $stateParams.isFilterOpen = true;
                 $scope.isFilterOpen = true;

@@ -12,7 +12,7 @@
         <table ng-show="!hasNoAppointments()">
             <thead>
             <tr>
-                <th ng-show="::info.enable" ng-repeat="info in ::tableInfo" ng-click="::info.sortInfo && sortAppointmentsBy(info.sortInfo)">
+                <th ng-show="info.enable" ng-repeat="info in ::tableInfo" ng-click="::info.sortInfo && sortAppointmentsBy(info.sortInfo)">
                     {{ ::info.heading | translate }}
                     <span ng-if="sortColumn == info.sortInfo || info.sortInfo == 'additionalInfo' && sortColumn == 'additionalInformation'">
                         <i class="fa fa-caret-up" ng-show="reverseSort"></i>
@@ -25,7 +25,7 @@
             <tr ng-repeat="appointment in filteredAppointments" ng-click="select(appointment)" ng-style="{'background-color': colorsForListView[appointment.status]}" ng-class="{'selected' : isSelected(appointment)}">
                 <td>{{::appointment.patient.identifier}}</td>
                 <td>{{::appointment.patient.name | titleCase}}</td>
-                <td ng-show="searchedPatient">{{::appointment.startDateTime | bahmniDate}}</td>
+                <td ng-show="::searchedPatient">{{::appointment.startDateTime | bahmniDate}}</td>
                 <td>{{::appointment.block | translate}}</td>
                 <td ng-show="::enableSpecialities">{{::appointment.service.speciality.name}}</td>
                 <td>{{::appointment.service.name}}</td>
