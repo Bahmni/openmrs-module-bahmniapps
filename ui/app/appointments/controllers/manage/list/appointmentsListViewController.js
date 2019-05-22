@@ -87,6 +87,7 @@ angular.module('bahmni.appointments')
 
             $scope.goBackToPreviousView = function () {
                 $scope.searchedPatient = false;
+                $scope.tableInfo[2].enable = false;
                 $scope.filteredAppointments = oldPatientData;
                 $stateParams.isFilterOpen = true;
                 $scope.isFilterOpen = true;
