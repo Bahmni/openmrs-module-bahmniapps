@@ -70,6 +70,19 @@ angular.module('bahmni.common.conceptSet')
                 });
 
                 scope.handleUpdate = function () {
+                    if (scope.observation.concept.name == 'Last Menstruation Date') {
+                        _.map(scope.rootObservation.groupMembers, function (currentObj) {
+                            if (currentObj.concept.name == 'Probable delivery date') {
+                                var currentEnteredDate = new Date(scope.observation.value);
+                                currentEnteredDate = moment(currentEnteredDate).add(9, 'M');
+                                currentEnteredDate = moment(currentEnteredDate).add(7, 'days');
+                                currentEnteredDate = moment(currentEnteredDate).format('YYYY-MM-DD');
+                                currentObj.value = currentEnteredDate;
+                                return currentObj;
+                            }
+                            return currentObj;
+                        });
+                    }
                     scope.$root.$broadcast("event:observationUpdated-" + scope.conceptSetName, scope.observation.concept.name, scope.rootObservation);
                 };
 
