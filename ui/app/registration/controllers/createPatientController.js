@@ -24,7 +24,6 @@ angular.module('bahmni.registration')
             $scope.buildFinalNID = function () {
                 $scope.patient.primaryIdentifier.registrationNumber = $scope.NID.healthFacilityCode + '/' + $scope.NID.serviceCode + '/' + $scope.NID.year + '/' + $scope.NID.sequentialCode;
             };
-
             $scope.$watch('patient.primaryIdentifier.registrationNumber', function () {
                 $scope.patient.primaryIdentifier.generate();
             });
@@ -36,6 +35,9 @@ angular.module('bahmni.registration')
                     return;
                 }
                 var defaults = patientInformation.defaults;
+                if ($scope.patient.US_REG_DATE == undefined) {
+                    $scope.patient.US_REG_DATE = dateUtil.today();
+                }
                 var defaultVariableNames = _.keys(defaults);
 
                 var hasDefaultAnswer = function (personAttributeType) {
@@ -132,7 +134,7 @@ angular.module('bahmni.registration')
                         var data = _.map(response.data, function (data) {
                             return {
                                 sizeOfTheJump: data.sizeOfJump,
-                                identifierName: _.find($rootScope.patientConfiguration.identifierTypes, {uuid: data.identifierType}).name
+                                identifierName: _.find($rootScope.patientConfiguration.identifierTypes, { uuid: data.identifierType }).name
                             };
                         });
                         createPatient(true);

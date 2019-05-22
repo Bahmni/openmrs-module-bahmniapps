@@ -114,9 +114,9 @@ Bahmni.Registration.PatientConfig = (function () {
             })[0];
 
             if (givenName && middleName && familyName) {
-                return { "showNameField": true, "labelForNameField": givenName.description, "placeholderForGivenName": givenName.description, "placeholderForMiddleName": middleName.description, "placeholderForFamilyName": familyName.description};
+                return { "showNameField": true, "labelForNameField": givenName.description, "placeholderForGivenName": givenName.description, "placeholderForMiddleName": middleName.description, "placeholderForFamilyName": familyName.description };
             }
-            return {"showNameField": false};
+            return { "showNameField": false };
         }
 
     };

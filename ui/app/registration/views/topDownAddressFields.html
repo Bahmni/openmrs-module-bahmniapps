@@ -1,5 +1,5 @@
 <section class="form-field-inline" ng-repeat="addressLevels in ::addressLevelsChunks">
-    <article class="form-field" ng-repeat="addressLevel in ::addressLevels"
+    <article class="form-field" ng-repeat="addressLevel in ::addressLevels" ng-if="addressLevel.name !== 'HF_NAME' && addressLevel.name !== 'HF_PROVINCE' && addressLevel.name !== 'HF_DISTRICT'"
              ng-class="::{'right-form-field': $index % 2 != 0 }">
         <div class="field-attribute"><label for="{{::addressLevel.addressField}}">{{::addressLevel.name | translate}}<span
                 class="asterick"

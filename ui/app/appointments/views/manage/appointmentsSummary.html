@@ -1,37 +1,64 @@
 <div class="app-summary-container">
-    <week-picker view-date="viewDate" on-change="getAppointmentsSummaryForAWeek"
-                 week-start="weekStart"></week-picker>
-    <div class="app-summary-table-container">
+
+    <div class="app-date-nav">
+        
+        {{'APPOINTMENT_SUMMARY_START_LABEL' | translate}}<input type="date" id="input1" name="input"
+            ng-model="startDate" placeholder="YYYY-MM-DD" required />
+
+        {{'APPOINTMENT_SUMMARY_END_LABEL' | translate}}<input type="date" id="input2" name="input" ng-model="endDate"
+            placeholder="YYYY-MM-DD" min="{{minDay | date:'yyyy-MM-dd'}}" required />
+
+
+        <button type="submit" ng-show="startDate!=undefined && endDate!=undefined"
+            ng-click="getAppointmentsSummaryPeriod(startDate,endDate)" ng-disabled="endDate==startDate"> {{'APPOINTMENT_SUMMARY_BUTTON_LABEL' | translate}}</button>
+       
+        <div ng-show="weekDatesInfo==''" style="color:red">{{'APPOINTMENT_SUMMARY_END_ALERT' | translate}}</div>
+    </div>
+
+    <div class="app-summary-table-container" ng-hide="weekDatesInfo==undefined || weekDatesInfo==''">
         <table class="table-header">
             <thead>
-            <tr>
-                <th></th>
-                <th ng-repeat="dateInfo in weekDatesInfo">
-                    {{dateInfo.date | date:'dd/MM/y'}}
-                </th>
-            </tr>
+                <tr>
+
+                    <th>
+                    <td ng-repeat="appointment in appointments"> {{appointment.appointmentService.name}}</td>
+
+                    <td>{{ 'TOTAL_KEY' | translate }}</td>
+                    </th>
+
+                </tr>
             </thead>
-        </table>
-        <table>
+
             <tbody>
-            <tr ng-repeat="appointment in appointments">
-                <td>
-                    {{appointment.appointmentService.name}}
-                </td>
-                <td ng-repeat="dateInfo in weekDatesInfo" ng-class="{'currentDate' : isCurrentDate(dateInfo.date)}">
-                    <a ng-click="goToListView(dateInfo.date, appointment.appointmentService)">{{appointment.appointmentCountMap[dateInfo.date].allAppointmentsCount}}</a>
-                    <span style="color: #E31C3B" ng-if="appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount">
-                ({{appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount}} {{'MISSED_KEY' | translate}})</span>
-                </td>
-            </tr>
-            <tr>
-                <td>{{ 'TOTAL_KEY' | translate }}</td>
-                <td ng-repeat="dateInfo in weekDatesInfo" class="app-summary-total" ng-class="{'currentDate' : isCurrentDate(dateInfo.date)}">
-                    <a ng-if="dateInfo.total.all" ng-click="goToListView(dateInfo.date)" target="_blank">{{dateInfo.total.all}} </a>
-                    <span style="color: #E31C3B" ng-if="dateInfo.total.missed">({{dateInfo.total.missed}} {{'MISSED_KEY' | translate}})</span>
-                </td>
-            </tr>
+
+                <tr ng-repeat="dateInfo in weekDatesInfo">
+                    <br>
+                    <td>
+                        {{dateInfo.date | date:'dd/MM/y'}}
+                    </td>
+                    <td ng-repeat="appointment in appointments"
+                        ng-class="{'currentDate' : isCurrentDate(dateInfo.date)}">
+                        <a
+                            ng-click="goToListView(dateInfo.date, appointment.appointmentService)">{{appointment.appointmentCountMap[dateInfo.date].allAppointmentsCount}}</a>
+                        <span style="color: #E31C3B"
+                            ng-if="appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount">
+                            ({{appointment.appointmentCountMap[dateInfo.date].missedAppointmentsCount}}
+                            {{'MISSED_KEY' | translate}})</span>
+                    </td>
+
+                    <td class="app-summary-total" ng-class="{'currentDate' : isCurrentDate(dateInfo.date)}">
+                        <a ng-if="dateInfo.total.all" ng-click="goToListView(dateInfo.date)"
+                            target="_blank">{{dateInfo.total.all}} </a>
+                        <span style="color: #E31C3B" ng-if="dateInfo.total.missed">({{dateInfo.total.missed}}
+                            {{'MISSED_KEY' | translate}})</span>
+                    </td>
+
+                </tr>
+
             </tbody>
         </table>
     </div>
+
+
+
 </div>

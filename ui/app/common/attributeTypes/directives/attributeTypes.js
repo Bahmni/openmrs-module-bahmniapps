@@ -34,12 +34,28 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
             $scope.borderColor = "1px solid #d1d1d1";
             $rootScope.canSave = true;
 
+            if ($scope.attribute.name === "PATIENT_STATUS") {
+                for (var i = 0; i < $scope.attribute.answers.length; i++) {
+                    if ($scope.attribute.answers[i].fullySpecifiedName === "Pre TARV") {
+                        $rootScope.patientPreTARVStatusUiid = $scope.attribute.answers[i].conceptId;
+                    }
+                }
+            }
+
             $scope.appendConceptNameToModel = function (attribute) {
+                $timeout(function () {
+                    if (attribute.name === "TYPE_OF_REGISTRATION") {
+                        if ($scope.targetModel.TYPE_OF_REGISTRATION.value === "NEW_PATIENT") {
+                            $scope.targetModel.PATIENT_STATUS.conceptUuid = $rootScope.patientPreTARVStatusUiid;
+                        }
+                    } }, 15);
+
                 var attributeValueConceptType = $scope.targetModel[attribute.name];
                 var concept = _.find(attribute.answers, function (answer) {
                     return answer.conceptId === attributeValueConceptType.conceptUuid;
                 });
                 attributeValueConceptType.value = concept && concept.fullySpecifiedName;
+                $rootScope.typeOfRegistrationSelected = attributeValueConceptType.value;
             };
 
             $scope.suggest = function (string) {
