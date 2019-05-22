@@ -17,6 +17,7 @@ angular.module('bahmni.registration')
         $scope.addressFieldInvalid = false;
         var selectedAddressUuids = {};
         var selectedUserGeneratedIds = {};
+        var selectedProvinceUuid = {};
 
         $scope.healthFacilityName = "";
         $scope.healthFacilityProvince = "";
@@ -64,6 +65,7 @@ angular.module('bahmni.registration')
                 selectedAddressUuids[fieldName] = addressFieldItem.addressField.uuid;
                 if (fieldName === "address7") {
                     $scope.$parent.$parent.patient.HEALTH_FACILITY_PROVINCE = addressFieldItem.value;
+                    selectedProvinceUuid[fieldName] = addressFieldItem.addressField.uuid;
                 }
                 if (fieldName === "address8") {
                     $scope.$parent.$parent.patient.HEALTH_FACILITY_DISTRICT = addressFieldItem.value;
@@ -156,9 +158,8 @@ angular.module('bahmni.registration')
                     }
 
                     if (fieldName === "address8") {
-                        if ($scope.healthFacilityName !== "") {
-                            selectedAddressUuids = {};
-                        }
+                        selectedAddressUuids = {};
+                        selectedAddressUuids.address7 = selectedProvinceUuid.address7;
                         $scope.$parent.$parent.patient.HEALTH_FACILITY_NAME = "";
                         document.getElementById("address10").value = "";
                         $scope.healthFacilityName = "";
