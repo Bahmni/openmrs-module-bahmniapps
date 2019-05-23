@@ -61,7 +61,7 @@
                         <div class="input-prepend" ng-if="typeOfRegistrationSelected != 'NEW_PATIENT'">
                             <span class="add-on">{{ ::'REGISTRATION_HEALTH_FACILITY_CODE' | translate}}</span>
                             <input type="text" id="registrationNumber" ng-model="NID.healthFacilityCode"
-                                   pattern-validate onfocus="this.value=''"
+                                   pattern-validate onfocus="this.value=''" focus-me="true"
                                    focus-on="patient.primaryIdentifier.hasOldIdentifier"
                                    ng-blur="buildFinalNID()" minlength="8" maxlength="8" size=8 required>
                         </div>
