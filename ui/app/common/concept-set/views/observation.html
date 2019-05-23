@@ -315,24 +315,24 @@
 
                     <div ng-include src="'../common/concept-set/views/observationDataTypes/addMore.html'"></div>
                 </div>
-<!--                <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment"-->
-<!--                        ng-blur="handleUpdate()" ng-disabled="observation.disabled"-->
-<!--                        class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': observation.comment}">-->
-<!--                    <i class="fa fa-file-o">-->
-<!--                        <i class="fa fa-plus-circle"></i>-->
-<!--                        <i class="fa fa-minus-circle"></i>-->
-<!--                    </i>-->
-<!--                    <i class="fa fa-file-text-o"></i>-->
-<!--                </button>-->
+                <button ng-if="::observation.canHaveComment()" type="button" toggle="observation.showComment"
+                        ng-blur="handleUpdate()" ng-disabled="observation.disabled"
+                        class="comment-toggle fr" tabindex="-1" ng-class="{'has-notes': observation.comment}">
+                    <i class="fa fa-file-o">
+                        <i class="fa fa-plus-circle"></i>
+                        <i class="fa fa-minus-circle"></i>
+                    </i>
+                    <i class="fa fa-file-text-o"></i>
+                </button>
 
-<!--                <div ng-if="::observation.canHaveComment()" class="offset-label" >-->
-<!--                    <label class="control-label"></label>-->
-<!--                    <div class="field-value" ng-if="observation.showComment">-->
-<!--                        <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"-->
-<!--                                  placeholder="{{ 'NOTES_LABEL'|translate }}" msd-elastic>-->
-<!--                        </textarea>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <div ng-if="::observation.canHaveComment()" class="offset-label" >
+                    <label class="control-label"></label>
+                    <div class="field-value" ng-if="observation.showComment">
+                        <textarea class="obs-comment-section" maxlength="255" ng-model="observation.comment"
+                                  placeholder="{{ 'NOTES_LABEL'|translate }}" msd-elastic>
+                        </textarea>
+                    </div>
+                </div>
             </div>
         </fieldset>
 
