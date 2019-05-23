@@ -12,11 +12,11 @@
       padding: 5px;
     }
     input {
-      width: 250px;
+      width: 150px;
     }
   }
   .app-summary-table-container {
-    margin-top: 65px;
+    margin-top: 100px;
     height: calc(100vh - 177px);
     width: 100%;
     overflow: auto;
@@ -28,9 +28,8 @@
       width: 100%;
       &.table-header {
         width: calc(100% - 20px);
-        position: fixed;
+        position: relative;
         margin-top: 0;
-        top: 176px;
         @media all and (max-width: 1300px) {
           width: calc(100% - 40px);
         }

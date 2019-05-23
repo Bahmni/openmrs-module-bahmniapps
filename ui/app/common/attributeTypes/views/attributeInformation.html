@@ -63,10 +63,19 @@
     </div>
 
 
-    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name != 'LOCATION_OF_TEST' && attribute.name != 'SECTOR_SELECT' && attribute.name != 'PATIENT_OCCUPATION'">
+    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name != 'LOCATION_OF_TEST' && attribute.name != 'SECTOR_SELECT' && attribute.name != 'PATIENT_OCCUPATION' && attribute.name != 'TYPE_OF_REGISTRATION' && attribute.name != 'PATIENT_STATUS'">
         <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
                 ng-options="a.conceptId as a.description | translate for a in ::attribute.answers"
                 ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name)">
+            <option value=""></option>
+        </select>
+    </div>
+
+
+    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name === 'PATIENT_STATUS'">
+        <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
+                ng-options="a.conceptId as a.description | translate for a in ::attribute.answers"
+                ng-disabled="targetModel.TYPE_OF_REGISTRATION.value === 'NEW_PATIENT'" ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name)">
             <option value=""></option>
         </select>
     </div>
@@ -75,6 +84,14 @@
         <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid"
                 ng-options="a.conceptId as a.description | translate for a in ::attribute.answers"
                 ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name);handleLocationChange()">
+            <option value=""></option>
+        </select>
+    </div>
+
+    <div class="left" data-ng-switch-when="org.openmrs.Concept" ng-if="attribute.name == 'TYPE_OF_REGISTRATION'">
+        <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].conceptUuid" ng-disabled="attribute.enabled"
+                ng-options="a.conceptId as a.description | translate for a in ::attribute.answers"
+                ng-required="{{::attribute.required}}" ng-change="appendConceptNameToModel(attribute); handleUpdate(attribute.name)">
             <option value=""></option>
         </select>
     </div>

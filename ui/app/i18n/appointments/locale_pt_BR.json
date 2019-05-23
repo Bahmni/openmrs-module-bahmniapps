@@ -102,8 +102,8 @@
   "LIST_VIEW": "Ver em lista",
   "MESSAGE_DIALOG_OPTION_COPY": "Erro de Cópia",
   "MESSAGE_DIALOG_OPTION_OKAY": "OK",
-  "MISSED_APPOINTMENT": "Perdidas",
-  "MISSED_KEY": "perdida",
+  "MISSED_APPOINTMENT": "Ausente",
+  "MISSED_KEY": "ausente",
   "MONDAY": "2f",
   "NAVIGATION_CONFIRMATION_DIALOG_MESSAGE_KEY": "Pode ter alterações que não foram gravadas. escolha uma opção.",
   "NAVIGATION_CONFIRMATION_OPTION_CANCEL_KEY": "Cancelar",
@@ -168,5 +168,10 @@
   "COMPLETED_APPOINTMENT": "Realizada",
   "SCHEDULED_APPOINTMENT":"Agendada",
   "CANCELLED_APPOINTMENT ":"Cancelar",
-  "CHECKEDIN_APPOINTMENT":"Introduza um horário de entrada válido."
+  "CHECKEDIN_APPOINTMENT":"Introduza um horário de entrada válido.",
+  "APPOINTMENT_SUMMARY_BUTTON_LABEL": "Pesquisar",
+  "APPOINTMENT_SUMMARY_START_LABEL": "Inicio:",
+  "APPOINTMENT_SUMMARY_END_LABEL": "Fim:",
+  "APPOINTMENT_SUMMARY_END_ALERT": "A Data de Fim deve ser maior que a de Inicio.",
+  "APPOINTMENT_CREATE_SAVE_ADD_NEW": "Salvar e adicionar nova visita"
 }
