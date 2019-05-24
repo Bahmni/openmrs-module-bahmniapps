@@ -78,10 +78,11 @@
                         <td>{{::patient.nickName}}</td>
                         <td>{{::patient.gender}}</td>
                         <td>{{::patient.age}}</td>
-                        <td>{{::patient.birthDate}}</td>
+                        <td ng-if="!patient.birthdateEstimated">{{::patient.birthDate | date:'dd-MM-y'}}</td>
+                        <td ng-if="patient.birthdateEstimated">{{::patient.birthDate | date:'dd-MM-y'}}&nbsp;&nbsp;&nbsp;({{::'BIRTHDATE_ESTIMATED' | translate}})</td>
                         <td>{{::patient.mainContact}}</td>
                         <td>{{::patient.patientStatus}}</td>
-                        <td>{{::patient.registrationDate | date : "dd/MM/yyyy"}}</td>
+                        <td>{{::patient.registrationDate | date:'dd-MM-y'}}</td>
                     </tr>
                     </tbody>
                 </table>
