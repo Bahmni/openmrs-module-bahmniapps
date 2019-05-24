@@ -88,15 +88,15 @@
                 <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field=='NICK_NAME'">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
                 <td>{{::result.gender}}</td>
 
-                <td ng-if="!result.birthdateEstimated">{{::result.birthDate | date:'dd/MM/y'}}</td>
-                <td ng-if="result.birthdateEstimated">{{::result.birthDate | date:'dd/MM/y'}}&nbsp;&nbsp;&nbsp;({{::'BIRTHDATE_ESTIMATED' | translate}})</td>
+                <td ng-if="!result.birthdateEstimated">{{::result.birthDate | date:'dd-MM-y'}}</td>
+                <td ng-if="result.birthdateEstimated">{{::result.birthDate | date:'dd-MM-y'}}&nbsp;&nbsp;&nbsp;({{::'BIRTHDATE_ESTIMATED' | translate}})</td>
 
                 <td ng-if="result.age">{{::result.age }}</td>
 
                 <!-- <td ng-repeat = "field in ::addressSearchResultsConfig.fields">{{::result.addressFieldValue[field] || ""}}</td> -->
                 <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field=='PRIMARY_CONTACT_NUMBER_1'">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
                 <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field=='PATIENT_STATUS'">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
-                <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field=='US_REG_DATE'">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
+                <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-if="field=='US_REG_DATE'">{{::result.customAttribute[field] || "" | date:'dd-MM-y'}}</td>
                 <td ng-if="::programAttributesSearchConfig.show">{{getProgramAttributeValues(result) | bahmniDateInStrictMode}}</td>
             </tr>
             </tbody>

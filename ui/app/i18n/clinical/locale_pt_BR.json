@@ -340,5 +340,6 @@
 "CLINICAL_LIST_PATIENT_NID":"NID",
 "CONSULTATION_PAD_EMPTY_MESSAGE": "Prontuário sem Mensagem",
 "FOLLOWUP_APSS_CONSULTATION":  "Consulta de Seguimento APSS",
-"ORDER_TYPE": "Exames"
+"ORDER_TYPE": "Exames",
+"BIRTHDATE_ESTIMATED": "Estimado"
  }
