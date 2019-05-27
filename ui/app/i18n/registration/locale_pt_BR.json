@@ -140,5 +140,7 @@
     "REGISTRATION_LABEL_US_REG_DATE": "Data de Registo na US",
     "REGISTRATION_LABEL_PASSPORT_MOZ": "Passporte Mocambicano",
     "REGISTRATION_LABEL_PASSPORT_FOR": "Passaporte Estrangeiro",
-    "TRANSFERED_OUT_FROM": "Proveniência"
+    "TRANSFERED_OUT_FROM": "Proveniência",
+    "REGISTRATION_PATIENT_DETAILS":"Detalhes Paciente",
+    "PATIENT_OCCUPATION":"Profissão/Ocupação"
 }
