@@ -9,8 +9,10 @@ angular.module('bahmni.common.domain')
                     stripExtraConceptInfo(obs);
                 });
 
+                getBacteriologyGroupMembers(encounter).flat().forEach(function (mem) {
+                    deleteIfImageOrVideoObsIsVoided(mem);
+                });
                 encounter.providers = encounter.providers || [];
-
                 var providerData = $bahmniCookieStore.get(Bahmni.Common.Constants.grantProviderAccessDataCookieName);
                 if (_.isEmpty(encounter.providers)) {
                     if (providerData && providerData.uuid) {
@@ -20,6 +22,25 @@ angular.module('bahmni.common.domain')
                     }
                 }
                 return encounter;
+            };
+
+            var getBacteriologyGroupMembers = function (encounter) {
+                var addBacteriologyMember = function (bacteriologyGroupMembers, member) {
+                    bacteriologyGroupMembers = member.groupMembers.length ? bacteriologyGroupMembers.concat(member.groupMembers) :
+                        bacteriologyGroupMembers.concat(member);
+                    return bacteriologyGroupMembers;
+                };
+                return encounter.extensions.mdrtbSpecimen.map(function (observation) {
+                    var bacteriologyGroupMembers = [];
+                    observation.sample.additionalAttributes && observation.sample.additionalAttributes.groupMembers.forEach(function (member) {
+                        bacteriologyGroupMembers = addBacteriologyMember(bacteriologyGroupMembers, member);
+                    });
+
+                    observation.report.results && observation.report.results.groupMembers.forEach(function (member) {
+                        bacteriologyGroupMembers = addBacteriologyMember(bacteriologyGroupMembers, member);
+                    });
+                    return bacteriologyGroupMembers;
+                });
             };
 
             var getDefaultEncounterType = function () {
