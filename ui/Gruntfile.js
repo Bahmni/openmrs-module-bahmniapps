@@ -62,7 +62,9 @@ module.exports = function (grunt) {
         'components/angular-route/angular-route.min.js',
         'components/crypto-js/crypto-js.js',
         'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
-        'components/angular-ivh-treeview/dist/ivh-treeview.min.js'
+        'components/angular-ivh-treeview/dist/ivh-treeview.min.js',
+        'components/bahmniapps-commons/patient-profile.js',
+        'components/bahmniapps-commons/bahmni-patient-commons.js'
     ];
 
     try {
@@ -321,6 +323,15 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: '<%= yeoman.nodeModules %>/bahmni-clinical-components/dist',
                         dest: '<%= yeoman.app %>/components/bahmni-clinical-components/',
+                        src: [
+                            '*.*'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/bahmniapps-commons/dist',
+                        dest: '<%= yeoman.app %>/components/bahmniapps-commons/',
                         src: [
                             '*.*'
                         ]
