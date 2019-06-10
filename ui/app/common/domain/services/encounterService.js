@@ -8,8 +8,11 @@ angular.module('bahmni.common.domain')
                 encounter.observations.forEach(function (obs) {
                     stripExtraConceptInfo(obs);
                 });
-
-                getBacteriologyGroupMembers(encounter).flat().forEach(function (mem) {
+                var bacterilogyMembers = getBacteriologyGroupMembers(encounter);
+                bacterilogyMembers = bacterilogyMembers.reduce(function (mem1, mem2) {
+                    return mem1.concat(mem2);
+                }, []);
+                bacterilogyMembers.forEach(function (mem) {
                     deleteIfImageOrVideoObsIsVoided(mem);
                 });
                 encounter.providers = encounter.providers || [];
