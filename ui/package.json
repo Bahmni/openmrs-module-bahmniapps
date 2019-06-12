@@ -67,6 +67,6 @@
     "url": "https://github.com/Bhamni/opd/issues"
   },
   "dependencies": {
-    "bahmniapps-commons": "file:../../bahmniapps-commons/bahmniapps-commons-0.0.1.tgz"
+    "bahmniapps-commons": "0.0.1"
   }
 }
