@@ -63,7 +63,7 @@ module.exports = function (grunt) {
         'components/crypto-js/crypto-js.js',
         'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
         'components/angular-ivh-treeview/dist/ivh-treeview.min.js',
-        'components/bahmniapps-commons/patient-profile.js',
+        'components/bahmniapps-commons/displaycontrols.js',
         'components/bahmniapps-commons/bahmni-patient-commons.js'
     ];
 
