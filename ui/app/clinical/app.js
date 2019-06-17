@@ -59,7 +59,9 @@ angular.module('consultation')
                 url: '/:configName/patient/search',
                 views: {
                     'patientSearchPage-header': {
-                        templateUrl: '../common/ui-helper/header.html',
+                        templateProvider: function ($templateCache) {
+                            return $templateCache.get('ui-helper-header');
+                        },
                         controller: 'PatientListHeaderController'
                     },
                     'patientSearchPage-content': {
@@ -377,7 +379,9 @@ angular.module('consultation')
                 },
                 views: {
                     'dashboard-header': {
-                        templateUrl: '../common/ui-helper/header.html',
+                        templateProvider: function ($templateCache) {
+                            return $templateCache.get('ui-helper-header');
+                        },
                         controller: 'PatientListHeaderController'
                     },
                     'dashboard-content': {
@@ -434,7 +438,9 @@ angular.module('consultation')
                 },
                 views: {
                     'patientProgram-header': {
-                        templateUrl: '../common/ui-helper/header.html',
+                        templateProvider: function ($templateCache) {
+                            return $templateCache.get('ui-helper-header');
+                        },
                         controller: 'PatientListHeaderController'
                     },
                     'patientProgram-content': {

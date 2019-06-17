@@ -21,7 +21,7 @@
     <body>
         <div ng-app="bahmni.appointments" class="bahmni-appointments">
             <div ui-view="additional-header"></div>
-            <div ng-include src="'../common/ui-helper/messages.html'"></div>
+            <div ng-include src="'ui-helper-messages'"></div>
             <div ui-view="mainContent"></div>
         </div>
         <script src="../components/lodash/dist/lodash.min.js"></script>
@@ -86,18 +86,8 @@
         <script src="../common/domain/services/configurationService.js"></script>
         <script src="../common/domain/services/providerService.js"></script>
 
-        <script src="../common/ui-helper/init.js"></script>
-        <script src="../common/ui-helper/spinner.js"></script>
-        <script src="../common/ui-helper/printer.js"></script>
-        <script src="../common/ui-helper/services/backlinkService.js"></script>
-        <script src="../common/ui-helper/services/stateChangeSpinner.js"></script>
-        <script src="../common/ui-helper/directives/backLinks.js"></script>
-        <script src="../common/ui-helper/controllers/messageController.js"></script>
-        <script src="../common/ui-helper/services/messagingService.js"></script>
-        <script src="../common/ui-helper/services/confirmBoxService.js"></script>
-        <script src="../common/ui-helper/directives/bahmniAutocomplete.js"></script>
-        <script src="../common/ui-helper/filters/dateFilters.js"></script>
-
+        <script src="../components/bahmniapps-commons/ui-helper.js"></script>
+        
         <script src="../components/bahmniapps-commons/bahmni-patient-commons.js"></script>
         <script src="../common/concept-set/init.js"></script>
 

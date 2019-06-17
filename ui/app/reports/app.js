@@ -65,7 +65,8 @@ angular
         }]).run(['$rootScope', '$templateCache', '$window', function ($rootScope, $templateCache, $window) {
             moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
             $rootScope.$on('$viewContentLoaded', function () {
-                $templateCache.removeAll();
+                // TODO-Extract: Figure out why we clear the templateCache here. It stops us from using $templateCache anywhere
+                // $templateCache.removeAll();
             }
         );
         }]);

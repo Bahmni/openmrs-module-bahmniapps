@@ -19,8 +19,7 @@
 <body ng-app="ot">
     <div ui-view="additional-header" class="ot-header-wrapper"></div>
     <div ui-view="content"></div>
-    <div ng-include src="'../common/ui-helper/messages.html'"></div>
-
+    <div ng-include src="'ui-helper-messages'"></div>
 
     <script src="../components/lodash/dist/lodash.min.js"></script>
     <script src="../components/jquery/jquery.min.js"></script>
@@ -86,7 +85,7 @@
     <script src="../components/bahmniapps-commons/bahmni-patient-commons.js"></script>
 
     <script src="../common/config/directives/showIfPrivilege.js"></script>
-    <script src="../common/ui-helper/directives/fallbackSrc.js"></script>
+    <script src="../components/bahmniapps-commons/ui-helper.js"></script>
 
     <script src="../common/domain/init.js"></script>
 
@@ -139,30 +138,6 @@
     <script src="../common/patient-search/directives/resize.js"></script>
     <script src="../common/patient-search/directives/scheduler.js"></script>
     <script src="../common/patient-search/controllers/patientsListController.js"></script>
-
-    <script src="../common/ui-helper/init.js"></script>
-    <script src="../common/ui-helper/services/backlinkService.js"></script>
-    <script src="../common/ui-helper/services/contextChangeHandler.js"></script>
-    <script src="../common/ui-helper/directives/popOver.js"></script>
-    <script src="../common/ui-helper/directives/splitButton.js"></script>
-    <script src="../common/ui-helper/directives/backLinks.js"></script>
-    <script src="../common/ui-helper/directives/focusOn.js"></script>
-    <script src="../common/ui-helper/directives/bmShow.js"></script>
-    <script src="../common/ui-helper/spinner.js"></script>
-    <script src="../common/ui-helper/printer.js"></script>
-    <script src="../common/ui-helper/directives/toggle.js"></script>
-    <script src="../common/ui-helper/filters/thumbnail.js"></script>
-    <script src="../common/ui-helper/filters/dateFilters.js"></script>
-    <script src="../common/ui-helper/controllers/messageController.js"></script>
-    <script src="../common/ui-helper/services/messagingService.js"></script>
-    <script src="../common/ui-helper/directives/ngConfirmClick.js"></script>
-    <script src="../common/ui-helper/directives/monthyearpicker.js"></script>
-    <script src="../common/ui-helper/directives/providerDirective.js"></script>
-    <script src="../common/ui-helper/directives/singleClick.js"></script>
-    <script src="../common/ui-helper/directives/bahmniAutocomplete.js"></script>
-    <script src="../common/ui-helper/directives.js"></script>
-    <script src="../common/ui-helper/directives/singleSubmit.js"></script>
-
 
     <script src="../common/logging/init.js"></script>
     <script src="../common/logging/exceptionHandler.js"></script>

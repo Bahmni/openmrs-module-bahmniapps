@@ -64,6 +64,7 @@ module.exports = function (grunt) {
         'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
         'components/angular-ivh-treeview/dist/ivh-treeview.min.js',
         'components/bahmniapps-commons/displaycontrols.js',
+        'components/bahmniapps-commons/ui-helper.js',
         'components/bahmniapps-commons/authentication.js',
         'components/bahmniapps-commons/bahmni-patient-commons.js'
     ];

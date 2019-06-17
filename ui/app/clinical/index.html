@@ -24,7 +24,7 @@
     </head>
     <body ng-app="consultation" >
         <div ng-controller="ClinicalController" ng-class="{'retro-mode':retrospectiveClass()}" id="ClinicalController">
-            <div ng-include src="'../common/ui-helper/messages.html'"></div>
+                <div ng-include src="'ui-helper-messages'"></div>
             <div class="opd-wrapper">
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
@@ -109,7 +109,7 @@
         <script src="../common/config/directives/showIfPrivilege.js"></script>
 
         <script src="../components/bahmniapps-commons/bahmni-patient-commons.js"></script>
-        <script src="../common/ui-helper/directives/fallbackSrc.js"></script>
+        <script src="../components/bahmniapps-commons/ui-helper.js"></script>
 
         <script src="../common/patient-search/init.js"></script>
         <script src="../common/patient-search/constants.js"></script>
@@ -145,40 +145,6 @@
 
         <script src="../common/gallery/init.js"></script>
         <script src="../common/gallery/directives/galleryPane.js"></script>
-
-        <script src="../common/ui-helper/init.js"></script>
-        <script src="../common/ui-helper/spinner.js"></script>
-        <script src="../common/ui-helper/printer.js"></script>
-        <script src="../common/ui-helper/directives.js"></script>
-        <script src="../common/ui-helper/directives/bahmniAutocomplete.js"></script>
-        <script src="../common/ui-helper/directives/popOver.js"></script>
-        <script src="../common/ui-helper/directives/conceptAutocomplete.js"></script>
-        <script src="../common/ui-helper/directives/datetimepicker.js"></script>
-        <script src="../common/ui-helper/directives/monthyearpicker.js"></script>
-        <script src="../common/ui-helper/directives/toggle.js"></script>
-        <script src="../common/ui-helper/directives/gallery.js"></script>
-        <script src="../common/ui-helper/directives/ngConfirmClick.js"></script>
-        <script src="../common/ui-helper/directives/bmShow.js"></script>
-        <script src="../common/ui-helper/directives/confirmOnExit.js"></script>
-        <script src="../common/ui-helper/filters/dateFilters.js"></script>
-        <script src="../common/ui-helper/filters/reverse.js"></script>
-        <script src="../common/ui-helper/filters/thumbnail.js"></script>
-        <script src="../common/ui-helper/filters/formatDecimalValues.js"></script>
-        <script src="../common/ui-helper/services/backlinkService.js"></script>
-        <script src="../common/ui-helper/services/contextChangeHandler.js"></script>
-        <script src="../common/ui-helper/services/stateChangeSpinner.js"></script>
-        <script src="../common/ui-helper/directives/backLinks.js"></script>
-        <script src="../common/ui-helper/directives/providerDirective.js"></script>
-        <script src="../common/ui-helper/directives/focusOn.js"></script>
-        <script src="../common/ui-helper/directives/scrollToObsElement.js"></script>
-        <script src="../common/ui-helper/directives/dateConverter.js"></script>
-        <script src="../common/ui-helper/directives/compileHtml.js"></script>
-        <script src="../common/ui-helper/controllers/messageController.js"></script>
-        <script src="../common/ui-helper/services/messagingService.js"></script>
-        <script src="../common/ui-helper/services/confirmBoxService.js"></script>
-        <script src="../common/ui-helper/directives/focusOnInputErrors.js"></script>
-        <script src="../common/ui-helper/directives/fixedFirstColumn.js"></script>
-        <script src="../common/ui-helper/directives/assignHeight.js"></script>
 
         <script src="../common/attributeTypes/directives/attributeTypes.js"></script>
         <script src="../common/domain/mappers/attributeTypeMapper.js"></script>
@@ -222,14 +188,11 @@
 
         <script src="../common/obs/directives/showObservation.js"></script>
         <script src="../common/obs/directives/editObservation.js"></script>
-        <script src="../common/ui-helper/directives/autoScroll.js"></script>
 
         <script src="../common/models/documentImage.js"></script>
         <script src="../common/models/visitSummary.js"></script>
         <script src="../common/debugUiRouter.js"></script>
-        <script src="../common/ui-helper/directives/singleClick.js"></script>
-        <script src="../common/ui-helper/directives/singleSubmit.js"></script>
-
+        
         <script src="../common/displaycontrols/init.js"></script>
 
         <script src="../common/displaycontrols/observation/init.js"></script>

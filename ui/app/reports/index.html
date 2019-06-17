@@ -13,11 +13,11 @@
         <!-- endbuild -->
     </head>
     <body>
-        <div ng-app="bahmni.reports" class="bahmni-reports">
-            <div ui-view="additional-header"></div>
-            <div ng-include src="'../common/ui-helper/messages.html'"></div>
-            <div ui-view="mainContent"></div>
-        </div>
+            <div ng-app="bahmni.reports" class="bahmni-reports">
+                    <div ui-view="additional-header"></div>
+                    <div ng-include src="'ui-helper-messages'"></div>
+                    <div ui-view="mainContent"></div>
+                </div>
         <script src="../components/lodash/dist/lodash.min.js"></script>
         <script src="../components/jquery/jquery.min.js"></script>
         <script src="../components/jquery.cookie/jquery.cookie.js"></script>
@@ -95,30 +95,8 @@
         <script src="../common/obs/init.js"></script>
         <script src="../common/obs/models/imageObservation.js"></script>
 
-        <script src="../common/ui-helper/init.js"></script>
-        <script src="../common/ui-helper/spinner.js"></script>
-        <script src="../common/ui-helper/printer.js"></script>
-        <script src="../common/ui-helper/directives.js"></script>
-        <script src="../common/ui-helper/directives/bahmniAutocomplete.js"></script>
-        <script src="../common/ui-helper/directives/popOver.js"></script>
-        <script src="../common/ui-helper/directives/conceptAutocomplete.js"></script>
-        <script src="../common/ui-helper/directives/datetimepicker.js"></script>
-        <script src="../common/ui-helper/directives/monthyearpicker.js"></script>
-        <script src="../common/ui-helper/directives/toggle.js"></script>
-        <script src="../common/ui-helper/directives/gallery.js"></script>
-        <script src="../common/ui-helper/directives/ngConfirmClick.js"></script>
-        <script src="../common/ui-helper/filters/dateFilters.js"></script>
-        <script src="../common/ui-helper/filters/reverse.js"></script>
-        <script src="../common/ui-helper/filters/thumbnail.js"></script>
-        <script src="../common/ui-helper/filters/formatDecimalValues.js"></script>
-        <script src="../common/ui-helper/services/backlinkService.js"></script>
-        <script src="../common/ui-helper/services/contextChangeHandler.js"></script>
-        <script src="../common/ui-helper/services/stateChangeSpinner.js"></script>
-        <script src="../common/ui-helper/directives/backLinks.js"></script>
-        <script src="../common/ui-helper/directives/focusOn.js"></script>
-        <script src="../common/ui-helper/directives/dateConverter.js"></script>
-        <script src="../common/ui-helper/controllers/messageController.js"></script>
-        <script src="../common/ui-helper/services/messagingService.js"></script>
+        <script src="../components/bahmniapps-commons/bahmni-patient-commons.js"></script>
+        <script src="../components/bahmniapps-commons/ui-helper.js"></script>
 
         <script src="../common/util/init.js"></script>
         <script src="../common/util/httpErrorInterceptor.js"></script>

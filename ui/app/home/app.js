@@ -1,5 +1,4 @@
 'use strict';
-
 angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.common.domain', 'bahmni.common.i18n', 'bahmni.common.uiHelper', 'bahmni.common.util',
     'bahmni.common.appFramework', 'bahmni.common.logging', 'bahmni.common.routeErrorHandler', 'pascalprecht.translate', 'ngCookies',
     'bahmni.common.models'])
@@ -59,6 +58,7 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
             moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
         // Disable caching view template partials
             $rootScope.$on('$viewContentLoaded', function () {
-                $templateCache.removeAll();
+                // TODO-Extract: Figure out why we clear the templateCache here. It stops us from using $templateCache anywhere
+                // $templateCache.removeAll();
             });
         }]);

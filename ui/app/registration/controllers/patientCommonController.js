@@ -44,7 +44,7 @@ angular.module('bahmni.registration')
                     if (event) {
                         event.preventDefault();
                     }
-                    ngDialog.openConfirm({template: "../common/ui-helper/views/saveConfirmation.html", scope: $scope});
+                    ngDialog.openConfirm({template: 'ui-helper-save-confirmation', scope: $scope});
                 }
             };
 

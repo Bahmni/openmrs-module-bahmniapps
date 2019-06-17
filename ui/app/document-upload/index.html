@@ -22,7 +22,7 @@
         <div class="document-upload">
             <div ui-view="header"></div>
             <div ui-view="additional-header"></div>
-            <div ng-include src="'../common/ui-helper/messages.html'"></div>
+            <div ng-include src="'ui-helper-messages'"></div>
             <div class="opd-wrapper">
                 <div ui-view="content" id="view-content" class="main opd-content-wrapper"></div>
             </div>
@@ -115,29 +115,14 @@
         <script src="../common/obs/init.js"></script>
         <script src="../common/obs/models/imageObservation.js"></script>
 
-        <script src="../common/ui-helper/init.js"></script>
-        <script src="../common/ui-helper/filters/reverse.js"></script>
-        <script src="../common/ui-helper/filters/dateFilters.js"></script>
-        <script src="../common/ui-helper/spinner.js"></script>
-        <script src="../common/ui-helper/printer.js"></script>
-        <script src="../common/ui-helper/directives.js"></script>
-        <script src="../common/ui-helper/directives/bahmniAutocomplete.js"></script>
-        <script src="../common/ui-helper/directives/focusOn.js"></script>
+        <script src="../components/bahmniapps-commons/ui-helper.js"></script>
         <script src="../common/util/dateUtil.js"></script>
-        <script src="../common/ui-helper/directives/gallery.js"></script>
-        <script src="../common/ui-helper/services/backlinkService.js"></script>
-        <script src="../common/ui-helper/directives/backLinks.js"></script>
-        <script src="../common/ui-helper/controllers/messageController.js"></script>
-        <script src="../common/ui-helper/services/messagingService.js"></script>
-        <script src="../common/ui-helper/directives/fallbackSrc.js"></script>
-        <script src="../common/ui-helper/directives/toggle.js"></script>
 
         <script src="../common/i18n/init.js"></script>
         <script src="../common/i18n/bahmni-translate.js"></script>
         <script src="../common/i18n/services/mergeLocaleFilesService.js"></script>
 
         <script src="../common/models/documentImage.js"></script>
-        <script src="../common/ui-helper/directives/singleSubmit.js"></script>
 
         <script src="app.js"></script>
         <script src="init.js"></script>

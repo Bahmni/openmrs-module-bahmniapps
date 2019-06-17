@@ -62,5 +62,6 @@ angular.module('admin')
     ]).run(['$rootScope', '$templateCache', '$window', function ($rootScope, $templateCache, $window) {
         moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
         // Disable caching view template partials
-        $rootScope.$on('$viewContentLoaded', $templateCache.removeAll);
+        // TODO-Extract: Figure out why we clear the templateCache here. It stops us from using $templateCache anywhere
+        // $rootScope.$on('$viewContentLoaded', $templateCache.removeAll);
     }]);

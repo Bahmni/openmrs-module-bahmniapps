@@ -27,7 +27,9 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
                     controller: 'PatientsListController'
                 },
                 'additional-header': {
-                    templateUrl: '../common/ui-helper/header.html'
+                    templateProvider: function ($templateCache) {
+                        return $templateCache.get('ui-helper-header');
+                    }
                 }
             },
             resolve: {
@@ -59,7 +61,9 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
                 url: '/error',
                 views: {
                     'content': {
-                        templateUrl: '../common/ui-helper/error.html'
+                        templateProvider: function ($templateCache) {
+                            return $templateCache.get('ui-helper-error');
+                        }
                     }
                 }
             });
