@@ -29,7 +29,7 @@ angular.module('bahmni.common.patient')
 
         this.search = function (query, offset, identifier) {
             offset = offset || 0;
-            return $http.get(Bahmni.Common.Constants.bahmniSearchUrl + "/patient", {
+            return $http.get(Bahmni.Common.Constants.bahmniSearchUrl + "/patient/luceneHibernate", {
                 method: "GET",
                 params: {
                     q: query,
