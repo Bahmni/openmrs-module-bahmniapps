@@ -13,6 +13,7 @@ angular.module('bahmni.registration')
             $scope.disablePhotoCapture = appService.getAppDescriptor().getConfigValue("disablePhotoCapture");
 
             $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
+            $scope.patientLoaded = true;
 
             var setReadOnlyFields = function () {
                 $scope.readOnlyFields = {};
@@ -27,9 +28,8 @@ angular.module('bahmni.registration')
             var successCallBack = function (openmrsPatient) {
                 $scope.openMRSPatient = openmrsPatient["patient"];
                 $scope.patient = openmrsPatientMapper.map(openmrsPatient);
-                setReadOnlyFields();
+                // setReadOnlyFields();
                 expandDataFilledSections();
-                $scope.patientLoaded = true;
             };
 
             var expandDataFilledSections = function () {
@@ -37,7 +37,7 @@ angular.module('bahmni.registration')
                     var notNullAttribute = _.find(section && section.attributes, function (attribute) {
                         return $scope.patient[attribute.name] !== undefined;
                     });
-                    section.expand = section.expanded || (notNullAttribute ? true : false);
+                    section.expand = false; // section.expand || (!!notNullAttribute);
                 });
             };
 
@@ -86,9 +86,9 @@ angular.module('bahmni.registration')
                 $scope.patient.relationships = _.concat(newRelationships, $scope.patient.deletedRelationships);
             };
 
-            $scope.isReadOnly = function (field) {
-                return $scope.readOnlyFields ? ($scope.readOnlyFields[field] ? true : false) : undefined;
-            };
+            /* $scope.isReadOnly = function (field) {
+                return $scope.readOnlyFields ? (!!$scope.readOnlyFields[field]) : undefined;
+            }; */
 
             $scope.afterSave = function () {
                 auditLogService.log($scope.patient.uuid, Bahmni.Registration.StateNameEvenTypeMap['patient.edit'], undefined, "MODULE_LABEL_REGISTRATION_KEY");

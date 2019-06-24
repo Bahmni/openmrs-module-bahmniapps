@@ -67,7 +67,7 @@ angular.module('bahmni.registration')
                 stateChangeListener();
             });
 
-            $scope.getDeathConcepts = function () {
+            /* $scope.getDeathConcepts = function () {
                 return $http({
                     url: Bahmni.Common.Constants.globalPropertyUrl,
                     method: 'GET',
@@ -94,18 +94,27 @@ angular.module('bahmni.registration')
                     }]
                 });
             };
-            spinner.forPromise($scope.getDeathConcepts());
+
             var filterRetireDeathConcepts = function (deathConcepts) {
                 return _.filter(deathConcepts, function (concept) {
                     return !concept.retired;
                 });
-            };
+            }; */
 
             $scope.isAutoComplete = function (fieldName) {
                 return !_.isEmpty(autoCompleteFields) ? autoCompleteFields.indexOf(fieldName) > -1 : false;
             };
 
-            $scope.showCasteSameAsLastName = function () {
+            $scope.isReadOnly = function (fieldName) {
+                var readOnlyPatientAttributes = ["HealthFacilityName", "TodaysDate", "RegistrantName", "UniqueArtID"];
+
+                if (!$scope.patientLoaded) {
+                    readOnlyPatientAttributes = ["UniqueArtID"];
+                }
+                return readOnlyPatientAttributes.indexOf(fieldName) > -1 || false;
+            };
+
+            /* $scope.showCasteSameAsLastName = function () {
                 personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
                     return attribute.name.toLowerCase();
                 });
@@ -118,7 +127,7 @@ angular.module('bahmni.registration')
                 if ($scope.patient.sameAsLastName) {
                     $scope.patient[caste] = $scope.patient.familyName;
                 }
-            };
+            }; */
 
             var showSections = function (sectionsToShow, allSections) {
                 _.each(sectionsToShow, function (sectionName) {
@@ -167,13 +176,13 @@ angular.module('bahmni.registration')
                 return data.results;
             };
 
-            $scope.$watch('patient.familyName', function () {
+            /* $scope.$watch('patient.familyName', function () {
                 if ($scope.patient.sameAsLastName) {
                     $scope.patient[caste] = $scope.patient.familyName;
                 }
-            });
+            }); */
 
-            $scope.$watch('patient.caste', function () {
+            /* $scope.$watch('patient.caste', function () {
                 if ($scope.patient.sameAsLastName && ($scope.patient.familyName !== $scope.patient[caste])) {
                     $scope.patient.sameAsLastName = false;
                 }
@@ -187,6 +196,6 @@ angular.module('bahmni.registration')
 
             $scope.disableIsDead = function () {
                 return ($scope.patient.causeOfDeath || $scope.patient.deathDate) && $scope.patient.dead;
-            };
+            }; */
         }]);
 

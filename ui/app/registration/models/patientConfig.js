@@ -39,13 +39,14 @@ Bahmni.Registration.PatientConfig = (function () {
                         sectionObject = {
                             attributes: [],
                             title: section.title,
-                            expanded: section.expanded,
+                            expand: section.expand,
                             translationKey: section.translationKey,
                             shortcutKey: section.shortcutKey,
                             order: section.order,
                             canShow: true
                         };
                     }
+                    item.required = true;
                     sectionObject.attributes.push(item);
                     patientAttributesSections[key] = sectionObject;
                     return true;
