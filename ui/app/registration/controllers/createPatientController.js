@@ -5,6 +5,8 @@ angular.module('bahmni.registration')
         function ($scope, $rootScope, $state, patientService, patient, spinner, appService, messagingService, ngDialog, $q) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.actions = {};
+            $scope.patient = {};
+            var personAttributes = [];
             var errorMessage;
             var configValueForEnterId = appService.getAppDescriptor().getConfigValue('showEnterID');
             $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
@@ -14,6 +16,19 @@ angular.module('bahmni.registration')
 
             var getPersonAttributeTypes = function () {
                 return $rootScope.patientConfiguration.attributeTypes;
+            };
+
+            var initTodaysDate = function () {
+                if (personAttributes.length == 0) {
+                    personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
+                        return attribute.name;
+                    });
+                }
+                var personAttributeHasTodaysDate = personAttributes.indexOf("TodaysDate") !== -1;
+                var todaysDateAttrName = personAttributeHasTodaysDate ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TodaysDate")].name : undefined;
+                if (todaysDateAttrName) {
+                    $scope.patient[todaysDateAttrName] = Bahmni.Common.Util.DateUtil.today();
+                }
             };
 
             var prepopulateDefaultsInFields = function () {
@@ -61,7 +76,7 @@ angular.module('bahmni.registration')
                     var notNullAttribute = _.find(section && section.attributes, function (attribute) {
                         return $scope.patient[attribute.name] !== undefined;
                     });
-                    section.expand = section.expanded || (notNullAttribute ? true : false);
+                    section.expand = false; // section.expand || (!!notNullAttribute);
                 });
             };
 
@@ -69,7 +84,8 @@ angular.module('bahmni.registration')
                 $scope.patient = patient.create();
                 prepopulateDefaultsInFields();
                 expandSectionsWithDefaultValue();
-                $scope.patientLoaded = true;
+                initTodaysDate();
+                $scope.patientLoaded = false;
             };
 
             init();
@@ -101,6 +117,55 @@ angular.module('bahmni.registration')
                 $scope.patient.relationships = newRelationships;
             };
 
+            var updateUniqueArtId = function () {
+                var personUniqueArtId;
+                if ($scope.patient.gender) {
+                    personUniqueArtId = $scope.patient.gender === 'F' ? '1' : ($scope.patient.gender === 'M' ? '2' : '3');
+                }
+                var personAttributeHasMobileCountryCode = personAttributes.indexOf("MobileCountryCode") !== -1;
+                var personAttributeMobileCountryCd = personAttributeHasMobileCountryCode ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("MobileCountryCode")].name : undefined;
+                if (personAttributeMobileCountryCd && $scope.patient[personAttributeMobileCountryCd].value) {
+                    var personAttributeMobileCountryCdAnwser = _.find($rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("MobileCountryCode")].answers, function (anwser) {
+                        return anwser.fullySpecifiedName === $scope.patient[personAttributeMobileCountryCd].value;
+                    });
+                    personUniqueArtId += personAttributeMobileCountryCdAnwser.fullySpecifiedName === 'South Sudan' ? '5'
+                        : (personAttributeMobileCountryCdAnwser.fullySpecifiedName === 'DRC' ? '1'
+                        : (personAttributeMobileCountryCdAnwser.fullySpecifiedName === 'Eretria' ? '2'
+                        : (personAttributeMobileCountryCdAnwser.fullySpecifiedName === 'Ethiopia' ? '3'
+                        : (personAttributeMobileCountryCdAnwser.fullySpecifiedName === 'Kenya' ? '4'
+                        : (personAttributeMobileCountryCdAnwser.fullySpecifiedName === 'Uganda' ? '6'
+                        : (personAttributeMobileCountryCdAnwser.fullySpecifiedName === 'Rwanda' ? '7'
+                        : (personAttributeMobileCountryCdAnwser.fullySpecifiedName === 'Tanzania' ? '8' : '9')))))));
+                }
+                var personAttributeHasOrderOfBirth = personAttributes.indexOf("OrderOfBirth") !== -1;
+                var personAttributeOrderOfBirth = personAttributeHasOrderOfBirth ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("OrderOfBirth")].name : undefined;
+                if (personAttributeOrderOfBirth && $scope.patient[personAttributeOrderOfBirth]) {
+                    personUniqueArtId = personUniqueArtId + '0' + $scope.patient[personAttributeOrderOfBirth];
+                }
+                if ($scope.patient.birthdate) {
+                    var patientBirthdate = Bahmni.Common.Util.DateUtil.getDateWithoutTime($scope.patient.birthdate);
+                    personUniqueArtId = personUniqueArtId + patientBirthdate[2] + patientBirthdate[3];
+                }
+                if ($scope.patient.givenName && $scope.patient.givenName.length > 2) {
+                    personUniqueArtId = personUniqueArtId + $scope.patient.givenName[0] + $scope.patient.givenName[1];
+                }
+                if ($scope.patient.familyName && $scope.patient.familyName.length > 2) {
+                    personUniqueArtId = personUniqueArtId + $scope.patient.familyName[0] + $scope.patient.familyName[1];
+                }
+                var personAttributeHasKeyPopulationType = personAttributes.indexOf("KeyPopulationType") !== -1;
+                var personAttributeKeyPopulationType = personAttributeHasKeyPopulationType ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("KeyPopulationType")].name : undefined;
+                if (personAttributeKeyPopulationType && $scope.patient[personAttributeKeyPopulationType] && $scope.patient[personAttributeKeyPopulationType].value) {
+                    var personAttributeKeyPopulationTypeAnwser = _.find($rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("KeyPopulationType")].answers, function (anwser) {
+                        return anwser.fullySpecifiedName === $scope.patient[personAttributeKeyPopulationType].value;
+                    });
+                    personUniqueArtId += personAttributeKeyPopulationTypeAnwser.fullySpecifiedName === 'Female Sex Worker' ? '1'
+                        : (personAttributeKeyPopulationTypeAnwser.fullySpecifiedName === 'Men who have sex with men (MSM)' ? '2' : '3');
+                }
+                if (personUniqueArtId && personUniqueArtId.length === 11) {
+                    return personUniqueArtId;
+                }
+            };
+
             var getConfirmationViaNgDialog = function (config) {
                 var ngDialogLocalScope = config.scope.$new();
                 ngDialogLocalScope.yes = function () {
@@ -128,6 +193,8 @@ angular.module('bahmni.registration')
             };
 
             var createPatient = function (jumpAccepted) {
+                var personAttributeUniqueArtId = updateUniqueArtId();
+                $scope.patient.primaryIdentifier.identifier = personAttributeUniqueArtId;
                 return patientService.create($scope.patient, jumpAccepted).then(function (response) {
                     copyPatientProfileDataToScope(response);
                 }, function (response) {
