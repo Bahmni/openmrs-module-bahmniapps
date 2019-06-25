@@ -146,10 +146,10 @@ angular.module('bahmni.registration')
                     var patientBirthdate = Bahmni.Common.Util.DateUtil.getDateWithoutTime($scope.patient.birthdate);
                     personUniqueArtId = personUniqueArtId + patientBirthdate[2] + patientBirthdate[3];
                 }
-                if ($scope.patient.givenName && $scope.patient.givenName.length > 2) {
+                if ($scope.patient.givenName && $scope.patient.givenName.length >= 2) {
                     personUniqueArtId = personUniqueArtId + $scope.patient.givenName[0] + $scope.patient.givenName[1];
                 }
-                if ($scope.patient.familyName && $scope.patient.familyName.length > 2) {
+                if ($scope.patient.familyName && $scope.patient.familyName.length >= 2) {
                     personUniqueArtId = personUniqueArtId + $scope.patient.familyName[0] + $scope.patient.familyName[1];
                 }
                 var personAttributeHasKeyPopulationType = personAttributes.indexOf("KeyPopulationType") !== -1;
@@ -161,7 +161,7 @@ angular.module('bahmni.registration')
                     personUniqueArtId += personAttributeKeyPopulationTypeAnwser.fullySpecifiedName === 'Female Sex Worker' ? '1'
                         : (personAttributeKeyPopulationTypeAnwser.fullySpecifiedName === 'Men who have sex with men (MSM)' ? '2' : '3');
                 }
-                if (personUniqueArtId && personUniqueArtId.length === 11) {
+                if (personUniqueArtId && personUniqueArtId.length >= 11) {
                     return personUniqueArtId;
                 }
             };
