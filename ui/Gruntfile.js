@@ -67,6 +67,7 @@ module.exports = function (grunt) {
         'components/bahmniapps-commons/ui-helper.js',
         'components/bahmniapps-commons/authentication.js',
         'components/bahmniapps-commons/bahmni-util-commons.js',
+        'components/bahmniapps-commons/bahmni-config-commons.js',
         'components/bahmniapps-commons/bahmni-patient-commons.js'
     ];
 
