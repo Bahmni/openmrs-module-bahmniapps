@@ -59,13 +59,13 @@
                               <input data-ng-switch-when="true"
                                      type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
                                      my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
-                                     data-item-type="personName"
+                                     data-item-type="personName" minlength="2"
                                      placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
                                      title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
 
                               <input data-ng-switch-default
                                      type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
-                                     placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
+                                     placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" minlength="2"
                                      title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
                           </span>
 
@@ -74,26 +74,26 @@
                               <input data-ng-switch-when="true"
                                      type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
                                      my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
-                                     data-item-type="personName" style="padding: 2px 0px;"
+                                     data-item-type="personName" style="padding: 2px 0px;" minlength="2"
                                      placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
                                      title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
 
                               <input data-ng-switch-default
                                      type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
                                      placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" style="padding: 2px 0px;"
-                                     title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
+                                     title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" minlength="2">
                           </span>
 
                           <span ng-show="::showLastName" data-ng-switch="::isAutoComplete('familyName')">
                               <input data-ng-switch-when="true"
                                      type="text" id="familyName" ng-model="$parent.patient.familyName"  pattern-validate
                                      my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
-                                     data-item-type="personName" style="padding: 2px 0px;"
+                                     data-item-type="personName" style="padding: 2px 0px;" minlength="2"
                                      placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
                                      title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
 
                               <input data-ng-switch-default
-                                     type="text" id="familyName" ng-model="patient.familyName"  pattern-validate
+                                     type="text" id="familyName" ng-model="patient.familyName"  pattern-validate minlength="2"
                                      placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}" style="padding: 2px 0px;"
                                      title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
                           </span>
