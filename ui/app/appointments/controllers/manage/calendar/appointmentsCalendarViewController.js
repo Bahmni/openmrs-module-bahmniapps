@@ -2,7 +2,7 @@
 
 angular.module('bahmni.appointments')
     .controller('AppointmentsCalendarViewController', ['$scope', '$state', '$translate', 'spinner', 'appointmentsService',
-    	'appointmentsFilter', '$rootScope', 'appService',
+        'appointmentsFilter', '$rootScope', 'appService',
         function ($scope, $state, $translate, spinner, appointmentsService, appointmentsFilter, $rootScope, appService) {
             var init = function () {
                 $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();

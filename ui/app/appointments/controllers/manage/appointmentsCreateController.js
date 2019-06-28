@@ -50,7 +50,7 @@ angular.module('bahmni.appointments')
                 if ($scope.createAppointmentForm.$invalid) {
                     message = $scope.createAppointmentForm.$error.pattern
                         ? 'INVALID_TIME_ERROR_MESSAGE' : 'INVALID_SERVICE_FORM_ERROR_MESSAGE';
-                } 
+                }
                 /* else if (!moment($scope.appointment.startTime, 'hh:mm a')
                         .isBefore(moment($scope.appointment.endTime, 'hh:mm a'), 'minutes')) {
                     message = 'TIME_SEQUENCE_ERROR_MESSAGE';
@@ -63,7 +63,7 @@ angular.module('bahmni.appointments')
                 $scope.validatedAppointment = Bahmni.Appointments.Appointment.create($scope.appointment);
                 // var conflictingAppointments = getConflictingAppointments($scope.validatedAppointment);
                 // if (conflictingAppointments.length === 0) {
-                    return saveAppointment($scope.validatedAppointment);
+                return saveAppointment($scope.validatedAppointment);
                 /* } else {
                     $scope.displayConflictConfirmationDialog();
                 } */
