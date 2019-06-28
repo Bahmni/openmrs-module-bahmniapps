@@ -70,6 +70,7 @@ module.exports = function (grunt) {
         'components/bahmniapps-commons/bahmni-config-commons.js',
         'components/bahmniapps-commons/bahmni-appframework-commons.js',
         'components/bahmniapps-commons/bahmni-domain-commons.js',
+        'components/bahmniapps-commons/bahmni-conceptset-commons.js',
         'components/bahmniapps-commons/bahmni-patient-commons.js'
     ];
 
@@ -145,7 +146,6 @@ module.exports = function (grunt) {
                 reporters: ['junit', 'progress'],
                 preprocessors: {
                     'app/common/displaycontrols/**/views/*.html': ['ng-html2js'],
-                    'app/common/concept-set/views/*.html': ['ng-html2js'],
                     'app/common/uicontrols/**/views/*.html': ['ng-html2js'],
                     'app/clinical/**/**/*.html': ['ng-html2js']
                 }

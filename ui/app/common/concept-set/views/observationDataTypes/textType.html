@@ -1,6 +1,0 @@
-<textarea id="{{::observation.uniqueId}}" ng-model="observation.value"
-          ng-blur="handleUpdate()" ng-disabled="observation.disabled"
-          ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet,conceptSetRequired), 'computed-field': observation.isComputedAndEditable()}"
-          focus-me="::observation.isFocused" tabindex="1" msd-elastic>
-</textarea>
-
