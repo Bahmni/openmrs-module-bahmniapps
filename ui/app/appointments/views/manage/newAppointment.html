@@ -81,16 +81,7 @@
                         </option>
                     </select>
                 </p>
-                <p>
-                    <label for="provider">
-                        {{'APPOINTMENT_PROVIDER' | translate}}
-                    </label>
-                    <select id="provider" ng-model="appointment.provider"
-                            ng-options="provider.person.display for provider in appointmentCreateConfig.providers | orderBy:'person.display'"
-                            ng-disabled="isEditMode() && !isEditAllowed()">
-                        <option value="">{{ ::'PLACEHOLDER_CREATE_PROVIDER' | translate}}</option>
-                    </select>
-                </p>
+
                 <p>
                     <label for="date">
                         {{'APPOINTMENT_DATE' | translate}}<sup class="asterick">*</sup>
@@ -106,7 +97,7 @@
                     <i class="fa fa-exclamation-triangle"></i>
                     <span> {{'APPOINTMENT_CREATION_DATE_WARNING' | translate}} </span>
                 </p>
-                <p>
+                <!-- <p>
                     <label for="startTimeID">
                         {{'APPOINTMENT_START_TIME_KEY' | translate}}<sup class="asterick">*</sup>
                     </label>
@@ -154,7 +145,7 @@
                            ng-model-options="{allowInvalid: true}"
                            required/>
                     <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
-                </p>
+                </p> -->
                 <p class="app-ava-slots"
                    ng-if="currentLoad || maxAppointmentsLimit || (maxAppointmentsLimit && currentLoad)">
                     <span ng-if="maxAppointmentsLimit"><span style="color: #5cb85c;">{{maxAppointmentsLimit-currentLoad}} {{'APPOINTMENT_CREATE_SLOT' | translate}} {{'APPOINTMENT_CREATE_AVAL' | translate}}</span>
@@ -162,26 +153,38 @@
                                 ng-if="maxAppointmentsLimit && currentLoad">, </span></span>
                     <span style="color: #f0ad4e;" ng-if="currentLoad">{{currentLoad}} {{'APPOINTMENT_CREATE_SLOT' | translate}} {{'APPOINTMENT_CREATE_BOOKED' | translate}}</span>
                 </p>
-                <p class="warning-message" ng-if="warning.endTime">
+                <!-- <p class="warning-message" ng-if="warning.endTime">
                     <i class="fa fa-exclamation-triangle"></i>
                     <span> {{'APPOINTMENT_CREATION_END_TIME_WARNING' | translate}} </span>
                 </p>
                 <p class="warning-message" ng-if="warning.outOfRange">
                     <i class="fa fa-exclamation-triangle"></i>
                     <span> {{'APPOINTMENT_CREATION_OUT_OF_RANGE_WARNING' | translate}} </span>
-                </p>
+                </p> -->
                 <p class="walk-in-app">
                     <input type="checkbox" ng-model="appointment.appointmentKind" ng-true-value="'WalkIn'"
                            ng-false-value="'Scheduled'" ng-disabled="isEditMode() && !isEditAllowed()">
                     <span class="walk-in-text">{{'APPOINTMENT_CREATE_WALK_IN' | translate}}</span>
                 </p>
+
                 <p>
+                    <label for="provider">
+                        {{'APPOINTMENT_PROVIDER' | translate}}
+                    </label>
+                    <select id="provider" ng-model="appointment.provider"
+                            ng-options="provider.person.display for provider in appointmentCreateConfig.providers | orderBy:'person.display'"
+                            ng-disabled="isEditMode() && !isEditAllowed()">
+                        <option value="">{{ ::'PLACEHOLDER_CREATE_PROVIDER' | translate}}</option>
+                    </select>
+                </p>
+
+                <!-- <p>
                     <label for="notes">
                         {{'APPOINTMENT_CREATE_NOTES' | translate}}
                     </label>
                     <textarea placeholder="{{ ::'PLACEHOLDER_CREATE_NOTES' | translate }}" id="notes"
                               ng-model="appointment.comments"></textarea>
-                </p>
+                </p> -->
             </section>
             <a class="create-appointment-action-btn" ui-sref="^">{{::'APPOINTMENT_CREATE_CANCEL' | translate }}</a>
             <button type="submit" class="service-save-btn create-appointment-action-btn">{{::'APPOINTMENT_CREATE_SAVE' |

@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bahmni.appointments')
-    .controller('AppointmentsCalendarViewController', ['$scope', '$state', '$translate', 'spinner', 'appointmentsService', 'appointmentsFilter', '$rootScope',
-        function ($scope, $state, $translate, spinner, appointmentsService, appointmentsFilter, $rootScope) {
+    .controller('AppointmentsCalendarViewController', ['$scope', '$state', '$translate', 'spinner', 'appointmentsService',
+    	'appointmentsFilter', '$rootScope', 'appService',
+        function ($scope, $state, $translate, spinner, appointmentsService, appointmentsFilter, $rootScope, appService) {
             var init = function () {
                 $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
                 $scope.$on('filterClosedOpen', function (event, args) {
@@ -45,8 +46,8 @@ angular.module('bahmni.appointments')
                     appointments.reduce(function (result, appointment) {
                         var event = {};
                         event.resourceId = appointment.provider ? appointment.provider.name : $translate.instant("NO_PROVIDER_COLUMN_KEY");
-                        event.start = appointment.startDateTime;
-                        event.end = appointment.endDateTime;
+                        event.start = appService.getAppDescriptor().getConfigValue('startOfDay') || Bahmni.Appointments.Constants.defaultCalendarStartTime; // appointment.startDateTime;
+                        event.end = appService.getAppDescriptor().getConfigValue('endOfDay') || Bahmni.Appointments.Constants.defaultCalendarEndTime; // appointment.endDateTime;
                         event.color = appointment.service.color;
                         event.serviceName = appointment.service.name;
                         var existingEvent = _.find(result, event);
