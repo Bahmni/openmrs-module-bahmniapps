@@ -81,7 +81,7 @@
   "PLACEHOLDER_SERVICE": "Select a service",
   "PLACEHOLDER_SERVICE_TYPE": "Select a service appointment type",
   "PLACEHOLDER_CREATE_PROVIDER": "Select a provider",
-  "APPOINTMENT_DATE": "Date",
+  "APPOINTMENT_DATE": "Date of Appointment",
   "APPOINTMENT_START_TIME_KEY": "Start Time",
   "APPOINTMENT_END_TIME_KEY": "End Time",
   "PLACEHOLDER_APPOINTMENT_TIME_FORMAT": "Enter time as hh:mm am/pm",

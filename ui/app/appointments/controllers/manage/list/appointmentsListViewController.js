@@ -19,8 +19,8 @@ angular.module('bahmni.appointments')
             $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
                 {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
-                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
-                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
+                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: false},
+                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: false},
                 {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
                 {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
                 {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
@@ -28,8 +28,8 @@ angular.module('bahmni.appointments')
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                 {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
                 {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
-                {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
+                {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: false, enable: false},
+                {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: false}];
             var init = function () {
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
