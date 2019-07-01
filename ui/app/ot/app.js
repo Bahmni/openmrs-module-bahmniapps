@@ -34,7 +34,9 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
                         templateUrl: 'views/header.html'
                     },
                     'content': {
-                        templateUrl: '../common/patient-search/views/patientsList.html',
+                        templateProvider: function ($templateCache) {
+                            return $templateCache.get('template-patient-search-patient-list');
+                        },
                         controller: 'PatientsListController'
                     }
                 },

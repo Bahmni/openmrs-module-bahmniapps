@@ -5,6 +5,6 @@ angular.module('bahmni.ipd')
         return {
             restrict: 'E',
             controller: 'PatientsListController',
-            templateUrl: '../common/patient-search/views/patientsList.html'
+            templateUrl: "template-patient-search-patient-list"
         };
     }]);

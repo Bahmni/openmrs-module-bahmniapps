@@ -16,6 +16,6 @@ angular.module('bahmni.adt')
             restrict: 'E',
             controller: 'PatientsListController',
             link: link,
-            templateUrl: '../common/patient-search/views/patientsList.html'
+            templateUrl: "template-patient-search-patient-list"
         };
     }]);

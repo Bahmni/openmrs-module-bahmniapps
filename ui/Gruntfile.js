@@ -71,6 +71,7 @@ module.exports = function (grunt) {
         'components/bahmniapps-commons/bahmni-appframework-commons.js',
         'components/bahmniapps-commons/bahmni-domain-commons.js',
         'components/bahmniapps-commons/bahmni-conceptset-commons.js',
+        'components/bahmniapps-commons/bahmni-patientsearch-commons.js',
         'components/bahmniapps-commons/bahmni-patient-commons.js'
     ];
 

@@ -29,7 +29,9 @@ angular
                 },
                 views: {
                     'content': {
-                        templateUrl: '../common/patient-search/views/patientsList.html',
+                        templateProvider: function ($templateCache) {
+                            return $templateCache.get('template-patient-search-patient-list');
+                        },
                         controller: 'PatientsListController'
                     }
                 },
