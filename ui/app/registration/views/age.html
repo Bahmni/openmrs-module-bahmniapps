@@ -7,7 +7,7 @@
         <div class="input-prepend">
             <span class="add-on">{{ ::'REGISTRATION_LABEL_YEARS' | translate}}</span>
             <input type="number" id="ageYears" name="ageYear" max="120" ng-model="patient.age.years" min="0"
-                   ng-required="::!dobMandatory" title="{{ ::'REGISTRATION_LABEL_NUMERIC_YEARS' | translate}}"
+                   ng-required="checkIfEmptyAgeFields()" title="{{ ::'REGISTRATION_LABEL_NUMERIC_YEARS' | translate}}"
                    ng-change="patient.calculateBirthDate()" ng-blur="handleUpdate('age')">
         </div>
         <div class="input-prepend">
