@@ -73,6 +73,7 @@ module.exports = function (grunt) {
         'components/bahmniapps-commons/bahmni-conceptset-commons.js',
         'components/bahmniapps-commons/bahmni-patientsearch-commons.js',
         'components/bahmniapps-commons/bahmni-logging-commons.js',
+        'components/bahmniapps-commons/bahmni-obs-commons.js',
         'components/bahmniapps-commons/bahmni-patient-commons.js'
     ];
 
@@ -302,6 +303,7 @@ module.exports = function (grunt) {
                         src: [
                             libraryCSSFiles,
                             libraryJSFiles,
+                            'components/bahmniapps-commons/*.png',
                             'components/openmrs-uicommons/**/*',
                             '*.{ico,txt,html,js}',
                             '.htaccess',
