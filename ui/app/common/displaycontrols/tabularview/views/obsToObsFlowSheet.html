@@ -33,7 +33,7 @@
                             <span ng-if="row.columns[header.name][0].concept.conceptClass == 'Image'">
                                 <span ng-repeat="data in row.columns[header.name]">
                                     <span class="has-link fl"  ng-if="!hasPDFAsValue(data)"
-                                          ng-dialog="dashboard/views/dashboardSections/imageDisplay.html"
+                                          ng-dialog="template-clinical-displaycontrol-imageDisplay"
                                           ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit"
                                           ng-dialog-data="{{data}}">
                                         <img class="observation-image" ng-src="{{ data.value|thumbnail }}">
@@ -48,7 +48,7 @@
                                   ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{::commafy(row.columns[header.name])}}</span>
                             <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
                                 <span class="has-link fl"
-                                      ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
+                                      ng-dialog="template-clinical-displaycontrol-editObservationForm"
                                       ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit"
                                       ng-dialog-data="{{::getEditObsData(row.columns[header.name][0])}}">
                                      <i class="fl fa fa-pencil"></i>
@@ -73,7 +73,7 @@
                         <span class="fl wrap-on-line-break" ng-class="{ 'obsTableData' : header.name === config.groupByConcept && isEditable }">{{::commafy(row.columns[header.name])}}</span>
                         <span class="fl" ng-if="header.name === config.groupByConcept && isEditable" >
                                 <span class="has-link fl"
-                                      ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
+                                      ng-dialog="template-clinical-displaycontrol-editObservationForm"
                                       ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page  ng-dialog-edit"
                                       ng-dialog-data="{{::getEditObsData(row.columns[header.name][0])}}">
                                      <i class="fl fa fa-pencil"></i>

@@ -14,7 +14,7 @@ angular.module('bahmni.clinical')
 
             $scope.openSummaryDialog = function () {
                 ngDialog.open({
-                    template: 'dashboard/views/dashboardSections/treatmentSummary.html',
+                    template: 'template-clinical-displaycontrol-treatmentSummary',
                     params: $scope.expandedViewConfig,
                     className: "ngdialog-theme-default ng-dialog-all-details-page",
                     scope: $scope
