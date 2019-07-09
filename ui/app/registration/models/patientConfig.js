@@ -46,7 +46,7 @@ Bahmni.Registration.PatientConfig = (function () {
                             canShow: true
                         };
                     }
-                    item.required = true;
+                    item.required = isItemARequiredField(item);
                     sectionObject.attributes.push(item);
                     patientAttributesSections[key] = sectionObject;
                     return true;
@@ -54,6 +54,11 @@ Bahmni.Registration.PatientConfig = (function () {
                 return false;
             });
         });
+    }
+
+    function isItemARequiredField (item) {
+        var requiredPatientAttributes = ["HealthFacilityName", "TodaysDate", "RegistrantName", "TypeofPatient", "UniqueArtNo"];
+        return requiredPatientAttributes.indexOf(item.name) > -1;
     }
 
     function isItemAMandatoryField (item) {

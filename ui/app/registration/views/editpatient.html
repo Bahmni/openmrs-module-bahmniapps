@@ -6,12 +6,12 @@
                 <span class="mylegend"><strong>{{patient.primaryIdentifier.identifierType.name}}: <span id="patientIdentifierValue">{{patient.primaryIdentifier.identifier}}</span></strong></span>
                 <span ng-show= "isDigitized" class="right"><strong>{{::'REGISTRATION_LABEL_SCANNED' | translate}}</strong></span>
             </legend>
-            <div class="photo-container-wrapper" ng-if="!disablePhotoCapture">
+            <!-- <div class="photo-container-wrapper" ng-if="!disablePhotoCapture">
                 <span class="photo-container">
                         <img class="patient-image" ng-src="{{patient.image}}" fallback-src="../images/blank-user.gif">
                         <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
                  </span>
-            </div>
+            </div> -->
             <article class="form-field">
                     <div class="field-attribute">
                     <label class="control-label">{{::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</label>
