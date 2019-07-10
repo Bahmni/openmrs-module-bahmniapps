@@ -90,5 +90,97 @@ describe("BedManagementService", function() {
             var actualLayout = BedManagementService.createLayoutGrid(bedLayouts);
             expect(actualLayout).toEqual(expectedBedLayout);
         });
+
+		it("should initialise min max row column numbers before creating bedLayout", function(){
+            var expectedBedLayout = [
+                [
+                    {
+                        empty : false,
+                        available : false,
+                        bed : {
+                            bedId: 1,
+                            bedNumber: 'I1',
+                            bedType: 'ICU Bed',
+                            bedTagMaps: {uuid: "tagMapUuuid", bed: {id: 2}, bedTag: {id: 1, name: "lost"}},
+                            status: 'OCCUPIED',
+                            patient: {uuid: "patientUuid"}
+                        }
+                    },
+                    {
+                        empty : true,
+                        available : false,
+                        bed : {
+                            bedId: false,
+                            bedNumber: false,
+                            bedType: false,
+                            bedTagMaps: false,
+                            status: false,
+                            patient: false
+                        }
+                    }
+                ],
+                [
+                    {
+                        empty : true,
+                        available : false,
+                        bed : {
+                            bedId: false,
+                            bedNumber: false,
+                            bedType: false,
+                            bedTagMaps: false,
+                            status: false,
+                            patient: false
+                        }
+                    },
+                    {
+                        empty : false,
+                        available : true,
+                        bed : {
+                            bedId: 2,
+                            bedNumber: 'I2',
+                            bedType: 'ICU Bed',
+                            bedTagMaps: {uuid: "tagMapUuuid", bed: {id: 2}, bedTag: {id: 1, name: "lost"}},
+                            status: 'AVAILABLE',
+                            patient: undefined
+                        }
+                    }
+                ]
+            ];
+
+            var otherBedLayouts = [
+                {bedId: 1,
+                    bedNumber: "I1",
+                    bedType: {description: "This is the ICU bed type",
+                        displayName: "ICU Bed",
+                        id: 102,
+                        name: "ICU Bed"},
+                    bedTagMaps: {uuid: "tagMapUuuid", bed: {id: 2}, bedTag: {id: 1, name: "lost"}},
+                    columnNumber: 1,
+                    rowNumber: 1,
+                    status: "OCCUPIED",
+                    patient: {uuid: "patientUuid"}
+                }];
+
+            var otherExpectedBedLayout = [
+                [
+                    {
+                        empty : false,
+                        available : false,
+                        bed : {
+                            bedId: 1,
+                            bedNumber: 'I1',
+                            bedType: 'ICU Bed',
+                            bedTagMaps: {uuid: "tagMapUuuid", bed: {id: 2}, bedTag: {id: 1, name: "lost"}},
+                            status: 'OCCUPIED',
+                            patient: {uuid: "patientUuid"}
+                        }
+                    }
+                ]
+            ];
+            var actualLayout = BedManagementService.createLayoutGrid(bedLayouts);
+            var otherActualLayout = BedManagementService.createLayoutGrid(otherBedLayouts);
+            expect(actualLayout).toEqual(expectedBedLayout);
+            expect(otherActualLayout).toEqual(otherExpectedBedLayout);
+        });
     });
 });
