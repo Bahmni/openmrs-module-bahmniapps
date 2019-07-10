@@ -330,6 +330,8 @@
     text-align: center;
     margin-top: 195px;
     position: relative;
+    display: grid;
+    padding-left: 10px;
     .bed-layout-row {
       display: flex;
       place-content: center;
