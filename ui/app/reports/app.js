@@ -54,6 +54,38 @@ angular
                         controller: 'MyReportsController'
                     }
                 }
+            }).state('dashboard.facilityReports', {
+                url: '/facilityReports?appName',
+                views: {
+                    'content': {
+                        templateUrl: 'views/facilityReports.html',
+                        controller: 'FacilityReportsController'
+                    }
+                }
+            }).state('dashboard.monthlyReports', {
+                url: '/monthlyReports?appName',
+                views: {
+                    'content': {
+                        templateUrl: 'views/monthlyReports.html',
+                        controller: 'MonthlyReportsController'
+                    }
+                }
+            }).state('dashboard.quarterlyReports', {
+                url: '/quarterlyReports?appName',
+                views: {
+                    'content': {
+                        templateUrl: 'views/quarterlyReports.html',
+                        controller: 'QuarterlyReportsController'
+                    }
+                }
+            }).state('dashboard.merReports', {
+                url: '/merReports?appName',
+                views: {
+                    'content': {
+                        templateUrl: 'views/merReports.html',
+                        controller: 'MerReportsController'
+                    }
+                }
             });
 
             var getAppName = function () {
