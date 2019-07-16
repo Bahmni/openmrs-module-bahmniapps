@@ -1,17 +1,17 @@
+
 <div class="clint-logo-wrapper">
-    <img class="implementor-logo" src={{logo}} style="margin: 60px -194px 0px 0px ;">
-    <img src="./../images/southsudanflag.png" alt="flag"  style="float: right; margin: 0px 92px 3px 0px; width: 86px ; height: 50px" />
+    <img class="implementor-logo" src={{logo}} style="margin: 24px 307px 0px 0px ;width: 160px ; height: 143px">
+    <img src="./../images/southsudanflag.png" alt="flag"  style="float: left; margin: 24px 105px 11px 31px; width: 160px ; height: 100px" />
     <span ng-if="titleText" class="title_text"> {{'LOGIN_PAGE_TITLE_TEXT' | translate }} </span>
 </div>
-
 <div class="login" ng-hide="showOTP">
     <div ng-if="headerText" class="emr-login-text">
         <b>{{'LOGIN_PAGE_HEADER_TEXT'| translate}} </b>
     </div>
     <header class="reg-header">
         <div class="left">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</div>
-        <div class="right locale-wrapper">
-            <span class="locale-text">{{'LOGIN_LABEL_SELECT_LOCALE_KEY' | translate}} </span>
+        <div class="right locale-wrapper" hidden>
+            <span class="locale-text" >{{'LOGIN_LABEL_SELECT_LOCALE_KEY' | translate}} </span>
             <select id="locale" ng-model="selectedLocale" ng-options="item.code as item.nativeName for item in locales" required/>
         </div>
     </header>
@@ -128,3 +128,5 @@
     <img src="./../images/bahmniLogoFull.png" alt="Bahmni" />
     <a href={{helpLink}}> Bahmni Help</a>
 </div>
+</div>
+
