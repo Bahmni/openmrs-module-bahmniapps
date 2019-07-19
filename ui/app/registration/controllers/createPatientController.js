@@ -149,35 +149,85 @@ angular.module('bahmni.registration')
                         return attribute.name;
                     });
                 }
-                var personAttributeHasUniqueArtNo = personAttributes.indexOf("UniqueArtNo") !== -1;
-                var personAttributeUniqueArtNo = personAttributeHasUniqueArtNo
-                    ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("UniqueArtNo")].name : undefined;
-                if (personAttributeUniqueArtNo && $scope.patient[personAttributeUniqueArtNo] && $scope.patient.extraIdentifiers.length > 0) {
-                    $scope.patient.extraIdentifiers[0].identifier = $scope.patient[personAttributeUniqueArtNo];
-                }
-                return patientService.create($scope.patient, jumpAccepted).then(function (response) {
-                    copyPatientProfileDataToScope(response);
-                }, function (response) {
-                    if (response.status === 412) {
-                        var data = _.map(response.data, function (data) {
-                            return {
-                                sizeOfTheJump: data.sizeOfJump,
-                                identifierName: _.find($rootScope.patientConfiguration.identifierTypes, {uuid: data.identifierType}).name
-                            };
-                        });
-                        getConfirmationViaNgDialog({
-                            template: 'views/customIdentifierConfirmation.html',
-                            data: data,
-                            scope: $scope,
-                            yesCallback: function () {
-                                return createPatient(true);
+                var personAttributeHasTypeofPatient = personAttributes.indexOf("TypeofPatient") !== -1;
+                var personAttributeTypeofPatient = personAttributeHasTypeofPatient
+                    ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TypeofPatient")].name : undefined;
+                if (personAttributeTypeofPatient && $scope.patient[personAttributeTypeofPatient] &&
+                        $scope.patient[personAttributeTypeofPatient].value === "NewPatient") {
+                    var idgenPrefix = {};
+                    idgenPrefix.identifierPrefix = {};
+                    idgenPrefix.identifierPrefix.prefix = "UID";
+                    return patientService.generateIdentifier(idgenPrefix).then(function (response) {
+                        var uniqueArtIdentifier = "";
+                        if ($scope.patient.extraIdentifiers.length > 0 && response && response.data && response.data.length > 0) {
+                            var personAttributeHasHealthFacility = personAttributes.indexOf("HealthFacilityName") !== -1;
+                            var personAttributeHealthFacility = personAttributeHasHealthFacility
+                                ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("HealthFacilityName")].name : undefined;
+                            if (personAttributeHealthFacility && $scope.patient[personAttributeHealthFacility] &&
+                                    $scope.patient[personAttributeHealthFacility].value === "Juba Teaching Hospital") {
+                                uniqueArtIdentifier = _.padStart(response.data, 8, '0');
+                                uniqueArtIdentifier = "CES/JTH-" + uniqueArtIdentifier;
+                            } else if (personAttributeHealthFacility && $scope.patient[personAttributeHealthFacility] &&
+                                    $scope.patient[personAttributeHealthFacility].value === "Nimule") {
+                                uniqueArtIdentifier = _.padStart(response.data, 8, '0');
+                                uniqueArtIdentifier = "EES/NMC-" + uniqueArtIdentifier;
+                            }
+                        }
+                        var personAttributeHasUniqueArtNo = personAttributes.indexOf("UniqueArtNo") !== -1;
+                        var personAttributeUniqueArtNo = personAttributeHasUniqueArtNo
+                            ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("UniqueArtNo")].name : undefined;
+                        $scope.patient[personAttributeUniqueArtNo] = uniqueArtIdentifier;
+                        $scope.patient.extraIdentifiers[0].identifier = uniqueArtIdentifier;
+                    }).then(function () {
+                        return patientService.create($scope.patient, jumpAccepted).then(function (response) {
+                            copyPatientProfileDataToScope(response);
+                        }, function (response) {
+                            if (response.status === 412) {
+                                var data = _.map(response.data, function (data) {
+                                    return {
+                                        sizeOfTheJump: data.sizeOfJump,
+                                        identifierName: _.find($rootScope.patientConfiguration.identifierTypes, {uuid: data.identifierType}).name
+                                    };
+                                });
+                                getConfirmationViaNgDialog({
+                                    template: 'views/customIdentifierConfirmation.html',
+                                    data: data,
+                                    scope: $scope,
+                                    yesCallback: function () {
+                                        return createPatient(true);
+                                    }
+                                });
+                            }
+                            if (response.isIdentifierDuplicate) {
+                                errorMessage = response.message;
                             }
                         });
-                    }
-                    if (response.isIdentifierDuplicate) {
-                        errorMessage = response.message;
-                    }
-                });
+                    });
+                } else {
+                    return patientService.create($scope.patient, jumpAccepted).then(function (response) {
+                        copyPatientProfileDataToScope(response);
+                    }, function (response) {
+                        if (response.status === 412) {
+                            var data = _.map(response.data, function (data) {
+                                return {
+                                    sizeOfTheJump: data.sizeOfJump,
+                                    identifierName: _.find($rootScope.patientConfiguration.identifierTypes, {uuid: data.identifierType}).name
+                                };
+                            });
+                            getConfirmationViaNgDialog({
+                                template: 'views/customIdentifierConfirmation.html',
+                                data: data,
+                                scope: $scope,
+                                yesCallback: function () {
+                                    return createPatient(true);
+                                }
+                            });
+                        }
+                        if (response.isIdentifierDuplicate) {
+                            errorMessage = response.message;
+                        }
+                    });
+                }
             };
 
             var createPromise = function () {
