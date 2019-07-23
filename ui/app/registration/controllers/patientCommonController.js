@@ -75,7 +75,7 @@ angular.module('bahmni.registration')
                 var readOnlyPatientAttributes = ["HealthFacilityName", "TodaysDate", "RegistrantName", "UniqueArtNo", "TypeofPatient"];
 
                 if (!$scope.patientLoaded) {
-                    readOnlyPatientAttributes = ["UniqueArtNo"];
+                    readOnlyPatientAttributes = [];
                 }
                 return readOnlyPatientAttributes.indexOf(fieldName) > -1 || false;
             };
@@ -118,7 +118,7 @@ angular.module('bahmni.registration')
                         $scope.patient[personAttributeTypeofPatient] && $scope.patient[personAttributeTypeofPatient].value === "Walk-In") {
                         for (var i = 0; i < personAttributes.length; ++i) {
                             var attrName = personAttributes[i];
-                            if (attrName !== "TypeofPatient") {
+                            if (attrName !== "TypeofPatient" && attrName !== "UniqueArtNo") {
                                 var attrElement = angular.element(document.getElementById(attrName));
                                 if (attrElement) {
                                     attrElement.attr('disabled', true);

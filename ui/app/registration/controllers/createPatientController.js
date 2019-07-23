@@ -206,6 +206,12 @@ angular.module('bahmni.registration')
                         });
                     });
                 } else {
+                    var personAttributeHasUniqueArtNo = personAttributes.indexOf("UniqueArtNo") !== -1;
+                    var personAttributeUniqueArtNo = personAttributeHasUniqueArtNo
+                        ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("UniqueArtNo")].name : undefined;
+                    if ($scope.patient.primaryIdentifier) {
+                        $scope.patient.primaryIdentifier.identifier = $scope.patient[personAttributeUniqueArtNo];
+                    }
                     return patientService.create($scope.patient, jumpAccepted).then(function (response) {
                         copyPatientProfileDataToScope(response);
                     }, function (response) {
