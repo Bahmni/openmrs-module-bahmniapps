@@ -57,7 +57,7 @@ Bahmni.Registration.PatientConfig = (function () {
     }
 
     function isItemARequiredField (item) {
-        var requiredPatientAttributes = ["HealthFacilityName", "TodaysDate", "RegistrantName", "TypeofPatient", "UniqueArtNo"];
+        var requiredPatientAttributes = ["HealthFacilityName", "TodaysDate", "RegistrantName", "TypeofPatient", "MaritalStatus"];
         return requiredPatientAttributes.indexOf(item.name) > -1;
     }
 
