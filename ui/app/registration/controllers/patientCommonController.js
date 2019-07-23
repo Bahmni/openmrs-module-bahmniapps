@@ -123,6 +123,11 @@ angular.module('bahmni.registration')
                                 if (attrElement) {
                                     attrElement.attr('disabled', true);
                                 }
+                            } else if (attrName === "UniqueArtNo") {
+                                var attrElement = angular.element(document.getElementById(attrName));
+                                if (attrElement) {
+                                    attrElement.attr('disabled', false);
+                                }
                             }
                         }
                     } else if (personAttributeTypeofPatient &&
@@ -133,6 +138,11 @@ angular.module('bahmni.registration')
                                 var attrElement = angular.element(document.getElementById(attrName));
                                 if (attrElement) {
                                     attrElement.attr('disabled', false);
+                                }
+                            } else if (attrName === "UniqueArtNo") {
+                                var attrElement = angular.element(document.getElementById(attrName));
+                                if (attrElement) {
+                                    attrElement.attr('disabled', true);
                                 }
                             }
                         }
