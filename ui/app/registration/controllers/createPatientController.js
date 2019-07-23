@@ -159,7 +159,7 @@ angular.module('bahmni.registration')
                     idgenPrefix.identifierPrefix.prefix = "UID";
                     return patientService.generateIdentifier(idgenPrefix).then(function (response) {
                         var uniqueArtIdentifier = "";
-                        if ($scope.patient.extraIdentifiers.length > 0 && response && response.data && response.data.length > 0) {
+                        if (response && response.data && response.data.length > 0) {
                             var personAttributeHasHealthFacility = personAttributes.indexOf("HealthFacilityName") !== -1;
                             var personAttributeHealthFacility = personAttributeHasHealthFacility
                                 ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("HealthFacilityName")].name : undefined;
@@ -177,7 +177,9 @@ angular.module('bahmni.registration')
                         var personAttributeUniqueArtNo = personAttributeHasUniqueArtNo
                             ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("UniqueArtNo")].name : undefined;
                         $scope.patient[personAttributeUniqueArtNo] = uniqueArtIdentifier;
-                        $scope.patient.extraIdentifiers[0].identifier = uniqueArtIdentifier;
+                        if ($scope.patient.primaryIdentifier) {
+                            $scope.patient.primaryIdentifier.identifier = uniqueArtIdentifier;
+                        }
                     }).then(function () {
                         return patientService.create($scope.patient, jumpAccepted).then(function (response) {
                             copyPatientProfileDataToScope(response);
