@@ -141,6 +141,20 @@
                         </div>
                     </div>
                 </section>
+                <div ng-if="section.order === 4">
+                    <legend class="registraion_legend">
+                        <span class="mylegend"> {{ ::'REGISTRATION_LABEL_ADDRESS_INFO' | translate}}</span>
+                    </legend>
+
+                    <section address-fields data-address-levels="::addressLevels" data-address="patient.address"
+                             field-validation="::fieldValidation"
+                             strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"
+                             ng-if="::!addressHierarchyConfigs.showAddressFieldsTopDown"></section>
+
+                    <section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.address"
+                             field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
+                             strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
+                </div>
         </div>
 
         <div ng-if="::(section.canShow && section.order === 5)">
