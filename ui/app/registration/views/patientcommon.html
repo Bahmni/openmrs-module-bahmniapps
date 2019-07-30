@@ -64,13 +64,13 @@
                                   <input data-ng-switch-when="true"
                                          type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
                                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
-                                         data-item-type="personName"
+                                         data-item-type="personName" maxlength="10" style="width:90px;"
                                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
 
                                   <input data-ng-switch-default
                                          type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
-                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
+                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" maxlength="10" style="width:90px;"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
                               </span>
 
@@ -79,14 +79,28 @@
                                   <input data-ng-switch-when="true"
                                          type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
                                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
-                                         data-item-type="personName"
-                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
+                                         data-item-type="personName" maxlength="10" style="width:90px;"
+                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" maxlength="10" style="width:90px;"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
 
                                   <input data-ng-switch-default
                                          type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
-                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
+                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" maxlength="10" style="width:90px;"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
+                              </span>
+
+                              <span ng-show="::showMiddleName" data-ng-switch="::isAutoComplete('middleName')">
+                                  <input data-ng-switch-when="true"
+                                         type="text" id="middleName" ng-model="$parent.patient.middleName" pattern-validate
+                                         my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
+                                         data-item-type="personName" maxlength="10" style="width:90px;"
+                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
+                                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
+
+                                  <input data-ng-switch-default
+                                         type="text" id="middleName" ng-model="patient.middleName" pattern-validate
+                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}" maxlength="10" style="width:90px;"
+                                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
                               </span>
                             </div>
                         </article>
@@ -96,7 +110,7 @@
                             </div>
                             <div id="patientLastName" class="field-value">
                               <span ng-show="::showLastName" data-ng-switch="::isAutoComplete('familyName')">
-                                  <input data-ng-switch-when="true"
+                                  <input data-ng-switch-when="true" maxlength="10" width="100px"
                                          type="text" id="familyName" ng-model="$parent.patient.familyName"  pattern-validate
                                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                                          data-item-type="personName"
@@ -105,7 +119,7 @@
 
                                   <input data-ng-switch-default
                                          type="text" id="familyName" ng-model="patient.familyName"  pattern-validate
-                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
+                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}" maxlength="10" width="100px"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
                               </span>
                             </div>
@@ -158,6 +172,30 @@
         </div>
 
         <div ng-if="::(section.canShow && section.order === 5)">
+            <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
+                <legend>
+                  <span>
+                      <i class="fa fa-caret-down" ng-show="!section.expand"></i>
+                      <strong>
+                          <a ng-if="::section.translationKey" href accesskey="{{::section.shortcutKey | translate}}"
+                             ng-bind-html="::section.translationKey | translate">
+                          </a>
+                          <a ng-if="::(section.title && !section.translationKey)" href>{{::section.title | translate}}</a>
+                      </strong>
+                  </span>
+                </legend>
+                <section class="form-field-inline clearfix" ng-show="!section.expand">
+                    <article class="form-field" ng-repeat="attribute in ::section.attributes"
+                             ng-class="::{'right-form-field' : $index%2 != 0}">
+                        <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                              is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                              get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                    </article>
+                </section>
+            </div>
+        </div>
+
+        <div ng-if="::(section.canShow && section.order === 6)">
             <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
                 <legend>
                   <span>
