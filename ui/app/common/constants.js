@@ -255,7 +255,8 @@ Bahmni.Common = Bahmni.Common || {};
         privilegeRequiredErrorMessage: "PRIVILEGE_REQUIRED",
         patientFormsUrl: BAHMNI_CORE + "/patient/{patientUuid}/forms",
         defaultPossibleRelativeSearchLimit: 10,
-        forms2Type: "formsV2"
+        formBuilderDisplayControlType: "formsV2",
+        formBuilderType: "v2"
     };
 })();
 
