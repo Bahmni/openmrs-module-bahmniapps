@@ -56,5 +56,13 @@
     "GENDER_OTHER_KEY": "Other",
     "ADMISSION_DATE_LABEL": "Admission Date",
     "DOB_LABEL": "Date of Birth",
-    "PATIENT_BED_MANAGEMENT_PAGE_KEY": "Patient Bed Management" 
+    "PATIENT_BED_MANAGEMENT_PAGE_KEY": "Patient Bed Management",
+    "ADMIT_SUMMARY_KEY": "Admit Summary",
+    "DISCHARGE_SUMMARY_KEY": "Discharge Summary",
+    "DISCHARGE_FROM_KEY": "Discharge From:",
+    "PATIENT_MOVEMENT_KEY": "Patient Movement",
+    "MOVEMENT_FROM_KEY": "Movement From",
+    "MOVEMENT_TO_KEY": "Movement To",
+    "MOVE_KEY": "Move",
+    "ADMIT_TO_KEY": "Admit To:"
 }
