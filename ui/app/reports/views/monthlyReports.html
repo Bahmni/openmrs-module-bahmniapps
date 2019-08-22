@@ -1,0 +1,105 @@
+<div class="reports-page">
+    <h2 ng-if="::!reportsDefined">{{ 'REPORTS_MISSING_WARNING_MESSAGE_KEY' | translate}}</h2>
+    <section class="section-grid" ng-if="::monthlyReportsRequiringDateRange.length > 0">
+        <h2 class="section-title">{{::'REPORTS_TITLE_KEY' | translate}}</h2>
+        <table class="alt-row form">
+            <thead>
+            <tr>
+                <th>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</th>
+                <th class="reports-start-date">{{::'REPORTS_START_DATE_HEADER_KEY ' |translate}}
+                    <span class="asterick">*</span>
+                    <input ng-model="default.reportsRequiringDateRange.startDate" date-converter
+                           class="form-field start-date" type="date" max="{{default.reportsRequiringDateRange.stopDate | date:'yyyy-MM-dd'}}"
+                           ng-change="setDefault('startDate', 'reportsRequiringDateRange')">
+                </th>
+                <th class="reports-stop-date">{{::'REPORTS_END_DATE_HEADER_KEY' |translate}}
+                    <span class="asterick">*</span>
+                    <input ng-model="default.reportsRequiringDateRange.stopDate" date-converter
+                           class="form-field start-date" type="date" min="{{default.reportsRequiringDateRange.startDate | date:'yyyy-MM-dd'}}"
+                           ng-change="setDefault('stopDate', 'reportsRequiringDateRange')">
+                </th>
+                <th class="reports-format">
+                    {{::'REPORT_FORMAT_KEY' | translate}}
+                    <span class="asterick">*</span>
+                    <select ng-model="default.reportsRequiringDateRange.responseType"
+                            ng-options="type as label for (label , type) in ::formats"
+                            ng-change="setDefault('responseType', 'reportsRequiringDateRange')">
+                        <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
+                    </select>
+                </th>
+                <th class="reports-action">
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="report in ::monthlyReportsRequiringDateRange">
+                <td>{{:: report.name }}</td>
+                <td class="reports-start-date">
+                    <input date-converter class="form-field start-date" type="date" max="{{report.stopDate | date:'yyyy-MM-dd'}}"
+                           ng-model="report.startDate">
+                </td>
+                <td class="reports-stop-date">
+                    <input date-converter class="form-field stop-date" type="date" min="{{report.startDate | date:'yyyy-MM-dd'}}"
+                            ng-model="report.stopDate">
+                </td>
+                <td class="reports-format">
+                    <select ng-model="report.responseType" ng-options="type as label for (label , type) in ::formats">
+                        <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
+                    </select>
+                    <input ng-if="report.responseType=='application/vnd.ms-excel-custom' && !report.config.macroTemplatePath"
+                           class="input-file-upload custom-file"
+                           type="file" accept=".xls" nv-file-select uploader="uploader" options="{report: report}"/>
+                </td>
+                <td class="reports-action">
+                    <button ng-if="!enableReportQueue" type="submit" class="run-report confirm" ng-click="downloadReport(report)">
+                        {{::'RUN_REPORT_BUTTON_KEY' |translate}}
+                    </button>
+                    <button ng-if="enableReportQueue" type="submit" class="run-report confirm" ng-click="downloadReport(report)">
+                        {{::'RUN_NOW_BUTTON_KEY' |translate}}
+                    </button>
+                    <button ng-if="enableReportQueue" type="submit" class="run-report confirm" ng-click="scheduleReport(report)">
+                        {{::'QUEUE_BUTTON_KEY' |translate}}
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+    <section class="section-grid" ng-if="::monthlyReportsNotRequiringDateRange.length > 0">
+        <h2 class="section-title">{{::'REPORTS_TITLE_WITHOUT_DATE_RANGE_KEY' | translate}}</h2>
+        <table class="alt-row">
+            <thead>
+            <tr>
+                <th>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</th>
+                <th class="reports-format">
+                    {{::'REPORT_FORMAT_KEY' | translate}}
+                    <select ng-model="default.reportsNotRequiringDateRange.responseType"
+                            ng-change="setDefault('responseType', 'reportsNotRequiringDateRange')"
+                            ng-options="type as label for (label , type) in ::formats">
+                        <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
+                    </select>
+                </th>
+                <th class="reports-action">
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="report in ::monthlyReportsNotRequiringDateRange">
+                <td>{{:: report.name }}</td>
+                <td class="reports-format">
+                    <select ng-model="report.responseType" ng-options="type as label for (label , type) in ::formats">
+                        <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
+
+                    </select>
+                </td>
+                <td class="reports-action">
+                    <button type="submit" class="run-report confirm" ng-click="downloadReport(report)">
+                        {{::'RUN_REPORT_BUTTON_KEY' |translate}}
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+</div>

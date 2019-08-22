@@ -8,7 +8,7 @@ angular.module('bahmni.reports').factory('initialization',
                     return configurations.load([]);
                 };
                 var initApp = function () {
-                    return appService.initApp(appName || 'reports', {'app': true, 'extension': true }, null, ["reports", "facilityReports"]);
+                    return appService.initApp(appName || 'reports', {'app': true, 'extension': true }, null, ["reports", "facilityReports", "monthlyReports"]);
                 };
 
                 return spinner.forPromise(authenticator.authenticateUser()
