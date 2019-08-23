@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ipd')
-    .controller('RoomController', ['$scope', '$rootScope', '$state', '$translate', 'appService',
-        function ($scope, $rootScope, $state, $translate, appService) {
+    .controller('RoomController', ['$scope', '$rootScope', '$state', '$translate', 'appService', 'printer',
+        function ($scope, $rootScope, $state, $translate, appService, printer) {
             var init = function () {
                 $scope.defaultTags = ['AVAILABLE', 'OCCUPIED'];
                 var appDescriptor = appService.getAppDescriptor();
@@ -32,6 +32,29 @@ angular.module('bahmni.ipd')
                 $rootScope.currentView = ($rootScope.currentView === "Grid") ? "List" : "Grid";
                 $scope.currentView = $rootScope.currentView;
             };
+
+            $scope.printWardList = function () {
+                let printTemplateUrl = appService.getAppDescriptor()
+                  .getConfigValue('wardListPrintViewTemplateUrl') || 'views/wardListPrint.html';
+                let configuredTableHeader = appService.getAppDescriptor()
+                  .getConfigValue('wardListPrintAttributes');
+                if (configuredTableHeader && configuredTableHeader.length > 0) {
+                    $scope.tableHeader = configuredTableHeader;
+                }
+                printer.print(printTemplateUrl, {
+                    wardName: $scope.room.name,
+                    date: moment().format('DD-MMM-YYYY'),
+                    totalBeds: $scope.room.totalBeds,
+                    occupiedBeds: $scope.room.totalBeds - $scope.room.availableBeds,
+                    tableData: $scope.tableData,
+                    tableHeader: $scope.tableHeader
+                });
+            };
+
+            $scope.$on("event:getTableData", function (event, data) {
+                $scope.tableData = data.tableData;
+                $scope.tableHeader = data.tableHeader;
+            });
 
             $scope.getTagName = function (tag) {
                 if (tag === 'AVAILABLE') {
