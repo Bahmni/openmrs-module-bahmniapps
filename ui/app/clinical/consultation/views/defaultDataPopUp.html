@@ -9,8 +9,8 @@
     </div>
     <div class="input-container">
         <div show-if-privilege="{{onBehalfOfPrivilege}}">
-            <label  class="retro-date-label" style = "display: none">{{ 'RETROSPECTIVE_POPUP_ON_BEHALF_LABEL'|translate }}</label>
-            <input style = "display: none" type="text" class="retro-date-widget" ng-model="encounterProvider.value" 
+            <label  class="retro-date-label">{{ 'RETROSPECTIVE_POPUP_ON_BEHALF_LABEL'|translate }}</label>
+            <input type="text" class="retro-date-widget" ng-model="encounterProvider.value"
                    bahmni-autocomplete source="getProviderList()" response-map="getProviderDataResults" on-select="providerSelected()" ng-change="clearProvider(encounterProvider.value)"/>
         </div>
     </div>
