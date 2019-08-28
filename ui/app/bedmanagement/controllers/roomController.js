@@ -47,8 +47,18 @@ angular.module('bahmni.ipd')
                     totalBeds: $scope.room.totalBeds,
                     occupiedBeds: $scope.room.totalBeds - $scope.room.availableBeds,
                     tableData: $scope.tableData,
-                    tableHeader: $scope.tableHeader
+                    tableHeader: $scope.tableHeader,
+                    isEmptyRow: $scope.isEmptyRow
                 });
+            };
+
+            $scope.isEmptyRow = function (row) {
+                for (let header of $scope.tableHeader) {
+                    if (row[header]) {
+                        return false;
+                    }
+                }
+                return true;
             };
 
             $scope.$on("event:getTableData", function (event, data) {

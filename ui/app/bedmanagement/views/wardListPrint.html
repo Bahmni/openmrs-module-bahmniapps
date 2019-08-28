@@ -117,7 +117,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="row in tableData">
+            <tr ng-repeat="row in tableData" ng-if="isEmptyRow(row) == false">
                 <td ng-repeat="heading in tableHeader">
                     <span>{{row[heading]}}</span>
                 </td>

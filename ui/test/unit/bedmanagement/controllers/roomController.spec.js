@@ -108,6 +108,7 @@ describe('RoomController', function () {
             scope.room = room;
             scope.currentView = "Grid";
             scope.tableData = tableData;
+            scope.tableHeader = defaultTableHeaders;
         });
         translate = jasmine.createSpyObj('$translate', ['instant']);
         translate.instant.and.callFake(function (key) {
@@ -199,5 +200,18 @@ describe('RoomController', function () {
               tableHeader: defaultTableHeaders
           }
         )
+    });
+
+    it('should return false if the row is empty', function () {
+        initController(rootScope, state, getSpyForAppService(implementationPrintTemplate, defaultTableHeaders));
+        expect(scope.isEmptyRow(tableData[0])).toBeFalsy();
+
+    });
+
+    it('should return true if the row is not empty', function () {
+        initController(rootScope, state, getSpyForAppService(implementationPrintTemplate, defaultTableHeaders));
+        let invalidRowForConfiguredAttributes = '{"Name": "Tom", "Country: "US"}';
+        expect(scope.isEmptyRow(invalidRowForConfiguredAttributes)).toBeTruthy()
+
     })
 });
