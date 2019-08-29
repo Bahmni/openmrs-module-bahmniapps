@@ -13,7 +13,7 @@ angular.module('bahmni.ipd')
                     "url": "../bedmanagement/#/patient/{{patientUuid}}/visit/{{visitUuid}}/dashboard"
                 }
             };
-            var configUrl = appService.getAppDescriptor().getConfigValue("patientDashboardForwardUrl") || links.dashboard.url;
+            var patientForwardUrl = appService.getAppDescriptor().getConfigValue("patientForwardUrl") || links.dashboard.url;
 
             var isDepartmentPresent = function (department) {
                 if (!department) return false;
@@ -174,7 +174,7 @@ angular.module('bahmni.ipd')
             $scope.goToAdtPatientDashboard = function () {
                 getVisitInfoByPatientUuid($scope.patient.uuid).then(function (visitUuid) {
                     var options = {patientUuid: $scope.patient.uuid, visitUuid: visitUuid};
-                    var url = appService.getAppDescriptor().formatUrl(configUrl, options);
+                    var url = appService.getAppDescriptor().formatUrl(patientForwardUrl, options);
                     window.open(url);
                 });
                 if (window.scrollY > 0) {
