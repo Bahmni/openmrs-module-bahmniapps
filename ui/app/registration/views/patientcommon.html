@@ -220,4 +220,16 @@
         </div>
       </div>
     </div>
+    <div class="box-container" ng-if="::(relationshipTypes.length > 0)">
+        <legend class="additional-attribute" ng-show="::relationshipTypes" toggle="patient.hasRelationships">
+          <span>
+              <i class="fa fa-caret-right"></i>
+              <i class="fa fa-caret-down"></i>
+              <strong><a ng-bind-html="::'REGISTRATION_TITLE_RELATIONSHIPS' | translate"></a></strong>
+          </span>
+        </legend>
+        <div patient-relationship patient="patient" ng-show="patient.hasRelationships"
+             ng-if="::relationshipTypes"></div>
+    </div>
+
 </div>

@@ -93,7 +93,7 @@
   "OBS_BOOLEAN_YES_KEY":"Yes",
   "OBS_BOOLEAN_NO_KEY":"No",
   "REGISTRATION_RELATION_TYPE_LABEL": "Relationship Type",
-  "REGISTRATION_ENTER_NAME_ID_LABEL": "Enter Name/ ID",
+  "REGISTRATION_ENTER_NAME_ID_LABEL": "Enter Name/ ART Number",
   "REQUIRED_FIELD": "Please fill out this field",
   "PRIVILEGE_REQUIRED": "User is logged in but doesn't have the relevant privilege",
   "NO_FULFILMENT_MESSAGE": "No observations captured for this order.",
