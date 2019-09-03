@@ -8,7 +8,7 @@ angular.module('bahmni.ipd')
                 var appDescriptor = appService.getAppDescriptor();
                 $rootScope.bedTagsColorConfig = appDescriptor.getConfigValue("colorForTags") || [];
                 $rootScope.currentView = $rootScope.currentView || "Grid";
-                $scope.showPrintIcon  = appDescriptor.getConfigValue("wardListPrintEnabled") || false;
+                $scope.showPrintIcon = appDescriptor.getConfigValue("wardListPrintEnabled") || false;
                 $scope.currentView = $rootScope.currentView;
 
                 if ($rootScope.bedDetails) {
@@ -35,9 +35,9 @@ angular.module('bahmni.ipd')
             };
 
             $scope.printWardList = function () {
-                let printTemplateUrl = appService.getAppDescriptor()
+                var printTemplateUrl = appService.getAppDescriptor()
                   .getConfigValue('wardListPrintViewTemplateUrl') || 'views/wardListPrint.html';
-                let configuredTableHeader = appService.getAppDescriptor()
+                var configuredTableHeader = appService.getAppDescriptor()
                   .getConfigValue('wardListPrintAttributes');
                 if (configuredTableHeader && configuredTableHeader.length > 0) {
                     $scope.tableHeader = configuredTableHeader;

@@ -140,17 +140,20 @@ describe('RoomController', function () {
     });
 
     it('should verify print is called with configured wardListPrintAttributes and wardListPrintViewTemplateUrl', function () {
-
+        scope.isEmptyRow = function(row) {
+            return false;
+        }
         initController(rootScope, state, getSpyForAppService(implementationPrintTemplate, configuredTableHeaders));
         scope.printWardList();
         expect(printer.print).toHaveBeenCalledWith(implementationPrintTemplate,
           {
             wardName: 'ROOM1',
-            date:  '23-Aug-2019',
+            date: moment().format('DD-MMM-YYYY'),
             totalBeds: 9,
             occupiedBeds: 8,
             tableData: tableData,
-            tableHeader: configuredTableHeaders
+            tableHeader: configuredTableHeaders,
+            isEmptyRow: scope.isEmptyRow
           }
           )
     });
@@ -170,34 +173,40 @@ describe('RoomController', function () {
     }
 
     it('should verify print is called with configured wardListPrintAttributes and default print template', function () {
-
+        scope.isEmptyRow = function(row) {
+            return false;
+        }
         initController(rootScope, state, getSpyForAppService(undefined, configuredTableHeaders));
         scope.printWardList();
         expect(printer.print).toHaveBeenCalledWith(defaultPrintTemplate,
           {
               wardName: 'ROOM1',
-              date:  '23-Aug-2019',
+              date: moment().format('DD-MMM-YYYY'),
               totalBeds: 9,
               occupiedBeds: 8,
               tableData: tableData,
-              tableHeader: configuredTableHeaders
+              tableHeader: configuredTableHeaders,
+              isEmptyRow: scope.isEmptyRow
           }
         )
     });
 
     it('should verify print is called with all columns of bed managment list view if' +
       ' wardListPrintAttributes are not configured', function () {
-
+        scope.isEmptyRow = function(row) {
+            return false;
+        }
         initController(rootScope, state, getSpyForAppService(implementationPrintTemplate, defaultTableHeaders));
         scope.printWardList();
         expect(printer.print).toHaveBeenCalledWith(implementationPrintTemplate,
           {
               wardName: 'ROOM1',
-              date:  '23-Aug-2019',
+              date: moment().format('DD-MMM-YYYY'),
               totalBeds: 9,
               occupiedBeds: 8,
               tableData: tableData,
-              tableHeader: defaultTableHeaders
+              tableHeader: defaultTableHeaders,
+              isEmptyRow: scope.isEmptyRow
           }
         )
     });
