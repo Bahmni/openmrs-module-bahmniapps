@@ -12,7 +12,7 @@
             </div>
             <div class="fl" style="margin-top: 5px; padding: 0 5px;">{{tag.name | translate}}</div>
         </div>
-        <span class="quick-links" ng-if="currentView == 'List' && tableHeader && tableData">
+        <span class="quick-links" ng-if="currentView == 'List' && tableHeader && tableData && showPrintIcon">
             <button class="print-list switch-bed-views" ng-click="printWardList()">
                 <span class="fa fa-print"></span>
             </button>
