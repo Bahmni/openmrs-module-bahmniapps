@@ -53,7 +53,8 @@ angular.module('bahmni.ipd')
             };
 
             $scope.isEmptyRow = function (row) {
-                for (let header of $scope.tableHeader) {
+                for (var i = 0; i < $scope.tableHeader.length; i++) {
+                    var header = $scope.tableHeader[i];
                     if (row[header]) {
                         return false;
                     }

@@ -32,7 +32,6 @@
         display: flex;
         font-weight: bold;
         align-items: flex-start;
-        margin-left: 5px;
     }
 
     @media print {
@@ -98,7 +97,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="row in tableData" ng-if="isEmptyRow(row) == false">
+            <tr ng-repeat="row in tableData" ng-if="!isEmptyRow(row)">
                 <td ng-repeat="heading in tableHeader">
                     <span>{{row[heading]}}</span>
                 </td>
