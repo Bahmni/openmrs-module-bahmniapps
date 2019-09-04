@@ -19,6 +19,8 @@ angular.module('bahmni.registration')
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
 
+            $scope.heiRelationship = false;
+
             var dontSaveButtonClicked = false;
             var isHref = false;
 
@@ -106,6 +108,7 @@ angular.module('bahmni.registration')
                     executeRule(ruleFunction);
                 }
                 if (!$scope.patientLoaded && attribute === "TypeofPatient") {
+                    $scope.heiRelationship = false;
                     if (personAttributes.length == 0) {
                         personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
                             return attribute.name;
@@ -131,6 +134,11 @@ angular.module('bahmni.registration')
                             }
                         }
                     } else if (personAttributeTypeofPatient &&
+                        $scope.patient[personAttributeTypeofPatient] && $scope.patient[personAttributeTypeofPatient].value === "HeiRelationship") {
+                        $scope.heiRelationship = true;
+                    }
+                    toggleHeiAddressFields();
+                    if (personAttributeTypeofPatient &&
                         $scope.patient[personAttributeTypeofPatient] && $scope.patient[personAttributeTypeofPatient].value !== "Walk-In") {
                         for (var i = 0; i < personAttributes.length; ++i) {
                             var attrName = personAttributes[i];
@@ -186,10 +194,25 @@ angular.module('bahmni.registration')
                 }
             };
 
+            var toggleHeiAddressFields = function () {
+                var heiAddressFields = ["cityVillage", "postalCode", "stateProvince"];
+                for (var i = 0; i < heiAddressFields.length; i++) {
+                    var attrName = heiAddressFields[i];
+                    var attrElement = angular.element(document.getElementById(attrName));
+                    if (attrElement) {
+                        attrElement.attr('disabled', !$scope.heiRelationship);
+                    }
+                }
+            };
+
             $scope.$watch('patientLoaded', function () {
                 if ($scope.patientLoaded) {
                     executeShowOrHideRules();
+                    if ($scope.patient['TypeofPatient'] && $scope.patient['TypeofPatient'].value === "HeiRelationship") {
+                        $scope.heiRelationship = true;
+                    }
                     setReadOnlyFields();
+                    toggleHeiAddressFields();
                 }
             });
 

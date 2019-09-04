@@ -86,6 +86,7 @@ angular.module('bahmni.registration')
                 expandSectionsWithDefaultValue();
                 initTodaysDate();
                 $scope.patientLoaded = false;
+                $scope.heiRelationship = false;
             };
 
             init();
@@ -153,7 +154,8 @@ angular.module('bahmni.registration')
                 var personAttributeTypeofPatient = personAttributeHasTypeofPatient
                     ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TypeofPatient")].name : undefined;
                 if (personAttributeTypeofPatient && $scope.patient[personAttributeTypeofPatient] &&
-                        $scope.patient[personAttributeTypeofPatient].value === "NewPatient") {
+                        ($scope.patient[personAttributeTypeofPatient].value === "NewPatient" ||
+                        $scope.patient[personAttributeTypeofPatient].value === "HeiRelationship")) {
                     var idgenPrefix = {};
                     idgenPrefix.identifierPrefix = {};
                     idgenPrefix.identifierPrefix.prefix = "UID";

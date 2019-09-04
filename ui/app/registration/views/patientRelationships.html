@@ -8,7 +8,7 @@
                     <span>{{getRelatedToPersonForDisplay(relationship)}}</span>
                     <span ng-if="isPatientRelationship(relationship)"><a ng-click="openPatientDashboardInNewTab(relationship)"><i class="fa fa-external-link"></i></a></span>
                 </div>
-                <div class="col col3">
+                <div class="col col3 ng-hide">
                     <strong class="till-text">{{ ::'REGISTRATION_LABEL_TILL' | translate}}</strong>
                     <span>{{relationship.endDate | bahmniDate}}</span>
                 </div>

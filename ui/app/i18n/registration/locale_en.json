@@ -85,6 +85,7 @@
   "DISPLAY_CONTROL_ERROR_MESSAGE_KEY": "No {{ displayControl }} for this patient",
   "REGISTRATION_LABEL_NUMBER": "Registration Number",
   "REGISTRATION_START_VISIT": "Start {{ visitType }} visit",
+  "REGISTRATION_START_VISIT_CLINICAL_CONSULTATION": "Clinical Consultation",
   "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
   "MESSAGE_DIALOG_OPTION_OKAY": "OK",
   "NO_LOCATION_TAGGED_TO_VISIT_LOCATION": "No location tagged to Visit Location Found",
