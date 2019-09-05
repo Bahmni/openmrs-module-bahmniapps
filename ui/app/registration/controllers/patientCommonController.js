@@ -18,6 +18,7 @@ angular.module('bahmni.registration')
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
+            $scope.fieldValidation = appService.getAppDescriptor().getConfigValue("fieldValidation") || {};
 
             $scope.heiRelationship = false;
 

@@ -277,10 +277,10 @@ angular.module('bahmni.registration')
                     personSearchResultsConfig: $scope.personSearchResultsConfig.fields */
                 });
 
-                var searchPromise = patientService.search(undefined, patientIdentifier, $scope.addressSearchConfig.field,
+                var searchPromise = patientService.search(undefined, patientIdentifier, undefined,
                     undefined, undefined, undefined, $scope.customAttributesSearchConfig.fields,
                     $scope.programAttributesSearchConfig.field, $scope.searchParameters.programAttributeFieldValue,
-                    $scope.addressSearchResultsConfig.fields, $scope.personSearchResultsConfig.fields,
+                    undefined, $scope.personSearchResultsConfig.fields,
                     $scope.isExtraIdentifierConfigured())
                     .then(function (data) {
                         mapCustomAttributesSearchResults(data).then(function () {
@@ -368,10 +368,12 @@ angular.module('bahmni.registration')
                 var promise = searchBasedOnQueryParameters($scope.results.length);
                 if (promise) {
                     promise.then(function (data) {
-                        angular.forEach(data.pageOfResults, function (result) {
-                            $scope.results.push(result);
-                        });
-                        $scope.noMoreResultsPresent = (data.pageOfResults.length === 0);
+                        if (data) {
+                            angular.forEach(data.pageOfResults, function (result) {
+                                $scope.results.push(result);
+                            });
+                            $scope.noMoreResultsPresent = (data.pageOfResults.length === 0);
+                        }
                         $scope.nextPageLoading = false;
                     }, function () {
                         $scope.nextPageLoading = false;

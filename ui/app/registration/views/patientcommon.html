@@ -103,10 +103,11 @@
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
                               </span>
                             </div>
-                        </article>
-                        <article class="form-field patient-name-wrapper">
+                        <!-- </article> -->
+                        <br class="clearfix"/>
+                        <!-- <article class="form-field clearfix"> -->
                             <div class="field-attribute">
-                                <label for="patientLastName">{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME_LABEL' | translate}}<span class="asterick">*</span></label>
+                                <label for="patientLastName">{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME_LABEL' | translate}}</label>
                             </div>
                             <div id="patientLastName" class="field-value">
                               <span ng-show="::showLastName" data-ng-switch="::isAutoComplete('familyName')">
@@ -131,7 +132,6 @@
                                 <label for="gender">{{ ::'REGISTRATION_LABEL_GENDER' | translate}} <span
                                         class="asterick">*</span></label>
                             </div>
-
                             <div class="field-value">
                                 <select id="gender" ng-model="patient.gender" required="required" title="{{ 'REGISTRATION_LABEL_SELECT_GENDER'|translate }}"
                                         ng-options="genderMap[genderCode] for genderCode in genderCodes track by genderCode" ng-change="handleUpdate('gender')">
@@ -139,19 +139,17 @@
                                 </select>
                             </div>
                         </article>
+                        <div class="age-wrapper">
+                            <ng-include src="'views/age.html'"></ng-include>
+                        </div>
                         <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.attributes.length > 0)"
                              ng-class="::{'right-form-field' : $index%2 != 0}">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                               is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                               get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                         </article>
-                        <div ng-if="::!dobMandatory" class="age-wrapper">
-                            <ng-include src="'views/age.html'"></ng-include>
+                        <div class="age-wrapper">
                             <ng-include src="'views/dob.html'"></ng-include>
-                        </div>
-                        <div ng-if="::dobMandatory" class="age-wrapper">
-                            <ng-include src="'views/dob.html'"></ng-include>
-                            <ng-include src="'views/age.html'"></ng-include>
                         </div>
                     </div>
                 </section>
