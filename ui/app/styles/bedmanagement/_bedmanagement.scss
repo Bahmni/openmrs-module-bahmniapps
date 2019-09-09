@@ -331,7 +331,8 @@
     margin-top: 195px;
     position: relative;
     .bed-layout-row {
-      display: inline-block;
+      display: flex;
+      place-content: center;
       .bed-layout-cells {
         float: left;
         .bed {

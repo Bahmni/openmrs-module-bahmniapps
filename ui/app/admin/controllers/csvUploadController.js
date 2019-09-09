@@ -14,6 +14,10 @@ angular.module('bahmni.admin')
                 "drug": {name: "Drug", url: Bahmni.Common.Constants.drugImportUrl},
                 "labResults": {name: "Lab Results", url: Bahmni.Common.Constants.labResultsImportUrl},
                 "referenceterms": {name: "Reference Terms", url: Bahmni.Common.Constants.referenceTermsImportUrl},
+                "updateReferenceTerms": {
+                    name: "Add new Reference Terms to Existing Concepts",
+                    url: Bahmni.Common.Constants.updateReferenceTermsImportUrl
+                },
                 "relationship": {name: "Relationship Information", url: Bahmni.Common.Constants.relationshipImportUrl}
             };
             var fileUploaderOptions = {
