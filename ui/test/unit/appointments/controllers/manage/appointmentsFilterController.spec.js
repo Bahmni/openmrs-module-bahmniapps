@@ -740,6 +740,15 @@ describe('AppointmentsFilterController', function () {
         expect(scope.providers.length).toBe(2)
     });
 
+    it("should apply filter when selectedSpecialities is set", function () {
+        q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, {data: {results: [{name:"someProvider",person : {display:"someProvider"}, uuid:"someProviderUuid", display: "someProvider"}]}}]));
+        appDescriptor.getConfigValue.and.returnValue(true);
+        createController();
+        spyOn(scope,'applyFilter');
+        scope.setSelectedSpecialities();
+        expect(scope.applyFilter).toHaveBeenCalled();
+    });
+
     it("should not include retired providers", function () {
         q.all.and.returnValue(specUtil.simplePromise([servicesWithTypes, providers]));
         createController();
