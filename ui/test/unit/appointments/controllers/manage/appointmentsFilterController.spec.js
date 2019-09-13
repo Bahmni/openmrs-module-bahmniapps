@@ -71,7 +71,7 @@ describe('AppointmentsFilterController', function () {
             location = jasmine.createSpyObj('$location', ['url']);
             appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['getAllServicesWithServiceTypes']);
-            ivhTreeviewMgr = jasmine.createSpyObj('ivhTreeviewMgr', ['deselectAll', 'selectEach']);
+            ivhTreeviewMgr = jasmine.createSpyObj('ivhTreeviewMgr', ['deselectAll', 'selectEach', 'collapseRecursive']);
             translate = jasmine.createSpyObj('$translate', ['instant']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             appDescriptor.getConfigValue.and.returnValue(true);
