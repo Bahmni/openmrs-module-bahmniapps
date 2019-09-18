@@ -28,3 +28,4 @@ node_modules
 *.tern-port
 **/.idea/*
 ui/common.background.min.js
+ui/dist.zip
