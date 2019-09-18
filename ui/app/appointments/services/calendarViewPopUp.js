@@ -35,7 +35,7 @@ angular.module('bahmni.appointments')
                         };
                         $state.go('home.manage.appointments.calendar.new', params, {reload: false});
                     } else {
-                        $state.go($state.current, $state.params, {reload: true});
+                        $state.go($state.current, params, {reload: true});
                     }
                     popUpScope.$destroy();
                 };

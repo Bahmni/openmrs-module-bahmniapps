@@ -5,10 +5,9 @@ angular.module('bahmni.appointments')
         function ($scope, $state, $window, spinner, appointmentsService, appService) {
             var init = function () {
                 $scope.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
-                $scope.weekStartDate = moment($scope.viewDate).startOf('week').toDate();
-                $scope.weekEndDate = moment($scope.viewDate).endOf('week').toDate();
-                $scope.weekStart = appService.getAppDescriptor().getConfigValue('weekStart');
-                $scope.getAppointmentsSummaryForAWeek($scope.weekStartDate, $scope.weekEndDate);
+                var weekStartDay = appService.getAppDescriptor().getConfigValue('startOfWeek')
+                    || Bahmni.Appointments.Constants.defaultWeekStartDayName;
+                $scope.weekStart = Bahmni.Appointments.Constants.weekDays[weekStartDay];
             };
 
             $scope.getAppointmentsSummaryForAWeek = function (startDate, endDate) {
@@ -22,6 +21,7 @@ angular.module('bahmni.appointments')
                     $scope.appointments = response.data;
                     setWeekDatesInfo();
                 }));
+                $state.params.viewDate = $scope.viewDate;
             };
 
             $scope.goToListView = function (date, service) {

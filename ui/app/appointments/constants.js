@@ -16,6 +16,7 @@ Bahmni.Appointments.Constants = (function () {
         getAppointmentByUuid: hostURL + '/appointment/',
         getAllAppointmentsUrl: hostURL + '/appointment/all',
         searchAppointmentUrl: hostURL + '/appointment/search',
+        searchAppointmentsUrl: hostURL + '/appointments/search',
         getAppointmentsSummaryUrl: hostURL + '/appointment/appointmentSummary',
         defaultServiceTypeDuration: 15,
         defaultCalendarSlotLabelInterval: "01:00",
@@ -24,6 +25,8 @@ Bahmni.Appointments.Constants = (function () {
         defaultCalendarEndTime: "19:00",
         defaultExpandServiceFilter: -1,
         collapseServiceFilter: 0,
+        angularCalendarDaysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+        defaultWeekStartDayName: 'Sunday',
         minDurationForAppointment: 30,
         appointmentStatusList: [ "Scheduled", "CheckedIn", "Completed", "Cancelled", "Missed" ],
         regexForTime: /^(?:(?:1[0-2]|0?[1-9]):[0-5]\d\s*[AaPp][Mm])?$/,
@@ -31,6 +34,7 @@ Bahmni.Appointments.Constants = (function () {
         privilegeForAdmin: 'app:appointments:adminTab',
         privilegeOwnAppointments: 'Manage Own Appointments',
         availableForAppointments: 'Available for appointments',
+        weekDays: {"Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6, "Sunday": 7 },
         providerResponses: { ACCEPTED: "ACCEPTED", REJECTED: "REJECTED", TENTATIVE: "TENTATIVE", CANCELLED: "CANCELLED", AWAITING: "AWAITING" }
     };
 })();

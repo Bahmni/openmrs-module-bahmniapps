@@ -40,19 +40,13 @@ describe ('appointmentsSummaryController', function () {
         };
         createController();
         expect(scope.viewDate).toEqual(date);
-        expect(scope.weekStartDate).toEqual(moment(date).startOf('week').toDate());
-        expect(scope.weekEndDate).toEqual(moment(date).endOf('week').endOf('day').toDate());
-    });
-
-    it('should initialize the week to current week and date to todays date', function () {
-        createController();
-        expect(scope.weekStartDate).toEqual(new Date(moment().startOf('week')));
-        expect(scope.weekEndDate).toEqual(new Date(moment().endOf('week').endOf('day')));
-        expect(scope.viewDate).toEqual(new Date(moment().startOf('day').toDate()));
     });
 
     it('should construct dates array for current week on initialization', function () {
         createController();
+        var startDate = moment().startOf('week').format('YYYY-MM-DD');
+        var endDate = moment(startDate).add(7, 'days');
+        scope.getAppointmentsSummaryForAWeek(startDate, endDate);
         expect(scope.weekDatesInfo[0].date).toEqual(moment().startOf('week').format('YYYY-MM-DD'));
         expect(scope.weekDatesInfo[1].date).toEqual(moment(Bahmni.Common.Util.DateUtil.addDays(scope.weekDatesInfo[0].date, 1)).format('YYYY-MM-DD'));
         expect(scope.weekDatesInfo[2].date).toEqual(moment(Bahmni.Common.Util.DateUtil.addDays(scope.weekDatesInfo[0].date, 2)).format('YYYY-MM-DD'));
@@ -60,13 +54,6 @@ describe ('appointmentsSummaryController', function () {
         expect(scope.weekDatesInfo[4].date).toEqual(moment(Bahmni.Common.Util.DateUtil.addDays(scope.weekDatesInfo[0].date, 4)).format('YYYY-MM-DD'));
         expect(scope.weekDatesInfo[5].date).toEqual(moment(Bahmni.Common.Util.DateUtil.addDays(scope.weekDatesInfo[0].date, 5)).format('YYYY-MM-DD'));
         expect(scope.weekDatesInfo[6].date).toEqual(moment(Bahmni.Common.Util.DateUtil.addDays(scope.weekDatesInfo[0].date, 6)).format('YYYY-MM-DD'));
-    });
-
-    it('should Get all the appointments summary for current week on initialization', function () {
-        createController();
-        expect(appointmentsService.getAppointmentsSummary).toHaveBeenCalledWith({startDate: new Date(moment().startOf('week')),
-        endDate: new Date(moment().endOf('week').endOf('day'))});
-        expect(spinner.forPromise).toHaveBeenCalled();
     });
 
     it('should go to list view on clicking of appointment count', function () {
