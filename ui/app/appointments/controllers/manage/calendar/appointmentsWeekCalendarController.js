@@ -91,7 +91,7 @@ angular.module('bahmni.appointments')
                         businessHours: {
                             start: appService.getAppDescriptor().getConfigValue('startOfDay') || Bahmni.Appointments.Constants.defaultCalendarStartTime,
                             end: appService.getAppDescriptor().getConfigValue('endOfDay') || Bahmni.Appointments.Constants.defaultCalendarEndTime,
-                            dow: Bahmni.Appointments.Constants.defaultWeekDays
+                            dow: Bahmni.Appointments.Constants.angularCalendarDaysOfWeek
                         },
                         scrollTime: appService.getAppDescriptor().getConfigValue('startOfDay') || Bahmni.Appointments.Constants.defaultCalendarStartTime,
                         selectable: true,
@@ -111,7 +111,7 @@ angular.module('bahmni.appointments')
                         eventRender: $scope.eventRender,
                         schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
                         firstDay: Bahmni.Appointments.Constants.weekDays[appService.getAppDescriptor().getConfigValue('startOfWeek')]
-                            || Bahmni.Appointments.Constants.defaultWeekStartDay
+                            || Bahmni.Appointments.Constants.defaultWeekStartDayName
                     }
                 };
 
