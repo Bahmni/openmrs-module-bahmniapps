@@ -25,6 +25,13 @@ angular.module('bahmni.appointments')
                 });
             };
 
+            this.searchAppointments = function (data) {
+                return $http.post(Bahmni.Appointments.Constants.searchAppointmentsUrl, data, {
+                    withCredentials: true,
+                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
+                });
+            };
+
             this.getAllAppointments = function (params) {
                 return $http.get(Bahmni.Appointments.Constants.getAllAppointmentsUrl, {
                     params: params,

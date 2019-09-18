@@ -15,7 +15,8 @@ describe('DatePicker', function () {
     }));
 
     var createElement = function () {
-        var html = '<date-picker view-date="viewDate" last-valid-date="lastValidDate" on-change="toggleChanged"></date-picker>';
+        var html = '<date-picker view-date="viewDate" last-valid-date="lastValidDate"' +
+            ' on-change="toggleChanged" show-buttons="true"></date-picker>';
 
         var element = compile(angular.element(html))(scope);
         scope.$digest();

@@ -1,5 +1,9 @@
 <div class="app-date-nav">
-
+    <button class="app-today-btn" ng-click="setViewDateToToday()" ng-show="showButtons">{{::'CURRENT_DATE'
+        |translate}}</button>
+    <button class="app-today-btn" disabled ng-show="showButtons">{{::'WEEK' |translate}}</button>
+    <button class="app-today-btn" ng-click="$parent.toggleWeekView()"
+            ng-show="showButtons">{{::'DAY' |translate}}</button>
     <button class="app-view-prev" ng-click="goToPreviousWeek()"><i class="fa fa-angle-left"></i></button>
     <span>
         <label for="weeklyDate">{{weekStartDate | date:'d MMM'}} - {{weekEndDate | date:'d MMM'}}</label>

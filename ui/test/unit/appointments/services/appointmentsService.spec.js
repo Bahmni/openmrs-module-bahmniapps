@@ -37,6 +37,14 @@ describe('AppointmentsService', function () {
         expect(mockHttp.post).toHaveBeenCalledWith(Bahmni.Appointments.Constants.searchAppointmentUrl, appointmentInfo, params);
     });
 
+    it('should search for appointments with given start date and end date', function () {
+        var data = {startDate:"2018-09-07T18:30:00.000Z" , endDate:"2018-09-13T18:30:00.000Z"};
+        appointmentsService.searchAppointments(data);
+        var headers = {"Accept": "application/json", "Content-Type": "application/json"};
+        var params = {withCredentials: true, headers: headers};
+        expect(mockHttp.post).toHaveBeenCalledWith(Bahmni.Appointments.Constants.searchAppointmentsUrl, data, params);
+    });
+
     it('should get all the appointments summary for all the service types', function () {
         var weekInfo = {
             startDate: moment().startOf('week').toDate(),

@@ -110,6 +110,8 @@
   "EDIT_APPOINTMENT": "Edit",
   "CANCEL_APPOINTMENT": "Cancel",
   "CURRENT_DATE": "Today",
+  "DAY": "Day",
+  "WEEK": "Week",
   "TOTAL_KEY": "Total",
   "MISSED_KEY": "missed",
   "PLACEHOLDER_SELECT_PATIENT": "Select a patient",

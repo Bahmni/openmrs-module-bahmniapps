@@ -8,11 +8,19 @@ angular.module('bahmni.appointments')
             var autoRefreshStatus = true;
             const SECONDS_TO_MILLISECONDS_FACTOR = 1000;
             var init = function () {
-                $scope.startDate = $state.params.viewDate || moment().startOf('day').toDate();
+                $scope.weekView = $rootScope.weekView || $state.params.weekView;
+                $state.params.viewDate = $state.params.viewDate || moment().startOf('day').toDate();
+                if ($scope.weekView) {
+                    $state.params.viewDate = getViewDate($state.params.viewDate);
+                }
+                $scope.startDate = $state.params.viewDate;
                 $scope.$on('filterClosedOpen', function (event, args) {
                     $scope.isFilterOpen = args.filterViewStatus;
                 });
                 $scope.isFilterOpen = $state.params.isFilterOpen;
+                var weekStartDay = appService.getAppDescriptor().getConfigValue('startOfWeek')
+                    || Bahmni.Appointments.Constants.defaultWeekStartDayName;
+                $scope.weekStart = Bahmni.Appointments.Constants.weekDays[weekStartDay];
             };
 
             var createProviderEventForAppointment = function (provider, appointment, eventList) {
@@ -35,6 +43,97 @@ angular.module('bahmni.appointments')
                     event.appointments = [];
                     event.appointments.push(appointment);
                     eventList.push(event);
+                }
+            };
+
+            $scope.toggleWeekView = function () {
+                $scope.weekView = !$scope.weekView;
+                $rootScope.weekView = $scope.weekView;
+                $state.params.weekView = $scope.weekView;
+                fetchAppointmentsData();
+            };
+
+            $scope.getAppointmentsForDate = function (viewDate) {
+                if ($scope.weekView) {
+                    return;
+                }
+                $state.params.viewDate = viewDate;
+                $scope.shouldReload = false;
+                var params = {forDate: viewDate};
+                $scope.$on('$stateChangeStart', function (event, toState, toParams) {
+                    if (toState.tabName == 'list' && !$scope.weekView) {
+                        toParams.doFetchAppointmentsData = false;
+                    }
+                });
+                if ($state.params.doFetchAppointmentsData) {
+                    return spinner.forPromise(setAppointments(params));
+                } else {
+                    var filteredAppointments = appointmentsFilter($state.params.appointmentsData, $state.params.filterParams);
+                    $state.params.doFetchAppointmentsData = true;
+                    return parseAppointments(filteredAppointments, $state.params.filterParams);
+                }
+            };
+
+            $scope.getAppointmentsForWeek = function (startDate, endDate) {
+                if (!$scope.weekView) {
+                    return;
+                }
+                $state.params.viewDate = $scope.startDate;
+                $scope.shouldReload = false;
+                var data = {startDate: startDate, endDate: endDate};
+                $state.params.doFetchAppointmentsData = true;
+                return spinner.forPromise(setAppointments(data));
+            };
+
+            $scope.$watch(function () {
+                return $state.params.filterParams;
+            }, function (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay || $state.params.appointmentsData, $state.params.filterParams);
+                    if (filteredAppointments) {
+                        parseAppointments(filteredAppointments, $state.params.filterParams);
+                    }
+                }
+            }, true);
+
+            $scope.hasNoAppointments = function () {
+                return _.isEmpty($scope.providerAppointments) || _.isEmpty($scope.providerAppointments.events);
+            };
+
+            var fetchAppointmentsData = function () {
+                var viewDate = $scope.startDate || moment().startOf('day').toDate();
+                if ($scope.weekView) {
+                    var weekStartDate = getWeekStartDate(viewDate);
+                    var weekEndDate = getWeekEndDate(weekStartDate);
+                    $scope.getAppointmentsForWeek(weekStartDate, weekEndDate);
+                }
+                else {
+                    $scope.getAppointmentsForDate(viewDate);
+                }
+            };
+
+            var getWeekStartDate = function (date) {
+                var daysToBeSubtracted = daysToSubtract(date, $scope.weekStart);
+                return moment(date).subtract(daysToBeSubtracted, 'days').toDate();
+            };
+
+            var getWeekEndDate = function (date) {
+                return moment(date).add(6, 'days').toDate();
+            };
+
+            var getViewDate = function (date) {
+                var weekStartDate = getWeekStartDate(date);
+                var weekEndDate = getWeekEndDate(weekStartDate);
+                var isoWeekdayForToday = moment().isoWeekday();
+                var weekStart = $scope.weekStart;
+                var daysBetweenTodayAndWeekStart = weekStart - isoWeekdayForToday;
+                if (daysBetweenTodayAndWeekStart > 0) {
+                    var daysToSubtract = daysBetweenTodayAndWeekStart - 1;
+                    return moment(weekEndDate).subtract(daysToSubtract, 'days').toDate();
+                }
+                else {
+                    var daysToAdd = Math.abs(daysBetweenTodayAndWeekStart);
+                    return moment(weekStartDate).add(daysToAdd, 'days').toDate();
                 }
             };
 
@@ -107,51 +206,40 @@ angular.module('bahmni.appointments')
                 }
             };
 
-            $scope.$watch(function () {
-                return $state.params.filterParams;
-            }, function (newValue, oldValue) {
-                if (newValue !== oldValue) {
-                    var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay || $state.params.appointmentsData, $state.params.filterParams);
-                    if (filteredAppointments) {
-                        parseAppointments(filteredAppointments, $state.params.filterParams);
-                    }
-                }
-            }, true);
+            var daysToSubtract = function (date, weekStart) {
+                return moment(date).isoWeekday() >= weekStart ?
+                    moment(date).isoWeekday() - weekStart :
+                    7 + moment(date).isoWeekday() - weekStart;
+            };
 
             var setAppointments = function (params) {
                 autoRefreshStatus = false;
-                return appointmentsService.getAllAppointments(params).then(function (response) {
-                    $scope.allAppointmentsForDay = response.data;
-                    var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay, $state.params.filterParams);
-                    $rootScope.appointmentsData = filteredAppointments;
-                    autoRefreshStatus = true;
-                    return parseAppointments(filteredAppointments, $state.params.filterParams);
-                });
-            };
-            $scope.getAppointmentsForDate = function (viewDate) {
-                $state.params.viewDate = viewDate;
-                $scope.shouldReload = false;
-                var params = {forDate: viewDate};
-                $scope.$on('$stateChangeStart', function (event, toState, toParams) {
-                    if (toState.tabName == 'list') {
-                        toParams.doFetchAppointmentsData = false;
-                    }
-                });
-                if ($state.params.doFetchAppointmentsData) {
-                    return spinner.forPromise(setAppointments(params));
-                } else {
-                    var filteredAppointments = appointmentsFilter($state.params.appointmentsData, $state.params.filterParams);
-                    $state.params.doFetchAppointmentsData = true;
-                    return parseAppointments(filteredAppointments, $state.params.filterParams);
+                if (!$scope.weekView) {
+                    return appointmentsService.getAllAppointments(params).then(resolveAppointmentsData);
                 }
+                return appointmentsService.searchAppointments(params).then(resolveAppointmentsData);
+            };
+
+            var resolveAppointmentsData = function (response) {
+                $scope.allAppointmentsForDay = response.data;
+                var filteredAppointments = appointmentsFilter($scope.allAppointmentsForDay, $state.params.filterParams);
+                $rootScope.appointmentsData = filteredAppointments;
+                autoRefreshStatus = true;
+                return parseAppointments(filteredAppointments, $state.params.filterParams);
             };
 
             var setAppointmentsInAutoRefresh = function () {
                 if (!autoRefreshStatus) {
                     return;
                 }
-                var viewDate = $state.params.viewDate || moment().startOf('day').toDate();
-                setAppointments({forDate: viewDate});
+                var viewDate = $scope.startDate || moment().startOf('day').toDate();
+                var params = {forDate: viewDate};
+                if ($scope.weekView) {
+                    var weekStartDate = getWeekStartDate(viewDate);
+                    var weekEndDate = getWeekEndDate(weekStartDate);
+                    params = {startDate: weekStartDate, endDate: weekEndDate};
+                }
+                setAppointments(params);
             };
 
             var autoRefresh = (function () {
@@ -168,8 +256,5 @@ angular.module('bahmni.appointments')
                 }
             });
 
-            $scope.hasNoAppointments = function () {
-                return _.isEmpty($scope.providerAppointments) || _.isEmpty($scope.providerAppointments.events);
-            };
             return init();
         }]);
