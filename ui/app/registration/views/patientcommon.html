@@ -25,7 +25,7 @@
                 </section>
             </div>
         </div>
-        <div class="box-container form" ng-if="section.canShow && (section.order === 2 || section.order === 3 || section.order === 4)">
+        <div class="box-container form" ng-if="section.canShow && (section.order >= 2 && section.order <= 5)">
                 <legend ng-if="::(section.order === 2)">
                    <span>
                        <i class="fa fa-caret-down" ng-show="!section.expand"></i>
@@ -167,9 +167,19 @@
                              field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
                              strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
                 </div>
+                <div ng-if="section.order === 5">
+                    <section class="form-field-inline clearfix" ng-show="!section.expand">
+                        <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.attributes.length > 0)"
+                             ng-class="::{'right-form-field' : $index%2 != 0}">
+                            <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                              is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                              get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                        </article>
+                    </section>
+                </div>
         </div>
 
-        <div ng-if="::(section.canShow && section.order === 5)" ng-hide="!heiRelationship">
+        <div ng-if="::(section.canShow && section.order === 6)" ng-hide="!heiRelationship">
             <div class="box-container form" ng-if="::(relationshipTypes.length > 0)">
                 <legend>
                   <span>
@@ -204,8 +214,7 @@
             </div>
         </div>
 
-
-        <div ng-if="::(section.canShow && section.order === 6)">
+        <div ng-if="::(section.canShow && section.order === 7)" ng-hide="!heiRelationship">
             <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
                 <legend>
                   <span>
@@ -229,7 +238,7 @@
             </div>
         </div>
 
-        <div ng-if="::(section.canShow && section.order === 7)">
+        <div ng-if="::(section.canShow && section.order === 8)" ng-hide="infantPatient">
             <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
                 <legend>
                   <span>

@@ -154,8 +154,8 @@ angular.module('bahmni.registration')
                 var personAttributeTypeofPatient = personAttributeHasTypeofPatient
                     ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TypeofPatient")].name : undefined;
                 if (personAttributeTypeofPatient && $scope.patient[personAttributeTypeofPatient] &&
-                        ($scope.patient[personAttributeTypeofPatient].value === "NewPatient" ||
-                        $scope.patient[personAttributeTypeofPatient].value === "HeiRelationship")) {
+                        ($scope.patient[personAttributeTypeofPatient].value === "NewPatient")) {
+                        //    || $scope.patient[personAttributeTypeofPatient].value === "HeiRelationship")) {
                     var idgenPrefix = {};
                     idgenPrefix.identifierPrefix = {};
                     idgenPrefix.identifierPrefix.prefix = "UID";
@@ -179,9 +179,9 @@ angular.module('bahmni.registration')
                         var personAttributeUniqueArtNo = personAttributeHasUniqueArtNo
                             ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("UniqueArtNo")].name : undefined;
                         $scope.patient[personAttributeUniqueArtNo] = uniqueArtIdentifier;
-                        if ($scope.patient.primaryIdentifier) {
-                            $scope.patient.primaryIdentifier.identifier = uniqueArtIdentifier;
-                        }
+                        // if ($scope.patient.primaryIdentifier) {
+                        $scope.patient.primaryIdentifier.identifier = uniqueArtIdentifier;
+                        // }
                     }).then(function () {
                         return patientService.create($scope.patient, jumpAccepted).then(function (response) {
                             copyPatientProfileDataToScope(response);
@@ -211,9 +211,11 @@ angular.module('bahmni.registration')
                     var personAttributeHasUniqueArtNo = personAttributes.indexOf("UniqueArtNo") !== -1;
                     var personAttributeUniqueArtNo = personAttributeHasUniqueArtNo
                         ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("UniqueArtNo")].name : undefined;
-                    if ($scope.patient.primaryIdentifier) {
-                        $scope.patient.primaryIdentifier.identifier = $scope.patient[personAttributeUniqueArtNo];
-                    }
+                    // if ($scope.patient.primaryIdentifier) {
+                    $scope.patient.primaryIdentifier.identifier = $scope.patient[personAttributeUniqueArtNo];
+                    // $scope.patient.extraIdentifiers[0].preferred = true;
+                    // }
+                    // $scope.patient.extraIdentifiers[0].identifier = $scope.patient[personAttributeUniqueArtNo];
                     return patientService.create($scope.patient, jumpAccepted).then(function (response) {
                         copyPatientProfileDataToScope(response);
                     }, function (response) {

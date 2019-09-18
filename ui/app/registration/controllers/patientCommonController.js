@@ -21,6 +21,7 @@ angular.module('bahmni.registration')
             $scope.fieldValidation = appService.getAppDescriptor().getConfigValue("fieldValidation") || {};
 
             $scope.heiRelationship = false;
+            $scope.infantPatient = false;
 
             var dontSaveButtonClicked = false;
             var isHref = false;
@@ -108,6 +109,10 @@ angular.module('bahmni.registration')
                 if (ruleFunction) {
                     executeRule(ruleFunction);
                 }
+                if (attribute === 'birthdate' || attribute === 'age') {
+                    $scope.infantPatient = false;
+                    disableFieldsForInfant();
+                }
                 if (!$scope.patientLoaded && attribute === "TypeofPatient") {
                     $scope.heiRelationship = false;
                     if (personAttributes.length == 0) {
@@ -119,15 +124,15 @@ angular.module('bahmni.registration')
                     var personAttributeTypeofPatient = personAttributeHasTypeofPatient
                         ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TypeofPatient")].name : undefined;
                     if (personAttributeTypeofPatient &&
-                        $scope.patient[personAttributeTypeofPatient] && $scope.patient[personAttributeTypeofPatient].value === "Walk-In") {
+                        $scope.patient[personAttributeTypeofPatient] && $scope.patient[personAttributeTypeofPatient].value === "Walk-In"){
                         for (var i = 0; i < personAttributes.length; ++i) {
                             var attrName = personAttributes[i];
-                            if (attrName !== "TypeofPatient" && attrName !== "UniqueArtNo") {
+                            if (attrName !== "TypeofPatient" && attrName !== "UniqueArtNo" && attrName !== "HIVExposedInfant(HEI)No") {
                                 var attrElement = angular.element(document.getElementById(attrName));
                                 if (attrElement) {
                                     attrElement.attr('disabled', true);
                                 }
-                            } else if (attrName === "UniqueArtNo") {
+                            } else if (attrName === "UniqueArtNo" || attrName === "HIVExposedInfant(HEI)No") {
                                 var attrElement = angular.element(document.getElementById(attrName));
                                 if (attrElement) {
                                     attrElement.attr('disabled', false);
@@ -137,10 +142,8 @@ angular.module('bahmni.registration')
                     } else if (personAttributeTypeofPatient &&
                         $scope.patient[personAttributeTypeofPatient] && $scope.patient[personAttributeTypeofPatient].value === "HeiRelationship") {
                         $scope.heiRelationship = true;
-                    }
-                    toggleHeiAddressFields();
-                    if (personAttributeTypeofPatient &&
-                        $scope.patient[personAttributeTypeofPatient] && $scope.patient[personAttributeTypeofPatient].value !== "Walk-In") {
+                    } else if (personAttributeTypeofPatient &&
+                        $scope.patient[personAttributeTypeofPatient] && $scope.patient[personAttributeTypeofPatient].value === "NewPatient") {
                         for (var i = 0; i < personAttributes.length; ++i) {
                             var attrName = personAttributes[i];
                             if (attrName !== "TypeofPatient" && attrName !== "UniqueArtNo") {
@@ -154,8 +157,25 @@ angular.module('bahmni.registration')
                                     attrElement.attr('disabled', true);
                                 }
                             }
+                            /* if (attrName === "TypeofPatient" && attrName === "UniqueArtNo" && $scope.patient[personAttributeTypeofPatient].value !== "NewPatient") {
+                                var attrElement = angular.element(document.getElementById(attrName));
+                                if (attrElement) {
+                                    attrElement.attr('disabled', false);
+                                }
+                            } */
                         }
                     }
+                    if (personAttributeTypeofPatient && ($scope.patient[personAttributeTypeofPatient].value === "Transfer-In" ||
+                                $scope.patient[personAttributeTypeofPatient].value === "ExistingPatient")) {
+                        for (var i = 0; i < personAttributes.length; ++i) {
+                            var attrName = personAttributes[i];
+                                var attrElement = angular.element(document.getElementById(attrName));
+                                if (attrElement) {
+                                    attrElement.attr('disabled', false);
+                                }
+                            }
+                    }
+                    toggleHeiAddressFields();
                 }
             };
 
@@ -212,10 +232,33 @@ angular.module('bahmni.registration')
                     if ($scope.patient['TypeofPatient'] && $scope.patient['TypeofPatient'].value === "HeiRelationship") {
                         $scope.heiRelationship = true;
                     }
+                    disableFieldsForInfant();
                     setReadOnlyFields();
                     toggleHeiAddressFields();
                 }
             });
+
+            var disableFieldsForInfant = function () {
+                if (personAttributes.length == 0) {
+                    personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
+                        return attribute.name;
+                    });
+                }
+                if (((!$scope.patient.age.years || $scope.patient.age.years === 0) && $scope.patient.age.months <= 12) ||
+                    ($scope.patient.age.years === 1 && $scope.patient.age.months <= 6)) {
+                    $scope.infantPatient = true;
+                }
+                for (var i = 0; i < personAttributes.length; ++i) {
+                    var attrName = personAttributes[i];
+                    if (attrName === "MaritalStatus" || attrName === "UniqueArtNo") {
+                        var attrElement = angular.element(document.getElementById(attrName));
+                        if (attrElement) {
+                            attrElement.attr('disabled', $scope.infantPatient);
+                        }
+                    }
+                }
+
+            };
 
             $scope.getAutoCompleteList = function (attributeName, query, type) {
                 return patientAttributeService.search(attributeName, query, type);

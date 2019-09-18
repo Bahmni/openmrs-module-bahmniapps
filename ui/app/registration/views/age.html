@@ -12,8 +12,8 @@
         </div>
         <div class="input-prepend">
             <span class="add-on">{{ ::'REGISTRATION_LABEL_MONTHS' | translate}}</span>
-            <input type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0"
-                   title="{{ ::'REGISTRATION_LABEL_NUMERIC_MONTHS' | translate}}"
+            <input type="number" id="ageMonths" name="ageMonths" max="12" ng-model="patient.age.months" min="0" ng-init="patient.age.months=0" 
+                   title="{{ ::'REGISTRATION_LABEL_NUMERIC_MONTHS' | translate}}" ng-blur="handleUpdate('age')"
                    ng-change="patient.calculateBirthDate()">
         </div>
         <!-- <div class="input-prepend">

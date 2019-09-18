@@ -24,6 +24,10 @@ angular.module('bahmni.registration')
                 } else {
                     $scope.patient.newlyAddedRelationships.splice(index, 1);
                 }
+                var emptyRows = _.filter($scope.patient.newlyAddedRelationships, $scope.isEmpty);
+                if (emptyRows.length === 0) {
+                    $scope.addPlaceholderRelationship();
+                }
             };
 
             $scope.isPatientRelationship = function (relationship) {
@@ -247,7 +251,7 @@ angular.module('bahmni.registration')
                 delete relationship.providerName;
                 delete relationship.endDate;
                 delete relationship.content;
-                managePlaceholderRelationshipRows(index);
+                // managePlaceholderRelationshipRows(index); // making single relationship
             };
 
             var managePlaceholderRelationshipRows = function (index) {
