@@ -251,7 +251,7 @@ angular.module('bahmni.registration')
                 }
                 for (var i = 0; i < personAttributes.length; ++i) {
                     var attrName = personAttributes[i];
-                    if (attrName === "MaritalStatus" || attrName === "UniqueArtNo") {
+                    if (attrName === "MaritalStatus") {
                         var attrElement = angular.element(document.getElementById(attrName));
                         if (attrElement) {
                             attrElement.attr('disabled', $scope.infantPatient);
@@ -268,3 +268,4 @@ angular.module('bahmni.registration')
                 return data.results;
             };
         }]);
+
