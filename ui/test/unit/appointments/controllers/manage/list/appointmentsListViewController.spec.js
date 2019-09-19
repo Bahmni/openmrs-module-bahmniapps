@@ -1258,9 +1258,9 @@ describe('AppointmentsListViewController', function () {
 
     describe('Reset appointment status functionality', function () {
 
-        it('should return true when enableResetAppointmentStatusesFor is not undefined', function () {
+        it('should return true when enableResetAppointmentStatuses is not undefined', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
-                if (value === 'enableResetAppointmentStatusesFor') {
+                if (value === 'enableResetAppointmentStatuses') {
                     return "";
                 }
                 return undefined;
@@ -1270,9 +1270,9 @@ describe('AppointmentsListViewController', function () {
             expect(scope.isResetAppointmentStatusFeatureEnabled()).toBeTruthy();
         });
 
-        it('should return false when enableResetAppointmentStatusesFor is undefined', function () {
+        it('should return false when enableResetAppointmentStatuses is undefined', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
-                if (value === 'enableResetAppointmentStatusesFor') {
+                if (value === 'enableResetAppointmentStatuses') {
                     return undefined;
                 }
                 return undefined;
@@ -1315,7 +1315,7 @@ describe('AppointmentsListViewController', function () {
 
         it('should return false if select appointment status is not listed in configured reset statuses for', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
-                if (value === 'enableResetAppointmentStatusesFor') {
+                if (value === 'enableResetAppointmentStatuses') {
                     return [];
                 }
                 return undefined;
@@ -1334,7 +1334,7 @@ describe('AppointmentsListViewController', function () {
 
         it('should return false if configured reset statuses is not a list', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
-                if (value === 'enableResetAppointmentStatusesFor') {
+                if (value === 'enableResetAppointmentStatuses') {
                     return "Cancelled";
                 }
                 return undefined;
@@ -1353,7 +1353,7 @@ describe('AppointmentsListViewController', function () {
 
         it('should return false if selected appointment is Scheduled and allowResetAppointmentStatusesFor has Scheduled', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
-                if (value === 'enableResetAppointmentStatusesFor') {
+                if (value === 'enableResetAppointmentStatuses') {
                     return ["Cancelled", "Scheduled"];
                 }
                 return undefined;
@@ -1373,7 +1373,7 @@ describe('AppointmentsListViewController', function () {
 
         it('should return true if user have required privileges and selected appointment status is in reset configuration list', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
-                if (value === 'enableResetAppointmentStatusesFor') {
+                if (value === 'enableResetAppointmentStatuses') {
                     return ["Cancelled", "Missed"];
                 }
                 return undefined;

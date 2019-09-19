@@ -11,7 +11,7 @@ angular.module('bahmni.appointments')
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
-            $scope.enableResetAppointmentStatusesFor = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatusesFor');
+            $scope.enableResetAppointmentStatuses = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatuses');
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
             $scope.resetAppointmentStatusPrivilege = Bahmni.Appointments.Constants.privilegeResetAppointmentStatus;
@@ -366,13 +366,13 @@ angular.module('bahmni.appointments')
             };
 
             $scope.isResetAppointmentStatusFeatureEnabled = function () {
-                return !(_.isNull($scope.enableResetAppointmentStatusesFor) ||
-                    _.isUndefined($scope.enableResetAppointmentStatusesFor));
+                return !(_.isNull($scope.enableResetAppointmentStatuses) ||
+                    _.isUndefined($scope.enableResetAppointmentStatuses));
             };
 
             var isSelectedAppointmentStatusAllowedToReset = function () {
-                return _.isArray($scope.enableResetAppointmentStatusesFor) &&
-                    _.includes($scope.enableResetAppointmentStatusesFor, $scope.selectedAppointment.status);
+                return _.isArray($scope.enableResetAppointmentStatuses) &&
+                    _.includes($scope.enableResetAppointmentStatuses, $scope.selectedAppointment.status);
             };
 
             $scope.isResetAppointmentStatusAllowed = function () {
