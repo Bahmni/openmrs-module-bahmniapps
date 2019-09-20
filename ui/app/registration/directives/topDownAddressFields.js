@@ -20,6 +20,30 @@ angular.module('bahmni.registration')
         var selectedUserGeneratedIds = {};
 
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
+        var new_address = new Array($scope.addressLevels.length).fill(undefined);
+        angular.forEach($scope.addressLevels, function (value, key) {
+            value.isStrictEntry = false;
+            if (value.addressField === "address1") {
+                new_address.splice(3,1, value);
+            } else if (value.addressField === "address2") {
+                new_address.splice(2,1, value);
+            } else if (value.addressField === "address3") {
+                new_address.splice(1,1, value);
+            } else if (value.addressField === "address4") {
+                new_address.splice(0,1, value);
+            } else if (value.addressField === "address5") {
+                new_address.splice(4,1, value);
+            } else if (value.addressField === "address6") {
+                new_address.splice(5,1, value);
+            } else if (value.addressField === "cityVillage") {
+                new_address.splice(6,1, value);
+            } else if (value.addressField === "stateProvince") {
+                new_address.splice(7,1, value);
+            } else if (value.addressField === "postalCode") {
+                new_address.splice(8,1, value);
+            }
+        });
+        $scope.addressLevels = new_address;
         var addressLevelUIOrderBasedOnConfig = $scope.addressLevels;
         $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelUIOrderBasedOnConfig, 2);
         var addressLevelsNamesInDescendingOrder = addressLevelsCloneInDescendingOrder.map(function (addressLevel) {

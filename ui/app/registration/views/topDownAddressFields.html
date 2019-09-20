@@ -5,7 +5,7 @@
                 class="asterick"
                 ng-show="::addressLevel.required">*</span></label>
         </div>
-        <div class="field-value">
+        <div class="field-value" ng-if="::addressLevel.addressField ==='address1'">
             <input type="text"
                    id="{{::addressLevel.addressField}}"
                    pattern-validate
@@ -13,6 +13,25 @@
                    ng-model="address[addressLevel.addressField]"
                    ng-disabled="isReadOnly(addressLevel)"
                    bahmni-autocomplete
+                   source="getAddressEntryList(addressLevel.addressField)"
+                   response-map="getAddressDataResults"
+                   on-select="addressFieldSelected(addressLevel.addressField)"
+                   ng-change="clearFields(addressLevel.addressField)"
+                   min-length="1"
+                   strict-select="addressLevel.isStrictEntry"
+                   initial-value="selectedValue[addressLevel.addressField]"
+                   is-invalid="addressFieldInvalid"
+                   ng-class="{'illegalValue': addressFieldInvalid}"
+                   on-edit="removeAutoCompleteEntry(addressLevel.addressField)"
+                   required/>
+        </div>
+        <div class="field-value" ng-if="::addressLevel.addressField !=='address1'">
+            <input type="text"
+                   id="{{::addressLevel.addressField}}"
+                   pattern-validate
+                   non-blank="::addressLevel.required"
+                   ng-model="address[addressLevel.addressField]"
+                   ng-disabled="isReadOnly(addressLevel)"
                    source="getAddressEntryList(addressLevel.addressField)"
                    response-map="getAddressDataResults"
                    on-select="addressFieldSelected(addressLevel.addressField)"
