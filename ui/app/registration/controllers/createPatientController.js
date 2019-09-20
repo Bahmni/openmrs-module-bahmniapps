@@ -82,6 +82,7 @@ angular.module('bahmni.registration')
 
             var init = function () {
                 $scope.patient = patient.create();
+                $scope.patient.newlyAddedRelationships = [{}];
                 prepopulateDefaultsInFields();
                 expandSectionsWithDefaultValue();
                 initTodaysDate();
@@ -250,15 +251,48 @@ angular.module('bahmni.registration')
                 return deferred.promise;
             };
 
+            var validateUniqueArtNo = function () {
+                var personAttributeHasTypeofPatient = personAttributes.indexOf("TypeofPatient") !== -1;
+                var personAttributeTypeofPatient = personAttributeHasTypeofPatient
+                    ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TypeofPatient")].name : undefined;
+                if (personAttributeTypeofPatient && $scope.patient[personAttributeTypeofPatient] &&
+                        ($scope.patient[personAttributeTypeofPatient].value === "ExistingPatient")) {
+                    var personAttributeHasUniqueArtNo = personAttributes.indexOf("UniqueArtNo") !== -1;
+                    var personAttributeUniqueArtNo = personAttributeHasUniqueArtNo
+                        ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("UniqueArtNo")].name : undefined;
+                    var uniqueArt = $scope.patient[personAttributeUniqueArtNo];
+                    var personAttributeHasHealthFacility = personAttributes.indexOf("HealthFacilityName") !== -1;
+                    var personAttributeHealthFacility = personAttributeHasHealthFacility
+                        ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("HealthFacilityName")].name : undefined;
+                    if (personAttributeHealthFacility && $scope.patient[personAttributeHealthFacility] &&
+                            $scope.patient[personAttributeHealthFacility].value === "Juba Teaching Hospital") {
+                        if (uniqueArt && !(uniqueArt.startsWith("CES/JTH-") && uniqueArt.length === 16)) {
+                            return "Unique art no should be 16 characters starting with CES/JTH-";
+                        }
+                    } else if (personAttributeHealthFacility && $scope.patient[personAttributeHealthFacility] &&
+                            $scope.patient[personAttributeHealthFacility].value === "Nimule") {
+                        if (uniqueArt && !(uniqueArt.startsWith("EES/NMC-") && uniqueArt.length === 16)) {
+                            return "Unique art no should be 16 characters starting with EES/NMC-";
+                        }
+                    }
+                }
+                return "";
+            };
+
             $scope.create = function () {
                 addNewRelationships();
                 var errorMessages = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
+                var customValidateArtMsg = validateUniqueArtNo();
+                if (customValidateArtMsg !== "") {
+                    errorMessages.push(customValidateArtMsg);
+                }
                 if (errorMessages.length > 0) {
                     errorMessages.forEach(function (errorMessage) {
                         messagingService.showMessage('error', errorMessage);
                     });
                     return $q.when({});
                 }
+
                 return spinner.forPromise(createPromise()).then(function (response) {
                     if (errorMessage) {
                         messagingService.showMessage("error", errorMessage);
