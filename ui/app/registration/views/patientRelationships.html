@@ -25,7 +25,7 @@
                 <div class="col col1 form-field">
                     <div class="field-attribute showOn-small-screen">
                         <label>{{ 'REGISTRATION_RELATION_TYPE_LABEL'|translate }}
-                            <span class="asterick">*</span>
+                            <!-- <span class="asterick">*</span> -->
                         </label>
                     </div>
                     <div class="field-value">
@@ -34,12 +34,12 @@
                             <option value="">{{ ::'REGISTRATION_LABEL_SELECT_RELATIONSHIP_TYPE' | translate}}</option>
                         </select>
                     </div>
-                    <span class="asterick showOn-desktop">*</span>
+                    <!-- <span class="asterick showOn-desktop">*</span> -->
                 </div>
                 <div class="col col2 form-field">
                     <div class="field-attribute showOn-small-screen">
                         <label>{{ 'REGISTRATION_ENTER_NAME_ID_LABEL'|translate }}
-                            <span class="asterick">*</span>
+                            <!-- <span class="asterick">*</span> -->
                         </label>
                     </div>
                     <div class="field-value" ng-switch="getChosenRelationshipType(newRelationship)">
@@ -62,7 +62,7 @@
 
                         <input type="hidden" ng-model="newRelationship.personB"/>
                     </div>
-                    <span class="asterick showOn-desktop">*</span>
+                    <!-- <span class="asterick showOn-desktop">*</span> -->
                     <span class="no-person" ng-show="showPersonNotFound(newRelationship)">{{ ::'REGISTRATION_LABEL_PERSON_NOT_FOUND' | translate}}</span>
                     <span ng-show="!showPersonNotFound(newRelationship)">{{newRelationship.content}}</span>
                     <span class="no-person" ng-show="duplicateRelationship(newRelationship)">{{ ::'REGISTRATION_LABEL_RELATIONSHIP_EXISTS' | translate}}</span>

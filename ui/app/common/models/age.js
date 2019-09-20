@@ -28,6 +28,12 @@ angular.module('bahmni.common.models')
 
         var calculateBirthDate = function (age) {
             var birthDate = dateUtil.now();
+            if (!age.months) {
+                birthDate = dateUtil.subtractYears(birthDate, age.years);
+                birthDate = new Date(birthDate.getFullYear(), 5, 15, 0);
+                birthDate = moment(birthDate).format('DD-MM-YYYY');
+                return birthDate;
+            }
             birthDate = dateUtil.subtractYears(birthDate, age.years);
             birthDate = dateUtil.subtractMonths(birthDate, age.months);
             birthDate = dateUtil.subtractDays(birthDate, age.days);

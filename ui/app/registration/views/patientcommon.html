@@ -128,6 +128,11 @@
                         </article>
                     </div>
                     <div ng-if="section.order === 4">
+                        <div class="age-wrapper">
+                            <ng-include src="'views/dob.html'"></ng-include>
+                            <ng-include src="'views/age.html'"></ng-include>
+                        </div>
+
                         <article class="form-field form-field-gender">
                             <div class="field-attribute">
                                 <label for="gender">{{ ::'REGISTRATION_LABEL_GENDER' | translate}} <span
@@ -140,18 +145,12 @@
                                 </select>
                             </div>
                         </article>
-                        <div class="age-wrapper">
-                            <ng-include src="'views/age.html'"></ng-include>
-                        </div>
-                        <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.attributes.length > 0)"
+                        <article class="form-field clearfix" ng-repeat="attribute in ::section.attributes" ng-if="::(section.attributes.length > 0)"
                              ng-class="::{'right-form-field' : $index%2 != 0}">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                               is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                               get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                         </article>
-                        <div class="age-wrapper">
-                            <ng-include src="'views/dob.html'"></ng-include>
-                        </div>
                     </div>
                 </section>
                 <!-- <div ng-if="section.order === 4">
@@ -205,17 +204,6 @@
                 </div>
 
         <div ng-if="::(section.canShow && section.order === 6)" ng-hide="!heiRelationship">
-            <div class="box-container form" ng-if="::(relationshipTypes.length > 0)">
-                <legend>
-                  <span>
-                       <i class="fa fa-caret-down"></i>
-                      <strong>{{'REGISTRATION_TITLE_RELATIONSHIPS' | translate}}</strong>
-                  </span>
-                </legend>
-                <section class="form-field-inline clearfix" ng-show="!section.expand">
-                        <div patient-relationship patient="patient" ng-if="::relationshipTypes"></div>
-                </section>
-            </div>
             <div class="box-container form" ng-if="::(section.attributes.length > 0 && section.title)">
                 <legend>
                   <span>
@@ -235,6 +223,9 @@
                               is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                               get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                     </article>
+                </section>
+                <section class="form-field-inline clearfix" ng-show="!section.expand">
+                        <div patient-relationship patient="patient" ng-if="::(relationshipTypes && relationshipTypes.length > 0)"></div>
                 </section>
             </div>
         </div>
