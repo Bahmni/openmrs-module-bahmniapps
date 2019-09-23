@@ -65,11 +65,4 @@ angular.module('bahmni.appointments')
                     headers: {"Accept": "application/json", "Content-Type": "application/json"}
                 });
             };
-
-            this.undoCheckIn = function (appointmentUuid) {
-                return $http.post(Bahmni.Appointments.Constants.undoCheckInUrl + appointmentUuid, {
-                    withCredentials: true,
-                    headers: {"Accept": "application/json", "Content-Type": "application/json"}
-                });
-            };
         }]);
