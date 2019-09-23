@@ -1313,7 +1313,7 @@ describe('AppointmentsListViewController', function () {
             expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
         });
 
-        it('should return false if select appointment status is not listed in configured reset statuses for', function () {
+        it('should return false if select appointment status is not listed in configured reset statuses', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
                 if (value === 'enableResetAppointmentStatuses') {
                     return [];
@@ -1351,7 +1351,7 @@ describe('AppointmentsListViewController', function () {
             expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
         })
 
-        it('should return false if selected appointment is Scheduled and allowResetAppointmentStatusesFor has Scheduled', function () {
+        it('should return false if selected appointment is Scheduled and enableResetAppointmentStatuses has Scheduled', function () {
             appDescriptor.getConfigValue.and.callFake(function (value) {
                 if (value === 'enableResetAppointmentStatuses') {
                     return ["Cancelled", "Scheduled"];
