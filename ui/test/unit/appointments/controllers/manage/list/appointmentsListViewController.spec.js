@@ -936,14 +936,14 @@ describe('AppointmentsListViewController', function () {
     it('should change status on confirmation on undo check in', function () {
         var appointment = {uuid: 'appointmentUuid', status: 'CheckedIn'};
         var message = "Successfully changed appointment status to Scheduled";
-        appointmentsService.undoCheckIn.and.returnValue(specUtil.simplePromise({data: {uuid: 'appointmentUuid', status: 'Scheduled'}}));
+        appointmentsService.changeStatus.and.returnValue(specUtil.simplePromise({data: {uuid: 'appointmentUuid', status: 'Scheduled'}}));
         $translate.instant.and.returnValue(message);
         createController();
         scope.selectedAppointment = appointment;
         confirmBox.and.callFake(function (config) {
             var close = jasmine.createSpy('close');
             config.scope.yes(close).then(function () {
-                expect(appointmentsService.undoCheckIn).toHaveBeenCalledWith(appointment.uuid);
+                expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, 'Scheduled', null);
                 expect(scope.selectedAppointment.status).toBe('Scheduled');
                 expect(close).toHaveBeenCalled();
                 expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
@@ -1120,16 +1120,31 @@ describe('AppointmentsListViewController', function () {
         });
     });
 
-    it('return true for allowUndoCheckIn if user allowed to do and selected appointment status is checkedIn', function () {
+    it('return true for isUndoCheckInAllowed if user allowed to do and selected appointment status is checkedIn', function () {
         rootScope.currentUser = {
-            privileges: [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}]
+            privileges: [
+                {name: Bahmni.Appointments.Constants.privilegeManageAppointments},
+                {name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}
+            ]
         };
         scope.selectedAppointment = {status: 'CheckedIn'};
         rootScope.currentProvider = {};
         createController();
 
-        expect(scope.allowUndoCheckIn()).toBeTruthy();
+        expect(scope.isUndoCheckInAllowed()).toBeTruthy();
     });
+
+    it('return false for isUndoCheckInAllowed if user does not have privilege and selected appointment status is checkedIn', function () {
+            rootScope.currentUser = {
+                privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeManageAppointments}
+                ]
+            };
+            scope.selectedAppointment = {status: 'CheckedIn'};
+            createController();
+
+            expect(scope.isUndoCheckInAllowed()).toBeFalsy();
+        });
 
     it('should get colors for config', function () {
         var colors = { Cancelled: "Red", Missed: "Orange" };
@@ -1239,6 +1254,183 @@ describe('AppointmentsListViewController', function () {
 
             expect(scope.isEditAllowed()).toBe(false);
         });
+    });
+
+    describe('Reset appointment status functionality', function () {
+
+        it('should return true when enableResetAppointmentStatuses is not undefined', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'enableResetAppointmentStatuses') {
+                    return "";
+                }
+                return undefined;
+            });
+            createController();
+
+            expect(scope.isResetAppointmentStatusFeatureEnabled()).toBeTruthy();
+        });
+
+        it('should return false when enableResetAppointmentStatuses is undefined', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'enableResetAppointmentStatuses') {
+                    return undefined;
+                }
+                return undefined;
+            });
+            createController();
+
+            expect(scope.isResetAppointmentStatusFeatureEnabled()).toBeFalsy();
+        });
+
+        it('should return false if user does not have manageAppointment and self privilege but has reset privilege', function () {
+            rootScope.currentUser = {
+                privileges: [{name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}]
+            };
+            createController();
+
+            expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
+        });
+
+        it('should return false if user does not have resetAppointmentStatus privilege', function () {
+            rootScope.currentUser = {
+                privileges: []
+            };
+            createController();
+
+            expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
+        });
+
+        it('should return false if user has required privileges but did not select appointment', function () {
+            rootScope.currentUser = {
+                privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeManageAppointments},
+                    {name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}
+                ]
+            };
+            scope.selectedAppointment = undefined;
+            createController();
+
+            expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
+        });
+
+        it('should return false if select appointment status is not listed in configured reset statuses', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'enableResetAppointmentStatuses') {
+                    return [];
+                }
+                return undefined;
+            });
+            rootScope.currentUser = {
+                privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeManageAppointments},
+                    {name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}
+                ]
+            };
+            scope.selectedAppointment = {status: 'Cancelled'};
+            createController();
+
+            expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
+        });
+
+        it('should return false if configured reset statuses is not a list', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'enableResetAppointmentStatuses') {
+                    return "Cancelled";
+                }
+                return undefined;
+            });
+            rootScope.currentUser = {
+                privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeManageAppointments},
+                    {name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}
+                ]
+            };
+            scope.selectedAppointment = {status: 'Cancelled'};
+            createController();
+
+            expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
+        })
+
+        it('should return false if selected appointment is Scheduled and enableResetAppointmentStatuses has Scheduled', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'enableResetAppointmentStatuses') {
+                    return ["Cancelled", "Scheduled"];
+                }
+                return undefined;
+            });
+            rootScope.currentUser = {
+                privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeManageAppointments},
+                    {name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}
+                ]
+            };
+
+            scope.selectedAppointment = {status: 'Scheduled'};
+            createController();
+
+            expect(scope.isResetAppointmentStatusAllowed()).toBeFalsy();
+        });
+
+        it('should return true if user have required privileges and selected appointment status is in reset configuration list', function () {
+            appDescriptor.getConfigValue.and.callFake(function (value) {
+                if (value === 'enableResetAppointmentStatuses') {
+                    return ["Cancelled", "Missed"];
+                }
+                return undefined;
+            });
+            rootScope.currentUser = {
+                privileges: [
+                    {name: Bahmni.Appointments.Constants.privilegeManageAppointments},
+                    {name: Bahmni.Appointments.Constants.privilegeResetAppointmentStatus}
+                ]
+            };
+
+            scope.selectedAppointment = {status: 'Cancelled'};
+            createController();
+
+            expect(scope.isResetAppointmentStatusAllowed()).toBeTruthy();
+        });
+
+        it('should show a pop up on click of reset button', function () {
+            var translatedMessage = "Are you sure, you want to reset the status to Scheduled?";
+            $translate.instant.and.returnValue(translatedMessage);
+            confirmBox.and.callFake(function (config) {
+                expect($translate.instant).toHaveBeenCalledWith('APPOINTMENT_RESET_CONFIRM_MESSAGE');
+                expect(config.scope.message).toEqual(translatedMessage);
+                expect(config.scope.no).toEqual(jasmine.any(Function));
+                expect(config.scope.yes).toEqual(jasmine.any(Function));
+                expect(config.actions).toEqual([{name: 'yes', display: 'YES_KEY'}, {name: 'no', display: 'NO_KEY'}]);
+                expect(config.className).toEqual('ngdialog-theme-default');
+            });
+            createController();
+            scope.selectedAppointment = {uuid: 'appointmentUuid'};
+
+            scope.reset();
+
+            expect(confirmBox).toHaveBeenCalled();
+        });
+
+        it('should change status on confirmation on reset', function () {
+            var appointment = {uuid: 'appointmentUuid', status: 'Missed'};
+            var message = "Successfully changed appointment status to Scheduled";
+            appointmentsService.changeStatus.and.returnValue(specUtil.simplePromise({data: {uuid: 'appointmentUuid', status: 'Scheduled'}}));
+            $translate.instant.and.returnValue(message);
+            createController();
+            scope.selectedAppointment = appointment;
+
+            scope.reset();
+
+            confirmBox.and.callFake(function (config) {
+                var close = jasmine.createSpy('close');
+                config.scope.yes(close).then(function () {
+                    expect(appointmentsService.changeStatus).toHaveBeenCalledWith(appointment.uuid, 'Scheduled', null);
+                    expect(scope.selectedAppointment.status).toBe('Scheduled');
+                    expect(close).toHaveBeenCalled();
+                    expect(messagingService.showMessage).toHaveBeenCalledWith('info', message);
+                });
+            });
+        });
+
     });
 
 });

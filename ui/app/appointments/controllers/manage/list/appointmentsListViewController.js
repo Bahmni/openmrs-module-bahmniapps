@@ -11,8 +11,10 @@ angular.module('bahmni.appointments')
             $scope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
             $scope.colorsForListView = appService.getAppDescriptor().getConfigValue('colorsForListView') || {};
             var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
+            $scope.enableResetAppointmentStatuses = appService.getAppDescriptor().getConfigValue('enableResetAppointmentStatuses');
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
+            $scope.resetAppointmentStatusPrivilege = Bahmni.Appointments.Constants.privilegeResetAppointmentStatus;
             $scope.searchedPatient = false;
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
@@ -247,21 +249,27 @@ angular.module('bahmni.appointments')
             };
 
             $scope.undoCheckIn = function () {
-                var undoCheckIn = function (closeConfirmBox) {
-                    return appointmentsService.undoCheckIn($scope.selectedAppointment.uuid).then(function (response) {
-                        ngDialog.close();
-                        $scope.selectedAppointment.status = response.data.status;
-                        var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
-                            toStatus: response.data.status
-                        });
-                        closeConfirmBox();
-                        messagingService.showMessage('info', message);
-                    });
-                };
-
                 var scope = {};
                 scope.message = $translate.instant('APPOINTMENT_UNDO_CHECKIN_CONFIRM_MESSAGE');
-                scope.yes = undoCheckIn;
+                scope.yes = resetStatus;
+                showPopUp(scope);
+            };
+
+            var resetStatus = function (closeConfirmBox) {
+                return appointmentsService.changeStatus($scope.selectedAppointment.uuid, 'Scheduled', null).then(function (response) {
+                    $scope.selectedAppointment.status = response.data.status;
+                    var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
+                        toStatus: response.data.status
+                    });
+                    closeConfirmBox();
+                    messagingService.showMessage('info', message);
+                });
+            };
+
+            $scope.reset = function () {
+                var scope = {};
+                scope.message = $translate.instant('APPOINTMENT_RESET_CONFIRM_MESSAGE');
+                scope.yes = resetStatus;
                 showPopUp(scope);
             };
 
@@ -323,11 +331,30 @@ angular.module('bahmni.appointments')
                 return _.includes(allowedActions, action);
             };
 
-            $scope.allowUndoCheckIn = function () {
-                if (!_.isUndefined($scope.selectedAppointment)) {
-                    return appointmentCommonService.isUserAllowedToPerformEdit($scope.selectedAppointment.providers, $rootScope.currentUser.privileges, $rootScope.currentProvider.uuid) && $scope.selectedAppointment &&
-                        $scope.selectedAppointment.status === 'CheckedIn';
+            var isCurrentUserHavePrivilege = function (privilege) {
+                return !_.isUndefined(_.find($rootScope.currentUser.privileges, function (userPrivilege) {
+                    return userPrivilege.name === privilege;
+                }));
+            };
+
+            $scope.isUserAllowedToPerform = function () {
+                if (isCurrentUserHavePrivilege($scope.manageAppointmentPrivilege)) {
+                    return true;
                 }
+                else if (isCurrentUserHavePrivilege($scope.ownAppointmentPrivilege)) {
+                    if ($scope.selectedAppointment) {
+                        return _.isNull($scope.selectedAppointment.provider) ||
+                            $scope.selectedAppointment.provider.uuid === $rootScope.currentProvider.uuid;
+                    }
+                }
+                return false;
+            };
+
+            $scope.isUndoCheckInAllowed = function () {
+                return $scope.isUserAllowedToPerform() &&
+                    isCurrentUserHavePrivilege($scope.resetAppointmentStatusPrivilege) &&
+                    $scope.selectedAppointment &&
+                    $scope.selectedAppointment.status === 'CheckedIn';
             };
 
             $scope.isEditAllowed = function () {
@@ -336,6 +363,24 @@ angular.module('bahmni.appointments')
                     return maxAppointmentProviders > 1 ? true : appointmentCommonService.isUserAllowedToPerformEdit(appointmentProvider, currentUserPrivileges, currentProviderUuId);
                 }
                 return false;
+            };
+
+            $scope.isResetAppointmentStatusFeatureEnabled = function () {
+                return !(_.isNull($scope.enableResetAppointmentStatuses) ||
+                    _.isUndefined($scope.enableResetAppointmentStatuses));
+            };
+
+            var isSelectedAppointmentStatusAllowedToReset = function () {
+                return _.isArray($scope.enableResetAppointmentStatuses) &&
+                    _.includes($scope.enableResetAppointmentStatuses, $scope.selectedAppointment.status);
+            };
+
+            $scope.isResetAppointmentStatusAllowed = function () {
+                return $scope.isUserAllowedToPerform() &&
+                    isCurrentUserHavePrivilege($scope.resetAppointmentStatusPrivilege) &&
+                    $scope.selectedAppointment &&
+                    $scope.selectedAppointment.status != 'Scheduled' &&
+                    isSelectedAppointmentStatusAllowedToReset();
             };
 
             init();
