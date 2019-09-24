@@ -3,6 +3,7 @@
         <nav>
             <a ng-class="{'active': getCurrentTabName() === 'summary'}" ng-click="navigateTo('summary')">{{ ::'SUMMARY' | translate}}</a>
             <a ng-class="{'active': (getCurrentTabName() === 'calendar' || getCurrentTabName() === 'list')}" ng-click="navigateTo('appointments')">{{ ::'APPOINTMENT_LIST' | translate}}</a>
+            <a ng-class="{'active': (getCurrentTabName() === 'addAppointment' || getCurrentTabName() === 'list')}" ng-click="navigateTo('appointments' + '.calendar.new')">{{ ::'ADD_NEW_APPOINTMENT' | translate}}</a>
         </nav>
     <br/><br/><br/>
     </header>
