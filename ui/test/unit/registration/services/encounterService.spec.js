@@ -75,7 +75,10 @@ describe('EncounterService', function () {
             "observations": [
                 {"value": 10, "concept": {"name": "REGISTRATION FEES", "uuid": "b4afc27e-c79a-11e2-b284-107d46e7b2c5"}},
                 {"value": null, "concept": {"name": "HEIGHT", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"}}
-            ]
+            ],
+            "extensions": {
+                "mdrtbSpecimen": []
+            }
         };
 
         var results = encounterService.create(encounter);
@@ -95,7 +98,10 @@ describe('EncounterService', function () {
             "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
             "observations": [
                 {"value": null, "concept": {"name": "HEIGHT", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"}}
-            ]
+            ],
+            "extensions": {
+                "mdrtbSpecimen": []
+            }
         };
 
         var results = encounterService.buildEncounter(encounter);
@@ -115,7 +121,10 @@ describe('EncounterService', function () {
             "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
             "observations": [
                 {"value": null, "concept": {"name": "HEIGHT", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"}}
-            ]
+            ],
+            "extensions": {
+                "mdrtbSpecimen": []
+            }
         };
 
         var results = encounterService.buildEncounter(encounter);
@@ -134,6 +143,9 @@ describe('EncounterService', function () {
             "observations": [
                 {"value": null, "concept": {"name": "HEIGHT", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"}}
             ],
+            "extensions": {
+                "mdrtbSpecimen": []
+            },
             providers: [{uuid: "existing-provider-uuid"}]
 
         };
@@ -241,7 +253,10 @@ describe('EncounterService', function () {
                 {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
                     "voided" : true, "groupMembers": []}
             ],
-            providers: [{uuid: "existing-provider-uuid"}]
+            providers: [{uuid: "existing-provider-uuid"}],
+            "extensions": {
+                "mdrtbSpecimen": []
+            }
 
         };
         var Videourl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForVideo";
@@ -265,7 +280,10 @@ describe('EncounterService', function () {
                 {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
                     "voided" : true, "groupMembers": []}
             ],
-            providers: [{uuid: "existing-provider-uuid"}]
+            providers: [{uuid: "existing-provider-uuid"}],
+            "extensions": {
+                "mdrtbSpecimen": []
+            }
 
         };
         var Videourl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForVideo";
@@ -288,7 +306,10 @@ describe('EncounterService', function () {
                 {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
                     "voided" : true}
             ],
-            providers: [{uuid: "existing-provider-uuid"}]
+            providers: [{uuid: "existing-provider-uuid"}],
+            "extensions": {
+                "mdrtbSpecimen": []
+            }
 
         };
         var Videourl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForVideo";
@@ -311,7 +332,10 @@ describe('EncounterService', function () {
                 {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
                     "voided" : true, "groupMembers": []}
             ],
-            providers: [{uuid: "existing-provider-uuid"}]
+            providers: [{uuid: "existing-provider-uuid"}],
+            "extensions": {
+                "mdrtbSpecimen": []
+            }
 
         };
         var Videourl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForVideo";
@@ -336,7 +360,10 @@ describe('EncounterService', function () {
                 {"value": "", "concept": {"name": "Image", "conceptClass" : "Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c7"},
                     "voided" : true, "groupMembers": []}
             ],
-            providers: [{uuid: "existing-provider-uuid"}]
+            providers: [{uuid: "existing-provider-uuid"}],
+            "extensions": {
+                "mdrtbSpecimen": []
+            }
 
         };
 
@@ -356,7 +383,10 @@ describe('EncounterService', function () {
                 {"value": "pathForImage", "concept": {"name": "Image", "conceptClass" : "non-Image", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
                     "voided" : true, "groupMembers": []}
             ],
-            providers: [{uuid: "existing-provider-uuid"}]
+            providers: [{uuid: "existing-provider-uuid"}],
+            "extensions": {
+                "mdrtbSpecimen": []
+            }
 
         };
 
@@ -376,12 +406,191 @@ describe('EncounterService', function () {
                 {"value": "someValue", "concept": {"name": "someObs", "conceptClass" : "someClass", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
                     "voided" : true, "groupMembers": []}
             ],
-            providers: [{uuid: "existing-provider-uuid"}]
+            providers: [{uuid: "existing-provider-uuid"}],
+            "extensions": {
+                "mdrtbSpecimen": []
+            }
 
         };
 
         var results = encounterService.buildEncounter(encounter);
         expect(mockHttp.delete).not.toHaveBeenCalled();
+        mockHttp.delete.calls.reset();
+    });
+
+    it('should  call URL to delete file if any bacteriology member of type Video or Image is voided', function () {
+        var Videourl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForVideo";
+        var Videourl2 = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForVideo2";
+        var Imageurl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForImage";
+
+        var encounter = {
+            "encounterTypeUuid": "b469afaa-c79a-11e2-b284-107d46e7b2c5",
+            "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
+            "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
+            "observations": [
+                {"value": "pathForSomeVideo", "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided" : false, "groupMembers": []},
+                {"value": "someValue", "concept": {"name": "someObs", "conceptClass" : "someClass", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided" : true, "groupMembers": []}
+            ],
+            "extensions": {
+                "mdrtbSpecimen": [
+                    {
+                        "sample": {
+                            "additionalAttributes": {
+                                "groupMembers": [
+                                    {
+                                        "value": "pathForVideo",
+                                        "concept": {
+                                            "name": "Video",
+                                            "conceptClass": "Video",
+                                            "uuid": "h7b371da-c79a-11e2-b284-107d46e7b2c5"
+                                        },
+                                        "voided": true,
+                                        "groupMembers": []
+                                    },
+
+                                ]
+                            }
+                        },
+                        "report": {
+                            "results": {
+                                "groupMembers": [
+                                    {
+                                        "value": "pathForImage",
+                                        "concept": {
+                                            "name": "Video",
+                                            "conceptClass": "Image",
+                                            "uuid": "a2b371da-c79a-11e2-b284-107d46e7b2c5"
+                                        },
+                                        "voided": true,
+                                        "groupMembers": []
+                                    },
+
+                                ]
+
+                            }
+                        }
+                    },
+                    {
+                        "sample": {
+                            "additionalAttributes": {
+                                "groupMembers": [
+                                    {
+                                        "value": "SomeValue",
+                                        "concept": {
+                                            "name": "SomeName",
+                                            "conceptClass": "someClass",
+                                            "uuid": "h7b371da-c79a-11e2-b284-107d46e7b2c5"
+                                        },
+                                        "groupMembers": [ {
+                                            "value": "pathForVideo2",
+                                            "concept": {
+                                                "name": "Video",
+                                                "conceptClass": "Video",
+                                                "uuid": "h7b371da-c79a-11e2-b284-107d46e7b2c5"
+                                            },
+                                            "voided": true,
+                                            "groupMembers": []
+                                        }]
+                                    },
+
+                                ]
+                            }
+                        },
+                        "report": {
+                            "results": {
+                                "groupMembers": [
+                                    {
+                                        "value": "pathForImage",
+                                        "concept": {
+                                            "name": "Video",
+                                            "conceptClass": "Image",
+                                            "uuid": "a2b371da-c79a-11e2-b284-107d46e7b2c5"
+                                        },
+                                        "voided": true,
+                                        "groupMembers": []
+                                    },
+
+                                ]
+
+                            }
+                        }
+                    }
+
+                ]
+            },
+            providers: [{uuid: "existing-provider-uuid"}]
+
+        };
+
+        var results = encounterService.buildEncounter(encounter);
+        expect(mockHttp.delete).toHaveBeenCalledWith(Videourl, {withCredentials: true});
+        expect(mockHttp.delete).toHaveBeenCalledWith(Videourl2, {withCredentials: true});
+        expect(mockHttp.delete).toHaveBeenCalledWith(Imageurl, {withCredentials: true});
+        mockHttp.delete.calls.reset();
+    });
+    it('should not call URL to delete file if any bacteriology member of type  other than Video or Image is voided', function () {
+        var Videourl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForVideo";
+        var Imageurl = Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument?filename=" + "pathForImage";
+
+        var encounter = {
+            "encounterTypeUuid": "b469afaa-c79a-11e2-b284-107d46e7b2c5",
+            "patientUuid": "027eca99-0b1e-4421-954e-e8778161ddc1",
+            "visitTypeUuid": "b5c3bd82-c79a-11e2-b284-107d46e7b2c5",
+            "observations": [
+                {"value": "pathForSomeVideo", "concept": {"name": "Video", "conceptClass" : "Video", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c5"},
+                    "voided" : false, "groupMembers": []},
+                {"value": "someValue", "concept": {"name": "someObs", "conceptClass" : "someClass", "uuid": "b4b371da-c79a-11e2-b284-107d46e7b2c6"},
+                    "voided" : true, "groupMembers": []}
+            ],
+            "extensions": {
+                "mdrtbSpecimen": [
+                    {
+                        "sample": {
+                            "additionalAttributes": {
+                                "groupMembers": [
+                                    {
+                                        "value": "pathForVideo",
+                                        "concept": {
+                                            "name": "Video",
+                                            "conceptClass": "someType",
+                                            "uuid": "h7b371da-c79a-11e2-b284-107d46e7b2c5"
+                                        },
+                                        "voided": true,
+                                        "groupMembers": []
+                                    },
+
+                                ]
+                            }
+                        },
+                        "report": {
+                            "results": {
+                                "groupMembers": [
+                                    {
+                                        "value": "pathForImage",
+                                        "concept": {
+                                            "name": "Video",
+                                            "conceptClass": "someType",
+                                            "uuid": "a2b371da-c79a-11e2-b284-107d46e7b2c5"
+                                        },
+                                        "voided": true,
+                                        "groupMembers": []
+                                    },
+
+                                ]
+
+                            }
+                        }
+                    }
+                ]
+            },
+            providers: [{uuid: "existing-provider-uuid"}]
+
+        };
+
+        var results = encounterService.buildEncounter(encounter);
+        expect(mockHttp.delete).not.toHaveBeenCalledWith();
         mockHttp.delete.calls.reset();
     });
 });
