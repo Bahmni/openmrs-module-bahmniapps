@@ -125,24 +125,24 @@ angular.module('bahmni.registration')
                         ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TypeofPatient")].name : undefined;
                     if (personAttributeTypeofPatient &&
                         $scope.patient[personAttributeTypeofPatient] && $scope.patient[personAttributeTypeofPatient].value === "Walk-In") {
-                               var attrElement = angular.element(document.getElementById("UniqueArtNo"));
-                               if (attrElement) {
-                                   attrElement.attr('required', false);
-                               }
-                               for (var i = 0; i < personAttributes.length; ++i) {
-                                var attrName = personAttributes[i];
-                                if (attrName !== "TypeofPatient" && attrName !== "UniqueArtNo") {
-                                    var attrElement = angular.element(document.getElementById(attrName));
-                                    if (attrElement) {
-                                        attrElement.attr('disabled', true);
-                                    }
-                                } else if (attrName === "UniqueArtNo") {
-                                    var attrElement = angular.element(document.getElementById(attrName));
-                                    if (attrElement) {
-                                        attrElement.attr('disabled', false);
-                                    }
+                        var attrElement = angular.element(document.getElementById("UniqueArtNo"));
+                        if (attrElement) {
+                            attrElement.attr('required', false);
+                        }
+                        for (var i = 0; i < personAttributes.length; ++i) {
+                            var attrName = personAttributes[i];
+                            if (attrName !== "TypeofPatient" && attrName !== "UniqueArtNo") {
+                                var attrElement = angular.element(document.getElementById(attrName));
+                                if (attrElement) {
+                                    attrElement.attr('disabled', true);
+                                }
+                            } else if (attrName === "UniqueArtNo") {
+                                var attrElement = angular.element(document.getElementById(attrName));
+                                if (attrElement) {
+                                    attrElement.attr('disabled', false);
                                 }
                             }
+                        }
                     } else if (personAttributeTypeofPatient &&
                         $scope.patient[personAttributeTypeofPatient] && $scope.patient[personAttributeTypeofPatient].value === "HeiRelationship") {
                         $scope.heiRelationship = true;
@@ -178,7 +178,7 @@ angular.module('bahmni.registration')
                         }
                     }
                     if (personAttributeTypeofPatient && ($scope.patient[personAttributeTypeofPatient].value === "Transfer-In" ||
-                                $scope.patient[personAttributeTypeofPatient].value === "ExistingPatient")) {
+                            $scope.patient[personAttributeTypeofPatient].value === "ExistingPatient")) {
                         for (var i = 0; i < personAttributes.length; ++i) {
                             var attrName = personAttributes[i];
                             if (attrName === "HIVExposedInfant(HEI)No") {
@@ -214,7 +214,7 @@ angular.module('bahmni.registration')
                 var personAttributeTypeofPatient = personAttributeHasTypeofPatient
                     ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TypeofPatient")].name : undefined;
                 if (personAttributeTypeofPatient && $scope.patient[personAttributeTypeofPatient] &&
-                        $scope.patient[personAttributeTypeofPatient].value === "Walk-In") {
+                    $scope.patient[personAttributeTypeofPatient].value === "Walk-In") {
                     for (var i = 0; i < personAttributes.length; i++) {
                         var attrName = personAttributes[i];
                         var attrElement = angular.element(document.getElementById(attrName));
