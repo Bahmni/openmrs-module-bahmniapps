@@ -91,6 +91,7 @@ angular
                 }
             }).state('home.manage.appointments.calendar.new', {
                 url: '/new',
+                tabName: 'addAppointment',
                 params: {
                     appointment: null
                 },
