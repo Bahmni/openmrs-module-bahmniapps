@@ -208,7 +208,11 @@ angular.module('bahmni.clinical')
                 } else {
                     template.toggle();
                     template.klass = "active";
-                    $scope.consultation.selectedObsTemplate.push(template);
+                    if (index > -1) {
+                        $scope.consultation.selectedObsTemplate[index] = template;
+                    } else {
+                        $scope.consultation.selectedObsTemplate.push(template);
+                    }
                 }
                 $scope.consultation.searchParameter = "";
                 messagingService.showMessage("info", $translate.instant("CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY", {label: template.label}));
