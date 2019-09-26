@@ -40,9 +40,17 @@
                 <section class="form-field-inline clearfix">
                     <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.order === 2 && section.attributes.length > 0)"
                              ng-class="::{'right-form-field' : $index%2 != 0}">
+                        <div ng-if="attribute.name==='Walk-InReason' && walkInPatientType">
                         <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                               is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                               get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                        </div>
+
+                        <div ng-if="attribute.name!=='Walk-InReason'">
+                        <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
+                              is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
+                              get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                        </div>
                     </article>
 
                     <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.order === 3 && section.attributes.length > 0)"
@@ -153,30 +161,6 @@
                         </article>
                     </div>
                 </section>
-                <!-- <div ng-if="section.order === 4">
-                    <legend class="registraion_legend">
-                        <span class="mylegend"> {{ ::'REGISTRATION_LABEL_ADDRESS_INFO' | translate}}</span>
-                    </legend>
-
-                    <section address-fields data-address-levels="::addressLevels" data-address="patient.address"
-                             field-validation="::fieldValidation"
-                             strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"
-                             ng-if="::!addressHierarchyConfigs.showAddressFieldsTopDown"></section>
-
-                    <section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.address"
-                             field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
-                             strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
-                </div> -->
-                <!-- <div ng-if="section.order === 5 && !heiRelationship">
-                    <section class="form-field-inline clearfix" ng-if="!section.expand && !heiRelationship">
-                        <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.attributes.length > 0)"
-                             ng-class="::{'right-form-field' : $index%2 != 0}">
-                            <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
-                              is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
-                              get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
-                        </article>
-                    </section>
-                </div> -->
         </div>
 
                 <div ng-if="::(section.canShow && section.order === 5)">
