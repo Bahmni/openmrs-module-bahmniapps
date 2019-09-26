@@ -134,12 +134,12 @@ angular.module('bahmni.registration')
                         }
                         for (var i = 0; i < personAttributes.length; ++i) {
                             var attrName = personAttributes[i];
-                            if (attrName !== "TypeofPatient" && attrName !== "UniqueArtNo") {
+                            if (attrName !== "TypeofPatient" && attrName !== "UniqueArtNo" && attrName !== "RegistrantName") {
                                 var attrElement = angular.element(document.getElementById(attrName));
                                 if (attrElement) {
                                     attrElement.attr('disabled', true);
                                 }
-                            } else if (attrName === "UniqueArtNo") {
+                            } else if (attrName === "UniqueArtNo" || attrName === "RegistrantName") {
                                 var attrElement = angular.element(document.getElementById(attrName));
                                 if (attrElement) {
                                     attrElement.attr('disabled', false);
