@@ -22,6 +22,7 @@ angular.module('bahmni.registration')
 
             $scope.heiRelationship = false;
             $scope.infantPatient = false;
+            $scope.walkInPatientType = false;
 
             var dontSaveButtonClicked = false;
             var isHref = false;
@@ -115,6 +116,7 @@ angular.module('bahmni.registration')
                 }
                 if (!$scope.patientLoaded && attribute === "TypeofPatient") {
                     $scope.heiRelationship = false;
+                    $scope.walkInPatientType = false;
                     if (personAttributes.length == 0) {
                         personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
                             return attribute.name;
@@ -125,6 +127,7 @@ angular.module('bahmni.registration')
                         ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TypeofPatient")].name : undefined;
                     if (personAttributeTypeofPatient &&
                         $scope.patient[personAttributeTypeofPatient] && $scope.patient[personAttributeTypeofPatient].value === "Walk-In") {
+                        $scope.walkInPatientType = true;
                         var attrElement = angular.element(document.getElementById("UniqueArtNo"));
                         if (attrElement) {
                             attrElement.attr('required', false);
@@ -178,7 +181,7 @@ angular.module('bahmni.registration')
                         }
                     }
                     if (personAttributeTypeofPatient && ($scope.patient[personAttributeTypeofPatient].value === "Transfer-In" ||
-                            $scope.patient[personAttributeTypeofPatient].value === "ExistingPatient")) {
+                                $scope.patient[personAttributeTypeofPatient].value === "ExistingPatient")) {
                         for (var i = 0; i < personAttributes.length; ++i) {
                             var attrName = personAttributes[i];
                             if (attrName === "HIVExposedInfant(HEI)No") {
@@ -214,7 +217,7 @@ angular.module('bahmni.registration')
                 var personAttributeTypeofPatient = personAttributeHasTypeofPatient
                     ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TypeofPatient")].name : undefined;
                 if (personAttributeTypeofPatient && $scope.patient[personAttributeTypeofPatient] &&
-                    $scope.patient[personAttributeTypeofPatient].value === "Walk-In") {
+                        $scope.patient[personAttributeTypeofPatient].value === "Walk-In") {
                     for (var i = 0; i < personAttributes.length; i++) {
                         var attrName = personAttributes[i];
                         var attrElement = angular.element(document.getElementById(attrName));
@@ -238,9 +241,9 @@ angular.module('bahmni.registration')
                 var heiAddressFields = ["cityVillage", "postalCode", "stateProvince"];
                 for (var i = 0; i < heiAddressFields.length; i++) {
                     var attrName = heiAddressFields[i];
-                    var attrElement = angular.element(document.getElementById(attrName));
+                    var attrElement = angular.element(document.getElementById(attrName + "_fld"));
                     if (attrElement) {
-                        attrElement.attr('disabled', !$scope.heiRelationship);
+                        attrElement.css('display', $scope.heiRelationship ? 'block' : 'none');
                     }
                 }
             };
@@ -249,8 +252,11 @@ angular.module('bahmni.registration')
                 if ($scope.patientLoaded) {
                     $scope.patient.birthdate = moment($scope.patient.birthdate).format('DD-MM-YYYY');
                     executeShowOrHideRules();
+                    $scope.walkInPatientType = false;
                     if ($scope.patient['TypeofPatient'] && $scope.patient['TypeofPatient'].value === "HeiRelationship") {
                         $scope.heiRelationship = true;
+                    } else if ($scope.patient['TypeofPatient'] && $scope.patient['TypeofPatient'].value === "Walk-In") {
+                        $scope.walkInPatientType = true;
                     }
                     disableFieldsForInfant();
                     setReadOnlyFields();
@@ -264,7 +270,7 @@ angular.module('bahmni.registration')
                         return attribute.name;
                     });
                 }
-                if (((!$scope.patient.age.years || $scope.patient.age.years === 0) && $scope.patient.age.months <= 12) ||
+                if (($scope.patient.age.years === 0 && $scope.patient.age.months <= 12) ||
                     ($scope.patient.age.years === 1 && $scope.patient.age.months <= 6)) {
                     $scope.infantPatient = true;
                 }

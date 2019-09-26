@@ -16,7 +16,7 @@ angular.module('bahmni.registration')
     })
     .controller('AddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', function ($scope, addressHierarchyService) {
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
-        $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelsCloneInDescendingOrder, 2);
+        $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelsCloneInDescendingOrder, $scope.addressLevels.length);
         var addressLevelsNamesInDescendingOrder = addressLevelsCloneInDescendingOrder.map(function (addressLevel) {
             return addressLevel.addressField;
         });
