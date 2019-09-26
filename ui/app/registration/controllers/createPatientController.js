@@ -29,6 +29,7 @@ angular.module('bahmni.registration')
                 if (todaysDateAttrName) {
                     $scope.patient[todaysDateAttrName] = Bahmni.Common.Util.DateUtil.today();
                 }
+                $scope.patient['FacilityName'] = $rootScope.loggedInLocation ? $rootScope.loggedInLocation.name : '';
             };
 
             var prepopulateDefaultsInFields = function () {

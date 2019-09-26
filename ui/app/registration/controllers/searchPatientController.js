@@ -68,8 +68,12 @@ angular.module('bahmni.registration')
                             mapProgramAttributesSearchResults(response);
                         }).then(function () {
                             searching = false;
-                            $scope.results = response.pageOfResults;
-                            $scope.noResultsMessage = $scope.results.length === 0 ? 'REGISTRATION_NO_RESULTS_FOUND' : null;
+                            if (response.pageOfResults && response.pageOfResults.length > 0) {
+                                $scope.results = response.pageOfResults;
+                                $scope.noResultsMessage = $scope.results.length === 0 ? 'REGISTRATION_NO_RESULTS_FOUND' : null;
+                            } else {
+                                $scope.noResultsMessage = $scope.results.length === 0 ? 'REGISTRATION_NO_RESULTS_FOUND' : null;
+                            }
                         });
                     });
                     return searchPromise;
