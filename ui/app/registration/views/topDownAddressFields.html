@@ -11,7 +11,6 @@
                    pattern-validate
                    non-blank="::addressLevel.required"
                    ng-model="address[addressLevel.addressField]"
-                   ng-disabled="isReadOnly(addressLevel)"
                    bahmni-autocomplete
                    source="getAddressEntryList(addressLevel.addressField)"
                    response-map="getAddressDataResults"
@@ -31,7 +30,6 @@
                    pattern-validate
                    non-blank="::addressLevel.required"
                    ng-model="address[addressLevel.addressField]"
-                   ng-disabled="isReadOnly(addressLevel)"
                    source="getAddressEntryList(addressLevel.addressField)"
                    response-map="getAddressDataResults"
                    on-select="addressFieldSelected(addressLevel.addressField)"
