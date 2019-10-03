@@ -83,7 +83,7 @@ angular.module('bahmni.registration')
 
             var init = function () {
                 $scope.patient = patient.create();
-                $scope.patient.newlyAddedRelationships = [{}];
+                $scope.patient.newlyAddedRelationships = [];
                 prepopulateDefaultsInFields();
                 expandSectionsWithDefaultValue();
                 initTodaysDate();
@@ -142,7 +142,7 @@ angular.module('bahmni.registration')
                 $scope.patient.name = patientProfileData.patient.person.names[0].display;
                 $scope.patient.isNew = true;
                 $scope.patient.registrationDate = dateUtil.now();
-                $scope.patient.newlyAddedRelationships = [{}];
+                // $scope.patient.newlyAddedRelationships = [{}];
                 $scope.actions.followUpAction(patientProfileData);
             };
 
@@ -252,6 +252,18 @@ angular.module('bahmni.registration')
                 return deferred.promise;
             };
 
+            var validateAgeBirthdateForHeiType = function () {
+                var patientType = $scope.patient['TypeofPatient'].value;
+                if (patientType === 'HeiRelationship') {
+                    var ageYr = $scope.patient.age.years;
+                    var ageMth = $scope.patient.age.months;
+                    if (!((ageYr === 0 && ageMth <= 12) || (ageYr === 1 && ageMth <= 6))) {
+                        return "HEI child is not an infant!";
+                    }
+                }
+                return "";
+            };
+
             var validateUniqueArtNo = function () {
                 var personAttributeHasTypeofPatient = personAttributes.indexOf("TypeofPatient") !== -1;
                 var personAttributeTypeofPatient = personAttributeHasTypeofPatient
@@ -284,6 +296,10 @@ angular.module('bahmni.registration')
                 addNewRelationships();
                 var errorMessages = Bahmni.Common.Util.ValidationUtil.validate($scope.patient, $scope.patientConfiguration.attributeTypes);
                 var customValidateArtMsg = validateUniqueArtNo();
+                if (customValidateArtMsg !== "") {
+                    errorMessages.push(customValidateArtMsg);
+                }
+                customValidateArtMsg = validateAgeBirthdateForHeiType();
                 if (customValidateArtMsg !== "") {
                     errorMessages.push(customValidateArtMsg);
                 }

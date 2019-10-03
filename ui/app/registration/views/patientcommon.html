@@ -96,28 +96,6 @@
                                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" maxlength="10" style="width:90px;"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
                               </span>
-
-                              <span ng-show="::showMiddleName" data-ng-switch="::isAutoComplete('middleName')">
-                                  <input data-ng-switch-when="true"
-                                         type="text" id="middleName" ng-model="$parent.patient.middleName" pattern-validate
-                                         my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
-                                         data-item-type="personName" maxlength="10" style="width:90px;"
-                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
-                                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
-
-                                  <input data-ng-switch-default
-                                         type="text" id="middleName" ng-model="patient.middleName" pattern-validate
-                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}" maxlength="10" style="width:90px;"
-                                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
-                              </span>
-                            </div>
-                        <!-- </article> -->
-                        <!-- <br class="clearfix"/> -->
-                        <div class="form-field clearfix">
-                            <div class="field-attribute">
-                                <label for="patientLastName">{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME_LABEL' | translate}}</label>
-                            </div>
-                            <div id="patientLastName" class="field-value">
                               <span ng-show="::showLastName" data-ng-switch="::isAutoComplete('familyName')">
                                   <input data-ng-switch-when="true" maxlength="10" width="100px"
                                          type="text" id="familyName" ng-model="$parent.patient.familyName"  pattern-validate
@@ -130,6 +108,26 @@
                                          type="text" id="familyName" ng-model="patient.familyName"  pattern-validate
                                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}" maxlength="10" width="100px"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
+                              </span>
+                            </div>
+
+                        <div class="form-field clearfix">
+                            <div class="field-attribute">
+                                <label for="patientOtherName">{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME_LABEL' | translate}}</label>
+                            </div>
+                            <div id="patientOtherName" class="field-value">
+                              <span ng-show="::showMiddleName" data-ng-switch="::isAutoComplete('middleName')">
+                                  <input data-ng-switch-when="true"
+                                         type="text" id="middleName" ng-model="$parent.patient.middleName" pattern-validate
+                                         my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
+                                         data-item-type="personName" maxlength="10" style="width:90px;"
+                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
+                                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
+
+                                  <input data-ng-switch-default
+                                         type="text" id="middleName" ng-model="patient.middleName" pattern-validate
+                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}" maxlength="10" style="width:90px;"
+                                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
                               </span>
                             </div>
                          </div>
