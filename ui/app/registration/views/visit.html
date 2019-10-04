@@ -48,10 +48,10 @@
                     </section>
                 </div>
                 <div class="submit-btn-container">
-                    <button type="button" class="cancel" tabindex="-1" ng-show="::canCloseVisit" ng-click="closeVisitIfDischarged()">{{ ::'REGISTRATION_LABEL_CLOSE_VISIT' | translate}}</button>
+                    <button single-click="submit()" class="confirm" accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
                     <div class="right">
-                        <button ng-click="back()" accesskey="{{ ::'REGISTRATION_BACK_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_BACK' | translate"></button>
-                        <button single-click="submit()" class="confirm" accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
+                        <button ng-click="back()" accesskey="{{ ::'REGISTRATION_BACK_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_BACK' | translate"></button>  
+                        <button type="button" class="cancel" tabindex="-1" ng-show="::canCloseVisit" ng-click="closeVisitIfDischarged()">{{ ::'REGISTRATION_LABEL_CLOSE_VISIT' | translate}}</button>
                     </div>
                 </div>
             </form>

@@ -10,9 +10,9 @@ Bahmni.Common.VisitControl = function (visitTypes, defaultVisitTypeName, encount
     })[0];
 
     self.startButtonText = function (visitType) {
-        if (visitType.name === defaultVisitTypeName) {
+        /* if (visitType.name === defaultVisitTypeName) {
             return $translate.instant('REGISTRATION_START_VISIT_CLINICAL_CONSULTATION');
-        }
+        } */
         return $translate.instant('REGISTRATION_START_VISIT', {visitType: visitType.name});
     };
 

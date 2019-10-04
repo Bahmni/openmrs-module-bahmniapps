@@ -114,6 +114,19 @@
                                 </select>
                             </div>
                         </article>
+                        <article class="form-field ">
+                            <div class="field-attribute">
+                                <label class=" unit-text">{{ ::treatmentConfig.translate('units', 'MEDICATION_LABEL_REGIMEN_CHANGE_REASON') }} </label>
+                            </div>
+                            <div class="field-value">
+                                <select id="uniform-dose-unit" class="form-field freq-choose-units" ng-model="treatment.uniformDosingType.doseUnits"
+                                        ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
+                                        ng-required="treatment.isUniformDoseUnitRequired()"
+                                        ng-class="{'noFractionOptions' : !isDoseFractionsAvailable()}">
+                                    <option value="">{{ ::treatmentConfig.translate('doseUnitsPlaceHolder', 'MEDICATION_LABEL_REGIMEN_CHANGE_REASON_PLACEHOLDER') }} </option>
+                                </select>
+                            </div>
+                        </article>
                     </div>
                     <div class="frequency-widget variable-frequency " ng-if="!treatment.isUniformFrequency">
                         <article class="form-field ">
