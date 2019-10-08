@@ -26,7 +26,8 @@ angular.module('bahmni.clinical')
                         v: "custom:" + customRepresentation
                     }).then(function (response) {
                         var allTemplates = response.data.results[0].setMembers;
-                        if($scope.patient.age > 2){                                                
+                        console.log("This is the gender:", $scope.patient.gender);
+                        if($scope.patient.age >= 2){                                                
                             for(var i = allTemplates.length -1; i >= 0 ; i--){
                                 var heiformuuid = "54a93292-ffe6-43bd-898d-b8946bff488e";
                                 var clinicainfantuuid = "7c199842-c27a-4bc4-be25-57f61a5c878c";
@@ -51,7 +52,15 @@ angular.module('bahmni.clinical')
                                     allTemplates.splice(i, 1);
                                 } 
                             }                        
-                        }  
+                        }
+                        if($scope.patient.gender == "M"){
+                          var anccardtoommit = "71611db1-cd65-4ae1-9d59-537b82fe7289";
+                          for(var i= allTemplates.length -1; i >=0 ; i--){
+                            if(allTemplates[i].uuid == anccardtoommit ){
+                               allTemplates.splice(i, 1)
+                            }
+                          }
+                        }
                         createConceptSections(allTemplates);
                         if ($state.params.programUuid) {
                             showOnlyTemplatesFilledInProgram();
