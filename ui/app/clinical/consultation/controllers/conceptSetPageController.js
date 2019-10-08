@@ -26,6 +26,32 @@ angular.module('bahmni.clinical')
                         v: "custom:" + customRepresentation
                     }).then(function (response) {
                         var allTemplates = response.data.results[0].setMembers;
+                        if($scope.patient.age > 2){                                                
+                            for(var i = allTemplates.length -1; i >= 0 ; i--){
+                                var heiformuuid = "54a93292-ffe6-43bd-898d-b8946bff488e";
+                                var clinicainfantuuid = "7c199842-c27a-4bc4-be25-57f61a5c878c";
+                                var heitestinguuid = "c074b65c-c336-11e9-9cb5-2a2ae2dbcce4";
+                                var heiendoffollowup = "c2670412-c32a-11e9-9cb5-2a2ae2dbcce4";
+                                if(allTemplates[i].uuid == heiformuuid || allTemplates[i].uuid == clinicainfantuuid || allTemplates[i].uuid == heitestinguuid || allTemplates[i].uuid == heiendoffollowup ){
+                                    allTemplates.splice(i, 1);
+                                } 
+                            }
+                        }
+                        if($scope.patient.age < 2){
+                            var personalhist = "55c92dcd-5af3-4f20-b828-a309b16b28c3";
+                            var familyhistdata = "c2a6c127-e3ba-426f-a4ae-83713dde0736";
+                            var arthistoryclinical = "54857487-063a-4f92-a388-e3267b97d22a";
+                            var arttreatmentform = "f97d06ef-6b9d-484b-b338-1be4b4ffa0bb";
+                            var artandhivfollowup= "beffd410-b9a4-4cfd-9a29-22512980de1b";
+                            var endoffollowupform = "8ef5716c-0df6-48d3-92fb-f9476424a8e0";
+                            var anccard = "71611db1-cd65-4ae1-9d59-537b82fe7289";
+                            var viralload = "bf4d44d6-fe08-4abd-9c25-8c2a548cc873";
+                            for(var i = allTemplates.length -1; i >= 0 ; i--){                         
+                                if(allTemplates[i].uuid == personalhist ||  allTemplates[i].uuid == familyhistdata || allTemplates[i].uuid == arthistoryclinical ||allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform ||  allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload ){
+                                    allTemplates.splice(i, 1);
+                                } 
+                            }                        
+                        }  
                         createConceptSections(allTemplates);
                         if ($state.params.programUuid) {
                             showOnlyTemplatesFilledInProgram();
