@@ -267,7 +267,6 @@ angular.module('bahmni.registration')
                     setReadOnlyFields();
                     toggleHeiAddressFields();
                 }
-
             });
 
             var disableFieldsForInfant = function () {

@@ -1,7 +1,7 @@
 <section class="reg-search-wrapper">
     <section class="reg-search">
-        <article class="search-seperator-l" ng-if="::patientIdentifierSearchConfig.show">
-            <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui clearfix" >
+        <article class="search-seperator-l fl" ng-if="::patientIdentifierSearchConfig.show">
+            <form name="searchByIdForm" ng-submit="searchById()" class="clearfix" >
                     <label for="registrationNumber"><strong>{{ ::'REGISTRATION_LABEL_PATIENT_ID' | translate}}</strong></label>
                     <div class="search-patient-id fl">
                         <input tabindex="2" class="fl" type="text" id="registrationNumber"
@@ -13,31 +13,27 @@
                     </div>
             </form>
         </article>
-        <article class="search-seperator-r">
-            <form name="searchByNameForm" ng-submit="searchPatients()" class="simple-form-ui" >
-                <article class="fl">
+        <article class="search-seperator-l clearfix">
+            <form name="searchByNameForm" ng-submit="searchPatients()" class="clearfix">
+                <article class="">
                     <label for="name"><strong>{{ ::'REGISTRATION_LABEL_NAME' | translate}}</strong></label>
-                    <input tabindex="4" type="text" id="name" ng-model="searchParameters.name" placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME' | translate}}">
-                </article>
-                <!-- <article class="fl" ng-if="::customAttributesSearchConfig.show">
-                    <label for="name"><strong>{{::customAttributesSearchConfig.label}}</strong></label>
-                    <input tabindex="5" type="text" id="customAttribute" ng-model="searchParameters.customAttribute" placeholder="{{::customAttributesSearchConfig.placeholder}}">
-                </article>
-                <article class="fl" ng-if="::addressSearchConfig.show">
-                    <label for="name"><strong>{{::addressSearchConfig.label}}</strong></label>
-                    <input tabindex="6" type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="{{::addressSearchConfig.placeholder}}">
-                </article>
-
-                <article class="fl" ng-show="::programAttributesSearchConfig.show">
-                    <label for="name"><strong>{{ ::programAttributesSearchConfig.label | translate}}</strong></label>
-                    <input tabindex="7" type="text" id="programAttribute" ng-model="searchParameters.programAttributeFieldValue" placeholder="{{ ::programAttributesSearchConfig.placeholder}}">
-                </article> -->
-
-                <article class="fl">
-                    <div class="reg-srch-btn">
-                        <button tabindex="8" type="submit" ng-disabled="disableSearchButton()">{{ ::'REGISTRATION_LABEL_SEARCH' | translate}}</button>
+                    <div class="reg-srch-btn fl">
+                        <input tabindex="4" type="text" id="name" ng-model="searchParameters.name" placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME' | translate}}">
+                        <button tabindex="5" type="submit" ng-disabled="disableSearchButton()">{{ ::'REGISTRATION_LABEL_SEARCH' | translate}}</button>
                     </div>
                 </article>
+            </form>
+        </article>
+        <article class="fl">
+            <form name="searchByVisitDateForm" ng-submit="searchPatientsByVisitDate()" class="clearfix" autocomplete="off">
+                <div class="">
+                    <label for="visitDate"><strong>{{ ::'REGISTRATION_LABEL_VISIT_DATE' | translate}}</strong></label>
+                    <div class="reg-srch-btn fl">
+                        <input tabindex="6" type="text" id="visitDate" ng-model="searchParameters.visitDate" 
+                            datepicker max-date="{{::today}}" placeholder="{{ ::'REGISTRATION_LABEL_ENTER_VISIT_DATE' | translate}}">
+                        <button tabindex="7" type="submit" ng-disabled="!searchParameters.visitDate">{{ ::'REGISTRATION_LABEL_SEARCH' | translate}}</button>
+                    </div>
+                </div>
             </form>
         </article>
     </section>
@@ -63,6 +59,7 @@
                 <th ng-repeat = "field in ::addressSearchResultsConfig.fields"><strong>{{::convertToTableHeader(getAddressColumnName(field))}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
                 <th ng-if="::programAttributesSearchConfig.show"><strong>{{::convertToTableHeader(programAttributesSearchConfig.label)}}</strong></th>
+                <th><strong>{{ ::'REGISTRATION_LABEL_VISIT_DATE' | translate}}</strong></th>
             </tr>
             </thead>
             <tbody>
@@ -80,6 +77,7 @@
                 <td ng-repeat = "field in ::addressSearchResultsConfig.fields">{{::result.addressFieldValue[field] || ""}}</td>
                 <td>{{::result.dateCreated | bahmniDate}}</td>
                 <td ng-if="::programAttributesSearchConfig.show">{{getProgramAttributeValues(result) | bahmniDateInStrictMode}}</td>
+                <td>{{::result.visitDate | bahmniDate}}</td>
             </tr>
             </tbody>
         </table>
