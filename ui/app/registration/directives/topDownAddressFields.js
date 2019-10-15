@@ -136,7 +136,7 @@ angular.module('bahmni.registration')
         $scope.getAddressDataResults = addressHierarchyService.getAddressDataResults;
 
         $scope.clearFields = function (fieldName) {
-            var childFields = addressLevelsNamesInDescendingOrder.slice(0, addressLevelsNamesInDescendingOrder.indexOf(fieldName));
+            var childFields = $scope.addressLevels.slice(0, addressLevelsNamesInDescendingOrder.indexOf(fieldName));
             childFields.forEach(function (childField) {
                 if ($scope.selectedValue[childField] !== null) {
                     $scope.address[childField] = null;
