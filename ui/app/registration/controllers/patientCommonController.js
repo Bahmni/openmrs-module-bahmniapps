@@ -79,7 +79,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.isReadOnly = function (fieldName) {
-                var readOnlyPatientAttributes = ["HealthFacilityName", "TodaysDate", "RegistrantName", "UniqueArtNo", "TypeofPatient"];
+                var readOnlyPatientAttributes = ["HealthFacilityName", "TodaysDate", "RegistrantName", "UniqueArtNo", "TypeofPatient", "HIVExposedInfant(HEI)No"];
 
                 if (!$scope.patientLoaded) {
                     readOnlyPatientAttributes = [];
@@ -272,8 +272,8 @@ angular.module('bahmni.registration')
                     } else if ($scope.patient['TypeofPatient'] && $scope.patient['TypeofPatient'].value === "Walk-In") {
                         $scope.walkInPatientType = true;
                     }
-                    setReadOnlyFields();
                     toggleHeiAddressFields();
+                    setReadOnlyFields();
                 }
             });
 
@@ -294,6 +294,7 @@ angular.module('bahmni.registration')
                         if (attrElement) {
                             attrElement.attr('disabled', $scope.infantPatient);
                         }
+                        break;
                     }
                 }
             };

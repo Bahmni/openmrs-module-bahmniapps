@@ -251,7 +251,7 @@ angular.module('bahmni.registration')
                 delete relationship.providerName;
                 delete relationship.endDate;
                 delete relationship.content;
-                // managePlaceholderRelationshipRows(index); // making single relationship
+                managePlaceholderRelationshipRows(index);
             };
 
             var managePlaceholderRelationshipRows = function (index) {
@@ -264,7 +264,7 @@ angular.module('bahmni.registration')
 
                 var emptyRows = _.filter($scope.patient.newlyAddedRelationships, $scope.isEmpty);
                 if (emptyRows.length === 0) {
-                    $scope.addPlaceholderRelationship();
+                    // $scope.addPlaceholderRelationship();   // making single relationship
                 }
             };
 
@@ -280,6 +280,11 @@ angular.module('bahmni.registration')
             var init = function () {
                 $scope.relationshipTypes = $rootScope.relationshipTypes;
                 $scope.patient.relationships = $scope.patient.relationships || [];
+                if ($scope.patient.relationships.length == 0) {
+                    $scope.addPlaceholderRelationship();
+                } else {
+                    $scope.patient.newlyAddedRelationships = [];
+                }
             };
 
             init();

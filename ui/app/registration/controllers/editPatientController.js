@@ -31,6 +31,11 @@ angular.module('bahmni.registration')
                 $scope.patient = openmrsPatientMapper.map(openmrsPatient);
                 // setReadOnlyFields();
                 expandDataFilledSections();
+                if ($scope.patient.relationships.length == 0) {
+                    $scope.patient.newlyAddedRelationships = [{}];
+                } else {
+                    $scope.patient.newlyAddedRelationships = [];
+                }
                 $scope.patientLoaded = true;
             };
 
