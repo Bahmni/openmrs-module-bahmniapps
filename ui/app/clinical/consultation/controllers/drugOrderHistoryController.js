@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'activeDrugOrders',
         'treatmentConfig', 'treatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope',
         function ($scope, $filter, $stateParams, activeDrugOrders, treatmentConfig, treatmentService, spinner,
-                   drugOrderHistoryHelper, visitHistory, $translate, $rootScope) {
+            drugOrderHistoryHelper, visitHistory, $translate, $rootScope) {
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var currentVisit = visitHistory.activeVisit;
@@ -88,18 +88,7 @@ angular.module('bahmni.clinical')
                 spinner.forPromise(treatmentService.getPrescribedDrugOrders(
                     $stateParams.patientUuid, true, numberOfVisits, $stateParams.dateEnrolled, $stateParams.dateCompleted).then(function (data) {
                         $scope.prescribedDrugOrders = data;
-                        treatmentService.prescribedDrugOrders=data;
-                        // console.log("The entire drugs :",prescribedDrugOrders); 
-                        // console.log("These are the prescribed drugs", prescribedDrugOrders[0].concept.uuid);
-                        //  var drug1 = "4c87e6d5-7042-435e-9ef7-a8d14c15bfe1";
-                        //  var drug2 = "9062c6d9-a650-44d2-8929-da84f617c427";
-                        // for (var i = prescribedDrugOrders.length - 1; i >= 0; i--) {
-                        //    if (prescribedDrugOrders[0].concept.uuid == drug1 || prescribedDrugOrders[0].concept.uuid == drug2 ) {
-                        //     console.log("these are the uuids", prescribedDrugOrders[i].concept.uuid)     
-                        //     console.log("its  a match");
-                        //      }
-                        //  }
-                        console.log("new scope",treatmentService.prescribedDrugOrders )
+                        treatmentService.prescribedDrugOrders = data;
                         createPrescriptionGroups($scope.consultation.activeAndScheduledDrugOrders);
                     }));
             };
@@ -239,7 +228,7 @@ angular.module('bahmni.clinical')
             };
 
             var getAttribute = function (drugOrder, attributeName) {
-                return _.find(drugOrder.orderAttributes, {name: attributeName});
+                return _.find(drugOrder.orderAttributes, { name: attributeName });
             };
 
             init();
