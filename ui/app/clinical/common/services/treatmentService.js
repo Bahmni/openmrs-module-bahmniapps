@@ -2,6 +2,7 @@
 
 angular.module('bahmni.clinical')
     .factory('treatmentService', ['$http', '$q', 'appService', function ($http, $q, appService) {
+        var prescribedDrugOrders = [];
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };

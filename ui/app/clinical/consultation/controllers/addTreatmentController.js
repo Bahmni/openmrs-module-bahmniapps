@@ -3,19 +3,17 @@
 angular.module('bahmni.clinical')
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'drugService',
         '$timeout', 'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
-        'orderSetService', '$q', 'locationService', 'spinner', '$translate',
+        'orderSetService', '$q', 'locationService', 'spinner', '$translate', 'treatmentService',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
-                  clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
-                  orderSetService, $q, locationService, spinner, $translate) {
+            clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
+            orderSetService, $q, locationService, spinner, $translate, treatmentService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var scrollTop = _.partial($window.scrollTo, 0, 0);
-
             $scope.showOrderSetDetails = true;
             $scope.addTreatment = true;
             $scope.canOrderSetBeAdded = true;
             $scope.isSearchDisabled = false;
-
             $scope.getFilteredOrderSets = function (searchTerm) {
                 if (searchTerm && searchTerm.length >= 3) {
                     orderSetService.getOrderSetsByQuery(searchTerm).then(function (response) {
@@ -179,7 +177,7 @@ angular.module('bahmni.clinical')
                 setSortWeightForOrderSetDrugs(refilledOrderGroupOrders);
 
                 // Fetch the orderSet for the drugOrder
-                var matchedOrderSet = _.find(orderSets, {uuid: drugOrder.orderSetUuid});
+                var matchedOrderSet = _.find(orderSets, { uuid: drugOrder.orderSetUuid });
 
                 // Find the drugs in ordered DrugOrderSet which matches with the matchedOrderSet SetMembers
                 var orderSetMembersOfMatchedOrderSet = matchedOrderSet.orderSetMembers;
@@ -201,11 +199,11 @@ angular.module('bahmni.clinical')
                         var baseDose = eachMember.orderTemplate.dosingInstructions.dose;
                         var drugName = eachMember.orderTemplate.concept.name;
                         return orderSetService.getCalculatedDose($scope.patient.uuid, drugName, baseDose, doseUnits, $scope.newOrderSet.name)
-                                     .then(function (calculatedDosage) {
-                                         refilledOrderGroupOrders[index].uniformDosingType.dose = calculatedDosage.dose;
-                                         refilledOrderGroupOrders[index].uniformDosingType.doseUnits = calculatedDosage.doseUnit;
-                                         refilledOrderGroupOrders[index].calculateQuantityAndUnit();
-                                     });
+                            .then(function (calculatedDosage) {
+                                refilledOrderGroupOrders[index].uniformDosingType.dose = calculatedDosage.dose;
+                                refilledOrderGroupOrders[index].uniformDosingType.doseUnits = calculatedDosage.doseUnit;
+                                refilledOrderGroupOrders[index].calculateQuantityAndUnit();
+                            });
                     }
                 });
 
@@ -348,10 +346,10 @@ angular.module('bahmni.clinical')
             var getConflictingDrugOrder = function (newDrugOrder) {
                 var allDrugOrders = $scope.treatments.concat($scope.orderSetTreatments);
                 allDrugOrders = _.reject(allDrugOrders, newDrugOrder);
-                var unsavedNotBeingEditedOrders = _.filter(allDrugOrders, {isBeingEdited: false});
+                var unsavedNotBeingEditedOrders = _.filter(allDrugOrders, { isBeingEdited: false });
                 var existingDrugOrders;
                 if (newDrugOrder.isBeingEdited) {
-                    existingDrugOrders = _.reject($scope.consultation.activeAndScheduledDrugOrders, {uuid: newDrugOrder.previousOrderUuid});
+                    existingDrugOrders = _.reject($scope.consultation.activeAndScheduledDrugOrders, { uuid: newDrugOrder.previousOrderUuid });
                 } else {
                     existingDrugOrders = $scope.consultation.activeAndScheduledDrugOrders;
                 }
@@ -466,36 +464,100 @@ angular.module('bahmni.clinical')
             var contextChange = function () {
                 var errorMessages = Bahmni.Clinical.Constants.errorMessages;
                 if (isSameDrugBeingDiscontinuedAndOrdered()) {
-                    return {allow: false, errorMessage: $translate.instant(errorMessages.discontinuingAndOrderingSameDrug)};
+                    return { allow: false, errorMessage: $translate.instant(errorMessages.discontinuingAndOrderingSameDrug) };
                 }
                 if ($scope.incompleteDrugOrders()) {
                     $scope.formInvalid = true;
-                    return {allow: false};
+                    return { allow: false };
                 }
                 if ($scope.unaddedDrugOrders()) {
-                    return {allow: false, errorMessage: $translate.instant(errorMessages.incompleteForm)};
+                    return { allow: false, errorMessage: $translate.instant(errorMessages.incompleteForm) };
                 }
-                return {allow: true};
+                return { allow: true };
             };
 
             var setIsNotBeingEdited = function (treatment) {
                 treatment.isBeingEdited = false;
             };
-
+            $scope.stoppedOrderReasons = treatmentConfig.stoppedOrderReasonConcepts;
             $scope.getDataResults = function (drugs) {
                 var searchString = $scope.treatment.drugNameDisplay;
                 var listOfDrugSynonyms = _.map(drugs, function (drug) {
+                    var drugavailable = Bahmni.Clinical.DrugSearchResult.getAllMatchingSynonyms(drug, searchString);
                     return Bahmni.Clinical.DrugSearchResult.getAllMatchingSynonyms(drug, searchString);
                 });
                 return _.flatten(listOfDrugSynonyms);
             };
-
             (function () {
                 var selectedItem;
+                var presentdrugs = [];
                 $scope.onSelect = function (item) {
+                    var a1 = "9062c6d9-a650-44d2-8929-da84f617c427";
+                    var b1 = "c22e6700-a937-4909-b4ad-e82ff51325ac";
+                    var c1 = "a00d9620-e88b-4c2f-9293-b1ac9e5943f2";
+                    var d1 = "5d500ca2-350a-49ee-a3d4-f340db32ff31";
+                    var e1 = "3fd242a8-7ade-463c-8919-d82573ea8526";
+                    var f1 = "91f5d0d6-eb81-484f-9376-4bfb926a5a81";
+                    var g1 = "0dd3e78f-e1fc-47de-95bc-1f489d0dfcc5";
+                    var h1 = "4a86fbee-07a9-422a-bf69-16256c0c2b8b";
+                    var j1 = "03224cae-f115-4814-bd53-c99c72288446";
+
+                    var a2 = "bd97cacd-4a91-4901-8803-3a4a2e5f1ca8";
+                    var b2 = "ad6ff4ef-769e-4aec-b8bb-7f033fe6aaaa";
+                    var c2 = "47167ec1-4957-4d0a-a58c-3894bdeb93ff";
+                    var d2 = "e649a0ec-e193-4af0-bb49-02687107a893";
+                    var e2 = "accca537-b8ee-41ec-b902-7de814d099b2";
+                    var f2 = "77f201fc-aefc-4068-baa7-cb3284782a38";
+                    var g2 = "cb0f9fcd-fb52-493f-95aa-d0197387fbdb";
+                    var h2 = "28790bde-81db-4490-806b-ac10c17b41dc";
+                    var i2 = "aae69cae-2806-4e8b-a916-f22ed733a19b";
+                    var j2 = "64336206-c9bc-4d37-accf-c7abac7a37f6";
+                    var k2 = "25f0cca5-902d-4e36-9e4f-5ce5da744a75";
+
+                    var a4 = "c224b116-27ec-4156-93ba-d4838a3ac1c0";
+                    var b4 = "5efe8d99-c65e-4136-8820-5f3646437ff7";
+                    var c4 = "f8f64be8-ccb4-404d-b99e-3c4975155da5";
+                    var d4 = "28c5d192-ba71-4ef5-8604-ecf6bd177126";
+                    var f4 = "0372f3fb-5e8a-474f-8250-01af7a485778";
+                    var g4 = "ce2412c4-a041-4328-bfaa-35e041ca4802";
+                    var h4 = "6ed47806-8809-4c5a-a1b6-fe2ec0158563";
+                    var i4 = "f6b1c6ea-b0a2-46a0-b7e0-3038d268356c";
+                    var j4 = "2e1ab9d3-7fe1-48ba-a12c-fd8d26bc161d";
+                    var k4 = "99f54f96-e761-4d86-bb1b-0abc2a24fa16";
+                    var l4 = "5287f2a4-23e5-4314-b60c-0a4b91753ec6";
+
+                    var a5 = "b23cf614-dfec-48c9-a12f-ba577e28347d";
+                    var b5 = "dabc93c3-8c3d-41e1-b3e3-d7e14c4765b6";
+                    var c5 = "da3c6710-c431-4582-a444-a466d54693ec";
+                    var d5 = "6c383d11-2b29-4cc2-bfa4-811ff7a988f1";
+                    var e5 = "82725d14-00c6-4864-bf8b-ad5db0b3c3fa";
+                    var f5 = "140ede93-5691-463b-9d17-2dc8834621f8";
+                    var g5 = "06017ac1-2ce8-4689-a3bf-4e9f3d54978f";
+                    var h5 = "2c0a5b91-7b2a-4f8e-86fd-a8007841fca8";
+                    var i5 = "50b60d77-186d-4a0d-8784-659ee2d60ec9";
+
+                    for (var i = treatmentService.prescribedDrugOrders.length - 1; i >= 0; i--) {
+                        if (treatmentService.prescribedDrugOrders[i].concept.uuid == a1 || treatmentService.prescribedDrugOrders[i].concept.uuid == b1 || treatmentService.prescribedDrugOrders[i].concept.uuid == c1 || treatmentService.prescribedDrugOrders[i].concept.uuid == d1 || treatmentService.prescribedDrugOrders[i].concept.uuid == e1 || treatmentService.prescribedDrugOrders[i].concept.uuid == f1 || treatmentService.prescribedDrugOrders[i].concept.uuid == g1 || treatmentService.prescribedDrugOrders[i].concept.uuid == h1 || treatmentService.prescribedDrugOrders[i].concept.uuid == a4 || treatmentService.prescribedDrugOrders[i].concept.uuid == b4 || treatmentService.prescribedDrugOrders[i].concept.uuid == c4 || treatmentService.prescribedDrugOrders[i].concept.uuid == d4 || treatmentService.prescribedDrugOrders[i].concept.uuid == f4 || treatmentService.prescribedDrugOrders[i].concept.uuid == g4 || treatmentService.prescribedDrugOrders[i].concept.uuid == h4 || treatmentService.prescribedDrugOrders[i].concept.uuid == i4 || treatmentService.prescribedDrugOrders[i].concept.uuid == j4 || treatmentService.prescribedDrugOrders[i].concept.uuid == k4 || treatmentService.prescribedDrugOrders[i].concept.uuid == l4) {
+                            presentdrugs.push(treatmentService.prescribedDrugOrders[i].concept.uuid);
+                        }
+                    }
+
                     selectedItem = item;
+                    if (selectedItem.drug.uuid == a2 || selectedItem.drug.uuid == b2 || selectedItem.drug.uuid == c2 || selectedItem.drug.uuid == d2 || selectedItem.drug.uuid == e2 || selectedItem.drug.uuid == f2 || selectedItem.drug.uuid == g2 || selectedItem.drug.uuid == h2 || selectedItem.drug.uuid == i2 || selectedItem.drug.uuid == j2 || selectedItem.drug.uuid == k2
+                        || selectedItem.drug.uuid == a5 || selectedItem.drug.uuid == b5 || selectedItem.drug.uuid == c5 || selectedItem.drug.uuid == d5 || selectedItem.drug.uuid == e5 || selectedItem.drug.uuid == f5 || selectedItem.drug.uuid == g5 || selectedItem.drug.uuid == h5 || selectedItem.drug.uuid == i5) {
+                        if (presentdrugs === undefined || presentdrugs.length == 0) {
+                            ngDialog.open({
+                                template: 'consultation/views/treatmentSections/conflictingOrderSet.html'
+                            });
+                            $scope.popupActive = true;
+                            clearForm();
+                        } else {
+                            console.log(".");
+                        }
+                    }
                     $scope.onChange();
                 };
+
                 $scope.onAccept = function () {
                     $scope.treatment.acceptedItem = $scope.treatment.drugNameDisplay;
                     $scope.onChange();
@@ -585,7 +647,7 @@ angular.module('bahmni.clinical')
                 $scope.consultation.newlyAddedTreatments = allTreatmentsAcrossTabs.concat(includedOrderSetTreatments);
                 if ($scope.consultation.discontinuedDrugs) {
                     $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
-                        var removableOrder = _.find(activeDrugOrders, {uuid: discontinuedDrug.uuid});
+                        var removableOrder = _.find(activeDrugOrders, { uuid: discontinuedDrug.uuid });
                         if (discontinuedDrug) {
                             removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
                             removableOrder.dateActivated = null;
@@ -699,7 +761,7 @@ angular.module('bahmni.clinical')
                 });
                 ngDialog.open({
                     template: 'consultation/views/treatmentSections/conflictingOrderSet.html',
-                    data: {'conflictingDrugOrders': conflictingDrugOrders}
+                    data: { 'conflictingDrugOrders': conflictingDrugOrders }
                 });
                 $scope.popupActive = true;
             };
@@ -730,7 +792,7 @@ angular.module('bahmni.clinical')
                     drugOrder.include = false;
                     ngDialog.open({
                         template: 'consultation/views/treatmentSections/conflictingOrderSet.html',
-                        data: {'conflictingDrugOrders': [conflictingDrugOrder]}
+                        data: { 'conflictingDrugOrders': [conflictingDrugOrder] }
                     });
                     $scope.popupActive = true;
                 }
@@ -740,7 +802,7 @@ angular.module('bahmni.clinical')
 
             var mergeActiveAndScheduledWithDiscontinuedOrders = function () {
                 _.each($scope.consultation.discontinuedDrugs, function (discontinuedDrug) {
-                    _.remove($scope.consultation.activeAndScheduledDrugOrders, {'uuid': discontinuedDrug.uuid});
+                    _.remove($scope.consultation.activeAndScheduledDrugOrders, { 'uuid': discontinuedDrug.uuid });
                     $scope.consultation.activeAndScheduledDrugOrders.push(discontinuedDrug);
                 });
             };

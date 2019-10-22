@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'activeDrugOrders',
         'treatmentConfig', 'treatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope',
         function ($scope, $filter, $stateParams, activeDrugOrders, treatmentConfig, treatmentService, spinner,
-                   drugOrderHistoryHelper, visitHistory, $translate, $rootScope) {
+            drugOrderHistoryHelper, visitHistory, $translate, $rootScope) {
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var currentVisit = visitHistory.activeVisit;
@@ -87,7 +87,8 @@ angular.module('bahmni.clinical')
                 var numberOfVisits = treatmentConfig.drugOrderHistoryConfig.numberOfVisits ? treatmentConfig.drugOrderHistoryConfig.numberOfVisits : 3;
                 spinner.forPromise(treatmentService.getPrescribedDrugOrders(
                     $stateParams.patientUuid, true, numberOfVisits, $stateParams.dateEnrolled, $stateParams.dateCompleted).then(function (data) {
-                        prescribedDrugOrders = data;
+                        $scope.prescribedDrugOrders = data;
+                        treatmentService.prescribedDrugOrders = data;
                         createPrescriptionGroups($scope.consultation.activeAndScheduledDrugOrders);
                     }));
             };
@@ -227,7 +228,7 @@ angular.module('bahmni.clinical')
             };
 
             var getAttribute = function (drugOrder, attributeName) {
-                return _.find(drugOrder.orderAttributes, {name: attributeName});
+                return _.find(drugOrder.orderAttributes, { name: attributeName });
             };
 
             init();
