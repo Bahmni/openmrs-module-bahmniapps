@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .service('formRecordTreeBuildService', ['formService', function (formService) {
+    .service('formRecordTreeBuildService', ['formService','$http','$window', function (formService, $http, $window) {
         var self = this;
 
         self.build = function (bahmniObservations, hasNoHierarchy) {
@@ -103,7 +103,14 @@ angular.module('bahmni.common.displaycontrol.observation')
                             if (formDetailsAsString) {
                                 var formDef = JSON.parse(formDetailsAsString);
                                 formDef.version = observationForm.version;
-                                forms.push(self.updateObservationsWithRecordTree(formDef, form));
+                                formDef.version = observationForm.version;
+                                var locale = $window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
+                                return formService.getFormTranslate(formDef.name, formDef.version, locale)
+                                    .then(function (response) {
+                                        var translationData = response.data;
+                                        forms.push(self.updateObservationsWithRecordTree(formDef, form, translationData));
+                                        observation.value = forms;
+                                    });
                             }
                             observation.value = forms;
                         });
@@ -132,10 +139,10 @@ angular.module('bahmni.common.displaycontrol.observation')
             return member ? member.formFieldPath.split('.')[1].split('/')[0] : undefined;
         };
 
-        self.updateObservationsWithRecordTree = function (formDef, form) {
+        self.updateObservationsWithRecordTree = function (formDef, form, translationData) {
             var recordTree = getRecordTree(formDef, form.groupMembers);
             recordTree = JSON.parse(JSON.stringify(recordTree));
-            self.createGroupMembers(recordTree, form, form.groupMembers);
+            self.createGroupMembers(recordTree, form, form.groupMembers, translationData);
             return form;
         };
 
@@ -168,7 +175,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             return columnChildren;
         };
 
-        self.createGroupMembers = function (recordTree, obsGroup, obsList) {
+        self.createGroupMembers = function (recordTree, obsGroup, obsList, translationData) {
             _.forEach(recordTree.children, function (record) {
                 if (record.control.type === 'obsControl' || record.control.type === 'obsGroupControl') {
                     var recordObservations = self.getRecordObservations(record.formFieldPath, obsList);
@@ -177,8 +184,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                     });
                 }
                 else if (record.control.type === 'section') {
-                    var sectionGroup = self.createObsGroup(record);
-                    self.createGroupMembers(record, sectionGroup, obsList);
+                    var sectionGroup = self.createObsGroup(record, translationData);
+                    self.createGroupMembers(record, sectionGroup, obsList, translationData);
                     if (sectionGroup.groupMembers.length > 0) {
                         obsGroup.groupMembers.push(sectionGroup);
                     }
@@ -206,7 +213,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             });
         };
 
-        self.createObsGroup = function (record) {
+        self.createObsGroup = function (record, translationData) {
             var obsGroup = {
                 "groupMembers": [],
                 "concept": {
@@ -214,7 +221,13 @@ angular.module('bahmni.common.displaycontrol.observation')
                     "conceptClass": null
                 }
             };
-            obsGroup.concept.shortName = record.control.label.value;
+            var translationKey = record.control.label.translationKey;
+            if (translationData && translationData.labels && translationData.labels[translationKey][0] !== translationKey) {
+                obsGroup.concept.shortName = translationData.labels[translationKey][0];
+            }
+            else {
+                obsGroup.concept.shortName = record.control.label.value;
+            }
             return obsGroup;
         };
     }]);
