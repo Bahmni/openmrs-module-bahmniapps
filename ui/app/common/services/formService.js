@@ -36,7 +36,7 @@ angular.module('bahmni.common.conceptSet')
         };
 
         var getFormTranslate = function (formName, formVersion, locale) {
-            return $http.get(Bahmni.Common.Constants.formBuilderTranslationApi, { params: {formName : formName,formVersion: formVersion, locale:locale}});
+            return $http.get(Bahmni.Common.Constants.formBuilderTranslationApi, { params: {formName: formName, formVersion: formVersion, locale: locale}});
         };
 
         return {

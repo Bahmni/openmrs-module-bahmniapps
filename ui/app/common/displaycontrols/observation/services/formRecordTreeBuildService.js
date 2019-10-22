@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .service('formRecordTreeBuildService', ['formService','$http','$window', function (formService, $http, $window) {
+    .service('formRecordTreeBuildService', ['formService', '$http', '$window', function (formService, $http, $window) {
         var self = this;
 
         self.build = function (bahmniObservations, hasNoHierarchy) {

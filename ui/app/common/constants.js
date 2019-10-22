@@ -258,7 +258,7 @@ Bahmni.Common = Bahmni.Common || {};
         defaultPossibleRelativeSearchLimit: 10,
         formBuilderDisplayControlType: "formsV2",
         formBuilderType: "v2",
-        formBuilderTranslationApi : IE_APPS_API + '/form/translate'
+        formBuilderTranslationApi: IE_APPS_API + '/form/translate'
     };
 })();
 
