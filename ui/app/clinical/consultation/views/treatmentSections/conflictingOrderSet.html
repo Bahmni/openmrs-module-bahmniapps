@@ -3,7 +3,7 @@
 
 	<span class="ngdialog-close"></span>
 	<div class="drug-details">
-		<p>The following drug orders are conflicting with order set you are trying to add.</p>
+		<p>You Cannot Dispense A Second Regimen Drug To A Patient Without An Existing First Regimen Drug.</p>
 
 		<div ng-repeat="drugOrder in ngDialogData.conflictingDrugOrders">
 		<strong class="drug-name">{{::$index+1}}. {{::drugOrder.getDisplayName()}}</strong> from <strong>{{::drugOrder.effectiveStartDate | bahmniDate}}</strong> to <strong>{{::drugOrder.effectiveStopDate | bahmniDate}}</strong>
