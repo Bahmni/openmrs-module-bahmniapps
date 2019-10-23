@@ -281,6 +281,7 @@ angular.module('bahmni.registration')
                 $scope.relationshipTypes = $rootScope.relationshipTypes;
                 $scope.patient.relationships = $scope.patient.relationships || [];
                 if ($scope.patient.relationships.length == 0) {
+                    $scope.patient.newlyAddedRelationships = [];
                     $scope.addPlaceholderRelationship();
                 } else {
                     $scope.patient.newlyAddedRelationships = [];
