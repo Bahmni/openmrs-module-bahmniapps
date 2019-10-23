@@ -227,7 +227,7 @@ angular.module('bahmni.registration')
                                 ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("HIVExposedInfant(HEI)No")].name : undefined;
                             $scope.patient[personAttributeHei] = heiIdentifier;
                         }
-                    })).then(patientService.generateIdentifier(idgenPatientPrefix)
+                    })).then(spinner.forPromise(patientService.generateIdentifier(idgenPatientPrefix)
                         .then(function (response) {
                             var uniqueIdentifier = "";
                             if (response && response.data && response.data.length > 0) {
@@ -272,7 +272,7 @@ angular.module('bahmni.registration')
                                     errorMessage = response.message;
                                 }
                             });
-                        }));
+                        })));
                 } else {
                     var personAttributeHasUniqueArtNo = personAttributes.indexOf("UniqueArtNo") !== -1;
                     var personAttributeUniqueArtNo = personAttributeHasUniqueArtNo
