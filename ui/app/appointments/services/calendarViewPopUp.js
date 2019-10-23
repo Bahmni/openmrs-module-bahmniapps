@@ -51,10 +51,20 @@ angular.module('bahmni.appointments')
                     var message = $translate.instant('APPOINTMENT_STATUS_CHANGE_SUCCESS_MESSAGE', {
                         toStatus: toStatus
                     });
-                    return appointmentsService.changeStatus(appointment.uuid, toStatus, onDate).then(function () {
+                    return appointmentsService.changeStatus(appointment.uuid, toStatus, onDate).then(function (response) {
+                        ngDialog.close();
                         appointment.status = toStatus;
-                        closeConfirmBox();
-                        messagingService.showMessage('info', message);
+                        if (toStatus === "CheckedIn") {
+                            toStatus = 'Completed';
+                            return appointmentsService.changeStatus(appointment.uuid, toStatus, onDate).then(function (response) {
+                                appointment.status = toStatus;
+                                closeConfirmBox();
+                                messagingService.showMessage('info', "Successfully marked appointment as Checked in and Completed");
+                            });
+                        } else {
+                            closeConfirmBox();
+                            messagingService.showMessage('info', message);
+                        }
                     });
                 };
 

@@ -186,8 +186,17 @@ angular.module('bahmni.appointments')
                 return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus, onDate).then(function (response) {
                     ngDialog.close();
                     $scope.selectedAppointment.status = response.data.status;
-                    closeConfirmBox();
-                    messagingService.showMessage('info', message);
+                    if (toStatus === "CheckedIn") {
+                        toStatus = 'Completed';
+                        return appointmentsService.changeStatus($scope.selectedAppointment.uuid, toStatus, onDate).then(function (response) {
+                            $scope.selectedAppointment.status = response.data.status;
+                            closeConfirmBox();
+                            messagingService.showMessage('info', "Successfully marked appointment as Checked in and Completed");
+                        });
+                    } else {
+                        closeConfirmBox();
+                        messagingService.showMessage('info', message);
+                    }
                 });
             };
 

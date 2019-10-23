@@ -53,14 +53,14 @@
                 ng-show="isAllowedAction('CheckedIn')"
                 ng-disabled="!isValidAction('CheckedIn')"
                 ng-click="checkinAppointment()">
-                {{::'CHECK_IN_APPOINTMENT' | translate}}
+                {{::'CHECK_IN__COMPLETE_APPOINTMENT' | translate}}
         </button>
-        <button show-if-privilege="{{manageAppointmentPrivilege}}"
-                ng-show="isAllowedAction('Completed')"
-                ng-disabled="!isValidAction('Completed')"
-                ng-click="confirmAction('Completed')">
-                {{::'COMPLETE_APPOINTMENT' |translate}}
-        </button>
+        <!--<button show-if-privilege="{{manageAppointmentPrivilege}}"-->
+                <!--ng-show="isAllowedAction('Completed')"-->
+                <!--ng-disabled="!isValidAction('Completed')"-->
+                <!--ng-click="confirmAction('Completed')">-->
+                <!--{{::'COMPLETE_APPOINTMENT' |translate}}-->
+        <!--</button>-->
         <button show-if-privilege="{{manageAppointmentPrivilege}}"
                 ng-show="isAllowedAction('Missed')"
                 ng-disabled="!isValidAction('Missed')"
