@@ -2046,6 +2046,12 @@ describe("FormRecordTreeBuildService", function () {
             }
         };
 
+        formTranslationsDetails = {
+            "data": {
+                "labels":{"SECTION_1":["SectionOne"],"SECTION_2":["SectionAddMore"],"TABLE_1":["Table"],"COLUMN_1":["Column1"],"COLUMN_2":["Column2"]},
+            }
+        };
+
         var recordTree = {
             "children": [
                 {
@@ -2103,7 +2109,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "Table"
+                            "value": "Table",
+                            "translationKey": "TABLE_1"
                         },
                         "type": "table",
                         "columnHeaders" :[
@@ -2113,7 +2120,8 @@ describe("FormRecordTreeBuildService", function () {
                                     "value": "Column1"
                                 },
                                 "value": "Column1",
-                                "type": "label"
+                                "type": "label",
+                                "translationKey": "COLUMN_1"
                             },
                             {
                                 "label": {
@@ -2121,7 +2129,8 @@ describe("FormRecordTreeBuildService", function () {
                                     "value": "Column2"
                                 },
                                 "value": "Column2",
-                                "type": "label"
+                                "type": "label",
+                                "translationKey": "COLUMN_2"
                             }
                         ],
                     },
@@ -2201,6 +2210,12 @@ describe("FormRecordTreeBuildService", function () {
             }
         };
 
+        formTranslationsDetails = {
+            "data": {
+                "labels":{"SECTION_1":["SectionOne"],"SECTION_2":["SectionAddMore"],"TABLE_1":["Table"],"COLUMN_1":["Column1"],"COLUMN_2":["Column2"]},
+            }
+        };
+
         var recordTree = {
             "children": [
                 {
@@ -2234,7 +2249,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "Table"
+                            "value": "Table",
+                            "translationKey": "TABLE_1"
                         },
                         "type": "table",
                         columnHeaders: [
@@ -2244,7 +2260,8 @@ describe("FormRecordTreeBuildService", function () {
                                     "value": "Column1"
                                 },
                                 "value": "Column1",
-                                "type": "label"
+                                "type": "label",
+                                "translationKey": "COLUMN_1"
                             },
                             {
                                 "label": {
@@ -2252,7 +2269,8 @@ describe("FormRecordTreeBuildService", function () {
                                     "value": "Column2"
                                 },
                                 "value": "Column2",
-                                "type": "label"
+                                "type": "label",
+                                "translationKey": "COLUMN_2"
                             },
                         ]
                     },

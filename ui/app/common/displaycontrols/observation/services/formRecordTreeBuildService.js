@@ -146,7 +146,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             return form;
         };
 
-        self.createColumnGroupsForTable = function (record, columns, tableGroup, obsList) {
+        self.createColumnGroupsForTable = function (record, columns, tableGroup, obsList, translationData) {
             _.forEach(columns, function (column, index) {
                 var obsGroup = {
                     "groupMembers": [],
@@ -155,10 +155,16 @@ angular.module('bahmni.common.displaycontrol.observation')
                         "conceptClass": null
                     }
                 };
-                obsGroup.concept.shortName = column.value;
+                var translationKey = column.translationKey;
+                if (translationData && translationData.labels && translationData.labels[translationKey][0] !== translationKey) {
+                    obsGroup.concept.shortName = translationData.labels[translationKey][0];
+                }
+                else {
+                    obsGroup.concept.shortName = column.value;
+                }
                 var columnRecord = self.getColumnObs(index, record);
                 column.children = columnRecord;
-                self.createGroupMembers(column, obsGroup, obsList);
+                self.createGroupMembers(column, obsGroup, obsList, translationData);
                 if (obsGroup.groupMembers.length > 0) {
                     tableGroup.groupMembers.push(obsGroup);
                 }
@@ -191,9 +197,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
                 }
                 else if (record.control.type === "table") {
-                    var tableGroup = self.createObsGroup(record);
+                    var tableGroup = self.createObsGroup(record, translationData);
                     var columns = record.control.columnHeaders;
-                    self.createColumnGroupsForTable(record, columns, tableGroup, obsList);
+                    self.createColumnGroupsForTable(record, columns, tableGroup, obsList, translationData);
                     if (tableGroup.groupMembers.length > 0) {
                         obsGroup.groupMembers.push(tableGroup);
                     }
