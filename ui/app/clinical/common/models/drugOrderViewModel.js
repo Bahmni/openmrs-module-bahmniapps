@@ -558,14 +558,14 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     this.isUniformDoseUnitRequired = function () {
         return (this.uniformDosingType.dose) ||
-               (this.uniformDosingType.doseFraction) ||
-               (this.isUniformFrequency && this.isDoseMandatory());
+            (this.uniformDosingType.doseFraction) ||
+            (this.isUniformFrequency && this.isDoseMandatory());
     };
 
     this.isUniformDoseRequired = function () {
         return this.isUniformFrequency &&
-               this.isDoseMandatory() &&
-               !this.uniformDosingType.doseFraction;
+            this.isDoseMandatory() &&
+            !this.uniformDosingType.doseFraction;
     };
 
     this.isVariableDoseRequired = function () {
@@ -613,7 +613,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
                     uuid: orderAttribute.obsUuid,
                     value: orderAttribute.value ? true : false,
                     orderUuid: self.uuid,
-                    concept: {uuid: orderAttribute.conceptUuid }
+                    concept: { uuid: orderAttribute.conceptUuid }
                 };
             });
         }
@@ -654,7 +654,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         if (this.durationInDays) {
             this.effectiveStopDate = DateUtil
                 .addDays(
-                DateUtil.parse(this.effectiveStartDate), this.durationInDays);
+                    DateUtil.parse(this.effectiveStartDate), this.durationInDays);
         }
     };
 };
