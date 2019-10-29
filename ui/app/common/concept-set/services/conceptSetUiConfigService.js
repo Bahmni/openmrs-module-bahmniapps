@@ -6,7 +6,7 @@ angular.module('bahmni.common.conceptSet')
             var conceptName = config[conceptNameField];
             if (conceptName != null) {
                 return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
-                    params: {name: conceptName, v: "custom:(uuid,name)"}
+                    params: { name: conceptName, v: "custom:(uuid,name)" }
                 }).then(function (response) {
                     var concept = response.data.results.filter(function (c) {
                         return c.name.name === conceptName;

@@ -156,7 +156,7 @@ angular.module('bahmni.registration')
                 var personAttributeTypeofPatient = personAttributeHasTypeofPatient
                     ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TypeofPatient")].name : undefined;
                 if (personAttributeTypeofPatient && $scope.patient[personAttributeTypeofPatient] &&
-                        ($scope.patient[personAttributeTypeofPatient].value === "NewPatient")) {
+                    ($scope.patient[personAttributeTypeofPatient].value === "NewPatient")) {
                     var idgenPrefix = {};
                     idgenPrefix.identifierPrefix = {};
                     idgenPrefix.identifierPrefix.prefix = "UID";
@@ -167,11 +167,21 @@ angular.module('bahmni.registration')
                             var personAttributeHealthFacility = personAttributeHasHealthFacility
                                 ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("HealthFacilityName")].name : undefined;
                             if (personAttributeHealthFacility && $scope.patient[personAttributeHealthFacility] &&
-                                    $scope.patient[personAttributeHealthFacility].value === "Juba Teaching Hospital") {
+                                $scope.patient[personAttributeHealthFacility].value === "Juba Teaching Hospital") {
                                 uniqueArtIdentifier = _.padStart(response.data, 8, '0');
-                                uniqueArtIdentifier = "CES/JTH-" + uniqueArtIdentifier;
-                            } else if (personAttributeHealthFacility && $scope.patient[personAttributeHealthFacility] &&
-                                    $scope.patient[personAttributeHealthFacility].value === "Nimule") {
+
+                                var x = Number(uniqueArtIdentifier);
+                                Number.prototype.pad = function (size) {
+                                    var s = String(this);
+                                    while (s.length < (size || 2)) { s = "0" + s; }
+                                    return s;
+                                };
+                                var preserveIdFrom = x + 5475;
+                                var padPreservedIdFrom = preserveIdFrom.pad(8);
+                                uniqueArtIdentifier = "CES/JTH-" + padPreservedIdFrom;
+
+                                } else if (personAttributeHealthFacility && $scope.patient[personAttributeHealthFacility] &&
+                                $scope.patient[personAttributeHealthFacility].value === "Nimule") {
                                 uniqueArtIdentifier = _.padStart(response.data, 8, '0');
                                 uniqueArtIdentifier = "EES/NMC-" + uniqueArtIdentifier;
                             }
@@ -192,7 +202,7 @@ angular.module('bahmni.registration')
                                 var data = _.map(response.data, function (data) {
                                     return {
                                         sizeOfTheJump: data.sizeOfJump,
-                                        identifierName: _.find($rootScope.patientConfiguration.identifierTypes, {uuid: data.identifierType}).name
+                                        identifierName: _.find($rootScope.patientConfiguration.identifierTypes, { uuid: data.identifierType }).name
                                     };
                                 });
                                 getConfirmationViaNgDialog({
@@ -210,7 +220,7 @@ angular.module('bahmni.registration')
                         });
                     });
                 } else if (personAttributeTypeofPatient && $scope.patient[personAttributeTypeofPatient] &&
-                        ($scope.patient[personAttributeTypeofPatient].value === "HeiRelationship")) {
+                    ($scope.patient[personAttributeTypeofPatient].value === "HeiRelationship")) {
                     var idgenPrefix = {};
                     idgenPrefix.identifierPrefix = {};
                     idgenPrefix.identifierPrefix.prefix = "HEI";
@@ -340,7 +350,7 @@ angular.module('bahmni.registration')
                     if (personAttributeHealthFacility && $scope.patient[personAttributeHealthFacility] &&
                             $scope.patient[personAttributeHealthFacility].value === "Juba Teaching Hospital") {
                         var numericPart = uniqueArt.substring(uniqueArt.lastIndexOf("CES/JTH-"));
-                        if (uniqueArt && !(uniqueArt.startsWith("CES/JTH-") && uniqueArt.length === 16
+                        if (uniqueArt && (!(uniqueArt.startsWith("CES/JTH-")) && !(uniqueArt.length === 16)
                             && numericPart.length === 8 && Number(numericPart) > 0)) {
                             return "Unique art no should be 16 characters starting with CES/JTH-";
                         }
