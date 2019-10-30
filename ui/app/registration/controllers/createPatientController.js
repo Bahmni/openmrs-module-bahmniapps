@@ -348,15 +348,17 @@ angular.module('bahmni.registration')
                     var personAttributeHealthFacility = personAttributeHasHealthFacility
                         ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("HealthFacilityName")].name : undefined;
                     if (personAttributeHealthFacility && $scope.patient[personAttributeHealthFacility] &&
-                        $scope.patient[personAttributeHealthFacility].value === "Juba Teaching Hospital") {
-                        var numericPart = uniqueArt.substring(uniqueArt.lastIndexOf("CES/JTH-"));
-                        if (uniqueArt.length !== 16 || !uniqueArt.startsWith("CES/JTH-")) {
+                            $scope.patient[personAttributeHealthFacility].value === "Juba Teaching Hospital") {
+                        var numericPart = uniqueArt.substring("CES/JTH-".length);
+                        if (uniqueArt && !(uniqueArt.startsWith("CES/JTH-") && uniqueArt.length === 16
+                            && numericPart.length === 8 && Number(numericPart) > 0)) {
                             return "Unique art no should be 16 characters starting with CES/JTH-";
                         }
                     } else if (personAttributeHealthFacility && $scope.patient[personAttributeHealthFacility] &&
-                        $scope.patient[personAttributeHealthFacility].value === "Nimule") {
-                        var numericPart = uniqueArt.substring(uniqueArt.lastIndexOf("EES/NMC-"));
-                        if (uniqueArt.length !== 16 || !uniqueArt.startsWith("EES/NMC-")) {
+                            $scope.patient[personAttributeHealthFacility].value === "Nimule") {
+                        var numericPart = uniqueArt.substring("EES/NMC-".length);
+                        if (uniqueArt && !(uniqueArt.startsWith("EES/NMC-") && uniqueArt.length === 16
+                            && numericPart.length === 8 && Number(numericPart) > 0)) {
                             return "Unique art no should be 16 characters starting with EES/NMC-";
                         }
                     }
