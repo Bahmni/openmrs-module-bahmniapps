@@ -176,7 +176,7 @@ angular.module('bahmni.registration')
                                     while (s.length < (size || 2)) { s = "0" + s; }
                                     return s;
                                 };
-                                var preserveIdFrom = x + 5475;
+                                var preserveIdFrom = x + 5875;
                                 var padPreservedIdFrom = preserveIdFrom.pad(8);
                                 uniqueArtIdentifier = "CES/JTH-" + padPreservedIdFrom;
                             }
