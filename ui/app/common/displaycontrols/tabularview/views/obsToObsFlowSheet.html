@@ -65,7 +65,7 @@
                         </th>
                     </tr>
                     <tr ng-repeat="header in obsTable.headers" ng-if="header.name != 'Month'">
-                        <td>
+                        <td ng-class="{'obsTableEdit' : header.name === config.groupByConcept && isEditable}">
                             {{::getHeaderName(header)}}
                             <hint concept-details="header"/>
                         </td>
