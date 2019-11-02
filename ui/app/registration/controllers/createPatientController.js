@@ -208,4 +208,15 @@ angular.module('bahmni.registration')
                 });
             };
         }
-    ]);
+    ])
+    .directive('amharicText', ['amharicKeyboardService', function (amharicKeyboardService) {
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attr, ngModel) {
+                element.on('keypress', function (event) {
+                    amharicKeyboardService.amharicConverter(scope, element, ngModel, event);
+                    event.preventDefault();
+                });
+            }
+        };
+    }]);

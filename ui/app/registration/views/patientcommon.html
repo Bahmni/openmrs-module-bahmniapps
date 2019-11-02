@@ -6,13 +6,13 @@
                     <label for="patientName">{{::patientConfiguration.local()['labelForNameField']}}</label>
                 </div>
                 <div class="field-value" id="patientNameLocal">
-                    <input type="text" id="givenNameLocal" ng-model="patient.givenNameLocal" pattern-validate
+                    <input type="text" id="givenNameLocal" amharic-text ng-model="patient.givenNameLocal" pattern-validate
                            placeholder="{{::patientConfiguration.local()['placeholderForGivenName']}}" focus-me="true">
-                    <input ng-show="::showMiddleName" type="text" id="middleNameLocal"
+                    <input ng-show="::showMiddleName" type="text" id="middleNameLocal" amharic-text
                            ng-model="patient.middleNameLocal"
                            pattern-validate
                            placeholder="{{::patientConfiguration.local()['placeholderForMiddleName']}}">
-                    <input type="text" ng-show="::showLastName" id="familyNameLocal" ng-model="patient.familyNameLocal" pattern-validate
+                    <input type="text" ng-show="::showLastName" id="familyNameLocal" amharic-text ng-model="patient.familyNameLocal" pattern-validate
                            placeholder="{{::patientConfiguration.local()['placeholderForFamilyName']}}">
                 </div>
             </article>
