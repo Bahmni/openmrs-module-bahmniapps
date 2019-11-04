@@ -87,7 +87,7 @@
                                   <input data-ng-switch-when="true"
                                          type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
                                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
-                                         data-item-type="personName" maxlength="10" style="width:100px;"
+                                         data-item-type="personName" maxlength="50" style="width:100px;"
                                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" maxlength="10"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
 
@@ -97,7 +97,7 @@
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
                               </span>
                               <span ng-show="::showLastName" data-ng-switch="::isAutoComplete('familyName')">
-                                  <input data-ng-switch-when="true" maxlength="10" style="width:100px;"
+                                  <input data-ng-switch-when="true" maxlength="50" style="width:100px;"
                                          type="text" id="familyName" ng-model="$parent.patient.familyName" pattern-validate
                                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                                          data-item-type="personName"
@@ -106,7 +106,7 @@
 
                                   <input data-ng-switch-default
                                          type="text" id="familyName" ng-model="patient.familyName" pattern-validate
-                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}" maxlength="10" style="width:100px;"
+                                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}" maxlength="50" style="width:100px;"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
                               </span>
                             </div>
