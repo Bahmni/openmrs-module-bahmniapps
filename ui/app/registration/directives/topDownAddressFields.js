@@ -24,23 +24,25 @@ angular.module('bahmni.registration')
         angular.forEach($scope.addressLevels, function (value, key) {
             value.isStrictEntry = false;
             if (value.addressField === "address1") {
-                newAddress.splice(3, 1, value);
-            } else if (value.addressField === "address2") {
-                newAddress.splice(2, 1, value);
-            } else if (value.addressField === "address3") {
-                newAddress.splice(1, 1, value);
-            } else if (value.addressField === "address4") {
-                newAddress.splice(0, 1, value);
-            } else if (value.addressField === "address5") {
                 newAddress.splice(4, 1, value);
-            } else if (value.addressField === "address6") {
+            } else if (value.addressField === "address2") {
+                newAddress.splice(3, 1, value);
+            } else if (value.addressField === "address3") {
+                newAddress.splice(2, 1, value);
+            } else if (value.addressField === "address4") {
+                newAddress.splice(1, 1, value);
+            } else if (value.addressField === "address5") {
                 newAddress.splice(5, 1, value);
-            } else if (value.addressField === "cityVillage") {
+            } else if (value.addressField === "address6") {
                 newAddress.splice(6, 1, value);
-            } else if (value.addressField === "stateProvince") {
+            } else if (value.addressField === "cityVillage") {
                 newAddress.splice(7, 1, value);
-            } else if (value.addressField === "postalCode") {
+            } else if (value.addressField === "stateProvince") {
                 newAddress.splice(8, 1, value);
+            } else if (value.addressField === "postalCode") {
+                newAddress.splice(9, 1, value);
+            }else if (value.addressField === "country") {
+                newAddress.splice(0, 1, value);
             }
         });
         $scope.addressLevels = newAddress;
