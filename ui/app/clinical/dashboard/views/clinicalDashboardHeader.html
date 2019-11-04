@@ -108,6 +108,11 @@
                 </div>
             <span class="grouped-buttons">
                  <a class=" btn--left btn--success "
+                    href="/bahmni/appointments"
+                    accesskey="{{'APPOINTMENTS' | translate}}"
+                    ng-bind-html="'APPOINTMENTS' | translate">
+                 </a>
+                 <a class=" btn--left btn--success "
                     ng-if="visitHistory.activeVisit || retrospectiveEntry || allowConsultation()"
                     ng-click="openConsultation()"
                     accesskey="{{'CONSULTATION_SHORTCUT_KEY' | translate}}"

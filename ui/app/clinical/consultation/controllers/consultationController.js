@@ -282,6 +282,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 switchToConsultationTab();
             };
 
+            $scope.redirectAppointment = function () {
+                $location.path('appointments');
+            };
+
             var switchToConsultationTab = function () {
                 if ($scope.lastConsultationTabUrl.url) {
                     $location.url($scope.lastConsultationTabUrl.url);
