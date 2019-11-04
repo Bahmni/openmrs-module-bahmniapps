@@ -287,7 +287,8 @@ angular.module('bahmni.registration')
                     var personAttributeHasUniqueArtNo = personAttributes.indexOf("UniqueArtNo") !== -1;
                     var personAttributeUniqueArtNo = personAttributeHasUniqueArtNo
                         ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("UniqueArtNo")].name : undefined;
-                    $scope.patient.primaryIdentifier.identifier = $scope.patient[personAttributeUniqueArtNo].value || "";
+                    $scope.patient.primaryIdentifier.identifier = $scope.patient[personAttributeUniqueArtNo] || "";
+                    $scope.patient.primaryIdentifier.preferred = true;
                     return patientService.create($scope.patient, jumpAccepted).then(function (response) {
                         copyPatientProfileDataToScope(response);
                     }, function (response) {
