@@ -175,20 +175,19 @@ angular.module('bahmni.registration')
                 _.map(data.pageOfResults, function (result) {
                     var searchParams = {
                         patient: result.uuid,
-                        includeInactive: true,
                         v: "full"
                     };
                     var promise = visitService.search(searchParams).then(function (response) {
                         var results = response.data.results;
-                        var activeVisitForCurrentLoginLocation;
+                        var visitForCurrentLoginLocation;
                         if (results) {
-                            activeVisitForCurrentLoginLocation = _.filter(results, function (res) {
+                            visitForCurrentLoginLocation = _.filter(results, function (res) {
                                 return res.location.uuid === visitLocationUuid;
                             });
                         }
-                        var hasVisit = activeVisitForCurrentLoginLocation && (activeVisitForCurrentLoginLocation.length > 0);
+                        var hasVisit = visitForCurrentLoginLocation && (visitForCurrentLoginLocation.length > 0);
                         if (hasVisit) {
-                            var visit = activeVisitForCurrentLoginLocation[0];
+                            var visit = visitForCurrentLoginLocation[0];
                             result.visitDate = visit.startDatetime ? visit.startDatetime : '';
                         }
                     });

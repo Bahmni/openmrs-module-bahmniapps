@@ -155,14 +155,23 @@ angular.module('bahmni.registration')
                 var personAttributeHasTypeofPatient = personAttributes.indexOf("TypeofPatient") !== -1;
                 var personAttributeTypeofPatient = personAttributeHasTypeofPatient
                     ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TypeofPatient")].name : undefined;
+                var locName = $rootScope.loggedInLocation ? $rootScope.loggedInLocation.name : null;
+                var prefix = '';
+                if (locName && locName === 'Juba') {
+                    prefix = 'CES/JTH-';
+                } else if (locName && locName === 'Nimule') {
+                    prefix = 'EES/NMC-';
+                }
+                var idgenPatientPrefix = {};
+                idgenPatientPrefix.identifierPrefix = {};
+                idgenPatientPrefix.identifierPrefix.prefix = prefix;
                 if (personAttributeTypeofPatient && $scope.patient[personAttributeTypeofPatient] &&
                     ($scope.patient[personAttributeTypeofPatient].value === "NewPatient")) {
-                    var idgenPrefix = {};
-                    idgenPrefix.identifierPrefix = {};
-                    idgenPrefix.identifierPrefix.prefix = "UID";
-                    return spinner.forPromise(patientService.generateIdentifier(idgenPrefix).then(function (response) {
+                    return spinner.forPromise(patientService.generateIdentifier(idgenPatientPrefix).then(function (response) {
                         var uniqueArtIdentifier = "";
                         if (response && response.data && response.data.length > 0) {
+                            response.data = response.data.replace("CES/JTH-", "");
+                            response.data = response.data.replace("EES/NMC-", "");
                             var personAttributeHasHealthFacility = personAttributes.indexOf("HealthFacilityName") !== -1;
                             var personAttributeHealthFacility = personAttributeHasHealthFacility
                                 ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("HealthFacilityName")].name : undefined;
@@ -170,15 +179,15 @@ angular.module('bahmni.registration')
                                 $scope.patient[personAttributeHealthFacility].value === "Juba Teaching Hospital") {
                                 uniqueArtIdentifier = _.padStart(response.data, 8, '0');
 
-                                var x = Number(uniqueArtIdentifier);
+                                /* var x = Number(uniqueArtIdentifier);
                                 Number.prototype.pad = function (size) {
                                     var s = String(this);
                                     while (s.length < (size || 2)) { s = "0" + s; }
                                     return s;
                                 };
-                                var preserveIdFrom = x + 5971;
-                                var padPreservedIdFrom = preserveIdFrom.pad(8);
-                                uniqueArtIdentifier = "CES/JTH-" + padPreservedIdFrom;
+                                var preserveIdFrom = x + 5875;
+                                var padPreservedIdFrom = preserveIdFrom.pad(8); */
+                                uniqueArtIdentifier = "CES/JTH-" + uniqueArtIdentifier;
                             }
                             else if (personAttributeHealthFacility && $scope.patient[personAttributeHealthFacility] &&
                                 $scope.patient[personAttributeHealthFacility].value === "Nimule") {
@@ -222,9 +231,6 @@ angular.module('bahmni.registration')
                     var idgenPrefix = {};
                     idgenPrefix.identifierPrefix = {};
                     idgenPrefix.identifierPrefix.prefix = "HEI";
-                    var idgenPatientPrefix = {};
-                    idgenPatientPrefix.identifierPrefix = {};
-                    idgenPatientPrefix.identifierPrefix.prefix = "UID";
                     return spinner.forPromise(patientService.generateIdentifier(idgenPrefix).then(function (response) {
                         var heiIdentifier = "";
                         if (response && response.data && response.data.length > 0) {
@@ -240,6 +246,8 @@ angular.module('bahmni.registration')
                         .then(function (response) {
                             var uniqueIdentifier = "";
                             if (response && response.data && response.data.length > 0) {
+                                response.data = response.data.replace("CES/JTH-", "");
+                                response.data = response.data.replace("EES/NMC-", "");
                                 var personAttributeHasHealthFacility = personAttributes.indexOf("HealthFacilityName") !== -1;
                                 var personAttributeHealthFacility = personAttributeHasHealthFacility
                                     ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("HealthFacilityName")].name : undefined;
