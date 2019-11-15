@@ -19,7 +19,7 @@ angular.module('bahmni.clinical')
             if (enableProviderTypeBasedFormsAccess) {
                 providerTypeBasedFormsAccess = appService.getAppDescriptor().getConfigValue('providerTypeBasedFormsAccess');
             }
-            
+
             var finalFormsToDisplay;
             var numberOfLevels = 2;
             var fields = ['uuid', 'name:(name,display)', 'names:(uuid,conceptNameType,name)'];
@@ -35,13 +35,13 @@ angular.module('bahmni.clinical')
                         v: "custom:" + customRepresentation
                     }), enableProviderTypeBasedFormsAccess ? providerService.getProviderAttributes(currentProvider.uuid) : null]).then(function (response) {
                         var allTemplates = response[0].data.results[0].setMembers;
-                        
+
                         if (response[1]) {
                             if (response[1].data) {
                                 providerAttributes = response[1].data.results;
                             }
                         }
-                        
+
                         createConceptSections(allTemplates, providerAttributes, providerTypeBasedFormsAccess);
                         if ($state.params.programUuid) {
                             showOnlyTemplatesFilledInProgram();
@@ -179,7 +179,7 @@ angular.module('bahmni.clinical')
                         }
                     }));
                 }
-                
+
                 _.map(allTemplates, function (template) {
                     var conceptSetExtension = _.find(extensions, function (extension) {
                         return extension.extensionParams.conceptName === template.name.name;
