@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ConceptSetPageController', function () {
-    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, formService;
+    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, formService, appService, appDescriptor;
     stateParams = {conceptSetGroupName: "concept set group name"};
     var extension = {"extension": {
         extensionParams: {}
@@ -46,11 +46,15 @@ describe('ConceptSetPageController', function () {
                 "allowAddMore": true
             }
         };
+        rootScope.currentProvider = {uuid:'212332-233322'};
         clinicalAppConfigService.getAllConceptsConfig.and.returnValue(configs);
         configurations = jasmine.createSpyObj("configurations", ["encounterConfig"]);
         configurations.encounterConfig.and.returnValue(encounterConfig);
         conceptSetService = jasmine.createSpyObj("conceptSetService", ["getConcept", "getObsTemplatesForProgram"]);
         formService = jasmine.createSpyObj("formService", ["getFormList"]);
+        appService = jasmine.createSpyObj("appService", ["getAppDescriptor"]);
+        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
         spinner = jasmine.createSpyObj("spinner", ["forPromise"]);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         translate = jasmine.createSpyObj('$translate',['instant']);
@@ -66,6 +70,7 @@ describe('ConceptSetPageController', function () {
             $stateParams: stateParams,
             conceptSetService: conceptSetService,
             formService: formService,
+            appService: appService,
             clinicalAppConfigService: clinicalAppConfigService,
             messagingService: messagingService,
             configurations: configurations,

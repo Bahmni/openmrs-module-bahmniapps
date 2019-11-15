@@ -10,11 +10,16 @@ angular.module('bahmni.clinical')
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
+            var providerTypeBasedFormsAccess;
             var extensions = clinicalAppConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
             var configs = clinicalAppConfigService.getAllConceptsConfig();
             var visitType = configurations.encounterConfig().getVisitTypeByUuid($scope.consultation.visitTypeUuid);
             $scope.context = {visitType: visitType, patient: $scope.patient};
-            var providerTypeBasedFormsAccess = appService.getAppDescriptor().getConfigValue('providerTypeBasedFormsAccess');
+            var enableProviderTypeBasedFormsAccess = appService.getAppDescriptor().getConfigValue('enableProviderTypeBasedFormsAccess');
+            if (enableProviderTypeBasedFormsAccess) {
+                providerTypeBasedFormsAccess = appService.getAppDescriptor().getConfigValue('providerTypeBasedFormsAccess');
+            }
+            
             var finalFormsToDisplay;
             var numberOfLevels = 2;
             var fields = ['uuid', 'name:(name,display)', 'names:(uuid,conceptNameType,name)'];
@@ -28,13 +33,14 @@ angular.module('bahmni.clinical')
                     spinner.forPromise($q.all([conceptSetService.getConcept({
                         name: "All Observation Templates",
                         v: "custom:" + customRepresentation
-                    }), providerService.getProviderAttributes(currentProvider.uuid)]).then(function (response) {
+                    }), enableProviderTypeBasedFormsAccess ? providerService.getProviderAttributes(currentProvider.uuid) : null]).then(function (response) {
                         var allTemplates = response[0].data.results[0].setMembers;
                         
-                        if (response[1].data) {
-                            providerAttributes = response[1].data.results;
+                        if (response[1]) {
+                            if (response[1].data) {
+                                providerAttributes = response[1].data.results;
+                            }
                         }
-
                         
                         createConceptSections(allTemplates, providerAttributes, providerTypeBasedFormsAccess);
                         if ($state.params.programUuid) {
@@ -161,18 +167,19 @@ angular.module('bahmni.clinical')
             };
 
             var createConceptSections = function (allTemplates, allProviderAttributes, providerTypeBasedFormsAccess) {
+                var providerType;
 
-                var providerType = providerTypeService.getProviderType(allProviderAttributes, providerTypeBasedFormsAccess)[0];
+                if (enableProviderTypeBasedFormsAccess) {
+                    providerType = providerTypeService.getProviderType(allProviderAttributes, providerTypeBasedFormsAccess)[0];
+                    finalFormsToDisplay = providerTypeBasedFormsAccess[providerType];
+
+                    allTemplates = _.filter(_.map(allTemplates, function (template) {
+                        if (_.includes(finalFormsToDisplay, template.name.name)) {
+                            return template;
+                        }
+                    }));
+                }
                 
-                finalFormsToDisplay = providerTypeBasedFormsAccess[providerType];
-
-                allTemplates = _.filter(_.map(allTemplates, function (template) {
-                    if (_.includes(finalFormsToDisplay, template.name.name)) {
-                        return template;
-                    }
-                }));
-
-
                 _.map(allTemplates, function (template) {
                     var conceptSetExtension = _.find(extensions, function (extension) {
                         return extension.extensionParams.conceptName === template.name.name;
