@@ -318,6 +318,7 @@
     "BROWSER_DOES_NOT_SUPPORT_VIDEO_TAG_MESSAGE":"Your browser does not support the video tag.",
     "YEARS_LABEL": "Years",
     "TAKE_PATIENT_PHOTO_TITTLE": "Take Patient's Photo",
+    "UPLOAD_PATIENT_PHOTO_TITTLE": "Upload Patient's Photo",
     "CLICK_PATIENT_PHOTO_LABEL": "Click Photo",
     "CONFIRM_PATIENT_PHOTO_LABEL": "Confirm Photo",
     "CHOOSE_ANSWER_FROM_DROPDOWN_LABEL": "Choose Answer",

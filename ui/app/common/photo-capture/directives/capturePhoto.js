@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.photoCapture')
-    .directive('capturePhoto', ['$parse', '$window', function factory ($parse, $window) {
+    .directive('capturePhoto', ['$translate', '$parse', '$window', function factory ($translate, $parse, $window) {
         var link = function (scope, iElement, iAttrs) {
             var captureDialogElement = iElement.find(".photoCaptureDialog"),
                 captureVideo = captureDialogElement.find("video")[0],
@@ -19,6 +19,10 @@ angular.module('bahmni.common.photoCapture')
 
             captureContext.scale(pixelRatio, pixelRatio);
             uploadContext.scale(pixelRatio, pixelRatio);
+
+            // TAKE_PATIENT_PHOTO_TITTLE'|translate
+            scope.patientPhotoTitle = $translate.instant("TAKE_PATIENT_PHOTO_TITTLE");
+            scope.patientPhotoUploadTitle = $translate.instant("UPLOAD_PATIENT_PHOTO_TITTLE");
 
             var confirmImage = function (canvas, dialogElement) {
                 var image = canvas.toDataURL("image/jpeg");
@@ -104,7 +108,7 @@ angular.module('bahmni.common.photoCapture')
                 captureConfirmImageButton.focus();
             };
 
-            captureDialogElement.dialog({autoOpen: false, height: 300, width: 500, modal: true,
+            captureDialogElement.dialog({autoOpen: false, height: 300, width: 500, modal: true, title: scope.patientPhotoTitle,
                 close: function () {
                     dialogOpen = false;
                     if (captureActiveStream) {
@@ -145,7 +149,7 @@ angular.module('bahmni.common.photoCapture')
                 uploadConfirmImageButton.focus();
             };
 
-            uploadDialogElement.dialog({autoOpen: false, height: 350, width: 350, modal: true,
+            uploadDialogElement.dialog({autoOpen: false, height: 350, width: 350, modal: true, title: scope.patientPhotoUploadTitle,
                 close: function () {
                     dialogOpen = false;
                 }

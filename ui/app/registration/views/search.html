@@ -23,7 +23,7 @@
                 </article>
                 <article class="fl" ng-if="::customAttributesSearchConfig.show">
                     <label for="name"><strong>{{::customAttributesSearchConfig.label}}</strong></label>
-                    <input tabindex="5" type="text" id="customAttribute" amharic-text ng-model="searchParameters.customAttribute" placeholder="{{::customAttributesSearchConfig.placeholder}}">
+                    <input tabindex="5" type="text" id="customAttribute" amharic-text force-Am="true" ng-model="searchParameters.customAttribute" placeholder="{{::customAttributesSearchConfig.placeholder}}">
                 </article>
                 <article class="fl" ng-if="::addressSearchConfig.show">
                     <label for="name"><strong>{{::addressSearchConfig.label}}</strong></label>

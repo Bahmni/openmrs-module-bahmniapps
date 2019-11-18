@@ -1,12 +1,10 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner', '$location', 'ngDialog', '$window', '$state',
-        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner, $location, ngDialog, $window, $state) {
+    .controller('PatientCommonController', ['$scope', '$rootScope', '$translate', '$log', '$http', 'patientAttributeService', 'appService', 'spinner', '$location', 'ngDialog', '$window', '$state',
+        function ($scope, $rootScope, $translate, $log, $http, patientAttributeService, appService, spinner, $location, ngDialog, $window, $state) {
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
-            var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             var personAttributes = [];
-            var caste;
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
             $scope.showLastName = appService.getAppDescriptor().getConfigValue("showLastName");
             $scope.isLastNameMandatory = $scope.showLastName && appService.getAppDescriptor().getConfigValue("isLastNameMandatory");
@@ -105,21 +103,6 @@ angular.module('bahmni.registration')
                 return !_.isEmpty(autoCompleteFields) ? autoCompleteFields.indexOf(fieldName) > -1 : false;
             };
 
-            $scope.showCasteSameAsLastName = function () {
-                personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
-                    return attribute.name.toLowerCase();
-                });
-                var personAttributeHasCaste = personAttributes.indexOf("caste") !== -1;
-                caste = personAttributeHasCaste ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("caste")].name : undefined;
-                return showCasteSameAsLastNameCheckbox && personAttributeHasCaste;
-            };
-
-            $scope.setCasteAsLastName = function () {
-                if ($scope.patient.sameAsLastName) {
-                    $scope.patient[caste] = $scope.patient.familyName;
-                }
-            };
-
             var showSections = function (sectionsToShow, allSections) {
                 _.each(sectionsToShow, function (sectionName) {
                     allSections[sectionName].canShow = true;
@@ -135,7 +118,9 @@ angular.module('bahmni.registration')
 
             var executeRule = function (ruleFunction) {
                 var attributesShowOrHideMap = ruleFunction($scope.patient);
-                var patientAttributesSections = $rootScope.patientConfiguration.getPatientAttributesSections();
+                var patientAttributesSections = $rootScope.patientConfiguration.getPatientAttributesSections().forEach(function (section) {
+                    $scope.message = section.title;
+                });
                 showSections(attributesShowOrHideMap.show, patientAttributesSections);
                 hideSections(attributesShowOrHideMap.hide, patientAttributesSections);
             };
@@ -166,18 +151,6 @@ angular.module('bahmni.registration')
             $scope.getDataResults = function (data) {
                 return data.results;
             };
-
-            $scope.$watch('patient.familyName', function () {
-                if ($scope.patient.sameAsLastName) {
-                    $scope.patient[caste] = $scope.patient.familyName;
-                }
-            });
-
-            $scope.$watch('patient.caste', function () {
-                if ($scope.patient.sameAsLastName && ($scope.patient.familyName !== $scope.patient[caste])) {
-                    $scope.patient.sameAsLastName = false;
-                }
-            });
 
             $scope.selectIsDead = function () {
                 if ($scope.patient.causeOfDeath || $scope.patient.deathDate) {
