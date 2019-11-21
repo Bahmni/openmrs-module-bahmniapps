@@ -21,6 +21,12 @@
             <li ng-repeat="(key, value) in patientContext.programAttributes">
                 {{value.description}}: {{value.value}}
             </li>
+            <li ng-if="!patientContext.lostToFollowUp">
+                ACTIVE
+            </li>
+            <li ng-if="patientContext.lostToFollowUp">
+                Lost to Follow Up - {{::patientContext.days}} Days
+            </li>
         </ul>
     </div>
 </div>
