@@ -11,7 +11,6 @@ describe("BahmniObservation", function () {
     beforeEach(module('bahmni.common.displaycontrol.observation', function ($provide) {
         observationsService = jasmine.createSpyObj('observationsService', ['fetch', 'fetchForEncounter', 'getByUuid', 'fetchForPatientProgram', 'encounterService']);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function () {
                 return {

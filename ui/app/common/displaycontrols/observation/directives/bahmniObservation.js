@@ -48,7 +48,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     });
 
                     if (formObservations.length > 0) {
-                        formRecordTreeBuildService.build($scope.bahmniObservations);
+                        formRecordTreeBuildService.build($scope.bahmniObservations, $scope.hasNoHierarchy);
                     }
                 };
 
@@ -131,7 +131,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                     isOnDashboard: "=?",
                     observations: "=?",
                     message: "=?",
-                    enrollment: "=?"
+                    enrollment: "=?",
+                    hasNoHierarchy: "@"
                 }
             };
         }]);
