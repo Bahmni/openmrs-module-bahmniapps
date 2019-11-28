@@ -4,12 +4,16 @@ angular.module('bahmni.common.displaycontrol.observation')
     .service('formRecordTreeBuildService', ['formService', function (formService) {
         var self = this;
 
-        self.build = function (bahmniObservations) {
+        self.build = function (bahmniObservations, hasNoHierarchy) {
             _.forEach(bahmniObservations, function (obs) {
                 obs.value = self.preProcessMultiSelectObs(obs.value);
             });
-            var obs = self.createObsGroupForForm(bahmniObservations);
-            updateObservationsWithFormDefinition(obs);
+
+            if (!hasNoHierarchy) {
+                // This block builds hierarchy for the passed bahmniObservations
+                var obs = self.createObsGroupForForm(bahmniObservations);
+                updateObservationsWithFormDefinition(obs);
+            }
         };
 
         self.createMultiSelectObservation = function (observations) {

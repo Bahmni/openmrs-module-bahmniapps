@@ -3001,4 +3001,234 @@ describe("FormRecordTreeBuildService", function () {
         expect(memberObs.valueAsString).toBe("160.0");
     });
 
+    it('should return multiSelect observations with out hierarchy when hasNoHierarchy is true', function () {
+
+        const obsOne = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.1/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Susceptible"
+        };
+
+        const obsTwo = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.1/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Resistant"
+        };
+
+        observations = [{
+            "value": [obsOne, obsTwo]
+        }];
+
+        const formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "CodedForm"
+                    })
+                }]
+            }
+        };
+
+        const recordTree = {
+            "formFieldPath": "",
+            "children": [
+                {
+                    "active": true,
+                    "children": [
+                        {
+                            "valueMapper": {},
+                            "control": {
+                                "type": "obsControl",
+                                "label": {
+                                    "translationKey": "MD,_MEDICAL_HISTORY_6",
+                                    "id": "6",
+                                    "units": "",
+                                    "type": "label",
+                                    "value": "MD, Medical History"
+                                },
+                                "properties": {
+                                    "multiSelect": true
+                                },
+                                "id": "6",
+                                "concept": {
+                                    "name": "MD, Medical History"
+                                }
+                            },
+                            "formFieldPath": "CodedForm.1/5-0",
+                            "showAddMore": false
+                        }
+                    ],
+                    "control": {
+                        "label": {
+                            "id": "1",
+                            "value": "SectionOne"
+                        },
+                        "type": "section"
+                    },
+                    "formFieldPath": "CodedForm.1/1-0",
+                    "showAddMore": false
+                }
+            ]
+        };
+
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        window.getRecordTree = function () {
+            return recordTree;
+        };
+
+        formRecordTreeBuildService.build(observations, true);
+        allFormsDeferred.resolve(allFormsResponse);
+        formDetailDeferred.resolve(formDetails);
+        $scope.$apply();
+
+
+        expect(observations[0].value.length).toBe(1);
+
+        let multiSelectObservation = observations[0].value[0];
+
+        expect(multiSelectObservation.concept.shortName).toBe("MD, Medical History");
+        expect(multiSelectObservation.groupMembers.length).toBe(2);
+        expect(multiSelectObservation.type).toBe("multiSelect");
+        expect(multiSelectObservation.groupMembers[0].valueAsString).toBe("Susceptible");
+        expect(multiSelectObservation.groupMembers[1].valueAsString).toBe("Resistant");
+    });
+
+    it('should return observations with out hierarchy when hasNoHierarchy is true', function () {
+
+        const obsOne = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.1/5-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Speciality",
+                "dataType": "Coded",
+                "shortName": "MD, Medical History"
+            },
+            "valueAsString": "Susceptible"
+        };
+
+        const obsTwo = {
+            "groupMembers": [],
+            "formFieldPath": "CodedForm.1/6-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "Dummy Observation",
+                "dataType": "Coded",
+                "shortName": "Dummy Observation"
+            },
+            "valueAsString": "Resistant"
+        };
+
+        observations = [{
+            "value": [obsOne, obsTwo]
+        }];
+
+        const formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "CodedForm"
+                    })
+                }]
+            }
+        };
+
+        const recordTree = {
+            "formFieldPath": "",
+            "children": [
+                {
+                    "active": true,
+                    "children": [
+                        {
+                            "valueMapper": {},
+                            "control": {
+                                "type": "obsControl",
+                                "label": {
+                                    "translationKey": "MD,_MEDICAL_HISTORY_6",
+                                    "id": "6",
+                                    "units": "",
+                                    "type": "label",
+                                    "value": "MD, Medical History"
+                                },
+                                "properties": {},
+                                "id": "6",
+                                "concept": {
+                                    "name": "MD, Medical History"
+                                }
+                            },
+                            "formFieldPath": "CodedForm.1/5-0",
+                            "showAddMore": false
+                        },
+                        {
+                            "valueMapper": {},
+                            "control": {
+                                "type": "obsControl",
+                                "label": {
+                                    "translationKey": "MD,_MEDICAL_HISTORY_6",
+                                    "id": "6",
+                                    "units": "",
+                                    "type": "label",
+                                    "value": "Dummy Observation"
+                                },
+                                "properties": {},
+                                "id": "6",
+                                "concept": {
+                                    "name": "Dummy Observation"
+                                }
+                            },
+                            "formFieldPath": "CodedForm.1/6-0",
+                            "showAddMore": false
+                        }
+                    ],
+                    "control": {
+                        "label": {
+                            "id": "1",
+                            "value": "SectionOne"
+                        },
+                        "type": "section"
+                    },
+                    "formFieldPath": "CodedForm.1/1-0",
+                    "showAddMore": false
+                }
+            ]
+        };
+
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        window.getRecordTree = function () {
+            return recordTree;
+        };
+
+        formRecordTreeBuildService.build(observations, true);
+        allFormsDeferred.resolve(allFormsResponse);
+        formDetailDeferred.resolve(formDetails);
+        $scope.$apply();
+
+        expect(observations[0].value.length).toBe(2);
+
+        const observationOne = observations[0].value[0];
+        const observationTwo = observations[0].value[1];
+
+        expect(observationOne.concept.shortName).toBe("MD, Medical History");
+        expect(observationOne.formFieldPath).toBe("CodedForm.1/5-0");
+        expect(observationOne.valueAsString).toBe("Susceptible");
+
+        expect(observationTwo.concept.shortName).toBe("Dummy Observation");
+        expect(observationTwo.formFieldPath).toBe("CodedForm.1/6-0");
+        expect(observationTwo.valueAsString).toBe("Resistant");
+    });
+
 });
