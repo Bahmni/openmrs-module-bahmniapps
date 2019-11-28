@@ -30,7 +30,7 @@
                 <th class="reports-action">
                 </th>
             </tr>
-            </thead>		
+            </thead>
             <tbody>
             <tr ng-repeat="report in ::reportsRequiringDateRange" show-if-privilege="{{:: report.requiredPrivilege}}">
                 <td>{{:: report.name }}</td>
@@ -84,7 +84,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="report in ::reportsNotRequiringDateRange"show-if-privilege="{{:: report.requiredPrivilege}}>
+            <tr ng-repeat="report in ::reportsNotRequiringDateRange" show-if-privilege="{{:: report.requiredPrivilege}}">
                 <td>{{:: report.name }}</td>
                 <td class="reports-format">
                     <select ng-model="report.responseType" ng-options="type as label for (label , type) in ::formats">
