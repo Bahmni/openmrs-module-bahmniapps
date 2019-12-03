@@ -3,35 +3,32 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService',
         'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner',
-        'contextChangeHandler', '$q', '$translate', 'formService', 'appService', 'providerService', 'providerTypeService',
+        'contextChangeHandler', '$q', '$translate', 'formService', 'appService', 'providerService', 'privilegeTypeService',
         function ($scope, $rootScope, $stateParams, conceptSetService,
                   clinicalAppConfigService, messagingService, configurations, $state, spinner,
-                  contextChangeHandler, $q, $translate, formService, appService, providerService, providerTypeService) {
+                  contextChangeHandler, $q, $translate, formService, appService, providerService, privilegeTypeService) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
-            var providerTypeBasedFormsAccess;
+            var privilegeTypeBasedFormsAccess;
             var extensions = clinicalAppConfigService.getAllConceptSetExtensions($stateParams.conceptSetGroupName);
             var configs = clinicalAppConfigService.getAllConceptsConfig();
             var visitType = configurations.encounterConfig().getVisitTypeByUuid($scope.consultation.visitTypeUuid);
             $scope.context = {visitType: visitType, patient: $scope.patient};
-            var enableProviderTypeBasedFormsAccess = appService.getAppDescriptor().getConfigValue('enableProviderTypeBasedFormsAccess');
-            if (enableProviderTypeBasedFormsAccess) {
-                providerTypeBasedFormsAccess = appService.getAppDescriptor().getConfigValue('providerTypeBasedFormsAccess');
-            }
-
+            var enablePrivilegeTypeBasedFormsAccess = appService.getAppDescriptor().getConfigValue('enablePrivilegeTypeBasedFormsAccess');
             var finalFormsToDisplay = [];
             var numberOfLevels = 2;
             var fields = ['uuid', 'name:(name,display)', 'names:(uuid,conceptNameType,name)'];
             var customRepresentation = Bahmni.ConceptSet.CustomRepresentationBuilder.build(fields, 'setMembers', numberOfLevels);
             var allConceptSections = [];
             var currentProvider = $rootScope.currentProvider;
-            var providerType;
+            var providerType = null;
 
-            if (providerTypeService.isCurrentUserHavingPrivilege(Bahmni.Clinical.Constants.viewFormsPrivilege, $rootScope.currentUser.privileges)) {
-                providerType = providerTypeService.getCurrentUserPrivilegeName(Bahmni.Clinical.Constants.viewFormsPrivilege, $rootScope.currentUser.privileges);
-            } else {
-                console.log("Not Privileged");
+            if (enablePrivilegeTypeBasedFormsAccess) {
+                privilegeTypeBasedFormsAccess = appService.getAppDescriptor().getConfigValue('privilegeTypeBasedFormsAccess');
+                if (privilegeTypeService.isCurrentUserHavingPrivilege(Bahmni.Clinical.Constants.viewFormsPrivilege, $rootScope.currentUser.privileges)) {
+                    providerType = privilegeTypeService.getCurrentUserPrivilegeName(Bahmni.Clinical.Constants.viewFormsPrivilege, $rootScope.currentUser.privileges);
+                }
             }
 
             var init = function () {
@@ -40,9 +37,15 @@ angular.module('bahmni.clinical')
                         name: "All Observation Templates",
                         v: "custom:" + customRepresentation
                     })]).then(function (response) {
-                        var allTemplates = response[0].data.results[0].setMembers;
+                        var allTemplates;
 
-                        createConceptSections(allTemplates, providerType, providerTypeBasedFormsAccess);
+                        if (providerType || !enablePrivilegeTypeBasedFormsAccess) {
+                            allTemplates = response[0].data.results[0].setMembers;
+                        } else {
+                            allTemplates = [];
+                        }
+
+                        createConceptSections(allTemplates, providerType, privilegeTypeBasedFormsAccess);
                         if ($state.params.programUuid) {
                             showOnlyTemplatesFilledInProgram();
                         }
@@ -166,12 +169,10 @@ angular.module('bahmni.clinical')
                 }));
             };
 
-            var createConceptSections = function (allTemplates, providerType, providerTypeBasedFormsAccess) {
-
-                if (enableProviderTypeBasedFormsAccess) {
-
-                    providerType.map(function(item){
-                        finalFormsToDisplay = finalFormsToDisplay.concat(providerTypeBasedFormsAccess[item]);
+            var createConceptSections = function (allTemplates, providerType, privilegeTypeBasedFormsAccess) {
+                if (enablePrivilegeTypeBasedFormsAccess && providerType) {
+                    providerType.map(function (item) {
+                        finalFormsToDisplay = finalFormsToDisplay.concat(privilegeTypeBasedFormsAccess[item]);
                     });
                     allTemplates = _.filter(_.map(allTemplates, function (template) {
                         if (_.includes(finalFormsToDisplay, template.name.name)) {
