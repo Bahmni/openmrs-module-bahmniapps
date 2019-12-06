@@ -8,22 +8,22 @@
                 <th>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</th>
                 <th class="reports-start-date">{{::'REPORTS_START_DATE_HEADER_KEY ' |translate}}
                     <span class="asterick">*</span>
-                    <input ng-model="default.reportsRequiringDateRange.startDate" date-converter
-                           class="form-field start-date" type="date" max="{{default.reportsRequiringDateRange.stopDate | date:'yyyy-MM-dd'}}"
-                           ng-change="setDefault('startDate', 'reportsRequiringDateRange')">
+                    <input ng-model="default.facilityReportsRequiringDateRange.startDate" datepicker placeholder="dd-mm-yyyy"
+                           class="form-field start-date" type="text" max="{{default.facilityReportsRequiringDateRange.stopDate | date:'yyyy-MM-dd'}}"
+                           ng-change="setDefault('startDate', 'facilityReportsRequiringDateRange')">
                 </th>
                 <th class="reports-stop-date">{{::'REPORTS_END_DATE_HEADER_KEY' |translate}}
                     <span class="asterick">*</span>
-                    <input ng-model="default.reportsRequiringDateRange.stopDate" date-converter
-                           class="form-field start-date" type="date" min="{{default.reportsRequiringDateRange.startDate | date:'yyyy-MM-dd'}}"
-                           ng-change="setDefault('stopDate', 'reportsRequiringDateRange')">
+                    <input ng-model="default.facilityReportsRequiringDateRange.stopDate" datepicker placeholder="dd-mm-yyyy"
+                           class="form-field start-date" type="text" min="{{default.facilityReportsRequiringDateRange.startDate | date:'yyyy-MM-dd'}}"
+                           ng-change="setDefault('stopDate', 'facilityReportsRequiringDateRange')">
                 </th>
                 <th class="reports-format">
                     {{::'REPORT_FORMAT_KEY' | translate}}
                     <span class="asterick">*</span>
-                    <select ng-model="default.reportsRequiringDateRange.responseType"
+                    <select ng-model="default.facilityReportsRequiringDateRange.responseType"
                             ng-options="type as label for (label , type) in ::formats"
-                            ng-change="setDefault('responseType', 'reportsRequiringDateRange')">
+                            ng-change="setDefault('responseType', 'facilityReportsRequiringDateRange')">
                         <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
                     </select>
                 </th>
@@ -35,12 +35,12 @@
             <tr ng-repeat="report in ::facilityReportsRequiringDateRange">
                 <td>{{:: report.name }}</td>
                 <td class="reports-start-date">
-                    <input date-converter class="form-field start-date" type="date" max="{{report.stopDate | date:'yyyy-MM-dd'}}"
-                           ng-model="report.startDate">
+                    <input class="form-field start-date" type="text" max="{{report.stopDate | date:'yyyy-MM-dd'}}"
+                           ng-model="report.startDate" datepicker placeholder="dd-mm-yyyy">
                 </td>
                 <td class="reports-stop-date">
-                    <input date-converter class="form-field stop-date" type="date" min="{{report.startDate | date:'yyyy-MM-dd'}}"
-                            ng-model="report.stopDate">
+                    <input class="form-field stop-date" type="text" min="{{report.startDate | date:'yyyy-MM-dd'}}"
+                            ng-model="report.stopDate" datepicker placeholder="dd-mm-yyyy">
                 </td>
                 <td class="reports-format">
                     <select ng-model="report.responseType" ng-options="type as label for (label , type) in ::formats">
@@ -73,8 +73,8 @@
                 <th>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</th>
                 <th class="reports-format">
                     {{::'REPORT_FORMAT_KEY' | translate}}
-                    <select ng-model="default.reportsNotRequiringDateRange.responseType"
-                            ng-change="setDefault('responseType', 'reportsNotRequiringDateRange')"
+                    <select ng-model="default.facilityReportsNotRequiringDateRange.responseType"
+                            ng-change="setDefault('responseType', 'facilityReportsNotRequiringDateRange')"
                             ng-options="type as label for (label , type) in ::formats">
                         <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
                     </select>

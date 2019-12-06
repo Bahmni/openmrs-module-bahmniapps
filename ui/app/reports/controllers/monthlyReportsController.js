@@ -18,10 +18,16 @@ angular.module('bahmni.reports')
         $scope.enableReportQueue = appService.getAppDescriptor().getConfigValue("enableReportQueue");
 
         $scope.setDefault = function (item, header) {
-            var setToChange = header === 'reportsRequiringDateRange' ? $rootScope.monthlyReportsRequiringDateRange : $rootScope.monthlyReportsNotRequiringDateRange;
-            setToChange.forEach(function (report) {
-                report[item] = $rootScope.default[header][item];
-            });
+            var setToChange = header === 'monthlyReportsRequiringDateRange' ? $rootScope.monthlyReportsRequiringDateRange : $rootScope.monthlyReportsNotRequiringDateRange;
+            if (item === 'responseType') {
+                setToChange.forEach(function (report) {
+                    report[item] = $rootScope.default[header][item];
+                });
+            } else {
+                setToChange.forEach(function (report) {
+                    report[item] = moment($rootScope.default[header][item], 'DD-MM-YYYY').format('DD-MM-YYYY');
+                });
+            }
         };
 
         var isDateRangeRequiredFor = function (report) {
@@ -40,14 +46,16 @@ angular.module('bahmni.reports')
                 }
                 report.reportTemplateLocation = report.config.macroTemplatePath;
             }
-            report.startDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.startDate);
-            report.stopDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.stopDate);
-            if (isDateRangeRequiredFor(report) && (!report.startDate || !report.stopDate)) {
+            // report.startDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.startDate);
+            // report.stopDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.stopDate);
+            var startDate = moment(report.startDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
+            var stopDate = moment(report.stopDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
+            if (isDateRangeRequiredFor(report) && (!startDate || !stopDate)) {
                 var msg = [];
-                if (!report.startDate) {
+                if (!startDate) {
                     msg.push("start date");
                 }
-                if (!report.stopDate) {
+                if (!stopDate) {
                     msg.push("end date");
                 }
                 messagingService.showMessage("error", "Please select the " + msg.join(" and "));
@@ -62,8 +70,13 @@ angular.module('bahmni.reports')
 
         $scope.downloadReport = function (report) {
             if (validateReport(report)) {
-                report.appName = appName;
-                reportService.generateReport(report);
+                var startDate = moment(report.startDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
+                var stopDate = moment(report.stopDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
+                var objReport = angular.copy(report);
+                objReport.startDate = startDate;
+                objReport.stopDate = stopDate;
+                objReport.appName = appName;
+                reportService.generateReport(objReport);
                 if (report.responseType === 'application/vnd.ms-excel-custom') {
                     report.reportTemplateLocation = undefined;
                     report.responseType = _.values($scope.formats)[0];
@@ -78,7 +91,13 @@ angular.module('bahmni.reports')
 
         $scope.scheduleReport = function (report) {
             if (validateReport(report)) {
-                spinner.forPromise(reportService.scheduleReport(report)).then(function () {
+                var startDate = moment(report.startDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
+                var stopDate = moment(report.stopDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
+                var objReport = angular.copy(report);
+                objReport.startDate = startDate;
+                objReport.stopDate = stopDate;
+                objReport.appName = appName;
+                spinner.forPromise(reportService.scheduleReport(objReport)).then(function () {
                     messagingService.showMessage("info", report.name + " added to My Reports");
                 }, function () {
                     messagingService.showMessage("error", "Error in scheduling report");
