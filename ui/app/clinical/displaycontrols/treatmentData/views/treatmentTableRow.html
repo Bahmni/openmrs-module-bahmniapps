@@ -1,4 +1,4 @@
-<tr ng-class="::{active: drugOrder.isActive(), 'test-notes-parent': (drugOrder.additionalInstructions || ''), 'notes-open': (drugOrder.showDetails == true)}" >
+<tr ng-if="drugOrder.drug.form ==='HIVTC, ART Regimen'" ng-class="::{active: drugOrder.isActive(), 'test-notes-parent': (drugOrder.additionalInstructions || ''), 'notes-open': (drugOrder.showDetails == true)}" >
     <td class="drug" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped(), 'active-drug': drugOrder.isActive(), 'scheduled-drug': drugOrder.isScheduled()}">
         <span >{{::drugOrder.getDrugOrderName((params.showDrugForm == true))}}</span>
         <span ng-repeat="orderAttribute in drugOrder.orderAttributes" ng-if="::orderAttribute.value == 'true'" ng-class="'drug-attr-highlight'">
@@ -22,7 +22,7 @@
         </button>
     </td>
 </tr>
-<tr ng-if="::drugOrder.additionalInstructions" ng-class="::{'has-test-notes': drugOrder.additionalInstructions}">
+<tr ng-if="::drugOrder.additionalInstructions && drugOrder.drug.form ==='HIVTC, ART Regimen'" ng-class="::{'has-test-notes': drugOrder.additionalInstructions}">
     <td colspan="4" class="notes test-notes">
         <i class="fa fa-comments left"></i>
         <pre class="left">{{::drugOrder.additionalInstructions}}</pre>
@@ -33,7 +33,7 @@
         </div>
     </td>
 </tr>
-<tr bm-show="drugOrder.showDetails" ng-if="::!drugOrder.additionalInstructions">
+<tr bm-show="drugOrder.showDetails" ng-if="::!drugOrder.additionalInstructions && drugOrder.drug.form ==='HIVTC, ART Regimen'">
     <td colspan="4" class="notes inline-notes">
         <div class="footer-note right">
             <span class="provider" ng-if="::params.showProvider">
