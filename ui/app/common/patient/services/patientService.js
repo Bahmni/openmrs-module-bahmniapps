@@ -18,7 +18,13 @@ angular.module('bahmni.common.patient')
                 withCredentials: true
             });
         };
-
+        this.getVisits = function(patientUuid) {
+            return $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/visit", {
+                method: "GET",
+                params: {patient: patientUuid, v: "full"},
+                withCredentials: true
+            });
+        };
         this.findPatients = function (params) {
             return $http.get(Bahmni.Common.Constants.sqlUrl, {
                 method: "GET",
