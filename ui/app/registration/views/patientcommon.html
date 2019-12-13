@@ -162,18 +162,28 @@
 
                 <div ng-if="::(section.canShow && section.order === 5)">
                     <legend class="registraion_legend">
-                        <span class="mylegend"> {{ ::'REGISTRATION_LABEL_ADDRESS_INFO' | translate}}</span>
+                        <span class="mylegend"> {{ ::'REGISTRATION_LABEL_PERMANENT_ADDRESS_INFO' | translate}}</span>
                     </legend>
-
-                    <section address-fields data-address-levels="::addressLevels" data-address="patient.address"
+                    <section address-fields data-address-levels="::addressLevels" data-address="patient.permanentAddress"
                              field-validation="::fieldValidation"
                              strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"
                              ng-if="::!addressHierarchyConfigs.showAddressFieldsTopDown"></section>
+                    <section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.permanentAddress"
+                             field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
+                             strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
 
-                    <section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.address"
+					<legend class="registraion_legend">
+                        <span class="mylegend"> {{ ::'REGISTRATION_LABEL_CURRENT_ADDRESS_INFO' | translate}}</span>
+                    </legend>
+                    <section address-fields data-address-levels="::addressLevels" data-address="patient.currentAddress"
+                             field-validation="::fieldValidation"
+                             strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"
+                             ng-if="::!addressHierarchyConfigs.showAddressFieldsTopDown"></section>
+                    <section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.currentAddress"
                              field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
                              strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
                     <br/>
+
                     <section class="form-field-inline clearfix" ng-show="!heiRelationship">
                         <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.attributes.length > 0)"
                              ng-class="::{'right-form-field' : $index%2 != 0}">

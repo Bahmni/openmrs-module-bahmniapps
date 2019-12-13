@@ -16,6 +16,7 @@ angular.module('bahmni.registration')
     })
     .controller('TopDownAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', function ($scope, addressHierarchyService) {
         $scope.addressFieldInvalid = false;
+        $scope.heiAddressFields = ["cityVillage", "postalCode", "stateProvince"];
         var selectedAddressUuids = {};
         var selectedUserGeneratedIds = {};
 
@@ -41,7 +42,7 @@ angular.module('bahmni.registration')
                 newAddress.splice(8, 1, value);
             } else if (value.addressField === "postalCode") {
                 newAddress.splice(9, 1, value);
-            }else if (value.addressField === "country") {
+            } else if (value.addressField === "country") {
                 newAddress.splice(0, 1, value);
             }
         });
@@ -168,7 +169,7 @@ angular.module('bahmni.registration')
                 isStrictEntry = addressLevel.isStrictEntry;
             });
             $scope.addressLevels.reverse();
-
+            $scope.heiAddressFields = ["cityVillage", "postalCode", "stateProvince"];
             // wait for address to be resolved in edit patient scenario
             var deregisterAddressWatch = $scope.$watch('address', function (newValue) {
                 if (newValue !== undefined) {

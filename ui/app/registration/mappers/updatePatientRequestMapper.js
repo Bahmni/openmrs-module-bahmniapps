@@ -21,7 +21,8 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                             "preferred": true
                         }
                     ],
-                    addresses: [_.pick(patient.address, Bahmni.Registration.Constants.allAddressFileds)],
+                    addresses: [_.pick(patient.currentAddress, Bahmni.Registration.Constants.allAddressFileds), _.pick(patient.permanentAddress, Bahmni.Registration.Constants.allAddressFileds)],
+                    // addresses: [_.pick(patient.address, Bahmni.Registration.Constants.allAddressFileds)],
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
                     birthdateEstimated: patient.birthdateEstimated,
                     birthtime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(patient.birthtime),
