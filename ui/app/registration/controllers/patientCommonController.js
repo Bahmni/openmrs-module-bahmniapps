@@ -250,19 +250,23 @@ angular.module('bahmni.registration')
             };
 
             var toggleHeiAddressFields = function () {
-                var heiAddressFields = ["cityVillage", "postalCode", "stateProvince"];
+                var attrElements = angular.element(document).find(".heiAddressField");
+                if (attrElements) {
+                    attrElements.css('display', $scope.heiRelationship ? 'block' : 'none');
+                }
+                /* var heiAddressFields = ["cityVillage", "postalCode", "stateProvince"];
                 for (var i = 0; i < heiAddressFields.length; i++) {
                     var attrName = heiAddressFields[i];
                     var attrElement = angular.element(document.getElementById(attrName + "_fld"));
                     if (attrElement) {
                         attrElement.css('display', $scope.heiRelationship ? 'block' : 'none');
                     }
-                }
+                } */
             };
 
             $scope.$watch('patientLoaded', function () {
                 if ($scope.patientLoaded) {
-                    $scope.patient.birthdate = moment($scope.patient.birthdate).format('DD-MM-YYYY');
+                    // $scope.patient.birthdate = moment($scope.patient.birthdate).format('DD-MM-YYYY');
                     executeShowOrHideRules();
                     $scope.walkInPatientType = false;
                     if ($scope.patient['TypeofPatient'] && ($scope.patient['TypeofPatient'].value === "HeiRelationship" ||

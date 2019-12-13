@@ -84,6 +84,8 @@ angular.module('bahmni.registration')
             var init = function () {
                 $scope.patient = patient.create();
                 $scope.patient.newlyAddedRelationships = [];
+                $scope.patient.permanentAddress = {};
+                $scope.patient.currentAddress = {};
                 prepopulateDefaultsInFields();
                 expandSectionsWithDefaultValue();
                 initTodaysDate();
@@ -165,6 +167,9 @@ angular.module('bahmni.registration')
                 var idgenPatientPrefix = {};
                 idgenPatientPrefix.identifierPrefix = {};
                 idgenPatientPrefix.identifierPrefix.prefix = prefix;
+                $scope.patient.permanentAddress.preferred = true;
+                $scope.patient.permanentAddress.address15 = "Is permanent dummy address";
+                $scope.patient.currentAddress.address15 = "Is current dummy address";
                 if (personAttributeTypeofPatient && $scope.patient[personAttributeTypeofPatient] &&
                     ($scope.patient[personAttributeTypeofPatient].value === "NewPatient")) {
                     return spinner.forPromise(patientService.generateIdentifier(idgenPatientPrefix).then(function (response) {
@@ -266,7 +271,7 @@ angular.module('bahmni.registration')
                                 }
                             }
                         }))).then(function () {
-                                patientService.create($scope.patient, jumpAccepted)
+                            patientService.create($scope.patient, jumpAccepted)
                                 .then(function (response) {
                                     copyPatientProfileDataToScope(response);
                                 }, function (response) {

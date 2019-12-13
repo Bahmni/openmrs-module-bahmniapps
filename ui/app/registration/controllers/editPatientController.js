@@ -15,7 +15,6 @@ angular.module('bahmni.registration')
 
             $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
             $scope.patientLoaded = false;
-
             /* var setReadOnlyFields = function () {
                 $scope.readOnlyFields = {};
                 var readOnlyFields = appService.getAppDescriptor().getConfigValue("readOnlyFields");
@@ -37,6 +36,12 @@ angular.module('bahmni.registration')
                     $scope.patient.newlyAddedRelationships = [];
                 }
                 $scope.patientLoaded = true;
+                $scope.patient.permanentAddress = $scope.patient.permanentAddress || {};
+                $scope.patient.permanentAddress.preferred = true;
+                $scope.patient.currentAddress = $scope.patient.currentAddress || {};
+                $scope.patient.permanentAddress.address15 = "Is permanent dummy address";
+                $scope.patient.currentAddress.address15 = "Is current dummy address";
+                $scope.patient.birthdate = moment($scope.patient.birthdate).format('DD-MM-YYYY');
             };
 
             var expandDataFilledSections = function () {
