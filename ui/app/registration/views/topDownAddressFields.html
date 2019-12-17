@@ -20,27 +20,8 @@
                    initial-value="selectedValue[addressLevel.addressField]"
                    is-invalid="addressFieldInvalid"
                    ng-class="{'illegalValue': addressFieldInvalid}"
-                   on-edit="removeAutoCompleteEntry(addressLevel.addressField)"/>
-        </div>
-        
-        <!-- <div class="field-value" ng-if="::addressLevel.addressField !=='address1'">
-            <input type="text"
-                   id="{{::addressLevel.addressField}}"
-                   pattern-validate
-                   non-blank="::addressLevel.required"
-                   ng-model="address[addressLevel.addressField]"
-                   source="getAddressEntryList(addressLevel.addressField)"
-                   response-map="getAddressDataResults"
-                   on-select="addressFieldSelected(addressLevel.addressField)"
-                   ng-change="clearFields(addressLevel.addressField)"
-                   min-length="1"
-                   strict-select="addressLevel.isStrictEntry"
-                   initial-value="selectedValue[addressLevel.addressField]"
-                   is-invalid="addressFieldInvalid"
-                   ng-class="{'illegalValue': addressFieldInvalid}"
                    on-edit="removeAutoCompleteEntry(addressLevel.addressField)"
-                   bahmni-autocomplete
-                   required/>
-        </div> -->
+                   ng-disabled="fieldReadOnly"/>
+        </div>
     </article>
 </section>

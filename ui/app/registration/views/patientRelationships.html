@@ -13,7 +13,8 @@
                     <span>{{relationship.endDate | bahmniDate}}</span>
                 </div>
                 <div class="col col4">
-                    <button type="button" class="small-btn row-remover" ng-confirm-click="removeRelationship(relationship)" id="relationRemoveBtn">
+                    <button type="button" class="small-btn row-remover" ng-confirm-click="removeRelationship(relationship)" id="relationRemoveBtn"
+                    	ng-disabled="isReadOnly()">
                         <span class="fa fa-remove"></span>
                     </button>
                 </div>
@@ -30,7 +31,7 @@
                     </div>
                     <div class="field-value">
                         <select ng-model="newRelationship.relationshipType.uuid" ng-options="type.uuid as type.aIsToB for type in ::relationshipTypes"
-                                ng-change="clearRelationshipRow(newRelationship, $index);">
+                                ng-change="clearRelationshipRow(newRelationship, $index);" ng-disabled="newRelationship.relationshipType.uuid && isReadOnly()">
                             <option value="">{{ ::'REGISTRATION_LABEL_SELECT_RELATIONSHIP_TYPE' | translate}}</option>
                         </select>
                     </div>

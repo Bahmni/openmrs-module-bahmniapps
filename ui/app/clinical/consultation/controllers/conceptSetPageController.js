@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService',
         'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner',
-        'contextChangeHandler', '$q', '$translate', 'formService','patientService',
+        'contextChangeHandler', '$q', '$translate', 'formService', 'patientService',
         function ($scope, $rootScope, $stateParams, conceptSetService,
             clinicalAppConfigService, messagingService, configurations, $state, spinner,
-            contextChangeHandler, $q, $translate, formService , patientService) {
+            contextChangeHandler, $q, $translate, formService, patientService) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
@@ -64,7 +64,7 @@ angular.module('bahmni.clinical')
                         var currentuserRoleName = $rootScope.currentUser.roles[0].name;
                         if (currentuserRoleName == "Data Clerk") {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
-                                if (allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload || allTemplates[i].uuid == tbscreeningform  || allTemplates[i].uuid == eacforms) {
+                                if (allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload || allTemplates[i].uuid == tbscreeningform || allTemplates[i].uuid == eacforms) {
                                     allTemplates.splice(i, 1);
                                 }
                             }

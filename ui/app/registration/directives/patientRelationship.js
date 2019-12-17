@@ -7,12 +7,15 @@ angular.module('bahmni.registration')
             templateUrl: 'views/patientRelationships.html',
             controller: 'PatientRelationshipController',
             scope: {
-                patient: "="
+                patient: "=",
+                isReadOnly: '&'
             }
         };
     })
     .controller('PatientRelationshipController', ['$window', '$scope', '$rootScope', 'spinner', 'patientService', 'providerService', 'appService', '$q',
         function ($window, $scope, $rootScope, spinner, patientService, providerService, appService, $q) {
+            $scope.isReadOnly = $scope.isReadOnly() || function () { return false; };
+
             $scope.addPlaceholderRelationship = function () {
                 $scope.patient.newlyAddedRelationships.push({});
             };

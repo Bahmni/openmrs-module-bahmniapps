@@ -29,6 +29,8 @@
             </button>
         </span>
     </span>
-    <button type="submit" class="right submit-btn" ng-click="setSubmitSource('save')"
+    <button id="saveBtn" type="submit" class="right submit-btn" ng-click="setSubmitSource('save')" ng-disabled="inEditPatient"
             accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
+    <button id="editBtn" type="button" class="right submit-btn" ng-click="enableSave()" ng-disabled="!inEditPatient"
+            accesskey="{{ ::'REGISTRATION_EDIT_PATIENT_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_EDIT_PATIENT' | translate"></button>
 </div>

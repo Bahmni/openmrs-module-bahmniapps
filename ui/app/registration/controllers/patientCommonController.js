@@ -19,12 +19,11 @@ angular.module('bahmni.registration')
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
             $scope.fieldValidation = appService.getAppDescriptor().getConfigValue("fieldValidation") || {};
-
             $scope.today = moment(Bahmni.Common.Util.DateUtil.now()).format('DD-MM-YYYY');
-
             $scope.heiRelationship = false;
             $scope.infantPatient = false;
             $scope.walkInPatientType = false;
+            $scope.inEditPatient = false;
 
             var dontSaveButtonClicked = false;
             var isHref = false;
@@ -79,12 +78,17 @@ angular.module('bahmni.registration')
             };
 
             $scope.isReadOnly = function (fieldName) {
-                var readOnlyPatientAttributes = ["HealthFacilityName", "TodaysDate", "RegistrantName", "UniqueArtNo", "TypeofPatient", "HIVExposedInfant(HEI)No"];
+                var readOnlyPatientAttributes = ["HealthFacilityName", "TodaysDate", "RegistrantName", "UniqueArtNo",
+                    "TypeofPatient", "HIVExposedInfant(HEI)No"];
 
                 if (!$scope.patientLoaded) {
                     readOnlyPatientAttributes = [];
                 }
-                return readOnlyPatientAttributes.indexOf(fieldName) > -1 || false;
+                return $scope.inEditPatient || readOnlyPatientAttributes.indexOf(fieldName) > -1 || false;
+            };
+
+            $scope.getEditFlag = function () {
+                return $scope.inEditPatient;
             };
 
             var showSections = function (sectionsToShow, allSections) {
@@ -219,11 +223,24 @@ angular.module('bahmni.registration')
                 });
             };
 
+            var toggleHeiAddressFields = function () {
+                var attrElements = angular.element(document).find(".heiAddressField");
+                if (attrElements) {
+                    attrElements.css('display', $scope.heiRelationship ? 'block' : 'none');
+                }
+            };
+
             var setReadOnlyFields = function () {
                 if (personAttributes.length == 0) {
                     personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
                         return attribute.name;
                     });
+                }
+                if ($scope.inEditPatient) {
+                    $scope.$applyAsync(angular.element(document).find("#myForm :input").attr('disabled', true));
+                    $scope.$applyAsync(angular.element(document).find("button").attr('disabled', false));
+                    $scope.$applyAsync(angular.element(document).find("#saveBtn").attr('disabled', true));
+                    return;
                 }
                 var personAttributeHasTypeofPatient = personAttributes.indexOf("TypeofPatient") !== -1;
                 var personAttributeTypeofPatient = personAttributeHasTypeofPatient
@@ -249,38 +266,6 @@ angular.module('bahmni.registration')
                 }
             };
 
-            var toggleHeiAddressFields = function () {
-                var attrElements = angular.element(document).find(".heiAddressField");
-                if (attrElements) {
-                    attrElements.css('display', $scope.heiRelationship ? 'block' : 'none');
-                }
-                /* var heiAddressFields = ["cityVillage", "postalCode", "stateProvince"];
-                for (var i = 0; i < heiAddressFields.length; i++) {
-                    var attrName = heiAddressFields[i];
-                    var attrElement = angular.element(document.getElementById(attrName + "_fld"));
-                    if (attrElement) {
-                        attrElement.css('display', $scope.heiRelationship ? 'block' : 'none');
-                    }
-                } */
-            };
-
-            $scope.$watch('patientLoaded', function () {
-                if ($scope.patientLoaded) {
-                    // $scope.patient.birthdate = moment($scope.patient.birthdate).format('DD-MM-YYYY');
-                    executeShowOrHideRules();
-                    $scope.walkInPatientType = false;
-                    if ($scope.patient['TypeofPatient'] && ($scope.patient['TypeofPatient'].value === "HeiRelationship" ||
-                        $scope.patient['TypeofPatient'].value === "ExistingHeiRelationship")) {
-                        $scope.heiRelationship = true;
-                        disableFieldsForInfant();
-                    } else if ($scope.patient['TypeofPatient'] && $scope.patient['TypeofPatient'].value === "Walk-In") {
-                        $scope.walkInPatientType = true;
-                    }
-                    toggleHeiAddressFields();
-                    setReadOnlyFields();
-                }
-            });
-
             var disableFieldsForInfant = function () {
                 if (personAttributes.length == 0) {
                     personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
@@ -302,6 +287,24 @@ angular.module('bahmni.registration')
                     }
                 }
             };
+
+            $scope.$watch('patientLoaded', function () {
+                if ($scope.patientLoaded) {
+                    // $scope.patient.birthdate = moment($scope.patient.birthdate).format('DD-MM-YYYY');
+                    $scope.inEditPatient = true;
+                    executeShowOrHideRules();
+                    $scope.walkInPatientType = false;
+                    if ($scope.patient['TypeofPatient'] && ($scope.patient['TypeofPatient'].value === "HeiRelationship" ||
+                        $scope.patient['TypeofPatient'].value === "ExistingHeiRelationship")) {
+                        $scope.heiRelationship = true;
+                        disableFieldsForInfant();
+                    } else if ($scope.patient['TypeofPatient'] && $scope.patient['TypeofPatient'].value === "Walk-In") {
+                        $scope.walkInPatientType = true;
+                    }
+                    toggleHeiAddressFields();
+                    setReadOnlyFields();
+                }
+            });
 
             $scope.getAutoCompleteList = function (attributeName, query, type) {
                 return patientAttributeService.search(attributeName, query, type);

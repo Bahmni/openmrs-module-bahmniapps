@@ -20,6 +20,7 @@ angular.module('bahmni.registration')
                 showStartVisitButton = (_.isUndefined(showStartVisitButton) || _.isNull(showStartVisitButton)) ? true : showStartVisitButton;
                 var visitLocationUuid = $rootScope.visitLocation;
                 var forwardUrls = forwardUrlsForVisitTypes || false;
+                $scope.inEditPatient = false;
 
                 var getForwardUrlEntryForVisitFromTheConfig = function () {
                     var matchedEntry = _.find(forwardUrls, function (entry) {
@@ -56,8 +57,10 @@ angular.module('bahmni.registration')
                     if (_.isEmpty(uuid)) {
                         self.hasActiveVisit = false;
                         setForwardActionKey();
+                        $scope.inEditPatient = false;
                         return;
                     }
+                    $scope.inEditPatient = true;
                     var searchParams = {
                         patient: uuid,
                         includeInactive: false,
@@ -115,6 +118,7 @@ angular.module('bahmni.registration')
                     case 'configAction':
                         return handleConfigAction(patientProfileData);
                     case 'save':
+                        $scope.inEditPatient = true;
                         $scope.afterSave();
                     }
                 };
@@ -158,6 +162,10 @@ angular.module('bahmni.registration')
                     }));
                 };
 
+                $scope.enableSave = function () {
+                    $scope.inEditPatient = false;
+                    $scope.processEnabledSave();
+                };
                 init();
             };
             return {
