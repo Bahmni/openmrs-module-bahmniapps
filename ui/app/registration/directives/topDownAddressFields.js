@@ -10,7 +10,8 @@ angular.module('bahmni.registration')
                 address: '=',
                 addressLevels: '=',
                 fieldValidation: '=',
-                strictAutocompleteFromLevel: '='
+                strictAutocompleteFromLevel: '=',
+                fieldReadOnly: '='
             }
         };
     })

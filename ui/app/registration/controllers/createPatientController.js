@@ -83,6 +83,8 @@ angular.module('bahmni.registration')
 
             var init = function () {
                 $scope.patient = patient.create();
+                $scope.patient.age.years = 0;
+                $scope.patient.age.months = 0;
                 $scope.patient.newlyAddedRelationships = [];
                 $scope.patient.permanentAddress = {};
                 $scope.patient.currentAddress = {};
@@ -91,8 +93,8 @@ angular.module('bahmni.registration')
                 initTodaysDate();
                 $scope.patientLoaded = false;
                 $scope.heiRelationship = false;
+                $scope.inEditPatient = false;
             };
-
             init();
 
             var prepopulateFields = function () {

@@ -15,6 +15,7 @@ angular.module('bahmni.registration')
 
             $scope.today = dateUtil.getDateWithoutTime(dateUtil.now());
             $scope.patientLoaded = false;
+
             /* var setReadOnlyFields = function () {
                 $scope.readOnlyFields = {};
                 var readOnlyFields = appService.getAppDescriptor().getConfigValue("readOnlyFields");
@@ -35,7 +36,6 @@ angular.module('bahmni.registration')
                 } else {
                     $scope.patient.newlyAddedRelationships = [];
                 }
-                $scope.patientLoaded = true;
                 $scope.patient.permanentAddress = $scope.patient.permanentAddress || {};
                 $scope.patient.permanentAddress.preferred = true;
                 $scope.patient.currentAddress = $scope.patient.currentAddress || {};
@@ -53,9 +53,13 @@ angular.module('bahmni.registration')
                 });
             };
 
-            (function () {
+            var init = function () {
+                if (personAttributes.length == 0) {
+                    personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
+                        return attribute.name;
+                    });
+                }
                 var getPatientPromise = patientService.get(uuid).then(successCallBack);
-
                 var isDigitized = encounterService.getDigitized(uuid);
                 isDigitized.then(function (data) {
                     var encountersWithObservations = data.data.results.filter(function (encounter) {
@@ -63,9 +67,76 @@ angular.module('bahmni.registration')
                     });
                     $scope.isDigitized = encountersWithObservations.length > 0;
                 });
+                // return spinner.forPromise($q.all([getPatientPromise, isDigitized]));
+                return getPatientPromise.then(function () {
+                    spinner.forPromise(isDigitized);
+                }).then(function () {
+                    $scope.inEditPatient = true;
+                    $scope.patientLoaded = true;
+                });
+            };
+            spinner.forPromise(init());
 
-                spinner.forPromise($q.all([getPatientPromise, isDigitized]));
-            })();
+            var setReadOnlyFields = function () {
+                if (personAttributes.length == 0) {
+                    personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
+                        return attribute.name;
+                    });
+                }
+                var personAttributeHasTypeofPatient = personAttributes.indexOf("TypeofPatient") !== -1;
+                var personAttributeTypeofPatient = personAttributeHasTypeofPatient
+                    ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("TypeofPatient")].name : undefined;
+                if (personAttributeTypeofPatient && $scope.patient[personAttributeTypeofPatient] &&
+                        $scope.patient[personAttributeTypeofPatient].value === "Walk-In") {
+                    for (var i = 0; i < personAttributes.length; i++) {
+                        var attrName = personAttributes[i];
+                        var attrElement = angular.element(document.getElementById(attrName));
+                        if (attrElement) {
+                            attrElement.attr('disabled', true);
+                        }
+                    }
+                } else {
+                    var readOnlyPatientAttributes = ["HealthFacilityName", "TodaysDate", "RegistrantName", "UniqueArtNo", "TypeofPatient", "HIVExposedInfant(HEI)No"];
+                    for (var i = 0; i < readOnlyPatientAttributes.length; i++) {
+                        var attrName = readOnlyPatientAttributes[i];
+                        var attrElement = angular.element(document.getElementById(attrName));
+                        if (attrElement) {
+                            attrElement.attr('disabled', true);
+                        }
+                    }
+                }
+            };
+
+            var disableFieldsForInfant = function () {
+                if (personAttributes.length == 0) {
+                    personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
+                        return attribute.name;
+                    });
+                }
+                if (($scope.patient.age.years === 0 && $scope.patient.age.months <= 12) ||
+                    ($scope.patient.age.years === 1 && $scope.patient.age.months <= 6)) {
+                    $scope.infantPatient = true;
+                }
+                for (var i = 0; i < personAttributes.length; ++i) {
+                    var attrName = personAttributes[i];
+                    if (attrName === "MaritalStatus") {
+                        var attrElement = angular.element(document.getElementById(attrName));
+                        if (attrElement) {
+                            attrElement.attr('disabled', $scope.infantPatient);
+                        }
+                        break;
+                    }
+                }
+            };
+
+            $scope.processEnabledSave = function () {
+                $scope.inEditPatient = false;
+                $scope.$applyAsync(angular.element(document).find("#myForm :input").attr('disabled', false));
+                setReadOnlyFields();
+                disableFieldsForInfant();
+                $scope.$applyAsync(angular.element(document).find("button").attr('disabled', false));
+                $scope.$applyAsync(angular.element(document).find("#editBtn").attr('disabled', true));
+            };
 
             $scope.update = function () {
                 addNewRelationships();
@@ -76,11 +147,13 @@ angular.module('bahmni.registration')
                     });
                     return $q.when({});
                 }
-
+                $scope.patientLoaded = false;
                 return spinner.forPromise(patientService.update($scope.patient, $scope.openMRSPatient).then(function (result) {
                     var patientProfileData = result.data;
                     if (!patientProfileData.error) {
                         successCallBack(patientProfileData);
+                        $scope.inEditPatient = true;
+                        $scope.patientLoaded = true;
                         $scope.actions.followUpAction(patientProfileData);
                     }
                 }));

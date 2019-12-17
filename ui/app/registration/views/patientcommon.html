@@ -69,14 +69,14 @@
                             <div id="patientFirstName" class="field-value">
                               <span data-ng-switch="::isAutoComplete('givenName')"
                                     ng-if="::patientConfiguration.local()['showNameField']">
-                                  <input data-ng-switch-when="true"
+                                  <input data-ng-switch-when="true" ng-disabled="isReadOnly()"
                                          type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
                                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                                          data-item-type="personName" maxlength="10" style="width:100px;"
                                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
 
-                                  <input data-ng-switch-default
+                                  <input data-ng-switch-default ng-disabled="isReadOnly()"
                                          type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
                                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" maxlength="10" style="width:100px;"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
@@ -87,17 +87,17 @@
                                   <input data-ng-switch-when="true"
                                          type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
                                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
-                                         data-item-type="personName" maxlength="50" style="width:100px;"
+                                         data-item-type="personName" maxlength="50" style="width:100px;" ng-disabled="isReadOnly()"
                                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" maxlength="10"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
 
                                   <input data-ng-switch-default
-                                         type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
+                                         type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate ng-disabled="isReadOnly()"
                                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}" maxlength="10" style="width:100px;"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
                               </span>
                               <span ng-show="::showLastName" data-ng-switch="::isAutoComplete('familyName')">
-                                  <input data-ng-switch-when="true" maxlength="50" style="width:100px;"
+                                  <input data-ng-switch-when="true" maxlength="50" style="width:100px;" ng-disabled="isReadOnly()"
                                          type="text" id="familyName" ng-model="$parent.patient.familyName" pattern-validate
                                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                                          data-item-type="personName"
@@ -105,7 +105,7 @@
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
 
                                   <input data-ng-switch-default
-                                         type="text" id="familyName" ng-model="patient.familyName" pattern-validate
+                                         type="text" id="familyName" ng-model="patient.familyName" pattern-validate ng-disabled="isReadOnly()"
                                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}" maxlength="50" style="width:100px;"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
                               </span>
@@ -119,12 +119,12 @@
                                   <input data-ng-switch-when="true"
                                          type="text" id="middleName" ng-model="$parent.patient.middleName" pattern-validate
                                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
-                                         data-item-type="personName" maxlength="10" style="width:100px;"
+                                         data-item-type="personName" maxlength="10" style="width:100px;" ng-disabled="isReadOnly()"
                                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
 
                                   <input data-ng-switch-default
-                                         type="text" id="middleName" ng-model="patient.middleName" pattern-validate
+                                         type="text" id="middleName" ng-model="patient.middleName" pattern-validate ng-disabled="isReadOnly()"
                                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}" maxlength="10" style="width:100px;"
                                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
                               </span>
@@ -144,7 +144,7 @@
                                         class="asterick">*</span></label>
                             </div>
                             <div class="field-value">
-                                <select id="gender" ng-model="patient.gender" required="required" title="{{ 'REGISTRATION_LABEL_SELECT_GENDER'|translate }}"
+                                <select id="gender" ng-model="patient.gender" required="required" title="{{ 'REGISTRATION_LABEL_SELECT_GENDER'|translate }}" ng-disabled="isReadOnly()"
                                         ng-options="genderMap[genderCode] for genderCode in genderCodes track by genderCode" ng-change="handleUpdate('gender')">
                                     <option value="">{{ ::'REGISTRATION_LABEL_SELECT_GENDER' | translate}}</option>
                                 </select>
@@ -169,7 +169,7 @@
                              strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"
                              ng-if="::!addressHierarchyConfigs.showAddressFieldsTopDown"></section>
                     <section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.permanentAddress"
-                             field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
+                             field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown" field-read-only="inEditPatient"
                              strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
 
 					<legend class="registraion_legend">
@@ -180,7 +180,7 @@
                              strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"
                              ng-if="::!addressHierarchyConfigs.showAddressFieldsTopDown"></section>
                     <section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.currentAddress"
-                             field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown"
+                             field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown" field-read-only="inEditPatient"
                              strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
                     <br/>
 
@@ -207,7 +207,7 @@
                       </strong>
                   </span>
                 </legend>
-                <section class="form-field-inline clearfix" ng-show="!section.expand">
+                <section class="form-field-inline clearfix">
                     <article class="form-field" ng-repeat="attribute in ::section.attributes"
                              ng-class="::{'right-form-field' : $index%2 != 0}">
                         <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
@@ -215,8 +215,8 @@
                               get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                     </article>
                 </section>
-                <section class="form-field-inline clearfix" ng-show="!section.expand">
-                        <div patient-relationship patient="patient" ng-if="::(relationshipTypes && relationshipTypes.length > 0)"></div>
+                <section class="form-field-inline clearfix">
+                        <div patient-relationship patient="patient" ng-if="::(relationshipTypes && relationshipTypes.length > 0)" is-read-only="getEditFlag"></div>
                 </section>
             </div>
         </div>
@@ -234,7 +234,7 @@
                       </strong>
                   </span>
                 </legend>
-                <section class="form-field-inline clearfix" ng-show="!section.expand">
+                <section class="form-field-inline clearfix">
                     <article class="form-field" ng-repeat="attribute in ::section.attributes"
                              ng-class="::{'right-form-field' : $index%2 != 0}">
                         <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
@@ -258,7 +258,7 @@
                       </strong>
                   </span>
                 </legend>
-                <section class="form-field-inline clearfix" ng-show="!section.expand">
+                <section class="form-field-inline clearfix">
                     <article class="form-field" ng-repeat="attribute in ::section.attributes"
                              ng-class="::{'right-form-field' : $index%2 != 0}">
                         <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
