@@ -57,14 +57,55 @@
         <table class="table">
             <thead>
             <tr>
-                <th><strong>{{ ::'REGISTRATION_LABEL_ID' | translate}}</strong></th>
-                <th ng-repeat = "type in ::extraIdentifierTypes track by $index"><strong>{{type.name}}</strong></th>
-                <th><strong>{{ ::'REGISTRATION_LABEL_NAME' | translate}}</strong></th>
-                <th ng-repeat = "field in ::personSearchResultsConfig.fields track by $index"><strong>{{::convertToTableHeader(field)}}</strong></th>
-                <th><strong>{{ ::'REGISTRATION_LABEL_GENDER' | translate}}</strong></th>
-                <th><strong>{{ ::'REGISTRATION_LABEL_AGE' | translate}}</strong></th>
-                <th ng-repeat = "field in ::addressSearchResultsConfig.fields"><strong>{{::convertToTableHeader(getAddressColumnName(field))}}</strong></th>
-                <th><strong>{{ ::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
+                <th ng-click="sortPatient('identifier');orderByField ='identifier'"><strong>{{ ::'REGISTRATION_LABEL_ID' | translate}}
+                    <span ng-show="orderByField == 'identifier' " class="sort-pos">
+                        <span ng-show="direction[0]==='asc'"><i class="sort-by-asc"></i></span>
+                        <span ng-show="direction[0]==='desc'"><i class="sort-by-desc"></i></span>
+                    </span>
+                </strong>
+            </th>
+                <th ng-repeat = "type in ::extraIdentifierTypes track by $index" ng-click="sortPatient('extraIdentifiers.'+type.name);$parent.orderByField ='extraIdentifiers.'+type.name"> <strong>{{type.name}}
+                    <span ng-show="$parent.orderByField == 'extraIdentifiers.'+type.name" class="sort-pos">
+                        <span ng-show="direction[0]==='asc'"><i class="sort-by-asc"></i></span>
+                        <span ng-show="direction[0]==='desc'"><i class="sort-by-desc"></i></span>
+                    </span>
+                </strong></th>
+                <th ng-click="sortPatient('givenName');orderByField ='givenName'"><strong>{{ ::'REGISTRATION_LABEL_NAME' | translate}}
+                    <span ng-show="orderByField == 'givenName'" class="sort-pos">
+                        <span ng-show="direction[0]==='asc'"><i class="sort-by-asc"></i></span>
+                        <span ng-show="direction[0]==='desc'"><i class="sort-by-desc"></i></span>
+                    </span>
+                </strong></th>
+                <th ng-repeat = "field in ::personSearchResultsConfig.fields track by $index" ng-click="sortPatient('customAttribute.'+field);$parent.orderByField ='customAttribute.'+field"><strong>{{::convertToTableHeader(field)}}
+                    <span ng-show="$parent.orderByField == 'customAttribute.'+field" class="sort-pos">
+                        <span ng-show="direction[0]==='asc'"><i class="sort-by-asc"></i></span>
+                        <span ng-show="direction[0]==='desc'"><i class="sort-by-desc"></i></span>
+                    </span>
+                </strong></th>
+                <th ng-click="sortPatient('gender');orderByField ='gender'"><strong>{{ ::'REGISTRATION_LABEL_GENDER' | translate}} 
+                    <span ng-show="orderByField == 'gender'" class="sort-pos">
+                        <span ng-show="direction[0]==='asc'"><i class="sort-by-asc"></i></span>
+                        <span ng-show="direction[0]==='desc'"><i class="sort-by-desc"></i></span>
+                    </span>
+                </strong></th>
+                <th ng-click="sortPatient('age');orderByField ='age';orderByField ='age'"><strong>{{ ::'REGISTRATION_LABEL_AGE' | translate}}
+                    <span ng-show="orderByField == 'age'" class="sort-pos">
+                        <span ng-show="direction[0]==='asc'"><i class="sort-by-asc"></i></span>
+                        <span ng-show="direction[0]==='desc'"><i class="sort-by-desc"></i></span>
+                    </span>
+                </strong></th>
+                <th ng-repeat = "field in ::addressSearchResultsConfig.fields" ng-click="sortPatient('addressFieldValue.'+field);$parent.orderByField ='addressFieldValue.'+field"><strong>{{::convertToTableHeader(getAddressColumnName(field))}}
+                    <span ng-show="$parent.orderByField == 'addressFieldValue.'+field" class="sort-pos">
+                        <span ng-show="direction[0]==='asc'"><i class="sort-by-asc"></i></span>
+                        <span ng-show="direction[0]==='desc'"><i class="sort-by-desc"></i></span>
+                    </span>
+                </strong></th>
+                <th ng-click="sortPatient('dateCreated');orderByField ='dateCreated'"> <strong>{{ ::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}
+                    <span ng-show="orderByField == 'dateCreated'" class="sort-pos">
+                        <span ng-show="direction[0]==='asc'"><i class="sort-by-asc"></i></span>
+                        <span ng-show="direction[0]==='desc'"><i class="sort-by-desc"></i></span>
+                    </span>
+                </strong></th>
                 <th ng-if="::programAttributesSearchConfig.show"><strong>{{::convertToTableHeader(programAttributesSearchConfig.label)}}</strong></th>
             </tr>
             </thead>

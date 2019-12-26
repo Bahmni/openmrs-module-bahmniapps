@@ -65,5 +65,8 @@
   "readmeFilename": "README.md",
   "bugs": {
     "url": "https://github.com/Bhamni/opd/issues"
+  },
+  "dependencies": {
+    "natural-orderby": "^2.0.3"
   }
 }

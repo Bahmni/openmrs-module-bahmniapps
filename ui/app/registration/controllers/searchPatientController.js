@@ -5,6 +5,9 @@ angular.module('bahmni.registration')
         'messagingService', '$translate', '$filter',
         function ($rootScope, $scope, $location, $window, spinner, patientService, appService, messagingService, $translate, $filter) {
             $scope.results = [];
+            var naturalOrderBy = window.naturalOrderBy;
+            $scope.orderByField;
+            $scope.direction = ['asc'];
             $scope.extraIdentifierTypes = _.filter($rootScope.patientConfiguration.identifierTypes, function (identifierType) {
                 return !identifierType.primary;
             });
@@ -23,6 +26,25 @@ angular.module('bahmni.registration')
                     if (addressLevel.addressField === columnCamelCase) { columnName = addressLevel.name; }
                 });
                 return columnName;
+            };
+
+            $scope.sortPatient = function (param) {
+                var paramArray = param.split('.');
+                $scope.results = naturalOrderBy.orderBy($scope.results, [function (obj) {
+                    var tempObj = obj;
+                    paramArray.map(function (currentParam) {
+                        if (tempObj[currentParam]) {
+                            tempObj = tempObj[currentParam];
+                        }
+                    });
+                    return tempObj;
+                }], $scope.direction);
+
+                if ($scope.direction[0] == 'asc') {
+                    $scope.direction[0] = 'desc';
+                } else {
+                    $scope.direction[0] = 'asc';
+                }
             };
 
             var hasSearchParameters = function () {
