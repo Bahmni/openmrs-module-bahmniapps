@@ -71,7 +71,7 @@ angular.module('bahmni.common.patientSearch')
 
         var hideSpinner = function (spinnerObj, data, container) {
             spinnerObj.hide(data, container);
-            $(container).children('div:first-child').hide();
+            $(container).children('patient-list-spinner').hide();
         };
 
         $scope.getHeadings = function (patients) {
@@ -139,7 +139,7 @@ angular.module('bahmni.common.patientSearch')
         }, (patientSearchConfig && patientSearchConfig.fetchDelay) || DEFAULT_FETCH_DELAY, {});
 
         var showSpinner = function (spinnerObj, container) {
-            $(container).children('div:first-child').show();
+            $(container).children('patient-list-spinner').show();
             return spinnerObj.show(container);
         };
 
