@@ -71,13 +71,13 @@ angular.module('bahmni.registration')
                 return getPatientPromise.then(function () {
                     spinner.forPromise(isDigitized);
                 }).then(function () {
-                    $scope.inEditPatient = true;
+                    $scope.patient.inEditPatient = true;
                     $scope.patientLoaded = true;
                 });
             };
             spinner.forPromise(init());
 
-            var setReadOnlyFields = function () {
+            var setReadOnlyEditFields = function () {
                 if (personAttributes.length == 0) {
                     personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
                         return attribute.name;
@@ -107,7 +107,7 @@ angular.module('bahmni.registration')
                 }
             };
 
-            var disableFieldsForInfant = function () {
+            var disableEditFieldsForInfant = function () {
                 if (personAttributes.length == 0) {
                     personAttributes = _.map($rootScope.patientConfiguration.attributeTypes, function (attribute) {
                         return attribute.name;
@@ -122,7 +122,7 @@ angular.module('bahmni.registration')
                     if (attrName === "MaritalStatus") {
                         var attrElement = angular.element(document.getElementById(attrName));
                         if (attrElement) {
-                            attrElement.attr('disabled', $scope.infantPatient);
+                            $scope.$applyAsync(attrElement.attr('disabled', $scope.infantPatient));
                         }
                         break;
                     }
@@ -130,12 +130,12 @@ angular.module('bahmni.registration')
             };
 
             $scope.processEnabledSave = function () {
-                $scope.inEditPatient = false;
+                $scope.patient.inEditPatient = false;
                 $scope.$applyAsync(angular.element(document).find("#myForm :input").attr('disabled', false));
-                setReadOnlyFields();
-                disableFieldsForInfant();
                 $scope.$applyAsync(angular.element(document).find("button").attr('disabled', false));
                 $scope.$applyAsync(angular.element(document).find("#editBtn").attr('disabled', true));
+                disableEditFieldsForInfant();
+                setReadOnlyEditFields();
             };
 
             $scope.update = function () {
@@ -152,7 +152,7 @@ angular.module('bahmni.registration')
                     var patientProfileData = result.data;
                     if (!patientProfileData.error) {
                         successCallBack(patientProfileData);
-                        $scope.inEditPatient = true;
+                        $scope.patient.inEditPatient = true;
                         $scope.patientLoaded = true;
                         $scope.actions.followUpAction(patientProfileData);
                     }
