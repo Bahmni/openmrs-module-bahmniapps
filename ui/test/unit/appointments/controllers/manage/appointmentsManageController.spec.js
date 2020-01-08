@@ -63,5 +63,15 @@ describe('AppointmentsManageController', function () {
         createController();
         var tabName = scope.getCurrentTabName();
         expect(tabName).toBe('summary');
-    })
+    });
+
+    it('should not call state.go when current view name and navigate to view name are same', function () {
+        state.params = {};
+        var appointmentListTabName = 'appointments';
+        state.current = {
+            tabName: appointmentListTabName
+        };
+        scope.navigateTo(appointmentListTabName);
+        expect(state.go).not.toHaveBeenCalled();
+    });
 });
