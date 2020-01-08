@@ -25,7 +25,7 @@
                 </section>
             </div>
         </div>
-        <div class="box-container form" ng-if="section.canShow && (section.order === 2)">
+        <div class="box-container form" ng-if="section.canShow && section.order === 2">
                 <legend>
                    <span>
                        <i class="fa fa-caret-down" ng-show="!section.expand"></i>
@@ -38,9 +38,9 @@
                    </span>
                 </legend>
                 <section class="form-field-inline clearfix">
-                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.attributes.length > 0)"
+                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.order === 2 && section.attributes.length > 0)"
                            ng-class="::{'right-form-field' : $index%2 != 0}">
-                        <span ng-show="attribute.name==='Walk-InReason' && walkInPatientType">
+                        <span ng-if="attribute.name==='Walk-InReason' && walkInPatientType">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                                   is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                                   get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
@@ -53,19 +53,19 @@
                     </article>
                 </section>
         </div>
-        <div class="box-container form" ng-if="section.canShow && (section.order === 3)" ng-show="transferInPatientType">
+        <div class="box-container form" ng-if="section.canShow && section.order === 3 && transferInPatientType">
                 <legend class="registraion_legend">
                         <span class="mylegend"> {{::section.title | translate}}</span>
                 </legend>
                 <section class="form-field-inline clearfix">
-                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.attributes.length > 0)"
+                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.order === 3 && section.attributes.length > 0)"
                            ng-class="::{'right-form-field' : $index%2 != 0}">
-                        <span ng-show="(attribute.name==='TransferredOnART') && transferInPatientType">
+                        <span ng-if="(attribute.name==='TransferredOnART') && transferInPatientType">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                                   is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                                   get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                         </span>
-                        <span ng-show="(attribute.name==='NameOfClinic' || attribute.name==='DateTransferredIn') && transferredOnART">
+                        <span ng-if="(attribute.name==='NameOfClinic' || attribute.name==='DateTransferredIn') && transferredOnART">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                                   is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                                   get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
@@ -172,7 +172,7 @@
                                 </select>
                             </div>
                         </article>
-                        <article class="form-field clearfix" ng-repeat="attribute in ::section.attributes" ng-if="::(section.attributes.length > 0)"
+                        <article class="form-field clearfix" ng-repeat="attribute in ::section.attributes" ng-if="::(section.order === 5 && section.attributes.length > 0)"
                              ng-class="::{'right-form-field' : $index%2 != 0}">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                               is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
@@ -207,7 +207,7 @@
                     <br/>
 
                     <section class="form-field-inline clearfix" ng-show="!heiRelationship">
-                        <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.attributes.length > 0)"
+                        <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.order === 6 && section.attributes.length > 0)"
                              ng-class="::{'right-form-field' : $index%2 != 0}">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                               is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
@@ -230,7 +230,7 @@
                   </span>
                 </legend>
                 <section class="form-field-inline clearfix">
-                    <article class="form-field" ng-repeat="attribute in ::section.attributes"
+                    <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.order === 7 && section.attributes.length > 0)"
                              ng-class="::{'right-form-field' : $index%2 != 0}">
                         <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                               is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
