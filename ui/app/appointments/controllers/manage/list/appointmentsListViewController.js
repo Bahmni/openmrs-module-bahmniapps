@@ -140,6 +140,7 @@ angular.module('bahmni.appointments')
                 $stateParams.isFilterOpen = false;
                 $scope.isFilterOpen = false;
                 $stateParams.isSearchEnabled = true;
+                $scope.selectedAppointment = undefined;
             };
 
             $scope.hasNoAppointments = function () {
