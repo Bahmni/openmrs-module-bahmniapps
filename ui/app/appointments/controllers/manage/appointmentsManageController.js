@@ -6,7 +6,7 @@ angular.module('bahmni.appointments')
             $scope.enableCalendarView = appService.getAppDescriptor().getConfigValue('enableCalendarView');
             $scope.currentViewName = 'summary';
             $scope.navigateTo = function (viewName) {
-                if ($scope.currentViewName === 'appointments' && viewName === 'appointments') {
+                if ($scope.currentViewName === viewName) {
                     return;
                 }
                 var stateName = 'home.manage.' + ((viewName === 'appointments') ? getAppointmentsTab() : viewName);
