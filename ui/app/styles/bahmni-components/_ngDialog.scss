@@ -290,3 +290,6 @@ div.ngdialog-close {
     position:static!important;
     height:auto!important;
 }
+.auto-scrollable-dialog .ngdialog-content {
+    height: auto!important;
+}
