@@ -91,6 +91,14 @@ angular.module('bahmni.registration')
             });
         };
 
+        var findPatientLatestAppointment = function (params) {
+            return $http.get(Bahmni.Common.Constants.sqlUrl, {
+                method: "GET",
+                params: params,
+                withCredentials: true
+            });
+        };
+
         return {
             search: search,
             searchByIdentifier: searchByIdentifier,
@@ -100,6 +108,7 @@ angular.module('bahmni.registration')
             updateImage: updateImage,
             searchByNameOrIdentifier: searchByNameOrIdentifier,
             generateIdentifier: generateIdentifier,
-            findPatients: findPatients
+            findPatients: findPatients,
+            findPatientLatestAppointment: findPatientLatestAppointment
         };
     }]);
