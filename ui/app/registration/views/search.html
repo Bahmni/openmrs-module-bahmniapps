@@ -60,6 +60,7 @@
                 <th><strong>{{ ::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
                 <th ng-if="::programAttributesSearchConfig.show"><strong>{{::convertToTableHeader(programAttributesSearchConfig.label)}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_VISIT_DATE' | translate}}</strong></th>
+                <th><strong>{{ ::'REGISTRATION_LABEL_APPOINTMENT_DATE' | translate}}</strong></th>
             </tr>
             </thead>
             <tbody>
@@ -78,6 +79,8 @@
                 <td>{{::result.dateCreated | bahmniDate}}</td>
                 <td ng-if="::programAttributesSearchConfig.show">{{getProgramAttributeValues(result) | bahmniDateInStrictMode}}</td>
                 <td>{{::result.visitDate | bahmniDate}}</td>
+                <td ng-if="result.appointmentStatus==='Missed'" style="color: red;">{{::result.appointmentDate | bahmniDate}}</td>
+                <td ng-if="result.appointmentStatus!=='Missed'">{{::result.appointmentDate | bahmniDate}}</td>
             </tr>
             </tbody>
         </table>

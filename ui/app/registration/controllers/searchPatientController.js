@@ -69,7 +69,8 @@ angular.module('bahmni.registration')
                             mapVisitDateOfSearchResults(response),
                             mapExtraIdentifiers(response),
                             mapAddressAttributesSearchResults(response),
-                            mapProgramAttributesSearchResults(response)])
+                            mapProgramAttributesSearchResults(response),
+                            mapPatientAppointmentDetail(response)])
                         .then(function () {
                             searching = false;
                             if (response.pageOfResults && response.pageOfResults.length > 0) {
@@ -194,6 +195,25 @@ angular.module('bahmni.registration')
                     promises.push(promise);
                 });
                 return $q.all(promises);
+            };
+
+            var mapPatientAppointmentDetail = function (data) {
+                var promises = [];
+                _.map(data.pageOfResults, function (result) {
+                    var searchParams = {
+                        q: "bahmni.sqlGet.registrationPatientAppointmentSeach"
+                    };
+                    searchParams["patientUuid"] = result.uuid;
+                    var promise = patientService.findPatientLatestAppointment(searchParams).then(function (response) {
+                        var hasAppointment = response.data && response.data.length > 0;
+                        if (hasAppointment) {
+                            result.appointmentDate = response.data[0].appointmentDate ? response.data[0].appointmentDate : '';
+                            result.appointmentStatus = response.data[0].appointmentStatus ? response.data[0].appointmentStatus : '';
+                        }
+                    });
+                    promises.push(promise);
+                });
+                return spinner.forPromise($q.all(promises));
             };
 
             var showSearchResults = function (searchPromise) {
@@ -335,11 +355,12 @@ angular.module('bahmni.registration')
                         mapAddressAttributesSearchResults(data),
                         mapProgramAttributesSearchResults(data)])
                    .then(function () {
-                       if (data.pageOfResults && data.pageOfResults.length === 1) {
+                       /* if (data.pageOfResults && data.pageOfResults.length === 1) {
                            var patient = data.pageOfResults[0];
                            var forwardUrl = appService.getAppDescriptor().getConfigValue("searchByIdForwardUrl") || "/patient/{{patientUuid}}";
                            $location.url(appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patient.uuid}));
-                       } else if (data.pageOfResults.length > 1) {
+                       } else */
+                       if (data.pageOfResults.length > 0) {
                            $scope.results = data.pageOfResults;
                            $scope.noResultsMessage = null;
                        } else {
@@ -382,7 +403,8 @@ angular.module('bahmni.registration')
                             mapVisitDateOfSearchResults(data),
                             mapExtraIdentifiers(data),
                             mapAddressAttributesSearchResults(data),
-                            mapProgramAttributesSearchResults(data)])
+                            mapProgramAttributesSearchResults(data),
+                            mapPatientAppointmentDetail(data)])
                         .then(function () {
                             if (data.pageOfResults.length === 1) {
                                 var patient = data.pageOfResults[0];
