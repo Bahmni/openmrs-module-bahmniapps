@@ -6,17 +6,17 @@
     </style>
     <div class="ngdialog-close clearfix"></div>
     <div class="clearfix">
-        <h4> Discharge Summary </h4>
+        <h4> {{'DISCHARGE_SUMMARY_KEY' | translate}}</h4>
     </div>
     <div class="clearfix">
         <div class="patient-attributes dialog-patient-name">
-            <label for="patient-name">Patient name: </label>
+            <label for="patient-name">{{'PATIENT_NAME_KEY' | translate}}</label>
             <span id="patient-name">{{$root.patient.name}}</span>
         </div>
     </div>
     <div class="transfer-section  discharge-bed-section">
         <p class="transfer-container">
-            <b>Discharge From:</b>
+            <b>{{'DISCHARGE_FROM_KEY' | translate}}</b>
             <span>{{$root.bedDetails.wardName}},</span>
             <span>{{$root.bedDetails.physicalLocationName}},</span>
             <span>#{{$root.bedDetails.bedNumber}}</span>
@@ -26,8 +26,8 @@
         <concept-set concept-set-name="getAdtConceptConfig" observations="adtObservations"></concept-set>
     </div>
     <div class="dialog-button-group ipd-button-group">
-        <button id="modal-revise-button1" class="secondary-button" ng-click="dischargeConfirmation()">Discharge</button>
-        <button id="modal-revise-button3" class="secondary-button" ng-click="cancelConfirmationDialog()">Cancel</button>
+        <button id="modal-revise-button1" class="secondary-button" ng-click="dischargeConfirmation()">{{'DISCHARGE_KEY' | translate}}</button>
+        <button id="modal-revise-button3" class="secondary-button" ng-click="cancelConfirmationDialog()">{{'CANCEL_KEY' | translate}}</button>
     </div>
 
     <span class="ngdialog-end"></span>
