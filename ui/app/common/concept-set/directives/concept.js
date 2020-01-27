@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService',
-        function (RecursionHelper, spinner, $filter, messagingService) {
+    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService','$http',
+        function (RecursionHelper, spinner, $filter, messagingService ,$http) {
             var link = function (scope) {
                 var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig && scope.observation.conceptUIConfig['hideAbnormalButton'];
 
@@ -85,6 +85,18 @@ angular.module('bahmni.common.conceptSet')
                 scope.getBooleanResult = function (value) {
                     return !!value;
                 };
+                var fetchPatientHeight = $http.get(Bahmni.Common.Constants.observationsUrl, {
+                    params: {
+                        concept: Bahmni.Common.Constants.patientHeightConceptName,
+                        patientUuid: scope.patient.uuid
+                    },
+                    withCredentials: true
+                });
+                fetchPatientHeight = fetchPatientHeight.then(function (response) {
+                    var patientHeight = response;
+                    console.log("This is the patient height", patientHeight.data[0].value);
+                    scope.patientHeight = patientHeight.data[0].value;
+                });
             };
 
             var compile = function (element) {
