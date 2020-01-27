@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService','$http',
-        function (RecursionHelper, spinner, $filter, messagingService ,$http) {
+    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService', '$http',
+        function (RecursionHelper, spinner, $filter, messagingService, $http) {
             var link = function (scope) {
                 var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig && scope.observation.conceptUIConfig['hideAbnormalButton'];
 
