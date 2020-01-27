@@ -193,7 +193,8 @@
                     </div>
 
                     <div ng-switch-when="html5InputDataType">
-                        <div ng-include src="'../common/concept-set/views/observationDataTypes/html5DataType.html'"></div>
+                        <div ng-if="observation.concept.name != 'HEIGHT (CM)'" ng-include src="'../common/concept-set/views/observationDataTypes/html5DataType.html'"></div>
+                        <h3 ng-if="observation.concept.name === 'HEIGHT (CM)'"><span><strong>{{::patientHeight}}</strong></span></h3>
                     </div>
 
                     <div ng-switch-when="text" ng-if="::!observation.isConciseText()">
