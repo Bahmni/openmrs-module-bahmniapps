@@ -33,7 +33,6 @@ angular.module('bahmni.clinical')
             var tbscreeningform = "6fa69c2e-3ddf-4c9e-b31b-1de9629eb8e1";
             var eacforms = "940923e2-433e-4d58-869f-dd099333af9b";
             var init = function () {
-                console.log("This is the vsits", patientService.getVisits());
                 if (!($scope.allTemplates !== undefined && $scope.allTemplates.length > 0)) {
                     spinner.forPromise(conceptSetService.getConcept({
                         name: "All Observation Templates",
@@ -65,6 +64,14 @@ angular.module('bahmni.clinical')
                         if (currentuserRoleName == "Data Clerk") {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
                                 if (allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload || allTemplates[i].uuid == tbscreeningform || allTemplates[i].uuid == eacforms) {
+                                    allTemplates.splice(i, 1);
+                                }
+                            }
+                        }
+                        var visitnumber = $scope.visitHistory.visits.length;
+                        if (visitnumber <= 1) {
+                            for (var i = allTemplates.length - 1; i >= 0; i--) {
+                                if (allTemplates[i].uuid == endoffollowupform) {
                                     allTemplates.splice(i, 1);
                                 }
                             }
