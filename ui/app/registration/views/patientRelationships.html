@@ -29,7 +29,7 @@
                         </label>
                     </div>
                     <div class="field-value">
-                        <select ng-model="newRelationship.relationshipType.uuid" ng-options="type.uuid as type.aIsToB for type in ::relationshipTypes"
+                        <select ng-model="newRelationship.relationshipType.uuid" ng-options="type.uuid as type.aIsToB | translate for type in ::relationshipTypes"
                                 ng-change="clearRelationshipRow(newRelationship, $index);">
                             <option value="">{{ ::'REGISTRATION_LABEL_SELECT_RELATIONSHIP_TYPE' | translate}}</option>
                         </select>
@@ -43,14 +43,14 @@
                         </label>
                     </div>
                     <div class="field-value" ng-switch="getChosenRelationshipType(newRelationship)">
-                        <input type="text" ng-switch-when="patient" bahmni-autocomplete
+                        <input type="text" amharic-text ng-switch-when="patient" bahmni-autocomplete
                                validation-message="{{ ::'REGISTRATION_LABEL_PATIENT_AUTOCOMPLETE_LIST' | translate}}" on-edit="onEdit(newRelationship)"
                                ng-model="newRelationship.patientIdentifier" response-map="getPatientList" source="searchByPatientIdentifierOrName"
                                ng-change="clearPatient(newRelationship)" on-select="patientSelected(newRelationship)"
                                placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME_ID' | translate}}"
                                ng-class="{'illegalValue': !newRelationship.personB.uuid||duplicateRelationship(newRelationship)}" is-invalid="isInvalidRelation(newRelationship)"/>
 
-                        <input type="text" ng-switch-when="provider" bahmni-autocomplete is-invalid="isInvalidRelation(newRelationship)"
+                        <input type="text" amharic-text ng-switch-when="provider" bahmni-autocomplete is-invalid="isInvalidRelation(newRelationship)"
                                ng-class="{'illegalValue': !newRelationship.personB.uuid || duplicateRelationship(newRelationship)}"
                                validation-message="{{ ::'REGISTRATION_LABEL_PROVIDER_AUTOCOMPLETE_LIST' | translate}}" on-edit="onEdit(newRelationship)"
                                ng-model="newRelationship.providerName" response-map="getProviderDataResults" source="getProviderList(relationship)"

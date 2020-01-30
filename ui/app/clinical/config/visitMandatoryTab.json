@@ -6,8 +6,6 @@
             "config": {
                 "translationKey": "VISIT_TITLE_PATIENT_INFORMATION",
                 "patientAttributes": [
-                    "caste",
-                    "class",
                     "education",
                     "occupation"
                 ]

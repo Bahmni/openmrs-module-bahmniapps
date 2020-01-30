@@ -10,14 +10,13 @@
         "defaultValue": [
           "givenName",
           "familyName",
-          "caste",
           "primaryContact",
-          "secondaryContact",
+          "emergencyContact",
           "primaryRelative",
-          "secondaryIdentifier"
+          "emergencyConName"
         ],
         "name": "autoCompleteFields",
-        "description": "auto complete fields in patient create page. eg. givenName, familyName, caste, primaryContact, secondaryContact, primaryRelative, secondaryIdentifier"
+        "description": "auto complete fields in patient create page. eg. givenName, familyName, caste, primaryContact, emergencyContact, primaryRelative, emergencyConName"
       },
       "searchByIdForwardUrl": {
         "defaultValue": "/patient/{{patientUuid}}",
@@ -136,11 +135,11 @@
           "buttonSelect": true
         }
       },
-      "defaultIdentifierPrefix": "GAN",
+      "defaultIdentifierPrefix": "SPH",
       "fieldValidation": {
         "landHolding": {
           "pattern": "[0-9]{0,3}",
-          "errorMessage": "Should be between 1 to 999 acres"
+          "errorMessage": "Should be between 0 to 999 acres"
         },
         "middleName": {
           "pattern": "[a-zA-Z]{0,}",
@@ -197,8 +196,7 @@
             "cluster",
             "RationCard",
             "familyIncome",
-            "debt",
-            "cluster"
+            "debt"
           ],
           "title": "Additional Patient Information"
         },
@@ -218,8 +216,8 @@
             "middleNameLocal",
             "familyNameLocal"
           ],
-          "placeholder": "रुग्णाचे नाव",
-          "label": "रुग्णाचे नाव"
+          "placeholder": "የታካሚ ስም",
+          "label": "የታካሚ ስም"
         },
         "address": {
           "field": "address2",

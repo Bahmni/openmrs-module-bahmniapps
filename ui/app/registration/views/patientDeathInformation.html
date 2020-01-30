@@ -17,7 +17,7 @@
             </div>
             <div class="field-value">
                 <select ng-model="patient.causeOfDeath"
-                        ng-options="concept.display for concept in ::deathConcepts track by concept.uuid"
+                        ng-options="concept.display|translate for concept in ::deathConcepts track by concept.uuid"
                         ng-change="selectIsDead()" ng-required="patient.dead">
                     <option value="">{{ ::'REGISTRATION_LABEL_CHOOSE_VALUE' | translate}}</option>
                 </select>

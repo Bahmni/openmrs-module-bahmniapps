@@ -1,7 +1,7 @@
 'use strict';
 
 Bahmni.Registration.PatientConfig = (function () {
-    function PatientConfig (patientAttributeTypes, identifierTypes, patientInformation) {
+    function PatientConfig ($translate, patientAttributeTypes, identifierTypes, patientInformation) {
         this.attributeTypes = patientAttributeTypes;
         this.identifierTypes = identifierTypes;
         var patientAttributesSections = {};
@@ -21,8 +21,16 @@ Bahmni.Registration.PatientConfig = (function () {
                     !isAttributeInOtherSection(patientInformation, patientAttributesSections, item);
             });
 
+            angular.forEach(otherInformationAttributes, function (attribute) {
+                attribute.description = $translate.instant(attribute.description);
+            });
             this.attributeRows = this.splitAsRows(otherInformationAttributes);
             this.patientAttributesSections = patientAttributesSections;
+            angular.forEach(this.patientAttributesSections, function (section) {
+                angular.forEach(section.attributes, function (attribute) {
+                    attribute.description = $translate.instant(attribute.description);
+                });
+            });
         }
     }
 
@@ -43,7 +51,7 @@ Bahmni.Registration.PatientConfig = (function () {
                             translationKey: section.translationKey,
                             shortcutKey: section.shortcutKey,
                             order: section.order,
-                            canShow: true
+                            canShow: section.canShow
                         };
                     }
                     sectionObject.attributes.push(item);

@@ -154,7 +154,7 @@ form, .form {
         }
         .field-value {
             float: left;
-            input[type="text"], input[type="password"],input[type="date"] {
+            input[type="text"], input[type="number"], input[type="password"],input[type="date"] {
                 float: left;
                 width: 12.5em;
                 @media (max-width : 800px) {
@@ -165,7 +165,7 @@ form, .form {
                 }
             }
 
-            input[type="number"] { width: 8em; }
+            // input[type="number"] { width: 8em; }
 
             .value-text-only {
                 display: inline-block;

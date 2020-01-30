@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration').factory('initialization',
-    ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'preferences', 'locationService', 'mergeService',
-        function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, mergeService) {
+    ['$rootScope', '$translate', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'preferences', 'locationService', 'mergeService',
+        function ($rootScope, $translate, $q, configurations, authenticator, appService, spinner, preferences, locationService, mergeService) {
             var getConfigs = function () {
                 var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierTypesConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig', 'relationshipTypeMap', 'loginLocationToVisitTypeMapping'];
                 return configurations.load(configNames).then(function () {
@@ -10,7 +10,7 @@ angular.module('bahmni.registration').factory('initialization',
                     var patientAttributeTypes = new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(configurations.patientAttributesConfig(), mandatoryPersonAttributes);
                     $rootScope.regEncounterConfiguration = angular.extend(new Bahmni.Registration.RegistrationEncounterConfig(), configurations.encounterConfig());
                     $rootScope.encounterConfig = angular.extend(new EncounterConfig(), configurations.encounterConfig());
-                    $rootScope.patientConfiguration = new Bahmni.Registration.PatientConfig(patientAttributeTypes.attributeTypes,
+                    $rootScope.patientConfiguration = new Bahmni.Registration.PatientConfig($translate, patientAttributeTypes.attributeTypes,
                     configurations.identifierTypesConfig(), appService.getAppDescriptor().getConfigValue("patientInformation"));
                     $rootScope.regEncounterConfiguration.loginLocationToVisitTypeMap = configurations.loginLocationToVisitTypeMapping();
 

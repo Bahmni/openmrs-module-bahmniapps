@@ -8,6 +8,7 @@ angular.module('bahmni.common.i18n', ['pascalprecht.translate'])
             $translateProvider.useSanitizeValueStrategy('escaped');
             $translateProvider.preferredLanguage(preferredLanguage);
             $translateProvider.useLocalStorage();
+            $translateProvider.fallbackLanguage('en');
         };
         this.$get = [function () {
             return $translateProvider;

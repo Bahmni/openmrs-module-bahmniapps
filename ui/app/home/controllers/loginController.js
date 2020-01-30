@@ -79,6 +79,7 @@ angular.module('bahmni.home')
             };
 
             $scope.$watch('selectedLocale', function () {
+                $translate.fallbackLanguage('en');
                 $translate.use($scope.selectedLocale);
             });
 

@@ -37,7 +37,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                 var init = function () {
                     $scope.formsNotFound = false;
                     return $q.all([getAllObservationTemplates(), obsFormData()]).then(function (results) {
-                        $scope.observationTemplates = results[0].data.results[0].setMembers;
+                        $scope.observationTemplates = results[0].data.results[0]?results[0].data.results[0].setMembers :[];
                         var sortedFormDataByDate = sortedFormDataByLatestDate(results[1].data.results);
                         if ($scope.isOnDashboard) {
                             $scope.formData = filterFormData(sortedFormDataByDate);

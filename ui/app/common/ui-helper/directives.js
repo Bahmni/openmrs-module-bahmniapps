@@ -120,7 +120,13 @@ angular.module('bahmni.common.uiHelper')
         return function ($scope, element, attrs) {
             var addPatternToElement = function () {
                 if ($scope.fieldValidation && $scope.fieldValidation[attrs.id]) {
-                    element.attr({"pattern": $scope.fieldValidation[attrs.id].pattern, "title": $scope.fieldValidation[attrs.id].errorMessage, "type": "text"});
+                    if (attrs.type == "number")
+                    {
+                        element.attr({"pattern": $scope.fieldValidation[attrs.id].pattern, "title": $scope.fieldValidation[attrs.id].errorMessage, "type": "number"});
+                    }
+                    else {
+                        element.attr({"pattern": $scope.fieldValidation[attrs.id].pattern, "title": $scope.fieldValidation[attrs.id].errorMessage, "type": "text"});
+                    }
                 }
             };
 
