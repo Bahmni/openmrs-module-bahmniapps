@@ -22,17 +22,17 @@
                     <input tabindex="4" type="text" id="name" ng-model="searchParameters.name" placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME' | translate}}">
                 </article>
                 <article class="fl" ng-if="::customAttributesSearchConfig.show">
-                    <label for="name"><strong>{{::customAttributesSearchConfig.label}}</strong></label>
-                    <input tabindex="5" type="text" id="customAttribute" ng-model="searchParameters.customAttribute" placeholder="{{::customAttributesSearchConfig.placeholder}}">
+                    <label for="name"><strong>{{::customAttributesSearchConfig.label | translate}}</strong></label>
+                    <input tabindex="5" type="text" id="customAttribute" ng-model="searchParameters.customAttribute" placeholder="{{::customAttributesSearchConfig.placeholder | translate}}">
                 </article>
                 <article class="fl" ng-if="::addressSearchConfig.show">
-                    <label for="name"><strong>{{::addressSearchConfig.label}}</strong></label>
-                    <input tabindex="6" type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="{{::addressSearchConfig.placeholder}}">
+                    <label for="name"><strong>{{::addressSearchConfig.label | translate}}</strong></label>
+                    <input tabindex="6" type="text" id="addressFieldValue" ng-model="searchParameters.addressFieldValue" placeholder="{{::addressSearchConfig.placeholder | translate}}">
                 </article>
 
                 <article class="fl" ng-show="::programAttributesSearchConfig.show">
                     <label for="name"><strong>{{ ::programAttributesSearchConfig.label | translate}}</strong></label>
-                    <input tabindex="7" type="text" id="programAttribute" ng-model="searchParameters.programAttributeFieldValue" placeholder="{{ ::programAttributesSearchConfig.placeholder}}">
+                    <input tabindex="7" type="text" id="programAttribute" ng-model="searchParameters.programAttributeFieldValue" placeholder="{{ ::programAttributesSearchConfig.placeholder | translate}}">
                 </article>
 
                 <article class="fl">
