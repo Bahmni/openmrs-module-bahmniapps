@@ -1,4 +1,5 @@
 <section class="block hierarchy visit-dashboard">
+	<ul show-if-privilege="{{::section.dashboardConfig.requiredPrivilege}}">
     <h2 class="section-title has-link"
         ng-dialog="../common/displaycontrols/forms/views/allForms.html"
         ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page"
@@ -44,5 +45,6 @@
             </li>
         </ul>
     </div>
+	</ul>
 </section>
 
