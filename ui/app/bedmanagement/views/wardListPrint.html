@@ -1,0 +1,109 @@
+<style>
+    @page {
+        size: A4 landscape;
+    }
+
+    body {
+        font-family: sans-serif;
+        font-size: 10px;
+    }
+
+    .page-header {
+        padding-bottom: 5px;
+        position: fixed;
+        width: 100%;
+    }
+
+    .page-header > div {
+        position: relative;
+        flex-flow: column;
+    }
+
+    .page-header .page-title {
+        display: flex;
+        align-items: center;
+    }
+
+    .page-header .page-title * {
+        margin: 0 auto;
+    }
+
+    .page-header .bedStatus {
+        display: flex;
+        font-weight: bold;
+        align-items: flex-start;
+        margin-left: 5px;
+    }
+
+    @media print {
+        .page-header, .page-header-space {
+            height: 80px;
+        }
+
+        .table-wrapper {
+            position: relative;
+        }
+
+        table, th, td {
+            border: 1px solid #444;
+            border-collapse: collapse;
+        }
+
+        table {
+            page-break-inside: auto;
+            width: 100%
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="page-header">
+        <div class="page-title">
+            <h1>Bed Management</h1>
+            <h2>Ward name: {{wardName}}</h2>
+        </div>
+        <div class="bedStatus">
+            <div>
+                <span>Date:</span>
+                <span>{{date}}</span>
+            </div>
+            <div>
+                <span>Occupancy:</span>
+                <span>{{occupiedBeds}}/{{totalBeds}} Occupied</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table ng-if="tableData.length > 0">
+            <thead>
+            <tr style="border: 1px solid #fff">
+                <td style="border: none">
+                    <div class="page-header-space"></div>
+                </td>
+            </tr>
+            <tr>
+                <th ng-repeat="heading in tableHeader">
+                    {{heading}}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in tableData" ng-if="!isEmptyRow(row)">
+                <td ng-repeat="heading in tableHeader">
+                    <span>{{row[heading]}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

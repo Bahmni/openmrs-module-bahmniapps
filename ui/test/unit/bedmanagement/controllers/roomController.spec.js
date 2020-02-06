@@ -12,6 +12,12 @@ describe('RoomController', function () {
             return [{"tagName":"Lost","color":"#E1FF00"},{"tagName":"Isolation","color":"#00FBFF"},{"tagName":"Strict Isolation","color":"#4D00FF"}];
         }
     });
+    var printer = jasmine.createSpyObj('printer', ['print']);
+    var configuredTableHeaders = ['Patient ID', 'Age', 'Surgery'];
+    var defaultTableHeaders = ['Patient ID', 'Age', 'Surgery', 'Bed Number'];
+    var tableData = [{'Patient ID': 123, Age: 22, Surgery: 'Biopsy', 'Bed Number': 'B15'}];
+    var implementationPrintTemplate = '/bahmni_config/openmrs/apps/ipd/wardListPrint.html';
+    var defaultPrintTemplate = 'views/wardListPrint.html';
     var state = jasmine.createSpyObj('$state',['go']);
     var room = {
         "name": "ROOM1",
@@ -79,15 +85,15 @@ describe('RoomController', function () {
             };
 
 
-    var initController = function (rootScope, state) {
+    var initController = function (rootScope, state, appServiceSpy = appService) {
         controller('RoomController', {
             $scope: scope,
             $rootScope: rootScope,
             $state: state,
             messagingService: messagingService,
-            appService: appService,
-            $translate: translate
-
+            appService: appServiceSpy,
+            $translate: translate,
+            printer: printer
         });
     };
 
@@ -101,6 +107,8 @@ describe('RoomController', function () {
             spyOn(scope, '$emit');
             scope.room = room;
             scope.currentView = "Grid";
+            scope.tableData = tableData;
+            scope.tableHeader = defaultTableHeaders;
         });
         translate = jasmine.createSpyObj('$translate', ['instant']);
         translate.instant.and.callFake(function (key) {
@@ -130,4 +138,89 @@ describe('RoomController', function () {
         scope.toggleWardView();
         expect(scope.currentView).toEqual("List");
     });
+
+    it('should verify print is called with configured wardListPrintAttributes and wardListPrintViewTemplateUrl', function () {
+        scope.isEmptyRow = function(row) {
+            return false;
+        }
+        initController(rootScope, state, getSpyForAppService(implementationPrintTemplate, configuredTableHeaders));
+        scope.printWardList();
+        expect(printer.print).toHaveBeenCalledWith(implementationPrintTemplate,
+          {
+            wardName: 'ROOM1',
+            date: moment().format('DD-MMM-YYYY'),
+            totalBeds: 9,
+            occupiedBeds: 8,
+            tableData: tableData,
+            tableHeader: configuredTableHeaders,
+            isEmptyRow: scope.isEmptyRow
+          }
+          )
+    });
+
+    function getSpyForAppService(printTemplate, tableHeaders) {
+        let appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function (value) {
+                if(value === 'wardListPrintViewTemplateUrl') {
+                    return printTemplate;
+                } else if(value === 'wardListPrintAttributes') {
+                    return tableHeaders;
+                }
+            }
+        });
+        return appService;
+    }
+
+    it('should verify print is called with configured wardListPrintAttributes and default print template', function () {
+        scope.isEmptyRow = function(row) {
+            return false;
+        }
+        initController(rootScope, state, getSpyForAppService(undefined, configuredTableHeaders));
+        scope.printWardList();
+        expect(printer.print).toHaveBeenCalledWith(defaultPrintTemplate,
+          {
+              wardName: 'ROOM1',
+              date: moment().format('DD-MMM-YYYY'),
+              totalBeds: 9,
+              occupiedBeds: 8,
+              tableData: tableData,
+              tableHeader: configuredTableHeaders,
+              isEmptyRow: scope.isEmptyRow
+          }
+        )
+    });
+
+    it('should verify print is called with all columns of bed managment list view if' +
+      ' wardListPrintAttributes are not configured', function () {
+        scope.isEmptyRow = function(row) {
+            return false;
+        }
+        initController(rootScope, state, getSpyForAppService(implementationPrintTemplate, defaultTableHeaders));
+        scope.printWardList();
+        expect(printer.print).toHaveBeenCalledWith(implementationPrintTemplate,
+          {
+              wardName: 'ROOM1',
+              date: moment().format('DD-MMM-YYYY'),
+              totalBeds: 9,
+              occupiedBeds: 8,
+              tableData: tableData,
+              tableHeader: defaultTableHeaders,
+              isEmptyRow: scope.isEmptyRow
+          }
+        )
+    });
+
+    it('should return false if the row is empty', function () {
+        initController(rootScope, state, getSpyForAppService(implementationPrintTemplate, defaultTableHeaders));
+        expect(scope.isEmptyRow(tableData[0])).toBeFalsy();
+
+    });
+
+    it('should return true if the row is not empty', function () {
+        initController(rootScope, state, getSpyForAppService(implementationPrintTemplate, defaultTableHeaders));
+        let invalidRowForConfiguredAttributes = '{"Name": "Tom", "Country: "US"}';
+        expect(scope.isEmptyRow(invalidRowForConfiguredAttributes)).toBeTruthy()
+
+    })
 });
