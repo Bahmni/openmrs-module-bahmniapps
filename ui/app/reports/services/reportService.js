@@ -13,6 +13,12 @@ angular.module('bahmni.reports')
             "ODS": "application/vnd.oasis.opendocument.spreadsheet"
         };
 
+        var quarterlyPeriods = {
+            "one": 1,
+            "two": 2,
+            "three": 3,
+            "four": 4
+        };
         var scheduleReport = function (report) {
             var url = Bahmni.Common.Constants.reportsUrl + "/schedule";
             url = (url + "?name={0}&startDate={1}&endDate={2}&responseType={3}&paperSize={4}&appName={5}&userName={6}").format(report.name, report.startDate, report.stopDate, report.responseType, paperSize, appName, currentUser());
@@ -60,6 +66,10 @@ angular.module('bahmni.reports')
             window.open(url);
         };
 
+        var getQuarterlyPeriods = function () {
+            return quarterlyPeriods
+        };
+
         return {
             getFormatForMimeType: getFormatForMimeType,
             getMimeTypeForFormat: getMimeTypeForFormat,
@@ -67,6 +77,7 @@ angular.module('bahmni.reports')
             scheduleReport: scheduleReport,
             getScheduledReports: getScheduledReports,
             deleteReport: deleteReport,
-            generateReport: generateReport
+            generateReport: generateReport,
+            getQuarterlyPeriods: getQuarterlyPeriods
         };
     }]);

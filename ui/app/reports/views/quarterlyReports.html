@@ -18,6 +18,15 @@
                            class="form-field start-date" type="text" min="{{default.quarterlyReportsRequiringDateRange.startDate | date:'yyyy-MM-dd'}}"
                            ng-change="setDefault('stopDate', 'quarterlyReportsRequiringDateRange')">
                 </th>
+                <th class="reports-format ng-hide">
+                    {{::'QUARTERLY_TIME_PERIOD' | translate}}
+                    <span class="asterick">*</span>
+                    <select ng-model="default.quarterlyReportsRequiringDateRange.timePeriod"
+                            ng-options="type as label for (label , type) in ::timePeriods"
+                            ng-change="setDefault('timePeriod', 'quarterlyReportsRequiringDateRange')">
+                        <option value="">{{'CHOOSE_QUARTER'|translate}}</option>
+                    </select>
+                </th>
                 <th class="reports-format">
                     {{::'REPORT_FORMAT_KEY' | translate}}
                     <span class="asterick">*</span>
@@ -42,6 +51,11 @@
                     <input datepicker class="form-field stop-date" type="text" min="{{report.startDate | date:'yyyy-MM-dd'}}"
                            ng-model="report.stopDate" placeholder="dd-mm-yyyy">
                 </td>
+                <td class="reports-format ng-hide">
+                    <select ng-model="report.timePeriod" ng-options="type as label for (label , type) in ::timePeriods">
+                        <option value="">{{'CHOOSE_QUARTER'|translate}}</option>
+                    </select>
+                </td>
                 <td class="reports-format">
                     <select ng-model="report.responseType" ng-options="type as label for (label , type) in ::formats">
                         <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
@@ -65,7 +79,7 @@
             </tbody>
         </table>
     </section>
-    <section class="section-grid" ng-if="::monthlyReportsNotRequiringDateRange.length > 0">
+    <section class="section-grid" ng-if="::quarterlyReportsNotRequiringDateRange.length > 0">
         <h2 class="section-title">{{::'REPORTS_TITLE_WITHOUT_DATE_RANGE_KEY' | translate}}</h2>
         <table class="alt-row">
             <thead>
@@ -73,8 +87,8 @@
                 <th>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</th>
                 <th class="reports-format">
                     {{::'REPORT_FORMAT_KEY' | translate}}
-                    <select ng-model="default.monthlyReportsNotRequiringDateRange.responseType"
-                            ng-change="setDefault('responseType', 'monthlyReportsNotRequiringDateRange')"
+                    <select ng-model="default.quarterlyReportsNotRequiringDateRange.responseType"
+                            ng-change="setDefault('responseType', 'quarterlyReportsNotRequiringDateRange')"
                             ng-options="type as label for (label , type) in ::formats">
                         <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
                     </select>
@@ -84,7 +98,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="report in ::monthlyReportsNotRequiringDateRange">
+            <tr ng-repeat="report in ::quarterlyReportsNotRequiringDateRange">
                 <td>{{:: report.name }}</td>
                 <td class="reports-format">
                     <select ng-model="report.responseType" ng-options="type as label for (label , type) in ::formats">

@@ -2,7 +2,7 @@
 
 angular.module('bahmni.reports')
     .controller('QuarterlyReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, auditLogService) {
-        var appName = "QuarterlyReports";
+        var appName = "quarterlyReports";
         $scope.uploader = new FileUploader({
             url: Bahmni.Common.Constants.uploadReportTemplateUrl,
             removeAfterUpload: true,
@@ -18,8 +18,10 @@ angular.module('bahmni.reports')
         $scope.enableReportQueue = appService.getAppDescriptor().getConfigValue("enableReportQueue");
 
         $scope.setDefault = function (item, header) {
+            console.log("item ", item);
+            console.log("header", header);
             var setToChange = header === 'quarterlyReportsRequiringDateRange' ? $rootScope.quarterlyReportsRequiringDateRange : $rootScope.quarterlyReportsNotRequiringDateRange;
-            if (item === 'responseType') {
+            if (item === 'responseType' || item === 'timePeriod') {
                 setToChange.forEach(function (report) {
                     report[item] = $rootScope.default[header][item];
                 });
@@ -118,6 +120,12 @@ angular.module('bahmni.reports')
             $scope.formats = _.pick(reportService.getAvailableFormats(), supportedFormats);
         };
 
+        var initilizeTimePeriods = function () {
+            var supportedFormats = appService.getAppDescriptor().getConfigValue("quarterlyTimePeriods") || _.keys(reportService.getQuarterlyPeriods());
+            $scope.timePeriods = _.pick(reportService.getQuarterlyPeriods(), supportedFormats);
+            console.log("timeperiods", $scope.timePeriods);
+        };
+
         var initialization = function () {
             var reportList = appService.getAppDescriptor().getConfigForPage("quarterlyReports");
             $rootScope.quarterlyReportsRequiringDateRange = _.isUndefined($rootScope.quarterlyReportsRequiringDateRange) ? _.values(reportList).filter(function (report) {
@@ -129,6 +137,7 @@ angular.module('bahmni.reports')
             $scope.reportsDefined = _.values(reportList).length > 0;
 
             initializeFormats();
+            initilizeTimePeriods();
         };
 
         initialization();
