@@ -8,24 +8,22 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
             var patient = $scope.patient;
 
             var getTemplateDisplayName = function () {
-                if ($scope.config.templateName) {
-                    return conceptSetService.getConcept({
-                        name: $scope.config.templateName,
-                        v: "custom:(uuid,names,displayString)"
-                    }).then(function (result) {
-                        var templateConcept = result && result.data && result.data.results && result.data.results[0];
-                        var displayName = templateConcept && templateConcept.displayString;
-                        if (templateConcept && templateConcept.names && templateConcept.names.length === 1 && templateConcept.names[0].name != "") {
-                            displayName = templateConcept.names[0].name;
-                        } else if (templateConcept && templateConcept.names && templateConcept.names.length === 2) {
-                            displayName = _.find(templateConcept.names, {conceptNameType: "SHORT"}).name;
-                        }
-                        $scope.conceptDisplayName = displayName;
-                    });
-                }
+                return conceptSetService.getConcept({
+                    name: $scope.config.templateName,
+                    v: "custom:(uuid,names,displayString)"
+                }).then(function (result) {
+                    var templateConcept = result && result.data && result.data.results && result.data.results[0];
+                    var displayName = templateConcept && templateConcept.displayString;
+                    if (templateConcept && templateConcept.names && templateConcept.names.length === 1 && templateConcept.names[0].name != "") {
+                        displayName = templateConcept.names[0].name;
+                    } else if (templateConcept && templateConcept.names && templateConcept.names.length === 2) {
+                        displayName = _.find(templateConcept.names, {conceptNameType: "SHORT"}).name;
+                    }
+                    $scope.conceptDisplayName = displayName;
+                });
             };
 
-            var removeEmptyRecords = function (records) {
+            const removeEmptyRecords = function (records) {
                 records.headers = _.filter(records.headers, function (header) {
                     return !(_.every(records.rows, function (record) {
                         return _.isEmpty(record.columns[header.name]);
@@ -38,7 +36,7 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
                 return observationsService.getObsInFlowSheet(patient.uuid, $scope.config.templateName,
                     $scope.config.groupByConcept, $scope.config.orderByConcept, $scope.config.conceptNames, $scope.config.numberOfVisits,
                     $scope.config.initialCount, $scope.config.latestCount, $scope.config.type, $scope.section.startDate,
-                    $scope.section.endDate, $scope.enrollment, $scope.config.formNames).success(function (data) {
+                    $scope.section.endDate, $scope.enrollment).success(function (data) {
                         var obsInFlowSheet = data;
                         var groupByElement = _.find(obsInFlowSheet.headers, function (header) {
                             return header.name === $scope.config.groupByConcept;
@@ -70,24 +68,11 @@ angular.module('bahmni.common.displaycontrol.obsVsObsFlowSheet').directive('obsT
             };
 
             $scope.getEditObsData = function (observation) {
-                var editData = {
-                    observation: {encounterUuid: observation.encounterUuid}
+                return {
+                    observation: {encounterUuid: observation.encounterUuid, uuid: observation.obsGroupUuid},
+                    conceptSetName: $scope.config.templateName,
+                    conceptDisplayName: $scope.conceptDisplayName
                 };
-                if ($scope.config.templateName) {
-                    editData.observation.uuid = observation.obsGroupUuid;
-                    editData.conceptSetName = $scope.config.templateName;
-                    editData.conceptDisplayName = $scope.conceptDisplayName;
-                } else {
-                    var formNameAndVersion = Bahmni.Common.Util.FormFieldPathUtil
-                        .getFormNameAndVersion(observation.formFieldPath);
-                    editData.observation = Object.assign({}, editData.observation,
-                        {
-                            formType: Bahmni.Common.Constants.formBuilderType,
-                            formName: formNameAndVersion.formName,
-                            formVersion: formNameAndVersion.formVersion
-                        });
-                }
-                return editData;
             };
 
             $scope.getPivotOn = function () {

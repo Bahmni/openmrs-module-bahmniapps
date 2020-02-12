@@ -153,8 +153,5 @@
   "YEARS_LABEL": "Years",
   "CHOOSE_ANSWER_FROM_DROPDOWN_LABEL": "Choose Answer",
   "DELETE_LABEL": "Delete",
-  "EDIT_LABEL": "Edit",
-  "SELECT_APPOINTMENT_PROVIDER": "Select Provider",
-  "INVITED_PROVIDERS": "Invitees",
-  "APPOINTMENT_PROVIDER_REMOVE_ACTION": "Remove"
+  "EDIT_LABEL": "Edit"
 }

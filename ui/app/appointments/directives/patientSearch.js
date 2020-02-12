@@ -18,8 +18,7 @@ angular.module('bahmni.appointments')
 
                     $scope.responseMap = function (data) {
                         return _.map(data, function (patientInfo) {
-                            var familyName = patientInfo.familyName ? " " + patientInfo.familyName : '';
-                            patientInfo.label = patientInfo.givenName + familyName + " " + "(" + patientInfo.identifier + ")";
+                            patientInfo.label = patientInfo.givenName + " " + patientInfo.familyName + " " + "(" + patientInfo.identifier + ")";
                             return patientInfo;
                         });
                     };

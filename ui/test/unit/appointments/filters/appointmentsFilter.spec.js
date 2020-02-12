@@ -304,7 +304,7 @@ describe("appointmentsFilter", function () {
                 "creatorName": null
             },
             "serviceType": {"duration": 20, "name": "typeB", "uuid": "a416f7b8-86e1-4407-b7b7-006135e37898"},
-            "providers": [{"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"}],
+            "provider": {"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"},
             "location": null,
             "startDateTime": 1503923400000,
             "endDateTime": 1503925200000,
@@ -329,7 +329,7 @@ describe("appointmentsFilter", function () {
                 "creatorName": null
             },
             "serviceType": {"duration": 20, "name": "typeA", "uuid": "a416f7b8-86e1-4407-b7b7-006135e36cf5"},
-            "providers": [],
+            "provider": null,
             "location": null,
             "startDateTime": 1503912600000,
             "endDateTime": 1503913800000,
@@ -340,7 +340,7 @@ describe("appointmentsFilter", function () {
         var filters = {serviceUuids: [], serviceTypeUuids: [], providerUuids: ["c1c26908-3f10-11e4-adec-0800271c1b75"]};
         var filteredAppointments = appointmentsFilter(appointmentsForFilter, filters);
         expect(filteredAppointments.length).toBe(1);
-        expect(filteredAppointments[0].providers[0].uuid).toEqual("c1c26908-3f10-11e4-adec-0800271c1b75");
+        expect(filteredAppointments[0].provider.uuid).toEqual("c1c26908-3f10-11e4-adec-0800271c1b75");
     });
 
     it('should return all appointments when filters are undfined', function () {
@@ -361,7 +361,7 @@ describe("appointmentsFilter", function () {
                 "creatorName": null
             },
             "serviceType": {"duration": 20, "name": "typeB", "uuid": "a416f7b8-86e1-4407-b7b7-006135e37898"},
-            "providers": [{"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"}],
+            "provider": {"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"},
             "location": null,
             "startDateTime": 1503923400000,
             "endDateTime": 1503925200000,
@@ -386,7 +386,7 @@ describe("appointmentsFilter", function () {
                 "creatorName": null
             },
             "serviceType": {"duration": 20, "name": "typeA", "uuid": "a416f7b8-86e1-4407-b7b7-006135e36cf5"},
-            "providers": [],
+            "provider": null,
             "location": null,
             "startDateTime": 1503912600000,
             "endDateTime": 1503913800000,
@@ -417,7 +417,7 @@ describe("appointmentsFilter", function () {
                 "creatorName": null
             },
             "serviceType": {"duration": 20, "name": "typeB", "uuid": "a416f7b8-86e1-4407-b7b7-006135e37898"},
-            "providers": [{"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"}],
+            "provider": {"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"},
             "location": null,
             "startDateTime": 1503923400000,
             "endDateTime": 1503925200000,
@@ -442,7 +442,7 @@ describe("appointmentsFilter", function () {
                 "creatorName": null
             },
             "serviceType": {"duration": 20, "name": "typeA", "uuid": "a416f7b8-86e1-4407-b7b7-006135e36cf5"},
-            "providers": [],
+            "provider": null,
             "location": null,
             "startDateTime": 1503912600000,
             "endDateTime": 1503913800000,
@@ -474,7 +474,7 @@ describe("appointmentsFilter", function () {
                 "creatorName": null
             },
             "serviceType": {"duration": 20, "name": "typeB", "uuid": "a416f7b8-86e1-4407-b7b7-006135e37898"},
-            "providers": [{"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"}],
+            "provider": {"name": "Super Man", "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"},
             "location": null,
             "startDateTime": 1503923400000,
             "endDateTime": 1503925200000,
@@ -499,7 +499,7 @@ describe("appointmentsFilter", function () {
                 "creatorName": null
             },
             "serviceType": {"duration": 20, "name": "typeA", "uuid": "a416f7b8-86e1-4407-b7b7-006135e36cf5"},
-            "providers": [],
+            "provider": null,
             "location": null,
             "startDateTime": 1503912600000,
             "endDateTime": 1503913800000,
@@ -511,6 +511,6 @@ describe("appointmentsFilter", function () {
         var filteredAppointments = appointmentsFilter(appointmentsForFilter, filters);
         expect(filteredAppointments.length).toBe(1);
         expect(filteredAppointments[0].status).toEqual("Scheduled");
-        expect(filteredAppointments[0].providers).toEqual([]);
+        expect(filteredAppointments[0].provider).toEqual(null);
     })
 });

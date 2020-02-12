@@ -54,21 +54,14 @@ angular.module('bahmni.appointments')
                     uiCalendarConfig.calendars[calendar].fullCalendar('changeView', view);
                 };
 
-                function isOwnAppointmentUserPrivilegedToCreateAppointment (privilege, provider) {
-                    var NO_PROVIDER_UUID = 'no-provider-uuid';
-                    return (privilege.name === Bahmni.Appointments.Constants.privilegeOwnAppointments &&
-                        (provider.uuid === NO_PROVIDER_UUID || provider.uuid === $rootScope.currentProvider.uuid));
-                }
-
-                var isUserPrivilegedToCreateAppointment = function (provider) {
+                var isUserPrivilegedToCreateAppointment = function () {
                     return _.find($rootScope.currentUser.privileges, function (privilege) {
-                        return privilege.name === Bahmni.Appointments.Constants.privilegeManageAppointments ||
-                            isOwnAppointmentUserPrivilegedToCreateAppointment(privilege, provider);
+                        return privilege.name === Bahmni.Appointments.Constants.privilegeManageAppointments;
                     });
                 };
 
                 $scope.createAppointment = function (start, end, jsEvent, view, resource) {
-                    if (resource && !isUserPrivilegedToCreateAppointment(resource.provider)) {
+                    if (!isUserPrivilegedToCreateAppointment()) {
                         return;
                     }
                     var params = $state.params;

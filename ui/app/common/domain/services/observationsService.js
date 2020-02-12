@@ -65,7 +65,7 @@ angular.module('bahmni.common.domain')
 
         this.getObsInFlowSheet = function (patientUuid, conceptSet, groupByConcept, orderByConcept, conceptNames,
                                            numberOfVisits, initialCount, latestCount, groovyExtension,
-                                           startDate, endDate, patientProgramUuid, formNames) {
+                                           startDate, endDate, patientProgramUuid) {
             var params = {
                 patientUuid: patientUuid,
                 conceptSet: conceptSet,
@@ -78,8 +78,7 @@ angular.module('bahmni.common.domain')
                 name: groovyExtension,
                 startDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDate),
                 endDate: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDate),
-                enrollment: patientProgramUuid,
-                formNames: formNames
+                enrollment: patientProgramUuid
             };
             return $http.get(Bahmni.Common.Constants.observationsUrl + "/flowSheet", {
                 params: params,

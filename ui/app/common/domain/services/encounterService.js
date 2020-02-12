@@ -137,10 +137,9 @@ angular.module('bahmni.common.domain')
                     withCredentials: true
                 });
             };
-            this.findByEncounterUuid = function (encounterUuid, params) {
-                params = params || {includeAll: true};
+            this.findByEncounterUuid = function (encounterUuid) {
                 return $http.get(Bahmni.Common.Constants.bahmniEncounterUrl + '/' + encounterUuid, {
-                    params: params,
+                    params: {includeAll: true},
                     withCredentials: true
                 });
             };

@@ -5,7 +5,7 @@ angular.module('bahmni.common.uiHelper')
         var confirmBox = function (config) {
             var dialog;
             var scope = config.scope;
-            scope.checkedInAppointment = {time: moment().seconds(0).milliseconds(0).toDate()};
+            scope.time = moment().seconds(0).milliseconds(0).toDate();
             scope.close = function () {
                 ngDialog.close(dialog.id);
                 scope.$destroy();
@@ -16,8 +16,8 @@ angular.module('bahmni.common.uiHelper')
                 className: config.className || 'ngdialog-theme-default'
             });
 
-            scope.performAction = function () {
-                scope.action(scope.checkedInAppointment.time, scope.close);
+            scope.performAction = function (close) {
+                scope.action(scope.time, close);
             };
         };
         return confirmBox;

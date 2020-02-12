@@ -110,7 +110,6 @@ Bahmni.Common = Bahmni.Common || {};
         drugImportUrl: BAHMNI_CORE + "/admin/upload/drug",
         labResultsImportUrl: BAHMNI_CORE + "/admin/upload/labResults",
         referenceTermsImportUrl: BAHMNI_CORE + "/admin/upload/referenceterms",
-        updateReferenceTermsImportUrl: BAHMNI_CORE + "/admin/upload/referenceterms/new",
         relationshipImportUrl: BAHMNI_CORE + "/admin/upload/relationship",
         conceptSetExportUrl: BAHMNI_CORE + "/admin/export/conceptset?conceptName=:conceptName",
         patientImportUrl: BAHMNI_CORE + "/admin/upload/patient",
@@ -253,10 +252,7 @@ Bahmni.Common = Bahmni.Common || {};
         followUpConditionConcept: 'Follow-up Condition',
         localeLangs: "/bahmni_config/openmrs/apps/home/locale_languages.json",
         privilegeRequiredErrorMessage: "PRIVILEGE_REQUIRED",
-        patientFormsUrl: BAHMNI_CORE + "/patient/{patientUuid}/forms",
-        defaultPossibleRelativeSearchLimit: 10,
-        formBuilderDisplayControlType: "formsV2",
-        formBuilderType: "v2"
+        defaultPossibleRelativeSearchLimit: 10
     };
 })();
 

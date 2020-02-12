@@ -12,23 +12,6 @@ Bahmni.Appointments.Appointment = (function () {
             var formattedTime = moment(givenTime, ["hh:mm a"]).format("HH:mm");
             return dateUtil.parseServerDateToDate(dateUtil.getDateWithoutTime(appointmentDate) + ' ' + formattedTime);
         };
-
-        var getAppointmentProviders = function (providers) {
-            var providerList = [];
-            if (providers) {
-                providers.forEach(function (p) {
-                    if (p.uuid != undefined) {
-                        providerList.push({
-                            uuid: p.uuid,
-                            response: p.response,
-                            comments: p.comments
-                        });
-                    }
-                });
-            }
-            return providerList;
-        };
-
         var appointment = new Appointment({
             uuid: appointmentDetails.uuid,
             patientUuid: appointmentDetails.patient.uuid,
@@ -37,7 +20,6 @@ Bahmni.Appointments.Appointment = (function () {
             startDateTime: getDateTime(appointmentDetails.date, appointmentDetails.startTime),
             endDateTime: getDateTime(appointmentDetails.date, appointmentDetails.endTime),
             providerUuid: appointmentDetails.provider && appointmentDetails.provider.uuid,
-            providers: getAppointmentProviders(appointmentDetails.providers),
             locationUuid: appointmentDetails.location && appointmentDetails.location.uuid,
             appointmentKind: appointmentDetails.appointmentKind,
             comments: appointmentDetails.comments

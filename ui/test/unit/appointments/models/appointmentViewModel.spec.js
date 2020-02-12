@@ -36,12 +36,10 @@ describe('AppointmentViewModel', function () {
             name: 'type1',
             uuid: 'f5203cea-f4d2-4cd9-b7d2-b00f7e8890e9'
         },
-        providers: [
-            {
-                name: "Super Man",
-                uuid: "c1c26908-3f10-11e4-adec-0800271c1b75"
-            }
-        ],
+        provider: {
+            name: 'Super Man',
+            uuid: 'c1c26908-3f10-11e4-adec-0800271c1b75'
+        },
         location: {
             name: 'Ganiyari',
             uuid: 'c1e42932-3f10-11e4-adec-0800271c1b75'
@@ -90,16 +88,8 @@ describe('AppointmentViewModel', function () {
             uuid: "0f59beb7-827a-41d5-a4ad-7728194e38a3",
             color: "#006400"
         }];
-        var providers = [
-            {
-                name: "LABSYSTEM - labsystem system",
-                uuid: "7d162c29-3f12-11e4-adec-0800271c1b75"
-            },
-            {
-                name: "Super Man",
-                uuid: "c1c26908-3f10-11e4-adec-0800271c1b75"
-            }
-        ];
+        var providers = [{uuid: "7d162c29-3f12-11e4-adec-0800271c1b75", display: "LABSYSTEM - labsystem system"},
+                     {uuid: "c1c26908-3f10-11e4-adec-0800271c1b75", display: "superman - Super Man"}];
         var selectedService = {
             appointmentServiceId: 77,
             name: "CardioService",
@@ -135,7 +125,7 @@ describe('AppointmentViewModel', function () {
         expect(appointmentViewModel.speciality).toBe(config.specialities[1]);
         expect(appointmentViewModel.service).toBe(config.services[0]);
         expect(appointmentViewModel.serviceType).toBe(config.selectedService.serviceTypes[0]);
-        expect(appointmentViewModel.providers[0]).toEqual(config.providers[1]);
+        expect(appointmentViewModel.provider).toBe(config.providers[1]);
         expect(appointmentViewModel.location).toBe(config.locations[0]);
         expect(appointmentViewModel.date).toEqual(new Date(moment(appointmentResponse.startDateTime)));
         expect(appointmentViewModel.startTime).toBe(moment(appointmentResponse.startDateTime).format('hh:mm a'));

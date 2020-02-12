@@ -99,7 +99,7 @@ describe('AppointmentsDayCalendarController', function () {
         expect(scope.uiConfig.calendar.selectable).toBe(true)
     });
 
-    it('should go to new appointment state on createAppointment even if the user has Manage privilege', function () {
+    it('should go to new appointment state on createAppointment only if the user has Manage privilege', function () {
         rootScope.currentUser = {privileges: [{name: Bahmni.Appointments.Constants.privilegeManageAppointments}]};
         createController();
         var startDateTime = moment();
@@ -110,48 +110,6 @@ describe('AppointmentsDayCalendarController', function () {
         expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new',
             $state.params,{reload:false});
     });
-
-    it('should go to new appointment state on createAppointment even if the current user has ownManage privilege and current user is the provider', function () {
-        rootScope = {
-            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}]},
-            currentProvider: {uuid: 'currentUserUuid'}
-        };
-        createController();
-        $state.params = {};
-        var resource = {provider: {uuid: 'currentUserUuid'}};
-
-        scope.createAppointment(null, null, undefined, undefined, resource);
-
-        expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new',
-            $state.params, {reload: false});
-    });
-
-    it('should go to new appointment state on createAppointment even if the current user has ownManage privilege and the appointment has no provider', function () {
-        rootScope = {
-            currentUser: {privileges: [{name: Bahmni.Appointments.Constants.privilegeOwnAppointments}]},
-            currentProvider: {uuid: 'currentUserUuid'}
-        };
-        createController();
-        $state.params = {};
-        var resource = {provider: {uuid: 'no-provider-uuid'}};
-
-        scope.createAppointment(null, null, undefined, undefined, resource);
-
-        expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new',
-            $state.params, {reload: false});
-    });
-
-    it('should go to new appointment state on createAppointment if resource is undefined', function () {
-        var resource = undefined;
-        $state.params = {};
-        createController();
-
-        scope.createAppointment(null, null, undefined, undefined, resource);
-
-        expect($state.go).toHaveBeenCalledWith('home.manage.appointments.calendar.new',
-            $state.params, {reload: false});
-    });
-
 
     it('should not go to new appointment state on createAppointment if the user does not have Manage privilege', function () {
         rootScope.currentUser = {privileges: []};

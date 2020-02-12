@@ -59,7 +59,6 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "name": "obsToObsFlowSheet",
                 "headingConceptSource": "Abbreviation",
                 "dashboardConfig": {
-                    "templateName": "TemplateName",
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -73,8 +72,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.enrollment = "enrollmentUuid";
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&enrollment=enrollmentUuid&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&enrollment=enrollmentUuid&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var html = '<obs-to-obs-flow-sheet patient="patient" section="section" is-on-dashboard="true" enrollment="enrollment"></obs-to-obs-flow-sheet>';
 
@@ -98,7 +97,6 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "name": "obsToObsFlowSheet",
                 "headingConceptSource": "Abbreviation",
                 "dashboardConfig": {
-                    "templateName": "TemplateName",
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -110,8 +108,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -135,8 +133,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.isOnDashboard = true;
             scope.section = {
                 "headingConceptSource": "Abbreviation",
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -148,8 +145,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -174,8 +171,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.isOnDashboard = true;
             scope.section = {
                 "headingConceptSource": "CustomAbbreviationSource",
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -187,8 +183,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -220,8 +216,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.isOnDashboard = true;
             scope.section = {
                 "headingConceptSource": "CustomAbbreviationSource",
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -233,8 +228,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -265,8 +260,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -278,8 +272,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -314,8 +308,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -327,8 +320,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -352,8 +345,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -365,8 +357,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -397,8 +389,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.section = {
                 "name": "obsToObsFlowSheet",
                 "headingConceptSource": "Abbreviation",
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -410,8 +401,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -445,8 +436,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.section = {
                 "name": "obsToObsFlowSheet",
                 "headingConceptSource": "Abbreviation",
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -459,8 +449,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -494,8 +484,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.isOnDashboard = true;
             scope.section = {
                 "headingConceptSource": "Abbreviation",
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -507,8 +496,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -536,8 +525,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.isOnDashboard = true;
             scope.section = {
                 "headingConceptSource": "CustomAbbreviationSource",
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -549,8 +537,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -577,8 +565,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -590,8 +577,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -626,8 +613,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -639,8 +625,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -669,8 +655,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             scope.isOnDashboard = true;
             scope.section = {
                 "dataConceptSource": "Abbreviation",
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -682,8 +667,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -721,8 +706,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -734,8 +718,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -773,8 +757,7 @@ describe('obsToObsFlowSheet DisplayControl', function () {
 
             scope.isOnDashboard = true;
             scope.section = {
-               "dashboardConfig": {
-                    "templateName": "TemplateName",
+                "dashboardConfig": {
                     "conceptNames": [
                         "Bacteriology, Rifampicin result",
                         "Bacteriology, Ethambutol result"
@@ -786,8 +769,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                 "uuid": "patientUuid"
             };
 
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=TemplateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=TemplateName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&patientUuid=patientUuid').respond({});
+            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&v=custom:(uuid,names,displayString)').respond("<div>dummy</div>");
 
             var element = compile(simpleHtml)(scope);
 
@@ -819,113 +802,5 @@ describe('obsToObsFlowSheet DisplayControl', function () {
             expect(compiledElementScope.commafy(observations)).toEqual("Answer1");
         });
     });
-
-    describe('getEditObsData', function(){
-        it('should construct object with formDetails when formName is given', function () {
-            var scope = rootScope.$new();
-            scope.isOnDashboard = true;
-            scope.section = {
-                "dashboardConfig": {
-                    "formNames": ["formName"],
-                    "conceptNames": [
-                        "Bacteriology, Rifampicin result",
-                        "Bacteriology, Ethambutol result"
-                    ]
-                }
-            };
-            scope.patient = {
-                "uuid": "patientUuid"
-            };
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&formNames=formName&patientUuid=patientUuid').respond({});
-
-            var element = compile(simpleHtml)(scope);
-
-            scope.$digest();
-            mockBackend.flush();
-
-            var compiledElementScope = element.isolateScope();
-            scope.$digest();
-
-            var observation =
-                {
-                    encounterUuid: "encounteruuid",
-                    concept: {
-                        name: "ConceptName",
-                        dataType: 'Coded'
-                    },
-                    value: {
-                        "name": "Answer1",
-                        "mappings": [
-                            {
-                                "source": "Abbreviation",
-                                "name": "abbreviation",
-                                "code": "A1"
-                            }
-                        ]
-                    },
-                    formFieldPath: "formName.1/1-0"
-                };
-
-            var editData = compiledElementScope.getEditObsData(observation);
-            expect(editData.observation.encounterUuid).toBe("encounteruuid");
-            expect(editData.observation.formType).toBe("v2");
-            expect(editData.observation.formName).toBe("formName");
-            expect(editData.observation.formVersion).toBe("1");
-        });
-
-        it('should construct object with formDetails when formName is given', function () {
-            var scope = rootScope.$new();
-            scope.isOnDashboard = true;
-            scope.section = {
-                "dashboardConfig": {
-                    "templateName": "templateName",
-                    "conceptNames": [
-                        "Bacteriology, Rifampicin result",
-                        "Bacteriology, Ethambutol result"
-                    ]
-                }
-            };
-            scope.patient = {
-                "uuid": "patientUuid"
-            };
-
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations/flowSheet?conceptNames=Bacteriology,+Rifampicin+result&conceptNames=Bacteriology,+Ethambutol+result&conceptSet=templateName&patientUuid=patientUuid').respond({});
-            mockBackend.expectGET('/openmrs/ws/rest/v1/concept?s=byFullySpecifiedName&name=templateName&v=custom:(uuid,names,displayString)')
-                .respond({"results":[{"uuid":"uuid","names":[{"display":"TemplateName","uuid":"uuid1","name":"TemplateName"}],"displayString":"MD, Medication"}]});
-            var element = compile(simpleHtml)(scope);
-
-            scope.$digest();
-            mockBackend.flush();
-
-            var compiledElementScope = element.isolateScope();
-            scope.$digest();
-
-            var observation =
-                {
-                    encounterUuid: "encounteruuid",
-                    obsGroupUuid: "obsGroupUuid",
-                    concept: {
-                        name: "ConceptName",
-                        dataType: 'Coded'
-                    },
-                    value: {
-                        "name": "Answer1",
-                        "mappings": [
-                            {
-                                "source": "Abbreviation",
-                                "name": "abbreviation",
-                                "code": "A1"
-                            }
-                        ]
-                    }
-                };
-
-            var editData = compiledElementScope.getEditObsData(observation);
-            expect(editData.observation.encounterUuid).toBe("encounteruuid");
-            expect(editData.observation.uuid).toBe("obsGroupUuid");
-            expect(editData.conceptSetName).toBe("templateName");
-            expect(editData.conceptDisplayName).toBe("TemplateName");
-        });
-    })
 });
 

@@ -16,7 +16,7 @@ Bahmni.Common.Obs.ObservationMapper = function () {
             bahmniObservations = Bahmni.Common.Obs.ObservationUtil.sortSameConceptsWithObsDateTime(bahmniObservations);
         }
         $.each(bahmniObservations, function (i, bahmniObservation) {
-            var conceptConfig = bahmniObservation.formFieldPath ? [] : allConceptsConfig[bahmniObservation.concept.name] || [];
+            var conceptConfig = allConceptsConfig[bahmniObservation.concept.name] || [];
             var observation = new Bahmni.Common.Obs.Observation(bahmniObservation, conceptConfig);
             if (observation.groupMembers && observation.groupMembers.length >= 0) {
                 observation.groupMembers = mapObservations(observation.groupMembers, allConceptsConfig, dontSortByObsDateTime);
@@ -28,11 +28,11 @@ Bahmni.Common.Obs.ObservationMapper = function () {
 
     var mapUIObservations = function (observations, allConceptsConfig) {
         var groupedObservations = _.groupBy(observations, function (observation) {
-            return observation.formFieldPath + "#" + observation.concept.name;
+            return observation.concept.name;
         });
         var mappedObservations = [];
         $.each(groupedObservations, function (i, obsGroup) {
-            var conceptConfig = obsGroup[0].formFieldPath ? [] : allConceptsConfig[obsGroup[0].concept.name] || [];
+            var conceptConfig = allConceptsConfig[obsGroup[0].concept.name] || [];
             if (conceptConfig.multiSelect) {
                 var multiSelectObservations = {};
                 $.each(obsGroup, function (i, observation) {

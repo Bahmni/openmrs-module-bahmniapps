@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Forms Table display control", function () {
-    var element, scope, $compile, mockBackend, conceptSetService, visitFormService, q, spinner, formService;
+    var element, scope, $compile, mockBackend, conceptSetService, visitFormService, q, spinner;
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
 
     appService.getAppDescriptor.and.returnValue({
@@ -17,7 +17,6 @@ describe("Forms Table display control", function () {
     beforeEach(module('bahmni.common.displaycontrol.forms', function ($provide) {
         conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
         visitFormService = jasmine.createSpyObj('visitFormService', ['formData']);
-        formService = jasmine.createSpyObj('formService', ['getAllPatientForms']);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
 
         spinner.forPromise.and.callFake(function (param) {
@@ -31,7 +30,6 @@ describe("Forms Table display control", function () {
         $provide.value('$state', {});
         $provide.value('conceptSetService', conceptSetService);
         $provide.value('visitFormService', visitFormService);
-        $provide.value('formService', formService);
         $provide.value('spinner', spinner);
 
         $provide.value('$bahmniTranslate', {
@@ -65,16 +63,6 @@ describe("Forms Table display control", function () {
 
     var mockVisitFormService = function (data) {
         visitFormService.formData.and.callFake(function () {
-            return {
-                then: function (callback) {
-                    return callback(data)
-                }
-            }
-        });
-    };
-
-    var mockFormService = function (data) {
-        formService.getAllPatientForms.and.callFake(function () {
             return {
                 then: function (callback) {
                     return callback(data)
@@ -471,35 +459,6 @@ describe("Forms Table display control", function () {
 
             expect(compiledElementScope).not.toBeUndefined();
             expect(compiledElementScope.getDisplayName(observation)).toEqual(observation.concept.displayString);
-        });
-    });
-    describe('versioned form controller', function () {
-        it('should return versionedFormController when section type is formsV2', function () {
-            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
-            const formData = {formName: 'form'};
-            var formDataObj = {"data": [formData]};
-            mockFormService(formDataObj);
-            scope.section = {dashboardConfig: {maximumNoOfVisits: 10}, type: 'formsV2'};
-            var element = $compile(simpleHtml)(scope);
-            scope.$digest();
-            var compiledElementScope = element.isolateScope();
-
-            expect(compiledElementScope).not.toBe(undefined);
-            expect(compiledElementScope.getDisplayName(formData)).toEqual('form');
-            expect(formService.getAllPatientForms.calls.count()).toEqual(1);
-        });
-
-        it('should not return versionedFormController when section type is not formsV2', function () {
-            var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
-            var allObsTemplateData = {"data": {"results": [{}]}};
-            var formDataObj = {"data": {results: []}};
-            mockConceptSetService(allObsTemplateData);
-            mockVisitFormService(formDataObj);
-            scope.section = {dashboardConfig: {maximumNoOfVisits: 10}, type: 'forms'};
-            var element = $compile(simpleHtml)(scope);
-            scope.$digest();
-
-            expect(formService.getAllPatientForms.calls.count()).toEqual(0);
-        });
+        })
     })
 });

@@ -2,21 +2,24 @@
 
 angular.module('bahmni.appointments')
     .service('calendarViewPopUp', ['$rootScope', 'ngDialog', '$state', '$translate', 'appointmentsService',
-        'confirmBox', 'checkinPopUp', 'appService', 'messagingService', 'appointmentCommonService',
-        function ($rootScope, ngDialog, $state, $translate, appointmentsService, confirmBox, checkinPopUp, appService, messagingService, appointmentCommonService) {
+        'confirmBox', 'checkinPopUp', 'appService', 'messagingService',
+        function ($rootScope, ngDialog, $state, $translate, appointmentsService, confirmBox, checkinPopUp, appService, messagingService) {
             var calendarViewPopUp = function (config) {
                 var popUpScope = $rootScope.$new();
                 var dialog;
                 var scope = config.scope;
-                var maxAppointmentProviders = appService.getAppDescriptor().getConfigValue('maxAppointmentProviders') || 1;
-                var appointmentProviders = scope.appointments[0].providers;
-                var currentUserPrivileges = $rootScope.currentUser.privileges;
-                var currentProviderUuId = $rootScope.currentProvider.uuid;
+                scope.patientList = scope.appointments.map(function (appt) {
+                    return appt.patient;
+                });
+
+                scope.patientAppointmentMap = scope.appointments.reduce(function (result, appt) {
+                    result[appt.patient.uuid] = appt;
+                    return result;
+                }, {});
 
                 popUpScope.scope = scope;
-                popUpScope.appointment = scope.appointments.length === 1 ? scope.appointments[0] : undefined;
+                popUpScope.patient = scope.patientList.length === 1 ? scope.patientList[0] : undefined;
                 popUpScope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
-                popUpScope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
                 popUpScope.allowedActions = appService.getAppDescriptor().getConfigValue('allowedActions') || [];
                 popUpScope.allowedActionsByStatus = appService.getAppDescriptor().getConfigValue('allowedActionsByStatus') || {};
 
@@ -42,15 +45,6 @@ angular.module('bahmni.appointments')
 
                 var closeConfirmBox = function (closeConfirmBox) {
                     closeConfirmBox();
-                };
-
-                popUpScope.isUserAllowedToPerformEdit = function () {
-                    return appointmentCommonService.isUserAllowedToPerformEdit(appointmentProviders, currentUserPrivileges, currentProviderUuId);
-                };
-
-                popUpScope.isEditAllowed = function () {
-                    return maxAppointmentProviders > 1 ? true :
-                        appointmentCommonService.isUserAllowedToPerformEdit(appointmentProviders, currentUserPrivileges, currentProviderUuId);
                 };
 
                 var changeStatus = function (appointment, toStatus, onDate, closeConfirmBox) {
@@ -94,27 +88,12 @@ angular.module('bahmni.appointments')
                     return _.includes(popUpScope.allowedActions, action);
                 };
 
-                popUpScope.isValidActionAndIsUserAllowedToPerformEdit = function (appointment, action) {
-                    return !appointment ? false :
-                        !appointmentCommonService.isUserAllowedToPerformEdit(appointmentProviders, currentUserPrivileges, currentProviderUuId)
-                            ? false : isValidAction(appointment, action);
-                };
-
-                var isValidAction = function (appointment, action) {
+                popUpScope.isValidAction = function (appointment, action) {
+                    if (!appointment) {
+                        return false;
+                    }
                     var allowedActions = popUpScope.allowedActionsByStatus.hasOwnProperty(appointment.status) ? popUpScope.allowedActionsByStatus[appointment.status] : [];
                     return _.includes(allowedActions, action);
-                };
-
-                popUpScope.getAppointmentProviderNames = function (appointment) {
-                    if (appointment.providers) {
-                        var providerNames = appointment.providers.filter(function (p) {
-                            return p.response !== Bahmni.Appointments.Constants.providerResponses.CANCELLED;
-                        }).map(function (p) {
-                            return p.name;
-                        }).join(', ');
-                        return providerNames;
-                    }
-                    return '';
                 };
 
                 dialog = ngDialog.open({

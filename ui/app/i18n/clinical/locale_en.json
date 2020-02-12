@@ -326,6 +326,5 @@
     "EDIT_LABEL": "Edit",
     "INVESTIGATIONS_PANELS_HEADER_LABEL": "Panels",
     "INVESTIGATIONS_SELECTIONS_HEADER_LABEL": "Selection",
-    "CLINICAL_GO_TO_DASHBOARD_LABEL": "Go to IPD dashboard",
-    "NO_FORM_FOUND_FOR_PATIENT": "No Form found for this patient"
+    "CLINICAL_GO_TO_DASHBOARD_LABEL": "Go to IPD dashboard"
 }

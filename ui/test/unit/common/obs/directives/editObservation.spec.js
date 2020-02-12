@@ -2,7 +2,7 @@
 
 describe("ensure that the directive edit-observation works properly", function () {
     var scope, filter, _spinner, rootScope, httpBackend, compile, q, state, ngDialog, configurations, encounterResponse,
-        encounterServiceMock, contextChangeHandler, auditLogServiceMock, messageServiceMock, formService;
+        encounterServiceMock, contextChangeHandler, auditLogServiceMock, messageServiceMock;
     var html = '<edit-observation  concept-set-name="History and Examinations" observation="observation" ></edit-observation>';
     var observation = {
         encounterUuid: "encounter uuid one"
@@ -47,7 +47,6 @@ describe("ensure that the directive edit-observation works properly", function (
             }
         };
         encounterServiceMock = jasmine.createSpyObj('encounterService', ['findByEncounterUuid', 'create']);
-        formService = jasmine.createSpyObj('formService', ['getAllForms']);
         var encounterPromise = specUtil.createServicePromise('findByEncounterUuid');
         encounterPromise.then = function (successFn) {
             successFn({data: {
@@ -96,7 +95,6 @@ describe("ensure that the directive edit-observation works properly", function (
         $provide.value('ngDialog', ngDialog);
         $provide.value('messagingService', messageServiceMock);
         $provide.value('encounterService', encounterServiceMock);
-        $provide.value('formService', formService);
         $provide.value('configurations', configurations);
         $provide.value('auditLogService', auditLogServiceMock);
     }));
@@ -208,160 +206,6 @@ describe("ensure that the directive edit-observation works properly", function (
         var messageParams = {encounterUuid: encounterResponse.encounterUuid, encounterType: encounterResponse.encounterType};
         expect(auditLogServiceMock.log).toHaveBeenCalledWith(compiledScope.patient.uuid, "EDIT_ENCOUNTER", messageParams, "MODULE_LABEL_CLINICAL_KEY");
         expect(compiledScope.encounter.orders.length).toBe(0);
-    });
-
-    it('should return false if observation formType is not defined', function () {
-        scope = rootScope.$new();
-        scope.observation = observation;
-        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
-        var compiledEle = compile(html)(scope);
-        var compiledScope = compiledEle.isolateScope();
-        httpBackend.flush();
-        scope.$digest();
-
-        expect(compiledScope.isFormBuilderForm()).toBeFalsy();
-    });
-
-    it('should return true if observation formType is v2', function () {
-        scope = rootScope.$new();
-        scope.observation = observation;
-        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
-        var compiledEle = compile(html)(scope);
-        var compiledScope = compiledEle.isolateScope();
-        httpBackend.flush();
-        scope.observation = Object.assign({}, observation, {formType: 'v2'});
-        scope.$digest();
-
-        expect(compiledScope.isFormBuilderForm()).toBeTruthy();
-    });
-
-    it('should return false if observation formType is not v2', function () {
-        scope = rootScope.$new();
-        scope.observation = observation;
-        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
-        var compiledEle = compile(html)(scope);
-        var compiledScope = compiledEle.isolateScope();
-        httpBackend.flush();
-        scope.observation = Object.assign({}, observation, {formType: 'v3'});
-        scope.$digest();
-
-        expect(compiledScope.isFormBuilderForm()).toBeFalsy();
-    });
-
-    it('should set formDetails for given observation when the observation formType is v2', function () {
-        var allForms = [{name: 'EditForm', version: '3', uuid: 'editFormUuid'}];
-        formService.getAllForms.and.returnValue(specUtil.respondWithPromise(q, {data: allForms}));
-        rootScope.currentUser = {isFavouriteObsTemplate: function(){}};
-        scope = rootScope.$new();
-        scope.observation = Object.assign({}, observation, {formType: 'v2', formName: 'EditForm', formVersion: '3'});
-        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
-
-        var compiledEle = compile(html)(scope);
-        var compiledScope = compiledEle.isolateScope();
-        httpBackend.flush();
-        scope.$digest();
-
-        expect(formService.getAllForms).toHaveBeenCalled();
-        var formDetails = compiledScope.formDetails;
-        expect(formDetails).toBeDefined();
-        expect(formDetails.formName).toBe('EditForm');
-        expect(formDetails.formVersion).toBe('3');
-        expect(formDetails.formUuid).toBe('editFormUuid');
-        expect(formDetails.observations.length).toBe(0);
-    });
-
-    it('should not set formDetails for given observation when the observation formType is not v2', function () {
-        scope = rootScope.$new();
-        scope.observation = Object.assign({}, observation, {formType: 'v3', formName: 'EditForm', formVersion: '3'});
-        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
-
-        var compiledEle = compile(html)(scope);
-        var compiledScope = compiledEle.isolateScope();
-        httpBackend.flush();
-        scope.$digest();
-
-        expect(formService.getAllForms).not.toHaveBeenCalled();
-        expect(compiledScope.formDetails).not.toBeDefined();
-    });
-
-    it('should get called for observations from formDetails component when observation formType is v2 while saving', function () {
-        var component = jasmine.createSpyObj('component', ['getValue']);
-        component.getValue.and.returnValue({observations: [{encounterUuid:'9e90667f'}] });
-        scope = rootScope.$new();
-        scope.observation = observation;
-        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
-        var compiledEle = compile(html)(scope);
-        var compiledScope = compiledEle.isolateScope();
-        httpBackend.flush();
-        scope.observation = Object.assign({}, observation, {formType: 'v2', formName: 'EditForm', formVersion: '3'});
-        compiledScope.formDetails = {component: component};
-        scope.$digest();
-
-        expect(component.getValue).not.toHaveBeenCalled();
-
-        compiledScope.save();
-
-        expect(component.getValue).toHaveBeenCalled();
-        expect(component.getValue.calls.count()).toBe(1);
-    });
-
-    it('should not get called for observations from formDetails component when observation formType is not v2 while' +
-        ' saving', function () {
-        var component = jasmine.createSpyObj('component', ['getValue']);
-        component.getValue.and.returnValue({observations: [{encounterUuid:'9e90667f'}] });
-        scope = rootScope.$new();
-        scope.observation = observation;
-        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
-        var compiledEle = compile(html)(scope);
-        var compiledScope = compiledEle.isolateScope();
-        httpBackend.flush();
-        scope.observation = Object.assign({}, observation, {formType: 'v3', formName: 'EditForm', formVersion: '3'});
-        compiledScope.formDetails = {component: component};
-        scope.$digest();
-
-        expect(component.getValue).not.toHaveBeenCalled();
-
-        compiledScope.save();
-
-        expect(component.getValue).not.toHaveBeenCalled();
-    });
-
-    it('should display error message when formDetails component has error', function () {
-        var component = jasmine.createSpyObj('component', ['getValue']);
-        component.getValue.and.returnValue({errors: ["Please Fill Mandatory Field"], observations: [{encounterUuid:'9e9066c'}] });
-        scope = rootScope.$new();
-        scope.observation = observation;
-        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
-        var compiledEle = compile(html)(scope);
-        var compiledScope = compiledEle.isolateScope();
-        scope.observation = Object.assign({}, observation, {formType: 'v2', formName: 'EditForm', formVersion: '3'});
-        compiledScope.formDetails = {component: component};
-        httpBackend.flush();
-        scope.$digest();
-        spyOn(rootScope, '$broadcast');
-
-        compiledScope.save();
-
-        expect(messageServiceMock.showMessage).toHaveBeenCalledWith( 'error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
-    });
-
-    it('should display saveSuccess message when formDetails component has no errors', function () {
-        var component = jasmine.createSpyObj('component', ['getValue']);
-        component.getValue.and.returnValue({observations: [{encounterUuid:'9e90667f'}] });
-        scope = rootScope.$new();
-        scope.observation = observation;
-        httpBackend.expectGET("../common/obs/views/editObservation.html").respond("<div>dummy</div>");
-        var compiledEle = compile(html)(scope);
-        var compiledScope = compiledEle.isolateScope();
-        scope.observation = Object.assign({}, observation, {formType: 'v2', formName: 'EditForm', formVersion: '3'});
-        compiledScope.formDetails = {component: component};
-        httpBackend.flush();
-        scope.$digest();
-        spyOn(rootScope, '$broadcast');
-
-        compiledScope.save();
-
-        expect(messageServiceMock.showMessage).toHaveBeenCalledWith('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
     });
 });
 

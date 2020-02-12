@@ -3,7 +3,7 @@
 angular.module('bahmni.common.displaycontrol.forms')
     .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService', 'appService', '$state',
         function (conceptSetService, spinner, $q, visitFormService, appService, $state) {
-            var defaultController = function ($scope) {
+            var controller = function ($scope) {
                 $scope.shouldPromptBrowserReload = true;
                 $scope.showFormsDate = appService.getAppDescriptor().getConfigValue("showFormsDate");
                 var getAllObservationTemplates = function () {
@@ -35,7 +35,8 @@ angular.module('bahmni.common.displaycontrol.forms')
                 };
 
                 var init = function () {
-                    $scope.formsNotFound = false;
+                    $scope.noFormFoundMessage = "No Form found for this patient";
+                    $scope.isFormFound = false;
                     return $q.all([getAllObservationTemplates(), obsFormData()]).then(function (results) {
                         $scope.observationTemplates = results[0].data.results[0].setMembers;
                         var sortedFormDataByDate = sortedFormDataByLatestDate(results[1].data.results);
@@ -45,8 +46,8 @@ angular.module('bahmni.common.displaycontrol.forms')
                             $scope.formData = sortedFormDataByDate;
                         }
 
-                        if ($scope.formData.length === 0) {
-                            $scope.formsNotFound = true;
+                        if ($scope.formData.length == 0) {
+                            $scope.isFormFound = true;
                             $scope.$emit("no-data-present-event");
                         }
                     });
@@ -102,12 +103,7 @@ angular.module('bahmni.common.displaycontrol.forms')
 
             return {
                 restrict: 'E',
-                controller: function ($scope, $controller) {
-                    if ($scope.section.type && $scope.section.type === Bahmni.Common.Constants.formBuilderDisplayControlType) {
-                        return $controller("versionedFormController", {$scope: $scope});
-                    }
-                    return defaultController($scope);
-                },
+                controller: controller,
                 link: link,
                 templateUrl: "../common/displaycontrols/forms/views/formsTable.html",
                 scope: {

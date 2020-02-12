@@ -317,41 +317,6 @@
         }
       }
     }
-    div {
-      overflow: hidden;
-      margin: 0 0 10px;
-      position: relative;
-      p {
-        width: 115px;
-        float: left;
-        label {
-          clear: left;
-          float: left;
-          width: 115px;
-          text-align: right;
-          margin-right: 10px;
-          margin-top: 15px;
-        }
-      }
-      div {
-        display: inline-block;
-        float: left;
-        width: calc(100% - 130px);
-        padding: 8px 10px;
-        box-sizing: border-box;
-        ul {
-          list-style: none;
-          li {
-            label {
-              float: left;
-            }
-            input {
-              margin-left: 5px;
-            }
-          }
-        }
-      }
-    }
     .warning-message {
       display: inline-block;
       width: calc(100% - 130px);
