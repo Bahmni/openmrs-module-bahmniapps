@@ -82,12 +82,11 @@ describe("PacsOrdersDisplayControl", function () {
 
         expect(element.children()[0].localName).toBe('section');
 
-        expect(section.children()[0].localName).toBe('ul');
-        
-        var ul = $(section.children()[0]);
+        var section = $(element.children()[0]);
 
-        expect(ul.children()[0].localName).toBe('h2');
-        expect(ul.children()[1].localName).toBe('div');
+        expect(section.children()[0].localName).toBe('ul');
+        expect(section.children()[1].localName).toBe('h2');
+        expect(section.children()[2].localName).toBe('div');
     });
 
     it('1 section child should have children 1 h2 and 1 div', function () {
@@ -143,12 +142,11 @@ describe("PacsOrdersDisplayControl", function () {
             orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
             var element = generateElement();
 
-            expect(element.children()[0].localName).toBe('section');
+            expect(element.children()[0]).toEqual('section');
 
             var section = $(element.children()[0]);
 
-            expect($(section.children()[1]).children()[1].localName).toBeDefined();
-            expect($($(section.children()[1]).children()[1]).text()).not.toContain("No testOrder for this patient.");
+            expect(section.children()[2]).not.toContainText('No testOrder for this patient.');
         });
     });
     describe("Pacs Image Link",function(){
