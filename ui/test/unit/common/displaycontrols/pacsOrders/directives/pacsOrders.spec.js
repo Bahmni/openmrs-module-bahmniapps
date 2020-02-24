@@ -84,8 +84,9 @@ describe("PacsOrdersDisplayControl", function () {
 
         var section = $(element.children()[0]);
 
-        expect(section.children()[0].localName).toBe('h2');
-        expect(section.children()[1].localName).toBe('div');
+        expect(section.children()[0].localName).toBe('ul');
+        expect(section.children()[1].localName).toBe('h2');
+        expect(section.children()[2].localName).toBe('div');
     });
 
     it('1 section child should have children 1 h2 and 1 div', function () {
@@ -97,8 +98,9 @@ describe("PacsOrdersDisplayControl", function () {
         expect(element.children()[0].localName).toBe('section');
         var section = $(element.children()[0]);
 
-        expect(section.children()[0].localName).toBe('h2');
-        expect(section.children()[1].localName).toBe('div');
+        expect(section.children()[0].localName).toBe('ul');
+        expect(section.children()[1].localName).toBe('h2');
+        expect(section.children()[2].localName).toBe('div');
     });
 
     describe("noOrdersMessage", function () {
