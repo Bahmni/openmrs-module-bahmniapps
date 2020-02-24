@@ -77,16 +77,20 @@ describe("PacsOrdersDisplayControl", function () {
 
     it('section should have children 1 h2 and 1 section', function () {
 
+        scope.section.title = "testTitle";
+
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
         var element = generateElement();
 
-        expect(element.children()[0].localName).toBe('section');
-
+        expect(element.children()[0]).toEqual('section');
         var section = $(element.children()[0]);
 
-        expect(section.children()[0].localName).toBe('ul');
-        expect(section.children()[1].localName).toBe('h2');
-        expect(section.children()[2].localName).toBe('div');
+		expect(section.children()[0].localName).toBe('ul');
+        
+        var ul = $(section.children()[0]);
+
+        expect(ul.children()[0].localName).toBe('h2');
+        expect(ul.children()[1].localName).toBe('div');
     });
 
     it('1 section child should have children 1 h2 and 1 div', function () {
@@ -130,11 +134,11 @@ describe("PacsOrdersDisplayControl", function () {
             orderService.getOrders.and.returnValue(specUtil.createFakePromise([]));
             var element = generateElement();
 
-            expect(element.children()[0].localName).toBe('section');
+          var topLevelSection = element.children()[0];
+            expect(topLevelSection).toEqual('section');
 
-            var section = $(element.children()[0]);
-
-            expect($(section.children()[1]).children()[1].localName).toBeDefined();
+            var noMessageSecion = $(topLevelSection).find('>div>div');
+            expect(noMessageSecion).toBeDefined();
         });
 
         it('should not show the noOrdersMessage when there are orders', function () {
