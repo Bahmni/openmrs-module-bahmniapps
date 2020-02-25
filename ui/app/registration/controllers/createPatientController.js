@@ -248,6 +248,8 @@ angular.module('bahmni.registration')
                             var personAttributeHei = personAttributeHasHei
                                 ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("HIVExposedInfant(HEI)No")].name : undefined;
                             $scope.patient[personAttributeHei] = heiIdentifier;
+                            $scope.patient.heiNumber = heiIdentifier;
+
                         }
                     })).then(spinner.forPromise(patientService.generateIdentifier(idgenPatientPrefix)
                         .then(function (response) {

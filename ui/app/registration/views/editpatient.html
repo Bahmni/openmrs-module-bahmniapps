@@ -4,6 +4,7 @@
         <div class="box-container box-container-default">
             <legend class="registraion_legend first-registraion_legend" ng-class="{'removeLegend': patient.primaryIdentifier == undefined}">
                 <span class="mylegend"><strong>{{patient.primaryIdentifier.identifierType.name}}: <span id="patientIdentifierValue">{{patient.primaryIdentifier.identifier}}</span></strong></span>
+                <span ng-if="patient.heiNumber" class="mylegend"><strong>HEI Number : <span id="heiNumber">{{patient.heiNumber}}</span></strong></span>
                 <span ng-show= "isDigitized" class="right"><strong>{{::'REGISTRATION_LABEL_SCANNED' | translate}}</strong></span>
             </legend>
             <!-- <div class="photo-container-wrapper" ng-if="!disablePhotoCapture">
