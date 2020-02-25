@@ -32,7 +32,7 @@ angular.module('bahmni.registration')
                 var personAttributeHasHei = personAttributes.indexOf("HIVExposedInfant(HEI)No") !== -1;
                 var personAttributeHei = personAttributeHasHei
                     ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("HIVExposedInfant(HEI)No")].name : undefined;
-                if(personAttributeHasHei && personAttributeHei){
+                if (personAttributeHasHei && personAttributeHei) {
                     $scope.patient.heiNumber = $scope.patient[personAttributeHei];
                 }
                 // setReadOnlyFields();

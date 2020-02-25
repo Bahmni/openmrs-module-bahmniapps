@@ -94,8 +94,9 @@ angular.module('bahmni.common.conceptSet')
                 });
                 fetchPatientHeight = fetchPatientHeight.then(function (response) {
                     var patientHeight = response;
-                    console.log("This is the patient height", patientHeight.data[0].value);
-                    scope.patientHeight = patientHeight.data[0].value;
+                    if (patientHeight.data[0] && patientHeight.data[0].value ) {
+                        scope.patientHeight = patientHeight.data[0].value;
+                    }
                 });
             };
 

@@ -67,7 +67,7 @@ angular.module('bahmni.reports')
         };
 
         var getQuarterlyPeriods = function () {
-            return quarterlyPeriods
+            return quarterlyPeriods;
         };
 
         return {
