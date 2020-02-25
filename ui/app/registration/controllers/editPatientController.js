@@ -29,6 +29,12 @@ angular.module('bahmni.registration')
             var successCallBack = function (openmrsPatient) {
                 $scope.openMRSPatient = openmrsPatient["patient"];
                 $scope.patient = openmrsPatientMapper.map(openmrsPatient);
+                var personAttributeHasHei = personAttributes.indexOf("HIVExposedInfant(HEI)No") !== -1;
+                var personAttributeHei = personAttributeHasHei
+                    ? $rootScope.patientConfiguration.attributeTypes[personAttributes.indexOf("HIVExposedInfant(HEI)No")].name : undefined;
+                if(personAttributeHasHei && personAttributeHei){
+                    $scope.patient.heiNumber = $scope.patient[personAttributeHei];
+                }
                 // setReadOnlyFields();
                 expandDataFilledSections();
                 if ($scope.patient.relationships.length == 0) {
