@@ -30,6 +30,7 @@ angular.module('bahmni.common.conceptSet')
                                 formDetails.version = formVersion;
                                 loadedFormDetails[formUuid] = formDetails;
                                 var formParams = { formName: formName, formVersion: formVersion, locale: locale };
+                                $scope.form.events = { onFormSave : formDetails.events};
                                 spinner.forPromise(formService.getFormTranslations(formDetails.translationsUrl, formParams)
                                     .then(function (response) {
                                         var formTranslations = !_.isEmpty(response.data) ? response.data[0] : {};
