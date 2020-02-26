@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .controller('ConceptSetPageController', ['$scope', '$rootScope', '$stateParams', 'conceptSetService',
         'clinicalAppConfigService', 'messagingService', 'configurations', '$state', 'spinner',
-        'contextChangeHandler', '$q', '$translate', 'formService', 'patientService',
+        'contextChangeHandler', '$q', '$translate', 'formService', 'patientService', '$http',
         function ($scope, $rootScope, $stateParams, conceptSetService,
             clinicalAppConfigService, messagingService, configurations, $state, spinner,
-            contextChangeHandler, $q, $translate, formService, patientService) {
+            contextChangeHandler, $q, $translate, formService, patientService, $http) {
             $scope.consultation.selectedObsTemplate = $scope.consultation.selectedObsTemplate || [];
             $scope.allTemplates = $scope.allTemplates || [];
             $scope.scrollingEnabled = false;
@@ -32,27 +32,55 @@ angular.module('bahmni.clinical')
             var familyhistdata = "c2a6c127-e3ba-426f-a4ae-83713dde0736";
             var tbscreeningform = "6fa69c2e-3ddf-4c9e-b31b-1de9629eb8e1";
             var eacforms = "940923e2-433e-4d58-869f-dd099333af9b";
+            var getPcr = function () {
+                return spinner.forPromise(patientService.patientFirstPcrTestResult($scope.patient.uuid)).then(function (response) {
+                    console.log("response", response);
+                    if (response.data && response.data[0]) {
+                        $scope.firstPcrResult = response.data[0].valueAsString;
+                    }
+                }).then(spinner.forPromise(patientService.patientSecondPcrTestResult($scope.patient.uuid)).then(function (response) {
+                    console.log("response2", response);
+                    if (response.data && response.data[0]) {
+                        $scope.secondPcrResult = response.data[0].valueAsString;
+                    }
+                })).then(spinner.forPromise(patientService.patientRepeatPcrTestResult($scope.patient.uuid)).then(function (response) {
+                    console.log("response3", response);
+                    if (response.data && response.data[0]) {
+                        $scope.repeattPcrResult = response.data[0].valueAsString;
+                    }
+                }));
+            };
             var init = function () {
+                console.log("here", $scope.firstPcrResult);
+                console.log("here2", $scope.secondPcrResult);
+                console.log("here3", $scope.repeattPcrResult);
                 if (!($scope.allTemplates !== undefined && $scope.allTemplates.length > 0)) {
                     spinner.forPromise(conceptSetService.getConcept({
                         name: "All Observation Templates",
                         v: "custom:" + customRepresentation
                     }).then(function (response) {
                         var allTemplates = response.data.results[0].setMembers;
-                        if ($scope.patient.age >= 2) {
+                        if (($scope.patient.age >= 2) || (($scope.firstPcrResult == "Positive") && ($scope.repeattPcrResult == "Positive"))) {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
                                 if (allTemplates[i].uuid == heiformuuid || allTemplates[i].uuid == clinicainfantuuid || allTemplates[i].uuid == heitestinguuid || allTemplates[i].uuid == heiendoffollowup) {
                                     allTemplates.splice(i, 1);
                                 }
                             }
-                        }
-                        if ($scope.patient.age < 2) {
+                        } else {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
                                 if (allTemplates[i].uuid == personalhist || allTemplates[i].uuid == familyhistdata || allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload) {
                                     allTemplates.splice(i, 1);
                                 }
                             }
                         }
+
+                        // if ($scope.patient.age < 2) {
+                        //     for (var i = allTemplates.length - 1; i >= 0; i--) {
+                        //         if (allTemplates[i].uuid == personalhist || allTemplates[i].uuid == familyhistdata || allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload) {
+                        //             allTemplates.splice(i, 1);
+                        //         }
+                        //     }
+                        // }
                         if ($scope.patient.gender == "M") {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
                                 if (allTemplates[i].uuid == anccard) {
@@ -60,6 +88,13 @@ angular.module('bahmni.clinical')
                                 }
                             }
                         }
+                        // if($scope.firstPcrResult == "Positive"){
+                        //     for (var i = allTemplates.length - 1; i >= 0; i--) {
+                        //         if (allTemplates[i].uuid == heiformuuid) {
+                        //             allTemplates.push(i, 1);
+                        //         }
+                        //     }
+                        // }
                         var currentuserRoleName = $rootScope.currentUser.roles[0].name;
                         if (currentuserRoleName == "Data Clerk") {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
@@ -281,5 +316,7 @@ angular.module('bahmni.clinical')
                 return forms;
             };
             // Form Code :: End
-            init();
+            getPcr().then(function () {
+                init();
+            });
         }]);
