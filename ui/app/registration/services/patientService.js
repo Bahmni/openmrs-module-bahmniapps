@@ -4,7 +4,7 @@ angular.module('bahmni.registration')
     .factory('patientService', ['$http', '$rootScope', '$bahmniCookieStore', '$q', 'patientServiceStrategy', 'sessionService', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceStrategy, sessionService) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
-
+        var datas;
         var search = function (query, identifier, addressFieldName, addressFieldValue, customAttributeValue,
                                offset, customAttributeFields, programAttributeFieldName, programAttributeFieldValue, addressSearchResultsConfig,
                                patientSearchResultsConfig, filterOnAllIdentifiers) {
@@ -90,6 +90,12 @@ angular.module('bahmni.registration')
                 withCredentials: true
             });
         };
+        this.get = function () {
+            var catd = "Paka";
+        }
+        this.datas = function () {
+            return datas;
+        }
 
         var findPatientLatestAppointment = function (params) {
             return $http.get(Bahmni.Common.Constants.sqlUrl, {

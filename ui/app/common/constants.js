@@ -62,6 +62,9 @@ Bahmni.Common = Bahmni.Common || {};
     authenticatedReferenceDataMap["/openmrs/ws/rest/v1/entitymapping?mappingType=location_encountertype&s=byEntityAndMappingType&entityUuid=" + (localStorage.getItem("LoginInformation") ? JSON.parse(localStorage.getItem("LoginInformation")).currentLocation.uuid : "")] = "LoginLocationToEncounterTypeMapping";
 
     Bahmni.Common.Constants = {
+        patientFirstPcrTestResult: "HEI Testing (First PCR Results)",
+        patientSecondPcrTestResult: "HEI Testing (Second PCR Result)",
+        patientRepeatPCRResult: "HEI Testing (Repeat PCR Results)",
         patientHeightConceptName: "HEIGHT",
         hostURL: hostUrl,
         dateFormat: "dd/mm/yyyy",

@@ -61,4 +61,34 @@ angular.module('bahmni.common.patient')
                 withCredentials: true
             });
         };
+
+        this.patientFirstPcrTestResult = function (uuid) {
+            return $http.get(Bahmni.Common.Constants.observationsUrl, {
+                params: {
+                    concept: Bahmni.Common.Constants.patientFirstPcrTestResult,
+                    patientUuid: uuid
+                },
+                withCredentials: true
+            });
+        };
+
+        this.patientSecondPcrTestResult = function (uuid) {
+            return $http.get(Bahmni.Common.Constants.observationsUrl, {
+                params: {
+                    concept: Bahmni.Common.Constants.patientSecondPcrTestResult,
+                    patientUuid: uuid
+                },
+                withCredentials: true
+            });
+        };
+
+        this.patientRepeatPcrTestResult = function (uuid) {
+            return $http.get(Bahmni.Common.Constants.observationsUrl, {
+                params: {
+                    concept: Bahmni.Common.Constants.patientRepeatPCRResult,
+                    patientUuid: uuid
+                },
+                withCredentials: true
+            });
+        };
     }]);
