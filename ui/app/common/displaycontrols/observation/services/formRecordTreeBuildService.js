@@ -156,12 +156,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                     }
                 };
                 var translationKey = column.translationKey;
-                if (translationData && translationData.labels && translationData.labels[translationKey][0] !== translationKey) {
-                    obsGroup.concept.shortName = translationData.labels[translationKey][0];
-                }
-                else {
-                    obsGroup.concept.shortName = column.value;
-                }
+                var defaultShortName = column.value;
+                obsGroup.concept.shortName = self.getTranslatedShortName(translationData, translationKey, obsGroup, defaultShortName);
                 var columnRecord = self.getColumnObs(index, record);
                 column.children = columnRecord;
                 self.createGroupMembers(column, obsGroup, obsList, translationData);
@@ -169,6 +165,20 @@ angular.module('bahmni.common.displaycontrol.observation')
                     tableGroup.groupMembers.push(obsGroup);
                 }
             });
+        };
+
+        self.getTranslatedShortName = function (translationData, translationKey, obsGroup, defaultShortName) {
+            if (self.isTranslationKeyPresent(translationData, translationKey)) {
+                return translationData.labels[translationKey][0];
+            }
+            else {
+                return defaultShortName;
+            }
+        };
+
+        self.isTranslationKeyPresent = function (translationData, translationKey) {
+            return translationData && translationData.labels &&
+                translationData.labels[translationKey][0] !== translationKey;
         };
 
         self.getColumnObs = function (columnIndex, record) {
@@ -228,12 +238,9 @@ angular.module('bahmni.common.displaycontrol.observation')
                 }
             };
             var translationKey = record.control.label.translationKey;
-            if (translationData && translationData.labels && translationData.labels[translationKey][0] !== translationKey) {
-                obsGroup.concept.shortName = translationData.labels[translationKey][0];
-            }
-            else {
-                obsGroup.concept.shortName = record.control.label.value;
-            }
+            var defaultShortName = record.control.label.value;
+            obsGroup.concept.shortName =
+                self.getTranslatedShortName(translationData, translationKey, obsGroup, defaultShortName);
             return obsGroup;
         };
     }]);
