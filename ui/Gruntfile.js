@@ -54,8 +54,8 @@ module.exports = function (grunt) {
         'components/angular-translate-handler-log/angular-translate-handler-log.min.js',
         'components/angular-file-upload/dist/angular-file-upload.min.js',
         'components/angular-elastic/elastic.js',
-        'components/react/react.min.js',
-        'components/react/react-dom.min.js',
+        'components/react/react.production.min.js',
+        'components/react/react-dom.production.min.js',
         'components/bahmni-form-controls/helpers.js',
         'components/bahmni-form-controls/bundle.js',
         'components/purl/purl.js',
@@ -321,6 +321,24 @@ module.exports = function (grunt) {
                         dot: true,
                         cwd: '<%= yeoman.nodeModules %>/bahmni-clinical-components/dist',
                         dest: '<%= yeoman.app %>/components/bahmni-clinical-components/',
+                        src: [
+                            '*.*'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/react/umd/',
+                        dest: '<%= yeoman.app %>/components/react/',
+                        src: [
+                            '*.*'
+                        ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/react-dom/umd/',
+                        dest: '<%= yeoman.app %>/components/react-dom/',
                         src: [
                             '*.*'
                         ]

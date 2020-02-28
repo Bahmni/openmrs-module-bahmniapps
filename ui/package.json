@@ -41,9 +41,7 @@
     "karma-jasmine": "~0.2.0",
     "karma-junit-reporter": "^0.2.2",
     "karma-ng-html2js-preprocessor": "^0.1.2",
-    "matchdep": "^0.3.0",
-    "react": "^15.2.1",
-    "react-dom": "^15.2.1"
+    "matchdep": "^0.3.0"
   },
   "scripts": {
     "test": "karma start test/config/karma.conf.js"
@@ -65,5 +63,9 @@
   "readmeFilename": "README.md",
   "bugs": {
     "url": "https://github.com/Bhamni/opd/issues"
+  },
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   }
 }
