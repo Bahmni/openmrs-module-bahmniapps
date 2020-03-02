@@ -314,9 +314,16 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return getUrl(board);
             };
 
+            var preSaveEvents = function () {
+                var observationForms = $scope.consultation.observationForms;
+                _.each(observationForms, function (form) {
+                    if (form.component && form.events && form.events.onFormSave)
+                        form.component.state.data = runScript(form);
+                });
+            };
+
             var preSavePromise = function () {
                 var deferred = $q.defer();
-
                 var observationFilter = new Bahmni.Common.Domain.ObservationFilter();
                 $scope.consultation.preSaveHandler.fire();
                 $scope.lastvisited = $scope.consultation.lastvisited;
@@ -441,6 +448,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return $q.when({});
                 }
+                preSaveEvents();
                 return spinner.forPromise($q.all([preSavePromise(), encounterService.getEncounterType($state.params.programUuid, sessionService.getLoginLocationUuid())]).then(function (results) {
                     var encounterData = results[0];
                     encounterData.encounterTypeUuid = results[1].uuid;
