@@ -317,8 +317,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             var preSaveEvents = function () {
                 var observationForms = $scope.consultation.observationForms;
                 _.each(observationForms, function (form) {
-                    if (form.component && form.events && form.events.onFormSave)
+                    if (form.component && form.events && form.events.onFormSave) {
                         form.component.state.data = runScript(form);
+                    }
                 });
             };
 
