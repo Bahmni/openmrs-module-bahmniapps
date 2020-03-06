@@ -1,7 +1,6 @@
 <div id="messages" class="messages">
-    <div class="info-message" ng-show="success"><p>File(s) updated successfully</p></div>
-    <div class="error-message" ng-show="orientation_warning"><p><i class="fa fa-exclamation-sign"></i>The device is not
-        held upright. Please rotate the device before taking photo</p></div>
+    <div class="info-message" ng-show="success"><p>{{::'FILE_UPLOAD_SUCCESS_MESSAGE'|translate }}</p></div>
+    <div class="error-message" ng-show="orientation_warning"><p><i class="fa fa-exclamation-sign"></i>{{::'PLEASE_ROTATE_DEVICE_MESSAGE'|translate }}</p></div>
 </div>
 <div ng-if="toggleGallery">
     <ul class="doc-upload-accordion" bm-gallery patient="patient" access-impression="false">
@@ -9,29 +8,29 @@
             <h5 ng-click="resetCurrentVisit(newVisit)">
                 <i ng-hide="isCurrentVisit(newVisit)" class="fa fa-plus-circle state"></i>
                 <i ng-if="isCurrentVisit(newVisit)" class="fa fa-minus-circle state"></i>
-                Visit: New
+                {{::'NEW_VISIT_LABEL'|translate }}
             </h5>
 
             <div ng-show="isCurrentVisit(newVisit)" class="visit-content">
                 <form name="newVisitForm" single-submit="save(newVisit)">
                     <p class="caution" ng-show="newVisitForm.startDate.$error.overlap">
                         <i class="fa fa-exclamation-sign small"></i>
-                        <span>There is already a visit that exists within the entered dates. Please upload documents against appropriate visit.</span>
+                        <span>{{::'VISIT_EXIST_LABEL'|translate }}</span>
                     </p>
 
                     <p class="caution" ng-show="newVisitForm.startDate.$error.future">
                         <i class="fa fa-exclamation-sign small"></i>
-                        <span>Visit date should not be in the future.</span>
+                        <span>{{::'VISIT_NOT_IN_FUTURE_LABEL'|translate }}</span>
                     </p>
 
                     <p class="caution" ng-show="newVisitForm.startDate.$error.dateSequence">
                         <i class="fa fa-exclamation-sign small"></i>
-                        <span>Start Date should not be greater than End Date.</span>
+                        <span>{{::'START_NOT_GREATER_THAN_END_DATE_LABEL'|translate }}</span>
                     </p>
 
                     <div class="form-field">
                         <div>
-                            <label><strong>Visit Type</strong>
+                            <label><strong>{{::'VISIT_TYPE_LABEL'|translate }}</strong>
                                 <span class="asterick">*</span>
                             </label>
                         </div>
@@ -44,7 +43,7 @@
                     </div>
                     <div class="form-field">
                         <div>
-                            <label class="form-attribute"><strong>Start Date</strong>
+                            <label class="form-attribute"><strong>{{::'START_DATE_LABEL'|translate }}</strong>
                                 <span class="asterick">*</span>
                             </label>
                         </div>
@@ -57,7 +56,7 @@
                     </div>
                     <div class="form-field">
                         <div>
-                            <label class="form-attribute"><strong>End Date</strong></label>
+                            <label class="form-attribute"><strong>{{::'END_DATE_LABEL'|translate }}</strong></label>
                         </div>
                         <div class="field-value">
                             <input name="endDate" type="date" ng-model="newVisit.stopDatetime"
@@ -69,11 +68,11 @@
                         <input id="file-browse" type="file" multiple name="image" accept="application/pdf, image/*"
                                capture="camera" file-upload visit="newVisit" on-select="onSelect">
                         <label for="file-browse" class="btn btn-primary"><i
-                                class="fa fa-camera fa fa-white"></i> SCAN</label>
+                                class="fa fa-camera fa fa-white"></i> {{::'SCAN_LABEL'|translate }}</label>
                         <button type="submit"
                                 ng-disabled="!newVisit.hasFiles() || newVisitForm.$invalid || newVisit.hasErrors()"
                                 class="btn btn-primary">
-                            <i class="fa fa-save fa fa-white"></i> SAVE
+                            <i class="fa fa-save fa fa-white"></i> {{::'SAVE_LABEL'|translate }}
                         </button>
                     </div>
                 </form>
@@ -131,10 +130,10 @@
             <h5 ng-click="resetCurrentVisit(visit)">
                 <i ng-hide="isCurrentVisit(visit)" class="fa fa-plus-circle state"></i>
                 <i ng-if="isCurrentVisit(visit)" class="fa fa-minus-circle state"></i>
-                Visit:
-                <small>From:</small>
+                {{::'VISIT_LABEL'|translate }}
+                <small>{{::'VISIT_FROM_LABEL'|translate }}</small>
                 <span>{{visit.startDatetime | bahmniDate}}</span>
-                <small ng-if="visit.stopDatetime">To:</small>
+                <small ng-if="visit.stopDatetime">{{::'VISIT_TO_LABEL'|translate }</small>
                 <span ng-if="visit.stopDatetime">{{visit.stopDatetime | bahmniDate}}</span>
                 <span ng-if="visit.hasFiles()" class="containsImageMarker" title="Visit has images"><i
                         class="fa fa-picture-o"></i></span>
@@ -150,7 +149,7 @@
                                     <div class="file-actions">
                                         <button type="submit" ng-disabled="!visit.changed || visit.hasErrors()"
                                                 class="btn btn-primary">
-                                            <i class="fa fa-save fa fa-white"></i> SAVE
+                                            <i class="fa fa-save fa fa-white"></i> {{::'SAVE_LABEL'|translate }}
                                         </button>
                                     </div>
                                 </li>

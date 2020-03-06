@@ -17,5 +17,19 @@
     "YEARS_LABEL": "Years",
     "CHOOSE_ANSWER_FROM_DROPDOWN_LABEL": "Choose Answer",
     "DELETE_LABEL": "Delete",
-    "EDIT_LABEL": "Edit"
+    "EDIT_LABEL": "Edit",
+    "FILE_UPLOAD_SUCCESS_MESSAGE": "File(s) updated successfully",
+    "PLEASE_ROTATE_DEVICE_MESSAGE": "The device is not held upright. Please rotate the device before taking photo",
+    "NEW_VISIT_LABEL": "Visit: New",
+    "VISIT_EXIST_LABEL": "There is already a visit that exists within the entered dates. Please upload documents against appropriate visit.",
+    "VISIT_NOT_IN_FUTURE_LABEL": "Visit date should not be in the future.",
+    "START_NOT_GREATER_THAN_END_DATE_LABEL": "Start Date should not be greater than End Date.",
+    "VISIT_TYPE_LABEL": "Visit Type",
+    "START_DATE_LABEL": "Start Date",
+    "END_DATE_LABEL": "End Date",
+    "SCAN_LABEL": "SCAN",
+    "SAVE_LABEL": "SAVE",
+    "VISIT_LABEL": "Visit",
+    "VISIT_FROM_LABEL": "From:",
+    "VISIT_TO_LABEL": "To:"
 }
