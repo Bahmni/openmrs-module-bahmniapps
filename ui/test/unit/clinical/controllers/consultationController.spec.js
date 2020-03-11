@@ -707,6 +707,37 @@ describe("ConsultationController", function () {
                 done();
             });
         });
+
+        it("should not make api calls when there is error in form save event when there is a single error", function (done) {
+            scope.consultation = {
+                discontinuedDrugs: [{dateStopped: new Date()}],
+                preSaveHandler: new Bahmni.Clinical.Notifier(),
+                postSaveHandler: new Bahmni.Clinical.Notifier(),
+                observations: [],
+                observationForms: [{
+                    isAdded: true,
+                    component: {
+                        getValue: function () {
+                            return {}
+                        }, state: {data: {}}
+                    },
+                    events: {
+                        onFormSave: 'Save event'
+                    }
+                }],
+                conditions: [{uuid: undefined, conditionNonCoded: "fever"}]
+            };
+            window.runScript = function() {
+                throw {message: 'Error'};
+            };
+
+            scope.save({toState: {}}).then(function () {
+                expect(encounterService.getEncounterType).not.toHaveBeenCalled();
+                expect(encounterService.create).not.toHaveBeenCalled();
+                expect(conditionsService.save).not.toHaveBeenCalled();
+                done();
+            });
+        });
     });
 
     it("should generate the URL as mentioned in the config", function () {

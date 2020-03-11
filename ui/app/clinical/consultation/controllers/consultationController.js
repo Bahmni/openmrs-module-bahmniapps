@@ -316,9 +316,16 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             var preSaveEvents = function () {
                 var observationForms = $scope.consultation.observationForms;
-                _.each(observationForms, function (form) {
+                var addedObservationForms = _.filter(observationForms, function (form) {
+                    return form.isAdded;
+                });
+                _.each(addedObservationForms, function (form) {
                     if (form.component && form.events && form.events.onFormSave) {
-                        form.component.state.data = runScript(form);
+                        try {
+                            form.component.state.data = runScript(form);
+                        } catch (error) {
+                            throw error;
+                        }
                     }
                 });
             };
@@ -449,46 +456,54 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return $q.when({});
                 }
-                preSaveEvents();
-                return spinner.forPromise($q.all([preSavePromise(), encounterService.getEncounterType($state.params.programUuid, sessionService.getLoginLocationUuid())]).then(function (results) {
-                    var encounterData = results[0];
-                    encounterData.encounterTypeUuid = results[1].uuid;
-                    var params = angular.copy($state.params);
-                    params.cachebuster = Math.random();
-                    return encounterService.create(encounterData)
-                        .then(function (saveResponse) {
-                            var messageParams = {encounterUuid: saveResponse.data.encounterUuid, encounterType: saveResponse.data.encounterType};
-                            auditLogService.log($scope.patient.uuid, "EDIT_ENCOUNTER", messageParams, "MODULE_LABEL_CLINICAL_KEY");
-                            var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
-                                configurations.consultationNoteConcept(), configurations.labOrderNotesConcept(), $scope.followUpConditionConcept);
-                            var consultation = consultationMapper.map(saveResponse.data);
-                            consultation.lastvisited = $scope.lastvisited;
-                            return consultation;
-                        }).then(function (savedConsultation) {
-                            return spinner.forPromise(diagnosisService.populateDiagnosisInformation($scope.patient.uuid, savedConsultation)
-                                                          .then(function (consultationWithDiagnosis) {
-                                                              return saveConditions().then(function (savedConditions) {
-                                                                  consultationWithDiagnosis.conditions = savedConditions;
-                                                                  messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
-                                                              }, function () {
-                                                                  consultationWithDiagnosis.conditions = $scope.consultation.conditions;
-                                                              }).then(function () {
-                                                                  copyConsultationToScope(consultationWithDiagnosis);
-                                                                  if ($scope.targetUrl) {
-                                                                      return $window.open($scope.targetUrl, "_self");
-                                                                  }
-                                                                  return $state.transitionTo(toStateConfig ? toStateConfig.toState : $state.current, toStateConfig ? toStateConfig.toParams : params, {
-                                                                      inherit: false,
-                                                                      notify: true,
-                                                                      reload: (toStateConfig !== undefined)
-                                                                  });
-                                                              });
-                                                          }));
-                        }).catch(function (error) {
-                            var message = Bahmni.Clinical.Error.translate(error) || "{{'CLINICAL_SAVE_FAILURE_MESSAGE_KEY' | translate}}";
-                            messagingService.showMessage('error', message);
-                        });
-                }));
+                try {
+                    preSaveEvents();
+                    return spinner.forPromise($q.all([preSavePromise(),
+                        encounterService.getEncounterType($state.params.programUuid, sessionService.getLoginLocationUuid())]).then(function (results) {
+                            var encounterData = results[0];
+                            encounterData.encounterTypeUuid = results[1].uuid;
+                            var params = angular.copy($state.params);
+                            params.cachebuster = Math.random();
+                            return encounterService.create(encounterData)
+                            .then(function (saveResponse) {
+                                var messageParams = {
+                                    encounterUuid: saveResponse.data.encounterUuid,
+                                    encounterType: saveResponse.data.encounterType
+                                };
+                                auditLogService.log($scope.patient.uuid, "EDIT_ENCOUNTER", messageParams, "MODULE_LABEL_CLINICAL_KEY");
+                                var consultationMapper = new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
+                                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept(), $scope.followUpConditionConcept);
+                                var consultation = consultationMapper.map(saveResponse.data);
+                                consultation.lastvisited = $scope.lastvisited;
+                                return consultation;
+                            }).then(function (savedConsultation) {
+                                return spinner.forPromise(diagnosisService.populateDiagnosisInformation($scope.patient.uuid, savedConsultation)
+                                    .then(function (consultationWithDiagnosis) {
+                                        return saveConditions().then(function (savedConditions) {
+                                            consultationWithDiagnosis.conditions = savedConditions;
+                                            messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
+                                        }, function () {
+                                            consultationWithDiagnosis.conditions = $scope.consultation.conditions;
+                                        }).then(function () {
+                                            copyConsultationToScope(consultationWithDiagnosis);
+                                            if ($scope.targetUrl) {
+                                                return $window.open($scope.targetUrl, "_self");
+                                            }
+                                            return $state.transitionTo(toStateConfig ? toStateConfig.toState : $state.current, toStateConfig ? toStateConfig.toParams : params, {
+                                                inherit: false,
+                                                notify: true,
+                                                reload: (toStateConfig !== undefined)
+                                            });
+                                        });
+                                    }));
+                            }).catch(function (error) {
+                                var message = Bahmni.Clinical.Error.translate(error) || "{{'CLINICAL_SAVE_FAILURE_MESSAGE_KEY' | translate}}";
+                                messagingService.showMessage('error', message);
+                            });
+                        }));
+                } catch (error) {
+                    return spinner.forPromise(Promise.resolve(messagingService.showMessage('error', error.message)));
+                }
             };
 
             initialize();
