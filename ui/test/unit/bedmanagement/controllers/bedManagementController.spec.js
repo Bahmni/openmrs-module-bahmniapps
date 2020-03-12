@@ -13,6 +13,11 @@ describe('BedManagementController', function () {
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     var appDescriptor = {
+        getConfigValue: function (input) {
+            if (input === "forwardUrl") {
+                return "patientForwardUrl";
+            }
+        },
         formatUrl: function (url, options) {
             return "../bedmanagement/#/patient/PATIENT_UUID/visit/VISIT_UUID/dashboard";
         }
