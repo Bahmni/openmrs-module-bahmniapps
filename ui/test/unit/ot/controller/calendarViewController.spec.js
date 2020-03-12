@@ -17,6 +17,9 @@ describe("calendarViewController", function () {
                 dayViewEnd: "17:00",
                 dayViewSplit: "60"};
         }
+        if (value == 'startOfWeek') {
+            return "Tuesday";
+        }
     });
 
     patientService.search.and.returnValue(specUtil.simplePromise({data: {results: [{name: "new Patient", uuid: "patientUuid"}]}}));
@@ -290,10 +293,10 @@ describe("calendarViewController", function () {
         scope.goToCurrentWeek();
         expect(scope.weekOrDay).toEqual('week');
         expect(state.weekOrDay).toEqual('week');
-        expect(scope.weekStartDate).toEqual(new Date(moment().startOf('week')));
-        expect(state.weekStartDate).toEqual(new Date(moment().startOf('week')));
-        expect(scope.weekEndDate).toEqual(new Date(moment().endOf('week').endOf('day')));
-        expect(state.weekEndDate).toEqual(new Date(moment().endOf('week').endOf('day')));
+        expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekStartDate(new Date(moment().startOf('day').toDate()), scope.startOfWeekCode));
+        expect(state.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekStartDate(new Date(moment().startOf('day').toDate()), scope.startOfWeekCode));
+        expect(scope.weekEndDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekEndDate(scope.weekStartDate));
+        expect(state.weekEndDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekEndDate(scope.weekStartDate));
     });
 
     it('should go to next week on click of right arrow in week view', function() {
@@ -340,10 +343,19 @@ describe("calendarViewController", function () {
     });
 
     it('should go to calendar view on click of calendar button', function () {
-       createController();
-       scope.calendarView();
-       expect(scope.weekOrDay).toEqual('day');
-       expect(scope.view).toEqual('Calendar');
+        createController();
+        scope.calendarView();
+        expect(scope.view).toEqual('Calendar');
+    });
+
+
+    it('should go to calender view on click of calendar button and weekly view should be displayed on click of weekly' +
+        ' button', function () {
+        createController();
+        scope.calendarView();
+        scope.goToCurrentWeek();
+        expect(scope.view).toEqual('Calendar');
+        expect(scope.weekOrDay).toEqual('week');
     });
 
     it('should go to list view on click of list view button', function () {
@@ -482,4 +494,9 @@ describe("calendarViewController", function () {
         expect(scope.appointmentStatusList).toEqual([{name: Bahmni.OT.Constants.scheduled}, {name: Bahmni.OT.Constants.completed},
             {name: Bahmni.OT.Constants.postponed}, {name: Bahmni.OT.Constants.cancelled}]);
     });
+
+    it('should set startOfWeekCode as 2 when startOfWeek is Tuesday in configuration', function () {
+        createController();
+        expect(scope.startOfWeekCode).toEqual(2);
+    })
 });

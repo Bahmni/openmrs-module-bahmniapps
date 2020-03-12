@@ -74,7 +74,7 @@
     </p>
 
 
-    <p ng-show="view === 'List View'" class="day-btn-container">
+    <p class="day-btn-container">
         <input type="radio" name="weekOrDay" id="week-button" ng-model="weekOrDay" value="week"
                ng-click="goToCurrentWeek()" required/>
         <label for="week-button">{{'OT_WEEK_KEY' | translate}}</label>
@@ -93,13 +93,21 @@
 </div>
 
 <div class="calander-container">
-    <ot-calendar ng-if="view === 'Calendar'"
+    <ot-calendar ng-if="view === 'Calendar' && weekOrDay === 'day'"
                  view-date="viewDate"
                  day-view-start="calendarConfig.dayViewStart"
                  day-view-end="calendarConfig.dayViewEnd"
                  day-view-split="calendarConfig.dayViewSplit"
                  filter-params="filterParams">
     </ot-calendar>
+
+    <ot-weekly-calendar ng-if="view === 'Calendar' && weekOrDay === 'week'"
+                        view-date="viewDate"
+                        week-start-date="weekStartDate",
+                        day-view-start="calendarConfig.dayViewStart"
+                        day-view-end="calendarConfig.dayViewEnd"
+                        day-view-split="calendarConfig.dayViewSplit">
+    </ot-weekly-calendar>
 
     <list-view ng-if="view === 'List View'"
                week-start-date="weekStartDate"

@@ -1,0 +1,30 @@
+<div on-Scroll class="calendar">
+    <p class="calendar-overflow-hiding"></p>
+    <div class="calendar-location">
+        <p class="weekly-heading-cell" ng-repeat="index in [0, 1, 2, 3, 4, 5, 6]">
+            {{weekStartDate | addDays: index | bahmniDateTimeWithFormat: 'Do MMM, ddd'}}
+        </p>
+    </div>
+    <div class="table-block">
+        <div class="calendar-time-container">
+            <div ng-repeat="row in ::rows" class="calendar-time">
+                {{::row.date | bahmniTime}}
+            </div>
+        </div>
+        <div class="ot-block-container">
+            <div class="ot-block-wrapper">
+                <div class="ot-weekly-block" ng-repeat="index in [0, 1, 2, 3, 4, 5, 6]">
+                    <div ng-repeat="row in ::rows" class="weekly-calendar-cell">
+                    </div>
+
+                    <hr class="current-day-line"
+                        ng-if="shouldDisplayCurrentTimeLine()"
+                        ng-style="{top : currentTimeLineHeight + 'px'}">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
