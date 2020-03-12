@@ -502,7 +502,16 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             });
                         }));
                 } catch (error) {
-                    return spinner.forPromise(Promise.resolve(messagingService.showMessage('error', error.message)));
+                    var displayErrors = function (error) {
+                        if (angular.isArray(error)) {
+                            _.each(error, function (errorObj) {
+                                messagingService.showMessage('error', errorObj.message || '[ERROR]');
+                            });
+                        } else {
+                            messagingService.showMessage('error', error.message || '[ERROR]');
+                        }
+                    };
+                    return spinner.forPromise(Promise.resolve(displayErrors(error)));
                 }
             };
 
