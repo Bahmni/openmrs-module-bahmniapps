@@ -171,9 +171,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             if (self.isTranslationKeyPresent(translationData, translationKey)) {
                 return translationData.labels[translationKey][0];
             }
-            else {
-                return defaultShortName;
-            }
+            return defaultShortName;
         };
 
         self.isTranslationKeyPresent = function (translationData, translationKey) {
