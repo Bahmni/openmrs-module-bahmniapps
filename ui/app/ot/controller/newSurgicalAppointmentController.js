@@ -4,6 +4,7 @@ angular.module('bahmni.ot')
     .controller('NewSurgicalAppointmentController', ['$scope', '$q', '$window', 'patientService', 'surgicalAppointmentService', 'messagingService', 'programService', 'appService', 'ngDialog', 'spinner', 'queryService', 'programHelper',
         function ($scope, $q, $window, patientService, surgicalAppointmentService, messagingService, programService, appService, ngDialog, spinner, queryService, programHelper) {
             var init = function () {
+                $scope.configuredSurgeryAttributeNames = appService.getAppDescriptor().getConfigValue("surgeryAttributes");
                 $scope.selectedPatient = $scope.ngDialogData && $scope.ngDialogData.patient;
                 $scope.patient = $scope.ngDialogData && $scope.ngDialogData.patient && ($scope.ngDialogData.patient.value || $scope.ngDialogData.patient.display);
                 $scope.otherSurgeons = _.cloneDeep($scope.surgeons);
@@ -122,6 +123,18 @@ angular.module('bahmni.ot')
                 return {
                     patientUuid: $scope.selectedPatient.uuid
                 };
+            };
+
+            $scope.getConfiguredAttributes = function () {
+                const configuredAttributes = [];
+                _.each($scope.configuredSurgeryAttributeNames, function (configuredAttributeName) {
+                    configuredAttributes.push($scope.attributes[configuredAttributeName]);
+                });
+                return configuredAttributes;
+            };
+
+            $scope.isSurgeryAttributesConfigurationAvailableAndValid = function () {
+                return $scope.configuredSurgeryAttributeNames && $scope.configuredSurgeryAttributeNames.length > 0;
             };
 
             spinner.forPromise(init());
