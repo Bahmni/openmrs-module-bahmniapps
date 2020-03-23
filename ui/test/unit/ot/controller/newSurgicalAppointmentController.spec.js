@@ -547,4 +547,64 @@ describe("newSurgicalAppointmentController", function () {
         expect(scope.surgicalForm.surgicalAppointments[0].isBeingEdited).toBeUndefined();
         expect(scope.ngDialogData.isBeingEdited).toBeUndefined();
     });
+
+    it('should return surgery attributes from config', function () {
+        getAppDescriptor.getConfigValue.and.returnValue(['procedure', 'surgicalAssistant']);
+
+        createController();
+        expect(getAppDescriptor.getConfigValue).toHaveBeenCalledWith('surgeryAttributes');
+        expect(scope.configuredSurgeryAttributeNames.length).toBe(2);
+        expect(scope.configuredSurgeryAttributeNames[0]).toBe('procedure');
+        expect(scope.configuredSurgeryAttributeNames[1]).toBe('surgicalAssistant');
+
+    });
+
+    describe('isSurgeryAttributesConfigurationAvailableAndValid', function () {
+        it('should return true if "surgeryAttributes" configuration is available', function () {
+            createController();
+            scope.configuredSurgeryAttributeNames = ["procedure", "surgicalAssistant"];
+            expect(scope.isSurgeryAttributesConfigurationAvailableAndValid()).toBeTruthy();
+
+        });
+
+        it('should return false if "surgeryAttributes" configuration is not defined', function () {
+            createController();
+            scope.configuredSurgeryAttributeNames = undefined;
+            expect(scope.isSurgeryAttributesConfigurationAvailableAndValid()).toBeFalsy();
+        });
+
+        it('should return false if "surgeryAttributes" configuration is an empty array', function () {
+            createController();
+            scope.configuredSurgeryAttributeNames = [];
+            expect(scope.isSurgeryAttributesConfigurationAvailableAndValid()).toBeFalsy();
+        });
+    });
+
+    describe('getConfiguredAttributes', function () {
+        it('should return configured surgery attributes along with the order', function () {
+            createController();
+            scope.configuredSurgeryAttributeNames = ["surgicalAssistant", "procedure"];
+            scope.attributes = {
+                procedure: {surgicalAppointmentAttributeType: {name: 'procedure'}},
+                surgicalAssistant: {surgicalAppointmentAttributeType: {name: 'surgicalAssistant'}},
+                cleaningTime: {surgicalAppointmentAttributeType: {name: 'cleaningTime'}}
+            };
+            let configuredAttributes = scope.getConfiguredAttributes();
+            expect(configuredAttributes.length).toBe(2);
+            expect(configuredAttributes[0].surgicalAppointmentAttributeType.name).toBe('surgicalAssistant');
+            expect(configuredAttributes[1].surgicalAppointmentAttributeType.name).toBe('procedure');
+        });
+
+        it('should return empty array when "configuredSurgeryAttributeNames" is undefined', function () {
+            createController();
+            scope.configuredSurgeryAttributeNames = undefined;
+            scope.attributes = {
+                procedure: {surgicalAppointmentAttributeType: {name: 'procedure'}},
+                surgicalAssistant: {surgicalAppointmentAttributeType: {name: 'surgicalAssistant'}},
+                cleaningTime: {surgicalAppointmentAttributeType: {name: 'cleaningTime'}}
+            };
+            expect(scope.getConfiguredAttributes().length).toBe(0)
+        });
+    })
+
 });

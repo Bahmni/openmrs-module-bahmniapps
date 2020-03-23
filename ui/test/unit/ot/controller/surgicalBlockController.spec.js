@@ -197,10 +197,10 @@ describe("surgicalBlockController", function () {
     appService.getAppDescriptor.and.returnValue(appDescriptor);
 
     appDescriptor.getConfigValue.and.callFake(function (value) {
-        if (value == 'primarySurgeonsForOT') {
+        if (value === 'primarySurgeonsForOT') {
             return ["provider1", "provider2"];
         }
-        if (value == 'calendarView') {
+        if (value === 'calendarView') {
             return {dayViewStart: '08:00', dayViewEnd: '18:00', dayViewSplit: '60'}
         }
         return value;
