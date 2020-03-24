@@ -33,7 +33,7 @@ angular.module('bahmni.common.domain')
                         bacteriologyGroupMembers.concat(member);
                     return bacteriologyGroupMembers;
                 };
-                return encounter.extensions.mdrtbSpecimen.map(function (observation) {
+                return encounter.extensions.mdrtbSpecimen ? encounter.extensions.mdrtbSpecimen.map(function (observation) {
                     var bacteriologyGroupMembers = [];
                     observation.sample.additionalAttributes && observation.sample.additionalAttributes.groupMembers.forEach(function (member) {
                         bacteriologyGroupMembers = addBacteriologyMember(bacteriologyGroupMembers, member);
@@ -43,7 +43,7 @@ angular.module('bahmni.common.domain')
                         bacteriologyGroupMembers = addBacteriologyMember(bacteriologyGroupMembers, member);
                     });
                     return bacteriologyGroupMembers;
-                });
+                }) : [];
             };
 
             var getDefaultEncounterType = function () {
