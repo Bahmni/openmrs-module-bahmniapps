@@ -322,7 +322,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 _.each(addedObservationForms, function (form) {
                     if (form.component && form.events && form.events.onFormSave) {
                         try {
-                            form.component.state.data = runScript(form);
+                            form.component.state.data = runEventScript(form.component.state.data,
+                                form.events.onFormSave, form.component.props && form.component.props.patient);
                         } catch (error) {
                             throw error;
                         }

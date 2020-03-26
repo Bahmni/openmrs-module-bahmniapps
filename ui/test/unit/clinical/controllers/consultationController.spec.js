@@ -720,7 +720,9 @@ describe("ConsultationController", function () {
                     component: {
                         getValue: function () {
                             return {}
-                        }, state: {data: {}}
+                        },
+                        state: {data: {}},
+                        props: {patient: {}},
                     },
                     events: {
                         onFormSave: 'Save event'
@@ -728,7 +730,7 @@ describe("ConsultationController", function () {
                 }],
                 conditions: [{uuid: undefined, conditionNonCoded: "fever"}]
             };
-            window.runScript = function() {
+            window.runEventScript = function() {
                 throw {message: 'Error'};
             };
 
@@ -752,7 +754,9 @@ describe("ConsultationController", function () {
                     component: {
                         getValue: function () {
                             return {}
-                        }, state: {data: {}}
+                        },
+                        state: {data: {}},
+                        props: {patient: {}},
                     },
                     events: {
                         onFormSave: 'Save event'
@@ -760,7 +764,7 @@ describe("ConsultationController", function () {
                 }],
                 conditions: [{uuid: undefined, conditionNonCoded: "fever"}]
             };
-            window.runScript = function () {
+            window.runEventScript = function () {
                 throw [{message: 'Error1'}, {message: ''}, {mesage: 'Error3'}];
             };
 
