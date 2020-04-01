@@ -134,8 +134,10 @@ describe("FormRecordTreeBuildService", function () {
             "date": "1488782460000",
             "isOpen": true
         }];
-
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         formRecordTreeBuildService.build(observations);
+        allFormsDeferred.resolve(allFormsResponse);
+        $scope.$apply();
 
         var value = observations[0].value[0];
         expect(value.concept.shortName).toBe("myForm");
@@ -166,7 +168,10 @@ describe("FormRecordTreeBuildService", function () {
             "value": [obsOne, obsTwo]
         }]
 
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         formRecordTreeBuildService.build(observations);
+        allFormsDeferred.resolve(allFormsResponse);
+        $scope.$apply();
 
         expect(observations[0].value.length).toBe(1);
 
@@ -241,7 +246,10 @@ describe("FormRecordTreeBuildService", function () {
             "value": [obsGroupOne, obsOne, obsTwo]
         }];
 
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         formRecordTreeBuildService.build(observations);
+        allFormsDeferred.resolve(allFormsResponse);
+        $scope.$apply();
 
         expect(observations[0].value.length).toBe(1);
         var value = observations[0].value[0];
@@ -291,7 +299,10 @@ describe("FormRecordTreeBuildService", function () {
             }]
         }];
 
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         formRecordTreeBuildService.build(observations);
+        allFormsDeferred.resolve(allFormsResponse);
+        $scope.$apply();
 
         expect(observations[0].value.length).toBe(2);
 

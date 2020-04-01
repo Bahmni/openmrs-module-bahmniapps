@@ -128,6 +128,56 @@ describe('ConceptSetPageController', function () {
             expect(scope.consultation.selectedObsTemplate.length).toBe(0);
         });
 
+        it("should load the form2 forms", function () {
+            var conceptResponseData = {
+                results: [
+                    {
+                        setMembers: [{name: {name: "abcd"}, uuid: 123}]
+                    }
+                ]
+            };
+            mockConceptSetService(conceptResponseData);
+            let nameTranslationForSimpleForm = [{locale:'en', display:'Simple_en'},
+                {locale:'es', display:'Simple_es'}];
+            var form2Data= [{
+                    name: "Sample",
+                    uuid:"96d89bfe-8b42-493c-bcc0-284ce0f5d12b",
+                    version: "1",
+                    published: true,
+                    id: null,
+                    resources: null,
+                    nameTranslation: null
+                },
+                {
+                    name: "Simple",
+                    uuid: "71a11931-56bf-4792-9d12-81836aca0b1c",
+                    version: "9",
+                    published: true,
+                    id: null,
+                    resources: null,
+                    nameTranslation: JSON.stringify(nameTranslationForSimpleForm)
+                }];
+            mockformService(form2Data);
+            rootScope.currentUser = {
+                isFavouriteObsTemplate: function () {
+                    return false;
+                }
+            };
+            localStorage.setItem("NG_TRANSLATE_LANG_KEY", "en");
+            createController();
+            expect(scope.consultation.observationForms[0].formName).toEqual( form2Data[0].name);
+            expect(scope.consultation.observationForms[0].label).toEqual( form2Data[0].name);
+            expect(scope.consultation.observationForms[0].conceptName).toEqual( form2Data[0].name);
+            expect(scope.consultation.observationForms[0].formUuid).toEqual( form2Data[0].uuid);
+            expect(scope.consultation.observationForms[0].formVersion).toEqual( form2Data[0].version);
+
+            expect(scope.consultation.observationForms[1].formName).toEqual( form2Data[1].name);
+            expect(scope.consultation.observationForms[1].label).toEqual( nameTranslationForSimpleForm[0].display);
+            expect(scope.consultation.observationForms[1].conceptName).toEqual( form2Data[1].name);
+            expect(scope.consultation.observationForms[1].formUuid).toEqual( form2Data[1].uuid);
+            expect(scope.consultation.observationForms[1].formVersion).toEqual( form2Data[1].version);
+        });
+
         it("should load all obs templates along with forms from implementers interface", function () {
             var conceptResponseData = {
                 results: [

@@ -65,9 +65,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                             });
                             mapObservation(observationsForSelectedForm);
                         });
-                        $scope.title = $scope.config.formName;
-                    }
-                    else {
+                        $scope.title = $scope.config.formDisplayName;
+                    } else {
                         if ($scope.observations) {
                             mapObservation($scope.observations, $scope.config);
                             $scope.isFulfilmentDisplayControl = true;
