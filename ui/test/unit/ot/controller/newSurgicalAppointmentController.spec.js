@@ -605,6 +605,13 @@ describe("newSurgicalAppointmentController", function () {
             };
             expect(scope.getConfiguredAttributes().length).toBe(0)
         });
+
+        it('should return empty array when "attributes" is undefined', function () {
+            createController();
+            scope.configuredSurgeryAttributeNames = ["surgicalAssistant", "procedure"];
+            scope.attributes = undefined;
+            expect(scope.getConfiguredAttributes().length).toBe(0);
+        });
     })
 
 });
