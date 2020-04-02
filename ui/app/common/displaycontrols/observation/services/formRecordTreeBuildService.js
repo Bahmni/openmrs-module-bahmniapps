@@ -103,7 +103,6 @@ angular.module('bahmni.common.displaycontrol.observation')
                             if (formDetailsAsString) {
                                 var formDef = JSON.parse(formDetailsAsString);
                                 formDef.version = observationForm.version;
-                                formDef.version = observationForm.version;
                                 var locale = $window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
                                 return formService.getFormTranslate(formDef.name, formDef.version, locale)
                                     .then(function (response) {
