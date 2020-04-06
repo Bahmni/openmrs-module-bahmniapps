@@ -324,6 +324,15 @@ module.exports = function (grunt) {
                         src: [
                             '*.*'
                         ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/natural-orderby/iife',
+                        dest: '<%= yeoman.app %>/components/natural-orderby/',
+                        src: [
+                            '*.*'
+                        ]
                     }
                 ]
             }
