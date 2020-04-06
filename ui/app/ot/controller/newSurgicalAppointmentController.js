@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('NewSurgicalAppointmentController', ['$scope', '$q', '$window', 'patientService', 'surgicalAppointmentService', 'messagingService', 'programService', 'appService', 'ngDialog', 'spinner', 'queryService', 'programHelper',
-        function ($scope, $q, $window, patientService, surgicalAppointmentService, messagingService, programService, appService, ngDialog, spinner, queryService, programHelper) {
+    .controller('NewSurgicalAppointmentController', ['$scope', '$q', '$window', 'patientService', 'surgicalAppointmentService', 'messagingService', 'programService', 'appService', 'ngDialog', 'spinner', 'queryService', 'programHelper', 'surgicalAppointmentHelper',
+        function ($scope, $q, $window, patientService, surgicalAppointmentService, messagingService, programService, appService, ngDialog, spinner, queryService, programHelper, surgicalAppointmentHelper) {
             var init = function () {
                 $scope.configuredSurgeryAttributeNames = appService.getAppDescriptor().getConfigValue("surgeryAttributes");
                 $scope.selectedPatient = $scope.ngDialogData && $scope.ngDialogData.patient;
@@ -125,18 +125,8 @@ angular.module('bahmni.ot')
                 };
             };
 
-            $scope.getConfiguredAttributes = function () {
-                const configuredAttributes = [];
-                if ($scope.attributes != null) {
-                    _.each($scope.configuredSurgeryAttributeNames, function (configuredAttributeName) {
-                        configuredAttributes.push($scope.attributes[configuredAttributeName]);
-                    });
-                }
-                return configuredAttributes;
-            };
-
-            $scope.isSurgeryAttributesConfigurationAvailableAndValid = function () {
-                return $scope.configuredSurgeryAttributeNames && $scope.configuredSurgeryAttributeNames.length > 0;
+            $scope.sort = function (attributes) {
+                return surgicalAppointmentHelper.getAttributesFromAttributeTypes(attributes, $scope.attributeTypes);
             };
 
             spinner.forPromise(init());

@@ -4,7 +4,8 @@
         <thead>
         <tr>
             <th ng-repeat="info in tableInfo" ng-click="info.sortInfo && sortSurgicalAppointmentsBy(info.sortInfo)">
-                {{ info.heading }}
+                <!--TODO Translations need to be revisited once dynamic translation key generation feature for attributes added by product -->
+                {{ (defaultAttributeTranslations.get(info.heading) | translate) || info.heading }}
                 <span ng-if="sortColumn == info.sortInfo">
                         <i class="fa fa-caret-up" ng-show="reverseSort"></i>
                         <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
@@ -51,28 +52,11 @@
                 {{appointment.surgicalBlock.location.name}}
             </td>
             <td>
-                {{appointment.surgicalAppointmentAttributes.procedure.value}}
-            </td>
-            <td>
-                {{appointment.surgicalAppointmentAttributes.notes.value}}
-            </td>
-            <td>
                 {{appointment.surgicalBlock.provider.person.display}}
             </td>
-            <td>
-                {{appointment.surgicalAppointmentAttributes.otherSurgeon.value.person.display}}
-            </td>
-            <td>
-                {{appointment.surgicalAppointmentAttributes.surgicalAssistant.value}}
-            </td>
-            <td>
-                {{appointment.surgicalAppointmentAttributes.anaesthetist.value}}
-            </td>
-            <td>
-                {{appointment.surgicalAppointmentAttributes.scrubNurse.value}}
-            </td>
-            <td>
-                {{appointment.surgicalAppointmentAttributes.circulatingNurse.value}}
+            <td ng-repeat="attribute in filteredSurgicalAttributeTypes"
+                ng-init="attributeValue=appointment.surgicalAppointmentAttributes[attribute.name].value">
+                {{attribute.format == 'org.openmrs.Provider' ? attributeValue.person.display : attributeValue}}
             </td>
             <td class="list-view-notes">
                 {{appointment.notes}}
