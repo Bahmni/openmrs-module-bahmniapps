@@ -24,8 +24,7 @@
                 <a ng-click="goToForwardUrl()">{{::patient}}</a>
             </span>
         </p>
-
-        <div ng-repeat="attribute in isSurgeryAttributesConfigurationAvailableAndValid() ? getConfiguredAttributes() : attributes">
+        <div ng-repeat="attribute in isSurgeryAttributesConfigurationAvailableAndValid() ? getConfiguredAttributes(attributes) : sort(attributes)">
             <!--TODO Translations need to be revisited once dynamic translation key generation feature for attributes added by product -->
             <div ng-switch="attributeTypeName" ng-init="attributeTypeName = attribute.surgicalAppointmentAttributeType.name">
                 <p ng-switch-when="procedure">
