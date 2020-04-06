@@ -191,7 +191,7 @@ describe('surgicalAppointmentHelper', function () {
         expect(filteredAppointments.length).toEqual(1);
         expect(filteredAppointments[0].id).toEqual(108);
     });
-    
+
     it('should calculate the duration of the appointment when some fields are empty', function () {
         var estTimInHours = "";
         var estTimInMinutes = "";
@@ -199,5 +199,109 @@ describe('surgicalAppointmentHelper', function () {
         var appointmentDuration = surgicalAppointmentHelper.getAppointmentDuration(estTimInHours, estTimInMinutes, cleaningTime);
 
         expect(appointmentDuration).toEqual(0);
-    })
+    });
+
+    describe('getAttributesFromAttributeNames', function () {
+        it('should return configured surgery attributes along with the order', function () {
+
+            var configuredSurgeryAttributeNames = ["surgicalAssistant", "procedure"];
+            var attributes = {
+                procedure: {surgicalAppointmentAttributeType: {name: 'procedure'}},
+                surgicalAssistant: {surgicalAppointmentAttributeType: {name: 'surgicalAssistant'}},
+                cleaningTime: {surgicalAppointmentAttributeType: {name: 'cleaningTime'}}
+            };
+
+            var expectedAttributes = {
+                surgicalAssistant: {surgicalAppointmentAttributeType: {name: 'surgicalAssistant'}},
+                procedure: {surgicalAppointmentAttributeType: {name: 'procedure'}}
+            };
+
+            var configuredAttributes = surgicalAppointmentHelper.getAttributesFromAttributeNames(attributes, configuredSurgeryAttributeNames);
+
+            expect(_.isEqual(expectedAttributes, configuredAttributes)).toBeTruthy();
+        });
+
+        it('should return empty object when "configuredSurgeryAttributeNames" is undefined', function () {
+            var attributes = {
+                procedure: {surgicalAppointmentAttributeType: {name: 'procedure'}},
+                surgicalAssistant: {surgicalAppointmentAttributeType: {name: 'surgicalAssistant'}},
+                cleaningTime: {surgicalAppointmentAttributeType: {name: 'cleaningTime'}}
+            };
+            var configuredAttributes = surgicalAppointmentHelper.getAttributesFromAttributeNames(attributes, undefined);
+            expect(_.isEmpty(configuredAttributes)).toBeTruthy();
+        });
+
+        it('should return empty object when "attributes" is undefined', function () {
+            var configuredSurgeryAttributeNames = ["surgicalAssistant", "procedure"];
+            var configuredAttributes = surgicalAppointmentHelper.getAttributesFromAttributeNames(undefined, configuredSurgeryAttributeNames);
+            expect(_.isEmpty(configuredAttributes)).toBeTruthy();
+        });
+
+        describe('getAttributeTypesByRemovingAttributeNames', function () {
+            it('should return surgical attributes types by removing given "attributeNames"', function () {
+                var attributeNamesToBeRemoved = ['estTimeHours', 'estTimeMinutes', 'cleaningTime'];
+                var attributesTypes = [{"uuid": "34c1cace-7367-11e7-a46a-000c29e530d2", "name": "procedure"},
+                    {"uuid": "34c1e03b-7367-11e7-a46a-000c29e530d2", "name": "Notes"},
+                    {"uuid": "34c26d4b-7367-11e7-a46a-000c29e530d5", "name": "estTimeHours"},
+                    {"uuid": "34c26d4b-7367-11e7-a46a-000c29e530d3", "name": "estTimeMinutes"},
+                    {"uuid": "34c26d4b-7367-11e7-a46a-000c29e530d8", "name": "cleaningTime"}];
+                var finalAttributeTypes = surgicalAppointmentHelper.getAttributeTypesByRemovingAttributeNames(attributesTypes, attributeNamesToBeRemoved);
+                expect(finalAttributeTypes.length).toBe(2);
+                expect(finalAttributeTypes[0].name).toBe('procedure');
+                expect(finalAttributeTypes[1].name).toBe('Notes');
+            });
+
+            it('should return same surgical attributes types when given "attributeNames" is undefined', function () {
+                var attributesTypes = [{"uuid": "34c1cace-7367-11e7-a46a-000c29e530d2", "name": "procedure"},
+                    {"uuid": "34c1e03b-7367-11e7-a46a-000c29e530d2", "name": "Notes"}];
+                var finalAttributeTypes = surgicalAppointmentHelper.getAttributeTypesByRemovingAttributeNames(attributesTypes, undefined);
+                expect(finalAttributeTypes.length).toBe(2);
+                expect(finalAttributeTypes[0].name).toBe('procedure');
+                expect(finalAttributeTypes[1].name).toBe('Notes');
+            });
+        });
+
+        describe('getAttributesFromAttributeTypes', function () {
+            it('should sort and filter attributes by given "attributeTypes"', function () {
+                var attributes = {
+                    procedure: {surgicalAppointmentAttributeType: {name: 'procedure'}},
+                    surgicalAssistant: {surgicalAppointmentAttributeType: {name: 'surgicalAssistant'}},
+                    cleaningTime: {surgicalAppointmentAttributeType: {name: 'cleaningTime'}},
+                    estTimeHours: {surgicalAppointmentAttributeType: {name: 'estTimeHours'}},
+                    estTimeMinutes: {surgicalAppointmentAttributeType: {name: 'estTimeMinutes'}},
+                    Notes: {surgicalAppointmentAttributeType: {name: 'Notes'}}
+                };
+                var attributesTypes = [{"uuid": "34c1cace-7367-11e7-a46a-000c29e530d2", "name": "procedure"},
+                    {"uuid": "34c1e03b-7367-11e7-a46a-000c29e530d2", "name": "Notes"},
+                    {"uuid": "34c26d4b-7367-11e7-a46a-000c29e530d5", "name": "estTimeHours"},
+                    {"uuid": "34c26d4b-7367-11e7-a46a-000c29e530d3", "name": "estTimeMinutes"},
+                    {"uuid": "34c26d4b-7367-11e7-a46a-000c29e530d8", "name": "cleaningTime"}];
+
+                var expectedAttributes = {
+                    procedure: {surgicalAppointmentAttributeType: {name: 'procedure'}},
+                    Notes: {surgicalAppointmentAttributeType: {name: 'Notes'}},
+                    estTimeHours: {surgicalAppointmentAttributeType: {name: 'estTimeHours'}},
+                    estTimeMinutes: {surgicalAppointmentAttributeType: {name: 'estTimeMinutes'}},
+                    cleaningTime: {surgicalAppointmentAttributeType: {name: 'cleaningTime'}}
+                };
+
+                var finalAttributes = surgicalAppointmentHelper.getAttributesFromAttributeTypes(attributes, attributesTypes);
+
+                expect(_.isEqual(expectedAttributes, finalAttributes)).toBeTruthy();
+            });
+
+            it('should return empty attributes when "attributeTypes" is undefined', function () {
+                var attributes = {procedure: {surgicalAppointmentAttributeType: {name: 'procedure'}}};
+                var finalAttributes = surgicalAppointmentHelper.getAttributesFromAttributeTypes(attributes);
+                expect(_.isEmpty(finalAttributes)).toBeTruthy();
+            });
+
+            it('should return empty attributes when "attributes" is undefined', function () {
+                var finalAttributes = surgicalAppointmentHelper.getAttributesFromAttributeTypes(undefined, {});
+                expect(_.isEmpty(finalAttributes)).toBeTruthy();
+            });
+        });
+
+    });
+
 });

@@ -14,7 +14,10 @@ Bahmni.OT.Constants = (function () {
         updateSurgicalAppointmentUrl: RESTWS_V1 + "/surgicalAppointment",
         surgicalAppointmentAttributeTypeUrl: RESTWS_V1 + "/surgicalAppointmentAttributeType",
         defaultCalendarEndTime: '23:59',
-        defaultCalendarStartTime: '00:00'
+        defaultCalendarStartTime: '00:00',
+        weekDays: {"Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6, "Sunday": 7 },
+        defaultWeekStartDayName: 'Sunday',
+        providerSurgicalAttributeFormat: 'org.openmrs.Provider'
     };
 })();
 
