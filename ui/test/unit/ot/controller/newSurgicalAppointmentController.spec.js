@@ -548,70 +548,36 @@ describe("newSurgicalAppointmentController", function () {
         expect(scope.ngDialogData.isBeingEdited).toBeUndefined();
     });
 
-    it('should return surgery attributes from config', function () {
-        getAppDescriptor.getConfigValue.and.returnValue(['procedure', 'surgicalAssistant']);
+    it('should sort attributes by "attributeTypes"', function () {
+        var attributes = {
+            procedure: {surgicalAppointmentAttributeType: {name: 'procedure'}},
+            surgicalAssistant: {surgicalAppointmentAttributeType: {name: 'surgicalAssistant'}},
+            cleaningTime: {surgicalAppointmentAttributeType: {name: 'cleaningTime'}},
+            estTimeHours: {surgicalAppointmentAttributeType: {name: 'estTimeHours'}},
+            estTimeMinutes: {surgicalAppointmentAttributeType: {name: 'estTimeMinutes'}},
+            Notes: {surgicalAppointmentAttributeType: {name: 'Notes'}}
+        };
+        var attributesTypes = [{"uuid": "34c1cace-7367-11e7-a46a-000c29e530d2", "name": "procedure"},
+            {"uuid": "34c1e03b-7367-11e7-a46a-000c29e530d2", "name": "Notes"},
+            {"uuid": "34c26d4b-7367-11e7-a46a-000c29e530d5", "name": "estTimeHours"},
+            {"uuid": "34c26d4b-7367-11e7-a46a-000c29e530d3", "name": "estTimeMinutes"},
+            {"uuid": "34c26d4b-7367-11e7-a46a-000c29e530d8", "name": "cleaningTime"}];
+
+        var expectedAttributes = {
+            procedure: {surgicalAppointmentAttributeType: {name: 'procedure'}},
+            Notes: {surgicalAppointmentAttributeType: {name: 'Notes'}},
+            estTimeHours: {surgicalAppointmentAttributeType: {name: 'estTimeHours'}},
+            estTimeMinutes: {surgicalAppointmentAttributeType: {name: 'estTimeMinutes'}},
+            cleaningTime: {surgicalAppointmentAttributeType: {name: 'cleaningTime'}}
+        };
 
         createController();
-        expect(getAppDescriptor.getConfigValue).toHaveBeenCalledWith('surgeryAttributes');
-        expect(scope.configuredSurgeryAttributeNames.length).toBe(2);
-        expect(scope.configuredSurgeryAttributeNames[0]).toBe('procedure');
-        expect(scope.configuredSurgeryAttributeNames[1]).toBe('surgicalAssistant');
 
+        scope.attributeTypes = attributesTypes;
+
+        var finalAttributes = scope.sort(attributes);
+
+        expect(_.isEqual(expectedAttributes, finalAttributes)).toBeTruthy();
     });
-
-    describe('isSurgeryAttributesConfigurationAvailableAndValid', function () {
-        it('should return true if "surgeryAttributes" configuration is available', function () {
-            createController();
-            scope.configuredSurgeryAttributeNames = ["procedure", "surgicalAssistant"];
-            expect(scope.isSurgeryAttributesConfigurationAvailableAndValid()).toBeTruthy();
-
-        });
-
-        it('should return false if "surgeryAttributes" configuration is not defined', function () {
-            createController();
-            scope.configuredSurgeryAttributeNames = undefined;
-            expect(scope.isSurgeryAttributesConfigurationAvailableAndValid()).toBeFalsy();
-        });
-
-        it('should return false if "surgeryAttributes" configuration is an empty array', function () {
-            createController();
-            scope.configuredSurgeryAttributeNames = [];
-            expect(scope.isSurgeryAttributesConfigurationAvailableAndValid()).toBeFalsy();
-        });
-    });
-
-    describe('getConfiguredAttributes', function () {
-        it('should return configured surgery attributes along with the order', function () {
-            createController();
-            scope.configuredSurgeryAttributeNames = ["surgicalAssistant", "procedure"];
-            scope.attributes = {
-                procedure: {surgicalAppointmentAttributeType: {name: 'procedure'}},
-                surgicalAssistant: {surgicalAppointmentAttributeType: {name: 'surgicalAssistant'}},
-                cleaningTime: {surgicalAppointmentAttributeType: {name: 'cleaningTime'}}
-            };
-            let configuredAttributes = scope.getConfiguredAttributes();
-            expect(configuredAttributes.length).toBe(2);
-            expect(configuredAttributes[0].surgicalAppointmentAttributeType.name).toBe('surgicalAssistant');
-            expect(configuredAttributes[1].surgicalAppointmentAttributeType.name).toBe('procedure');
-        });
-
-        it('should return empty array when "configuredSurgeryAttributeNames" is undefined', function () {
-            createController();
-            scope.configuredSurgeryAttributeNames = undefined;
-            scope.attributes = {
-                procedure: {surgicalAppointmentAttributeType: {name: 'procedure'}},
-                surgicalAssistant: {surgicalAppointmentAttributeType: {name: 'surgicalAssistant'}},
-                cleaningTime: {surgicalAppointmentAttributeType: {name: 'cleaningTime'}}
-            };
-            expect(scope.getConfiguredAttributes().length).toBe(0)
-        });
-
-        it('should return empty array when "attributes" is undefined', function () {
-            createController();
-            scope.configuredSurgeryAttributeNames = ["surgicalAssistant", "procedure"];
-            scope.attributes = undefined;
-            expect(scope.getConfiguredAttributes().length).toBe(0);
-        });
-    })
 
 });

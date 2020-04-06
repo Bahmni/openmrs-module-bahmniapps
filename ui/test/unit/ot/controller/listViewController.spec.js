@@ -1,7 +1,7 @@
 'use strict';
 
 describe('listViewController', function () {
-    var scope, controller, q, spinner, state, rootScope;
+    var scope, controller, q, spinner, state, rootScope, defaultAttributeTypes;
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
     spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgicalBlocksInDateRange']);
@@ -37,70 +37,59 @@ describe('listViewController', function () {
             printer: printer
         });
         scope.$apply();
-        rootScope.surgeons = [{
-            "uuid": "batmanUuid",
-            "person": {
-                "display": "Bat Man"
-            },
-            "attributes": [
-                {
-                    "attributeType": {
-                        "display": "otCalendarColor"
-                    },
-                    "value": "90"
-                }
-            ]
-        },
-            {
-                "uuid": "spidermanUuid",
-                "person": {
-                    "display": "Spider Man"
-                },
-                "attributes": []
-            }];
-        rootScope.attributeTypes = [
-            {
-                "uuid": "613ed1d6-3c7c-11e7-ba26-0800274a5156",
-                "name": "procedure"
-            },
-            {
-                "uuid": "613efa61-3c7c-11e7-ba26-0800274a5156",
-                "name": "estTimeHours"
-            },
-            {
-                "uuid": "613f275a-3c7c-11e7-ba26-0800274a5156",
-                "name": "estTimeMinutes"
-            },
-            {
-                "uuid": "6141270b-3c7c-11e7-ba26-0800274a5156",
-                "name": "cleaningTime"
-            },
-            {
-                "uuid": "61415081-3c7c-11e7-ba26-0800274a5156",
-                "name": "otherSurgeon"
-            },
-            {
-                "uuid": "61416693-3c7c-11e7-ba26-0800274a5156",
-                "name": "surgicalAssistant"
-            },
-            {
-                "uuid": "6141780a-3c7c-11e7-ba26-0800274a5156",
-                "name": "anaesthetist"
-            },
-            {
-                "uuid": "6141881a-3c7c-11e7-ba26-0800274a5156",
-                "name": "scrubNurse"
-            },
-            {
-                "uuid": "6141968f-3c7c-11e7-ba26-0800274a5156",
-                "name": "circulatingNurse"
-            },
-            {
-                "uuid": "910f2c7f-4b73-11e7-81d5-0800274a5156",
-                "name": "notes"
-            }
-        ];
     };
+    defaultAttributeTypes = [
+        {
+            "uuid": "613ed1d6-3c7c-11e7-ba26-0800274a5156",
+            "name": "procedure",
+            "format": "java.lang.String"
+        },
+        {
+            "uuid": "613efa61-3c7c-11e7-ba26-0800274a5156",
+            "name": "estTimeHours",
+            "format": "java.lang.String"
+        },
+        {
+            "uuid": "613f275a-3c7c-11e7-ba26-0800274a5156",
+            "name": "estTimeMinutes",
+            "format": "java.lang.String"
+        },
+        {
+            "uuid": "6141270b-3c7c-11e7-ba26-0800274a5156",
+            "name": "cleaningTime",
+            "format": "java.lang.String"
+        },
+        {
+            "uuid": "61415081-3c7c-11e7-ba26-0800274a5156",
+            "name": "otherSurgeon",
+            "format": "org.openmrs.Provider"
+        },
+        {
+            "uuid": "61416693-3c7c-11e7-ba26-0800274a5156",
+            "name": "surgicalAssistant",
+            "format": "java.lang.String"
+        },
+        {
+            "uuid": "6141780a-3c7c-11e7-ba26-0800274a5156",
+            "name": "anaesthetist",
+            "format": "java.lang.String"
+        },
+        {
+            "uuid": "6141881a-3c7c-11e7-ba26-0800274a5156",
+            "name": "scrubNurse",
+            "format": "java.lang.String"
+        },
+        {
+            "uuid": "6141968f-3c7c-11e7-ba26-0800274a5156",
+            "name": "circulatingNurse",
+            "format": "java.lang.String"
+        },
+        {
+            "uuid": "910f2c7f-4b73-11e7-81d5-0800274a5156",
+            "name": "notes",
+            "format": "java.lang.String"
+        }
+    ];
 
       var surgicalAppointmentsForOT2Block = [{
           "id": 105,
@@ -665,6 +654,7 @@ describe('listViewController', function () {
             stopPropagation: function () {
             }
         };
+        rootScope.attributeTypes = defaultAttributeTypes;
         createController();
         expect(scope.tableInfo.length).toBe(21);
         expect(scope.tableInfo[19].heading).toBe("Bed Location");
@@ -672,4 +662,29 @@ describe('listViewController', function () {
         expect(scope.tableInfo[20].heading).toBe("Bed ID");
         expect(scope.tableInfo[20].sortInfo).toBe("bedNumber");
     });
+
+    it('should have all the surgical attributes in table info', function () {
+        scope.filterParams = {
+            providers: [],
+            locations: {"OT 1": true, "OT 2": true, "OT 3": true},
+            statusList: []
+        };
+        rootScope.attributeTypes = defaultAttributeTypes;
+        createController();
+        expect(scope.tableInfo.length).toBe(21);
+        expect(scope.tableInfo[11].heading).toBe('procedure');
+        expect(scope.tableInfo[11].sortInfo).toBe('surgicalAppointmentAttributes.procedure.value');
+        expect(scope.tableInfo[12].heading).toBe('otherSurgeon');
+        expect(scope.tableInfo[12].sortInfo).toBe('surgicalAppointmentAttributes.otherSurgeon.value.person.display');
+        expect(scope.tableInfo[13].heading).toBe('surgicalAssistant');
+        expect(scope.tableInfo[13].sortInfo).toBe('surgicalAppointmentAttributes.surgicalAssistant.value');
+        expect(scope.tableInfo[14].heading).toBe('anaesthetist');
+        expect(scope.tableInfo[14].sortInfo).toBe('surgicalAppointmentAttributes.anaesthetist.value');
+        expect(scope.tableInfo[15].heading).toBe('scrubNurse');
+        expect(scope.tableInfo[15].sortInfo).toBe('surgicalAppointmentAttributes.scrubNurse.value');
+        expect(scope.tableInfo[16].heading).toBe('circulatingNurse');
+        expect(scope.tableInfo[16].sortInfo).toBe('surgicalAppointmentAttributes.circulatingNurse.value');
+        expect(scope.tableInfo[17].heading).toBe('notes');
+        expect(scope.tableInfo[17].sortInfo).toBe('surgicalAppointmentAttributes.notes.value');
+    })
 });
