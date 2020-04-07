@@ -397,8 +397,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     _.remove(tempConsultation.observations, function (observation) {
                         return observation.formNamespace;
                     });
-                    _.each(tempConsultation.observationForms, function (observationForm) {
-                        if (observationForm.component) {
+                    _.each($scope.consultation.observationForms, function (observationForm) {
+                        if (observationForm.component && observationForm.isAdded) {
                             var formObservations = observationForm.component.getValue();
                             _.each(formObservations.observations, function (obs) {
                                 tempConsultation.observations.push(obs);

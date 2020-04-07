@@ -93,8 +93,12 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
 
     Object.defineProperty(self, "isAdded", {
         get: function () {
-            if (self.hasSomeValue()) {
-                self.added = true;
+            if (self.added === undefined) {
+                if (self.options.default) {
+                    self.added = true;
+                } else {
+                    self.added = self.hasSomeValue();
+                }
             }
             return self.added;
         },
