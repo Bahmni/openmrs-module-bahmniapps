@@ -45,9 +45,8 @@
     "fullcalendar-scheduler": "1.3.2",
     "crypto-js": "3.1.5",
     "ng-tags-input": "^3.1.1",
-    "ngReact": "^0.3.0",
+    "ngReact": "^0.5.2",
     "offline": "0.7.14",
-    "react": "^15.3.2",
     "angular-ivh-treeview": "^1.1.0",
     "angular-drag-and-drop-lists": "2.1.0"
   },
