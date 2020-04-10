@@ -9,6 +9,8 @@ describe("FormRecordTreeBuildService", function () {
     var formService;
     var formDetailDeferred;
     var allFormsDeferred;
+    var formTranslateDeferred;
+    var formTranslationsDetails;
 
     beforeEach(module("bahmni.common.displaycontrol.observation"));
     beforeEach(inject(function (_formRecordTreeBuildService_, _$q_, _$rootScope_, _formService_) {
@@ -95,8 +97,14 @@ describe("FormRecordTreeBuildService", function () {
                 }
             ]
         };
+        formTranslationsDetails = {
+            "data": {
+                "labels":{"SECTION_1":["SectionOne"],"SECTION_2":["SectionAddMore"]}
+            }
+        };
         formDetailDeferred = $q.defer();
         allFormsDeferred = $q.defer();
+        formTranslateDeferred = $q.defer();
     }));
 
     it("should construct obs group for single observation from form", function () {
@@ -412,6 +420,12 @@ describe("FormRecordTreeBuildService", function () {
             "value": [obsOne, obsTwo, obsThree]
         }];
 
+        formTranslationsDetails = {
+            "data": {
+                "labels": {"SECTION_1":["french1"]}
+            }
+        };
+
         var formDetailsResponse = {
             "data": {
                 "resources": [{
@@ -488,7 +502,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "SectionOne"
+                            "value": "SectionOne",
+                            "translationKey": "SECTION_1"
                         },
                         "type": "section"
                     },
@@ -501,6 +516,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -508,6 +525,7 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetailsResponse);
+        formTranslateDeferred.resolve(formTranslationsDetails);
         $scope.$apply();
 
 
@@ -563,6 +581,7 @@ describe("FormRecordTreeBuildService", function () {
             }
 
         };
+
         var recordTree = {
             "children": [
                 {
@@ -591,7 +610,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "SectionOne"
+                            "value": "SectionOne",
+                            "translationKey": "SECTION_1"
                         },
                         "type": "section"
                     },
@@ -624,7 +644,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "SectionAddMore"
+                            "value": "SectionAddMore",
+                            "translationKey": "SECTION_2"
                         },
                         "type": "section"
                     },
@@ -637,6 +658,7 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -644,6 +666,7 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetailsResponse);
+        formTranslateDeferred.resolve(formTranslationsDetails);
         $scope.$apply();
 
 
@@ -728,7 +751,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "SectionOne"
+                            "value": "SectionOne",
+                            "translationKey": "SECTION_1"
                         },
                         "type": "section"
                     },
@@ -760,6 +784,7 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -767,6 +792,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         var formGroup = observations[0].value[0];
@@ -875,7 +902,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "SectionOne"
+                            "value": "SectionOne",
+                            "translationKey": "SECTION_1"
                         },
                         "type": "section"
                     },
@@ -908,7 +936,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "SectionOneAddMore"
+                            "value": "SectionAddMore",
+                            "translationKey": "SECTION_2"
                         },
                         "type": "section"
                     },
@@ -959,6 +988,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -966,6 +997,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         var formGroup = observations[0].value[0];
@@ -981,7 +1014,7 @@ describe("FormRecordTreeBuildService", function () {
         expect(sectionMemberObs.valueAsString).toBe("160.0");
 
         var memberSectionAddMoreGroup = formGroup.groupMembers[1];
-        expect(memberSectionAddMoreGroup.concept.shortName).toBe("SectionOneAddMore");
+        expect(memberSectionAddMoreGroup.concept.shortName).toBe("SectionAddMore");
         expect(memberSectionAddMoreGroup.groupMembers.length).toBe(1);
 
         var sectionAddMoreMemberObs = memberSectionAddMoreGroup.groupMembers[0];
@@ -1106,6 +1139,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -1113,6 +1148,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         var formGroup = observations[0].value[0];
@@ -1182,6 +1219,12 @@ describe("FormRecordTreeBuildService", function () {
             }
         };
 
+        formTranslationsDetails = {
+            "data": {
+                "labels":{"SECTION_1":["SectionOne"],"SECTION_2":["SectionAddMore"]}
+            }
+        };
+
         var recordTree = {
             "children": [
                 {
@@ -1243,7 +1286,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "4",
-                            "value": "SectionOne"
+                            "value": "SectionOne",
+                            "translationKey": "SECTION_1"
                         },
                         "type": "section"
                     },
@@ -1256,6 +1300,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -1263,6 +1309,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         var formGroup = observations[0].value[0];
@@ -1385,7 +1433,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "4",
-                            "value": "SectionOne"
+                            "value": "SectionOne",
+                            "translationKey": "SECTION_1"
                         },
                         "type": "section"
                     },
@@ -1432,7 +1481,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "4",
-                            "value": "SectionAddMore"
+                            "value": "SectionAddMore",
+                            "translationKey": "SECTION_2"
                         },
                         "type": "section"
                     },
@@ -1445,6 +1495,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -1452,6 +1504,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         var formGroup = observations[0].value[0];
@@ -1521,6 +1575,12 @@ describe("FormRecordTreeBuildService", function () {
             }
         };
 
+        formTranslationsDetails = {
+            "data": {
+                "labels":{"SECTION_1":["SectionOne"],"SECTION_2":["SectionTwo"]}
+            }
+        };
+
         var recordTree = {
             "children": [
                 {
@@ -1552,7 +1612,8 @@ describe("FormRecordTreeBuildService", function () {
                             "control": {
                                 "label": {
                                     "id": "2",
-                                    "value": "SectionTwo"
+                                    "value": "SectionTwo",
+                                    "translationKey": "SECTION_2"
                                 },
                                 "type": "section"
                             },
@@ -1582,7 +1643,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "SectionOne"
+                            "value": "SectionOne",
+                            "translationKey": "SECTION_1"
                         },
                         "type": "section"
                     },
@@ -1595,6 +1657,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -1602,6 +1666,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         var formGroup = observations[0].value[0];
@@ -1678,6 +1744,13 @@ describe("FormRecordTreeBuildService", function () {
             }
         };
 
+        formTranslationsDetails = {
+            "data": {
+                "labels":{"SECTION_1":["SectionOne"],"SECTION_2":["SectionTwo"], "SECTION_3":["SectionTwoAddMore"]}
+            }
+        };
+
+
         var recordTree = {
             "children": [
                 {
@@ -1709,7 +1782,8 @@ describe("FormRecordTreeBuildService", function () {
                             "control": {
                                 "label": {
                                     "id": "2",
-                                    "value": "SectionTwo"
+                                    "value": "SectionTwo",
+                                    "translationKey": "SECTION_2"
                                 },
                                 "type": "section"
                             },
@@ -1742,7 +1816,8 @@ describe("FormRecordTreeBuildService", function () {
                             "control": {
                                 "label": {
                                     "id": "2",
-                                    "value": "SectionTwoAddMore"
+                                    "value": "SectionTwoAddMore",
+                                    "translationKey": "SECTION_3"
                                 },
                                 "type": "section"
                             },
@@ -1772,7 +1847,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "SectionOne"
+                            "value": "SectionOne",
+                            "translationKey": "SECTION_1"
                         },
                         "type": "section"
                     },
@@ -1785,6 +1861,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -1792,6 +1870,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         var formGroup = observations[0].value[0];
@@ -1966,6 +2046,12 @@ describe("FormRecordTreeBuildService", function () {
             }
         };
 
+        formTranslationsDetails = {
+            "data": {
+                "labels":{"SECTION_1":["SectionOne"],"SECTION_2":["SectionAddMore"],"TABLE_1":["Table"],"COLUMN_1":["Column1"],"COLUMN_2":["Column2"]},
+            }
+        };
+
         var recordTree = {
             "children": [
                 {
@@ -2023,7 +2109,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "Table"
+                            "value": "Table",
+                            "translationKey": "TABLE_1"
                         },
                         "type": "table",
                         "columnHeaders" :[
@@ -2033,7 +2120,8 @@ describe("FormRecordTreeBuildService", function () {
                                     "value": "Column1"
                                 },
                                 "value": "Column1",
-                                "type": "label"
+                                "type": "label",
+                                "translationKey": "COLUMN_1"
                             },
                             {
                                 "label": {
@@ -2041,7 +2129,8 @@ describe("FormRecordTreeBuildService", function () {
                                     "value": "Column2"
                                 },
                                 "value": "Column2",
-                                "type": "label"
+                                "type": "label",
+                                "translationKey": "COLUMN_2"
                             }
                         ],
                     },
@@ -2054,6 +2143,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -2061,6 +2152,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         var formGroup = observations[0].value[0];
@@ -2117,6 +2210,12 @@ describe("FormRecordTreeBuildService", function () {
             }
         };
 
+        formTranslationsDetails = {
+            "data": {
+                "labels":{"SECTION_1":["SectionOne"],"SECTION_2":["SectionAddMore"],"TABLE_1":["Table"],"COLUMN_1":["Column1"],"COLUMN_2":["Column2"]},
+            }
+        };
+
         var recordTree = {
             "children": [
                 {
@@ -2150,7 +2249,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "Table"
+                            "value": "Table",
+                            "translationKey": "TABLE_1"
                         },
                         "type": "table",
                         columnHeaders: [
@@ -2160,7 +2260,8 @@ describe("FormRecordTreeBuildService", function () {
                                     "value": "Column1"
                                 },
                                 "value": "Column1",
-                                "type": "label"
+                                "type": "label",
+                                "translationKey": "COLUMN_1"
                             },
                             {
                                 "label": {
@@ -2168,7 +2269,8 @@ describe("FormRecordTreeBuildService", function () {
                                     "value": "Column2"
                                 },
                                 "value": "Column2",
-                                "type": "label"
+                                "type": "label",
+                                "translationKey": "COLUMN_2"
                             },
                         ]
                     },
@@ -2182,6 +2284,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -2189,6 +2293,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         var formGroup = observations[0].value[0];
@@ -2278,6 +2384,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -2285,6 +2393,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         var formGroup = observations[0].value[0];
@@ -2403,6 +2513,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -2410,6 +2522,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         var formGroup = observations[0].value[0];
@@ -2568,6 +2682,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -2575,6 +2691,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         var formGroup = observations[0].value[0];
@@ -2809,7 +2927,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "SectionOne"
+                            "value": "SectionOne",
+                            "translationKey": "SECTION_1"
                         },
                         "type": "section"
                     },
@@ -2841,6 +2960,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -2848,6 +2969,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         expect(observations[0].value.length).toBe(2);
@@ -2937,7 +3060,8 @@ describe("FormRecordTreeBuildService", function () {
                     "control": {
                         "label": {
                             "id": "1",
-                            "value": "SectionOne"
+                            "value": "SectionOne",
+                            "translationKey": "SECTION_1"
                         },
                         "type": "section"
                     },
@@ -2969,6 +3093,8 @@ describe("FormRecordTreeBuildService", function () {
 
         spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
         spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+
         window.getRecordTree = function () {
             return recordTree;
         };
@@ -2976,6 +3102,8 @@ describe("FormRecordTreeBuildService", function () {
         formRecordTreeBuildService.build(observations);
         allFormsDeferred.resolve(allFormsResponse);
         formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+
         $scope.$apply();
 
         expect(observations[0].value.length).toBe(2);
@@ -3231,4 +3359,250 @@ describe("FormRecordTreeBuildService", function () {
         expect(observationTwo.valueAsString).toBe("Resistant");
     });
 
+    it("should construct form 2 hirearchy with translated name for section", function () {
+        var obsOne = {
+            "groupMembers": [],
+            "formFieldPath": "testSectionWithAnObs.1/4-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "HEIGHT",
+                "dataType": "Numeric",
+                "shortName": "HEIGHT"
+            },
+            "valueAsString": "170.0"
+        };
+
+        observations = [{
+            "value": [obsOne]
+        }];
+
+        var formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "obsGroupInSectionAddMore"
+                    })
+                }]
+            }
+        };
+
+        var formTranslationsDetails = {
+            "data" : {
+                "labels":{"SECTION_1":["french name"]}
+            }
+        };
+
+        var recordTree = {
+            "children": [
+                {
+                    "active": true,
+                    "children": [
+                        {
+                            "control": {
+                                "concept": {
+                                    "name": "HEIGHT",
+                                    "units": "(cms)"
+                                },
+                                "id": "4",
+                                "label": {
+                                    "id": "4",
+                                    "type": "label",
+                                    "units": "(cms)",
+                                    "value": "HEIGHT"
+                                },
+                                "properties": {},
+                                "type": "obsControl"
+                            },
+                            "formFieldPath": "testSectionWithAnObs.1/4-0",
+                            "valueAsString": "170.0"
+                        }
+                    ],
+                    "control": {
+                        "label": {
+                            "id": "1",
+                            "value": "SectionOne",
+                            "translationKey": "SECTION_1"
+                        },
+                        "type": "section"
+                    },
+                    "formFieldPath": "testSectionWithAnObs.1/1-0",
+                    "showAddMore": false
+                }
+            ],
+            "formFieldPath": ""
+        };
+
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+        window.getRecordTree = function () {
+            return recordTree;
+        };
+
+        formRecordTreeBuildService.build(observations);
+        allFormsDeferred.resolve(allFormsResponse);
+        formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+        $scope.$apply();
+
+        var formGroup = observations[0].value[0];
+        expect(formGroup.concept.shortName).toBe("testSectionWithAnObs");
+        expect(formGroup.groupMembers.length).toBe(1);
+
+        var memberSectionGroup = formGroup.groupMembers[0];
+        expect(memberSectionGroup.concept.shortName).toBe("french name");
+
+    });
+    it("should construct form 2 hirearchy with translated name for section inside section", function () {
+        var obsOne = {
+            "groupMembers": [],
+            "formFieldPath": "sectionInSectionWithObs.1/4-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "HEIGHT",
+                "dataType": "Numeric",
+                "shortName": "HEIGHT"
+            },
+            "valueAsString": "170.0"
+        };
+        var obsTwo = {
+            "groupMembers": [],
+            "formFieldPath": "sectionInSectionWithObs.1/3-0",
+            "concept": {
+                "uuid": "A5090A",
+                "name": "WEIGHT",
+                "dataType": "Numeric",
+                "shortName": "WEIGHT"
+            },
+            "valueAsString": "55.0"
+        };
+
+        observations = [{
+            "value": [obsOne, obsTwo]
+        }];
+
+        var formDetails = {
+            "data": {
+                "resources": [{
+                    "value": JSON.stringify({
+                        "name": "obsGroupInSectionAddMore"
+                    })
+                }]
+            }
+        };
+
+        var formTranslationsDetails = {
+            "data" :{
+                "labels":{"SECTION_1":["french1"],"SECTION_2":["french2"]}
+            }
+        };
+
+        var recordTree = {
+            "children": [
+                {
+                    "active": true,
+                    "children": [
+                        {
+                            "active": true,
+                            "children": [
+                                {
+                                    "control": {
+                                        "concept": {
+                                            "name": "WEIGHT",
+                                            "units": "(cms)"
+                                        },
+                                        "id": "3",
+                                        "label": {
+                                            "id": "3",
+                                            "type": "label",
+                                            "units": "(cms)",
+                                            "value": "WEIGHT"
+                                        },
+                                        "properties": {},
+                                        "type": "obsControl"
+                                    },
+                                    "formFieldPath": "sectionInSectionWithObs.1/3-0",
+                                    "valueAsString": "55.0"
+                                }
+                            ],
+                            "control": {
+                                "label": {
+                                    "id": "2",
+                                    "value": "SectionTwo",
+                                    "translationKey": "SECTION_2"
+                                },
+                                "type": "section"
+                            },
+                            "formFieldPath": "sectionInSectionWithObs.1/2-0",
+                            "showAddMore": false
+                        },
+                        {
+                            "control": {
+                                "concept": {
+                                    "name": "HEIGHT",
+                                    "units": "(cms)"
+                                },
+                                "id": "4",
+                                "label": {
+                                    "id": "4",
+                                    "type": "label",
+                                    "units": "(cms)",
+                                    "value": "HEIGHT"
+                                },
+                                "properties": {},
+                                "type": "obsControl"
+                            },
+                            "formFieldPath": "sectionInSectionWithObs.1/4-0",
+                            "valueAsString": "170.0"
+                        }
+                    ],
+                    "control": {
+                        "label": {
+                            "id": "1",
+                            "value": "SectionOne",
+                            "translationKey": "SECTION_1"
+                        },
+                        "type": "section"
+                    },
+                    "formFieldPath": "sectionInSectionWithObs.1/1-0",
+                    "showAddMore": false
+                }
+            ],
+            "formFieldPath": ""
+        };
+
+        spyOn(formService, "getAllForms").and.returnValue(allFormsDeferred.promise);
+        spyOn(formService, "getFormDetail").and.returnValue(formDetailDeferred.promise);
+        spyOn(formService, "getFormTranslate").and.returnValue(formTranslateDeferred.promise);
+        window.getRecordTree = function () {
+            return recordTree;
+        };
+
+        formRecordTreeBuildService.build(observations);
+        allFormsDeferred.resolve(allFormsResponse);
+        formDetailDeferred.resolve(formDetails);
+        formTranslateDeferred.resolve(formTranslationsDetails);
+        $scope.$apply();
+
+        var formGroup = observations[0].value[0];
+        expect(formGroup.concept.shortName).toBe("sectionInSectionWithObs");
+        expect(formGroup.groupMembers.length).toBe(1);
+
+        var memberSectionGroup = formGroup.groupMembers[0];
+        expect(memberSectionGroup.concept.shortName).toBe("french1");
+        expect(memberSectionGroup.groupMembers.length).toBe(2);
+
+        var memberInMemberSectionGroup = memberSectionGroup.groupMembers[0];
+        expect(memberInMemberSectionGroup.concept.shortName).toBe("french2");
+        expect(memberInMemberSectionGroup.groupMembers.length).toBe(1);
+
+        var sectionMemberObs = memberInMemberSectionGroup.groupMembers[0];
+        expect(sectionMemberObs.concept.shortName).toBe("WEIGHT");
+        expect(sectionMemberObs.valueAsString).toBe("55.0");
+
+        var memberObs = memberSectionGroup.groupMembers[1];
+        expect(memberObs.concept.shortName).toBe("HEIGHT");
+        expect(memberObs.valueAsString).toBe("170.0");
+
+    });
 });
