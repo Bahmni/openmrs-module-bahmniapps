@@ -13,6 +13,7 @@ Bahmni.Common = Bahmni.Common || {};
     var BACTERIOLOGY = RESTWS_V1;
     var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
     var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
+    var IE_APPS_API = RESTWS_V1 + "/bahmniie";
 
     var serverErrorMessages = [
         {
@@ -256,7 +257,8 @@ Bahmni.Common = Bahmni.Common || {};
         patientFormsUrl: BAHMNI_CORE + "/patient/{patientUuid}/forms",
         defaultPossibleRelativeSearchLimit: 10,
         formBuilderDisplayControlType: "formsV2",
-        formBuilderType: "v2"
+        formBuilderType: "v2",
+        formBuilderTranslationApi: IE_APPS_API + '/form/translate'
     };
 })();
 

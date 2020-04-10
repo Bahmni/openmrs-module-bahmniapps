@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.observation')
-    .service('formRecordTreeBuildService', ['formService', function (formService) {
+    .service('formRecordTreeBuildService', ['formService', '$http', '$window', function (formService, $http, $window) {
         var self = this;
 
         self.build = function (bahmniObservations, hasNoHierarchy) {
@@ -103,7 +103,13 @@ angular.module('bahmni.common.displaycontrol.observation')
                             if (formDetailsAsString) {
                                 var formDef = JSON.parse(formDetailsAsString);
                                 formDef.version = observationForm.version;
-                                forms.push(self.updateObservationsWithRecordTree(formDef, form));
+                                var locale = $window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
+                                return formService.getFormTranslate(formDef.name, formDef.version, locale)
+                                    .then(function (response) {
+                                        var translationData = response.data;
+                                        forms.push(self.updateObservationsWithRecordTree(formDef, form, translationData));
+                                        observation.value = forms;
+                                    });
                             }
                             observation.value = forms;
                         });
@@ -132,14 +138,14 @@ angular.module('bahmni.common.displaycontrol.observation')
             return member ? member.formFieldPath.split('.')[1].split('/')[0] : undefined;
         };
 
-        self.updateObservationsWithRecordTree = function (formDef, form) {
+        self.updateObservationsWithRecordTree = function (formDef, form, translationData) {
             var recordTree = getRecordTree(formDef, form.groupMembers);
             recordTree = JSON.parse(JSON.stringify(recordTree));
-            self.createGroupMembers(recordTree, form, form.groupMembers);
+            self.createGroupMembers(recordTree, form, form.groupMembers, translationData);
             return form;
         };
 
-        self.createColumnGroupsForTable = function (record, columns, tableGroup, obsList) {
+        self.createColumnGroupsForTable = function (record, columns, tableGroup, obsList, translationData) {
             _.forEach(columns, function (column, index) {
                 var obsGroup = {
                     "groupMembers": [],
@@ -148,14 +154,28 @@ angular.module('bahmni.common.displaycontrol.observation')
                         "conceptClass": null
                     }
                 };
-                obsGroup.concept.shortName = column.value;
+                var translationKey = column.translationKey;
+                var defaultShortName = column.value;
+                obsGroup.concept.shortName = self.getTranslatedShortName(translationData, translationKey, obsGroup, defaultShortName);
                 var columnRecord = self.getColumnObs(index, record);
                 column.children = columnRecord;
-                self.createGroupMembers(column, obsGroup, obsList);
+                self.createGroupMembers(column, obsGroup, obsList, translationData);
                 if (obsGroup.groupMembers.length > 0) {
                     tableGroup.groupMembers.push(obsGroup);
                 }
             });
+        };
+
+        self.getTranslatedShortName = function (translationData, translationKey, obsGroup, defaultShortName) {
+            if (self.isTranslationKeyPresent(translationData, translationKey)) {
+                return translationData.labels[translationKey][0];
+            }
+            return defaultShortName;
+        };
+
+        self.isTranslationKeyPresent = function (translationData, translationKey) {
+            return translationData && translationData.labels &&
+                translationData.labels[translationKey][0] !== translationKey;
         };
 
         self.getColumnObs = function (columnIndex, record) {
@@ -168,7 +188,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             return columnChildren;
         };
 
-        self.createGroupMembers = function (recordTree, obsGroup, obsList) {
+        self.createGroupMembers = function (recordTree, obsGroup, obsList, translationData) {
             _.forEach(recordTree.children, function (record) {
                 if (record.control.type === 'obsControl' || record.control.type === 'obsGroupControl') {
                     var recordObservations = self.getRecordObservations(record.formFieldPath, obsList);
@@ -177,16 +197,16 @@ angular.module('bahmni.common.displaycontrol.observation')
                     });
                 }
                 else if (record.control.type === 'section') {
-                    var sectionGroup = self.createObsGroup(record);
-                    self.createGroupMembers(record, sectionGroup, obsList);
+                    var sectionGroup = self.createObsGroup(record, translationData);
+                    self.createGroupMembers(record, sectionGroup, obsList, translationData);
                     if (sectionGroup.groupMembers.length > 0) {
                         obsGroup.groupMembers.push(sectionGroup);
                     }
                 }
                 else if (record.control.type === "table") {
-                    var tableGroup = self.createObsGroup(record);
+                    var tableGroup = self.createObsGroup(record, translationData);
                     var columns = record.control.columnHeaders;
-                    self.createColumnGroupsForTable(record, columns, tableGroup, obsList);
+                    self.createColumnGroupsForTable(record, columns, tableGroup, obsList, translationData);
                     if (tableGroup.groupMembers.length > 0) {
                         obsGroup.groupMembers.push(tableGroup);
                     }
@@ -206,7 +226,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             });
         };
 
-        self.createObsGroup = function (record) {
+        self.createObsGroup = function (record, translationData) {
             var obsGroup = {
                 "groupMembers": [],
                 "concept": {
@@ -214,7 +234,10 @@ angular.module('bahmni.common.displaycontrol.observation')
                     "conceptClass": null
                 }
             };
-            obsGroup.concept.shortName = record.control.label.value;
+            var translationKey = record.control.label.translationKey;
+            var defaultShortName = record.control.label.value;
+            obsGroup.concept.shortName =
+                self.getTranslatedShortName(translationData, translationKey, obsGroup, defaultShortName);
             return obsGroup;
         };
     }]);
