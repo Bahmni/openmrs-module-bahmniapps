@@ -7,7 +7,6 @@ angular.module('bahmni.ot')
                 $scope.currentTimeLineHeight = heightPerMin * Bahmni.Common.Util.DateUtil.diffInMinutes($scope.calendarStartDatetime, new Date());
             };
             var heightPerMin = 120 / $scope.dayViewSplit;
-
             var init = function () {
                 var dayStart = ($scope.dayViewStart || Bahmni.OT.Constants.defaultCalendarStartTime).split(':');
                 var dayEnd = ($scope.dayViewEnd || Bahmni.OT.Constants.defaultCalendarEndTime).split(':');
@@ -21,8 +20,8 @@ angular.module('bahmni.ot')
                 $scope.calendarEndDatetime = Bahmni.Common.Util.DateUtil.addMinutes($scope.viewDate, (dayEnd[0] * 60 + parseInt(dayEnd[1])));
                 updateCurrentDayTimeline();
                 $scope.rows = $scope.getRowsForCalendar();
-                var blocksStartDatetime = $scope.viewDate;
-                var blocksEndDatetime = moment($scope.viewDate).endOf('day');
+                var blocksStartDatetime = $scope.weekOrDay === 'day' ? $scope.viewDate : moment($scope.weekStartDate).startOf('day');
+                var blocksEndDatetime = $scope.weekOrDay === 'day' ? moment($scope.viewDate).endOf('day') : Bahmni.Common.Util.DateUtil.getWeekEndDate($scope.weekStartDate);``
                 return $q.all([locationService.getAllByTag('Operation Theater'),
                     surgicalAppointmentService.getSurgicalBlocksInDateRange(blocksStartDatetime, blocksEndDatetime)]).then(function (response) {
                         $scope.locations = response[0].data.results;
@@ -32,6 +31,11 @@ angular.module('bahmni.ot')
                                 return surgicalBlock.location.uuid === location.uuid;
                             });
                         });
+                    $scope.surgicalBlocksByDate = _.map($scope.weekDates, function (weekDate) {
+                        return _.filter(response[1].data.results, function (surgicalBlock) {
+                            return Bahmni.Common.Util.DateUtil.isSameDate(moment(surgicalBlock.startDatetime).startOf('day').toDate(), weekDate);
+                        });
+                    });
                     });
             };
 
