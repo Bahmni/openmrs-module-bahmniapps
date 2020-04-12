@@ -7,7 +7,9 @@ angular.module('bahmni.ot')
                 $scope.currentTimeLineHeight = heightPerMin * Bahmni.Common.Util.DateUtil.diffInMinutes($scope.calendarStartDatetime, new Date());
             };
             var heightPerMin = 120 / $scope.dayViewSplit;
-            var init = function () {
+            var blocksStartDatetime = $scope.viewDate;
+            var blocksEndDatetime = moment($scope.viewDate).endOf('day');
+            var init = function (blocksStartDatetime, blocksEndDatetime) {
                 var dayStart = ($scope.dayViewStart || Bahmni.OT.Constants.defaultCalendarStartTime).split(':');
                 var dayEnd = ($scope.dayViewEnd || Bahmni.OT.Constants.defaultCalendarEndTime).split(':');
                 $scope.surgicalBlockSelected = {};
@@ -20,8 +22,8 @@ angular.module('bahmni.ot')
                 $scope.calendarEndDatetime = Bahmni.Common.Util.DateUtil.addMinutes($scope.viewDate, (dayEnd[0] * 60 + parseInt(dayEnd[1])));
                 updateCurrentDayTimeline();
                 $scope.rows = $scope.getRowsForCalendar();
-                var blocksStartDatetime = $scope.weekOrDay === 'day' ? $scope.viewDate : moment($scope.weekStartDate).startOf('day');
-                var blocksEndDatetime = $scope.weekOrDay === 'day' ? moment($scope.viewDate).endOf('day') : Bahmni.Common.Util.DateUtil.getWeekEndDate($scope.weekStartDate);``
+                blocksStartDatetime = $scope.weekOrDay === 'day' ? $scope.viewDate : moment($scope.weekStartDate).startOf('day');
+                blocksEndDatetime = $scope.weekOrDay === 'day' ? moment($scope.viewDate).endOf('day') : Bahmni.Common.Util.DateUtil.getWeekEndDate($scope.weekStartDate);``
                 return $q.all([locationService.getAllByTag('Operation Theater'),
                     surgicalAppointmentService.getSurgicalBlocksInDateRange(blocksStartDatetime, blocksEndDatetime)]).then(function (response) {
                         $scope.locations = response[0].data.results;
@@ -67,10 +69,33 @@ angular.module('bahmni.ot')
                 $interval.cancel(timer);
             });
 
-            $scope.$watch("viewDate", function (oldValue, newValue) {
+            $scope.$watch("viewDate", function (newValue, oldValue) {
                 if (oldValue.getTime() !== newValue.getTime()) {
-                    spinner.forPromise(init());
+                    blocksStartDatetime = $scope.viewDate;
+                    blocksEndDatetime = moment(blocksStartDatetime).endOf('day');
+                    spinner.forPromise(init(blocksStartDatetime, blocksEndDatetime));
                 }
             });
-            spinner.forPromise(init());
+            $scope.$watch("weekStartDate", function (newValue, oldValue) {
+                if (moment(oldValue).toDate() !== moment(newValue).toDate()) {
+                    blocksStartDatetime = moment($scope.weekStartDate).toDate();
+                    blocksEndDatetime = moment(Bahmni.Common.Util.DateUtil.getWeekEndDate($scope.weekStartDate)).endOf('day');
+                    spinner.forPromise(init(blocksStartDatetime, blocksEndDatetime));
+                }
+            });
+
+            $scope.$watch("weekOrDay", function (newValue, oldValue) {
+                if (oldValue !== newValue) {
+                    if (newValue === 'week') {
+                        blocksStartDatetime = moment($scope.weekStartDate).toDate();
+                        blocksEndDatetime = moment(Bahmni.Common.Util.DateUtil.getWeekEndDate($scope.weekStartDate)).endOf('day');
+                    }
+                    if (newValue === "day") {
+                        blocksStartDatetime = $scope.viewDate;
+                        blocksEndDatetime = moment(blocksStartDatetime).endOf('day');
+                    }
+                    spinner.forPromise(init(blocksStartDatetime, blocksEndDatetime));
+                }
+            });
+            spinner.forPromise(init(blocksStartDatetime, blocksEndDatetime));
         }]);
