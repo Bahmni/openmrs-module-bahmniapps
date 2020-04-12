@@ -21,8 +21,6 @@
                 <div ng-repeat="block in blocks | surgicalBlock:filterParams">
                     <ot-calendar-surgical-block
                             surgical-block="block" ng-if="!block.voided"
-                            calendar-start-datetime="::calendarStartDatetime"
-                            calendar-end-datetime="::calendarEndDatetime"
                             day-view-split="::dayViewSplit"
                             filter-params="filterParams"
                     ></ot-calendar-surgical-block>
