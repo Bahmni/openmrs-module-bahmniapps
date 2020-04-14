@@ -116,5 +116,11 @@
                week-or-day="weekOrDay"
                filter-params="filterParams">
     </list-view>
+    <div ng-if="view === 'List View'" class="surgical-action-wrapper">
+        <button  show-if-privilege="app:ot:write" ng-disabled="addActualTimeDisabled" ng-mousedown="addActualTime()">{{'OT_ADD_ACTUAL_TIME_KEY' | translate}}</button>
+        <button  show-if-privilege="app:ot:write" ng-disabled="editDisabled" ng-mousedown="goToEdit($event)">{{'OT_EDIT_KEY' | translate}}</button>
+        <button  show-if-privilege="app:ot:write" ng-disabled="moveButtonDisabled" ng-mousedown="gotoMove()">{{'OT_MOVE_KEY' | translate}}</button>
+        <button  show-if-privilege="app:ot:write" ng-disabled="cancelDisabled" ng-mousedown="cancelSurgicalBlockOrSurgicalAppointment()">{{'OT_CANCEL_KEY' | translate}}</button>
+    </div>
 
 </div>
