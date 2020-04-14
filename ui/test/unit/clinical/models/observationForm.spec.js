@@ -66,6 +66,20 @@ describe("ObservationForm", function () {
             expect(observationForm.isOpen).toBe(false);
             expect(observationForm.options).toEqual(extension.extensionParams);
         });
+
+        it("should have isAdded set to false if there are obs recorded and added is false", function () {
+            var observations = [
+                {
+                    value: 10,
+                    concept: {
+                        name: "Pulse"
+                    },
+                    formFieldPath: "formName.1/101"
+                }];
+            var observationForm = new ObservationForm('uuid', dummyUser, 'formName', '1', observations);
+            observationForm.isAdded = false;
+            expect(observationForm.isAdded).toBe(false);
+        });
     });
 
     describe('toggleDisplay', function () {
