@@ -40,7 +40,7 @@ describe("calendarViewController", function () {
         });
     });
 
-    var createController = function () {
+    var createController = function (customNgDialog) {
         controller('calendarViewController', {
             $rootScope: rootScope,
             $scope: scope,
@@ -48,7 +48,7 @@ describe("calendarViewController", function () {
             appService: appService,
             patientService: patientService,
             locationService: locationService,
-            ngDialog: ngDialog,
+            ngDialog: customNgDialog || ngDialog,
             $stateParams: stateParams
         });
     };
@@ -520,10 +520,11 @@ describe("calendarViewController", function () {
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
-    xit('should set surgical block data to empty object when surgical block details dialog is closed', function () {
-        createController();
-        scope.$emit("event:surgicalBlockSelect", {surgicalAppointments: []});
+    it('should set surgical block data to empty object when surgical block details dialog is closed', function () {
+        var ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
+        createController(ngDialog);
 
+        scope.$emit("event:surgicalBlockSelect", {surgicalAppointments: []});
         ngDialog.open.calls.argsFor(0)[0].preCloseCallback();
 
         expect(_.isEmpty(scope.surgicalBlockSelected)).toBeTruthy();
