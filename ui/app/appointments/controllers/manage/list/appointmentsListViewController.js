@@ -91,6 +91,10 @@ angular.module('bahmni.appointments')
                     return;
                 }
                 $scope.selectedAppointment = appointment;
+                 $scope.selectedpatientnames = appointment.patient.name;
+                 $scope.selectedpatientidentifier =appointment.patient.identifier;
+                 $scope.selectedPatientlabel = $scope.selectedpatientnames + " (" +  $scope.selectedpatientidentifier + ")";
+                 console.log("Patient uuid" ,   $scope.selectedPatientlabel );
             };
 
             $scope.isWalkIn = function (appointmentType) {
@@ -239,6 +243,24 @@ angular.module('bahmni.appointments')
                 var allowedActions = $scope.allowedActionsByStatus.hasOwnProperty(status) ? $scope.allowedActionsByStatus[status] : [];
                 return _.includes(allowedActions, action);
             };
-
+            var parsePatient = function (patientInfo) {
+                var patient = {};
+                patient.label = patientInfo.name + " (" + patientInfo.identifier + ")";
+                patient.uuid = patientInfo.uuid;
+                return patient;
+            };
+            $rootScope.$on("PopulateInfoForNextAppointment", function () {
+                if ($scope.getCurrentAppointmentTabName() === "list") {
+                     var patient = {} ;
+                     patient.label = $scope.selectedPatientlabel;
+                     patient.uuid = $scope.selectedAppointment.patient.uuid;
+                    // $scope.patientlabel = $scope.selectedPatientlabel;
+                    // console.log("patient" , patient.label , patient.uuid );
+                    
+                  return $scope.patientInfo =  patient;
+                  
+                    
+                }
+            });
             init();
         }]);

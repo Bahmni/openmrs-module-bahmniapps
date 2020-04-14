@@ -21,7 +21,8 @@ angular.module('bahmni.appointments')
             var patientSearchURL = appService.getAppDescriptor().getConfigValue('patientSearchUrl');
             var loginLocationUuid = sessionService.getLoginLocationUuid();
             $scope.minCharLengthToTriggerPatientSearch = appService.getAppDescriptor().getConfigValue('minCharLengthToTriggerPatientSearch') || 3;
-
+            
+           
             var isProviderNotAvailableForAppointments = function (selectedProvider) {
                 var providers = appointmentCreateConfig.providers;
                 return _.isUndefined(_.find(providers, function (provider) {
@@ -40,6 +41,8 @@ angular.module('bahmni.appointments')
                 $scope.appointment = Bahmni.Appointments.AppointmentViewModel.create(appointmentContext.appointment || {appointmentKind: 'Scheduled'}, appointmentCreateConfig);
                 $scope.selectedService = appointmentCreateConfig.selectedService;
                 $scope.isPastAppointment = $scope.isEditMode() ? Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')) : false;
+                $scope.appointment.patient = $scope.patientInfo || null;
+                console.log("Patient appointment data", $scope.appointment.patient );
                 if ($scope.appointment.patient) {
                     $scope.onSelectPatient($scope.appointment.patient);
                 }

@@ -19,6 +19,7 @@
                            min-length="minCharLengthToTriggerPatientSearch"
                            bahmni-autocomplete
                            ng-model="appointment.patient.label"
+                           ng-init="appointment.patient.label = patientInfo"
                            source="search"
                            response-map="responseMap"
                            on-select="onSelectPatient"
@@ -28,6 +29,7 @@
                            non-blank
                            ng-disabled="isEditMode()"
                            required
+                           
                     />
                     <i class="fa fa-search search-icon-app" aria-hidden="true"></i>
                 </p>
