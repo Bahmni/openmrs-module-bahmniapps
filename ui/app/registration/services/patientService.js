@@ -90,13 +90,6 @@ angular.module('bahmni.registration')
                 withCredentials: true
             });
         };
-        this.get = function () {
-            var catd = "Paka";
-        }
-        this.datas = function () {
-            return datas;
-        }
-
         var findPatientLatestAppointment = function (params) {
             return $http.get(Bahmni.Common.Constants.sqlUrl, {
                 method: "GET",
