@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('otCalendarController', ['$scope', '$q', '$interval', 'spinner', 'locationService', 'surgicalAppointmentService',
-        function ($scope, $q, $interval, spinner, locationService, surgicalAppointmentService) {
+    .controller('otCalendarController', ['$scope', '$q', '$interval', 'spinner', 'locationService', 'surgicalAppointmentService', '$timeout',
+        function ($scope, $q, $interval, spinner, locationService, surgicalAppointmentService, $timeout) {
             var updateCurrentDayTimeline = function () {
                 $scope.currentTimeLineHeight = heightPerMin * Bahmni.Common.Util.DateUtil.diffInMinutes($scope.calendarStartDatetime, new Date());
             };
@@ -121,20 +121,19 @@ angular.module('bahmni.ot')
 
             $scope.$watch("viewDate", function (newValue, oldValue) {
                 if ($scope.weekOrDay === 'day') {
-                    if (oldValue && newValue && (oldValue.getTime() !== newValue.getTime())) {
+                    if (oldValue.getTime() !== newValue.getTime()) {
                         blocksStartDatetime = $scope.viewDate;
                         blocksEndDatetime = moment(blocksStartDatetime).endOf('day');
-                        spinner.forPromise(init(blocksStartDatetime, blocksEndDatetime));
+                        $timeout(function () { spinner.forPromise(init(blocksStartDatetime, blocksEndDatetime)); }, 50);
                     } }
             });
             $scope.$watch("weekStartDate", function (newValue, oldValue) {
                 if ($scope.weekOrDay === 'week') {
-                    if (oldValue && newValue && !Bahmni.Common.Util.DateUtil.isSameDate(moment(oldValue).toDate(), moment(newValue).toDate())) {
+                    if (!Bahmni.Common.Util.DateUtil.isSameDate(moment(oldValue).toDate(), moment(newValue).toDate())) {
                         blocksStartDatetime = moment($scope.weekStartDate).toDate();
                         blocksEndDatetime = moment(Bahmni.Common.Util.DateUtil.getWeekEndDate($scope.weekStartDate)).endOf('day');
-                        spinner.forPromise(init(blocksStartDatetime, blocksEndDatetime));
+                        $timeout(function () { spinner.forPromise(init(blocksStartDatetime, blocksEndDatetime)); }, 50);
                     } }
             });
-
             spinner.forPromise(init(blocksStartDatetime, blocksEndDatetime));
         }]);
