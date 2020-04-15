@@ -190,7 +190,7 @@ describe("otCalendarController", function () {
             scope.weekOrDay = 'week';
             scope.weekStartDate = moment('2020-04-06').toDate();
             createController();
-            expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(moment(scope.weekStartDate).startOf('day'), Bahmni.Common.Util.DateUtil.getWeekEndDate(scope.weekStartDate));
+            expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(moment(scope.weekStartDate).startOf('day'), moment(Bahmni.Common.Util.DateUtil.getWeekEndDate(scope.weekStartDate)).endOf('day'));
             expect(scope.surgicalBlocksByDate.length).toEqual(7);
             expect(scope.surgicalBlocksByDate[4][0]).toEqual(weekSurgicalBlocks[0]);
             expect(scope.surgicalBlocksByDate[5][0]).toEqual(weekSurgicalBlocks[1]);
