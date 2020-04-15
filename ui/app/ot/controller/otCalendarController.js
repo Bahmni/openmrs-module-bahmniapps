@@ -9,7 +9,6 @@ angular.module('bahmni.ot')
             var updateBlocksStartDatetimeAndBlocksEndDatetime = function () {
                 $scope.blocksStartDatetime = $scope.weekOrDay === 'day' ? $scope.viewDate : moment($scope.weekStartDate).startOf('day');
                 $scope.blocksEndDatetime = $scope.weekOrDay === 'day' ? moment($scope.viewDate).endOf('day') : Bahmni.Common.Util.DateUtil.getWeekEndDate($scope.weekStartDate);
-
             };
 
             var heightPerMin = 120 / $scope.dayViewSplit;
