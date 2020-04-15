@@ -83,13 +83,13 @@
       margin: 35% 0;
     }
   }
-  .surgicalBlock-surgenName {
+  .surgicalblock-surgeon-name {
     position: absolute;
     bottom: 3px;
     left: 3px;
     word-break: break-word;
   }
-  &.exceed .surgicalBlock-surgenName {
+  &.exceed .surgicalblock-surgeon-name {
     position: relative;
     top: 6px;
   }

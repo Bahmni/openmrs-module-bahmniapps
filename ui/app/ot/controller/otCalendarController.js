@@ -108,10 +108,10 @@ angular.module('bahmni.ot')
             var getOrderedOtsByLocation = function (otsOfDay) {
                 var orderedOts = [];
                 if ($scope.locations != null) {
-                    _.each($scope.locations, function (location) {
-                        if (otsOfDay.includes(location.uuid)) {
-                            orderedOts.push(location.uuid);
-                        }
+                    orderedOts = _.map(_.filter($scope.locations, function (location) {
+                        return otsOfDay.includes(location.uuid);
+                    }), function (ot) {
+                        return ot.uuid;
                     });
                 }
                 return orderedOts;

@@ -15,7 +15,7 @@ angular.module('bahmni.ot')
                     height: surgicalBlockHeight,
                     width: $scope.weekOrDay === 'week' ? getWidthForSurgicalBlock() : 290,
                     top: getTopForSurgicalBlock(),
-                    left: $scope.weekOrDay === 'week' ? getLeftForSurgicalBlock() : 0,
+                    left: $scope.weekOrDay === 'week' ? getLeftPositionForSurgicalBlock() : 0,
                     color: getColorForProvider(),
                     appointmentHeightPerMin: (surgicalBlockHeight - heightForSurgeonName) / Bahmni.Common.Util.DateUtil.diffInMinutes(
                         $scope.surgicalBlock.startDatetime, $scope.surgicalBlock.endDatetime)
@@ -41,7 +41,7 @@ angular.module('bahmni.ot')
                 }
             };
 
-            var getLeftForSurgicalBlock = function () {
+            var getLeftPositionForSurgicalBlock = function () {
                 var index = 1;
                 if ($scope.blockedOtsOfTheDay != null) {
                     index = $scope.blockedOtsOfTheDay.indexOf(($scope.surgicalBlock.location.uuid));
