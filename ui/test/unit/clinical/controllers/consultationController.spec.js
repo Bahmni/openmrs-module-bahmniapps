@@ -707,6 +707,78 @@ describe("ConsultationController", function () {
                 done();
             });
         });
+
+        it("should not make api calls and call showMessage of messagingService when there is error in form save " +
+            "event when there is a single error", function (done) {
+            scope.consultation = {
+                discontinuedDrugs: [{dateStopped: new Date()}],
+                preSaveHandler: new Bahmni.Clinical.Notifier(),
+                postSaveHandler: new Bahmni.Clinical.Notifier(),
+                observations: [],
+                observationForms: [{
+                    isAdded: true,
+                    component: {
+                        getValue: function () {
+                            return {}
+                        },
+                        state: {data: {}},
+                        props: {patient: {}},
+                    },
+                    events: {
+                        onFormSave: 'Save event'
+                    }
+                }],
+                conditions: [{uuid: undefined, conditionNonCoded: "fever"}]
+            };
+            window.runEventScript = function() {
+                throw {message: 'Error'};
+            };
+
+            scope.save({toState: {}}).then(function () {
+                expect(encounterService.getEncounterType).not.toHaveBeenCalled();
+                expect(encounterService.create).not.toHaveBeenCalled();
+                expect(conditionsService.save).not.toHaveBeenCalled();
+                expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'Error');
+                done();
+            });
+        });
+
+        it("should call messagingService n times for n number of errors and api calls aren't made on FormSave event ", function (done) {
+            scope.consultation = {
+                discontinuedDrugs: [{dateStopped: new Date()}],
+                preSaveHandler: new Bahmni.Clinical.Notifier(),
+                postSaveHandler: new Bahmni.Clinical.Notifier(),
+                observations: [],
+                observationForms: [{
+                    isAdded: true,
+                    component: {
+                        getValue: function () {
+                            return {}
+                        },
+                        state: {data: {}},
+                        props: {patient: {}},
+                    },
+                    events: {
+                        onFormSave: 'Save event'
+                    }
+                }],
+                conditions: [{uuid: undefined, conditionNonCoded: "fever"}]
+            };
+            window.runEventScript = function () {
+                throw [{message: 'Error1'}, {message: ''}, {mesage: 'Error3'}];
+            };
+
+            scope.save({toState: {}}).then(function () {
+                expect(encounterService.getEncounterType).not.toHaveBeenCalled();
+                expect(encounterService.create).not.toHaveBeenCalled();
+                expect(conditionsService.save).not.toHaveBeenCalled();
+                expect(messagingService.showMessage.calls.count()).toBe(3);
+                expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'Error1');
+                expect(messagingService.showMessage).toHaveBeenCalledWith('error', '[ERROR]');
+                expect(messagingService.showMessage).toHaveBeenCalledWith('error', '[ERROR]');
+                done();
+            });
+        });
     });
 
     it("should generate the URL as mentioned in the config", function () {
