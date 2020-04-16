@@ -102,7 +102,9 @@ category: Components - Alerts
 	.types-for-errors{
 		display: block;
 		text-align: center;
-		padding: 0 0 7px;
+		> div {
+			margin: 7px 0;
+		}
 	}
 	.button-wrappper{
 	  .copy-btn, .show-btn {
