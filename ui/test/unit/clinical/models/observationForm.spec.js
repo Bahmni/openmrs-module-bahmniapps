@@ -35,6 +35,11 @@ describe("ObservationForm", function () {
             expect(observationForm.formVersion).toBe('1');
         });
 
+        it("should have set label", function () {
+            var observationForm = new ObservationForm('uuid', dummyUser, 'name', '1', [], 'label value');
+            expect(observationForm.label).toBe('label value');
+
+        });
         it("should have collapseInerSections to be false by default", function(){
             var observationForm = new ObservationForm('uuid', dummyUser, 'form', '1', []);
             expect(observationForm.collapseInnerSections.value).toBe(false);
@@ -62,7 +67,7 @@ describe("ObservationForm", function () {
                     conceptNames: ["Pulse"]
                 }
             };
-            var observationForm = new ObservationForm('uuid', dummyUser, 'formName', '1', [], extension);
+            var observationForm = new ObservationForm('uuid', dummyUser, 'formName', '1', [], 'formName', extension);
             expect(observationForm.isOpen).toBe(false);
             expect(observationForm.options).toEqual(extension.extensionParams);
         });

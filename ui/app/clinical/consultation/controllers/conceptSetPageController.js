@@ -231,7 +231,17 @@ angular.module('bahmni.clinical')
                     var formUuid = observationForm.formUuid || observationForm.uuid;
                     var formName = observationForm.name || observationForm.formName;
                     var formVersion = observationForm.version || observationForm.formVersion;
-                    forms.push(new Bahmni.ObservationForm(formUuid, $rootScope.currentUser, formName, formVersion, observations));
+                    var labels = observationForm.nameTranslation ? JSON.parse(observationForm.nameTranslation) : [];
+                    var label = formName;
+                    if (labels.length > 0) {
+                        var locale = localStorage.getItem("NG_TRANSLATE_LANG_KEY") || "en";
+                        var currentLabel = labels.find(function (label) {
+                            return label.locale === locale;
+                        });
+                        if (currentLabel) { label = currentLabel.display; }
+                    }
+                    forms.push(new Bahmni.ObservationForm(formUuid, $rootScope.currentUser,
+                        formName, formVersion, observations, label));
                 });
                 return forms;
             };

@@ -292,7 +292,7 @@ angular.module('bahmni.registration')
                         var formUuid = observationForm.formUuid || observationForm.uuid;
                         var formName = observationForm.name || observationForm.formName;
                         var formVersion = observationForm.version || observationForm.formVersion;
-                        forms.push(new Bahmni.ObservationForm(formUuid, $rootScope.currentUser, formName, formVersion, observations, ext));
+                        forms.push(new Bahmni.ObservationForm(formUuid, $rootScope.currentUser, formName, formVersion, observations, formName, ext));
                     }
                 });
                 return forms;
