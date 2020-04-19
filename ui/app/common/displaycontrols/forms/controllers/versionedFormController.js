@@ -34,15 +34,29 @@ angular.module('bahmni.common.displaycontrol.forms')
                 return filteredForms;
             }
 
+            var latestPublishedForms = function () {
+                return formService.getFormList();
+            };
+
             var init = function () {
                 $scope.formsNotFound = false;
                 return $q.all([formService.getAllPatientForms($scope.patient.uuid,
-                    $scope.section.dashboardConfig.maximumNoOfVisits, $state.params.enrollment)]).then(function (result) {
-                        if (!(result[0] && result[0].data.length)) {
+                    $scope.section.dashboardConfig.maximumNoOfVisits, $state.params.enrollment),
+                    latestPublishedForms()]).then(function (results) {
+                        if (!(results[0] && results[0].data.length)) {
                             $scope.formsNotFound = true;
                             $scope.$emit("no-data-present-event");
                         } else {
-                            var sortedFormDataByDate = sortFormDataByLatestDate(filterForms(result[0].data));
+                            var latestForms = results[1] && results[1].data;
+                            if (latestForms) {
+                                $scope.formsWithNameTranslations = latestForms.map(function (latestForm) {
+                                    return {
+                                        formName: latestForm.name,
+                                        formNameTranslations: latestForm.nameTranslation ? JSON.parse(latestForm.nameTranslation) : []
+                                    };
+                                });
+                            }
+                            var sortedFormDataByDate = sortFormDataByLatestDate(filterForms(results[0].data));
                             if ($scope.isOnDashboard) {
                                 $scope.formData = getUniqueForms(sortedFormDataByDate);
                             } else {
@@ -53,6 +67,20 @@ angular.module('bahmni.common.displaycontrol.forms')
             };
 
             $scope.getDisplayName = function (data) {
+                if ($scope.formsWithNameTranslations && $scope.formsWithNameTranslations.length > 0) {
+                    var formWithNameTranslation = $scope.formsWithNameTranslations.find(function (formWithNameTranslation) {
+                        return formWithNameTranslation.formName === data.formName;
+                    });
+                    var locale = localStorage.getItem("NG_TRANSLATE_LANG_KEY") || "en";
+                    var currentLabel = formWithNameTranslation && formWithNameTranslation.formNameTranslations
+                           .find(function (formNameTranslation) {
+                               return formNameTranslation.locale === locale;
+                           });
+                    if (currentLabel) {
+                        return currentLabel.display;
+                    }
+                }
+
                 return data.formName;
             };
 
@@ -73,7 +101,8 @@ angular.module('bahmni.common.displaycontrol.forms')
                         showGroupDateTime: false,
                         encounterUuid: data.encounterUuid,
                         observationUuid: data.uuid,
-                        formType: $scope.section.type
+                        formType: $scope.section.type,
+                        formDisplayName: $scope.getDisplayName(data)
                     }
                 };
             };

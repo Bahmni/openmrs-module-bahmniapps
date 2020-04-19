@@ -48,14 +48,26 @@ angular.module('bahmni.common.obs')
                     return $scope.observation.formType === Bahmni.Common.Constants.formBuilderType;
                 };
 
+                $scope.getFormDisplayName = function (conceptDisplayName) {
+                    return $scope.formDetails ? $scope.formDetails.label : conceptDisplayName;
+                };
                 var setFormDetails = function () {
                     formService.getAllForms().then(function (response) {
                         var allForms = response.data;
                         var observationForm = getFormByFormName(allForms, $scope.observation.formName, $scope.observation.formVersion);
+                        var label = $scope.observation.formName;
                         if (observationForm) {
+                            var locale = localStorage.getItem("NG_TRANSLATE_LANG_KEY") || "en";
+                            var currentLabel = observationForm.nameTranslation && JSON.parse(observationForm.nameTranslation)
+                                .find(function (formNameTranslation) {
+                                    return formNameTranslation.locale === locale;
+                                });
+                            if (currentLabel) {
+                                label = currentLabel.display;
+                            }
                             $scope.formDetails = new Bahmni.ObservationForm(
                                 observationForm.uuid, $rootScope.currentUser, $scope.observation.formName,
-                                $scope.observation.formVersion, $scope.editableObservations);
+                                $scope.observation.formVersion, $scope.editableObservations, label);
                         }
                     });
                 };

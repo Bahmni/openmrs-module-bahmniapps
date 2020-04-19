@@ -1,7 +1,7 @@
 <div class="template-container">
     <section class="dashboard-section">
         <div class="section-title-wrapper clearfix">
-            <h2 class="section-title fl">{{::conceptDisplayName}}</h2>
+            <h2 class="section-title fl">{{getFormDisplayName(conceptDisplayName)}}</h2>
             <button class="confirm fr" ng-click="save()" accesskey="s">
                 <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
             </button>

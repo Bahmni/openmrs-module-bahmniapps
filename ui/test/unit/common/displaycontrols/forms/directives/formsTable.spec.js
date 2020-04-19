@@ -17,7 +17,7 @@ describe("Forms Table display control", function () {
     beforeEach(module('bahmni.common.displaycontrol.forms', function ($provide) {
         conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
         visitFormService = jasmine.createSpyObj('visitFormService', ['formData']);
-        formService = jasmine.createSpyObj('formService', ['getAllPatientForms']);
+        formService = jasmine.createSpyObj('formService', ['getAllPatientForms', 'getFormList']);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
 
         spinner.forPromise.and.callFake(function (param) {

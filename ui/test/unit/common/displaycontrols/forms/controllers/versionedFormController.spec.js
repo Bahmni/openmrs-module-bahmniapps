@@ -8,7 +8,7 @@ describe('versionedFormController', function () {
 
     beforeEach(module('bahmni.common.displaycontrol.forms', function ($provide) {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        formService = jasmine.createSpyObj('formService', ['getAllPatientForms']);
+        formService = jasmine.createSpyObj('formService', ['getAllPatientForms', 'getFormList']);
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function () {
                 return true;
@@ -41,7 +41,7 @@ describe('versionedFormController', function () {
     };
 
 
-    var mockFormService = function (data) {
+    var mockFormServiceGetAllPatientForms = function (data) {
         formService.getAllPatientForms.and.callFake(function () {
             return {
                 then: function (callback) {
@@ -58,9 +58,41 @@ describe('versionedFormController', function () {
         expect(scope.getDisplayName(formData)).toEqual('Test Form');
     });
 
+    it('should return translated formName when form has translations', function () {
+        q = jasmine.createSpyObj('$q', ['all']);
+        let allFormData = [{formName: 'Simple', encounterDateTime: '2015-12-18T17:26:31.000+0000'}, {
+            formName: 'Second',
+            encounterDateTime: '2015-12-18T16:26:31.000+0000'
+        }, {formName: 'Third', encounterDateTime: '2015-12-16T16:26:31.000+0000'}];
+        let data = {"data": allFormData};
+        let nameTranslationForSimpleForm = [{locale:'en', display:'Simple_en'},
+            {locale:'es', display:'Simple_es'}];
+        mockFormServiceGetAllPatientForms(data);
+        let formListData = {data:[
+                {
+                    name: "Simple",
+                    uuid: "71a11931-56bf-4792-9d12-81836aca0b1c",
+                    version: "9",
+                    published: true,
+                    id: null,
+                    resources: null,
+                    nameTranslation: JSON.stringify(nameTranslationForSimpleForm)
+                }
+            ]};
+        formService.getFormList.and.callFake(function () {
+            return specUtil.simplePromise(formListData);
+        });
+        q.all.and.returnValue(specUtil.simplePromise([data,formListData ]));
+
+        createController();
+        let formData = {formName: 'Simple'};
+
+        expect(scope.getDisplayName(formData)).toEqual(nameTranslationForSimpleForm[0].display);
+    });
+
     it('should set formsNotFound to true when data is empty', function () {
         const formDataObj = {"data": []};
-        mockFormService(formDataObj);
+        mockFormServiceGetAllPatientForms(formDataObj);
         createController();
         scope.$digest();
 
@@ -79,7 +111,7 @@ describe('versionedFormController', function () {
         }];
         let data = {"data": formData};
         scope.section.formGroup = ['First', 'Second'];
-        mockFormService(data);
+        mockFormServiceGetAllPatientForms(data);
         createController();
         scope.$digest();
 
@@ -99,7 +131,7 @@ describe('versionedFormController', function () {
         let data = {"data": formData};
         scope.isOnDashboard = true;
         scope.section.formGroup = ['First', 'Second'];
-        mockFormService(data);
+        mockFormServiceGetAllPatientForms(data);
         createController();
         scope.$digest();
 
@@ -114,7 +146,7 @@ describe('versionedFormController', function () {
         }, {formName: 'First', encounterDateTime: '2015-12-16T16:26:31.000+0000'}];
         let data = {"data": formData};
         scope.section.formGroup = ['First', 'Second'];
-        mockFormService(data);
+        mockFormServiceGetAllPatientForms(data);
         createController();
         scope.$digest();
 
