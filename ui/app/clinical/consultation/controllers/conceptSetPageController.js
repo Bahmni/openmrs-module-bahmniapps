@@ -32,6 +32,7 @@ angular.module('bahmni.clinical')
             var familyhistdata = "c2a6c127-e3ba-426f-a4ae-83713dde0736";
             var tbscreeningform = "6fa69c2e-3ddf-4c9e-b31b-1de9629eb8e1";
             var eacforms = "940923e2-433e-4d58-869f-dd099333af9b";
+            var maternityform = "84253d19-1c16-45c0-8541-f0bbf11f4112";
             var getPcr = function () {
                 return spinner.forPromise(patientService.patientFirstPcrTestResult($scope.patient.uuid)).then(function (response) {
                     console.log("response", response);
@@ -51,9 +52,6 @@ angular.module('bahmni.clinical')
                 }));
             };
             var init = function () {
-                console.log("here", $scope.firstPcrResult);
-                console.log("here2", $scope.secondPcrResult);
-                console.log("here3", $scope.repeattPcrResult);
                 if (!($scope.allTemplates !== undefined && $scope.allTemplates.length > 0)) {
                     spinner.forPromise(conceptSetService.getConcept({
                         name: "All Observation Templates",
@@ -73,14 +71,6 @@ angular.module('bahmni.clinical')
                                 }
                             }
                         }
-
-                        // if ($scope.patient.age < 2) {
-                        //     for (var i = allTemplates.length - 1; i >= 0; i--) {
-                        //         if (allTemplates[i].uuid == personalhist || allTemplates[i].uuid == familyhistdata || allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload) {
-                        //             allTemplates.splice(i, 1);
-                        //         }
-                        //     }
-                        // }
                         if ($scope.patient.gender == "M") {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
                                 if (allTemplates[i].uuid == anccard) {
@@ -88,17 +78,16 @@ angular.module('bahmni.clinical')
                                 }
                             }
                         }
-                        // if($scope.firstPcrResult == "Positive"){
-                        //     for (var i = allTemplates.length - 1; i >= 0; i--) {
-                        //         if (allTemplates[i].uuid == heiformuuid) {
-                        //             allTemplates.push(i, 1);
-                        //         }
-                        //     }
-                        // }
                         var currentuserRoleName = $rootScope.currentUser.roles[0].name;
                         if (currentuserRoleName == "Data Clerk") {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
-                                if (allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload || allTemplates[i].uuid == tbscreeningform || allTemplates[i].uuid == eacforms) {
+                                if (allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload || allTemplates[i].uuid == tbscreeningform || allTemplates[i].uuid == eacforms || allTemplates[i].uuid == maternityform) {
+                                    allTemplates.splice(i, 1);
+                                }
+                            }
+                        } else {
+                            for (var i = allTemplates.length - 1; i >= 0; i--) {
+                                if (allTemplates[i].uuid == personalhist || allTemplates[i].uuid == familyhistdata) {
                                     allTemplates.splice(i, 1);
                                 }
                             }
