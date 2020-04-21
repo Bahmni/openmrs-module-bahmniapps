@@ -299,8 +299,6 @@ angular.module('bahmni.registration')
                     // $scope.patient.birthdate = moment($scope.patient.birthdate).format('DD-MM-YYYY');
                     executeShowOrHideRules();
                     $scope.walkInPatientType = false;
-                    $scope.onART = false;
-                    console.log("This is patient on ART?", onART);
                     if ($scope.patient['TypeofPatient'] && ($scope.patient['TypeofPatient'].value === "HeiRelationship" ||
                         $scope.patient['TypeofPatient'].value === "ExistingHeiRelationship")) {
                         $scope.heiRelationship = true;
