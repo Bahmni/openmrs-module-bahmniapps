@@ -198,7 +198,8 @@
                     </div>
 
                     <div ng-switch-when="text" ng-if="::!observation.isConciseText()">
-                        <div ng-include src="'../common/concept-set/views/observationDataTypes/textType.html'"></div>
+                        <div ng-if="observation.concept.name != 'Current visit label'" ng-include src="'../common/concept-set/views/observationDataTypes/textType.html'"></div>
+                        <h3 ng-if="observation.concept.name === 'Current visit label'"><span><strong>{{::maternalvisit}}</strong></span></h3>
                     </div>
 
                     <div ng-switch-when="text" ng-if="::observation.isConciseText()">
