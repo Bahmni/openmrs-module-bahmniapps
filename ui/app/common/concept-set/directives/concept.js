@@ -98,6 +98,20 @@ angular.module('bahmni.common.conceptSet')
                         scope.patientHeight = patientHeight.data[0].value;
                     }
                 });
+                var maternalcarevisitnumber = $http.get(Bahmni.Common.Constants.observationsUrl, {
+                    params: {
+                        concept: Bahmni.Common.Constants.maternalCareVisitNumber,
+                        patientUuid: scope.patient.uuid
+                    },
+                    withCredentials: true
+                });
+                maternalcarevisitnumber = maternalcarevisitnumber.then(function (response) {
+                    var maternalvisit = response;
+                    scope.maternalvisit = "None";
+                    if (maternalvisit.data[0] && maternalvisit.data[0].valueAsString) {
+                        scope.maternalvisit = maternalvisit.data[0].valueAsString;
+                    }
+                });
             };
 
             var compile = function (element) {
