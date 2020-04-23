@@ -616,6 +616,7 @@ describe("calendarViewController", function () {
         scope.isFilterOpen = true;
         scope.minimizeFilter();
         expect(scope.isFilterOpen).toBeFalsy();
+    });
 
     it('should return existing attributes from surgical appointment', function () {
         var surgicalAppointment = {
