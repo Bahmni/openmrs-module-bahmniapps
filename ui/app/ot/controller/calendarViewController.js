@@ -24,6 +24,7 @@ angular.module('bahmni.ot')
                 $state.view = $scope.view;
                 $scope.weekOrDay = $state.weekOrDay || 'day';
                 $state.weekOrDay = $scope.weekOrDay;
+                $scope.isFilterOpen = true;
                 if ($scope.weekOrDay === 'week') {
                     $scope.weekStartDate = $state.weekStartDate || new Date(moment().startOf('week'));
                     $state.weekStartDate = $scope.weekStartDate;
@@ -316,6 +317,37 @@ angular.module('bahmni.ot')
                 currentDialog.closePromise.then(function () {
                     ngDialog.close();
                 });
+            };
+
+            $scope.minimizeFilter = function () {
+                $scope.isFilterOpen = false;
+            };
+
+            $scope.expandFilter = function () {
+                $scope.isFilterOpen = true;
+            };
+
+            function getLocationNames () {
+                return _.map($scope.locations, function (location) {
+                    return location.name;
+                });
+            }
+
+            function isAnyLocationDeselected () {
+                if ($scope.filters.locations) {
+                    var locationNames = getLocationNames();
+                    return _.some(locationNames, function (loc) {
+                        return !$scope.filters.locations[loc];
+                    });
+                } return false;
+            }
+
+            function isAnyFilterOtherThanLocationsSelected () {
+                return !(_.isEmpty($scope.filters.providers) && _.isEmpty($scope.filters.patient) && _.isEmpty($scope.filters.statusList));
+            }
+
+            $scope.isFilterApplied = function () {
+                return isAnyFilterOtherThanLocationsSelected() || isAnyLocationDeselected();
             };
 
             $scope.cancelSurgicalBlockOrSurgicalAppointment = function () {

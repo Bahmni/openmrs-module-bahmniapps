@@ -547,6 +547,61 @@ describe("calendarViewController", function () {
         expect(_.isEmpty(scope.surgicalBlockSelected)).toBeTruthy();
     });
 
+    it('should return false when filters are empty including locations', function () {
+        createController();
+        scope.locations = [];
+        scope.filters = {};
+        var filterApplied = scope.isFilterApplied();
+        expect(filterApplied).toBeFalsy();
+    });
+
+    it('should return false when other filters are empty and all locations are set to true', function () {
+        createController();
+        scope.locations = [{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}];
+        scope.filters = {
+            locations: {"location1": true, "location2": true}, providers: [],
+            patient: {}, statusList: []
+        };
+        var filterApplied = scope.isFilterApplied();
+        expect(filterApplied).toBeFalsy();
+    });
+
+    it('should return true when other filters are empty and all locations are not set to true', function () {
+        createController();
+        scope.locations = [{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}];
+        scope.filters = {
+            locations: {"location1": true, "location2": false}, providers: [],
+            patient: {}, statusList: []
+        };
+        var filterApplied = scope.isFilterApplied();
+        expect(filterApplied).toBeTruthy();
+    });
+
+    it('should return true when filters are not empty and locations are all set to true', function () {
+        createController();
+        scope.locations = [{uuid: "uuid1", name: "location1"}, {uuid: "uuid2", name: "location2"}];
+        scope.filters = {
+            locations: {"location1": true, "location2": true}, providers: [{uuid: "providerUuid1"}],
+            patient: {uuid: "patientUuid2", value: "firstName2 lastName2", identifier: "IQ10002"},
+            statusList: [{name: "COMPLETED"}]
+        };
+        var filterApplied = scope.isFilterApplied();
+        expect(filterApplied).toBeTruthy();
+    });
+
+    it('should set isFilterOpen flag to true when filter is expanded', function () {
+        createController();
+        scope.isFilterOpen = false;
+        scope.expandFilter();
+        expect(scope.isFilterOpen).toBeTruthy();
+    });
+
+    it('should set isFilterOpen flag to false when filter is minimized', function () {
+        createController();
+        scope.isFilterOpen = true;
+        scope.minimizeFilter();
+        expect(scope.isFilterOpen).toBeFalsy();
+
     it('should return existing attributes from surgical appointment', function () {
         var surgicalAppointment = {
             id: 1,

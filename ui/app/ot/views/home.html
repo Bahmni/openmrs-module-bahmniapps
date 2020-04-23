@@ -3,7 +3,8 @@
         {{'NEW_SURGICAL_BLOCK' | translate}}
     </button>
 </div>
-<div class="ot-filter-section">
+<div class="ot-filter-section" ng-show="isFilterOpen">
+    <a ng-click="minimizeFilter()"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
     <div class="ot-filter-items location-block">
         <h4>{{'OT_OPERATION_THEATRE_LABEL' | translate}}</h4>
         <p ng-repeat="location in locations track by location.uuid">
@@ -54,6 +55,11 @@
 </div>
 
 <div class="ot-top-button-wrapper">
+    <p class="calendar-day-navigation filter-button" ng-show="!isFilterOpen">
+        <button ng-click="expandFilter()"><i class="fa fa-filter"
+                                             aria-hidden="true"></i> {{::'OT_FILTER_KEY' |translate}}
+        </button>
+    </p>
     <p class="calendar-day-navigation" ng-if="weekOrDay === 'day'">
         <button ng-click="goToPreviousDate(viewDate)"><i class="fa fa-angle-left"></i></button>
         <button ng-click="goToCurrentDate()">{{'OT_TODAY_KEY' | translate}}</button>

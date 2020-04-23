@@ -53,7 +53,7 @@ describe("otCalendarSurgicalBlock", function () {
             scope.$digest();
             expect(compiledElementScope.blockDimensions).toEqual({
                 height: 1200,
-                width: 290,
+                width: 96,
                 top: 0,
                 left: 0,
                 color: {backgroundColor: 'hsl(0, 100%, 90%)', borderColor: 'hsl(0,100%, 60%)'},
@@ -90,7 +90,7 @@ describe("otCalendarSurgicalBlock", function () {
             scope.$digest();
             expect(compiledElementScope.blockDimensions).toEqual({
                 height: 1200,
-                width: 290,
+                width: 96,
                 top: 0,
                 left: 0,
                 color: {backgroundColor: 'hsl(260, 100%, 90%)', borderColor: 'hsl(260,100%, 60%)'},
@@ -240,7 +240,7 @@ describe("otCalendarSurgicalBlock", function () {
             scope.$digest();
             expect(compiledElementScope.blockDimensions).toEqual({
                 height: 1200,
-                width: 175,
+                width: 96,
                 top: 0,
                 left: 1,
                 color: {backgroundColor: 'hsl(0, 100%, 90%)', borderColor: 'hsl(0,100%, 60%)'},
@@ -264,9 +264,9 @@ describe("otCalendarSurgicalBlock", function () {
             scope.$digest();
             expect(compiledElementScope.blockDimensions).toEqual({
                 height: 1200,
-                width: 58.333333333333336,
+                width: 32,
                 top: 0,
-                left: 59.333333333333336,
+                left: 33,
                 color: {backgroundColor: 'hsl(0, 100%, 90%)', borderColor: 'hsl(0,100%, 60%)'},
                 appointmentHeightPerMin: 3.93
             });

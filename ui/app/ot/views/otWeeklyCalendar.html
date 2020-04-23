@@ -1,5 +1,4 @@
 <div on-Scroll class="calendar">
-    <p class="calendar-overflow-hiding"></p>
     <div class="calendar-location">
         <p class="weekly-heading-cell" ng-repeat="index in [0, 1, 2, 3, 4, 5, 6]">
             {{weekStartDate | addDays: index | bahmniDateTimeWithFormat: 'Do MMM, ddd'}}

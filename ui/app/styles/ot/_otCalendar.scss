@@ -20,6 +20,7 @@
     position: absolute;
     z-index: 20;
     background: #fff;
+    width: 94%;
     .heading-cell {
       width: 300px;
       box-sizing: border-box;
@@ -31,7 +32,6 @@
     }
   }
   .calendar-time-container {
-    float: left;
     clear: left;
     position: absolute;
     top: 36px;
@@ -50,9 +50,7 @@
   }
   .table-block {
     .ot-block-container {
-      float: left;
-      position: relative;
-      width: calc(100% - 80px);
+      display: block;
       .ot-block-wrapper {
         position: absolute;
         display: flex;
@@ -60,6 +58,8 @@
         overflow: auto;
         padding-bottom: 5px;
         top: 36px;
+        width: calc(100% - 90px);
+        right: 0;
       }
       .calendar-cell {
         border-bottom: 0.5px solid lightgrey;

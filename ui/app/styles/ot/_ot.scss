@@ -17,6 +17,21 @@
   }
 }
 
+.filter-button {
+  padding-right: 15px;
+  border-right: 1px solid #95989A;
+}
+
+.fa-angle-double-left{
+  color: #00ACC3;
+  font-size: 21px;
+  padding-left: 263px;
+}
+
+.colorForFilter {
+  color: #00ACC3 !important;
+}
+
 .ot-scheduling-nav {
   overflow: hidden;
   margin: 10px 0 0 10px;
@@ -451,5 +466,5 @@ div[ng-app="ot"] {
 }
 
 .ot-dialog.ngdialog.ngdialog-theme-default{
-  padding-top :160px; 
+  padding-top :160px;
 }
