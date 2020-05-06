@@ -60,32 +60,27 @@
                 <section class="form-field-inline clearfix">
                     <article class="form-field" ng-repeat="attribute in ::section.attributes" ng-if="::(section.order === 3 && section.attributes.length > 0)"
                            ng-class="::{'right-form-field' : $index%2 != 0}">
-                        <span ng-if="(attribute.name==='TransferredOnART') && transferInPatientType">
-                            <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
-                                  is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
-                                  get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
-                        </span>
-                        <span ng-if="(attribute.name==='NameOfClinic') && transferredOnART">
+                        <span ng-if="(attribute.name==='NameOfClinic')">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation" 
                                   is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
                                   get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                         </span>
-                        <span ng-if="(attribute.name==='DateTransferredIn') && transferredOnART">
+                        <span ng-if="(attribute.name==='DateTransferredIn')">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation" 
                                   is-auto-complete="isAutoComplete" 
                                   get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                         </span>
-                        <span ng-if="(attribute.name==='TransferInformation') && transferredOnART">
+                        <span ng-if="(attribute.name==='TransferInformation')">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation" 
                                   is-auto-complete="isAutoComplete" 
                                   get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                         </span>
-                        <span ng-if="(attribute.name==='OnART?') && transferredOnART">
+                        <span ng-if="(attribute.name==='OnART?')">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation" 
                                   is-auto-complete="isAutoComplete" 
                                   get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
                         </span>
-                        <span ng-if="(attribute.name==='TransferInTreatmentStatus') && transferredOnART">
+                        <span ng-if="(attribute.name==='TransferInTreatmentStatus')">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation" 
                                   is-auto-complete="isAutoComplete" 
                                   get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
