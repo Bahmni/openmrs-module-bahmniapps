@@ -213,6 +213,7 @@ angular.module('bahmni.ot')
                     closeByDocument: false,
                     className: 'ngdialog-theme-default surgical-appointment-dialog',
                     showClose: true,
+                    closeByNavigation: true,
                     scope: $scope,
                     data: surgicalAppointment
                 });
