@@ -68,7 +68,7 @@
                         <span ng-if="(attribute.name==='DateTransferredIn')">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation" 
                                   is-auto-complete="isAutoComplete" 
-                                  get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                                  get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate" ></attribute-types>
                         </span>
                         <span ng-if="(attribute.name==='TransferInformation')">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation" 
@@ -208,7 +208,7 @@
                              ng-if="::!addressHierarchyConfigs.showAddressFieldsTopDown"></section>
                     <section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.permanentAddress"
                              field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown" field-read-only="getEditFlag()"
-                             strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
+                             strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel" handle-update="handleUpdate"></section>
 
 					<legend class="registraion_legend">
                         <span class="mylegend"> {{ ::'REGISTRATION_LABEL_CURRENT_ADDRESS_INFO' | translate}}</span>
@@ -227,7 +227,7 @@
                              ng-class="::{'right-form-field' : $index%2 != 0}">
                             <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                               is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
-                              get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                              get-data-results="getDataResults" is-read-only="isReadOnly"></attribute-types>
                         </article>
                     </section>
                 </div>

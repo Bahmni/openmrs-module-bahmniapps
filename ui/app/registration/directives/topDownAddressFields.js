@@ -15,7 +15,7 @@ angular.module('bahmni.registration')
             }
         };
     })
-    .controller('TopDownAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', function ($scope, addressHierarchyService) {
+    .controller('TopDownAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', '$rootScope', function ($scope, addressHierarchyService, $rootScope) {
         $scope.addressFieldInvalid = false;
         $scope.heiAddressFields = ["cityVillage", "postalCode", "stateProvince"];
         var selectedAddressUuids = {};
@@ -78,6 +78,7 @@ angular.module('bahmni.registration')
                 selectedAddressUuids[fieldName] = addressFieldItem.addressField.uuid;
                 selectedUserGeneratedIds[fieldName] = addressFieldItem.addressField.userGeneratedId;
                 $scope.selectedValue[fieldName] = addressFieldItem.addressField.name;
+
                 var parentFields = addressLevelsNamesInDescendingOrder.slice(addressLevelsNamesInDescendingOrder.indexOf(fieldName) + 1);
                 var parent = addressFieldItem.addressField.parent;
                 parentFields.forEach(function (parentField) {
@@ -92,7 +93,7 @@ angular.module('bahmni.registration')
         };
 
         $scope.findParentField = function (fieldName) {
-            var found = _.find($scope.addressLevels, {addressField: fieldName});
+            var found = _.find($scope.addressLevels, { addressField: fieldName });
             var index = _.findIndex($scope.addressLevels, found);
             var parentFieldName;
             var topLevel = 0;
@@ -150,6 +151,14 @@ angular.module('bahmni.registration')
                 }
             });
 
+            if (fieldName === 'country') {
+                var attrElement = angular.element(fieldName);
+                var attrElement1 = angular.element(document.getElementById(fieldName));
+                attrElement1.attr("disabled", true);
+                console.log("That:", attrElement1);
+            }
+
+            console.log("this", $scope.addressLevels.fieldName);
             if (_.isEmpty($scope.address[fieldName])) {
                 $scope.address[fieldName] = null;
                 selectedUserGeneratedIds[fieldName] = null;
@@ -176,7 +185,7 @@ angular.module('bahmni.registration')
                 if (newValue !== undefined) {
                     populateSelectedAddressUuids(0);
                     $scope.selectedValue = _.mapValues($scope.address, function (value, key) {
-                        var addressLevel = _.find($scope.addressLevels, {addressField: key});
+                        var addressLevel = _.find($scope.addressLevels, { addressField: key });
                         return addressLevel && addressLevel.isStrictEntry ? value : null;
                     });
                     deregisterAddressWatch();
