@@ -254,10 +254,8 @@ angular.module('bahmni.appointments')
                     var patient = {};
                     patient.label = $scope.selectedPatientlabel;
                     patient.uuid = $scope.selectedAppointment.patient.uuid;
-                    // $scope.patientlabel = $scope.selectedPatientlabel;
-                    // console.log("patient" , patient.label , patient.uuid );
                     return;
-                    // return $scope.patientInfo = patient;
+                    
                 }
             });
             init();
