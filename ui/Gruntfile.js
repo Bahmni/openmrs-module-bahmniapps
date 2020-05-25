@@ -55,7 +55,7 @@ module.exports = function (grunt) {
         'components/angular-file-upload/dist/angular-file-upload.min.js',
         'components/angular-elastic/elastic.js',
         'components/react/react.production.min.js',
-        'components/react/react-dom.production.min.js',
+        'components/react-dom/react-dom.production.min.js',
         'components/bahmni-form-controls/helpers.js',
         'components/bahmni-form-controls/bundle.js',
         'components/purl/purl.js',
