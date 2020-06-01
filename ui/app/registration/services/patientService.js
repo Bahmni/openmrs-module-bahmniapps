@@ -27,7 +27,23 @@ angular.module('bahmni.registration')
                 },
                 withCredentials: true
             };
-            return patientServiceStrategy.search(config);
+
+            var searchStrategy = identifier !== undefined && identifier !== '' ? 'lucene' : '';
+
+            return patientServiceStrategy.search(config, searchStrategy);
+        };
+
+        var searchSimilar = function (name, gender, birthdate) {
+            var config = {
+                params: {
+                    q: name,
+                    gender: gender,
+                    birthdate: birthdate ? moment(birthdate).format('YYYY-MM-DD') : birthdate,
+                    loginLocationUuid: sessionService.getLoginLocationUuid()
+                },
+                withCredentials: true
+            };
+            return patientServiceStrategy.search(config, 'similar');
         };
 
         var searchByIdentifier = function (identifier) {
@@ -82,6 +98,7 @@ angular.module('bahmni.registration')
         return {
             search: search,
             searchByIdentifier: searchByIdentifier,
+            searchSimilar: searchSimilar,
             create: create,
             update: update,
             get: get,

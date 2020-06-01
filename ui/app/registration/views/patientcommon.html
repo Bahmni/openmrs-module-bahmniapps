@@ -23,60 +23,44 @@
 
                 <div class="field-value patient-name" id="patientName">
 
-              <span data-ng-switch="::isAutoComplete('givenName')"
-                    ng-if="::patientConfiguration.local()['showNameField']">
+              <span data-ng-switch="::isAutoComplete('givenName')">
                   <input data-ng-switch-when="true"
-                         type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
+                         type="text" id="givenName" ng-model="$parent.patient.givenName" ng-blur="searchSimilarPatients()" non-blank pattern-validate
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
 
                   <input data-ng-switch-default
-                         type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
+                         type="text" id="givenName" ng-model="patient.givenName" ng-blur="searchSimilarPatients()" non-blank pattern-validate
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
-              </span>
-
-              <span data-ng-switch="::isAutoComplete('givenName')"
-                    ng-if="::!patientConfiguration.local()['showNameField']">
-                  <input data-ng-switch-when="true"
-                         type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
-                         my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
-                         data-item-type="personName"
-                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" focus-me="true">
-
-                  <input data-ng-switch-default
-                         type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
-                         placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
-                         title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" focus-me="true">
               </span>
 
               <span ng-show="::showMiddleName" data-ng-switch="::isAutoComplete('middleName')">
                   <input data-ng-switch-when="true"
-                         type="text" id="middleName" ng-model="$parent.patient.middleName" pattern-validate
+                         type="text" id="middleName" ng-model="$parent.patient.middleName" ng-blur="searchSimilarPatients()" pattern-validate
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
 
                   <input data-ng-switch-default
-                         type="text" id="middleName" ng-model="patient.middleName" pattern-validate
+                         type="text" id="middleName" ng-model="patient.middleName" ng-blur="searchSimilarPatients()" pattern-validate
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
               </span>
 
               <span ng-show="::showLastName" data-ng-switch="::isAutoComplete('familyName')">
                   <input data-ng-switch-when="true"
-                         type="text" id="familyName" ng-model="$parent.patient.familyName"  pattern-validate
+                         type="text" id="familyName" ng-model="$parent.patient.familyName" ng-blur="searchSimilarPatients()" pattern-validate
                          my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                          data-item-type="personName"
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
 
                   <input data-ng-switch-default
-                         type="text" id="familyName" ng-model="patient.familyName"  pattern-validate
+                         type="text" id="familyName" ng-model="patient.familyName" ng-blur="searchSimilarPatients()" pattern-validate
                          placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
                          title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
               </span>
@@ -110,7 +94,8 @@
 
                 <div class="field-value">
                     <select id="gender" ng-model="patient.gender" required="required" title="{{ 'REGISTRATION_LABEL_SELECT_GENDER'|translate }}"
-                            ng-options="genderMap[genderCode] for genderCode in genderCodes track by genderCode" ng-change="handleUpdate('gender')">
+                            ng-options="genderMap[genderCode] for genderCode in genderCodes track by genderCode"
+                            ng-change="handleUpdate('gender'); searchSimilarPatients()">
                         <option value="">{{ ::'REGISTRATION_LABEL_SELECT_GENDER' | translate}}</option>
                     </select>
                     <!--<div class="selectGender">
@@ -133,6 +118,38 @@
                 <ng-include src="'views/age.html'"></ng-include>
             </div>
         </section>
+
+        <section>
+            <div class="similar-patient-suggestion" ng-if="searchForSimilarPatients && hasSimilarSearchResults">
+                <legend class="registraion_legend first-registraion_legend">
+                    <span class="mylegend white-bg"><strong>{{ ::'REGISTRATION_LABEL_SIMILARS_FOUND' | translate}}</strong></span>
+                </legend>
+                <table class="similar-patient-table">
+                    <tbody>
+                    <tr>
+                        <td ng-repeat="result in results">
+                            <a tabindex="{{ :: 8 + $index + 1 }}" ng-if="::(searchActions.length > 0)" ng-click="forPatient(result).doExtensionAction(searchActions[0])">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <img class="patient-image" ng-src="{{result.image}}" fallback-src="../images/blank-user.gif">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{::result.givenName}} {{::result.middleName}} {{::result.familyName}} ({{::result.gender}})</td>
+                                </tr>
+                                <tr>
+                                    <td>* {{::result.birthdate}} ({{::result.age}})</td>
+                                </tr>
+                            </table>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <legend class="registraion_legend">
             <span class="mylegend"> {{ ::'REGISTRATION_LABEL_ADDRESS_INFO' | translate}}</span>
         </legend>

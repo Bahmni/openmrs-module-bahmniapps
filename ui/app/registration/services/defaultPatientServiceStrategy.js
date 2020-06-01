@@ -5,12 +5,12 @@ angular.module('bahmni.registration')
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
 
-        var search = function (config) {
+        var search = function (config, searchStrategy) {
             var defer = $q.defer();
-            var patientSearchUrl = Bahmni.Common.Constants.bahmniSearchUrl + "/patient";
-            if (config && config.params.identifier) {
-                patientSearchUrl = Bahmni.Common.Constants.bahmniSearchUrl + "/patient/lucene";
-            }
+
+            var strategyWithSlashOrEmpty = searchStrategy !== '' ? '/' + searchStrategy : '';
+            var patientSearchUrl = Bahmni.Common.Constants.bahmniSearchUrl + "/patient" + strategyWithSlashOrEmpty;
+
             var onResults = function (result) {
                 defer.resolve(result);
             };
