@@ -96,8 +96,18 @@ angular.module('bahmni.ot')
                 return moment($scope.surgicalBlock.endDatetime).toDate() > getCalendarEndDateTime($scope.surgicalBlock.endDatetime);
             };
 
+            var showToolTipForSurgicalBlock = function () {
+                $('.surgical-block').tooltip({
+                    content: function () {
+                        return $(this).prop('title');
+                    },
+                    track: true
+                });
+            };
+
             getViewPropertiesForSurgicalBlock();
             calculateEstimatedAppointmentDuration();
+            showToolTipForSurgicalBlock();
         };
         return {
             restrict: 'E',

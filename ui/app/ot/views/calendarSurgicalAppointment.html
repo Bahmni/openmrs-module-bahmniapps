@@ -1,6 +1,7 @@
 <div ng-class="{'hide-surgical-appointment': !canTheSurgicalAppointmentBeShown() }"
      ng-style="{ height: height + 'px', background : backgroundColor.color, borderColor : backgroundColor.borderColor }"
-     tabindex="1" ng-click="selectSurgicalAppointment($event)" class="surgical-block-appointment">
+     tabindex="1" ng-click="selectSurgicalAppointment($event)" class="surgical-block-appointment"
+     title=" {{'OT_PATIENT' | translate}}: {{patient}}<br/> {{'OT_SURGICAL_BLOCK_DIALOG_LOCATION' | translate}}: {{operationTheatre}}<br/> {{'OT_SURGICAL_BLOCK_DIALOG_SURGEON' | translate}}: {{$parent.surgicalBlock.provider.person.display}}">
     <div ng-if="weekOrDay === 'day'" class="collapse">
         <p class="surgicalblock-patientname"> {{patient}}  <i ng-show="surgicalAppointment.status === 'COMPLETED'" class="fa fa-check" aria-hidden="true"></i> </p>
         <p ng-if="surgicalAppointment.derivedAttributes.expectedStartDatetime"> Est Time: {{surgicalAppointment.derivedAttributes.expectedStartDatetime | bahmniTime}} - {{surgicalAppointment.derivedAttributes.expectedEndDatetime | bahmniTime}}</p>

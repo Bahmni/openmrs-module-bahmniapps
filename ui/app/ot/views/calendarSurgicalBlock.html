@@ -2,7 +2,8 @@
      class=" calendar-cell surgical-block"
      ng-class="{'exceed': surgicalBlockExceedsCalendar()}"
      ng-click="selectSurgicalBlock($event)"
-     tabindex="1">
+     tabindex="1"
+     title="{{'OT_SURGICAL_BLOCK_DIALOG_SURGEON' | translate}}: {{surgicalBlock.provider.person.display}} <br/> {{'OT_SURGICAL_BLOCK_DIALOG_LOCATION' | translate}}: {{surgicalBlock.location.name}}">
 
     <div ng-repeat="surgicalAppointment in surgicalBlock.surgicalAppointments | orderBy: 'sortWeight'">
         <ot-calendar-surgical-appointment surgical-appointment="surgicalAppointment"
