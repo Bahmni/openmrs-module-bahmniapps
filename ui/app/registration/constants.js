@@ -14,7 +14,8 @@ Bahmni.Registration.Constants = {
     webServiceRestBaseURL: hostUrl + "/openmrs/ws/rest/v1",
     patientSearchURL: "/search",
     allAddressFileds: ["uuid", "preferred", "address1", "address2", "address3", "address4", "address5", "address6", "cityVillage", "countyDistrict", "stateProvince", "postalCode", "country", "latitude", "longitude"],
-    nextStepConfigId: "org.bahmni.registration.patient.next"
+    nextStepConfigId: "org.bahmni.registration.patient.next",
+    patientNameDisplayOrder: ["firstName", "middleName", "lastName"]
 };
 
 Bahmni.Registration.Constants.Errors = {
