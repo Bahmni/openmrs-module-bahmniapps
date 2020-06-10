@@ -18,6 +18,18 @@ angular.module('bahmni.registration')
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
 
+            function initPatientNameDisplayOrder () {
+                var validNameFields = Bahmni.Registration.Constants.patientNameDisplayOrder;
+                var nameFields = appService.getAppDescriptor().getConfigValue("patientNameDisplayOrder") || [];
+                var valid = nameFields.every(function (val) { return validNameFields.indexOf(val) >= 0; });
+                if (nameFields.length !== 3 || !valid) {
+                    $scope.patientNameDisplayOrder = validNameFields;
+                } else {
+                    $scope.patientNameDisplayOrder = nameFields;
+                }
+            }
+
+            initPatientNameDisplayOrder();
             var dontSaveButtonClicked = false;
 
             var isHref = false;
