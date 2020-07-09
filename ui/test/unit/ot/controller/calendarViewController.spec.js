@@ -8,7 +8,7 @@ describe("calendarViewController", function () {
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
     var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
-    var ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
+    var ngDialog = jasmine.createSpyObj('ngDialog', ['open', 'close']);
     appService.getAppDescriptor.and.returnValue(appDescriptor);
 
     appDescriptor.getConfigValue.and.callFake(function (value) {
@@ -17,8 +17,13 @@ describe("calendarViewController", function () {
                 dayViewEnd: "17:00",
                 dayViewSplit: "60"};
         }
-        if (value == 'startOfWeek') {
-            return "Tuesday";
+    });
+
+    ngDialog.open.and.returnValue({
+        closePromise: {
+            then: function (callback) {
+                callback();
+            }
         }
     });
 
@@ -293,10 +298,10 @@ describe("calendarViewController", function () {
         scope.goToCurrentWeek();
         expect(scope.weekOrDay).toEqual('week');
         expect(state.weekOrDay).toEqual('week');
-        expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekStartDate(new Date(moment().startOf('day').toDate()), scope.startOfWeekCode));
-        expect(state.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekStartDate(new Date(moment().startOf('day').toDate()), scope.startOfWeekCode));
-        expect(scope.weekEndDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekEndDate(scope.weekStartDate));
-        expect(state.weekEndDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekEndDate(scope.weekStartDate));
+        expect(scope.weekStartDate).toEqual(new Date(moment().startOf('week')));
+        expect(state.weekStartDate).toEqual(new Date(moment().startOf('week')));
+        expect(scope.weekEndDate).toEqual(new Date(moment().endOf('week').endOf('day')));
+        expect(state.weekEndDate).toEqual(new Date(moment().endOf('week').endOf('day')));
     });
 
     it('should go to next week on click of right arrow in week view', function() {
@@ -343,19 +348,10 @@ describe("calendarViewController", function () {
     });
 
     it('should go to calendar view on click of calendar button', function () {
-        createController();
-        scope.calendarView();
-        expect(scope.view).toEqual('Calendar');
-    });
-
-
-    it('should go to calender view on click of calendar button and weekly view should be displayed on click of weekly' +
-        ' button', function () {
-        createController();
-        scope.calendarView();
-        scope.goToCurrentWeek();
-        expect(scope.view).toEqual('Calendar');
-        expect(scope.weekOrDay).toEqual('week');
+       createController();
+       scope.calendarView();
+       expect(scope.weekOrDay).toEqual('day');
+       expect(scope.view).toEqual('Calendar');
     });
 
     it('should go to list view on click of list view button', function () {
@@ -498,5 +494,39 @@ describe("calendarViewController", function () {
     it('should set startOfWeekCode as 2 when startOfWeek is Tuesday in configuration', function () {
         createController();
         expect(scope.startOfWeekCode).toEqual(2);
-    })
+    });
+
+    it('should open surgical block details dialog when surgical block is selected', function () {
+        createController();
+        var surgicalBlock = {provider: {person: {display: 'Surgeon Name'}}};
+        scope.$emit("event:surgicalBlockSelect", surgicalBlock);
+
+        expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining(
+            {
+                template: 'views/surgicalBlockDialog.html',
+                className: 'ngdialog-theme-default ng-dialog-adt-popUp ot-dialog',
+                scope: scope,
+                data: surgicalBlock
+            }
+        ));
+    });
+
+    it('should close "surgicalBlockDialog" when "cacelSurgicalBlock" dialog is closed', function () {
+        createController();
+        scope.surgicalBlockSelected = surgicalBlocks[0];
+        scope.surgicalBlockSelected.provider = {person: {display:"something"}};
+        scope.cancelSurgicalBlockOrSurgicalAppointment();
+
+        expect(ngDialog.close).toHaveBeenCalled();
+    });
+
+    xit('should set surgical block data to empty object when surgical block details dialog is closed', function () {
+        createController();
+        scope.$emit("event:surgicalBlockSelect", {surgicalAppointments: []});
+
+        ngDialog.open.calls.argsFor(0)[0].preCloseCallback();
+
+        expect(_.isEmpty(scope.surgicalBlockSelected)).toBeTruthy();
+    });
+
 });

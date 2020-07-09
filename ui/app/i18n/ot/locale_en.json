@@ -87,5 +87,10 @@
     "OT_THIS_WEEK_KEY": "This Week",
     "OT_MOVE_KEY": "Move",
     "OT_EDIT_KEY": "Edit",
-    "OT_ADD_ACTUAL_TIME_KEY": "Add Actual Time"
+    "OT_ADD_ACTUAL_TIME_KEY": "Add Actual Time",
+    "OT_SURGICAL_BLOCK_DIALOG_DETAILS": "Surgical Block Details",
+    "OT_SURGICAL_BLOCK_DIALOG_SURGEON": "Surgeon",
+    "OT_SURGICAL_BLOCK_DIALOG_LOCATION": "Location",
+    "OT_SURGICAL_BLOCK_DIALOG_DATE": "Date",
+    "OT_SURGICAL_BLOCK_DIALOG_DURATION": "Duration"
 }

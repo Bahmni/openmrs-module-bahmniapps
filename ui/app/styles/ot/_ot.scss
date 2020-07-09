@@ -287,6 +287,19 @@ div[ng-app="ot"] {
   }
 }
 
+.ot-surgical-block-dialog {
+  .center, h4 {
+    text-align: center;
+  }
+  button {
+    margin: 20px 15px 5px;
+  }
+  p {
+    padding-left: 10px;
+    padding-bottom: 5px;
+  }
+}
+
 .ot-cancel-dialog-form {
   p {
     padding: 0 10px;

@@ -200,15 +200,24 @@ angular.module('bahmni.ot')
                 if (!surgicalBlockWithCompletedAppointments()) {
                     $scope.cancelDisabled = false;
                 }
+                ngDialog.open({
+                    template: 'views/surgicalBlockDialog.html',
+                    className: 'ngdialog-theme-default ng-dialog-adt-popUp ot-dialog',
+                    closeByNavigation: true,
+                    preCloseCallback: nullifySurgicalBlockData,
+                    scope: $scope,
+                    data: surgicalBlock
+                });
             });
 
-            $scope.$on("event:surgicalBlockDeselect", function (event) {
-                $scope.editDisabled = true;
-                $scope.cancelDisabled = true;
-                $scope.moveButtonDisabled = true;
-                $scope.addActualTimeDisabled = true;
+            var nullifySurgicalBlockData = function () {
                 $scope.surgicalBlockSelected = {};
                 $scope.surgicalAppointmentSelected = {};
+            };
+
+            // todo: should be removed after enabling pop-up for surigical appointment
+            $scope.$on("event:surgicalBlockDeselect", function (event) {
+
             });
 
             $scope.goToEdit = function ($event) {
@@ -268,7 +277,7 @@ angular.module('bahmni.ot')
             };
 
             var cancelSurgicalBlock = function () {
-                ngDialog.open({
+                var cancelSurgicalBlockDialog = ngDialog.open({
                     template: "views/cancelSurgicalBlock.html",
                     closeByDocument: false,
                     controller: "cancelSurgicalBlockController",
@@ -278,6 +287,13 @@ angular.module('bahmni.ot')
                         surgicalBlock: $scope.surgicalBlockSelected,
                         provider: $scope.surgicalBlockSelected.provider.person.display
                     }
+                });
+                closeSubsequentActiveDialogs(cancelSurgicalBlockDialog);
+            };
+
+            var closeSubsequentActiveDialogs = function (currentDialog) {
+                currentDialog.closePromise.then(function () {
+                    ngDialog.close();
                 });
             };
 

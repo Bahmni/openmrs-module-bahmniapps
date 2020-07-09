@@ -1,0 +1,18 @@
+<div class="ngdialog-close clearfix"></div>
+<div class="ot-surgical-block-dialog">
+    <h4 class="ot-actual-time-person-display"> {{'OT_SURGICAL_BLOCK_DIALOG_DETAILS' | translate}}</h4>
+    <p>{{'OT_SURGICAL_BLOCK_DIALOG_SURGEON' | translate}}: {{ngDialogData.provider.person.display}}</p>
+    <p>{{'OT_SURGICAL_BLOCK_DIALOG_LOCATION' | translate}}: {{ngDialogData.location.name}}</p>
+    <p>{{'OT_SURGICAL_BLOCK_DIALOG_DATE' | translate}}: {{ngDialogData.startDatetime | bahmniDateTimeWithFormat: 'Do
+        MMM, ddd'}}</p>
+    <p>{{'OT_SURGICAL_BLOCK_DIALOG_DURATION' | translate}}: {{ngDialogData.startDatetime | bahmniTime}} -
+        {{ngDialogData.endDatetime | bahmniTime}}</p>
+    <div class="center">
+        <button show-if-privilege="app:ot:write" ng-mousedown="goToEdit($event)">
+            {{'OT_EDIT_KEY' | translate}}
+        </button>
+        <button show-if-privilege="app:ot:write" ng-disabled="cancelDisabled"
+                ng-mousedown="cancelSurgicalBlockOrSurgicalAppointment()">{{'OT_CANCEL_KEY' | translate}}
+        </button>
+    </div>
+</div>
