@@ -77,6 +77,8 @@
         overflow: hidden;
         .surgical-block {
           width: calc(100% - 10px);
+          position: absolute;
+          margin: 0 5px;
           border: 0.5px solid #1976D2;
           &:focus {
             border-color: #1976D2 !important;

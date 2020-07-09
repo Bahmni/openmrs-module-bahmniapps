@@ -1,19 +1,25 @@
-<div ng-style="{top : blockDimensions.top + 'px', background : blockDimensions.color.backgroundColor, borderColor : blockDimensions.color.borderColor, height: blockDimensions.height + 'px'}"
-     class="calendar-cell surgical-block"
+<div ng-style="{top : blockDimensions.top + 'px', left: blockDimensions.left + 'px',  background : blockDimensions.color.backgroundColor, borderColor : blockDimensions.color.borderColor, height: blockDimensions.height + 'px', width: blockDimensions.width + 'px'}"
+     class=" calendar-cell surgical-block"
      ng-class="{'exceed': surgicalBlockExceedsCalendar()}"
      ng-click="selectSurgicalBlock($event)"
      tabindex="1">
 
-<div ng-repeat="surgicalAppointment in surgicalBlock.surgicalAppointments | orderBy: 'sortWeight'">
-    <ot-calendar-surgical-appointment surgical-appointment="surgicalAppointment"
-                                      background-color="blockDimensions.color"
-                                      ng-if="isValidSurgicalAppointment(surgicalAppointment)"
-                                      height-per-min="blockDimensions.appointmentHeightPerMin"
-                                      filter-params="filterParams"></ot-calendar-surgical-appointment>
+    <div ng-repeat="surgicalAppointment in surgicalBlock.surgicalAppointments | orderBy: 'sortWeight'">
+        <ot-calendar-surgical-appointment surgical-appointment="surgicalAppointment"
+                                          week-or-day="weekOrDay"
+                                          operation-theatre="operationTheatre"
+                                          background-color="blockDimensions.color"
+                                          ng-if="isValidSurgicalAppointment(surgicalAppointment)"
+                                          height-per-min="blockDimensions.appointmentHeightPerMin"
+                                          filter-params="filterParams"></ot-calendar-surgical-appointment>
 
-</div>
+    </div>
 
-<div class="surgicalBlock-surgenName">
-    {{'SURGEON' | translate }} - {{surgicalBlock.provider.person.display}}
-</div>
+    <div class="surgicalBlock-surgenName" ng-if="weekOrDay === 'day'">
+        {{'SURGEON' | translate }} - {{surgicalBlock.provider.person.display}}
+    </div>
+
+    <div class="surgicalBlock-surgenName" ng-if="weekOrDay === 'week'">
+        {{surgicalBlock.provider.person.display}}
+    </div>
 </div>

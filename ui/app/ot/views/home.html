@@ -94,6 +94,7 @@
 
 <div class="calander-container">
     <ot-calendar ng-if="view === 'Calendar' && weekOrDay === 'day'"
+                 week-or-day="weekOrDay"
                  view-date="viewDate"
                  day-view-start="calendarConfig.dayViewStart"
                  day-view-end="calendarConfig.dayViewEnd"
@@ -102,11 +103,13 @@
     </ot-calendar>
 
     <ot-weekly-calendar ng-if="view === 'Calendar' && weekOrDay === 'week'"
+                        week-or-day="weekOrDay"
                         view-date="viewDate"
                         week-start-date="weekStartDate",
                         day-view-start="calendarConfig.dayViewStart"
                         day-view-end="calendarConfig.dayViewEnd"
-                        day-view-split="calendarConfig.dayViewSplit">
+                        day-view-split="calendarConfig.dayViewSplit"
+                        filter-params="filterParams">
     </ot-weekly-calendar>
 
     <list-view ng-if="view === 'List View'"

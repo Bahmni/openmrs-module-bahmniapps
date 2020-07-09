@@ -16,12 +16,17 @@
                 <div class="ot-weekly-block" ng-repeat="(blockIndex, blocks) in surgicalBlocksByDate" >
                     <div ng-repeat="row in ::rows" class="weekly-calendar-cell">
                     </div>
-                    <div class="ot-week-day" ng-repeat="block in blocks | surgicalBlock:filterParams" >
+                    <div class="ot-week-day" ng-repeat="block in blocks | surgicalBlock:filterParams" ng-init="updateBlockedOtsOfTheDay(blockIndex)" >
                         <ot-calendar-surgical-block
                                 surgical-block="block" ng-if="!block.voided"
+                                blocked-ots-of-the-day="blockedOtsOfTheDay"
+                                day-view-start="::dayViewStart"
+                                day-view-end="::dayViewEnd"
                                 day-view-split="::dayViewSplit"
                                 filter-params="filterParams"
+                                week-or-day="::weekOrDay"
                         ></ot-calendar-surgical-block>
+                    </div>
                     <hr class="current-day-line"
                         ng-if="shouldDisplayCurrentTimeLine()"
                         ng-style="{top : currentTimeLineHeight + 'px'}">

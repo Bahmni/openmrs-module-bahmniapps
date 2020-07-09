@@ -3,15 +3,19 @@
 angular.module('bahmni.ot')
     .directive('otCalendarSurgicalBlock', ['surgicalAppointmentHelper', function (surgicalAppointmentHelper) {
         var link = function ($scope) {
+            var totalWidth = 145;
             var gridCellHeight = 120;
             var heightForSurgeonName = 21;
             var surgicalBlockHeightPerMin = gridCellHeight / $scope.dayViewSplit;
+            $scope.operationTheatre = $scope.surgicalBlock.location.name;
 
             var getViewPropertiesForSurgicalBlock = function () {
                 var surgicalBlockHeight = getHeightForSurgicalBlock();
                 $scope.blockDimensions = {
                     height: surgicalBlockHeight,
+                    width: $scope.weekOrDay === 'week' ? getWidthForSurgicalBlock() : 290,
                     top: getTopForSurgicalBlock(),
+                    left: $scope.weekOrDay === 'week' ? getLeftForSurgicalBlock() : 0,
                     color: getColorForProvider(),
                     appointmentHeightPerMin: (surgicalBlockHeight - heightForSurgeonName) / Bahmni.Common.Util.DateUtil.diffInMinutes(
                         $scope.surgicalBlock.startDatetime, $scope.surgicalBlock.endDatetime)
@@ -31,7 +35,19 @@ angular.module('bahmni.ot')
                     borderColor: borderColor
                 };
             };
+            var getWidthForSurgicalBlock = function () {
+                if ($scope.blockedOtsOfTheDay != null) {
+                    return totalWidth / $scope.blockedOtsOfTheDay.length;
+                }
+            };
 
+            var getLeftForSurgicalBlock = function () {
+                var index = 1;
+                if ($scope.blockedOtsOfTheDay != null) {
+                    index = $scope.blockedOtsOfTheDay.indexOf(($scope.surgicalBlock.location.uuid));
+                }
+                return (index * getWidthForSurgicalBlock()) + 1;
+            };
             var getHeightForSurgicalBlock = function () {
                 return Bahmni.Common.Util.DateUtil.diffInMinutes(
                         $scope.surgicalBlock.startDatetime, $scope.surgicalBlock.endDatetime) * surgicalBlockHeightPerMin;
@@ -88,8 +104,12 @@ angular.module('bahmni.ot')
             link: link,
             scope: {
                 surgicalBlock: "=",
+                blockedOtsOfTheDay: "=",
+                dayViewStart: "=",
+                dayViewEnd: "=",
                 dayViewSplit: "=",
-                filterParams: "="
+                filterParams: "=",
+                weekOrDay: "="
             },
             templateUrl: "../ot/views/calendarSurgicalBlock.html"
         };

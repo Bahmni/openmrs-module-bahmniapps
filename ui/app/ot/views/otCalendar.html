@@ -21,8 +21,11 @@
                 <div ng-repeat="block in blocks | surgicalBlock:filterParams">
                     <ot-calendar-surgical-block
                             surgical-block="block" ng-if="!block.voided"
+                            day-view-start="::dayViewStart"
+                            day-view-end="::dayViewEnd"
                             day-view-split="::dayViewSplit"
                             filter-params="filterParams"
+                            week-or-day="::weekOrDay"
                     ></ot-calendar-surgical-block>
                 </div>
                 <hr class="current-day-line"

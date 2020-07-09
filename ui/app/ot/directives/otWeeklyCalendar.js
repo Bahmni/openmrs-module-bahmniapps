@@ -6,11 +6,13 @@ angular.module('bahmni.ot')
             restrict: 'E',
             controller: "otCalendarController",
             scope: {
+                weekOrDay: "=",
                 weekStartDate: "=",
                 viewDate: "=",
                 dayViewStart: "=",
                 dayViewEnd: "=",
-                dayViewSplit: "="
+                dayViewSplit: "=",
+                filterParams: "="
             },
             templateUrl: "../ot/views/otWeeklyCalendar.html"
         };

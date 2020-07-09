@@ -37,3 +37,61 @@
     }
   }
 }
+.surgical-block {
+  position: absolute;
+  margin: 0 1px;
+  border-radius: 3px;
+  .surgical-block-appointment {
+    border: 1px solid #1976D2;
+    padding: 5px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    border-radius: 3px;
+    &:focus {
+      border-color: #1976D2 !important;
+    }
+    &.hide-surgical-appointment {
+      visibility: hidden;
+    }
+    &.expanded {
+      z-index: 1;
+    }
+    button {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 0;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    p {
+      font-size: 12px;
+    }
+    .surgicalblock-patientname {
+      color: #000;
+      padding-right: 20px;
+    }
+    .surgicalblock-ot {
+      font-weight: 900;
+      color: #000;
+      font-size: 14px;
+      padding-right: 20px;
+      margin: 35% 0;
+    }
+  }
+  .surgicalBlock-surgenName {
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+    word-break: break-word;
+  }
+  &.exceed .surgicalBlock-surgenName {
+    position: relative;
+    top: 6px;
+  }
+}

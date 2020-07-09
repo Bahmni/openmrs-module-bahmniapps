@@ -6,6 +6,7 @@ angular.module('bahmni.ot')
             restrict: 'E',
             controller: "otCalendarController",
             scope: {
+                weekOrDay: "=",
                 viewDate: "=",
                 dayViewStart: "=",
                 dayViewEnd: "=",
