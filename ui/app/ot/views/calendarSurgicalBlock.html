@@ -2,7 +2,6 @@
      class="calendar-cell surgical-block"
      ng-class="{'exceed': surgicalBlockExceedsCalendar()}"
      ng-click="selectSurgicalBlock($event)"
-     ng-blur="deselectSurgicalBlock($event)"
      tabindex="1">
 
 <div ng-repeat="surgicalAppointment in surgicalBlock.surgicalAppointments | orderBy: 'sortWeight'">

@@ -258,10 +258,10 @@
 
 .move-appointment {
   h4 {
-    padding-right: 15px;
+    padding: 20px 15px 25px 8px;
   }
   p {
-    margin-bottom: 12px;
+    margin: 22px 0;
     label {
       width: 120px;
       text-align: right;
@@ -277,14 +277,14 @@
       padding-left: 10px;
     }
   }
+  .center {
+    text-align: center;
+  }
   button {
-    float: right;
     -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
     box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-    padding: 5px 10px;
-    color: #000;
+    color: #363463;
     border: 1px solid #95989a;
-    margin-right: 10px;
-    background: #fff;
+    margin: 50px 15px;
   }
 }

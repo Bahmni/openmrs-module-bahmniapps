@@ -265,7 +265,7 @@ describe("calendarViewController", function () {
             template: "views/cancelAppointment.html",
             closeByDocument: false,
             controller: "calendarViewCancelAppointmentController",
-            className: 'ngdialog-theme-default ng-dialog-adt-popUp ot-dialog',
+            className: 'ngdialog-theme-default ot-dialog',
             showClose: true,
             data: {
                 surgicalBlock: scope.surgicalBlockSelected,
@@ -284,7 +284,7 @@ describe("calendarViewController", function () {
             template: "views/cancelSurgicalBlock.html",
             closeByDocument: false,
             controller: "cancelSurgicalBlockController",
-            className: 'ngdialog-theme-default ng-dialog-adt-popUp ot-dialog',
+            className: 'ngdialog-theme-default ot-dialog',
             showClose: true,
             data: {
                 surgicalBlock: scope.surgicalBlockSelected,
@@ -432,7 +432,7 @@ describe("calendarViewController", function () {
             template: "views/moveAppointment.html",
             closeByDocument: false,
             controller: "moveSurgicalAppointmentController",
-            className: 'ngdialog-theme-default ng-dialog-adt-popUp ot-dialog',
+            className: 'ngdialog-theme-default ot-dialog',
             showClose: true,
             data: {
                 surgicalBlock: scope.surgicalBlockSelected,
@@ -477,6 +477,23 @@ describe("calendarViewController", function () {
        expect(scope.cancelDisabled).toBeFalsy();
     });
 
+    it("should open surgical appointment dialog on clicking surgical appointment", function () {
+        createController();
+        scope.view = 'Calendar';
+        let surgicalAppointment = {status: Bahmni.OT.Constants.scheduled};
+        scope.$emit("event:surgicalAppointmentSelect", surgicalAppointment, {surgicalAppointments: []});
+
+        expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining(
+            {
+                template: 'views/surgicalAppointmentDialog.html',
+                className: 'ngdialog-theme-default',
+                closeByNavigation: true,
+                scope: scope,
+                data: surgicalAppointment
+            }
+        ))
+    });
+
     it("should take stateParams viewDate when it is present", function () {
         stateParams.viewDate = new Date();
         createController();
@@ -504,7 +521,7 @@ describe("calendarViewController", function () {
         expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining(
             {
                 template: 'views/surgicalBlockDialog.html',
-                className: 'ngdialog-theme-default ng-dialog-adt-popUp ot-dialog',
+                className: 'ngdialog-theme-default',
                 scope: scope,
                 data: surgicalBlock
             }
@@ -528,6 +545,52 @@ describe("calendarViewController", function () {
         ngDialog.open.calls.argsFor(0)[0].preCloseCallback();
 
         expect(_.isEmpty(scope.surgicalBlockSelected)).toBeTruthy();
+    });
+
+    it('should return existing attributes from surgical appointment', function () {
+        var surgicalAppointment = {
+            id: 1,
+            patient: {uuid: "patientUuid"},
+            actualStartDateTime: null,
+            actualEndDateTime: null,
+            status: null,
+            surgicalAppointmentAttributes: [{
+                id: 88,
+                value: "Physiotherapy",
+                surgicalAppointmentAttributeType: {name: "procedure"}
+            }, {id: 89, value: "1", surgicalAppointmentAttributeType: {name: "estTimeHours"}}, {
+                id: 90,
+                value: "15",
+                surgicalAppointmentAttributeType: {name: "estTimeMinutes"}
+            }, {id: 91, value: "30", surgicalAppointmentAttributeType: {name: "cleaningTime"}}]
+        };
+        var expectedAttributes = {
+            procedure: 'Physiotherapy',
+            estTimeHours: '1',
+            estTimeMinutes: '15',
+            cleaningTime: '30'
+        };
+
+        createController();
+
+        var surgicalAttributes = scope.getAttributes(surgicalAppointment);
+
+        expect(_.isEqual(expectedAttributes, surgicalAttributes)).toBeTruthy()
+    });
+
+    it('should return patient display label in desired format', function () {
+        var surgicalAppointment = {
+            id: 1,
+            patient: {uuid: "patientUuid", display: 'IQ1144 - Patient Name'},
+            actualStartDateTime: null,
+            actualEndDateTime: null,
+            status: null,
+        };
+        createController();
+
+        var actualPatientDisplayName = scope.getPatientDisplayLabel(surgicalAppointment);
+
+        expect(actualPatientDisplayName).toBe('Patient Name ( IQ1144 )');
     });
 
 });

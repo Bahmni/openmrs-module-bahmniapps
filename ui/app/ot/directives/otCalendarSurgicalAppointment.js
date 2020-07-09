@@ -3,10 +3,7 @@
 angular.module('bahmni.ot')
     .directive('otCalendarSurgicalAppointment', ['surgicalAppointmentHelper', function (surgicalAppointmentHelper) {
         var link = function ($scope) {
-            $scope.attributes = _.reduce($scope.surgicalAppointment.surgicalAppointmentAttributes, function (attributes, attribute) {
-                attributes[attribute.surgicalAppointmentAttributeType.name] = attribute.value;
-                return attributes;
-            }, {});
+            $scope.attributes = surgicalAppointmentHelper.getSurgicalAttributes($scope.surgicalAppointment);
 
             var hasAppointmentStatusInFilteredStatusList = function () {
                 if (_.isEmpty($scope.filterParams.statusList)) {
@@ -42,11 +39,6 @@ angular.module('bahmni.ot')
                 $event.stopPropagation();
             };
             getDataForSurgicalAppointment();
-
-            $scope.deselectSurgicalAppointment = function ($event) {
-                $scope.$emit("event:surgicalBlockDeselect");
-                $event.stopPropagation();
-            };
         };
         return {
             restrict: 'E',

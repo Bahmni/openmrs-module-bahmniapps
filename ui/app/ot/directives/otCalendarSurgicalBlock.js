@@ -68,11 +68,6 @@ angular.module('bahmni.ot')
                 $event.stopPropagation();
             };
 
-            $scope.deselectSurgicalBlock = function ($event) {
-                $scope.$emit("event:surgicalBlockDeselect");
-                $event.stopPropagation();
-            };
-
             $scope.surgicalBlockExceedsCalendar = function () {
                 return moment($scope.surgicalBlock.endDatetime).toDate() > $scope.calendarEndDatetime;
             };
