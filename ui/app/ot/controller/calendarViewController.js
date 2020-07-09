@@ -7,7 +7,11 @@ angular.module('bahmni.ot')
             $scope.viewDate = $stateParams.viewDate || $state.viewDate || (moment().startOf('day')).toDate();
             $state.viewDate = $scope.viewDate;
             $scope.calendarConfig = appService.getAppDescriptor().getConfigValue("calendarView");
-
+            var weekStartDay = appService.getAppDescriptor().getConfigValue('startOfWeek') || Bahmni.OT.Constants.defaultWeekStartDayName;
+            var currentDate = moment().startOf('day').toDate();
+            $scope.startOfWeekCode = Bahmni.OT.Constants.weekDays[weekStartDay];
+            $scope.weekStartDate = $state.weekStartDate || Bahmni.Common.Util.DateUtil.getWeekStartDate(currentDate, $scope.startOfWeekCode);
+            $state.weekStartDate = $scope.weekStartDate;
             var addLocationsForFilters = function () {
                 var locations = {};
                 _.each($scope.locations, function (location) {
@@ -15,7 +19,6 @@ angular.module('bahmni.ot')
                 });
                 $scope.filters.locations = locations;
             };
-
             var init = function () {
                 $scope.filterParams = $state.filterParams;
                 $scope.filters = {};
@@ -71,8 +74,6 @@ angular.module('bahmni.ot')
             };
 
             $scope.calendarView = function () {
-                $scope.weekOrDay = 'day';
-                $state.weekOrDay = $scope.weekOrDay;
                 $scope.view = CALENDAR_VIEW;
                 $state.view = $scope.view;
             };
@@ -146,24 +147,29 @@ angular.module('bahmni.ot')
             };
 
             $scope.goToCurrentDate = function () {
-                $scope.viewDate = new Date(moment().startOf('day'));
+                $scope.viewDate = moment().startOf('day').toDate();
                 $state.viewDate = $scope.viewDate;
                 $scope.weekOrDay = 'day';
                 $state.weekOrDay = $scope.weekOrDay;
+
+                $scope.weekStartDate = Bahmni.Common.Util.DateUtil.getWeekStartDate(currentDate, $scope.startOfWeekCode);
+                $state.weekStartDate = $scope.weekStartDate;
             };
 
             $scope.goToNextDate = function (date) {
                 $scope.viewDate = Bahmni.Common.Util.DateUtil.addDays(date, 1);
                 $state.viewDate = $scope.viewDate;
             };
-
             $scope.goToCurrentWeek = function () {
-                $scope.weekStartDate = new Date(moment().startOf('week'));
+                $scope.weekStartDate = Bahmni.Common.Util.DateUtil.getWeekStartDate(currentDate, $scope.startOfWeekCode);
                 $state.weekStartDate = $scope.weekStartDate;
-                $scope.weekEndDate = new Date(moment().endOf('week').endOf('day'));
+                $scope.weekEndDate = Bahmni.Common.Util.DateUtil.getWeekEndDate($scope.weekStartDate);
                 $state.weekEndDate = $scope.weekEndDate;
                 $scope.weekOrDay = 'week';
                 $state.weekOrDay = $scope.weekOrDay;
+
+                $scope.viewDate = moment().startOf('day').toDate();
+                $state.viewDate = $scope.viewDate;
             };
 
             $scope.goToNextWeek = function () {
@@ -189,7 +195,7 @@ angular.module('bahmni.ot')
                 $scope.surgicalBlockSelected = surgicalBlock;
                 isCalendarView() && ngDialog.open({
                     template: 'views/surgicalAppointmentDialog.html',
-                    className: 'ngdialog-theme-default popup',
+                    className: 'ngdialog-theme-default',
                     closeByNavigation: true,
                     preCloseCallback: nullifySurgicalBlockData,
                     scope: $scope,
@@ -220,7 +226,7 @@ angular.module('bahmni.ot')
                 }
                 ngDialog.open({
                     template: 'views/surgicalBlockDialog.html',
-                    className: 'ngdialog-theme-default popup',
+                    className: 'ngdialog-theme-default',
                     closeByNavigation: true,
                     preCloseCallback: nullifySurgicalBlockData,
                     scope: $scope,
@@ -260,7 +266,7 @@ angular.module('bahmni.ot')
                     template: "views/moveAppointment.html",
                     closeByDocument: false,
                     controller: "moveSurgicalAppointmentController",
-                    className: "ngdialog-theme-default ot-dialog popup",
+                    className: "ngdialog-theme-default ot-dialog",
                     showClose: true,
                     data: {
                         surgicalBlock: $scope.surgicalBlockSelected,
@@ -275,7 +281,7 @@ angular.module('bahmni.ot')
                     template: "views/addActualTimeDialog.html",
                     closeByDocument: false,
                     controller: "surgicalAppointmentActualTimeController",
-                    className: 'ngdialog-theme-default ot-dialog popup',
+                    className: 'ngdialog-theme-default ot-dialog',
                     showClose: true,
                     data: {
                         surgicalBlock: $scope.surgicalBlockSelected,
@@ -289,7 +295,7 @@ angular.module('bahmni.ot')
                     template: "views/cancelAppointment.html",
                     closeByDocument: false,
                     controller: "calendarViewCancelAppointmentController",
-                    className: 'ngdialog-theme-default ot-dialog popup',
+                    className: 'ngdialog-theme-default ot-dialog',
                     showClose: true,
                     data: {
                         surgicalBlock: $scope.surgicalBlockSelected,
@@ -303,7 +309,7 @@ angular.module('bahmni.ot')
                     template: "views/cancelSurgicalBlock.html",
                     closeByDocument: false,
                     controller: "cancelSurgicalBlockController",
-                    className: 'ngdialog-theme-default ot-dialog popup',
+                    className: 'ngdialog-theme-default ot-dialog',
                     showClose: true,
                     data: {
                         surgicalBlock: $scope.surgicalBlockSelected,

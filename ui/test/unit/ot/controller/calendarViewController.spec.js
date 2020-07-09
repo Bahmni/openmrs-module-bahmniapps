@@ -17,6 +17,9 @@ describe("calendarViewController", function () {
                 dayViewEnd: "17:00",
                 dayViewSplit: "60"};
         }
+        if (value == 'startOfWeek') {
+            return "Tuesday";
+        }
     });
 
     ngDialog.open.and.returnValue({
@@ -94,6 +97,8 @@ describe("calendarViewController", function () {
         scope.goToCurrentDate();
         expect(scope.viewDate).toEqual((moment().startOf('day')).toDate());
         expect(state.viewDate).toEqual((moment().startOf('day')).toDate());
+        expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekStartDate(moment().startOf('day').toDate(), scope.startOfWeekCode));
+        expect(state.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekStartDate(moment().startOf('day').toDate(), scope.startOfWeekCode));
     });
 
     it('Should search the patient with the given search string', function () {
@@ -265,7 +270,7 @@ describe("calendarViewController", function () {
             template: "views/cancelAppointment.html",
             closeByDocument: false,
             controller: "calendarViewCancelAppointmentController",
-            className: 'ngdialog-theme-default ot-dialog popup',
+            className: 'ngdialog-theme-default ot-dialog',
             showClose: true,
             data: {
                 surgicalBlock: scope.surgicalBlockSelected,
@@ -284,7 +289,7 @@ describe("calendarViewController", function () {
             template: "views/cancelSurgicalBlock.html",
             closeByDocument: false,
             controller: "cancelSurgicalBlockController",
-            className: 'ngdialog-theme-default ot-dialog popup',
+            className: 'ngdialog-theme-default ot-dialog',
             showClose: true,
             data: {
                 surgicalBlock: scope.surgicalBlockSelected,
@@ -292,16 +297,17 @@ describe("calendarViewController", function () {
             }
         }));
     });
-
     it('should go to the current week on click of week', function () {
         createController();
         scope.goToCurrentWeek();
         expect(scope.weekOrDay).toEqual('week');
         expect(state.weekOrDay).toEqual('week');
-        expect(scope.weekStartDate).toEqual(new Date(moment().startOf('week')));
-        expect(state.weekStartDate).toEqual(new Date(moment().startOf('week')));
-        expect(scope.weekEndDate).toEqual(new Date(moment().endOf('week').endOf('day')));
-        expect(state.weekEndDate).toEqual(new Date(moment().endOf('week').endOf('day')));
+        expect(scope.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekStartDate(new Date(moment().startOf('day').toDate()), scope.startOfWeekCode));
+        expect(state.weekStartDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekStartDate(new Date(moment().startOf('day').toDate()), scope.startOfWeekCode));
+        expect(scope.weekEndDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekEndDate(scope.weekStartDate));
+        expect(state.weekEndDate).toEqual(Bahmni.Common.Util.DateUtil.getWeekEndDate(scope.weekStartDate));
+        expect(scope.viewDate).toEqual((moment().startOf('day')).toDate());
+        expect(state.viewDate).toEqual((moment().startOf('day')).toDate());
     });
 
     it('should go to next week on click of right arrow in week view', function() {
@@ -348,10 +354,19 @@ describe("calendarViewController", function () {
     });
 
     it('should go to calendar view on click of calendar button', function () {
-       createController();
-       scope.calendarView();
-       expect(scope.weekOrDay).toEqual('day');
-       expect(scope.view).toEqual('Calendar');
+        createController();
+        scope.calendarView();
+        expect(scope.view).toEqual('Calendar');
+    });
+
+
+    it('should go to calender view on click of calendar button and weekly view should be displayed on click of weekly' +
+        ' button', function () {
+        createController();
+        scope.calendarView();
+        scope.goToCurrentWeek();
+        expect(scope.view).toEqual('Calendar');
+        expect(scope.weekOrDay).toEqual('week');
     });
 
     it('should go to list view on click of list view button', function () {
@@ -432,7 +447,7 @@ describe("calendarViewController", function () {
             template: "views/moveAppointment.html",
             closeByDocument: false,
             controller: "moveSurgicalAppointmentController",
-            className: 'ngdialog-theme-default ot-dialog popup',
+            className: 'ngdialog-theme-default ot-dialog',
             showClose: true,
             data: {
                 surgicalBlock: scope.surgicalBlockSelected,
@@ -486,7 +501,7 @@ describe("calendarViewController", function () {
         expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining(
             {
                 template: 'views/surgicalAppointmentDialog.html',
-                className: 'ngdialog-theme-default popup',
+                className: 'ngdialog-theme-default',
                 closeByNavigation: true,
                 scope: scope,
                 data: surgicalAppointment
@@ -521,7 +536,7 @@ describe("calendarViewController", function () {
         expect(ngDialog.open).toHaveBeenCalledWith(jasmine.objectContaining(
             {
                 template: 'views/surgicalBlockDialog.html',
-                className: 'ngdialog-theme-default popup',
+                className: 'ngdialog-theme-default',
                 scope: scope,
                 data: surgicalBlock
             }

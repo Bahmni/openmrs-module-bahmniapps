@@ -126,14 +126,14 @@ angular.module('bahmni.ot')
             $scope.$watch("viewDate", function (newValue, oldValue) {
                 if ($scope.weekOrDay === 'day') {
                     if (!Bahmni.Common.Util.DateUtil.isSameDate(oldValue, newValue)) {
-                        $timeout(function () { spinner.forPromise(init()); }, 500);
+                        spinner.forPromise(init());
                     }
                 }
             });
             $scope.$watch("weekStartDate", function (newValue, oldValue) {
                 if ($scope.weekOrDay === 'week') {
                     if (!Bahmni.Common.Util.DateUtil.isSameDate(moment(oldValue).toDate(), moment(newValue).toDate())) {
-                        $timeout(function () { spinner.forPromise(init()); }, 500);
+                        spinner.forPromise(init());
                     }
                 }
             });
