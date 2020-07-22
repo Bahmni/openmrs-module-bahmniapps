@@ -15,7 +15,7 @@ angular.module('bahmni.registration')
     .controller('PatientRelationshipController', ['$window', '$scope', '$rootScope', 'spinner', 'patientService', 'providerService', 'appService', '$q',
         function ($window, $scope, $rootScope, spinner, patientService, providerService, appService, $q) {
             $scope.isReadOnly = $scope.isReadOnly() || function () { return false; };
-
+            var personAttributes = [];
             $scope.addPlaceholderRelationship = function () {
                 $scope.patient.newlyAddedRelationships.push({});
             };
@@ -59,7 +59,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.getRelationshipType = function (uuid) {
-                return _.find($scope.relationshipTypes, {uuid: uuid});
+                return _.find($scope.relationshipTypes, { uuid: uuid });
             };
 
             $scope.getRelationshipTypeForDisplay = function (relationship) {
@@ -86,7 +86,7 @@ angular.module('bahmni.registration')
             };
 
             var getPersonB = function (personName, personUuid) {
-                return {'display': personName, 'uuid': personUuid};
+                return { 'display': personName, 'uuid': personUuid };
             };
             $scope.searchByPatientIdentifier = function (relationship) {
                 if (!relationship.patientIdentifier) {
@@ -254,6 +254,13 @@ angular.module('bahmni.registration')
                 delete relationship.providerName;
                 delete relationship.endDate;
                 delete relationship.content;
+                if (relationship.relationshipType.uuid) {
+                    angular.element(document).find("#MothersArtNo").attr('disabled', true);
+                    angular.element(document).find("#MotherInCareAtArtClinic").attr('disabled', true);
+                } else {
+                    angular.element(document).find("#MothersArtNo").attr('disabled', false);
+                    angular.element(document).find("#MotherInCareAtArtClinic").attr('disabled', false);
+                }
                 managePlaceholderRelationshipRows(index);
             };
 
