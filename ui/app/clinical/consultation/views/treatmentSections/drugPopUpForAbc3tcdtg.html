@@ -1,0 +1,15 @@
+<div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label">
+	<span class="ngdialog-start"></span>
+
+	<span class="ngdialog-close"></span>
+	<div class="drug-details">
+		<p>Recommended Regimen for Children with weight range of (19.9Kg - 29.9Kg) is "ABC/3TC+DTG".</p>
+
+		<div ng-repeat="drugOrder in ngDialogData.conflictingDrugOrders">
+		<strong class="drug-name">{{::$index+1}}. {{::drugOrder.getDisplayName()}}</strong> from <strong>{{::drugOrder.effectiveStartDate | bahmniDate}}</strong> to <strong>{{::drugOrder.effectiveStopDate | bahmniDate}}</strong>
+		</div>
+	</div>
+	<span class="ngdialog-end"></span>
+</div>
+
+

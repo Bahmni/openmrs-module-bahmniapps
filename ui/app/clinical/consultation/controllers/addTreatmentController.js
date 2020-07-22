@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'drugService',
         '$timeout', 'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
-        'orderSetService', '$q', 'locationService', 'spinner', '$translate', 'treatmentService',
+        'orderSetService', '$q', 'locationService', 'spinner', '$translate', 'treatmentService', '$http',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
             clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
-            orderSetService, $q, locationService, spinner, $translate, treatmentService) {
+            orderSetService, $q, locationService, spinner, $translate, treatmentService, $http) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var scrollTop = _.partial($window.scrollTo, 0, 0);
@@ -479,6 +479,7 @@ angular.module('bahmni.clinical')
             var setIsNotBeingEdited = function (treatment) {
                 treatment.isBeingEdited = false;
             };
+
             $scope.stoppedOrderReasons = treatmentConfig.stoppedOrderReasonConcepts;
             $scope.getDataResults = function (drugs) {
                 var searchString = $scope.treatment.drugNameDisplay;
@@ -536,6 +537,11 @@ angular.module('bahmni.clinical')
                     var h5 = "2c0a5b91-7b2a-4f8e-86fd-a8007841fca8";
                     var i5 = "50b60d77-186d-4a0d-8784-659ee2d60ec9";
 
+                    var lpvr = "9593e1b0-5c8c-44ff-ab06-0769396ab19c";
+                    var tdf3tcdtg = "7e2265a4-7260-4796-b627-4ad94033f383";
+                    var abc3tcdtg = "d9863f4f-0dd0-456a-9d83-5466c5851915";
+                    var abc3tclpvr = "c46684dd-8534-43d3-af53-673b37b9130a";
+
                     for (var i = treatmentService.prescribedDrugOrders.length - 1; i >= 0; i--) {
                         if (treatmentService.prescribedDrugOrders[i].concept.uuid == a1 || treatmentService.prescribedDrugOrders[i].concept.uuid == b1 || treatmentService.prescribedDrugOrders[i].concept.uuid == c1 || treatmentService.prescribedDrugOrders[i].concept.uuid == d1 || treatmentService.prescribedDrugOrders[i].concept.uuid == e1 || treatmentService.prescribedDrugOrders[i].concept.uuid == f1 || treatmentService.prescribedDrugOrders[i].concept.uuid == g1 || treatmentService.prescribedDrugOrders[i].concept.uuid == h1 || treatmentService.prescribedDrugOrders[i].concept.uuid == a4 || treatmentService.prescribedDrugOrders[i].concept.uuid == b4 || treatmentService.prescribedDrugOrders[i].concept.uuid == c4 || treatmentService.prescribedDrugOrders[i].concept.uuid == d4 || treatmentService.prescribedDrugOrders[i].concept.uuid == f4 || treatmentService.prescribedDrugOrders[i].concept.uuid == g4 || treatmentService.prescribedDrugOrders[i].concept.uuid == h4 || treatmentService.prescribedDrugOrders[i].concept.uuid == i4 || treatmentService.prescribedDrugOrders[i].concept.uuid == j4 || treatmentService.prescribedDrugOrders[i].concept.uuid == k4 || treatmentService.prescribedDrugOrders[i].concept.uuid == l4) {
                             presentdrugs.push(treatmentService.prescribedDrugOrders[i].concept.uuid);
@@ -555,6 +561,58 @@ angular.module('bahmni.clinical')
                             console.log(".");
                         }
                     }
+                    var patientAge = $scope.patient.age;
+                    var patientWeight = $scope.patientWeight;
+                    var artRegimens = [{ uuid: a1 }, { uuid: b1 }, { uuid: c1 }, { uuid: d1 }, { uuid: e1 }, { uuid: f1 }, { uuid: g1 }, { uuid: h1 }, { uuid: j1 },
+                    { uuid: a2 }, { uuid: b2 }, { uuid: c2 }, { uuid: d2 }, { uuid: e2 }, { uuid: f2 }, { uuid: g2 }, { uuid: h2 }, { uuid: i2 }, { uuid: j2 }, { uuid: k2 },
+                    { uuid: a4 }, { uuid: b4 }, { uuid: c4 }, { uuid: d4 }, { uuid: f4 }, { uuid: g4 }, { uuid: h4 }, { uuid: i4 }, { uuid: j4 }, { uuid: k4 }, { uuid: l4 },
+                    { uuid: a5 }, { uuid: b5 }, { uuid: c5 }, { uuid: d5 }, { uuid: f5 }, { uuid: g5 }, { uuid: h5 }, { uuid: i5 }
+                    ];
+                    // lpvr
+                    var filteredRegimens = artRegimens.filter(regimen => selectedItem.drug.uuid.includes(regimen.uuid));
+                    if ((patientAge <= 2) && (patientWeight >= 10 && patientWeight <= 19.9) && (filteredRegimens.length >= 1) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (selectedItem.drug.uuid != "9593e1b0-5c8c-44ff-ab06-0769396ab19c")) {
+                        ngDialog.open({
+                            template: 'consultation/views/treatmentSections/drugPopUpForLPVr.html'
+                        });
+                        $scope.popupActive = true;
+                        clearForm();
+                    } else {
+                        console.log(".");
+                    }
+                    // abc3tclpvr
+                    if ((patientAge <= 2) && (patientWeight >= 3.5 && patientWeight <= 9.9) && (filteredRegimens.length >= 1) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (selectedItem.drug.uuid != "c46684dd-8534-43d3-af53-673b37b9130a")) {
+                        console.log("selected drug", $scope.firstPcrResult);
+                        ngDialog.open({
+                            template: 'consultation/views/treatmentSections/drugPopUpForAbc3tclpvr.html'
+                        });
+                        $scope.popupActive = true;
+                        clearForm();
+                    } else {
+                        console.log(".");
+                    }
+                    // abc3tcdtg
+                    if ((patientAge <= 2) && (patientWeight > 19.99 && patientWeight <= 29.9) && (filteredRegimens.length >= 1) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (selectedItem.drug.uuid != "d9863f4f-0dd0-456a-9d83-5466c5851915")) {
+                        console.log("selected drug", selectedItem.drug);
+                        ngDialog.open({
+                            template: 'consultation/views/treatmentSections/drugPopUpForAbc3tcdtg.html'
+                        });
+                        $scope.popupActive = true;
+                        clearForm();
+                    } else {
+                        console.log(".");
+                    }
+                    // tdf3tcdtg
+                    if ((patientAge <= 2) && (patientWeight >= 30) && (filteredRegimens.length >= 1) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (selectedItem.drug.uuid != "7e2265a4-7260-4796-b627-4ad94033f383")) {
+                        console.log("selected drug", selectedItem.drug);
+                        ngDialog.open({
+                            template: 'consultation/views/treatmentSections/drugPopUpForTdf3tcdtg.html'
+                        });
+                        $scope.popupActive = true;
+                        clearForm();
+                    } else {
+                        console.log(".");
+                    }
+
                     $scope.onChange();
                 };
 
@@ -816,6 +874,20 @@ angular.module('bahmni.clinical')
                 mergeActiveAndScheduledWithDiscontinuedOrders();
 
                 $scope.treatmentConfig = treatmentConfig;// $scope.treatmentConfig used only in UI
+
+                var patientWeight = $http.get(Bahmni.Common.Constants.observationsUrl, {
+                    params: {
+                        concept: Bahmni.Common.Constants.patientWeight,
+                        patientUuid: $scope.patient.uuid
+                    },
+                    withCredentials: true
+                });
+                patientWeight = patientWeight.then(function (response) {
+                    var patientWeightData = response;
+                    if (patientWeightData.data[0] && patientWeightData.data[0].valueAsString) {
+                        $scope.patientWeight = response.data[0].value;
+                    }
+                });
             };
             init();
         }]);

@@ -67,6 +67,7 @@ Bahmni.Common = Bahmni.Common || {};
         patientRepeatPCRResult: "HEI Testing (Repeat PCR Results)",
         patientHeightConceptName: "HEIGHT",
         maternalCareVisitNumber: "Visit Number",
+        patientWeight: "WEIGHT",
         hostURL: hostUrl,
         dateFormat: "dd/mm/yyyy",
         dateDisplayFormat: "DD-MMM-YYYY",

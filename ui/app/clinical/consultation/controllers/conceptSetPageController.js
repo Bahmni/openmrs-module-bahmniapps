@@ -35,17 +35,14 @@ angular.module('bahmni.clinical')
             var maternityform = "84253d19-1c16-45c0-8541-f0bbf11f4112";
             var getPcr = function () {
                 return spinner.forPromise(patientService.patientFirstPcrTestResult($scope.patient.uuid)).then(function (response) {
-                    console.log("response", response);
                     if (response.data && response.data[0]) {
                         $scope.firstPcrResult = response.data[0].valueAsString;
                     }
                 }).then(spinner.forPromise(patientService.patientSecondPcrTestResult($scope.patient.uuid)).then(function (response) {
-                    console.log("response2", response);
                     if (response.data && response.data[0]) {
                         $scope.secondPcrResult = response.data[0].valueAsString;
                     }
                 })).then(spinner.forPromise(patientService.patientRepeatPcrTestResult($scope.patient.uuid)).then(function (response) {
-                    console.log("response3", response);
                     if (response.data && response.data[0]) {
                         $scope.repeattPcrResult = response.data[0].valueAsString;
                     }
