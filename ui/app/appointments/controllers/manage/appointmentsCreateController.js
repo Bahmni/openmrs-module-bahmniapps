@@ -40,7 +40,6 @@ angular.module('bahmni.appointments')
                 $scope.selectedService = appointmentCreateConfig.selectedService;
                 $scope.isPastAppointment = $scope.isEditMode() ? Bahmni.Common.Util.DateUtil.isBeforeDate($scope.appointment.date, moment().startOf('day')) : false;
                 $scope.appointment.patient = $scope.patientInfo || null;
-                console.log("Patient appointment data", $scope.appointment.patient);
                 if ($scope.appointment.patient) {
                     $scope.onSelectPatient($scope.appointment.patient);
                 }
