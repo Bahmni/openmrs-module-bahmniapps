@@ -68,6 +68,11 @@ angular.module('bahmni.registration')
                 ngDialog.close();
                 delete $scope.targetUrl;
             };
+            $scope.resetDateTransferredIn = function () {
+                angular.element(document.getElementById("DateTransferredIn").value = " ");
+                ngDialog.close();
+                delete $scope.targetUrl;
+            };
 
             $scope.$on("$destroy", function () {
                 stateChangeListener();
@@ -130,14 +135,13 @@ angular.module('bahmni.registration')
                         disableFieldsForInfant();
                     }
                 }
-
                 if (attribute === "DateTransferredIn") {
                     var attrElement = angular.element(document.getElementById(attribute));
                     if (attrElement) {
                         var today = new Date();
                         var selectedDate = new Date(attrElement[0].value);
                         if (selectedDate > today) {
-                            alert("Date Transferred Cannot Be In Future");
+                            ngDialog.openConfirm({ template: "../common/ui-helper/views/preventFutureDatePopup.html", scope: $scope });
                         }
                     }
                 }
