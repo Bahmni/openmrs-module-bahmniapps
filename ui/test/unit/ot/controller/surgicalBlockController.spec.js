@@ -463,6 +463,7 @@ describe("surgicalBlockController", function () {
             closeByDocument: false,
             className: 'ngdialog-theme-default surgical-appointment-dialog',
             showClose: true,
+            closeByNavigation: true,
             scope: scope,
             data: surgicalAppointment
         }));
@@ -479,6 +480,7 @@ describe("surgicalBlockController", function () {
             closeByDocument: false,
             className: 'ngdialog-theme-default surgical-appointment-dialog',
             showClose: true,
+            closeByNavigation: true,
             scope: scope,
             data: surgicalAppointment
         }));

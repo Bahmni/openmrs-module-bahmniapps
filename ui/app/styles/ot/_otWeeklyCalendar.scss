@@ -1,0 +1,55 @@
+.calendar {
+  .calendar-location {
+    .weekly-heading-cell {
+      width: calc((100% - 7px) / 7);
+      box-sizing: border-box;
+      text-align: center;
+      float: left;
+      border-bottom: .5px solid lightgrey;
+      padding: 10px 0;
+      font-family: OpenSansSemiBold;
+    }
+  }
+  .table-block {
+    .ot-block-container {
+      .weekly-calendar-cell {
+        border-bottom: 0.5px solid lightgrey;
+        border-right: 0.5px solid lightgrey;
+        width: 100%;
+        flex-basis: 80px;
+        height: 120px;
+        box-sizing: border-box;
+      }
+      .ot-weekly-block {
+        float: left;
+        position: relative;
+        padding-bottom: 20px;
+        overflow: hidden;
+        width: calc(100% / 7);
+        .surgical-block {
+          width: calc(100% - 10px);
+          border: 0.5px solid #1976D2;
+          &:focus {
+            border-color: #1976D2 !important;
+          }
+        }
+      }
+    }
+  }
+}
+.surgical-block {
+  margin: 0 1px;
+  .surgical-block-appointment {
+    .surgicalblock-patientname {
+      word-break: break-word;
+    }
+    .surgicalblock-ot {
+      color: #000;
+      padding-right: 20px;
+      margin: 2% 0;
+    }
+  }
+  .surgicalblock-surgeon-name {
+    word-break: break-word;
+  }
+}

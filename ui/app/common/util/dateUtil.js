@@ -49,6 +49,13 @@ Bahmni.Common.Util.DateUtil = {
     subtractDays: function (date, days) {
         return this.addDays(date, -1 * days);
     },
+    subtractISOWeekDays: function (date, days) {
+        if (days == null) {
+            return moment(date).isoWeekday();
+        }
+        return moment(date).isoWeekday() >= days ? moment(date).isoWeekday() - days
+            : 7 + moment(date).isoWeekday() - days;
+    },
     subtractMonths: function (date, months) {
         return this.addMonths(date, -1 * months);
     },
@@ -277,5 +284,12 @@ Bahmni.Common.Util.DateUtil = {
     },
     isBeforeTime: function (time, otherTime) {
         return moment(time, 'hh:mm a').format('YYYY-MM-DD');
+    },
+    getWeekStartDate: function (date, startOfWeek) {
+        var daysToBeSubtracted = this.subtractISOWeekDays(date, startOfWeek);
+        return moment(date).subtract(daysToBeSubtracted, 'days').toDate();
+    },
+    getWeekEndDate: function (weekStartDate) {
+        return moment(weekStartDate).add(6, 'days').toDate();
     }
 };

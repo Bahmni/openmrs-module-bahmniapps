@@ -17,6 +17,21 @@
   }
 }
 
+.filter-button {
+  padding-right: 15px;
+  border-right: 1px solid #95989A;
+}
+
+.fa-angle-double-left{
+  color: #00ACC3;
+  font-size: 21px;
+  padding-left: 263px;
+}
+
+.colorForFilter {
+  color: #00ACC3 !important;
+}
+
 .ot-scheduling-nav {
   overflow: hidden;
   margin: 10px 0 0 10px;
@@ -287,6 +302,49 @@ div[ng-app="ot"] {
   }
 }
 
+.ot-surgical-block-dialog {
+  .center, h4 {
+    text-align: center;
+  }
+  button {
+    margin: 20px 15px 5px;
+  }
+  p {
+    padding-left: 10px;
+    padding-bottom: 5px;
+  }
+}
+
+.ot-surgical-appointment-dialog {
+  .center, h4 {
+    text-align: center;
+  }
+  button {
+    margin: 20px 10px 5px;
+  }
+  p {
+    padding-left: 10px;
+    padding-bottom: 5px;
+  }
+}
+
+.ngdialog.ngdialog-theme-default.popup {
+  .ngdialog-content {
+    width: 600px;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.24);
+    border-radius: 0;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    h4 {
+      font-size: 14px;
+      font-weight: bold;
+      color: #484848;
+      margin: 0 0 10px;
+    }
+  }
+}
+
 .ot-cancel-dialog-form {
   p {
     padding: 0 10px;
@@ -408,5 +466,5 @@ div[ng-app="ot"] {
 }
 
 .ot-dialog.ngdialog.ngdialog-theme-default{
-  padding-top :160px; 
+  padding-top :160px;
 }

@@ -1,18 +1,19 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .directive('otCalendar', [function () {
+    .directive('otWeeklyCalendar', [function () {
         return {
             restrict: 'E',
             controller: "otCalendarController",
             scope: {
                 weekOrDay: "=",
+                weekStartDate: "=",
                 viewDate: "=",
                 dayViewStart: "=",
                 dayViewEnd: "=",
                 dayViewSplit: "=",
                 filterParams: "="
             },
-            templateUrl: "../ot/views/otCalendar.html"
+            templateUrl: "../ot/views/otWeeklyCalendar.html"
         };
     }]);
