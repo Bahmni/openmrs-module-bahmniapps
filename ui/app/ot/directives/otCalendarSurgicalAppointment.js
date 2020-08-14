@@ -3,10 +3,7 @@
 angular.module('bahmni.ot')
     .directive('otCalendarSurgicalAppointment', ['surgicalAppointmentHelper', function (surgicalAppointmentHelper) {
         var link = function ($scope) {
-            $scope.attributes = _.reduce($scope.surgicalAppointment.surgicalAppointmentAttributes, function (attributes, attribute) {
-                attributes[attribute.surgicalAppointmentAttributeType.name] = attribute.value;
-                return attributes;
-            }, {});
+            $scope.attributes = surgicalAppointmentHelper.getSurgicalAttributes($scope.surgicalAppointment);
 
             var hasAppointmentStatusInFilteredStatusList = function () {
                 if (_.isEmpty($scope.filterParams.statusList)) {
@@ -41,18 +38,26 @@ angular.module('bahmni.ot')
                 $scope.$emit("event:surgicalAppointmentSelect", $scope.surgicalAppointment, $scope.$parent.surgicalBlock);
                 $event.stopPropagation();
             };
-            getDataForSurgicalAppointment();
 
-            $scope.deselectSurgicalAppointment = function ($event) {
-                $scope.$emit("event:surgicalBlockDeselect");
-                $event.stopPropagation();
+            var showToolTipForSurgery = function () {
+                $('.surgical-block-appointment').tooltip({
+                    content: function () {
+                        return $(this).prop('title');
+                    },
+                    track: true
+                });
             };
+
+            getDataForSurgicalAppointment();
+            showToolTipForSurgery();
         };
         return {
             restrict: 'E',
             link: link,
             scope: {
                 surgicalAppointment: "=",
+                weekOrDay: "=",
+                operationTheatre: "=",
                 heightPerMin: "=",
                 backgroundColor: "=",
                 filterParams: "="

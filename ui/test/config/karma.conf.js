@@ -17,6 +17,8 @@ module.exports = function (config) {
             'app/components/jquery/jquery.js',
             'app/components/jquery.cookie/jquery.cookie.js',
             'app/components/jasmine-jquery/lib/jasmine-jquery.js',
+            'app/components/jquery-ui/ui/jquery.ui.widget.js',
+            'app/components/jquery-ui/ui/jquery.ui.tooltip.js',
             'app/components/angular-mocks/angular-mocks.js',
             'app/components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'app/components/d3/d3.min.js',

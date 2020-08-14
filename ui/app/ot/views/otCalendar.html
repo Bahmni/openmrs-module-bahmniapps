@@ -1,5 +1,4 @@
 <div on-Scroll class="calendar">
-    <p class="calendar-overflow-hiding"></p>
     <!-- Please dont remove or alter the below class name -->
     <div class="calendar-location">
         <p class="heading-cell" ng-repeat="location in locations">
@@ -21,10 +20,11 @@
                 <div ng-repeat="block in blocks | surgicalBlock:filterParams">
                     <ot-calendar-surgical-block
                             surgical-block="block" ng-if="!block.voided"
-                            calendar-start-datetime="::calendarStartDatetime"
-                            calendar-end-datetime="::calendarEndDatetime"
+                            day-view-start="::dayViewStart"
+                            day-view-end="::dayViewEnd"
                             day-view-split="::dayViewSplit"
                             filter-params="filterParams"
+                            week-or-day="::weekOrDay"
                     ></ot-calendar-surgical-block>
                 </div>
                 <hr class="current-day-line"

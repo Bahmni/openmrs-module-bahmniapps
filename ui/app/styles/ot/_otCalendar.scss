@@ -1,6 +1,6 @@
 .calendar {
   overflow: auto;
-  height: calc(100vh - 205px);
+  height: calc(100vh - 157px);
   background: #fff;
   position: relative;
   .calendar-overflow-hiding {
@@ -20,6 +20,7 @@
     position: absolute;
     z-index: 20;
     background: #fff;
+    width: 94%;
     .heading-cell {
       width: 300px;
       box-sizing: border-box;
@@ -31,7 +32,6 @@
     }
   }
   .calendar-time-container {
-    float: left;
     clear: left;
     position: absolute;
     top: 36px;
@@ -50,9 +50,7 @@
   }
   .table-block {
     .ot-block-container {
-      float: left;
-      position: relative;
-      width: calc(100% - 80px);
+      display: block;
       .ot-block-wrapper {
         position: absolute;
         display: flex;
@@ -60,6 +58,8 @@
         overflow: auto;
         padding-bottom: 5px;
         top: 36px;
+        width: calc(100% - 90px);
+        right: 0;
       }
       .calendar-cell {
         border-bottom: 0.5px solid lightgrey;
@@ -77,6 +77,8 @@
         overflow: hidden;
         .surgical-block {
           width: calc(100% - 10px);
+          position: absolute;
+          margin: 0 5px;
           border: 0.5px solid #1976D2;
           &:focus {
             border-color: #1976D2 !important;
@@ -223,7 +225,7 @@
     &.expanded {
       z-index: 1;
     }
-    button {
+    i {
       position: absolute;
       right: 5px;
       top: 5px;
@@ -242,15 +244,24 @@
       font-weight: 600;
       color: #000;
       font-size: 14px;
-      padding-right: 20px;
+      padding: 0 10px 3px 1px;
+    }
+    p {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
-  .surgicalBlock-surgenName {
+  .surgicalblock-surgeon-name {
     position: absolute;
     bottom: 3px;
     left: 3px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  &.exceed .surgicalBlock-surgenName {
+  &.exceed .surgicalblock-surgeon-name {
     position: relative;
     top: 6px;
   }
@@ -258,10 +269,10 @@
 
 .move-appointment {
   h4 {
-    padding-right: 15px;
+    padding: 20px 15px 25px 8px;
   }
   p {
-    margin-bottom: 12px;
+    margin: 22px 0;
     label {
       width: 120px;
       text-align: right;
@@ -277,14 +288,22 @@
       padding-left: 10px;
     }
   }
+  .center {
+    text-align: center;
+  }
   button {
-    float: right;
     -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
     box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-    padding: 5px 10px;
-    color: #000;
+    color: #363463;
     border: 1px solid #95989a;
-    margin-right: 10px;
-    background: #fff;
+    margin: 50px 15px;
   }
+}
+.ui-tooltip{
+    width: auto;
+    height: auto;
+    line-height: 1.5;
+    padding: 0.3%;
+    border-radius: 4px;
+    position: absolute;
 }

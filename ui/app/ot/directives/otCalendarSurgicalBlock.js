@@ -3,15 +3,19 @@
 angular.module('bahmni.ot')
     .directive('otCalendarSurgicalBlock', ['surgicalAppointmentHelper', function (surgicalAppointmentHelper) {
         var link = function ($scope) {
+            var totalWidthInPercentile = 96;
             var gridCellHeight = 120;
             var heightForSurgeonName = 21;
             var surgicalBlockHeightPerMin = gridCellHeight / $scope.dayViewSplit;
+            $scope.operationTheatre = $scope.surgicalBlock.location.name;
 
             var getViewPropertiesForSurgicalBlock = function () {
                 var surgicalBlockHeight = getHeightForSurgicalBlock();
                 $scope.blockDimensions = {
                     height: surgicalBlockHeight,
+                    width: $scope.weekOrDay === 'week' ? getWidthForSurgicalBlock() : totalWidthInPercentile,
                     top: getTopForSurgicalBlock(),
+                    left: $scope.weekOrDay === 'week' ? getLeftPositionForSurgicalBlock() : 0,
                     color: getColorForProvider(),
                     appointmentHeightPerMin: (surgicalBlockHeight - heightForSurgeonName) / Bahmni.Common.Util.DateUtil.diffInMinutes(
                         $scope.surgicalBlock.startDatetime, $scope.surgicalBlock.endDatetime)
@@ -31,7 +35,19 @@ angular.module('bahmni.ot')
                     borderColor: borderColor
                 };
             };
+            var getWidthForSurgicalBlock = function () {
+                if ($scope.blockedOtsOfTheDay != null) {
+                    return totalWidthInPercentile / $scope.blockedOtsOfTheDay.length;
+                }
+            };
 
+            var getLeftPositionForSurgicalBlock = function () {
+                var index = 1;
+                if ($scope.blockedOtsOfTheDay != null) {
+                    index = $scope.blockedOtsOfTheDay.indexOf(($scope.surgicalBlock.location.uuid));
+                }
+                return (index * getWidthForSurgicalBlock()) + 1;
+            };
             var getHeightForSurgicalBlock = function () {
                 return Bahmni.Common.Util.DateUtil.diffInMinutes(
                         $scope.surgicalBlock.startDatetime, $scope.surgicalBlock.endDatetime) * surgicalBlockHeightPerMin;
@@ -39,9 +55,17 @@ angular.module('bahmni.ot')
 
             var getTopForSurgicalBlock = function () {
                 return Bahmni.Common.Util.DateUtil.diffInMinutes(
-                        $scope.calendarStartDatetime, $scope.surgicalBlock.startDatetime) * surgicalBlockHeightPerMin;
+                    getCalendarStartDateTime($scope.surgicalBlock.startDatetime), $scope.surgicalBlock.startDatetime) * surgicalBlockHeightPerMin;
+            };
+            var getCalendarStartDateTime = function (date) {
+                var dayStart = ($scope.dayViewStart || Bahmni.OT.Constants.defaultCalendarStartTime).split(':');
+                return Bahmni.Common.Util.DateUtil.addMinutes(moment(date).startOf('day'), (dayStart[0] * 60 + parseInt(dayStart[1])));
             };
 
+            var getCalendarEndDateTime = function (date) {
+                var dayEnd = ($scope.dayViewEnd || Bahmni.OT.Constants.defaultCalendarEndTime).split(':');
+                return Bahmni.Common.Util.DateUtil.addMinutes(moment(date).startOf('day'), (dayEnd[0] * 60 + parseInt(dayEnd[1])));
+            };
             var calculateEstimatedAppointmentDuration = function () {
                 var surgicalAppointments = _.filter($scope.surgicalBlock.surgicalAppointments, function (surgicalAppointment) {
                     return $scope.isValidSurgicalAppointment(surgicalAppointment);
@@ -68,27 +92,34 @@ angular.module('bahmni.ot')
                 $event.stopPropagation();
             };
 
-            $scope.deselectSurgicalBlock = function ($event) {
-                $scope.$emit("event:surgicalBlockDeselect");
-                $event.stopPropagation();
+            $scope.surgicalBlockExceedsCalendar = function () {
+                return moment($scope.surgicalBlock.endDatetime).toDate() > getCalendarEndDateTime($scope.surgicalBlock.endDatetime);
             };
 
-            $scope.surgicalBlockExceedsCalendar = function () {
-                return moment($scope.surgicalBlock.endDatetime).toDate() > $scope.calendarEndDatetime;
+            var showToolTipForSurgicalBlock = function () {
+                $('.surgical-block').tooltip({
+                    content: function () {
+                        return $(this).prop('title');
+                    },
+                    track: true
+                });
             };
 
             getViewPropertiesForSurgicalBlock();
             calculateEstimatedAppointmentDuration();
+            showToolTipForSurgicalBlock();
         };
         return {
             restrict: 'E',
             link: link,
             scope: {
                 surgicalBlock: "=",
-                calendarStartDatetime: "=",
-                calendarEndDatetime: "=",
+                blockedOtsOfTheDay: "=",
+                dayViewStart: "=",
+                dayViewEnd: "=",
                 dayViewSplit: "=",
-                filterParams: "="
+                filterParams: "=",
+                weekOrDay: "="
             },
             templateUrl: "../ot/views/calendarSurgicalBlock.html"
         };

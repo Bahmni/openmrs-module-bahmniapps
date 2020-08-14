@@ -138,7 +138,7 @@ angular.module('bahmni.ot')
             $scope.$watch("weekStartDate", function () {
                 if ($scope.weekOrDay === 'week') {
                     startDatetime = moment($scope.weekStartDate).toDate();
-                    endDatetime = moment($scope.weekEndDate).toDate();
+                    endDatetime = moment($scope.weekEndDate).endOf('day').toDate();
                     spinner.forPromise(init(startDatetime, endDatetime));
                 }
             });

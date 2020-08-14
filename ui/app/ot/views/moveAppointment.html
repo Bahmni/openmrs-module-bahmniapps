@@ -15,6 +15,10 @@
         <i class="fa fa-exclamation-circle small"></i>
         <span>{{'NO_FREE_SLOT_AVAILABLE_FOR_THE_GIVEN_SURGEON_AND_DATE_MESSAGE' | translate}}</span>
     </p>
-    <button ng-mousedown="cancel()">{{'OT_SURGICAL_APPOINTMENT_CANCEL' | translate}}</button>
-    <button ng-click="moveSurgicalAppointment()" ng-disabled="!dateForMovingSurgery || !destinationBlock"> {{'OT_SURGICAL_APPOINTMENT_MOVE' | translate}}</button>
+    <div class="center">
+        <button ng-click="moveSurgicalAppointment()" ng-disabled="!dateForMovingSurgery || !destinationBlock">
+            {{'OT_SURGICAL_APPOINTMENT_MOVE' | translate}}
+        </button>
+        <button ng-mousedown="cancel()">{{'OT_SURGICAL_APPOINTMENT_CANCEL' | translate}}</button>
+    </div>
 </div>
