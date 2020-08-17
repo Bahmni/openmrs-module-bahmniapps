@@ -21,7 +21,7 @@ angular.module('bahmni.registration')
             function initPatientNameDisplayOrder () {
                 var validNameFields = Bahmni.Registration.Constants.patientNameDisplayOrder;
                 var nameFields = appService.getAppDescriptor().getConfigValue("patientNameDisplayOrder") || [];
-                var valid = _.every(nameFields, function (val) { return validNameFields.indexOf(val) >= 0; })
+                var valid = _.every(nameFields, function (val) { return validNameFields.indexOf(val) >= 0; });
                 if (nameFields.length !== 3 || !valid) {
                     $scope.patientNameDisplayOrder = validNameFields;
                 } else {
