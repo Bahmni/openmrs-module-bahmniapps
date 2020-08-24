@@ -46,10 +46,6 @@ angular.module('bahmni.clinical')
                     if (response.data && response.data[0]) {
                         $scope.repeattPcrResult = response.data[0].valueAsString;
                     }
-                })).then(spinner.forPromise(patientService.infantStatus($scope.patient.uuid)).then(function (response) {
-                    if (response.data && response.data[0]) {
-                        $scope.infantStausResults = response.data[0].valueAsString;
-                    }
                 }));
             };
             var init = function () {
