@@ -152,13 +152,19 @@ angular.module('bahmni.registration')
             });
 
             if (fieldName === 'country') {
-                var attrElement = angular.element(fieldName);
-                var attrElement1 = angular.element(document.getElementById(fieldName));
-                attrElement1.attr("disabled", true);
-                console.log("That:", attrElement1);
+                // var attrElement = angular.element(fieldName);
+                console.log(fieldName);
+                var attrName =  angular.element($scope.addressLevels[4].name);
+               
+               
             }
 
-            console.log("this", $scope.addressLevels.fieldName);
+            // var attrElement = angular.element(document.getElementById(attrName));
+            // if (attrElement) {
+            //     attrElement.attr('disabled', true);
+            // }
+
+
             if (_.isEmpty($scope.address[fieldName])) {
                 $scope.address[fieldName] = null;
                 selectedUserGeneratedIds[fieldName] = null;

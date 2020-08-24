@@ -68,6 +68,7 @@ Bahmni.Common = Bahmni.Common || {};
         patientHeightConceptName: "HEIGHT",
         maternalCareVisitNumber: "Visit Number",
         patientWeight: "WEIGHT",
+        infantStatus: "Infant HIV Status",
         hostURL: hostUrl,
         dateFormat: "dd/mm/yyyy",
         dateDisplayFormat: "DD-MMM-YYYY",

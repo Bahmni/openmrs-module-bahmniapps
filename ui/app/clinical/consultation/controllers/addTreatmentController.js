@@ -537,10 +537,26 @@ angular.module('bahmni.clinical')
                     var h5 = "2c0a5b91-7b2a-4f8e-86fd-a8007841fca8";
                     var i5 = "50b60d77-186d-4a0d-8784-659ee2d60ec9";
 
-                    var lpvr = "9593e1b0-5c8c-44ff-ab06-0769396ab19c";
-                    var tdf3tcdtg = "7e2265a4-7260-4796-b627-4ad94033f383";
-                    var abc3tcdtg = "d9863f4f-0dd0-456a-9d83-5466c5851915";
-                    var abc3tclpvr = "c46684dd-8534-43d3-af53-673b37b9130a";
+                    var AZTNVP = "f2744208-2187-11ea-978f-2e728ce88125";
+                    var AZT3TCLPVr = "4f39254b-dfe7-4a42-82f9-0052bf9b5e70";
+                    var AZT3TCNVP = "ea30af59-cea5-431c-aef2-b42366c272de";
+                    var ABC3TCLPVr = "31130f2b-524d-4c26-a2a4-05d7c3bb9f33";
+                    var ABC3TCEFV = "19daabc4-057e-4ab7-b58b-c51d3fb6de01";
+                    var AZT3TCRAL = "192573f6-1bbb-45ac-84e6-cd6aebc6ea9e";
+
+                    var ABC3TCRAL = "22cbf310-9a1e-4b49-8ba2-2c4a3810ae67";
+                    var AZT3TCEFV = "60a5990d-8f4d-4320-ae4b-452e79fb334c";
+                    var ABC3TCDTG = "e071d3a4-28e3-409d-97a5-89cc039d2afb";
+                    var TDF3TCDTG = "6d8fca22-3acd-42c3-b022-0ad418cf34be";
+                    var TDF3TCEFV = "1faf6726-72df-4390-9768-b3bc1c594509";
+                    var ABCn3TCpDTG = "c471f1d7-d50f-4003-96dd-20c1d709f2b7";
+                    var AZTn3TCEFV = "057a59b0-19e1-43c5-9680-8defc05ed54f";
+                    var ABCn3TCpLPVnr = "b0456e76-fafd-4ce2-b397-ecbc87541940";
+
+                    var ABCp3TCnAZT = "6df50daa-514c-48d7-917e-a677d5847ea4";
+                    var ABCn3TCLPVrRTV = "061160e0-ca02-455e-9642-b6326cd54584";
+                    var ABCn3TCdoubledoseDTG = "c2d14a27-7b96-4529-bece-48a87e85fb86";
+                    var ABCn3TCEFV = "c0636109-3ff1-4b0a-b4e7-357ebd0afc66";
 
                     for (var i = treatmentService.prescribedDrugOrders.length - 1; i >= 0; i--) {
                         if (treatmentService.prescribedDrugOrders[i].concept.uuid == a1 || treatmentService.prescribedDrugOrders[i].concept.uuid == b1 || treatmentService.prescribedDrugOrders[i].concept.uuid == c1 || treatmentService.prescribedDrugOrders[i].concept.uuid == d1 || treatmentService.prescribedDrugOrders[i].concept.uuid == e1 || treatmentService.prescribedDrugOrders[i].concept.uuid == f1 || treatmentService.prescribedDrugOrders[i].concept.uuid == g1 || treatmentService.prescribedDrugOrders[i].concept.uuid == h1 || treatmentService.prescribedDrugOrders[i].concept.uuid == a4 || treatmentService.prescribedDrugOrders[i].concept.uuid == b4 || treatmentService.prescribedDrugOrders[i].concept.uuid == c4 || treatmentService.prescribedDrugOrders[i].concept.uuid == d4 || treatmentService.prescribedDrugOrders[i].concept.uuid == f4 || treatmentService.prescribedDrugOrders[i].concept.uuid == g4 || treatmentService.prescribedDrugOrders[i].concept.uuid == h4 || treatmentService.prescribedDrugOrders[i].concept.uuid == i4 || treatmentService.prescribedDrugOrders[i].concept.uuid == j4 || treatmentService.prescribedDrugOrders[i].concept.uuid == k4 || treatmentService.prescribedDrugOrders[i].concept.uuid == l4) {
@@ -562,15 +578,39 @@ angular.module('bahmni.clinical')
                         }
                     }
                     var patientAge = $scope.patient.age;
+                    const birthdate = new Date($scope.patient.birthdate);
+                    var today = new Date();
+                    var diffTime = Math.abs(today - birthdate);
+                    var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24) - 1);
+
                     var patientWeight = $scope.patientWeight;
                     var artRegimens = [{ uuid: a1 }, { uuid: b1 }, { uuid: c1 }, { uuid: d1 }, { uuid: e1 }, { uuid: f1 }, { uuid: g1 }, { uuid: h1 }, { uuid: j1 },
                     { uuid: a2 }, { uuid: b2 }, { uuid: c2 }, { uuid: d2 }, { uuid: e2 }, { uuid: f2 }, { uuid: g2 }, { uuid: h2 }, { uuid: i2 }, { uuid: j2 }, { uuid: k2 },
                     { uuid: a4 }, { uuid: b4 }, { uuid: c4 }, { uuid: d4 }, { uuid: f4 }, { uuid: g4 }, { uuid: h4 }, { uuid: i4 }, { uuid: j4 }, { uuid: k4 }, { uuid: l4 },
                     { uuid: a5 }, { uuid: b5 }, { uuid: c5 }, { uuid: d5 }, { uuid: f5 }, { uuid: g5 }, { uuid: h5 }, { uuid: i5 }
                     ];
+
+                    var neonates = [{ uuid: AZT3TCLPVr }];
+                    var neonatesRegimens = neonates.filter(regimen => selectedItem.drug.uuid.includes(regimen.uuid));
+
+                    var childrenlessthanTwenty = [{ uuid: ABC3TCLPVr }, { uuid: AZT3TCRAL }, { uuid: AZT3TCLPVr }, { uuid: ABC3TCRAL }, { uuid: AZT3TCEFV }];
+                    var childrenlessthanTwentyRegimens = childrenlessthanTwenty.filter(regimen => selectedItem.drug.uuid.includes(regimen.uuid));
+
+                    var childrenlessthanTwentyAbovethree = [{ uuid: ABC3TCEFV }, { uuid: AZT3TCRAL }, { uuid: AZT3TCLPVr }, { uuid: ABC3TCRAL }, { uuid: AZT3TCEFV }];
+                    var childrenlessthanTwentyAbovethreeRegimen = childrenlessthanTwentyAbovethree.filter(regimen => selectedItem.drug.uuid.includes(regimen.uuid));
+
+                    var childrenweightoftwentyandaboveandlessthanthirty = [{ uuid: ABC3TCDTG }, { uuid: ABC3TCLPVr }, { uuid: ABC3TCRAL }, { uuid: ABC3TCEFV }, { uuid: AZT3TCEFV }, { uuid: AZT3TCLPVr }, { uuid: AZT3TCRAL }];
+                    var childrenweightoftwentyandaboveandlessthanthirtyRegimen = childrenweightoftwentyandaboveandlessthanthirty.filter(regimen => selectedItem.drug.uuid.includes(regimen.uuid));
+
+                    var childrenweightofthirtyandabove = [{ uuid: TDF3TCDTG }, { uuid: TDF3TCEFV }, { uuid: ABCn3TCpDTG }, { uuid: AZTn3TCEFV }, { uuid: ABCn3TCpLPVnr }];
+                    var childrenweightofthirtyandaboveRegimen = childrenweightofthirtyandabove.filter(regimen => selectedItem.drug.uuid.includes(regimen.uuid));
+
+                    var childrenwithtbduringart = [{ uuid: ABCp3TCnAZT }, { uuid: ABCn3TCLPVrRTV }, { uuid: ABCn3TCdoubledoseDTG }, { uuid: ABCn3TCEFV }];
+                    var childrenwithtbduringartRegimen = childrenwithtbduringart.filter(regimen => selectedItem.drug.uuid.includes(regimen.uuid));
+
                     // lpvr
                     var filteredRegimens = artRegimens.filter(regimen => selectedItem.drug.uuid.includes(regimen.uuid));
-                    if ((patientAge <= 2) && (patientWeight >= 10 && patientWeight <= 19.9) && (filteredRegimens.length >= 1) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (selectedItem.drug.uuid != "9593e1b0-5c8c-44ff-ab06-0769396ab19c")) {
+                    if ((diffDays <= 28) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (neonatesRegimens.length == 0)) {
                         ngDialog.open({
                             template: 'consultation/views/treatmentSections/drugPopUpForLPVr.html'
                         });
@@ -579,39 +619,63 @@ angular.module('bahmni.clinical')
                     } else {
                         console.log(".");
                     }
-                    // abc3tclpvr
-                    if ((patientAge <= 2) && (patientWeight >= 3.5 && patientWeight <= 9.9) && (filteredRegimens.length >= 1) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (selectedItem.drug.uuid != "c46684dd-8534-43d3-af53-673b37b9130a")) {
-                        console.log("selected drug", $scope.firstPcrResult);
+                    if ((patientAge < 3) && (patientWeight < 20) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (childrenlessthanTwentyRegimens.length == 0)) {
                         ngDialog.open({
-                            template: 'consultation/views/treatmentSections/drugPopUpForAbc3tclpvr.html'
+                            template: 'consultation/views/treatmentSections/weightlessthantwentythreeyears.html'
                         });
                         $scope.popupActive = true;
                         clearForm();
                     } else {
                         console.log(".");
                     }
-                    // abc3tcdtg
-                    if ((patientAge <= 2) && (patientWeight > 19.99 && patientWeight <= 29.9) && (filteredRegimens.length >= 1) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (selectedItem.drug.uuid != "d9863f4f-0dd0-456a-9d83-5466c5851915")) {
-                        console.log("selected drug", selectedItem.drug);
+                    if ((patientAge >= 3) && (patientWeight < 20) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (childrenlessthanTwentyAbovethreeRegimen.length == 0)) {
                         ngDialog.open({
-                            template: 'consultation/views/treatmentSections/drugPopUpForAbc3tcdtg.html'
+                            template: 'consultation/views/treatmentSections/weightabovethreeandtwentythreeyears.html'
                         });
                         $scope.popupActive = true;
                         clearForm();
                     } else {
                         console.log(".");
                     }
-                    // tdf3tcdtg
-                    if ((patientAge <= 2) && (patientWeight >= 30) && (filteredRegimens.length >= 1) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (selectedItem.drug.uuid != "7e2265a4-7260-4796-b627-4ad94033f383")) {
-                        console.log("selected drug", selectedItem.drug);
+                    if ((patientAge <= 14) && (patientWeight >= 20) && (patientWeight < 30) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (childrenweightoftwentyandaboveandlessthanthirtyRegimen.length == 0)) {
                         ngDialog.open({
-                            template: 'consultation/views/treatmentSections/drugPopUpForTdf3tcdtg.html'
+                            template: 'consultation/views/treatmentSections/weightabovetentyandlessthanthirty.html'
                         });
                         $scope.popupActive = true;
                         clearForm();
                     } else {
                         console.log(".");
                     }
+                    if ((patientAge <= 14) && (patientWeight >= 30) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (childrenweightofthirtyandaboveRegimen.length == 0)) {
+                        ngDialog.open({
+                            template: 'consultation/views/treatmentSections/weightofthiryandabove.html'
+                        });
+                        $scope.popupActive = true;
+                        clearForm();
+                    } else {
+                        console.log(".");
+                    }
+
+                    if ((diffDays > 28) && (patientAge < 3) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (childrenwithtbduringartRegimen.length == 0)) {
+                        ngDialog.open({
+                            template: 'consultation/views/treatmentSections/childrenwithtb.html'
+                        });
+                        $scope.popupActive = true;
+                        clearForm();
+                    } else {
+                        console.log(".");
+                    }
+
+                    // if ((patientAge <= 2) && (patientWeight >= 3.5 && patientWeight <= 9.9) && (filteredRegimens.length >= 1) && (selectedItem.drug.dosageForm.display == "HIVTC, ART Regimen") && (selectedItem.drug.uuid != "c46684dd-8534-43d3-af53-673b37b9130a")) {
+                    //     console.log("selected drug", $scope.firstPcrResult);
+                    //     ngDialog.open({
+                    //         template: 'consultation/views/treatmentSections/drugPopUpForAbc3tclpvr.html'
+                    //     });
+                    //     $scope.popupActive = true;
+                    //     clearForm();
+                    // } else {
+                    //     console.log(".");
+                    // }
 
                     $scope.onChange();
                 };

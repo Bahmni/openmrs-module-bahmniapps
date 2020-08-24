@@ -5,7 +5,7 @@ angular.module('bahmni.common.patient')
         this.getPatient = function (uuid) {
             var patient = $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/patient/" + uuid, {
                 method: "GET",
-                params: {v: "full"},
+                params: { v: "full" },
                 withCredentials: true
             });
             return patient;
@@ -14,7 +14,7 @@ angular.module('bahmni.common.patient')
         this.getRelationships = function (patientUuid) {
             return $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/relationship", {
                 method: "GET",
-                params: {person: patientUuid, v: "full"},
+                params: { person: patientUuid, v: "full" },
                 withCredentials: true
             });
         };
@@ -22,7 +22,7 @@ angular.module('bahmni.common.patient')
         this.getVisits = function (patientUuid) {
             return $http.get(Bahmni.Common.Constants.openmrsUrl + "/ws/rest/v1/visit", {
                 method: "GET",
-                params: {patient: patientUuid, v: "full"},
+                params: { patient: patientUuid, v: "full" },
                 withCredentials: true
             });
         };
