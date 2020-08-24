@@ -3,7 +3,9 @@
 
 	<span class="ngdialog-close"></span>
 	<div class="drug-details">
-		<p>Recommended Regimen for Neonates is "AZT + 3TC + LPV/r".</p>
+		<p>Preferred Regimen for children of weight above 20Kgs and less than 30Kgs is "ABC + 3TC + DTG". Alternative Regimen 
+			include: "ABC +3TC + LPV/r", "ABC +3TC + RAL" , "ABC +3TC + EFV", "AZT + 3TC + EFV","AZT +3TC + LPV/r","AZT + 3TC + RAL".
+		</p>
 
 		<div ng-repeat="drugOrder in ngDialogData.conflictingDrugOrders">
 		<strong class="drug-name">{{::$index+1}}. {{::drugOrder.getDisplayName()}}</strong> from <strong>{{::drugOrder.effectiveStartDate | bahmniDate}}</strong> to <strong>{{::drugOrder.effectiveStopDate | bahmniDate}}</strong>
