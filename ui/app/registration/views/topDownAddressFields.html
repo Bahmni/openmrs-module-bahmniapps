@@ -8,6 +8,7 @@
         <div class="field-value">
             <input type="text"
                    pattern-validate
+                   id="{{::addressLevel.addressField}}"
                    non-blank="::addressLevel.required"
                    ng-model="address[addressLevel.addressField]"
                    bahmni-autocomplete

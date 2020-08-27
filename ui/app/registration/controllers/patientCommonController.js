@@ -145,6 +145,17 @@ angular.module('bahmni.registration')
                         }
                     }
                 }
+                if(attribute === "TreatmentSupporterRelationship"){
+                    var attrElement = angular.element(document.getElementById("SpecifyOtherSupporterRelationship"));
+                    if ($scope.patient['TreatmentSupporterRelationship'].value !== 'TreatmentSupporterRelationshipOthers'){
+                        if (attrElement) {
+                            attrElement.attr('disabled', true);
+                        } 
+                    } else {
+                        attrElement.attr('disabled', false);
+                    }
+
+                }
 
                 $scope.transferredOnART = false;
                 if (!$scope.patientLoaded && attribute === "TypeofPatient") {

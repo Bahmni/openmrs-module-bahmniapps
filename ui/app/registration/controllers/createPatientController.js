@@ -94,6 +94,7 @@ angular.module('bahmni.registration')
                 $scope.patientLoaded = false;
                 $scope.heiRelationship = false;
                 $scope.inEditPatient = false;
+                
             };
             init();
 

@@ -151,14 +151,17 @@ angular.module('bahmni.registration')
                 }
             });
 
-            if (fieldName === 'country') {
-                // var attrElement = angular.element(fieldName);
-                console.log(fieldName);
-                var attrName =  angular.element($scope.addressLevels[4].name);
-               
-               
-            }
+            // if (fieldName === 'country') {
 
+            //     if($scope.address.country != 'South Sudan')
+            //     // var attrElement = angular.element(fieldName);
+            //     console.log($scope.address.country);
+            //     console.log($scope.addressLevels)
+            //     var attrName = ($scope.addressLevels[4].addressField);
+            //     console.log("add4",attrName)
+            //    console.log(angular.element($("#"+attrName))) 
+               
+            // }
             // var attrElement = angular.element(document.getElementById(attrName));
             // if (attrElement) {
             //     attrElement.attr('disabled', true);
