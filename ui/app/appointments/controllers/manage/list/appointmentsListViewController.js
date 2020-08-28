@@ -242,18 +242,5 @@ angular.module('bahmni.appointments')
                 var allowedActions = $scope.allowedActionsByStatus.hasOwnProperty(status) ? $scope.allowedActionsByStatus[status] : [];
                 return _.includes(allowedActions, action);
             };
-            var parsePatient = function (patientInfo) {
-                var patient = {};
-                patient.label = patientInfo.name + " (" + patientInfo.identifier + ")";
-                patient.uuid = patientInfo.uuid;
-                return patient;
-            };
-            // $rootScope.$on("PopulateInfoForNextAppointment", function () {
-            //     if ($scope.getCurrentAppointmentTabName() === "list") {
-            //         var patient = {};
-            //         patient.label = $scope.selectedPatientlabel;
-            //         return;
-            //     }
-            // });
             init();
         }]);

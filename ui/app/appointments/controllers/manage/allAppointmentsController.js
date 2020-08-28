@@ -8,9 +8,6 @@ angular.module('bahmni.appointments')
             $scope.manageAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeManageAppointments;
 
             $scope.navigateTo = function (viewName) {
-                if ($scope.getCurrentAppointmentTabName() === "list") {
-                    $rootScope.$emit("PopulateInfoForNextAppointment", {});
-                }
                 $scope.currentTab = viewName;
                 var path = 'home.manage.appointments.' + viewName;
                 $state.params.appointmentsData = $rootScope.appointmentsData;
