@@ -151,7 +151,14 @@ angular.module('bahmni.registration')
                 }
             });
 
-            // if (fieldName === 'country') {
+           
+            if (fieldName === 'country') {
+            var hh = [{name:'address4'},{name:'address5'}] 
+            var attrElement = angular.element(document.getElementById(hh));
+            if (attrElement) {
+                attrElement.attr('disabled', true);
+            }
+            }
 
             //     if($scope.address.country != 'South Sudan')
             //     // var attrElement = angular.element(fieldName);
