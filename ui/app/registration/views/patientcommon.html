@@ -213,11 +213,11 @@
 					<legend class="registraion_legend">
                         <span class="mylegend"> {{ ::'REGISTRATION_LABEL_CURRENT_ADDRESS_INFO' | translate}}</span>
                     </legend>
-                    <section address-fields data-address-levels="::addressLevels" data-address="patient.currentAddress"
+                    <section address-fields data-address-levels="::addressLevels" data-address="patient.currentAddress" 
                              field-validation="::fieldValidation"
                              strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"
                              ng-if="::!addressHierarchyConfigs.showAddressFieldsTopDown"></section>
-                    <section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.currentAddress"
+                    <section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.currentAddress" address-type="2"
                              field-validation="::fieldValidation" ng-if="::addressHierarchyConfigs.showAddressFieldsTopDown" field-read-only="getEditFlag()"
                              strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"></section>
                     <br/>

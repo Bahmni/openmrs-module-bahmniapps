@@ -11,11 +11,13 @@ angular.module('bahmni.registration')
                 addressLevels: '=',
                 fieldValidation: '=',
                 strictAutocompleteFromLevel: '=',
-                fieldReadOnly: '='
+                fieldReadOnly: '=',
+                addressType: '='
+
             }
         };
     })
-    .controller('TopDownAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', '$rootScope', function ($scope, addressHierarchyService, $rootScope) {
+    .controller('TopDownAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', 'spinner', '$rootScope', '$timeout', function ($scope, addressHierarchyService, spinner, $rootScope, $timeout) {
         $scope.addressFieldInvalid = false;
         $scope.heiAddressFields = ["cityVillage", "postalCode", "stateProvince"];
         var selectedAddressUuids = {};
@@ -112,6 +114,7 @@ angular.module('bahmni.registration')
                 return false;
             }
             var fieldName = addressLevel.addressField;
+            $scope.fieldNames = addressLevel.addressField;
             var parentFieldName = $scope.findParentField(fieldName);
             var parentValue = $scope.address[parentFieldName];
             var parentValueInvalid = isParentValueInvalid(parentFieldName);
@@ -139,7 +142,6 @@ angular.module('bahmni.registration')
         };
 
         $scope.getAddressDataResults = addressHierarchyService.getAddressDataResults;
-
         $scope.clearFields = function (fieldName) {
             var childFields = $scope.addressLevels.slice(0, addressLevelsNamesInDescendingOrder.indexOf(fieldName));
             childFields.forEach(function (childField) {
@@ -150,37 +152,35 @@ angular.module('bahmni.registration')
                     selectedUserGeneratedIds[childField] = null;
                 }
             });
-
-           
             if (fieldName === 'country') {
-            var hh = [{name:'address4'},{name:'address5'}] 
-            var attrElement = angular.element(document.getElementById(hh));
-            if (attrElement) {
-                attrElement.attr('disabled', true);
+                // document.getElementById("address5").value = "My values";
+                if ($scope.address.country != 'South Sudan') {
+                    document.getElementById('address1').disabled = true;
+                    document.getElementById('address2').disabled = true;
+                    document.getElementById('address3').disabled = true;
+                    document.getElementById('address4').disabled = true;
+                    document.getElementById('address5').disabled = true;
+                    document.getElementById('address6').disabled = true;
+                    document.getElementById('cityVillage').disabled = true;
+                    document.getElementById('stateProvince').disabled = true;
+                    document.getElementById('postalCode').disabled = true;
+                } else {
+                    document.getElementById('address1').disabled = false;
+                    document.getElementById('address2').disabled = false;
+                    document.getElementById('address3').disabled = false;
+                    document.getElementById('address4').disabled = false;
+                    document.getElementById('address5').disabled = false;
+                    document.getElementById('address6').disabled = false;
+                    document.getElementById('cityVillage').disabled = false;
+                    document.getElementById('stateProvince').disabled = false;
+                    document.getElementById('postalCode').disabled = false;
+                }
             }
-            }
-
-            //     if($scope.address.country != 'South Sudan')
-            //     // var attrElement = angular.element(fieldName);
-            //     console.log($scope.address.country);
-            //     console.log($scope.addressLevels)
-            //     var attrName = ($scope.addressLevels[4].addressField);
-            //     console.log("add4",attrName)
-            //    console.log(angular.element($("#"+attrName))) 
-               
-            // }
-            // var attrElement = angular.element(document.getElementById(attrName));
-            // if (attrElement) {
-            //     attrElement.attr('disabled', true);
-            // }
-
-
             if (_.isEmpty($scope.address[fieldName])) {
                 $scope.address[fieldName] = null;
                 selectedUserGeneratedIds[fieldName] = null;
             }
         };
-
         $scope.removeAutoCompleteEntry = function (fieldName) {
             return function () {
                 $scope.selectedValue[fieldName] = null;
@@ -207,6 +207,14 @@ angular.module('bahmni.registration')
                     deregisterAddressWatch();
                 }
             });
+            $scope.setDefaultCountry = function (fieldName) {
+                var promise = $timeout(function () {
+                    document.getElementById("country").value = "South Sudan";
+                }, 300);
+
+                return promise;
+            };
         };
         init();
+        $scope.setDefaultCountry();
     }]);
