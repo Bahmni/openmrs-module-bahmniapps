@@ -75,20 +75,20 @@ angular.module('bahmni.clinical')
                                 }
                             }
                         }
-                        var currentuserRoleName = $rootScope.currentUser.roles[0].name;
-                        if (currentuserRoleName == "Data Clerk") {
-                            for (var i = allTemplates.length - 1; i >= 0; i--) {
-                                if (allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload || allTemplates[i].uuid == tbscreeningform || allTemplates[i].uuid == eacforms || allTemplates[i].uuid == maternityform) {
-                                    allTemplates.splice(i, 1);
-                                }
-                            }
-                        } else {
-                            for (var i = allTemplates.length - 1; i >= 0; i--) {
-                                if (allTemplates[i].uuid == personalhist || allTemplates[i].uuid == familyhistdata) {
-                                    allTemplates.splice(i, 1);
-                                }
-                            }
-                        }
+                        // var currentuserRoleName = $rootScope.currentUser.roles[0].name;
+                        // if ((currentuserRoleName == "Data Clerk") && (currentuserRoleName != "superman")){
+                        //     for (var i = allTemplates.length - 1; i >= 0; i--) {
+                        //         if (allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload || allTemplates[i].uuid == tbscreeningform || allTemplates[i].uuid == eacforms || allTemplates[i].uuid == maternityform) {
+                        //             allTemplates.splice(i, 1);
+                        //         }
+                        //     }
+                        // } else {
+                        //     for (var i = allTemplates.length - 1; i >= 0; i--) {
+                        //         if (allTemplates[i].uuid == personalhist || allTemplates[i].uuid == familyhistdata) {
+                        //             allTemplates.splice(i, 1);
+                        //         }
+                        //     }
+                        // }
                         var visitnumber = $scope.visitHistory.visits.length;
                         if (visitnumber <= 1) {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
