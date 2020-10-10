@@ -116,6 +116,7 @@
     "compass": "grunt compass",
     "bundle": "grunt bundle",
     "uglify-and-rename": "grunt uglify-and-rename",
+    "web": "grunt web",
     "ci": "grunt bundle && grunt uglify-and-rename && grunt web"
   },
   "repository": {

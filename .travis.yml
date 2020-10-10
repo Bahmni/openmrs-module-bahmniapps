@@ -17,7 +17,7 @@ install:
   - cd ui && yarn
   - cat npm-debug.log || true
 
-script: yarn run ci
+script: yarn ci
 
 cache:
   directories:
