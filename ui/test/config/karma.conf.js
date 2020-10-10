@@ -76,6 +76,7 @@ module.exports = function (config) {
         ],
         exclude:[
             'app/components/moment/src/**/*.js',
+            'app/components/moment/meteor/**/*.js',
             'app/components/jquery/src/**/*.js',
             'app/components/**/test/**/*.js',
 
