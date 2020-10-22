@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.forms')
-    .controller('versionedFormController', ['$scope', 'formService', 'appService', '$q', '$state',
-        function ($scope, formService, appService, $q, $state) {
+    .controller('versionedFormController', ['$scope', 'formService', 'appService', '$q', '$state', '$rootScope',
+        function ($scope, formService, appService, $q, $state, $rootScope) {
             $scope.shouldPromptBrowserReload = true;
             $scope.showFormsDate = appService.getAppDescriptor().getConfigValue("showFormsDate");
 
@@ -26,33 +26,101 @@ angular.module('bahmni.common.displaycontrol.forms')
             function filterForms (formData) {
                 const filteredForms = [];
                 _.each(formData, function (item) {
-                    const foundElement = _.includes($scope.section.formGroup, item.formName);
-                    if (foundElement) {
+                    if ($scope.section.formGroup.length == 0) {
                         filteredForms.push(item);
+                    } else {
+                        const foundElement = _.includes($scope.section.formGroup, item.formName);
+                        if (foundElement) {
+                            filteredForms.push(item);
+                        }
                     }
                 });
                 return filteredForms;
             }
 
+            var latestPublishedForms = function () {
+                return formService.getFormList();
+            };
+
             var init = function () {
                 $scope.formsNotFound = false;
-                return $q.all([formService.getAllPatientForms($scope.patient.uuid,
-                    $scope.section.dashboardConfig.maximumNoOfVisits, $state.params.enrollment)]).then(function (result) {
-                        if (!(result[0] && result[0].data.length)) {
-                            $scope.formsNotFound = true;
-                            $scope.$emit("no-data-present-event");
-                        } else {
-                            var sortedFormDataByDate = sortFormDataByLatestDate(filterForms(result[0].data));
-                            if ($scope.isOnDashboard) {
-                                $scope.formData = getUniqueForms(sortedFormDataByDate);
-                            } else {
-                                $scope.formData = sortedFormDataByDate;
-                            }
+                var privileges = [];
+                return $q.all([formService.getAllPatientForms($scope.patient.uuid, $scope.section.dashboardConfig.maximumNoOfVisits, $state.params.enrollment), latestPublishedForms()]).then(function (results) {
+                    if (!(results[0] && results[0].data.length)) {
+                        $scope.formsNotFound = true;
+                        $scope.$emit("no-data-present-event");
+                    } else {
+                        var formListFromObsTab = results[0] && results[0].data;
+                        var attachedFormList = [];
+                        var latestForms = results[1] && results[1].data;
+                        var privileges = 'privileges';
+
+                        if (latestForms) {
+                            $scope.formsWithNameTranslations = latestForms.map(function (latestForm) {
+                                _.each(formListFromObsTab, function (item) {
+                                    if (item.formName === latestForm.name) {
+                                        item['privileges'] = latestForm.privileges;
+                                        attachedFormList.push(item);
+                                    }
+                                });
+                                return {
+                                    formName: latestForm.name,
+                                    formNameTranslations: latestForm.nameTranslation ? JSON.parse(latestForm.nameTranslation) : []
+
+                                };
+                            });
                         }
+                        var sortedFormDataByDate = sortFormDataByLatestDate(filterForms(attachedFormList));
+                        if ($scope.isOnDashboard) {
+                            $scope.formData = getUniqueForms(sortedFormDataByDate);
+                        } else {
+                            $scope.formData = sortedFormDataByDate;
+                        }
+                    }
+                });
+            };
+            $scope.doesUserHaveAccessToTheForm = function (data, action) {
+                if (data.privileges != undefined) {
+                    var editable = [];
+                    var viewable = [];
+                    data.privileges.forEach(function (formPrivilege) {
+                        _.find($rootScope.currentUser.privileges, function (privilege) {
+                            if (formPrivilege.privilegeName === privilege.name) {
+                                if (action === 'edit') {
+                                    editable.push(formPrivilege.editable);
+                                } else {
+                                    viewable.push(formPrivilege.viewable);
+                                }
+                            }
+                        });
                     });
+                    if (action === 'edit') {
+                        if (editable.includes(true)) {
+                            return true;
+                        }
+                    } else {
+                        if (viewable.includes(true)) {
+                            return true;
+                        }
+                    }
+                }
             };
 
             $scope.getDisplayName = function (data) {
+                if ($scope.formsWithNameTranslations && $scope.formsWithNameTranslations.length > 0) {
+                    var formWithNameTranslation = $scope.formsWithNameTranslations.find(function (formWithNameTranslation) {
+                        return formWithNameTranslation.formName === data.formName;
+                    });
+                    var locale = localStorage.getItem("NG_TRANSLATE_LANG_KEY") || "en";
+                    var currentLabel = formWithNameTranslation && formWithNameTranslation.formNameTranslations
+                           .find(function (formNameTranslation) {
+                               return formNameTranslation.locale === locale;
+                           });
+                    if (currentLabel) {
+                        return currentLabel.display;
+                    }
+                }
+
                 return data.formName;
             };
 
@@ -73,7 +141,8 @@ angular.module('bahmni.common.displaycontrol.forms')
                         showGroupDateTime: false,
                         encounterUuid: data.encounterUuid,
                         observationUuid: data.uuid,
-                        formType: $scope.section.type
+                        formType: $scope.section.type,
+                        formDisplayName: $scope.getDisplayName(data)
                     }
                 };
             };

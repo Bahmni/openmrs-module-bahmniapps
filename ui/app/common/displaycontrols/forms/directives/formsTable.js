@@ -105,8 +105,9 @@ angular.module('bahmni.common.displaycontrol.forms')
                 controller: function ($scope, $controller) {
                     if ($scope.section.type && $scope.section.type === Bahmni.Common.Constants.formBuilderDisplayControlType) {
                         return $controller("versionedFormController", {$scope: $scope});
+                    } else {
+                        return defaultController($scope);
                     }
-                    return defaultController($scope);
                 },
                 link: link,
                 templateUrl: "../common/displaycontrols/forms/views/formsTable.html",

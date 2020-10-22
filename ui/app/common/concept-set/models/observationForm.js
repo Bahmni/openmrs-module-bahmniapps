@@ -1,13 +1,13 @@
 'use strict';
 
-Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observations, extension) {
+Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observations, label, extension) {
     var self = this;
 
     var init = function () {
         self.formUuid = formUuid;
         self.formVersion = formVersion;
         self.formName = formName;
-        self.label = formName;
+        self.label = label;
         self.conceptName = formName;
         self.collapseInnerSections = {value: false};
         self.alwaysShow = user.isFavouriteObsTemplate(self.conceptName);
@@ -93,8 +93,12 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
 
     Object.defineProperty(self, "isAdded", {
         get: function () {
-            if (self.hasSomeValue()) {
-                self.added = true;
+            if (self.added === undefined) {
+                if (self.options.default) {
+                    self.added = true;
+                } else {
+                    self.added = self.hasSomeValue();
+                }
             }
             return self.added;
         },
