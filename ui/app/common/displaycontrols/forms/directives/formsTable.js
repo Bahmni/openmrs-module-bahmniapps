@@ -16,7 +16,6 @@ angular.module('bahmni.common.displaycontrol.forms')
                 var obsFormData = function () {
                     return visitFormService.formData($scope.patient.uuid, $scope.section.dashboardConfig.maximumNoOfVisits, $scope.section.formGroup, $state.params.enrollment);
                 };
-
                 var filterFormData = function (formData) {
                     var filterList = [];
                     _.each(formData, function (item) {
@@ -33,7 +32,32 @@ angular.module('bahmni.common.displaycontrol.forms')
                 var sortedFormDataByLatestDate = function (formData) {
                     return _.sortBy(formData, "obsDatetime").reverse();
                 };
-
+                $scope.doesUserHaveAccessToTheForm = function (data, action) {
+                    if (data.privileges != undefined) {
+                        var editable = [];
+                        var viewable = [];
+                        data.privileges.forEach(function (formPrivilege) {
+                            _.find($rootScope.currentUser.privileges, function (privilege) {
+                                if (formPrivilege.privilegeName === privilege.name) {
+                                    if (action === 'edit') {
+                                        editable.push(formPrivilege.editable);
+                                    } else {
+                                        viewable.push(formPrivilege.viewable);
+                                    }
+                                }
+                            });
+                        });
+                        if (action === 'edit') {
+                            if (editable.includes(true)) {
+                                return true;
+                            }
+                        } else {
+                            if (viewable.includes(true)) {
+                                return true;
+                            }
+                        }
+                    } else { return true; }
+                };
                 var init = function () {
                     $scope.formsNotFound = false;
                     return $q.all([getAllObservationTemplates(), obsFormData()]).then(function (results) {
@@ -105,9 +129,8 @@ angular.module('bahmni.common.displaycontrol.forms')
                 controller: function ($scope, $controller) {
                     if ($scope.section.type && $scope.section.type === Bahmni.Common.Constants.formBuilderDisplayControlType) {
                         return $controller("versionedFormController", {$scope: $scope});
-                    } else {
-                        return defaultController($scope);
                     }
+                    return defaultController($scope);
                 },
                 link: link,
                 templateUrl: "../common/displaycontrols/forms/views/formsTable.html",
