@@ -5,10 +5,10 @@
                 class="asterick"
                 ng-show="::addressLevel.required">*</span></label>
         </div>
-        <div class="field-value">
+        <div class="field-value" >
             <input type="text"
                    pattern-validate
-                   id="{{::addressLevel.addressField}}"
+                   id="{{::addressLevel.addressField}}{{addressType}}"
                    non-blank="::addressLevel.required"
                    ng-model="address[addressLevel.addressField]"
                    bahmni-autocomplete

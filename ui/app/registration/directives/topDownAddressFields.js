@@ -210,6 +210,7 @@ angular.module('bahmni.registration')
             $scope.setDefaultCountry = function (fieldName) {
                 var promise = $timeout(function () {
                     document.getElementById("country").value = "South Sudan";
+                    document.getElementById("country2").disabled = "true";
                 }, 300);
 
                 return promise;
