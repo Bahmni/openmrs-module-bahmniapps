@@ -214,7 +214,7 @@
                         <span class="mylegend"> {{ ::'REGISTRATION_LABEL_CURRENT_ADDRESS_INFO' | translate}}</span>
                     </legend>
                     <section address-fields data-address-levels="::addressLevels" data-address="patient.currentAddress" 
-                             field-validation="::fieldValidation"
+                             field-validation="::fieldValidation" address-type="2"
                              strict-autocomplete-from-level="::addressHierarchyConfigs.strictAutocompleteFromLevel"
                              ng-if="::!addressHierarchyConfigs.showAddressFieldsTopDown"></section>
                     <section top-down-address-fields data-address-levels="::addressLevels" data-address="patient.currentAddress" address-type="2"
