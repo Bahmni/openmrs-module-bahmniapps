@@ -75,7 +75,11 @@ module.exports = function (config) {
             "test/unit/common/util/dateTimeFormatter.spec.js"
         ],
         exclude:[
-            'app/components/moment/src/**/*.js'
+            'app/components/moment/src/**/*.js',
+            'app/components/moment/meteor/**/*.js',
+            'app/components/jquery/src/**/*.js',
+            'app/components/**/test/**/*.js',
+
         ],
         reporters: ['junit', (process.env.CI === 'true' ? 'dots' : 'progress'), 'coverage'],
         preprocessors: {

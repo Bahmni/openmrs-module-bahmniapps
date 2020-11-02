@@ -32,6 +32,5 @@ Please visit https://bahmni.atlassian.net/wiki/display/BAH/Working+on+Bahmni+Ope
     |   |-- reports
     |
     |-- .jshint.rc
-    |-- bower.json
     |-- package.json
 </pre>

@@ -10,10 +10,9 @@ ZIP_FILE_NAME=bahmniapps
 mkdir -p $ROOT_DIR/target
 rm -rf $ROOT_DIR/target/${ZIP_FILE_NAME}*.zip
 
-npm install
-bower install
-grunt bundle
-grunt uglify-and-rename
+yarn install
+yarn bundle
+yarn uglify-and-rename
 
 cd $ROOT_DIR
 
@@ -28,7 +27,7 @@ Xvfb :99 &
 XVFB_PID=$!
 echo "Starting Xvfb process $XVFB_PID"
 
-grunt web
+yarn web
 cd dist && zip -r ../target/${ZIP_FILE_NAME}.zip *
 
 
