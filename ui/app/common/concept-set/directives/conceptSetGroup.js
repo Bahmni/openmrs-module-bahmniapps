@@ -73,7 +73,25 @@ angular.module('bahmni.common.conceptSet')
                     });
                 }));
             };
-
+            $scope.computeFormViewabilityInConceptSetGroup = function(conceptSet){
+                if(conceptSet instanceof Bahmni.ObservationForm){
+                    if(conceptSet.privileges.length != 0){
+                         for(var i = 0;i<conceptSet.privileges.length;i++){
+                            var result =false;
+                            _.find($rootScope.currentUser.privileges, function (privilege) {
+                               if(conceptSet.privileges[i].privilegeName === privilege.name){
+                                   if(!conceptSet.privileges[i].editable){
+                                        if(conceptSet.privileges[i].viewable){
+                                              result = true;
+                                        }
+                                   }
+                               }
+                            });
+                         }
+                    }else{result= true;}
+                return result;
+                }
+            };
             $scope.canRemove = function (index) {
                 var observations = $scope.allTemplates[index].observations;
                 if (observations === undefined || _.isEmpty(observations)) {

@@ -103,7 +103,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                             return true;
                         }
                     }
-                }
+                }else{ return true; }
             };
 
             $scope.getDisplayName = function (data) {

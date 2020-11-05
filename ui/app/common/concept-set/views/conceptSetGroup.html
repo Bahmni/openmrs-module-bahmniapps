@@ -31,9 +31,11 @@
         <section class="concept-set-panel-right">
             <ul>
                 <li ng-repeat="conceptSet in allTemplates" ng-if="leftPanelConceptSet==conceptSet">
+                    <fieldset ng-disabled="computeFormViewabilityInConceptSetGroup(conceptSet)">
                     <section class="concept-set-group section-grid" >
                         <ng-include src="'../common/concept-set/views/conceptSetGroupSection.html'"></ng-include>
                     </section>
+                    </fieldset>
                 </li>
                 <li class="concept-set-panel-no-template"  ng-style="{'height': contentHeight.height + 'px'}"> </li>
             </ul>
