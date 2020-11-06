@@ -253,23 +253,23 @@ angular.module('bahmni.clinical')
             };
             $scope.isFormEditableByTheUser = function (form) {
                 var result = false;
-                    if (form.privileges.length != 0) {
-                         form.privileges.forEach(function (formPrivilege) {
-                            _.find($rootScope.currentUser.privileges, function (privilege) {
-                               if (formPrivilege.privilegeName === privilege.name) {
-                                   if (formPrivilege.editable) {
-                                        result = formPrivilege.editable;
-                                   } else {
-                                        if (formPrivilege.viewable) {
-                                             result = true;
-                                        }
-                                   }
-                               }
-                            });
-                         });
-                    } else { result = true; }
-                    return result;
-                };
+                if (form.privileges.length != 0) {
+                    form.privileges.forEach(function (formPrivilege) {
+                        _.find($rootScope.currentUser.privileges, function (privilege) {
+                            if (formPrivilege.privilegeName === privilege.name) {
+                                if (formPrivilege.editable) {
+                                    result = formPrivilege.editable;
+                                } else {
+                                    if (formPrivilege.viewable) {
+                                        result = true;
+                                    }
+                                }
+                            }
+                        });
+                    });
+                } else { result = true; }
+                return result;
+            };
 
             // Form Code :: End
             init();

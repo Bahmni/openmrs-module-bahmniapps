@@ -75,7 +75,7 @@ angular.module('bahmni.common.conceptSet')
             };
             $scope.computeFormViewabilityInConceptSetGroup = function (conceptSet) {
                 if (conceptSet instanceof Bahmni.ObservationForm) {
-                     var result = false;
+                    var result = false;
                     if (conceptSet.privileges.length != 0) {
                         for (var i = 0; i < conceptSet.privileges.length; i++) {
                             _.find($rootScope.currentUser.privileges, function (privilege) {
