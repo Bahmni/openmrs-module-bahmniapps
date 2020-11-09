@@ -4,11 +4,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
     ['$scope', '$rootScope', '$state', '$location', '$translate', 'clinicalAppConfigService', 'diagnosisService', 'urlHelper', 'contextChangeHandler',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', '$q',
         'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig', 'appService',
-        'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService',
+        'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService', 'confirmBox',
         function ($scope, $rootScope, $state, $location, $translate, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
-                  ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService) {
+                  ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, confirmBox) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var getPreviousActiveCondition = Bahmni.Common.Domain.Conditions.getPreviousActiveCondition;
             $scope.togglePrintList = false;
@@ -192,6 +192,28 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     }
                     ngDialog.openConfirm({template: '../common/ui-helper/views/saveConfirmation.html', scope: $scope});
                 }
+                if ($rootScope.showTeleConsultationWindow) {
+                    var childScope = {};
+                    childScope.message = 'Please end teleconsultation before moving out of this window';
+                    childScope.ok = okEvent;
+                    if (event) {
+                        event.preventDefault();
+                        confirmBox({
+                            scope: childScope,
+                            actions: [{name: 'ok', display: 'Ok'}],
+                            className: "ngdialog-theme-default delete-program-popup"
+                        });
+                    }
+                }
+            };
+
+            var okEvent = function (closeDialog) {
+                closeDialog();
+            };
+
+            var cancelEvent = function (closeDialog) {
+                closeDialog();
+                delete $scope.targetUrl;
             };
 
             var cleanUpListenerStateChangeSuccess = $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
