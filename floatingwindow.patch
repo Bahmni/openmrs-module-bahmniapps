@@ -1,0 +1,184 @@
+diff --git a/ui/app/clinical/consultation/controllers/clinicalController.js b/ui/app/clinical/consultation/controllers/clinicalController.js
+index 726de014d..24fb8aa54 100644
+--- a/ui/app/clinical/consultation/controllers/clinicalController.js
++++ b/ui/app/clinical/consultation/controllers/clinicalController.js
+@@ -1,8 +1,41 @@
+ 'use strict';
+ 
+ angular.module('bahmni.clinical').controller('ClinicalController',
+-    ['$scope', 'retrospectiveEntryService', '$rootScope', 'appService',
+-        function ($scope, retrospectiveEntryService, $rootScope, appService) {
++    ['$scope', 'retrospectiveEntryService', '$rootScope', 'appService', '$document',
++        function ($scope, retrospectiveEntryService, $rootScope, appService, $document) {
++            $scope.showTeleConsultationWindow = false;
++            var api = null;
++            $scope.$watch(function () {
++                return $rootScope.showTeleConsultationWindow;
++            }, function () {
++                $scope.showTeleConsultationWindow = $rootScope.showTeleConsultationWindow;
++                if ($scope.showTeleConsultationWindow) {
++                    var teleConsultationWindow = angular.element(document.getElementById('tele-consultation-meet'));
++                    teleConsultationWindow.empty();
++                    var meetId = $rootScope.meetId;
++                    var domain = 'meet.jit.si';
++                    var options = {
++                        roomName: meetId || "",
++                        parentNode: document.querySelector('#tele-consultation-meet')
++                    };
++                    api = new JitsiMeetExternalAPI(domain, options);
++                }
++            }, true);
++
++            $scope.closeTeleConsultation = function () {
++                api.executeCommand('hangup');
++                appService.setTeleConsultationVars(null, false);
++                var teleConsultationWindow = angular.element(document.getElementById('tele-consultation'));
++                teleConsultationWindow.css({
++                    top: '0px',
++                    left: '0px'
++                });
++                teleConsultationWindow.css({
++                    top: '40%',
++                    left: '40%'
++                });
++            };
++
+             $scope.retrospectiveClass = function () {
+                 return !_.isEmpty(retrospectiveEntryService.getRetrospectiveEntry());
+             };
+diff --git a/ui/app/clinical/consultation/controllers/consultationController.js b/ui/app/clinical/consultation/controllers/consultationController.js
+index 6cbf8f030..ccd21080b 100644
+--- a/ui/app/clinical/consultation/controllers/consultationController.js
++++ b/ui/app/clinical/consultation/controllers/consultationController.js
+@@ -4,11 +4,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
+     ['$scope', '$rootScope', '$state', '$location', '$translate', 'clinicalAppConfigService', 'diagnosisService', 'urlHelper', 'contextChangeHandler',
+         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', '$q',
+         'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig', 'appService',
+-        'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService',
++        'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService', 'confirmBox',
+         function ($scope, $rootScope, $state, $location, $translate, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
+                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
+                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
+-                  ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService) {
++                  ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, confirmBox) {
+             var DateUtil = Bahmni.Common.Util.DateUtil;
+             var getPreviousActiveCondition = Bahmni.Common.Domain.Conditions.getPreviousActiveCondition;
+             $scope.togglePrintList = false;
+@@ -192,6 +192,28 @@ angular.module('bahmni.clinical').controller('ConsultationController',
+                     }
+                     ngDialog.openConfirm({template: '../common/ui-helper/views/saveConfirmation.html', scope: $scope});
+                 }
++                if ($rootScope.showTeleConsultationWindow) {
++                    var childScope = {};
++                    childScope.message = 'Please end teleconsultation before moving out of this window';
++                    childScope.ok = okEvent;
++                    if (event) {
++                        event.preventDefault();
++                        confirmBox({
++                            scope: childScope,
++                            actions: [{name: 'ok', display: 'Ok'}],
++                            className: "ngdialog-theme-default delete-program-popup"
++                        });
++                    }
++                }
++            };
++
++            var okEvent = function (closeDialog) {
++                closeDialog();
++            };
++
++            var cancelEvent = function (closeDialog) {
++                closeDialog();
++                delete $scope.targetUrl;
+             };
+ 
+             var cleanUpListenerStateChangeSuccess = $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
+diff --git a/ui/app/clinical/index.html b/ui/app/clinical/index.html
+index f1c844101..1e4f338bc 100644
+--- a/ui/app/clinical/index.html
++++ b/ui/app/clinical/index.html
+@@ -25,11 +25,23 @@
+     <body ng-app="consultation" >
+         <div ng-controller="ClinicalController" ng-class="{'retro-mode':retrospectiveClass()}" id="ClinicalController">
+             <div ng-include src="'../common/ui-helper/messages.html'"></div>
++            <div ng-show="showTeleConsultationWindow" draggable-div class="tele-consultation ng-hide" id="tele-consultation">
++                <div class="tele-consultation-header">
++                    <h3 class="heading">Tele Consultation</h3>
++                    <h3 class="close" ng-click="closeTeleConsultation()">
++                        <i class="fa fa-close"></i>
++                    </h3>
++                </div>
++                <div id="tele-consultation-meet"></div>
++            </div>
+             <div class="opd-wrapper">
+                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
+             </div>
+         </div>
+         <link rel="stylesheet" href="../components/offline/themes/{{getLocaleCSS()}}.css">
++
++        <script src='https://meet.jit.si/external_api.js'></script>
++
+         <script src="../components/jquery/jquery.min.js"></script>
+         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
+         <script src="../lib/modernizr.custom.80690.js"></script>
+@@ -426,6 +438,7 @@
+         <script src="displaycontrols/graph/models/observationGraphReference.js"></script>
+         <script src="displaycontrols/graph/models/observationGraphConfig.js"></script>
+         <script src="displaycontrols/patientContext/directives/patientContext.js"></script>
++        <script src="displaycontrols/patientContext/directives/draggableDiv.js"></script>
+ 
+         <script src="../common/displaycontrols/admissiondetails/init.js"></script>
+         <script src="../common/displaycontrols/admissiondetails/directives/admissionDetails.js"></script>
+diff --git a/ui/app/common/app-framework/services/appService.js b/ui/app/common/app-framework/services/appService.js
+index 70da5eed3..a3f876a2b 100644
+--- a/ui/app/common/app-framework/services/appService.js
++++ b/ui/app/common/app-framework/services/appService.js
+@@ -10,7 +10,8 @@ angular.module('bahmni.common.appFramework')
+             var baseUrl = Bahmni.Common.Constants.baseUrl;
+             var customUrl = Bahmni.Common.Constants.customUrl;
+             var appDescriptor = null;
+-
++            $rootScope.meetId = null;
++            $rootScope.showTeleConsultationWindow = false;
+             var loadConfig = function (url) {
+                 return loadConfigService.loadConfig(url, appDescriptor.contextPath);
+             };
+@@ -183,6 +184,13 @@ angular.module('bahmni.common.appFramework')
+                 return this.appName;
+             };
+ 
++            this.setTeleConsultationVars = function (meetId, show) {
++                if (!meetId || !$rootScope.meetId) {
++                    $rootScope.meetId = meetId;
++                    $rootScope.showTeleConsultationWindow = show;
++                }
++            };
++
+             this.checkPrivilege = function (privilegeName) {
+                 if (hasPrivilegeOf(privilegeName)) {
+                     return $q.when(true);
+diff --git a/ui/app/common/ui-helper/directives/backLinks.js b/ui/app/common/ui-helper/directives/backLinks.js
+index 5be6aa069..583ac902f 100644
+--- a/ui/app/common/ui-helper/directives/backLinks.js
++++ b/ui/app/common/ui-helper/directives/backLinks.js
+@@ -9,7 +9,7 @@ angular.module('bahmni.common.uiHelper')
+                             '<a class="back-btn" ng-class="{\'dashboard-link\':backLink.image}" ng-if="backLink.url" accesskey="{{backLink.accessKey}}" ng-href="{{backLink.url}}" ng-click="closeAllDialogs()" id="{{backLink.id}}"  title="{{backLink.title}}"> ' +
+                                 '<img ng-if="backLink.image" ng-src="{{backLink.image}}" onerror="this.onerror=null; this.src=\'../images/blank-user.gif\'"/>' +
+                                 '<i ng-if="backLink.icon && !backLink.image" class="fa {{backLink.icon}}"></i></a>' +
+-                            '<a class="back-btn" ng-if="backLink.state && !backLink.text" accesskey="{{backLink.accessKey}}" ui-sref="{{backLink.state}}" ng-click="closeAllDialogs()" id="{{backLink.id}}">' +
++                            '<a class="back-btn" ng-if="backLink.state && !backLink.text" accesskey="{{backLink.accessKey}}" ui-sref="{{backLink.state}}" ng-click="displayConfirmationDialog($event);closeAllDialogs()" id="{{backLink.id}}">' +
+                                 '<i ng-if="backLink.icon" class="fa {{backLink.icon}}"></i></a>' +
+          '<a ng-if="backLink.text && backLink.requiredPrivilege" show-if-privilege="{{backLink.requiredPrivilege}}" accesskey="{{backLink.accessKey}}" ui-sref="{{backLink.state}}" id="{{backLink.id}}" class="back-btn-noIcon" ui-sref-active="active">' +
+          '<span>{{backLink.text | translate}}</span>' +
+diff --git a/ui/app/styles/clinical.scss b/ui/app/styles/clinical.scss
+index b80b0b09d..beb051c84 100644
+--- a/ui/app/styles/clinical.scss
++++ b/ui/app/styles/clinical.scss
+@@ -56,6 +56,7 @@
+ 
+ @import "clinical/patientSearchDesktop";
+ @import "clinical/observationsDesktop";
++@import "clinical/_draggableDiv";
+ //@import "clinical/treatmentDesktop";
+ @import "clinical/drugOrderTemplate";
+ 
