@@ -101,6 +101,8 @@ angular.module('bahmni.common.displaycontrol.forms')
                     } else {
                         if (viewable.includes(true)) {
                             return true;
+                        }else{
+                                    return false;
                         }
                     }
                 } else { return true; }
