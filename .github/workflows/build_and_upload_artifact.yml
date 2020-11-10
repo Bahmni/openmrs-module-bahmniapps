@@ -20,11 +20,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: pwd && ls && ls -R ui
     - run: npm install -g bower
     - run: cd ui && npm cache clean --force
     - run: bower cache clean
     - run: rm -rf coverage/
+    - run: pwd && ls && ls -R ui
     - run: /bin/bash ./scripts/package.sh
     - uses: actions/upload-artifact@v2
       with:
