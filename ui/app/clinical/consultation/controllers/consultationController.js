@@ -211,11 +211,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 closeDialog();
             };
 
-            var cancelEvent = function (closeDialog) {
-                closeDialog();
-                delete $scope.targetUrl;
-            };
-
             var cleanUpListenerStateChangeSuccess = $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
                 if (toState.name.match(/patient.dashboard.show.+/)) {
                     $rootScope.hasVisitedConsultation = true;
