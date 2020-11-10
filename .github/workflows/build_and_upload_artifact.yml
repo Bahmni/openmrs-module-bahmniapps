@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: pwd
+    - run: pwd && tree -if
     - run: npm install -g bower
     - run: cd ui && npm cache clean --force
     - run: bower cache clean
