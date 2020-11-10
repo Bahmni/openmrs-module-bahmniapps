@@ -160,7 +160,7 @@
     "MEDICATION_STARTED_ON": "Started on",
     "MEDICATION_STOPPED_ON": "Stopped on",
     "MEDICATION_DUE_TO": "due to",
-
+    "MEDICATION_LABEL_START_DATE": "Medication Start Date",
     "REMOVE_CONFIRMATION_KEY": "Are you sure you want to remove?",
     "CLEAR_CONFIRMATION_KEY": "Are you sure you want to clear?",
     "REMOVE_DRUG_ORDER_KEY": "Are you sure you want to remove drug : {{ drugName }} ?",
@@ -218,6 +218,7 @@
     "CLINICAL_INITIAL": "Initial",
     "CLINICAL_CHANGED": "Changed",
     "CLINICAL_UPDATE": "Update",
+    "CLINICAL_ACCEPT": "Accept",
     "CANCEL": "Cancel",
     "CLINICAL_ADD_AS_CONDITION": "Add as condition",
 
@@ -327,5 +328,8 @@
     "INVESTIGATIONS_PANELS_HEADER_LABEL": "Panels",
     "INVESTIGATIONS_SELECTIONS_HEADER_LABEL": "Selection",
     "CLINICAL_GO_TO_DASHBOARD_LABEL": "Go to IPD dashboard",
-    "NO_FORM_FOUND_FOR_PATIENT": "No Form found for this patient"
+    "CASTE": "Caste",
+    "CLASS": "Class",
+    "NO_FORM_FOUND_FOR_PATIENT": "No Form found for this patient",
+    "TUBERCULOSIS_FOLLOW_UP":"Tuberculosis Follow Up"
 }

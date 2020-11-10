@@ -204,5 +204,18 @@
     "CONDITION_LIST_FOLLOW_UP": "Seguimiento",
     "CONDITION_LIST_ACTIVE_SINCE": "condición de",
     "CONDITION_LIST_NO_CONDITIONS": "No hay Condiciones disponibles",
-    "CONDITION_LIST_NO_RETRO_MODE": "<strong>Las condiciones no pueden</strong> ser editadas en modo retroactivo"
+    "CONDITION_LIST_NO_RETRO_MODE": "<strong>Las condiciones no pueden</strong> ser editadas en modo retroactivo",
+    "CASTE": "Casta",
+    "CLASS": "Clase",
+    "NATIONAL_ID": "Identificación nacional",
+    "NO_FORM_FOUND_FOR_PATIENT": "No se encontraron formas para la paciente.",
+    "DISPOSITION_TYPE_LABEL": "Tipo de disposición",
+    "DISPOSITION_NOTE_LABEL": "Etiqueta de disposición",
+
+    "DISPOSITION_UNDO_DISCHARGE": "Undo Discharge",
+    "DISPOSITION_ADMIT_PATIENT": "Admit Patient",
+    "DISPOSITION_TRANSFER_PATIENT": "Transfer Patient",
+    "DISPOSITION_TRANSFER_PATIENT": "Transfer Patient",
+    "DISPOSITION_DISCHARGE_PATIENT": "Discharge Patient",
+    "DASHBOARD_TITLE_BACTERIOLOGY_RESULTS_KEY":"Resultados de bacteriología"
 }

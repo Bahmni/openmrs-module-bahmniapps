@@ -204,5 +204,9 @@
     "CONDITION_LIST_FOLLOW_UP": "Follow up",
     "CONDITION_LIST_ACTIVE_SINCE": "condition from",
     "CONDITION_LIST_NO_CONDITIONS": "No Conditions available",
-    "CONDITION_LIST_NO_RETRO_MODE": "<strong>Conditions cannot</strong> be edited in retrospective mode"
+    "CONDITION_LIST_NO_RETRO_MODE": "<strong>Conditions cannot</strong> be edited in retrospective mode",
+    "CASTE": "Casta",
+    "CLASS": "Classe",
+    "NATIONAL_ID": "Identidade nacional"
+    
 }
