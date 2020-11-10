@@ -82,6 +82,7 @@
                 </ul>
             </div>
             <div class="dashboard-header-right-wrapper">
+                <tele-consultation id="meetingContainer"></tele-consultation>
                 <div ng-if="::clinicalDashboardConfig.quickPrints" class="fl print-list-wrapper" toggle="togglePrintList">
                     <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group"
                             accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}">
