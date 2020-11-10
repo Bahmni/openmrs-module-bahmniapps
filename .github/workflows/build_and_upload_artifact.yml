@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install -g bower && cd ui && npm cache clean --force && bower cache clean --force && rm -rf coverage/ && /bin/bash ./scripts/package.sh
+    - run: npm install -g bower && npm install -g grunt-cli && gem install compass && cd ui && npm cache clean --force && bower cache clean --force && rm -rf coverage/ && /bin/bash ./scripts/package.sh
     - uses: actions/upload-artifact@v2
       with:
         name: BahmniApps
