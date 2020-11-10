@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         node-version: [10.16.3]
-        ruby: [2.3]
+        ruby: [2.5]
 
     steps:
     - uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
     - uses: actions/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-    - run: npm install -g bower && npm install -g grunt-cli && gem install compass && cd ui && npm cache clean --force && bower cache clean --force && rm -rf coverage/ && /bin/bash ./scripts/package.sh
+    - run: npm install -g bower && npm install -g grunt-cli && sudo gem install compass && cd ui && npm cache clean --force && bower cache clean --force && rm -rf coverage/ && /bin/bash ./scripts/package.sh
     - uses: actions/upload-artifact@v2
       with:
         name: BahmniApps
