@@ -25,7 +25,7 @@ jobs:
     - run: cd ui && npm cache clean --force
     - run: bower cache clean
     - run: rm -rf coverage/
-    - run: /bin/bash scripts/package.sh
+    - run: /bin/bash ./scripts/package.sh
     - uses: actions/upload-artifact@v2
       with:
         name: BahmniApps
