@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [10.16.3]
 
     steps:
     - uses: actions/checkout@v2
@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: cd openmrs-module-bahmniapps/ui && npm cache clean --force
+    - run: cd ui && npm cache clean --force
     - run: bower cache clean
     - run: rm -rf coverage/
     - run: /bin/bash scripts/package.sh
