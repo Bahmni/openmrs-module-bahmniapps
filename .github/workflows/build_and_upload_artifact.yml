@@ -28,4 +28,5 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: BahmniApps
-        path: target/bahmniapps.zip
+        path: ui/target/bahmniapps.zip
+

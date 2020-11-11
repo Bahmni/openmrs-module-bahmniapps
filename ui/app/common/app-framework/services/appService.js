@@ -10,7 +10,8 @@ angular.module('bahmni.common.appFramework')
             var baseUrl = Bahmni.Common.Constants.baseUrl;
             var customUrl = Bahmni.Common.Constants.customUrl;
             var appDescriptor = null;
-
+            $rootScope.meetId = null;
+            $rootScope.showTeleConsultationWindow = false;
             var loadConfig = function (url) {
                 return loadConfigService.loadConfig(url, appDescriptor.contextPath);
             };
@@ -181,6 +182,13 @@ angular.module('bahmni.common.appFramework')
 
             this.getAppName = function () {
                 return this.appName;
+            };
+
+            this.setTeleConsultationVars = function (meetId, show) {
+                if (!meetId || !$rootScope.meetId) {
+                    $rootScope.meetId = meetId;
+                    $rootScope.showTeleConsultationWindow = show;
+                }
             };
 
             this.checkPrivilege = function (privilegeName) {
