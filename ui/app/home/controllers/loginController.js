@@ -71,8 +71,18 @@ angular.module('bahmni.home')
                 });
             });
 
+            var supportedBrowsers = ["Firefox", "Chrome"];
+            $scope.isSupportedBrowser = function () {
+                for (var i = 0; i < supportedBrowsers.length; i++) {
+                    if ($window.navigator.userAgent.indexOf(supportedBrowsers[i]) !== -1) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+
             $scope.isChrome = function () {
-                if ($window.navigator.userAgent.indexOf("Chrome") != -1) {
+                if ($window.navigator.userAgent.indexOf("Chrome") !== -1) {
                     return true;
                 }
                 return false;
