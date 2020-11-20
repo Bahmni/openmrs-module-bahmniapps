@@ -63,32 +63,32 @@ angular.module('bahmni.clinical')
                             }
                         } else {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
-                                if (allTemplates[i].uuid == personalhist || allTemplates[i].uuid == familyhistdata || allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload) {
+                                if (allTemplates[i].uuid == personalhist || allTemplates[i].uuid == familyhistdata || allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload || allTemplates[i].uuid == maternityform) {
                                     allTemplates.splice(i, 1);
                                 }
                             }
                         }
                         if ($scope.patient.gender == "M") {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
-                                if (allTemplates[i].uuid == anccard) {
+                                if (allTemplates[i].uuid == anccard || allTemplates[i].uuid == maternityform) {
                                     allTemplates.splice(i, 1);
                                 }
                             }
                         }
-                        // var currentuserRoleName = $rootScope.currentUser.roles[0].name;
-                        // if ((currentuserRoleName == "Data Clerk") && (currentuserRoleName != "superman")){
-                        //     for (var i = allTemplates.length - 1; i >= 0; i--) {
-                        //         if (allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload || allTemplates[i].uuid == tbscreeningform || allTemplates[i].uuid == eacforms || allTemplates[i].uuid == maternityform) {
-                        //             allTemplates.splice(i, 1);
-                        //         }
-                        //     }
-                        // } else {
-                        //     for (var i = allTemplates.length - 1; i >= 0; i--) {
-                        //         if (allTemplates[i].uuid == personalhist || allTemplates[i].uuid == familyhistdata) {
-                        //             allTemplates.splice(i, 1);
-                        //         }
-                        //     }
-                        // }
+                        var currentuserRoleName = $rootScope.currentUser.roles[0].name;
+                        if ((currentuserRoleName == "Data Clerk") && (currentuserRoleName != "superman")){
+                            for (var i = allTemplates.length - 1; i >= 0; i--) {
+                                if (allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload || allTemplates[i].uuid == tbscreeningform || allTemplates[i].uuid == eacforms || allTemplates[i].uuid == maternityform) {
+                                    allTemplates.splice(i, 1);
+                                }
+                            }
+                        } else {
+                            for (var i = allTemplates.length - 1; i >= 0; i--) {
+                                if (allTemplates[i].uuid == personalhist || allTemplates[i].uuid == familyhistdata) {
+                                    allTemplates.splice(i, 1);
+                                }
+                            }
+                        }
                         var visitnumber = $scope.visitHistory.visits.length;
                         if (visitnumber <= 1) {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
