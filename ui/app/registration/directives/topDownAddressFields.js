@@ -14,7 +14,7 @@ angular.module('bahmni.registration')
             }
         };
     })
-    .controller('TopDownAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', function ($scope, addressHierarchyService) {
+    .controller('TopDownAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService','$translate', function ($scope, addressHierarchyService, $translate) {
         $scope.addressFieldInvalid = false;
         var selectedAddressUuids = {};
         var selectedUserGeneratedIds = {};
@@ -44,7 +44,23 @@ angular.module('bahmni.registration')
                 });
             }
         };
+        $scope.translateAttributes = function (attribute) {
+            console.log(attribute);
+            if($scope.ModuleName == null){
+                var keyPrefix = "REGISTRATION";
+            }else{
+                var keyPrefix = $scope.ModuleName;
+            }
 
+            var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
+            var translationKey = keyPrefix + "_" +keyName;
+            var translation = $translate.instant(translationKey);
+            if (translation != translationKey) {
+                attribute =  translation;
+            }
+            console.log(translation);
+            return attribute;
+         };
         $scope.addressFieldSelected = function (fieldName) {
             return function (addressFieldItem) {
                 selectedAddressUuids[fieldName] = addressFieldItem.addressField.uuid;
