@@ -1,12 +1,12 @@
 <tr bo-if="test.isPanel" class="header">
-    <td colspan="3"><strong>{{ test.orderName}}</strong></td>
+    <td colspan="3"><strong>{{::getLocaleSpecificNameForPanel(test)}}</strong></td>
 </tr>
 
 <tr bo-if="!test.isPanel" ng-class="{'test-notes-parent': test.notes, 'notes-open': test.showDetails}">
     <td class="testUnderPanel" bo-class="{'has-uploaded-file': test.uploadedFileName}">
-        <span ng-if="!test.uploadedFileName" bo-text="test.testName"></span>
+        <span ng-if="!test.uploadedFileName" bo-text="::getLocaleSpecificNameForTest(test)"></span>
         <span ng-if="test.labReportUrl">
-            <a class="uploaded-file"  href="{{test.labReportUrl}}" stop-event-propagation="click" target="_blank">{{test.testName}}
+            <a class="uploaded-file"  href="{{test.labReportUrl}}" stop-event-propagation="click" target="_blank">{{test.preferredNameByLocale}}
                 <span bo-show="test.hasRange" class="range">
                     <span bo-text="'(' + test.minNormal + ' - ' + test.maxNormal + ')'"></span>
                 </span>

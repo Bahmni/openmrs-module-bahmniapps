@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService',
-        function (RecursionHelper, spinner, $filter, messagingService) {
+    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService','$rootScope',
+        function (RecursionHelper, spinner, $filter, messagingService, $rootScope) {
             var link = function (scope) {
                 var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig && scope.observation.conceptUIConfig['hideAbnormalButton'];
 
@@ -84,6 +84,19 @@ angular.module('bahmni.common.conceptSet')
 
                 scope.getBooleanResult = function (value) {
                     return !!value;
+                };
+                scope.translatedLabel = function (observation) {
+                    var localName = "";
+                    if(typeof observation != 'undefined'){
+                        var currentLocale = $rootScope.currentUser.userProperties.defaultLocale;
+                        var namesMap = observation.concept.names;
+                        namesMap.forEach(function (names) {
+                            if(names.locale === currentLocale){
+                                observation.concept.name =  names.display;
+                            }
+                        });
+                    }
+                    return observation.concept.name;
                 };
             };
 

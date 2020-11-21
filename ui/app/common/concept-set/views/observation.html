@@ -45,7 +45,7 @@
 
 
                 <label class="control-label" ng-hide="observation.getControlType()== 'image'" ng-if="::showTitle" for="{{::observation.uniqueId}}">
-                    <span ng-bind="::observation.label"></span>
+                    <span ng-bind="::translatedLabel(observation)"></span>
                     <span ng-if="::getBooleanResult(observation.primaryObs.units)"
                           ng-bind-html="::'(' + observation.primaryObs.units + ')'"></span>
                     <span ng-if="::observation.conceptUIConfig.required===true" class="asterick">*</span>
