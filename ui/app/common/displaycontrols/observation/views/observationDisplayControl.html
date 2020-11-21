@@ -35,7 +35,7 @@
                     </ul>
                     <ul ng-if="obsGroup.isOpen" class="print-observations hidden-print">
                         <show-observation show-details-button="::config.showDetailsButton" patient="::patient"
-                                          observation="::observation" ng-repeat="observation in ::obsGroup.value"
+                                          observation="::observation" ng-repeat="observation in obsGroup.value"
                                           level="2"></show-observation>
                     </ul>
                 </li>

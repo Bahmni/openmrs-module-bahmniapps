@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner', '$location', 'ngDialog', '$window', '$state','$translate',
+    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner', '$location', 'ngDialog', '$window', '$state', '$translate',
         function ($scope, $rootScope, $http, patientAttributeService, appService, spinner, $location, ngDialog, $window, $state, $translate) {
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
@@ -17,7 +17,7 @@ angular.module('bahmni.registration')
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
-
+            $scope.ModuleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
             var dontSaveButtonClicked = false;
 
             var isHref = false;
@@ -31,17 +31,16 @@ angular.module('bahmni.registration')
                 }
             };
             $scope.translateAttributes = function (attribute) {
-                if($scope.ModuleName == null){
+                if ($scope.ModuleName == null) {
                     var keyPrefix = "REGISTRATION";
-                }else{
+                } else {
                     var keyPrefix = $scope.ModuleName;
                 }
-
                 var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
-                var translationKey = keyPrefix + "_" +keyName;
+                var translationKey = keyPrefix + "_" + keyName;
                 var translation = $translate.instant(translationKey);
                 if (translation != translationKey) {
-                    attribute =  translation;
+                    attribute = translation;
                 }
                 return attribute;
             };

@@ -3,11 +3,6 @@
 angular.module('bahmni.registration')
     .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q', '$translate',
         function ($scope, $rootScope, $state, patientService, patient, spinner, appService, messagingService, ngDialog, $q, $translate) {
-            var modulePrefixMap = {
-                    'registration': 'REGISTRATION_',
-                    'program': 'PROGRAM_',
-                    'OT': 'OT_'
-                };
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.actions = {};
             var errorMessage;
@@ -20,19 +15,18 @@ angular.module('bahmni.registration')
             var getPersonAttributeTypes = function () {
                 return $rootScope.patientConfiguration.attributeTypes;
             };
-
             $scope.translateAttributes = function (attribute) {
-                if($scope.ModuleName == null){
+                if ($scope.ModuleName == null) {
                     var keyPrefix = "REGISTRATION";
-                }else{
+                } else {
                     var keyPrefix = $scope.ModuleName;
                 }
 
                 var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
-                var translationKey = keyPrefix + "_" +keyName;
+                var translationKey = keyPrefix + "_" + keyName;
                 var translation = $translate.instant(translationKey);
                 if (translation != translationKey) {
-                    attribute =  translation;
+                    attribute = translation;
                 }
                 return attribute;
             };

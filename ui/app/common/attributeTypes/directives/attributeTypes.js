@@ -38,15 +38,12 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
             $scope.translateAttributeName = function (attribute, moduleName) {
                 var keyPrefix = moduleName && modulePrefixMap[moduleName] ? modulePrefixMap[moduleName] : '';
                 keyPrefix = (keyPrefix == '' && attribute.keyPrefix) ? attribute.keyPrefix : '';
-                console.log(attribute.name);
                 var keyName = attribute.name.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
                 var translationKey = keyPrefix + keyName;
                 var translation = $translate.instant(translationKey);
                 if (translation == translationKey) {
-                console.log(attribute.description);
                     return attribute.description;
                 }
-                
                 return translation;
             };
         }

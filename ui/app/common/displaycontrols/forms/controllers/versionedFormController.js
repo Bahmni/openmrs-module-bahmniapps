@@ -80,7 +80,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                 });
             };
             $scope.doesUserHaveAccessToTheForm = function (data, action) {
-                if (data.privileges != undefined) {
+                if (data.privileges.length > 0) {
                     var editable = [];
                     var viewable = [];
                     data.privileges.forEach(function (formPrivilege) {
@@ -101,9 +101,11 @@ angular.module('bahmni.common.displaycontrol.forms')
                     } else {
                         if (viewable.includes(true)) {
                             return true;
+                        } else {
+                            return false;
                         }
                     }
-                }else{ return true; }
+                } else { return true; }
             };
 
             $scope.getDisplayName = function (data) {
