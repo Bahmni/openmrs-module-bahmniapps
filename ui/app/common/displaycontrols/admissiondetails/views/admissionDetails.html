@@ -7,7 +7,7 @@
         <table class="dashboard-table history-diagnosis" ng-if="::visitSummary.admissionDetails || visitSummary.dischargeDetails">
             <tbody class="row">
             <tr ng-if="bedDetails">
-                <td class="value">{{::bedDetails.wardName}}</td>
+                <td class="value">{{::translateAttributeName(bedDetails.wardName,'BM')}}</td>
                 <td class="value">{{::bedDetails.bedNumber}}</td>
             </tr>
             <tr class="view-past">

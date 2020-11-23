@@ -48,7 +48,6 @@
         this.viewName = getViewUrl(this);
         this.hideEmptyDisplayControl = section.hideEmptyDisplayControl != undefined ? section.hideEmptyDisplayControl : false;
         this.isDataAvailable = true;
-
         this.id = getId(this, $filter);
     };
 

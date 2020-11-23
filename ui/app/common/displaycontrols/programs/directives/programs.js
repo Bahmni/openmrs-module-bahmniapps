@@ -1,9 +1,14 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.programs')
-    .directive('programs', ['programService', '$state', 'spinner',
-        function (programService, $state, spinner) {
+    .directive('programs', ['programService', '$state', 'spinner', '$translate',
+        function (programService, $state, spinner, $translate) {
             var controller = function ($scope) {
+                var modulePrefixMap = {
+                    'registration': 'REGISTRATION',
+                    'program': 'PROGRAM',
+                    'OT': 'OT'
+                };
                 $scope.initialization = programService.getPatientPrograms($scope.patient.uuid, true, $state.params.enrollment).then(function (patientPrograms) {
                     if (_.isEmpty(patientPrograms.activePrograms) && _.isEmpty(patientPrograms.endedPrograms)) {
                         $scope.$emit("no-data-present-event");

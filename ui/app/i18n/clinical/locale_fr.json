@@ -248,9 +248,18 @@
   "CLASS": "Classe",
   "NATIONAL_ID": "Carte d'identité",
   "NO_FORM_FOUND_FOR_PATIENT": "Aucun formulaire trouvé pour le patient",
-  "DISPOSITION_TYPE_LABEL": "Tipo de disposición",
-  "DISPOSITION_NOTE_LABEL": "Étiquette de disposition",
+  "DISPOSITION_TYPE_LABEL": "Type de disposition",
+  "DISPOSITION_NOTE_LABEL": "Note de disposition",
+  "DISPOSITION_UNDO_DISCHARGE": "Annuler la décharge",
+  "DISPOSITION_ADMIT_PATIENT": "Admettre le patient",
+  "DISPOSITION_TRANSFER_PATIENT": "Transfert du patient",
+  "DISPOSITION_DISCHARGE_PATIENT": "Patient de sortie",
   "DASHBOARD_TITLE_BACTERIOLOGY_RESULTS_KEY":"Resultados de bacteriología",
   "CONSULTATION_TAB_CONSULTATION_NOTES_LABEL": "Notes de consultation",
-  "CLINICAL_ENTER_NOTES_PLACEHOLDER": "Entrez les notes ici"
+  "CLINICAL_ENTER_NOTES_PLACEHOLDER": "Entrez les notes ici",
+  "PROGRAM_IDNUMBER": "Numéro d'identification",
+  "PROGRAM_TREATMENTDATE": "Date du traitement",
+  "PROGRAM_COMORBIDITES": "Comorbidités",
+  "PROGRAM_DOCTORINCHARGE": "Docteur en charge",
+  "PROGRAM_PATIENTSTAGE": "Stade du patient"
 }

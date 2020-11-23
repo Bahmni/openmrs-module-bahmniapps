@@ -18,7 +18,7 @@ angular.module('bahmni.registration')
         $scope.addressFieldInvalid = false;
         var selectedAddressUuids = {};
         var selectedUserGeneratedIds = {};
-
+        $scope.ModuleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
         var addressLevelUIOrderBasedOnConfig = $scope.addressLevels;
         $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelUIOrderBasedOnConfig, 2);

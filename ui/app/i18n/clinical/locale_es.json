@@ -222,14 +222,19 @@
     "NATIONAL_ID": "Identificación nacional",
     "NO_FORM_FOUND_FOR_PATIENT": "No se encontraron formas para la paciente.",
     "DISPOSITION_TYPE_LABEL": "Tipo de disposición",
-    "DISPOSITION_NOTE_LABEL": "Etiqueta de disposición",
-    "DISPOSITION_UNDO_DISCHARGE": "Undo Discharge",
-    "DISPOSITION_ADMIT_PATIENT": "Admit Patient",
-    "DISPOSITION_TRANSFER_PATIENT": "Transfer Patient",
-    "DISPOSITION_TRANSFER_PATIENT": "Transfer Patient",
-    "DISPOSITION_DISCHARGE_PATIENT": "Discharge Patient",
+    "DISPOSITION_NOTE_LABEL": "Nota de disposición",
+    "DISPOSITION_UNDO_DISCHARGE": "Deshacer descarga",
+    "DISPOSITION_ADMIT_PATIENT": "Admitir paciente",
+    "DISPOSITION_TRANSFER_PATIENT": "Paciente transferida",
+    "DISPOSITION_DISCHARGE_PATIENT": "Paciente de alta",
     "DASHBOARD_TITLE_BACTERIOLOGY_RESULTS_KEY":"Resultados de bacteriología",
     "CONSULTATION_TAB_CONSULTATION_NOTES_LABEL": "Notas de consulta",
     "CLINICAL_ENTER_NOTES_PLACEHOLDER": "Ingrese notas aquí",
-    "ACCESSION_AT_LABEL": "Adhesión en"
+    "ACCESSION_AT_LABEL": "Adhesión en",
+    "PROGRAM_IDNUMBER": "Número de identificación",
+    "PROGRAM_TREATMENTDATE": "Fecha de tratamiento",
+    "PROGRAM_COMORBIDITES": "Comorbilidades",
+    "PROGRAM_DOCTORINCHARGE": "Doctora a cargo",
+    "PROGRAM_PATIENTSTAGE": "Etapa del paciente"
+
 }

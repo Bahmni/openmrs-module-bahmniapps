@@ -21,7 +21,6 @@ angular.module('bahmni.registration')
                 } else {
                     var keyPrefix = $scope.ModuleName;
                 }
-
                 var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
                 var translationKey = keyPrefix + "_" + keyName;
                 var translation = $translate.instant(translationKey);

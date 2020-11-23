@@ -68,24 +68,23 @@ angular.module('bahmni.common.displaycontrol.orders')
                 $scope.initialization = init();
                 $scope.translatedLabel = function (concept) {
                     var localName = "";
-                    if(typeof concept != 'undefined'){
+                    if (typeof concept != 'undefined') {
                         var currentLocale = $rootScope.currentUser.userProperties.defaultLocale;
                         var namesMap = concept.names;
-                        if(namesMap != null && (typeof namesMap != 'undefined')){
+                        if (namesMap != null && (typeof namesMap != 'undefined')) {
                             namesMap.forEach(function (names) {
-                                if(names.locale === currentLocale){
-                                    observation.concept.name =  names.display;
+                                if (names.locale === currentLocale) {
+                                    observation.concept.name = names.display;
                                 }
                             });
-                            }else{
-                                if(concept.shortName != null){
-                                     return concept.shortName;       
-                                }
-
+                        } else {
+                            if (concept.shortName != null) {
+                                return concept.shortName;
                             }
                         }
-                         return concept.name;
-                    };
+                    }
+                    return concept.name;
+                };
             };
 
             var link = function ($scope, element) {

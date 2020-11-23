@@ -64,5 +64,7 @@
     "MOVEMENT_FROM_KEY": "Movement From",
     "MOVEMENT_TO_KEY": "Movement To",
     "MOVE_KEY": "Move",
-    "ADMIT_TO_KEY": "Admit To:"
+    "ADMIT_TO_KEY": "Admit To:",
+    "BED_MANAGEMENT_BED_DETAILS": "Ward Name",
+    "BED_MANAGEMENT_GENERAL_WARD": "General Ward"
 }
