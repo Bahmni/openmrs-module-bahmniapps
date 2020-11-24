@@ -31,6 +31,7 @@ angular.module('bahmni.clinical').controller('ClinicalController',
                     left: '0px'
                 });
                 teleConsultationWindow.css({
+                    position: 'fixed',
                     top: '40%',
                     left: '40%'
                 });
