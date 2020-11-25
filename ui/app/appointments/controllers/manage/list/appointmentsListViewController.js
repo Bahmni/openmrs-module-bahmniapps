@@ -326,11 +326,13 @@ angular.module('bahmni.appointments')
                 });
                 if (_.isEmpty($scope.additionalInfoColumns)) {
                     var colList = [];
-                    for (const [key, value] of Object.entries(jsonObj)) {
+                    var mapIter = jsonObj.entries();
+                    Object.keys(jsonObj).forEach(function (key) {
                         if (!_.includes($scope.additionalInfoColumns, key)) {
-                            colList.push(value);
+                            colList.push(jsonObj[value]);
                         }
-                    }
+                    });
+
                     return Object.values(colList).join(", ");
                 }
                 return JSON.stringify(jsonObj || '').replace(/[{\"}]/g, "").replace(/[,]/g, ",\t");
