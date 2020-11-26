@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('treatmentData', ['treatmentService', 'appService', 'spinner', '$stateParams', '$q', 'treatmentConfig', function (treatmentService, appService, spinner, $stateParams, $q, treatmentConfig) {
+    .directive('treatmentData', ['treatmentService', 'appService', 'spinner', '$stateParams', '$q', 'treatmentConfig', '$rootScope', function (treatmentService, appService, spinner, $stateParams, $q, treatmentConfig, $rootScope) {
         var controller = function ($scope) {
             var Constants = Bahmni.Clinical.Constants;
+            var defaultLocale = $rootScope.currentUser.userProperties.defaultLocale;
             var defaultParams = {
                 showListView: true,
                 showRoute: false,
@@ -30,7 +31,7 @@ angular.module('bahmni.clinical')
                 }
 
                 return $q.all([treatmentConfig(), treatmentService.getPrescribedAndActiveDrugOrders($scope.params.patientUuid, $scope.params.numberOfVisits,
-                    $scope.params.showOtherActive, $scope.params.visitUuids || [], startDate, endDate, getEffectiveOrdersOnly)])
+                    $scope.params.showOtherActive, $scope.params.visitUuids || [], startDate, endDate, getEffectiveOrdersOnly, defaultLocale)])
                     .then(function (results) {
                         var config = results[0];
                         var drugOrderResponse = results[1].data;

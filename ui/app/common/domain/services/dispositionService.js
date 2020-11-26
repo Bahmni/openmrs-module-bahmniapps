@@ -14,17 +14,21 @@ angular.module('bahmni.common.domain')
                 "&v=custom:(uuid,name:(name))", {cache: true});
         };
 
-        var getDispositionByVisit = function (visitUuid) {
+        var getDispositionByVisit = function (visitUuid, locale) {
             return $http.get(Bahmni.Common.Constants.bahmniDispositionByVisitUrl, {
-                params: {visitUuid: visitUuid}
+                params: {
+                    visitUuid: visitUuid,
+                    locale: locale
+                }
             });
         };
 
-        var getDispositionByPatient = function (patientUuid, numberOfVisits) {
+        var getDispositionByPatient = function (patientUuid, numberOfVisits, locale) {
             return $http.get(Bahmni.Common.Constants.bahmniDispositionByPatientUrl, {
                 params: {
                     patientUuid: patientUuid,
-                    numberOfVisits: numberOfVisits
+                    numberOfVisits: numberOfVisits,
+                    locale: locale
                 }
             });
         };

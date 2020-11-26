@@ -231,55 +231,10 @@ angular.module('bahmni.clinical')
                     var formUuid = observationForm.formUuid || observationForm.uuid;
                     var formName = observationForm.name || observationForm.formName;
                     var formVersion = observationForm.version || observationForm.formVersion;
-                    var privileges = observationForm.privileges;
-                    var labels = observationForm.nameTranslation ? JSON.parse(observationForm.nameTranslation) : [];
-                    var label = formName;
-                    if (labels.length > 0) {
-                        var locale = localStorage.getItem("NG_TRANSLATE_LANG_KEY") || "en";
-                        var currentLabel = labels.find(function (label) {
-                            return label.locale === locale;
-                        });
-                        if (currentLabel) { label = currentLabel.display; }
-                    }
-                    if ($scope.isFormEditableByTheUser(observationForm)) {
-                        forms.push(new Bahmni.ObservationForm(formUuid, $rootScope.currentUser,
-                            formName, formVersion, observations, label));
-                    }
+                    forms.push(new Bahmni.ObservationForm(formUuid, $rootScope.currentUser, formName, formVersion, observations));
                 });
-                $scope.formListWithEditPrivileges = forms;
                 return forms;
             };
-            $scope.isFormEditableByTheUser = function (form) {
-                var result = false;
-                if (form.privileges.length != 0) {
-                    form.privileges.forEach(function (formPrivilege) {
-                        _.find($rootScope.currentUser.privileges, function (privilege) {
-                            if (formPrivilege.privilegeName === privilege.name) {
-                                if (formPrivilege.editable) {
-                                    result = formPrivilege.editable;
-                                }
-                            }
-                        });
-                    });
-                } else { result = true; }
-                return result;
-            };
-            $scope.isFormViewableByTheUser = function (form) {
-                var result = false;
-                if (form.privileges.length != 0) {
-                    form.privileges.forEach(function (formPrivilege) {
-                        _.find($rootScope.currentUser.privileges, function (privilege) {
-                            if (formPrivilege.privilegeName === privilege.name) {
-                                if (formPrivilege.viewable) {
-                                    result = formPrivilege.editable;
-                                }
-                            }
-                        });
-                    });
-                } else { result = true; }
-                return result;
-            };
-
             // Form Code :: End
             init();
         }]);

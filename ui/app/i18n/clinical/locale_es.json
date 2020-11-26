@@ -204,5 +204,25 @@
     "CONDITION_LIST_FOLLOW_UP": "Seguimiento",
     "CONDITION_LIST_ACTIVE_SINCE": "condición de",
     "CONDITION_LIST_NO_CONDITIONS": "No hay Condiciones disponibles",
-    "CONDITION_LIST_NO_RETRO_MODE": "<strong>Las condiciones no pueden</strong> ser editadas en modo retroactivo"
+    "CONDITION_LIST_NO_RETRO_MODE": "<strong>Las condiciones no pueden</strong> ser editadas en modo retroactivo",
+    "CASTE": "Casta",
+    "CLASS": "Clase",
+    "NATIONAL_ID": "Identificación nacional",
+    "NO_FORM_FOUND_FOR_PATIENT": "No se encontraron formas para la paciente.",
+    "DISPOSITION_TYPE_LABEL": "Tipo de disposición",
+    "DISPOSITION_NOTE_LABEL": "Nota de disposición",
+    "DISPOSITION_UNDO_DISCHARGE": "Deshacer descarga",
+    "DISPOSITION_ADMIT_PATIENT": "Admitir paciente",
+    "DISPOSITION_TRANSFER_PATIENT": "Paciente transferida",
+    "DISPOSITION_DISCHARGE_PATIENT": "Paciente de alta",
+    "DASHBOARD_TITLE_BACTERIOLOGY_RESULTS_KEY":"Resultados de bacteriología",
+    "CONSULTATION_TAB_CONSULTATION_NOTES_LABEL": "Notas de consulta",
+    "CLINICAL_ENTER_NOTES_PLACEHOLDER": "Ingrese notas aquí",
+    "ACCESSION_AT_LABEL": "Adhesión en",
+    "PROGRAM_IDNUMBER": "Número de identificación",
+    "PROGRAM_TREATMENTDATE": "Fecha de tratamiento",
+    "PROGRAM_COMORBIDITES": "Comorbilidades",
+    "PROGRAM_DOCTORINCHARGE": "Doctora a cargo",
+    "PROGRAM_PATIENTSTAGE": "Etapa del paciente"
+
 }

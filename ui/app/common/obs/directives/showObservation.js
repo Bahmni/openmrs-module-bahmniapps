@@ -20,6 +20,9 @@ angular.module('bahmni.common.obs')
                 }
                 return $filter(filterName)(observation.observationDateTime);
             };
+            $scope.translatedLabel = function (observation) {
+                return observation.conceptNameToDisplay;
+            };
             $scope.openVideoInPopup = function (observation) {
                 ngDialog.open({
                     template: "../common/obs/views/showVideo.html",

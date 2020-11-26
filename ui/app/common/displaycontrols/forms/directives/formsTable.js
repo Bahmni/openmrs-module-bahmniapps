@@ -32,32 +32,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                 var sortedFormDataByLatestDate = function (formData) {
                     return _.sortBy(formData, "obsDatetime").reverse();
                 };
-                $scope.doesUserHaveAccessToTheForm = function (data, action) {
-                    if (data.privileges != undefined) {
-                        var editable = [];
-                        var viewable = [];
-                        data.privileges.forEach(function (formPrivilege) {
-                            _.find($rootScope.currentUser.privileges, function (privilege) {
-                                if (formPrivilege.privilegeName === privilege.name) {
-                                    if (action === 'edit') {
-                                        editable.push(formPrivilege.editable);
-                                    } else {
-                                        viewable.push(formPrivilege.viewable);
-                                    }
-                                }
-                            });
-                        });
-                        if (action === 'edit') {
-                            if (editable.includes(true)) {
-                                return true;
-                            }
-                        } else {
-                            if (viewable.includes(true)) {
-                                return true;
-                            }
-                        }
-                    } else { return true; }
-                };
+
                 var init = function () {
                     $scope.formsNotFound = false;
                     return $q.all([getAllObservationTemplates(), obsFormData()]).then(function (results) {

@@ -80,5 +80,32 @@
   "REQUIRED_FIELD": "Veuillez remplir ce champ",
   "PRIVILEGE_REQUIRED": "L'utilisateur est connecté mais n'a pas le privilège pertinent",
   "NO_FULFILMENT_MESSAGE": "Aucune observation capturée pour cette commande.",
-  "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Veuillez sélectionner une valeur de auto complète"
+  "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Veuillez sélectionner une valeur de auto complète",
+  "REGISTRATON_LATEST_KEY": "Dernière",
+  "MESSAGE_DIALOG_OPTION_COPY": "Copy",
+  "MESSAGE_DIALOG_OPTION_OKAY": "Ok",
+
+  "REGISTRATION_CREATE_NEW_CONFIG_KEY": "Créer un nouveau",
+  "REGISTRATION_SEARCH_CONFIG_KEY": "Chercher",
+  "REGISTRATION_PATIENT_IDENTIFIER": "Identifiant du patient",
+  "REGISTRATION_NAME_IN_LOCAL_LANGUAGE": "Nom dans la langue locale",
+  "REGISTRATION_MIDDLENAMELOCAL": "Second prénom local",
+  "REGISTRATION_FAMILYNAMELOCAL": "Nom de famille local",
+  "PATIENT_ATTRIBUTE_CASTE": "Casta",
+  "PATIENT_ATTRIBUTE_CLASS": "Classe",
+  "PATIENT_ATTRIBUTE_EDUCATION": "Détails sur l'éducation",
+  "PATIENT_ATTRIBUTE_OCCUPATION": "Occupation",
+  "PATIENT_ATTRIBUTE_SECONDARYCONTACT": "Contact secondaire",
+  "PATIENT_ATTRIBUTE_PRIMARYRELATIVE": "Parent primaire",
+  "PATIENT_ATTRIBUTE_SECONDARYIDENTIFIER": "Identificateur secondaire",
+  "PATIENT_ATTRIBUTE_LANDHOLDING": "Propriété foncière",
+  "PATIENT_ATTRIBUTE_DEBT": "Dette",
+  "PATIENT_ATTRIBUTE_DISTANCEFROMCENTER": "Distance du centre",
+  "PATIENT_ATTRIBUTE_ISURBAN": "est urbain",
+  "PATIENT_ATTRIBUTE_CLUSTER": "Grappe",
+  "PATIENT_ATTRIBUTE_RATIONCARD": "Carte de ration",
+  "PATIENT_ATTRIBUTE_FAMILYINCOME": "Revenu familial",
+  "NUTRITIONAL_VALUES_LOCALE_KEY": "Valeurs nutritionnelles",
+  "FEE_INFORMATION_LOCALE_KEY": "Informations sur les frais"
+
 }
