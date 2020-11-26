@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.forms')
-    .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService', 'appService', '$state',
-        function (conceptSetService, spinner, $q, visitFormService, appService, $state) {
+    .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService', 'appService', '$state', '$rootScope',
+        function (conceptSetService, spinner, $q, visitFormService, appService, $state, $rootScope) {
             var defaultController = function ($scope) {
                 $scope.shouldPromptBrowserReload = true;
                 $scope.showFormsDate = appService.getAppDescriptor().getConfigValue("showFormsDate");
@@ -33,7 +33,32 @@ angular.module('bahmni.common.displaycontrol.forms')
                 var sortedFormDataByLatestDate = function (formData) {
                     return _.sortBy(formData, "obsDatetime").reverse();
                 };
-
+                $scope.doesUserHaveAccessToTheForm = function (data, action) {
+                    if (data.privileges != undefined) {
+                        var editable = [];
+                        var viewable = [];
+                        data.privileges.forEach(function (formPrivilege) {
+                            _.find($rootScope.currentUser.privileges, function (privilege) {
+                                if (formPrivilege.privilegeName === privilege.name) {
+                                    if (action === 'edit') {
+                                        editable.push(formPrivilege.editable);
+                                    } else {
+                                        viewable.push(formPrivilege.viewable);
+                                    }
+                                }
+                            });
+                        });
+                        if (action === 'edit') {
+                            if (editable.includes(true)) {
+                                return true;
+                            }
+                        } else {
+                            if (viewable.includes(true)) {
+                                return true;
+                            }
+                        }
+                    } else { return true; }
+                };
                 var init = function () {
                     $scope.formsNotFound = false;
                     return $q.all([getAllObservationTemplates(), obsFormData()]).then(function (results) {
@@ -54,14 +79,19 @@ angular.module('bahmni.common.displaycontrol.forms')
 
                 $scope.getDisplayName = function (data) {
                     var concept = data.concept;
-                    var displayName = data.concept.displayString;
-                    if (concept.names && concept.names.length === 1 && concept.names[0].name != "") {
-                        displayName = concept.names[0].name;
-                    } else if (concept.names && concept.names.length === 2) {
-                        var shortName = _.find(concept.names, {conceptNameType: "SHORT"});
-                        displayName = shortName && shortName.name ? shortName.name : displayName;
-                    }
+                    var defaultLocale = $rootScope.currentUser.userProperties.defaultLocale;
+                    var displayName = getLocaleSpecificConceptName(concept, defaultLocale, "FULLY_SPECIFIED");
                     return displayName;
+                };
+                var getLocaleSpecificConceptName = function (concept, locale, conceptNameType) {
+                    conceptNameType = conceptNameType ? conceptNameType : "SHORT";
+                    var localeSpecificName = _.filter(concept.names, function (name) {
+                        return ((name.locale === locale) && (name.conceptNameType === conceptNameType));
+                    });
+                    if (localeSpecificName && localeSpecificName[0]) {
+                        return localeSpecificName[0].display;
+                    }
+                    return concept.name.name;
                 };
 
                 $scope.initialization = init();
