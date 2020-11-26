@@ -17,7 +17,7 @@ angular.module('bahmni.clinical')
         };
 
         var getPrescribedAndActiveDrugOrders = function (patientUuid, numberOfVisits, getOtherActive, visitUuids, startDate, endDate, getEffectiveOrdersOnly) {
-            return $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/prescribedAndActiveWithLocale", {
+            return $http.get(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/prescribedAndActive", {
                 params: {
                     patientUuid: patientUuid,
                     numberOfVisits: numberOfVisits,
@@ -26,7 +26,7 @@ angular.module('bahmni.clinical')
                     startDate: startDate,
                     endDate: endDate,
                     getEffectiveOrdersOnly: getEffectiveOrdersOnly,
-                    locale: $rootScope.currentUser.userProperties.defaultLocale
+                    preferredLocale: $rootScope.currentUser.userProperties.defaultLocale
                 },
                 withCredentials: true
             }).success(function (response) {
