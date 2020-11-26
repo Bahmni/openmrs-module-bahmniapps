@@ -1,9 +1,14 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.programs')
-    .directive('programs', ['programService', '$state', 'spinner',
-        function (programService, $state, spinner) {
+    .directive('programs', ['programService', '$state', 'spinner', '$translate',
+        function (programService, $state, spinner, $translate) {
             var controller = function ($scope) {
+                var modulePrefixMap = {
+                    'registration': 'REGISTRATION',
+                    'program': 'PROGRAM',
+                    'OT': 'OT'
+                };
                 $scope.initialization = programService.getPatientPrograms($scope.patient.uuid, true, $state.params.enrollment).then(function (patientPrograms) {
                     if (_.isEmpty(patientPrograms.activePrograms) && _.isEmpty(patientPrograms.endedPrograms)) {
                         $scope.$emit("no-data-present-event");
@@ -54,6 +59,19 @@ angular.module('bahmni.common.displaycontrol.programs')
                 };
                 var isCodedConceptFormat = function (format) {
                     return format == "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype";
+                };
+                $scope.translateAttributeName = function (attribute, moduleName) {
+                    var keyPrefix = moduleName && modulePrefixMap[moduleName] ? modulePrefixMap[moduleName] : '';
+                    if (typeof attribute.description == 'undefined') {
+                        attribute.description = attribute.display;
+                    }
+                    var keyName = attribute.description.toUpperCase().replace(/[^a-zA-Z0-9]/g, "").replace(/ /g, "_").replace(/-/g, "_");
+                    var translationKey = keyPrefix + '_' + keyName;
+                    var translation = $translate.instant(translationKey);
+                    if (translation == translationKey) {
+                        return attribute.description;
+                    }
+                    return translation;
                 };
             };
 

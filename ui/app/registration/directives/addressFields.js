@@ -14,9 +14,10 @@ angular.module('bahmni.registration')
             }
         };
     })
-    .controller('AddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', function ($scope, addressHierarchyService) {
+    .controller('AddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', '$translate', function ($scope, addressHierarchyService, $translate) {
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
         $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelsCloneInDescendingOrder, 2);
+        $scope.ModuleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
         var addressLevelsNamesInDescendingOrder = addressLevelsCloneInDescendingOrder.map(function (addressLevel) {
             return addressLevel.addressField;
         });
@@ -36,7 +37,20 @@ angular.module('bahmni.registration')
                 });
             };
         };
-
+        $scope.translateAttributes = function (attribute) {
+            if ($scope.ModuleName == null) {
+                var keyPrefix = "REGISTRATION";
+            } else {
+                var keyPrefix = $scope.ModuleName;
+            }
+            var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
+            var translationKey = keyPrefix + "_" + keyName;
+            var translation = $translate.instant(translationKey);
+            if (translation != translationKey) {
+                attribute = translation;
+            }
+            return attribute;
+        };
         $scope.removeAutoCompleteEntry = function (fieldName) {
             return function () {
                 $scope.selectedValue[fieldName] = null;

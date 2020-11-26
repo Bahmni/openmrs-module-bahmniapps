@@ -16,7 +16,7 @@
                 <section>
                     <article class="form-field existing-patient">
                         <div class="field-attribute">
-                            <label class="control-label" for="patientID">{{:: patient.primaryIdentifier.identifierType.name}}
+                            <label class="control-label" for="patientID">{{:: translateAttributes(patient.primaryIdentifier.identifierType.name) | translate}}
                                 <span ng-show="::patient.primaryIdentifier.identifierType.required && !patient.primaryIdentifier.hasIdentifierSources()" class="asterick">*</span>
                             </label>
                         </div>
@@ -29,7 +29,7 @@
 
                         <div class="field-value field-value-has-identifier">
                             <input type="text" id="registrationNumber" ng-model="patient.primaryIdentifier.registrationNumber"
-                                   placeholder="{{:: patient.primaryIdentifier.identifierType.description}}" non-blank="patient.primaryIdentifier.isIdentifierRequired()" pattern-validate
+                                   placeholder="{{:: translateAttributes(patient.primaryIdentifier.identifierType.description)}}" non-blank="patient.primaryIdentifier.isIdentifierRequired()" pattern-validate
                                    ng-change="patient.primaryIdentifier.generate()" focus-on="patient.primaryIdentifier.hasOldIdentifier"
                                    ng-show="patient.primaryIdentifier.hasOldIdentifier || !patient.primaryIdentifier.hasIdentifierSources()" >
                             <div ng-show="::patient.primaryIdentifier.hasIdentifierSources() && showEnterID" class="fl">

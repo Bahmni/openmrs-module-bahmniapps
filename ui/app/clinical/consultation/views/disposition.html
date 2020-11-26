@@ -6,7 +6,7 @@
     <div class="box disposition-tab">
         <form ng-submit="submit()">
             <label for="dispositionAction">{{ 'DISPOSITION_TYPE_LABEL'|translate }}: </label>
-            <select id="dispositionAction" ng-model="dispositionCode" ng-options="d.code as d.name for d in dispositionActions" ng-change="clearDispositionNote();"  ng-disabled="isRetrospectiveMode()">
+            <select id="dispositionAction" ng-model="dispositionCode" ng-options="d.code as ::translateAttributeName(d.name) for d in dispositionActions" ng-change="clearDispositionNote();"  ng-disabled="isRetrospectiveMode()">
                 <option value=""></option>
             </select>
             <div class="dispositionNotesWrap">

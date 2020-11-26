@@ -1,9 +1,10 @@
 "use strict";
 
 angular.module('bahmni.common.displaycontrol.disposition')
-    .directive('disposition', ['dispositionService', 'spinner',
-        function (dispositionService, spinner) {
-            var controller = function ($scope) {
+    .directive('disposition', ['dispositionService', 'spinner', '$rootScope',
+        function (dispositionService, spinner, $rootScope) {
+            var controller = function ($scope, $rootScope) {
+                var defaultLocale = $rootScope.currentUser.userProperties.defaultLocale;
                 var fetchDispositionByPatient = function (patientUuid, numOfVisits) {
                     return dispositionService.getDispositionByPatient(patientUuid, numOfVisits)
                         .then(handleDispositionResponse);
