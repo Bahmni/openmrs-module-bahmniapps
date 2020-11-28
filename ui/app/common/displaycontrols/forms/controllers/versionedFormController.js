@@ -70,6 +70,9 @@ angular.module('bahmni.common.displaycontrol.forms')
                                 };
                             });
                         }
+                        if(attachedFormList.length == 0){
+                            attachedFormList = formListFromObsTab;
+                        }
                         var sortedFormDataByDate = sortFormDataByLatestDate(filterForms(attachedFormList));
                         if ($scope.isOnDashboard) {
                             $scope.formData = getUniqueForms(sortedFormDataByDate);

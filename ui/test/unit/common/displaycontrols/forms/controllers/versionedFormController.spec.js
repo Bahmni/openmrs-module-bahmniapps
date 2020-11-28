@@ -8,7 +8,7 @@ describe('versionedFormController', function () {
 
     beforeEach(module('bahmni.common.displaycontrol.forms', function ($provide) {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        formService = jasmine.createSpyObj('formService', ['getAllPatientForms', 'getFormList']);
+        formService = jasmine.createSpyObj('formService', ['getAllPatientForms','getFormList']);
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function () {
                 return true;
@@ -26,7 +26,7 @@ describe('versionedFormController', function () {
         $aController = $controller;
         q = $q;
         scope.patient = {uuid: '123'};
-        scope.section = {dashboardConfig: {maximumNoOfVisits: 10}};
+        scope.section = {dashboardConfig: {maximumNoOfVisits: 10},formGroup:[]};
         mockBackend = $httpBackend;
         mockBackend.expectGET('../common/displaycontrols/forms/views/formsTable.html').respond("<div>dummy</div>");
     }));
@@ -50,7 +50,6 @@ describe('versionedFormController', function () {
             }
         });
     };
-
     it('should return formName', function () {
         createController();
         let formData = {formName: 'Test Form'};
@@ -76,7 +75,8 @@ describe('versionedFormController', function () {
                     published: true,
                     id: null,
                     resources: null,
-                    nameTranslation: JSON.stringify(nameTranslationForSimpleForm)
+                    nameTranslation: JSON.stringify(nameTranslationForSimpleForm),
+                    privilege:[]
                 }
             ]};
         formService.getFormList.and.callFake(function () {
@@ -101,56 +101,57 @@ describe('versionedFormController', function () {
     });
 
     it('should filter forms based on formGroup given in config', function () {
-        let formData = [{formName: 'First', encounterDateTime: '2015-12-18T17:26:31.000+0000'}, {
+        let formData = [{formName: 'First', encounterDateTime: '2015-12-18T17:26:31.000+0000', privileges: []}, {
             formName: 'Second',
-            encounterDateTime: '2015-12-18T16:26:31.000+0000'
-        }, {formName: 'Third', encounterDateTime: '2015-12-16T16:26:31.000+0000'}];
-        let expectedFormData = [{formName: 'First', encounterDateTime: '2015-12-18T17:26:31.000+0000'}, {
+            encounterDateTime: '2015-12-18T16:26:31.000+0000', privileges: []
+        }, {formName: 'Third', encounterDateTime: '2015-12-16T16:26:31.000+0000', privileges: []}];
+        let expectedFormData = [{formName: 'First', encounterDateTime: '2015-12-18T17:26:31.000+0000', privileges: []}, {
             formName: 'Second',
-            encounterDateTime: '2015-12-18T16:26:31.000+0000'
+            encounterDateTime: '2015-12-18T16:26:31.000+0000',privileges: []
         }];
         let data = {"data": formData};
         scope.section.formGroup = ['First', 'Second'];
         mockFormServiceGetAllPatientForms(data);
         createController();
         scope.$digest();
-
         expect(formService.getAllPatientForms.calls.count()).toEqual(1);
         expect(scope.formData).toEqual(expectedFormData);
     });
 
     it('should show only latest unique forms on the dashboard', function () {
-        let formData = [{formName: 'First', encounterDateTime: '2015-12-18T17:26:31.000+0000'}, {
+        let formData = [{formName: 'First', encounterDateTime: '2015-12-18T17:26:31.000+0000', privileges: []}, {
             formName: 'Second',
-            encounterDateTime: '2015-12-17T16:26:31.000+0000'
-        }, {formName: 'First', encounterDateTime: '2015-12-16T16:26:31.000+0000'}];
-        let expectedFormData = [{formName: 'First', encounterDateTime: '2015-12-18T17:26:31.000+0000'}, {
+            encounterDateTime: '2015-12-17T16:26:31.000+0000', privileges: []
+        }, {formName: 'First', encounterDateTime: '2015-12-16T16:26:31.000+0000', privileges: []}];
+        let expectedFormData = [{formName: 'First', encounterDateTime: '2015-12-18T17:26:31.000+0000', privileges: []}, {
             formName: 'Second',
-            encounterDateTime: '2015-12-17T16:26:31.000+0000'
+            encounterDateTime: '2015-12-17T16:26:31.000+0000', privileges: []
         }];
         let data = {"data": formData};
         scope.isOnDashboard = true;
-        scope.section.formGroup = ['First', 'Second'];
+        scope.section.formGroup = ["First","Second" ];
         mockFormServiceGetAllPatientForms(data);
         createController();
         scope.$digest();
-
         expect(formService.getAllPatientForms.calls.count()).toEqual(1);
         expect(scope.formData).toEqual(expectedFormData);
     });
 
     it('should show all forms if not on the dashboard', function () {
-        let formData = [{formName: 'First', encounterDateTime: '2015-12-18T17:26:31.000+0000'}, {
+        let formData = [{formName: 'First', encounterDateTime: '2015-12-18T17:26:31.000+0000', privileges: []}, {
             formName: 'Second',
-            encounterDateTime: '2015-12-17T16:26:31.000+0000'
-        }, {formName: 'First', encounterDateTime: '2015-12-16T16:26:31.000+0000'}];
+            encounterDateTime: '2015-12-17T16:26:31.000+0000', privileges: []
+        }, {formName: 'First', encounterDateTime: '2015-12-16T16:26:31.000+0000', privileges: []}];
         let data = {"data": formData};
+        scope.isOnDashboard = false;
         scope.section.formGroup = ['First', 'Second'];
+
         mockFormServiceGetAllPatientForms(data);
         createController();
         scope.$digest();
 
         expect(formService.getAllPatientForms.calls.count()).toEqual(1);
+        expect(formService.getFormList.calls.count()).toEqual(1);
         expect(scope.formData).toEqual(formData);
     });
 
