@@ -40,7 +40,7 @@ angular.module('bahmni.registration')
                 });
             };
         };
-        $scope.translateAttributes = function (attribute ,moduleName) {
+        $scope.translateAttributes = function (attribute, moduleName) {
             if (moduleName == null) {
                 var keyPrefix = "REGISTRATION";
             } else {
