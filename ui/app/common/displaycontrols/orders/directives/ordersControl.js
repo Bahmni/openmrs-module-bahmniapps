@@ -83,7 +83,7 @@ angular.module('bahmni.common.displaycontrol.orders')
                             }
                         }
                     }
-                    return concept.name;
+                    return concept;
                 };
             };
 

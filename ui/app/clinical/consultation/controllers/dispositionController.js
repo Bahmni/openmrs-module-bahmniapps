@@ -4,7 +4,6 @@ angular.module('bahmni.clinical')
     .controller('DispositionController', ['$scope', '$q', 'dispositionService', 'appService', 'retrospectiveEntryService', 'spinner', '$rootScope', '$translate', function ($scope, $q, dispositionService, appService, retrospectiveEntryService, spinner, $rootScope, $translate) {
         var consultation = $scope.consultation;
         var allDispositions = [];
-        var defaultLocale = $rootScope.currentUser.userProperties.defaultLocale;
         $scope.ModuleName = appService.getAppDescriptor().getConfigValue('disposition');
         var getPreviousDispositionNote = function () {
             if (consultation.disposition && (!consultation.disposition.voided)) {
@@ -25,7 +24,7 @@ angular.module('bahmni.clinical')
         };
 
         var getDispositionActionsPromise = function () {
-            return dispositionService.getDispositionActions(defaultLocale).then(function (response) {
+            return dispositionService.getDispositionActions().then(function (response) {
                 allDispositions = new Bahmni.Clinical.DispostionActionMapper().map(response.data.results[0].answers);
                 $scope.dispositionActions = filterDispositionActions(allDispositions, $scope.$parent.visitSummary);
                 $scope.dispositionCode = consultation.disposition && (!consultation.disposition.voided) ? consultation.disposition.code : null;

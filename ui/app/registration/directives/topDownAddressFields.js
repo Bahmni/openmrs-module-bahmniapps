@@ -18,7 +18,11 @@ angular.module('bahmni.registration')
         $scope.addressFieldInvalid = false;
         var selectedAddressUuids = {};
         var selectedUserGeneratedIds = {};
-        $scope.ModuleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
+         var modulePrefixMap = {
+            'registration': 'REGISTRATION',
+            'program': 'PROGRAM',
+            'OT': 'OT'
+         };
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
         var addressLevelUIOrderBasedOnConfig = $scope.addressLevels;
         $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelUIOrderBasedOnConfig, 2);
@@ -44,11 +48,11 @@ angular.module('bahmni.registration')
                 });
             }
         };
-        $scope.translateAttributes = function (attribute) {
-            if ($scope.ModuleName == null) {
+        $scope.translateAttributes = function (attribute , moduleName) {
+            if (moduleName == null) {
                 var keyPrefix = "REGISTRATION";
             } else {
-                var keyPrefix = $scope.ModuleName;
+                var keyPrefix = moduleName && modulePrefixMap[moduleName] ? modulePrefixMap[moduleName] : '';
             }
             var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
             var translationKey = keyPrefix + "_" + keyName;

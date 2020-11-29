@@ -14,7 +14,6 @@ describe('versionedFormController', function () {
                 return true;
             }
         });
-
         $provide.value('$state', {});
         $provide.value('formService', formService);
         $provide.value('appService', appService);
