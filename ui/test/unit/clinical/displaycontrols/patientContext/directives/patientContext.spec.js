@@ -1,7 +1,7 @@
 'use strict';
 
 describe('patient context', function () {
-    var scope, $compile, mockBackend, patientService, spinner, mockAppDescriptor, mockAppService, provide;
+    var scope, $compile, mockBackend, patientService, spinner, mockAppDescriptor, mockAppService, provide, mocktranslate;
 
     beforeEach(module('bahmni.common.patient', function ($provide) {
         patientService = jasmine.createSpyObj('patientService', ['getPatientContext']);
@@ -12,12 +12,12 @@ describe('patient context', function () {
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         mockAppService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        mocktranslate = jasmine.createSpyObj('$translate', ['instant']);
         provide = $provide;
-
         $provide.value('spinner', spinner);
         $provide.value('appService', mockAppService);
         $provide.value('$state', {params: {enrollment: 'programUuid'}});
-        $provide.value('$translate', {});
+        $provide.value('$translate', mocktranslate);
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
@@ -253,6 +253,9 @@ describe('patient context', function () {
                 personAttributes: {'Aadhar Number': {description: 'Aadhar Number', value: '1234'}},
                 programAttributes: {'Aadhar Number': {description: 'Aadhar Number', value: '2345'}}
             };
+            mocktranslate.instant.and.callFake(function (value) {
+                return value;
+            });
             patientService.getPatientContext.and.returnValue(specUtil.createFakePromise(patientContext));
             var patientContextConfig = {
                 personAttributes: ['Aadhar Number'],
@@ -292,6 +295,9 @@ describe('patient context', function () {
             var patientContextConfig = {
                 personAttributes: ['isUrban', 'cool']
             };
+            mocktranslate.instant.and.callFake(function (value) {
+                return value;
+            });
             mockAppDescriptor.getConfigValue.and.returnValue(patientContextConfig);
             mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
 
