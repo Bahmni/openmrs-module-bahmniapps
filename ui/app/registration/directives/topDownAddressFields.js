@@ -18,11 +18,11 @@ angular.module('bahmni.registration')
         $scope.addressFieldInvalid = false;
         var selectedAddressUuids = {};
         var selectedUserGeneratedIds = {};
-         var modulePrefixMap = {
-            'registration': 'REGISTRATION',
-            'program': 'PROGRAM',
-            'OT': 'OT'
-         };
+        var modulePrefixMap = {
+           'registration': 'REGISTRATION',
+           'program': 'PROGRAM',
+           'OT': 'OT'
+        };
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
         var addressLevelUIOrderBasedOnConfig = $scope.addressLevels;
         $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelUIOrderBasedOnConfig, 2);

@@ -21,9 +21,9 @@ angular.module('bahmni.registration')
             return addressLevel.addressField;
         });
         var modulePrefixMap = {
-                    'registration': 'REGISTRATION',
-                    'program': 'PROGRAM',
-                    'OT': 'OT'
+            'registration': 'REGISTRATION',
+            'program': 'PROGRAM',
+            'OT': 'OT'
         };
         $scope.addressFieldSelected = function (fieldName) {
             return function (addressFieldItem) {
@@ -40,7 +40,7 @@ angular.module('bahmni.registration')
                 });
             };
         };
-        $scope.translateAttributes = function (attribute , moduleName) {
+        $scope.translateAttributes = function (attribute ,moduleName) {
             if (moduleName == null) {
                 var keyPrefix = "REGISTRATION";
             } else {
