@@ -2,7 +2,7 @@
 
 describe("DispositionController", function () {
 
-    var scope, rootScope ,controller, retrospectiveEntry, retrospectiveEntryService, dispositionService, dispositionActions;
+    var scope, rootScope ,controller, retrospectiveEntry, retrospectiveEntryService, dispositionService, dispositionActions, appService, translate;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -16,6 +16,8 @@ describe("DispositionController", function () {
         dispositionService.getDispositionNoteConcept.and.returnValue(specUtil.simplePromise({data: {results: [{uuid: "uuid"}]}}));
         dispositionService.getDispositionActions.and.returnValue(specUtil.simplePromise({data: {results: [{answers: dispositionActions}]}}));
         $provide.value('dispositionService', dispositionService);
+        translate = jasmine.createSpyObj('$translate',['instant']);
+        $provide.value('$translate', translate);
     }));
 
     beforeEach(inject(function ($controller, $rootScope) {
@@ -23,6 +25,10 @@ describe("DispositionController", function () {
         rootScope = $rootScope;
         controller = $controller;
         rootScope.consultation = {preSaveHandler: new Bahmni.Clinical.Notifier()};
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
+        appDescriptor.getConfigValue.and.returnValue(true);
 
         retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.parse('2015-07-01'));
         retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
@@ -40,6 +46,7 @@ describe("DispositionController", function () {
         scope.consultation.disposition = {'code':'ADMIT'};
         scope.dispositionCode = 'ADMIT';
         scope.dispositionNote ={'value':''};
+        scope.consultation.disposition.additionalObs = {};
         scope.$destroy();
         expect(scope.consultation.disposition.additionalObs).toEqual([]);
     });
@@ -48,6 +55,7 @@ describe("DispositionController", function () {
         scope.consultation.disposition = {'code':'ADMIT'};
         scope.dispositionCode = 'ADMIT';
         scope.dispositionNote ={'value':'some notes'};
+        scope.consultation.disposition.additionalObs ={'value':'some notes'} ;
         scope.$destroy();
         expect(scope.consultation.disposition.additionalObs.length).toBe(1);
         expect(scope.consultation.disposition.additionalObs[0]).toEqual({'value':'some notes','voided' : false});
@@ -57,6 +65,7 @@ describe("DispositionController", function () {
         scope.consultation.disposition = {'code':'ADMIT'};
         scope.dispositionCode = 'ADMIT';
         scope.dispositionNote ={'uuid':'someUuid','value':'','voided':true};
+        scope.consultation.disposition.additionalObs ={'uuid':'someUuid','value':'','voided':true} ;
         scope.$destroy();
         expect(scope.consultation.disposition.additionalObs.length).toBe(1);
         expect(scope.consultation.disposition.additionalObs[0]).toEqual({'uuid':'someUuid','value':'','voided':true});
@@ -66,6 +75,7 @@ describe("DispositionController", function () {
         scope.consultation.disposition = {'code':'ADMIT'};
         scope.dispositionCode = 'ADMIT';
         scope.dispositionNote ={'uuid':'someUuid','value':'','concept': {'uuid': 'someUuid'},'voided':false};
+        scope.consultation.disposition.additionalObs ={'uuid':'someUuid','value':'','voided':true} ;
         scope.$destroy();
         expect(scope.consultation.disposition.additionalObs.length).toBe(1);
         expect(scope.consultation.disposition.additionalObs[0]).toEqual({'uuid':'someUuid','value':'','concept': {'uuid': 'someUuid'},'voided':true});
@@ -118,7 +128,10 @@ describe("DispositionController", function () {
             $scope: scope,
             $rootScope: rootScope,
             retrospectiveEntryService: retrospectiveEntryService,
-            dispositionService: dispositionService
+            dispositionService: dispositionService,
+            appService: appService,
+            $translate: translate
+
         });
     }
 });
