@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('treatmentService', ['$http', '$q', 'appService', function ($http, $q, appService) {
+    .factory('treatmentService', ['$http', '$q', 'appService', '$rootScope', function ($http, $q, appService, $rootScope) {
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
@@ -25,7 +25,8 @@ angular.module('bahmni.clinical')
                     visitUuids: visitUuids,
                     startDate: startDate,
                     endDate: endDate,
-                    getEffectiveOrdersOnly: getEffectiveOrdersOnly
+                    getEffectiveOrdersOnly: getEffectiveOrdersOnly,
+                    preferredLocale: $rootScope.currentUser.userProperties.defaultLocale
                 },
                 withCredentials: true
             }).success(function (response) {

@@ -13,7 +13,20 @@ angular.module('bahmni.clinical')
             $scope.hasNotes = function () {
                 return $scope.test.notes || $scope.test.showNotes ? true : false;
             };
-
+            $scope.getLocaleSpecificNameForPanel = function (test) {
+                if ($scope.test.preferredPanelName != null) {
+                    return test.preferredPanelName;
+                } else {
+                    return test.panelName;
+                }
+            };
+            $scope.getLocaleSpecificNameForTest = function (test) {
+                if ($scope.test.preferredTestName != null) {
+                    return test.preferredTestName;
+                } else {
+                    return test.testName;
+                }
+            };
             $scope.showTestNotes = function () {
                 return $scope.hasNotes($scope.test);
             };

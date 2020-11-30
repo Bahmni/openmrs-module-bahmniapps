@@ -2,7 +2,7 @@
     <article class="form-field" ng-repeat="addressLevel in ::addressLevels"
              ng-class="::{'right-form-field': $index % 2 != 0 }">
         <div class="field-attribute">
-            <label for="{{::addressLevel.addressField}}">{{::addressLevel.name | translate}}
+            <label for="{{::addressLevel.addressField}}">{{::translateAttributes(addressLevel.name , 'registration') | translate}}
                 <span class="asterick" ng-show="::addressLevel.required">*</span>
             </label>
         </div>

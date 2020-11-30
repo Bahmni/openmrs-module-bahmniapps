@@ -5,7 +5,7 @@
 
             <div ng-repeat="program in activePrograms" ng-if="::hasPatientAnyActivePrograms()">
                 <div class="program-basic-details">
-                    <span class="program-name fl">{{::program.display}}</span>
+                    <span class="program-name fl">{{::translateAttributeName(program, 'program')}}</span>
                 <span class="program-dates fr">
                     <strong>{{::'PROGRAM_MANAGEMENT_START_DATE_KEY'| translate }}</strong> : {{::program.dateEnrolled | bahmniDate}}
                 </span>
@@ -13,7 +13,7 @@
                 <div class="program-attributes">
                     <div class="program-attribute clearfix" ng-repeat="attribute in program.attributes" ng-if="isIncluded(attribute.attributeType, program)">
                     <span class="program-attribute-title fl">
-                        <strong>{{::attribute.attributeType.description || attribute.attributeType.display}}</strong> :
+                        <strong>{{::translateAttributeName(attribute.attributeType,'program')}}</strong> :
                     </span>
                         <span class="program-attribute-value fl">{{::getAttributeValue(attribute)}}</span>
                     </div>

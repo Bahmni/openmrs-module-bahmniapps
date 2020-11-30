@@ -14,11 +14,15 @@ angular.module('bahmni.registration')
             }
         };
     })
-    .controller('TopDownAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', function ($scope, addressHierarchyService) {
+    .controller('TopDownAddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', '$translate', function ($scope, addressHierarchyService, $translate) {
         $scope.addressFieldInvalid = false;
         var selectedAddressUuids = {};
         var selectedUserGeneratedIds = {};
-
+        var modulePrefixMap = {
+            'registration': 'REGISTRATION',
+            'program': 'PROGRAM',
+            'OT': 'OT'
+        };
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
         var addressLevelUIOrderBasedOnConfig = $scope.addressLevels;
         $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelUIOrderBasedOnConfig, 2);
@@ -44,7 +48,20 @@ angular.module('bahmni.registration')
                 });
             }
         };
-
+        $scope.translateAttributes = function (attribute, moduleName) {
+            if (moduleName == null) {
+                var keyPrefix = "REGISTRATION";
+            } else {
+                var keyPrefix = moduleName && modulePrefixMap[moduleName] ? modulePrefixMap[moduleName] : '';
+            }
+            var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
+            var translationKey = keyPrefix + "_" + keyName;
+            var translation = $translate.instant(translationKey);
+            if (translation != translationKey) {
+                attribute = translation;
+            }
+            return attribute;
+        };
         $scope.addressFieldSelected = function (fieldName) {
             return function (addressFieldItem) {
                 selectedAddressUuids[fieldName] = addressFieldItem.addressField.uuid;

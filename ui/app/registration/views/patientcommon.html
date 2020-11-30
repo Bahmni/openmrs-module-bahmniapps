@@ -3,20 +3,20 @@
         <section>
             <article class="form-field patient-name-wrapper" ng-if="::patientConfiguration.local()['showNameField']">
                 <div class="field-attribute">
-                    <label for="patientName">{{::patientConfiguration.local()['labelForNameField']}}</label>
+                    <label for="patientName">{{::translateAttributes(patientConfiguration.local()['labelForNameField'])}}</label>
                 </div>
                 <div class="field-value" id="patientNameLocal">
                     <span ng-repeat="nameField in patientNameDisplayOrder">
                         <input type="text" id="givenNameLocal" ng-model="patient.givenNameLocal" pattern-validate
-                               placeholder="{{::patientConfiguration.local()['placeholderForGivenName']}}" focus-me="true"
+                           placeholder="{{::translateAttributes(patientConfiguration.local()['placeholderForGivenName'])}}" focus-me="true">
                                 ng-if="nameField === 'firstName'">
                         <input ng-show="::showMiddleName" type="text" id="middleNameLocal"
                                ng-model="patient.middleNameLocal"
                                pattern-validate
-                               placeholder="{{::patientConfiguration.local()['placeholderForMiddleName']}}"
+                           placeholder="{{::translateAttributes(patientConfiguration.local()['placeholderForMiddleName'])}}">
                                ng-if="nameField === 'middleName'">
                         <input type="text" ng-show="::showLastName" id="familyNameLocal" ng-model="patient.familyNameLocal" pattern-validate
-                               placeholder="{{::patientConfiguration.local()['placeholderForFamilyName']}}"
+                           placeholder="{{::translateAttributes(patientConfiguration.local()['placeholderForFamilyName'])}}">
                                ng-if="nameField === 'lastName'">
                     </span>
                 </div>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .factory('dispositionService', ['$http', function ($http) {
+    .factory('dispositionService', ['$http', '$rootScope', function ($http, $rootScope) {
         var getDispositionActions = function () {
             return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl +
                 "&name=" + Bahmni.Common.Constants.dispositionConcept +
@@ -16,7 +16,8 @@ angular.module('bahmni.common.domain')
 
         var getDispositionByVisit = function (visitUuid) {
             return $http.get(Bahmni.Common.Constants.bahmniDispositionByVisitUrl, {
-                params: {visitUuid: visitUuid}
+                params: {visitUuid: visitUuid},
+                locale: $rootScope.currentUser.userProperties.defaultLocale
             });
         };
 
@@ -24,7 +25,8 @@ angular.module('bahmni.common.domain')
             return $http.get(Bahmni.Common.Constants.bahmniDispositionByPatientUrl, {
                 params: {
                     patientUuid: patientUuid,
-                    numberOfVisits: numberOfVisits
+                    numberOfVisits: numberOfVisits,
+                    locale: $rootScope.currentUser.userProperties.defaultLocale
                 }
             });
         };

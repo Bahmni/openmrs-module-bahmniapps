@@ -11,7 +11,7 @@ describe("AllAppointmentServicesController", function () {
             controller = $controller;
             appointmentsServiceService = jasmine.createSpyObj('appointmentsServiceService', ['getAllServices']);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             appDescriptor.getConfigValue.and.returnValue(true);
             spinnerService = jasmine.createSpyObj('spinnerService', ['forPromise']);

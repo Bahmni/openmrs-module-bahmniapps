@@ -14,13 +14,17 @@ angular.module('bahmni.registration')
             }
         };
     })
-    .controller('AddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', function ($scope, addressHierarchyService) {
+    .controller('AddressFieldsDirectiveController', ['$scope', 'addressHierarchyService', '$translate', function ($scope, addressHierarchyService, $translate) {
         var addressLevelsCloneInDescendingOrder = $scope.addressLevels.slice(0).reverse();
         $scope.addressLevelsChunks = Bahmni.Common.Util.ArrayUtil.chunk(addressLevelsCloneInDescendingOrder, 2);
         var addressLevelsNamesInDescendingOrder = addressLevelsCloneInDescendingOrder.map(function (addressLevel) {
             return addressLevel.addressField;
         });
-
+        var modulePrefixMap = {
+            'registration': 'REGISTRATION',
+            'program': 'PROGRAM',
+            'OT': 'OT'
+        };
         $scope.addressFieldSelected = function (fieldName) {
             return function (addressFieldItem) {
                 var parentFields = addressLevelsNamesInDescendingOrder.slice(addressLevelsNamesInDescendingOrder.indexOf(fieldName) + 1);
@@ -36,7 +40,20 @@ angular.module('bahmni.registration')
                 });
             };
         };
-
+        $scope.translateAttributes = function (attribute, moduleName) {
+            if (moduleName == null) {
+                var keyPrefix = "REGISTRATION";
+            } else {
+                var keyPrefix = moduleName && modulePrefixMap[moduleName] ? modulePrefixMap[moduleName] : '';
+            }
+            var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
+            var translationKey = keyPrefix + "_" + keyName;
+            var translation = $translate.instant(translationKey);
+            if (translation != translationKey) {
+                attribute = translation;
+            }
+            return attribute;
+        };
         $scope.removeAutoCompleteEntry = function (fieldName) {
             return function () {
                 $scope.selectedValue[fieldName] = null;
