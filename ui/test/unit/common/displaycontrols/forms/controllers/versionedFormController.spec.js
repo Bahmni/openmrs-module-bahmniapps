@@ -25,7 +25,9 @@ describe('versionedFormController', function () {
         $aController = $controller;
         q = $q;
         scope.patient = {uuid: '123'};
+
         scope.section = {dashboardConfig: {maximumNoOfVisits: 10}, formGroup:[]};
+
         mockBackend = $httpBackend;
         mockBackend.expectGET('../common/displaycontrols/forms/views/formsTable.html').respond("<div>dummy</div>");
     }));
@@ -106,7 +108,9 @@ describe('versionedFormController', function () {
         }, {formName: 'Third', encounterDateTime: '2015-12-16T16:26:31.000+0000', privileges: []}];
         let expectedFormData = [{formName: 'First', encounterDateTime: '2015-12-18T17:26:31.000+0000', privileges: []}, {
             formName: 'Second',
+
             encounterDateTime: '2015-12-18T16:26:31.000+0000', privileges: []
+
         }];
         let data = {"data": formData};
         scope.section.formGroup = ['First', 'Second'];
