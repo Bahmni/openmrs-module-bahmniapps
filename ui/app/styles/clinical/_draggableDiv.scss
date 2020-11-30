@@ -1,0 +1,39 @@
+.tele-consultation {
+    position: fixed;
+    z-index: 20000;
+    background-color: #f1f1f1;
+    text-align: center;
+    border: 1px solid #d3d3d3;
+    height: 450px;
+    width: 500px;
+    min-height: 450px;
+    min-width: 500px;
+    top: 40%;
+    left: 40%;
+    .tele-consultation-header {
+      display: flex;
+      padding: 10px;
+      max-height: 20px;
+      height: 5%;
+      cursor: move;
+      z-index: 20001;
+      background-color: #2196F3;
+      .heading {
+        padding: 0px;
+        margin: 0px;
+        color: #fff;
+        width: 95%;
+      }
+      .close {
+        padding: 0px;
+        margin: 0px;
+        color: #fff;
+        width: 5%;
+        cursor: pointer;
+      }
+    }
+    #tele-consultation-meet {
+      height: 90%;
+      width: 100%;
+    }
+}
