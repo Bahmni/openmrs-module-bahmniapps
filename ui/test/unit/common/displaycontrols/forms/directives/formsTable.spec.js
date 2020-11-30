@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Forms Table display control", function () {
-    var element, scope, $compile, mockBackend, conceptSetService, visitFormService, q, spinner, formService;
+    var element, scope, $compile, mockBackend, conceptSetService, visitFormService, q, spinner, formService, rootScope;
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
 
     appService.getAppDescriptor.and.returnValue({
@@ -15,7 +15,7 @@ describe("Forms Table display control", function () {
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.common.i18n'));
     beforeEach(module('bahmni.common.displaycontrol.forms', function ($provide) {
-        conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
+        conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept', '']);
         visitFormService = jasmine.createSpyObj('visitFormService', ['formData']);
         formService = jasmine.createSpyObj('formService', ['getAllPatientForms', 'getFormList']);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
@@ -41,16 +41,20 @@ describe("Forms Table display control", function () {
         });
         $provide.value('appService', appService);
         $provide.value('$state', {params: {enrollment: "patientProgramUuid"}})
+
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {
         scope = $rootScope;
+        rootScope = $rootScope;
         $compile = _$compile_;
         q = $q;
         scope.patient = {uuid: '123'};
         scope.section = {dashboardConfig: {maximumNoOfVisits: 10}};
+        scope.section.formGroup = [];
         mockBackend = $httpBackend;
         mockBackend.expectGET('../common/displaycontrols/forms/views/formsTable.html').respond("<div>dummy</div>");
+        rootScope.currentUser = jasmine.createSpyObj('currentUser', ['userProperties']);
     }));
 
     var mockConceptSetService = function (data) {
@@ -94,7 +98,10 @@ describe("Forms Table display control", function () {
                             "uuid": "2625f662-a807-4682-844a-ccff002e669d",
                             "concept": {
                                 "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                                "display": "Medication log Template"
+                                "display": "Medication log Template",
+                                "conceptNameType": "FULLY_SPECIFIED",
+                                "name":"Medication log Template"
+
                             },
                             "display": "Medication log Template: 2015-11-01, Not defined",
                             "obsDatetime": "2015-12-18T16:26:31.000+0000"
@@ -103,7 +110,9 @@ describe("Forms Table display control", function () {
                             "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
                             "concept": {
                                 "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
-                                "display": "Outcome End of Treatment Template"
+                                "display": "Outcome End of Treatment Template",
+                                "conceptNameType": "FULLY_SPECIFIED",
+                                "name":"Medication log Template"
                             },
                             "display": "Outcome End of Treatment Template: 2015-11-17",
                             "obsDatetime": "2015-11-18T16:26:30.000+0000"
@@ -134,7 +143,9 @@ describe("Forms Table display control", function () {
                             "uuid": "2625f662-a807-4682-844a-ccff002e669d",
                             "concept": {
                                 "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                                "displayString": "Medication log Template"
+                                "displayString": "Medication log Template",
+                                "conceptNameType": "FULLY_SPECIFIED",
+                                "name":"Medication log Template"
                             },
                             "display": "Medication log Template: 2015-11-01, Not defined",
                             "obsDatetime": "2015-10-18T16:26:31.000+0000"
@@ -143,7 +154,9 @@ describe("Forms Table display control", function () {
                             "uuid": "2625f662-a807-4682-844a-ccff002e6111",
                             "concept": {
                                 "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                                "displayString": "Medication log Template"
+                                "displayString": "Medication log Template",
+                                "conceptNameType": "FULLY_SPECIFIED",
+                                "name":"Medication log Template"
                             },
                             "display": "Medication log Template: 2015-11-01, Not defined",
                             "obsDatetime": "2015-11-18T16:26:31.000+0000"
@@ -152,7 +165,9 @@ describe("Forms Table display control", function () {
                             "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
                             "concept": {
                                 "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
-                                "displayString": "Outcome End of Treatment Template"
+                                "displayString": "Outcome End of Treatment Template",
+                                "conceptNameType": "FULLY_SPECIFIED",
+                                "name":"Medication log Template"
                             },
                             "display": "Outcome End of Treatment Template: 2015-11-17",
                             "obsDatetime": "2015-11-18T16:26:30.000+0000"
@@ -166,7 +181,9 @@ describe("Forms Table display control", function () {
                 "encounterUuid": "encounterUuid",
                 "concept": {
                     "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                    "displayString": "Medication log Template"
+                    "displayString": "Medication log Template",
+                    "conceptNameType": "FULLY_SPECIFIED",
+                     "name":"Medication log Template"
                 },
                 "display": "Medication log Template: 2015-11-01, Not defined",
                 "obsDatetime": "2015-10-18T16:26:31.000+0000"
@@ -200,7 +217,9 @@ describe("Forms Table display control", function () {
                             "uuid": "2625f662-a807-4682-844a-ccff002e669d",
                             "concept": {
                                 "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                                "displayString": "Medication log Template"
+                                "displayString": "Medication log Template",
+                                "conceptNameType": "FULLY_SPECIFIED",
+                                "name":"Medication log Template"
                             },
                             "display": "Medication log Template: 2015-11-01, Not defined",
                             "obsDatetime": "2015-10-18T16:26:31.000+0000"
@@ -209,7 +228,9 @@ describe("Forms Table display control", function () {
                             "uuid": "2625f662-a807-4682-844a-ccff002e6111",
                             "concept": {
                                 "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                                "displayString": "Medication log Template"
+                                "displayString": "Medication log Template",
+                                "conceptNameType": "FULLY_SPECIFIED",
+                                "name":"Medication log Template"
                             },
                             "display": "Medication log Template: 2015-11-01, Not defined",
                             "obsDatetime": "2015-11-18T16:26:31.000+0000"
@@ -218,7 +239,9 @@ describe("Forms Table display control", function () {
                             "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
                             "concept": {
                                 "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
-                                "displayString": "Outcome End of Treatment Template"
+                                "displayString": "Outcome End of Treatment Template",
+                                "conceptNameType": "FULLY_SPECIFIED",
+                                "name":"Medication log Template"
                             },
                             "display": "Outcome End of Treatment Template: 2015-11-17",
                             "obsDatetime": "2015-11-18T16:26:30.000+0000"
@@ -253,7 +276,9 @@ describe("Forms Table display control", function () {
                             "uuid": "ace25383-0baf-4c52-96bd-224d8caca00e",
                             "concept": {
                                 "uuid": "bb80d45d-e4c5-4ce0-bb7c-0a34d2635ea5",
-                                "displayString": "Outcome End of Treatment Template"
+                                "displayString": "Outcome End of Treatment Template",
+                                "conceptNameType": "FULLY_SPECIFIED",
+                                "name":{"name":"Medication log Template"}
                             },
                             "display": "Outcome End of Treatment Template: 2015-11-17",
                             "obsDatetime": "2015-11-18T16:26:30.000+0000"
@@ -262,7 +287,14 @@ describe("Forms Table display control", function () {
                 }
             };
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
-
+                    rootScope.currentUser = {
+                                "username": "superman",
+                                "userProperties": [{"defaultLocale": "en"}],
+                                "privileges": [
+                                    {"name": "app:clinical:retrospective"},
+                                    {"name":"app:billing"}
+                                ]
+                            };
             mockConceptSetService(allObsTemplateData);
             mockVisitFormService(formDataObj);
 
@@ -286,10 +318,14 @@ describe("Forms Table display control", function () {
                 "encounterUuid": "encounterUuid",
                 "concept": {
                     "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                    "displayString": "Medication log Template"
+                    "displayString": "Medication log Template",
+                    "names": [],
+                    "conceptNameType": "FULLY_SPECIFIED",
+                    "name":{"name":"Medication log Template"}
                 },
                 "display": "Medication log Template: 2015-11-01, Not defined",
-                "obsDatetime": "2015-10-18T16:26:31.000+0000"
+                "obsDatetime": "2015-10-18T16:26:31.000+0000",
+                "privileges":[]
             };
 
 
@@ -319,7 +355,8 @@ describe("Forms Table display control", function () {
                 "encounterUuid": "encounterUuid",
                 "concept": {
                     "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                    "displayString": "Medication log Template"
+                    "displayString": "Medication log Template",
+                    "name":{"name":"Medication log Template"}
                 },
                 "display": "Medication log Template: 2015-11-01, Not defined",
                 "obsDatetime": "2015-10-18T16:26:31.000+0000"
@@ -346,20 +383,23 @@ describe("Forms Table display control", function () {
     });
 
     describe("getDisplayName", function () {
+        var allObsTemplateData = {"data": {"results": [{}]}};
+        var formDataObj = {"data": {results: []}};
         it("should return displayString if there are no multiple names", function () {
-            var allObsTemplateData = {"data": {"results": [{}]}};
-            var formDataObj = {"data": {results: []}};
             var observation = {
-                "uuid": "2625f662-a807-4682-844a-ccff002e669d",
-                "encounterUuid": "encounterUuid",
-                "concept": {
-                    "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
-                    "displayString": "Medication log Template"
-                },
-                "display": "Medication log Template: 2015-11-01, Not defined",
-                "obsDatetime": "2015-10-18T16:26:31.000+0000"
-            };
-
+                            "uuid": "2625f662-a807-4682-844a-ccff002e669d",
+                            "encounterUuid": "encounterUuid",
+                            "concept": {
+                                "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
+                                "displayString": "Medication log Template",
+                                "names": [],
+                                "conceptNameType": "FULLY_SPECIFIED",
+                                "name":{"name":"Medication log Template"}
+                            },
+                            "display": "Medication log Template: 2015-11-01, Not defined",
+                            "obsDatetime": "2015-10-18T16:26:31.000+0000",
+                            "privileges":[]
+                        };
 
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
 
@@ -385,8 +425,10 @@ describe("Forms Table display control", function () {
                     "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
                     "displayString": "Medication log Template",
                     "names": [
-                        {name: "Full Name of Medication log template", conceptNameType: "FULLY_SPECIFIED"}
-                    ]
+                        {name: "Full Name of Medication log template", conceptNameType: "FULLY_SPECIFIED",  locale: "en", display: "Medication log Template"}
+                    ],
+                    "conceptNameType": "FULLY_SPECIFIED",
+                    "name":{"name":"Full Name of Medication log template"}
                 },
                 "display": "Medication log Template: 2015-11-01, Not defined",
                 "obsDatetime": "2015-10-18T16:26:31.000+0000"
@@ -417,9 +459,11 @@ describe("Forms Table display control", function () {
                     "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
                     "displayString": "Medication log Template",
                     "names": [
-                        {name: "Full Name of Medication log template", conceptNameType: "FULLY_SPECIFIED"},
-                        {name: "short Name of Medication log template", conceptNameType: "SHORT"}
-                    ]
+                        {name: "Full Name of Medication log template", conceptNameType: "FULLY_SPECIFIED",  locale: "en", display: "Medication log Template"},
+                        {name: "short Name of Medication log template", conceptNameType: "SHORT", locale: "en"}
+                    ],
+                    "conceptNameType": "FULLY_SPECIFIED",
+                    "name":{"name":"short Name of Medication log template"}
                 },
                 "display": "Medication log Template: 2015-11-01, Not defined",
                 "obsDatetime": "2015-10-18T16:26:31.000+0000"
@@ -450,9 +494,11 @@ describe("Forms Table display control", function () {
                     "uuid": "288b0183-2c6a-4496-b038-5ea311dd3934",
                     "displayString": "Medication log Template",
                     "names": [
-                        {name: "Full Name of Medication log template", conceptNameType: "FULLY_SPECIFIED"},
+                        {name: "Full Name of Medication log template", conceptNameType: "FULLY_SPECIFIED",  locale: "en", display: "Medication log Template"},
                         {name: "short Name of Medication log template", conceptNameType: "SOME TYPE"}
-                    ]
+                    ],
+                    "conceptNameType": "FULLY_SPECIFIED",
+                   "name":{"name":"Medication log Template"}
                 },
                 "display": "Medication log Template: 2015-11-01, Not defined",
                 "obsDatetime": "2015-10-18T16:26:31.000+0000"
@@ -476,10 +522,10 @@ describe("Forms Table display control", function () {
     describe('versioned form controller', function () {
         it('should return versionedFormController when section type is formsV2', function () {
             var simpleHtml = '<forms-table section="section" patient="patient" is-on-dashboard="false"></forms-table>';
-            const formData = {formName: 'form'};
+            const formData = {formName: 'form',privileges: []};
             var formDataObj = {"data": [formData]};
             mockFormService(formDataObj);
-            scope.section = {dashboardConfig: {maximumNoOfVisits: 10}, type: 'formsV2'};
+            scope.section = {dashboardConfig: {maximumNoOfVisits: 10}, type: 'formsV2', formGroup: []};
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
             var compiledElementScope = element.isolateScope();
@@ -495,7 +541,7 @@ describe("Forms Table display control", function () {
             var formDataObj = {"data": {results: []}};
             mockConceptSetService(allObsTemplateData);
             mockVisitFormService(formDataObj);
-            scope.section = {dashboardConfig: {maximumNoOfVisits: 10}, type: 'forms'};
+            scope.section = {dashboardConfig: {maximumNoOfVisits: 10}, type: 'forms', formGroup: []};
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
 
