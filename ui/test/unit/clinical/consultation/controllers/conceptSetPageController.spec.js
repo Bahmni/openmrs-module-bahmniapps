@@ -145,7 +145,8 @@ describe('ConceptSetPageController', function () {
                     published: true,
                     id: null,
                     resources: null,
-                    nameTranslation: null
+                    nameTranslation: null,
+                    privileges: []
                 },
                 {
                     name: "Simple",
@@ -154,7 +155,8 @@ describe('ConceptSetPageController', function () {
                     published: true,
                     id: null,
                     resources: null,
-                    nameTranslation: JSON.stringify(nameTranslationForSimpleForm)
+                    nameTranslation: JSON.stringify(nameTranslationForSimpleForm),
+                    privileges: []
                 }];
             mockformService(form2Data);
             rootScope.currentUser = {
@@ -309,7 +311,8 @@ describe('ConceptSetPageController', function () {
                     uuid: 124
                 },
                 formFieldPath: "my form.1/101",
-                uuid: "random-uuid"
+                uuid: "random-uuid",
+                privileges:[]
             }];
             createController();
 
