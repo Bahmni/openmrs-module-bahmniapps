@@ -25,11 +25,23 @@
     <body ng-app="consultation" >
         <div ng-controller="ClinicalController" ng-class="{'retro-mode':retrospectiveClass()}" id="ClinicalController">
             <div ng-include src="'../common/ui-helper/messages.html'"></div>
+            <div ng-show="showTeleConsultationWindow" draggable-div class="tele-consultation ng-hide" id="tele-consultation">
+                <div class="tele-consultation-header">
+                    <h3 class="heading">Tele Consultation</h3>
+                    <h3 class="close" ng-click="closeTeleConsultation()">
+                        <i class="fa fa-close"></i>
+                    </h3>
+                </div>
+                <div id="tele-consultation-meet"></div>
+            </div>
             <div class="opd-wrapper">
                 <div ui-view="content" id="view-content" class="opd-content-wrapper"></div>
             </div>
         </div>
         <link rel="stylesheet" href="../components/offline/themes/{{getLocaleCSS()}}.css">
+
+        <script src='https://meet.jit.si/external_api.js'></script>
+
         <script src="../components/jquery/jquery.min.js"></script>
         <script src="../lib/jquery/jquery-ui-1.10.4.custom.min.js"></script>
         <script src="../lib/modernizr.custom.80690.js"></script>
@@ -426,6 +438,7 @@
         <script src="displaycontrols/graph/models/observationGraphReference.js"></script>
         <script src="displaycontrols/graph/models/observationGraphConfig.js"></script>
         <script src="displaycontrols/patientContext/directives/patientContext.js"></script>
+        <script src="displaycontrols/patientContext/directives/draggableDiv.js"></script>
 
         <script src="../common/displaycontrols/admissiondetails/init.js"></script>
         <script src="../common/displaycontrols/admissiondetails/directives/admissionDetails.js"></script>

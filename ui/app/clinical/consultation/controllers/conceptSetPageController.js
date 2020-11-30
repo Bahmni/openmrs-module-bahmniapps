@@ -231,6 +231,7 @@ angular.module('bahmni.clinical')
                     var formUuid = observationForm.formUuid || observationForm.uuid;
                     var formName = observationForm.name || observationForm.formName;
                     var formVersion = observationForm.version || observationForm.formVersion;
+                    var privileges = observationForm.privileges;
                     var labels = observationForm.nameTranslation ? JSON.parse(observationForm.nameTranslation) : [];
                     var label = formName;
                     if (labels.length > 0) {
@@ -240,11 +241,36 @@ angular.module('bahmni.clinical')
                         });
                         if (currentLabel) { label = currentLabel.display; }
                     }
-                    forms.push(new Bahmni.ObservationForm(formUuid, $rootScope.currentUser,
-                        formName, formVersion, observations, label));
+                    if ($scope.isFormEditableByTheUser(observationForm)) {
+                        var tempForm = new Bahmni.ObservationForm(formUuid, $rootScope.currentUser,
+                                                                   formName, formVersion, observations, label);
+                        tempForm.privileges = privileges;
+                        forms.push(tempForm);
+                    }
                 });
+
                 return forms;
             };
+            $scope.isFormEditableByTheUser = function (form) {
+                var result = false;
+                if (form.privileges.length != 0) {
+                    form.privileges.forEach(function (formPrivilege) {
+                        _.find($rootScope.currentUser.privileges, function (privilege) {
+                            if (formPrivilege.privilegeName === privilege.name) {
+                                if (formPrivilege.editable) {
+                                    result = formPrivilege.editable;
+                                } else {
+                                    if (formPrivilege.viewable) {
+                                        result = true;
+                                    }
+                                }
+                            }
+                        });
+                    });
+                } else { result = true; }
+                return result;
+            };
+
             // Form Code :: End
             init();
         }]);
