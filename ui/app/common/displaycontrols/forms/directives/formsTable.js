@@ -12,7 +12,6 @@ angular.module('bahmni.common.displaycontrol.forms')
                         v: "custom:(setMembers:(display))"
                     });
                 };
-
                 var obsFormData = function () {
                     return visitFormService.formData($scope.patient.uuid, $scope.section.dashboardConfig.maximumNoOfVisits, $scope.section.formGroup, $state.params.enrollment);
                 };

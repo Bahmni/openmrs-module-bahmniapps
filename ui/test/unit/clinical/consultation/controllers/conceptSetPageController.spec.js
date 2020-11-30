@@ -8,7 +8,6 @@ describe('ConceptSetPageController', function () {
     }};
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
-
     var initController = function () {
         inject(function ($controller, $rootScope) {
             controller = $controller;

@@ -45,7 +45,6 @@ angular.module('bahmni.clinical')
                     }));
                 }
             };
-
             var concatObservationForms = function () {
                 $scope.allTemplates = getSelectedObsTemplate(allConceptSections);
                 $scope.uniqueTemplates = _.uniqBy($scope.allTemplates, 'label');

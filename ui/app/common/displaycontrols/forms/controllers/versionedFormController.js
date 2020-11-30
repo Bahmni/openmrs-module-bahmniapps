@@ -18,7 +18,6 @@ angular.module('bahmni.common.displaycontrol.forms')
                 });
                 return uniqueForms;
             };
-
             const sortFormDataByLatestDate = function (formData) {
                 return _.sortBy(formData, "encounterDateTime").reverse();
             };

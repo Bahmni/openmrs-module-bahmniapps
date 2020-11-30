@@ -5,7 +5,6 @@ describe('versionedFormController', function () {
         $aController, formService, appService, mockBackend, q;
 
     beforeEach(module('bahmni.common.displaycontrol.forms'));
-
     beforeEach(module('bahmni.common.displaycontrol.forms', function ($provide) {
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         formService = jasmine.createSpyObj('formService', ['getAllPatientForms','getFormList']);
