@@ -6,7 +6,6 @@ describe('ConceptSetPageController', function () {
     var extension = {"extension": {
         extensionParams: {}
     }};
-
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
 
