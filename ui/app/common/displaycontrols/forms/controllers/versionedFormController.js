@@ -66,7 +66,6 @@ angular.module('bahmni.common.displaycontrol.forms')
                                 return {
                                     formName: latestForm.name,
                                     formNameTranslations: latestForm.nameTranslation ? JSON.parse(latestForm.nameTranslation) : []
-
                                 };
                             });
                         }

@@ -34,7 +34,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                     return _.sortBy(formData, "obsDatetime").reverse();
                 };
                 $scope.doesUserHaveAccessToTheForm = function (data, action) {
-                    if (typeof data.privileges != undefined && data.privileges >0) {
+                    if ((data.privileges != null) && (typeof data.privileges != undefined) && (data.privileges > 0)){
                         var editable = [];
                         var viewable = [];
                         data.privileges.forEach(function (formPrivilege) {

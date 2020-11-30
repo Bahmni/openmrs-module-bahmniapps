@@ -253,7 +253,7 @@ angular.module('bahmni.clinical')
             };
             $scope.isFormEditableByTheUser = function (form) {
                 var result = false;
-                if ((typeof form.privileges != undefined) && (form.privileges != null) && (form.privileges.length!= 0)) {
+                if ((typeof form.privileges != undefined) && (form.privileges != null) && (form.privileges.length != 0)) {
                     form.privileges.forEach(function (formPrivilege) {
                         _.find($rootScope.currentUser.privileges, function (privilege) {
                             if (formPrivilege.privilegeName === privilege.name) {
