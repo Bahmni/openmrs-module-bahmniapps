@@ -242,10 +242,10 @@ angular.module('bahmni.clinical')
                         if (currentLabel) { label = currentLabel.display; }
                     }
                     if ($scope.isFormEditableByTheUser(observationForm)) {
-                        var tempForm = new Bahmni.ObservationForm(formUuid, $rootScope.currentUser,
+                        var newForm = new Bahmni.ObservationForm(formUuid, $rootScope.currentUser,
                                                                    formName, formVersion, observations, label);
-                        tempForm.privileges = privileges;
-                        forms.push(tempForm);
+                        newForm.privileges = privileges;
+                        forms.push(newForm);
                     }
                 });
 
@@ -253,7 +253,7 @@ angular.module('bahmni.clinical')
             };
             $scope.isFormEditableByTheUser = function (form) {
                 var result = false;
-                if (form.privileges.length != 0) {
+                if ((typeof form.privileges != undefined) && (form.privileges != null) && (form.privileges.length!= 0)) {
                     form.privileges.forEach(function (formPrivilege) {
                         _.find($rootScope.currentUser.privileges, function (privilege) {
                             if (formPrivilege.privilegeName === privilege.name) {
