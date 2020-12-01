@@ -8,7 +8,6 @@ describe('ConceptSetPageController', function () {
     }};
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.clinical'));
-
     var initController = function () {
         inject(function ($controller, $rootScope) {
             controller = $controller;
@@ -193,7 +192,7 @@ describe('ConceptSetPageController', function () {
                     name: "my form",
                     version: 1,
                     uuid: "my-form-uuid",
-                    privileges:[]
+                    privileges: []
                 }
             ];
             mockformService(data);
@@ -225,7 +224,7 @@ describe('ConceptSetPageController', function () {
                     name: "my form",
                     version: 1,
                     uuid: "my-form-uuid",
-                    privileges:[]
+                    privileges: []
                 }
             ];
             mockConceptSetService(conceptResponseData);
@@ -286,7 +285,7 @@ describe('ConceptSetPageController', function () {
                     name: "my form",
                     version: '1',
                     uuid: "my-form-uuid",
-                    privileges:[]
+                    privileges: []
                 }
             ];
             mockConceptSetService(conceptResponseData);
@@ -312,7 +311,7 @@ describe('ConceptSetPageController', function () {
                 },
                 formFieldPath: "my form.1/101",
                 uuid: "random-uuid",
-                privileges:[]
+                privileges: []
             }];
             createController();
 
@@ -366,7 +365,6 @@ describe('ConceptSetPageController', function () {
             expect(scope.allTemplates[1].isAdded).toBeFalsy();
             expect(scope.allTemplates[1].alwaysShow).toBeTruthy();
         });
-
         it("should add template to the list when clicked", function () {
             var conceptResponseData = {
                 results: [

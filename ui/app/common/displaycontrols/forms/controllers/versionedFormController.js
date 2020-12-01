@@ -18,7 +18,6 @@ angular.module('bahmni.common.displaycontrol.forms')
                 });
                 return uniqueForms;
             };
-
             const sortFormDataByLatestDate = function (formData) {
                 return _.sortBy(formData, "encounterDateTime").reverse();
             };
@@ -66,7 +65,6 @@ angular.module('bahmni.common.displaycontrol.forms')
                                 return {
                                     formName: latestForm.name,
                                     formNameTranslations: latestForm.nameTranslation ? JSON.parse(latestForm.nameTranslation) : []
-
                                 };
                             });
                         }
@@ -83,9 +81,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                 });
             };
             $scope.doesUserHaveAccessToTheForm = function (data, action) {
-
-                if ((typeof data.privileges != undefined) && (data.privileges != null) && (data.privileges.length > 0)) {
-
+                if ((typeof data.privileges != 'undefined') && (data.privileges != null) && (data.privileges.length > 0)) {
                     var editable = [];
                     var viewable = [];
                     data.privileges.forEach(function (formPrivilege) {
@@ -153,7 +149,6 @@ angular.module('bahmni.common.displaycontrol.forms')
                     }
                 };
             };
-
             $scope.getEditObsData = function (observation) {
                 return {
                     observation: observation,

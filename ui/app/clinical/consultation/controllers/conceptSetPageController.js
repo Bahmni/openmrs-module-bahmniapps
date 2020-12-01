@@ -45,7 +45,6 @@ angular.module('bahmni.clinical')
                     }));
                 }
             };
-
             var concatObservationForms = function () {
                 $scope.allTemplates = getSelectedObsTemplate(allConceptSections);
                 $scope.uniqueTemplates = _.uniqBy($scope.allTemplates, 'label');
@@ -221,7 +220,6 @@ angular.module('bahmni.clinical')
             $scope.getNormalized = function (conceptName) {
                 return conceptName.replace(/['\.\s\(\)\/,\\]+/g, "_");
             };
-
             $scope.consultation.preSaveHandler.register("collectObservationsFromConceptSets", collectObservationsFromConceptSets);
             // Form Code :: Start
             var getObservationForms = function (observationsForms) {
@@ -253,8 +251,7 @@ angular.module('bahmni.clinical')
             };
             $scope.isFormEditableByTheUser = function (form) {
                 var result = false;
-
-                if ((typeof form.privileges != undefined) && (form.privileges != null) && (form.privileges.length!= 0)) {
+                if ((typeof form.privileges != 'undefined') && (form.privileges != null) && (form.privileges.length != 0)) {
                     form.privileges.forEach(function (formPrivilege) {
                         _.find($rootScope.currentUser.privileges, function (privilege) {
                             if (formPrivilege.privilegeName === privilege.name) {
