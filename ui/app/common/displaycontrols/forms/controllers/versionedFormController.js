@@ -81,7 +81,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                 });
             };
             $scope.doesUserHaveAccessToTheForm = function (data, action) {
-                if ((typeof data.privileges != undefined) && (data.privileges != null) && (data.privileges.length > 0)) {
+                if ((typeof data.privileges != 'undefined') && (data.privileges != null) && (data.privileges.length > 0)) {
                     var editable = [];
                     var viewable = [];
                     data.privileges.forEach(function (formPrivilege) {

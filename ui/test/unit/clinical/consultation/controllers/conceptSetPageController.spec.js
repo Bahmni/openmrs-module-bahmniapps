@@ -192,7 +192,7 @@ describe('ConceptSetPageController', function () {
                     name: "my form",
                     version: 1,
                     uuid: "my-form-uuid",
-                    privileges:[]
+                    privileges: []
                 }
             ];
             mockformService(data);
@@ -224,7 +224,7 @@ describe('ConceptSetPageController', function () {
                     name: "my form",
                     version: 1,
                     uuid: "my-form-uuid",
-                    privileges:[]
+                    privileges: []
                 }
             ];
             mockConceptSetService(conceptResponseData);
@@ -285,7 +285,7 @@ describe('ConceptSetPageController', function () {
                     name: "my form",
                     version: '1',
                     uuid: "my-form-uuid",
-                    privileges:[]
+                    privileges: []
                 }
             ];
             mockConceptSetService(conceptResponseData);
@@ -311,7 +311,7 @@ describe('ConceptSetPageController', function () {
                 },
                 formFieldPath: "my form.1/101",
                 uuid: "random-uuid",
-                privileges:[]
+                privileges: []
             }];
             createController();
 

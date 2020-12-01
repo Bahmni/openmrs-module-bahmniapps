@@ -24,7 +24,7 @@ describe('versionedFormController', function () {
         $aController = $controller;
         q = $q;
         scope.patient = {uuid: '123'};
-        scope.section = {dashboardConfig: {maximumNoOfVisits: 10}, formGroup:[]};
+        scope.section = {dashboardConfig: {maximumNoOfVisits: 10}, formGroup: []};
         mockBackend = $httpBackend;
         mockBackend.expectGET('../common/displaycontrols/forms/views/formsTable.html').respond("<div>dummy</div>");
     }));
