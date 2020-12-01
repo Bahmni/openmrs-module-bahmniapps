@@ -15,7 +15,6 @@ angular.module('bahmni.common.displaycontrol.forms')
                 var obsFormData = function () {
                     return visitFormService.formData($scope.patient.uuid, $scope.section.dashboardConfig.maximumNoOfVisits, $scope.section.formGroup, $state.params.enrollment);
                 };
-
                 var filterFormData = function (formData) {
                     var filterList = [];
                     _.each(formData, function (item) {

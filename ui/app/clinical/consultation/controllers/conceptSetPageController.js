@@ -220,7 +220,6 @@ angular.module('bahmni.clinical')
             $scope.getNormalized = function (conceptName) {
                 return conceptName.replace(/['\.\s\(\)\/,\\]+/g, "_");
             };
-
             $scope.consultation.preSaveHandler.register("collectObservationsFromConceptSets", collectObservationsFromConceptSets);
             // Form Code :: Start
             var getObservationForms = function (observationsForms) {

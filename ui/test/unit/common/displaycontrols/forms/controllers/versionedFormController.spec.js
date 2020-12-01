@@ -37,8 +37,6 @@ describe('versionedFormController', function () {
             $q: q
         })
     };
-
-
     var mockFormServiceGetAllPatientForms = function (data) {
         formService.getAllPatientForms.and.callFake(function () {
             return {
@@ -54,7 +52,6 @@ describe('versionedFormController', function () {
 
         expect(scope.getDisplayName(formData)).toEqual('Test Form');
     });
-
     it('should return translated formName when form has translations', function () {
         q = jasmine.createSpyObj('$q', ['all']);
         let allFormData = [{formName: 'Simple', encounterDateTime: '2015-12-18T17:26:31.000+0000'}, {
@@ -181,6 +178,5 @@ describe('versionedFormController', function () {
 
         expect(actualEditObsData).toEqual(expectedEditObsData);
     });
-
 
 });

@@ -365,7 +365,6 @@ describe('ConceptSetPageController', function () {
             expect(scope.allTemplates[1].isAdded).toBeFalsy();
             expect(scope.allTemplates[1].alwaysShow).toBeTruthy();
         });
-
         it("should add template to the list when clicked", function () {
             var conceptResponseData = {
                 results: [
