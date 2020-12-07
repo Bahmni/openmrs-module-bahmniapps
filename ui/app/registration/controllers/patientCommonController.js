@@ -17,7 +17,7 @@ angular.module('bahmni.registration')
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
-            $scope.ModuleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
+            $scope.moduleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
             function initPatientNameDisplayOrder () {
                 var validNameFields = Bahmni.Registration.Constants.patientNameDisplayOrder;
                 var nameFields = appService.getAppDescriptor().getConfigValue("patientNameDisplayOrder") || [];
@@ -43,10 +43,10 @@ angular.module('bahmni.registration')
                 }
             };
             $scope.translateAttributes = function (attribute) {
-                if ($scope.ModuleName == null) {
+                if ($scope.moduleName == null) {
                     var keyPrefix = "REGISTRATION";
                 } else {
-                    var keyPrefix = $scope.ModuleName;
+                    var keyPrefix = $scope.moduleName;
                 }
                 var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
                 var translationKey = keyPrefix + "_" + keyName;

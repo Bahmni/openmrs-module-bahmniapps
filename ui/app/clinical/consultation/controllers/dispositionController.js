@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .controller('DispositionController', ['$scope', '$q', 'dispositionService', 'appService', 'retrospectiveEntryService', 'spinner', '$rootScope', '$translate', function ($scope, $q, dispositionService, appService, retrospectiveEntryService, spinner, $rootScope, $translate) {
         var consultation = $scope.consultation;
         var allDispositions = [];
-        $scope.ModuleName = appService.getAppDescriptor().getConfigValue('disposition');
+        $scope.moduleName = appService.getAppDescriptor().getConfigValue('disposition');
         var getPreviousDispositionNote = function () {
             if (consultation.disposition && (!consultation.disposition.voided)) {
                 return _.find(consultation.disposition.additionalObs, function (obs) {
@@ -87,10 +87,10 @@ angular.module('bahmni.clinical')
             return selectedDispositionConceptName.name;
         };
         $scope.translateAttributeName = function (attribute) {
-            if ($scope.ModuleName == null) {
+            if ($scope.moduleName == null) {
                 var keyPrefix = "DISPOSITION";
             } else {
-                var keyPrefix = $scope.ModuleName;
+                var keyPrefix = $scope.moduleName;
             }
             var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
             var translationKey = keyPrefix + '_' + keyName;
