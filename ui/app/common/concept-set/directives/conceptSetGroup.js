@@ -41,7 +41,25 @@ angular.module('bahmni.common.conceptSet')
             $scope.isInEditEncounterMode = function () {
                 return $stateParams.encounterUuid !== undefined && $stateParams.encounterUuid !== 'active';
             };
-
+            $scope.computeFormViewabilityInConceptSetGroup = function (conceptSet) {
+                if (conceptSet instanceof Bahmni.ObservationForm) {
+                    var result = false;
+                    if (conceptSet.privileges.length != 0) {
+                        for (var i = 0; i < conceptSet.privileges.length; i++) {
+                            _.find($rootScope.currentUser.privileges, function (privilege) {
+                                if (conceptSet.privileges[i].privilegeName === privilege.name) {
+                                    if (!conceptSet.privileges[i].editable) {
+                                        if (conceptSet.privileges[i].viewable) {
+                                            result = true;
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    } else { result = false; }
+                    return result;
+                }
+            };
             $scope.computeField = function (conceptSet, event) {
                 event.stopPropagation();
                 $scope.consultation.preSaveHandler.fire();
