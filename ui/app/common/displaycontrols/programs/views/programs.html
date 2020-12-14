@@ -13,7 +13,7 @@
                 <div class="program-attributes">
                     <div class="program-attribute clearfix" ng-repeat="attribute in program.attributes" ng-if="isIncluded(attribute.attributeType, program)">
                     <span class="program-attribute-title fl">
-                        <strong>{{::translateAttributeName(attribute.attributeType,'program')}}</strong> :
+                        <strong>{{::translateAttributeName(attribute.attributeType)}}</strong> :
                     </span>
                         <span class="program-attribute-value fl">{{::getAttributeValue(attribute)}}</span>
                     </div>

@@ -42,19 +42,9 @@ angular.module('bahmni.registration')
                     $scope.confirmationPrompt(event);
                 }
             };
-            $scope.translateAttributes = function (attribute) {
-                if ($scope.moduleName == null) {
-                    var keyPrefix = "REGISTRATION";
-                } else {
-                    var keyPrefix = $scope.moduleName;
-                }
-                var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
-                var translationKey = keyPrefix + "_" + keyName;
-                var translation = $translate.instant(translationKey);
-                if (translation != translationKey) {
-                    attribute = translation;
-                }
-                return attribute;
+            $scope.getTranslatedPatientControls = function (controls) {
+                var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(controls, Bahmni.Common.Constants.registration, $translate);
+                return translatedName;
             };
             var stateChangeListener = $rootScope.$on("$stateChangeStart", function (event, toState, toParams) {
                 if ($scope.showSaveConfirmDialogConfig && (toState.url == "/search" || toState.url == "/patient/new")) {

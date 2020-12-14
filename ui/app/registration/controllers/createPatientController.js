@@ -15,19 +15,9 @@ angular.module('bahmni.registration')
             var getPersonAttributeTypes = function () {
                 return $rootScope.patientConfiguration.attributeTypes;
             };
-            $scope.translateAttributes = function (attribute) {
-                if ($scope.moduleName == null) {
-                    var keyPrefix = "REGISTRATION";
-                } else {
-                    var keyPrefix = $scope.moduleName;
-                }
-                var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
-                var translationKey = keyPrefix + "_" + keyName;
-                var translation = $translate.instant(translationKey);
-                if (translation != translationKey) {
-                    attribute = translation;
-                }
-                return attribute;
+            $scope.getTranslatedPatientIdentifier = function (patientIdentifier) {
+                var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(patientIdentifier, Bahmni.Common.Constants.registration, $translate);
+                return translatedName;
             };
             var prepopulateDefaultsInFields = function () {
                 var personAttributeTypes = getPersonAttributeTypes();
