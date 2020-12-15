@@ -55,11 +55,11 @@ angular.module('bahmni.common.displaycontrol.programs')
                 var isCodedConceptFormat = function (format) {
                     return format == "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype";
                 };
-                $scope.translateAttributeName = function (attribute) {
-                    if (typeof attribute.description == 'undefined') {
-                        attribute.description = attribute.display;
+                $scope.translateProgram = function (program) {
+                    if (typeof program.description == 'undefined') {
+                        program.description = program.display;
                     }
-                    var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(attribute.description, Bahmni.Common.Constants.program, $translate);
+                    var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(program.description, Bahmni.Common.Constants.program, $translate);
                     return translatedName;
                 };
             };
