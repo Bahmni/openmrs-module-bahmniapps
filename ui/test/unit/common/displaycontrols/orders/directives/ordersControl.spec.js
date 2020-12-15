@@ -23,6 +23,7 @@ describe("OrdersDisplayControl", function () {
         inject(function ($compile, $rootScope) {
             compile = $compile;
             scope = $rootScope.$new();
+            scope.concept = undefined;
         });
 
     });

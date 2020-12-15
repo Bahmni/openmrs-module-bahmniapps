@@ -84,5 +84,31 @@
     "NO_LOCATION_TAGGED_TO_VISIT_LOCATION": "No hay ubicación puesta para la Ubicacion de la Visita Encontrada",
     "REGISTRATION_FORM_ERRORS_MESSAGE_KEY": "Por favor ingrese un valor en los campos obligatorios o corriga el valor en los campos resaltados para continuar",
     "OBS_BOOLEAN_YES_KEY": "Sí",
-    "OBS_BOOLEAN_NO_KEY": "No"
+    "OBS_BOOLEAN_NO_KEY": "No",
+
+    "REGISTRATION_CREATE_NEW_CONFIG_KEY": "Crear nueva",
+    "REGISTRATION_SEARCH_CONFIG_KEY": "Buscar",
+    "REGISTRATION_ADDTIONAL_IDENTIFIERS": "Identificador adicional",
+    "REGISTRATION_PATIENT_IDENTIFIER": "Itentificador de pacientes",
+    "REGISTRATION_NAME_IN_LOCAL_LANGUAGE": "Nombre en idioma local",
+    "REGISTRATION_MIDDLENAMELOCAL": "Segundo nombre Local",
+    "REGISTRATION_FAMILYNAMELOCAL": "Apellido Local",
+    "PATIENT_ATTRIBUTE_CASTE": "Casta",
+    "PATIENT_ATTRIBUTE_CLASS": "Clase",
+    "PATIENT_ATTRIBUTE_EDUCATION": "Detalles de educación",
+    "PATIENT_ATTRIBUTE_OCCUPATION": "Ocupación",
+    "PATIENT_ATTRIBUTE_SECONDARYCONTACT": "Contacto secundario",
+    "PATIENT_ATTRIBUTE_PRIMARYRELATIVE": "Familiar primario",
+    "PATIENT_ATTRIBUTE_SECONDARYIDENTIFIER": "Identificador secundaria",
+    "PATIENT_ATTRIBUTE_LANDHOLDING": "Tenencia de la tierra",
+    "PATIENT_ATTRIBUTE_DEBT": "Deuda",
+    "PATIENT_ATTRIBUTE_DISTANCEFROMCENTER": "Distancia desde el centro",
+    "PATIENT_ATTRIBUTE_ISURBAN": "Es urbana",
+    "PATIENT_ATTRIBUTE_CLUSTER": "Racimo",
+    "PATIENT_ATTRIBUTE_RATIONCARD": "Cartilla de racionamiento",
+    "PATIENT_ATTRIBUTE_FAMILYINCOME": "Ingresos familiares",
+    "NUTRITIONAL_VALUES_LOCALE_KEY": "Valores nutricionales",
+    "FEE_INFORMATION_LOCALE_KEY": "Información de tarifas"
+
+
 }

@@ -15,7 +15,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
         },
         templateUrl: '../common/attributeTypes/views/attributeInformation.html',
         restrict: 'E',
-        controller: function ($scope) {
+        controller: function ($scope, $translate) {
             $scope.getAutoCompleteList = $scope.getAutoCompleteList();
             $scope.getDataResults = $scope.getDataResults();
             // to avoid watchers in one way binding
@@ -29,6 +29,10 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                     return answer.conceptId === attributeValueConceptType.conceptUuid;
                 });
                 attributeValueConceptType.value = concept && concept.fullySpecifiedName;
+            };
+            $scope.getTranslatedAttributeTypes = function (attribute) {
+                var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(attribute, Bahmni.Common.Constants.patientAttribute, $translate);
+                return translatedName;
             };
         }
     };

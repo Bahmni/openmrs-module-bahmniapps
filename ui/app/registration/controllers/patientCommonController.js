@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner', '$location', 'ngDialog', '$window', '$state',
-        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner, $location, ngDialog, $window, $state) {
+    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner', '$location', 'ngDialog', '$window', '$state', '$translate',
+        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner, $location, ngDialog, $window, $state, $translate) {
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             var personAttributes = [];
@@ -17,7 +17,7 @@ angular.module('bahmni.registration')
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
-
+            $scope.moduleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
             function initPatientNameDisplayOrder () {
                 var validNameFields = Bahmni.Registration.Constants.patientNameDisplayOrder;
                 var nameFields = appService.getAppDescriptor().getConfigValue("patientNameDisplayOrder") || [];
@@ -42,7 +42,10 @@ angular.module('bahmni.registration')
                     $scope.confirmationPrompt(event);
                 }
             };
-
+            $scope.getTranslatedPatientControls = function (controls) {
+                var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(controls, Bahmni.Common.Constants.registration, $translate);
+                return translatedName;
+            };
             var stateChangeListener = $rootScope.$on("$stateChangeStart", function (event, toState, toParams) {
                 if ($scope.showSaveConfirmDialogConfig && (toState.url == "/search" || toState.url == "/patient/new")) {
                     $scope.targetUrl = toState.name;
@@ -94,13 +97,18 @@ angular.module('bahmni.registration')
                             $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                                 params: {
                                     name: deathConcept,
-                                    v: "custom:(uuid,name,set,setMembers:(uuid,display,name:(uuid,name),retired))"
+                                    v: "custom:(uuid,name,set,names,setMembers:(uuid,display,name:(uuid,name),names,retired))"
                                 },
                                 withCredentials: true
                             }).then(function (results) {
                                 $scope.deathConceptExists = !!results.data.results.length;
                                 $scope.deathConcepts = results.data.results[0] ? results.data.results[0].setMembers : [];
-                                $scope.deathConcepts = filterRetireDeathConcepts($scope.deathConcepts);
+
+                                var activeDeathConcepts = filterRetireDeathConcepts($scope.deathConcepts);
+                                _.forEach(activeDeathConcepts, function (deathConcept, index) {
+                                    activeDeathConcepts[index] = $scope.updateDisplayFieldToLocaleSpecific(
+                                    $scope.filterNamesForLocale(deathConcept, $rootScope.currentUser.userProperties.defaultLocale, "FULLY_SPECIFIED"));
+                                });
                             });
                         }
                     }]
@@ -111,6 +119,20 @@ angular.module('bahmni.registration')
                 return _.filter(deathConcepts, function (concept) {
                     return !concept.retired;
                 });
+            };
+
+            $scope.filterNamesForLocale = function (jsonNames, locale, nametype) {
+                var localeNames = _.filter(jsonNames.names, function (name) {
+                    return name.locale == locale && name.conceptNameType == nametype;
+                });
+                if (localeNames.length > 0) {
+                    jsonNames.names = localeNames;
+                }
+                return jsonNames;
+            };
+
+            $scope.updateDisplayFieldToLocaleSpecific = function (concept) {
+                concept.display = concept.names[0].display;
             };
 
             $scope.isAutoComplete = function (fieldName) {

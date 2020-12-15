@@ -10,10 +10,10 @@ angular.module('bahmni.clinical')
                 $scope.patientContext = response.data;
                 var programAttributes = $scope.patientContext.programAttributes;
                 var personAttributes = $scope.patientContext.personAttributes;
-
                 convertBooleanValuesToEnglish(personAttributes);
                 convertBooleanValuesToEnglish(programAttributes);
-
+                translateAttributes(personAttributes);
+                translateAttributes(programAttributes);
                 var preferredIdentifier = patientContextConfig.preferredIdentifier;
                 if (preferredIdentifier) {
                     if (programAttributes[preferredIdentifier]) {
@@ -41,6 +41,13 @@ angular.module('bahmni.clinical')
             var booleanMap = {'true': 'Yes', 'false': 'No'};
             _.forEach(attributes, function (value) {
                 value.value = booleanMap[value.value] ? booleanMap[value.value] : value.value;
+            });
+        };
+
+        var translateAttributes = function (attributes) {
+            _.forEach(attributes, function (attribute, key) {
+                var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(key, Bahmni.Common.Constants.registration, $translate);
+                attribute.description = translatedName;
             });
         };
 
