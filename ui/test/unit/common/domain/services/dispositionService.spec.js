@@ -69,11 +69,21 @@ describe('dispositionService', function () {
     }));
 
     it('should return dispositions by visit', function () {
+        rootScope.currentUser = {
+            userProperties :{
+                defaultLocale : "en"
+            }
+        };
         var actualDispositions = dispositionService.getDispositionByVisit("1234");
         expect(actualDispositions).toEqual(dispositions);
     });
 
     it('should return dispositions by patient', function () {
+        rootScope.currentUser = {
+            userProperties :{
+                defaultLocale : "en"
+            }
+        };
         var actualDispositions = dispositionService.getDispositionByPatient("1234");
         expect(actualDispositions).toEqual(dispositions);
     });

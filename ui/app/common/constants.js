@@ -82,8 +82,8 @@ Bahmni.Common = Bahmni.Common || {};
         bahmniVisitLocationUrl: BAHMNI_CORE + "/visitLocation",
         bahmniOrderUrl: BAHMNI_CORE + "/orders",
         bahmniDrugOrderUrl: BAHMNI_CORE + "/drugOrders",
-        bahmniDispositionByVisitUrl: BAHMNI_CORE + "/disposition/visit",
-        bahmniDispositionByPatientUrl: BAHMNI_CORE + "/disposition/patient",
+        bahmniDispositionByVisitUrl: BAHMNI_CORE + "/disposition/visitWithLocale",
+        bahmniDispositionByPatientUrl: BAHMNI_CORE + "/disposition/patientWithLocale",
         bahmniSearchUrl: BAHMNI_CORE + "/search",
         bahmniLabOrderResultsUrl: BAHMNI_CORE + "/labOrderResults",
         bahmniEncounterUrl: BAHMNI_CORE + "/bahmniencounter",
@@ -258,7 +258,14 @@ Bahmni.Common = Bahmni.Common || {};
         defaultPossibleRelativeSearchLimit: 10,
         formBuilderDisplayControlType: "formsV2",
         formBuilderType: "v2",
-        formBuilderTranslationApi: IE_APPS_API + '/form/translate'
+        formBuilderTranslationApi: IE_APPS_API + '/form/translate',
+        disposition: "DISPOSITION",
+        registration: "REGISTRATION",
+        clinical: "CLINICAL",
+        diagnosis: "DIAGNOSIS",
+        ot: "OT",
+        patientAttribute: "PATIENT_ATTRIBUTE",
+        program: "PROGRAM"
     };
 })();
 

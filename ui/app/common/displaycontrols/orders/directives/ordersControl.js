@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.orders')
-    .directive('ordersControl', ['orderService', 'orderTypeService', '$q', 'spinner', '$filter',
-        function (orderService, orderTypeService, $q, spinner, $filter) {
+    .directive('ordersControl', ['orderService', 'orderTypeService', '$q', 'spinner', '$filter', '$rootScope',
+        function (orderService, orderTypeService, $q, spinner, $filter, $rootScope) {
             var controller = function ($scope) {
                 $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($scope.orderType);
                 if ($scope.config.showHeader === null || $scope.config.showHeader === undefined) {
@@ -66,6 +66,25 @@ angular.module('bahmni.common.displaycontrol.orders')
                     return $filter('titleTranslate')($scope.section);
                 };
                 $scope.initialization = init();
+                $scope.translatedLabel = function (concept) {
+                    var localName = "";
+                    if (typeof concept != 'undefined') {
+                        var currentLocale = $rootScope.currentUser.userProperties.defaultLocale;
+                        var namesMap = concept.names;
+                        if (namesMap != null && (typeof namesMap != 'undefined')) {
+                            namesMap.forEach(function (names) {
+                                if (names.locale === currentLocale) {
+                                    observation.concept.name = names.display;
+                                }
+                            });
+                        } else {
+                            if (concept.shortName != null) {
+                                return concept.shortName;
+                            }
+                        }
+                    }
+                    return concept;
+                };
             };
 
             var link = function ($scope, element) {
