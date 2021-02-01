@@ -16,8 +16,8 @@ angular.module('bahmni.common.domain')
 
         var getDispositionByVisit = function (visitUuid) {
             return $http.get(Bahmni.Common.Constants.bahmniDispositionByVisitUrl, {
-                params: {visitUuid: visitUuid},
-                locale: $rootScope.currentUser.userProperties.defaultLocale
+                params: {visitUuid: visitUuid,
+                    locale: $rootScope.currentUser.userProperties.defaultLocale}
             });
         };
 

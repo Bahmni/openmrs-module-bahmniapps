@@ -40,7 +40,10 @@ angular.module('bahmni.clinical')
             }
             return copyOfFinalDispositionActions;
         };
-
+        $scope.getTranslatedDisposition = function (dispositionName) {
+            var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(dispositionName, Bahmni.Common.Constants.disposition, $translate);
+            return translatedName;
+        };
         var filterDispositionActions = function (dispositions, visitSummary) {
             var defaultDispositions = ["Undo Discharge", "Admit Patient", "Transfer Patient", "Discharge Patient"];
             var finalDispositionActions = _.filter(dispositions, function (disposition) {

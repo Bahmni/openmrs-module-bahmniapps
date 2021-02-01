@@ -5,7 +5,7 @@
             <tbody ng-repeat="disposition in dispositions" class="row">
             <tr class="view-past" ng-class="::{'test-notes-parent': getNotes(disposition), 'notes-open': (disposition.show == true)}">
                 <td class="name">
-                    <span class="disposition-state">{{::disposition.conceptName}}</span>
+                    <span class="disposition-state">{{::getDisplayName(disposition)}}</span>
                 </td>
                 <td class="value">
                     {{::disposition.dispositionDateTime| bahmniDate}}

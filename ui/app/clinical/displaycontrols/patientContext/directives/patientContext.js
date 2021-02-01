@@ -53,6 +53,8 @@ angular.module('bahmni.clinical')
                 if (translation != translationKey) {
                     attribute.description = translation;
                 }
+                var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(key, Bahmni.Common.Constants.registration, $translate);
+                attribute.description = translatedName;
             });
         };
 
