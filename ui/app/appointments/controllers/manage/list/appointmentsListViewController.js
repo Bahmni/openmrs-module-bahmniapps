@@ -16,6 +16,7 @@ angular.module('bahmni.appointments')
             $scope.ownAppointmentPrivilege = Bahmni.Appointments.Constants.privilegeOwnAppointments;
             $scope.resetAppointmentStatusPrivilege = Bahmni.Appointments.Constants.privilegeResetAppointmentStatus;
             $scope.searchedPatient = false;
+            $scope.additionalInfoColumns = appService.getAppDescriptor().getConfigValue('additionalInfoColumns') || {};
             var autoRefreshIntervalInSeconds = parseInt(appService.getAppDescriptor().getConfigValue('autoRefreshIntervalInSeconds'));
             var enableAutoRefresh = !isNaN(autoRefreshIntervalInSeconds);
             var autoRefreshStatus = true;
@@ -26,24 +27,35 @@ angular.module('bahmni.appointments')
             $scope.$on('filterClosedOpen', function (event, args) {
                 $scope.isFilterOpen = args.filterViewStatus;
             });
-            $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
-                {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
-                {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
-                {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
-                {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
-                {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes},
-                {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
-                {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
-                {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
-                {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
             var init = function () {
                 $scope.searchedPatient = $stateParams.isSearchEnabled && $stateParams.patient;
                 $scope.startDate = $stateParams.viewDate || moment().startOf('day').toDate();
                 $scope.isFilterOpen = $stateParams.isFilterOpen;
+            };
+            var buildTableHeader = function () {
+                $scope.tableInfo = [{heading: 'APPOINTMENT_PATIENT_ID', sortInfo: 'patient.identifier', enable: true},
+                    {heading: 'APPOINTMENT_PATIENT_NAME', sortInfo: 'patient.name', class: true, enable: true},
+                    {heading: 'APPOINTMENT_DATE', sortInfo: 'date', enable: true},
+                    {heading: 'APPOINTMENT_START_TIME_KEY', sortInfo: 'startDateTime', enable: true},
+                    {heading: 'APPOINTMENT_END_TIME_KEY', sortInfo: 'endDateTime', enable: true},
+                    {heading: 'APPOINTMENT_PROVIDER', sortInfo: 'provider.name', class: true, enable: true},
+                    {heading: 'APPOINTMENT_SERVICE_SPECIALITY_KEY', sortInfo: 'service.speciality.name', enable: $scope.enableSpecialities},
+                    {heading: 'APPOINTMENT_SERVICE', sortInfo: 'service.name', class: true, enable: true},
+                    {heading: 'APPOINTMENT_SERVICE_TYPE_FULL', sortInfo: 'serviceType.name', class: true, enable: $scope.enableServiceTypes},
+                    {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
+                    {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
+                    {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
+                    {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
+                if ($scope.additionalInfoColumns.length > 0) {
+                    $scope.tableInfo.splice($scope.tableInfo.length - 1, 0,
+                    {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true});
+                } else {
+                    _.forEach($scope.additionalInfoColumns, function (key, value) {
+                        var str = value.replace(/ +/g, "");
+                        $scope.tableInfo.splice($scope.tableInfo.length - 1, 0,
+                        { heading: 'APPOINTMENT_ADDITIONAL_INFO_COLUMN_' + str.toUpperCase(), sortInfo: value, class: true, enable: true});
+                    });
+                }
             };
 
             var setAppointments = function (params) {
@@ -146,7 +158,9 @@ angular.module('bahmni.appointments')
             $scope.hasNoAppointments = function () {
                 return _.isEmpty($scope.filteredAppointments);
             };
-
+            $scope.hasAdditionalInfoColumnsEntered = function () {
+                return _.isEmpty($scope.additionalInfoColumns);
+            };
             $scope.goBackToPreviousView = function () {
                 $scope.searchedPatient = false;
                 $scope.filteredAppointments = oldPatientData;
@@ -209,7 +223,11 @@ angular.module('bahmni.appointments')
                 var emptyObjects = _.filter($scope.filteredAppointments, function (appointment) {
                     return !_.property(sortColumn)(appointment);
                 });
-
+                if (_.includes($scope.additionalInfoColumns, sortColumn)) {
+                    emptyObjects = _.filter($scope.filteredAppointments, function (appointment) {
+                        return !_.property(sortColumn)(appointment.additionalInfo);
+                    });
+                }
                 if (sortColumn === "provider.name") {
                     emptyObjects = $scope.filteredAppointments.filter(function (fa) {
                         return _.every(fa.providers, {"response": Bahmni.Appointments.Constants.providerResponses.CANCELLED }) || _.isEmpty(fa.providers);
@@ -227,6 +245,9 @@ angular.module('bahmni.appointments')
 
                     if (angular.isNumber(_.get(appointment, sortColumn))) {
                         return _.get(appointment, sortColumn);
+                    }
+                    if (_.includes($scope.additionalInfoColumns, sortColumn)) {
+                        return _.get(appointment.additionalInfo, sortColumn).toLowerCase();
                     }
                     return _.get(appointment, sortColumn).toLowerCase();
                 });
@@ -294,14 +315,26 @@ angular.module('bahmni.appointments')
                 scope.yes = _.partial(changeStatus, toStatus, undefined, _);
                 showPopUp(scope);
             };
-
+            $scope.displayNewColumns = function (jsonObj, columnName) {
+                if (jsonObj != null) {
+                    return jsonObj[columnName];
+                }
+            };
             $scope.display = function (jsonObj) {
                 jsonObj = _.mapKeys(jsonObj, function (value, key) {
                     return $translate.instant(key);
                 });
+                if (_.isEmpty($scope.additionalInfoColumns)) {
+                    var colList = [];
+                    angular.forEach(jsonObj, function (value, key) {
+                        if (!_.includes($scope.additionalInfoColumns, key)) {
+                            colList.push(jsonObj[value]);
+                        }
+                    });
+                    return Object.values(colList).join(", ");
+                }
                 return JSON.stringify(jsonObj || '').replace(/[{\"}]/g, "").replace(/[,]/g, ",\t");
             };
-
             var showPopUp = function (popUpScope) {
                 popUpScope.no = function (closeConfirmBox) {
                     closeConfirmBox();
@@ -385,4 +418,5 @@ angular.module('bahmni.appointments')
             };
 
             init();
+            buildTableHeader();
         }]);

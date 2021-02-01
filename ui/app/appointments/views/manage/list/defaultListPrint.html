@@ -59,7 +59,9 @@
                     <th class="table-mid-width" ng-if="enableServiceTypes">{{::'APPOINTMENT_SERVICE_TYPE_FULL' |translate}}</th>
                     <th class="table-mid-width">{{::'APPOINTMENT_SERVICE_LOCATION_KEY' |translate}}</th>
                     <th>{{::'APPOINTMENT_STATUS' |translate}}</th>
-                    <!--<th class="notes">{{::'APPOINTMENT_COMMENTS' |translate}}</th>-->
+                    <!--<th>{{::'APPOINTMENT_ADDITIONAL_INFO' |translate}}</th>
+                    <th ng-repeat-start="columnValue in additionalInfoColumns" class="table-mid-width" ng-repeat-end>'APPOINTMENT_ADDITIONAL_INFO_COLUMN_'+columnValue.toUpperCase() \ translate</th>
+                    <th class="notes">{{::'APPOINTMENT_COMMENTS' |translate}}</th>-->
                 </tr>
                 </thead>
                 <tbody>
@@ -80,7 +82,9 @@
                     <td class="table-mid-width" ng-if="enableServiceTypes">{{::appointment.serviceType && (appointment.serviceType.name + ' [' + appointment.serviceType.duration + ' min]')}}</td>
                     <td class="table-mid-width">{{::appointment.location.name}}</td>
                     <td>{{::appointment.status}}</td>
-                    <!--<td class="notes">{{::appointment.comments}}</td>-->
+                   <!-- <td ng-show="hasAdditionalInfoColumnsEntered()" class="table-mid-width">{{display(appointment.additionalInfo)}}</td>
+                    <td ng-repeat-start="columnValue in additionalInfoColumns" class="table-mid-width" ng-repeat-end>{{displayNewColumns(appointment.additionalInfo, columnValue)}}</td>
+                    <td class="notes">{{::appointment.comments}}</td>-->
                 </tr>
                 </tbody>
             </table>
