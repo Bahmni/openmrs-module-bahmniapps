@@ -42,7 +42,8 @@
                 <td>{{appointment.status}}</td>
                 <td>{{:: isWalkIn(appointment.appointmentKind)}}</td>
                 <td class="table-mid-width">{{::appointment.location.name}}</td>
-                <td class="table-mid-width">{{display(appointment.additionalInfo)}}</td>
+                <td ng-show="hasAdditionalInfoColumnsEntered()" class="table-mid-width">{{display(appointment.additionalInfo)}}</td>
+                <td ng-repeat-start="columnValue in additionalInfoColumns" class="table-mid-width" ng-repeat-end>{{displayNewColumns(appointment.additionalInfo, columnValue)}}</td>
                 <td>{{::appointment.comments}}</td>
             </tr>
             </tbody>
