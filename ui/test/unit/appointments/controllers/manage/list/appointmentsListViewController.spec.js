@@ -2,9 +2,9 @@
 
 describe('AppointmentsListViewController', function () {
     var controller, scope, rootScope, stateparams, spinner, appointmentsService, appService, appDescriptor, _appointmentsFilter,
-        printer, confirmBox, $translate, $state, messagingService, interval;
+        printer, confirmBox, $translate, $state, messagingService, interval, $scope;
     var controller, scope, stateparams, spinner, appointmentsService, appService, appDescriptor, _appointmentsFilter,
-        printer, confirmBox, $translate, $state, messagingService, interval;
+        printer, confirmBox, $translate, $state, messagingService, interval, $scope;
 
     beforeEach(function () {
         module('bahmni.appointments');
@@ -33,6 +33,7 @@ describe('AppointmentsListViewController', function () {
             confirmBox = jasmine.createSpy('confirmBox');
             messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
             $translate = jasmine.createSpyObj('$translate', ['instant', 'storageKey', 'storage', 'preferredLanguage']);
+            $scope = jasmine.createSpyObj('$scope', ['additionalInfoColumns']);
             $httpBackend.expectGET('../i18n/appointments/locale_en.json').respond('<div></div>');
             $httpBackend.expectGET('/bahmni_config/openmrs/i18n/appointments/locale_en.json').respond('<div></div>');
             $httpBackend.expectGET('/openmrs/ws/rest/v1/provider').respond('<div></div>');
@@ -602,8 +603,8 @@ describe('AppointmentsListViewController', function () {
             scope.sortAppointmentsBy('additionalInfo');
             expect(scope.sortColumn).toEqual('additionalInformation');
             expect(scope.filteredAppointments.length).toEqual(2);
-            expect(scope.filteredAppointments[0].additionalInfo).toEqual(otherAppointment.additionalInfo);
-            expect(scope.filteredAppointments[1].additionalInfo).toEqual(appointment.additionalInfo);
+            expect(scope.filteredAppointments[0].additionalInfo).toEqual(appointment.additionalInfo);
+            expect(scope.filteredAppointments[1].additionalInfo).toEqual(otherAppointment.additionalInfo);
         });
 
         it("should reverse sort appointments if sorted on the same column consecutively", function () {
@@ -720,7 +721,6 @@ describe('AppointmentsListViewController', function () {
                 {heading: 'APPOINTMENT_STATUS', sortInfo: 'status', enable: true},
                 {heading: 'APPOINTMENT_WALK_IN', sortInfo: 'appointmentKind', enable: true},
                 {heading: 'APPOINTMENT_SERVICE_LOCATION_KEY', sortInfo: 'location.name', class: true, enable: true},
-                {heading: 'APPOINTMENT_ADDITIONAL_INFO', sortInfo: 'additionalInfo', class: true, enable: true},
                 {heading: 'APPOINTMENT_CREATE_NOTES', sortInfo: 'comments', enable: true}];
                 createController();
 
@@ -956,6 +956,12 @@ describe('AppointmentsListViewController', function () {
         $translate.instant.and.callFake(function (value) {
             return value;
         });
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'additionalInfoColumns') {
+                return {"array": [1, 2, 3], "boolean": true, "null": null, "number": 123, "object": {"a": "b", "c": "d", "e": "f"}, "string": "Hello World"};
+            }
+            return undefined;
+        });
         createController();
         var jsonObject = {"array": [1, 2, 3], "boolean": true, "null": null, "number": 123, "object": {"a": "b", "c": "d", "e": "f"}, "string": "Hello World"};
         var display = scope.display(jsonObject);
@@ -970,7 +976,14 @@ describe('AppointmentsListViewController', function () {
             }
             return value;
         });
+        appDescriptor.getConfigValue.and.callFake(function (value) {
+            if (value === 'additionalInfoColumns') {
+                return {"array": [1, 2, 3], "LOCATION_KEY": "Registration"};
+            }
+            return undefined;
+        });
         createController();
+        scope.additionalInformation = [];
         var jsonObject = {"array": [1, 2, 3], "LOCATION_KEY": "Registration"};
         var display = scope.display(jsonObject);
         var jsonString = 'array:[1,\t2,\t3],\tLocation:Registration';
