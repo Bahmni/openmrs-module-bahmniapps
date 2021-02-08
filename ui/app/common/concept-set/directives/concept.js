@@ -98,6 +98,19 @@ angular.module('bahmni.common.conceptSet')
                         scope.patientHeight = patientHeight.data[0].value;
                     }
                 });
+                var fetchPatientWeight = $http.get(Bahmni.Common.Constants.observationsUrl, {
+                    params: {
+                        concept: Bahmni.Common.Constants.patientWeightConceptName,
+                        patientUuid: scope.patient.uuid
+                    },
+                    withCredentials: true
+                });
+                fetchPatientWeight = fetchPatientWeight.then(function (response) {
+                    var patientWeight = response;
+                    if (patientWeight.data[0] && patientWeight.data[0].value) {
+                        scope.patientWeight = patientWeight.data[0].value;
+                    }
+                });
                 var maternalcarevisitnumber = $http.get(Bahmni.Common.Constants.observationsUrl, {
                     params: {
                         concept: Bahmni.Common.Constants.maternalCareVisitNumber,
