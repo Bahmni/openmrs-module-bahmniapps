@@ -63,7 +63,7 @@ Bahmni.Common = Bahmni.Common || {};
 
     Bahmni.Common.Constants = {
         patientFirstPcrTestResult: "HEI Testing (First PCR Results)",
-        patientSecondPcrTestResult: "HEI Testing (Second PCR Result)",
+        patientSecondPcrTestResult: "HEI Testing (Second PCR Results)",
         patientRepeatPCRResult: "HEI Testing (Repeat PCR Results)",
         patientHeightConceptName: "HEIGHT",
         patientWeightConceptName: "WEIGHT",

@@ -55,13 +55,20 @@ angular.module('bahmni.clinical')
                         v: "custom:" + customRepresentation
                     }).then(function (response) {
                         var allTemplates = response.data.results[0].setMembers;
-                        if (($scope.patient.age >= 2) || (($scope.firstPcrResult == "Positive") && ($scope.repeattPcrResult == "Positive"))) {
+                        if (($scope.patient.age >= 2)) {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
                                 if (allTemplates[i].uuid == heiformuuid || allTemplates[i].uuid == clinicainfantuuid || allTemplates[i].uuid == heitestinguuid || allTemplates[i].uuid == heiendoffollowup) {
                                     allTemplates.splice(i, 1);
                                 }
                             }
-                        } else {
+                        } else if (($scope.patient.age <= 2) && ($scope.firstPcrResult == "Positive") && ($scope.secondPcrResult == "Positive") && ($scope.repeattPcrResult == "Positive")) {
+                            for (var i = allTemplates.length - 1; i >= 0; i--) {
+                                if (allTemplates[i].uuid == heiformuuid || allTemplates[i].uuid == clinicainfantuuid || allTemplates[i].uuid == heitestinguuid || allTemplates[i].uuid == heiendoffollowup) {
+                                    allTemplates.splice(i, 1);
+                                }
+                            }
+                        }
+                        else {
                             for (var i = allTemplates.length - 1; i >= 0; i--) {
                                 if (allTemplates[i].uuid == personalhist || allTemplates[i].uuid == familyhistdata || allTemplates[i].uuid == arthistoryclinical || allTemplates[i].uuid == arttreatmentform || allTemplates[i].uuid == artandhivfollowup || allTemplates[i].uuid == endoffollowupform || allTemplates[i].uuid == anccard || allTemplates[i].uuid == viralload || allTemplates[i].uuid == maternityform) {
                                     allTemplates.splice(i, 1);
