@@ -105,6 +105,7 @@ Bahmni.Common = Bahmni.Common || {};
         observationsUrl: BAHMNI_CORE + "/observations",
         obsRelationshipUrl: BAHMNI_CORE + "/obsrelationships",
         encounterImportUrl: BAHMNI_CORE + "/admin/upload/encounter",
+        form2encounterImportUrl: BAHMNI_CORE + "/admin/upload/form2encounter",
         programImportUrl: BAHMNI_CORE + "/admin/upload/program",
         conceptImportUrl: BAHMNI_CORE + "/admin/upload/concept",
         conceptSetImportUrl: BAHMNI_CORE + "/admin/upload/conceptset",
