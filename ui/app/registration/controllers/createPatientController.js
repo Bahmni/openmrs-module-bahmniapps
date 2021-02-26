@@ -11,23 +11,13 @@ angular.module('bahmni.registration')
             $scope.disablePhotoCapture = appService.getAppDescriptor().getConfigValue("disablePhotoCapture");
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
             $scope.today = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime(dateUtil.now());
-            $scope.ModuleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
+            $scope.moduleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
             var getPersonAttributeTypes = function () {
                 return $rootScope.patientConfiguration.attributeTypes;
             };
-            $scope.translateAttributes = function (attribute) {
-                if ($scope.ModuleName == null) {
-                    var keyPrefix = "REGISTRATION";
-                } else {
-                    var keyPrefix = $scope.ModuleName;
-                }
-                var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
-                var translationKey = keyPrefix + "_" + keyName;
-                var translation = $translate.instant(translationKey);
-                if (translation != translationKey) {
-                    attribute = translation;
-                }
-                return attribute;
+            $scope.getTranslatedPatientIdentifier = function (patientIdentifier) {
+                var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(patientIdentifier, Bahmni.Common.Constants.registration, $translate);
+                return translatedName;
             };
             var prepopulateDefaultsInFields = function () {
                 var personAttributeTypes = getPersonAttributeTypes();

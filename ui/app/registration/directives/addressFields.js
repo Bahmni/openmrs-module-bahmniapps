@@ -40,19 +40,9 @@ angular.module('bahmni.registration')
                 });
             };
         };
-        $scope.translateAttributes = function (attribute, moduleName) {
-            if (moduleName == null) {
-                var keyPrefix = "REGISTRATION";
-            } else {
-                var keyPrefix = moduleName && modulePrefixMap[moduleName] ? modulePrefixMap[moduleName] : '';
-            }
-            var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
-            var translationKey = keyPrefix + "_" + keyName;
-            var translation = $translate.instant(translationKey);
-            if (translation != translationKey) {
-                attribute = translation;
-            }
-            return attribute;
+        $scope.getTranslatedAddressFields = function (address) {
+            var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(address, Bahmni.Common.Constants.registration, $translate);
+            return translatedName;
         };
         $scope.removeAutoCompleteEntry = function (fieldName) {
             return function () {
