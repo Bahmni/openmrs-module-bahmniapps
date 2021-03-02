@@ -125,9 +125,16 @@ describe("AdtController", function () {
         createController();
 
         scope.admit();
-        expect(ngDialog.openConfirm).toHaveBeenCalled();
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/visitChangeConfirmation.html', scope: scope, closeByEscape: true});
+        expect(ngDialog.openConfirm.calls.count()).toBe(1);
+        var args = ngDialog.openConfirm.calls.argsFor(0)[0];
+        expect(args.scope).toBe(scope);
+        expect(args.template).toBe('views/visitChangeConfirmation.html');
+        expect(args.closeByEscape).toBe(true);
+        expect(typeof args.preCloseCallback).toBe('function');
+        args.preCloseCallback();
+        expect(scope.buttonClicked).toBe(false);
     });
+
     it("Should show confirmation dialog if patient's visit type is not defaultVisitType and hideStartNewVisitPopUp is present", function () {
         scope.visitSummary = {"visitType": "OPD"};
         appService.getAppDescriptor.and.returnValue({
@@ -146,8 +153,15 @@ describe("AdtController", function () {
         createController();
 
         scope.admit();
-        expect(ngDialog.openConfirm).toHaveBeenCalled();
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/admitConfirmation.html', scope: scope, closeByEscape: true, className: "ngdialog-theme-default ng-dialog-adt-popUp"});
+        expect(ngDialog.openConfirm.calls.count()).toBe(1);
+        var args = ngDialog.openConfirm.calls.argsFor(0)[0];
+        expect(args.scope).toBe(scope);
+        expect(args.template).toBe('views/admitConfirmation.html');
+        expect(args.closeByEscape).toBe(true);
+        expect(args.className).toBe("ngdialog-theme-default ng-dialog-adt-popUp");
+        expect(typeof args.preCloseCallback).toBe('function');
+        args.preCloseCallback();
+        expect(scope.buttonClicked).toBe(false);
     });
 
     it("should close the visit and create a new encounter if dialog is confirmed", function () {
@@ -515,8 +529,15 @@ describe("AdtController", function () {
         createController();
 
         scope.transfer();
-        expect(ngDialog.openConfirm).toHaveBeenCalled();
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/transferConfirmation.html', scope: scope, closeByEscape: true, className: "ngdialog-theme-default ng-dialog-adt-popUp"});
+        expect(ngDialog.openConfirm.calls.count()).toBe(1);
+        var args = ngDialog.openConfirm.calls.argsFor(0)[0];
+        expect(args.scope).toBe(scope);
+        expect(args.template).toBe('views/transferConfirmation.html');
+        expect(args.closeByEscape).toBe(true);
+        expect(args.className).toBe("ngdialog-theme-default ng-dialog-adt-popUp");
+        expect(typeof args.preCloseCallback).toBe('function');
+        args.preCloseCallback()
+        expect(scope.buttonClicked).toBe(false);
     });
 
     it("Should create an encounter of type Transfer and assign patient to new bed, On transferConfirmation when the selected bed is still available", function () {
@@ -596,7 +617,15 @@ describe("AdtController", function () {
         };
         visitService.search.and.callFake(stubSearchPromise);
         scope.discharge();
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/dischargeConfirmation.html', scope: scope, closeByEscape: true,  className: "ngdialog-theme-default ng-dialog-adt-popUp"});
+        expect(ngDialog.openConfirm.calls.count()).toBe(1);
+        var args = ngDialog.openConfirm.calls.argsFor(0)[0];
+        expect(args.scope).toBe(scope);
+        expect(args.template).toBe('views/dischargeConfirmation.html');
+        expect(args.closeByEscape).toBe(true);
+        expect(args.className).toBe("ngdialog-theme-default ng-dialog-adt-popUp");
+        expect(typeof args.preCloseCallback).toBe('function');
+        args.preCloseCallback()
+        expect(scope.buttonClicked).toBe(false);
     });
 
     it("Should create an encounter of type Discharge and discharge the patient from the bed, On dischargeConfirmation", function () {
