@@ -51,12 +51,7 @@ angular.module('httpErrorInterceptor', [])
                     var errorMessage = data.error && data.error.message ? data.error.message : (data.localizedMessage || "Could not connect to the server. Please check your connection and try again");
                     showError(errorMessage);
                 } else if (response.status === 403) {
-                    var errorMessage = data.error && data.error.message ? data.error.message : unexpectedError;
-                    if (shouldRedirectToLogin(response)) {
-                        $rootScope.$broadcast('event:auth-loginRequired');
-                    } else {
-                        showError(errorMessage);
-                    }
+                    $rootScope.$broadcast('event:auth-loginRequired');
                 } else if (response.status === 404) {
                     if (!_.includes(response.config.url, "implementation_config") && !_.includes(response.config.url, "locale_")
                         && !_.includes(response.config.url, "offlineMetadata")) {
