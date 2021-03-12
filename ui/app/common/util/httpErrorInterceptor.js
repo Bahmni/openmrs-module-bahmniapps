@@ -27,13 +27,6 @@ angular.module('httpErrorInterceptor', [])
                 return response;
             }
 
-            function shouldRedirectToLogin (response) {
-                var errorMessage = response.data.error ? response.data.error.message : response.data;
-                if (errorMessage.search("HTTP Status 403 - Session timed out") > 0) {
-                    return true;
-                }
-            }
-
             function error (response) {
                 var data = response.data;
                 var unexpectedError = "There was an unexpected issue on the server. Please try again";
@@ -51,12 +44,7 @@ angular.module('httpErrorInterceptor', [])
                     var errorMessage = data.error && data.error.message ? data.error.message : (data.localizedMessage || "Could not connect to the server. Please check your connection and try again");
                     showError(errorMessage);
                 } else if (response.status === 403) {
-                    var errorMessage = data.error && data.error.message ? data.error.message : unexpectedError;
-                    if (shouldRedirectToLogin(response)) {
-                        $rootScope.$broadcast('event:auth-loginRequired');
-                    } else {
-                        showError(errorMessage);
-                    }
+                    $rootScope.$broadcast('event:auth-loginRequired');
                 } else if (response.status === 404) {
                     if (!_.includes(response.config.url, "implementation_config") && !_.includes(response.config.url, "locale_")
                         && !_.includes(response.config.url, "offlineMetadata")) {
