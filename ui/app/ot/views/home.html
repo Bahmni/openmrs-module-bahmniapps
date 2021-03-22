@@ -11,7 +11,8 @@
             <span>{{ location.display }}</span>
             <label class="location-buttons" for="{{location.display}}">
                 <input type="checkbox" id="{{location.display}}" name="location"
-                       ng-model="filters.locations[location.name]" required/>
+                       ng-model="filters.locations[location.name]"
+                       ng-click="applyFilters()" required/>
             </label>
         </p>
     </div>
@@ -49,14 +50,13 @@
                 auto-complete-min-length="1"></multi-select-autocomplete>
     </div>
     <div class="surgical-action-wrapper">
-        <button ng-click="applyFilters()">{{'OT_APPLY_FILTERS' | translate}}</button>
-        <button ng-click="clearFilters()">{{'OT_CLEAR_FILTERS' | translate}}</button>
+        <button ng-disable="!isFilterApplied()" ng-click="clearFilters()">{{'OT_CLEAR_FILTERS' | translate}}</button>
     </div>
 </div>
 
 <div class="ot-top-button-wrapper">
     <p class="calendar-day-navigation filter-button" ng-show="!isFilterOpen">
-        <button ng-click="expandFilter()"><i class="fa fa-filter"
+        <button ng-click="expandFilter()"><i class="fa fa-filter" ng-class="{'colorForFilter': isFilterApplied()}"
                                              aria-hidden="true"></i> {{::'OT_FILTER_KEY' |translate}}
         </button>
     </p>
