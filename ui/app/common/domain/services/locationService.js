@@ -28,10 +28,18 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        var setSessionLocation = function (payload) {
+            return $http.post(Bahmni.Common.Constants.RESTWS_V1 + '/session', payload, {
+                withCredentials: true,
+                headers: {"Accept": "application/json"}
+            });
+        };
+
         return {
             getAllByTag: getAllByTag,
             getLoggedInLocation: getLoggedInLocation,
             getByUuid: getByUuid,
-            getVisitLocation: getVisitLocation
+            getVisitLocation: getVisitLocation,
+            setSessionLocation: setSessionLocation
         };
     }]);

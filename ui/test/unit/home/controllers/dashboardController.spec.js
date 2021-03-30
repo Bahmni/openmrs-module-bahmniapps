@@ -13,7 +13,7 @@ describe('dashboardController', function () {
         rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
         appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
         _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-        locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
+        locationService = jasmine.createSpyObj('locationService', ['getAllByTag','setSessionLocation']);
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get','remove','put']);
         $bahmniCookieStore.get.and.callFake(function(cookieName) {
             if (cookieName == Bahmni.Common.Constants.locationCookieName) {
@@ -24,6 +24,7 @@ describe('dashboardController', function () {
             getExtensions: function () { return {} }
         });
         locationService.getAllByTag.and.returnValue(specUtil.createFakePromise({"data": {"results": {}}}));
+        locationService.setSessionLocation.and.returnValue(specUtil.createFakePromise({}));
     }));
 
     beforeEach(

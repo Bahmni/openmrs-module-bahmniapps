@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'auditLogService',
-        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, auditLogService) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'auditLogService', 'locationService',
+        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, auditLogService, locationService) {
             var redirectUrl = $location.search()['from'];
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
@@ -26,7 +26,7 @@ angular.module('bahmni.home')
 
             var logAuditForLoginAttempts = function (eventType, isFailedEvent) {
                 if ($scope.loginInfo.username) {
-                    var messageParams = isFailedEvent ? {userName: $scope.loginInfo.username} : undefined;
+                    var messageParams = isFailedEvent ? { userName: $scope.loginInfo.username } : undefined;
                     auditLogService.log(undefined, eventType, messageParams, 'MODULE_LABEL_LOGIN_KEY');
                 }
             };
@@ -38,7 +38,7 @@ angular.module('bahmni.home')
                 var localTime = new Date().toLocaleString();
                 var localtimeZone = getLocalTimeZone();
                 var localeTimeZone = localTime + " " + localtimeZone;
-                $scope.timeZoneObject = { serverTime: serverTime, localeTimeZone: localeTimeZone};
+                $scope.timeZoneObject = { serverTime: serverTime, localeTimeZone: localeTimeZone };
                 if (offset && !new Date().toString().includes(offset)) {
                     $scope.warning = "Warning";
                     $scope.warningMessage = "WARNING_SERVER_TIME_ZONE_MISMATCH";
@@ -62,7 +62,7 @@ angular.module('bahmni.home')
                     _.forEach(localeList, function (locale) {
                         var localeLanguage = findLanguageByLocale(locale);
                         if (_.isUndefined(localeLanguage)) {
-                            $scope.locales.push({"code": locale, "nativeName": locale});
+                            $scope.locales.push({ "code": locale, "nativeName": locale });
                         } else {
                             $scope.locales.push(localeLanguage);
                         }

@@ -22,6 +22,10 @@ angular.module('bahmni.home')
                 return locationService.getAllByTag("Login Location").then(function (response) {
                     $scope.locations = response.data.results;
                     $scope.selectedLocationUuid = getCurrentLocation().uuid;
+                    return getCurrentLocation().uuid;
+                }
+                ).then(function (response) {
+                    return locationService.setSessionLocation({ sessionLocation: response});
                 }
                 );
             };
@@ -31,19 +35,24 @@ angular.module('bahmni.home')
                     return location.uuid === uuid;
                 });
             };
-
+            var updateLocationCookie = function (selectedLocation) {
+                $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
+                $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {
+                    name: selectedLocation.display,
+                    uuid: selectedLocation.uuid
+                }, { path: '/', expires: 7 });
+                $window.location.reload();
+            };
             $scope.isCurrentLocation = function (location) {
                 return getCurrentLocation().uuid === location.uuid;
             };
 
             $scope.onLocationChange = function () {
                 var selectedLocation = getLocationFor($scope.selectedLocationUuid);
-                $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
-                $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {
-                    name: selectedLocation.display,
-                    uuid: selectedLocation.uuid
-                }, {path: '/', expires: 7});
-                $window.location.reload();
+                locationService.setSessionLocation({ sessionLocation: selectedLocation.uuid}).then(function (response) {
+                    updateLocationCookie(selectedLocation);
+                    return response;
+                });
             };
 
             $scope.changePassword = function () {
