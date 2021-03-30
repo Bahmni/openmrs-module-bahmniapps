@@ -17,6 +17,18 @@ angular.module('bahmni.registration')
             $scope.readOnlyExtraIdentifiers = appService.getAppDescriptor().getConfigValue("readOnlyExtraIdentifiers");
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
+            $scope.ndhmExtPoint = appService.getAppDescriptor().getExtensions("org.bahmni.registration.identifier.ndhm.source", "link")[0];
+
+            $scope.openNdhmPopup = () => {
+                ngDialog.open({
+                    className: "ngdialog-theme-default ndhm",
+                    template: $scope.ndhmExtPoint.template,
+                    scope: $scope,
+                    controller: $scope.ndhmExtPoint.controller,
+                    closeByEscape: false,
+                    closeByDocument: false
+                });
+            };
 
             function initPatientNameDisplayOrder () {
                 var validNameFields = Bahmni.Registration.Constants.patientNameDisplayOrder;

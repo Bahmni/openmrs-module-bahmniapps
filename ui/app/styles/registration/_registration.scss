@@ -120,7 +120,20 @@ body{
     }
   }
 }
+.verify-health-id-btn {
+  margin-left: 10%;
+  margin-top: 10px;
+  @media (max-width : 800px){
+    margin-left: 18%;
+  }
+}
 
+.ndhm {
+  .ngdialog-content {
+    width: 800px !important;
+    height: 600px !important;
+  }
+}
 
 .additional-attribute{
   &.active{
