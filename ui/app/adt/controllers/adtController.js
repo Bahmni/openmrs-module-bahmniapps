@@ -3,10 +3,10 @@
 angular.module('bahmni.adt')
     .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService',
         'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService',
-        'messagingService', '$anchorScroll', '$stateParams', 'ngDialog', '$filter', 'auditLogService',
+        'messagingService', '$anchorScroll', '$stateParams', 'ngDialog', '$filter', 'auditLogService', '$translate',
         function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService,
                   appService, visitService, $location, $window, sessionService, messagingService, $anchorScroll,
-                  $stateParams, ngDialog, $filter, auditLogService) {
+                  $stateParams, ngDialog, $filter, auditLogService, $translate) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
             var locationUuid = sessionService.getLoginLocationUuid();
@@ -29,7 +29,23 @@ angular.module('bahmni.adt')
                 }
                 return defaultVisitTypeUuid;
             };
+            $scope.translateDispositionForBedManagement = function (attribute, moduleName) {
+                if (typeof attribute != 'undefined') {
+                    if ((moduleName == null) || (typeof moduleName == 'undefined')) {
+                        var keyPrefix = " ";
+                    } else {
+                        keyPrefix = moduleName;
+                    }
 
+                    var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
+                    var translationKey = keyPrefix + "_" + keyName;
+                    var translation = $translate.instant(translationKey);
+                    if (translation != translationKey) {
+                        attribute = translation;
+                    }
+                }
+                return attribute;
+            };
             var getActionCode = function (concept) {
                 var mappingCode = "";
                 if (concept.mappings) {

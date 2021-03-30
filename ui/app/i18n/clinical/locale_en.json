@@ -160,7 +160,7 @@
     "MEDICATION_STARTED_ON": "Started on",
     "MEDICATION_STOPPED_ON": "Stopped on",
     "MEDICATION_DUE_TO": "due to",
-
+    "MEDICATION_LABEL_START_DATE": "Start Date",
     "REMOVE_CONFIRMATION_KEY": "Are you sure you want to remove?",
     "CLEAR_CONFIRMATION_KEY": "Are you sure you want to clear?",
     "REMOVE_DRUG_ORDER_KEY": "Are you sure you want to remove drug : {{ drugName }} ?",
@@ -202,6 +202,11 @@
     "CLINICAL_DUPLICATE_DIAGNOSIS_ERROR_MESSAGE" : "Please correct the duplicate diagnosis entered.",
     "CLINICAL_TEMPLATE_ADDED_SUCCESS_KEY": "{{label}} added successfully",
     "CLINICAL_TEMPLATE_REMOVED_SUCCESS_KEY": "{{label}} removed successfully",
+
+    "CLINICAL_DIAGNOSIS_PRIMARY": "PRIMARY",
+    "CLINICAL_DIAGNOSIS_SECONDARY": "SECONDARY",
+    "CLINICAL_DIAGNOSIS_CONFIRMED": "CONFIRMED",
+    "CLINICAL_DIAGNOSIS_PRESUMED": "PRESUMED",
 
     "CLINICAL_DIAGNOSIS_ORDER_PRIMARY":"PRIMARY",
     "CLINICAL_DIAGNOSIS_ORDER_SECONDARY":"SECONDARY",
@@ -285,7 +290,7 @@
     "MEDICATION_DOSAGE_INSTRUCTIONS": "Dosage Instructions",
     "MEDICATION_NEW_TREATMENTS": "New Treatments",
     "MEDICATION_DISCONTINUED_TREATMENTS": "Discontinued Treatments",
-    "CONSULTATION_TAB_PAD_EMPTY_MESSAGE": "Consultation pad is empty",
+    "CONSULTATION_PAD_EMPTY_MESSAGE": "Consultation pad is empty",
     "CONSULTATION_TAB_DIAGNOSES_HEADER_LABEL": "Diagnoses",
     "CONSULTATION_TAB_OBSERVATIONS_HEADER_LABEL": "Observations",
     "CONSULTATION_TAB_INVESTIGATION_HEADER_LABEL": "Investigation",
@@ -327,5 +332,16 @@
     "INVESTIGATIONS_PANELS_HEADER_LABEL": "Panels",
     "INVESTIGATIONS_SELECTIONS_HEADER_LABEL": "Selection",
     "CLINICAL_GO_TO_DASHBOARD_LABEL": "Go to IPD dashboard",
-    "NO_FORM_FOUND_FOR_PATIENT": "No Form found for this patient"
+    "NO_FORM_FOUND_FOR_PATIENT": "No Form found for this patient",
+    "CLINICAL_ACCEPT": "ACCEPT",
+    "MEDICATION_LABEL_START_DATE": "Data de início da medicação",
+    "PROGRAM_HIV_PROGRAM": "HIV Program",
+    "PROGRAM_TB_PPROGRAM": "TB Program",
+    "PROGRAM_ID_NUMBER": "ID Number",
+    "PROGRAM_TREATMENT_DATE": "Treatment Date",
+    "PROGRAM_COMORBIDITES": "Co-morbidites",
+    "PROGRAM_DOCTORINCHARGE": "Doctor In-Charge",
+    "PROGRAM_PATIENT_STAGE": "Patient Stage",
+    "CLINICAL_CLASS": "Class",
+    "CLINICAL_CASTE": "Caste"
 }

@@ -34,7 +34,7 @@ describe("Diagnosis Controller", function () {
                 }
             }
         });
-        translate = jasmine.createSpyObj('translate',['']);
+        translate = jasmine.createSpyObj('$translate',['instant']);
 
         retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['isRetrospectiveMode']);
 

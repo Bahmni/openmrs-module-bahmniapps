@@ -2,7 +2,7 @@
 
 describe("AdtController", function () {
     var scope, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService,
-        encounterService, ngDialog, window, messagingService, spinnerService, auditLogService;
+        encounterService, ngDialog, window, messagingService, spinnerService, auditLogService, translate;
 
     beforeEach(function () {
         module('bahmni.adt');
@@ -22,6 +22,7 @@ describe("AdtController", function () {
         ngDialog = jasmine.createSpyObj('ngDialog', ['openConfirm', 'close']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         spinnerService = jasmine.createSpyObj('spinnerService', ['forPromise']);
+        translate = jasmine.createSpyObj('$translate',['instant']);
         window = {};
 
         appService.getAppDescriptor.and.returnValue({
@@ -79,7 +80,8 @@ describe("AdtController", function () {
             $window: window,
             messagingService: messagingService,
             spinner: spinnerService,
-            auditLogService: auditLogService
+            auditLogService: auditLogService,
+            $translate: translate
         });
     };
 

@@ -31,6 +31,16 @@ angular.module('bahmni.clinical')
                 'CLINICAL_DIAGNOSIS_CERTAINTY_CONFIRMED': 'CONFIRMED',
                 'CLINICAL_DIAGNOSIS_CERTAINTY_PRESUMED': 'PRESUMED'
             };
+            $scope.translateDiagnosisLabels = function (key, type) {
+                if (key) {
+                    var translationKey = "CLINICAL_DIAGNOSIS_" + type + "_" + key.toUpperCase();
+                    var translation = $translate.instant(translationKey);
+                    if (translation != translationKey) {
+                        return translation;
+                    }
+                }
+                return key;
+            };
 
             $scope.getDiagnosis = function (params) {
                 return diagnosisService.getAllFor(params.term).then(mapConcept);

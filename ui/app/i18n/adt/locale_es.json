@@ -29,5 +29,11 @@
     "CONDITION_LIST_CONDITIONS_INACTIVE": "Condiciones Inactivas",
     "CONDITION_LIST_CREATED_BY": "por",
     "CONDITION_LIST_ACTIVE_SINCE": "condición de",
-    "CONDITION_LIST_NO_CONDITIONS": "Sin Condiciones disponibles"
+    "CONDITION_LIST_NO_CONDITIONS": "Sin Condiciones disponibles",
+    "NO_FULFILMENT_MESSAGE": "No se capturaron observaciones para este pedido.",
+    "PATIENT_MOVEMENT_LABEL": "Movimiento del paciente",
+    "PATIENT_MOVEMENT_SELECT_LABEL": "Seleccione",
+    "BEDMANAGEMENT_DISPOSITION_ADMIT_PATIENT": "Admitir Paciente",
+    "BEDMANAGEMENT_DISPOSITION_DISCHARGE_PATIENT": "Paciente de alta",
+    "BEDMANAGEMENT_DISPOSITION_TRANSFER_PATIENT": "Paciente transferida"
 }

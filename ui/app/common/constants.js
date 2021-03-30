@@ -265,7 +265,8 @@ Bahmni.Common = Bahmni.Common || {};
         diagnosis: "DIAGNOSIS",
         ot: "OT",
         patientAttribute: "PATIENT_ATTRIBUTE",
-        program: "PROGRAM"
+        program: "PROGRAM",
+        visitType: "VISIT_TYPE"
     };
 })();
 
