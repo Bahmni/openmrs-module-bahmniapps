@@ -14,18 +14,14 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
                 return element ? true : false;
             };
 
-           var getLocaleSpecificConceptName = function (concept, locale, conceptNameType) {
-
+            var getLocaleSpecificConceptName = function (concept, locale, conceptNameType) {
                 conceptNameType = conceptNameType ? conceptNameType : "SHORT";
-
-                var localeSpecificName =  _.filter(concept.names, function(name) {
+                var localeSpecificName = _.filter(concept.names, function (name) {
                     return name.locale == locale && name.conceptNameType == conceptNameType;
                 });
-
                 if (localeSpecificName && localeSpecificName[0]) {
                     return localeSpecificName[0].display;
                 }
-
                 return null;
             };
 
