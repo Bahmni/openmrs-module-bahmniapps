@@ -77,6 +77,10 @@ describe('AttributeTypeMapper', function () {
                         {
                             "display": "General",
                             "uuid": "0a843350-1481-11e3-937b-0800271c1b75",
+                            name: {
+                                display: "General",
+                                conceptNameType: "FULLY_SPECIFIED"
+                            },
                             "links": [
                                 {
                                     "rel": "self",
