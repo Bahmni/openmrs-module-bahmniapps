@@ -266,7 +266,9 @@ Bahmni.Common = Bahmni.Common || {};
         ot: "OT",
         patientAttribute: "PATIENT_ATTRIBUTE",
         program: "PROGRAM",
-        visitType: "VISIT_TYPE"
+        visitType: "VISIT_TYPE",
+        bedmanagement: "BEDMANAGEMENT",
+        bedmanagementDisposition: "BEDMANAGEMENT_DISPOSITION"
     };
 })();
 
