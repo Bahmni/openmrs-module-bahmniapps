@@ -34,8 +34,10 @@ describe('PatientCommonController', function () {
             return {
                 getConfigValue: function (config) {
                     return true;
+                },
+                getExtensions: function (name, type) {
+                    return {};
                 }
-
             };
         };
 
@@ -128,6 +130,9 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                     if (config == "showBirthTime") {
                         return false;
                     }
+                },
+                getExtensions: function (name, type) {
+                    return {};
                 }
             };
         };
@@ -216,6 +221,9 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                 return {
                     getConfigValue: function (config) {
                         return true;
+                    },
+                    getExtensions: function (name, type) {
+                        return {};
                     }
 
                 };

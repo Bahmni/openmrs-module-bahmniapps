@@ -19,7 +19,7 @@ angular.module('bahmni.registration')
             $scope.showSaveAndContinueButton = false;
             $scope.ndhmExtPoint = appService.getAppDescriptor().getExtensions("org.bahmni.registration.identifier.ndhm.source", "link")[0];
 
-            $scope.openNdhmPopup = () => {
+            $scope.openNdhmPopup = function () {
                 ngDialog.open({
                     className: "ngdialog-theme-default ndhm",
                     template: $scope.ndhmExtPoint.template,
