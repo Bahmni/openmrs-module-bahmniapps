@@ -132,9 +132,22 @@ body{
   .ngdialog-content {
     width: 800px !important;
     height: 600px !important;
+    background: white !important;
+  }
+  .NDHM-template{
+      table, tr, td, th{
+          border :  none;
+      }
+      table{
+          margin-top:3%;
+      }
+      .req {
+                  font-size: 90%;
+                  font-style: italic;
+                  color: red;
+      }
   }
 }
-
 .additional-attribute{
   &.active{
     .fa-caret-right{
