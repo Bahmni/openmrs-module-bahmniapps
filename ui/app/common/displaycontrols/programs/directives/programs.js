@@ -56,9 +56,11 @@ angular.module('bahmni.common.displaycontrol.programs')
                     return format == "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype";
                 };
                 $scope.translateProgram = function (program) {
-                    if (typeof program.description == 'undefined') {
-                        program.description = program.display;
-                    }
+                    var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(program, Bahmni.Common.Constants.program, $translate);
+                    return translatedName;
+                };
+
+                $scope.translateProgramAttributes = function (program) {
                     var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(program.description, Bahmni.Common.Constants.program, $translate);
                     return translatedName;
                 };

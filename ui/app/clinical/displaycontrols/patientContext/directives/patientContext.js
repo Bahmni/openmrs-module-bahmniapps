@@ -46,7 +46,7 @@ angular.module('bahmni.clinical')
 
         var translateAttributes = function (attributes) {
             _.forEach(attributes, function (attribute, key) {
-                var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(key, Bahmni.Common.Constants.registration, $translate);
+                var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(key, Bahmni.Common.Constants.clinical, $translate);
                 attribute.description = translatedName;
             });
         };

@@ -27,6 +27,9 @@ describe('Drug Order Details DisplayControl', function () {
                 "strength": null,
                 "uuid": "191d09b9-fbcf-4333-8c00-d708ccd7ae88",
                 "name": "Ipratropium Pressurised"
+            },
+            "concept": {
+                "shortName": "Ipratropium Pressurised"
             }
         },
         {
@@ -41,6 +44,9 @@ describe('Drug Order Details DisplayControl', function () {
                 "strength": null,
                 "uuid": "191d09b9-fbcf-4333-8c00-d708ccd7ae88",
                 "name": "Paracetemol"
+            },
+            "concept": {
+                "shortName": "Paracetemol"
             }
         }
     ];

@@ -29,5 +29,8 @@
     "CONDITION_LIST_CONDITIONS_INACTIVE": "Inactive Conditions",
     "CONDITION_LIST_CREATED_BY": "by",
     "CONDITION_LIST_ACTIVE_SINCE": "condition from",
-    "CONDITION_LIST_NO_CONDITIONS": "No Conditions available"
+    "CONDITION_LIST_NO_CONDITIONS": "No Conditions available",
+    "BEDMANAGEMENT_DISPOSITION_ADMIT_PATIENT": "Admitir Paciente",
+    "BEDMANAGEMENT_DISPOSITION_DISCHARGE_PATIENT": "Paciente de alta",
+    "BEDMANAGEMENT_DISPOSITION_TRANSFER_PATIENT": "Paciente de transferência"
 }
