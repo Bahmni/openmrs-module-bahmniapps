@@ -17,7 +17,10 @@ angular.module('bahmni.clinical')
                 $scope.hasVisits = function () {
                     return $scope.visits && $scope.visits.length > 0;
                 };
-
+                var translateVisitTypes = function (key) {
+                    var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(key, Bahmni.Common.Constants.visit, $translate);
+                    attribute.description = translatedName;
+                };
                 $scope.params = angular.extend(
                     {
                         maximumNoOfVisits: 4,

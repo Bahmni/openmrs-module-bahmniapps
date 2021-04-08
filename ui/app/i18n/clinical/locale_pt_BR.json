@@ -89,6 +89,10 @@
     "CLINICAL_ORDER_RADIOLOGY_NEED_PRINT": "Need Print for this order.",
     "CLINICAL_ORDER_RADIOLOGY_NEED_PRINT_BUTTON": "Needs Print",
     "CLINICAL_DECIMAL_FAILURE_MESSAGE_KEY": "Por favor, indique um valor inteiro, o valor decimal não é permitido",
+    "CLINICAL_DIAGNOSIS_PRIMARY": "PRIMARY",
+    "CLINICAL_DIAGNOSIS_SECONDARY": "SECUNDÁRIA",
+    "CLINICAL_DIAGNOSIS_CONFIRMED": "CONFIRMADA",
+    "CLINICAL_DIAGNOSIS_PRESUMED": "PRESUMIDA",
     "SAVE_ACCESS_KEY": "s",
     "CLINICAL_PRINT_TRANSLATION_KEY": "<u>I</u>mprimir",
     "CLINICAL_PRINT_ACCESS_KEY": "i",
@@ -204,5 +208,12 @@
     "CONDITION_LIST_FOLLOW_UP": "Follow up",
     "CONDITION_LIST_ACTIVE_SINCE": "condition from",
     "CONDITION_LIST_NO_CONDITIONS": "No Conditions available",
-    "CONDITION_LIST_NO_RETRO_MODE": "<strong>Conditions cannot</strong> be edited in retrospective mode"
+    "CONDITION_LIST_NO_RETRO_MODE": "<strong>Conditions cannot</strong> be edited in retrospective mode",
+    "DOB_LABEL": "Data de nascimento",
+    "MEDICATION_STOP": "Pare",
+    "MEDICATION_REFILL": "Refil",
+    "MEDICATION_LABEL_START_DATE": "Data de início",
+    "ADMISSION_DATE_LABEL": "Data de admissão",
+    "CONSULTATION_PAD_EMPTY_MESSAGE": "O painel de consulta está vazio",
+    "DISCHARGE_DATE_LABEL": "Descarga Date"
 }

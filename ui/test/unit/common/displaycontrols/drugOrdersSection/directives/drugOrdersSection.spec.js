@@ -51,6 +51,9 @@ describe('DrugOrdersSection DisplayControl', function () {
         "previousOrderUuid": null,
         "orderReasonText": null,
         "duration": 10,
+        "concept": {
+            "shortName": "Methylprednisolone 2ml"
+        },
         "provider": {name: "superman"}
     };
 
@@ -95,6 +98,9 @@ describe('DrugOrdersSection DisplayControl', function () {
         "previousOrderUuid": null,
         "orderReasonText": null,
         "duration": 10,
+        "concept": {
+            "shortName": "Methylprednisolone 2ml"
+        },
         "provider": {name: "superman"}
     };
 

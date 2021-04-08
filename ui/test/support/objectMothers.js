@@ -78,7 +78,8 @@ Bahmni.Tests.drugOrderViewModelMother = {
             "form": "Tablet",
             "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
             "strength": null,
-            "name": "calpol 500mg"
+            "name": "calpol 500mg",
+            "shortName": "calpol 500mg"
         };
         defaultModel.encounterDate = encounterDate;
         return defaultModel;

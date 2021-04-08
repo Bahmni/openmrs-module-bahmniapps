@@ -637,6 +637,9 @@ describe("drugOrderViewModel", function () {
                 "previousOrderUuid": null,
                 "orderReasonText": null,
                 "duration": 10,
+                "concept": {
+                    "shortName": "Methylprednisolone 2ml"
+                },
                 "provider": {name: "superman"},
                 "orderAttributes":[{name:"dispensed",value:true},{name:"administered",value:false}]
             };
@@ -723,6 +726,9 @@ describe("drugOrderViewModel", function () {
                 "form": "Injection",
                 "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
                 "name": "Methylprednisolone 2ml"
+            },
+            "concept": {
+                "shortName": "Methylprednisolone 2ml"
             },
             "dosingInstructions": {
                 "quantity": 100,

@@ -3,10 +3,10 @@
 angular.module('bahmni.adt')
     .controller('AdtController', ['$scope', '$q', '$rootScope', 'spinner', 'dispositionService',
         'encounterService', 'bedService', 'appService', 'visitService', '$location', '$window', 'sessionService',
-        'messagingService', '$anchorScroll', '$stateParams', 'ngDialog', '$filter', 'auditLogService',
+        'messagingService', '$anchorScroll', '$stateParams', 'ngDialog', '$filter', 'auditLogService', '$translate',
         function ($scope, $q, $rootScope, spinner, dispositionService, encounterService, bedService,
                   appService, visitService, $location, $window, sessionService, messagingService, $anchorScroll,
-                  $stateParams, ngDialog, $filter, auditLogService) {
+                  $stateParams, ngDialog, $filter, auditLogService, $translate) {
             var actionConfigs = {};
             var encounterConfig = $rootScope.encounterConfig;
             var locationUuid = sessionService.getLoginLocationUuid();
@@ -28,6 +28,10 @@ angular.module('bahmni.adt')
                     return getVisitTypeUuid($scope.visitSummary.visitType);
                 }
                 return defaultVisitTypeUuid;
+            };
+            $scope.translateDispositionForBedManagement = function (attribute) {
+                var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(attribute, Bahmni.Common.Constants.bedmanagementDisposition, $translate);
+                return translatedName;
             };
 
             var getActionCode = function (concept) {

@@ -148,6 +148,9 @@ describe("TreamentService", function () {
               "orderReasonConcept": null,
               "orderReasonText": null,
               "duration": 10,
+              "concept": {
+                  "shortName": "Ipratropium Pressurised"
+              },
               "provider": {
                 "uuid": "35ba3170-cf80-4749-9672-b3b678c77b6a",
                 "name": "superman"

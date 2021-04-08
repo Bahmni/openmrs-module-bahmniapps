@@ -94,7 +94,15 @@ angular.module('bahmni.common.displaycontrol.observation')
                         }
                     }
                 };
-
+                $scope.translateAttributeName = function (attribute) {
+                    var keyName = attribute.toUpperCase().replace(/\s\s+/g, ' ').replace(/[^a-zA-Z0-9 _]/g, "").trim().replace(/ /g, "_");
+                    var translationKey = keyName;
+                    var translation = $translate.instant(translationKey);
+                    if (translation == translationKey) {
+                        return translation;
+                    }
+                    return translation;
+                };
                 $scope.toggle = function (element) {
                     element.isOpen = !element.isOpen;
                 };
