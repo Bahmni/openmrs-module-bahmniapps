@@ -127,7 +127,19 @@ body{
     margin-left: 18%;
   }
 }
-
+.healthIDField{
+   margin-left: 12%;
+    @media (max-width : 800px){
+      margin-left: 20%;
+    }
+}
+.health-id-input{
+  margin-left: 0.5%;
+  padding-left:10px;
+  @media (max-width : 800px){
+    margin-left: 8.5%;
+  }
+}
 .ndhm {
   .ngdialog-content {
     width: 800px !important;
@@ -135,16 +147,31 @@ body{
     background: white !important;
   }
   .NDHM-template{
-      table, tr, td, th{
-          border :  none;
+      .NDHMDetails {
+          td{
+              width:50%;
+          }
+          table-layout:fixed;
+          border:1px solid black;
+          margin-left:auto;
+          margin-right:auto;
+          text-align:center;
+      }
+      .userAuth,.finalButtons{
+          table,tr,td{
+                border:none;
+          }
+       }
+      .finalButtons{
+           text-align: center;
       }
       table{
           margin-top:3%;
       }
       .req {
-                  font-size: 90%;
-                  font-style: italic;
-                  color: red;
+          font-size: 90%;
+          font-style: italic;
+          color: red;
       }
   }
 }

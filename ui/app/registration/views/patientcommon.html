@@ -218,8 +218,16 @@
                         </div>
                     </article>
                 </div>
-           </section>
-           <button ng-if="ndhmExtPoint != undefined" class="verify-health-id-btn" type="button" ng-click="openNdhmPopup()">Verify Health ID</button>
+            </section>
+            <button class="verify-health-id-btn" ng-if="ndhmExtPoint != undefined" ng-show="!showHealthId" type="button"
+                    ng-click="openNdhmPopup()">Verify Health ID
+            </button>
+            <br>
+            <div ng-show="showHealthId">
+                <span class="healthIDField">Health ID</span> <input type="text" class="health-id-input" size="35" readonly name="mytext"
+                                                                    min-width="1px"
+                                                                    ng-model="healthIdSaved">
+            </div>
         </section>
 
         <legend class="registraion_legend" ng-if="patientConfiguration.customAttributeRows().length > 0">
