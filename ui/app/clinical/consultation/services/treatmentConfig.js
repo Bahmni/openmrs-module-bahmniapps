@@ -6,11 +6,6 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
             var getConfigFromServer = function (baseTreatmentConfig) {
                 return treatmentService.getConfig().then(function (result) {
                     var config = angular.extend(baseTreatmentConfig, result.data);
-                    config.durationUnits = [
-                        {name: "Day(s)", factor: 1},
-                        {name: "Week(s)", factor: 7},
-                        {name: "Month(s)", factor: 30}
-                    ];
                     config.frequencies = _(config.frequencies)
                         .reverse()
                         .sortBy({'name': 'Immediately'})
@@ -113,6 +108,15 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                     var allTabConfigs = medicationJson.tabConfig || {};
                     var tabConfig = allTabConfigs[tabConfigName] || {};
                     tabConfig.inputOptionsConfig = tabConfig.inputOptionsConfig || {};
+
+                    // Backward compatibility: provide provide hardcoded duration units factors - BAH-1194
+                    var defaultDurationUnitsFactors = [
+                        {name: "Day(s)", factor: 1},
+                        {name: "Week(s)", factor: 7},
+                        {name: "Month(s)", factor: 30}
+                    ];
+                    tabConfig.durationUnits = tabConfig.inputOptionsConfig.durationUnitsFactors || defaultDurationUnitsFactors;
+
                     tabConfig.orderSet = tabConfig.orderSet || {};
                     var showDoseFractions = tabConfig.inputOptionsConfig.showDoseFractions;
                     tabConfig.inputOptionsConfig.showDoseFractions = showDoseFractions ? showDoseFractions : false;
