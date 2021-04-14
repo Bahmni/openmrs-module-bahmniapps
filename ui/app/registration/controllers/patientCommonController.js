@@ -18,15 +18,19 @@ angular.module('bahmni.registration')
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
             $scope.ndhmExtPoint = appService.getAppDescriptor().getExtensions("org.bahmni.registration.identifier.ndhm.source", "link")[0];
-
+            $scope.hipUrl = $scope.ndhmExtPoint.extensionParams.hipUrl;
             $scope.openNdhmPopup = function () {
-                ngDialog.open({
+                var newClassDialog = ngDialog.open({
                     className: "ngdialog-theme-default ndhm",
                     template: $scope.ndhmExtPoint.template,
                     scope: $scope,
                     controller: $scope.ndhmExtPoint.controller,
                     closeByEscape: false,
                     closeByDocument: false
+                });
+                newClassDialog.closePromise.then(function (data) {
+                    $scope.healthIdSaved = data.value.healthId;
+                    $scope.showHealthId = data.value.showHealthId;
                 });
             };
 
