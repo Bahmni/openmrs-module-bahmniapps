@@ -19,6 +19,23 @@ angular.module('bahmni.ot')
                 });
                 $scope.filters.locations = locations;
             };
+            var addListenersToAutoFilterResults = function () {
+                $scope.$watch("filters.providers", function () {
+                    if (!_.isUndefined($scope.filters.providers)) {
+                        $scope.applyFilters();
+                    }
+                });
+                $scope.$watch("filters.patient", function () {
+                    if (!_.isUndefined($scope.filters.patient)) {
+                        $scope.applyFilters();
+                    }
+                });
+                $scope.$watch("filters.statusList", function () {
+                    if (!_.isUndefined($scope.filters.statusList)) {
+                        $scope.applyFilters();
+                    }
+                });
+            };
             var init = function () {
                 $scope.filterParams = $state.filterParams;
                 $scope.filters = {};
@@ -60,6 +77,7 @@ angular.module('bahmni.ot')
                     $scope.filters = $scope.filterParams || $scope.filters;
                     $scope.patient = $scope.filters.patient && $scope.filters.patient.value;
                     $scope.applyFilters();
+                    addListenersToAutoFilterResults();
                     return $scope.locations;
                 });
             };
@@ -86,6 +104,13 @@ angular.module('bahmni.ot')
             var getBackGroundHSLColorFor = function (otCalendarColorAttribute) {
                 var hue = otCalendarColorAttribute ? otCalendarColorAttribute.value.toString() : "0";
                 return "hsl(" + hue + ", 100%, 90%)";
+            };
+
+            $scope.isFilterApplied = function () {
+                return Object.keys($state.filterParams.locations).length != $scope.locations.length
+                        || !_.isEmpty($state.filterParams.providers)
+                        || !_.isEmpty($state.filterParams.patient)
+                        || !_.isEmpty($state.filterParams.statusList);
             };
 
             $scope.applyFilters = function () {
