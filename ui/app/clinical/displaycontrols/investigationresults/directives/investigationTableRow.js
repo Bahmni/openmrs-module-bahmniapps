@@ -17,7 +17,11 @@ angular.module('bahmni.clinical')
                 if ($scope.test.preferredPanelName != null) {
                     return test.preferredPanelName;
                 } else {
-                    return test.panelName;
+                    if (!test.panelName) {
+                        return test.orderName;
+                    } else {
+                        return test.panelName;
+                    }
                 }
             };
             $scope.getLocaleSpecificNameForTest = function (test) {
