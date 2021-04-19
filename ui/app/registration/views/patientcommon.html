@@ -219,12 +219,13 @@
                     </article>
                 </div>
             </section>
-            <button class="verify-health-id-btn" ng-if="ndhmExtPoint != undefined" ng-show="!showHealthId" type="button"
+            <button class="verify-health-id-btn" ng-if="ndhmExtPoint != undefined && patient.uuid == undefined" ng-show="!showHealthId" type="button"
                     ng-click="openNdhmPopup()">Verify Health ID
             </button>
             <br>
-            <div ng-show="showHealthId">
-                <span class="healthIDField">Health ID</span> <input type="text" class="health-id-input" size="35" readonly name="mytext"
+            <div ng-if="patient.uuid != undefined || showHealthId == true">
+                <span class="healthIDField">Health ID</span>
+                <input type="text" class="health-id-input" size="35" readonly name="mytext"
                                                                     min-width="1px"
                                                                     ng-model="healthIdSaved">
             </div>
