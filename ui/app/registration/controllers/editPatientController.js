@@ -35,7 +35,7 @@ angular.module('bahmni.registration')
                         var identifier = $scope.patient.extraIdentifiers[i];
                         if (identifier.identifierType.name === Bahmni.Registration.Constants.patientIdentifiers.healthId &&
                             identifier.registrationNumber === undefined) {
-                                $scope.showHealthId = false;
+                                $scope.showVeriyHealthIdBtn = false;
                                 break;
                         }
                     }
