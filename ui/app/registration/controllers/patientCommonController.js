@@ -31,13 +31,14 @@ angular.module('bahmni.registration')
                 newClassDialog.closePromise.then(function (data) {
                     $scope.healthIdSaved = data.value.healthId;
                     $scope.showHealthId = data.value.showHealthId;
-                    $scope.patient.extraIdentifiers = $scope.patient.extraIdentifiers.map(function (identifier) {
-                        if (identifier.identifierType.uuid === "ed84a528-a7e4-11eb-b2ec-080027c205d3") {
+                    for (var i=0; i<$scope.patient.extraIdentifiers.length; i++) {
+                        var identifier = $scope.patient.extraIdentifiers[i];
+                        if (identifier.identifierType.name === Bahmni.Registration.Constants.patientIdentifiers.healthId) {
                             identifier.registrationNumber = $scope.healthIdSaved;
                             identifier.generate();
+                            break;
                         }
-                        return identifier;
-                    });
+                    }
                 });
             };
 
