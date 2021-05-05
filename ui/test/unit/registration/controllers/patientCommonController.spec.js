@@ -36,7 +36,16 @@ describe('PatientCommonController', function () {
                     return true;
                 },
                 getExtensions: function (name, type) {
-                    return {};
+                    return [{
+                        "id": "",
+                        "extensionPointId": "",
+                        "type": "",
+                        "template" : "",
+                        "controller": "",
+                        "extensionParams": {
+                            "hipUrl" : ""
+                        }
+                    }];
                 }
             };
         };
@@ -132,7 +141,16 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                     }
                 },
                 getExtensions: function (name, type) {
-                    return {};
+                    return [{
+                        "id": "",
+                        "extensionPointId": "",
+                        "type": "",
+                        "template" : "",
+                        "controller": "",
+                        "extensionParams": {
+                            "hipUrl" : ""
+                        }
+                    }];
                 }
             };
         };
@@ -223,7 +241,16 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                         return true;
                     },
                     getExtensions: function (name, type) {
-                        return {};
+                        return [{
+                            "id": "",
+                            "extensionPointId": "",
+                            "type": "",
+                            "template" : "",
+                            "controller": "",
+                            "extensionParams": {
+                                "hipUrl" : ""
+                            }
+                        }];
                     }
 
                 };

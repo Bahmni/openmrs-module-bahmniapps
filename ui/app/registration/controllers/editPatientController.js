@@ -30,6 +30,16 @@ angular.module('bahmni.registration')
                 setReadOnlyFields();
                 expandDataFilledSections();
                 $scope.patientLoaded = true;
+                if ($scope.patient.extraIdentifiers !== undefined) {
+                    for (var i=0; i<$scope.patient.extraIdentifiers.length; i++) {
+                        var identifier = $scope.patient.extraIdentifiers[i];
+                        if (identifier.identifierType.name === Bahmni.Registration.Constants.patientIdentifiers.healthId &&
+                            identifier.registrationNumber === undefined) {
+                                $scope.showVeriyHealthIdBtn = false;
+                                break;
+                        }
+                    }
+                }
             };
 
             var expandDataFilledSections = function () {

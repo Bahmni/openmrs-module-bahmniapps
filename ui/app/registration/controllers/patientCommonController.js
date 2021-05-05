@@ -30,7 +30,15 @@ angular.module('bahmni.registration')
                 });
                 newClassDialog.closePromise.then(function (data) {
                     $scope.healthIdSaved = data.value.healthId;
-                    $scope.showHealthId = data.value.showHealthId;
+                    $scope.showVeriyHealthIdBtn = data.value.showHealthId;
+                    for (var i=0; i<$scope.patient.extraIdentifiers.length; i++) {
+                        var identifier = $scope.patient.extraIdentifiers[i];
+                        if (identifier.identifierType.name === Bahmni.Registration.Constants.patientIdentifiers.healthId) {
+                            identifier.registrationNumber = $scope.healthIdSaved;
+                            identifier.generate();
+                            break;
+                        }
+                    }
                 });
             };
 
