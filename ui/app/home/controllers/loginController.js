@@ -186,13 +186,30 @@ angular.module('bahmni.home')
                     });
                 };
 
+                var urlMatches = function (domain, url) {
+                    if (!domain.trim().endsWith("/")) {
+                        return url.startsWith(domain.trim().concat("/"));
+                    } else {
+                        return url.startsWith(domain.trim());
+                    }
+                };
+
                 spinner.forPromise(deferrable.promise).then(
                     function (data) {
                         if (data) return;
                         if (redirectUrl) {
-                            $window.location = redirectUrl;
+                            userService.allowedDomains(redirectUrl).then(function (wlDomains) {
+                                var domains = wlDomains || [];
+                                domains = domains.concat($window.location.origin);
+                                var res = domains.find(function (dUrl) { return urlMatches(dUrl, redirectUrl); });
+                                if (res) {
+                                    $window.location.replace(redirectUrl);
+                                } else {
+                                    $location.url(landingPagePath);
+                                }
+                            });
                         } else {
-                            $location.path(landingPagePath);
+                            $location.url(landingPagePath);
                         }
                     }
                 );
