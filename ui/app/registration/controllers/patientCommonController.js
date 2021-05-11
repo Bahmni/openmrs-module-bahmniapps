@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner', '$location', 'ngDialog', '$window', '$state',
-        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner, $location, ngDialog, $window, $state) {
+    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'spinner', '$location', 'ngDialog', '$window', '$state', '$document', '$timeout',
+        function ($scope, $rootScope, $http, patientAttributeService, appService, spinner, $location, ngDialog, $window, $state, $document, $timeout) {
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             var personAttributes = [];
@@ -18,20 +18,17 @@ angular.module('bahmni.registration')
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
             $scope.ndhmExtPoint = appService.getAppDescriptor().getExtensions("org.bahmni.registration.identifier.ndhm.source", "link")[0];
-            $scope.hipUrl = $scope.ndhmExtPoint.extensionParams.hipUrl;
+            $scope.ndhmIframeSrc = $scope.ndhmExtPoint.src;
+            $scope.showNdhmIframe = false;
+
             $scope.openNdhmPopup = function () {
-                var newClassDialog = ngDialog.open({
-                    className: "ngdialog-theme-default ndhm",
-                    template: $scope.ndhmExtPoint.template,
-                    scope: $scope,
-                    controller: $scope.ndhmExtPoint.controller,
-                    closeByEscape: false,
-                    closeByDocument: false
-                });
-                newClassDialog.closePromise.then(function (data) {
-                    $scope.healthIdSaved = data.value.healthId;
-                    $scope.showVeriyHealthIdBtn = data.value.showHealthId;
-                    for (var i=0; i<$scope.patient.extraIdentifiers.length; i++) {
+                var ndhmframe = $document[0].getElementById("ndhm");
+                $scope.showNdhmIframe = true;
+                $window.addEventListener("message", function (healthId) {
+                    $scope.healthIdSaved = healthId.data;
+                    $scope.showVeriyHealthIdBtn = true;
+                    $scope.showNdhmIframe = false;
+                    for (var i = 0; i < $scope.patient.extraIdentifiers.length; i++) {
                         var identifier = $scope.patient.extraIdentifiers[i];
                         if (identifier.identifierType.name === Bahmni.Registration.Constants.patientIdentifiers.healthId) {
                             identifier.registrationNumber = $scope.healthIdSaved;
@@ -39,7 +36,15 @@ angular.module('bahmni.registration')
                             break;
                         }
                     }
-                });
+                    $scope.$digest();
+                }, false);
+                $timeout(function () {
+                    ndhmframe.contentWindow.postMessage({call: "hipUrl", value: $scope.ndhmExtPoint.extensionParams.hipUrl});
+                }, 2000);
+            };
+
+            $scope.closeNdhmPopup = function () {
+                $scope.showNdhmIframe = false;
             };
 
             function initPatientNameDisplayOrder () {

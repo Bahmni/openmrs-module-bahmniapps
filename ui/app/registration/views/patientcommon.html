@@ -1,4 +1,4 @@
-  <div ng-controller="PatientCommonController">
+<div ng-controller="PatientCommonController">
     <div class="box-container box-container-patient-info patient-common-info-container">
         <section>
             <article class="form-field patient-name-wrapper" ng-if="::patientConfiguration.local()['showNameField']">
@@ -30,7 +30,8 @@
                     <span data-ng-switch="::isAutoComplete('givenName')"
                           ng-if="::patientConfiguration.local()['showNameField'] && nameField === 'firstName'">
                           <input data-ng-switch-when="true"
-                                 type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
+                                 type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank
+                                 pattern-validate
                                  my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                                  data-item-type="personName"
                                  placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
@@ -219,6 +220,12 @@
                     </article>
                 </div>
             </section>
+            <div class="ndhm-ui"  ng-hide="!showNdhmIframe">
+                <div class="ndhm-iframe">
+                    <span class="close" ng-click="closeNdhmPopup()">&times;</span>
+                    <iframe name="ndhm-health-verfication" id="ndhm" ng-src="{{ndhmIframeSrc}}" height="95%" width="100%"></iframe>
+                </div>
+            </div>
             <button class="verify-health-id-btn" ng-if="ndhmExtPoint != undefined" ng-show="!showVeriyHealthIdBtn" type="button"
                     ng-click="openNdhmPopup()">Verify Health ID
             </button>
