@@ -138,6 +138,15 @@ body{
   overflow: auto;
   background-color: rgba(0,0,0,0.6);
 
+  .ndhm-iframe {    
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+    height: 600px;
+  }
+
   .close {
     color: #aaaaaa;
     float: right;
@@ -151,16 +160,8 @@ body{
     text-decoration: none;
     cursor: pointer;
   }
-
-  .ndhm-iframe {    
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 40%;
-    height: 600px;
-  }
 }
+
 .additional-attribute{
   &.active{
     .fa-caret-right{
