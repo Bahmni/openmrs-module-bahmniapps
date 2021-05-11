@@ -268,7 +268,8 @@ Bahmni.Common = Bahmni.Common || {};
         program: "PROGRAM",
         visitType: "VISIT_TYPE",
         bedmanagement: "BEDMANAGEMENT",
-        bedmanagementDisposition: "BEDMANAGEMENT_DISPOSITION"
+        bedmanagementDisposition: "BEDMANAGEMENT_DISPOSITION",
+        loginConfig: "/bahmni_config/openmrs/apps/home/login_config.json"
     };
 })();
 
