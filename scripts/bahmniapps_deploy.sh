@@ -1,4 +1,3 @@
-#Download latest HIP OMOD and relaunch openmrs
 username=***
 token=****
 list_artifacts=https://api.github.com/repos/Bahmni-Covid19/openmrs-module-bahmniapps/actions/artifacts
