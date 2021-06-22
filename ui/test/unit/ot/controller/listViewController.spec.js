@@ -368,7 +368,7 @@ describe('listViewController', function () {
 
 
     it("should sort the appointments by start date and by the location and by start time", function () {
-        scope.viewDate = moment('2017-02-22').toDate();
+        scope.viewDate = moment('2017-06-22').toDate();
         scope.filterParams = {
             providers: [],
             locations: {"OT 1": true, "OT 2": true, "OT 3": true},
@@ -376,7 +376,7 @@ describe('listViewController', function () {
             statusList: []
         };
         createController();
-        expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(jasmine.any(Date), jasmine.any(Date), true);
+        expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(jasmine.any(Date), jasmine.any(Date), true, true);
         expect(scope.surgicalAppointmentList.length).toEqual(6);
         expect(scope.surgicalAppointmentList[0].id).toEqual(104);
         expect(scope.surgicalAppointmentList[1].id).toEqual(105);
@@ -387,6 +387,7 @@ describe('listViewController', function () {
     });
 
     it("should set the derived attributes for appointments", function () {
+        scope.viewDate = moment('2017-06-22').toDate();
         scope.filterParams = {
             providers: [],
             locations: {"OT 1": true, "OT 2": false, "OT 3": false},
@@ -455,6 +456,7 @@ describe('listViewController', function () {
     });
 
     it("should sort appointments by the sort column", function () {
+        scope.viewDate = moment('2017-06-22').toDate();
         scope.filterParams = {
             providers: [],
             locations: {"OT 1": true, "OT 2": true, "OT 3": true},
@@ -523,6 +525,7 @@ describe('listViewController', function () {
     });
 
     it("should reverse sort appointments if sorted on the same column consecutively", function () {
+        scope.viewDate = moment('2017-06-22').toDate();
         scope.filterParams = {
             providers: [],
             locations: {"OT 1": true, "OT 2": true, "OT 3": true},

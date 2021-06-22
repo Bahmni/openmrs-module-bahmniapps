@@ -90,14 +90,14 @@ describe('surgicalAppointmentService', function () {
 
         mockHttp.get.and.returnValue(specUtil.respondWith(data));
 
-        surgicalAppointmentService.getSurgicalBlocksInDateRange(startDatetime, endDatetime).then(function (response) {
+        surgicalAppointmentService.getSurgicalBlocksInDateRange(startDatetime, endDatetime, false, true).then(function (response) {
             expect(response).toEqual(data);
             done();
         });
 
         expect(mockHttp.get).toHaveBeenCalled();
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/surgicalBlock");
-        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({ startDatetime : '2039-08-26T12:00:00.000', endDatetime : '2039-08-26T15:00:00.000',includeVoided: false, v: "custom:(id,uuid," +
+        expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({ startDatetime : '2039-08-26T12:00:00.000', endDatetime : '2039-08-26T15:00:00.000',includeVoided: false, activeBlocks: true, v: "custom:(id,uuid," +
         "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
         "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,person:(age))," +
         "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,bedNumber,bedLocation,surgicalAppointmentAttributes))"});

@@ -3,9 +3,13 @@
     <h4> {{'OT_SURGICAL_BLOCK_DIALOG_DETAILS' | translate}}</h4>
     <p>{{'OT_SURGICAL_BLOCK_DIALOG_SURGEON' | translate}}: {{ngDialogData.provider.person.display}}</p>
     <p>{{'OT_SURGICAL_BLOCK_DIALOG_LOCATION' | translate}}: {{ngDialogData.location.name}}</p>
-    <p>{{'OT_SURGICAL_BLOCK_DIALOG_DATE' | translate}}: {{ngDialogData.startDatetime | date : 'dd MMM yyyy, EEE'}}</p>
-    <p>{{'OT_SURGICAL_BLOCK_DIALOG_DURATION' | translate}}: {{ngDialogData.startDatetime | bahmniTime}} -
+    <p ng-if="!showEndDate">{{'OT_SURGICAL_BLOCK_DIALOG_DATE' | translate}}: {{ngDialogData.startDatetime | date : 'dd MMM yyyy, EEE'}}</p>
+    <p ng-if="!showEndDate">{{'OT_SURGICAL_BLOCK_DIALOG_DURATION' | translate}}: {{ngDialogData.startDatetime | bahmniTime}} -
         {{ngDialogData.endDatetime | bahmniTime}}</p>
+    <p ng-if="showEndDate">{{'OT_SURGICAL_BLOCK_DIALOG_DATE' | translate}}:
+        {{ngDialogData.startDatetime | date : 'dd MMM, '}}{{ngDialogData.startDatetime | bahmniTime}} -
+        {{ngDialogData.endDatetime | date : 'dd MMM, '}}{{ngDialogData.endDatetime | bahmniTime}}
+    </p>
     <div class="center">
         <button show-if-privilege="app:ot:write" ng-mousedown="goToEdit($event)">
             {{'OT_EDIT_KEY' | translate}}

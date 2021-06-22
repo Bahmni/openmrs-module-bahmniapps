@@ -390,6 +390,7 @@ describe("surgicalBlockController", function () {
         scope.surgicalForm.location = {uuid: "locationUuid"};
         scope.surgicalForm.surgicalAppointments = [{id: "11", patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes}];
 
+        scope.saveAnywaysFlag = true;
         scope.save(scope.surgicalForm);
 
         expect(surgicalAppointmentService.saveSurgicalBlock).toHaveBeenCalled();
@@ -427,6 +428,7 @@ describe("surgicalBlockController", function () {
         scope.surgicalForm.location = {uuid: "locationUuid"};
         scope.surgicalForm.surgicalAppointments = [{id: "11", patient: {uuid: "patientUuid"}, notes: "need more assistants", sortWeight: 0, surgicalAppointmentAttributes: uiSurgicalAppointmentAttributes}];
 
+        scope.saveAnywaysFlag = true;
         scope.save(scope.surgicalForm);
 
         expect(surgicalAppointmentService.updateSurgicalBlock).toHaveBeenCalled();

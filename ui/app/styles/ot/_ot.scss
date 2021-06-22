@@ -277,6 +277,10 @@ div[ng-app="ot"] {
     text-align: center;
     padding: 15px 0px 3px 0px;
   }
+  .ot-actual-datetime-input {
+    text-align: center;
+    display: block;
+  }
   .ot-actual-time-input {
     word-spacing: 1px;
     font-size: 18px;
@@ -284,7 +288,6 @@ div[ng-app="ot"] {
     border-radius: 6px;
     padding: 0px 10px 0px 30px;
     margin: 0px auto 0px !important;
-    display: block;
   }
   .ot-actual-time-notes {
     min-height: 100px;

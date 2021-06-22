@@ -123,7 +123,7 @@ describe("otCalendarController", function () {
             });
             scope.weekOrDay = 'day';
             createController();
-            expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(scope.viewDate, moment(scope.viewDate).endOf('day'));
+            expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(scope.viewDate, moment(scope.viewDate).endOf('day'), false, true);
             expect(scope.surgicalBlocksByLocation.length).toEqual(2);
             expect(scope.surgicalBlocksByLocation[0][0]).toEqual(surgicalBlocks[0]);
             expect(scope.surgicalBlocksByLocation[1][0]).toEqual(surgicalBlocks[1]);
@@ -171,13 +171,12 @@ describe("otCalendarController", function () {
             scope.weekOrDay = 'week';
             scope.weekStartDate = moment('2020-04-06').toDate();
             createController();
-            scope.updateBlockedOtsOfTheDay(4);
             expect(scope.blockedOtsOfTheWeek.length).toEqual(7);
-            expect(scope.blockedOtsOfTheWeek[0]).toEqual([]);
-            expect(scope.blockedOtsOfTheWeek[1]).toEqual([]);
-            expect(scope.blockedOtsOfTheWeek[2]).toEqual([]);
-            expect(scope.blockedOtsOfTheWeek[3]).toEqual([]);
-            expect(scope.blockedOtsOfTheWeek[4]).toEqual(["uuid1"]);
+            expect(scope.blockedOtsOfTheWeek[0]).toEqual(['uuid1', 'uuid2']);
+            expect(scope.blockedOtsOfTheWeek[1]).toEqual(['uuid1', 'uuid2']);
+            expect(scope.blockedOtsOfTheWeek[2]).toEqual(['uuid1', 'uuid2']);
+            expect(scope.blockedOtsOfTheWeek[3]).toEqual(['uuid1', 'uuid2']);
+            expect(scope.blockedOtsOfTheWeek[4]).toEqual(['uuid1', 'uuid2']);
             expect(scope.blockedOtsOfTheWeek[5]).toEqual(["uuid2"]);
             expect(scope.blockedOtsOfTheWeek[6]).toEqual([]);
 
@@ -190,7 +189,7 @@ describe("otCalendarController", function () {
             scope.weekOrDay = 'week';
             scope.weekStartDate = moment('2020-04-06').toDate();
             createController();
-            expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(moment(scope.weekStartDate).startOf('day'), moment(Bahmni.Common.Util.DateUtil.getWeekEndDate(scope.weekStartDate)).endOf('day'));
+            expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(moment(scope.weekStartDate).startOf('day'), moment(Bahmni.Common.Util.DateUtil.getWeekEndDate(scope.weekStartDate)).endOf('day'), false, true);
             expect(scope.surgicalBlocksByDate.length).toEqual(7);
             expect(scope.surgicalBlocksByDate[4][0]).toEqual(weekSurgicalBlocks[0]);
             expect(scope.surgicalBlocksByDate[5][0]).toEqual(weekSurgicalBlocks[1]);
@@ -204,8 +203,8 @@ describe("otCalendarController", function () {
             scope.weekStartDate = moment('2020-04-06').toDate();
             createController();
             scope.updateBlockedOtsOfTheDay(4);
-            expect(scope.blockedOtsOfTheDay.length).toEqual(1);
-            expect(scope.blockedOtsOfTheDay).toEqual(["uuid1"]);
+            expect(scope.blockedOtsOfTheDay.length).toEqual(2);
+            expect(scope.blockedOtsOfTheDay).toEqual(["uuid1", "uuid2"]);
         });
     });
 
