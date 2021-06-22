@@ -3,15 +3,16 @@
     <h4>{{'OT_SURGICAL_APPOINTMENT_DIALOG_DETAILS' | translate}}</h4>
     <p>{{'OT_PATIENT' | translate}}: {{getPatientDisplayLabel(ngDialogData)}}</p>
     <p>{{'OT_SURGICAL_BLOCK_DIALOG_LOCATION' | translate}}: {{surgicalBlockSelected.location.name}}</p>
-    <p ng-if="ngDialogData.derivedAttributes.expectedStartDatetime"> {{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' |
-        translate}}: {{ngDialogData.derivedAttributes.expectedStartDatetime | bahmniTime}} -
-        {{ngDialogData.derivedAttributes.expectedEndDatetime | bahmniTime}}</p>
+    <p ng-if="ngDialogData.derivedAttributes.expectedStartDatetime"> {{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}}:
+        {{ngDialogData.derivedAttributes.expectedStartDatetime | date : 'dd MMM, '}}{{ngDialogData.derivedAttributes.expectedStartDatetime | bahmniTime}} -
+        {{ngDialogData.derivedAttributes.expectedEndDatetime | date : 'dd MMM, '}}{{ngDialogData.derivedAttributes.expectedEndDatetime | bahmniTime}}</p>
     <p ng-if="attributes.procedure"> {{'OT_SURGICAL_APPOINTMENT_PROCEDURE' | translate}}: {{attributes.procedure}} </p>
     <p ng-if="attributes.anaesthetist"> {{'OT_SURGICAL_APPOINTMENT_ANAESTHETIST' | translate}}:
         {{attributes.anaesthetist}} </p>
     <p ng-if="attributes.notes"> {{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}: {{attributes.notes}} </p>
     <p ng-if="ngDialogData.actualStartDatetime"><br> {{'OT_SURGICAL_APPOINTMENT_ACTUAL_TIME' | translate}}:
-        {{ngDialogData.actualStartDatetime | bahmniTime}} - {{ngDialogData.actualEndDatetime | bahmniTime}}</p>
+        {{ngDialogData.actualStartDatetime | date : 'dd MMM, '}}{{ngDialogData.actualStartDatetime | bahmniTime}} -
+        {{ngDialogData.actualEndDatetime | date : 'dd MMM, '}}{{ngDialogData.actualEndDatetime | bahmniTime}}</p>
     <div class="center">
         <button show-if-privilege="app:ot:write" ng-disabled="addActualTimeDisabled" ng-mousedown="addActualTime()">
             {{'OT_ADD_ACTUAL_TIME_KEY' | translate}}

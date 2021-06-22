@@ -50,13 +50,14 @@ angular.module('bahmni.ot')
             });
         };
 
-        this.getSurgicalBlocksInDateRange = function (startDatetime, endDatetime, includeVoided) {
+        this.getSurgicalBlocksInDateRange = function (startDatetime, endDatetime, includeVoided, activeBlocks) {
             return $http.get(Bahmni.OT.Constants.addSurgicalBlockUrl, {
                 method: "GET",
                 params: {
                     startDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(startDatetime),
                     endDatetime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(endDatetime),
                     includeVoided: includeVoided || false,
+                    activeBlocks: activeBlocks || false,
                     v: "custom:(id,uuid," +
                     "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
                     "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,person:(age))," +

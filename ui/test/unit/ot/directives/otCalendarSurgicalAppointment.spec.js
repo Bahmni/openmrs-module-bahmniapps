@@ -57,7 +57,8 @@ describe("otCalendarSurgicalAppointment", function () {
 
                 }],
                  "derivedAttributes": {
-                    duration: 136
+                    duration: 136,
+                    height: 136
                 }
             };
         scope.filterParams = {
