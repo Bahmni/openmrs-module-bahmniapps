@@ -10,7 +10,7 @@
                                           week-or-day="weekOrDay"
                                           operation-theatre="operationTheatre"
                                           background-color="blockDimensions.color"
-                                          ng-if="isValidSurgicalAppointment(surgicalAppointment)"
+                                          ng-if="canShowInCalendarView(surgicalAppointment)"
                                           height-per-min="blockDimensions.appointmentHeightPerMin"
                                           filter-params="filterParams"></ot-calendar-surgical-appointment>
 

@@ -3,7 +3,7 @@
 describe("otCalendarSurgicalBlock", function () {
     var simpleHtml = '<ot-calendar-surgical-block surgical-block="surgicalBlock"' +
         '  blocked-ots-of-the-day="blockedOtsOfTheDay" day-view-start="::dayViewStart" day-view-end="::dayViewEnd"' +
-        ' day-view-split="dayViewSplit" filter-params="filterParams"  week-or-day="::weekOrDay"></ot-calendar-surgical-block>';
+        ' day-view-split="dayViewSplit" filter-params="filterParams"  week-or-day="::weekOrDay" view-date="::viewDate" ></ot-calendar-surgical-block>';
     var $compile, element, mockBackend, scope;
 
     beforeEach(module('ngHtml2JsPreprocessor'));
@@ -44,6 +44,7 @@ describe("otCalendarSurgicalBlock", function () {
             scope.dayViewEnd = "16:00";
             scope.dayViewSplit = 30;
             scope.weekOrDay = 'day';
+            scope.viewDate = "2017-05-24 09:00:00";
 
             mockBackend.expectGET('../ot/views/calendarSurgicalBlock.html').respond("<div>dummy</div>");
             element = $compile(simpleHtml)(scope);
@@ -81,6 +82,7 @@ describe("otCalendarSurgicalBlock", function () {
             scope.dayViewEnd = "16:00";
             scope.dayViewSplit = 30;
             scope.weekOrDay = 'day';
+            scope.viewDate = "2017-05-24 09:00:00";
 
             mockBackend.expectGET('../ot/views/calendarSurgicalBlock.html').respond("<div>dummy</div>");
             element = $compile(simpleHtml)(scope);
@@ -231,6 +233,7 @@ describe("otCalendarSurgicalBlock", function () {
             scope.dayViewSplit = 30;
             scope.weekOrDay = 'week';
             scope.blockedOtsOfTheDay = ["3353ccb2-3086-11e7-b60e-0800274a5156"];
+            scope.viewDate = "2017-05-24 09:00:00";
 
             mockBackend.expectGET('../ot/views/calendarSurgicalBlock.html').respond("<div>dummy</div>");
             element = $compile(simpleHtml)(scope);
@@ -255,6 +258,7 @@ describe("otCalendarSurgicalBlock", function () {
             scope.dayViewSplit = 30;
             scope.weekOrDay = 'week';
             scope.blockedOtsOfTheDay = ["3e175fd1-4ce5-11e7-9b35-000c29e530d2", "3353ccb2-3086-11e7-b60e-0800274a5156", "3e1740e5-4ce5-11e7-9b35-000c29e530d2"];
+            scope.viewDate = "2017-05-24 09:00:00";
 
             mockBackend.expectGET('../ot/views/calendarSurgicalBlock.html').respond("<div>dummy</div>");
             element = $compile(simpleHtml)(scope);

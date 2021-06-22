@@ -2,12 +2,18 @@
     <h4 class="ot-actual-time-person-display"> {{'OT_SURGICAL_APPOINTMENT_ADD_ACTUAL_TIME_FOR' | translate}} {{patientDisplayLabel}}</h4>
     <p>
         <label class="ot-actual-time-label">{{'OT_START_TIME_KEY' | translate}}</label>
-        <input class= "ot-actual-time-input" ng-required="isActualTimeRequired()" type="time" ng-model="actualStartTime"/>
+        <span class="ot-actual-datetime-input">
+            <input class= "ot-actual-time-input" ng-required="isActualTimeRequired()" type="date" ng-model="actualStartTime"/>
+            <input class= "ot-actual-time-input" ng-required="isActualTimeRequired()" type="time" ng-model="actualStartTime"/>
+        </span>
     </p>
 
     <p>
         <label class="ot-actual-time-label">{{'OT_END_TIME_KEY' | translate}}</label>
-        <input class="ot-actual-time-input" ng-required="isActualTimeRequired()" type="time" ng-model="actualEndTime"/>
+        <span class="ot-actual-datetime-input">
+            <input class= "ot-actual-time-input" ng-required="isActualTimeRequired()" type="date" ng-model="actualEndTime"/>
+            <input class= "ot-actual-time-input" ng-required="isActualTimeRequired()" type="time" ng-model="actualEndTime"/>
+        </span>
     </p>
     <p>
         <label class="ot-actual-time-label">{{'OT_SURGICAL_APPOINTMENT_NOTES' | translate}}</label>
