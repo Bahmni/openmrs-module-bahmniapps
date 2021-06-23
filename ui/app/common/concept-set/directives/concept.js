@@ -1,10 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService', '$rootScope',
-        function (RecursionHelper, spinner, $filter, messagingService, $rootScope) {
-    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService', '$translate',
-        function (RecursionHelper, spinner, $filter, messagingService, $translate) {
+    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService', '$rootScope', '$translate',
+        function (RecursionHelper, spinner, $filter, messagingService, $rootScope, $translate) {
             var link = function (scope) {
                 var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig && scope.observation.conceptUIConfig['hideAbnormalButton'];
                 scope.now = moment().format("YYYY-MM-DD hh:mm:ss");
