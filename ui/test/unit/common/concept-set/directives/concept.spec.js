@@ -1,7 +1,7 @@
 'use strict';
 
 describe("concept", function () {
-    var recursionHelper, spinner, conceptSetService, filter, compile, scope, httpBackend;
+    var recursionHelper, spinner, conceptSetService, filter, compile, scope, httpBackend, translate;
 
     beforeEach(function () {
         module('bahmni.common.conceptSet');
@@ -12,6 +12,7 @@ describe("concept", function () {
             $provide.value('conceptSetService', conceptSetService);
             $provide.value('spinner', spinner);
             $provide.value('RecursionHelper', recursionHelper);
+            $provide.value('$translate', translate);
         });
         inject(function ($compile, $rootScope, $httpBackend, $filter) {
             compile = $compile;
