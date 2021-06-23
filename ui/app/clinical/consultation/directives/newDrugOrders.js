@@ -72,8 +72,7 @@ angular.module('bahmni.clinical')
                 $scope.selectAllCheckbox();
                 if ($scope.showBulkChangeToggle) {
                     if (isDurationNullForAnyTreatment($scope.treatments)) {
-                        messagingService.showMessage("info", "There are drugs that do no have a duration specified." +
-                            "Updating duration will update for those drugs as well");
+                        messagingService.showMessage("info", "UPDATE_DURATION_OF_THE_DRUGS_MESSAGE");
                     }
                 }
             };

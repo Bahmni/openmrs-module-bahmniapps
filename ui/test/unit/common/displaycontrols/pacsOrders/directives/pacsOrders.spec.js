@@ -195,7 +195,7 @@ describe("PacsOrdersDisplayControl", function () {
             var isolateScope = element.isolateScope();
             isolateScope.openImage(orders[0]);
 
-            expect(messagingService.showMessage).toHaveBeenCalledWith("info", "No image available yet for order: Absconding")
+            expect(messagingService.showMessage).toHaveBeenCalledWith("info", "NO_IMAGE_AVAILABLE_FOR_ORDER_MESSAGE" + "Absconding")
         });
 
         it('should open image in new tab  when the image link is  servicable (when image is available)', function(){

@@ -61,7 +61,7 @@ describe("LatestPrescriptionPrintController", function () {
             };
             var messageServiceExpectation = function (type, message){
                 expect(type).toBe("info");
-                expect(message).toBe("Please close this tab.");
+                expect(message).toBe("CLOSE_TAB_MESSAGE");
             };
 
             loadController(visitActionServiceExpectation, messageServiceExpectation);
@@ -77,7 +77,7 @@ describe("LatestPrescriptionPrintController", function () {
 
             var messageServiceExpectation = function (type, message){
                 expect(type).toBe("error");
-                expect(message).toBe("No Active visit found for this patient.");
+                expect(message).toBe("NO_ACTIVE_VISIT_FOUND_MESSAGE");
             };
 
             loadController(null, messageServiceExpectation);

@@ -549,7 +549,15 @@ describe("AdtController", function () {
         scope.patient = {uuid: "123"};
         scope.adtObservations = [];
         var encounterCreateResponse = {data: {patientUuid: '123', encounterUuid: "encounterUuid"}};
-        translate.instant.and.returnValue("402/1 Bed is assigned successfully");
+        translate.instant.and.callFake(function (value) {
+            if (value === 'BED') {
+                return 'Bed';
+            }
+            if (value === 'IS_SUCCESSFULLY_ASSIGNED_MESSAGE') {
+                return 'is assigned successfully';
+            }
+            return value;
+        });
         encounterService.create.and.returnValue(specUtil.simplePromise(encounterCreateResponse));
         bedService.assignBed.and.returnValue(specUtil.simplePromise({data: {}}));
 
@@ -569,7 +577,7 @@ describe("AdtController", function () {
         expect(encounterService.create).toHaveBeenCalledWith(mappedEncounterData);
         expect(bedService.assignBed).toHaveBeenCalledWith(rootScope.selectedBedInfo.bed.bedId, encounterCreateResponse.data.patientUuid, encounterCreateResponse.data.encounterUuid);
         expect(scope.$emit).toHaveBeenCalledWith("event:patientAssignedToBed", rootScope.selectedBedInfo.bed);
-        expect(messagingService.showMessage).toHaveBeenCalledWith('info',  rootScope.selectedBedInfo.bed.bedNumber +" Bed is assigned successfully");
+        expect(messagingService.showMessage).toHaveBeenCalledWith('info',  "Bed " + rootScope.selectedBedInfo.bed.bedNumber + " is assigned successfully");
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
@@ -687,7 +695,15 @@ describe("AdtController", function () {
         rootScope.selectedBedInfo = {bed : bed};
         bedService.getCompleteBedDetailsByBedId.and.returnValue(specUtil.simplePromise({data: {bed: bed, patients: []}}));
         bedService.assignBed.and.returnValue(specUtil.simplePromise({data: {}}));
-        translate.instant.and.returnValue("402/1 Bed is assigned successfully");
+        translate.instant.and.callFake(function (value) {
+            if (value === 'BED') {
+                return 'Bed';
+            }
+            if (value === 'IS_SUCCESSFULLY_ASSIGNED_MESSAGE') {
+                return 'is assigned successfully';
+            }
+            return value;
+        });
 
         scope.visitSummary = {"visitType": "IPD", "uuid": "visitUuid"};
         scope.patient = {uuid: "123"};
@@ -720,7 +736,7 @@ describe("AdtController", function () {
         expect(encounterService.create).toHaveBeenCalled();
         expect(bedService.assignBed).toHaveBeenCalledWith(rootScope.selectedBedInfo.bed.bedId, "patientUuid", "encounterUuid");
         expect(scope.$emit).toHaveBeenCalledWith("event:patientAssignedToBed", rootScope.selectedBedInfo.bed);
-        expect(messagingService.showMessage).toHaveBeenCalledWith('info', rootScope.selectedBedInfo.bed.bedNumber + " Bed is assigned successfully");
+        expect(messagingService.showMessage).toHaveBeenCalledWith('info', "Bed " + rootScope.selectedBedInfo.bed.bedNumber + " is assigned successfully");
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
@@ -729,7 +745,15 @@ describe("AdtController", function () {
         rootScope.selectedBedInfo = {bed : bed};
         bedService.getCompleteBedDetailsByBedId.and.returnValue(specUtil.simplePromise({data: {bed: bed, patients: []}}));
         bedService.assignBed.and.returnValue(specUtil.simplePromise({data: {}}));
-        translate.instant.and.returnValue("402/1 Bed is assigned successfully");
+        translate.instant.and.callFake(function (value) {
+            if (value === 'BED') {
+                return 'Bed';
+            }
+            if (value === 'IS_SUCCESSFULLY_ASSIGNED_MESSAGE') {
+                return 'is assigned successfully';
+            }
+            return value;
+        });
 
         scope.patient = {uuid: "123"};
         scope.adtObservations = [];
@@ -763,7 +787,7 @@ describe("AdtController", function () {
         expect(bedService.getCompleteBedDetailsByBedId).toHaveBeenCalledWith(rootScope.selectedBedInfo.bed.bedId);
         expect(bedService.assignBed).toHaveBeenCalledWith(rootScope.selectedBedInfo.bed.bedId, "patientUuid", "encounterUuid");
         expect(scope.$emit).toHaveBeenCalledWith("event:patientAssignedToBed", rootScope.selectedBedInfo.bed);
-        expect(messagingService.showMessage).toHaveBeenCalledWith('info', rootScope.selectedBedInfo.bed.bedNumber + " Bed is assigned successfully");
+        expect(messagingService.showMessage).toHaveBeenCalledWith('info', "Bed " + rootScope.selectedBedInfo.bed.bedNumber + " is assigned successfully");
         expect(scope.visitSummary.visitType).toBe(visitSummary.visitType);
         expect(scope.visitSummary.uuid).toBe(visitSummary.uuid);
         expect(visitService.endVisitAndCreateEncounter).toHaveBeenCalledWith("visitUuid", {encounterUuid: 'uuid'});

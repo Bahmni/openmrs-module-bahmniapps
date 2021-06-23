@@ -187,7 +187,7 @@ angular.module('bahmni.ipd')
                 spinner.forPromise(bedService.assignBed(bed.bedId, patientUuid, encounterUuid).then(function () {
                     bed.status = "OCCUPIED";
                     $scope.$emit("event:patientAssignedToBed", $rootScope.selectedBedInfo.bed);
-                    messagingService.showMessage("info", $translate.instant("BED_IS_ASSIGNED_SUCCESSFULLY_MESSAGE", {bed: bed.bedNumber}));
+                    messagingService.showMessage("info", $translate.instant("BED") + " " + bed.bedNumber + " " + $translate.instant("IS_SUCCESSFULLY_ASSIGNED_MESSAGE"));
                 }));
             };
 

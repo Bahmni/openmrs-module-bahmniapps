@@ -137,7 +137,7 @@ angular.module('bahmni.common.appFramework')
                     }
                 }, function (error) {
                     if (error.status !== 404) {
-                        messagingService.showMessage('error', "Incorrect Configuration:  " + error.message);
+                        messagingService.showMessage('error', $translate.instance("INCORRECT_CONFIGURATION_MESSAGE", {error: error.message}));
                         deferrable.reject(error);
                     } else {
                         deferrable.resolve(appDescriptor);
