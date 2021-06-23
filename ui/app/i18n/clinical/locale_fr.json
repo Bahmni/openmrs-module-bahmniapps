@@ -272,4 +272,7 @@
   "CONSULTATION_PAD_EMPTY_MESSAGE": "Le bloc de consultation est vide",
   "MEDICATION_LABEL_START_DATE": "Date de début",
   "DISCHARGE_DATE_LABEL": "Décharge Date"
+  "CONDITION_LIST_NO_RETRO_MODE": "<strong>Conditions cannot</strong> be edited in retrospective mode",
+  "ENTER_IMPRESSION_ON_IMAGE": "Entrez une impression sur l'image"
 }
+

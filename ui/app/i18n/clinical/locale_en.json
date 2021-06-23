@@ -344,4 +344,6 @@
     "PROGRAM_PATIENT_STAGE": "Patient Stage",
     "CLINICAL_CLASS": "Class",
     "CLINICAL_CASTE": "Caste"
+    "NO_FORM_FOUND_FOR_PATIENT": "No Form found for this patient",
+    "ENTER_IMPRESSION_ON_IMAGE": "Enter Impression on Image"
 }
