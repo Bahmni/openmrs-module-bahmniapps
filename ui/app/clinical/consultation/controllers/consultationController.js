@@ -192,7 +192,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     }
                     ngDialog.openConfirm({template: '../common/ui-helper/views/saveConfirmation.html', scope: $scope});
                 }
-                if ($rootScope.showTeleConsultationWindow) {
+                if ($scope.showTeleConsultationWindow) {
                     var childScope = {};
                     childScope.message = 'Please end teleconsultation before moving out of this window';
                     childScope.ok = okEvent;
