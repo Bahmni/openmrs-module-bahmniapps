@@ -11,7 +11,6 @@ angular.module('bahmni.clinical').controller('ClinicalController',
                 $scope.showTeleConsultationWindow = true;
                 var teleConsultationWindow = angular.element(document.getElementById('tele-consultation-meet'));
                 teleConsultationWindow.empty();
-                
                 var meetId = params.uuid;
                 var domain = 'meet.jit.si';
 

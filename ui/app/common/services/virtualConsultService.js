@@ -7,5 +7,5 @@ angular.module('bahmni.common.services')
 
         return {
             launchMeeting: launchMeeting
-        };    
+        };
     }]);
