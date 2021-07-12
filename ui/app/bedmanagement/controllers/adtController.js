@@ -20,6 +20,7 @@ angular.module('bahmni.ipd')
             $scope.expectedDateOfDischargeConceptName = appService.getAppDescriptor().getConfigValue('expectedDateOfDischarge') || "";
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
             $scope.editMode = false;
+            $scope.buttonClicked = false;
 
             var getVisitTypeUuid = function (visitTypeName) {
                 var visitType = _.find(visitTypes, {name: visitTypeName});
@@ -165,7 +166,7 @@ angular.module('bahmni.ipd')
                 var currentVisitTypeUuid = getCurrentVisitTypeUuid();
                 if (currentVisitTypeUuid !== null) {
                     var encounterData = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), currentVisitTypeUuid);
-                    return encounterService.create(encounterData).then(function (response) {
+                    return spinner.forPromise(encounterService.create(encounterData).then(function (response) {
                         if ($scope.visitSummary === null) {
                             visitService.getVisitSummary(response.data.visitUuid).then(function (response) {
                                 $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
@@ -173,7 +174,7 @@ angular.module('bahmni.ipd')
                         }
                         assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
                         forwardUrl(response.data, "onAdmissionForwardTo");
-                    });
+                    }));
                 } else if ($scope.defaultVisitTypeName === null) {
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY");
                 } else {
@@ -190,21 +191,32 @@ angular.module('bahmni.ipd')
                 }));
             };
 
+            var setButtonClicked = function () {
+                $scope.buttonClicked = true;
+            };
+
+            var unsetButtonClicked = function () {
+                $scope.buttonClicked = false;
+            };
+
             $scope.admit = function () {
+                setButtonClicked();
                 if (angular.isUndefined($rootScope.selectedBedInfo.bed)) {
                     messagingService.showMessage("error", "Please select a bed to admit patient");
                 } else if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName && !hideStartNewVisitPopUp) {
                     ngDialog.openConfirm({
                         template: 'views/visitChangeConfirmation.html',
                         scope: $scope,
-                        closeByEscape: true
+                        closeByEscape: true,
+                        preCloseCallback: unsetButtonClicked
                     });
                 } else {
                     ngDialog.openConfirm({
                         template: 'views/admitConfirmation.html',
                         scope: $scope,
                         closeByEscape: true,
-                        className: "ngdialog-theme-default ng-dialog-adt-popUp"
+                        className: "ngdialog-theme-default ng-dialog-adt-popUp",
+                        preCloseCallback: unsetButtonClicked
                     });
                 }
                 return $q.when({});
@@ -217,13 +229,13 @@ angular.module('bahmni.ipd')
             $scope.closeCurrentVisitAndStartNewVisit = function () {
                 if (defaultVisitTypeUuid !== null) {
                     var encounter = getEncounterData($scope.encounterConfig.getAdmissionEncounterTypeUuid(), defaultVisitTypeUuid);
-                    visitService.endVisitAndCreateEncounter($scope.visitSummary.uuid, encounterService.buildEncounter(encounter)).then(function (response) {
-                        visitService.getVisitSummary(response.data.visitUuid).then(function (response) {
+                    spinner.forPromise(visitService.endVisitAndCreateEncounter($scope.visitSummary.uuid, encounterService.buildEncounter(encounter)).then(function (response) {
+                        spinner.forPromise(visitService.getVisitSummary(response.data.visitUuid).then(function (response) {
                             $scope.visitSummary = new Bahmni.Common.VisitSummary(response.data);
-                        });
+                        }));
                         assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
                         forwardUrl(response.data, "onAdmissionForwardTo");
-                    });
+                    }));
                 } else if ($scope.defaultVisitTypeName === null) {
                     messagingService.showMessage("error", "MESSAGE_DEFAULT_VISIT_TYPE_NOT_FOUND_KEY");
                 } else {
@@ -241,11 +253,11 @@ angular.module('bahmni.ipd')
             spinner.forPromise(init());
 
             $scope.disableAdmitButton = function () {
-                return !($rootScope.patient && !$rootScope.bedDetails);
+                return (!($rootScope.patient && !$rootScope.bedDetails)) || $scope.buttonClicked;
             };
 
             $scope.disableTransfer = function () {
-                return !($rootScope.patient && $rootScope.bedDetails && !isCurrentPatientPresentOnSelectedBed());
+                return (!($rootScope.patient && $rootScope.bedDetails && !isCurrentPatientPresentOnSelectedBed())) || $scope.buttonClicked;
             };
 
             var isCurrentPatientPresentOnSelectedBed = function () {
@@ -255,10 +267,11 @@ angular.module('bahmni.ipd')
                 return false;
             };
             $scope.disableDischargeButton = function () {
-                return !($rootScope.patient && $rootScope.bedDetails && isCurrentPatientPresentOnSelectedBed());
+                return (!($rootScope.patient && $rootScope.bedDetails && isCurrentPatientPresentOnSelectedBed())) || $scope.buttonClicked;
             };
 
             $scope.transfer = function () {
+                setButtonClicked();
                 if (angular.isUndefined($rootScope.selectedBedInfo.bed) || $rootScope.selectedBedInfo.bed.bedId === $rootScope.bedDetails.bedId) {
                     messagingService.showMessage("error", "Please select a bed to transfer the patient");
                 } else {
@@ -266,7 +279,8 @@ angular.module('bahmni.ipd')
                         template: 'views/transferConfirmation.html',
                         scope: $scope,
                         closeByEscape: true,
-                        className: "ngdialog-theme-default ng-dialog-adt-popUp"
+                        className: "ngdialog-theme-default ng-dialog-adt-popUp",
+                        preCloseCallback: unsetButtonClicked
                     });
                 }
             };
@@ -299,11 +313,11 @@ angular.module('bahmni.ipd')
                 spinner.forPromise(bedService.getCompleteBedDetailsByBedId($rootScope.selectedBedInfo.bed.bedId).then(function (response) {
                     var bedDetails = response.data;
                     if (!bedDetails.patients.length) {
-                        encounterService.create(encounterData).then(function (response) {
+                        spinner.forPromise(encounterService.create(encounterData).then(function (response) {
                             assignBedToPatient($rootScope.selectedBedInfo.bed, response.data.patientUuid, response.data.encounterUuid);
                             ngDialog.close();
                             forwardUrl(response.data, "onTransferForwardTo");
-                        });
+                        }));
                     } else {
                         showErrorMessage(bedDetails);
                         reloadStateWithContextParams();
@@ -312,6 +326,7 @@ angular.module('bahmni.ipd')
             };
 
             $scope.discharge = function () {
+                setButtonClicked();
                 if (!$rootScope.bedDetails.bedNumber) {
                     messagingService.showMessage("error", "Please select a bed to discharge the patient");
                 } else {
@@ -324,7 +339,8 @@ angular.module('bahmni.ipd')
                                 template: 'views/dischargeConfirmation.html',
                                 scope: $scope,
                                 closeByEscape: true,
-                                className: "ngdialog-theme-default ng-dialog-adt-popUp"
+                                className: "ngdialog-theme-default ng-dialog-adt-popUp",
+                                preCloseCallback: unsetButtonClicked
                             });
                         }
                     });
@@ -350,7 +366,7 @@ angular.module('bahmni.ipd')
             };
 
             $scope.admitConfirmation = function () {
-                bedService.getCompleteBedDetailsByBedId($rootScope.selectedBedInfo.bed.bedId).then(function (response) {
+                spinner.forPromise(bedService.getCompleteBedDetailsByBedId($rootScope.selectedBedInfo.bed.bedId).then(function (response) {
                     var bedDetails = response.data;
                     if (bedDetails.patients.length) {
                         showErrorMessage(bedDetails);
@@ -363,7 +379,7 @@ angular.module('bahmni.ipd')
                         createEncounterAndContinue();
                         $scope.cancelConfirmationDialog();
                     }
-                });
+                }));
             };
         }
     ]);
