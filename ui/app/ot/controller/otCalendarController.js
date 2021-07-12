@@ -27,7 +27,7 @@ angular.module('bahmni.ot')
                 updateBlocksStartDatetimeAndBlocksEndDatetime();
                 $scope.rows = $scope.getRowsForCalendar();
                 return $q.all([locationService.getAllByTag('Operation Theater'),
-                    surgicalAppointmentService.getSurgicalBlocksInDateRange($scope.blocksStartDatetime, $scope.blocksEndDatetime)]).then(function (response) {
+                    surgicalAppointmentService.getSurgicalBlocksInDateRange($scope.blocksStartDatetime, $scope.blocksEndDatetime, false, true)]).then(function (response) {
                         $scope.locations = response[0].data.results;
                         $scope.weekDates = $scope.getAllWeekDates();
                         $scope.surgicalBlocksByLocation = _.map($scope.locations, function (location) {
@@ -37,11 +37,16 @@ angular.module('bahmni.ot')
                         });
                         $scope.surgicalBlocksByDate = _.map($scope.weekDates, function (weekDate) {
                             return _.filter(response[1].data.results, function (surgicalBlock) {
-                                return Bahmni.Common.Util.DateUtil.isSameDate(moment(surgicalBlock.startDatetime).startOf('day').toDate(), weekDate);
+                                return $scope.isSurgicalBlockActiveOnGivenDate(surgicalBlock, weekDate);
                             });
                         });
                         $scope.blockedOtsOfTheWeek = getBlockedOtsOfTheWeek();
                     });
+            };
+
+            $scope.isSurgicalBlockActiveOnGivenDate = function (surgicalBlock, weekDate) {
+                return Bahmni.Common.Util.DateUtil.isSameDate(moment(surgicalBlock.startDatetime).startOf('day').toDate(), weekDate)
+                    || moment(surgicalBlock.endDatetime).toDate() > weekDate;
             };
 
             $scope.intervals = function () {
