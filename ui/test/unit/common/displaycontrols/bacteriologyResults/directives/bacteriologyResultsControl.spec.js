@@ -3,8 +3,8 @@
 describe('Bacteriology Results Control', function () {
     var $compile,
         mockBackend, q,messagingService,
-        scope,deferred,
-        section,element,_bacteriologyResultsService, appService, _spinner,mockedBacteriologyTabInitialization,patient={uuid:"patientUuid"},
+        scope,deferred, state,
+        section,element,_bacteriologyResultsService, _observationsService, _encounterService, _auditLogService, appService, _spinner,mockedBacteriologyTabInitialization,patient={uuid:"patientUuid"},
         simpleHtml = '<bacteriology-results-control id="dashboard-drug-order-details" patient="patient" section="section"></bacteriology-results-control>',
         mockDialog,mockConsultationInitialization;
     var bacteriologyTabData = {};
@@ -14,8 +14,17 @@ describe('Bacteriology Results Control', function () {
     beforeEach(module('bahmni.common.appFramework'));
     beforeEach(module('bahmni.common.displaycontrol.bacteriologyresults'));
     beforeEach(module(function ($provide) {
-        _bacteriologyResultsService = jasmine.createSpyObj('bacteriologyResultsService', ['getBacteriologyResults', 'saveBacteriologyResults']);
-        _bacteriologyResultsService.saveBacteriologyResults.and.returnValue(specUtil.createFakePromise({}));
+        _bacteriologyResultsService = jasmine.createSpyObj('bacteriologyResultsService', ['getBacteriologyResults']);
+
+        _observationsService = jasmine.createSpyObj('observationsService', ['getByUuid']);
+        _observationsService.getByUuid.and.returnValue(specUtil.createFakePromise({}));
+
+        _encounterService = jasmine.createSpyObj('observationService', ['findByEncounterUuid', 'create']);
+        _encounterService.findByEncounterUuid.and.returnValue(specUtil.createFakePromise({}));
+        _encounterService.create.and.returnValue(specUtil.createFakePromise({}));
+
+        _auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
+
         var observation1 = {
             type: {name: "specimen type name"},
             dateCollected: undefined,
@@ -31,6 +40,16 @@ describe('Bacteriology Results Control', function () {
             uuid: "some uuid2",
             typeObservation: {type: "Some Type2", dateCollected: "Some date2"},
             sample: {}
+        };
+
+        state = {
+            params: {
+                encounterUuid: "someEncounterUuid",
+                programUuid: "someProgramUuid",
+                patientUuid: "somePatientUuid"
+            },
+            go: function () {
+            }
         };
         _bacteriologyResultsService.getBacteriologyResults.and.returnValue(specUtil.simplePromise({data: {results: [observation1, observation2]}}));
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -64,6 +83,10 @@ describe('Bacteriology Results Control', function () {
 
         $provide.value('bacteriologyTabInitialization', mockedBacteriologyTabInitialization);
         $provide.value('bacteriologyResultsService', _bacteriologyResultsService);
+        $provide.value('observationsService', _observationsService);
+        $provide.value('encounterService', _encounterService);
+        $provide.value('auditLogService', _auditLogService);
+        $provide.value('$state', state);
         $provide.value('appService', appService);
         $provide.value('spinner', _spinner);
         $provide.value('ngDialog', mockDialog);
