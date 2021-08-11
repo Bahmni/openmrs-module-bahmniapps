@@ -97,7 +97,7 @@ angular.module('bahmni.ipd').controller('editTagsController', ['$scope', '$rootS
         };
         $scope.updateTagsForTheSelectedBed = function () {
             spinner.forPromise($q.all(unAssignTagsFromBed(), assignTagsToBed()).then(function () {
-                messagingService.showMessage('info', "Tags Updated Successfully");
+                messagingService.showMessage('info', "TAGS_UPDATED_SUCCESSFULLY_MESSAGE");
             }));
         };
 

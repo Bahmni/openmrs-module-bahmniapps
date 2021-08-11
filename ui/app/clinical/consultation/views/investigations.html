@@ -4,7 +4,7 @@
     </div>
     <div ng-show="activeTab.name == 'Laboratory'" class="add-notes">
         <button  name="notes" ng-click="toggleNote()" ng-disabled="!isValidInvestigation()" class="fa fa-pencil primary-btn"> {{ 'CLINICAL_ADD_NOTES'|translate }}</button>
-        <textarea ng-model="consultation.labOrderNote.value" ng-show="noteState" placeholder="Please enter your notes here..." ng-change="onNoteChanged()"></textarea>
+        <textarea ng-model="consultation.labOrderNote.value" ng-show="noteState" placeholder="{{'ENTER_NOTES_MESSAGE'|translate}}" ng-change="onNoteChanged()"></textarea>
     </div>
     <div ng-switch="activeTab" class="investigation-selection">
         <div ng-switch-default>
