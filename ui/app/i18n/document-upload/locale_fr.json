@@ -1,0 +1,17 @@
+{
+  "MESSAGE_DIALOG_OPTION_COPY" : "Erreur de copie",
+  "MESSAGE_DIALOG_OPTION_OKAY": "d'accord",
+  "NEW_VISIT_LABEL": "Visite: Nouveau",
+  "VISIT_EXIST_LABEL": "Il y a déjà une visite qui existe dans les dates saisies. Veuillez télécharger les documents contre la visite appropriée.",
+  "VISIT_NOT_IN_FUTURE_LABEL": "La date de la visite ne doit pas être dans le futur.",
+  "START_NOT_GREATER_THAN_END_DATE_LABEL": "La date de début ne doit pas être postérieure à la date de fin.",
+  "VISIT_TYPE_LABEL": "Type de visite",
+  "START_DATE_LABEL": "Date de début",
+  "END_DATE_LABEL": "Date de fin",
+  "SCAN_LABEL": "ANALYSE",
+  "SAVE_LABEL": "SAUVEGARDER",
+  "VISIT_LABEL": "Visite",
+  "VISIT_FROM_LABEL": "De:",
+  "VISIT_TO_LABEL": "À:",
+  "FILE_TYPE_NOT_SUPPORTED_MESSAGE": "Le type de fichier n'est pas pris en charge"
+}

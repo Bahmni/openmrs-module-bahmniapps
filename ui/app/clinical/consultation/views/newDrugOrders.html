@@ -11,7 +11,7 @@
                    ng-change="selectAllCheckbox()"/>
             <div class="fr bulk-btn-container">
                 <button type="button" ng-click="updateDuration(-1)" class="stepper__btn stepper__minus">-</button>
-                <input class="form-field duration bulkDuration" type="number" min=0 placeholder="Duration"
+                <input class="form-field duration bulkDuration" type="number" min=0 placeholder="{{'DURATION_KEY'|translate}}"
                        ng-model="bulkDurationData.bulkDuration" required ng-pattern="/^[0-9]+$/"/>
                 <button type="button" ng-click="updateDuration(+1)" class="stepper__btn stepper__plus">+</button>
                 <select class="form-field bulk-duration-unit" ng-model="bulkDurationData.bulkDurationUnit"
