@@ -272,4 +272,21 @@
   "CONSULTATION_PAD_EMPTY_MESSAGE": "Le bloc de consultation est vide",
   "MEDICATION_LABEL_START_DATE": "Date de début",
   "DISCHARGE_DATE_LABEL": "Décharge Date"
+  "CONDITION_LIST_NO_RETRO_MODE": "<strong>Conditions cannot</strong> be edited in retrospective mode",
+  "ENTER_IMPRESSION_ON_IMAGE": "Entrez une impression sur l'image",
+  "CLOSE_TAB_MESSAGE": "Veuillez fermer cet onglet.",
+  "NO_ACTIVE_VISIT_FOUND_MESSAGE": "Aucune visite active trouvée pour ce patient.",
+  "DELETED_MESSAGE": "Supprimé",
+  "UPDATE_DURATION_OF_THE_DRUGS_MESSAGE": "Certains médicaments n'ont pas de durée spécifiée. La durée de mise à jour sera également mise à jour pour ces médicaments",
+  "INCORRECT_CONFIGURATION_MESSAGE": "Configuration incorrecte: ",
+  "NEW_KEY": "Un nouveau",
+  "SECTION_ADDED_KEY": "la section a été ajoutée",
+  "FILE_TYPE_NOT_SUPPORTED_MESSAGE": "Le type de fichier n'est pas pris en charge",
+  "NO_IMAGE_AVAILABLE_FOR_ORDER_MESSAGE": "Aucune image disponible pour le moment à la commande: ",
+  "ADD_KEY": "Ajouter",
+  "USE_KEY": "Utilisation",
+  "ENTER_NOTES_MESSAGE": "Veuillez entrer vos notes ici ...",
+  "DURATION_KEY": "Durée",
+  "SAVE_KEY": "sauver"
 }
+

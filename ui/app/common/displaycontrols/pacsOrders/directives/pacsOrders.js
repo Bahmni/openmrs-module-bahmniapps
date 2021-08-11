@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.pacsOrders')
-    .directive('pacsOrders', ['orderService', 'orderTypeService', 'spinner', 'messagingService', '$window',
-        function (orderService, orderTypeService, spinner, messagingService, $window) {
+    .directive('pacsOrders', ['orderService', 'orderTypeService', 'spinner', 'messagingService', '$window', '$translate',
+        function (orderService, orderTypeService, spinner, messagingService, $window, $translate) {
             var controller = function ($scope) {
                 $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($scope.orderType);
 
@@ -51,7 +51,7 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                         function () {
                             $window.open(url, "_blank");
                         }, function () {
-                        messagingService.showMessage("info", "No image available yet for order: " + $scope.getLabel(bahmniOrder));
+                        messagingService.showMessage("info", $translate.instant("NO_IMAGE_AVAILABLE_FOR_ORDER_MESSAGE") + $scope.getLabel(bahmniOrder));
                     }));
                 };
 

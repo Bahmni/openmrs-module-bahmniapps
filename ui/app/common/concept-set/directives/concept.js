@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService', '$rootScope',
-        function (RecursionHelper, spinner, $filter, messagingService, $rootScope) {
+    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService', '$rootScope', '$translate',
+        function (RecursionHelper, spinner, $filter, messagingService, $rootScope, $translate) {
             var link = function (scope) {
                 var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig && scope.observation.conceptUIConfig['hideAbnormalButton'];
                 scope.now = moment().format("YYYY-MM-DD hh:mm:ss");
@@ -16,7 +16,7 @@ angular.module('bahmni.common.conceptSet')
                     newObs.scrollToElement = true;
                     var index = parentObservation.groupMembers.indexOf(observation);
                     parentObservation.groupMembers.splice(index + 1, 0, newObs);
-                    messagingService.showMessage("info", "A new " + observation.label + " section has been added");
+                    messagingService.showMessage("info", $translate.instant("NEW_KEY") + " " + observation.label + " " + $translate.instant("SECTION_ADDED_KEY"));
                     scope.$root.$broadcast("event:addMore", newObs);
                 };
                 scope.removeClonedObs = function (observation, parentObservation) {

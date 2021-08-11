@@ -133,6 +133,6 @@ describe('editTagsController', function () {
         expect(rootScope.selectedBedInfo.bed.bedTagMaps).toContain(mappedBedTagStictIsolation);
         expect(bedTagMapService.unAssignTagFromTheBed).toHaveBeenCalledWith(lostBedTagMap.tagMapUuid);
         expect(rootScope.selectedBedInfo.bed.bedTagMaps).not.toContain(lostBedTagMap);
-        expect(messagingService.showMessage).toHaveBeenCalledWith('info', "Tags Updated Successfully");
+        expect(messagingService.showMessage).toHaveBeenCalledWith('info', "TAGS_UPDATED_SUCCESSFULLY_MESSAGE");
     });
 });

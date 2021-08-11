@@ -88,7 +88,15 @@ angular.module('bahmni.ot')
                 ['cleaningTime', "OT_SURGICAL_APPOINTMENT_CLEANING_TIME"], ['otherSurgeon', "OT_SURGICAL_APPOINTMENT_OTHER_SURGEON"],
                 ['surgicalAssistant', "OT_SURGICAL_APPOINTMENT_SURGICAL_ASSISTANT"], ['anaesthetist', "OT_SURGICAL_APPOINTMENT_ANAESTHETIST"],
                 ['scrubNurse', "OT_SURGICAL_APPOINTMENT_SCRUB_NURSE"], ['circulatingNurse', "OT_SURGICAL_APPOINTMENT_CIRCULATING_NURSE"],
-                ['notes', "OT_SURGICAL_APPOINTMENT_NOTES"]]);
+                ['notes', "OT_SURGICAL_APPOINTMENT_NOTES"], ['Status', "OT_SURGICAL_APPOINTMENT_STATUS"], ['Day', "OT_SURGICAL_BLOCK_START_DAY"],
+                ['Date', "OT_SURGICAL_BLOCK_START_DATE"], ['Identifier', "PATIENT_ATTRIBUTE_IDENTIFIER"],
+                ['Patient Name', "PATIENT_ATTRIBUTE_PATIENT_NAME"], ['Patient Age', "PERSON_ATTRIBUTE_PATIENT_AGE"],
+                ['Start Time', "OT_SURGICAL_BLOCK_START_TIME"], ['Est Time', "OT_SURGICAL_APPOINTMENT_EST_TIME"],
+                ['Actual Time', "OT_SURGICAL_APPOINTMENT_ACTUAL_TIME"], ['OT#', "OT_SURGICAL_BLOCK_LOCATION_NAME"],
+                ['Surgeon', "OT_PROVIDER_SURGEON"], ['Status Change Notes', "OT_SURGICAL_APPOINTMENT_STATUS_CHANGE_NOTES"],
+                ['Bed Location', "OT_SURGICAL_APPOINTMENT_BED_LOCATION"],
+                ['Bed ID', "OT_SURGICAL_APPOINTMENT_BED_ID"]
+            ]);
         };
 
         this.getSurgicalAttributes = function (surgicalAppointment) {

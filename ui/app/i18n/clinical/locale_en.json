@@ -343,5 +343,21 @@
     "PROGRAM_DOCTORINCHARGE": "Doctor In-Charge",
     "PROGRAM_PATIENT_STAGE": "Patient Stage",
     "CLINICAL_CLASS": "Class",
-    "CLINICAL_CASTE": "Caste"
+    "CLINICAL_CASTE": "Caste",
+    "NO_FORM_FOUND_FOR_PATIENT": "No Form found for this patient",
+    "ENTER_IMPRESSION_ON_IMAGE": "Enter Impression on Image",
+    "CLOSE_TAB_MESSAGE": "Please close this tab.",
+    "NO_ACTIVE_VISIT_FOUND_MESSAGE": "No Active visit found for this patient.",
+    "DELETED_MESSAGE": "Deleted",
+    "UPDATE_DURATION_OF_THE_DRUGS_MESSAGE": "There are drugs that do not have a duration specified. Updating duration will update for those drugs as well",
+    "INCORRECT_CONFIGURATION_MESSAGE": "Incorrect Configuration: ",
+    "NEW_KEY": "A new",
+    "SECTION_ADDED_KEY": "section has been added",
+    "FILE_TYPE_NOT_SUPPORTED_MESSAGE": "File type is not supported",
+    "NO_IMAGE_AVAILABLE_FOR_ORDER_MESSAGE": "No image available yet for order: ",
+    "ADD_KEY": "Add",
+    "USE_KEY": "Use",
+    "ENTER_NOTES_MESSAGE": "Please enter your notes here...",
+    "DURATION_KEY": "Duration",
+    "SAVE_KEY": "Save"
 }
