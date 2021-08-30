@@ -77,6 +77,15 @@ angular.module('bahmni.ot')
                         }
                         return mappedAppointment;
                     });
+                    surgicalBlock.surgicalAppointments = _.filter(surgicalBlock.surgicalAppointments, function (surgicalAppointment) {
+                        if (surgicalAppointment.derivedAttributes.expectedStartTime) {
+                            var surgicalAppointmentStartDateTime = surgicalAppointment.derivedAttributes.expectedStartTime;
+                            var surgicalAppointmentEndDateTime = Bahmni.Common.Util.DateUtil.addMinutes(surgicalAppointmentStartDateTime, surgicalAppointment.derivedAttributes.duration);
+                            return surgicalAppointmentStartDateTime < endDatetime && surgicalAppointmentEndDateTime > startDatetime;
+                        }
+                        return surgicalAppointment.derivedAttributes.expectedStartDate <= endDatetime
+                            && surgicalAppointment.derivedAttributes.expectedStartDate >= startDatetime;
+                    });
                     return surgicalBlock;
                 });
 
@@ -100,7 +109,7 @@ angular.module('bahmni.ot')
                 $scope.cancelDisabled = true;
                 $scope.reverseSort = false;
                 $scope.sortColumn = "";
-                return $q.all([surgicalAppointmentService.getSurgicalBlocksInDateRange(startDatetime, endDatetime, true)]).then(function (response) {
+                return $q.all([surgicalAppointmentService.getSurgicalBlocksInDateRange(startDatetime, endDatetime, true, true)]).then(function (response) {
                     $scope.surgicalBlocks = response[0].data.results;
                     filterSurgicalBlocksAndMapAppointmentsForDisplay($scope.surgicalBlocks);
                 });

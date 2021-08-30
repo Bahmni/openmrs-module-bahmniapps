@@ -65,6 +65,18 @@ angular.module('bahmni.ot')
                 return true;
             };
 
+            $scope.closeDialog = function () {
+                ngDialog.close();
+            };
+
+            $scope.saveAnywaysFlag = false;
+
+            $scope.saveAnyways = function (surgicalForm) {
+                $scope.saveAnywaysFlag = true;
+                $scope.save(surgicalForm);
+                ngDialog.close();
+            };
+
             $scope.save = function (surgicalForm) {
                 if (!$scope.isFormValid()) {
                     messagingService.showMessage('error', "{{'OT_ENTER_MANDATORY_FIELDS' | translate}}");
@@ -74,16 +86,27 @@ angular.module('bahmni.ot')
                     messagingService.showMessage('error', "{{'OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION' | translate}}");
                     return;
                 }
-                $scope.updateSortWeight(surgicalForm);
-                var surgicalBlock = new Bahmni.OT.SurgicalBlockMapper().mapSurgicalBlockUIToDomain(surgicalForm);
-                var saveOrupdateSurgicalBlock = _.isEmpty(surgicalBlock.uuid) ? surgicalAppointmentService.saveSurgicalBlock : surgicalAppointmentService.updateSurgicalBlock;
-                spinner.forPromise(saveOrupdateSurgicalBlock(surgicalBlock)).then(function (response) {
-                    $scope.surgicalForm = new Bahmni.OT.SurgicalBlockMapper().map(response.data, $scope.attributeTypes, $scope.surgeons);
-                    $scope.surgicalForm.surgicalAppointments = surgicalAppointmentHelper.filterSurgicalAppointmentsByStatus(
-                        $scope.surgicalForm.surgicalAppointments, [Bahmni.OT.Constants.scheduled, Bahmni.OT.Constants.completed]);
-                    messagingService.showMessage('info', "{{'OT_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
-                    $state.go('editSurgicalAppointment', {surgicalBlockUuid: response.data.uuid});
-                });
+                if ($scope.saveAnywaysFlag || Bahmni.Common.Util.DateUtil.isSameDate(surgicalForm.startDatetime, surgicalForm.endDatetime)) {
+                    $scope.updateSortWeight(surgicalForm);
+                    var surgicalBlock = new Bahmni.OT.SurgicalBlockMapper().mapSurgicalBlockUIToDomain(surgicalForm);
+                    var saveOrupdateSurgicalBlock = _.isEmpty(surgicalBlock.uuid) ? surgicalAppointmentService.saveSurgicalBlock : surgicalAppointmentService.updateSurgicalBlock;
+                    spinner.forPromise(saveOrupdateSurgicalBlock(surgicalBlock)).then(function (response) {
+                        $scope.surgicalForm = new Bahmni.OT.SurgicalBlockMapper().map(response.data, $scope.attributeTypes, $scope.surgeons);
+                        $scope.surgicalForm.surgicalAppointments = surgicalAppointmentHelper.filterSurgicalAppointmentsByStatus(
+                            $scope.surgicalForm.surgicalAppointments, [Bahmni.OT.Constants.scheduled, Bahmni.OT.Constants.completed]);
+                        messagingService.showMessage('info', "{{'OT_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
+                        $state.go('editSurgicalAppointment', {surgicalBlockUuid: response.data.uuid});
+                    });
+                    $scope.saveAnywaysFlag = false;
+                } else {
+                    ngDialog.open({
+                        template: 'views/surgicalBlockMultipleDaysDialog.html',
+                        className: 'ngdialog-theme-default',
+                        closeByNavigation: true,
+                        data: { surgicalForm: surgicalForm },
+                        scope: $scope
+                    });
+                }
             };
 
             var addOrUpdateTheSurgicalAppointment = function (surgicalAppointment) {

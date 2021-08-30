@@ -214,6 +214,7 @@ angular.module('bahmni.ot')
                 $scope.cancelDisabled = true;
                 $scope.surgicalBlockSelected = surgicalBlock;
                 $scope.surgicalAppointmentSelected = {};
+                $scope.showEndDate = (Bahmni.Common.Util.DateUtil.diffInDaysRegardlessOfTime(surgicalBlock.startDatetime, surgicalBlock.endDatetime) != 0);
 
                 var surgicalBlockWithCompletedAppointments = function () {
                     return _.find(surgicalBlock.surgicalAppointments, function (appointment) {
@@ -241,6 +242,7 @@ angular.module('bahmni.ot')
                 $scope.addActualTimeDisabled = true;
                 $scope.surgicalBlockSelected = {};
                 $scope.surgicalAppointmentSelected = {};
+                $scope.showEndDate = false;
             };
 
             $scope.$on("event:surgicalBlockDeselect", function (event) {
