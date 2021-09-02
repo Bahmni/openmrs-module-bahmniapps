@@ -271,5 +271,8 @@
   "ADMISSION_DATE_LABEL": "Date d'admission",
   "CONSULTATION_PAD_EMPTY_MESSAGE": "Le bloc de consultation est vide",
   "MEDICATION_LABEL_START_DATE": "Date de début",
-  "DISCHARGE_DATE_LABEL": "Décharge Date"
+  "DISCHARGE_DATE_LABEL": "Décharge Date",
+  "NO_PACS_STUDY_FOR_ORDER": "Impossible d'identifier l'étude pour la commande. Veuillez vérifier la configuration du PACS",
+  "RADIOLOGY_STUDY_FETCH_ERROR": "Impossible d'aller chercher des études de radiologie. Veuillez vérifier la configuration du PACS",
+  "NO_IMAGE_YET_FOR_ORDER": "Pas encore d'image disponible pour la commande"
 }

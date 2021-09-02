@@ -343,5 +343,8 @@
     "PROGRAM_DOCTORINCHARGE": "Doctor In-Charge",
     "PROGRAM_PATIENT_STAGE": "Patient Stage",
     "CLINICAL_CLASS": "Class",
-    "CLINICAL_CASTE": "Caste"
+    "CLINICAL_CASTE": "Caste",
+    "NO_PACS_STUDY_FOR_ORDER": "Can not identify study for order. Please verify PACS configuration",
+    "RADIOLOGY_STUDY_FETCH_ERROR": "Can not fetch radiology studies. Please verify PACS configuration",
+    "NO_IMAGE_YET_FOR_ORDER": "No image available yet for order"
 }
