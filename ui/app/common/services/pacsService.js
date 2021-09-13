@@ -11,7 +11,17 @@ angular.module('bahmni.common.services')
                 withCredentials: true
             });
         };
+
+        var getAccessionNumber = function (identifier) {
+            if (identifier.system.indexOf("urn:bahmni:accession") < 0) {
+                return null;
+            }
+            var parts = identifier.value.split("urn:oid:");
+            return parts && parts.length === 2 ? parts[1] : "";
+        };
+
         return {
-            search: search
+            search: search,
+            getAccessionNumber: getAccessionNumber
         };
     }]);

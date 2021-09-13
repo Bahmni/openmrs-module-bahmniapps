@@ -35,12 +35,7 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                                         return false;
                                     }
                                     var matches = rs.identifier.filter((rsi) => {
-                                        if (rsi.system.indexOf("urn:bahmni:accession") < 0) {
-                                            return false;
-                                        }
-                                        var parts = rsi.value.split("urn:oid:");
-                                        var accessionNumber = parts && parts.length === 2 ? parts[1] : "";
-                                        return accessionNumber === ro.orderNumber;
+                                        return pacsService.getAccessionNumber(rsi) === ro.orderNumber;
                                     });
                                     return (matches && matches.length > 0);
                                 });
