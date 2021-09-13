@@ -1,13 +1,14 @@
 'use strict';
 
 describe("PacsOrdersDisplayControl", function () {
-    var compile, scope, orderService, orderTypeService, spinner, orders,translateFilter, q, messagingService, $window;
+    var compile, scope, orderService, orderTypeService, spinner, orders, translateFilter, q, messagingService, $window, pacsService, radiologyStudies;
 
     beforeEach(function () {
         module('bahmni.common.uiHelper');
         module('bahmni.common.displaycontrol.pacsOrders');
         module('bahmni.common.i18n');
         module('ngHtml2JsPreprocessor');
+        module('bahmni.common.services');
 
         module(function ($provide) {
             orderService = jasmine.createSpyObj('orderService', ['getOrders']);
@@ -16,12 +17,14 @@ describe("PacsOrdersDisplayControl", function () {
             spinner = jasmine.createSpyObj('spinner', ['forPromise', 'forAjaxPromise']);
             translateFilter = jasmine.createSpy('translateFilter');
             $window = jasmine.createSpyObj('$window', ['open']);
+            pacsService = jasmine.createSpyObj('pacsService', ['search']);
             $provide.value('orderService', orderService);
             $provide.value('orderTypeService', orderTypeService);
             $provide.value('spinner', spinner);
             $provide.value('translateFilter',translateFilter);
             $provide.value('messagingService',messagingService);
             $provide.value('$window',$window);
+            $provide.value('pacsService', pacsService);
         });
         inject(function ($compile, $rootScope, $q) {
             compile = $compile;
@@ -56,12 +59,14 @@ describe("PacsOrdersDisplayControl", function () {
             "provider": "Surajkumar Surajkumar Surajkumar",
             "bahmniObservations": []
         }];
+        radiologyStudies = [];
     });
     it('should call using order uuid if present', function () {
         scope.config.numberOfVisits = 1;
         scope.orderUuid = "someOrderUuid";
 
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
+        pacsService.search.and.returnValue(specUtil.createFakePromise(radiologyStudies));
         generateElement();
 
         expect(orderService.getOrders.calls.mostRecent().args[0].orderUuid).toBe("someOrderUuid");
@@ -70,6 +75,7 @@ describe("PacsOrdersDisplayControl", function () {
     it('should have children 1 section', function () {
 
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
+        pacsService.search.and.returnValue(specUtil.createFakePromise(radiologyStudies));
         var element = generateElement();
 
         expect(element.children()[0].localName).toBe('section');
@@ -78,6 +84,7 @@ describe("PacsOrdersDisplayControl", function () {
     it('section should have children 1 h2 and 1 section', function () {
 
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
+        pacsService.search.and.returnValue(specUtil.createFakePromise(radiologyStudies));
         var element = generateElement();
 
         expect(element.children()[0].localName).toBe('section');
@@ -92,6 +99,7 @@ describe("PacsOrdersDisplayControl", function () {
         scope.section.title = "testTitle";
 
         orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
+        pacsService.search.and.returnValue(specUtil.createFakePromise(radiologyStudies));
         var element = generateElement();
 
         expect(element.children()[0].localName).toBe('section');
@@ -123,6 +131,7 @@ describe("PacsOrdersDisplayControl", function () {
         it('should show the noOrdersMessage when there is no order', function () {
 
             orderService.getOrders.and.returnValue(specUtil.createFakePromise([]));
+            pacsService.search.and.returnValue(specUtil.createFakePromise(radiologyStudies));
             var element = generateElement();
 
             expect(element.children()[0].localName).toBe('section');
@@ -135,6 +144,7 @@ describe("PacsOrdersDisplayControl", function () {
         it('should not show the noOrdersMessage when there are orders', function () {
 
             orderService.getOrders.and.returnValue(specUtil.createFakePromise(orders));
+            pacsService.search.and.returnValue(specUtil.createFakePromise(radiologyStudies));
             var element = generateElement();
 
             expect(element.children()[0].localName).toBe('section');
@@ -169,6 +179,7 @@ describe("PacsOrdersDisplayControl", function () {
                 deferred.resolve({data: orders});
                 return deferred.promise;
             });
+            pacsService.search.and.returnValue(specUtil.createFakePromise(radiologyStudies));
             generateElement();
 
             scope.$digest();
@@ -184,6 +195,7 @@ describe("PacsOrdersDisplayControl", function () {
                 deferred.resolve({data: orders});
                 return deferred.promise;
             });
+            pacsService.search.and.returnValue(specUtil.createFakePromise(radiologyStudies));
 
             spyOn($, 'ajax').and.callFake(function(){
                 var d = $.Deferred();
@@ -195,7 +207,7 @@ describe("PacsOrdersDisplayControl", function () {
             var isolateScope = element.isolateScope();
             isolateScope.openImage(orders[0]);
 
-            expect(messagingService.showMessage).toHaveBeenCalledWith("info", "NO_IMAGE_AVAILABLE_FOR_ORDER_MESSAGE" + "Absconding")
+            expect(messagingService.showMessage).toHaveBeenCalledWith("info", "NO_IMAGE_AVAILABLE_FOR_ORDER_MESSAGE" + "Absconding");
         });
 
         it('should open image in new tab  when the image link is  servicable (when image is available)', function(){
@@ -206,6 +218,7 @@ describe("PacsOrdersDisplayControl", function () {
                 deferred.resolve({data: orders});
                 return deferred.promise;
             });
+            pacsService.search.and.returnValue(specUtil.createFakePromise(radiologyStudies));
 
             spyOn($, 'ajax').and.callFake(function(){
                 var d = $.Deferred();
