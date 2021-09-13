@@ -270,9 +270,7 @@
   "MEDICATION_REFILL": "Recharge",
   "ADMISSION_DATE_LABEL": "Date d'admission",
   "CONSULTATION_PAD_EMPTY_MESSAGE": "Le bloc de consultation est vide",
-  "MEDICATION_LABEL_START_DATE": "Date de début",
-  "DISCHARGE_DATE_LABEL": "Décharge Date"
-  "CONDITION_LIST_NO_RETRO_MODE": "<strong>Conditions cannot</strong> be edited in retrospective mode",
+  "DISCHARGE_DATE_LABEL": "Décharge Date",
   "ENTER_IMPRESSION_ON_IMAGE": "Entrez une impression sur l'image",
   "CLOSE_TAB_MESSAGE": "Veuillez fermer cet onglet.",
   "NO_ACTIVE_VISIT_FOUND_MESSAGE": "Aucune visite active trouvée pour ce patient.",
@@ -287,6 +285,8 @@
   "USE_KEY": "Utilisation",
   "ENTER_NOTES_MESSAGE": "Veuillez entrer vos notes ici ...",
   "DURATION_KEY": "Durée",
-  "SAVE_KEY": "sauver"
+  "SAVE_KEY": "sauver",
+  "NO_PACS_STUDY_FOR_ORDER": "Impossible d'identifier l'étude pour la commande. Veuillez vérifier la configuration du PACS",
+  "RADIOLOGY_STUDY_FETCH_ERROR": "Impossible d'aller chercher des études de radiologie. Veuillez vérifier la configuration du PACS",
+  "NO_IMAGE_YET_FOR_ORDER": "Pas encore d'image disponible pour la commande"
 }
-

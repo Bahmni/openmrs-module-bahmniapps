@@ -334,7 +334,6 @@
     "CLINICAL_GO_TO_DASHBOARD_LABEL": "Go to IPD dashboard",
     "NO_FORM_FOUND_FOR_PATIENT": "No Form found for this patient",
     "CLINICAL_ACCEPT": "ACCEPT",
-    "MEDICATION_LABEL_START_DATE": "Data de início da medicação",
     "PROGRAM_HIV_PROGRAM": "HIV Program",
     "PROGRAM_TB_PPROGRAM": "TB Program",
     "PROGRAM_ID_NUMBER": "ID Number",
@@ -344,7 +343,6 @@
     "PROGRAM_PATIENT_STAGE": "Patient Stage",
     "CLINICAL_CLASS": "Class",
     "CLINICAL_CASTE": "Caste",
-    "NO_FORM_FOUND_FOR_PATIENT": "No Form found for this patient",
     "ENTER_IMPRESSION_ON_IMAGE": "Enter Impression on Image",
     "CLOSE_TAB_MESSAGE": "Please close this tab.",
     "NO_ACTIVE_VISIT_FOUND_MESSAGE": "No Active visit found for this patient.",
@@ -359,5 +357,8 @@
     "USE_KEY": "Use",
     "ENTER_NOTES_MESSAGE": "Please enter your notes here...",
     "DURATION_KEY": "Duration",
-    "SAVE_KEY": "Save"
+    "SAVE_KEY": "Save",
+    "NO_PACS_STUDY_FOR_ORDER": "Unable to identify study for order. Please verify PACS configuration",
+    "RADIOLOGY_STUDY_FETCH_ERROR": "Unable to fetch radiology studies. Please verify PACS configuration",
+    "NO_IMAGE_YET_FOR_ORDER": "No image available yet for order"
 }
