@@ -13,7 +13,7 @@
                        'value-text-only': !(observation.concept.dataType ==='Text' && print)
                        }"
               ng-if="::(observation.isFormElement() && !observation.isImageConcept() && !observation.isVideoConcept())">
-            <pre>{{::observation.getDisplayValue() | titleTranslate}}</pre>
+            <span>{{::observation.getDisplayValue() | titleTranslate}} </span>
             <span class="label-add-on">{{::observation.concept.units}}</span>
         </span>
         <a  ng-if="::(observation.isImageConcept() && !observation.hasPDFAsValue() && !print)" class="img-concept">

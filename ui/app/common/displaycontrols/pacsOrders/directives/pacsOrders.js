@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.pacsOrders')
-    .directive('pacsOrders', ['orderService', 'orderTypeService', 'spinner', 'messagingService', '$window', '$translate',
-        function (orderService, orderTypeService, spinner, messagingService, $window, $translate) {
+    .directive('pacsOrders', ['orderService', 'orderTypeService', 'spinner', 'messagingService', '$window', 'pacsService', '$translate',
+        function (orderService, orderTypeService, spinner, messagingService, $window, pacsService, $translate) {
             var controller = function ($scope) {
                 $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($scope.orderType);
-
+                const radiologyImageUrl = $scope.section.pacsStudyUrl || "/oviyam2/viewer.html?patientID={{patientID}}&studyUID={{studyUID}}";
                 var includeAllObs = true;
                 var getOrders = function () {
                     var params = {
@@ -18,19 +18,58 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                         visitUuid: $scope.visitUuid,
                         orderUuid: $scope.orderUuid
                     };
-                    return orderService.getOrders(params).then(function (response) {
-                        $scope.bahmniOrders = response.data;
-                        _.each($scope.bahmniOrders, function (order) {
-                            order.pacsImageUrl = ($scope.config.pacsImageUrl || "").replace('{{patientID}}', $scope.patient.identifier).replace('{{orderNumber}}', order.orderNumber);
-                        });
-                    });
+                    return orderService.getOrders(params);
                 };
-                var init = function () {
-                    return getOrders().then(function () {
+
+                var queryPacsStudies = function () {
+                    return pacsService.search($scope.patient.identifier);
+                };
+
+                var correlateWithStudies = function (radiologyOrders, radiologyStudies) {
+                    if (radiologyOrders) {
+                        radiologyOrders.forEach(function (ro) {
+                            ro.pacsImageUrl = ($scope.config.pacsImageUrl || "").replace('{{patientID}}', $scope.patient.identifier).replace('{{orderNumber}}', ro.orderNumber);
+                            if (radiologyStudies) {
+                                var matchingStudy = radiologyStudies.find(function (rs) {
+                                    if (!rs.identifier) {
+                                        return false;
+                                    }
+                                    var matches = rs.identifier.filter(function (rsi) {
+                                        return pacsService.getAccessionNumber(rsi) === ro.orderNumber;
+                                    });
+                                    return (matches && matches.length > 0);
+                                });
+
+                                if (matchingStudy) {
+                                    ro.studyInstanceUID = matchingStudy.id;
+                                    ro.pacsStudyUrl = radiologyImageUrl
+                                        .replace('{{patientID}}', $scope.patient.identifier)
+                                        .replace('{{studyUID}}', matchingStudy.id)
+                                        .replace('{{accessionNumber}}', ro.orderNumber);
+                                }
+                            }
+                        });
+                        $scope.bahmniOrders = radiologyOrders || [];
+                    } else {
                         if (_.isEmpty($scope.bahmniOrders)) {
                             $scope.noOrdersMessage = $scope.orderType;
                             $scope.$emit("no-data-present-event");
                         }
+                    }
+                };
+
+                var init = function () {
+                    return getOrders().then(function (radiologyOrders) {
+                        queryPacsStudies().then(function successCallback (response) {
+                            correlateWithStudies(radiologyOrders.data, response.data);
+                        },
+                        function errorCallback (errorResponse) {
+                            $window.console.error("Error occurred while trying to fetch radiology studies", errorResponse);
+                            if (errorResponse.status !== 501) {
+                                messagingService.showMessage('error', "RADIOLOGY_STUDY_FETCH_ERROR");
+                            }
+                            correlateWithStudies(radiologyOrders.data, []);
+                        });
                     });
                 };
 
@@ -46,12 +85,15 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                 };
 
                 $scope.openImage = function (bahmniOrder) {
-                    var url = bahmniOrder.pacsImageUrl;
+                    if (!bahmniOrder.pacsStudyUrl) {
+                        messagingService.showMessage('info', "NO_PACS_STUDY_FOR_ORDER");
+                    }
+                    var url = bahmniOrder.pacsStudyUrl || bahmniOrder.pacsImageUrl;
                     spinner.forAjaxPromise($.ajax({type: 'HEAD', url: url, async: false}).then(
                         function () {
                             $window.open(url, "_blank");
                         }, function () {
-                        messagingService.showMessage("info", $translate.instant("NO_IMAGE_AVAILABLE_FOR_ORDER_MESSAGE") + $scope.getLabel(bahmniOrder));
+                        messagingService.showMessage("info", $translate.instant("NO_IMAGE_YET_FOR_ORDER") + $scope.getLabel(bahmniOrder));
                     }));
                 };
 
