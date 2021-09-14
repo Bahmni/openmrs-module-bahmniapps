@@ -30,11 +30,11 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                         radiologyOrders.forEach(function (ro) {
                             ro.pacsImageUrl = ($scope.config.pacsImageUrl || "").replace('{{patientID}}', $scope.patient.identifier).replace('{{orderNumber}}', ro.orderNumber);
                             if (radiologyStudies) {
-                                var matchingStudy = radiologyStudies.find((rs) => {
+                                var matchingStudy = radiologyStudies.find(function (rs) {
                                     if (!rs.identifier) {
                                         return false;
                                     }
-                                    var matches = rs.identifier.filter((rsi) => {
+                                    var matches = rs.identifier.filter(function (rsi) {
                                         return pacsService.getAccessionNumber(rsi) === ro.orderNumber;
                                     });
                                     return (matches && matches.length > 0);
