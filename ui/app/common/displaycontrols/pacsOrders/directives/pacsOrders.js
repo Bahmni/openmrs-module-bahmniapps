@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.pacsOrders')
-    .directive('pacsOrders', ['orderService', 'orderTypeService', 'spinner', 'messagingService', '$window', 'pacsService',
-        function (orderService, orderTypeService, spinner, messagingService, $window, pacsService) {
+    .directive('pacsOrders', ['orderService', 'orderTypeService', 'spinner', 'messagingService', '$window', 'pacsService', '$translate',
+        function (orderService, orderTypeService, spinner, messagingService, $window, pacsService, $translate) {
             var controller = function ($scope) {
                 $scope.orderTypeUuid = orderTypeService.getOrderTypeUuid($scope.orderType);
                 const radiologyImageUrl = $scope.section.pacsStudyUrl || "/oviyam2/viewer.html?patientID={{patientID}}&studyUID={{studyUID}}";
@@ -93,7 +93,7 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                         function () {
                             $window.open(url, "_blank");
                         }, function () {
-                        messagingService.showMessage("info", "NO_IMAGE_YET_FOR_ORDER");
+                        messagingService.showMessage("info", $translate.instant("NO_IMAGE_YET_FOR_ORDER") + $scope.getLabel(bahmniOrder));
                     }));
                 };
 

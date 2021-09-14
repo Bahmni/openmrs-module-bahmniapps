@@ -71,9 +71,9 @@
                 </li>
             </ul>
             <div class="impression-control">
-                <textarea placeholder="Enter impression on image" ng-model="image.newSourceObs.value">
+                <textarea placeholder="{{ 'ENTER_IMPRESSION_ON_IMAGE'|translate }}" ng-model="image.newSourceObs.value">
                 </textarea>
-                <input class="confirm save-impression-btn" type="button" ng-click="saveImpression(image)" value="Add"
+                <input class="confirm save-impression-btn" type="button" ng-click="saveImpression(image)" value="{{'ADD_KEY'|translate}}"
                        ng-disabled="!image.newSourceObs.value">
             </div>
 

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController', [
-    '$scope', 'ngDialog', 'surgicalAppointmentService', 'messagingService', 'surgicalAppointmentHelper',
-    function ($scope, ngDialog, surgicalAppointmentService, messagingService, surgicalAppointmentHelper) {
+    '$scope', 'ngDialog', 'surgicalAppointmentService', 'messagingService', 'surgicalAppointmentHelper', '$translate',
+    function ($scope, ngDialog, surgicalAppointmentService, messagingService, surgicalAppointmentHelper, $translate) {
         var surgicalBlock = $scope.ngDialogData.surgicalBlock;
         var surgicalAppointment = $scope.ngDialogData.surgicalAppointment;
 
@@ -38,7 +38,7 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
 
         $scope.add = function () {
             if (!$scope.isStartDatetimeBeforeEndDatetime($scope.actualStartTime, $scope.actualEndTime)) {
-                messagingService.showMessage('error', "Actual start time should be less than actual end time");
+                messagingService.showMessage('error', 'ACTUAL_START_TIME_GREATER_THAN_END_TIME_MESSAGE');
                 return;
             }
             var surgicalAppointment = {};
@@ -56,7 +56,7 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
                 $scope.ngDialogData.surgicalAppointment.actualEndDatetime = response.data.actualEndDatetime;
                 $scope.ngDialogData.surgicalAppointment.status = response.data.status;
                 $scope.ngDialogData.surgicalAppointment.notes = response.data.notes;
-                var message = 'Actual time added to ' + surgicalAppointmentHelper.getPatientDisplayLabel($scope.ngDialogData.surgicalAppointment.patient.display) + ' - ' + $scope.ngDialogData.surgicalBlock.location.name;
+                var message = $translate.instant('ACTUAL_TIME_ADDED_TO_KEY') + surgicalAppointmentHelper.getPatientDisplayLabel($scope.ngDialogData.surgicalAppointment.patient.display) + ' - ' + $scope.ngDialogData.surgicalBlock.location.name;
                 messagingService.showMessage('info', message);
                 ngDialog.close();
             });

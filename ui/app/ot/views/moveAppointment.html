@@ -1,6 +1,6 @@
 <div class="ngdialog-close clearfix"></div>
 <div class="move-appointment">
-    <h4> {{'Moving ' + surgicalAppointment.patient.display + ' from ' + sourceSurgicalBlock.provider.person.display + ' - ' + sourceSurgicalBlock.location.name}}</h4>
+    <h4> {{ 'MOVING_KEY' + ' ' + surgicalAppointment.patient.display + ' ' + 'FROM_KEY' + ' ' + sourceSurgicalBlock.provider.person.display + ' - ' + sourceSurgicalBlock.location.name}}</h4>
     <p>
         <label>{{'DATE' | translate}}: </label>
         <input type="date" ng-model="dateForMovingSurgery" ng-change="changeInSurgeryDate()"/>

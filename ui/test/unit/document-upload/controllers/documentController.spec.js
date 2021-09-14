@@ -282,6 +282,9 @@ describe("DocumentController", function () {
                     uuid: "provider1 uuid"
                 }
             };
+
+            translate = jasmine.createSpyObj('$translate', ['instant']);
+
             documentController = $controller('DocumentController', {
                 $scope: scope,
                 spinner: spinner,
@@ -579,6 +582,7 @@ describe("DocumentController", function () {
             setUp();
             messagingService.showMessage.and.returnValue(specUtil.simplePromise("something"));
             visitDocumentService.getFileType.and.returnValue("not_supported");
+            translate.instant.and.returnValue("File type is not supported");
             var newVisit = new Bahmni.DocumentUpload.Visit();
             appConfig.encounterType.and.returnValue("Radiology");
 
@@ -595,6 +599,7 @@ describe("DocumentController", function () {
             setUp();
             messagingService.showMessage.and.returnValue(specUtil.simplePromise("something"));
             visitDocumentService.getFileType.and.returnValue("not_supported");
+            translate.instant.and.returnValue("File type is not supported");
             var newVisit = new Bahmni.DocumentUpload.Visit();
             appConfig.encounterType.and.returnValue("Radiology");
 

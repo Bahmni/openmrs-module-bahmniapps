@@ -31,5 +31,6 @@
     "SAVE_LABEL": "SAVE",
     "VISIT_LABEL": "Visit",
     "VISIT_FROM_LABEL": "From:",
-    "VISIT_TO_LABEL": "To:"
+    "VISIT_TO_LABEL": "To:",
+    "FILE_TYPE_NOT_SUPPORTED_MESSAGE": "File type is not supported"
 }
