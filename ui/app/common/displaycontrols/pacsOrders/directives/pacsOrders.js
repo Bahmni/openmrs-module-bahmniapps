@@ -89,12 +89,7 @@ angular.module('bahmni.common.displaycontrol.pacsOrders')
                         messagingService.showMessage('info', "NO_PACS_STUDY_FOR_ORDER");
                     }
                     var url = bahmniOrder.pacsStudyUrl || bahmniOrder.pacsImageUrl;
-                    spinner.forAjaxPromise($.ajax({type: 'HEAD', url: url, async: false}).then(
-                        function () {
-                            $window.open(url, "_blank");
-                        }, function () {
-                        messagingService.showMessage("info", $translate.instant("NO_IMAGE_YET_FOR_ORDER") + $scope.getLabel(bahmniOrder));
-                    }));
+                    $window.open(url, "_blank");
                 };
 
                 $scope.initialization = init();
