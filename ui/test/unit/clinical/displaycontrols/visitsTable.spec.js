@@ -1,13 +1,14 @@
 'use strict';
 
 describe("Visits Table display control", function () {
-    var element, scope, $compile, mockBackend, conceptSetService, visitFormService,patientVisitHistoryService;
+    var element, scope, $compile, mockBackend, conceptSetService, visitFormService,patientVisitHistoryService, $translate;
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.clinical'));
     beforeEach(module(function($provide) {
         conceptSetService = jasmine.createSpyObj('conceptSetService', ['getConcept']);
         visitFormService = jasmine.createSpyObj('visitFormService', ['formData']);
+        $translate = jasmine.createSpyObj('$translate', ['instant']);
         patientVisitHistoryService= jasmine.createSpyObj('patientVisitHistoryService', ['getVisitHistory']);
         $provide.value('$state', {});
         $provide.value('$bahmniCookieStore', {});
@@ -16,6 +17,7 @@ describe("Visits Table display control", function () {
         $provide.value('conceptSetService', conceptSetService);
         $provide.value('visitFormService', visitFormService);
         $provide.value('patientVisitHistoryService', patientVisitHistoryService);
+        $provide.value('$translate', $translate);
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
