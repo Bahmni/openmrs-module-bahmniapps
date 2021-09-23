@@ -81,17 +81,31 @@ angular.module('bahmni.common.conceptSet')
                     return !!value;
                 };
                 scope.translatedLabel = function (observation) {
-                    var localName = "";
-                    if (typeof observation != 'undefined') {
+                    if (observation && observation.concept) {
                         var currentLocale = $rootScope.currentUser.userProperties.defaultLocale;
-                        var namesMap = observation.concept.names;
-                        namesMap.forEach(function (names) {
-                            if (names.locale === currentLocale) {
-                                observation.concept.name = names.display;
-                            }
+                        var conceptNames = observation.concept.names ? observation.concept.names : [];
+                        var shortName = conceptNames.find(function (cn) {
+                            return cn.locale === currentLocale && cn.conceptNameType === "SHORT";
                         });
+
+                        if (shortName) {
+                            return shortName.name;
+                        }
+
+                        var fsName = conceptNames.find(function (cn) {
+                            return cn.locale === currentLocale && cn.conceptNameType === "FULLY_SPECIFIED";
+                        });
+
+                        if (fsName) {
+                            return fsName.name;
+                        }
+
+                        return observation.concept.shortName || observation.concept.name;
                     }
-                    return observation.concept.name;
+                    if (observation) {
+                        return observation.label;
+                    }
+                    return "UNKNOWN_OBSERVATION_CONCEPT";
                 };
             };
 
