@@ -203,6 +203,7 @@ angular.module('bahmni.ipd')
                 setButtonClicked();
                 if (angular.isUndefined($rootScope.selectedBedInfo.bed)) {
                     messagingService.showMessage("error", "SELECT_BED_TO_ADMIT_PATIENT_DEFAULT_MESSAGE");
+                    unsetButtonClicked();
                 } else if ($scope.visitSummary && $scope.visitSummary.visitType !== $scope.defaultVisitTypeName && !hideStartNewVisitPopUp) {
                     ngDialog.openConfirm({
                         template: 'views/visitChangeConfirmation.html',
