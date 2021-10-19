@@ -64,14 +64,21 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.onAdhocTeleconsultation = function () {
                 var email = patientContext.patient.email ? patientContext.patient.email.value : null;
-                if (email) {
+                var ccEmails = $rootScope.ccEmails;
+                if (email || ccEmails) {
                     var childScope = {};
+                    var emailList = email;
+                    if (email && ccEmails) {
+                        emailList = email + "," + ccEmails;
+                    } else if (ccEmails) {
+                        emailList = ccEmails;
+                    }
                     childScope.ok = startAdhocTeleconsultationLink;
-                    childScope.message = "An email with meeting link will be sent to: " + email;
+                    childScope.message = "An email with meeting link will be sent to: " + emailList;
                     confirmBox({
                         scope: childScope,
                         actions: [{name: 'ok', display: 'Ok'}],
-                        className: "ngdialog-theme-default delete-program-popup"
+                        className: "ngdialog-theme-default adhoc-info-popup"
                     });
                 } else {
                     virtualConsultService.launchMeeting(patientContext.patient.uuid);
@@ -83,7 +90,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 adhocTeleconsultationService.generateAdhocTeleconsultationLink(
                     {
                         patientUuid: patientContext.patient.uuid,
-                        provider: "test"
+                        provider: $rootScope.currentUser.username
                     }).then(function (data) {
                     virtualConsultService.launchMeeting(data.uuid);
                 });

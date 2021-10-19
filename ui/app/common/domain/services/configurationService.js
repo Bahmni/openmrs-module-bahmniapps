@@ -144,6 +144,19 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        configurationFunctions.ccEmails = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                method: "GET",
+                params: {
+                    property: 'bahmni.appointment.adhocTeleConsultation.ccEmails'
+                },
+                withCredentials: true,
+                transformResponse: [function (data) {
+                    return data;
+                }]
+            });
+        };
+
         configurationFunctions.relationshipTypeConfig = function () {
             return $http.get(Bahmni.Common.Constants.relationshipTypesUrl, {
                 withCredentials: true,
