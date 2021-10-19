@@ -289,5 +289,6 @@
   "ENTER_NOTES_MESSAGE": "Veuillez entrer vos notes ici ...",
   "DURATION_KEY": "Durée",
   "SAVE_KEY": "sauver",
-  "LAB_ENTRY_KEY": "Laboratoire"
+  "LAB_ENTRY_KEY": "Laboratoire",
+  "START_TELECON_KEY": "Start Téléconsultation"
 }

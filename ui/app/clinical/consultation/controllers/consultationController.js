@@ -5,10 +5,12 @@ angular.module('bahmni.clinical').controller('ConsultationController',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', '$q',
         'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig', 'appService',
         'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService', 'confirmBox',
+        'virtualConsultService', 'adhocTeleconsultationService',
         function ($scope, $rootScope, $state, $location, $translate, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
-                  ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, confirmBox) {
+                  ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, confirmBox,
+                  virtualConsultService, adhocTeleconsultationService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var getPreviousActiveCondition = Bahmni.Common.Domain.Conditions.getPreviousActiveCondition;
             $scope.togglePrintList = false;
@@ -56,6 +58,35 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     });
                     window.open(url, '_blank');
                 };
+            };
+
+            clinicalDashboardConfig.allowAdhocTeleConsultation = appService.getAppDescriptor().getConfigValue('allowAdhocTeleConsultation');
+
+            $scope.onAdhocTeleconsultation = function () {
+                var email = patientContext.patient.email ? patientContext.patient.email.value : null;
+                if (email) {
+                    var childScope = {};
+                    childScope.ok = startAdhocTeleconsultationLink;
+                    childScope.message = "An email with meeting link will be sent to: " + email;
+                    confirmBox({
+                        scope: childScope,
+                        actions: [{name: 'ok', display: 'Ok'}],
+                        className: "ngdialog-theme-default delete-program-popup"
+                    });
+                } else {
+                    virtualConsultService.launchMeeting(patientContext.patient.uuid);
+                }
+            };
+
+            var startAdhocTeleconsultationLink = function (closeDialog) {
+                closeDialog();
+                adhocTeleconsultationService.generateAdhocTeleconsultationLink(
+                    {
+                        patientUuid: patientContext.patient.uuid,
+                        provider: "test"
+                    }).then(function (data) {
+                    virtualConsultService.launchMeeting(data.uuid);
+                });
             };
 
             _.each(visitConfig.tabs, setVisitTabPrintAction);
