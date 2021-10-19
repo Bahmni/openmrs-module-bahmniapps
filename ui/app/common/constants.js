@@ -271,7 +271,8 @@ Bahmni.Common = Bahmni.Common || {};
         bedmanagement: "BEDMANAGEMENT",
         bedmanagementDisposition: "BEDMANAGEMENT_DISPOSITION",
         loginConfig: "/bahmni_config/openmrs/apps/home/login_config.json",
-        visit: "VISIT"
+        visit: "VISIT",
+        adhocTeleconsultationLinkServiceUrl: RESTWS_V1 + "/adhocTeleconsultation/generateAdhocTeleconsultationLink",
     };
 })();
 

@@ -360,5 +360,6 @@
     "USE_KEY": "Use",
     "ENTER_NOTES_MESSAGE": "Please enter your notes here...",
     "DURATION_KEY": "Duration",
-    "SAVE_KEY": "Save"
+    "SAVE_KEY": "Save",
+    "START_TELECON_KEY": "Start Teleconsultation"
 }

@@ -250,5 +250,6 @@
     "DISCHARGE_DATE_LABEL": "Descarga Date",
     "NO_PACS_STUDY_FOR_ORDER": "No se pudo identificar el estudio por orden. Buscando con número de acceso.",
     "RADIOLOGY_STUDY_FETCH_ERROR": "No se pueden obtener estudios de radiología. Verifique la configuración de PACS",
-    "NO_IMAGE_YET_FOR_ORDER": "Aún no hay imagen disponible para ordenar"
+    "NO_IMAGE_YET_FOR_ORDER": "Aún no hay imagen disponible para ordenar",
+    "START_TELECON_KEY": "Start Teleconsulta"
 }

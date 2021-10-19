@@ -218,5 +218,6 @@
     "DISCHARGE_DATE_LABEL": "Descarga Date",
     "NO_PACS_STUDY_FOR_ORDER": "Incapaz de identificar o estudo para pedido. Pesquisando com o número de acesso.",
     "RADIOLOGY_STUDY_FETCH_ERROR": "Não é possível buscar estudos de radiologia. Verifique a configuração do PACS",
-    "NO_IMAGE_YET_FOR_ORDER": "Nenhuma imagem disponível ainda para pedido"
+    "NO_IMAGE_YET_FOR_ORDER": "Nenhuma imagem disponível ainda para pedido",
+    "START_TELECON_KEY": "Start Teleconsulta"
 }

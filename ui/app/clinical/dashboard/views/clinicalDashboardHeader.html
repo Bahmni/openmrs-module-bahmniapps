@@ -82,6 +82,10 @@
                 </ul>
             </div>
             <div class="dashboard-header-right-wrapper">
+                <div ng-if="::clinicalDashboardConfig.allowAdhocTeleConsultation" ng-click="onAdhocTeleconsultation()" class="dialog-button-group start-tele-consultation"
+                     title="{{'START_TELECON_KEY'|translate}}">
+                    <img ng-src="../images/customer-service-fill.png" />
+                </div>
                 <div ng-if="::clinicalDashboardConfig.quickPrints" class="fl print-list-wrapper" toggle="togglePrintList">
                     <button ng-if="clinicalDashboardConfig.showPrint()" class="dialog-button-group"
                             accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}">
