@@ -71,6 +71,10 @@ angular.module('bahmni.common.config')
             return this.configs.relationshipTypeMap || {};
         };
 
+        this.ccEmails = function () {
+            return this.configs.ccEmails || {};
+        };
+
         this.loginLocationToVisitTypeMapping = function () {
             return this.configs.loginLocationToVisitTypeMapping || {};
         };

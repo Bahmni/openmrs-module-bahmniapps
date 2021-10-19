@@ -17,10 +17,12 @@ angular.module('bahmni.clinical').factory('initialization',
                         'stoppedOrderReasonConfig',
                         'genderMap',
                         'relationshipTypeMap',
+                        'ccEmails',
                         'defaultEncounterType'
                     ]).then(function () {
                         $rootScope.genderMap = configurations.genderMap();
                         $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
+                        $rootScope.ccEmails = configurations.ccEmails();
                         $rootScope.diagnosisStatus = (appService.getAppDescriptor().getConfig("diagnosisStatus") && appService.getAppDescriptor().getConfig("diagnosisStatus").value || "RULED OUT");
                     });
                 };
