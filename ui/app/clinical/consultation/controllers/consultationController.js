@@ -92,7 +92,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                         patientUuid: patientContext.patient.uuid,
                         provider: $rootScope.currentUser.username
                     }).then(function (data) {
-                    virtualConsultService.launchMeeting(data.uuid);
+                    virtualConsultService.launchMeeting(data.data.uuid, data.data.link);
                 });
             };
 
