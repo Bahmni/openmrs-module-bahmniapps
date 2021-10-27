@@ -65,7 +65,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.onAdhocTeleconsultation = function () {
                 var email = patientContext.patient.email ? patientContext.patient.email.value : null;
                 var ccEmails = $rootScope.ccEmails;
-                if (email || (angular.isString(ccEmails) && ccEmails)) {
+                if (email) {
                     var childScope = {};
                     var emailList = email;
                     if (email && angular.isString(ccEmails) && ccEmails) {
