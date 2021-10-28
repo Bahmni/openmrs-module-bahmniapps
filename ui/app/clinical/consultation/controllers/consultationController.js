@@ -62,37 +62,26 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             clinicalDashboardConfig.allowAdhocTeleConsultation = appService.getAppDescriptor().getConfigValue('allowAdhocTeleConsultation');
 
-            $scope.onAdhocTeleconsultation = function () {
-                var email = patientContext.patient.email ? patientContext.patient.email.value : null;
-                var ccEmails = $rootScope.ccEmails;
-                if (email) {
-                    var childScope = {};
-                    var emailList = email;
-                    if (email && angular.isString(ccEmails) && ccEmails) {
-                        emailList = email + "," + ccEmails;
-                    } else if (angular.isString(ccEmails) && ccEmails) {
-                        emailList = ccEmails;
-                    }
-                    childScope.ok = startAdhocTeleconsultationLink;
-                    childScope.message = "An email with meeting link will be sent to: " + emailList;
-                    confirmBox({
-                        scope: childScope,
-                        actions: [{name: 'ok', display: 'Ok'}],
-                        className: "ngdialog-theme-default adhoc-info-popup"
-                    });
-                } else {
-                    virtualConsultService.launchMeeting(patientContext.patient.uuid);
-                }
-            };
-
-            var startAdhocTeleconsultationLink = function (closeDialog) {
-                closeDialog();
+            $scope.startAdhocTeleconsultationLink = function () {
                 adhocTeleconsultationService.generateAdhocTeleconsultationLink(
                     {
                         patientUuid: patientContext.patient.uuid,
                         provider: $rootScope.currentUser.username
                     }).then(function (data) {
-                        virtualConsultService.launchMeeting(data.data.uuid, data.data.link);
+                        if (data && data.data) {
+                            virtualConsultService.launchMeeting(data.data.uuid, data.data.link);
+                            if (data.data.notificationResults && data.data.notificationResults.length > 0) {
+                                var message = data.data.notificationResults[0].message;
+                                var status = data.data.notificationResults[0].status;
+                                if (status === 1) {
+                                    messagingService.showMessage('error', message);
+                                } else {
+                                    messagingService.showMessage('info', message);
+                                }
+                            }
+                        } else {
+                            messagingService.showMessage('error', "{{'TELECON_ERROR_KEY' | translate }}");
+                        }
                     });
             };
 
