@@ -13,6 +13,11 @@ angular.module('bahmni.clinical').controller('ClinicalController',
                 teleConsultationWindow.empty();
                 var meetId = params.uuid;
                 var domain = 'meet.jit.si';
+                var startWithVideoMuted = false;
+
+                if (params.startWithVideoMuted) {
+                    startWithVideoMuted = true;
+                }
 
                 if (params.link && params.link.trim().length > 0) {
                     var meetingUrl = new URL(params.link.trim());
@@ -23,7 +28,8 @@ angular.module('bahmni.clinical').controller('ClinicalController',
 
                 var options = {
                     roomName: meetId || "",
-                    parentNode: document.querySelector('#tele-consultation-meet')
+                    parentNode: document.querySelector('#tele-consultation-meet'),
+                    configOverwrite: { startWithVideoMuted: startWithVideoMuted }
                 };
                 api = new JitsiMeetExternalAPI(domain, options);
             });
