@@ -1,23 +1,23 @@
-<div ng-controller="PatientCommonController">
+  <div ng-controller="PatientCommonController">
     <div class="box-container box-container-patient-info patient-common-info-container">
         <section>
             <article class="form-field patient-name-wrapper" ng-if="::patientConfiguration.local()['showNameField']">
                 <div class="field-attribute">
-                    <label for="patientName">{{::getTranslatedPatientControls(patientConfiguration.local()['labelForNameField'])}}</label>
+                    <label for="patientName">::getTranslatedPatientControls(patientConfiguration.local()['labelForNameField'])}}<span class="asterick" ng-show="localLanguageNameIsRequired()">*</span></label>
                 </div>
                 <div class="field-value" id="patientNameLocal">
                     <span ng-repeat="nameField in patientNameDisplayOrder">
                         <input type="text" id="givenNameLocal" ng-model="patient.givenNameLocal" pattern-validate
                                placeholder="{{::getTranslatedPatientControls(patientConfiguration.local()['placeholderForGivenName'])}}" focus-me="true"
-                               ng-if="nameField === 'firstName'">
+                               ng-if="nameField === 'firstName'" ng-required={{localLanguageNameIsRequired('givenNameLocal')}}>
                         <input ng-show="::showMiddleName" type="text" id="middleNameLocal"
                                ng-model="patient.middleNameLocal"
                                pattern-validate
                                placeholder="{{::getTranslatedPatientControls(patientConfiguration.local()['placeholderForMiddleName'])}}"
-                               ng-if="nameField === 'middleName'">
+                               ng-if="nameField === 'middleName'" ng-required={{localLanguageNameIsRequired('middleNameLocal')}}>
                         <input type="text" ng-show="::showLastName" id="familyNameLocal" ng-model="patient.familyNameLocal" pattern-validate
                                placeholder="{{::getTranslatedPatientControls(patientConfiguration.local()['placeholderForFamilyName'])}}"
-                               ng-if="nameField === 'lastName'">
+                               ng-if="nameField === 'lastName'" ng-required={{localLanguageNameIsRequired('familyNameLocal')}}>
                     </span>
                 </div>
             </article>
