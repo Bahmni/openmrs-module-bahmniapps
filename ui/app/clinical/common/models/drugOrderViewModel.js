@@ -2,10 +2,10 @@
 
 var constructDrugNameDisplayWithConcept = function (drug, concept) {
     if (!_.isEmpty(drug)) {
-        if (concept.shortName != null && (typeof concept.shortName !== 'undefined')) {
-            return concept.shortName + " (" + drug.form + ")";
-        } else {
+        if (drug.name) {
             return drug.name + " (" + drug.form + ")";
+        } else if (concept) {
+            return (concept.shortName || concept.name) + " (" + drug.form + ")";
         }
     }
 };
