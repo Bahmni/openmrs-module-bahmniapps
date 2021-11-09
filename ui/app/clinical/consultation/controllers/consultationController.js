@@ -11,6 +11,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
                   ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, confirmBox,
                   virtualConsultService, adhocTeleconsultationService) {
+            var ERROR = 1;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var getPreviousActiveCondition = Bahmni.Common.Domain.Conditions.getPreviousActiveCondition;
             $scope.togglePrintList = false;
@@ -65,22 +66,21 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.startAdhocTeleconsultationLink = function () {
                 adhocTeleconsultationService.generateAdhocTeleconsultationLink(
                     {
-                        patientUuid: patientContext.patient.uuid,
+                        patientUuid: $scope.patient.uuid,
                         provider: $rootScope.currentUser.username
                     }).then(function (data) {
-                        if (data && data.data) {
-                            virtualConsultService.launchMeeting(data.data.uuid, data.data.link);
-                            if (data.data.notificationResults && data.data.notificationResults.length > 0) {
-                                var message = data.data.notificationResults[0].message;
-                                var status = data.data.notificationResults[0].status;
-                                if (status === 1) {
-                                    messagingService.showMessage('error', message);
-                                } else {
-                                    messagingService.showMessage('info', message);
-                                }
-                            }
-                        } else {
+                        if (!(data && data.data)) {
                             messagingService.showMessage('error', "{{'TELECON_ERROR_KEY' | translate }}");
+                        }
+                        virtualConsultService.launchMeeting(data.data.uuid, data.data.link);
+                        if (data.data.notificationResults && data.data.notificationResults.length > 0) {
+                            var message = data.data.notificationResults[0].message;
+                            var status = data.data.notificationResults[0].status;
+                            if (status === ERROR) {
+                                messagingService.showMessage('error', message);
+                            } else {
+                                messagingService.showMessage('info', message);
+                            }
                         }
                     });
             };
