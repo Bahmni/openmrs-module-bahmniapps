@@ -31,7 +31,9 @@ Bahmni.Clinical.DrugSearchResult = (function () {
         var doesMatchSearchString = getMatcher(searchString);
         var createSynonym = getSynonymCreator(drug);
 
-        if (doesMatchSearchString(drug.name)) {
+        var drugName = drug.name || drug.concept.name.name;
+
+        if (doesMatchSearchString(drugName)) {
             return [createSynonym()];
         }
 
