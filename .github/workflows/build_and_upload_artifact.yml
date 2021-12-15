@@ -1,0 +1,39 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Build Bahmni Apps - Stream1 Master
+
+on:
+ push:
+    branches:
+     - master
+ workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.16.3]
+        ruby: [2.5]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - uses: actions/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+    - run:  npm install -g bower 
+    - run:  npm install -g grunt-cli 
+    - run:  gem install compass  
+    - run: npm install --global yarn 
+    - run : cd ui && npm cache clean --force && /bin/bash ./scripts/package.sh
+    - uses: actions/upload-artifact@v2
+      with:
+        name: BahmniApps
+        path: ui/target/bahmniapps.zip
