@@ -30,8 +30,10 @@ const callback = function (mutationsList) {
                 for (const mfContainer of mfContainers) {
                     let containerName = mfContainer.getAttribute('mf-container');
                     if (importMap[containerName]) {
-                        cleanUpContainer(mfContainer);
                         const enabledMfs = getEnabledMfs(containerName);
+                        if (enabledMfs.length) {
+                            cleanUpContainer(mfContainer);
+                        }
                         for (const enabledMf of enabledMfs) {
                             createDOM(mfContainer, enabledMf.name);
                             loadApp(mfContainer, enabledMf);
