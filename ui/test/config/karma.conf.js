@@ -9,6 +9,7 @@ module.exports = function (config) {
         files: [
             {pattern: 'test/data/*.json', watched: true, served: true, included: false},
             {pattern: 'app/images/*', included: false, served: true},
+            {pattern: 'test/unit/common/mf-app-shell/test-mfs/*.js', included: false, served: true },
             'app/components/q/q.js',
             'app/components/angular/angular.js',
             'app/components/ngDialog/js/ngDialog.js',
@@ -79,6 +80,8 @@ module.exports = function (config) {
             'app/components/moment/meteor/**/*.js',
             'app/components/jquery/src/**/*.js',
             'app/components/**/test/**/*.js',
+            'app/common/mf-app-shell/demo-apps/*.js',
+            'app/common/mf-app-shell/importmap.js'
 
         ],
         reporters: ['junit', (process.env.CI === 'true' ? 'dots' : 'progress'), 'coverage'],
@@ -117,7 +120,10 @@ module.exports = function (config) {
             moduleName: 'ngHtml2JsPreprocessor'
         },
         proxies:{
-            '/images/blank-user.gif' :'/base/app/images/blank-user.gif'
+            '/images/blank-user.gif' :'/base/app/images/blank-user.gif',
+            '/test-mf1.js': '/base/test/unit/common/mf-app-shell/test-mfs/test-mf1.js',
+            '/test-mf2.js': '/base/test/unit/common/mf-app-shell/test-mfs/test-mf2.js',
+            '/test-mf3.js': '/base/test/unit/common/mf-app-shell/test-mfs/test-mf3.js',
         }
     });
 };
