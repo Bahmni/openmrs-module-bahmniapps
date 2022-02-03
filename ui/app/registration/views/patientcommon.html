@@ -3,7 +3,7 @@
         <section>
             <article class="form-field patient-name-wrapper" ng-if="::patientConfiguration.local()['showNameField']">
                 <div class="field-attribute">
-                    <label for="patientName">::getTranslatedPatientControls(patientConfiguration.local()['labelForNameField'])}}<span class="asterick" ng-show="localLanguageNameIsRequired()">*</span></label>
+                    <label for="patientName">{{::getTranslatedPatientControls(patientConfiguration.local()['labelForNameField'])}}<span class="asterick" ng-show="localLanguageNameIsRequired()">*</span></label>
                 </div>
                 <div class="field-value" id="patientNameLocal">
                     <span ng-repeat="nameField in patientNameDisplayOrder">
