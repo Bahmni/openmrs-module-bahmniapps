@@ -2,7 +2,15 @@ name: Build Bahmni Apps
 
 on:
  push:
-    branches: [ master ]
+    branches:
+      - master
+      - 'BAH-*'
+ repository_dispatch:
+   types: [ "Default_config-0.94-trigger" ]
+ workflow_dispatch:
+env:
+  BAHMNI_VERSION: 0.94
+  BRANCH_NAME: master
 
 jobs:
   build:
@@ -29,3 +37,44 @@ jobs:
       with:
         name: BahmniApps
         path: ui/target/bahmniapps.zip
+  docker-build-publish:
+    name: Build & Publish Docker Image
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '8'
+      - name: Checkout bahmni-package
+        uses: actions/checkout@v2
+        with:
+          repository: Bahmni/bahmni-package
+          ref: ${{ env.BRANCH_NAME }}
+          path: bahmni-package
+      - name: Checkout bahmni-scripts
+        uses: actions/checkout@v2
+        with:
+          repository: Bahmni/bahmni-scripts
+          ref: ${{ env.BRANCH_NAME }}
+          path: bahmni-scripts
+      - name: Checkout default-config
+        uses: actions/checkout@v2
+        with:
+          repository: Bahmni/default-config
+          ref: ${{ env.BRANCH_NAME }}
+          path: default-config
+      - uses: actions/download-artifact@v2
+        with:
+          name: BahmniApps
+          path: bahmni-package/bahmni-web/resources
+      - name: Build Docker Image
+        run: ./bahmni-package/bahmni-docker/build_scripts/bahmni-web/docker_build.sh
+      - name: List Docker Images
+        run: docker images
+      - name: Push Docker Images
+        run: ./bahmni-package/bahmni-docker/build_scripts/bahmni-web/docker_publish.sh
+        env:
+            DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+            DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN}}
+
