@@ -53,16 +53,15 @@ jobs:
           ref: ${{ env.BRANCH_NAME }}
           path: bahmni-package
       - name: Checkout default-config
-        run: |
-          curl -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/Bahmni/default-config/actions/artifacts | \
-          jq -r '.artifacts[0].archive_download_url' | \
-          xargs curl -L -o default_config.zip -H "Authorization: token ${{secrets.BAHMNI_PAT}}"
-#        uses: actions/checkout@v2
-#        with:
-#          repository: Bahmni/default-config
-#          ref: ${{ env.BRANCH_NAME }}
-#          path: default-config
+#        run: |
+#          curl -H "Accept: application/vnd.github.v3+json" \
+#          https://api.github.com/repos/Bahmni/default-config/actions/artifacts | \
+#          jq -r '.artifacts[0].archive_download_url' | \
+#          xargs curl -L -o default_config.zip -H "Authorization: token ${{secrets.BAHMNI_PAT}}"
+        uses: actions/download-artifact@v2
+        with:
+          repository: Bahmni/default-config
+          name: default_config
       - uses: actions/download-artifact@v2
         with:
           name: BahmniApps
