@@ -55,7 +55,7 @@ jobs:
       - name: Checkout default-config
         run: |
           curl -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/Bahmni/bahmni-frontend/actions/artifacts | \
+          https://api.github.com/repos/Bahmni/default-config/actions/artifacts | \
           jq -r '.artifacts[0].archive_download_url' | \
           xargs curl -L -o default_config.zip -H "Authorization: token ${{secrets.BAHMNI_PAT}}"
 #        uses: actions/checkout@v2
