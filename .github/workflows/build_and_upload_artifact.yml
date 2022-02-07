@@ -58,11 +58,12 @@ jobs:
           https://api.github.com/repos/Bahmni/default-config/actions/artifacts | \
           jq -r '.artifacts[0].archive_download_url' | \
           xargs curl -L -o default_config.zip -H "Authorization: token ${{secrets.BAHMNI_PAT}}"
-#        uses: actions/checkout@v2
+      - run: unzip -q -o default_config.zip
+
+
+#        uses: actions/download-artifact@v2
 #        with:
-#          repository: Bahmni/default-config
-#          ref: ${{ env.BRANCH_NAME }}
-#          path: default-config
+#          name: default_config
       - uses: actions/download-artifact@v2
         with:
           name: BahmniApps
