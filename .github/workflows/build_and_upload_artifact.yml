@@ -6,7 +6,7 @@ on:
       - master
       - 'BAH-*'
  repository_dispatch:
-   types: [ "Default_config-0.94-trigger" ]
+   types: [ "default-config-trigger" ]
  workflow_dispatch:
 env:
   BAHMNI_VERSION: 0.94
@@ -52,18 +52,17 @@ jobs:
           repository: Bahmni/bahmni-package
           ref: ${{ env.BRANCH_NAME }}
           path: bahmni-package
-      - name: Checkout bahmni-scripts
-        uses: actions/checkout@v2
-        with:
-          repository: Bahmni/bahmni-scripts
-          ref: ${{ env.BRANCH_NAME }}
-          path: bahmni-scripts
       - name: Checkout default-config
-        uses: actions/checkout@v2
-        with:
-          repository: Bahmni/default-config
-          ref: ${{ env.BRANCH_NAME }}
-          path: default-config
+        run: |
+          curl -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/Bahmni/bahmni-frontend/actions/artifacts | \
+          jq -r '.artifacts[0].archive_download_url' | \
+          xargs curl -L -o default_config.zip -H "Authorization: token ${{secrets.BAHMNI_PAT}}"
+#        uses: actions/checkout@v2
+#        with:
+#          repository: Bahmni/default-config
+#          ref: ${{ env.BRANCH_NAME }}
+#          path: default-config
       - uses: actions/download-artifact@v2
         with:
           name: BahmniApps
