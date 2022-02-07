@@ -10,7 +10,7 @@ on:
  workflow_dispatch:
 env:
   BAHMNI_VERSION: 0.94
-  BRANCH_NAME: master
+  BRANCH_NAME: BAH-1381
 
 jobs:
   build:
