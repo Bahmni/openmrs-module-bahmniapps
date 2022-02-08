@@ -58,6 +58,7 @@ jobs:
           https://api.github.com/repos/Bahmni/default-config/actions/artifacts | \
           jq -r '.artifacts[0].archive_download_url' | \
           xargs curl -L -o default_config.zip -H "Authorization: token ${{secrets.BAHMNI_PAT}}"
+      - run: cat default_config.zip
       - run: unzip -q -o default_config.zip
 
 
