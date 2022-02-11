@@ -1,18 +1,18 @@
 name: bahmniapps Deploy
 on:
   push:
-      branches:
-        - master
-        - 'BAH-*'
-  # workflow_run:
-  #   workflows: ["Build Bahmni Apps"]
-  #   types:
-  #     - completed
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  repository_dispatch:
+    types: ["default-config-trigger"]
+
 env:
   BAHMNI_VERSION: 0.94
-  BRANCH_NAME: BAH-1381
+  BRANCH_NAME: master
+
 jobs:
-  build:
+  build-and-upload-artifact:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -37,24 +37,22 @@ jobs:
         name: BahmniApps
         path: ui/target/bahmniapps.zip
   docker-build-publish:
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Build & Publish Docker Image
-    needs: build
+    needs: build-and-upload-artifact
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-java@v2
         with:
           distribution: 'zulu'
-          java-version: '8'
-      # - uses: actions/checkout@v2
-      
+          java-version: '8'      
       - name: Checkout bahmni-package
         uses: actions/checkout@v2
         with:
           repository: Bahmni/bahmni-package
           ref: ${{ env.BRANCH_NAME }}
           path: bahmni-package
-      - uses: actions/download-artifact@v2
+      - name: Download BahmniApps
+        uses: actions/download-artifact@v2
         with:
           name: BahmniApps
           path: bahmni-package/bahmni-web/resources
@@ -63,12 +61,10 @@ jobs:
           curl -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/Bahmni/default-config/actions/artifacts | \
           jq -r '.artifacts[0].archive_download_url' | \
-          xargs curl -L -o default_config.zip -H "Authorization: token ${{secrets.BAHMNI_PAT}}"
-      # - run: cat default_config.zip
-      - run: unzip -q -o default_config.zip
+          xargs curl -L -o default_config.zip -H "Authorization: token ${{secrets.BAHMNI_PAT}}" &&\
+          unzip -q -o default_config.zip
       - name: Build Docker Image
         run: |
-          ls bahmni-package/bahmni-web/resources &&\
           ./bahmni-package/bahmni-docker/build_scripts/bahmni-web/docker_build.sh
       - name: List Docker Images
         run: docker images
