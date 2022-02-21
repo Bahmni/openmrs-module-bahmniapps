@@ -2,6 +2,8 @@ name: bahmniapps Deploy
 on:
   push:
     branches: [ master ]
+    paths-ignore: 
+      - '**.md'
   pull_request:
     branches: [ master ]
   repository_dispatch:
@@ -9,7 +11,6 @@ on:
 
 env:
   BAHMNI_VERSION: 0.94
-  BRANCH_NAME: master
 
 jobs:
   build-and-upload-artifact:
@@ -19,43 +20,34 @@ jobs:
         node-version: [10.16.3]
         ruby: [2.5]
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - uses: actions/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-    - run:  npm install -g bower 
-    - run:  npm install -g grunt-cli 
-    - run:  gem install compass  
-    - run: npm install --global yarn 
-    - run : cd ui && npm cache clean --force && /bin/bash ./scripts/package.sh
-    - uses: actions/upload-artifact@v2
-      with:
-        name: BahmniApps
-        path: ui/target/bahmniapps.zip
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - run:  npm install -g bower 
+      - run:  npm install -g grunt-cli 
+      - run:  gem install compass  
+      - run: npm install --global yarn 
+      - run : cd ui && npm cache clean --force && /bin/bash ./scripts/package.sh
+      - uses: actions/upload-artifact@v2
+        with:
+          name: BahmniApps
+          path: ui/target/bahmniapps.zip
   docker-build-publish:
     name: Build & Publish Docker Image
     needs: build-and-upload-artifact
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: '8'      
-      - name: Checkout bahmni-package
-        uses: actions/checkout@v2
-        with:
-          repository: Bahmni/bahmni-package
-          ref: ${{ env.BRANCH_NAME }}
-          path: bahmni-package
+      - uses: actions/checkout@v2
       - name: Download BahmniApps
         uses: actions/download-artifact@v2
         with:
           name: BahmniApps
-          path: bahmni-package/bahmni-web/resources
+          path: package/resources
       - name: Download default_config.zip
         run: |
           curl -H "Accept: application/vnd.github.v3+json" \
@@ -65,12 +57,11 @@ jobs:
           unzip -q -o default_config.zip
       - name: Build Docker Image
         run: |
-          ./bahmni-package/bahmni-docker/build_scripts/bahmni-web/docker_build.sh
+          ./package/docker/scripts/docker_build.sh
       - name: List Docker Images
         run: docker images
       - name: Push Docker Images
-        run: ./bahmni-package/bahmni-docker/build_scripts/bahmni-web/docker_publish.sh
+        run: ./package/docker/scripts/docker_publish.sh
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN}}
-
