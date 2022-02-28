@@ -1,9 +1,9 @@
 name: Build and Publish
 on:
   push:
-    branches: [ master ]
-    paths-ignore: 
-      - '**.md'
+    branches: [master]
+    paths-ignore:
+      - "**.md"
   repository_dispatch:
     types: ["default-config-trigger"]
 
@@ -24,12 +24,12 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.5
-      - run: npm install -g bower 
-      - run: npm install -g grunt-cli 
-      - run: gem install compass  
+      - run: npm install -g bower
+      - run: npm install -g grunt-cli
+      - run: gem install compass
       - run: npm install --global yarn
       - name: Package
-        run : cd ui && npm cache clean --force && /bin/bash ./scripts/package.sh
+        run: cd ui && npm cache clean --force && /bin/bash ./scripts/package.sh
       - name: Copy Build Artifact to resources
         run: mkdir package/resources && cp ui/target/bahmniapps.zip package/resources/
       - name: Download default_config.zip
@@ -41,10 +41,8 @@ jobs:
           unzip -q -o default_config.zip
       - name: Build Docker Image
         run: ./package/docker/scripts/docker_build.sh
-      - name: List Docker Images
-        run: docker images
       - name: Push Docker Images
-        run: ./package/docker/scripts/docker_publish.sh
+        run: ./package/docker/scripts/docker_publish.sh bahmni/bahmni-web
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN}}
