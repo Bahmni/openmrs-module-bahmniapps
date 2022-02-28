@@ -14,4 +14,4 @@ unzip -q -u -d build/bahmniapps resources/bahmniapps.zip
 
 #Building Docker images
 BAHMNI_WEB_IMAGE_TAG=${BAHMNI_VERSION}-${GITHUB_RUN_NUMBER}
-docker build -t bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG} -f docker/Dockerfile  . --no-cache
+docker build -t bahmni/bahmni-web:${BAHMNI_WEB_IMAGE_TAG} -t bahmni/bahmni-web:latest -f docker/Dockerfile  . --no-cache
