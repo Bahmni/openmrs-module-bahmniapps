@@ -1,6 +1,11 @@
 FROM httpd:2.4-alpine
 
 EXPOSE 8091
-COPY docker/httpd.conf /usr/local/apache2/conf
-COPY build/bahmniapps /usr/local/apache2/htdocs/bahmni/
-COPY build/default_config/ /usr/local/apache2/htdocs/bahmni_config/
+COPY package/docker/httpd.conf /usr/local/apache2/conf
+
+#unzip default_config
+ADD package/resources/default_config.zip /tmp/artifacts/
+RUN unzip -d /usr/local/apache2/htdocs/bahmni_config/ /tmp/artifacts/default_config.zip 
+
+# Copy BahmniApps
+COPY ui/dist/. /usr/local/apache2/htdocs/bahmni/

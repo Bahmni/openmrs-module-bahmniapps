@@ -30,19 +30,17 @@ jobs:
       - run: npm install --global yarn
       - name: Package
         run: cd ui && npm cache clean --force && /bin/bash ./scripts/package.sh
-      - name: Copy Build Artifact to resources
-        run: mkdir package/resources && cp ui/target/bahmniapps.zip package/resources/
       - name: Download default_config.zip
-        run: |
-          curl -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/Bahmni/default-config/actions/artifacts | \
-          jq -r '.artifacts[0].archive_download_url' | \
-          xargs curl -L -o default_config.zip -H "Authorization: token ${{secrets.BAHMNI_PAT}}" &&\
-          unzip -q -o default_config.zip
-      - name: Build Docker Image
-        run: ./package/docker/scripts/docker_build.sh
-      - name: Push Docker Images
-        run: ./package/docker/scripts/docker_publish.sh bahmni/bahmni-web
-        env:
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN}}
+        run: sh .github/download_artifact.sh default-config default_config ${{secrets.BAHMNI_PAT}}
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Docker Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: package/docker/Dockerfile
+          push: true
+          tags: bahmni/bahmni-web:${{env.BAHMNI_VERSION}}-${{github.run_number}},bahmni/bahmni-web:latest
