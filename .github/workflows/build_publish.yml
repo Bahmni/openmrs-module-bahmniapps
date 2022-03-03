@@ -1,0 +1,46 @@
+name: Build and Publish
+on:
+  push:
+    branches: [master, BAH-1417]
+    paths-ignore:
+      - "**.md"
+  repository_dispatch:
+    types: ["default-config-trigger"]
+
+env:
+  BAHMNI_VERSION: 0.94
+
+jobs:
+  docker-build-publish:
+    name: Docker Build & Publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 10.16.3
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.16.3
+      - name: Use Ruby 2.5
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.5
+      - run: npm install -g bower
+      - run: npm install -g grunt-cli
+      - run: gem install compass
+      - run: npm install --global yarn
+      - name: Package
+        run: cd ui && yarn cache clean && /bin/bash ./scripts/package.sh
+      - name: Download default_config.zip
+        run: sh .github/download_artifact.sh default-config default_config ${{secrets.BAHMNI_PAT}}
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Docker Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: package/docker/Dockerfile
+          push: true
+          tags: bahmni/bahmni-web:${{env.BAHMNI_VERSION}}-${{github.run_number}},bahmni/bahmni-web:latest
