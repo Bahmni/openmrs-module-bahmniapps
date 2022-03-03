@@ -1,7 +1,7 @@
 name: Build and Publish
 on:
   push:
-    branches: [master]
+    branches: [master, BAH-1417]
     paths-ignore:
       - "**.md"
   repository_dispatch:
@@ -29,7 +29,7 @@ jobs:
       - run: gem install compass
       - run: npm install --global yarn
       - name: Package
-        run: cd ui && npm cache clean --force && /bin/bash ./scripts/package.sh
+        run: cd ui && yarn cache clean && /bin/bash ./scripts/package.sh
       - name: Download default_config.zip
         run: sh .github/download_artifact.sh default-config default_config ${{secrets.BAHMNI_PAT}}
       - name: Login to DockerHub
