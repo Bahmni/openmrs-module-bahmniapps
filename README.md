@@ -1,5 +1,3 @@
-This is a forked repo from bahmni/openmrs-module-bahmniapps and have changes required for ABDM pop-up and other features.
-
 # Bahmni Apps
 
 [![Build Status](https://travis-ci.org/Bahmni/openmrs-module-bahmniapps.svg?branch=master)](https://travis-ci.org/Bahmni/openmrs-module-bahmniapps)
