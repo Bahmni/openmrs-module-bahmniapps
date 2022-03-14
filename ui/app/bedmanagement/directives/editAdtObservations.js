@@ -29,7 +29,7 @@ angular.module('bahmni.ipd')
                         return !_.isEmpty(member.value);
                     });
                     if (_.isEmpty(observations.groupMembers)) {
-                        messagingService.showMessage("error", "Date of Discharge and Reason for discharge cannot be empty.");
+                        messagingService.showMessage("error", "DATE_OF_DISCHARGE_AND_REASON_FOR_DISCHARGE_CANNOT_BE_EMPTY_MESSAGE");
                         setValuesForObservations($scope.savedObservations);
                         return [];
                     }

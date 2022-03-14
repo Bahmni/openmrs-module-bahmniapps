@@ -3,20 +3,20 @@
         <section>
             <article class="form-field patient-name-wrapper" ng-if="::patientConfiguration.local()['showNameField']">
                 <div class="field-attribute">
-                    <label for="patientName">{{::patientConfiguration.local()['labelForNameField']}}</label>
+                    <label for="patientName">{{::getTranslatedPatientControls(patientConfiguration.local()['labelForNameField'])}}</label>
                 </div>
                 <div class="field-value" id="patientNameLocal">
                     <span ng-repeat="nameField in patientNameDisplayOrder">
                         <input type="text" id="givenNameLocal" ng-model="patient.givenNameLocal" pattern-validate
-                               placeholder="{{::patientConfiguration.local()['placeholderForGivenName']}}" focus-me="true"
-                                ng-if="nameField === 'firstName'">
+                               placeholder="{{::getTranslatedPatientControls(patientConfiguration.local()['placeholderForGivenName'])}}" focus-me="true"
+                               ng-if="nameField === 'firstName'">
                         <input ng-show="::showMiddleName" type="text" id="middleNameLocal"
                                ng-model="patient.middleNameLocal"
                                pattern-validate
-                               placeholder="{{::patientConfiguration.local()['placeholderForMiddleName']}}"
+                               placeholder="{{::getTranslatedPatientControls(patientConfiguration.local()['placeholderForMiddleName'])}}"
                                ng-if="nameField === 'middleName'">
                         <input type="text" ng-show="::showLastName" id="familyNameLocal" ng-model="patient.familyNameLocal" pattern-validate
-                               placeholder="{{::patientConfiguration.local()['placeholderForFamilyName']}}"
+                               placeholder="{{::getTranslatedPatientControls(patientConfiguration.local()['placeholderForFamilyName'])}}"
                                ng-if="nameField === 'lastName'">
                     </span>
                 </div>
@@ -30,8 +30,7 @@
                     <span data-ng-switch="::isAutoComplete('givenName')"
                           ng-if="::patientConfiguration.local()['showNameField'] && nameField === 'firstName'">
                           <input data-ng-switch-when="true"
-                                 type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank
-                                 pattern-validate
+                                 type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
                                  my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                                  data-item-type="personName"
                                  placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
@@ -42,7 +41,7 @@
                                  title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
                     </span>
                     <span data-ng-switch="::isAutoComplete('givenName')"
-                        ng-if="::!patientConfiguration.local()['showNameField'] && nameField === 'firstName'">
+                          ng-if="::!patientConfiguration.local()['showNameField'] && nameField === 'firstName'">
                       <input data-ng-switch-when="true"
                              type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
                              my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
@@ -154,11 +153,11 @@
 
         <section>
             <!--edit patient flow-->
-           <section>
+            <section>
                 <div ng-if="patient.uuid != undefined">
                     <article ng-repeat="identifier in patient.extraIdentifiers" class="form-field existing-patient">
                         <div class="field-attribute">
-                            <label class="control-label" for="patientID">{{:: identifier.identifierType.name}}
+                            <label class="control-label" for="patientID">{{:: getTranslatedPatientIdentifier(identifier.identifierType.name)}}
                                 <span ng-show=":: identifier.identifierType.required && !identifier.hasIdentifierSources()"
                                       class="asterick">*</span>
                             </label>
@@ -182,9 +181,9 @@
                     <article ng-repeat="identifier in patient.extraIdentifiers"
                              class="form-field existing-patient">
                         <div class="field-attribute">
-                            <label class="control-label" for="patientID">{{:: identifier.identifierType.name}}
-                            <span ng-show="::identifier.identifierType.required && !identifier.hasIdentifierSources()"
-                                  class="asterick">*</span>
+                            <label class="control-label" for="patientID">{{:: getTranslatedPatientControls(identifier.identifierType.name)}}
+                                <span ng-show="::identifier.identifierType.required && !identifier.hasIdentifierSources()"
+                                      class="asterick">*</span>
                             </label>
                         </div>
                         <div ng-show="::(identifier.hasIdentifierSources() && !identifier.hasIdentifierSourceWithEmptyPrefix())"
@@ -234,9 +233,6 @@
                     <iframe name="identifier-verification" id="identifier-popup" height="95%" width="100%"></iframe>
                 </div>
             </div>
-<!--            <button class="verify-health-id-btn" ng-if="regExtPoints != undefined" ng-show="showVerifyBtn" type="button"-->
-<!--                    ng-click="openIdentifierPopup()">{{:: btnName}}-->
-<!--            </button>-->
         </section>
 
         <legend class="registraion_legend" ng-if="patientConfiguration.customAttributeRows().length > 0">

@@ -1,7 +1,7 @@
 'use strict';
 
 describe("AdtController", function () {
-    var scope, state, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService, encounterService, ngDialog, window, messagingService, spinnerService;
+    var scope, state, rootScope, controller, bedService, appService, sessionService, dispositionService, visitService, encounterService, ngDialog, window, messagingService, spinnerService, translate;
 
     beforeEach(function () {
         module('bahmni.ipd');
@@ -24,6 +24,7 @@ describe("AdtController", function () {
         spinnerService = jasmine.createSpyObj('spinnerService', ['forPromise']);
         state = jasmine.createSpyObj('state', ['transitionTo']);
         window = {location: { reload: jasmine.createSpy()} };
+        translate = jasmine.createSpyObj('$translate', ['instant']);
 
         appService.getAppDescriptor.and.returnValue({
             getConfigValue: function (key) {
@@ -103,7 +104,8 @@ describe("AdtController", function () {
             ngDialog: ngDialog,
             $window: window,
             messagingService : messagingService,
-            spinner: spinnerService
+            spinner: spinnerService,
+            $translate: translate,
         });
     };
 
@@ -121,13 +123,19 @@ describe("AdtController", function () {
             getConfig: function () {
             }
         });
-
         createController();
 
         scope.admit();
-        expect(ngDialog.openConfirm).toHaveBeenCalled();
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/visitChangeConfirmation.html', scope: scope, closeByEscape: true});
+        expect(ngDialog.openConfirm.calls.count()).toBe(1);
+        var args = ngDialog.openConfirm.calls.argsFor(0)[0];
+        expect(args.scope).toBe(scope);
+        expect(args.template).toBe('views/visitChangeConfirmation.html');
+        expect(args.closeByEscape).toBe(true);
+        expect(typeof args.preCloseCallback).toBe('function');
+        args.preCloseCallback();
+        expect(scope.buttonClicked).toBe(false);
     });
+
     it("Should show confirmation dialog if patient's visit type is not defaultVisitType and hideStartNewVisitPopUp is present", function () {
         scope.visitSummary = {"visitType": "OPD"};
         appService.getAppDescriptor.and.returnValue({
@@ -146,8 +154,15 @@ describe("AdtController", function () {
         createController();
 
         scope.admit();
-        expect(ngDialog.openConfirm).toHaveBeenCalled();
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/admitConfirmation.html', scope: scope, closeByEscape: true, className: "ngdialog-theme-default ng-dialog-adt-popUp"});
+        expect(ngDialog.openConfirm.calls.count()).toBe(1);
+        var args = ngDialog.openConfirm.calls.argsFor(0)[0];
+        expect(args.scope).toBe(scope);
+        expect(args.template).toBe('views/admitConfirmation.html');
+        expect(args.closeByEscape).toBe(true);
+        expect(args.className).toBe("ngdialog-theme-default ng-dialog-adt-popUp");
+        expect(typeof args.preCloseCallback).toBe('function');
+        args.preCloseCallback();
+        expect(scope.buttonClicked).toBe(false);
     });
 
     it("should close the visit and create a new encounter if dialog is confirmed", function () {
@@ -497,7 +512,7 @@ describe("AdtController", function () {
         createController();
 
         scope.transfer();
-        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please select a bed to transfer the patient");
+        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "SELECT_BED_TO_TRANSFER_MESSAGE");
     });
 
     it("Should throw an error message, when source and destination beds are same while trying to transfer a patient", function () {
@@ -506,7 +521,7 @@ describe("AdtController", function () {
         createController();
 
         scope.transfer();
-        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please select a bed to transfer the patient");
+        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "SELECT_BED_TO_TRANSFER_MESSAGE");
     });
 
     it("Should show confirmation dialog, when a bed is selected and trying to transfer a patient", function () {
@@ -515,8 +530,15 @@ describe("AdtController", function () {
         createController();
 
         scope.transfer();
-        expect(ngDialog.openConfirm).toHaveBeenCalled();
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/transferConfirmation.html', scope: scope, closeByEscape: true, className: "ngdialog-theme-default ng-dialog-adt-popUp"});
+        expect(ngDialog.openConfirm.calls.count()).toBe(1);
+        var args = ngDialog.openConfirm.calls.argsFor(0)[0];
+        expect(args.scope).toBe(scope);
+        expect(args.template).toBe('views/transferConfirmation.html');
+        expect(args.closeByEscape).toBe(true);
+        expect(args.className).toBe("ngdialog-theme-default ng-dialog-adt-popUp");
+        expect(typeof args.preCloseCallback).toBe('function');
+        args.preCloseCallback()
+        expect(scope.buttonClicked).toBe(false);
     });
 
     it("Should create an encounter of type Transfer and assign patient to new bed, On transferConfirmation when the selected bed is still available", function () {
@@ -527,6 +549,15 @@ describe("AdtController", function () {
         scope.patient = {uuid: "123"};
         scope.adtObservations = [];
         var encounterCreateResponse = {data: {patientUuid: '123', encounterUuid: "encounterUuid"}};
+        translate.instant.and.callFake(function (value) {
+            if (value === 'BED') {
+                return 'Bed';
+            }
+            if (value === 'IS_SUCCESSFULLY_ASSIGNED_MESSAGE') {
+                return 'is assigned successfully';
+            }
+            return value;
+        });
         encounterService.create.and.returnValue(specUtil.simplePromise(encounterCreateResponse));
         bedService.assignBed.and.returnValue(specUtil.simplePromise({data: {}}));
 
@@ -546,7 +577,7 @@ describe("AdtController", function () {
         expect(encounterService.create).toHaveBeenCalledWith(mappedEncounterData);
         expect(bedService.assignBed).toHaveBeenCalledWith(rootScope.selectedBedInfo.bed.bedId, encounterCreateResponse.data.patientUuid, encounterCreateResponse.data.encounterUuid);
         expect(scope.$emit).toHaveBeenCalledWith("event:patientAssignedToBed", rootScope.selectedBedInfo.bed);
-        expect(messagingService.showMessage).toHaveBeenCalledWith('info', "Bed " + rootScope.selectedBedInfo.bed.bedNumber + " is assigned successfully");
+        expect(messagingService.showMessage).toHaveBeenCalledWith('info',  "Bed " + rootScope.selectedBedInfo.bed.bedNumber + " is assigned successfully");
         expect(ngDialog.close).toHaveBeenCalled();
     });
 
@@ -562,6 +593,7 @@ describe("AdtController", function () {
             patientUuid: scope.patient.uuid,
             context: { roomName: roomName, department: { uuid: wardUuid, name: wardName, roomName: roomName }}
         };
+        translate.instant.and.returnValue("Please select an available bed. This bed is already assigned to IQ201");
 
         createController();
 
@@ -578,7 +610,7 @@ describe("AdtController", function () {
         createController();
 
         scope.discharge();
-        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "Please select a bed to discharge the patient");
+        expect(messagingService.showMessage).toHaveBeenCalledWith("error", "SELECT_BED_TO_DISCHARGE_MESSAGE");
     });
 
     it("Should show confirmation dialog, when a bed is selected and trying to discharge the patient", function () {
@@ -596,7 +628,15 @@ describe("AdtController", function () {
         };
         visitService.search.and.callFake(stubSearchPromise);
         scope.discharge();
-        expect(ngDialog.openConfirm).toHaveBeenCalledWith({template: 'views/dischargeConfirmation.html', scope: scope, closeByEscape: true,  className: "ngdialog-theme-default ng-dialog-adt-popUp"});
+        expect(ngDialog.openConfirm.calls.count()).toBe(1);
+        var args = ngDialog.openConfirm.calls.argsFor(0)[0];
+        expect(args.scope).toBe(scope);
+        expect(args.template).toBe('views/dischargeConfirmation.html');
+        expect(args.closeByEscape).toBe(true);
+        expect(args.className).toBe("ngdialog-theme-default ng-dialog-adt-popUp");
+        expect(typeof args.preCloseCallback).toBe('function');
+        args.preCloseCallback()
+        expect(scope.buttonClicked).toBe(false);
     });
 
     it("Should create an encounter of type Discharge and discharge the patient from the bed, On dischargeConfirmation", function () {
@@ -638,6 +678,7 @@ describe("AdtController", function () {
         };
         var patient = {id: 4, uuid: "someUuid", display: "IQ201 - someName", person: {display: "firstName lastName"}, identifiers: [{identifier: "IQ201"}]};
         bedService.getCompleteBedDetailsByBedId.and.returnValue(specUtil.simplePromise({data: {bed: bed, patients: [patient]}}));
+        translate.instant.and.returnValue("Please select an available bed. This bed is already assigned to IQ201");
 
         createController();
 
@@ -654,6 +695,15 @@ describe("AdtController", function () {
         rootScope.selectedBedInfo = {bed : bed};
         bedService.getCompleteBedDetailsByBedId.and.returnValue(specUtil.simplePromise({data: {bed: bed, patients: []}}));
         bedService.assignBed.and.returnValue(specUtil.simplePromise({data: {}}));
+        translate.instant.and.callFake(function (value) {
+            if (value === 'BED') {
+                return 'Bed';
+            }
+            if (value === 'IS_SUCCESSFULLY_ASSIGNED_MESSAGE') {
+                return 'is assigned successfully';
+            }
+            return value;
+        });
 
         scope.visitSummary = {"visitType": "IPD", "uuid": "visitUuid"};
         scope.patient = {uuid: "123"};
@@ -695,6 +745,15 @@ describe("AdtController", function () {
         rootScope.selectedBedInfo = {bed : bed};
         bedService.getCompleteBedDetailsByBedId.and.returnValue(specUtil.simplePromise({data: {bed: bed, patients: []}}));
         bedService.assignBed.and.returnValue(specUtil.simplePromise({data: {}}));
+        translate.instant.and.callFake(function (value) {
+            if (value === 'BED') {
+                return 'Bed';
+            }
+            if (value === 'IS_SUCCESSFULLY_ASSIGNED_MESSAGE') {
+                return 'is assigned successfully';
+            }
+            return value;
+        });
 
         scope.patient = {uuid: "123"};
         scope.adtObservations = [];

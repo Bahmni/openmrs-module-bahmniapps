@@ -4,7 +4,7 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
     function AttributeTypeMapper () {
     }
 
-    AttributeTypeMapper.prototype.mapFromOpenmrsAttributeTypes = function (mrsAttributeTypes, mandatoryAttributes, attributesConfig) {
+    AttributeTypeMapper.prototype.mapFromOpenmrsAttributeTypes = function (mrsAttributeTypes, mandatoryAttributes, attributesConfig, defaultLocale) {
         var attributeTypes = [];
         angular.forEach(mrsAttributeTypes, function (mrsAttributeType) {
             var isRequired = function () {
@@ -12,6 +12,34 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
                     return mandatoryAttribute == mrsAttributeType.name;
                 });
                 return element ? true : false;
+            };
+
+            var getLocaleSpecificConceptName = function (concept, locale, conceptNameType) {
+                conceptNameType = conceptNameType ? conceptNameType : "SHORT";
+                var localeSpecificName = _.filter(concept.names, function (name) {
+                    return name.locale == locale && name.conceptNameType == conceptNameType;
+                });
+                if (localeSpecificName && localeSpecificName[0]) {
+                    return localeSpecificName[0].display;
+                }
+                return null;
+            };
+
+            var getConceptDisplayName = function (concept, locale) {
+                var conceptNames = concept.names || [];
+                var shortName = conceptNames.find(function (cn) {
+                    return cn.locale === locale && cn.conceptNameType === "SHORT";
+                });
+                if (shortName) {
+                    return shortName.name;
+                }
+                var fsName = conceptNames.find(function (cn) {
+                    return cn.locale === locale && cn.conceptNameType === "FULLY_SPECIFIED";
+                });
+                if (fsName) {
+                    return fsName.name;
+                }
+                return concept.name ? concept.name.display : concept.displayString;
             };
 
             var attributeType = {
@@ -30,19 +58,10 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
 
             if (mrsAttributeType.concept && mrsAttributeType.concept.answers) {
                 angular.forEach(mrsAttributeType.concept.answers, function (mrsAnswer) {
-                    var displayName = mrsAnswer.display;
-                    var fullySpecifiedName = mrsAnswer.display;
-                    if (mrsAnswer.names && mrsAnswer.names.length == 2) {
-                        if (mrsAnswer.name.conceptNameType == 'FULLY_SPECIFIED') {
-                            if (mrsAnswer.names[0].display == displayName) {
-                                displayName = mrsAnswer.names[1].display;
-                                fullySpecifiedName = mrsAnswer.names[0].display;
-                            } else {
-                                displayName = mrsAnswer.names[0].display;
-                                fullySpecifiedName = mrsAnswer.names[1].display;
-                            }
-                        }
-                    }
+                    var displayName = getConceptDisplayName(mrsAnswer, defaultLocale);
+                    var fullySpecifiedName = getLocaleSpecificConceptName(mrsAnswer, defaultLocale, "FULLY_SPECIFIED");
+                    fullySpecifiedName = fullySpecifiedName || mrsAnswer.name.display;
+
                     attributeType.answers.push({
                         fullySpecifiedName: fullySpecifiedName,
                         description: displayName,

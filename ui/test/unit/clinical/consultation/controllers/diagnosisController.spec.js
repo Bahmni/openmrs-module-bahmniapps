@@ -14,6 +14,7 @@ describe("Diagnosis Controller", function () {
             "newlyAddedDiagnoses": [], preSaveHandler: new Bahmni.Clinical.Notifier()
         };
         rootScope.currentUser = {privileges: [{name: "app:clinical:deleteDiagnosis"}, {name: "app:clinical"}]};
+        rootScope.currentUser.userProperties = {defaultLocale: "en"};
 
         spyOn(DateUtil, 'today');
         mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig','getConfigValue']);
@@ -34,7 +35,7 @@ describe("Diagnosis Controller", function () {
                 }
             }
         });
-        translate = jasmine.createSpyObj('translate',['']);
+        translate = jasmine.createSpyObj('$translate',['instant']);
 
         retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['isRetrospectiveMode']);
 
@@ -86,7 +87,7 @@ describe("Diagnosis Controller", function () {
         it("should make a call to diagnosis service getAllFor", function () {
             $scope.getDiagnosis({term:"primary"}).then(function (list) {
                 spyOn(diagnosisService, 'getAllFor').and.returnValue(specUtil.simplePromise({data: [{"conceptName":"Cold, unspec.","conceptUuid":"uuid1","matchedName":null,"code":"T69.9XXA"}]}));
-                expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("primary");
+                expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("primary", "en");
                 expect(list.length).toBe(1);
                 expect(list[0].value).toBe("Cold, unspec. (T69.9XXA)");
                 expect(list[0].concept.name).toBe("Cold, unspec.");
@@ -98,7 +99,7 @@ describe("Diagnosis Controller", function () {
         it("should make a call to diagnosis service getAllFor with synonym", function () {
             spyOn(mockDiagnosisService, 'getAllFor').and.returnValue(specUtil.simplePromise({data: [{"conceptName":"Cold, unspec.","conceptUuid":"uuid1","matchedName":"Cold xyz","code":"T69.9XXA"}]}));
             $scope.getDiagnosis({term:"T69.9XXA"}).then(function (list) {
-                expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("T69.9XXA");
+                expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("T69.9XXA", "en");
                 expect(list.length).toBe(1);
                 expect(list[0].value).toBe("Cold xyz => Cold, unspec. (T69.9XXA)");
                 expect(list[0].concept.name).toBe("Cold, unspec.");

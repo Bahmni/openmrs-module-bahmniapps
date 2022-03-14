@@ -8,6 +8,8 @@ describe('Disposition DisplayControl', function () {
         rootScope,
         deferred,
         timeout,
+        dispositionService,
+        $translate,
         simpleHtml = '<disposition id="disposition" params="section" patient-uuid="patientUuid" visit-uuid="visitUuid"></disposition>';
 
     dispositions = [
@@ -58,10 +60,15 @@ describe('Disposition DisplayControl', function () {
             deferred.resolve({data: dispositions});
             return deferred.promise;
         });
-
         _spinner.then.and.callThrough({data: dispositions});
-
-        $provide.value('spinner', _spinner);
+        dispositionService = jasmine.createSpyObj('dispositionService', ['getDispositionByPatient']);
+        $translate = jasmine.createSpyObj('$translate', ['instant']);
+        $translate.instant.and.callFake(function (value) {
+            return value;
+        });
+         $provide.value('spinner', _spinner);
+         $provide.value('dispositionService', dispositionService);
+         $provide.value('$translate', $translate);
     });
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope,$q, $timeout) {
@@ -70,18 +77,23 @@ describe('Disposition DisplayControl', function () {
         rootScope = $rootScope;
         q = $q;
         timeout = $timeout;
+
+        rootScope.currentUser = {
+                    userProperties: function () {
+                        return {defaultLocale: 'en'};
+                    }
+                }
     }));
 
     it('should call dispositons by visit when visitUuid is passed', function () {
         var scope = rootScope.$new();
-
         scope.section = {
             numberOfVisits:1
         };
         scope.visitUuid= "1234";
 
         mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
-        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/visit?visitUuid=1234').respond(dispositions);
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/visitWithLocale?visitUuid=1234').respond(dispositions);
 
         var element = compile(simpleHtml)(scope);
 
@@ -98,14 +110,18 @@ describe('Disposition DisplayControl', function () {
 
     it('should return notes when getNotes method is called', function(){
         var scope = rootScope.$new();
-
+         rootScope.currentUser = {
+                    userProperties: function () {
+                        return {defaultLocale: 'en'};
+                    }
+         }
         scope.section = {
             numberOfVisits:1
         };
         scope.visitUuid= "1234";
 
         mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
-        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/visit?visitUuid=1234').respond(dispositions);
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/visitWithLocale?visitUuid=1234').respond(dispositions);
 
         var element = compile(simpleHtml)(scope);
 
@@ -124,14 +140,13 @@ describe('Disposition DisplayControl', function () {
 
     it('should call dispositions by patient when visitUuid is NOT passed', function () {
         var scope = rootScope.$new();
-
         scope.section = {
             numberOfVisits: 4
         };
         scope.patientUuid="123456";
 
         mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
-        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patient?numberOfVisits=4&patientUuid=123456').respond(dispositions);
+       mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patientWithLocale?numberOfVisits=4&patientUuid=123456').respond(dispositions);
 
         var element = compile(simpleHtml)(scope);
 
@@ -149,7 +164,6 @@ describe('Disposition DisplayControl', function () {
 
     it('should hide details button when the notes is available', function () {
         var scope = rootScope.$new();
-
         scope.section = {
             numberOfVisits: 4,
             showDetailsButton: true
@@ -157,7 +171,7 @@ describe('Disposition DisplayControl', function () {
         scope.patientUuid="123456";
 
         mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
-        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patient?numberOfVisits=4&patientUuid=123456').respond(dispositions);
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patientWithLocale?numberOfVisits=4&patientUuid=123456').respond(dispositions);
 
         var element = compile(simpleHtml)(scope);
 
@@ -181,7 +195,7 @@ describe('Disposition DisplayControl', function () {
         scope.patientUuid="123456";
 
         mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
-        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patient?numberOfVisits=4&patientUuid=123456').respond(dispositions);
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patientWithLocale?numberOfVisits=4&patientUuid=123456').respond(dispositions);
 
         var element = compile(simpleHtml)(scope);
 
@@ -204,7 +218,7 @@ describe('Disposition DisplayControl', function () {
         scope.patientUuid="123456";
 
         mockBackend.expectGET('../common/displaycontrols/disposition/views/disposition.html').respond("<div>dummy</div>");
-        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patient?numberOfVisits=4&patientUuid=123456').respond([]);
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/disposition/patientWithLocale?numberOfVisits=4&patientUuid=123456').respond([]);
 
         var element = compile(simpleHtml)(scope);
 

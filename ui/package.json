@@ -121,7 +121,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Bhamni/opd.git"
+    "url": "git://github.com/Bahmni/openmrs-module-bahmniapps.git"
   },
   "keywords": [
     "Bahmni",

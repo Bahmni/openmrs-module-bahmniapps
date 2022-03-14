@@ -39,7 +39,6 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             scope.$digest();
         });
 
-
         it("should update tehsil, district and state", function () {
             var village = Bahmni.Tests.villageMother.build();
 
@@ -54,9 +53,7 @@ describe('TopDownAddressFieldsDirectiveController', function () {
             var village = Bahmni.Tests.villageMother.build();
             village.parent = null;
             scope.address = {address3: "", countyDistrict: "", stateProvince: ""}
-
             scope.addressFieldSelected('cityVillage')({addressField: village});
-
             expect(scope.address.address3).toBe("");
             expect(scope.address.countyDistrict).toBe("");
             expect(scope.address.stateProvince).toBe("");

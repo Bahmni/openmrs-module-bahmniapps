@@ -1,15 +1,13 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService',
-        function (RecursionHelper, spinner, $filter, messagingService) {
+    .directive('concept', ['RecursionHelper', 'spinner', '$filter', 'messagingService', '$rootScope', '$translate',
+        function (RecursionHelper, spinner, $filter, messagingService, $rootScope, $translate) {
             var link = function (scope) {
                 var hideAbnormalbuttonConfig = scope.observation && scope.observation.conceptUIConfig && scope.observation.conceptUIConfig['hideAbnormalButton'];
-
                 scope.now = moment().format("YYYY-MM-DD hh:mm:ss");
                 scope.showTitle = scope.showTitle === undefined ? true : scope.showTitle;
                 scope.hideAbnormalButton = hideAbnormalbuttonConfig == undefined ? scope.hideAbnormalButton : hideAbnormalbuttonConfig;
-
                 scope.cloneNew = function (observation, parentObservation) {
                     observation.showAddMoreButton = function () {
                         return false;
@@ -18,10 +16,9 @@ angular.module('bahmni.common.conceptSet')
                     newObs.scrollToElement = true;
                     var index = parentObservation.groupMembers.indexOf(observation);
                     parentObservation.groupMembers.splice(index + 1, 0, newObs);
-                    messagingService.showMessage("info", "A new " + observation.label + " section has been added");
+                    messagingService.showMessage("info", $translate.instant("NEW_KEY") + " " + observation.label + " " + $translate.instant("SECTION_ADDED_KEY"));
                     scope.$root.$broadcast("event:addMore", newObs);
                 };
-
                 scope.removeClonedObs = function (observation, parentObservation) {
                     observation.voided = true;
                     var lastObservationByLabel = _.findLast(parentObservation.groupMembers, function (groupMember) {
@@ -31,7 +28,6 @@ angular.module('bahmni.common.conceptSet')
                     lastObservationByLabel.showAddMoreButton = function () { return true; };
                     observation.hidden = true;
                 };
-
                 scope.isClone = function (observation, parentObservation) {
                     if (parentObservation && parentObservation.groupMembers) {
                         var index = parentObservation.groupMembers.indexOf(observation);
@@ -39,7 +35,6 @@ angular.module('bahmni.common.conceptSet')
                     }
                     return false;
                 };
-
                 scope.isRemoveValid = function (observation) {
                     if (observation.getControlType() == 'image') {
                         return !observation.value;
@@ -84,6 +79,33 @@ angular.module('bahmni.common.conceptSet')
 
                 scope.getBooleanResult = function (value) {
                     return !!value;
+                };
+                scope.translatedLabel = function (observation) {
+                    if (observation && observation.concept) {
+                        var currentLocale = $rootScope.currentUser.userProperties.defaultLocale;
+                        var conceptNames = observation.concept.names ? observation.concept.names : [];
+                        var shortName = conceptNames.find(function (cn) {
+                            return cn.locale === currentLocale && cn.conceptNameType === "SHORT";
+                        });
+
+                        if (shortName) {
+                            return shortName.name;
+                        }
+
+                        var fsName = conceptNames.find(function (cn) {
+                            return cn.locale === currentLocale && cn.conceptNameType === "FULLY_SPECIFIED";
+                        });
+
+                        if (fsName) {
+                            return fsName.name;
+                        }
+
+                        return observation.concept.shortName || observation.concept.name;
+                    }
+                    if (observation) {
+                        return observation.label;
+                    }
+                    return "UNKNOWN_OBSERVATION_CONCEPT";
                 };
             };
 

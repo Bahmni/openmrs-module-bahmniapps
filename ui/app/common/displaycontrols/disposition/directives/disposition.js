@@ -28,6 +28,13 @@ angular.module('bahmni.common.displaycontrol.disposition')
                     }
                     return "";
                 };
+                $scope.getDisplayName = function (disposition) {
+                    if (disposition.preferredName != null) {
+                        return disposition.preferredName;
+                    } else {
+                        return disposition.conceptName;
+                    }
+                };
 
                 $scope.showDetailsButton = function (disposition) {
                     if ($scope.getNotes(disposition)) {

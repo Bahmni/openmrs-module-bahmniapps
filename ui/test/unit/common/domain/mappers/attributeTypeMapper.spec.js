@@ -77,6 +77,10 @@ describe('AttributeTypeMapper', function () {
                         {
                             "display": "General",
                             "uuid": "0a843350-1481-11e3-937b-0800271c1b75",
+                            name: {
+                                display: "General",
+                                conceptNameType: "FULLY_SPECIFIED"
+                            },
                             "links": [
                                 {
                                     "rel": "self",
@@ -182,7 +186,7 @@ describe('AttributeTypeMapper', function () {
         }));
     });
 
-    it('should map name, datatypeClassname if description, format not there for attributeTypes', function(){
+    it('should map name, datatypeClassname if description, format not there for attributeTypes', function () {
         var mrsAttributeTypes= [
             {
                 "uuid" : "uuid2",
@@ -198,7 +202,7 @@ describe('AttributeTypeMapper', function () {
         expect(mappedAttributeTypes.attributeTypes[0].excludeFrom.length).toBe(0);
     });
 
-    it('should map dataType Config to pattern for RegexValidatedTextDatatype attributeTypes', function(){
+    it('should map dataType Config to pattern for RegexValidatedTextDatatype attributeTypes', function () {
         var mrsAttributeTypes= [
            {
                "uuid" : "uuid2",
@@ -236,6 +240,340 @@ describe('AttributeTypeMapper', function () {
         expect(mappedAttributeTypes.attributeTypes[0].excludeFrom.length).toBe(1);
         expect(mappedAttributeTypes.attributeTypes[0].excludeFrom[0]).toBe("Some Program");
         expect(mappedAttributeTypes.attributeTypes[1].excludeFrom.length).toBe(0);
+    });
+
+    it('should map correct locale specific name to be displayed', function () {
+        var mrspatientAttributeTypes = [
+            {
+                "uuid": "c1f4a004-3f10-11e4-adec-0800271c1b75",
+                "name": "education",
+                "sortWeight": 6.0,
+                "description": "Education Details",
+                "format": "org.openmrs.Concept",
+                "concept": {
+                    "uuid": "c2084e7b-3f10-11e4-adec-0800271c1b75",
+                    "display": "Education Details",
+                    "name": {
+                        "display": "Education Details",
+                        "uuid": "c2085653-3f10-11e4-adec-0800271c1b75",
+                        "name": "Education Details",
+                        "locale": "en",
+                        "localePreferred": true,
+                        "conceptNameType": "FULLY_SPECIFIED",
+                        "links": [
+                            {
+                                "rel": "self",
+                                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2084e7b-3f10-11e4-adec-0800271c1b75/name/c2085653-3f10-11e4-adec-0800271c1b75"
+                            },
+                            {
+                                "rel": "full",
+                                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2084e7b-3f10-11e4-adec-0800271c1b75/name/c2085653-3f10-11e4-adec-0800271c1b75?v=full"
+                            }
+                        ],
+                        "resourceVersion": "1.9"
+                    },
+                    "datatype": {
+                        "uuid": "8d4a48b6-c2cc-11de-8d13-0010c6dffd0f",
+                        "display": "Coded",
+                        "name": "Coded",
+                        "description": "Value determined by term dictionary lookup (i.e., term identifier)",
+                        "hl7Abbreviation": "CWE",
+                        "retired": false,
+                        "links": [
+                            {
+                                "rel": "self",
+                                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a48b6-c2cc-11de-8d13-0010c6dffd0f"
+                            },
+                            {
+                                "rel": "full",
+                                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptdatatype/8d4a48b6-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                            }
+                        ],
+                        "resourceVersion": "1.8"
+                    },
+                    "conceptClass": {
+                        "uuid": "8d492774-c2cc-11de-8d13-0010c6dffd0f",
+                        "display": "Misc",
+                        "name": "Misc",
+                        "description": "Terms which don't fit other categories",
+                        "retired": false,
+                        "links": [
+                            {
+                                "rel": "self",
+                                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f"
+                            },
+                            {
+                                "rel": "full",
+                                "uri": "NEED-TO-CONFIGURE/ws/rest/v1/conceptclass/8d492774-c2cc-11de-8d13-0010c6dffd0f?v=full"
+                            }
+                        ],
+                        "resourceVersion": "1.8"
+                    },
+                    "set": false,
+                    "version": null,
+                    "retired": false,
+                    "names": [
+                        {
+                            "display": "education",
+                            "uuid": "c208531b-3f10-11e4-adec-0800271c1b75",
+                            "name": "education",
+                            "locale": "en",
+                            "localePreferred": false,
+                            "conceptNameType": "SHORT",
+                            "links": [
+                                {
+                                    "rel": "self",
+                                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2084e7b-3f10-11e4-adec-0800271c1b75/name/c208531b-3f10-11e4-adec-0800271c1b75"
+                                },
+                                {
+                                    "rel": "full",
+                                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2084e7b-3f10-11e4-adec-0800271c1b75/name/c208531b-3f10-11e4-adec-0800271c1b75?v=full"
+                                }
+                            ],
+                            "resourceVersion": "1.9"
+                        },
+                        {
+                            "display": "Education Details",
+                            "uuid": "c2085653-3f10-11e4-adec-0800271c1b75",
+                            "name": "Education Details",
+                            "locale": "en",
+                            "localePreferred": true,
+                            "conceptNameType": "FULLY_SPECIFIED",
+                            "links": [
+                                {
+                                    "rel": "self",
+                                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2084e7b-3f10-11e4-adec-0800271c1b75/name/c2085653-3f10-11e4-adec-0800271c1b75"
+                                },
+                                {
+                                    "rel": "full",
+                                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2084e7b-3f10-11e4-adec-0800271c1b75/name/c2085653-3f10-11e4-adec-0800271c1b75?v=full"
+                                }
+                            ],
+                            "resourceVersion": "1.9"
+                        }
+                    ],
+                    "descriptions": [],
+                    "mappings": [],
+                    "answers": [
+                        {
+                            "uuid": "c2107f30-3f10-11e4-adec-0800271c1b75",
+                            "name": {
+                                "display": "Uneducated",
+                                "uuid": "c21087ca-3f10-11e4-adec-0800271c1b75",
+                                "name": "Uneducated",
+                                "locale": "en",
+                                "localePreferred": true,
+                                "conceptNameType": "FULLY_SPECIFIED",
+                                "links": [
+                                    {
+                                        "rel": "self",
+                                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2107f30-3f10-11e4-adec-0800271c1b75/name/c21087ca-3f10-11e4-adec-0800271c1b75"
+                                    },
+                                    {
+                                        "rel": "full",
+                                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2107f30-3f10-11e4-adec-0800271c1b75/name/c21087ca-3f10-11e4-adec-0800271c1b75?v=full"
+                                    }
+                                ],
+                                "resourceVersion": "1.9"
+                            },
+                            "names": [
+                                {
+                                    "display": "Uneducated fr fsn",
+                                    "uuid": "9e57a5b1-b7ac-450c-bdb2-53bcc16d2d33",
+                                    "name": "Uneducated fr fsn",
+                                    "locale": "fr",
+                                    "localePreferred": true,
+                                    "conceptNameType": "FULLY_SPECIFIED",
+                                    "links": [
+                                        {
+                                            "rel": "self",
+                                            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2107f30-3f10-11e4-adec-0800271c1b75/name/9e57a5b1-b7ac-450c-bdb2-53bcc16d2d33"
+                                        },
+                                        {
+                                            "rel": "full",
+                                            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2107f30-3f10-11e4-adec-0800271c1b75/name/9e57a5b1-b7ac-450c-bdb2-53bcc16d2d33?v=full"
+                                        }
+                                    ],
+                                    "resourceVersion": "1.9"
+                                },
+                                {
+                                    "display": "Uneducated fr sn",
+                                    "uuid": "c2108410-3f10-11e4-adec-0800271c1b75",
+                                    "name": "Uneducated fr sn",
+                                    "locale": "fr",
+                                    "localePreferred": false,
+                                    "conceptNameType": "SHORT",
+                                    "links": [
+                                        {
+                                            "rel": "self",
+                                            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2107f30-3f10-11e4-adec-0800271c1b75/name/c2108410-3f10-11e4-adec-0800271c1b75"
+                                        },
+                                        {
+                                            "rel": "full",
+                                            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2107f30-3f10-11e4-adec-0800271c1b75/name/c2108410-3f10-11e4-adec-0800271c1b75?v=full"
+                                        }
+                                    ],
+                                    "resourceVersion": "1.9"
+                                },
+                                {
+                                    "display": "Uneducated",
+                                    "uuid": "c21087ca-3f10-11e4-adec-0800271c1b75",
+                                    "name": "Uneducated",
+                                    "locale": "en",
+                                    "localePreferred": true,
+                                    "conceptNameType": "FULLY_SPECIFIED",
+                                    "links": [
+                                        {
+                                            "rel": "self",
+                                            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2107f30-3f10-11e4-adec-0800271c1b75/name/c21087ca-3f10-11e4-adec-0800271c1b75"
+                                        },
+                                        {
+                                            "rel": "full",
+                                            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2107f30-3f10-11e4-adec-0800271c1b75/name/c21087ca-3f10-11e4-adec-0800271c1b75?v=full"
+                                        }
+                                    ],
+                                    "resourceVersion": "1.9"
+                                }
+                            ],
+                            "displayString": "Uneducated",
+                            "resourceVersion": "2.0"
+                        },
+                        {
+                            "uuid": "c211442b-3f10-11e4-adec-0800271c1b75",
+                            "name": {
+                                "display": "5th Pass and Below",
+                                "uuid": "c2114b67-3f10-11e4-adec-0800271c1b75",
+                                "name": "5th Pass and Below",
+                                "locale": "en",
+                                "localePreferred": true,
+                                "conceptNameType": "FULLY_SPECIFIED",
+                                "links": [
+                                    {
+                                        "rel": "self",
+                                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c211442b-3f10-11e4-adec-0800271c1b75/name/c2114b67-3f10-11e4-adec-0800271c1b75"
+                                    },
+                                    {
+                                        "rel": "full",
+                                        "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c211442b-3f10-11e4-adec-0800271c1b75/name/c2114b67-3f10-11e4-adec-0800271c1b75?v=full"
+                                    }
+                                ],
+                                "resourceVersion": "1.9"
+                            },
+                            "names": [
+                                {
+                                    "display": "5th Pass and Below en fsn",
+                                    "uuid": "c2114b67-3f10-11e4-adec-0800271c1b75",
+                                    "name": "5th Pass and Below en fsn",
+                                    "locale": "en",
+                                    "localePreferred": true,
+                                    "conceptNameType": "FULLY_SPECIFIED",
+                                    "links": [
+                                        {
+                                            "rel": "self",
+                                            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c211442b-3f10-11e4-adec-0800271c1b75/name/c2114b67-3f10-11e4-adec-0800271c1b75"
+                                        },
+                                        {
+                                            "rel": "full",
+                                            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c211442b-3f10-11e4-adec-0800271c1b75/name/c2114b67-3f10-11e4-adec-0800271c1b75?v=full"
+                                        }
+                                    ],
+                                    "resourceVersion": "1.9"
+                                },
+                                {
+                                    "display": "5th Pass and Below en sn",
+                                    "uuid": "c2114827-3f10-11e4-adec-0800271c1b75",
+                                    "name": "5th Pass and Below en sn",
+                                    "locale": "en",
+                                    "localePreferred": false,
+                                    "conceptNameType": "SHORT",
+                                    "links": [
+                                        {
+                                            "rel": "self",
+                                            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c211442b-3f10-11e4-adec-0800271c1b75/name/c2114827-3f10-11e4-adec-0800271c1b75"
+                                        },
+                                        {
+                                            "rel": "full",
+                                            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c211442b-3f10-11e4-adec-0800271c1b75/name/c2114827-3f10-11e4-adec-0800271c1b75?v=full"
+                                        }
+                                    ],
+                                    "resourceVersion": "1.9"
+                                }
+                            ],
+                            "displayString": "5th Pass and Below",
+                            "resourceVersion": "2.0"
+                        }
+                    ],
+                    "setMembers": [],
+                    "auditInfo": {
+                        "creator": {
+                            "uuid": "62a3b753-3f10-11e4-adec-0800271c1b75",
+                            "display": "admin",
+                            "links": [
+                                {
+                                    "rel": "self",
+                                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/user/62a3b753-3f10-11e4-adec-0800271c1b75"
+                                }
+                            ]
+                        },
+                        "dateCreated": "2014-09-18T14:19:53.000+0530",
+                        "changedBy": {
+                            "uuid": "62a3b753-3f10-11e4-adec-0800271c1b75",
+                            "display": "admin",
+                            "links": [
+                                {
+                                    "rel": "self",
+                                    "uri": "NEED-TO-CONFIGURE/ws/rest/v1/user/62a3b753-3f10-11e4-adec-0800271c1b75"
+                                }
+                            ]
+                        },
+                        "dateChanged": "2014-09-18T14:19:53.000+0530"
+                    },
+                    "links": [
+                        {
+                            "rel": "self",
+                            "uri": "NEED-TO-CONFIGURE/ws/rest/v1/concept/c2084e7b-3f10-11e4-adec-0800271c1b75"
+                        }
+                    ],
+                    "resourceVersion": "2.0"
+                }
+            }
+        ];
+
+        var mandatoryPersonAttributes = ["education"];
+
+        var patientConfigs = new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(mrspatientAttributeTypes, mandatoryPersonAttributes, undefined, 'en');
+        expect(patientConfigs.attributeTypes.length).toBe(1);
+        var educationAttributeType = patientConfigs.attributeTypes[0];
+        expect(educationAttributeType.answers.length).toBe(2);
+        expect(educationAttributeType.answers).toEqual(jasmine.objectContaining([
+            {
+                fullySpecifiedName: "Uneducated",
+                description: "Uneducated",
+                conceptId: "c2107f30-3f10-11e4-adec-0800271c1b75"
+            },
+            {
+                fullySpecifiedName: "5th Pass and Below en fsn",
+                description: "5th Pass and Below en sn",
+                conceptId: "c211442b-3f10-11e4-adec-0800271c1b75"
+            }
+        ]));
+
+        patientConfigs = new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(mrspatientAttributeTypes, mandatoryPersonAttributes, undefined, 'fr');
+        expect(patientConfigs.attributeTypes.length).toBe(1);
+        educationAttributeType = patientConfigs.attributeTypes[0];
+        expect(educationAttributeType.answers.length).toBe(2);
+        expect(educationAttributeType.answers).toEqual(jasmine.objectContaining([
+            {
+                fullySpecifiedName: "Uneducated fr fsn",
+                description: "Uneducated fr sn",
+                conceptId: "c2107f30-3f10-11e4-adec-0800271c1b75"
+            },
+            {
+                fullySpecifiedName: "5th Pass and Below",
+                description: "5th Pass and Below",
+                conceptId: "c211442b-3f10-11e4-adec-0800271c1b75"
+            }
+        ]));
     });
 
 });

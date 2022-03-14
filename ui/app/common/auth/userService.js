@@ -70,4 +70,17 @@ angular.module('authentication')
                 withCredentials: true
             });
         };
+
+        this.allowedDomains = function (redirectUrl) {
+            var deferrable = $q.defer();
+            $http.get(Bahmni.Common.Constants.loginConfig, {
+                method: "GET",
+                cache: true
+            }).success(function (data) {
+                deferrable.resolve(data.whiteListedDomains);
+            }).error(function () {
+                deferrable.resolve([]);
+            });
+            return deferrable.promise;
+        };
     }]);

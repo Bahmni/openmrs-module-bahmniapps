@@ -31,7 +31,7 @@ angular.module('bahmni.ot')
             };
 
             var getHeightForSurgicalAppointment = function () {
-                return $scope.surgicalAppointment.derivedAttributes.duration * $scope.heightPerMin;
+                return $scope.surgicalAppointment.derivedAttributes.height * $scope.heightPerMin;
             };
 
             $scope.selectSurgicalAppointment = function ($event) {

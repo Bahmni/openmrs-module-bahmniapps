@@ -159,7 +159,10 @@ angular.module('bahmni.registration')
                     });
                 }
             };
-
+            $scope.getTranslatedPrimaryIdentifierInVisit = function (primaryIdentifierName) {
+                var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(primaryIdentifierName, Bahmni.Common.Constants.registration, $translate);
+                return translatedName;
+            };
             $scope.getMessage = function () {
                 return $scope.message;
             };

@@ -6,6 +6,11 @@ describe("surgicalAppointmentActualTimeController", function () {
     var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgeons', 'saveSurgicalBlock', 'getSurgicalAppointmentAttributeTypes', 'getSurgicalBlockFor', 'updateSurgicalAppointment']);
     var surgicalAppointmentHelper = jasmine.createSpyObj('surgicalAppointmentHelper', ['getEstimatedDurationForAppointment']);
+    var translate;
+    var translatedMessages = {
+        "ACTUAL_START_TIME_GREATER_THAN_END_TIME_MESSAGE": "Actual start time should be less than actual end time",
+        "ACTUAL_TIME_ADDED_TO_KEY":"Actual time added to "
+    };
 
 
     beforeEach(function () {
@@ -15,6 +20,10 @@ describe("surgicalAppointmentActualTimeController", function () {
             scope = $rootScope.$new();
             surgicalAppointmentHelper = _surgicalAppointmentHelper_;
         });
+        translate = jasmine.createSpyObj('$translate', ['instant']);
+        translate.instant.and.callFake(function (key) {
+            return translatedMessages[key];
+        })
     });
 
     var createController = function () {
@@ -23,7 +32,8 @@ describe("surgicalAppointmentActualTimeController", function () {
             ngDialog: ngDialog,
             messagingService: messagingService,
             surgicalAppointmentService: surgicalAppointmentService,
-            surgicalAppointmentHelper: surgicalAppointmentHelper
+            surgicalAppointmentHelper: surgicalAppointmentHelper,
+            $translate: translate
         });
     };
 
@@ -322,6 +332,6 @@ describe("surgicalAppointmentActualTimeController", function () {
         scope.actualStartTime = new Date("2017-06-06T10:00:00.000+0530");
         scope.actualEndTime = new Date("2017-06-06T10:00:00.000+0530");
         scope.add();
-        expect(messagingService.showMessage).toHaveBeenCalledWith('error', "Actual start time should be less than actual end time");
+        expect(messagingService.showMessage).toHaveBeenCalledWith('error', 'ACTUAL_START_TIME_GREATER_THAN_END_TIME_MESSAGE');
     });
 });

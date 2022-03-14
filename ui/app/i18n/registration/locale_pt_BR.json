@@ -9,6 +9,7 @@
     "REGISTRATION_LABEL_PATIENT_IDENTIFIER": "Identificador do Paciente",
     "REGISTRATION_LABEL_ENTER_ID": "Inserir ID",
     "REGISTRATION_LABEL_NO_PRINT_LAYOUT": "Nenhum layout de impressão encontrados",
+    "REGISTRATION_PRINT_REG_CARD_LOCAL_KEY":"Imprimir cartão de registro",
     "REGISTRATION_LABEL_FEATURE_NOT_IMPLEMENTED": "O recurso que você está pedindo ainda não está implementado.",
     "REGISTRATION_LABEL_PATIENT_NAME": "Nome do Paciente",
     "REGISTRATION_LABEL_PATIENT_FIRSTNAME": "Primeiro Nome",
@@ -84,5 +85,6 @@
     "NO_LOCATION_TAGGED_TO_VISIT_LOCATION": "No location tagged to Visit Location Found",
     "REGISTRATION_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
     "OBS_BOOLEAN_YES_KEY": "Yes",
-    "OBS_BOOLEAN_NO_KEY": "No"
+    "OBS_BOOLEAN_NO_KEY": "No",
+    "REGISTRATION_ADDTIONAL_IDENTIFIERS": "Identifiants supplémentaires"
 }

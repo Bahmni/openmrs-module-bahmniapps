@@ -21,10 +21,10 @@
 
                 <td ng-if="::!isLatestDiagnosis(diagnosis)" class="view">
                 <span id="certainty" ng-hide="::(config.showCertainty == false)"
-                      class="certainty">{{::diagnosis.certainty}}</span>
+                      class="certainty">{{::translateDiagnosisLabels(diagnosis.certainty,'CERTAINTY') |translate}}</span>
                              <span id="order" ng-hide="::(config.showOrder == false)"
-                                   class="order">{{::diagnosis.order}}</span>
-                <span id="status" class="status">{{::diagnosis.diagnosisStatus}}</span>
+                                   class="order">{{::translateDiagnosisLabels(diagnosis.order , 'ORDER') |translate}}</span>
+                <span id="status" class="status">{{::translateDiagnosisLabels(diagnosis.diagnosisStatus, 'STATUS') |translate}}</span>
                 <span class="toggle-btn-date-wrapper">
                 <span id="diagnosisDate" class="date">{{::diagnosis.diagnosisDateTime | bahmniDate}}</span>
                 <span class="toggle-btn" toggle="diagnosis.showDetails"
@@ -39,10 +39,10 @@
                 <td ng-if="::isLatestDiagnosis(diagnosis)" class="view"></td>
                 <td class="view" ng-if="::(showLatestDiagnosis == 'true')">
                         <span id="certainty" ng-hide="::(config.showCertainty == false)" class="certainty">
-                            {{::diagnosis.latestDiagnosis.certainty}}</span>
+                            {{::translateDiagnosisLabels(diagnosis.latestDiagnosis.certainty, 'CERTAINTY') |translate}}</span>
                 <span id="order" ng-hide="::(config.showOrder == false)"
                       class="order">{{::diagnosis.latestDiagnosis.order}}</span>
-                <span id="status" class="status">{{::diagnosis.latestDiagnosis.diagnosisStatus}}</span>
+                <span id="status" class="status">{{::translateDiagnosisLabels(diagnosis.latestDiagnosis.diagnosisStatus , 'STATUS') |translate}}</span>
                 <span class="toggle-btn-date-wrapper">
                     <span id="diagnosisDate"
                           class="date">{{::diagnosis.latestDiagnosis.diagnosisDateTime | bahmniDate}}</span>

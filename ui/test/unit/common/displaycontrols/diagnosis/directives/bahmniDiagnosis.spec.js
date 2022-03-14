@@ -5,6 +5,7 @@ describe('Diagnosis DisplayControl', function () {
         compile, diagnosis,
         mockBackend,
         element,
+        translate,
         directiveHtml = '<bahmni-diagnosis patient-uuid="patient.uuid" config="section" show-ruled-out-diagnoses="false"></bahmni-diagnosis>';
 
     beforeEach(module('bahmni.common.domain'));
@@ -21,7 +22,8 @@ describe('Diagnosis DisplayControl', function () {
 
         _spinner.then.and.callThrough({data: {}});
         $provide.value('spinner', _spinner);
-
+        translate = jasmine.createSpyObj('$translate',['instant']);
+        $provide.value('$translate', translate);
         _diagnosisService = jasmine.createSpyObj('diagnosisService', ['getDiagnoses']);
         var getDiagnosesPromise = specUtil.createServicePromise('getDiagnoses');
         getDiagnosesPromise.then = function (successFn) {

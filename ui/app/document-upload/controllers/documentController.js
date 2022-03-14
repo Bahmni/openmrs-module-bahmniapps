@@ -206,7 +206,7 @@ angular.module('opd.documentupload')
                         $scope.toggleGallery = true;
                     }));
                 } else {
-                    messagingService.showMessage("error", "File type is not supported");
+                    messagingService.showMessage("error", $translate.instant("FILE_TYPE_NOT_SUPPORTED_MESSAGE"));
                     $scope.toggleGallery = true;
                     if (!$scope.$$phase) {
                         $scope.$apply();

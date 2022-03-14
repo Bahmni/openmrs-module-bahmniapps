@@ -1,0 +1,12 @@
+{
+  "SELECT_BED_TO_ADMIT_PATIENT_DEFAULT_MESSAGE": "Veuillez sélectionner un lit pour admettre le patient",
+  "SELECT_AVAILABLE_BED_DEFAULT_MESSAGE": "Veuillez sélectionner un lit disponible. Ce lit est déjà attribué à {{identifier}} ",
+  "SUCCESSFULLY_DISCHARGED_MESSAGE": "Déchargé avec succès de {{bed}}",
+  "SELECT_BED_TO_TRANSFER_MESSAGE": "Veuillez sélectionner un lit pour transférer le patient",
+  "SELECT_BED_TO_DISCHARGE_MESSAGE": "Veuillez sélectionner un lit pour libérer le patient",
+  "NO_ACTIVE_VISIT_MESSAGE": "Aucune visite active trouvée pour ce patient",
+  "TAGS_UPDATED_SUCCESSFULLY_MESSAGE": "Balises mises à jour avec succès",
+  "DATE_OF_DISCHARGE_AND_REASON_FOR_DISCHARGE_CANNOT_BE_EMPTY_MESSAGE": "La date du congé et la raison du congé ne peuvent pas être vides",
+  "IS_SUCCESSFULLY_ASSIGNED_MESSAGE": "est attribué avec succès",
+  "BED_KEY": "Lit"
+}

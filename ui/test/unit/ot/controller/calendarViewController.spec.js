@@ -160,6 +160,42 @@ describe("calendarViewController", function () {
         expect(state.filterParams).toEqual(scope.filters);
     });
 
+    it('Should automatically call applyFilters when providers are modified', function () {
+        createController();
+        scope.filters = {locations: {"location1": true, "location2": false},
+            providers: [], patient: null, statusList: []
+        };
+        scope.$digest();
+        spyOn(scope, 'applyFilters');
+        scope.filters.providers = [{uuid: "providerUuid1"}];
+        scope.$digest();
+        expect(scope.applyFilters).toHaveBeenCalled();
+    });
+
+    it('Should automatically call applyFilters when patient is modified', function () {
+        createController();
+        scope.filters = {locations: {"location1": true, "location2": false},
+            providers: [], patient: null, statusList: []
+        };
+        scope.$digest();
+        spyOn(scope, 'applyFilters');
+        scope.filters.patient = {uuid: "patientUuid2", value: "firstName2 lastName2", identifier: "IQ10002"};
+        scope.$digest();
+        expect(scope.applyFilters).toHaveBeenCalled();
+    });
+
+    it('Should automatically call applyFilters when statusList is modified', function () {
+        createController();
+        scope.filters = {locations: {"location1": true, "location2": false},
+            providers: [], patient: null, statusList: []
+        };
+        scope.$digest();
+        spyOn(scope, 'applyFilters');
+        scope.filters.statusList = [{name: "COMPLETED"}];
+        scope.$digest();
+        expect(scope.applyFilters).toHaveBeenCalled();
+    });
+
     it('Should initialize the filter data', function () {
         rootScope.surgeons = [{
             "uuid": "batmanUuid",

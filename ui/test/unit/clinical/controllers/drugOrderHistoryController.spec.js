@@ -193,6 +193,9 @@ describe("DrugOrderHistoryController", function () {
                     "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
                     "strength": null,
                     "name": "Methylprednisolone 2ml"
+                },
+                 "concept": {
+                    "shortName": "Methylprednisolone 2ml"
                 }
             };
 
@@ -254,6 +257,9 @@ describe("DrugOrderHistoryController", function () {
         "previousOrderUuid": null,
         "orderReasonText": null,
         "duration": 10,
+        "concept": {
+            "shortName": "Methylprednisolone 2ml"
+        },
         "provider": {name: "superman"}
     };
 
@@ -298,6 +304,9 @@ describe("DrugOrderHistoryController", function () {
         "previousOrderUuid": null,
         "orderReasonText": null,
         "duration": 10,
+        "concept": {
+            "shortName": "Methylprednisolone 200ml"
+        },
         "provider": {name: "superman"}
     };
 
@@ -345,6 +354,9 @@ describe("DrugOrderHistoryController", function () {
             "previousOrderUuid": null,
             "orderReasonText": null,
             "duration": 10,
+            "concept": {
+                "shortName": "Methylprednisolone 2ml"
+            },
             "provider": {name: "superman"}
         }];
 });

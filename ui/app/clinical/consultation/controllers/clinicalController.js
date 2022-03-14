@@ -5,26 +5,32 @@ angular.module('bahmni.clinical').controller('ClinicalController',
         function ($scope, retrospectiveEntryService, $rootScope, appService, $document) {
             $scope.showTeleConsultationWindow = false;
             var api = null;
-            $scope.$watch(function () {
-                return $rootScope.showTeleConsultationWindow;
-            }, function () {
-                $scope.showTeleConsultationWindow = $rootScope.showTeleConsultationWindow;
-                if ($scope.showTeleConsultationWindow) {
-                    var teleConsultationWindow = angular.element(document.getElementById('tele-consultation-meet'));
-                    teleConsultationWindow.empty();
-                    var meetId = $rootScope.meetId;
-                    var domain = 'meet.jit.si';
-                    var options = {
-                        roomName: meetId || "",
-                        parentNode: document.querySelector('#tele-consultation-meet')
-                    };
-                    api = new JitsiMeetExternalAPI(domain, options);
+
+            // eslint-disable-next-line angular/on-watch
+            $rootScope.$on("event:launchVirtualConsult", function (event, params) {
+                $scope.showTeleConsultationWindow = true;
+                var teleConsultationWindow = angular.element(document.getElementById('tele-consultation-meet'));
+                teleConsultationWindow.empty();
+                var meetId = params.uuid;
+                var domain = 'meet.jit.si';
+
+                if (params.link && params.link.trim().length > 0) {
+                    var meetingUrl = new URL(params.link.trim());
+                    domain = meetingUrl.host;
+                    var roomDetails = meetingUrl.pathname;
+                    meetId = roomDetails.substring(roomDetails.indexOf("/") + 1, roomDetails.length);
                 }
-            }, true);
+
+                var options = {
+                    roomName: meetId || "",
+                    parentNode: document.querySelector('#tele-consultation-meet')
+                };
+                api = new JitsiMeetExternalAPI(domain, options);
+            });
 
             $scope.closeTeleConsultation = function () {
                 api.executeCommand('hangup');
-                appService.setTeleConsultationVars(null, false);
+                $scope.showTeleConsultationWindow = false;
                 var teleConsultationWindow = angular.element(document.getElementById('tele-consultation'));
                 teleConsultationWindow.css({
                     top: '0px',

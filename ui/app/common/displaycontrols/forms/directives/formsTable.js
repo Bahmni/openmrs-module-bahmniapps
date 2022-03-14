@@ -12,7 +12,6 @@ angular.module('bahmni.common.displaycontrol.forms')
                         v: "custom:(setMembers:(display))"
                     });
                 };
-
                 var obsFormData = function () {
                     return visitFormService.formData($scope.patient.uuid, $scope.section.dashboardConfig.maximumNoOfVisits, $scope.section.formGroup, $state.params.enrollment);
                 };
@@ -34,7 +33,7 @@ angular.module('bahmni.common.displaycontrol.forms')
                     return _.sortBy(formData, "obsDatetime").reverse();
                 };
                 $scope.doesUserHaveAccessToTheForm = function (data, action) {
-                    if (data.privileges != undefined) {
+                    if ((data.privileges != null) && (typeof data.privileges != undefined) && (data.privileges > 0)) {
                         var editable = [];
                         var viewable = [];
                         data.privileges.forEach(function (formPrivilege) {

@@ -1,7 +1,7 @@
 'use strict';
 describe("Program display control", function () {
 
-    var compile, rootScope, programService, translateFilter, _provide;
+    var compile, rootScope, programService, _provide, translateFilter;
     var DateUtil = Bahmni.Common.Util.DateUtil;
     var element, q;
 
@@ -16,12 +16,19 @@ describe("Program display control", function () {
         $provide.value('translateFilter', translateFilter);
         _provide = $provide;
         $provide.value('$state', {params: {}})
+        var $translate = jasmine.createSpyObj('$translate', ['instant']);
+        $provide.value('$translate', $translate);
     }));
 
     beforeEach(inject(function ($compile, $rootScope, $q) {
         compile = $compile;
         rootScope = $rootScope;
         q = $q;
+        rootScope.currentUser = {
+            userProperties: function () {
+                return {defaultLocale: 'en'};
+            }
+        }
     }));
 
     var today = DateUtil.endOfToday();

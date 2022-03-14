@@ -1,5 +1,14 @@
 'use strict';
 
+var constructDrugNameDisplayWithConcept = function (drug, concept) {
+    if (!_.isEmpty(drug)) {
+        if (drug.name) {
+            return drug.name + " (" + drug.form + ")";
+        } else if (concept) {
+            return (concept.shortName || concept.name) + " (" + drug.form + ")";
+        }
+    }
+};
 var constructDrugNameDisplay = function (drug) {
     if (!_.isEmpty(drug)) {
         return drug.name + " (" + drug.form + ")";
@@ -718,8 +727,7 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
     viewModel.orderNumber = drugOrderResponse.orderNumber && parseInt(drugOrderResponse.orderNumber.replace("ORD-", ""));
     viewModel.drugNonCoded = drugOrderResponse.drugNonCoded;
     viewModel.isNonCodedDrug = drugOrderResponse.drugNonCoded ? true : false;
-    viewModel.drugNameDisplay = viewModel.drugNonCoded || constructDrugNameDisplay(viewModel.drug)
-        || _.get(viewModel, 'concept.name');
+    viewModel.drugNameDisplay = viewModel.drugNonCoded || constructDrugNameDisplayWithConcept(viewModel.drug, viewModel.concept) || _.get(viewModel, 'concept.name');
     if (config) {
         viewModel.loadOrderAttributes(drugOrderResponse);
     } else {

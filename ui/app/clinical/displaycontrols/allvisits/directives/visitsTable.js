@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q',
-        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q) {
+    .directive('visitsTable', ['patientVisitHistoryService', 'conceptSetService', 'spinner', '$state', '$q', '$translate',
+        function (patientVisitHistoryService, conceptSetService, spinner, $state, $q, $translate) {
             var controller = function ($scope) {
                 var emitNoDataPresentEvent = function () {
                     $scope.$emit("no-data-present-event");
@@ -17,7 +17,11 @@ angular.module('bahmni.clinical')
                 $scope.hasVisits = function () {
                     return $scope.visits && $scope.visits.length > 0;
                 };
-
+                $scope.translateVisitTypes = function (attribute) {
+                    var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(attribute, Bahmni.Common.Constants.visit, $translate);
+                    attribute = translatedName;
+                    return attribute;
+                };
                 $scope.params = angular.extend(
                     {
                         maximumNoOfVisits: 4,

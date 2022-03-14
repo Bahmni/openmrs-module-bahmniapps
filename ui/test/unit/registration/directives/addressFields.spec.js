@@ -5,11 +5,18 @@ describe('AddressFieldsDirectiveController', function () {
     var success;
     var controller;
     var scope;
+    var appService;
 
     beforeEach(angular.mock.module('bahmni.registration'));
     beforeEach(angular.mock.inject(function () {
         success = jasmine.createSpy('Successful');
         addressHierarchyService = jasmine.createSpyObj('addressHierarchyService', ['search', 'getNextAvailableParentName','getAddressDataResults']);
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+                appService.getAppDescriptor.and.returnValue({
+                    getConfigValue: function () {
+                        return true;
+                    }
+                });
     }));
 
     var setupController = function (strictAutoCompleteFromLevel) {
@@ -72,9 +79,7 @@ describe('AddressFieldsDirectiveController', function () {
         it("should clear address and selectedValue of all other auto completed child fields", function(){
             scope.address = {address3: "address", countyDistrict: "district", stateProvince: "state", cityVillage:"village"};
             scope.selectedValue = {address3: "address", countyDistrict: "district", stateProvince: "state", cityVillage:"village"};
-
             scope.clearFields("countyDistrict");
-
             expect(scope.address.cityVillage).toBe(null);
             expect(scope.address.address3).toBe(null);
             expect(scope.selectedValue.cityVillage).toBe(null);

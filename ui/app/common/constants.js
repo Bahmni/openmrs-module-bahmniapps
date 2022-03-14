@@ -82,8 +82,8 @@ Bahmni.Common = Bahmni.Common || {};
         bahmniVisitLocationUrl: BAHMNI_CORE + "/visitLocation",
         bahmniOrderUrl: BAHMNI_CORE + "/orders",
         bahmniDrugOrderUrl: BAHMNI_CORE + "/drugOrders",
-        bahmniDispositionByVisitUrl: BAHMNI_CORE + "/disposition/visit",
-        bahmniDispositionByPatientUrl: BAHMNI_CORE + "/disposition/patient",
+        bahmniDispositionByVisitUrl: BAHMNI_CORE + "/disposition/visitWithLocale",
+        bahmniDispositionByPatientUrl: BAHMNI_CORE + "/disposition/patientWithLocale",
         bahmniSearchUrl: BAHMNI_CORE + "/search",
         bahmniLabOrderResultsUrl: BAHMNI_CORE + "/labOrderResults",
         bahmniEncounterUrl: BAHMNI_CORE + "/bahmniencounter",
@@ -105,6 +105,7 @@ Bahmni.Common = Bahmni.Common || {};
         observationsUrl: BAHMNI_CORE + "/observations",
         obsRelationshipUrl: BAHMNI_CORE + "/obsrelationships",
         encounterImportUrl: BAHMNI_CORE + "/admin/upload/encounter",
+        form2encounterImportUrl: BAHMNI_CORE + "/admin/upload/form2encounter",
         programImportUrl: BAHMNI_CORE + "/admin/upload/program",
         conceptImportUrl: BAHMNI_CORE + "/admin/upload/concept",
         conceptSetImportUrl: BAHMNI_CORE + "/admin/upload/conceptset",
@@ -258,7 +259,19 @@ Bahmni.Common = Bahmni.Common || {};
         defaultPossibleRelativeSearchLimit: 10,
         formBuilderDisplayControlType: "formsV2",
         formBuilderType: "v2",
-        formBuilderTranslationApi: IE_APPS_API + '/form/translate'
+        formBuilderTranslationApi: IE_APPS_API + '/form/translate',
+        disposition: "DISPOSITION",
+        registration: "REGISTRATION",
+        clinical: "CLINICAL",
+        diagnosis: "DIAGNOSIS",
+        ot: "OT",
+        patientAttribute: "PATIENT_ATTRIBUTE",
+        program: "PROGRAM",
+        visitType: "VISIT_TYPE",
+        bedmanagement: "BEDMANAGEMENT",
+        bedmanagementDisposition: "BEDMANAGEMENT_DISPOSITION",
+        loginConfig: "/bahmni_config/openmrs/apps/home/login_config.json",
+        visit: "VISIT"
     };
 })();
 

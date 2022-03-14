@@ -47,6 +47,7 @@
     "MEDICATIONS_ACTIONS_LABEL": "Actions",
     "MEDICATIONS_STOP_LABEL": "Stop",
     "MEDICATIONS_REFILL_LABEL": "Refill",
+    "MEDICATION_LABEL_START_DATE": "Start Date",
     "DRUG_DETAILS_STOP_DATE": "Stop date",
     "TIME_OF_BIRTH_LABEL": "Time of Birth",
     "PATIENT_PROFILE_RELATIONSHIPS_LABEL": "Relationships",
@@ -63,5 +64,8 @@
     "BED_LABEL": "Bed",
     "ASSIGN_BED_LABEL": "Assign",
     "TRANSFER_BED_LABEL": "Transfer",
-    "EMPTY_WARD_MESSAGE": "There are no patients in this ward."
+    "EMPTY_WARD_MESSAGE": "There are no patients in this ward.",
+    "BEDMANAGEMENT_DISPOSITION_ADMIT_PATIENT": "Admit Patient",
+    "BEDMANAGEMENT_DISPOSITION_DISCHARGE_PATIENT": "Discharge Patient",
+    "BEDMANAGEMENT_DISPOSITION_TRANSFER_PATIENT": "Transfer Patient"
 }
