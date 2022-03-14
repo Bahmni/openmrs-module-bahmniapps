@@ -21,6 +21,7 @@
                                                 !diagnosis.isNonCodedAnswer && allowOnlyCodedDiagnosis) || diagnosis.invalid,
                                             active: diagnosis.isNonCodedAnswer
                                        }"
+                                       pattern="(?=.*[a-zA-Z])[,/\()%. A-Za-z0-9]+$"
                                        ng-change="restEmptyRowsToOne($index); diagnosis.clearCodedAnswerUuid(); checkInvalidDiagnoses()">
 
                                 <span ng-if="!allowOnlyCodedDiagnosis">

@@ -2,7 +2,7 @@
 
 describe('PatientCommonController', function () {
 
-    var $aController, $httpBackend, scope, appService, rootScope, patientAttributeService, $state;
+    var $aController, $httpBackend, scope, appService, patientService, rootScope, patientAttributeService, $state;
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var $compile;
 
@@ -34,15 +34,27 @@ describe('PatientCommonController', function () {
             return {
                 getConfigValue: function (config) {
                     return true;
+                },
+                getExtensions: function (name, type) {
+                    return [{
+                        "id": "",
+                        "extensionPointId": "",
+                        "type": "",
+                        "template" : "",
+                        "controller": "",
+                        "extensionParams": {
+                            "hipUrl" : ""
+                        }
+                    }];
                 }
-
             };
         };
 
         $aController('PatientCommonController', {
             $scope: scope,
             $rootScope: rootScope,
-            appService: appService
+            appService: appService,
+            patientService: patientService
         });
 
         $httpBackend.whenGET(Bahmni.Common.Constants.globalPropertyUrl + '?property=concept.reasonForDeath').respond({});
@@ -128,6 +140,18 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                     if (config == "showBirthTime") {
                         return false;
                     }
+                },
+                getExtensions: function (name, type) {
+                    return [{
+                        "id": "",
+                        "extensionPointId": "",
+                        "type": "",
+                        "template" : "",
+                        "controller": "",
+                        "extensionParams": {
+                            "hipUrl" : ""
+                        }
+                    }];
                 }
             };
         };
@@ -138,7 +162,8 @@ it('checks that the confirmation popup is not prompted on the Registration secon
             http: $httpBackend,
             patientAttributeService: patientAttributeService,
             spinner: spinner,
-            appService: appService
+            appService: appService,
+            patientService: patientService
         });
         expect(scope.showBirthTime).toBe(false);
     });
@@ -147,6 +172,7 @@ it('checks that the confirmation popup is not prompted on the Registration secon
         var sections;
         var createController = function () {
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+            patientService = jasmine.createSpyObj('patientService', ['getIdStatus']);
 
             rootScope.genderMap = {};
 
@@ -216,6 +242,18 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                 return {
                     getConfigValue: function (config) {
                         return true;
+                    },
+                    getExtensions: function (name, type) {
+                        return [{
+                            "id": "",
+                            "extensionPointId": "",
+                            "type": "",
+                            "template" : "",
+                            "controller": "",
+                            "extensionParams": {
+                                "hipUrl" : ""
+                            }
+                        }];
                     }
 
                 };
@@ -224,7 +262,8 @@ it('checks that the confirmation popup is not prompted on the Registration secon
             $aController('PatientCommonController', {
                 $scope: scope,
                 $rootScope: rootScope,
-                appService: appService
+                appService: appService,
+                patientService: patientService
             });
 
             $httpBackend.whenGET(Bahmni.Common.Constants.globalPropertyUrl + '?property=concept.reasonForDeath').respond({});

@@ -35,8 +35,9 @@
     <div class="left" data-ng-switch-when="org.openmrs.customdatatype.datatype.FreeTextDatatype">
         <input
                 type="text" pattern-validate id="{{::attribute.name}}"
-                ng-model="targetModel[attribute.name]" data-item-type="personAttribute"  pattern="^\S.*$"
-                ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-blur="::handleUpdate(attribute.name)"/>
+                ng-model="targetModel[attribute.name]" data-item-type="personAttribute"
+                ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-blur="::handleUpdate(attribute.name)"
+                pattern="[ a-zA-Z]{0,}"/>
     </div>
     <div class="left" data-ng-switch-when="java.lang.Integer">
         <input id="{{::attribute.name}}" type="number" pattern-validate

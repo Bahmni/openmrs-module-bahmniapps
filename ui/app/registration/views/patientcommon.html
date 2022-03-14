@@ -1,4 +1,4 @@
-  <div ng-controller="PatientCommonController">
+<div ng-controller="PatientCommonController">
     <div class="box-container box-container-patient-info patient-common-info-container">
         <section>
             <article class="form-field patient-name-wrapper" ng-if="::patientConfiguration.local()['showNameField']">
@@ -30,13 +30,14 @@
                     <span data-ng-switch="::isAutoComplete('givenName')"
                           ng-if="::patientConfiguration.local()['showNameField'] && nameField === 'firstName'">
                           <input data-ng-switch-when="true"
-                                 type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
+                                 type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank
+                                 pattern-validate
                                  my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                                  data-item-type="personName"
                                  placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
                                  title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
                           <input data-ng-switch-default
-                                 type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
+                                 type="text" id="givenName" ng-disabled = "isDisabled('givenName')" ng-model="patient.givenName" non-blank pattern-validate
                                  placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
                                  title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
                     </span>
@@ -62,14 +63,16 @@
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
                              title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
                       <input data-ng-switch-default
-                             type="text" id="middleName" ng-model="patient.middleName" pattern-validate
+                             type="text" id="middleName" ng-disabled = "isDisabled('middleName')" ng-model="patient.middleName" pattern-validate
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
                              title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
                     </span>
                     <span ng-show="::showLastName" data-ng-switch="::isAutoComplete('familyName')"
                           ng-if="nameField === 'lastName'">
                       <input data-ng-switch-when="true"
-                             type="text" id="familyName" ng-model="$parent.patient.familyName"  pattern-validate
+                             type="text" id="familyName" ng-model="$parent.patient.familyName"
+                             ng-disabled = "isDisabled('familyName')"
+                             pattern-validate
                              my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                              data-item-type="personName"
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
@@ -108,7 +111,7 @@
                 </div>
 
                 <div class="field-value">
-                    <select id="gender" ng-model="patient.gender" required="required" title="{{ 'REGISTRATION_LABEL_SELECT_GENDER'|translate }}"
+                    <select id="gender" ng-model="patient.gender" required="required" ng-disabled = "isDisabled('gender')" title="{{ 'REGISTRATION_LABEL_SELECT_GENDER'|translate }}"
                             ng-options="genderMap[genderCode] for genderCode in genderCodes track by genderCode" ng-change="handleUpdate('gender')">
                         <option value="">{{ ::'REGISTRATION_LABEL_SELECT_GENDER' | translate}}</option>
                     </select>
@@ -168,7 +171,10 @@
                                    ng-if="!identifier.hasIdentifierSources()"
                                    non-blank="identifier.identifierType.required && !identifier.hasIdentifierSources()"
                                    pattern-validate ng-change="identifier.generate()"
-                                   ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
+                                   ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-2">
+                            <button class="verify-health-id-btn" ng-show="showButton(identifier.identifierType.name,identifier.registrationNumber)" type="button"
+                                    ng-click="openIdentifierPopup(identifier.identifierType.name)">{{:: getDisplayName(identifier.identifierType.name)}}
+                            </button>
                         </div>
                     </article>
                 </div>
@@ -195,6 +201,9 @@
                                    ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
                                    ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()"
                                    ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
+                            <button class="verify-health-id-btn" ng-show="showButton(identifier.identifierType.name,identifier.registrationNumber)" type="button"
+                                    ng-click="openIdentifierPopup(identifier.identifierType.name)">{{:: getDisplayName(identifier.identifierType.name)}}
+                            </button>
                         </div>
 
                         <div class="field-value field-value-has-identifier"  ng-show="::identifier.hasIdentifierSources()">
@@ -218,7 +227,16 @@
                         </div>
                     </article>
                 </div>
-           </section>
+            </section>
+            <div class="identifier-ui"  ng-hide="!showIframe">
+                <div class="identifier-iframe">
+                    <span class="close" ng-click="closeIdentifierPopup()">&times;</span>
+                    <iframe name="identifier-verification" id="identifier-popup" height="95%" width="100%"></iframe>
+                </div>
+            </div>
+<!--            <button class="verify-health-id-btn" ng-if="regExtPoints != undefined" ng-show="showVerifyBtn" type="button"-->
+<!--                    ng-click="openIdentifierPopup()">{{:: btnName}}-->
+<!--            </button>-->
         </section>
 
         <legend class="registraion_legend" ng-if="patientConfiguration.customAttributeRows().length > 0">
@@ -231,7 +249,8 @@
                      ng-class="::{'right-form-field' : $index%2 != 0}">
                 <attribute-types target-model="patient" attribute="::attribute" field-validation="::fieldValidation"
                                  is-auto-complete="isAutoComplete" get-auto-complete-list="getAutoCompleteList"
-                                 get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"></attribute-types>
+                                 get-data-results="getDataResults" is-read-only="isReadOnly" handle-update="handleUpdate"
+                ></attribute-types>
             </article>
         </section>
     </div>

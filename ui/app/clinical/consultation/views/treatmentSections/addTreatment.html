@@ -21,7 +21,8 @@
                                    source="getDrugs" response-map="getDataResults" ng-required="!treatment.drugNameDisplay"
                                    ng-class="{
                             active: treatment.isNonCodedDrug
-                       }"
+                                     }"
+                                   pattern="^(?=.*[a-zA-Z]).{0,}$"
                                    ng-change="onChange()"
                                    ng-model="treatment.drugNameDisplay" on-select="onSelect" autofocus
                                    ng-disabled="treatment.previousOrderUuid" ng-readonly="treatment.isBeingEdited"/>
