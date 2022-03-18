@@ -17,8 +17,7 @@
                        bahmni-autocomplete source="getDiagnosis"
                        on-select="getAddConditionMethod()"
                        ng-change="consultation.condition.clearConcept()"
-                       ng-class="{illegalValue: !(consultation.condition.concept.name || consultation.condition.isEmpty())}"
-                       pattern="(?=.*[a-zA-Z])[,/\()%. A-Za-z0-9]+$" >
+                       ng-class="{illegalValue: !(consultation.condition.concept.name || consultation.condition.isEmpty())}">
                 <button type="button" ng-model="consultation.condition.isNonCoded"
                         class="small-btn accept-btn" id="accept-button"
                         ng-click="consultation.condition.toggleNonCoded()"
