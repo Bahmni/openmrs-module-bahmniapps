@@ -35,7 +35,7 @@ angular.module('bahmni.registration')
                                 $window.open(Bahmni.Registration.Constants.existingPatient + $rootScope.extenstionPatient.id, "_self");
                             }
                         } else $window.open(Bahmni.Registration.Constants.newPatient, "_self");
-                        update($rootScope.extenstionPatient);
+                        updateInfoFromExtSource($rootScope.extenstionPatient);
                         $scope.$digest();
                     }
                 }, false);
@@ -91,7 +91,7 @@ angular.module('bahmni.registration')
                 return null;
             }
 
-            function update (patient) {
+            function updateInfoFromExtSource (patient) {
                 $scope.showIframe = false;
                 var identifierMatch = false;
                 for (var i = 0; i < $scope.patient.extraIdentifiers.length; i++) {
@@ -149,7 +149,8 @@ angular.module('bahmni.registration')
                         }
                         break;
                     default:
-                        var age = calculateAge('01/01/' + changedDetails.birthDate);
+                        var DateUtil = Bahmni.Common.Util.DateUtil;
+                        var age = DateUtil.diffInYearsMonthsDays('01/01/' + changedDetails.birthDate, DateUtil.now());
                         $scope.patient.age.years = age.years;
                         $scope.patient.age.months = age.months;
                         $scope.patient.age.days = age.days;
@@ -162,40 +163,6 @@ angular.module('bahmni.registration')
             $scope.closeIdentifierPopup = function () {
                 $scope.showIframe = false;
             };
-
-            function calculateAge (birthDate) {
-                const dob = new Date(birthDate);
-                var dobYear = dob.getYear();
-                var dobMonth = dob.getMonth();
-                var dobDate = dob.getDate();
-                var now = new Date();
-                var currentYear = now.getYear();
-                var currentMonth = now.getMonth();
-                var currentDate = now.getDate();
-                var monthAge;
-                var yearAge = currentYear - dobYear;
-                if (currentMonth >= dobMonth) monthAge = currentMonth - dobMonth;
-                else {
-                    yearAge--;
-                    monthAge = 12 + currentMonth - dobMonth;
-                }
-                var dateAge;
-                if (currentDate >= dobDate) dateAge = currentDate - dobDate;
-                else {
-                    monthAge--;
-                    dateAge = 31 + currentDate - dobDate;
-                    if (monthAge < 0) {
-                        monthAge = 11;
-                        yearAge--;
-                    }
-                }
-
-                return {
-                    'years': yearAge,
-                    'months': monthAge,
-                    'days': dateAge
-                };
-            }
 
             function initPatientNameDisplayOrder () {
                 var validNameFields = Bahmni.Registration.Constants.patientNameDisplayOrder;
@@ -366,27 +333,29 @@ angular.module('bahmni.registration')
                 });
             };
 
+            var setAttributesToBeDisabled = function () {
+                $scope.patient.extraIdentifiers.forEach(function (identifier) {
+                    var extensionPoint = getExtensionPoint(identifier.identifierType.name);
+                    if (extensionPoint !== null) {
+                        extensionPoint.extensionParams.identifierType.forEach(function (identifiers) {
+                            if (identifier.identifierType.name === identifiers) {
+                                if (identifier.registrationNumber !== undefined) {
+                                    $scope.attributesToBeDisabled = extensionPoint.extensionParams.nonEditable;
+                                }
+                            }
+                        });
+                    }
+                });
+            };
+
             $scope.$watch('patientLoaded', function () {
                 if ($scope.patientLoaded) {
                     executeShowOrHideRules();
-                    if ($scope.patient.extraIdentifiers !== undefined && $scope.idStatus === false) {
-                        for (var i = 0; i < $scope.patient.extraIdentifiers.length; i++) {
-                            var identifier = $scope.patient.extraIdentifiers[i];
-                            var extensionPoint = getExtensionPoint(identifier.identifierType.name);
-                            if (extensionPoint != null) {
-                                var identifiers = extensionPoint.extensionParams.identifierType;
-                                for (var j = 0; j < identifiers.length; j++) {
-                                    if (identifier.identifierType.name === identifiers[j]) {
-                                        if (identifier.registrationNumber !== undefined) {
-                                            $scope.attributesToBeDisabled = extensionPoint.extensionParams.nonEditable;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if ($scope.patient.extraIdentifiers !== undefined) {
+                        setAttributesToBeDisabled();
                     }
                     if ($rootScope.extenstionPatient !== undefined) {
-                        update($rootScope.extenstionPatient);
+                        updateInfoFromExtSource($rootScope.extenstionPatient);
                     }
                 }
             });
