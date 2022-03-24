@@ -29,17 +29,12 @@ angular.module('bahmni.common.patient')
                 withCredentials: true
             });
         };
-        var isHealthIdentifier = function (query) {
-            return !isNaN(query) || query.includes("@");
-        };
 
         this.search = function (query, offset, identifier) {
             offset = offset || 0;
             var url = "/patient";
-            if (isHealthIdentifier(query)) {
-                identifier = query;
-                url = url + "/lucene";
-            }
+            identifier = query;
+            url = url + "/lucene";
             return $http.get(Bahmni.Common.Constants.bahmniSearchUrl + url, {
                 method: "GET",
                 params: {
