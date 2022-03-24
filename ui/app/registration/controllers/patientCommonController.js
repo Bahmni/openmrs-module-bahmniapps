@@ -35,7 +35,7 @@ angular.module('bahmni.registration')
                                 $window.open(Bahmni.Registration.Constants.existingPatient + $rootScope.extenstionPatient.id, "_self");
                             }
                         } else $window.open(Bahmni.Registration.Constants.newPatient, "_self");
-                        updateInfoFromExtSource($rootScope.extenstionPatient);
+                        $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
                         $scope.$digest();
                     }
                 }, false);
@@ -91,7 +91,7 @@ angular.module('bahmni.registration')
                 return null;
             }
 
-            function updateInfoFromExtSource (patient) {
+            $scope.updateInfoFromExtSource = function (patient) {
                 $scope.showIframe = false;
                 var identifierMatch = false;
                 for (var i = 0; i < $scope.patient.extraIdentifiers.length; i++) {
@@ -111,7 +111,7 @@ angular.module('bahmni.registration')
                         }
                     }
                 }
-            }
+            };
 
             function updatePatientAddress (address, addressMap) {
                 for (var key in addressMap) {
@@ -355,7 +355,7 @@ angular.module('bahmni.registration')
                         setAttributesToBeDisabled();
                     }
                     if ($rootScope.extenstionPatient !== undefined) {
-                        updateInfoFromExtSource($rootScope.extenstionPatient);
+                        $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
                     }
                 }
             });
