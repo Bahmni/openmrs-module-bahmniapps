@@ -222,5 +222,15 @@ angular.module('bahmni.registration')
             $scope.disableIsDead = function () {
                 return ($scope.patient.causeOfDeath || $scope.patient.deathDate) && $scope.patient.dead;
             };
+
+            $scope.localLanguageNameIsRequired = function (nameType) {
+                personAttributes = _.keyBy($rootScope.patientConfiguration.attributeTypes, function (attribute) {
+                    return attribute.name;
+                });
+                if (_.isEmpty(nameType)) {
+                    return personAttributes.givenNameLocal.required || personAttributes.middleNameLocal.required || personAttributes.familyNameLocal.required;
+                }
+                return nameType && personAttributes[nameType] && personAttributes[nameType].required;
+            };
         }]);
 
