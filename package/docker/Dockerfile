@@ -9,5 +9,9 @@ COPY package/docker/index.html /usr/local/apache2/htdocs/
 ADD package/resources/default_config.zip /tmp/artifacts/
 RUN unzip -d /usr/local/apache2/htdocs/bahmni_config/ /tmp/artifacts/default_config.zip 
 
+#unzip default_config
+ADD package/resources/ndhm-react.zip /tmp/artifacts/
+RUN unzip -d /usr/local/apache2/htdocs/ndhm/ /tmp/artifacts/ndhm-react.zip
+
 # Copy BahmniApps
 COPY ui/dist/. /usr/local/apache2/htdocs/bahmni/
