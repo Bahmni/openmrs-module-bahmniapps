@@ -46,7 +46,7 @@ angular.module('bahmni.registration')
             };
 
             function isIdentifierVoided (identifierType) {
-                if ($scope.patient.uuid !== undefined && $rootScope.patientIdentifiers !== null) {
+                if ($scope.patient.uuid !== undefined && $rootScope.patientIdentifiers !== undefined) {
                     for (var i = 0; i < $rootScope.patientIdentifiers.length; i++) {
                         var identifier = $rootScope.patientIdentifiers[i];
                         if (identifier.identifierType.display === identifierType) {
