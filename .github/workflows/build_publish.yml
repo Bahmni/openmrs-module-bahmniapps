@@ -31,7 +31,9 @@ jobs:
       - name: Package
         run: cd ui && yarn cache clean && /bin/bash ./scripts/package.sh
       - name: Download default_config.zip
-        run: sh .github/download_artifact.sh default-config default_config ${{secrets.BAHMNI_PAT}}
+        run: sh .github/download_artifact.sh default-config DefaultConfig ${{secrets.BAHMNI_PAT}}
+      - name: Download ndhm-react.zip
+        run: sh .github/download_artifact.sh ndhm-react NDHMReact ${{secrets.BAHMNI_PAT}}
       - name: Login to DockerHub
         uses: docker/login-action@v1 
         with:
