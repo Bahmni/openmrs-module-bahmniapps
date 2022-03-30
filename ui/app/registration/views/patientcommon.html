@@ -36,7 +36,7 @@
                                  placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
                                  title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
                           <input data-ng-switch-default
-                                 type="text" id="givenName" ng-disabled = "isDisabled('givenName')" ng-model="patient.givenName" non-blank pattern-validate
+                                 type="text" id="givenName" ng-disabled = "isDisabledAttribute('givenName')" ng-model="patient.givenName" non-blank pattern-validate
                                  placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
                                  title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}">
                     </span>
@@ -62,7 +62,7 @@
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
                              title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
                       <input data-ng-switch-default
-                             type="text" id="middleName" ng-disabled = "isDisabled('middleName')" ng-model="patient.middleName" pattern-validate
+                             type="text" id="middleName" ng-disabled = "isDisabledAttribute('middleName')" ng-model="patient.middleName" pattern-validate
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
                              title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_MIDDLE_NAME' | translate}}">
                     </span>
@@ -70,7 +70,7 @@
                           ng-if="nameField === 'lastName'">
                       <input data-ng-switch-when="true"
                              type="text" id="familyName" ng-model="$parent.patient.familyName"
-                             ng-disabled = "isDisabled('familyName')"
+                             ng-disabled = "isDisabledAttribute('familyName')"
                              pattern-validate
                              my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                              data-item-type="personName"
@@ -110,7 +110,7 @@
                 </div>
 
                 <div class="field-value">
-                    <select id="gender" ng-model="patient.gender" required="required" ng-disabled = "isDisabled('gender')" title="{{ 'REGISTRATION_LABEL_SELECT_GENDER'|translate }}"
+                    <select id="gender" ng-model="patient.gender" required="required" ng-disabled = "isDisabledAttribute('gender')" title="{{ 'REGISTRATION_LABEL_SELECT_GENDER'|translate }}"
                             ng-options="genderMap[genderCode] for genderCode in genderCodes track by genderCode" ng-change="handleUpdate('gender')">
                         <option value="">{{ ::'REGISTRATION_LABEL_SELECT_GENDER' | translate}}</option>
                     </select>
@@ -171,7 +171,7 @@
                                    non-blank="identifier.identifierType.required && !identifier.hasIdentifierSources()"
                                    pattern-validate ng-change="identifier.generate()"
                                    ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-2">
-                            <button class="verify-health-id-btn" ng-show="showButton(identifier.identifierType.name,identifier.registrationNumber)" type="button"
+                            <button class="verify-health-id-btn" ng-show="showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)" type="button"
                                     ng-click="openIdentifierPopup(identifier.identifierType.name)">{{:: getDisplayName(identifier.identifierType.name)}}
                             </button>
                         </div>
@@ -200,7 +200,7 @@
                                    ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
                                    ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()"
                                    ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
-                            <button class="verify-health-id-btn" ng-show="showButton(identifier.identifierType.name,identifier.registrationNumber)" type="button"
+                            <button class="verify-health-id-btn" ng-show="showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)" type="button"
                                     ng-click="openIdentifierPopup(identifier.identifierType.name)">{{:: getDisplayName(identifier.identifierType.name)}}
                             </button>
                         </div>

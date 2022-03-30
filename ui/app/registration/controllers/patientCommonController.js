@@ -20,7 +20,7 @@ angular.module('bahmni.registration')
             $scope.regExtPoints = appService.getAppDescriptor().getExtensions("org.bahmni.registration.identifier", "link");
 
             $scope.showIframe = false;
-            var buttonMap = new Map();
+            var identifierExtnMap = new Map();
             $scope.attributesToBeDisabled = [];
 
             $scope.openIdentifierPopup = function (identifierType) {
@@ -41,7 +41,7 @@ angular.module('bahmni.registration')
                 }, false);
             };
 
-            $scope.isDisabled = function (attribute) {
+            $scope.isDisabledAttribute = function (attribute) {
                 return $scope.attributesToBeDisabled.includes(attribute);
             };
 
@@ -57,12 +57,12 @@ angular.module('bahmni.registration')
                 return false;
             }
 
-            $scope.showButton = function (identifierType, identifierValue) {
+            $scope.showIdentifierVerificationButton = function (identifierType, identifierValue) {
                 var extenstionPoint = getExtensionPoint(identifierType);
                 if (extenstionPoint != null && identifierValue === undefined) {
-                    if (buttonMap.get(extenstionPoint.id) === identifierType || buttonMap.get(extenstionPoint.id) === undefined) {
-                        if (buttonMap.get(extenstionPoint.id) === undefined) {
-                            buttonMap.set(extenstionPoint.id, identifierType);
+                    if (identifierExtnMap.get(extenstionPoint.id) === identifierType || identifierExtnMap.get(extenstionPoint.id) === undefined) {
+                        if (identifierExtnMap.get(extenstionPoint.id) === undefined) {
+                            identifierExtnMap.set(extenstionPoint.id, identifierType);
                         }
                         return !isIdentifierVoided(identifierType);
                     }

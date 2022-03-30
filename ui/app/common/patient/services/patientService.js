@@ -32,9 +32,8 @@ angular.module('bahmni.common.patient')
 
         this.search = function (query, offset, identifier) {
             offset = offset || 0;
-            var url = "/patient";
+            var url = "/patient/lucene";
             identifier = query;
-            url = url + "/lucene";
             return $http.get(Bahmni.Common.Constants.bahmniSearchUrl + url, {
                 method: "GET",
                 params: {
