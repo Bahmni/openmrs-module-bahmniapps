@@ -45,6 +45,13 @@ angular.module('bahmni.registration')
                 var getPatientPromise = patientService.get(uuid).then(successCallBack);
 
                 var isDigitized = encounterService.getDigitized(uuid);
+
+                var identifiers = patientService.getAllPatientIdentifiers(uuid);
+
+                identifiers.then(function (response) {
+                    $rootScope.patientIdentifiers = response.data.results;
+                });
+
                 isDigitized.then(function (data) {
                     var encountersWithObservations = data.data.results.filter(function (encounter) {
                         return encounter.obs.length > 0;
@@ -52,7 +59,7 @@ angular.module('bahmni.registration')
                     $scope.isDigitized = encountersWithObservations.length > 0;
                 });
 
-                spinner.forPromise($q.all([getPatientPromise, isDigitized]));
+                spinner.forPromise($q.all([getPatientPromise, isDigitized, identifiers]));
             })();
 
             $scope.update = function () {
