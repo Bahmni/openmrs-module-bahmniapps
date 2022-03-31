@@ -333,7 +333,7 @@
     "INVESTIGATIONS_SELECTIONS_HEADER_LABEL": "Selection",
     "CLINICAL_GO_TO_DASHBOARD_LABEL": "Go to IPD dashboard",
     "NO_FORM_FOUND_FOR_PATIENT": "No Form found for this patient",
-    "CLINICAL_ACCEPT": "ACCEPT",
+    :wq"CLINICAL_ACCEPT": "ACCEPT",
     "PROGRAM_HIV_PROGRAM": "HIV Program",
     "PROGRAM_TB_PPROGRAM": "TB Program",
     "PROGRAM_ID_NUMBER": "ID Number",
