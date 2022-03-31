@@ -3,13 +3,13 @@
         <label for="birthdate">{{ ::'REGISTRATION_LABEL_DOB' | translate}}<span class="asterick" ng-show="::dobMandatory">*</span></label>
     </div>
     <div class="field-value">
-        <input id="birthdate" type="date" ng-model="patient.birthdate"  max="{{::today}}"
+        <input id="birthdate" type="date" ng-model="patient.birthdate" ng-disabled="isDisabledAttribute('birthDate')"  max="{{::today}}"
                ng-change="patient.calculateAge()" ng-blur="handleUpdate('birthdate')" ng-required="::dobMandatory">
     </div>
     <div class="showOn-desktop-registration">
         <div class="field-value">
-            <input type="checkbox" ng-model="patient.birthdateEstimated" ng-blur="handleUpdate('birthdateEstimated')"
-                   class="estimate-check">
+            <input type="checkbox" ng-model="patient.birthdateEstimated" id="birthdateEstimated"
+                   ng-blur="handleUpdate('birthdateEstimated')" class="estimate-check" ng-checked="isDisabledAttribute('birthDate')">
         </div>
         <div class="field-attribute estimated-label">
             <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
@@ -20,7 +20,8 @@
             <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
         </div>
         <div class="field-value">
-            <input type="checkbox" ng-model="patient.birthdateEstimated" class="estimate-check">
+            <input type="checkbox" id="birthdateEstimated" ng-checked="isDisabledAttribute('birthDate')" ng-model="patient.birthdateEstimated"
+                   class="estimate-check">
         </div>
     </div>
     <div ng-show="::showBirthTime" class="field-attribute">

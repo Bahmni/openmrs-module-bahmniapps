@@ -2,7 +2,7 @@
 
 describe('PatientCommonController', function () {
 
-    var $aController, $httpBackend, scope, appService, rootScope, patientAttributeService, $state;
+    var $aController, $httpBackend, scope, appService, patientService, rootScope, patientAttributeService, $state;
     var spinner = jasmine.createSpyObj('spinner', ['forPromise']);
     var $compile;
 
@@ -34,15 +34,37 @@ describe('PatientCommonController', function () {
             return {
                 getConfigValue: function (config) {
                     return true;
+                },
+                getExtensions: function (name, type) {
+                    return [{
+                        "id": "",
+                        "extensionPointId": "org.bahmni.registration.identifier",
+                        "type": "link",
+                        "src": "<div> Hello </div>",
+                        "extensionParams": {
+                            "identifierType": [
+                                "ABHA",
+                                "ABHA Address"
+                            ],
+                            "nonEditable": ["givenName", "middleName", "familyName", "gender", "birthDate", "age"],
+                            "linkDisplay": "Verify ABHA",
+                            "addressMap": {
+                                "city": "cityVillage",
+                                "state": "stateProvince",
+                                "postalCode": "postalCode",
+                                "line": "address1"
+                            }
+                        }
+                    }];
                 }
-
             };
         };
 
         $aController('PatientCommonController', {
             $scope: scope,
             $rootScope: rootScope,
-            appService: appService
+            appService: appService,
+            patientService: patientService
         });
 
         $httpBackend.whenGET(Bahmni.Common.Constants.globalPropertyUrl + '?property=concept.reasonForDeath').respond({});
@@ -128,6 +150,18 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                     if (config == "showBirthTime") {
                         return false;
                     }
+                },
+                getExtensions: function (name, type) {
+                    return [{
+                        "id": "",
+                        "extensionPointId": "",
+                        "type": "",
+                        "template" : "",
+                        "controller": "",
+                        "extensionParams": {
+                            "hipUrl" : ""
+                        }
+                    }];
                 }
             };
         };
@@ -138,7 +172,8 @@ it('checks that the confirmation popup is not prompted on the Registration secon
             http: $httpBackend,
             patientAttributeService: patientAttributeService,
             spinner: spinner,
-            appService: appService
+            appService: appService,
+            patientService: patientService
         });
         expect(scope.showBirthTime).toBe(false);
     });
@@ -147,6 +182,7 @@ it('checks that the confirmation popup is not prompted on the Registration secon
         var sections;
         var createController = function () {
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+            patientService = jasmine.createSpyObj('patientService', ['getIdStatus']);
 
             rootScope.genderMap = {};
 
@@ -216,6 +252,18 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                 return {
                     getConfigValue: function (config) {
                         return true;
+                    },
+                    getExtensions: function (name, type) {
+                        return [{
+                            "id": "",
+                            "extensionPointId": "",
+                            "type": "",
+                            "template" : "",
+                            "controller": "",
+                            "extensionParams": {
+                                "hipUrl" : ""
+                            }
+                        }];
                     }
 
                 };
@@ -224,7 +272,8 @@ it('checks that the confirmation popup is not prompted on the Registration secon
             $aController('PatientCommonController', {
                 $scope: scope,
                 $rootScope: rootScope,
-                appService: appService
+                appService: appService,
+                patientService: patientService
             });
 
             $httpBackend.whenGET(Bahmni.Common.Constants.globalPropertyUrl + '?property=concept.reasonForDeath').respond({});
@@ -349,5 +398,78 @@ it('checks that the confirmation popup is not prompted on the Registration secon
         })
     })
 
+    describe("extension point", function (){
+
+        var extensionPatient = {
+            address: [{
+                city: "",
+                country: "IN",
+                district: "Bhopal",
+                line: ['A-12, Dholakpur'],
+                postalCode: "212021",
+                state: "Madhya Pradesh",
+            }],
+            contactPoint: [
+                {system: 'phone', value: '+919800083232'}
+            ],
+            gender: "F",
+            id: undefined,
+            identifiers: [
+                {type: {
+                        text: "ABHA Address"},
+                    value: "hina.p@sbx"
+                },
+                {type: {
+                        text: "ABHA"},
+                    value: "57-0517-6745-1839"
+                }
+            ],
+            names: [{familyName: 'Patel', givenName: ['Hina',''], use: ''}],
+            birthDate: "2000"
+        }
+
+
+        it("should update registration page with demographics details from extension",function () {
+
+            scope.patient.age = {};
+            scope.patient.address = {};
+            scope.patient.extraIdentifiers = [{identifierType: {name : "ABHA"},generate : function (){}},
+                {identifierType: {name : "ABHA Address"},generate : function (){}}]
+
+            scope.patient.calculateBirthDate = function (){}
+
+            spyOn(Bahmni.Common.Util.DateUtil,'diffInYearsMonthsDays').and.returnValue({ years : 22, months : 2, days : 24 })
+
+            var expectedPatient = {
+                age : { years : 22, months : 2, days : 24 },
+                address : { cityVillage : '', stateProvince : 'Madhya Pradesh', postalCode : '212021', address1 : 'A-12, Dholakpur' },
+                extraIdentifiers : [ { identifierType : { name : 'ABHA' }, generate : function (){}, registrationNumber : '57-0517-6745-1839' },
+                    { identifierType : { name : 'ABHA Address' }, generate : function (){}, registrationNumber : 'hina.p@sbx' } ],
+                calculateBirthDate : Function,
+                primaryContact : '+919800083232',
+                gender : 'F',
+                givenName : 'Hina',
+                middleName : '',
+                familyName : 'Patel'
+        }
+
+            scope.updateInfoFromExtSource(extensionPatient);
+
+            const patientKeys = Object.keys(scope.patient);
+
+            const expectedPatientKeys = Object.keys(expectedPatient);
+
+            expect(patientKeys.length).toEqual(expectedPatientKeys.length);
+
+            for (var i = 0; i < patientKeys.length; i++) {
+                if(patientKeys[i] !== 'extraIdentifiers' && patientKeys[i] !== 'calculateBirthDate')
+                    expect(scope.patient[patientKeys[i]]).toEqual(expectedPatient[patientKeys[i]]);
+            }
+            expect(scope.patient.extraIdentifiers[0].registrationNumber).toBe(expectedPatient.extraIdentifiers[0].registrationNumber)
+            expect(scope.patient.extraIdentifiers[1].registrationNumber).toBe(expectedPatient.extraIdentifiers[1].registrationNumber)
+
+        })
+
+    })
 })
 
