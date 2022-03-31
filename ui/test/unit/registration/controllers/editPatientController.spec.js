@@ -5,7 +5,7 @@ describe('EditPatientController', function () {
     var $aController, patient = {};
     var scopeMock = jasmine.createSpyObj('scopeMock', ['actions']);
     var rootScopeMock = jasmine.createSpyObj('rootScopeMock', ['patientConfiguration']);
-    var patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['get', 'update']);
+    var patientServiceMock = jasmine.createSpyObj('patientServiceMock', ['get', 'update','getAllPatientIdentifiers']);
     var patientModelMock = jasmine.createSpyObj('patientModelMock', ['']);
     var spinnerMock = jasmine.createSpyObj('spinnerMock', ['forPromise']);
     var appServiceMock = jasmine.createSpyObj('appServiceMock', ['getAppDescriptor']);
@@ -35,6 +35,14 @@ describe('EditPatientController', function () {
             return {
                 then: function (successFn) {
                     successFn({data: "uuid"});
+                }
+            }
+        };
+
+        patientServiceMock.getAllPatientIdentifiers = function (uuid) {
+            return {
+                then: function (successFn) {
+                    successFn({data: {results:[] }});
                 }
             }
         };

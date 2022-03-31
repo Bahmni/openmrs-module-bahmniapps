@@ -66,6 +66,17 @@ angular.module('bahmni.registration')
             return patientServiceStrategy.update(patient, openMRSPatient, $rootScope.patientConfiguration.attributeTypes);
         };
 
+        var getAllPatientIdentifiers = function (uuid) {
+            var url = Bahmni.Registration.Constants.basePatientUrl + uuid + "/identifier";
+            return $http.get(url, {
+                method: "GET",
+                params: {
+                    includeAll: true
+                },
+                withCredentials: true
+            });
+        };
+
         var updateImage = function (uuid, image) {
             var url = baseOpenMRSRESTURL + "/personimage/";
             var data = {
@@ -86,6 +97,7 @@ angular.module('bahmni.registration')
             update: update,
             get: get,
             updateImage: updateImage,
-            searchByNameOrIdentifier: searchByNameOrIdentifier
+            searchByNameOrIdentifier: searchByNameOrIdentifier,
+            getAllPatientIdentifiers: getAllPatientIdentifiers
         };
     }]);
