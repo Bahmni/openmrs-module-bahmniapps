@@ -19,14 +19,14 @@ angular.module('bahmni.registration')
             $scope.showSaveAndContinueButton = false;
             $scope.regExtPoints = appService.getAppDescriptor().getExtensions("org.bahmni.registration.identifier", "link");
 
-            $scope.showIframe = false;
+            $scope.showExtIframe = false;
             var identifierExtnMap = new Map();
             $scope.attributesToBeDisabled = [];
 
             $scope.openIdentifierPopup = function (identifierType) {
                 var iframe = $document[0].getElementById("identifier-popup");
                 iframe.src = getExtensionPoint(identifierType).src;
-                $scope.showIframe = true;
+                $scope.showExtIframe = true;
                 $window.addEventListener("message", function (popupWindowData) {
                     if (popupWindowData.data.patient !== undefined) {
                         $rootScope.extenstionPatient = popupWindowData.data.patient;
@@ -92,7 +92,7 @@ angular.module('bahmni.registration')
             }
 
             $scope.updateInfoFromExtSource = function (patient) {
-                $scope.showIframe = false;
+                $scope.showExtIframe = false;
                 var identifierMatch = false;
                 for (var i = 0; i < $scope.patient.extraIdentifiers.length; i++) {
                     var identifier = $scope.patient.extraIdentifiers[i];
@@ -161,7 +161,7 @@ angular.module('bahmni.registration')
             }
 
             $scope.closeIdentifierPopup = function () {
-                $scope.showIframe = false;
+                $scope.showExtIframe = false;
             };
 
             function initPatientNameDisplayOrder () {
