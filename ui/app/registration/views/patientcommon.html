@@ -157,7 +157,7 @@
                 <div ng-if="patient.uuid != undefined">
                     <article ng-repeat="identifier in patient.extraIdentifiers" class="form-field existing-patient">
                         <div class="field-attribute">
-                            <label class="control-label" for="patientID">{{:: getTranslatedPatientIdentifier(identifier.identifierType.name)}}
+                            <label class="control-label" for="patientID">{{:: getTranslatedPatientControls(identifier.identifierType.name)}}
                                 <span ng-show=":: identifier.identifierType.required && !identifier.hasIdentifierSources()"
                                       class="asterick">*</span>
                             </label>
