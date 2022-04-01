@@ -42,7 +42,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.isDisabledAttribute = function (attribute) {
-                return $scope.attributesToBeDisabled.includes(attribute);
+                return $scope.attributesToBeDisabled !== undefined && $scope.attributesToBeDisabled.includes(attribute);
             };
 
             function isIdentifierVoided (identifierType) {
