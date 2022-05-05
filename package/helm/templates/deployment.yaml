@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+    environment: {{ .Values.metadata.labels.environment }}
+
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+      environment: {{ .Values.metadata.labels.environment }}
+  revisionHistoryLimit: 5
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        environment: {{ .Values.metadata.labels.environment }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          resources: {}
+          # volumeMounts:
+            # - mountPath: /usr/local/apache2/htdocs/bahmni
+            #   name: bahmni
+            # - mountPath: /usr/local/apache2/htdocs/bahmni/components
+            #   name: bahmni-components
+            # - mountPath: /usr/local/apache2/htdocs/bahmni/mf
+            #   name: bahmni-mf
+      restartPolicy: Always
+      # volumes:
+        # - name: bahmni
+        #   persistentVolumeClaim:
+        #     claimName: bahmni-pvc
+        # - name: bahmni-components
+        #   persistentVolumeClaim:
+        #     claimName: bahmni-components-pvc
+        # - name: bahmni-mf
+        #   persistentVolumeClaim:
+        #     claimName: bahmni-mf-pvc
+
