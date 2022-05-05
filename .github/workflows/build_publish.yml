@@ -76,6 +76,7 @@ jobs:
     needs: [get-version, docker-build-publish]
     env:
       ARTIFACT_VERSION: ${{ needs.get-version.outputs.version }}-${{github.run_number}}
+      HELM_CHART_PATH: openmrs-module-bahmniapps/package/helm/
     steps:
       - name: Checkout
         uses: actions/checkout@v2
