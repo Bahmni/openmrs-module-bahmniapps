@@ -81,37 +81,37 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: openmrs-module-bahmniapps
-        - name: Update Version and Image Tag
-          run: |
+      - name: Update Version and Image Tag
+        run: |
           yq --inplace '.image.tag = "${{ env.ARTIFACT_VERSION }}"' $HELM_CHART_PATH/values.yaml
           yq --inplace '.version = "${{ env.ARTIFACT_VERSION }}"' $HELM_CHART_PATH/Chart.yaml
 
-        - name: Helm Lint
-          run: helm lint $HELM_CHART_PATH
+      - name: Helm Lint
+        run: helm lint $HELM_CHART_PATH
 
-        - name: Helm Package
-          run: helm package $HELM_CHART_PATH
+      - name: Helm Package
+        run: helm package $HELM_CHART_PATH
 
-        - name: Checkout Charts Repository
-          uses: actions/checkout@v2
-          with:
-            repository: Bahmni/helm-charts
-            ref: gh-pages
-            path: helm-charts
-            persist-credentials: false
+      - name: Checkout Charts Repository
+        uses: actions/checkout@v2
+        with:
+          repository: Bahmni/helm-charts
+          ref: gh-pages
+          path: helm-charts
+          persist-credentials: false
 
-        - name: Copy Helm Archive
-          run: cp bahmni-web-${{ env.ARTIFACT_VERSION }}.tgz helm-charts/bahmni-web/
+      - name: Copy Helm Archive
+        run: cp bahmni-web-${{ env.ARTIFACT_VERSION }}.tgz helm-charts/bahmni-web/
 
-        - name: Helm Index
-          working-directory: helm-charts/
-          run: helm repo index --merge index.yaml --url https://bahmni.github.io/helm-charts/  .
+      - name: Helm Index
+        working-directory: helm-charts/
+        run: helm repo index --merge index.yaml --url https://bahmni.github.io/helm-charts/  .
 
-        - name: Commit and Push Chart Repository
-          working-directory: helm-charts/
-          run: |
-            git config user.name github-actions
-            git config user.email github-actions@github.com
-            git add .
-            git commit -m "Release of bahmni-web-${{ env.ARTIFACT_VERSION }}"
-            git push 'https://${{ secrets.BAHMNI_PAT_USERNAME}}:${{ secrets.BAHMNI_PAT}}@github.com/bahmni/helm-charts.git' gh-pages
+      - name: Commit and Push Chart Repository
+        working-directory: helm-charts/
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Release of bahmni-web-${{ env.ARTIFACT_VERSION }}"
+          git push 'https://${{ secrets.BAHMNI_PAT_USERNAME}}:${{ secrets.BAHMNI_PAT}}@github.com/bahmni/helm-charts.git' gh-pages
