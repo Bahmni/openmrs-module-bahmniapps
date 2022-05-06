@@ -111,8 +111,8 @@ jobs:
       - name: Commit and Push Chart Repository
         working-directory: helm-charts/
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.name ${{ secrets.BAHMNI_USERNAME}}
+          git config user.email ${{ secrets.BAHMNI_EMAIL}}
           git add .
           git commit -m "Release of bahmni-web-${{ env.ARTIFACT_VERSION }}"
-          git push 'https://${{ secrets.BAHMNI_PAT_USERNAME}}:${{ secrets.BAHMNI_PAT}}@github.com/bahmni/helm-charts.git' gh-pages
+          git push 'https://${{ secrets.BAHMNI_USERNAME}}:${{ secrets.BAHMNI_PAT}}@github.com/bahmni/helm-charts.git' gh-pages
