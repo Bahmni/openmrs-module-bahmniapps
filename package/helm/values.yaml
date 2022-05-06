@@ -10,7 +10,7 @@ image:
   tag: latest
 
 service:
-  type: LoadBalancer
+  type: ClusterIP
   port: 8091
 
 autoscaling:
