@@ -2,4 +2,4 @@ apiVersion: v2
 name: bahmni-web
 description: Helm chart for bahmni-web
 type: application
-version: 0.1.0
+version: 1.0.0
