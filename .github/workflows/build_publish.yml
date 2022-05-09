@@ -1,14 +1,11 @@
 name: Build and Publish
 on:
   push:
-    branches: [master, BAH-1678]
+    branches: [master]
     paths-ignore:
       - "**.md"
   repository_dispatch:
     types: ["default-config-trigger"]
-
-env:
-  BAHMNI_VERSION: 0.94
 
 jobs:
   get-version:
