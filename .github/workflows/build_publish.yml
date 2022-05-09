@@ -12,6 +12,8 @@ env:
 
 jobs:
   get-version:
+    #This job reads the .baseversion file and checks it against tags in the repo so that overlap builds don't occur.
+    #Also provides version as output for other jobs.
     name: Get Version
     runs-on: ubuntu-latest
     outputs:
