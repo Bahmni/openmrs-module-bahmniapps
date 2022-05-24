@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{languageUser}}" ng-app="consultation">
     <head>
         <title>OPD</title>
 
@@ -18,7 +18,8 @@
         <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.min.css"/>
 
         <!-- build:css clinical.min.css -->
-        <link rel="stylesheet" href="../styles/clinical.css"/>
+        <link rel="stylesheet" href="../styles/clinical.css" ng-if="!userLanguageDirRtl"/>
+        <link rel="stylesheet" href="../styles/clinical-rtl.css" ng-if="userLanguageDirRtl"/>
         <!-- endbuild -->
 
     </head>
@@ -513,7 +514,6 @@
 
         <!-- build:js clinical.min.web.js -->
         <script src="../common/services/formService.js"></script>
-        <script src="../common/services/pacsService.js"></script>
         <script src="../common/services/virtualConsultService.js"></script>
         <script src="../common/domain/services/visitService.js"></script>
         <script src="../common/domain/services/diagnosisService.js"></script>

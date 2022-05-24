@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{languageUser}}" ng-app="bahmni.home">
     <head>
         <title>Bahmni Home</title>
 
@@ -15,6 +15,7 @@
 
         <!-- build:css home.min.css -->
         <link rel="stylesheet" href="../styles/home.css"/>
+        <link rel="stylesheet" href="../styles/home-rtl.css" ng-if="userLanguageDirRtl"/>
         <!-- endbuild -->
     </head>
     <body>

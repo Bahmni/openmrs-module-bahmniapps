@@ -66,8 +66,14 @@ angular.module('documentupload').config(['$stateProvider', '$httpProvider', '$ur
 
         $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
         $bahmniTranslateProvider.init({app: 'document-upload', shouldMerge: true});
-    }]).run(['backlinkService', '$window', function (backlinkService, $window) {
+    }]).run(['$rootScope', 'backlinkService', '$window', function ($rootScope, backlinkService, $window) {
         FastClick.attach(document.body);
-        moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+        // moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+        $rootScope.languageUser = $window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
+        $rootScope.userLanguageDirRtl = false;
+        if ($window.localStorage["NG_TRANSLATE_LANG_KEY"] === 'ar') {
+            $rootScope.languageUser = "ar";
+            $rootScope.userLanguageDirRtl = true;
+        }
         backlinkService.addBackUrl();
     }]);

@@ -454,7 +454,7 @@ angular.module('consultation')
             $bahmniTranslateProvider.init({app: 'clinical', shouldMerge: true});
         }]).run(['stateChangeSpinner', '$rootScope', 'auditLogService', '$window',
             function (stateChangeSpinner, $rootScope, auditLogService, $window) {
-                moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+                // moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
                 FastClick.attach(document.body);
                 stateChangeSpinner.activate();
                 var cleanUpStateChangeSuccess = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams) {
@@ -467,6 +467,12 @@ angular.module('consultation')
                 var cleanUpNgDialogClosing = $rootScope.$on('ngDialog.closing', function () {
                     $('html').removeClass('ngdialog-open');
                 });
+                $rootScope.languageUser = $window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
+                $rootScope.userLanguageDirRtl = false;
+                if ($window.localStorage["NG_TRANSLATE_LANG_KEY"] === 'ar') {
+                    $rootScope.languageUser = "ar";
+                    $rootScope.userLanguageDirRtl = true;
+                }
 
                 $rootScope.$on("$destroy", function () {
                     cleanUpStateChangeSuccess();

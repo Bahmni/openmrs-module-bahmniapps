@@ -11,7 +11,7 @@
         <div class="left">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</div>
         <div class="right locale-wrapper">
             <span class="locale-text">{{'LOGIN_LABEL_SELECT_LOCALE_KEY' | translate}} </span>
-            <select id="locale" ng-model="selectedLocale" ng-options="item.code as item.nativeName for item in locales" required/>
+            <select id="locale" ng-model="selectedLocale" ng-change="onLocaleChange()" ng-options="item.code as item.nativeName for item in locales" required/>
         </div>
     </header>
 

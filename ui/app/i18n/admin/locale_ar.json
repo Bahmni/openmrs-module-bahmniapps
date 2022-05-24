@@ -1,0 +1,21 @@
+{
+    "userName": "اسم المستخدم",
+    "password": "كلمة المرور",
+    "location": "الموقع",
+    "login": "تسجيل الدخول",
+    "selectLocation": "تحديد الموقع",
+    "clinical_key": "النظام الطبي",
+    "MESSAGE_DIALOG_OPTION_COPY": "انسخ الخطأ",
+    "MESSAGE_DIALOG_OPTION_OKAY": "موافق",
+    "PRIVILEGE_REQUIRED": "المستخدم مسجل الدخول ولكن ليس لديه الصلاحيات اللازمة",
+    "FILTERS_HEADER_LABEL": "تصفيات",
+    "START_FROM_FILTER_LABEL": "ابدأ من",
+    "USERNAME_FILTER_LABEL": "اسم المستخدم",
+    "ENTER_USERNAME_PLACEHOLDER": "ادخل اسم المستخدم",
+    "PATIENT_ID_FILTER_LABEL": "الرقم التعريفي للمريض",
+    "ENTER_PATIENT_ID_PLACEHOLDER": "ادخل الرقم التعريفي للمريض",
+    "FILTER_BUTTON_LABEL": "تصفية",
+    "AUDIT_LOG_TABLE_HEADER_LABEL": "فحص سجل الأحداث",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "لا يوجد روابط انتقال",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "من فضلك اختر قيمة من قائمة"
+}

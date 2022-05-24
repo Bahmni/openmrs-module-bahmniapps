@@ -112,4 +112,12 @@ angular.module('ot').config(['$stateProvider', '$httpProvider', '$urlRouterProvi
             });
 
         $bahmniTranslateProvider.init({app: 'ot', shouldMerge: true});
+    }]).run(['$rootScope', 'backlinkService', '$window', function ($rootScope, backlinkService, $window) {
+        // moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+        $rootScope.languageUser = $window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
+        $rootScope.userLanguageDirRtl = false;
+        if ($window.localStorage["NG_TRANSLATE_LANG_KEY"] === 'ar') {
+            $rootScope.languageUser = "ar";
+            $rootScope.userLanguageDirRtl = true;
+        }
     }]);

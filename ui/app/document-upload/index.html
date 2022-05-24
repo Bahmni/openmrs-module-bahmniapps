@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{languageUser}}" ng-app="documentupload">
     <head>
         <title>Document Upload</title>    
             
@@ -11,7 +11,8 @@
 
         <!-- build:css document-upload.min.css -->
         <link rel="stylesheet" href="../components/jquery-ui/themes/smoothness/jquery-ui.min.css">
-        <link rel="stylesheet" href="../styles/clinical.css"/>
+        <link rel="stylesheet" href="../styles/clinical.css" ng-if="!userLanguageDirRtl"/>
+        <link rel="stylesheet" href="../styles/clinical-rtl.css" ng-if="userLanguageDirRtl"/>
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog.min.css"/>
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-default.min.css"/>
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>

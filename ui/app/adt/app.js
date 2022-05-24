@@ -93,6 +93,12 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
         });
 
         $bahmniTranslateProvider.init({app: 'adt', shouldMerge: true});
-    }]).run(['$window', function ($window) {
-        moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+    }]).run(['$rootScope', '$window', function ($rootScope, $window) {
+        // moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+        $rootScope.languageUser = $window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
+        $rootScope.userLanguageDirRtl = false;
+        if ($window.localStorage["NG_TRANSLATE_LANG_KEY"] === 'ar') {
+            $rootScope.languageUser = "ar";
+            $rootScope.userLanguageDirRtl = true;
+        }
     }]);
