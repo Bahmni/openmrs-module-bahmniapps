@@ -150,7 +150,7 @@ angular.module('bahmni.registration')
                         break;
                     default:
                         var DateUtil = Bahmni.Common.Util.DateUtil;
-                        var age = DateUtil.diffInYearsMonthsDays('01/01/' + changedDetails.birthDate, DateUtil.now());
+                        var age = DateUtil.diffInYearsMonthsDays(changedDetails.birthDate, DateUtil.now());
                         $scope.patient.age.years = age.years;
                         $scope.patient.age.months = age.months;
                         $scope.patient.age.days = age.days;
