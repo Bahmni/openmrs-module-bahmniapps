@@ -38,6 +38,9 @@ angular.module('bahmni.registration')
                         $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
                         $scope.$digest();
                     }
+                    if (popupWindowData.data.patientUuid !== undefined) {
+                        $window.open(Bahmni.Registration.Constants.existingPatient + popupWindowData.data.patientUuid, "_self");
+                    }
                 }, false);
             };
 
