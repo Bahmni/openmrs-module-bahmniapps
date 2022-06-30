@@ -12,11 +12,11 @@
             </li>
             <li>{{patientContext.gender}}</li>
             <li>{{patientContext.birthdate | birthDateToAgeText}}</li>
-            <li ng-repeat="(key, value) in patientContext.additionalPatientIdentifiers">
-                {{::key |translate}}: {{value}}
-            </li>
             <li ng-repeat="(key, value) in patientContext.personAttributes">
                 {{::value.description |translate}}: {{value.value}}
+            </li>
+            <li ng-repeat="(key, value) in patientContext.additionalPatientIdentifiers">
+                {{::key |translate}}: {{value}}
             </li>
             <li ng-repeat="(key, value) in patientContext.programAttributes">
                 {{::value.description |translate}}: {{value.value}}
