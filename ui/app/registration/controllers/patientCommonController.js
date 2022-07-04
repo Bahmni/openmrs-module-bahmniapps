@@ -148,7 +148,7 @@ angular.module('bahmni.registration')
                     case 'contactPoint':
                         for (var i = 0; i < changedDetails.contactPoint.length; i++) {
                             var contact = changedDetails.contactPoint[i];
-                            if (contact.system === "phone") { $scope.patient.primaryContact = contact.value; }
+                            if (contact.system === "phone") { $scope.patient.phoneNumber = contact.value; }
                         }
                         break;
                     default:
