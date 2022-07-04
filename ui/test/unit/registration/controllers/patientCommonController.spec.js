@@ -446,7 +446,7 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                 extraIdentifiers : [ { identifierType : { name : 'ABHA' }, generate : function (){}, registrationNumber : '57-0517-6745-1839' },
                     { identifierType : { name : 'ABHA Address' }, generate : function (){}, registrationNumber : 'hina.p@sbx' } ],
                 calculateBirthDate : Function,
-                primaryContact : '+919800083232',
+                phoneNumber : '+919800083232',
                 gender : 'F',
                 givenName : 'Hina',
                 middleName : '',
