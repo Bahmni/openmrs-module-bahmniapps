@@ -7,6 +7,7 @@ angular.module('bahmni.registration')
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             var personAttributes = [];
             var caste;
+            var contactAttribute;
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
             $scope.showLastName = appService.getAppDescriptor().getConfigValue("showLastName");
             $scope.isLastNameMandatory = $scope.showLastName && appService.getAppDescriptor().getConfigValue("isLastNameMandatory");
@@ -108,6 +109,7 @@ angular.module('bahmni.registration')
                             identifier.generate();
                             if (!identifierMatch) {
                                 extensionParam.addressMap !== null ? updatePatientAddress(patient.address[0], extensionParam.addressMap) : {};
+                                contactAttribute = extensionParam.contact ? extensionParam.contact : "primaryContact";
                                 changePatientDetails(patient);
                                 identifierMatch = true;
                             }
@@ -148,7 +150,7 @@ angular.module('bahmni.registration')
                     case 'contactPoint':
                         for (var i = 0; i < changedDetails.contactPoint.length; i++) {
                             var contact = changedDetails.contactPoint[i];
-                            if (contact.system === "phone") { $scope.patient.primaryContact = contact.value; }
+                            if (contact.system === "phone") { $scope.patient[contactAttribute] = contact.value; }
                         }
                         break;
                     default:
