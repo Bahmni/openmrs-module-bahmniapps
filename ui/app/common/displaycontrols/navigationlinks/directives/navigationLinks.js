@@ -39,8 +39,12 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                     "name": "registration",
                     "translationKey": "PATIENT_REGISTRATION_PAGE_KEY",
                     "url": "../registration/#/patient/{{patientUuid}}"
+                },
+                {
+                    "name": "labLite",
+                    "translationKey": "LAB_LITE_KEY",
+                    "url": "/lab/patient/{{patientUuid}}"
                 }
-
             ];
 
             var filterLinks = function (links, showLinks) {
