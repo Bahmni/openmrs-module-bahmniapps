@@ -1,9 +1,14 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .directive('patientContext', ['$state', '$translate', '$sce', 'patientService', 'spinner', 'appService', function ($state, $translate, $sce, patientService, spinner, appService) {
+    .directive('patientContext', ['$state', '$translate', '$sce', 'patientService', 'observationsService', 'spinner', 'appService', function ($state, $translate, $sce, patientService, observationsService, spinner, appService) {
         var controller = function ($scope, $rootScope) {
             var patientContextConfig = appService.getAppDescriptor().getConfigValue('patientContext') || {};
+            $scope.obs = observationsService.fetch($scope.patient.uuid, [patientContextConfig.conceptName], "latest", null, null, null, null, null)
+            .then(function (response) {
+                var observations = new Bahmni.Common.Obs.ObservationMapper().map(response.data, []);
+                $scope.patientContext.observation = _.sortBy(observations, 'sortWeight')[0];
+            });
             $scope.initPromise = patientService.getPatientContext($scope.patient.uuid, $state.params.enrollment, patientContextConfig.personAttributes, patientContextConfig.programAttributes, patientContextConfig.additionalPatientIdentifiers);
 
             $scope.initPromise.then(function (response) {
@@ -24,7 +29,6 @@ angular.module('bahmni.clinical')
                         delete personAttributes[preferredIdentifier];
                     }
                 }
-
                 $scope.showNameAndImage = $scope.showNameAndImage !== undefined ? $scope.showNameAndImage : true;
                 if ($scope.showNameAndImage) {
                     $scope.patientContext.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + $scope.patientContext.uuid;

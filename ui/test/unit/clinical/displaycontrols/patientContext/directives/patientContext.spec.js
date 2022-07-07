@@ -1,7 +1,7 @@
 'use strict';
 
 describe('patient context', function () {
-    var scope, $compile, mockBackend, patientService, spinner, mockAppDescriptor, mockAppService, provide, mocktranslate;
+    var scope, $compile, mockBackend, patientService, observationsService, spinner, mockAppDescriptor, mockAppService, provide, mocktranslate;
 
     beforeEach(module('bahmni.common.patient', function ($provide) {
         patientService = jasmine.createSpyObj('patientService', ['getPatientContext']);
@@ -10,6 +10,7 @@ describe('patient context', function () {
 
     beforeEach(module('bahmni.clinical', function ($provide) {
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+        observationsService = jasmine.createSpyObj('observationsService', ['fetch']);
         mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         mockAppService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         mocktranslate = jasmine.createSpyObj('$translate', ['instant']);
@@ -18,6 +19,7 @@ describe('patient context', function () {
         $provide.value('appService', mockAppService);
         $provide.value('$state', {params: {enrollment: 'programUuid'}});
         $provide.value('$translate', mocktranslate);
+        $provide.value('observationsService', observationsService);
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
