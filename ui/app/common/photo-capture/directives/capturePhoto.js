@@ -130,7 +130,7 @@ angular.module('bahmni.common.photoCapture')
             };
 
             scope.uploadImage = function () {
-                if (this.files && this.files[0]) {
+                if (this.files && this.files[0] && this.files[0].size <= 500000) {
                     var fileReader = new FileReader();
                     fileReader.onload = function (e) {
                         var image = new Image();
@@ -140,9 +140,12 @@ angular.module('bahmni.common.photoCapture')
                         image.src = e.target.result;
                     };
                     fileReader.readAsDataURL(this.files[0]);
+                    uploadConfirmImageButton.prop('disabled', false);
+                    uploadConfirmImageButton.focus();
+                } else {
+                    uploadConfirmImageButton.prop('disabled', true);
+                    alert('File size should be less than 500KB');
                 }
-                uploadConfirmImageButton.prop('disabled', false);
-                uploadConfirmImageButton.focus();
             };
 
             uploadDialogElement.dialog({autoOpen: false, height: 350, width: 350, modal: true,
