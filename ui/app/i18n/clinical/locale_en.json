@@ -196,7 +196,7 @@
     "POP_UP_CLOSE_DIALOG_MESSAGE_KEY":"You might lose unsaved data. Are you sure you want to leave this page?",
     "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
-    "LAB_LITE_KEY" : "Lab Entry",
+    "LAB_ENTRY_KEY" : "Lab Entry",
 
     "OBS_BOOLEAN_YES_KEY":"Yes",
     "OBS_BOOLEAN_NO_KEY":"No",
