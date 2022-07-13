@@ -28,7 +28,7 @@
                                   ng-dialog-data="{{getConfigToFetchDataAndShow(data)}}">
                                 <i class="fa fa-eye"></i>
                             </span>
-                            <span ng-show="doesUserHaveAccessToTheForm(data ,'edit')"class="has-link fl formDataEdit"
+                            <span ng-show="doesUserHaveAccessToTheForm(data ,'edit') && retrospectiveDateCheck(data)"class="has-link fl formDataEdit"
                                   ng-dialog="dashboard/views/dashboardSections/editObservationForm.html"
                                   ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-edit"
                                   ng-dialog-data="{{getEditObsData(data)}}"

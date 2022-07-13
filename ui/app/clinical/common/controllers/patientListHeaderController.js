@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog', 'retrospectiveEntryService', '$translate',
-        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, $translate) {
+    .controller('PatientListHeaderController', ['$scope', '$rootScope', '$bahmniCookieStore', 'providerService', 'spinner', 'locationService', '$window', 'ngDialog', 'retrospectiveEntryService', '$translate', 'appService',
+        function ($scope, $rootScope, $bahmniCookieStore, providerService, spinner, locationService, $window, ngDialog, retrospectiveEntryService, $translate, appService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.maxStartDate = DateUtil.getDateWithoutTime(DateUtil.today());
+            $scope.minStartDate = DateUtil.getDateWithoutTime(new Date(0));
             var selectedProvider = {};
             $scope.retrospectivePrivilege = Bahmni.Common.Constants.retrospectivePrivilege;
             $scope.locationPickerPrivilege = Bahmni.Common.Constants.locationPickerPrivilege;
@@ -48,7 +49,8 @@ angular.module('bahmni.clinical')
             };
 
             $scope.popUpHandler = function () {
-                $scope.dialog = ngDialog.open({ template: 'consultation/views/defaultDataPopUp.html', className: 'test ngdialog-theme-default',
+                $scope.dialog = ngDialog.open({ template: 'consultation/views/defaultDataPopUp.html',
+                    className: 'test ngdialog-theme-default',
                     controller: 'PatientListHeaderController'});
                 $('body').addClass('show-controller-back');
             };
@@ -76,6 +78,21 @@ angular.module('bahmni.clinical')
             };
 
             $scope.sync = function () {
+            };
+            var retrospectiveDateCheck = function () {
+                var hasPrivilege = _.some($rootScope.currentUser.privileges, {name: 'bypassRetrospectiveDateThreshold'});
+                var retrospectiveDateThreshold = appService.getAppDescriptor().getConfigValue('retrospectiveDateThreshold');
+                if (!hasPrivilege && retrospectiveDateThreshold) {
+                    var thresholdDate = new Date(new Date().setDate(retrospectiveDateThreshold));
+                    var currentDate = new Date();
+
+                    var startDate = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1, 0);
+                    if (currentDate > thresholdDate) {
+                        startDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1, 0);
+                    }
+
+                    $scope.minStartDate = DateUtil.getDateWithoutTime(startDate);
+                }
             };
 
             var getCurrentCookieLocation = function () {
@@ -107,7 +124,7 @@ angular.module('bahmni.clinical')
                 $scope.date = retrospectiveDate ? new Date(retrospectiveDate) : new Date($scope.maxStartDate);
                 $scope.encounterProvider = getCurrentProvider();
                 selectedProvider = getCurrentProvider();
-
+                retrospectiveDateCheck();
                 return locationService.getAllByTag("Login Location").then(function (response) {
                     $scope.locations = response.data.results;
                     $scope.selectedLocationUuid = getCurrentCookieLocation().uuid;

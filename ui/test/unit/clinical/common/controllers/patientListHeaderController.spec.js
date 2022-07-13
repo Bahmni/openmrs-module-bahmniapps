@@ -4,7 +4,7 @@ describe("PatientListHeaderController", function () {
 
     var scope, ngDialog,
         $bahmniCookieStore, locationService, $window, retrospectiveEntryService, translate,
-        providerService, rootScope, thisController, locationsPromise;
+        providerService, rootScope, thisController, locationsPromise, appService;
     var date = "2015-01-11";
     var encounterProvider = {value: "Test", uuid: "Test_UUID"};
     translate = jasmine.createSpyObj('$translate', ['instant']);
@@ -27,7 +27,6 @@ describe("PatientListHeaderController", function () {
                 return {uuid: 1, display: "Location" };
             }
         });
-
         locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
         retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveDate', 'resetRetrospectiveEntry']);
         retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
@@ -42,9 +41,20 @@ describe("PatientListHeaderController", function () {
             ]}});
         });
         providerService = jasmine.createSpyObj('providerService', ['search']);
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         ngDialog = jasmine.createSpyObj('ngDialog', ['open','close']);
         $window = {location: { reload: jasmine.createSpy()} };
-
+        
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function () {
+                return 10;
+            }
+        });
+        rootScope.currentUser = {
+            "username": "superman",
+            "userProperties": [{"defaultLocale": "en"}],
+            "privileges": []
+        };
         thisController = $controller('PatientListHeaderController', {
             $scope: scope,
             $bahmniCookieStore: $bahmniCookieStore,
@@ -53,7 +63,9 @@ describe("PatientListHeaderController", function () {
             retrospectiveEntryService: retrospectiveEntryService,
             $window: $window,
             ngDialog: ngDialog,
-            $translate: translate
+            $translate: translate,
+            appService: appService,
+            $rootScope: rootScope
         });
         thisController.windowReload = function () {
         };
