@@ -273,7 +273,7 @@ Bahmni.Common = Bahmni.Common || {};
         loginConfig: "/bahmni_config/openmrs/apps/home/login_config.json",
         visit: "VISIT",
         defaultImageUploadSize: 500000, // Default patient profile photo size
-        maxImageUploadSize: 9000000, // to ensure, extreme max size and prevent choking up server capacity (max size is 9MB)
+        maxImageUploadSize: 9000000 // to ensure, extreme max size and prevent choking up server capacity (max size is 9MB)
     };
 })();
 
