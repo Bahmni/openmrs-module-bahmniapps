@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.photoCapture')
-    .directive('capturePhoto', ['$parse', '$window', function factory ($parse, $window) {
+    .directive('capturePhoto', ['appService','$parse', '$window', function factory (appService, $parse, $window) {
         var link = function (scope, iElement, iAttrs) {
             var captureDialogElement = iElement.find(".photoCaptureDialog"),
                 captureVideo = captureDialogElement.find("video")[0],
@@ -15,8 +15,11 @@ angular.module('bahmni.common.photoCapture')
                 uploadConfirmImageButton = uploadDialogElement.find(".confirmImage"),
                 uploadField = iElement.find(".fileUpload")[0],
                 dialogOpen = false,
-                pixelRatio = window.devicePixelRatio;
-
+                pixelRatio = window.devicePixelRatio,
+                imageUploadSize = appService.getAppDescriptor().getConfigValue("imageUploadSize") || Bahmni.Common.Constants.defaultImageUploadSize;
+                if(imageUploadSize > Bahmni.Common.Constants.maxImageUploadSize){
+                    imageUploadSize = Bahmni.Common.Constants.maxImageUploadSize
+                }
             captureContext.scale(pixelRatio, pixelRatio);
             uploadContext.scale(pixelRatio, pixelRatio);
 
@@ -130,7 +133,7 @@ angular.module('bahmni.common.photoCapture')
             };
 
             scope.uploadImage = function () {
-                if (this.files && this.files[0] && this.files[0].size <= 500000) {
+                if (this.files && this.files[0] && this.files[0].size <= imageUploadSize) {
                     var fileReader = new FileReader();
                     fileReader.onload = function (e) {
                         var image = new Image();
@@ -144,7 +147,14 @@ angular.module('bahmni.common.photoCapture')
                     uploadConfirmImageButton.focus();
                 } else {
                     uploadConfirmImageButton.prop('disabled', true);
-                    alert('File size should be less than 500KB');
+                    var imageUploadSizeInKb = imageUploadSize/1000;
+                    var displayMessage = '';
+                    if(imageUploadSizeInKb >= 1000){
+                        displayMessage = Math.floor(imageUploadSizeInKb/1000)+"MB";
+                    } else{
+                        displayMessage = Math.floor(imageUploadSizeInKb)+"KB";
+                    }
+                    alert('File size should be less than '+displayMessage);
                 }
             };
 
