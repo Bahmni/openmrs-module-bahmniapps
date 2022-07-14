@@ -1,0 +1,1809 @@
+@charset "UTF-8";
+
+@page{
+}
+body {
+	font-family: Arial, sans-serif !important;
+	font-size: 9pt;
+	color: #000000;
+	background: #fff;
+	-webkit-print-color-adjust: exact;
+	pre {
+		font-family: Arial, sans-serif !important;
+		font-size: 9pt;
+		color: #000000;
+		white-space: pre-wrap;
+	}
+}
+p {
+	margin: 0px;
+	padding: 0px;
+}
+h1 {
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+h2 {
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+h3 {
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+table {
+	margin: 0px;
+	padding: 0px;
+}
+tr {
+	margin: 0px;
+	padding: 0px;
+}
+td {
+	margin: 0px;
+	padding: 0px;
+}
+div {
+	margin: 0px;
+	padding: 0px;
+}
+span {
+	margin: 0px;
+	padding: 0px;
+}
+li {
+	margin: 0px;
+	padding: 0px;
+}
+.print-center {
+	text-align: center;
+}
+.registrationCard-print-table {
+	width: 150mm;
+	height: 83mm;
+	overflow: scroll;
+	margin: 0 auto;
+	table-layout: fixed;
+	td.registrationCard-photo {
+		padding-top: 2px;
+	}
+}
+.print-table-left {
+	width: 77mm;
+}
+.print-table-header {
+	text-align: center;
+	margin-top: 7.5pt;
+	text-align: center;
+}
+.print-table-left-body {
+	font-size: 4mm;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	margin-top: 15px;
+	li {
+		margin: 0px;
+		padding: 0px 0px 5px 0px;
+		line-height: 18px;
+	}
+}
+.caution {
+	text-align: center;
+	line-height: 20px;
+	h3 {
+		line-height: 25px;
+		margin-bottom: 6px;
+		margin-top: 12px;
+	}
+}
+.print-table-right {
+	width: 77mm;
+	.logo {
+		text-align: center;
+		width: 12mm;
+		padding: 0px;
+		margin: 0px;
+		height: 12mm;
+	}
+}
+.print-table-right-header {
+	text-align: center;
+	width: 42mm;
+	text-align: right;
+	height: 12mm;
+}
+.registrationCard-location {
+	padding: 5px 8px 8px 8px;
+}
+.registrationCard-details {
+	padding: 0mm 5mm 0mm 5mm;
+}
+.registrationCard-details-name {
+	width: 70px;
+}
+.registrationCard-details-seperator {
+	width: 20px;
+	text-align: center;
+}
+.hindi-text {
+	vertical-align: bottom;
+}
+.pgContainer {
+	height: auto;
+	min-height: initial;
+	overflow: hidden;
+}
+.print-wrapper {
+	font-family: Arial, sans-serif;
+	font-size: 9pt;
+	padding: 10px 20px 0;
+	max-width: 21cm;
+	margin: 0 auto;
+	box-sizing: border-box;
+	.has-uploaded-file {
+		.uploaded-file {
+			display: inherit;
+			.fa-paper-clip {
+				margin-top: 0;
+				display: none;
+			}
+		}
+	}
+	a {
+		color: #333;
+	}
+	strong {
+		font-family: Arial, sans-serif;
+		font-weight: bold;
+	}
+	.visible-print {
+		display: block;
+	}
+	.hidden-print {
+		display: none;
+	}
+	.placeholder-text {
+		font-size: 9pt;
+		padding: 2px 10px;
+		border: 0;
+	}
+	.has-link {
+		pointer-events: none !important;
+		&:hover {
+			background: none !important;
+		}
+	}
+	.print-header {
+		text-align: center;
+		color: #000000;
+		margin-bottom: 10px;
+		.logo {
+			width: 35px;
+			vertical-align: middle;
+			display: inline-block;
+			margin-right: -40px;
+		}
+		h1 {
+			font-size: 14pt;
+			margin-bottom: 0;
+			color: #000000;
+			font-family: Arial, sans-serif;
+		}
+		h2 {
+			font-size: 10pt;
+			margin-top: 5px;
+			margin-bottom: 7px;
+			color: #000000;
+			text-transform: capitalize;
+			padding: 0;
+			font-family: Arial, sans-serif;
+			text-decoration: none;
+			font-weight: normal;
+		}
+	}
+	.hierarchy {
+		ul {
+			li {
+				.tree-list-item {
+					padding: 0 5px !important;
+					background: none !important;
+					i[class^="fa-"] {
+						display: none;
+					}
+					.obs-date {
+						-webkit-print-color-adjust: exact;
+						font-weight: bold;
+						font-size: 9pt;
+						background: #C3C3C3 !important;
+						padding: 2px 5px;
+						display: block;
+						margin: 2px 0;
+					}
+				}
+			}
+		}
+	}
+	.dashboard-sections {
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		float: none;
+	}
+	.section-grid {
+		border: 0;
+	}
+	.dashboard-section {
+		border: 0;
+		margin: 0 0 5px;
+		font-size: 7.5pt;
+		border-radius: 0;
+		border: 0;
+		section.block.hierarchy {
+			.value-text-only {
+				padding: 2px 5px;
+			}
+			.text-only {
+				width: 100%;
+				word-wrap: break-word;
+				display: auto;
+				padding-bottom: 5px;
+			}
+		}
+		h2.section-title {
+			text-align: right;
+			color: #000000;
+			font-size: 9.5pt;
+			font-family: Arial, sans-serif;
+			font-weight: bold;
+			line-height: normal;
+			padding: 0;
+			margin: 0;
+			border: 0;
+			text-transform: uppercase;
+			text-decoration: underline;
+			[class^="fa-"] {
+				display: none;
+			}
+		}
+		.form-field {
+			border: 0;
+			.time {
+				display: none;
+			}
+		}
+		.laborder-sub-heading {
+			font-size: 9pt;
+			font-weight: bold;
+			border: none;
+			padding: 0;
+			background: none;
+			.toggle-btn {
+				display: none;
+			}
+			[class^="fa-"] {
+				display: none;
+			}
+			[class*=" {
+				fa-"] {
+					display: none;
+				}
+			}
+		}
+		table {
+			border-collapse: separate;
+			border: 0;
+			margin: 0;
+			padding: 0;
+			height: auto;
+			overflow: visible;
+			thead {
+				tr {
+					border: 0;
+					th {
+						border: 0;
+						font-size: 9pt;
+						font-weight: bold;
+						padding: 1px 5px;
+						color: #000000;
+						background: none;
+						font-family: Arial, sans-serif;
+					}
+					.toggle-btn {
+						display: none;
+					}
+				}
+			}
+			tbody {
+				tr {
+					border: 0;
+					font-size: 9pt;
+					padding: 0 5px;
+					font-family: Arial, sans-serif;
+					text-align: right;
+					td {
+						border: 0;
+						font-size: 9pt;
+						padding: 0 5px;
+						font-family: Arial, sans-serif;
+						text-align: right;
+					}
+					th {
+						border: 0;
+						font-size: 9pt;
+						padding: 0 5px;
+						font-family: Arial, sans-serif;
+						text-align: right;
+					}
+					.name {
+						width: 45%;
+					}
+					.drug {
+						width: 45%;
+					}
+					.testUnderPanel {
+						width: 45%;
+					}
+					.value {
+						width: auto;
+						.is-abnormal {
+							font-weight: bold;
+							color: #333 !important;
+						}
+					}
+					.dosage {
+						width: auto;
+					}
+					.toggle-btn {
+						display: none;
+					}
+					.days {
+						min-width: 60px;
+					}
+				}
+			}
+			.drug-discontinued {
+				display: none;
+			}
+		}
+		table.printPrescription {
+			margin-top: 10px;
+			width: 100%;
+			table-layout: fixed;
+			border-collapse: collapse;
+			-webkit-print-color-adjust: exact;
+			tbody {
+				&:nth-child(odd) {
+					tr {
+						background: #EDEDED;
+					}
+				}
+			}
+			tr {
+				strong {
+					padding-right: 20px;
+					padding-bottom: 3px;
+				}
+			}
+			th {
+				padding-top: 6px;
+				padding-bottom: 4px;
+			}
+			th.sl-no-heading {
+				width: 8%;
+			}
+			th.drug-name-heading {
+				width: 30%;
+			}
+			th.dosage-instructions-heading {
+				width: 35%;
+			}
+			th.quantity-heading {
+				width: 15%;
+			}
+			th.start-date-heading {
+				width: 12%;
+			}
+			td {
+				padding-top: 4px;
+				vertical-align: top;
+				padding-bottom: 3px;
+				&:first-child {
+					padding-right: 14px;
+				}
+			}
+			td.inline-notes.notes {
+				padding-top: 0;
+			}
+		}
+		table.repeated-table {
+			margin-bottom: 5px;
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+		table.history-diagnosis {
+			.table-header {
+				display: none;
+			}
+		}
+		table.h-scroll {
+			border-collapse: collapse;
+			tbody {
+				tr {
+					padding: 0;
+					border: 0;
+					margin: 0;
+					td {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+					th {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+				}
+			}
+			thead {
+				tr {
+					padding: 0;
+					border: 0;
+					margin: 0;
+					td {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+					th {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+				}
+			}
+		}
+		table.pivot-table {
+			border-collapse: collapse;
+			tbody {
+				tr {
+					padding: 0;
+					border: 0;
+					margin: 0;
+					td {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+					th {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+				}
+			}
+			thead {
+				tr {
+					padding: 0;
+					border: 0;
+					margin: 0;
+					td {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+					th {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+				}
+			}
+		}
+		.hierarchy {
+			ul {
+				li {
+					border: 0;
+					background: none;
+					font-size: 9pt;
+					ul {
+						li {
+							border: 0;
+							background: none;
+							font-size: 9pt;
+						}
+					}
+					.testUnderPanel {
+						width: 37%;
+						font-weight: bold;
+						padding-right: 0;
+						.visit-start-date {
+							margin-left: 0;
+						}
+					}
+				}
+				ul {
+					ul {
+						padding-right: 10px;
+					}
+				}
+			}
+		}
+		table.ipd-investigation-print {
+			border-collapse: collapse;
+			border-bottom: 1px solid #ddd;
+			table-layout: fixed;
+			font-size: 8pt;
+			tbody {
+				tr {
+					th {
+						border: 1px solid #ddd;
+						border-width: 1px 0 0 1px;
+						display: table-cell;
+						font-weight: normal;
+						background: #fff;
+						height: 15px;
+						border-right: 1px solid #ddd;
+						width: 38%;
+					}
+					td {
+						border: 1px solid #ddd;
+						border-width: 1px 0 0 1px;
+						display: table-cell;
+						font-weight: normal;
+						background: #fff;
+						height: 15px;
+						padding: 0;
+					}
+				}
+			}
+			thead {
+				tr {
+					th {
+						border: 1px solid #ddd;
+						border-width: 1px 0 0 1px;
+						display: table-cell;
+						font-weight: normal;
+						background: #fff;
+						height: 15px;
+						&:first-child {
+							border-right: 1px solid #ddd;
+							width: 38%;
+						}
+					}
+					td {
+						border: 1px solid #ddd;
+						border-width: 1px 0 0 1px;
+						display: table-cell;
+						font-weight: normal;
+						background: #fff;
+						height: 15px;
+						padding: 0;
+					}
+				}
+			}
+			span.range {
+				font-size: 8pt;
+			}
+			span.is-abnormal {
+				font-weight: bold;
+			}
+			span.ipd-test-results {
+				white-space: normal;
+				text-overflow: initial;
+				padding: 0px 5px;
+				border-left-color: #ddd;
+				display: inline-block;
+				float: right;
+			}
+		}
+	}
+	.visit-summary-page {
+		section.block {
+			border: 0;
+			margin: 0 0 5px;
+			font-size: 7.5pt;
+		}
+		.hierarchy {
+			ul {
+				li {
+					ul {
+						li.has-child {
+							font-family: Arial, sans-serif;
+							ul {
+								li {
+									font-family: Arial, sans-serif;
+								}
+								li.has-child {
+									font-family: Arial, sans-serif;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	h2.section-title {
+		text-align: right;
+		color: #000000;
+		font-size: 9.5pt;
+		font-family: Arial, sans-serif;
+		font-weight: bold;
+		line-height: normal;
+		padding: 0;
+		margin: 0;
+		border: 0;
+		text-transform: uppercase;
+		text-decoration: underline;
+		background: none;
+		[class^="fa-"] {
+			display: none;
+		}
+	}
+	h2.section-title.has-link {
+		.title-link {
+			text-decoration: none;
+			border-bottom: 0;
+		}
+	}
+	table.history-diagnosis {
+		tbody {
+			.notes.inline-notes {
+				.left {
+					display: none !important;
+				}
+			}
+		}
+	}
+	section.block {
+		border-radius: 0;
+		border: 0;
+		h2.section-title {
+			text-align: right;
+			color: #000000;
+			font-size: 9.5pt;
+			font-family: Arial, sans-serif;
+			font-weight: bold;
+			line-height: normal;
+			padding: 0;
+			margin: 0;
+			border: 0;
+			text-transform: uppercase;
+			text-decoration: underline;
+			[class^="fa-"] {
+				display: none;
+			}
+		}
+		.form-field {
+			border: 0;
+			.time {
+				display: none;
+			}
+		}
+		.laborder-sub-heading {
+			font-size: 9pt;
+			font-weight: bold;
+			border: none;
+			padding: 0;
+			background: none;
+			.toggle-btn {
+				display: none;
+			}
+			[class^="fa-"] {
+				display: none;
+			}
+			[class*=" {
+				fa-"] {
+					display: none;
+				}
+			}
+		}
+		table {
+			border-collapse: separate;
+			border: 0;
+			margin: 0;
+			padding: 0;
+			height: auto;
+			overflow: visible;
+			thead {
+				tr {
+					border: 0;
+					th {
+						border: 0;
+						font-size: 9pt;
+						font-weight: bold;
+						padding: 1px 5px;
+						color: #000000;
+						background: none;
+						font-family: Arial, sans-serif;
+					}
+					.toggle-btn {
+						display: none;
+					}
+				}
+			}
+			tbody {
+				tr {
+					border: 0;
+					font-size: 9pt;
+					padding: 0 5px;
+					font-family: Arial, sans-serif;
+					text-align: right;
+					td {
+						border: 0;
+						font-size: 9pt;
+						padding: 0 5px;
+						font-family: Arial, sans-serif;
+						text-align: right;
+					}
+					th {
+						border: 0;
+						font-size: 9pt;
+						padding: 0 5px;
+						font-family: Arial, sans-serif;
+						text-align: right;
+					}
+					.name {
+						width: 45%;
+					}
+					.drug {
+						width: 45%;
+					}
+					.testUnderPanel {
+						width: 45%;
+					}
+					.value {
+						width: auto;
+						.is-abnormal {
+							font-weight: bold;
+							color: #333 !important;
+						}
+					}
+					.dosage {
+						width: auto;
+					}
+					.toggle-btn {
+						display: none;
+					}
+					.days {
+						min-width: 60px;
+					}
+				}
+			}
+			.drug-discontinued {
+				display: none;
+			}
+		}
+		table.printPrescription {
+			margin-top: 10px;
+			width: 100%;
+			table-layout: fixed;
+			border-collapse: collapse;
+			-webkit-print-color-adjust: exact;
+			tbody {
+				&:nth-child(odd) {
+					tr {
+						background: #EDEDED;
+					}
+				}
+			}
+			tr {
+				strong {
+					padding-right: 20px;
+					padding-bottom: 3px;
+				}
+			}
+			th {
+				padding-top: 6px;
+				padding-bottom: 4px;
+			}
+			th.sl-no-heading {
+				width: 8%;
+			}
+			th.drug-name-heading {
+				width: 30%;
+			}
+			th.dosage-instructions-heading {
+				width: 35%;
+			}
+			th.quantity-heading {
+				width: 15%;
+			}
+			th.start-date-heading {
+				width: 12%;
+			}
+			td {
+				padding-top: 4px;
+				vertical-align: top;
+				padding-bottom: 3px;
+				&:first-child {
+					padding-right: 14px;
+				}
+			}
+			td.inline-notes.notes {
+				padding-top: 0;
+			}
+		}
+		table.repeated-table {
+			margin-bottom: 5px;
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+		table.history-diagnosis {
+			.table-header {
+				display: none;
+			}
+		}
+		table.h-scroll {
+			border-collapse: collapse;
+			tbody {
+				tr {
+					padding: 0;
+					border: 0;
+					margin: 0;
+					td {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+					th {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+				}
+			}
+			thead {
+				tr {
+					padding: 0;
+					border: 0;
+					margin: 0;
+					td {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+					th {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+				}
+			}
+		}
+		table.pivot-table {
+			border-collapse: collapse;
+			tbody {
+				tr {
+					padding: 0;
+					border: 0;
+					margin: 0;
+					td {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+					th {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+				}
+			}
+			thead {
+				tr {
+					padding: 0;
+					border: 0;
+					margin: 0;
+					td {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+					th {
+						padding: 5px 10px;
+						border: 1px solid #ddd;
+						font-size: 9pt;
+						vertical-align: top;
+						min-height: 18px;
+						height: 18px;
+						font-weight: normal;
+						span {
+							line-height: 1;
+							padding: 0;
+						}
+					}
+				}
+			}
+		}
+		.hierarchy {
+			ul {
+				li {
+					border: 0;
+					background: none;
+					font-size: 9pt;
+					ul {
+						li {
+							border: 0;
+							background: none;
+							font-size: 9pt;
+						}
+					}
+					.testUnderPanel {
+						width: 37%;
+						font-weight: bold;
+						padding-right: 0;
+						.visit-start-date {
+							margin-left: 0;
+						}
+					}
+				}
+				ul {
+					ul {
+						padding-right: 10px;
+					}
+				}
+			}
+		}
+		table.ipd-investigation-print {
+			border-collapse: collapse;
+			border-bottom: 1px solid #ddd;
+			table-layout: fixed;
+			font-size: 8pt;
+			tbody {
+				tr {
+					th {
+						border: 1px solid #ddd;
+						border-width: 1px 0 0 1px;
+						display: table-cell;
+						font-weight: normal;
+						background: #fff;
+						height: 15px;
+						border-right: 1px solid #ddd;
+						width: 38%;
+					}
+					td {
+						border: 1px solid #ddd;
+						border-width: 1px 0 0 1px;
+						display: table-cell;
+						font-weight: normal;
+						background: #fff;
+						height: 15px;
+						padding: 0;
+					}
+				}
+			}
+			thead {
+				tr {
+					th {
+						border: 1px solid #ddd;
+						border-width: 1px 0 0 1px;
+						display: table-cell;
+						font-weight: normal;
+						background: #fff;
+						height: 15px;
+						&:first-child {
+							border-right: 1px solid #ddd;
+							width: 38%;
+						}
+					}
+					td {
+						border: 1px solid #ddd;
+						border-width: 1px 0 0 1px;
+						display: table-cell;
+						font-weight: normal;
+						background: #fff;
+						height: 15px;
+						padding: 0;
+					}
+				}
+			}
+			span.range {
+				font-size: 8pt;
+			}
+			span.is-abnormal {
+				font-weight: bold;
+			}
+			span.ipd-test-results {
+				white-space: normal;
+				text-overflow: initial;
+				padding: 0px 5px;
+				border-left-color: #ddd;
+				display: inline-block;
+				float: right;
+			}
+		}
+	}
+	.dashboard-patientInformation-section {
+		table.patient {
+			.value {
+				width: auto;
+			}
+			.patient-img {
+				display: none;
+			}
+			.patient-info {
+				td {
+					background: none;
+				}
+			}
+			.patient-value {
+				display: block;
+				width: auto;
+				float: right;
+				padding-bottom: 2px;
+				.patient-name {
+					font-size: 11pt;
+					text-decoration: underline;
+				}
+				.patient-gender-age {
+					font-size: 9pt;
+				}
+			}
+			.address {
+				.name {
+					display: none;
+				}
+			}
+		}
+	}
+	.diagnosis-name.ruled-out {
+		text-decoration: line-through;
+	}
+	.dashboard-radiology-section {
+		ul {
+			border: 0;
+		}
+		li {
+			border: 0;
+			a {
+				padding: 1px 5px;
+				font-size: 7.5pt;
+			}
+		}
+	}
+	.disposition-section {
+		ul {
+			border: 0;
+		}
+		li {
+			border: 0;
+			a {
+				padding: 1px 5px;
+				font-size: 7.5pt;
+			}
+		}
+	}
+	.radiology-investigations {
+		ul {
+			border: 0;
+		}
+		li {
+			border: 0;
+			a {
+				padding: 1px 5px;
+				font-size: 7.5pt;
+			}
+		}
+	}
+	.disposition-state {
+		font-size: 10pt;
+		.disposition-by {
+			display: none;
+		}
+	}
+	.dashboard-laborders-section {
+		table {
+			tr {
+				td {
+					.date {
+						display: none;
+					}
+					.value {
+						width: 60%;
+					}
+				}
+			}
+		}
+	}
+	.diagnosis {
+		table {
+			.date {
+				display: none;
+			}
+			.toggle-btn {
+				display: none;
+			}
+		}
+	}
+	.notes {
+		padding: 0px 20px 2px 5px;
+		font-size: 8pt;
+		background: none;
+		color: #999;
+		pre {
+			color: #999;
+			font-size: 8pt;
+		}
+		.content {
+			color: #999;
+			font-size: 8pt;
+		}
+		.footer-note {
+			.provider {
+				display: none;
+			}
+		}
+	}
+	.notes.test-notes {
+		i[class^=fa-] {
+			padding: 0;
+			display: none;
+		}
+	}
+	.notes.print-notes {
+		display: block !important;
+	}
+	.expander-row {
+		padding: 0 5px;
+	}
+	.laborder-section {
+		li {
+			padding: 0 5px;
+		}
+	}
+	.is-abnormal {
+		color: #000000 !important;
+	}
+	button.toggle {
+		display: none;
+	}
+	.visits-nav-bar {
+		display: none;
+		.prev-visit {
+			display: none;
+		}
+		.next-visit {
+			display: none;
+		}
+		.visit-details {
+			background: none;
+			border: 0;
+			font-family: Arial, sans-serif;
+		}
+		.visit-date {
+			font-family: Arial, sans-serif;
+		}
+	}
+	.ipd-treatment-section {
+		display: none;
+	}
+	table.drug-order-table {
+		td.drug {
+			border-right: 0 !important;
+		}
+	}
+	.fa {
+		display: none !important;
+	}
+	.patient-info-fixed-postion-container {
+		position: static;
+		.patient-info-fixed {
+			font-family: Arial, sans-serif !important;
+		}
+	}
+	.patient-dashboard.visit {
+		margin-top: 15px;
+	}
+	.dashboard-sections-wrapper {
+		.dashboard-sections.halfpage-container {
+			width: 100% !important;
+			.LAYOUT_25_75 {
+				width: 100% !important;
+			}
+		}
+		.dashboard-sections.halfpage-container.dashboard-sections-left {
+			.LAYOUT_25_75 {
+				width: 100% !important;
+			}
+		}
+		.dashboard-sections.three-fourth-page-container {
+			.LAYOUT_25_75 {
+				width: 100% !important;
+				float: right;
+			}
+			.LAYOUT_75_25 {
+				width: 100% !important;
+			}
+		}
+	}
+	.patient-monitering-schedule-details {
+		li {
+			width: auto;
+			padding-left: 10px;
+			span {
+				font-family: Arial, sans-serif;
+				font-weight: bold;
+			}
+		}
+	}
+	.patient-monitering-table {
+		.legends {
+			font-family: Arial, sans-serif;
+			span {
+				padding-bottom: 11px;
+				display: inline-block;
+			}
+			span.monitoring-legends--yellow {
+				&:before {
+					content: "∅";
+				}
+			}
+			span.monitoring-legends--green {
+				&:before {
+					content: "✓";
+				}
+			}
+			span.monitoring-legends--purple {
+				&:before {
+					content: "✗";
+				}
+			}
+		}
+		.monitoring-table-scroll {
+			width: 100%;
+			margin-right: 0;
+			overflow: hidden;
+			tr {
+				page-break-inside: avoid !important;
+				height: auto !important;
+			}
+			td {
+				page-break-inside: avoid !important;
+				height: auto !important;
+			}
+			th {
+				page-break-inside: avoid !important;
+				height: auto !important;
+			}
+			table {
+				tr {
+					td {
+						font-size: 7pt;
+						padding: 5px;
+						border: 1px solid #000000 !important;
+					}
+					th {
+						font-size: 7pt;
+						padding: 5px;
+						border: 1px solid #000000 !important;
+					}
+					td.monitoring-fixed-column {
+						position: static;
+						width: 100px;
+						white-space: normal;
+						height: auto;
+					}
+					th.monitoring-fixed-column {
+						position: static;
+						width: 100px;
+						white-space: normal;
+						height: auto;
+					}
+					td.monitoring-results {
+						span {
+							margin-top: 50%;
+							transform: translateY(-50%);
+							text-align: center;
+							font-size: 12px;
+						}
+					}
+					th.monitoring-results {
+						span {
+							margin-top: 50%;
+							transform: translateY(-50%);
+							text-align: center;
+							font-size: 12px;
+						}
+					}
+					td.monitoring-results--green {
+						span.monitoring-results-print--green {
+							display: block;
+						}
+					}
+					th.monitoring-results--green {
+						span.monitoring-results-print--green {
+							display: block;
+						}
+					}
+					td.monitoring-results--purple {
+						span.monitoring-results-print--purple {
+							display: block;
+						}
+					}
+					th.monitoring-results--purple {
+						span.monitoring-results-print--purple {
+							display: block;
+						}
+					}
+					td.monitoring-results--yellow {
+						span.monitoring-results-print--yellow {
+							display: block;
+						}
+					}
+					th.monitoring-results--yellow {
+						span.monitoring-results-print--yellow {
+							display: block;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+.prescription-print {
+	table {
+		tr {
+			td {
+				font-size: 9pt;
+				min-width: 1.75cm;
+			}
+			th {
+				font-size: 9pt;
+				min-width: 1.75cm;
+			}
+		}
+	}
+	.patient-info {
+		margin-bottom: 10px;
+		td {
+			font-weight: bold;
+			.value {
+				font-weight: normal;
+			}
+		}
+	}
+	.treatment-section {
+		.drug-name {
+			width: 7cm;
+		}
+		.dosage-days {
+			width: 7cm;
+		}
+		.dosage-form {
+			span {
+				float: right;
+				margin-left: 5px;
+				white-space: normal;
+			}
+		}
+	}
+}
+.dashboard-section {
+	box-shadow: none;
+}
+.patient-gender-age {
+	display: none;
+}
+.patient-estimated-text {
+	display: none;
+}
+.patient-birth-time {
+	display: none;
+}
+.treatment-section {
+	.notes {
+		.footer-note {
+			span {
+				font-size: 10px;
+			}
+			span.provider {
+				display: inline-block !important;
+				padding-bottom: 3px;
+			}
+		}
+	}
+}
+#diagnosisComments {
+	color: #000000 !important;
+}
+.print-patient-summary.print-wrapper {
+	max-width: 100%;
+}
+.print-patient-summary {
+	.dashboard-section {
+		margin-bottom: 0px;
+		.dashboard-tabular-obs-section.hasTable {
+			height: 970px;
+			page-break-before: always;
+			page-break-after: always;
+			position: relative;
+			.rotate {
+				transform: rotate(90deg);
+				position: absolute;
+				margin-top: -470px;
+				bottom: 0px;
+				width: 940px;
+				top: 50%;
+				right: 50%;
+				margin-right: -310px;
+				table {
+					width: 100%;
+					table-layout: fixed;
+					word-break: break-all;
+					margin: 0;
+					padding: 0;
+					tr {
+						th {
+							&:first-child {
+								width: 140px;
+							}
+						}
+					}
+				}
+			}
+		}
+		.block {
+			margin: 0 0 25px;
+		}
+		.dashboard-tabular-obs-section {
+			margin: 0 0 25px;
+		}
+		#Laboratory-Monitoring {
+			margin: 0 0 25px;
+		}
+		.dashboard-more-info {
+			margin: 0 0 25px;
+			.block {
+				margin-top: 4px;
+			}
+		}
+		.dashboard-patientInformation-section {
+			table {
+				tr {
+					border: none !important;
+				}
+				td {
+					border: none !important;
+				}
+				th {
+					border: none !important;
+				}
+				.patient-info {
+					padding: 0;
+					td {
+						padding: 0;
+					}
+					.patient-value {
+						.patient-address {
+							display: inline-block;
+						}
+					}
+				}
+			}
+		}
+		h2.section-title {
+			margin: 0 0 3px !important;
+			font-size: 13px !important;
+		}
+		.tabular-obs {
+			margin-top: 4px;
+		}
+		.chronic-treatment {
+			margin-top: 4px;
+		}
+		.hierarchy {
+			ul {
+				padding-right: 0 !important;
+				li {
+					overflow: auto;
+					clear: none;
+					background: #fff;
+					.tree-list-item {
+						padding: 3px 5px !important;
+						&:first-child {
+							padding-top: 0 !important;
+						}
+					}
+					ul {
+						overflow: hidden;
+						padding-right: 0 !important;
+						li {
+							&:nth-of-type(odd) {
+								background: #fff;
+							}
+							&:nth-of-type(even) {
+								background: #D9D8D8;
+							}
+							ul {
+								padding-right: 0 !important;
+								li {
+									ul {
+										li {
+											padding-right: 10px !important;
+											.tree-list-item {
+												padding: 0px 5px 3px 5px !important;
+												.testUnderPanel {
+													width: 463px !important;
+													font-weight: normal !important;
+												}
+											}
+											&:nth-of-type(odd) {
+												background: #fff !important;
+												ul {
+													li {
+														background: transparent !important;
+													}
+												}
+											}
+											&:nth-of-type(even) {
+												background: #D9D8D8 !important;
+												ul {
+													li {
+														background: transparent !important;
+													}
+												}
+											}
+											ul {
+												li {
+													ul {
+														li {
+															.tree-list-item {
+																padding-right: 20px !important;
+															}
+															padding-right: 0 !important;
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			.value-text-only {
+				width: auto !important;
+				padding: 3px 0px 0px !important;
+				display: inline-block;
+			}
+			.text-only {
+				width: auto !important;
+				padding: 3px 0px 0px !important;
+				display: inline-block;
+			}
+			.testUnderPanel {
+				width: 484px !important;
+				padding: 3px 0px 0px !important;
+				font-weight: normal !important;
+			}
+		}
+		table {
+			border: 1px #ccc solid !important;
+			border-collapse: collapse !important;
+			tr {
+				border: 1px #ccc solid !important;
+				th {
+					background: #EAEAEA !important;
+					border: 1px #ccc solid !important;
+					vertical-align: middle;
+				}
+				td {
+					background: #fff;
+					border: 1px #ccc solid !important;
+				}
+			}
+		}
+		table.h-scroll-print {
+			tr {
+				th {
+					font-weight: bold !important;
+				}
+			}
+		}
+	}
+	.dashboard-section.patientInformation {
+		table {
+			border: none !important;
+		}
+	}
+	.dashboard-chronic-treatment-section {
+		.chronic-treatment {
+			.stopped {
+				background: #fff !important;
+			}
+		}
+	}
+	.dashboard-sections-wrapper {
+		.dashboard-sections.three-fourth-page-container {
+			.LAYOUT_25_75 {
+				width: auto;
+				float: none;
+			}
+			.LAYOUT_75_25 {
+				width: auto;
+				float: none;
+			}
+		}
+	}
+	.patient-info-fixed-postion-container {
+		box-shadow: none;
+		border-bottom: none;
+		top: 65px;
+		div.patient-info-fixed {
+			ul {
+				li.patient-name-image-container {
+					.patient-image[src*="blank-user"] {
+						visibility: hidden !important;
+					}
+				}
+			}
+		}
+	}
+	.dashboard-tabular-obs-section {
+		.tabular-obs {
+			table.tableAsColumn {
+				tr {
+					&:first-child {
+						td {
+							font-family: Arial, sans-serif !important;
+							font-weight: bold;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+.is-abnormal-bold {
+	font-family: Arial, sans-serif !important;
+	font-weight: bold;
+	color: #000 !important;
+}
+.registration-print-summary {
+	.hierarchy {
+		ul {
+			li {
+				overflow: auto;
+				clear: both;
+			}
+		}
+		.value-text-only {
+			width: 380px !important;
+			float: left;
+			padding: 2px 0 !important;
+		}
+		.text-only {
+			width: 380px !important;
+			float: left;
+			padding: 2px 0 !important;
+		}
+	}
+}

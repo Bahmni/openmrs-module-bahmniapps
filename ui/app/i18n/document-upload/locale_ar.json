@@ -1,0 +1,21 @@
+{
+    "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/{{ primaryIdentifier }}  ...",
+    "MESSAGE_DIALOG_OPTION_COPY" : "خطأ في النسخ",
+    "MESSAGE_DIALOG_OPTION_OKAY": "حسنا",
+    "DOB_LABEL": "تاريخ الولادة",
+    "NO_RESULTS_FOUND": "لم يتم العثور على نتائج",
+    "PRIVILEGE_REQUIRED": "تم تسجيل دخول المستخدم ولكن ليس لديه الامتياز المناسب",
+    "NO_FULFILMENT_MESSAGE": ".لم يتم التقاط ملاحظات لهذا الطلب",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": ".لا توجد روابط تنقل متاحة",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "الرجاء تحديد قيمة من الإكمال التلقائي",
+    "NOTES_LABEL": "ملاحظات",
+    "ACCEPT":"قبول",
+    "NO_OBS_FOUND_MESSAGE": ".لا ملاحظات لهذا المريض",
+    "TIME_OF_BIRTH_LABEL": "وقت الميلاد",
+    "PATIENT_PROFILE_RELATIONSHIPS_LABEL": "العلاقات",
+    "BROWSER_DOES_NOT_SUPPORT_VIDEO_TAG_MESSAGE":".متصفحك الحالي لا يدعم تشغيل الفيديو",
+    "YEARS_LABEL": "سنوات",
+    "CHOOSE_ANSWER_FROM_DROPDOWN_LABEL": "اختر إجابة",
+    "DELETE_LABEL": "حذف",
+    "EDIT_LABEL": "تعديل"
+}

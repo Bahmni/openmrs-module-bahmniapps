@@ -98,13 +98,19 @@ angular
                 }
                 return states;
             };
-            moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+            // moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
             var loginLocationUuid = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid;
             locationService.getVisitLocation(loginLocationUuid).then(function (response) {
                 if (response.data) {
                     $rootScope.visitLocation = response.data.uuid;
                 }
             });
+            $rootScope.userLanguageDirRtl = false;
+            $rootScope.languageUser = $window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
+            if ($window.localStorage["NG_TRANSLATE_LANG_KEY"] === 'ar') {
+                $rootScope.userLanguageDirRtl = true;
+            }
+            // $.datetimepicker.setLocale($rootScope.languageUser);
 
             $rootScope.$on('$stateChangeStart', function () {
                 messagingService.hideMessages("error");

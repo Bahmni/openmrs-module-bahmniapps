@@ -347,6 +347,8 @@
     "NO_PACS_STUDY_FOR_ORDER": "Unable to identify study for order. Searching with accession number.",
     "RADIOLOGY_STUDY_FETCH_ERROR": "Unable to fetch radiology studies. Please verify PACS configuration",
     "NO_IMAGE_YET_FOR_ORDER": "No image available yet for order",
+    "CLINICAL_CASTE": "Caste",
+    "NO_FORM_FOUND_FOR_PATIENT": "No Form found for this patient",
     "ENTER_IMPRESSION_ON_IMAGE": "Enter Impression on Image",
     "CLOSE_TAB_MESSAGE": "Please close this tab.",
     "NO_ACTIVE_VISIT_FOUND_MESSAGE": "No Active visit found for this patient.",

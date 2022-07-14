@@ -56,8 +56,14 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
             $httpProvider.defaults.headers.common['Disable-WWW-Authenticate'] = true;
             $bahmniTranslateProvider.init({app: 'home', shouldMerge: true});
         }]).run(['$rootScope', '$templateCache', '$window', function ($rootScope, $templateCache, $window) {
-            moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
-        // Disable caching view template partials
+            // moment.locale($window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en");
+            $rootScope.userLanguageDirRtl = false;
+            $rootScope.languageUser = $window.localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
+            if ($window.localStorage["NG_TRANSLATE_LANG_KEY"] === 'ar') {
+                $rootScope.languageUser = "ar";
+                $rootScope.userLanguageDirRtl = true;
+            }
+            // Disable caching view template partials
             $rootScope.$on('$viewContentLoaded', function () {
                 $templateCache.removeAll();
             });

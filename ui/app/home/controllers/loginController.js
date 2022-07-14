@@ -82,6 +82,12 @@ angular.module('bahmni.home')
                 $translate.use($scope.selectedLocale);
             });
 
+            $scope.onLocaleChange = function () {
+                $translate.use($scope.selectedLocale);
+                localStorage.setItem("NG_TRANSLATE_LANG_KEY", $scope.selectedLocale);
+                $window.location.reload();
+            };
+
             var getLoginLocationUuid = function () {
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
             };
