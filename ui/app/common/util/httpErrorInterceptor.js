@@ -29,7 +29,7 @@ angular.module('httpErrorInterceptor', [])
 
             function shouldRedirectToLogin (response) {
                 var errorMessage = response.data.error ? response.data.error.message : response.data;
-                if (errorMessage.search("HTTP Status 403 - Session timed out") > 0) {
+                if (errorMessage.search("Session timed out") > 0) {
                     return true;
                 }
             }
