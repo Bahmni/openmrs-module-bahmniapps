@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.photoCapture')
-    .directive('capturePhoto', ['appService','$parse', '$window', function factory (appService, $parse, $window) {
+    .directive('capturePhoto', ['appService', '$parse', '$window', function factory (appService, $parse, $window) {
         var link = function (scope, iElement, iAttrs) {
             var captureDialogElement = iElement.find(".photoCaptureDialog"),
                 captureVideo = captureDialogElement.find("video")[0],
@@ -17,9 +17,9 @@ angular.module('bahmni.common.photoCapture')
                 dialogOpen = false,
                 pixelRatio = window.devicePixelRatio,
                 imageUploadSize = appService.getAppDescriptor().getConfigValue("imageUploadSize") || Bahmni.Common.Constants.defaultImageUploadSize;
-                if(imageUploadSize > Bahmni.Common.Constants.maxImageUploadSize){
-                    imageUploadSize = Bahmni.Common.Constants.maxImageUploadSize
-                }
+            if (imageUploadSize > Bahmni.Common.Constants.maxImageUploadSize) {
+                imageUploadSize = Bahmni.Common.Constants.maxImageUploadSize;
+            }
             captureContext.scale(pixelRatio, pixelRatio);
             uploadContext.scale(pixelRatio, pixelRatio);
 
@@ -147,14 +147,14 @@ angular.module('bahmni.common.photoCapture')
                     uploadConfirmImageButton.focus();
                 } else {
                     uploadConfirmImageButton.prop('disabled', true);
-                    var imageUploadSizeInKb = imageUploadSize/1000;
+                    var imageUploadSizeInKb = imageUploadSize / 1000;
                     var displayMessage = '';
-                    if(imageUploadSizeInKb >= 1000){
-                        displayMessage = Math.floor(imageUploadSizeInKb/1000)+"MB";
-                    } else{
-                        displayMessage = Math.floor(imageUploadSizeInKb)+"KB";
+                    if (imageUploadSizeInKb >= 1000) {
+                        displayMessage = Math.floor(imageUploadSizeInKb / 1000) + "MB";
+                    } else {
+                        displayMessage = Math.floor(imageUploadSizeInKb) + "KB";
                     }
-                    alert('File size should be less than '+displayMessage);
+                    alert('File size should be less than ' + displayMessage);
                 }
             };
 
