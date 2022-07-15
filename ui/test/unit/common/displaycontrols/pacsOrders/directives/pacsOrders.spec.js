@@ -207,7 +207,7 @@ describe("PacsOrdersDisplayControl", function () {
             var isolateScope = element.isolateScope();
             isolateScope.openImage(orders[0]);
 
-            expect(messagingService.showMessage).toHaveBeenCalledWith("info", "NO_PACS_STUDY_FOR_ORDER")
+            expect(messagingService.showMessage).toHaveBeenCalledWith("info", "NO_PACS_STUDY_FOR_ORDER");
         });
 
         it('should open image in new tab  when the image link is  servicable (when image is available)', function(){

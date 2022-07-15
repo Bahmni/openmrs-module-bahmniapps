@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="googlebot" content="noindex,nofollow">
+    <title>Bahmni</title>
+    <style>
+        html {
+            overflow: auto;
+        }
+        body {
+            font-family: OpenSans, Arial, sans-serif;
+            position: relative;
+            background: #f8f8f8;
+            overflow: hidden;
+            padding-bottom: 40px;
+        }
+        a {
+            text-decoration: none;
+        }
+        .container {
+            width: 750px;
+            margin: 20px auto 0;
+            padding: 0 15px 20px;
+            overflow: hidden;
+            background: #f8f8f8;
+            z-index: 2;
+        }
+        .container > h4 {
+            margin: 0;
+            text-align: center;
+            color: #646464;
+            font-size: 16px;
+        }
+        .section {
+            position: relative;
+            width: 207px;
+            min-height: 200px;
+            display: inline-block;
+            margin: 10px 15px;
+            background: #fff;
+            padding: 5px;
+            border-radius: 11px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+            z-index: 2;
+            vertical-align: top;
+        }
+        .section:hover {
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+         }
+        .launch {
+            text-align: center;
+            font-size: 20px;
+        }
+        .launch img {
+            width: 100px;
+            height: 100px;
+            display: block;
+            margin: 15px auto;
+        }
+        .launch span {
+            min-height: 55px;
+            display: inline-block;
+            color: #f4834d;
+            font-weight: bold;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+        .info {
+            padding: 10px;
+            position: relative;
+        }
+        .info-icon {
+            position: absolute;
+            right: 3px;
+            top: 3px;
+            display: inline-block;
+            cursor: pointer;
+            width: 17px;
+            height: 17px;
+            background-color: transparent;
+            border: 1px solid darkgray;
+            padding: 0px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .info-details {
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .info-details > div {
+            margin: 10px 0;
+        }
+        .details-label {
+            padding-left: 5px;
+            vertical-align: middle;
+        }
+        .go-icon {
+            display: inline-block;
+            vertical-align: middle;
+            width: 16px;
+            height: 20px;
+            background-repeat: no-repeat;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAYAAACEYr13AAAAAXNSR0IArs4c6QAAAAlwSFlzAAAOxAAADsQBlSsOGwAAActpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx4bXA6Q3JlYXRvclRvb2w+d3d3Lmlua3NjYXBlLm9yZzwveG1wOkNyZWF0b3JUb29sPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KGMtVWAAAAcZJREFUOBGFVD1LA1EQvHt3F0SwFBuJiOBP0EaDio0KNhYWVhYhlb/AykKwsbEQrOxFbFQEEQVbi3SChZ2ghSIIAfHl7pxJds/FhOTBZvbdzs5+5JIgaJ+xOI7nxSckxu/rjkdR9AbLYddgT0iGA0Z9s1G5IskUoDVgVZPIbkJz73Sdc9tGJBP/AsxRYffvJkmSaQjVJdkLfgE3Tcmuu6F6SUghRHYlWUciXiKu3XAvvXeDvcxC6FGEtJtP3DekEKHoxiFwAHtA4owh4Brvi4jt5hScEeG5AKQFQ7qRQKGOeAXdPAnHdrPW4iKwYgRuRYDA3cR6h8ie8L6Vj8VPkZQpCZgbn67eS2EYDkrMvhOeAvZokCNQOEW1ZVR/hr8Fa8JKeZ6/QHDRe18PQFjSloB3IOgZwP3QxHSRxyAMCckVM8oDVuBi57IsO4I7CfMwdvQOq6Vpegbk4TP/v4N7tLvTpeoJyMPMwuFL9Dc6yDoC59U2m+J/ANdbae2P4uvVZzGWgZ3osoMfBPhas8o52q0BX+UOaI1DLI5Dsqpy60xuwKpIXgUymfFUDNB5yphb/1CuEB4TCufs/aMxWmVu3ty1K/Oou/sL8FOGVSRGsrIAAAAASUVORK5CYII=)
+        }
+        .github-icon {
+            display: inline-block;
+            vertical-align: middle;
+            width: 16px;
+            height: 16px;
+            background-repeat: no-repeat;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAABBNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iCiAgICAgICAgICAgIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIgogICAgICAgICAgICB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOnRpZmY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vdGlmZi8xLjAvIj4KICAgICAgICAgPHhtcE1NOkRlcml2ZWRGcm9tIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgPHN0UmVmOmluc3RhbmNlSUQ+eG1wLmlpZDpFNTE3OEEyODk5QTAxMUUyOUExNUJDMTA0NkE4OTA0RDwvc3RSZWY6aW5zdGFuY2VJRD4KICAgICAgICAgICAgPHN0UmVmOmRvY3VtZW50SUQ+eG1wLmRpZDpFNTE3OEEyOTk5QTAxMUUyOUExNUJDMTA0NkE4OTA0RDwvc3RSZWY6ZG9jdW1lbnRJRD4KICAgICAgICAgPC94bXBNTTpEZXJpdmVkRnJvbT4KICAgICAgICAgPHhtcE1NOkRvY3VtZW50SUQ+eG1wLmRpZDpFNTE3OEEyQjk5QTAxMUUyOUExNUJDMTA0NkE4OTA0RDwveG1wTU06RG9jdW1lbnRJRD4KICAgICAgICAgPHhtcE1NOkluc3RhbmNlSUQ+eG1wLmlpZDpFNTE3OEEyQTk5QTAxMUUyOUExNUJDMTA0NkE4OTA0RDwveG1wTU06SW5zdGFuY2VJRD4KICAgICAgICAgPHhtcDpDcmVhdG9yVG9vbD5BZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpPC94bXA6Q3JlYXRvclRvb2w+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpu3rz2AAACW0lEQVQ4EW1TTWtTQRS9M/k0rTTRvJdHiPonRBEammXXunJZcenClT/BtVRFsKIuBReuCqUoFEIXgh8bQSkujIQkzXuLLIxNSGbGc+Y9sQsvDHPuvefcmXvnPSWpaWyWMAiCtha9JeI6cC8xBuuJqAMr9kUcx900JF6j4HjQarXOLOaLRxDeUkqJc448X5ScfzH1vFAq3On3+yc+Tlaz2azYxXJPad32Qogpp4jGmEfwfSFru7qQ3xwMBr95upiFeah1rm2tOQD3No79hPAJ8DcuYsZ8DhxyqaFWonp9oxGELgobLqqHTxhjO5hFBFjgImaMOXLI9Rpo81bpLTTInDilFtzR3wwbe/SGwY0APIkcArZiMWytnHTIQp8z48xjYhhb87xTe9ouOOSSRK0GrUUHJeJqtfrDw3T6nOPp5V8k5bg4nbK0WBUFwVNqJUkS32dW5L9bytGr6TuJY4EemXigc6VcaSNT5XwoczLMmBSLxQ7ar2WpHlt459/WualotxOdj64gucTi9f/OgXgZhuE15dQ2b0wNsm+1tvYpkjC3A9auyst7PNFnkhnkIo6CsIuhHcK9gJhlEW1zz/LDJPnYCBrb+DjuGmfX8TEdofxVY8xPEL3lTG5itVnP3JnWugzeg2Ey/MAresMJezjuslNyE4TBaDT6ioS/wcW1tdq8WDqCX0dOrLVvjuPxDeY5RC4ZxeNNtPUSQ9kXY7/g2gEJzM3LZX6RdSxozX2IrwMzpzlZD7j/mk73V0tnX+MW3ysrlcPJZMJhSq1Wg87G+CfvHY/HrxiD8WD7B5l2Fm85SHc6AAAAAElFTkSuQmCC)
+        }
+        .warning-message {
+            text-align: center;
+            margin: 0 auto;
+            color: #ffac2e;
+            width: 50%;
+            background: #f8f8f8;
+            padding-top: 10px;
+        }
+        .warning-message span {
+            font-weight: bolder;
+            font-size: 13px;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        .warning-message p {
+            padding: 0 50px;
+            margin: 0;
+            font-size: 14px;
+        }
+        .header_text {
+            text-align: center;
+            margin: 35px auto 25px;
+            color: #646464;
+            font-size: 24px;
+            width: 100%;
+        }
+        .power-by {
+            position: fixed;
+            width: 100%;
+            bottom: 7px;
+            text-align: center;
+            background: #f8f8f8;
+            padding-bottom: 5px;
+            font-size: 12px;
+            z-index: -1;
+            color: #898989;
+        }
+        .power-by img {
+            width: 55px;
+            vertical-align: middle;
+            margin: 0 1px;
+        }
+        .power-by a {
+            color: #000;
+        }
+        .clint-logo-wrapper {
+            display: block;
+            text-align: center;
+            padding-top: 10px;
+        }
+        .clint-logo-wrapper img {
+            max-width: 200px;
+            vertical-align: middle;
+            max-height: 120px;
+        }
+        .clint-logo-wrapper span {
+            vertical-align: middle;
+            color: #888;
+            font-size: 20px;
+        }
+
+        .bottom-banner-wrapper {
+            position: fixed;
+            text-align: center;
+            bottom: 20px;
+            width: 100%;
+        }
+
+        .bottom-banner-wrapper img {
+            max-width: 35%;
+            height: auto;
+        }
+    </style>
+
+    <script>
+        function toggleInfo(event) {
+            var infoDetails = event.target.parentNode.getElementsByClassName("info-details")[0];
+            infoDetails.style.display = (infoDetails.style.display == "block") ? "none" : "block";
+        }
+        function init() {
+            initLinks();
+            load("/bahmni_revisions/bahmni_openmrs_revision.json", 'bahmni');
+            load("/bahmni_revisions/bahmni_openelis_revision.json", 'elis');
+            load("/bahmni_revisions/bahmni_openerp_revision.json", 'erp');
+            serverTimeZone();
+            getLogoAndHeaderText();
+        }
+        function initLinks() {
+            var erpElement = document.getElementById("erp-app-link");
+            if (erpElement) {
+                erpElement.href = window.location.protocol+"//erp-"+window.location.host
+            }
+        }
+        function load(url, elementClass) {
+            callAjax(url, function (data) {
+                var infoElement = document.getElementsByClassName(elementClass)[0];
+                if (infoElement) {
+                    if (data) {
+                        var infoDetailsElement = infoElement.getElementsByClassName("info-details")[0];
+                        renderInfoLinks(data, infoDetailsElement);
+                    } else {
+                        var infoIconElement = infoElement.getElementsByClassName("info-icon")[0];
+                        infoIconElement.className += " error";
+                    }
+                }
+            });
+        }
+        function renderInfoLinks(data, infoDetailsElement) {
+            var goLink = '<div><i class="go-icon"></i><a class="details-label" target="_blank" href="_link_">Go CD</a></div>';
+            var githubLink = '<div><i class="github-icon"></i><a class="details-label" target="_blank" href="_link_">_label_</a></div>';
+            infoDetailsElement.innerHTML = "";
+            if (data.go) {
+                var goLinkElement = document.createElement("div");
+                goLinkElement.innerHTML = goLink.replace("_link_", data.go);
+                infoDetailsElement.appendChild(goLinkElement);
+            }
+            if (data.github) {
+                for (var key in data.github) {
+                    var githubLinkElement = document.createElement("div");
+                    var label = key.replace(/_/g, ' ');
+                    githubLinkElement.innerHTML = githubLink.replace("_link_", data.github[key]).replace("_label_", label);
+                    infoDetailsElement.appendChild(githubLinkElement);
+                }
+            }
+        }
+        function callAjax(url, callback) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    try {
+                        callback(JSON.parse(xmlhttp.responseText));
+                    } catch (ex) {
+                        callback(undefined);
+                    }
+                }
+            };
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+        }
+        function serverTimeZone() {
+            callAjax("/cgi-bin/systemdate", function(data) {
+               if(data){
+                   var serverTime = data.date;
+                   var offset = data.offset;
+                   var localTime = new Date().toLocaleString();
+                   var localTimeZone = getLocalTimeZone();
+                   if(offset && !new Date().toString().includes(offset)) {
+                        var warningMessageParagraph = document.getElementsByClassName("warning-message-paragraph")[0];
+                        var warningMessage = document.getElementsByClassName("warning-message-span")[0];
+                        warningMessage.innerHTML = "<img src='/bahmni/images/warning.png'> Warning";
+                        warningMessageParagraph.innerHTML= "The server timezone (" + serverTime + ") is different from your browser's time/timezone (" + localTime + " " +localTimeZone + "). This can cause some data or reports to appear incorrect. Please contact the administrator for further assistance.";
+                   }
+               }
+            });
+        }
+        var getLocalTimeZone = function () {
+            var currentLocalTime = new Date().toString();
+            var localTimeZoneList = currentLocalTime.split(" ");
+            var localTimeZone = localTimeZoneList[localTimeZoneList.length-1];
+            localTimeZone = localTimeZone.substring(1, localTimeZone.length - 1);
+            return localTimeZone;
+        };
+
+        function getLogoAndHeaderText() {
+            callAjax("/bahmni_config/openmrs/apps/home/whiteLabel.json", function(data) {
+                if(data) {
+                    if(data.homePage.header_text) {
+                        var headerTextElement = document.getElementsByClassName("header_text")[0];
+                        headerTextElement.innerHTML = "<b>" + data.homePage.header_text+ "</b>"
+                    }
+
+                    if(data.homePage.logo) {
+                        var logoImage = document.getElementsByClassName("client_logo")[0];
+                        logoImage.src = data.homePage.logo
+                    }
+
+                    if(data.helpLink.url) {
+                        var headerTextElement = document.getElementsByClassName("helper_url")[0];
+                        headerTextElement.href = data.helpLink.url;
+                    }
+                    if(data.homePage.title_text) {
+                        var titleTextElement = document.getElementsByClassName("title_text")[0] ;
+                        titleTextElement.innerHTML = data.homePage.title_text;
+                    }
+                    if (data.homePage.bottomBanner){
+                        document.getElementById("bottom-banner-image").src = data.homePage.bottomBanner;
+                    }
+                }
+            });
+        }
+
+    </script>
+</head>
+
+<body onload="init()">
+<dev class="clint-logo-wrapper">
+    <img class="client_logo" src="/bahmni/images/bahmniLogoFull.png" />
+    <span class="title_text"> TITLE TEXT </span>
+</dev>
+<div class="header_text">
+    <b>WELCOME TO<br />BAHMNI EMR & HOSPITAL SERVICE</b>
+</div>
+<div class="container">
+<h4>GET STARTED</h4>
+    <div class="section">
+        <div class="launch">
+            <a href="/bahmni/home" target="_blank">
+                <img src="/bahmni/images/app.png" />
+                <span>Clinical Service</span>
+            </a>
+        </div>
+        <div class="info bahmni">
+            <button class="info-icon" onclick="toggleInfo(event)">i</button>
+            <div class="info-details" style="display: none">
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="launch">
+            <a href="/openelis" target="_blank">
+                 <img src="/bahmni/images/lab.png" />
+                <span>Laboratory</span>
+            </a>
+        </div>
+        <div class="info elis">
+            <button class="info-icon" onclick="toggleInfo(event)">i</button>
+            <div class="info-details" style="display: none">
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="launch">
+            <a id="erp-app-link" target="_blank">
+                 <img src="/bahmni/images/bills.png" />
+                <span>Stock Inventory <br />& Billing</span>
+            </a>
+        </div>
+        <div class="info erp">
+            <button class="info-icon" onclick="toggleInfo(event)">i</button>
+            <div class="info-details" style="display: none">
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="launch">
+            <a href="/bahmni-connect" target="_blank">
+                 <img src="/bahmni/images/connect.png" />
+                <span>Connect</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="launch">
+            <a href="/dcm4chee-web3" target="_blank">
+                 <img src="/bahmni/images/pac.png" />
+                <span>Radiology</span>
+            </a>
+        </div>
+    </div>
+    
+</div>
+<div class="warning-message">
+    <span class="warning-message-span"></span>
+    <p class="warning-message-paragraph"></p>
+</div>
+<div class="bottom-banner-wrapper">
+   <img id="bottom-banner-image">
+</div>
+<div class="power-by">
+    <img src="/bahmni/images/bahmniLogoFull.png" alt="Bahmni" >
+    <a class="helper_url" href="https://bahmni.atlassian.net/wiki/display/BAH/Bahmni+Home"> Bahmni Help</a>
+</div>
+
+</body>
+</html>

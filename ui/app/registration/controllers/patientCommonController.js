@@ -7,6 +7,7 @@ angular.module('bahmni.registration')
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             var personAttributes = [];
             var caste;
+            var contactAttribute;
             $scope.showMiddleName = appService.getAppDescriptor().getConfigValue("showMiddleName");
             $scope.showLastName = appService.getAppDescriptor().getConfigValue("showLastName");
             $scope.isLastNameMandatory = $scope.showLastName && appService.getAppDescriptor().getConfigValue("isLastNameMandatory");
@@ -37,6 +38,9 @@ angular.module('bahmni.registration')
                         } else $window.open(Bahmni.Registration.Constants.newPatient, "_self");
                         $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
                         $scope.$digest();
+                    }
+                    if (popupWindowData.data.patientUuid !== undefined) {
+                        $window.open(Bahmni.Registration.Constants.existingPatient + popupWindowData.data.patientUuid, "_self");
                     }
                 }, false);
             };
@@ -105,6 +109,7 @@ angular.module('bahmni.registration')
                             identifier.generate();
                             if (!identifierMatch) {
                                 extensionParam.addressMap !== null ? updatePatientAddress(patient.address[0], extensionParam.addressMap) : {};
+                                contactAttribute = extensionParam.contact ? extensionParam.contact : "primaryContact";
                                 changePatientDetails(patient);
                                 identifierMatch = true;
                             }
@@ -145,12 +150,12 @@ angular.module('bahmni.registration')
                     case 'contactPoint':
                         for (var i = 0; i < changedDetails.contactPoint.length; i++) {
                             var contact = changedDetails.contactPoint[i];
-                            if (contact.system === "phone") { $scope.patient.primaryContact = contact.value; }
+                            if (contact.system === "phone") { $scope.patient[contactAttribute] = contact.value; }
                         }
                         break;
                     default:
                         var DateUtil = Bahmni.Common.Util.DateUtil;
-                        var age = DateUtil.diffInYearsMonthsDays('01/01/' + changedDetails.birthDate, DateUtil.now());
+                        var age = DateUtil.diffInYearsMonthsDays(changedDetails.birthDate, DateUtil.now());
                         $scope.patient.age.years = age.years;
                         $scope.patient.age.months = age.months;
                         $scope.patient.age.days = age.days;
