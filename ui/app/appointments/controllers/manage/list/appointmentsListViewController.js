@@ -113,6 +113,7 @@ angular.module('bahmni.appointments')
             });
 
             $scope.getAppointmentsForDate = function (viewDate) {
+                $scope.startDate = viewDate;
                 $stateParams.viewDate = viewDate;
                 $scope.selectedAppointment = undefined;
                 var params = {forDate: viewDate};
