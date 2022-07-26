@@ -44,20 +44,21 @@ angular.module('bahmni.clinical')
             return translatedName;
         };
         var filterDispositionActions = function (dispositions, visitSummary) {
-            var defaultDispositions = ["Undo Discharge", "Admit Patient", "Transfer Patient", "Discharge Patient"];
+            var defaultDispositions = ["UNDO_DISCHARGE", "ADMIT", "TRANSFER", "DISCHARGE"];
+
             var finalDispositionActions = _.filter(dispositions, function (disposition) {
-                return defaultDispositions.indexOf(disposition.name) < 0;
+                return defaultDispositions.indexOf(disposition.code) < 0;
             });
             var isVisitOpen = visitSummary ? _.isEmpty(visitSummary.stopDateTime) : false;
             if (visitSummary && visitSummary.isDischarged() && isVisitOpen) {
-                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[0]});
+                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { code: defaultDispositions[0]});
             }
             else if (visitSummary && visitSummary.isAdmitted() && isVisitOpen) {
-                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[2]});
-                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[3]});
+                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { code: defaultDispositions[2]});
+                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { code: defaultDispositions[3]});
             }
             else {
-                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { name: defaultDispositions[1]});
+                finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { code: defaultDispositions[1]});
             }
             return finalDispositionActions;
         };
