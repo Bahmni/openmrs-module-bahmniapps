@@ -39,7 +39,8 @@ angular.module('bahmni.common.obs')
                 patient: "=",
                 showDate: "=?",
                 showTime: "=?",
-                showDetailsButton: "=?"
+                showDetailsButton: "=?",
+                configIsObservationForImages: "=?"
             },
             controller: controller,
             template: '<ng-include src="\'../common/obs/views/showObservation.html\'" />'

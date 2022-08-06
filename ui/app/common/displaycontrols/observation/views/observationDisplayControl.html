@@ -33,10 +33,16 @@
                             </ul>
                         </li>
                     </ul>
-                    <ul ng-if="obsGroup.isOpen" class="print-observations hidden-print">
+                    <ul ng-if="obsGroup.isOpen && config.isObservationForImages"
+                        class="print-observations hidden-print obs-groups-container">
                         <show-observation show-details-button="::config.showDetailsButton" patient="::patient"
                                           observation="::observation" ng-repeat="observation in obsGroup.value"
-                                          level="2"></show-observation>
+                                          level="2" config-is-observation-for-images="::config.isObservationForImages"></show-observation>
+                    </ul>
+                    <ul ng-if="obsGroup.isOpen && !config.isObservationForImages" class="print-observations hidden-print">
+                        <show-observation show-details-button="::config.showDetailsButton" patient="::patient"
+                                          observation="::observation" ng-repeat="observation in obsGroup.value"
+                                          level="2" config-is-observation-for-images="::config.isObservationForImages"></show-observation>
                     </ul>
                 </li>
             </ul>

@@ -656,19 +656,19 @@ table.drug-order-table td.drug {
   .img-concept {
     border: 1px solid rgba($bahmniLinkColor, 0.5);
     display: inline-block;
-    padding: 4px;
+    padding: 5px;
     border-radius: 2px;
     background: #fff;
-    margin: 0 3px;
+    margin: 0 4px;
     transition: all .2s ease-in-out;
     img {
       vertical-align: top;
       margin: 0;
       padding: 0;
       border: 1px solid $lighterGray;
-      width: 40px;
+      width: 65px !important;
       box-shadow: 0px 0px 3px $lightGray;
-      height: auto;
+      height: 65px !important;
       transition: all .2s ease-in-out;
     }
     &:hover {
@@ -1199,4 +1199,28 @@ h2.section-title.section-title-pivot{
 
 }
 
+.obs-label{
+  font-size: xx-small;
+  text-overflow: clip;
+  max-width: 60px;
+  max-height: 27px;
+  overflow: hidden;
+  white-space: pre !important;
+}
+
+.obs-groups-container{
+  overflow-y: auto;
+  height: 140px;
+}
+
+.hr-obs{
+  margin-top: 2ch;
+  color: gray;
+  background-color: gray;
+  text-overflow: clip;
+  overflow: hidden;
+  border-bottom: thin;
+  width: 60px;
+  height: 1pt;
+}
 

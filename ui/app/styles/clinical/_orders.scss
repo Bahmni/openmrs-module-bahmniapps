@@ -392,15 +392,15 @@
   padding: 5px;
   box-sizing: border-box;
   position: relative;
-  width: 200px;
+  width: 87px;
   border: none;
   text-align: center;
   vertical-align: top;
   .tree-list-item {
     padding: 0;
     .img-concept, .pdf-link {
-      width: 160px;
-      height: 160px;
+      width: 60px;
+      height: 60px;
       float: left;
       overflow: hidden;
       margin: 0;
@@ -418,13 +418,13 @@
       }
       img {
         position: absolute;
-        left: 50%;
-        top: 50%;
+        left: 17%;
+        top: 17%;
         height: 100%;
         width: auto;
-        -webkit-transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
-        transform: translate(-50%,-50%);
+        -webkit-transform: translate(-17%,-17%);
+        -ms-transform: translate(-17%,-17%);
+        transform: translate(-17%,-17%);
       }
     }
   }

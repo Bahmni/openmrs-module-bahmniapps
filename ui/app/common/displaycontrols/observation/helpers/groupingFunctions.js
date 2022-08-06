@@ -54,5 +54,37 @@ Bahmni.Common.DisplayControl.Observation.GroupingFunctions = function () {
         return obsArray;
     };
 
+    var observationDateTimeGroupingFunction = function (obs) {
+        return Bahmni.Common.Util.DateUtil.getDateTimeWithoutSeconds(obs.observationDateTime);
+    };
+
+    self.groupByObservationDateTime = function (bahmniObservations) {
+        var obsArray = [];
+        var index = 0;
+        var oKey = null;
+        for (var obsKey in bahmniObservations) {
+            if (index === 0) {
+                index += 1;
+                oKey = observationDateTimeGroupingFunction(bahmniObservations[obsKey]);
+            }
+            var anObs = {
+                "key": oKey,
+                "value": bahmniObservations[obsKey],
+                "date": observationDateTimeGroupingFunction(bahmniObservations[obsKey])
+            };
+            obsArray.push(anObs);
+        }
+        var sortedArr = _.sortBy(obsArray, 'date').reverse();
+        var obsValues = [];
+        for (var obsKey in sortedArr) {
+            obsValues.push(sortedArr[obsKey].value);
+        }
+        var ele = {};
+        ele.key = oKey;
+        ele.value = obsValues;
+        ele.date = oKey;
+        return obsValues.length > 0 ? [ele] : [];
+    };
+
     return self;
 };
