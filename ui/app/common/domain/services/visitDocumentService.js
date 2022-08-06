@@ -45,7 +45,8 @@ angular.module('bahmni.common.domain')
                 format: format,
                 patientUuid: patientUuid,
                 encounterTypeName: encounterTypeName,
-                fileType: fileType || "file"
+                fileType: fileType || "file",
+                fileName: fileName.substring(0, fileName.lastIndexOf('.'))
             }, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
