@@ -2,9 +2,9 @@
 
 angular.module('bahmni.registration')
     .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper',
-        '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope', 'auditLogService',
+        '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope', 'auditLogService', '$translate',
         function ($scope, patientService, encounterService, $stateParams, openmrsPatientMapper, $window, $q, spinner,
-                  appService, messagingService, $rootScope, auditLogService) {
+                  appService, messagingService, $rootScope, auditLogService, $translate) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             var uuid = $stateParams.patientUuid;
             $scope.patient = {};
@@ -98,7 +98,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.sendWhatsAppMessage = function () {
-                var whatsAppMessage = appService.getAppDescriptor().getConfigValue("whatsAppMessage") || Bahmni.Registration.Constants.whatsAppMessage;
+                var whatsAppMessage = appService.getAppDescriptor().getConfigValue("whatsAppMessage") || $translate.instant(Bahmni.Registration.Constants.whatsAppMessage);
                 var startIndex = whatsAppMessage.indexOf("{");
                 var endIndex = whatsAppMessage.indexOf("}");
                 var messageSubstring = whatsAppMessage.substring(startIndex, endIndex + 1);
