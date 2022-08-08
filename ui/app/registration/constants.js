@@ -19,7 +19,7 @@ Bahmni.Registration.Constants = {
     allAddressFileds: ["uuid", "preferred", "address1", "address2", "address3", "address4", "address5", "address6", "cityVillage", "countyDistrict", "stateProvince", "postalCode", "country", "latitude", "longitude"],
     nextStepConfigId: "org.bahmni.registration.patient.next",
     patientNameDisplayOrder: ["firstName", "middleName", "lastName"],
-    whatsAppMessage: "Thank you for registering at Bahmni Clinic. Please note your Patient Registration Number: Patient ID. For any queries call us on +919876543210. Clinic Timings: All weekdays, 10 am - 7 pm. Weekends closed.",
+    whatsAppMessage: "REGISTRATION_WHATSAPP_MESSAGE",
     enableWhatsAppButton: "false"
 };
 
