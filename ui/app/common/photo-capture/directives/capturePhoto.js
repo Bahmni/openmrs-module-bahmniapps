@@ -78,7 +78,7 @@ angular.module('bahmni.common.photoCapture')
                             captureActiveStream = localMediaStream;
                             captureDialogElement.dialog('open');
                         }).catch(function (e) {
-                        alert("Could not get access to web camera. Please allow access to web camera");
+                            alert("Could not get access to web camera. Please allow access to web camera");
                         });
                 } else if (navigatorUserMedia) {
                     navigatorUserMedia(
