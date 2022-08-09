@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.photoCapture')
-    .directive('capturePhoto', ['appService', '$parse', '$window', function factory(appService, $parse, $window) {
+    .directive('capturePhoto', ['appService', '$parse', '$window', function factory (appService, $parse, $window) {
         var link = function (scope, iElement, iAttrs) {
             var captureDialogElement = iElement.find(".photoCaptureDialog"),
                 captureVideo = captureDialogElement.find("video")[0],
@@ -79,7 +79,7 @@ angular.module('bahmni.common.photoCapture')
                             captureDialogElement.dialog('open');
                         }).catch(function (e) {
                         alert("Could not get access to web camera. Please allow access to web camera");
-                    });
+                        });
                 } else if (navigatorUserMedia) {
                     navigatorUserMedia(
                         {video: true, audio: false},
@@ -137,11 +137,10 @@ angular.module('bahmni.common.photoCapture')
                 if (this.files && this.files[0] && this.files[0].type) {
                     var fileType = this.files[0].type;
                     if (!fileType.startsWith('image/')) {
-                        uploadConfirmImageButton.prop('disabled', true)
+                        uploadConfirmImageButton.prop('disabled', true);
                         alert('File uploaded must be an image');
                         return;
                     }
-
                 }
                 if (this.files[0] && this.files[0].size <= imageUploadSize) {
                     var fileReader = new FileReader();
