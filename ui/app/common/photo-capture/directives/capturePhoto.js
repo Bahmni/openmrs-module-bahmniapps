@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.photoCapture')
-    .directive('capturePhoto', ['appService', '$parse', '$window', function factory (appService, $parse, $window) {
+    .directive('capturePhoto', ['appService', '$parse', '$window', function factory(appService, $parse, $window) {
         var link = function (scope, iElement, iAttrs) {
             var captureDialogElement = iElement.find(".photoCaptureDialog"),
                 captureVideo = captureDialogElement.find("video")[0],
@@ -73,11 +73,11 @@ angular.module('bahmni.common.photoCapture')
                 var navigatorUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
                 if (navigator.mediaDevices) {
                     navigator.mediaDevices.getUserMedia({video: true, audio: false})
-                    .then(function (localMediaStream) {
-                        captureVideo.srcObject = localMediaStream;
-                        captureActiveStream = localMediaStream;
-                        captureDialogElement.dialog('open');
-                    }).catch(function (e) {
+                        .then(function (localMediaStream) {
+                            captureVideo.srcObject = localMediaStream;
+                            captureActiveStream = localMediaStream;
+                            captureDialogElement.dialog('open');
+                        }).catch(function (e) {
                         alert("Could not get access to web camera. Please allow access to web camera");
                     });
                 } else if (navigatorUserMedia) {
@@ -107,7 +107,8 @@ angular.module('bahmni.common.photoCapture')
                 captureConfirmImageButton.focus();
             };
 
-            captureDialogElement.dialog({autoOpen: false, height: 300, width: 500, modal: true,
+            captureDialogElement.dialog({
+                autoOpen: false, height: 300, width: 500, modal: true,
                 close: function () {
                     dialogOpen = false;
                     if (captureActiveStream) {
@@ -133,7 +134,16 @@ angular.module('bahmni.common.photoCapture')
             };
 
             scope.uploadImage = function () {
-                if (this.files && this.files[0] && this.files[0].size <= imageUploadSize) {
+                if (this.files && this.files[0] && this.files[0].type) {
+                    var fileType = this.files[0].type;
+                    if (!fileType.startsWith('image/')) {
+                        uploadConfirmImageButton.prop('disabled', true)
+                        alert('File uploaded must be an image');
+                        return;
+                    }
+
+                }
+                if (this.files[0] && this.files[0].size <= imageUploadSize) {
                     var fileReader = new FileReader();
                     fileReader.onload = function (e) {
                         var image = new Image();
@@ -158,7 +168,8 @@ angular.module('bahmni.common.photoCapture')
                 }
             };
 
-            uploadDialogElement.dialog({autoOpen: false, height: 350, width: 350, modal: true,
+            uploadDialogElement.dialog({
+                autoOpen: false, height: 350, width: 350, modal: true,
                 close: function () {
                     dialogOpen = false;
                 }
