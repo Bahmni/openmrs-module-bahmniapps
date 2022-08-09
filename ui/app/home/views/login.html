@@ -18,7 +18,7 @@
     <form ng-submit="login()" name="loginForm" bm-form autofillable="true">
         <div class="login-body">
             <div class="note-container">
-                <div class="note error" ng-if="!isChrome()">
+                <div class="note error" ng-if="!isSupportedBrowser()">
                     <div class="text">
                     {{ 'LOGIN_UNSUPPORTED_BROWSER_KEY'  | translate }}
                     </div>
