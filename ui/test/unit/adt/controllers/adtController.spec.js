@@ -288,10 +288,10 @@ describe("AdtController", function () {
         scope.adtObservations = [];
         var response = {
             "results": [{
-                "answers": [{"name": {"name": "Undo Discharge", "uuid": "c2bc09b3"}},
-                    {"name": {"name": "Admit Patient", "uuid": "avb231rt"}},
-                    {"name": {"name": "Discharge Patient", "uuid": "81cecc80"}},
-                    {"name": {"name": "Transfer Patient", "uuid": "81d1cf4e"}}]
+                "answers": [{"name": {"name": "Undo Discharge", "uuid": "c2bc09b3"},"mappings": [{"display": "org.openmrs.module.emrapi: UNDO_DISCHARGE"}]},
+                    {"name": {"name": "Admit Patient", "uuid": "avb231rt"},"mappings": [{"display": "org.openmrs.module.emrapi: ADMIT"}]},
+                    {"name": {"name": "Discharge Patient", "uuid": "81cecc80"},"mappings": [{"display": "org.openmrs.module.emrapi: DISCHARGE"}]},
+                    {"name": {"name": "Transfer Patient", "uuid": "81d1cf4e"}, "mappings":[{"display": "org.openmrs.module.emrapi: TRANSFER"}]}]
             }]
         };
         dispositionService.getDispositionActions.and.returnValue(response);
@@ -313,7 +313,7 @@ describe("AdtController", function () {
         encounterService.create.and.callFake(stubOnePromise);
 
         createController();
-        expect(scope.dispositionActions).toEqual([{"name": {"name": "Admit Patient", "uuid": "avb231rt"}}]);
+        expect(scope.dispositionActions).toEqual([{"name": {"name": "Admit Patient", "uuid": "avb231rt"},"mappings": [{"display": "org.openmrs.module.emrapi: ADMIT"}]}]);
     });
 
     it("Should have Undo Discharge action if the patient is discharged and visit is open", function () {
@@ -327,10 +327,10 @@ describe("AdtController", function () {
         scope.adtObservations = [];
         var response = {
             "results": [{
-                "answers": [{"name": {"name": "Undo Discharge", "uuid": "c2bc09b3"}},
-                    {"name": {"name": "Admit Patient", "uuid": "avb231rt"}},
-                    {"name": {"name": "Discharge Patient", "uuid": "81cecc80"}},
-                    {"name": {"name": "Transfer Patient", "uuid": "81d1cf4e"}}]
+                "answers": [{"name": {"name": "Undo Discharge", "uuid": "c2bc09b3"},"mappings": [{"display": "org.openmrs.module.emrapi: UNDO_DISCHARGE"}]},
+                    {"name": {"name": "Admit Patient", "uuid": "avb231rt"},"mappings": [{"display": "org.openmrs.module.emrapi: ADMIT"}]},
+                    {"name": {"name": "Discharge Patient", "uuid": "81cecc80"},"mappings": [{"display": "org.openmrs.module.emrapi: DISCHARGE"}]},
+                    {"name": {"name": "Transfer Patient", "uuid": "81d1cf4e"}, "mappings":[{"display": "org.openmrs.module.emrapi: TRANSFER"}]}]
             }]
         };
         dispositionService.getDispositionActions.and.returnValue(response);
@@ -346,7 +346,7 @@ describe("AdtController", function () {
 
         createController();
         scope.continueWithCurrentVisit();
-        expect(scope.dispositionActions).toEqual([{"name": {"name": "Undo Discharge", "uuid": "c2bc09b3"}}]);
+        expect(scope.dispositionActions).toEqual([{"name": {"name": "Undo Discharge", "uuid": "c2bc09b3"},"mappings": [{"display": "org.openmrs.module.emrapi: UNDO_DISCHARGE"}]}]);
     });
 
     it("Should have Discharge Patient and Transfer Patient action if the patient is admitted", function () {
@@ -360,10 +360,10 @@ describe("AdtController", function () {
         scope.adtObservations = [];
         var response = {
             "results": [{
-                "answers": [{"name": {"name": "Undo Discharge", "uuid": "c2bc09b3"}},
-                    {"name": {"name": "Admit Patient", "uuid": "avb231rt"}},
-                    {"name": {"name": "Discharge Patient", "uuid": "81cecc80"}},
-                    {"name": {"name": "Transfer Patient", "uuid": "81d1cf4e"}}]
+                "answers": [{"name": {"name": "Undo Discharge", "uuid": "c2bc09b3"},"mappings": [{"display": "org.openmrs.module.emrapi: UNDO_DISCHARGE"}]},
+                    {"name": {"name": "Admit Patient", "uuid": "avb231rt"},"mappings": [{"display": "org.openmrs.module.emrapi: ADMIT"}]},
+                    {"name": {"name": "Discharge Patient", "uuid": "81cecc80"},"mappings": [{"display": "org.openmrs.module.emrapi: DISCHARGE"}]},
+                    {"name": {"name": "Transfer Patient", "uuid": "81d1cf4e"}, "mappings":[{"display": "org.openmrs.module.emrapi: TRANSFER"}]}]
             }]
         };
         dispositionService.getDispositionActions.and.returnValue(response);
@@ -378,8 +378,8 @@ describe("AdtController", function () {
         encounterService.create.and.callFake(stubOnePromise);
 
         createController();
-        expect(scope.dispositionActions).toEqual([{"name": {"name": "Discharge Patient", "uuid": "81cecc80"}},
-            {"name": {"name": "Transfer Patient", "uuid": "81d1cf4e"}}]);
+        expect(scope.dispositionActions).toEqual([{"name": {"name": "Discharge Patient", "uuid": "81cecc80"},"mappings": [{"display": "org.openmrs.module.emrapi: DISCHARGE"}]},
+        {"name": {"name": "Transfer Patient", "uuid": "81d1cf4e"}, "mappings":[{"display": "org.openmrs.module.emrapi: TRANSFER"}]}]);
     });
 
     it("Should have Admit Patient action if the patient is not admitted in given visit", function () {
@@ -390,10 +390,10 @@ describe("AdtController", function () {
         scope.adtObservations = [];
         var response = {
             "results": [{
-                "answers": [{"name": {"name": "Undo Discharge", "uuid": "c2bc09b3"}},
-                    {"name": {"name": "Admit Patient", "uuid": "avb231rt"}},
-                    {"name": {"name": "Discharge Patient", "uuid": "81cecc80"}},
-                    {"name": {"name": "Transfer Patient", "uuid": "81d1cf4e"}}]
+                "answers": [{"name": {"name": "Undo Discharge", "uuid": "c2bc09b3"},"mappings": [{"display": "org.openmrs.module.emrapi: UNDO_DISCHARGE"}]},
+                    {"name": {"name": "Admit Patient", "uuid": "avb231rt"},"mappings": [{"display": "org.openmrs.module.emrapi: ADMIT"}]},
+                    {"name": {"name": "Discharge Patient", "uuid": "81cecc80"},"mappings": [{"display": "org.openmrs.module.emrapi: DISCHARGE"}]},
+                    {"name": {"name": "Transfer Patient", "uuid": "81d1cf4e"}, "mappings":[{"display": "org.openmrs.module.emrapi: TRANSFER"}]}]
             }]
         };
         dispositionService.getDispositionActions.and.returnValue(response);
@@ -415,7 +415,7 @@ describe("AdtController", function () {
         encounterService.create.and.callFake(stubOnePromise);
 
         createController();
-        expect(scope.dispositionActions).toEqual([{"name": {"name": "Admit Patient", "uuid": "avb231rt"}}]);
+        expect(scope.dispositionActions).toEqual([{"name": {"name": "Admit Patient", "uuid": "avb231rt"},"mappings": [{"display": "org.openmrs.module.emrapi: ADMIT"}]}]);
     });
 
     describe('Discharge', function () {
