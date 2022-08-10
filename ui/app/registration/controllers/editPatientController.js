@@ -99,41 +99,12 @@ angular.module('bahmni.registration')
 
             $scope.sendWhatsAppMessage = function () {
                 var whatsAppMessage = appService.getAppDescriptor().getConfigValue("whatsAppMessage") || $translate.instant(Bahmni.Registration.Constants.whatsAppMessage);
-                var startIndex = whatsAppMessage.indexOf("{");
-                var endIndex = whatsAppMessage.indexOf("}");
-                var messageSubstring = whatsAppMessage.substring(startIndex, endIndex + 1);
-                var patientAttributes = messageSubstring.substring(1, messageSubstring.length - 1).split(",");
-                var patientDetails = "";
-                for (var patt in patientAttributes) {
-                    switch (patientAttributes[patt]) {
-                    case 'patientId':
-                        if (patientDetails.length > 0) {
-                            patientDetails = patientDetails + ", ";
-                        }
-                        patientDetails = patientDetails + $scope.patient.primaryIdentifier.identifier;
-                        break;
-                    case 'name':
-                        if (patientDetails.length > 0) {
-                            patientDetails = patientDetails + ", ";
-                        }
-                        patientDetails = patientDetails + $scope.patient.givenName + " " + $scope.patient.familyName;
-                        break;
-                    case 'age':
-                        if (patientDetails.length > 0) {
-                            patientDetails = patientDetails + ", ";
-                        }
-                        patientDetails = patientDetails + $scope.patient.age.years + " years";
-                        break;
-                    case 'gender':
-                        if (patientDetails.length > 0) {
-                            patientDetails = patientDetails + ", ";
-                        }
-                        patientDetails = patientDetails + $scope.patient.gender;
-                        break;
-                    }
-                }
+                whatsAppMessage = whatsAppMessage.replace("#patientId", $scope.patient.primaryIdentifier.identifier);
+                whatsAppMessage = whatsAppMessage.replace("#name", $scope.patient.givenName + " " + $scope.patient.familyName);
+                whatsAppMessage = whatsAppMessage.replace("#age", $scope.patient.age.years + " years");
+                whatsAppMessage = whatsAppMessage.replace("#gender", $scope.patient.gender);
                 var phoneNumber = $scope.patient.phoneNumber.replace("+", "");
-                var url = "https://api.whatsapp.com/send?phone=" + phoneNumber + "&text=" + whatsAppMessage.replace(messageSubstring, patientDetails);
+                var url = "https://api.whatsapp.com/send?phone=" + phoneNumber + "&text=" + whatsAppMessage;
                 window.open(url);
             };
 
