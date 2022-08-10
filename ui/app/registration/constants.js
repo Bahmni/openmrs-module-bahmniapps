@@ -20,7 +20,7 @@ Bahmni.Registration.Constants = {
     nextStepConfigId: "org.bahmni.registration.patient.next",
     patientNameDisplayOrder: ["firstName", "middleName", "lastName"],
     whatsAppMessage: "REGISTRATION_WHATSAPP_MESSAGE",
-    enableWhatsAppButton: "false"
+    enableWhatsAppButton: false
 };
 
 Bahmni.Registration.Constants.Errors = {
