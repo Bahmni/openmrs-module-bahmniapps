@@ -1,0 +1,22 @@
+h1 {
+    font-size: 70px;
+    text-shadow: 7px 7px 10px #000;
+    margin-top: 0px;
+    margin-bottom: 0;
+    font-weight: normal;
+}
+
+body {
+    background-image: url("/src.jpg");
+    text-align: center;
+    font: 20px Helvetica, sans-serif;
+    color: #333;
+    background-repeat: no-repeat;
+    color: #fff;
+    background-color: rgba(66, 30, 30, 0.37);
+    background-blend-mode: multiply;
+}
+
+p {
+    line-height: 1.4;
+}
