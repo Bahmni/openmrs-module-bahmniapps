@@ -3,14 +3,47 @@
 describe('patient context', function () {
     var scope, $compile, mockBackend, patientService, observationsService, spinner, mockAppDescriptor, mockAppService, provide, mocktranslate;
 
+    var observation = {
+               "groupMembers": [
+                   {
+                       "encounterUuid": "efe78fd3-3ae5-41a5-9a0b-9181a3cd1b81",
+                       "uuid": "c5843ec9-85b9-487b-a78a-0f2a844feb24",
+                       "concept": {
+                           "uuid": "9c653330-9825-4f1d-939a-96757bc7cb97",
+                           "name": "Expected Date of Discharge",
+                           "dataType": "Date",
+                           "conceptClass": "Misc"
+                       },
+                       "voided": false,
+                       "conceptUuid": "9c653330-9825-4f1d-939a-96757bc7cb97",
+                       "value": "2017-01-03"
+                   }
+               ],
+               "encounterUuid": "efe78fd3-3ae5-41a5-9a0b-9181a3cd1b81",
+               "uuid": "c0415c40-8833-445f-945a-c51bb7bccd32",
+               "concept": {
+                   "uuid": "72baa954-4f6f-46a4-9289-144b4f973864",
+                   "name": "Expected Date of Discharge Set",
+                   "dataType": "N/A",
+                   "conceptClass": "Misc"
+               },
+               "voided": false,
+               "conceptUuid": "72baa954-4f6f-46a4-9289-144b4f973864",
+               "observationDateTime": "2017-02-23T13:48:52.000+0200",
+               "value": "1212121, 2017-01-03",
+               "comment": null
+           };
+
     beforeEach(module('bahmni.common.patient', function ($provide) {
         patientService = jasmine.createSpyObj('patientService', ['getPatientContext']);
+        observationsService = jasmine.createSpyObj('observationsService', ['fetch']);
         $provide.value('patientService', patientService);
+        $provide.value('observationsService', observationsService);
+
     }));
 
     beforeEach(module('bahmni.clinical', function ($provide) {
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
-        observationsService = jasmine.createSpyObj('observationsService', ['fetch']);
         mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         mockAppService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         mocktranslate = jasmine.createSpyObj('$translate', ['instant']);
@@ -19,7 +52,6 @@ describe('patient context', function () {
         $provide.value('appService', mockAppService);
         $provide.value('$state', {params: {enrollment: 'programUuid'}});
         $provide.value('$translate', mocktranslate);
-        $provide.value('observationsService', observationsService);
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
@@ -30,6 +62,8 @@ describe('patient context', function () {
         scope.patient = {uuid: '123'};
         mockBackend = $httpBackend;
         mockBackend.expectGET('displaycontrols/patientContext/views/patientContext.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=undefined&patientUuid=123&scope=latest').respond(observation);
+
     }));
 
     describe('initialization', function () {
