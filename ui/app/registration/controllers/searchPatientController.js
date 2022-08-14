@@ -187,7 +187,7 @@ angular.module('bahmni.registration')
                 var resultsConfigNotFound = false;
                 if (_.isEmpty(patientSearchResultConfigs)) {
                     resultsConfigNotFound = true;
-                    patientSearchResultConfigs.address = {"fields": allSearchConfigs.address ? [allSearchConfigs.address.field] : {}};
+                    patientSearchResultConfigs.address = {"fields": allSearchConfigs.address ? [allSearchConfigs.address.field] : []};
                     patientSearchResultConfigs.personAttributes
                         = {fields: allSearchConfigs.customAttributes ? allSearchConfigs.customAttributes.fields : {}};
                 } else {

@@ -95,6 +95,12 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
             return patient[column];
         }).join(" - ");
 
+        var abhaIdentifier = null;
+        if (patient.extraIdentifiers) {
+            var objIdentifier = JSON.parse(patient.extraIdentifiers);
+            abhaIdentifier = objIdentifier && objIdentifier["ABHA Address"];
+        }
+        patient.abhaIdentifier = patient.abhaIdentifier ? patient.abhaIdentifier : (abhaIdentifier ? abhaIdentifier : patient.identifier);
         patient.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + patient.uuid;
         return patient;
     }
