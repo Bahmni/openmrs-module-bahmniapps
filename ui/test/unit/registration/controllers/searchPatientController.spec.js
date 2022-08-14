@@ -202,7 +202,7 @@ describe('SearchPatientController', function () {
             var defaultSearchAddressField = undefined;
             scope.searchById();
 
-            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined, {}, {}, false);
+            expect(patientResource.search).toHaveBeenCalledWith(undefined, "20001", defaultSearchAddressField, undefined, undefined, undefined, undefined, undefined, undefined, [], {}, false);
         });
 
         it('should show the spinner while searching', function () {
@@ -245,7 +245,7 @@ describe('SearchPatientController', function () {
                 programAttributeFieldName: "Facility",
                 patientAttributes: ["education", "firstNameLocal"],
                 programAttributeFieldValue: undefined,
-                addressSearchResultsConfig: {},
+                addressSearchResultsConfig: [],
                 personSearchResultsConfig: {}
             });
         });
