@@ -12,6 +12,8 @@ angular.module('bahmni.registration')
             var selectedProvider = $rootScope.currentProvider;
             var regEncounterTypeUuid = $rootScope.regEncounterConfiguration.encounterTypes[Bahmni.Registration.Constants.registrationEncounterType];
             var visitLocationUuid = $rootScope.visitLocation;
+            var redirectToDashboard = false;
+            $scope.enableDashboardRedirect = _.some($rootScope.currentUser.privileges, {name: "app:clinical"}) && (appService.getAppDescriptor().getConfigValue("enableDashboardRedirect") || Bahmni.Registration.Constants.enableDashboardRedirect);
 
             var getPatient = function () {
                 var deferred = $q.defer();
@@ -250,8 +252,11 @@ angular.module('bahmni.registration')
 
             var afterSave = function () {
                 var forwardUrl = appService.getAppDescriptor().getConfigValue("afterVisitSaveForwardUrl");
+                var dashboardUrl = appService.getAppDescriptor().getConfigValue("dashboardUrl") || Bahmni.Registration.Constants.dashboardUrl;
                 if (forwardUrl != null) {
                     $window.location.href = appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patientUuid});
+                } else if (dashboardUrl != null && redirectToDashboard) {
+                    $window.location.href = appService.getAppDescriptor().formatUrl(dashboardUrl, {'patientUuid': patientUuid});
                 } else {
                     $state.transitionTo($state.current, $state.params, {
                         reload: true,
@@ -319,6 +324,11 @@ angular.module('bahmni.registration')
                         }
                     });
                 }
+            };
+
+            $scope.setDashboardRedirect = function () {
+                redirectToDashboard = true;
+                return validate().then(save).then(afterSave);
             };
 
             spinner.forPromise($q.all([getPatient(), getActiveEncounter(), searchActiveVisitsPromise()])
