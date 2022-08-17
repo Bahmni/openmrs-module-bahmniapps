@@ -9,7 +9,7 @@
     <div class="showOn-desktop-registration">
         <div class="field-value">
             <input type="checkbox" ng-model="patient.birthdateEstimated" id="birthdateEstimated"
-                   ng-blur="handleUpdate('birthdateEstimated')" class="estimate-check" ng-checked="isDisabledAttribute('birthDate')">
+                   ng-blur="handleUpdate('birthdateEstimated')" class="estimate-check" ng-disabled="isDisabledAttribute('birthDate')">
         </div>
         <div class="field-attribute estimated-label">
             <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
@@ -20,7 +20,7 @@
             <label for="birthdate">{{ ::'REGISTRATION_LABEL_ESTIMATE' | translate}}</label>
         </div>
         <div class="field-value">
-            <input type="checkbox" id="birthdateEstimated" ng-checked="isDisabledAttribute('birthDate')" ng-model="patient.birthdateEstimated"
+            <input type="checkbox" id="birthdateEstimated" ng-disabled="isDisabledAttribute('birthDate')" ng-model="patient.birthdateEstimated"
                    class="estimate-check">
         </div>
     </div>
