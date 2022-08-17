@@ -435,5 +435,37 @@ describe('patient context', function () {
             expect(compiledElementScope.showNameAndImage).toBeFalsy();
 
         });
+
+
+        it('should fetch person latest obs if configured.', function () {
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=weight&patientUuid=123&scope=latest').respond(observation);
+            observationsService.fetch.and.returnValue(specUtil.createFakePromise({}));
+            var patientContextConfig = {
+                conceptName: 'weight'
+            };
+            mockAppDescriptor.getConfigValue.and.returnValue(patientContextConfig);
+            mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
+
+            spinner.forPromise.and.callFake(function (param) {
+                return {
+                    then: function (callback) {
+                        return callback({data: {}});
+                    }
+                }
+            });
+
+            var simpleHtml = '<patient-context patient="patient"></patient-context>';
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            mockBackend.flush();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+
+            expect(compiledElementScope).not.toBeUndefined();
+            expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, patientContextConfig.conceptName, "latest", null, null, null, null, null);
+            expect(spinner.forPromise).toHaveBeenCalled();
+            expect(mockAppService.getAppDescriptor).toHaveBeenCalled();
+            expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientContext');
+        });
     })
 });
