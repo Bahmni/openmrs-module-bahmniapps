@@ -425,7 +425,8 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                 }
             ],
             names: [{familyName: 'Patel', givenName: ['Hina',''], use: ''}],
-            birthDate: "2000"
+            birthDate: "2000",
+            isBirthDateEstimated: true
         }
 
 
@@ -450,7 +451,8 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                 gender : 'F',
                 givenName : 'Hina',
                 middleName : '',
-                familyName : 'Patel'
+                familyName : 'Patel',
+                birthdateEstimated : true
         }
 
             scope.updateInfoFromExtSource(extensionPatient);
