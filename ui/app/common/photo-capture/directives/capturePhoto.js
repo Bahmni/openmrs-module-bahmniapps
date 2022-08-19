@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.photoCapture')
-    .directive('capturePhoto', ['appService', '$parse', '$window', function factory(appService, $parse, $window) {
+    .directive('capturePhoto', ['appService', '$parse', '$window', function factory (appService, $parse, $window) {
         var link = function (scope, iElement, iAttrs) {
             var captureDialogElement = iElement.find(".photoCaptureDialog"),
                 captureVideo = captureDialogElement.find("video")[0],
