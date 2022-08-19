@@ -141,6 +141,9 @@ angular.module('bahmni.common.photoCapture')
                         alert('File uploaded must be an image');
                         return;
                     }
+                } else {
+                    alert('File uploaded must be an image');
+                    return;
                 }
                 if (this.files[0] && this.files[0].size <= imageUploadSize) {
                     var fileReader = new FileReader();
