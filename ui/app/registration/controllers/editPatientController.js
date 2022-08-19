@@ -98,7 +98,7 @@ angular.module('bahmni.registration')
             };
 
             $scope.sendWhatsAppMessage = function () {
-                var whatsAppMessage = appService.getAppDescriptor().getConfigValue("whatsAppMessage") || $translate.instant(Bahmni.Registration.Constants.whatsAppMessage);
+                var whatsAppMessage = $translate.instant(appService.getAppDescriptor().getConfigValue("whatsAppMessage") || Bahmni.Registration.Constants.whatsAppMessage);
                 whatsAppMessage = whatsAppMessage.replace("#patientId", $scope.patient.primaryIdentifier.identifier);
                 whatsAppMessage = whatsAppMessage.replace("#name", $scope.patient.givenName + " " + $scope.patient.familyName);
                 whatsAppMessage = whatsAppMessage.replace("#age", $scope.patient.age.years + " years");
