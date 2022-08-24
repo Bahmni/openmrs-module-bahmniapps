@@ -104,7 +104,7 @@ angular.module('bahmni.registration')
                 whatsAppMessage = whatsAppMessage.replace("#age", $scope.patient.age.years + " years");
                 whatsAppMessage = whatsAppMessage.replace("#gender", $scope.patient.gender);
                 var phoneNumber = $scope.patient.phoneNumber.replace("+", "");
-                var url = "https://api.whatsapp.com/send?phone=" + phoneNumber + "&text=" + whatsAppMessage;
+                var url = "https://api.whatsapp.com/send?phone=" + phoneNumber + "&text=" + encodeURIComponent(whatsAppMessage);
                 window.open(url);
             };
 
