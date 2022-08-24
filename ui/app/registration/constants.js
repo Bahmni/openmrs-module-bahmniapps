@@ -20,7 +20,9 @@ Bahmni.Registration.Constants = {
     nextStepConfigId: "org.bahmni.registration.patient.next",
     patientNameDisplayOrder: ["firstName", "middleName", "lastName"],
     whatsAppMessage: "REGISTRATION_WHATSAPP_MESSAGE",
-    enableWhatsAppButton: false
+    enableWhatsAppButton: false,
+    enableDashboardRedirect: false,
+    dashboardUrl: "/bahmni/clinical/index.html#/default/patient/{{patientUuid}}/dashboard"
 };
 
 Bahmni.Registration.Constants.Errors = {
