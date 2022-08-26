@@ -227,6 +227,9 @@ angular.module('bahmni.clinical')
                 var forms = [];
                 var observations = $scope.consultation.observations || [];
                 _.each(observationsForms, function (observationForm) {
+                    var extension = _.find(extensions, function (ext) {
+                        return (ext.extensionParams.formName && (observationForm.formName === ext.extensionParams.formName || observationForm.name === ext.extensionParams.formName));
+                    }) || {};
                     var formUuid = observationForm.formUuid || observationForm.uuid;
                     var formName = observationForm.name || observationForm.formName;
                     var formVersion = observationForm.version || observationForm.formVersion;
@@ -242,7 +245,7 @@ angular.module('bahmni.clinical')
                     }
                     if ($scope.isFormEditableByTheUser(observationForm)) {
                         var newForm = new Bahmni.ObservationForm(formUuid, $rootScope.currentUser,
-                                                                   formName, formVersion, observations, label);
+                                                                   formName, formVersion, observations, label, extension);
                         newForm.privileges = privileges;
                         forms.push(newForm);
                     }

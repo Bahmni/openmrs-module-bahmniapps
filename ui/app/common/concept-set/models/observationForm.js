@@ -89,7 +89,7 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
     };
 
     self.isDefault = function () {
-        return false;
+        return self.options.default;
     };
 
     Object.defineProperty(self, "isAdded", {
