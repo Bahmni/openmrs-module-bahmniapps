@@ -7,7 +7,12 @@ angular.module('bahmni.clinical')
             $scope.obs = observationsService.fetch($scope.patient.uuid, [patientContextConfig.conceptName], "latest", null, null, null, null, null)
             .then(function (response) {
                 var observations = new Bahmni.Common.Obs.ObservationMapper().map(response.data, []);
-                $scope.patientContext.observation = _.sortBy(observations, 'sortWeight')[0];
+                if (observations) {
+                    $scope.patientContext.observation = _.sortBy(observations, 'sortWeight')[0];
+                    $scope.showObs = true;
+                } else {
+                    $scope.showObs = false;
+                }
             });
             $scope.initPromise = patientService.getPatientContext($scope.patient.uuid, $state.params.enrollment, patientContextConfig.personAttributes, patientContextConfig.programAttributes, patientContextConfig.additionalPatientIdentifiers);
 
