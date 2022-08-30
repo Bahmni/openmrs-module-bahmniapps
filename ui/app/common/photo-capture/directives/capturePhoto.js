@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.photoCapture')
-    .directive('capturePhoto', ['appService', '$parse', '$window', function factory (appService, $parse, $window) {
+    .directive('capturePhoto', ['appService', '$parse', '$window', '$translate', function factory (appService, $parse, $window, $translate) {
         var link = function (scope, iElement, iAttrs) {
             var captureDialogElement = iElement.find(".photoCaptureDialog"),
                 captureVideo = captureDialogElement.find("video")[0],
@@ -138,11 +138,11 @@ angular.module('bahmni.common.photoCapture')
                     var fileType = this.files[0].type;
                     if (!fileType.startsWith('image/')) {
                         uploadConfirmImageButton.prop('disabled', true);
-                        alert('File uploaded must be an image');
+                        alert($translate.instant("FILE_UPLOAD_MUST_BE_IMAGE"));
                         return;
                     }
                 } else {
-                    alert('File uploaded must be an image');
+                    alert($translate.instant("FILE_UPLOAD_MUST_BE_IMAGE"));
                     return;
                 }
                 if (this.files[0] && this.files[0].size <= imageUploadSize) {
@@ -166,7 +166,7 @@ angular.module('bahmni.common.photoCapture')
                     } else {
                         displayMessage = Math.floor(imageUploadSizeInKb) + "KB";
                     }
-                    alert('File size should be less than ' + displayMessage);
+                    alert($translate.instant("FILE_UPLOAD_MUST_BE_LESS_THAN") + ' ' + displayMessage);
                 }
             };
 
