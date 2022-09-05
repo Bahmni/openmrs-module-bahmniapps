@@ -37,7 +37,7 @@
     "WARNING_SERVER_TIME_ZONE_MISMATCH": "La fuseau horaire du serveur ({{serverTime}}) est différente de l'heure / fuseau horaire de votre navigateur ({{localeTimeZone}}). Cela peut entraîner l'apparition incorrecte de certaines données ou rapports. Veuillez contacter l'administrateur pour obtenir de l'aide.",
     "LOGIN_PAGE_HEADER_TEXT": "BAHMNI DME LOGIN",
     "LOGIN_PAGE_TITLE_TEXT": "TITRE TEXTE",
-    "LOGIN_UNSUPPORTED_BROWSER_KEY": "Bahmni est pris en charge sur le navigateur Chrome",
+    "LOGIN_UNSUPPORTED_BROWSER_KEY": "Bahmni est pris en charge sur le navigateur Chrome/Firefox",
     "LOGIN_LABEL_USERNAME_KEY": "Nom d'utilisateur",
     "LOGIN_MESSAGE_ENTER_USERNAME_KEY": "Entrez votre nom d'utilisateur",
     "LOGIN_MESSAGE_ENTER_PASSWORD_KEY": "Entrez votre mot de passe",
