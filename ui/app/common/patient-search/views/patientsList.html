@@ -77,8 +77,8 @@
                 <li ng-repeat="patient in search.visiblePatients" class="active-patient" ng-click="forwardPatient(patient)">
                     <img class="smallImages" ng-src="{{::patient.image}}" fallback-src='../images/blank-user.png'>
                     <div class="patient-name">{{::patient.name}}</div>
-                    <div ng-if="!preferAbhaIdInSearchResults" class="patient-id">{{::patient.identifier}}</div>
-                    <div ng-if="preferAbhaIdInSearchResults" class="patient-id">{{::patient.abhaIdentifier}}</div>
+                    <div ng-if="!preferExtraIdInSearchResults" class="patient-id">{{::patient.identifier}}</div>
+                    <div ng-if="preferExtraIdInSearchResults" class="patient-id">{{::patient.extraIdentifier}}</div>
                     <i class="ipd-indication fa fa-bed" ng-if="::(patient.hasBeenAdmitted===true||patient.hasBeenAdmitted==='true')"></i>
                 </li>
             </ul>

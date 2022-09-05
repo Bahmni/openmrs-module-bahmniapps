@@ -95,12 +95,17 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
             return patient[column];
         }).join(" - ");
 
-        var abhaIdentifier = null;
+        var extraIdentifier = null;
         if (patient.extraIdentifiers) {
-            var objIdentifier = JSON.parse(patient.extraIdentifiers);
-            abhaIdentifier = objIdentifier && objIdentifier["ABHA Address"];
+            var objIdentifiers = JSON.parse(patient.extraIdentifiers);
+            for (var key in objIdentifiers) {
+                extraIdentifier = objIdentifiers[key];
+                break;
+            }
+        } else if (patient.extraIdentifierVal) {
+        	extraIdentifier = patient.extraIdentifierVal;
         }
-        patient.abhaIdentifier = patient.abhaIdentifier ? patient.abhaIdentifier : (abhaIdentifier ? abhaIdentifier : patient.identifier);
+        patient.extraIdentifier = patient.extraIdentifier ? patient.extraIdentifier : (extraIdentifier ? extraIdentifier : patient.identifier);
         patient.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + patient.uuid;
         return patient;
     }
