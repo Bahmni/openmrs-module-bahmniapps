@@ -142,7 +142,9 @@ angular.module('bahmni.common.photoCapture')
                         return;
                     }
                 } else {
+                    uploadConfirmImageButton.prop('disabled', true);
                     alert($translate.instant("FILE_UPLOAD_MUST_BE_IMAGE"));
+                    uploadContext.clearRect(0, 0, uploadCanvas.width, uploadCanvas.height);
                     return;
                 }
                 if (this.files[0] && this.files[0].size <= imageUploadSize) {
@@ -167,6 +169,8 @@ angular.module('bahmni.common.photoCapture')
                         displayMessage = Math.floor(imageUploadSizeInKb) + "KB";
                     }
                     alert($translate.instant("FILE_UPLOAD_MUST_BE_LESS_THAN") + ' ' + displayMessage);
+                    uploadField.value = "";
+                    uploadContext.clearRect(0, 0, uploadCanvas.width, uploadCanvas.height);
                 }
             };
 
