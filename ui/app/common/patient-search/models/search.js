@@ -103,7 +103,7 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
                 break;
             }
         } else if (patient.extraIdentifierVal) {
-        	extraIdentifier = patient.extraIdentifierVal;
+            extraIdentifier = patient.extraIdentifierVal;
         }
         patient.extraIdentifier = patient.extraIdentifier ? patient.extraIdentifier : (extraIdentifier ? extraIdentifier : patient.identifier);
         patient.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + patient.uuid;
