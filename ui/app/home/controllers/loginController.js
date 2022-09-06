@@ -71,7 +71,7 @@ angular.module('bahmni.home')
                 });
             });
 
-            $scope.isChromeOrFirefox = function () {
+            $scope.isSupportedBrowser = function () {
                 var userAgent = $window.navigator.userAgent;
                 if (userAgent.indexOf("Chrome") !== -1 || userAgent.indexOf("Firefox") !== -1) {
                     return true;
