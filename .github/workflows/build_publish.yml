@@ -2,7 +2,7 @@ name: Build and Publish
 on:
   push:
     branches:
-      - BAH-2283
+      - master
       - 'release-*'
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
@@ -21,9 +21,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: Set artifact version
         run: |
-          wget -q https://raw.githubusercontent.com/mohan-13/versioning-action/shell/setVersion.sh && chmod +x setVersion.sh
-          ./setVersion.sh
-          rm setVersion.sh
+          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/setArtifactVersion.sh && chmod +x setArtifactVersion.sh
+          ./setArtifactVersion.sh
+          rm setArtifactVersion.sh
       - name: Use Node.js 10.16.3
         uses: actions/setup-node@v1
         with:
