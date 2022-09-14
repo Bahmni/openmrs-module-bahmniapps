@@ -120,7 +120,7 @@ describe('Patient resource', function () {
             customAttributeFields, programAttributeFieldName, programAttributeFieldValue);
 
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/patient/lucene");
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/patient/quick-search");
         expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
         expect(mockHttp.get.calls.mostRecent().args[1].params.identifier).toBe(identifier);
         expect(mockHttp.get.calls.mostRecent().args[1].params.addressFieldName).toBe(addressFieldName);
