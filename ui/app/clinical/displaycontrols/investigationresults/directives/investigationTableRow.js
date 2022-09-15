@@ -13,6 +13,19 @@ angular.module('bahmni.clinical')
             $scope.hasNotes = function () {
                 return $scope.test.notes || $scope.test.showNotes ? true : false;
             };
+
+            $scope.getFormattedRange = function(test) {
+                if (test.minNormal && test.maxNormal) {
+                    return "(" + test.minNormal + " - " + test.maxNormal + ")"
+                } else if (test.minNormal && !test.maxNormal) {
+                    return "(" + test.minNormal + "<)"
+                } else if (!test.minNormal && test.maxNormal) {
+                    return "(<" + test.maxNormal + ")"
+                } else {
+                    return ""
+                }
+            };
+
             $scope.getLocaleSpecificNameForPanel = function (test) {
                 if ($scope.test.preferredPanelName != null) {
                     return test.preferredPanelName;
