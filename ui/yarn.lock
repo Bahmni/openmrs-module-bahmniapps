@@ -656,9 +656,9 @@ backo2@1.0.2:
   integrity sha1-MasayLEpNjRj41s+u2n038+6eUc=
 
 bahmni-form-controls@^0.93.4:
-  version "0.93.7"
-  resolved "https://registry.yarnpkg.com/bahmni-form-controls/-/bahmni-form-controls-0.93.7.tgz#3a1c1d04e8e70b21a789893f88b4ab780eefb554"
-  integrity sha512-2MsGl7v+lXrLf/5xDuFVKrpHHSKuAwcaK6lbDSBfBOR76ipzJXe5RCbFoISa+inctMz4A0Bx4qopWByoy6Akjg==
+  version "0.93.8"
+  resolved "https://registry.yarnpkg.com/bahmni-form-controls/-/bahmni-form-controls-0.93.8.tgz#9e323529cb492e9d74ace7322552b9a43721be11"
+  integrity sha512-0HI4OOs4buH1gHkQxvHi1AZUcPUR6LfuH5tICjmMbMq03t7Fu87Bsg7Fdbz/LIH0kY7wg1w36I+B0kJeRfiPhA==
   dependencies:
     base64-inline-loader "^1.1.0"
     classnames "^2.2.5"
