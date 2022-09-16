@@ -1,0 +1,49 @@
+plugins {
+    id "nebula.ospackage" version "3.4.0"
+}
+
+group 'org.bahmni.web'
+version project.version
+
+task extractBahmniApps(type: Copy){
+    from zipTree(file("${projectDir}/resources/bahmniapps.zip"))
+    into file("${projectDir}/resources/bahmniapps")
+}
+
+task extractBahmniConfig(type: Copy){
+    from zipTree(file("${projectDir}/resources/default_config.zip"))
+    into file("${projectDir}/resources/bahmni_config")
+}
+
+ospackage {
+    packageName = 'bahmni-web'
+    version = project.version
+    release = project.hasProperty('release') ? project.release : ""
+    arch = NOARCH
+    os = LINUX
+    user = 'root'
+
+    into '/opt/bahmni-web'
+
+    from("${projectDir}/resources/") {
+        fileMode = 0755
+        createDirectoryEntry = true
+        into 'etc'
+        exclude('bahmniapps.zip')
+        exclude('default_config.zip')
+        exclude('*.checksum')
+    }
+}
+
+buildRpm {
+    dependsOn "extractBahmniApps", "extractBahmniConfig"
+
+    requires('httpd')
+    requires('mod_ssl')
+    requires('mod_wsgi')
+    requires('python-flask') //This is required for client_side_logging
+
+    preInstall file("${projectDir}/scripts/preinstall.sh")
+    postInstall file("${projectDir}/scripts/postinstall.sh")
+    postUninstall file("${projectDir}/scripts/postuninstall.sh")
+}
