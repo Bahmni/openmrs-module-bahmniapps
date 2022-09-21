@@ -104,6 +104,13 @@
             "config": {
                 "translationKey": "VISIT_TITLE_PATIENT_FILES_KEY"
             }
+        },
+        "Followup": {
+            "type": "followup",
+            "displayOrder": 9,
+            "config": {
+                "translationKey": "VISIT_TITLE_FOLLOWUP_KEY"
+            }
         }
     }
 }

@@ -1,0 +1,67 @@
+<style type="text/css">
+    table tr td {
+        border-collapse: collapse !important;
+    }
+    table, tr, td, ul, li {
+        border: none !important;
+		cellspacing: 0;
+		cellpadding: 0;
+    }
+	div {
+		word-wrap: break-word;
+	}
+</style>
+
+  <div>
+	    <div class="concept-set-container-view">
+			<h2 
+			  class="section-title">
+			  <span class="title-link"> {{::title | titleTranslate}} </span>
+			</h2>
+	        <section class="block hierarchy">
+				<!-- <h2 
+				  class="section-title">
+				  <span class="title-link">{{obs.mainConceptName}}</span>
+				</h2> -->
+	            <ul class="form-field"> 
+				 <li>
+					<table>
+						<tr  valign="top" ng-repeat="observation in ::obsToPrint track by $index">
+							<td width="40%"><br>{{observation.concept.shortName}}</td>
+							<td width="60%"><br>
+								<span>
+									<span ng-repeat="member in ::observation.groupMembers track by $index" ng-if="observation.groupMembers.length > 0">
+										<span align="left" ng-if="member.groupMembers.length > 0">
+											{{member.concept.shortName | translate}}<br>
+											<obs-print obs-to-print="::member"></obs-print>
+										</span>
+										<span align="left" ng-if="member.groupMembers.length === 0">
+											{{member.concept.shortName | translate}}: 
+											<span ng-if="member.concept.dataType==='Datetime'" ng-bind-html="member.valueAsString | bahmniDateTime"></span>
+											<span ng-if="member.concept.dataType==='Date'" ng-bind-html="member.valueAsString | bahmniDate"></span>
+											<span ng-if="member.concept.dataType!=='Date' && member.concept.dataType!=='Datetime'" ng-bind-html="member.valueAsString.trim()"></span><br>
+											<span ng-if="member.duration > 0">{{member.getDurationDisplayValue().trim()}}</span>
+											<span ng-if="member.concept.units.length > 0">{{member.concept.units.trim()}}</span>
+								
+											<span ng-if="member.comment!=null">(<span ng-if="member.comment!=null" ng-bind-html="member.comment"></span>)</span>
+											<span ng-if="!$last"><br></span>
+										</span>
+									</span>
+                                    <span align="left" ng-if="observation.groupMembers.length === 0">
+										<span ng-if="observation.concept.dataType==='Datetime'" ng-bind-html="observation.valueAsString | bahmniDateTime"></span>
+										<span ng-if="observation.concept.dataType==='Date'" ng-bind-html="observation.valueAsString | bahmniDate"></span>
+										<span ng-if="observation.concept.dataType!=='Date' && observation.concept.dataType!=='Datetime'" ng-bind-html="observation.valueAsString.trim()"></span>
+										<span ng-if="observation.duration > 0">{{observation.getDurationDisplayValue().trim()}}</span>
+										<span ng-if="observation.concept.units.length > 0">{{observation.concept.units.trim()}}</span> 
+										<span ng-if="observation.comment!=null">(<span ng-if="observation.comment!=null" ng-bind-html="observation.comment"></span>)</span>
+									</span>
+									<span ng-if="!$last"><br></span>
+								</span>
+							</td>
+						</tr>
+					</table>
+				 </li>
+			  </ul> 
+	        </section>
+	    </div>
+    </div>

@@ -1,0 +1,28 @@
+<style type="text/css">
+    table {
+        border-collapse: collapse;
+    }
+    table, tr, td {
+        border: none !important;
+    }
+</style>
+
+    <span cellspacing="0" cellpadding="0">
+            <span ng-repeat="member in ::obsToPrint.groupMembers" ng-if="obsToPrint.groupMembers.length > 0">
+                <span align="left" ng-if="member.groupMembers.length > 0">
+                    {{member.concept.shortName | translate}}<br>
+                    <obs-print obs-to-print="::member"></obs-print>
+                </span>
+                <span align="left" ng-if="member.groupMembers.length === 0">
+                    &nbsp;&nbsp;{{member.concept.shortName | translate}}: 
+                    <span ng-if="member.concept.dataType==='Datetime'" ng-bind-html="member.valueAsString | bahmniDateTime"></span>
+                    <span ng-if="member.concept.dataType==='Date'" ng-bind-html="member.valueAsString | bahmniDate"></span>
+                    <span ng-if="member.concept.dataType!=='Date' && member.concept.dataType!=='Datetime'" ng-bind-html="member.valueAsString.trim()"></span>
+                    <span ng-if="member.duration > 0">{{member.getDurationDisplayValue().trim()}}</span>
+                    <span ng-if="member.concept.units.length > 0">{{member.concept.units.trim()}}</span>
+        
+                    <span ng-if="member.comment!=null">(<span ng-if="member.comment!=null" ng-bind-html="member.comment"></span>)</span>
+                    <span ng-if="!$last"><br></span>
+                </span>
+            </span>
+    </span>

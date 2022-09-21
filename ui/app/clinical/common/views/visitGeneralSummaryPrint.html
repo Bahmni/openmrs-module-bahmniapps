@@ -1,0 +1,103 @@
+<html>
+<head>
+<style type="text/css">
+.allButFooter {
+    min-height: calc(100vh - 250px); 
+}
+</style>
+</head>
+<body>
+<div class="allButFooter">
+<div ng-if="::(!clearBoard)">
+  <table>
+        <tr ng-repeat="(key, section) in visitTabConfig.currentTab.groupedPrintSections" ng-switch="key">
+            <td ng-switch-when="patientInformation">
+                <section class="block dashboard-section" >
+                    <ng-include src="'common/views/patientInfoPrint.html'"></ng-include>
+                </section>
+            </td>
+
+            <td ng-switch-when="observation">
+                <div id="observation-section">
+                    <div ng-if="patientVisitObsData.length > 0">
+                        <obs-print obs-to-print="patientVisitObsData[0].obsData" template-url-name="patientVisitObsData[0].templateUrlName" 
+                            title="patientVisitObsData[0].title"></obs-print>
+                    </div>
+                    <div ng-if="patientVisitObsData.length > 1">
+                        <obs-print obs-to-print="patientVisitObsData[1].obsData" template-url-name="patientVisitObsData[1].templateUrlName"
+                            title="patientVisitObsData[1].title"></obs-print>
+                    </div>
+                </div>
+            </td>
+
+            <td ng-switch-when="diagnosis" ng-if="visitTabConfig.currentTab.printDiagnosis">
+                <section class="block dashboard-section">
+                    <bahmni-diagnosis patient-uuid="::section[0].config.patientUuid"
+                                      config="::section[0].config" visit-uuid="::visitUuid" show-latest-diagnosis="true"></bahmni-diagnosis>
+                </section>
+            </td>
+
+            <td data-ng-switch-when="conditionsList" ng-if="visitTabConfig.currentTab.printConditions">
+                <conditions-list params="section[0]" patient="patient"></conditions-list>
+            </td>
+
+            <td data-ng-switch-when="treatment" ng-if="treatmentSections.length > 0">
+                <div >
+                    <h2 class="section-title">
+                        <span class="title-link">Prescriptions</span>
+                    </h2>
+                    <table ng-repeat="drugOrderSection in ::treatmentSections | orderBy: drugOrderSection.visitDate">
+                        <tbody>
+                            <tr ng-repeat="drugOrder in ::drugOrderSection.drugOrders | orderBy: '::effectiveStartDate'"
+                               ng-if="::drugOrderSection.drugOrders.length > 0">
+                                <td style="width:30%">
+                                    <span>{{::drugOrder.getDrugOrderName((params.showDrugForm == true))}}</span>
+                                    <span ng-repeat="orderAttribute in drugOrder.orderAttributes" ng-if="::orderAttribute.value == 'true'" ng-class="'drug-attr-highlight'">
+                                        {{::orderAttribute.name.substring(0,1)}}
+                                    </span>
+                                </td>
+                                <td style="width:50%">
+                                    <span ng-if="::(params.showRoute == true)" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutDuration()}}</span>
+                                    <span ng-if="::!(params.showRoute == true)" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutRouteAndDuration()}}</span>
+                                    <span class="notes test-notes" ng-if="::drugOrder.additionalInstructions">
+                                        <i class="fa fa-comments left"></i>
+                                        <pre class="left"> ({{::drugOrder.additionalInstructions}})</pre>
+                                    </span>
+                                </td>
+                                <td style="text-align: left;width:20%">
+                                    <!-- <span class="fl">{{::drugOrder.effectiveStartDate | bahmniDate}}</span> -->
+                                    <span>{{::drugOrder.getSpanDetails().slice(2)}}</span>
+                                    <!-- <span ng-if="::drugOrder.isDiscontinuedOrStopped()" ng-class="::{'discontinued-text':drugOrder.isDiscontinuedOrStopped()}">{{'MEDICATION_STOPPED_ON'|translate}} {{::drugOrder.effectiveStopDate | bahmniDate}}</span> -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+
+            <td data-ng-switch-when="investigationResult" ng-if="visitTabConfig.currentTab.printInvestigations">
+                <div ng-if="((testOrderLabels && testOrderLabels.length > 0) || (radiologyOrderNames && radiologyOrderNames.length > 0))">
+                    <h2 
+                        class="section-title">
+                        <span class="title-link">Investigations</span>
+                    </h2>
+                    <li ng-if="testOrderLabels && testOrderLabels.length > 0">{{::testOrderLabels}}</li>
+                    <li ng-if="radiologyOrderNames && radiologyOrderNames.length > 0">{{::radiologyOrderNames}}</li>
+                </div>
+            </td>
+
+            <td data-ng-switch-when="followup">
+                <div ng-if="patientVisitObsData.length > 2">
+                    <obs-print obs-to-print="patientVisitObsData[2].obsData"
+                        template-url-name="patientVisitObsData[2].templateUrlName"></obs-print>
+                </div>
+            </td>
+         </tr>
+    </table>
+</div>
+</div>
+<footer class="fr">
+    {{visitConsultant}}
+</footer>
+</body>
+</html>
