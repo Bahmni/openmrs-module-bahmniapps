@@ -49,7 +49,7 @@
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
                              title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" focus-me="true">
                       <input data-ng-switch-default
-                             type="text" id="givenName" ng-model="patient.givenName" non-blank pattern-validate
+                             type="text" id="givenName" ng-disabled = "isDisabledAttribute('givenName')" ng-model="patient.givenName" non-blank pattern-validate
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
                              title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_NAME' | translate}}" focus-me="true">
                     </span>
@@ -70,14 +70,13 @@
                           ng-if="nameField === 'lastName'">
                       <input data-ng-switch-when="true"
                              type="text" id="familyName" ng-model="$parent.patient.familyName"
-                             ng-disabled = "isDisabledAttribute('familyName')"
                              pattern-validate
                              my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                              data-item-type="personName"
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
                              title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
                       <input data-ng-switch-default
-                             type="text" id="familyName" ng-model="patient.familyName"  pattern-validate
+                             type="text" id="familyName" ng-disabled=isDisabledAttribute('familyName') ng-model="patient.familyName"  pattern-validate
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
                              title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
                     </span>
