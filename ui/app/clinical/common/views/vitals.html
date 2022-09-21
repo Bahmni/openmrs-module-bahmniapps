@@ -25,10 +25,10 @@
 				</h2> -->
 	            <ul class="form-field"> 
 				 <li>
-					<table>
+					<table style="width: 100%;">
 						<tr  valign="top" ng-repeat="observation in ::obsToPrint track by $index">
-							<td width="40%"><br>{{observation.concept.shortName}}</td>
-							<td width="60%"><br>
+							<td style="width: 30%;vertical-align: text-top;">{{observation.concept.shortName}}</td>
+							<td width="70%">
 								<span>
 									<span ng-repeat="member in ::observation.groupMembers track by $index" ng-if="observation.groupMembers.length > 0">
 										<span align="left" ng-if="member.groupMembers.length > 0">

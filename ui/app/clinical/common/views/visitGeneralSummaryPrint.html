@@ -59,9 +59,9 @@
                                 <td style="width:50%">
                                     <span ng-if="::(params.showRoute == true)" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutDuration()}}</span>
                                     <span ng-if="::!(params.showRoute == true)" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutRouteAndDuration()}}</span>
-                                    <span class="notes test-notes" ng-if="::drugOrder.additionalInstructions">
-                                        <i class="fa fa-comments left"></i>
-                                        <pre class="left"> ({{::drugOrder.additionalInstructions}})</pre>
+                                    <span class="test-notes" ng-if="::drugOrder.additionalInstructions">
+                                        <!-- <i class="fa fa-comments"></i> -->
+                                        <span><i>({{::drugOrder.additionalInstructions}})</i></span>
                                     </span>
                                 </td>
                                 <td style="text-align: left;width:20%">
