@@ -5,7 +5,7 @@ angular.module('bahmni.common.domain')
         var self = this;
         this.getAllFor = function (searchTerm, locale) {
             var url = Bahmni.Common.Constants.emrapiConceptUrl;
-            var parameters = {term: searchTerm, limit: 20};
+            var parameters = {term: searchTerm, limit: Bahmni.Common.Constants.emrapiDiagnosisLimit};
             if (locale) {
                 parameters.locale = locale;
             }
