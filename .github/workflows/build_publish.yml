@@ -1,45 +1,28 @@
 name: Build and Publish
 on:
   push:
-    branches: [master]
-    paths-ignore:
-      - "**.md"
+    branches:
+      - master
+      - 'release-*'
+      - BAH-2287
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
   repository_dispatch:
     types: ["default-config-trigger"]
 
 jobs:
-  get-version:
-    #This job reads the .baseversion file and checks it against tags in the repo so that overlap builds don't occur.
-    #Also provides version as output for other jobs.
-    name: Get Version
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.get-version.outputs.version }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set Version Output
-        id: get-version
-        run: |
-          VERSION=$(cat package/.baseversion)
-          if [ $(git tag -l "$VERSION") ]; then 
-            echo "Version $VERSION already released. Please update your version in package/.baseversion"
-            exit 1
-          else
-            echo "Setting version $VERSION"
-            echo ::set-output name=version::$VERSION
-          fi
-
   docker-build-publish:
     name: Docker Build & Publish
     runs-on: ubuntu-latest
-    needs: [get-version]
     env:
-      ARTIFACT_VERSION: ${{ needs.get-version.outputs.version }}-${{github.run_number}}
+      HELM_CHART_PATH: package/helm/
     steps:
       - uses: actions/checkout@v2
+      - name: Set artifact version
+        run: |
+          wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/setArtifactVersion.sh && chmod +x setArtifactVersion.sh
+          ./setArtifactVersion.sh
+          rm setArtifactVersion.sh
       - name: Use Node.js 10.16.3
         uses: actions/setup-node@v1
         with:
@@ -57,7 +40,7 @@ jobs:
       - name: Download default_config.zip
         run: sh .github/download_artifact.sh default-config default_config ${{secrets.BAHMNI_PAT}}
       - name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
@@ -68,24 +51,10 @@ jobs:
           file: package/docker/Dockerfile
           push: true
           tags: bahmni/bahmni-web:${{ env.ARTIFACT_VERSION }},bahmni/bahmni-web:latest
-
-  helm-package-publish:
-    name: Helm Package & Publish
-    runs-on: ubuntu-latest
-    needs: [get-version, docker-build-publish]
-    env:
-      ARTIFACT_VERSION: ${{ needs.get-version.outputs.version }}-${{github.run_number}}
-      HELM_CHART_PATH: openmrs-module-bahmniapps/package/helm/
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          path: openmrs-module-bahmniapps
       - name: Update Version and Image Tag
         run: |
           yq --inplace '.image.tag = "${{ env.ARTIFACT_VERSION }}"' $HELM_CHART_PATH/values.yaml
           yq --inplace '.version = "${{ env.ARTIFACT_VERSION }}"' $HELM_CHART_PATH/Chart.yaml
-
       - name: Helm Lint
         run: helm lint $HELM_CHART_PATH
 
