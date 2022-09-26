@@ -63,7 +63,9 @@
     Conditions.fromConditionHistories = function (conditionsHistories) {
         return _.map(conditionsHistories, function (conditionsHistory) {
             var conditions = conditionsHistory.conditions;
-            return new Condition(_.last(_.sortBy(_.reject(conditions, 'endDate'), 'onSetDate')));
+            return new Condition(_.last(_.sortBy(_.reject(conditions, function (condition) {
+                return condition.voided === true;
+            }))), 'onSetDate');
         });
     };
 

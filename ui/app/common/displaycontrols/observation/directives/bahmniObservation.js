@@ -26,6 +26,8 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                     if ($scope.config.persistOrderOfConcepts) {
                         $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().persistOrderOfConceptNames(observations);
+                    } else if ($scope.config.persistOrderOfObsDateTime) {
+                        $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByObservationDateTime(observations);
                     } else {
                         $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(observations);
                     }

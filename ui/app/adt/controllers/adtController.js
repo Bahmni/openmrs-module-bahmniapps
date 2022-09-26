@@ -75,7 +75,7 @@ angular.module('bahmni.adt')
 
             var filterAction = function (actions, actionTypes) {
                 return _.filter(actions, function (action) {
-                    return actionTypes.indexOf(action.name.name) >= 0;
+                    return actionTypes.indexOf(action.mappings[0].display.split(':')[1].trim()) >= 0;
                 });
             };
 
@@ -84,11 +84,11 @@ angular.module('bahmni.adt')
                 var stopDate = visitSummary && visitSummary.stopDateTime;
                 var isVisitOpen = (stopDate === null);
                 if (visitSummary && visitSummary.isDischarged() && isVisitOpen) {
-                    return filterAction(actions, ["Undo Discharge"]);
+                    return filterAction(actions, ["UNDO_DISCHARGE"]);
                 } else if (visitSummary && visitSummary.isAdmitted() && isVisitOpen) {
-                    return filterAction(actions, ["Transfer Patient", "Discharge Patient"]);
+                    return filterAction(actions, ["TRANSFER", "DISCHARGE"]);
                 } else {
-                    return filterAction(actions, ["Admit Patient"]);
+                    return filterAction(actions, ["ADMIT"]);
                 }
             };
 

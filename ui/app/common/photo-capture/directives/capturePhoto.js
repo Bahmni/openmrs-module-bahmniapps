@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.photoCapture')
-    .directive('capturePhoto', ['$parse', '$window', function factory ($parse, $window) {
+    .directive('capturePhoto', ['appService', '$parse', '$window', '$translate', function factory (appService, $parse, $window, $translate) {
         var link = function (scope, iElement, iAttrs) {
             var captureDialogElement = iElement.find(".photoCaptureDialog"),
                 captureVideo = captureDialogElement.find("video")[0],
@@ -15,8 +15,11 @@ angular.module('bahmni.common.photoCapture')
                 uploadConfirmImageButton = uploadDialogElement.find(".confirmImage"),
                 uploadField = iElement.find(".fileUpload")[0],
                 dialogOpen = false,
-                pixelRatio = window.devicePixelRatio;
-
+                pixelRatio = window.devicePixelRatio,
+                imageUploadSize = appService.getAppDescriptor().getConfigValue("imageUploadSize") || Bahmni.Common.Constants.defaultImageUploadSize;
+            if (imageUploadSize > Bahmni.Common.Constants.maxImageUploadSize) {
+                imageUploadSize = Bahmni.Common.Constants.maxImageUploadSize;
+            }
             captureContext.scale(pixelRatio, pixelRatio);
             uploadContext.scale(pixelRatio, pixelRatio);
 
@@ -70,13 +73,13 @@ angular.module('bahmni.common.photoCapture')
                 var navigatorUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
                 if (navigator.mediaDevices) {
                     navigator.mediaDevices.getUserMedia({video: true, audio: false})
-                    .then(function (localMediaStream) {
-                        captureVideo.srcObject = localMediaStream;
-                        captureActiveStream = localMediaStream;
-                        captureDialogElement.dialog('open');
-                    }).catch(function (e) {
-                        alert("Could not get access to web camera. Please allow access to web camera");
-                    });
+                        .then(function (localMediaStream) {
+                            captureVideo.srcObject = localMediaStream;
+                            captureActiveStream = localMediaStream;
+                            captureDialogElement.dialog('open');
+                        }).catch(function (e) {
+                            alert("Could not get access to web camera. Please allow access to web camera");
+                        });
                 } else if (navigatorUserMedia) {
                     navigatorUserMedia(
                         {video: true, audio: false},
@@ -104,7 +107,8 @@ angular.module('bahmni.common.photoCapture')
                 captureConfirmImageButton.focus();
             };
 
-            captureDialogElement.dialog({autoOpen: false, height: 300, width: 500, modal: true,
+            captureDialogElement.dialog({
+                autoOpen: false, height: 300, width: 500, modal: true,
                 close: function () {
                     dialogOpen = false;
                     if (captureActiveStream) {
@@ -130,7 +134,20 @@ angular.module('bahmni.common.photoCapture')
             };
 
             scope.uploadImage = function () {
-                if (this.files && this.files[0]) {
+                if (this.files && this.files[0] && this.files[0].type) {
+                    var fileType = this.files[0].type;
+                    if (!fileType.startsWith('image/')) {
+                        uploadConfirmImageButton.prop('disabled', true);
+                        alert($translate.instant("FILE_UPLOAD_MUST_BE_IMAGE"));
+                        return;
+                    }
+                } else {
+                    uploadConfirmImageButton.prop('disabled', true);
+                    alert($translate.instant("FILE_UPLOAD_MUST_BE_IMAGE"));
+                    uploadContext.clearRect(0, 0, uploadCanvas.width, uploadCanvas.height);
+                    return;
+                }
+                if (this.files[0] && this.files[0].size <= imageUploadSize) {
                     var fileReader = new FileReader();
                     fileReader.onload = function (e) {
                         var image = new Image();
@@ -140,12 +157,25 @@ angular.module('bahmni.common.photoCapture')
                         image.src = e.target.result;
                     };
                     fileReader.readAsDataURL(this.files[0]);
+                    uploadConfirmImageButton.prop('disabled', false);
+                    uploadConfirmImageButton.focus();
+                } else {
+                    uploadConfirmImageButton.prop('disabled', true);
+                    var imageUploadSizeInKb = imageUploadSize / 1000;
+                    var displayMessage = '';
+                    if (imageUploadSizeInKb >= 1000) {
+                        displayMessage = Math.floor(imageUploadSizeInKb / 1000) + "MB";
+                    } else {
+                        displayMessage = Math.floor(imageUploadSizeInKb) + "KB";
+                    }
+                    alert($translate.instant("FILE_UPLOAD_MUST_BE_LESS_THAN") + ' ' + displayMessage);
+                    uploadField.value = "";
+                    uploadContext.clearRect(0, 0, uploadCanvas.width, uploadCanvas.height);
                 }
-                uploadConfirmImageButton.prop('disabled', false);
-                uploadConfirmImageButton.focus();
             };
 
-            uploadDialogElement.dialog({autoOpen: false, height: 350, width: 350, modal: true,
+            uploadDialogElement.dialog({
+                autoOpen: false, height: 350, width: 350, modal: true,
                 close: function () {
                     dialogOpen = false;
                 }

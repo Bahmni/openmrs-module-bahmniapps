@@ -656,15 +656,15 @@ backo2@1.0.2:
   integrity sha1-MasayLEpNjRj41s+u2n038+6eUc=
 
 bahmni-form-controls@^0.93.4:
-  version "0.93.6"
-  resolved "https://registry.yarnpkg.com/bahmni-form-controls/-/bahmni-form-controls-0.93.6.tgz#9b98e95765aa89267346487893e98afe7a80ade8"
-  integrity sha512-wSZAm/Vakbs3NPrHEWjm+nj6aqzY+i6Lw/j5H/YimhjdHVHscskN8q66pgftJOcR1uCHEg75CaO48AwvuHA8cQ==
+  version "0.93.9"
+  resolved "https://registry.yarnpkg.com/bahmni-form-controls/-/bahmni-form-controls-0.93.9.tgz#a931109094e5bec05f578fabf292eeed63817893"
+  integrity sha512-dV8P1SJRMiBpIEfvvSlkSNyo4rz0uaStjHxkvY6/zlVfeyaulL/F8/kCZtL3zcGe0p1q4JpFiZNQFSLe3P6yxw==
   dependencies:
     base64-inline-loader "^1.1.0"
     classnames "^2.2.5"
     enzyme-adapter-react-16 "^1.1.0"
     immutable "3.8.1"
-    lodash "^4.17.4"
+    lodash "4.17.12"
     prop-types "^15.6.2"
     react-intl "^3.12.0"
     react-select "^1.0.0-rc.2"
@@ -4208,12 +4208,17 @@ lodash.clonedeep@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
+lodash@4.17.12:
+  version "4.17.12"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.12.tgz#a712c74fdc31f7ecb20fe44f157d802d208097ef"
+  integrity sha512-+CiwtLnsJhX03p20mwXuvhoebatoh5B3tt+VvYlrPgZC1g36y+RRbkufX95Xa+X4I59aWEacDFYwnJZiyBh9gA==
+
 lodash@^3.10.1, lodash@^3.6.0:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
 
-lodash@^4.0.0, lodash@^4.17.0, lodash@^4.17.10, lodash@^4.17.14, lodash@^4.17.4, lodash@^4.3.0, lodash@^4.5.0, lodash@~4.17.10, lodash@~4.17.19, lodash@~4.17.21:
+lodash@^4.0.0, lodash@^4.17.0, lodash@^4.17.10, lodash@^4.17.14, lodash@^4.3.0, lodash@^4.5.0, lodash@~4.17.10, lodash@~4.17.19, lodash@~4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==

@@ -18,7 +18,11 @@ Bahmni.Registration.Constants = {
     newPatient: "/bahmni/registration/index.html#/patient/new",
     allAddressFileds: ["uuid", "preferred", "address1", "address2", "address3", "address4", "address5", "address6", "cityVillage", "countyDistrict", "stateProvince", "postalCode", "country", "latitude", "longitude"],
     nextStepConfigId: "org.bahmni.registration.patient.next",
-    patientNameDisplayOrder: ["firstName", "middleName", "lastName"]
+    patientNameDisplayOrder: ["firstName", "middleName", "lastName"],
+    whatsAppMessage: "REGISTRATION_WHATSAPP_MESSAGE",
+    enableWhatsAppButton: false,
+    enableDashboardRedirect: false,
+    dashboardUrl: "/bahmni/clinical/index.html#/default/patient/{{patientUuid}}/dashboard"
 };
 
 Bahmni.Registration.Constants.Errors = {

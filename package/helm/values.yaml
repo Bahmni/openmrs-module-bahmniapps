@@ -1,3 +1,8 @@
+global:
+  nodeSelector: {}
+  affinity: {}
+  tolerations: {}
+
 replicaCount: 1
 
 metadata:
@@ -19,3 +24,7 @@ autoscaling:
   #  maxReplicas: 5
   #  targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+affinity: {}
+tolerations: {}

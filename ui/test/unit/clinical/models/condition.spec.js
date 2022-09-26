@@ -181,7 +181,7 @@ describe("condition", function () {
     });
 
     describe("fromConditionHistories", function () {
-        it("should consider only condition without endDate", function () {
+        it("should consider only condition which is not voided", function () {
             var conditionHistory = {};
             conditionHistory.conditions = [
                 {
@@ -189,14 +189,14 @@ describe("condition", function () {
                     concept: {uuid: "Headache UUID"},
                     status: 'ACTIVE',
                     onSetDate: DateUtil.parse('2015-01-01'),
-                    endDate: DateUtil.parse('2016-01-01')
+                    voided: true
                 },
                 {
                     uuid: '002',
                     concept: {uuid: "Headache UUID"},
                     status: 'HISTORY_OF',
                     onSetDate: DateUtil.parse('2016-01-01'),
-                    endDate: DateUtil.parse('2017-01-01')
+                    voided: true
                 },
                 {
                     uuid: '003',

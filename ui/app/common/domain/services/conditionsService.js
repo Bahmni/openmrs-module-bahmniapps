@@ -3,7 +3,10 @@
 angular.module('bahmni.common.domain')
     .service('conditionsService', ['$http', function ($http) {
         this.save = function (conditions, patientUuid) {
-            var body = _.map(conditions, function (condition) {
+            var conditionsToBeSaved = _.reject(conditions, function (condition) {
+                return condition.onSetDate === null || Number.isInteger(condition.onSetDate);
+            });
+            var body = _.map(conditionsToBeSaved, function (condition) {
                 return {
                     uuid: condition.uuid,
                     patientUuid: patientUuid,

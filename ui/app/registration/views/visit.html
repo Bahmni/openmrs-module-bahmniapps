@@ -52,6 +52,7 @@
                     <div class="right">
                         <button ng-click="back()" accesskey="{{ ::'REGISTRATION_BACK_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_BACK' | translate"></button>
                         <button single-click="submit()" class="confirm" accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
+                        <button single-click="setDashboardRedirect()" class="confirm" style="margin-right: 0px;" ng-show="::enableDashboardRedirect" ng-bind-html="::'REGISTRATION_TO_CLINICAL' | translate"></button>
                     </div>
                 </div>
             </form>

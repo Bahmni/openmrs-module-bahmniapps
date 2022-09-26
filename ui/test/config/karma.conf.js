@@ -69,7 +69,6 @@ module.exports = function (config) {
             'app/ot/**/*.js',
             'app/reports/**/*.js',
             'app/registration/**/*.js',
-            'app/appointments/**/*.js',
             'test/support/**/*.js',
             'test/unit/**/*.js',
             "test/unit/common/util/dateTimeFormatter.spec.js"
@@ -93,7 +92,6 @@ module.exports = function (config) {
             'app/registration/**/*.js': ['coverage'],
             'app/reports/**/*.js': ['coverage'],
             'app/bedmanagement/**/*.js': ['coverage'],
-            'app/appointments/**/*.js': ['coverage'],
             'app/ot/**/*.js': ['coverage'],
             'app/common/displaycontrols/**/views/*.html':['ng-html2js'],
             'app/common/concept-set/views/*.html':['ng-html2js'],
