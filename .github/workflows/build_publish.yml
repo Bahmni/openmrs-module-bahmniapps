@@ -1,11 +1,9 @@
 name: Build and Publish
 on:
   push:
-    branches: [master]
+    branches: [master, BAH-2292]
     paths-ignore:
       - "**.md"
-  repository_dispatch:
-    types: ["default-config-trigger"]
 
 jobs:
   get-version:
@@ -54,10 +52,8 @@ jobs:
       - run: npm install --global yarn
       - name: Package
         run: cd ui && yarn cache clean && /bin/bash ./scripts/package.sh
-      - name: Download default_config.zip
-        run: sh .github/download_artifact.sh default-config default_config ${{secrets.BAHMNI_PAT}}
       - name: Login to DockerHub
-        uses: docker/login-action@v1 
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
@@ -67,7 +63,7 @@ jobs:
           context: .
           file: package/docker/Dockerfile
           push: true
-          tags: bahmni/bahmni-web:${{ env.ARTIFACT_VERSION }},bahmni/bahmni-web:latest
+          tags: bahmni/bahmni-web:${{ env.ARTIFACT_VERSION }}
 
   helm-package-publish:
     name: Helm Package & Publish
