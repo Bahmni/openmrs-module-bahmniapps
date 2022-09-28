@@ -53,7 +53,7 @@ spec:
           image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           resources: {}
           volumeMounts:
-            - mountPath: /etc/bahmni_config
+            - mountPath: /usr/local/apache2/htdocs/bahmni_config
               name: bahmni-config
       restartPolicy: Always
       volumes:
