@@ -9,6 +9,9 @@
             }"/>
             <a href="{{'/document_images/' + observation.value}}" download ng-if="observation.isVideoConcept()" class="button btn fr btn-download"><i class="fa fa-download" aria-hidden="true"></i></a>
         </span>
+        <span ng-if="observation.groupMembers.length > 1 && observation.formNamespace != null && observation.groupMembers[0].concept.conceptClass != 'Image'" class="testUnderPanel left">
+            <label>{{::(observation.getDisplayValue())}}</label>
+        </span>
         <span ng-if="observation.groupMembers.length==0 && !configIsObservationForImages" class="testUnderPanel left">
             <label>{{::(observation.concept.shortName || observation.concept.name)}}</label>
             <hint concept-details="::{
@@ -66,14 +69,14 @@
         </div>
     </div>
     <div>
-        <ul ng-if="::(!observation.isFormElement() && !print)" class="hidden-print">
+        <ul ng-if="::(!observation.isFormElement() && !print && !observation.isConceptClassConceptDetails())" class="hidden-print">
             <show-observation  show-details-button="::showDetailsButton" ng-if="::!observation.isFormElement()" ng-repeat="member in observation.groupMembers"
                           observation="::member" patient="::patient" show-date="::showDate" show-time="::showTime"
                           config-is-observation-for-images="::configIsObservationForImages"
                           ng-class="{'video-concept-show': member.isVideoConcept()}"></show-observation>
         </ul>
     </div>
-    <ul ng-if="::(!observation.isFormElement() && print)" class="visible-print">
+    <ul ng-if="::(!observation.isFormElement() && print && !observation.isConceptClassConceptDetails())" class="visible-print">
         <show-observation show-details-button="showDetailsButton" ng-if="::!observation.isFormElement()" ng-repeat="member in observation.groupMembers"
                           observation="::member" patient="::patient" show-date="::showDate" show-time="::showTime"
                           config-is-observation-for-images="::configIsObservationForImages"></show-observation>
