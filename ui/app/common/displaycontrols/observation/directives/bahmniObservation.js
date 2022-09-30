@@ -50,7 +50,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     });
 
                     if (formObservations.length > 0) {
-                        formRecordTreeBuildService.build($scope.bahmniObservations, $scope.hasNoHierarchy);
+                        formRecordTreeBuildService.build($scope.bahmniObservations);
                     }
                 };
 
