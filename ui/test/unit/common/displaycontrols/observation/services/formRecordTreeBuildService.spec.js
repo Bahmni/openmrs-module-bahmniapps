@@ -3357,10 +3357,9 @@ describe("FormRecordTreeBuildService", function () {
         formDetailDeferred.resolve(formDetails);
         $scope.$apply();
 
-        expect(observations[0].value.length).toBe(2);
-
-        const observationOne = observations[0].value[0];
-        const observationTwo = observations[0].value[1];
+        expect(observations[0].value[0].groupMembers.length, 2);
+        const observationOne = observations[0].value[0].groupMembers[0];
+        const observationTwo = observations[0].value[0].groupMembers[1];
 
         expect(observationOne.concept.shortName).toBe("MD, Medical History");
         expect(observationOne.formFieldPath).toBe("CodedForm.1/5-0");
