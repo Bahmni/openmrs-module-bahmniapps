@@ -40,6 +40,10 @@ Bahmni.Common.Obs.Observation = (function () {
             return this.isComplexConcept() && this.getComplexDataType() === "Provider";
         },
 
+        isConceptClassConceptDetails: function () {
+            return this.concept.conceptClass === "Concept Details";
+        },
+
         getDisplayValue: function () {
             var value;
             if (this.type === "Boolean" || this.concept && this.concept.dataType === "Boolean") {
@@ -65,6 +69,10 @@ Bahmni.Common.Obs.Observation = (function () {
 
             if (this.isProviderRef()) {
                 return this.complexData.display;
+            }
+
+            if (this.groupMembers.length > 1 && this.formNamespace != null) {
+                return this.groupMembers[0].value.name + " " + "since" + " " + this.groupMembers[1].value + " " + this.groupMembers[2].value.name;
             }
 
             value = this.value;
