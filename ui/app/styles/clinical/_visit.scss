@@ -10,6 +10,21 @@
           font-size: 14px;
         }
     }
+    .hierarchy ul li ul li.has-child{
+        font-family:OpenSansSemiBold;
+        background:$lightestGray;
+        ul li {
+            font-family:OpenSans;
+            background: #fff;
+            &.has-child {
+                font-family:OpenSans;
+                background: #fff;
+            }
+            ul li .tree-list-item .testUnderPanel {
+                width:34.4% !important
+            }
+        }
+    }
 }
 
 .opd-wrapper {overflow-x: hidden;}

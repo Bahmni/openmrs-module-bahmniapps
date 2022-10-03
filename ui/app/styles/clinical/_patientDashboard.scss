@@ -1223,19 +1223,3 @@ h2.section-title.section-title-pivot{
   width: 60px;
   height: 1pt;
 }
-
-.hierarchy ul li ul li.has-child{
-  font-family:OpenSansSemiBold;
-  background:$lightestGray;
-  ul li{
-    font-family:OpenSans;
-    background: #fff;
-    &.has-child{
-      font-family:OpenSans;
-      background: #fff;
-    }
-    ul li .tree-list-item .testUnderPanel{
-      width:34.4% !important
-    }
-  }
-}

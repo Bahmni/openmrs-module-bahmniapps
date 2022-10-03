@@ -3,20 +3,19 @@
 angular.module('bahmni.common.displaycontrol.observation')
     .service('formRecordTreeBuildService', ['formService', '$window', function (formService, $window) {
         var self = this;
-        self.formBuildFroms = [];
+        self.formBuildForms = [];
         self.build = function (bahmniObservations, hasNoHierarchy) {
             _.forEach(bahmniObservations, function (obs) {
                 obs.value = self.preProcessMultiSelectObs(obs.value);
             });
 
-            if (!hasNoHierarchy) {
-                formService.getAllForms().then(function (response) {
-                    var formBuildFroms = response.data;
-                    // This block builds hierarchy for the passed bahmniObservations
-                    var obs = self.createObsGroupForForm(bahmniObservations, formBuildFroms);
-                    updateObservationsWithFormDefinition(obs, formBuildFroms);
-                });
-            }
+            formService.getAllForms().then(function (response) {
+                var formBuildForms = response.data;
+                var obs = self.createObsGroupForForm(bahmniObservations, formBuildForms);
+                if (!hasNoHierarchy) {
+                    updateObservationsWithFormDefinition(obs, formBuildForms);
+                }
+            });
         };
 
         self.createMultiSelectObservation = function (observations) {
@@ -48,7 +47,7 @@ angular.module('bahmni.common.displaycontrol.observation')
             return value;
         };
 
-        self.createObsGroupForForm = function (observations, formBuilderFroms) {
+        self.createObsGroupForForm = function (observations, formBuilderForms) {
             _.forEach(observations, function (obs) {
                 var newValues = [];
                 _.forEach(obs.value, function (value) {
@@ -66,7 +65,7 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                     };
                     var formName = value.formFieldPath.split('.')[0];
-                    var formBuilderForm = formBuilderFroms.find(function (form) { return form.name ===
+                    var formBuilderForm = formBuilderForms.find(function (form) { return form.name ===
                         formName; });
                     obsGroup.concept.shortName = formName;
                     var locale = localStorage.getItem("NG_TRANSLATE_LANG_KEY") || "en";
@@ -100,8 +99,8 @@ angular.module('bahmni.common.displaycontrol.observation')
             return observations;
         };
 
-        var updateObservationsWithFormDefinition = function (observations, formBuildFroms) {
-            var allForms = formBuildFroms;
+        var updateObservationsWithFormDefinition = function (observations, formBuildForms) {
+            var allForms = formBuildForms;
             _.forEach(observations, function (observation) {
                 var forms = [];
                 _.forEach(observation.value, function (form) {
