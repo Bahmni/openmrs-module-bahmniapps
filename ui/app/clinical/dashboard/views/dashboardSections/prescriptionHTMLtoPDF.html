@@ -1,0 +1,72 @@
+<html>
+<head>
+    <style type="text/css">
+         .allButFooter {
+             min-height: calc(100vh - 250px);
+         }
+    </style>
+</head>
+    <body>
+        <div id="prescription-pdf">
+            <div class="allButFooter">
+            <table style="width: 100%;">
+                <tr>
+                    <td  style="width: 50%;">
+                        <img width="200px" style="margin-left: 20px;" height="80px" src="../images/bahmniLogoFull.png" >
+                    </td>
+                    <td style="text-align: left;width: 50%;">
+                        <i class="fa fa-map-marker"></i>  &nbsp;&nbsp;Near IPLit Demo hospital Road,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  IPLit Demo Address <br><i class="fa fa-envelope"></i>  connect@iplitdemo.in | <i class="fa fa-globe"></i> www.iplitdemo.in <br><i class="fa fa-phone"></i>  &nbsp;+918369682321
+                    </td>
+                </tr>
+            </table>
+            <div class="patient-info">
+                <table border="1">
+                    <tr>
+                        <td>Name: <span class="value">{{patient.name}}</span></td>
+                        <td>Age / Sex: <span class="value">{{patient.birthdate | dateToAge:visit.dateStarted}} / {{patient.gender}}</span>
+                        </td>
+                        <td>Registration No. <span class="value">{{patient.identifier}}</span></td>
+                    </tr>
+                    <tr>
+                        <td>Village / Town: <span class="value">{{patient.address.cityVillage}}</span></td>
+                        <td>P.O. <span class="value">{{patient.address.address2}}</span></td>
+                        <td>District: <span class="value">{{patient.address.countyDistrict}}</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Visit Date: <span class="value">{{visitDate | bahmniDate}}</span></td>
+                        <td>Doctor Name: <span class="value">Doctor Neha</span></td>
+                    </tr>
+                </table>
+            </div>
+            <div class-="prescription-info" ng-if="treatmentSections.length > 0">
+                <h2 class="section-title">
+                    <span class="title-link">Prescriptions {{treatmentSections}}</span>
+                </h2>
+                <table ng-repeat="drugOrderSection in ::treatmentSections | orderBy: drugOrderSection.visitDate">
+                    <tbody>
+                    <tr ng-repeat="drugOrder in ::drugOrderSection.drugOrders | orderBy: '::effectiveStartDate'"
+                        ng-if="::drugOrderSection.drugOrders.length > 0">
+                        <td style="width:30%">
+                            <span>{{::drugOrder.getDrugOrderName((params.showDrugForm == true))}}</span>
+                            <span ng-repeat="orderAttribute in drugOrder.orderAttributes" ng-if="::orderAttribute.value == 'true'" ng-class="'drug-attr-highlight'">
+                                    {{::orderAttribute.name.substring(0,1)}}
+                                </span>
+                        </td>
+                        <td style="width:50%">
+                            <span ng-if="::(params.showRoute == true)" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutDuration()}}</span>
+                            <span ng-if="::!(params.showRoute == true)" ng-class="::{'strike-text':drugOrder.isDiscontinuedOrStopped()}">{{::drugOrder.getDescriptionWithoutRouteAndDuration()}}</span>
+                            <span class="test-notes" ng-if="::drugOrder.additionalInstructions">
+                                    <span><i>({{::drugOrder.additionalInstructions}})</i></span>
+                                </span>
+                        </td>
+                        <td style="text-align: left;width:20%">
+                            <span>{{::drugOrder.getSpanDetails().slice(2)}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+    </body>
+</html>

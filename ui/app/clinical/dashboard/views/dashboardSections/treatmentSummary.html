@@ -12,6 +12,13 @@
 	<h6>{{'TREATMENTS_SUMMARY_PRESCRIPTION_KEY' | translate}}</h6>
     <div class="concept-set-container">
          <treatment-data id="treatment-summary" params="expandedViewConfig" patientUuid="patient.uuid"></treatment-data>
-
     </div>
+    <div class="concept-set-container">
+        <div class="prescription-content">
+            <ng-include src="'dashboard/views/dashboardSections/prescriptionHTMLtoPDF.html'"/>
+        </div>
+        <button ng-click="export()">Send Email</button>
+    </div>
+
 </div>
+
