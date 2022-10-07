@@ -16,12 +16,12 @@ angular.module('bahmni.clinical')
             console.log('treatmentService - ', treatmentService.getActiveDrugOrders($scope.patient.uuid, $stateParams.dateEnrolled, $stateParams.dateCompleted));
             $scope.dashboardConfig = {};
             $scope.expandedViewConfig = {};
-            $scope.enableSendEmailButton = false;
+            $scope.enableSendEmailButton = true;
             console.log('$scope.enableSendEmailButton value is..... - ', $scope.enableSendEmailButton);
             console.log("Inside controller on load enableSendEmailButton value is ..", $scope.enableSendEmailButton);
             if ($scope.patient.email != undefined) {
                 console.log("inside email check..", $scope.patient.email.value);
-                $scope.enableSendEmailButton = true;
+                $scope.enableSendEmailButton = false;
             }
 
             // $scope.drugOrdersSection = drugOrdersSection;
@@ -91,20 +91,30 @@ angular.module('bahmni.clinical')
 
             $scope.$on("$destroy", cleanUpListener);
 
-            $scope.export = function () {
-                // appService.getAppDescriptor().getConfigValue("enableSendEmailButton");
-                console.log("11111 - inside export");
-                fetchMedicines();
-                html2canvas(document.getElementById('prescription-pdf'), {
+            $scope.convertHTMLToPDF = function (tagIdName, fileName) {
+                html2canvas(document.getElementById(tagIdName), {
                     onrendered: function (canvas) {
                         var data = canvas.toDataURL();
                         var docDefinition = {
                             content: [{ image: data, width: 500 }]
                         };
-                        var document = pdfMake.createPdf(docDefinition).download('prescription.pdf');
+                        var document = pdfMake.createPdf(docDefinition).download(fileName); //getStream()
                         console.log('document ', document);
+                        return document;
                     }
                 });
             };
-            console.log('Exported - ', $scope.export);
+
+            $scope.export = function () {
+                // appService.getAppDescriptor().getConfigValue("enableSendEmailButton");
+                console.log("11111 - inside export");
+                fetchMedicines();
+                var attachment = $scope.convertHTMLToPDF('prescription-pdf', 'prescription.pdf');
+                var toMail = "deepthi.mantena@thoughtworks.com";
+                var subject = "Prescription";
+                var cc = "";
+                var subject = "Please find attachments";
+                var url = "https://mail.google.com/mail/?view=cm&fs=1&to=" + toMail + "&su=" + subject + "&body=" + subject + "&bcc=" + cc;
+                window.open(url);
+            };
         }]);

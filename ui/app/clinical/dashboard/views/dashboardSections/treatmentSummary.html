@@ -11,18 +11,7 @@
 <div class="template-container">
 	<h6>{{'TREATMENTS_SUMMARY_PRESCRIPTION_KEY' | translate}}</h6>
     <div class="concept-set-container">
-         <treatment-data id="treatment-summary" params="expandedViewConfig" patientUuid="patient.uuid"></treatment-data>
+        <treatment-data id="treatment-summary" params="expandedViewConfig" patientUuid="patient.uuid"></treatment-data>
+        <button type="submit" class="right submit-btn" ng-click="export()" ng-disabled="enableSendEmailButton">Send Email</button>
     </div>
-    <div class="concept-set-container">
-        <div class="prescription-content">
-            <ng-include src="'dashboard/views/dashboardSections/prescriptionHTMLtoPDF.html'"/>
-        </div>
-       <span>
-        <button type="submit" class="right submit-btn" ng-click="export()" ng-show="enableSendEmailButton">Send Email</button>
-       </span>
-
-    </span>
-    </div>
-
 </div>
-
