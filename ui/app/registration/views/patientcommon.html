@@ -170,9 +170,15 @@
                                    non-blank="identifier.identifierType.required && !identifier.hasIdentifierSources()"
                                    pattern-validate ng-change="identifier.generate()"
                                    ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-2">
-                            <button class="verify-health-id-btn" ng-show="showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)" type="button"
-                                    ng-click="openIdentifierPopup(identifier.identifierType.name)">{{:: getDisplayName(identifier.identifierType.name)}}
-                            </button>
+                                <div class="verify-health-id-btn" ng-show="showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)">
+                                    <button type="button"
+                                        ng-click="openIdentifierPopup(identifier.identifierType.name)">{{:: getDisplayName(identifier.identifierType.name)}}
+                                    </button>
+
+                                    <button ng-repeat="extButton in extensionButtons" type="button"
+                                        ng-click="openIdentifierPopup(extButton.id)">{{:: extButton.display}}
+                                    </button>
+                                </div>
                         </div>
                     </article>
                 </div>
@@ -199,9 +205,15 @@
                                    ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
                                    ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()"
                                    ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
-                            <button class="verify-health-id-btn" ng-show="showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)" type="button"
-                                    ng-click="openIdentifierPopup(identifier.identifierType.name)">{{:: getDisplayName(identifier.identifierType.name)}}
-                            </button>
+                                <div class="verify-health-id-btn" ng-show="showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)">
+                                    <button type="button"
+                                        ng-click="openIdentifierPopup(identifier.identifierType.name)">{{:: getDisplayName(identifier.identifierType.name)}}
+                                    </button>
+
+                                    <button ng-repeat="extButton in extensionButtons" type="button"
+                                        ng-click="openIdentifierPopup(extButton.id)">{{:: extButton.display}}
+                                    </button>
+                                </div>
                         </div>
 
                         <div class="field-value field-value-has-identifier"  ng-show="::identifier.hasIdentifierSources()">
@@ -229,7 +241,7 @@
             <div class="identifier-ui"  ng-hide="!showExtIframe">
                 <div class="identifier-iframe">
                     <span class="close" ng-click="closeIdentifierPopup()">&times;</span>
-                    <iframe name="identifier-verification" id="identifier-popup" height="95%" width="100%"></iframe>
+                    <iframe id="ndhm-popup" height="95%" width="100%"></iframe>
                 </div>
             </div>
         </section>

@@ -23,10 +23,25 @@ angular.module('bahmni.registration')
             $scope.showExtIframe = false;
             var identifierExtnMap = new Map();
             $scope.attributesToBeDisabled = [];
+            $scope.extensionButtons = $scope.regExtPoints[0].extensionButtons;
+
+            function isExtButtonDefined (id) {
+                for (var i = 0; i < $scope.extensionButtons.length; i++) {
+                    if ($scope.extensionButtons[i].id === id) {
+                        return true;
+                    }
+                }
+                return false;
+            }
 
             $scope.openIdentifierPopup = function (identifierType) {
-                var iframe = $document[0].getElementById("identifier-popup");
-                iframe.src = getExtensionPoint(identifierType).src;
+                var iframe = $document[0].getElementById("ndhm-popup");
+                iframe.name = identifierType;
+                if (isExtButtonDefined(identifierType)) {
+                    iframe.src = $scope.regExtPoints[0].src;
+                } else {
+                    iframe.src = getExtensionPoint(identifierType).src;
+                }
                 $scope.showExtIframe = true;
                 $window.addEventListener("message", function (popupWindowData) {
                     if (popupWindowData.data.patient !== undefined) {
