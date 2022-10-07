@@ -4,12 +4,28 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardTreatmentController', ['$scope', '$stateParams', '$q', 'ngDialog', 'treatmentService', 'appService', 'treatmentConfig',
         function ($scope, $stateParams, $q, ngDialog, treatmentService, appService, treatmentConfig) {
             var treatmentConfigParams = $scope.dashboard.getSectionByType("treatment") || {};
+            console.log('treatmentConfigParams - ', treatmentConfigParams);
             var patientUuidparams = {"patientUuid": $scope.patient.uuid};
+            console.log('scope   value --- - ', $scope.patient);
+            console.log('email value --- - ', $scope.patient.email);
+            console.log("stateparams value-----", $stateParams);
+            // console.log('treatmentServicedetail--- - ', treatmentService.getActiveDrugOrders($scope.patient.uuid,$scope.patient.date,));
+            // $scope.visitTabConfig = visitConfig;
             console.log('$scope - ', $scope);
             console.log('$stateParams - ', $stateParams);
             console.log('treatmentService - ', treatmentService.getActiveDrugOrders($scope.patient.uuid, $stateParams.dateEnrolled, $stateParams.dateCompleted));
             $scope.dashboardConfig = {};
             $scope.expandedViewConfig = {};
+            $scope.enableSendEmailButton = false;
+            console.log('$scope.enableSendEmailButton value is..... - ', $scope.enableSendEmailButton);
+            console.log("Inside controller on load enableSendEmailButton value is ..", $scope.enableSendEmailButton);
+            if ($scope.patient.email != undefined) {
+                console.log("inside email check..", $scope.patient.email.value);
+                $scope.enableSendEmailButton = true;
+            }
+
+            // $scope.drugOrdersSection = drugOrdersSection;
+            // $drugOrder = drugOrder;
             $scope.treatmentSections = treatmentService.getActiveDrugOrders($scope.patient.uuid, $stateParams.dateEnrolled, $stateParams.dateCompleted);
             console.log('$scope.treatmentSections ', $scope.treatmentSections);
 
@@ -76,6 +92,7 @@ angular.module('bahmni.clinical')
             $scope.$on("$destroy", cleanUpListener);
 
             $scope.export = function () {
+                // appService.getAppDescriptor().getConfigValue("enableSendEmailButton");
                 console.log("11111 - inside export");
                 fetchMedicines();
                 html2canvas(document.getElementById('prescription-pdf'), {
