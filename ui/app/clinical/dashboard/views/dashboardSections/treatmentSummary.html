@@ -13,5 +13,7 @@
     <div class="concept-set-container">
         <treatment-data id="treatment-summary" params="expandedViewConfig" patientUuid="patient.uuid"></treatment-data>
         <button type="submit" class="right submit-btn" ng-click="export()" ng-disabled="enableSendEmailButton">Send Email</button>
+        <ng-include src="'dashboard/views/dashboardSections/prescriptionHTMLtoPDF.html'" ng-show="false"/>
+
     </div>
 </div>

@@ -92,13 +92,13 @@ angular.module('bahmni.clinical')
             $scope.$on("$destroy", cleanUpListener);
 
             $scope.convertHTMLToPDF = function (tagIdName, fileName) {
-                html2canvas(document.getElementById(tagIdName), {
+                html2canvas(document.getElementById(tagIdName), { //
                     onrendered: function (canvas) {
                         var data = canvas.toDataURL();
                         var docDefinition = {
                             content: [{ image: data, width: 500 }]
                         };
-                        var document = pdfMake.createPdf(docDefinition).download(fileName); //getStream()
+                        var document = pdfMake.createPdf(docDefinition).download(); // getStream()
                         console.log('document ', document);
                         return document;
                     }
@@ -110,11 +110,15 @@ angular.module('bahmni.clinical')
                 console.log("11111 - inside export");
                 fetchMedicines();
                 var attachment = $scope.convertHTMLToPDF('prescription-pdf', 'prescription.pdf');
-                var toMail = "deepthi.mantena@thoughtworks.com";
-                var subject = "Prescription";
-                var cc = "";
-                var subject = "Please find attachments";
-                var url = "https://mail.google.com/mail/?view=cm&fs=1&to=" + toMail + "&su=" + subject + "&body=" + subject + "&bcc=" + cc;
+                var emailPrescription = appService.getAppDescriptor().getConfigValue("emailPrescription");
+                console.log('emailPrescription', emailPrescription);
+                var to = $scope.patient.email ? ( $scope.patient.email.value ? $scope.patient.email.value : "") : "" ;
+                var subject = emailPrescription.subject;
+                var body = emailPrescription.body;
+                body = body.replace('#patientName', $scope.patient.name);
+                body = body.replace('#doctorName', $scope.patient.name); // need to fetch doctor name
+                console.log('emailPrescription body', body);
+                var url = "https://mail.google.com/mail/?view=cm&fs=1&to=" + to + "&su=" + subject + "&body=" + body;
                 window.open(url);
             };
         }]);
