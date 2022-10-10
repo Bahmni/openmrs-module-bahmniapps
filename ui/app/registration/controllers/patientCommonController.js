@@ -35,7 +35,7 @@ angular.module('bahmni.registration')
             }
 
             $scope.openIdentifierPopup = function (identifierType) {
-                var iframe = $document[0].getElementById("ndhm-popup");
+                var iframe = $document[0].getElementById("extension-popup");
                 iframe.name = identifierType;
                 if (isExtButtonDefined(identifierType)) {
                     iframe.src = $scope.regExtPoints[0].src;
