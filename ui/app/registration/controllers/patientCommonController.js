@@ -360,9 +360,6 @@ angular.module('bahmni.registration')
                     if ($scope.patient.extraIdentifiers !== undefined) {
                         setAttributesToBeDisabled();
                     }
-                    if ($rootScope.extenstionPatient !== undefined) {
-                        $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
-                    }
                 }
             });
 
