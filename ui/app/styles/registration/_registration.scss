@@ -120,11 +120,15 @@ body{
     }
   }
 }
-.verify-health-id-btn {
+.extension-btn {
   margin-left: 5px;
   margin-top: 2px;
+  display: inline;
   @media (max-width : 800px){
     margin-left: 10px;
+  }
+  button {
+    margin-right: 5px;
   }
 }
 .identifier-ui {
