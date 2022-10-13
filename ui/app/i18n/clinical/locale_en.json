@@ -56,6 +56,7 @@
 
     "TREATMENTS_SUMMARY_PRESCRIPTION_KEY": "Prescriptions",
     "INVESTIGATION_CHART_KEY": "Investigation Chart",
+    "LAB_ORDERS_KEY": "Lab Orders",
     "ALL_VISITS_KEY": "All Visits",
     "ALL_DIAGNOSES_KEY": "All Diagnoses",
     "ALL_KEY": "All",

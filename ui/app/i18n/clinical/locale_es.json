@@ -12,6 +12,7 @@
     "NO_SPECIMEN_RESULT_FOUND_MESSAGE": "No se encuentra resultado para esta muestra ",
     "NO_SPECIMEN_FOUND_MESSAGE": "Ningún espécimen encontrado",
     "NO_DATA_MESSAGE": "Sin detalle",
+    "LAB_ORDERS_KEY": "Órdenes de laboratorio",
     "NO_DRUG_DETAILS_MESSAGE": "No hay detalle del medicamento",
     "PROGRAM_MANAGEMENT_SELECT_PROGRAM_KEY": "Enrolamiento en nuevo tratamiento",
     "PROGRAM_MANAGEMENT_ACTIVE_PROGRAM_KEY": "Tratamientos activos",
