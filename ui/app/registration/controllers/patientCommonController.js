@@ -135,9 +135,11 @@ angular.module('bahmni.registration')
 
             function updatePatientAddress (address, addressMap) {
                 for (var key in addressMap) {
-                    if (key === "line") {
-                        $scope.patient.address[addressMap[key]] = address[key] !== null ? address[key].join(" ") : "";
-                    } else { $scope.patient.address[addressMap[key]] = address[key] !== null ? address[key] : ""; }
+                    if (address[key] !== null) {
+                        if (key === "line") {
+                            $scope.patient.address[addressMap[key]] = address[key].join(" ");
+                        } else { $scope.patient.address[addressMap[key]] = address[key]; }
+                    }
                 }
             }
 
@@ -374,6 +376,9 @@ angular.module('bahmni.registration')
                     executeShowOrHideRules();
                     if ($scope.patient.extraIdentifiers !== undefined) {
                         setAttributesToBeDisabled();
+                    }
+                    if ($rootScope.extenstionPatient !== undefined) {
+                        $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
                     }
                 }
             });
