@@ -25,10 +25,10 @@
                        'value-text-only': !(observation.concept.dataType ==='Text' && print)
                        }"
               ng-if="::(observation.isFormElement() && !observation.isImageConcept() && !observation.isVideoConcept())">
-            <pre class="left obs-label" title="{{::observation.getDisplayValue().substring(observation.getDisplayValue().lastIndexOf('__')+2) | titleTranslate}}"
-                ng-if="configIsObservationForImages && observation.getDisplayValue().lastIndexOf('__')>-1">{{::observation.getDisplayValue().substring(observation.getDisplayValue().lastIndexOf('__')+2) | titleTranslate}}</pre>
-            <pre class="left obs-label" title="{{::observation.getDisplayValue() | titleTranslate}}"
-                ng-if="configIsObservationForImages && observation.getDisplayValue().lastIndexOf('__')===-1">{{::observation.getDisplayValue() | titleTranslate}}</pre>
+            <span class="left obs-label-file" title="{{::observation.getDisplayValue().substring(observation.getDisplayValue().lastIndexOf('__')+2) | titleTranslate}}"
+                ng-if="configIsObservationForImages && observation.getDisplayValue().lastIndexOf('__')>-1">{{::observation.getDisplayValue().substring(observation.getDisplayValue().lastIndexOf('__')+2) | titleTranslate}}</span>
+            <span class="left obs-label-file" title="{{::observation.getDisplayValue() | titleTranslate}}"
+                ng-if="configIsObservationForImages && observation.getDisplayValue().lastIndexOf('__')===-1">{{::observation.getDisplayValue() | titleTranslate}}</span>
             <pre class="left" ng-if="!configIsObservationForImages">{{::observation.getDisplayValue() | titleTranslate}}</pre>
             <span class="label-add-on">{{::observation.concept.units}}</span>
         </span>
@@ -50,20 +50,18 @@
             <i class="fa fa-angle-up"></i>
         </button>
     </div>
-    <div ng-if="::observation.comment || observation.isImageConcept() " class="notes inline-comments" ng-class="::{'print-notes': observation.comment, 'image-notes': observation.isImageConcept()}">
+    <div ng-if="::observation.comment || observation.isImageConcept() " class="left notes inline-comments" ng-class="::{'print-notes': observation.comment, 'image-notes': observation.isImageConcept()}">
         <i class="fa fa-comments left"></i>
-        <pre ng-if="::observation.comment" class="left">{{::observation.comment}}</pre>
-        <div class="footer-note fr">
-                <span class="provider">
-                    <provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}"></provider-directive>
-                    <span ng-if="::observation.isFormElement()">{{::dateString(observation)}} </span>
-                </span>
-        </div>
+        <span ng-if="::observation.comment" class="left obs-label" title="{{observation.comment}}">{{::observation.comment}}</span>
+        <span class="left provider obs-label" style="padding-left:3px;clear:both;"
+            provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}" title="{{observation.creatorName}}">
+            <span ng-if="::observation.isFormElement()">{{::dateString(observation)}} </span>
+        </span>
     </div>
-    <div ng-if="observation.showDetails" class="notes inline-notes" ng-class="::{'print-notes': observation.showDetails}">
-        <div class="footer-note fr">
-            <span class="provider">
-                <provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}"></provider-directive>
+    <div ng-if="observation.showDetails" class="left notes inline-notes" ng-class="::{'print-notes': observation.showDetails}">
+        <div class="footer-note">
+            <span class="left provider obs-label" style="padding-left:3px;clear:both;"
+                provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}" title="{{observation.creatorName}}">
                 <span ng-if="::observation.isFormElement()">{{::dateString(observation)}}</span>
             </span>
         </div>
