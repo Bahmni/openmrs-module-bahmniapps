@@ -1,14 +1,19 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-.filter('age', function () {
+.filter('age', ['$filter', '$translate', function ($filter, $translate) {
     return function (age) {
+        var requiredAgeOfPatientToShowMoreDetails = 5;
         if (age.years) {
-            return age.years + " year" + (age.years > 1 ? "s" : "");
+            if (age.years < requiredAgeOfPatientToShowMoreDetails) {
+                return (age.years > 0 ? " " + age.years + " " + $translate.instant("CLINICAL_YEARS_TRANSLATION_KEY") : "") +
+                       (age.months > 0 ? " " + age.months + " " + $translate.instant("CLINICAL_MONTHS_TRANSLATION_KEY") : "");
+            }
+            return age.years + " " + $translate.instant("CLINICAL_YEARS_TRANSLATION_KEY");
         }
         if (age.months) {
-            return age.months + " month" + (age.months > 1 ? "s" : "");
+            return age.months + " " + $translate.instant("CLINICAL_MONTHS_TRANSLATION_KEY");
         }
-        return age.days + " day" + (age.days > 1 ? "s" : "");
+        return age.days + " " + $translate.instant("CLINICAL_DAYS_TRANSLATION_KEY");
     };
-});
+}]);
