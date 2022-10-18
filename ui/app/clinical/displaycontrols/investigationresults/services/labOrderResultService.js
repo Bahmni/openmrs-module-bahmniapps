@@ -9,7 +9,7 @@ angular.module('bahmni.clinical')
         var sanitizeData = function (labOrderResults) {
             labOrderResults.forEach(function (result) {
                 result.accessionDateTime = Bahmni.Common.Util.DateUtil.parse(result.accessionDateTime);
-                result.hasRange = result.minNormal && result.maxNormal;
+                result.hasRange = result.minNormal || result.maxNormal;
             });
         };
 

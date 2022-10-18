@@ -8,13 +8,13 @@
         <span ng-if="test.labReportUrl">
             <a class="uploaded-file"  href="{{test.labReportUrl}}" stop-event-propagation="click" target="_blank">{{test.preferredNameByLocale}}
                 <span bo-show="test.hasRange" class="range">
-                    <span bo-text="'(' + test.minNormal + ' - ' + test.maxNormal + ')'"></span>
+                    <span bo-text="getFormattedRange(test)"></span>
                 </span>
                  <span bo-show="test.testUnitOfMeasurement" class="range" bo-text="test.testUnitOfMeasurement"></span>
             </a>
         </span>
         <span bo-show="test.hasRange && !test.uploadedFileName" class="range">
-            <span bo-text="'(' + test.minNormal + ' - ' + test.maxNormal + ')'"></span>
+            <span bo-text="getFormattedRange(test)"></span>
         </span>
         <span bo-show="test.testUnitOfMeasurement" class="range" bo-text="test.testUnitOfMeasurement"></span>
     </td>
