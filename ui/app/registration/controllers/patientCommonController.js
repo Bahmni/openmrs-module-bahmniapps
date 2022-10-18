@@ -23,10 +23,25 @@ angular.module('bahmni.registration')
             $scope.showExtIframe = false;
             var identifierExtnMap = new Map();
             $scope.attributesToBeDisabled = [];
+            $scope.extensionButtons = $scope.regExtPoints[0].extensionButtons != null ? $scope.regExtPoints[0].extensionButtons : null;
+
+            function isExtButtonDefined (id) {
+                for (var i = 0; i < $scope.extensionButtons.length; i++) {
+                    if ($scope.extensionButtons[i].id === id) {
+                        return true;
+                    }
+                }
+                return false;
+            }
 
             $scope.openIdentifierPopup = function (identifierType) {
-                var iframe = $document[0].getElementById("identifier-popup");
-                iframe.src = getExtensionPoint(identifierType).src;
+                var iframe = $document[0].getElementById("extension-popup");
+                iframe.name = identifierType;
+                if (isExtButtonDefined(identifierType)) {
+                    iframe.src = $scope.regExtPoints[0].src;
+                } else {
+                    iframe.src = getExtensionPoint(identifierType).src;
+                }
                 $scope.showExtIframe = true;
                 $window.addEventListener("message", function (popupWindowData) {
                     if (popupWindowData.data.patient !== undefined) {
@@ -120,9 +135,11 @@ angular.module('bahmni.registration')
 
             function updatePatientAddress (address, addressMap) {
                 for (var key in addressMap) {
-                    if (key === "line") {
-                        $scope.patient.address[addressMap[key]] = address[key] !== null ? address[key].join(" ") : "";
-                    } else { $scope.patient.address[addressMap[key]] = address[key] !== null ? address[key] : ""; }
+                    if (address[key] !== null) {
+                        if (key === "line") {
+                            $scope.patient.address[addressMap[key]] = address[key].join(" ");
+                        } else { $scope.patient.address[addressMap[key]] = address[key]; }
+                    }
                 }
             }
 

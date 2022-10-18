@@ -1224,3 +1224,9 @@ h2.section-title.section-title-pivot{
   height: 1pt;
 }
 
+.adhoc-info-popup.ngdialog-theme-default {
+    .message {
+      word-break: break-all;
+    }
+}
+

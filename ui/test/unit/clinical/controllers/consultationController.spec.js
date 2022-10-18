@@ -4,7 +4,7 @@ describe("ConsultationController", function () {
     var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService,
         stateParams, appService, ngDialog, q, appDescriptor, controller, visitConfig, _window_, clinicalDashboardConfig,
         sessionService, conditionsService, encounterService, configurations, diagnosisService, messagingService, spinnerMock,
-        auditLogService,  confirmBox;
+        auditLogService,  confirmBox, virtualConsultService, adhocTeleconsultationService;
 
     var encounterData = {
         "bahmniDiagnoses": [],
@@ -144,7 +144,9 @@ describe("ConsultationController", function () {
             messagingService: messagingService,
             spinner: spinnerMock,
             auditLogService: auditLogService,
-            confirmBox: confirmBox
+            confirmBox: confirmBox,
+            virtualConsultService: virtualConsultService,
+            adhocTeleconsultationService: adhocTeleconsultationService
         });
     };
     var setUpServiceMocks = function () {
@@ -232,6 +234,8 @@ describe("ConsultationController", function () {
         encounterService.getEncounterType.and.returnValue(specUtil.simplePromise({}));
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         diagnosisService = jasmine.createSpyObj('diagnosisService', ['populateDiagnosisInformation']);
+        adhocTeleconsultationService = jasmine.createSpyObj('adhocTeleconsultationService', ['generateAdhocTeleconsultationLink']);
+        virtualConsultService = jasmine.createSpyObj('virtualConsultService', ['launchMeeting']);
         encounterService.create.and.returnValue(specUtil.createFakePromise(encounterData));
         encounterService.create.and.callFake(function () {
             var deferred = Q.defer();
@@ -779,6 +783,40 @@ describe("ConsultationController", function () {
                 expect(messagingService.showMessage).toHaveBeenCalledWith('error', '[ERROR]');
                 done();
             });
+        });
+    });
+
+    describe("startAdhocTeleconsultationLink", function ()  {
+        it("should get ad-hoc teleconsultation link", function () {
+            scope.patient = {
+                uuid: "patient-uuid"
+            };
+            rootScope.currentUser = {
+                username: "username"
+            };
+            scope.adhocTeleconsultationData = {
+                uuid:"GAN203006",
+                link:"https://meet.jit.si/GAN203006",
+                notificationResults:[
+                    {
+                        uuid:"",
+                        medium:"EMAIL",
+                        status:1,
+                        message:"Unable to send tele-consultation appointment information through EMAIL"}
+                ]
+            };
+            console.log(adhocTeleconsultationService)
+            adhocTeleconsultationService.generateAdhocTeleconsultationLink.and.returnValue(specUtil.createFakePromise(scope.adhocTeleconsultationData));
+            scope.startAdhocTeleconsultationLink();
+            expect(adhocTeleconsultationService.generateAdhocTeleconsultationLink).toHaveBeenCalled();
+            expect(adhocTeleconsultationService.generateAdhocTeleconsultationLink).toHaveBeenCalledWith({
+                patientUuid: scope.patient.uuid,
+                provider: rootScope.currentUser.username
+            });
+            expect(virtualConsultService.launchMeeting).toHaveBeenCalledWith(
+                scope.adhocTeleconsultationData.uuid,
+                scope.adhocTeleconsultationData.link);
+            expect(messagingService.showMessage).toHaveBeenCalled();
         });
     });
 
