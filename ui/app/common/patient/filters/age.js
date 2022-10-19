@@ -3,11 +3,11 @@
 angular.module('bahmni.common.patient')
 .filter('age', ['$filter', '$translate', function ($filter, $translate) {
     return function (age) {
-        var requiredAgeOfPatientToShowMoreDetails = 5;
+        var requiredAgeToShowCompletedYears = 5;
         if (age.years) {
-            if (age.years < requiredAgeOfPatientToShowMoreDetails) {
-                return (age.years > 0 ? " " + age.years + " " + $translate.instant("CLINICAL_YEARS_TRANSLATION_KEY") : "") +
-                       (age.months > 0 ? " " + age.months + " " + $translate.instant("CLINICAL_MONTHS_TRANSLATION_KEY") : "");
+            if (age.years < requiredAgeToShowCompletedYears) {
+                return (age.years ? age.years + " " + $translate.instant("CLINICAL_YEARS_TRANSLATION_KEY") : "") +
+                       (age.months ? " " + age.months + " " + $translate.instant("CLINICAL_MONTHS_TRANSLATION_KEY") : "");
             }
             return age.years + " " + $translate.instant("CLINICAL_YEARS_TRANSLATION_KEY");
         }

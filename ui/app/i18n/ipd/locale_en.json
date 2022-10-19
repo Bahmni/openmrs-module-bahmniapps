@@ -3,7 +3,7 @@
     "SEARCH_KEY": "Search",
     "NO_ADMISSION_DETAILS_MESSAGE": "No Admission Details for this patient.",
     "NO_DIAGNOSIS_MESSAGE": "No diagnosis for this patient",
-    "CLINICAL_YEARS_TRANSLATION_KEY": "Years",
+    "CLINICAL_YEARS_TRANSLATION_KEY": "years",
     "CLINICAL_MONTHS_TRANSLATION_KEY": "months",
     "CLINICAL_DAYS_TRANSLATION_KEY": "days",
     "CONCEPT_SET_GROUP_EXPAND_ALL_KEY": "Expand All",

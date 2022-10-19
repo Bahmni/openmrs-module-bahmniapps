@@ -57,7 +57,7 @@
   "ALL_KEY": "Tous",
   "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/{{ primaryIdentifier }}  ...",
   "SEARCH_KEY": "Recherche",
-  "CLINICAL_YEARS_TRANSLATION_KEY": "Années",
+  "CLINICAL_YEARS_TRANSLATION_KEY": "années",
   "CLINICAL_MONTHS_TRANSLATION_KEY": "mois",
   "CLINICAL_DAYS_TRANSLATION_KEY": "Journées",
   "CONCEPT_SET_GROUP_EXPAND_ALL_KEY": "Développer tout",

@@ -63,7 +63,7 @@
 
     "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/{{ primaryIdentifier }}  ...",
     "SEARCH_KEY": "Search",
-    "CLINICAL_YEARS_TRANSLATION_KEY": "Years",
+    "CLINICAL_YEARS_TRANSLATION_KEY": "years",
     "CLINICAL_MONTHS_TRANSLATION_KEY": "months",
     "CLINICAL_DAYS_TRANSLATION_KEY": "days",
     "CONCEPT_SET_GROUP_EXPAND_ALL_KEY":"Expand All",

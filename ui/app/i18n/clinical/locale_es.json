@@ -57,7 +57,7 @@
     "ALL_KEY": "todos",
     "SEARCH_NAME_PLACEHOLDER_KEY": "Buscar por Nombre/Paciente",
     "SEARCH_KEY": "BUSCAR",
-    "CLINICAL_YEARS_TRANSLATION_KEY": "Año",
+    "CLINICAL_YEARS_TRANSLATION_KEY": "años",
     "CLINICAL_MONTHS_TRANSLATION_KEY": "meses",
     "CLINICAL_DAYS_TRANSLATION_KEY": "dias",
     "CONCEPT_SET_GROUP_EXPAND_ALL_KEY": "Expandir todo",
