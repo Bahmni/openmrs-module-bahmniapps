@@ -23,7 +23,7 @@ angular.module('bahmni.registration')
             $scope.showExtIframe = false;
             var identifierExtnMap = new Map();
             $scope.attributesToBeDisabled = [];
-            $scope.extensionButtons = $scope.regExtPoints[0].extensionButtons != null ? $scope.regExtPoints[0].extensionButtons : null;
+            $scope.extensionButtons = ($scope.regExtPoints[0] != null && $scope.regExtPoints[0].extensionButtons != null) ? $scope.regExtPoints[0].extensionButtons : null;
 
             function isExtButtonDefined (id) {
                 for (var i = 0; i < $scope.extensionButtons.length; i++) {
