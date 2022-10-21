@@ -60,18 +60,20 @@
                 "showDetailsButton": true
             }
         },
-        "Investigation Result": {
-            "type": "investigationResult",
-            "title": "Investigation Result",
+        "Lab Orders": {
+            "type": "labOrders",
             "displayOrder": 5,
             "config": {
-                "translationKey": "VISIT_TITLE_LAB_INVESTIGATIONS_KEY",
+                "translationKey": "VISIT_TITLE_LAB_ORDERS_KEY",
                 "showChart": true,
-                "showTable": true,
-                "showNormalLabResults": true,
-                "showCommentsExpanded": true,
+                "showTable": false,
+                "showOrders": true,
+                "showNormalLabResults": false,
+                "showCommentsExpanded": false,
                 "showAccessionNotes": true,
-                "numberOfVisits": 10
+                "numberOfVisits": 10,
+                "showDetailsButton": false,
+                "hideVisitDate": true
             }
         },
         "Treatments": {

@@ -13,7 +13,7 @@
             <label>{{::(observation.getDisplayValue())}}</label>
         </span>
         <span ng-if="observation.groupMembers.length==0 && !configIsObservationForImages && observation.concept.conceptClass != 'Image'" class="testUnderPanel left">
-            <label>{{::(observation.concept.shortName || observation.concept.name)}}</label>
+            <label>{{::(observation.concept.name || observation.concept.shortName)}}</label>
             <hint concept-details="::{
             lowNormal:observation.lowNormal||observation.concept.lowNormal,
             hiNormal:observation.hiNormal||observation.concept.hiNormal,
@@ -30,7 +30,7 @@
             <pre class="left obs-label" title="{{::observation.getDisplayValue() | titleTranslate}}"
                 ng-if="configIsObservationForImages && observation.getDisplayValue().lastIndexOf('__')===-1">{{::observation.getDisplayValue() | titleTranslate}}</pre>
             <pre class="left" ng-if="!configIsObservationForImages">{{::observation.getDisplayValue() | titleTranslate}}</pre>
-            <span class="label-add-on">{{::observation.concept.units}}</span>
+            &nbsp;<span class="label-add-on">{{::observation.concept.units}}</span>
         </span>
         <a class="img-concept" ng-if="::(observation.isImageConcept() && !observation.hasPDFAsValue() && !print)">
             <img align="middle" bm-observation-gallery-item observation="::observation" ng-src="/document_images/{{::observation.getDisplayValue()}}"

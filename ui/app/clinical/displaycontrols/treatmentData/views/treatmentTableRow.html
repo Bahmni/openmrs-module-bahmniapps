@@ -11,7 +11,7 @@
         <span>{{::drugOrder.getSpanDetails()}}</span>
         <span ng-if="::drugOrder.isDiscontinuedOrStopped()" ng-class="::{'discontinued-text':drugOrder.isDiscontinuedOrStopped()}">{{'MEDICATION_STOPPED_ON'|translate}} {{::drugOrder.effectiveStopDate | bahmniDate}}</span>
     </td>
-    <td class="days">
+    <td class="days" ng-if="::(!params.hideVisitDate)">
         <span class="fr">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
     </td>
 
@@ -33,7 +33,7 @@
         </div>
     </td>
 </tr>
-<tr bm-show="drugOrder.showDetails" ng-if="::!drugOrder.additionalInstructions">
+<tr bm-show="drugOrder.showDetails" ng-if="::(!drugOrder.additionalInstructions && !params.hideVisitDate)">
     <td colspan="4" class="notes inline-notes">
         <div class="footer-note right">
             <span class="provider" ng-if="::params.showProvider">
