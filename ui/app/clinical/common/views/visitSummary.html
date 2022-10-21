@@ -5,7 +5,7 @@
     </div>
 </section>
 
-<div ng-if="::(!clearBoard)" class="sections-group">
+<div  id="patient-summary-details" ng-if="::(!clearBoard)" class="sections-group">
     <div ng-repeat="section in visitTabConfig.currentTab.sections">
         <div ng-switch="section.type">
             <div ng-switch-when="patientInformation" class="section">

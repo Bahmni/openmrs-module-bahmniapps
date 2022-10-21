@@ -57,4 +57,17 @@ angular.module('bahmni.clinical')
             $scope.showPrint = function () {
                 return $scope.visitTabConfig.showPrint();
             };
+            $scope.convertHTMLToPDF = function () {
+                html2canvas(document.getElementById("patient-summary-details"), {
+                    onrendered: function (canvas) {
+                        var data = canvas.toDataURL();
+                        var docDefinition = {
+                            content: [{ image: data, width: 500 }]
+                        };
+                        pdfMake.createPdf(docDefinition).download();
+                        /* var document = pdfMake.createPdf(docDefinition).download(); // getStream()
+                        console.log('document ', document); */
+                    }
+                });
+            };
         }]);
