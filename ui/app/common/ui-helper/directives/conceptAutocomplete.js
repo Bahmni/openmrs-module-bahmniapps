@@ -27,7 +27,7 @@
                 return _.includes(_.toLower(name.name), searchTerm);
             });
             var flag = true, conceptNameFound;
-            searchString.forEach(string => {
+            searchString.forEach(function (string) {
                 conceptNameFound = _.includes(_.toLower(answer.name), string);
                 flag = (flag && conceptNameFound);
             });
