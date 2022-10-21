@@ -51,9 +51,9 @@
             </div>
             <div ng-switch-when="diagnosis" class="section">
                 <section ng-if="::section.config" class="block dashboard-section section-title has-link">
-                    <bahmni-diagnosis patient-uuid="::patient.uuid" config="::section" show-latest-diagnosis="false"
-                                      show-ruled-out-diagnoses="::section.showRuledOutDiagnoses"></bahmni-diagnosis>
-                    </bahmni-diagnosis>
+                    <bahmni-diagnosis patient-uuid="::section.config.patientUuid"
+                                      config="::section.config" visit-uuid="::visitUuid"
+                                      show-latest-diagnosis="true"></bahmni-diagnosis>
                 </section>
             </div>
             <div ng-switch-when="pivotTable" class="section">
