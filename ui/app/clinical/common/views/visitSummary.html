@@ -51,9 +51,11 @@
             </div>
             <div ng-switch-when="diagnosis" class="section">
                 <section ng-if="::section.config" class="block dashboard-section section-title has-link">
-                    <bahmni-diagnosis patient-uuid="::section.config.patientUuid"
-                                      config="::section.config" visit-uuid="::visitUuid"
-                                      show-latest-diagnosis="true"></bahmni-diagnosis>
+                    <h2 ng-hide="::hideTitle" class="section-title" ng-class="::{'hidden-print': (allDiagnoses && allDiagnoses.length == 0)}">
+                        <span> {{::section | titleTranslate}} </span>
+                    </h2>
+                    <bahmni-diagnosis patient-uuid="::patient.uuid" config="::section.config"
+                                      visit-uuid="::visitUuid" show-latest-diagnosis="true"></bahmni-diagnosis>
                 </section>
             </div>
             <div ng-switch-when="pivotTable" class="section">
