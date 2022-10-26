@@ -17,8 +17,8 @@
             "type": "diagnosis",
             "title": "Diagnosis",
             "displayOrder": 1,
+            "translationKey": "VISIT_TITLE_DIAGNOSIS_KEY",
             "config": {
-                "translationKey": "VISIT_TITLE_DIAGNOSIS_KEY",
                 "showCertainty": true,
                 "showOrder": true,
                 "showDetailsButton": true
