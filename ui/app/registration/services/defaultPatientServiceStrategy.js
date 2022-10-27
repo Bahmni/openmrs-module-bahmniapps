@@ -9,7 +9,7 @@ angular.module('bahmni.registration')
             var defer = $q.defer();
             var patientSearchUrl = Bahmni.Common.Constants.bahmniCommonsSearchUrl + "/patient";
             if (config && config.params.identifier) {
-                patientSearchUrl = Bahmni.Common.Constants.bahmniSearchUrl + "/patient/lucene";
+                patientSearchUrl = Bahmni.Common.Constants.bahmniCommonsSearchUrl + "/patient/lucene";
             }
             var onResults = function (result) {
                 defer.resolve(result);
