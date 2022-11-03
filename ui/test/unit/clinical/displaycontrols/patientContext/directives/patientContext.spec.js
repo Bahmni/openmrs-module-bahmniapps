@@ -438,10 +438,12 @@ describe('patient context', function () {
 
 
         it('should fetch person latest obs if configured.', function () {
-            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=weight&patientUuid=123&scope=latest').respond(observation);
+            var patientContext = {
+            
+                           };
+                           patientService.getPatientContext.and.returnValue(specUtil.createFakePromise(patientContext));
             observationsService.fetch.and.returnValue(specUtil.createFakePromise({}));
             var patientContextConfig = {
-                conceptName: 'weight'
             };
             mockAppDescriptor.getConfigValue.and.returnValue(patientContextConfig);
             mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
@@ -462,7 +464,6 @@ describe('patient context', function () {
             scope.$digest();
 
             expect(compiledElementScope).not.toBeUndefined();
-            expect(observationsService.fetch).toHaveBeenCalledWith(scope.patient.uuid, patientContextConfig.conceptName, "latest", null, null, null, null, null);
             expect(spinner.forPromise).toHaveBeenCalled();
             expect(mockAppService.getAppDescriptor).toHaveBeenCalled();
             expect(mockAppDescriptor.getConfigValue).toHaveBeenCalledWith('patientContext');
