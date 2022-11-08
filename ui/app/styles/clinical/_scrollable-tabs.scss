@@ -2,7 +2,7 @@
   display: flex;
   border-radius: 0 5px 0 0;
   position: relative;
-  overflow: scroll;
+  overflow: hidden;
   flex-grow: 1;
 
   ul {
@@ -12,5 +12,33 @@
 
   .tab-item {
     white-space: nowrap;
+  }
+
+  .arrow-left,
+  .arrow-right {
+    position: absolute;
+    outline: none;
+    border: 0;
+    border-radius: 0;
+    padding: 0 5px;
+    top: 0;
+    bottom: 0;
+    font-size: 20px;
+    color: white;
+    background: #527a7a;
+    z-index: 1;
+
+    &:hover,
+    &:focus {
+      opacity: 1;
+    }
+  }
+
+  .arrow-left {
+    left: 0;
+  }
+
+  .arrow-right {
+    right: 0;
   }
 }
