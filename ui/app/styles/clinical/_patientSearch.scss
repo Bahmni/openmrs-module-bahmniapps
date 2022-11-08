@@ -94,6 +94,11 @@
 
   .tabs {
     margin-top: 5px;
+    display: flex;
+  }
+
+  .dialog-button-group {
+    margin-bottom: 5px;
   }
 }
 .active-patient {

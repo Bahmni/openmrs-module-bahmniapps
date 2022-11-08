@@ -1,0 +1,16 @@
+.scrollable-tabs {
+  display: flex;
+  border-radius: 0 5px 0 0;
+  position: relative;
+  overflow: scroll;
+  flex-grow: 1;
+
+  ul {
+    display: flex;
+    position: relative;
+  }
+
+  .tab-item {
+    white-space: nowrap;
+  }
+}
