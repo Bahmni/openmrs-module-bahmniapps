@@ -1,16 +1,18 @@
 <div class="patient-search-wrapper">
     <div class="tabs">
-        <ul class="scrollable-tabs">
-            <li class="tab-item" ng-repeat="searchType in search.searchTypes"
-                ng-class="{'tab-selected': search.isSelectedSearch(searchType)}">
-                <a href="" ng-click="search.switchSearchType(searchType)">
-                    <span>{{::searchType | titleTranslate}} </span>
-                    <span ng-if="search.showPatientCountOnSearchParameter(searchType)">({{search.searchResults.length}})</span>
-                    <span ng-if="(searchType.handler && !search.showPatientCountOnSearchParameter(searchType))" scheduler
-                        watch-on="search.searchParameter" refresh-time="searchType.refreshTime">({{searchType.patientCount}})</span>
-                </a>
-            </li>
-        </ul>
+        <scrollable-tabs>
+            <ul>
+                <li class="tab-item" ng-repeat="searchType in search.searchTypes"
+                    ng-class="{'tab-selected': search.isSelectedSearch(searchType)}">
+                    <a href="" ng-click="search.switchSearchType(searchType)">
+                        <span>{{::searchType | titleTranslate}} </span>
+                        <span ng-if="search.showPatientCountOnSearchParameter(searchType)">({{search.searchResults.length}})</span>
+                        <span ng-if="(searchType.handler && !search.showPatientCountOnSearchParameter(searchType))" scheduler
+                            watch-on="search.searchParameter" refresh-time="searchType.refreshTime">({{searchType.patientCount}})</span>
+                    </a>
+                </li>
+            </ul>
+        </scrollable-tabs>
         <button ng-if="search.searchType.showPrint" class="dialog-button-group" ng-click="printPage()"
                 accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}" ng-bind-html="'CLINICAL_PRINT_TRANSLATION_KEY'|translate">
             <i class="fa fa-print"></i>
