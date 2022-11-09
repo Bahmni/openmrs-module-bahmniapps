@@ -14,8 +14,7 @@
     white-space: nowrap;
   }
 
-  .arrow-left,
-  .arrow-right {
+  [class^="arrow"]  {
     position: absolute;
     outline: none;
     border: 0;
@@ -32,13 +31,31 @@
     &:focus {
       opacity: 1;
     }
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 10px;
+    }
   }
 
   .arrow-left {
     left: 0;
+
+    &:before{
+      background: linear-gradient(to right, #527a7a 0%, rgba(255,255,255,0) 95%);
+      left: 25px;
+    }
   }
 
   .arrow-right {
     right: 0;
+
+    &:before{
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, #527a7a 95%);
+      right: 25px;
+    }
   }
 }
