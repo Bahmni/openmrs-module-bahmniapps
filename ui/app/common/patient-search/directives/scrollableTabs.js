@@ -8,9 +8,13 @@ angular.module("bahmni.common.patientSearch")
       replace: true,
       template:
       `<div class="scrollable-tabs">
-        <button type="btn" class="arrow-left" ng-click="scrollLeft()" ng-show="showLeft"><span class="fa fa-angle-left"></span></button>
+        <button type="btn" class="arrow-left" ng-click="scrollLeft()" ng-show="showLeft">
+          <span class="fa fa-angle-left"></span>
+        </button>
         <ng-transclude></ng-transclude>
-        <button type="btn" class="arrow-right" ng-click="scrollRight()" ng-show="showRight"><span class="fa fa-angle-right"></span></button>
+        <button type="btn" class="arrow-right" ng-click="scrollRight()" ng-show="showRight">
+          <span class="fa fa-angle-right"></span>
+        </button>
       </div>`,
       link: function(scope, element) {
         var scrollContainer = element.find('ul');
@@ -37,7 +41,20 @@ angular.module("bahmni.common.patientSearch")
           if(scrollContainer.outerWidth() - element.outerWidth() > 0) {
             scope.showRight = true;
           }
-        })
+        });
+
+        Bahmni.Common.Util.SwipeUtil.detectSwipe(function(evt, direction) {
+          if($(evt.target).closest('.scrollable-tabs').length) {
+            if(direction === Bahmni.Common.Util.SwipeUtil.DIRECTIONS.RIGHT) {
+              scope.scrollRight();
+            }
+
+            if(direction === Bahmni.Common.Util.SwipeUtil.DIRECTIONS.LEFT) {
+              scope.scrollLeft();
+            }
+          }
+          scope.$apply();
+        });
       }
   };
 })
