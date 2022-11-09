@@ -9,8 +9,8 @@ angular.module("bahmni.common.patientSearch")
       template:
       `<div class="scrollable-tabs">
         <button type="btn" class="arrow-left" ng-click="scrollLeft()" ng-show="showLeft"><span class="fa fa-angle-left"></span></button>
+        <ng-transclude></ng-transclude>
         <button type="btn" class="arrow-right" ng-click="scrollRight()" ng-show="showRight"><span class="fa fa-angle-right"></span></button>
-        <ng-transclude />
       </div>`,
       link: function(scope, element) {
         var scrollContainer = element.find('ul');
