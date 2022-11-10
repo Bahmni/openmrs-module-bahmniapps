@@ -17,6 +17,7 @@
   background: $white;
   border: 1px solid $lightGray;
   border-radius: 0 5px 5px 5px;
+  margin-top: -1px;
   li{
     text-align: center;
     cursor:pointer;
@@ -99,6 +100,13 @@
 
   .dialog-button-group {
     margin-bottom: 5px;
+    margin-left: 5px;
+    padding: 6px 15px 7px;
+    min-width: 63px;
+
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
   }
 }
 .active-patient {
