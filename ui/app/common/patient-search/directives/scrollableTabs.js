@@ -18,7 +18,7 @@ angular.module("bahmni.common.patientSearch")
                 '</div>',
             link: function (scope, element) {
                 var scrollContainer = element.find('ul');
-                var scrollingWidth;
+                var scrollingWidth = 0;
 
                 scope.scrollLeft = function () {
                     var scrollPos = Math.min(scrollContainer.position().left + element.outerWidth() / 3, 0);
@@ -54,6 +54,17 @@ angular.module("bahmni.common.patientSearch")
                         }
                     }
                     scope.$apply();
+                });
+
+                angular.element(window).resize(function () {
+                    $timeout(function () {
+                        scrollingWidth = scrollContainer.outerWidth() - element.outerWidth();
+                        scope.showRight = scrollingWidth > 0 && Math.abs(scrollContainer.position().left) < scrollingWidth;
+                        scope.showLeft = scrollingWidth > 0 && scrollContainer.position().left < 0;
+                        if (!scope.showRight && !scope.showLeft) {
+                            scrollContainer.css({"left": 0});
+                        }
+                    });
                 });
             }
         };
