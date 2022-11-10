@@ -6,8 +6,6 @@ on:
       - 'release-*'
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
-  repository_dispatch:
-    types: ["default-config-trigger"]
 
 jobs:
   build-publish-docker-helm:
@@ -36,8 +34,6 @@ jobs:
       - run: npm install --global yarn
       - name: Package
         run: cd ui && yarn cache clean && /bin/bash ./scripts/package.sh
-      - name: Download default_config.zip
-        run: sh .github/download_artifact.sh default-config default_config ${{secrets.BAHMNI_PAT}}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx

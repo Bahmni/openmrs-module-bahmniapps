@@ -56,13 +56,14 @@
 
     "TREATMENTS_SUMMARY_PRESCRIPTION_KEY": "Prescriptions",
     "INVESTIGATION_CHART_KEY": "Investigation Chart",
+    "LAB_ORDERS_KEY": "Lab Orders",
     "ALL_VISITS_KEY": "All Visits",
     "ALL_DIAGNOSES_KEY": "All Diagnoses",
     "ALL_KEY": "All",
 
     "SEARCH_NAME_PLACEHOLDER_KEY": "Search Name/{{ primaryIdentifier }}  ...",
     "SEARCH_KEY": "Search",
-    "CLINICAL_YEARS_TRANSLATION_KEY": "Years",
+    "CLINICAL_YEARS_TRANSLATION_KEY": "years",
     "CLINICAL_MONTHS_TRANSLATION_KEY": "months",
     "CLINICAL_DAYS_TRANSLATION_KEY": "days",
     "CONCEPT_SET_GROUP_EXPAND_ALL_KEY":"Expand All",

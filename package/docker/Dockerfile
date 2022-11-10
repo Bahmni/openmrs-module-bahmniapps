@@ -9,9 +9,5 @@ COPY package/docker/maintenance.html /usr/local/apache2/htdocs/
 COPY package/docker/unauthorized.html /usr/local/apache2/htdocs/
 COPY package/docker/style.css /usr/local/apache2/htdocs/
 
-#unzip default_config
-ADD package/resources/default_config.zip /tmp/artifacts/
-RUN unzip -d /usr/local/apache2/htdocs/bahmni_config/ /tmp/artifacts/default_config.zip 
-
 # Copy BahmniApps
 COPY ui/dist/. /usr/local/apache2/htdocs/bahmni/

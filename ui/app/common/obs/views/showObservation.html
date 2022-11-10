@@ -12,8 +12,8 @@
         <span ng-if="observation.groupMembers.length > 1 && observation.formNamespace != null && observation.groupMembers[0].concept.conceptClass != 'Image'" class="testUnderPanel left">
             <label>{{::(observation.getDisplayValue())}}</label>
         </span>
-       <span ng-if="observation.groupMembers.length==0 && !configIsObservationForImages && observation.concept.conceptClass != 'Image'" class="testUnderPanel left">
-            <label>{{::(observation.concept.shortName || observation.concept.name)}}</label>
+        <span ng-if="observation.groupMembers.length==0 && !configIsObservationForImages && observation.concept.conceptClass != 'Image'" class="testUnderPanel left">
+            <label>{{::((observation.concept.shortName.charAt(0).toUpperCase() + observation.concept.shortName.slice(1)) || observation.concept.name)}}</label>
             <hint concept-details="::{
             lowNormal:observation.lowNormal||observation.concept.lowNormal,
             hiNormal:observation.hiNormal||observation.concept.hiNormal,
@@ -28,7 +28,7 @@
             <span class="left obs-label-file" title="{{::observation.getDisplayFileName() | titleTranslate}}"
                 ng-if="configIsObservationForImages">{{::observation.getDisplayFileName() | titleTranslate}}</span>
             <pre class="left" ng-if="!configIsObservationForImages">{{::observation.getDisplayValue() | titleTranslate}}</pre>
-            <span class="label-add-on">{{::observation.concept.units}}</span>
+            &nbsp;<span class="label-add-on">{{::observation.concept.units}}</span>
         </span>
         <a class="img-concept" ng-if="::(observation.isImageConcept() && !observation.hasPDFAsValue() && !print)">
             <img align="middle" bm-observation-gallery-item observation="::observation" ng-src="/document_images/{{::observation.getDisplayValue()}}"
@@ -51,7 +51,7 @@
     <div ng-if="::observation.comment && !observation.isImageConcept() " class="notes inline-comments" ng-class="::{'print-notes': observation.comment, 'image-notes': observation.isImageConcept()}">
         <i class="fa fa-comments left"></i>
         <span style="overflow: hidden;" ng-if="::observation.comment" class="left" title="{{observation.comment}}">{{::observation.comment}}</span>
-        <span class="left provider obs-label" style="padding-left:3px;clear:both;" 
+        <span class="left provider obs-label" style="padding-left:3px;clear:both;"
             provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}" title="{{observation.creatorName}}">
             <span ng-if="::observation.isFormElement()">{{::dateString(observation)}} </span>
         </span>
@@ -61,7 +61,7 @@
     </div>
     <div ng-if="observation.showDetails" class="left notes inline-notes" ng-class="::{'print-notes': observation.showDetails}">
         <div class="footer-note">
-            <span class="left provider obs-label" style="padding-left:2px;clear:both;" 
+            <span class="left provider obs-label" style="padding-left:2px;clear:both;"
                 provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}" title="{{observation.creatorName}}">
                 <span ng-if="::observation.isFormElement()">{{::dateString(observation)}}</span>
             </span>

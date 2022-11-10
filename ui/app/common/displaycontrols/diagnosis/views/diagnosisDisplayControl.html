@@ -1,9 +1,8 @@
 <section id="diagnosisSection" class="block diagnosis"
          ng-class="::{'more': (allDiagnoses.show == true)}">
-    <h2 ng-hide="::hideTitle" class="section-title" ng-class="::{'hidden-print': (allDiagnoses && allDiagnoses.length == 0)}">{{::config | titleTranslate}}</h2>
     <div>
         <table class="dashboard-table history-diagnosis">
-            <tr ng-if="showLatestDiagnosis == 'true'" class="table-header">
+            <tr ng-if="::(showLatestDiagnosis == 'true' && !config.hideVisitDate)" class="table-header">
                 <th>&nbsp;</th>
                 <th><span>{{'CLINICAL_INITIAL'|translate}}</span></th>
                 <th><span>{{'CLINICAL_CURRENT'|translate}}</span></th>
@@ -26,7 +25,7 @@
                                    class="order">{{::translateDiagnosisLabels(diagnosis.order , 'ORDER') |translate}}</span>
                 <span id="status" class="status">{{::translateDiagnosisLabels(diagnosis.diagnosisStatus, 'STATUS') |translate}}</span>
                 <span class="toggle-btn-date-wrapper">
-                <span id="diagnosisDate" class="date">{{::diagnosis.diagnosisDateTime | bahmniDate}}</span>
+                <span ng-if="::!config.hideVisitDate" id="diagnosisDate" class="date">{{::diagnosis.diagnosisDateTime | bahmniDate}}</span>
                 <span class="toggle-btn" toggle="diagnosis.showDetails"
                       ng-show="::(!diagnosis.comments && (config.showDetailsButton == true))">
                     <button class="toggle fr" ng-class="::{'has-notes': diagnosis.comments}">
@@ -36,7 +35,7 @@
                 </span>
                     </span>
                 </td>
-                <td ng-if="::isLatestDiagnosis(diagnosis)" class="view"></td>
+                <td ng-if="::(isLatestDiagnosis(diagnosis) && !config.hideVisitDate)" class="view"></td>
                 <td class="view" ng-if="::(showLatestDiagnosis == 'true')">
                         <span id="certainty" ng-hide="::(config.showCertainty == false)" class="certainty">
                             {{::translateDiagnosisLabels(diagnosis.latestDiagnosis.certainty, 'CERTAINTY') |translate}}</span>
@@ -44,8 +43,7 @@
                       class="order">{{::diagnosis.latestDiagnosis.order}}</span>
                 <span id="status" class="status">{{::translateDiagnosisLabels(diagnosis.latestDiagnosis.diagnosisStatus , 'STATUS') |translate}}</span>
                 <span class="toggle-btn-date-wrapper">
-                    <span id="diagnosisDate"
-                          class="date">{{::diagnosis.latestDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                    <span ng-if="::!config.hideVisitDate" id="diagnosisDate" class="date">{{::diagnosis.latestDiagnosis.diagnosisDateTime | bahmniDate}}</span>
                     <span class="toggle-btn" toggle="diagnosis.showDetails"
                           ng-show="::(!diagnosis.comments && (config.showDetailsButton == true))">
                     <button class="toggle fr" ng-class="::{'has-notes': diagnosis.comments}">
@@ -56,7 +54,6 @@
                 </span>
                 </td>
             </tr>
-            {{diagnosis.comments}}
             <tr ng-show=":: diagnosis.comments" ng-class="::{'has-test-notes': diagnosis.comments}">
                 <td class="notes test-notes" colspan="{{showLatestDiagnosis ==  'true' ? 3 : 2}}">
                     <i class="fa fa-comments left"></i>
