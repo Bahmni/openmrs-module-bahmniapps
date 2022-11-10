@@ -48,7 +48,7 @@ Bahmni.Common.Obs.Observation = (function () {
             return '__';
         },
         isFileNameOfNewFormat: function () {
-          return this.getDisplayValue().lastIndexOf(this.getNewFormatFileNameSeparator()) > -1;
+            return this.getDisplayValue().lastIndexOf(this.getNewFormatFileNameSeparator()) > -1;
         },
         getDisplayFileName: function () {
             var displayValue = this.getDisplayValue();
