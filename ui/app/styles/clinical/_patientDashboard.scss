@@ -1206,7 +1206,17 @@ h2.section-title.section-title-pivot{
   max-width: 60px;
   max-height: 27px;
   overflow: hidden;
-  white-space: pre !important;
+  white-space: nowrap !important;
+  margin-left: -3px !important;
+}
+
+.obs-label-file {
+  font-size: xx-small;
+  text-overflow: clip;
+  max-width: 60px;
+  max-height: 27px;
+  overflow: hidden;
+  white-space: nowrap !important;
 }
 
 .obs-groups-container{
@@ -1230,4 +1240,3 @@ h2.section-title.section-title-pivot{
       word-break: break-all;
     }
 }
-
