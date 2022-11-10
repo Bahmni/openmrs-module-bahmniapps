@@ -25,10 +25,8 @@
                        'value-text-only': !(observation.concept.dataType ==='Text' && print)
                        }"
               ng-if="::(observation.isFormElement() && !observation.isImageConcept() && !observation.isVideoConcept())">
-            <span class="left obs-label-file" title="{{::observation.getDisplayValue().substring(observation.getDisplayValue().lastIndexOf('__')+2) | titleTranslate}}"
-                ng-if="configIsObservationForImages && observation.getDisplayValue().lastIndexOf('__')>-1">{{::observation.getDisplayValue().substring(observation.getDisplayValue().lastIndexOf('__')+2) | titleTranslate}}</span>
-            <span class="left obs-label-file" title="{{::observation.getDisplayValue() | titleTranslate}}"
-                ng-if="configIsObservationForImages && observation.getDisplayValue().lastIndexOf('__')===-1">{{::observation.getDisplayValue() | titleTranslate}}</span>
+            <span class="left obs-label-file" title="{{::observation.getDisplayFileName() | titleTranslate}}"
+                ng-if="configIsObservationForImages">{{::observation.getDisplayFileName() | titleTranslate}}</span>
             <pre class="left" ng-if="!configIsObservationForImages">{{::observation.getDisplayValue() | titleTranslate}}</pre>
             <span class="label-add-on">{{::observation.concept.units}}</span>
         </span>

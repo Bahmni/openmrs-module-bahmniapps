@@ -43,6 +43,17 @@ Bahmni.Common.Obs.Observation = (function () {
         isConceptClassConceptDetails: function () {
             return this.concept.conceptClass === "Concept Details";
         },
+        getNewFormatFileNameSeparator: function () {
+            // we are using this to separate random characters (patientID, uuid) and actual file name when saving the files in the new format
+            return '__';
+        },
+        isFileNameOfNewFormat: function () {
+          return this.getDisplayValue().lastIndexOf(this.getNewFormatFileNameSeparator()) > -1;
+        },
+        getDisplayFileName: function () {
+            var displayValue = this.getDisplayValue();
+            return this.isFileNameOfNewFormat() ? displayValue.substring(displayValue.lastIndexOf(this.getNewFormatFileNameSeparator()) + this.getNewFormatFileNameSeparator().length) : displayValue;
+        },
 
         getDisplayValue: function () {
             var value;
