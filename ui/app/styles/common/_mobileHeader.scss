@@ -1,0 +1,57 @@
+.hidden-mobile {
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
+}
+.mobile-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    
+    @media screen and (min-width: 769px) {
+        display: none;
+    }
+
+    .toggle-patient {
+        outline: none;
+        border: 0;
+    }
+
+    .mobile-header-right {
+        justify-content: flex-end;
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-icon {
+        border-radius: 0;
+        font-size: 16px;
+        border: none;
+        outline: none;
+        background-color: #fff;
+        color: #88af28;
+        padding: 4px 6px;
+
+        &:hover,
+        &:focus {
+            background-color: #fff;
+        }
+    }
+
+    .consultation-btn {
+        border-radius: 0;
+        font-size: 14px;
+        border: none;
+        outline: none;
+        background-color: #88af28;
+        background: #88af28;
+        color: #fff;
+        padding: 11px 8px 11px;
+
+        &:hover,
+        &:focus {
+            background-color: #88af28;
+        }
+    }
+}

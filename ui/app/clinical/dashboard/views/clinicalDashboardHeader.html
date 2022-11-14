@@ -38,7 +38,7 @@
 
 <div ng-show="stateChange()" confirm-on-exit>
     <div bindonce class="dashboard-header opd-header-wrapper">
-        <div class="opd-header-bottom tabs">
+        <div class="opd-header-bottom tabs hidden-mobile">
             <bm-back-links></bm-back-links>
             <recent-patients></recent-patients>
             <a show-if-privilege="{{adtNavigationConfig.privilege}}" ng-click= "displayConfirmationDialog($event)" class="back-btn" ng-href="{{adtNavigationURL(visitHistory.activeVisit.uuid)}}"
@@ -127,5 +127,6 @@
                 </button>
             </div>
         </div>
+        <ng-include src="'common/views/mobileHeader.html'"></ng-include>
     </div>
 </div>

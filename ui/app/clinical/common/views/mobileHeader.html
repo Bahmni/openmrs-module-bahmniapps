@@ -1,0 +1,22 @@
+<div class="mobile-header-wrapper">
+    <button class="toggle-patient" type="button">
+        <i class="fa fa-bars fa-white fa-large"></i>
+    </button>
+    <div class="mobile-header-right">
+        <button ng-click="startAdhocTeleconsultationLink()"
+            class="btn-icon" title="{{'START_TELECON_KEY'|translate}}">
+            <i class="fa fa-headphones"></i>
+        </button>
+        <button class="btn-icon"
+            ng-click="printDashboard()" accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}">
+            <i class="fa fa-print"></i>
+        </button>
+        <button class="btn-icon">
+            <i class="fa fa-file-text"></i>
+        </button>
+        <button class="consultation-btn" ng-if="visitHistory.activeVisit || retrospectiveEntry || allowConsultation()"
+            ng-click="openConsultation()" accesskey="{{'CONSULTATION_SHORTCUT_KEY' | translate}}"
+            ng-bind-html="'CONSULTATION_TAB_KEY' | translate">
+        </button>
+    </div>
+</div>
