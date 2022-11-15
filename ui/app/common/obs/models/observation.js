@@ -54,6 +54,11 @@ Bahmni.Common.Obs.Observation = (function () {
             var displayValue = this.getDisplayValue();
             return this.isFileNameOfNewFormat() ? displayValue.substring(displayValue.lastIndexOf(this.getNewFormatFileNameSeparator()) + this.getNewFormatFileNameSeparator().length) : displayValue;
         },
+        getChiefComplaintCodedComment: function () {
+            if (this.groupMembers.length > 1 && this.formNamespace != null && this.formFieldPath && this.formFieldPath.includes("History and Examination")) {
+                return this.groupMembers[0].comment;
+            }
+        },
 
         getDisplayValue: function () {
             var value;
