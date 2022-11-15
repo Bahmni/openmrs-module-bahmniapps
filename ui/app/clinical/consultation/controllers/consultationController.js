@@ -17,6 +17,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.togglePrintList = false;
             $scope.patient = patientContext.patient;
             $scope.showDashboardMenu = false;
+            $scope.showMobileMenu = false;
             $scope.stateChange = function () {
                 return $state.current.name === 'patient.dashboard.show';
             };
@@ -31,6 +32,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.openConsultationInNewTab = function () {
                 $window.open('#' + $scope.consultationBoardLink, '_blank');
+            };
+
+            $scope.toggleMobileMenu = function () {
+                $scope.showMobileMenu = !$scope.showMobileMenu;
             };
 
             $scope.toggleDashboardMenu = function () {

@@ -280,6 +280,7 @@ describe("ConsultationController", function () {
             expect(scope.togglePrintList).toBeFalsy();
             expect(scope.patient).toEqual({});
             expect(scope.showDashboardMenu).toBeFalsy();
+            expect(scope.showMobileMenu).toBeFalsy();
             expect(scope.showComment).toBeTruthy();
             expect(scope.consultationBoardLink).toEqual([]);
             expect(scope.showControlPanel).toBeFalsy();
@@ -555,6 +556,12 @@ describe("ConsultationController", function () {
             scope.toggleDashboardMenu();
 
             expect(scope.showDashboardMenu).toBeTruthy();
+        });
+
+        it("should toggle mobile menu", function () {
+            scope.toggleMobileMenu();
+
+            expect(scope.showMobileMenu).toBeTruthy();
         });
 
         it("should show dashboard menu", function () {
