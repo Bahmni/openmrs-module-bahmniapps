@@ -48,23 +48,19 @@ angular.module('authentication')
         var createSession = function (username, password, otp) {
             var deferrable = $q.defer();
 
-            destroySessionFromServer().success(function () {
-                getAuthFromServer(username, password, otp).then(function (response) {
-                    if (response.status == 204) {
-                        deferrable.resolve({"firstFactAuthorization": true});
-                    }
-                    deferrable.resolve(response.data);
-                }, function (response) {
-                    if (response.status == 401) {
-                        deferrable.reject('LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY');
-                    } else if (response.status == 410) {
-                        deferrable.reject('LOGIN_LABEL_OTP_EXPIRED');
-                    } else if (response.status == 429) { // Too many requests
-                        deferrable.reject('LOGIN_LABEL_MAX_FAILED_ATTEMPTS');
-                    }
-                    deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
-                });
-            }).error(function () {
+            getAuthFromServer(username, password, otp).then(function (response) {
+                if (response.status == 204) {
+                    deferrable.resolve({"firstFactAuthorization": true});
+                }
+                deferrable.resolve(response.data);
+            }, function (response) {
+                if (response.status == 401) {
+                    deferrable.reject('LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY');
+                } else if (response.status == 410) {
+                    deferrable.reject('LOGIN_LABEL_OTP_EXPIRED');
+                } else if (response.status == 429) { // Too many requests
+                    deferrable.reject('LOGIN_LABEL_MAX_FAILED_ATTEMPTS');
+                }
                 deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
             });
             return deferrable.promise;
