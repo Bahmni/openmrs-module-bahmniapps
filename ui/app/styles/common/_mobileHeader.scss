@@ -16,6 +16,11 @@
     .toggle-patient {
         outline: none;
         border: 0;
+
+        &:focus,
+        &:hover {
+            opacity: 1;
+        }
     }
 
     .mobile-header-right {
@@ -76,6 +81,7 @@
         z-index: 21001;
         background-color: #333;
         padding: 16px 20px 16px 35px;
+        transition: left linear 0.3s;
     }
 
     .menu-item {
@@ -97,5 +103,17 @@
         border: 1px solid #f5f5f5;
         width: 240px;
         margin-bottom: 20px;
+    }
+
+    &.ng-hide {
+        display: block !important;
+        .mobile-menu {
+            left: -100%;
+        }
+
+        .mobile-menu-overlay {
+            display: none;
+        }
+        
     }
 }

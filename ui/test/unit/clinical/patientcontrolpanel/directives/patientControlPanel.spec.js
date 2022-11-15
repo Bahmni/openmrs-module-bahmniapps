@@ -1,3 +1,4 @@
+/* eslint-disable angular/module-getter */
 'use strict';
 
 describe('patientControlPanelTest', function () {
@@ -49,6 +50,7 @@ describe('patientControlPanelTest', function () {
         $provide.value('$translate', $translate);
     }));
 
+    // eslint-disable-next-line angular/di
     beforeEach(inject(function ($compile, $httpBackend, $rootScope, $q) {
         compile = $compile;
         mockBackend = $httpBackend;
@@ -174,7 +176,6 @@ describe('patientControlPanelTest', function () {
         _provide.value('$stateParams', stateParams);
         _provide.value('clinicalAppConfigService', _clinicalAppConfigService);
 
-
         var scope = rootScope.$new();
 
         scope.visitHistory = {
@@ -208,7 +209,6 @@ describe('patientControlPanelTest', function () {
         stateParams = {encounterUuid: "active"};
         mockBackend.expectGET('patientcontrolpanel/views/controlPanel.html').respond("<div>dummy</div>");
 
-
         var _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink']);
         _clinicalAppConfigService.getConsultationBoardLink.and.returnValue("test");
 
@@ -224,7 +224,6 @@ describe('patientControlPanelTest', function () {
         };
         scope.patient = {uuid: "patientUuid"};
         scope.visitUuid = "1234";
-
 
         var element = compile(simpleHtml)(scope);
 
@@ -235,13 +234,11 @@ describe('patientControlPanelTest', function () {
         scope.$digest();
 
         expect(compiledElementScope.isInEditEncounterMode()).toBeFalsy();
-
     });
 
     it("isInEditEncounterMode() should return true on editing encounter", function () {
         stateParams = {encounterUuid: "abcd-1234-efagksjk"};
         mockBackend.expectGET('patientcontrolpanel/views/controlPanel.html').respond("<div>dummy</div>");
-
 
         var _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink']);
         _clinicalAppConfigService.getConsultationBoardLink.and.returnValue("test");
@@ -258,7 +255,6 @@ describe('patientControlPanelTest', function () {
         };
         scope.patient = {uuid: "patientUuid"};
         scope.visitUuid = "1234";
-
 
         var element = compile(simpleHtml)(scope);
 
