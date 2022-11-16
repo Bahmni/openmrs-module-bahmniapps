@@ -85,8 +85,6 @@
     }
 
     .menu-item {
-        display: flex;
-        gap: 30px;
         color: #fff;
         padding: 7px 0;
         font-size: 14px;
@@ -94,6 +92,12 @@
 
         .fa {
             font-size: 20px;
+            margin-right: 30px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
         }
     }
 

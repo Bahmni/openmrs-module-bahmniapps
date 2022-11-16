@@ -107,6 +107,7 @@
     "ON_BEHALF_OF_TRANSLATION_KEY": "On behalf of",
     "PATIENT_DOCUMENT_TRANSLATION_KEY": "Patient Documents",
     "BAHMNI_HOME_TRANSLATION_KEY": "Bahmni Home",
+    "PATIENT_QUEUE_TRANSLATION_KEY": "Patient Queue",
     "LOGOUT_TRANSLATION_KEY": "Logout",
     "OBS_ABNORMAL_TRANSLATE_KEY": "Abnormal",
     "OBS_UNKNOWN_TRANSLATE_KEY": "Unknown",

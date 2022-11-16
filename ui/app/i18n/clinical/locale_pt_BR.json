@@ -103,6 +103,7 @@
     "ON_BEHALF_OF_TRANSLATION_KEY": "Em nome de",
     "PATIENT_DOCUMENT_TRANSLATION_KEY": "Documentos do Paciente",
     "BAHMNI_HOME_TRANSLATION_KEY": "Início do Bahmni",
+    "PATIENT_QUEUE_TRANSLATION_KEY": "Fila de pacientes",
     "LOGOUT_TRANSLATION_KEY": "Sair",
     "OBS_ABNORMAL_TRANSLATE_KEY": "Anormal",
     "OBS_UNKNOWN_TRANSLATE_KEY": "Desconhecido",
