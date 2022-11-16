@@ -1,23 +1,25 @@
 <div bm-pop-over autoclose="true" class='recent-patients' ng-if="recentlyViewedPatients.length > 1">
-    <div class="recent-patients-header">
+    <div class="recent-patients-header" ng-if="triggeredByButton">
         <a class="prev-patient" ng-click="previous()" ng-class="{'disabled': !hasPrevious()}"><span><i class="fa fa-caret-left"></i></span></a>
         <a class="back-btn patient-switch" bm-pop-over-trigger ng-click="togglePatientsList()">
             <img src="../images/patient-switch1.png">
         </a>
         <a class="next-patient" ng-click="next()" ng-class="{'disabled': !hasNext()}"><span><i class="fa fa-caret-right"></i></span></a>
     </div>
-    <div class="recent-patients-panel" ng-if="showPatientsList">
+    <div class="recent-patients-panel" ng-if="showPatientsList || !triggeredByButton">
         <div class="recent-patients-search">
-             <input type="text" id="patientIdentifier" ng-model="::search.searchParameter" ng-focus="getActivePatients()" placeholder={{'SEARCH_BY_PATIENT_ID_KEY'|translate}}
+             <input type="text" class="search-input" ng-model="::search.searchParameter" ng-focus="getActivePatients()" ng-blur="hidePatientsBySearch()" placeholder={{'SEARCH_BY_PATIENT_ID_KEY'|translate}}
                focus-on="search.startPatientSearch" autocomplete="off"
                ng-change="search.filterPatientsByIdentifier()"/>
         </div>
-        <span  class="recent_patient" ng-if="!search.searchParameter">{{'RECENT_PATIENTS_LABEL'|translate}}</span>
-        <div ng-repeat="recent in recentlyViewedPatients track by $index" ng-class ="{'currentPatient': recent.uuid == patient.uuid}" ng-if="!search.searchParameter">
-            <a ng-href="#/{{configName}}/patient/{{recent.uuid}}/dashboard" ng-click="closeAllDialogs()"> <span>{{recent.name}}</span> ({{recent.identifier}})</a>
-        </div>
-        <div ng-repeat="patient in search.searchResults track by $index" ng-if="search.searchParameter">
-            <a ng-href="#/{{configName}}/patient/{{patient.uuid}}/dashboard" ng-click="closeAllDialogs()"> <span>{{patient.name}}</span> ({{patient.identifier}})</a>
+        <div class="recent-patients-wrapper" ng-show="triggeredByButton || showPatientsBySearch">
+            <span  class="recent_patient" ng-if="!search.searchParameter">{{'RECENT_PATIENTS_LABEL'|translate}}</span>
+            <div ng-repeat="recent in recentlyViewedPatients track by $index" ng-class ="{'currentPatient': recent.uuid == patient.uuid}" ng-if="!search.searchParameter">
+                <a ng-href="#/{{configName}}/patient/{{recent.uuid}}/dashboard" ng-click="closeAllDialogs()"> <span>{{recent.name}}</span> ({{recent.identifier}})</a>
+            </div>
+            <div ng-repeat="patient in search.searchResults track by $index" ng-if="search.searchParameter">
+                <a ng-href="#/{{configName}}/patient/{{patient.uuid}}/dashboard" ng-click="closeAllDialogs()"> <span>{{patient.name}}</span> ({{patient.identifier}})</a>
+            </div>
         </div>
     </div>
 </div>
