@@ -225,13 +225,24 @@ describe("ConsultationController", function () {
             },
             stoppedOrderReasonConfig: function () {
                 return {};
+            },
+            encounterConfig: function () {
+                return configurations;
+            },
+            getPatientDocumentEncounterTypeUuid: function () {
+                return "patientDocumentEncounterTypeUuid";
             }
         };
         conditionsService = jasmine.createSpyObj('conditionalService', ['save', 'getConditions']);
         conditionsService.save.and.returnValue(specUtil.simplePromise({}));
         conditionsService.getConditions.and.returnValue([{uuid: "condition-uuid", conditionNonCoded: "fever"}]);
-        encounterService = jasmine.createSpyObj('encounterService', ['getEncounterType', 'create']);
+        encounterService = jasmine.createSpyObj('encounterService', ['getEncounterType', 'create', 'getEncountersForEncounterType', 'then']);
         encounterService.getEncounterType.and.returnValue(specUtil.simplePromise({}));
+        encounterService.getEncountersForEncounterType.and.callFake(function () {
+            var deferred = Q.defer();
+            deferred.resolve({data: {results: []}});
+            return deferred.promise;
+        });
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         diagnosisService = jasmine.createSpyObj('diagnosisService', ['populateDiagnosisInformation']);
         adhocTeleconsultationService = jasmine.createSpyObj('adhocTeleconsultationService', ['generateAdhocTeleconsultationLink']);
@@ -242,6 +253,7 @@ describe("ConsultationController", function () {
             deferred.resolve({data: encounterData});
             return deferred.promise;
         });
+        encounterService.then.and.returnValue({data: {results: []}});
         spinnerMock = {
             forPromise: function (promise, element) {
                 return promise;
