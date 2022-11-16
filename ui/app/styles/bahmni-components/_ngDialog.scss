@@ -303,7 +303,7 @@
 
 .ng-dialog-all-details-page .ngdialog-content .template-container .concept-set-container {
     width: 100%;
-
+    flex-grow: 1;
 }
 
 .ng-dialog-view .ngdialog-content .template-container {
@@ -322,7 +322,7 @@
 
 .ng-dialog-all-details-page.ng-dialog-edit .ngdialog-content .template-container .concept-set-container {
     width: 100%;
-    top: 41px;
+    height: calc(100% - 50px);
 
     section {
         height: auto;
