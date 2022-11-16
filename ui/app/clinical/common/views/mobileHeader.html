@@ -3,16 +3,18 @@
         <i class="fa fa-bars fa-white fa-large"></i>
     </button>
     <div class="mobile-header-right">
-        <button type="button" ng-click="startAdhocTeleconsultationLink()"
+        <button ng-if="::clinicalDashboardConfig.allowAdhocTeleConsultation" type="button" ng-click="startAdhocTeleconsultationLink()"
             class="btn-icon" title="{{'START_TELECON_KEY'|translate}}">
             <i class="fa fa-headphones"></i>
         </button>
         <button type="button" class="btn-icon"
-            ng-click="printDashboard()" accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}">
+            ng-click="printDashboard()" accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}"
+            title="{{'CLINICAL_PRINT_TRANSLATION_KEY'|translate}}"
+        >
             <i class="fa fa-print"></i>
         </button>
-        <button type="button" class="btn-icon">
-            <i class="fa fa-file-text"></i>
+        <button type="button" class="btn-icon" bm-gallery patient="patient" access-impression="true">
+            <i class="fa fa-file-text" bm-lazy-image-observation-gallery-items promise="patientDocumentsPromise"></i>
         </button>
         <button type="button" class="consultation-btn" ng-if="visitHistory.activeVisit || retrospectiveEntry || allowConsultation()"
             ng-click="openConsultation()" accesskey="{{'CONSULTATION_SHORTCUT_KEY' | translate}}"

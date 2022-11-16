@@ -501,6 +501,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 $scope.dashboardDirty = true;
             };
 
+            var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
+            $scope.patientDocumentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
+                return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
+            });
+
             $scope.save = function (toStateConfig) {
                 if (!isFormValid()) {
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
