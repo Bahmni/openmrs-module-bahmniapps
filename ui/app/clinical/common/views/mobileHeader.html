@@ -29,16 +29,22 @@
         <recent-patients></recent-patients>
         <ul class="menu-list">
             <li class="menu-item">
-                <i class="fa fa-home"></i>
-                <span>{{"HOME_DASHBOARD_KEY"| translate}}</span>
+                <a href="../home/index.html">
+                    <i class="fa fa-home"></i>
+                    <span>{{"BAHMNI_HOME_TRANSLATION_KEY"| translate}}</span>
+                </a>
             </li>
             <li class="menu-item">
-                <i class="fa fa-group"></i>
-                <span>Patient Queue</span>
+                <a href="#/default/patient/search">
+                    <i class="fa fa-group"></i>
+                    <span>{{"PATIENT_QUEUE_TRANSLATION_KEY"| translate}}</span>
+                </a>
             </li>
             <li class="menu-item">
-                <i class="fa fa-sign-out"></i>
-                <span>{{"LOGOUT_TRANSLATION_KEY"| translate}}</span>
+                <a log-out>
+                    <i class="fa fa-sign-out"></i>
+                    <span>{{"LOGOUT_TRANSLATION_KEY"| translate}}</span>
+                </a>
             </li>
         </ul>
     </div>
