@@ -72,18 +72,35 @@ angular.module('bahmni.registration')
             return $http.post(url, data, config);
         };
 
-        var smsAlert = function (patient) {
+        const serializeData = function (data) {
+            const buffer = [];
+            for (let name in data) {
+                if (!data.hasOwnProperty(name)) {
+                    continue;
+                }
+                const value = data[ name ];
+                buffer.push(
+                    encodeURIComponent(name) +
+                    "=" +
+                    encodeURIComponent((value == null) ? "" : value)
+                );
+            }
+            const source = buffer
+                .join("&")
+                .replace(/%20/g, "+")
+            ;
+            return (source);
+        };
+
+        const smsAlert = function (patient) {
             console.log("in smsalert");
-            const form = new FormData();
-            form.append('phoneNumber', patient.phoneNumber);
-            form.append('message', '"Welcome to Bahmni"');
-            form.append('originator', '"Bahmni"');
-            var url = otpServiceUrl + "/notificaion/sms";
-            console.log("url --- " + url);
-            return fetch(url, {
-                method: 'POST',
-                body: form
-            });
+            const url = otpServiceUrl + "/notificaion/sms";
+            const data = {"phoneNumber": patient.phoneNumber, "message": "Welcome to Bahmni", "originator": "Bahmni"};
+            const config = {
+                withCredentials: true,
+                headers: {"Content-Type": "application/x-www-form-urlencoded"}
+            };
+            return $http.post(url, serializeData(data), config);
         };
 
         return {
