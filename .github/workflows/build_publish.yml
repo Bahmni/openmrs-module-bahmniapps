@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - temp/changes
       - 'release-*'
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
@@ -34,6 +35,7 @@ jobs:
       - run: npm install --global yarn
       - name: Package
         run: cd ui && yarn cache clean && /bin/bash ./scripts/package.sh
+      - run: cat ui/node_modules/bahmni-form-controls/package.json
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
