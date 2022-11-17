@@ -17,12 +17,24 @@
 @import "tableMobile";
 @import "scrollable-tabs";
 
-body{
-  font-size: 14px;
-  //@media (max-width : 768px){
-  //  font-size: 15px;
-  //}
+body {
+    font-size: 14px;
+    //@media (max-width : 768px){
+    //  font-size: 15px;
+    //}
 }
-.consultation-content{
-  margin-top: 45px;
+
+.consultation-content {
+    margin-top: 45px;
+
+    @media screen and (max-width: 768px) {
+        margin-top: 120px;
+
+        .template-control {
+            top: 160px;
+            box-shadow: none;
+        }
+    }
+
+    
 }

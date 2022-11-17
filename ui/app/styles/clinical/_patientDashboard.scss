@@ -1435,7 +1435,25 @@ table.treatments-details-table {
             }
         }
     }
+}
 
+.consultation-context {
+    .patient-info-fixed-postion-container {
+        @media screen and (max-width: 768px) {
+            box-shadow: none;
+            border-bottom: none;
+            div.patient-info-fixed {
+                height: 97px;
+
+                .patient-info {
+                    display: block;
+                    padding-top: 20px;
+                    box-sizing: border-box;
+                }
+            }
+            
+        }
+    }
 }
 
 .video-concept-show {

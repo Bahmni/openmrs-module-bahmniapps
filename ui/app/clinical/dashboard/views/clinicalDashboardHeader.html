@@ -17,12 +17,15 @@
             </span>
             </a>
 
-
-            <ul class="header-tabs consultation-tabs">
-                <li class="tab-item" ng-repeat="board in availableBoards track by $index" ng-class="{'tab-selected':board.isSelectedTab}">
-                    <a ng-click="showBoard($index)">{{ board | titleTranslate }}</a>
-                </li>
-            </ul>
+            <div class="header-scrollable-tabs header-tabs">
+                <scrollable-tabs>
+                    <ul>
+                        <li class="tab-item" ng-repeat="board in availableBoards track by $index" ng-class="{'tab-selected':board.isSelectedTab}">
+                            <a ng-click="showBoard($index)">{{ board | titleTranslate }}</a>
+                        </li>
+                    </ul>
+                </scrollable-tabs>
+            </div>
 
             <button class="toggle-patient" ng-click="toggleControlPanel()" ng-class="{'shift': showControlPanel, 'hide-ipad': availableBoards }">
                 <i class="fa fa-bars fa-white fa-large"></i>
@@ -33,6 +36,15 @@
             </button>
         </div>
         <ng-include src="'common/views/mobileHeader.html'"></ng-include>
+        <div class="tabs push-header-tabs hidden-tablet-above">
+            <scrollable-tabs>
+                <ul>
+                    <li class="tab-item" ng-repeat="board in availableBoards track by $index" ng-class="{'tab-selected':board.isSelectedTab}">
+                        <a ng-click="showBoard($index)">{{ board | titleTranslate }}</a>
+                    </li>
+                </ul>
+            </scrollable-tabs>
+        </div>
     </div>
 </div>
 
