@@ -8,9 +8,10 @@
     </div>
     <div class="recent-patients-panel" ng-if="showPatientsList || !triggeredByButton">
         <div class="recent-patients-search">
-             <input type="text" class="search-input" ng-model="::search.searchParameter" ng-focus="getActivePatients()" ng-blur="hidePatientsBySearch()" placeholder={{'SEARCH_BY_PATIENT_ID_KEY'|translate}}
+            <input type="text" class="search-input" ng-model="::search.searchParameter" ng-focus="getActivePatients()" ng-blur="hidePatientsBySearch()" placeholder={{'SEARCH_BY_PATIENT_ID_KEY'|translate}}
                focus-on="search.startPatientSearch" autocomplete="off"
                ng-change="search.filterPatientsByIdentifier()"/>
+            <button type="button" class="close-btn" ng-click="clearSearch()" ng-show="search.searchParameter && search.searchParameter.length"><i class="fa fa-close"></i></button>
         </div>
         <div class="recent-patients-wrapper" ng-show="triggeredByButton || showPatientsBySearch">
             <span  class="recent_patient" ng-if="!search.searchParameter">{{'RECENT_PATIENTS_LABEL'|translate}}</span>

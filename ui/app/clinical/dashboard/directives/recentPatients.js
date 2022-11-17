@@ -48,6 +48,11 @@ angular.module('bahmni.clinical')
                 $state.go('patient.dashboard', {configName: $scope.configName, patientUuid: patientUuid});
             };
 
+            $scope.clearSearch = function () {
+                $scope.search.searchParameter = '';
+                angular.element('.search-input').focus();
+            };
+
             $scope.getActivePatients = function () {
                 $scope.showPatientsBySearch = true;
                 if ($scope.search.patientsCount() > 0) {

@@ -152,6 +152,16 @@ describe("Recent patients", function () {
         });
     });
 
+    describe("clearSearch", function () {
+        it("should set search parameter to empty", function () {
+            scope.search.searchParameter = "John";
+
+            scope.clearSearch();
+
+            expect(scope.search.searchParameter).toBe("");
+        });
+    });
+
     describe("getActivePatients", function () {
         beforeEach(inject(function ($q) {
             var patients = {
