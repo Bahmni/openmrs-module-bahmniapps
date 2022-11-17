@@ -118,12 +118,23 @@
             padding: 0;
 
             .search-input {
-                padding: 8px;
+                padding: 8px 35px 8px 8px;
                 background: #f5f5f5;
                 border: 1px solid #f5f5f5;
                 width: 240px;
                 color: #a5a5a5;
             }
+        }
+
+        .close-btn {
+            right: 10px;
+            top: 8px;
+            color: #000;
+            font-size: 12px;
+            padding: 1px;
+            background: transparent;
+            border: 2px solid #000;
+            border-radius: 100%;
         }
 
         &-wrapper {
@@ -135,7 +146,7 @@
             left: 0;
             right: 0;
             background-color: #fff;
-            color: #a5a5a5
+            color: #a5a5a5;
         }
 
         .recent_patient {
