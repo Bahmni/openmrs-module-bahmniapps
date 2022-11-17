@@ -4,6 +4,7 @@ angular.module('bahmni.registration')
     .service('patientServiceStrategy', ['$http', '$q', '$rootScope', function ($http, $q, $rootScope) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
+        var otpServiceUrl = Bahmni.Registration.Constants.otpServiceUrl;
 
         var search = function (config) {
             var defer = $q.defer();
@@ -71,11 +72,26 @@ angular.module('bahmni.registration')
             return $http.post(url, data, config);
         };
 
+        var smsAlert = function (patient) {
+            console.log("in smsalert");
+            const form = new FormData();
+            form.append('phoneNumber', patient.phoneNumber);
+            form.append('message', '"Welcome to Bahmni"');
+            form.append('originator', '"Bahmni"');
+            var url = otpServiceUrl + "/notificaion/sms";
+            console.log("url --- " + url);
+            return fetch(url, {
+                method: 'POST',
+                body: form
+            });
+        };
+
         return {
             search: search,
             get: getByUuid,
             create: create,
             update: update,
-            generateIdentifier: generateIdentifier
+            generateIdentifier: generateIdentifier,
+            smsAlert: smsAlert
         };
     }]);

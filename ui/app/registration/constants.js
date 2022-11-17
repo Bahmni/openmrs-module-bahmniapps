@@ -22,7 +22,8 @@ Bahmni.Registration.Constants = {
     whatsAppMessage: "REGISTRATION_WHATSAPP_MESSAGE",
     enableWhatsAppButton: false,
     enableDashboardRedirect: false,
-    dashboardUrl: "/bahmni/clinical/index.html#/default/patient/{{patientUuid}}/dashboard"
+    dashboardUrl: "/bahmni/clinical/index.html#/default/patient/{{patientUuid}}/dashboard",
+    otpServiceUrl: hostUrl + "/otp-service"
 };
 
 Bahmni.Registration.Constants.Errors = {
