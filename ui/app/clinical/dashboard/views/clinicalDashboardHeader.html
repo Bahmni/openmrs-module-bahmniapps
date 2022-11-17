@@ -2,7 +2,7 @@
 <div ng-show="!stateChange()">
     <div class="opd-header-wrapper clinical-consultation" id="opd-tabs" ng-class="{'retro-mode':isInEditEncounterMode()}">
 
-        <div class="opd-header-bottom tabs">
+        <div class="opd-header-bottom tabs hidden-mobile">
             <bm-back-links></bm-back-links>
             <recent-patients ng-if="enablePatientSearch()" triggred-by-button></recent-patients>
             <a show-if-privilege="{{adtNavigationConfig.privilege}}" ng-click= "displayConfirmationDialog($event)" class="back-btn" ng-href="{{adtNavigationURL(consultation.uuid)}}"
@@ -32,6 +32,7 @@
                 <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
             </button>
         </div>
+        <ng-include src="'common/views/mobileHeader.html'"></ng-include>
     </div>
 </div>
 

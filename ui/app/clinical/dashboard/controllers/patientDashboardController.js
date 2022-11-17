@@ -46,7 +46,7 @@ angular.module('bahmni.clinical')
             });
 
             var addTabNameToParams = function (board) {
-                $location.search('currentTab', board.translationKey);
+                $location.search('currentTab', board.translationKey).replace();
             };
 
             var getCurrentTab = function () {

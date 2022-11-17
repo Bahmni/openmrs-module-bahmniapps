@@ -1,26 +1,28 @@
 @charset "UTF-8";
 
-.container{
-  @include clearfix;
-  max-width: $max-page-width;
-  margin: 0 auto;
-  @media screen and (max-width: $max-page-width) {
-    padding: 0 10px;
-  }
+.container {
+    @include clearfix;
+    max-width: $max-page-width;
+    margin: 0 auto;
+
+    @media screen and (max-width: $max-page-width) {
+        padding: 0 10px;
+    }
 }
 
-.opd-header-wrapper{
+.opd-header-wrapper {
     @include clearfix;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 999;
+    z-index: 1000;
     padding: 0 10px;
     box-sizing: border-box;
     background: $bahmniSecondaryColor;
     height: 52px;
     width: 100%;
+
     header {
         position: relative;
         color: $lightGray;
@@ -30,65 +32,79 @@
         line-height: 1em;
         max-width: $max-page-width;
         margin: 0px auto;
-        .header-logo{
-          display: block;
-          width: 35px;
-          margin: 8px auto;
-          img {
+
+        .header-logo {
             display: block;
             width: 35px;
-            border-radius: 17px;
-            box-shadow: 0 8px 6px -7px $black;
-          }
+            margin: 8px auto;
+
+            img {
+                display: block;
+                width: 35px;
+                border-radius: 17px;
+                box-shadow: 0 8px 6px -7px $black;
+            }
         }
+
         ul {
             display: inline-block;
-            float: left;
-            &.user-info{
-                float:right;
+
+            &.user-info {
+                float: right;
             }
-            li{
+
+            li {
                 @include font-size(0.9);
                 display: table;
                 float: left;
-                &.logoff{
-                    margin:2px 0px 2px 0px;
-                    button{
-                        padding:8px;
+
+                &.logoff {
+                    margin: 2px 0px 2px 0px;
+
+                    button {
+                        padding: 8px;
                         margin-top: 1px;
                         background: darken($bahmniSecondaryColor, 10%);
-                        border:1px solid $bahmniPrimaryColor;
-                        &:hover{
-                          background: darken($bahmniSecondaryColor, 5%);
-                          color: $white;
-                       }
+                        border: 1px solid $bahmniPrimaryColor;
+
+                        &:hover {
+                            background: darken($bahmniSecondaryColor, 5%);
+                            color: $white;
+                        }
                     }
-                }
-            a {
-                cursor:pointer;
-                &.user-name{
-                    color: $lightGray;
-                    &:hover{
-                        text-decoration: none;
-                        cursor:default;
-                    }
-                }
-                &.back-btn-noIcon{
-                  color: #fff;
-                  padding: 0 !important;
-                  margin: 21px 10px 0 !important;
-                  display: block;
-                  &.active{
-                    font-family: $primaryBoldFont;
-                  }
-                  &:focus{
-                    outline:none;
-                  }
                 }
 
-             }
+                a {
+                    cursor: pointer;
+
+                    &.user-name {
+                        color: $lightGray;
+
+                        &:hover {
+                            text-decoration: none;
+                            cursor: default;
+                        }
+                    }
+
+                    &.back-btn-noIcon {
+                        color: #fff;
+                        padding: 0 !important;
+                        margin: 21px 10px 0 !important;
+                        display: block;
+
+                        &.active {
+                            font-family: $primaryBoldFont;
+                        }
+
+                        &:focus {
+                            outline: none;
+                        }
+                    }
+
+                }
             }
         }
+
         .btn-user-info {
             background: lighten($bahmniPrimaryColor, 10%);
             padding: 15px;
@@ -98,103 +114,122 @@
             position: absolute;
             top: 0;
             right: 0;
-          @media screen and (max-width: 959px) {
-            margin: 0;
-            padding: 15px;
-          }
-          &:focus {
-            outline: 0;
-          }
-          i.mini {
-            font-size: .9em;
-          }
-          & + ul {
-            display: none;
-            &.active {
-              background: lighten($bahmniPrimaryColor, 10%);
-              display: block;
-              position: absolute;
-              right: 0;
-              top: 50px;
-              z-index: 10000;
-              @media screen and (max-width: 959px) {
-                top: 49px;
-                right: 0;
-              }
+
+            @media screen and (max-width: 959px) {
+                margin: 0;
+                padding: 15px;
             }
-            li {
-              float: left;
-              clear: both;
-              text-align: left;
-              border-bottom: 1px solid lighten($bahmniPrimaryColor, 10%);
-              margin: 0;
-              a {
-                padding: 10px 5px;
-                display: inline-block;
-                min-width: 190px;
-                &:hover {
-                  text-decoration: none;
-                  background: lighten($bahmniPrimaryColor, 10%);
-                }
-              }
-              a.disabled {
-                color: $lightGray;
-                .fa-user {
-                    color: $lightGray;
-                }
-              }
+
+            &:focus {
+                outline: 0;
             }
-          }
+
+            i.mini {
+                font-size: .9em;
+            }
+
+            &+ul {
+                display: none;
+
+                &.active {
+                    background: lighten($bahmniPrimaryColor, 10%);
+                    display: block;
+                    position: absolute;
+                    right: 0;
+                    top: 50px;
+                    z-index: 10000;
+
+                    @media screen and (max-width: 959px) {
+                        top: 49px;
+                        right: 0;
+                    }
+                }
+
+                li {
+                    float: left;
+                    clear: both;
+                    text-align: left;
+                    border-bottom: 1px solid lighten($bahmniPrimaryColor, 10%);
+                    margin: 0;
+
+                    a {
+                        padding: 10px 5px;
+                        display: inline-block;
+                        min-width: 190px;
+
+                        &:hover {
+                            text-decoration: none;
+                            background: lighten($bahmniPrimaryColor, 10%);
+                        }
+                    }
+
+                    a.disabled {
+                        color: $lightGray;
+
+                        .fa-user {
+                            color: $lightGray;
+                        }
+                    }
+                }
+            }
         }
     }
+
     .opd-header-bottom {
         border-radius: 0px;
-        position:relative;
+        position: relative;
         margin: 0px;
         max-width: $max-page-width;
         margin: 0px auto;
-        .dashboard-header-right-wrapper{
-          float: right;
+
+        .dashboard-header-right-wrapper {
+            float: right;
         }
-        .header-tabs{
-          float:left;
-          margin-top: 6px;
-          margin-left: 20px;
-          list-style: none;
+
+        .header-tabs {
+            float: left;
+            margin-top: 6px;
+            margin-left: 20px;
+            list-style: none;
         }
+
         .grouped-buttons {
-          float: left;
-          padding-top: 6px;
-          margin: 0 10px;
-          .btn--left {
-            padding-left: 10px;
-            padding-right: 10px;
-            margin-right: 10px;
-          }
-          @media screen and(max-width:470px){
-            margin: 0;
-          }
+            float: left;
+            padding-top: 6px;
+            margin: 0 10px;
+
+            .btn--left {
+                padding-left: 10px;
+                padding-right: 10px;
+                margin-right: 10px;
+            }
+
+            @media screen and(max-width:470px) {
+                margin: 0;
+            }
         }
+
         .dialog-button-group {
-          margin-top: 6px;
-          float: left;
-          padding: 5px 10px;
-          font-size: 14px;
-          height: 40px;
+            margin-top: 6px;
+            float: left;
+            padding: 5px 10px;
+            font-size: 14px;
+            height: 40px;
         }
 
         .start-tele-consultation {
-          clear: none;
-          margin-right: 10px;
-          cursor: pointer;
-          margin-top: 10px;
+            clear: none;
+            margin-right: 10px;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
         .print {
-          clear: none;
+            clear: none;
         }
     }
 }
+
 .opd-wrapper {
     position: relative;
     margin: 0px;
@@ -207,15 +242,18 @@
         max-width: $max-page-width;
         margin: 0 auto;
         box-sizing: border-box;
+
         @media screen and (max-width: $max-page-width) {
-          padding: 0 10px;
+            padding: 0 10px;
         }
+
         nav.navbar {
             background: #F8F8F8;
             overflow: hidden;
             padding: 5px 5px;
             margin: 15px 0;
             border-radius: 3px;
+
             .navbar-right {
                 float: right;
             }
@@ -224,7 +262,17 @@
 }
 
 .offline-ui {
-  z-index: 100007;
+    z-index: 100007;
 }
 
+.hidden-mobile {
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
+}
 
+.hidden-tablet-above {
+    @media screen and (min-width: 769px) {
+        display: none;
+    }
+}

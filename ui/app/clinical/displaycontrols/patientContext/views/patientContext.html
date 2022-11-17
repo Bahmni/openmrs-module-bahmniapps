@@ -1,6 +1,6 @@
 <div class="patient-info-fixed-postion-container" id="patientContext">
     <div class="patient-info-fixed">
-        <ul>
+        <ul class="hidden-mobile">
             <li class="patient-name-image-container">
                 <img class="patient-image" ng-src="{{::patientContext.image}}" fallback-src='../images/blank-user.gif'>
                 <span class="patient-name" ng-if="showNameAndImage" >
@@ -22,5 +22,12 @@
                 {{::value.description |translate}}: {{value.value}}
             </li>
         </ul>
+        <div class="patient-info hidden-tablet-above">
+            <button type="button" class="prev-page" history-back>
+                <i class="fa fa-arrow-left"></i>
+            </button>
+            <span class="name">{{patientContext.givenName}} {{patientContext.familyName}}</span>
+            <span class="gender-age">({{patientContext.birthdate | birthDateToYears}}, {{patientContext.gender.slice(0,1)}})</span>
+        </div> 
     </div>
 </div>
