@@ -1,4 +1,4 @@
-<patient-context patient="patient" show-name-and-image="tabBeingPrinted.printing.showNameAndImage"></patient-context>
+<patient-context patient="patient" show-name-and-image="tabBeingPrinted.printing.showNameAndImage" ng-class="{'consultation-context': !stateChange()}"></patient-context>
 <dashboard ng-show ="stateChange()" patient="::patient" config="::isDashboardPrinting ? tabBeingPrinted : clinicalDashboardConfig.currentTab"
            disease-templates="diseaseTemplates" section-groups="sectionGroups" visit-history="visitHistory"
            active-visit-uuid="visitHistory.activeVisit.uuid" visit-summary="visitSummary" enrollment="enrollment">

@@ -227,6 +227,14 @@
         .print {
             clear: none;
         }
+
+        .header-scrollable-tabs {
+            max-width: calc(100% - 350px);
+
+            @media screen and (min-width: 1025px) {
+                max-width: calc(100% - 450px);
+            }
+        }
     }
 }
 
