@@ -1396,6 +1396,44 @@ table.treatments-details-table {
                 }
             }
         }
+
+        .patient-info {
+            padding: 0 10px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            color: #333;
+
+            @media screen and (min-width: 769px) {
+                display: none;
+            }
+
+            .prev-page {
+                background: transparent;
+                outline: none;
+                padding: 0;
+                margin-right: 15px;
+
+                &:hover,
+                &:focus {
+                    opacity: 1;
+                    background: transparent;
+                }
+
+                .fa {
+                    color: #333;
+                }
+            }
+
+            .name {
+                margin-right: 5px;
+            }
+
+            .gender-age {
+                font-weight: 300;
+                font-family: 'OpenSans';
+            }
+        }
     }
 
 }
