@@ -50,7 +50,7 @@ angular.module('bahmni.clinical')
 
             $scope.clearSearch = function () {
                 $scope.search.searchParameter = '';
-                angular.element('.search-input').focus();
+                $('.search-input').focus();
             };
 
             $scope.getActivePatients = function () {
