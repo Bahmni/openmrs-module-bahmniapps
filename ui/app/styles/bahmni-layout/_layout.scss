@@ -238,14 +238,22 @@
             }
 
             @media screen and (max-width: 768px) {
-                position: absolute;
-                top: 106px;
-                max-width: calc(100vw - 20px);
                 float: none;
                 margin: 0;
             }
         }
     }
+
+    .header-scrollable-tabs {
+        @media screen and (max-width: 768px) {
+            position: absolute;
+            top: 96px;
+            max-width: 100%;
+            float: none;
+            margin: 0;
+        }
+    }
+
 }
 
 .opd-wrapper {

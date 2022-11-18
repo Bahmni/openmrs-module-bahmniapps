@@ -76,18 +76,6 @@
                     </li>
                 </ul>
             </div>
-            <div class="clinical-header mobile-menu fl">
-                <a id="MobileDashboardButton" class="mobile-menu-icon" ng-click="toggleDashboardMenu()">
-                    <i class="fa fa-bars fa-white fa-small"></i>
-                    <span>Dashboard</span>
-                </a>
-                <ul class="header-tabs" ng-if="clinicalDashboardConfig.showTabs()" ng-show="showDashboardMenu">
-                    <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.tabs"
-                        ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentTab(dashboard) && !dashboard.displayByDefault}">
-                        <a ng-click="showDashboard(dashboard)">{{dashboard | titleTranslate}} </a>
-                    </li>
-                </ul>
-            </div>
             <div class="dashboard-header-right-wrapper">
                 <div ng-if="::clinicalDashboardConfig.allowAdhocTeleConsultation" ng-click="startAdhocTeleconsultationLink()" class="dialog-button-group start-tele-consultation"
                      title="{{'START_TELECON_KEY'|translate}}">
@@ -135,5 +123,15 @@
             </div>
         </div>
         <ng-include src="'common/views/mobileHeader.html'"></ng-include>
+        <div class="tabs header-scrollable-tabs hidden-tablet-above" ng-if="clinicalDashboardConfig.showTabs()">
+            <scrollable-tabs>
+                <ul>
+                    <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.tabs"
+                        ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentTab(dashboard) && !dashboard.displayByDefault}">
+                        <a ng-click="showDashboard(dashboard)">{{dashboard | titleTranslate}} </a>
+                    </li>
+                </ul>
+            </scrollable-tabs>
+        </div>
     </div>
 </div>
