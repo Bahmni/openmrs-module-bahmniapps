@@ -48,6 +48,7 @@
         background: #88af28;
         color: #fff;
         padding: 11px 8px 11px;
+        margin-right: 0;
 
         &:hover,
         &:focus {
@@ -166,10 +167,4 @@
         }
         
     }
-}
-
-.push-header-tabs {
-    position: absolute;
-    top: 86px;
-    max-width: calc(100vw - 20px);
 }

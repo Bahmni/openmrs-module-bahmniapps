@@ -229,10 +229,20 @@
         }
 
         .header-scrollable-tabs {
-            max-width: calc(100% - 350px);
+            @media screen and (min-width: 769px) {
+                max-width: calc(100% - 350px);
+            }
 
             @media screen and (min-width: 1025px) {
                 max-width: calc(100% - 450px);
+            }
+
+            @media screen and (max-width: 768px) {
+                position: absolute;
+                top: 106px;
+                max-width: calc(100vw - 20px);
+                float: none;
+                margin: 0;
             }
         }
     }
