@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientService', ['$http', '$rootScope', '$bahmniCookieStore', '$q', 'patientServiceStrategy', 'sessionService', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceStrategy, sessionService) {
+    .factory('patientService', ['$http', '$rootScope', '$bahmniCookieStore', '$q', 'patientServiceStrategy', 'sessionService', '$translate', 'appService', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceStrategy, sessionService, $translate, appService) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
         var otpServiceUrl = Bahmni.Registration.Constants.otpServiceUrl;
@@ -91,16 +91,23 @@ angular.module('bahmni.registration')
             return $http.post(url, data, config);
         };
 
-        const smsAlert = function (patient) {
-            console.log("in smsalert");
-            const url = "http://localhost:9052/notification/sms";
+        var getRegistrationMessage = function (patientId, name, age, gender) {
+            var message = $translate.instant(appService.getAppDescriptor().getConfigValue("registrationMessage") || Bahmni.Registration.Constants.registrationMessage);
+            message = message.replace("#patientId", patientId);
+            message = message.replace("#name", name);
+            message = message.replace("#age", age + " years");
+            message = message.replace("#gender", gender);
+            return message;
+        };
+
+        const smsAlert = function (patientId, name, age, gender, phoneNumber) {
+            const url = otpServiceUrl + "/notification/sms";
             return $http({
                 url: url,
                 method: 'POST',
                 params: {
-                    phoneNumber: patient.phoneNumber,
-                    message: "Welcome to Bahmni",
-                    originator: "Bahmni"
+                    phoneNumber: phoneNumber,
+                    message: getRegistrationMessage(patientId, name, age, gender)
                 },
                 withCredentials: true
             });
@@ -115,6 +122,7 @@ angular.module('bahmni.registration')
             updateImage: updateImage,
             searchByNameOrIdentifier: searchByNameOrIdentifier,
             getAllPatientIdentifiers: getAllPatientIdentifiers,
-            smsAlert: smsAlert
+            smsAlert: smsAlert,
+            getRegistrationMessage: getRegistrationMessage
         };
     }]);

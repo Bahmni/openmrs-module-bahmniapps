@@ -2,9 +2,9 @@
 
 angular.module('bahmni.registration')
     .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper',
-        '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope', 'auditLogService', '$translate',
+        '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope', 'auditLogService',
         function ($scope, patientService, encounterService, $stateParams, openmrsPatientMapper, $window, $q, spinner,
-                  appService, messagingService, $rootScope, auditLogService, $translate) {
+                  appService, messagingService, $rootScope, auditLogService) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             var uuid = $stateParams.patientUuid;
             $scope.patient = {};
@@ -98,11 +98,8 @@ angular.module('bahmni.registration')
             };
 
             $scope.sendWhatsAppMessage = function () {
-                var whatsAppMessage = $translate.instant(appService.getAppDescriptor().getConfigValue("whatsAppMessage") || Bahmni.Registration.Constants.whatsAppMessage);
-                whatsAppMessage = whatsAppMessage.replace("#patientId", $scope.patient.primaryIdentifier.identifier);
-                whatsAppMessage = whatsAppMessage.replace("#name", $scope.patient.givenName + " " + $scope.patient.familyName);
-                whatsAppMessage = whatsAppMessage.replace("#age", $scope.patient.age.years + " years");
-                whatsAppMessage = whatsAppMessage.replace("#gender", $scope.patient.gender);
+                var name = $scope.patient.givenName + " " + $scope.patient.familyName;
+                var whatsAppMessage = patientService.getRegistrationMessage($scope.patient.primaryIdentifier.identifier, name, $scope.patient.age.years, $scope.patient.gender);
                 var phoneNumber = $scope.patient.phoneNumber.replace("+", "");
                 var url = "https://api.whatsapp.com/send?phone=" + phoneNumber + "&text=" + encodeURIComponent(whatsAppMessage);
                 window.open(url);

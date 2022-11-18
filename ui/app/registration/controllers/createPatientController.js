@@ -12,7 +12,7 @@ angular.module('bahmni.registration')
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
             $scope.today = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime(dateUtil.now());
             $scope.moduleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
-            $scope.enableRegistrationSMSAlert = (appService.getAppDescriptor().getConfigValue("enableRegistrationSMSAlert") || Bahmni.Registration.Constants.enableRegistrationSMSAlert);
+            var patientId;
             var getPersonAttributeTypes = function () {
                 return $rootScope.patientConfiguration.attributeTypes;
             };
@@ -152,6 +152,7 @@ angular.module('bahmni.registration')
                 $scope.patient.registrationDate = dateUtil.now();
                 $scope.patient.newlyAddedRelationships = [{}];
                 $scope.actions.followUpAction(patientProfileData);
+                patientId = patientProfileData.patient.identifiers[0].identifier;
             };
 
             var createPatient = function (jumpAccepted) {
@@ -201,21 +202,24 @@ angular.module('bahmni.registration')
                     if (errorMessage) {
                         messagingService.showMessage("error", errorMessage);
                         errorMessage = undefined;
+                    } else {
+                        sendSMS();
                     }
                 });
             };
 
             $scope.afterSave = function () {
                 messagingService.showMessage("info", "REGISTRATION_LABEL_SAVED");
-                sendSMS();
                 $state.go("patient.edit", {
                     patientUuid: $scope.patient.uuid
                 });
             };
 
             var sendSMS = function () {
-                if ($scope.enableRegistrationSMSAlert && ($scope.patient.phoneNumber != undefined)) {
-                    patientService.smsAlert($scope.patient);
+                var enableRegistrationSMSAlert = (appService.getAppDescriptor().getConfigValue("enableRegistrationSMSAlert") || Bahmni.Registration.Constants.enableRegistrationSMSAlert);
+                if (enableRegistrationSMSAlert && ($scope.patient.phoneNumber != undefined)) {
+                    var name = $scope.patient.givenName + " " + $scope.patient.familyName;
+                    patientService.smsAlert(patientId, name, $scope.patient.age.years, $scope.patient.gender, $scope.patient.phoneNumber);
                 }
             };
         }

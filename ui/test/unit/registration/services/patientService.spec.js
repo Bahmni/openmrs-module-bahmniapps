@@ -4,6 +4,7 @@ describe('Patient resource', function () {
     var patientService;
     var patient;
     var sessionService;
+    var appService;
 
 
     var openmrsUrl = "http://blah";
@@ -73,8 +74,10 @@ describe('Patient resource', function () {
         module(function ($provide) {
             Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;
             sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
+            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             $provide.value('$http', mockHttp);
             $provide.value('sessionService', sessionService);
+            $provide.value('appService', appService);
         });
 
         patientConfiguration = new Bahmni.Registration.PatientConfig([
