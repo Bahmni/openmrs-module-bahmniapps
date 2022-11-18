@@ -16,9 +16,12 @@
         <button type="button" class="btn-icon" bm-gallery patient="patient" access-impression="true">
             <i class="fa fa-file-text" bm-lazy-image-observation-gallery-items promise="patientDocumentsPromise"></i>
         </button>
-        <button type="button" class="consultation-btn" ng-if="visitHistory.activeVisit || retrospectiveEntry || allowConsultation()"
+        <button type="button" class="consultation-btn" ng-if="(visitHistory.activeVisit || retrospectiveEntry || allowConsultation()) && stateChange()"
             ng-click="openConsultation()" accesskey="{{'CONSULTATION_SHORTCUT_KEY' | translate}}"
             ng-bind-html="'CONSULTATION_TAB_KEY' | translate">
+        </button>
+        <button class="confirm consultation-btn" ng-show="availableBoards && !stateChange()" single-click="save()" accesskey="{{'SAVE_ACCESS_KEY' | translate}}">
+            <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
         </button>
     </div>
 </div>
