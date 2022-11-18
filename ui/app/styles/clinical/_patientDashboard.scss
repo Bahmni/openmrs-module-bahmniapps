@@ -473,7 +473,11 @@ category:  Layout - sections
 
 .patient-dashboard.visit {
     padding: 0;
-    margin-top: 45px
+    margin-top: 45px;
+
+    @media screen and (max-width: 768px) {
+        margin-top: 95px;
+    }
 }
 
 .dashboard-visit-summary {
@@ -1437,17 +1441,17 @@ table.treatments-details-table {
     }
 }
 
-.consultation-context {
+.dashboard-consultation {
     .patient-info-fixed-postion-container {
         @media screen and (max-width: 768px) {
             box-shadow: none;
             border-bottom: none;
             div.patient-info-fixed {
-                height: 97px;
+                height: 87px;
 
                 .patient-info {
                     display: block;
-                    padding-top: 20px;
+                    padding-top: 10px;
                     box-sizing: border-box;
                 }
             }
