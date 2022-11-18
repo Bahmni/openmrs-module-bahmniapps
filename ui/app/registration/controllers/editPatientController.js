@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('EditPatientController', ['$scope', 'patientService', 'patientServiceStrategy', 'encounterService', '$stateParams', 'openmrsPatientMapper',
+    .controller('EditPatientController', ['$scope', 'patientService', 'encounterService', '$stateParams', 'openmrsPatientMapper',
         '$window', '$q', 'spinner', 'appService', 'messagingService', '$rootScope', 'auditLogService', '$translate',
-        function ($scope, patientService, patientServiceStrategy, encounterService, $stateParams, openmrsPatientMapper, $window, $q, spinner,
+        function ($scope, patientService, encounterService, $stateParams, openmrsPatientMapper, $window, $q, spinner,
                   appService, messagingService, $rootScope, auditLogService, $translate) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             var uuid = $stateParams.patientUuid;
@@ -30,7 +30,6 @@ angular.module('bahmni.registration')
                 expandDataFilledSections();
                 $scope.patientLoaded = true;
                 $scope.enableWhatsAppButton = (appService.getAppDescriptor().getConfigValue("enableWhatsAppButton") || Bahmni.Registration.Constants.enableWhatsAppButton) && ($scope.patient.phoneNumber != undefined);
-                $scope.enableRegistrationSMSAlert = (appService.getAppDescriptor().getConfigValue("enableRegistrationSMSAlert") || Bahmni.Registration.Constants.enableRegistrationSMSAlert) && ($scope.patient.phoneNumber != undefined);
             };
 
             var expandDataFilledSections = function () {
@@ -112,15 +111,6 @@ angular.module('bahmni.registration')
             $scope.afterSave = function () {
                 auditLogService.log($scope.patient.uuid, Bahmni.Registration.StateNameEvenTypeMap['patient.edit'], undefined, "MODULE_LABEL_REGISTRATION_KEY");
                 messagingService.showMessage("info", "REGISTRATION_LABEL_SAVED");
-                sendSMS();
-            };
-
-            var sendSMS = function () {
-                console.log("-------- in save -----");
-                // if($scope.enableRegistrationSMSAlert){
-                console.log("Inside if of edit");
-                patientServiceStrategy.smsAlert($scope.patient);
-                // }
             };
         }]);
 

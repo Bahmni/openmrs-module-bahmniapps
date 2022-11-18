@@ -23,7 +23,8 @@ Bahmni.Registration.Constants = {
     enableWhatsAppButton: false,
     enableDashboardRedirect: false,
     dashboardUrl: "/bahmni/clinical/index.html#/default/patient/{{patientUuid}}/dashboard",
-    otpServiceUrl: hostUrl + "/otp-service"
+    otpServiceUrl: hostUrl + "/otp-service",
+    enableRegistrationSMSAlert: true
 };
 
 Bahmni.Registration.Constants.Errors = {

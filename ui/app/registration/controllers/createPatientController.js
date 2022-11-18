@@ -12,6 +12,7 @@ angular.module('bahmni.registration')
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
             $scope.today = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime(dateUtil.now());
             $scope.moduleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
+            $scope.enableRegistrationSMSAlert = (appService.getAppDescriptor().getConfigValue("enableRegistrationSMSAlert") || Bahmni.Registration.Constants.enableRegistrationSMSAlert);
             var getPersonAttributeTypes = function () {
                 return $rootScope.patientConfiguration.attributeTypes;
             };
@@ -206,9 +207,16 @@ angular.module('bahmni.registration')
 
             $scope.afterSave = function () {
                 messagingService.showMessage("info", "REGISTRATION_LABEL_SAVED");
+                sendSMS();
                 $state.go("patient.edit", {
                     patientUuid: $scope.patient.uuid
                 });
+            };
+
+            var sendSMS = function () {
+                if ($scope.enableRegistrationSMSAlert && ($scope.patient.phoneNumber != undefined)) {
+                    patientService.smsAlert($scope.patient);
+                }
             };
         }
     ]);
