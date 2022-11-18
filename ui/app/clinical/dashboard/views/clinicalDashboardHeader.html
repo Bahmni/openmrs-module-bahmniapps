@@ -17,7 +17,7 @@
             </span>
             </a>
 
-            <div class="header-scrollable-tabs header-tabs">
+            <div class="header-scrollable-tabs header-tabs" ng-if="!stateChange()">
                 <scrollable-tabs>
                     <ul>
                         <li class="tab-item" ng-repeat="board in availableBoards track by $index" ng-class="{'tab-selected':board.isSelectedTab}">
@@ -36,7 +36,7 @@
             </button>
         </div>
         <ng-include src="'common/views/mobileHeader.html'"></ng-include>
-        <div class="tabs push-header-tabs hidden-tablet-above">
+        <div class="tabs push-header-tabs hidden-tablet-above" ng-if="!stateChange()">
             <scrollable-tabs>
                 <ul>
                     <li class="tab-item" ng-repeat="board in availableBoards track by $index" ng-class="{'tab-selected':board.isSelectedTab}">
