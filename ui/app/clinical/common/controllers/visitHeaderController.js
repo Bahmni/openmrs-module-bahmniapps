@@ -1,13 +1,24 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitHeaderController', ['$rootScope', '$scope', '$state', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'visitConfig', 'contextChangeHandler', '$location', '$stateParams', 'urlHelper',
-        function ($rootScope, $scope, $state, clinicalAppConfigService, patientContext, visitHistory, visitConfig, contextChangeHandler, $location, $stateParams, urlHelper) {
+    .controller('VisitHeaderController', ['$rootScope', '$scope', '$state', 'clinicalAppConfigService', 'configurations', 'encounterService', 'patientContext', 'visitHistory', 'visitConfig', 'contextChangeHandler', '$location', '$stateParams', 'urlHelper',
+        function ($rootScope, $scope, $state, clinicalAppConfigService, configurations, encounterService, patientContext, visitHistory, visitConfig, contextChangeHandler, $location, $stateParams, urlHelper) {
             $scope.patient = patientContext.patient;
             $scope.visitHistory = visitHistory;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
             $scope.showControlPanel = false;
             $scope.visitTabConfig = visitConfig;
+            $scope.showMobileMenu = false;
+            $scope.visitPage = true;
+
+            var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
+            $scope.patientDocumentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
+                return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
+            });
+
+            $scope.toggleMobileMenu = function () {
+                $scope.showMobileMenu = !$scope.showMobileMenu;
+            };
 
             $scope.switchTab = function (tab) {
                 $scope.visitTabConfig.switchTab(tab);

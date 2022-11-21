@@ -1,9 +1,10 @@
+/* eslint-disable angular/di */
 'use strict';
 
 describe('visitHeaderController', function () {
-    var scope, controller, rootScope,visitTabConfig;
-    var mockClinicalAppConfigService= jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink', 'getAllConsultationBoards']);
-    var mockLocation= jasmine.createSpyObj('$location', ['path', 'url']);
+    var scope, controller, rootScope, visitTabConfig, configurations, encounterService;
+    var mockClinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink', 'getAllConsultationBoards']);
+    var mockLocation = jasmine.createSpyObj('$location', ['path', 'url']);
     var mockUrlHelper = {
         getPatientUrl: function () {
             return "/patient/somePatientUuid/dashboard";
@@ -24,10 +25,20 @@ describe('visitHeaderController', function () {
             printing: {title: "Awesome"}
         }
     ];
+
+    configurations = {
+        encounterConfig: function () {
+            return configurations;
+        },
+        getPatientDocumentEncounterTypeUuid: function () {
+            return "patientDocumentEncounterTypeUuid";
+        }
+    };
     var contextChangeHandler = {
         execute: function () {
-            return {allow: true}
-        }, reset: function () {
+            return {allow: true};
+        },
+        reset: function () {
         }
     };
 
@@ -41,7 +52,7 @@ describe('visitHeaderController', function () {
         spyOn(rootScope, '$broadcast');
     });
 
-    beforeEach(function() {
+    beforeEach(function () {
         mockClinicalAppConfigService.getConsultationBoardLink.and.returnValue("/patient/patient_uuid/dashboard/consultation");
         visitTabConfig = new Bahmni.Clinical.TabConfig(config);
         var boards = [{
@@ -57,29 +68,38 @@ describe('visitHeaderController', function () {
             }
         }];
         mockClinicalAppConfigService.getAllConsultationBoards.and.returnValue(boards);
+
+        encounterService = jasmine.createSpyObj('encounterService', ['getEncounterType', 'create', 'getEncountersForEncounterType', 'then']);
+        encounterService.getEncountersForEncounterType.and.callFake(function () {
+            var deferred = Q.defer();
+            deferred.resolve({data: {results: []}});
+            return deferred.promise;
+        });
+        encounterService.then.and.returnValue({data: {results: []}});
     });
 
-    function createController(stateParams) {
+    function createController (stateParams) {
         return controller('VisitHeaderController', {
             $scope: scope,
             $state: null,
-            $rootScope:rootScope,
-            clinicalAppConfigService:mockClinicalAppConfigService,
-            patientContext:{patient:{uuid:"patient_uuid"}},
-            visitHistory:null,
-            visitConfig:visitTabConfig,
-            $stateParams: stateParams  || {configName:"default"},
-            contextChangeHandler:contextChangeHandler,
-            $location:mockLocation,
-            urlHelper:mockUrlHelper
+            $rootScope: rootScope,
+            clinicalAppConfigService: mockClinicalAppConfigService,
+            patientContext: {patient: {uuid: "patient_uuid"}},
+            visitHistory: null,
+            visitConfig: visitTabConfig,
+            $stateParams: stateParams || {configName: "default"},
+            contextChangeHandler: contextChangeHandler,
+            $location: mockLocation,
+            urlHelper: mockUrlHelper,
+            configurations: configurations,
+            encounterService: encounterService
         });
     }
-
 
     describe('switchTab', function () {
         it("should broadcast event:clearVisitBoard with the particular tab as param", function () {
             createController();
-            scope.switchTab( config[1]);
+            scope.switchTab(config[1]);
             expect(rootScope.$broadcast).toHaveBeenCalledWith('event:clearVisitBoard', config[1]);
         });
     });
@@ -88,7 +108,7 @@ describe('visitHeaderController', function () {
         it("should broadcast event:clearVisitBoard with the particular tab as param", function () {
             createController();
             scope.closeTab(config[1]);
-            expect(rootScope.$broadcast).toHaveBeenCalledWith('event:clearVisitBoard',  config[1]);
+            expect(rootScope.$broadcast).toHaveBeenCalledWith('event:clearVisitBoard', config[1]);
         });
     });
 
@@ -97,7 +117,7 @@ describe('visitHeaderController', function () {
             createController();
             scope.visitTabConfig.currentTab = config[0];
             scope.print();
-            expect(rootScope.$broadcast).toHaveBeenCalledWith('event:printVisitTab',config[0]);
+            expect(rootScope.$broadcast).toHaveBeenCalledWith('event:printVisitTab', config[0]);
         });
     });
 
@@ -110,9 +130,16 @@ describe('visitHeaderController', function () {
         it("should return true if current tab have printing configured", function () {
             createController();
             scope.visitTabConfig.currentTab = config[0];
-            scope.visitTabConfig.currentTab.printing = {"header":"Printing header"};
+            scope.visitTabConfig.currentTab.printing = {"header": "Printing header"};
             expect(scope.showPrint()).toBeTruthy();
         });
+    });
+
+    it("should toggle mobile menu", function () {
+        createController();
+        scope.toggleMobileMenu();
+
+        expect(scope.showMobileMenu).toBeTruthy();
     });
 
     describe('gotoPatientDashboard', function () {
@@ -136,7 +163,7 @@ describe('visitHeaderController', function () {
         });
 
         it("should goto consultation from Visit page with given stateParams", function () {
-            var stateParams = {configName:"program", programUuid: "programUuid", enrollment: "patientProgramUuid", patientUuid: "patientUuid"};
+            var stateParams = {configName: "program", programUuid: "programUuid", enrollment: "patientProgramUuid", patientUuid: "patientUuid"};
             createController(stateParams);
             scope.collapseControlPanel = jasmine.createSpy('collapseControlPanel');
             scope.openConsultation();
