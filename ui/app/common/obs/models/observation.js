@@ -88,7 +88,7 @@ Bahmni.Common.Obs.Observation = (function () {
             }
 
             if (this.groupMembers.length > 1 && this.formNamespace != null) {
-                if(this.groupMembers[0].value.name !== 'Other generic') {
+                if (this.groupMembers[0].value.name !== 'Other generic') {
                     return this.groupMembers[0].value.name + " " + "since" + " " + this.groupMembers[1].value + " " + this.groupMembers[2].value.name;
                 } else {
                     return this.groupMembers[0].value.name + ' (' + this.groupMembers[1].value + ") " + "since" + " " + this.groupMembers[2].value + " " + this.groupMembers[3].value.name;
