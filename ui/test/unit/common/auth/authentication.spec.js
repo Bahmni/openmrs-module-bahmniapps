@@ -63,22 +63,12 @@ describe("Authentication", function () {
 
             $q.defer.and.returnValue(deferrable);
 
-            var fakeHttpPromise = {
-                error: function(callback) {
-                    callback("Error")
-                },
-                success: function(callback){
-                    return {
-                        error: function(callback) {
-                            callback("Error")
-                        },
-                        success: function(callback){
-                            callback("Sucess")
-                        }
-                    };
+            var fakeHttpGetPromise = {
+                then: function(success, failure) {
+                    success({"status" : 204});
                 }
             };
-            spyOn($http, 'delete').and.returnValue(fakeHttpPromise);
+            spyOn($http, 'get').and.returnValue(fakeHttpGetPromise);
 
             sessionService.loginUser("userName", "password", "location");
             expect($bahmniCookieStore.put).toHaveBeenCalled();
@@ -99,22 +89,12 @@ describe("Authentication", function () {
 
             $q.defer.and.returnValue(deferrable);
 
-            var fakeHttpPromise = {
-                error: function(callback) {
-                    callback("Error")
-                },
-                success: function(callback){
-                    return {
-                        error: function(callback) {
-                            callback("Error")
-                        },
-                        success: function(callback){
-                            callback("Sucess")
-                        }
-                    };
+            var fakeHttpGetPromise = {
+                then: function(success, failure) {
+                    success({"status" : 204});
                 }
             };
-            spyOn($http, 'delete').and.returnValue(fakeHttpPromise);
+            spyOn($http, 'get').and.returnValue(fakeHttpGetPromise);
 
             sessionService.loginUser("userName", "password", "location");
             expect($bahmniCookieStore.put).not.toHaveBeenCalled();
@@ -132,23 +112,12 @@ describe("Authentication", function () {
             };
 
             $q.defer.and.returnValue(deferrable);
-
-            var fakeHttpPromise = {
-                error: function(callback) {
-                    callback("Error")
-                },
-                success: function(callback){
-                    return {
-                        error: function(callback) {
-                            callback("Error")
-                        },
-                        success: function(callback){
-                            callback("Sucess")
-                        }
-                    };
+            var fakeHttpGetPromise = {
+                then: function(success, failure) {
+                    success({"status" : 204});
                 }
             };
-            spyOn($http, 'delete').and.returnValue(fakeHttpPromise);
+            spyOn($http, 'get').and.returnValue(fakeHttpGetPromise);
 
             sessionService.loginUser("userName", "password", "location", "123456");
             expect($bahmniCookieStore.put).toHaveBeenCalled();
