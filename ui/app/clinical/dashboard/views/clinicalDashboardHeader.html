@@ -127,7 +127,7 @@
             <scrollable-tabs>
                 <ul>
                     <li class="tab-item dashboard" ng-repeat="dashboard in clinicalDashboardConfig.tabs"
-                        ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard), 'tab-removable': clinicalDashboardConfig.isCurrentTab(dashboard) && !dashboard.displayByDefault}">
+                        ng-class="{'tab-selected' : clinicalDashboardConfig.isCurrentTab(dashboard)}">
                         <a ng-click="showDashboard(dashboard)">{{dashboard | titleTranslate}} </a>
                     </li>
                 </ul>

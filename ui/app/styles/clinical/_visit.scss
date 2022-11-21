@@ -2,525 +2,662 @@
     section.block {
         @extend %section-grid;
         margin: 0 0 15px;
+
         section.block {
-          margin: 0;
-          border: 0;
+            margin: 0;
+            border: 0;
         }
+
         table {
-          font-size: 14px;
+            font-size: 14px;
         }
     }
-    .hierarchy ul li ul li.has-child{
-        font-family:OpenSansSemiBold;
-        background:$lightestGray;
+
+    .hierarchy ul li ul li.has-child {
+        font-family: OpenSansSemiBold;
+        background: $lightestGray;
+
         ul li {
-            font-family:OpenSans;
+            font-family: OpenSans;
             background: #fff;
+
             &.has-child {
-                font-family:OpenSans;
+                font-family: OpenSans;
                 background: #fff;
             }
+
             ul li .tree-list-item .testUnderPanel {
-                width:34.4% !important
+                width: 34.4% !important
             }
         }
     }
+
+    @media screen and (max-width: 768px) {
+        margin-top: 100px;
+    }
 }
 
-.opd-wrapper {overflow-x: hidden;}
-.visit {
-  table tr:nth-child(even), table tr:nth-child(odd) {
-    background: $white;
-    a{
+.opd-wrapper {
+    overflow-x: hidden;
+}
 
-      &:hover{
-        text-decoration: underline;
-        .fa-star{
-          text-decoration: none;
-        }
-      }
-    }
-  }
-  table 
-	.info-message{
-        padding:10px;
-        color:red;
-        border:1px solid $lightGray;
-	}
-	.block-day{
-		border:3px solid #67ad95;
-		padding:10px;
+.visit {
+
+    table tr:nth-child(even),
+    table tr:nth-child(odd) {
         background: $white;
-        h1{
-            color:#274b59;
-            float:left;
-            padding:0px 10px;
+
+        a {
+
+            &:hover {
+                text-decoration: underline;
+
+                .fa-star {
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
+    table .info-message {
+        padding: 10px;
+        color: red;
+        border: 1px solid $lightGray;
+    }
+
+    .block-day {
+        border: 3px solid #67ad95;
+        padding: 10px;
+        background: $white;
+
+        h1 {
+            color: #274b59;
+            float: left;
+            padding: 0px 10px;
             font-family: $OpenSansBoldFont;
         }
-	}
+    }
 }
+
 .visit {
-  .hierarchy ul li{ overflow: hidden;}
-  .visit-dashboard{
-    span.visitType {
-      display: inline-block;
-      margin-right: 10%;
-      float: right;
+    .hierarchy ul li {
+        overflow: hidden;
     }
-    &.hierarchy ul li ul li{
-      span{
-        padding: 3px 10px !important;
-        display: inline-block;
-      }
-      ul li{
-        span{
-          padding: 3px 20px !important;
-          display: inline-block;
-        } 
-      }
+
+    .visit-dashboard {
+        span.visitType {
+            display: inline-block;
+            margin-right: 10%;
+            float: right;
+        }
+
+        &.hierarchy ul li ul li {
+            span {
+                padding: 3px 10px !important;
+                display: inline-block;
+            }
+
+            ul li {
+                span {
+                    padding: 3px 20px !important;
+                    display: inline-block;
+                }
+            }
+        }
+
+        .formDataTime {
+            width: 200px;
+            text-align: right;
+
+            .formDataEdit {
+                padding: 0 !important;
+            }
+
+            @media screen and (max-width: 1024px) {
+                width: 214px;
+            }
+        }
+
+        .formDataDate {
+            width: 140px;
+
+            @media screen and (max-width: 1024px) {
+                width: 154px;
+            }
+        }
     }
-    .formDataTime{
-      width:200px;
-      text-align: right;
-      .formDataEdit{
-        padding:0 !important;
-      }
-      @media screen and (max-width: 1024px) {
-        width:214px;
-      }
+
+    table tr th {
+        background: $lightestGray;
+        background-image: none;
+        color: $darkGray;
     }
-    .formDataDate{
-      width:140px;
-      @media screen and (max-width: 1024px) {
-        width:154px;
-      }
+
+    table tr th.notes {
+        .accession {
+            clear: both;
+            overflow: auto;
+            margin-bottom: 10px;
+        }
     }
-  }
-  table tr th {
-    background: $lightestGray;
-    background-image: none;
-    color: $darkGray; 
-  }
-  table tr th.notes {
-    .accession {
-      clear: both;
-      overflow: auto;
-      margin-bottom: 10px;
-    }
-  }
 }
+
 .visit .diagnosis .history-diagnosis {
-  margin:0; table-layout:fixed;
-  border-right: 0;
-  .view{
-    font-size: 11px;
-  }
-  .toggle-btn-date-wrapper{
-    float: right;
-    height: 15px;
-    .toggle-btn{
-      display: inline-block;
-      margin-top:-2px;
+    margin: 0;
+    table-layout: fixed;
+    border-right: 0;
+
+    .view {
+        font-size: 11px;
     }
-    .date{
-      float:left;
+
+    .toggle-btn-date-wrapper {
+        float: right;
+        height: 15px;
+
+        .toggle-btn {
+            display: inline-block;
+            margin-top: -2px;
+        }
+
+        .date {
+            float: left;
+        }
     }
-  }
-  .status{
-    float:none;
-    padding-left: 10px;
-  }
+
+    .status {
+        float: none;
+        padding-left: 10px;
+    }
 }
+
 .visit {
-  .diagnosis .history-diagnosis .table-header {
-    .col.col4 {
-      float: right;
-      width: 9%;
-      padding: 10px;
-      display: inline-block;
+    .diagnosis .history-diagnosis .table-header {
+        .col.col4 {
+            float: right;
+            width: 9%;
+            padding: 10px;
+            display: inline-block;
+        }
     }
-  }
-  .diagnosis .history-diagnosis .table-body {
-    .row {background: $white;}
-    .placeholder {
-      font-size: 14px;
-      padding: 10px;
+
+    .diagnosis .history-diagnosis .table-body {
+        .row {
+            background: $white;
+        }
+
+        .placeholder {
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        .diagnosis-name {
+            padding: 10px;
+            display: inline-block;
+        }
+
+        .col.col1 {
+            .diagnosis-name.ruled-out {
+                color: $mediumGray;
+                text-decoration: line-through;
+            }
+        }
+
+        .col.col4 {
+            float: right;
+            width: 8%;
+            padding: 10px;
+            display: inline-block;
+        }
     }
-    .diagnosis-name {
-      padding: 10px;
-      display: inline-block;
-    }
-    .col.col1 {
-      .diagnosis-name.ruled-out {
-          color: $mediumGray;
-          text-decoration: line-through;
-      }
-    }
-    .col.col4 {
-      float: right;
-      width: 8%;
-      padding: 10px;
-      display: inline-block;
-    }
-  }
 }
+
 .observation-section {
-  h3 {
-    font-family: $OpenSansBoldFont;
-    margin-top: 10px;
-  }
-  .is-abnormal {
-    color: red;
-  }
+    h3 {
+        font-family: $OpenSansBoldFont;
+        margin-top: 10px;
+    }
+
+    .is-abnormal {
+        color: red;
+    }
 }
+
 .visit {
-  .current {
-    font-size: 14px;
-    margin-top: 5px;
-  }
+    .current {
+        font-size: 14px;
+        margin-top: 5px;
+    }
 }
+
 .disposition-state {
-  font-size: 14px;
-  float: left;
-  span {
-    color: $mediumGray;
-    margin-left: 10px;
-  }
+    font-size: 14px;
+    float: left;
+
+    span {
+        color: $mediumGray;
+        margin-left: 10px;
+    }
 }
 
 .obs-concept {
-  width: 80%;
+    width: 80%;
 }
 
-.expander-row, .laborder-section li {
-  padding: 5px 10px;
-  clear: both;
-  overflow: auto;
-  padding-right: 0;
+.expander-row,
+.laborder-section li {
+    padding: 5px 10px;
+    clear: both;
+    overflow: auto;
+    padding-right: 0;
 }
+
 .disposition-section {
-  li {
-    border-bottom: 1px solid $lightestGray;
-    .toggle i {
-        padding-right: 0;
+    li {
+        border-bottom: 1px solid $lightestGray;
+
+        .toggle i {
+            padding-right: 0;
+        }
     }
-  }
 }
 
 .toggle {
-  float: left;
-  background: none;
-  border: none;
-  padding: 0;
-  color: $mediumGray;
-  &:hover {
+    float: left;
     background: none;
     border: none;
-  }
-  &.has-notes {
-    color: orange;
-  }
-  i {
-    padding: 0 10px;
-    font-size: 18px;
-  }
-  &.fr {
-    float: right;
-  }
+    padding: 0;
+    color: $mediumGray;
+
+    &:hover {
+        background: none;
+        border: none;
+    }
+
+    &.has-notes {
+        color: orange;
+    }
+
+    i {
+        padding: 0 10px;
+        font-size: 18px;
+    }
+
+    &.fr {
+        float: right;
+    }
 }
+
 .has-toggle-btn {
     border-right: 1px solid transparent !important;
 }
+
 .toggle-btn {
     padding: 0;
 }
 
 .consult-notes {
-  margin: 0;
-  padding: 10px!important;
-  overflow: auto;
-  h5 {
-    font-family: $OpenSansBoldFont;
-    float: left;
-    margin-right: 10px;
-  }
-  .consult-notes-text {
-    width: 80%;
-    float: left;
-  }
+    margin: 0;
+    padding: 10px !important;
+    overflow: auto;
+
+    h5 {
+        font-family: $OpenSansBoldFont;
+        float: left;
+        margin-right: 10px;
+    }
+
+    .consult-notes-text {
+        width: 80%;
+        float: left;
+    }
 }
 
 .consult-notes-item {
-  border-top: 1px solid $lightGray;
-  overflow: auto;
-  padding-top: 10px;
-  &:first-child {
-    border-top: 0;
-    padding-top: 0;
-  }
+    border-top: 1px solid $lightGray;
+    overflow: auto;
+    padding-top: 10px;
+
+    &:first-child {
+        border-top: 0;
+        padding-top: 0;
+    }
 }
 
 
 
-.drug-name, .dosage-days {
-  width: 340px;
-  @media screen and (max-width: 1024px) {
-    width: 160px;
-  }
+.drug-name,
+.dosage-days {
+    width: 340px;
+
+    @media screen and (max-width: 1024px) {
+        width: 160px;
+    }
 }
 
 .treatment-section {
-  table {
-    margin-top: 0;
-    margin-bottom: 0px;
-    //margin-bottom: 10px;
-    td,th{
-      border: 0;
-    }
-    tr.title th {
-      background: $bahmniTableHeaderBg;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-    tr td {
-      font-size: 14px;
-      vertical-align: top;
-      .discontinued-text {
-        display: block;
-        color: $mediumGray;
-        font-size: 12px;
-      }
-    }
-    tr td.toggle-btn{
-      width: 36px !important;
-    }
-    .drugorder-date {
-      text-transform: uppercase;
-    }
-    .dosage-form {
-      white-space: nowrap;
-    }
+    table {
+        margin-top: 0;
+        margin-bottom: 0px;
 
-  }
+        //margin-bottom: 10px;
+        td,
+        th {
+            border: 0;
+        }
+
+        tr.title th {
+            background: $bahmniTableHeaderBg;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        tr td {
+            font-size: 14px;
+            vertical-align: top;
+
+            .discontinued-text {
+                display: block;
+                color: $mediumGray;
+                font-size: 12px;
+            }
+        }
+
+        tr td.toggle-btn {
+            width: 36px !important;
+        }
+
+        .drugorder-date {
+            text-transform: uppercase;
+        }
+
+        .dosage-form {
+            white-space: nowrap;
+        }
+
+    }
 }
 
 
 table.ipd-investigation {
-  .belongsToPanel {padding-left: 25px; font-family: sans-serif;}
-  .upload-file-url{
-    float:left;
-    width:auto;
-    margin-top: 2px;
-  }
-}
-.ipd-test-results {
-  padding: 3px 5px;
-  border-right: 1px solid $lightestGray;
-}
-.one-result.ipd-test-results {border:0}
-.laborder-section, .observation {
-  .temp-class {
-    font-family: $OpenSansBoldFont;
-  }
-  table {
-    margin-top: 0;
-    td {font-size: 14px;}  
-    td.name {
-      padding: 5px 10px;
+    .belongsToPanel {
+        padding-left: 25px;
+        font-family: sans-serif;
     }
-    td.value {
-      .obs-value {
+
+    .upload-file-url {
         float: left;
-        width: 60%;
-      }
+        width: auto;
+        margin-top: 2px;
     }
-  }
+}
+
+.ipd-test-results {
+    padding: 3px 5px;
+    border-right: 1px solid $lightestGray;
+}
+
+.one-result.ipd-test-results {
+    border: 0
+}
+
+.laborder-section,
+.observation {
+    .temp-class {
+        font-family: $OpenSansBoldFont;
+    }
+
+    table {
+        margin-top: 0;
+
+        td {
+            font-size: 14px;
+        }
+
+        td.name {
+            padding: 5px 10px;
+        }
+
+        td.value {
+            .obs-value {
+                float: left;
+                width: 60%;
+            }
+        }
+    }
 
 }
-.observation table tr td{
-  padding: 2px 10px;
-  &.headerRow {
-    background: $bahmniTableHeaderBg;
-    font-family: $OpenSansBoldFont;
-    padding: 5px 5px 5px 10px;
-    color: $mediumGray;
-  }
-  &.name {
-    padding-left: 20px;
-  }
-  &.value {
-    .obs-value {
-      margin-top: 5px;
+
+.observation table tr td {
+    padding: 2px 10px;
+
+    &.headerRow {
+        background: $bahmniTableHeaderBg;
+        font-family: $OpenSansBoldFont;
+        padding: 5px 5px 5px 10px;
+        color: $mediumGray;
     }
-  }
+
+    &.name {
+        padding-left: 20px;
+    }
+
+    &.value {
+        .obs-value {
+            margin-top: 5px;
+        }
+    }
 }
-.laborder-item, .obs-item {
-  background: $lightestGray;
-  color: $mediumGray;
-  text-align: left;
-  padding: 10px 7px 10px 7px;
-  border: 1px solid $lightGray;
-  display: block;
+
+.laborder-item,
+.obs-item {
+    background: $lightestGray;
+    color: $mediumGray;
+    text-align: left;
+    padding: 10px 7px 10px 7px;
+    border: 1px solid $lightGray;
+    display: block;
 }
 
 .obs-item .labresults-item {
-  margin: 10px 0;
+    margin: 10px 0;
 }
+
 td.value {
-  width: 400px;
+    width: 400px;
 }
 
 td.header {
-  background: $lightestGray;
-  color: $mediumGray;
-  padding: 10px 7px;
+    background: $lightestGray;
+    color: $mediumGray;
+    padding: 10px 7px;
 }
 
 span.range {
-  font-size: 14px;
-  color: $mediumGray;
-  margin-top: 5px;
-  .units {color: $mediumGray;}
+    font-size: 14px;
+    color: $mediumGray;
+    margin-top: 5px;
+
+    .units {
+        color: $mediumGray;
+    }
 }
 
 .laborder-section {
-  table {
-    margin-bottom: 10px;
-    th {padding-right: 10px;}
-    th.notes.inline-notes {
-      font-family: "OpenSans", Arial, sans-serif;
+    table {
+        margin-bottom: 10px;
+
+        th {
+            padding-right: 10px;
+        }
+
+        th.notes.inline-notes {
+            font-family: "OpenSans", Arial, sans-serif;
+        }
+
+        tr.header td {
+            background: $bahmniTableHeaderBg;
+            font-family: $OpenSansBoldFont;
+            color: $mediumGray;
+        }
+
+        tr.header.pending-result td {
+            font-family: "OpenSans", Arial, sans-serif;
+            color: $darkGray;
+        }
+
+        tr.pending-result {
+            .status {
+                color: orange;
+                float: right;
+            }
+        }
     }
-    tr.header td {
-      background: $bahmniTableHeaderBg;
-      font-family: $OpenSansBoldFont;
-      color: $mediumGray;
+
+    td.belongsToPanel {
+        padding-left: 30px;
+
+        span {
+            display: block;
+        }
+
+        span.range {
+            font-size: 12px;
+        }
     }
-    tr.header.pending-result td{
-      font-family: "OpenSans", Arial, sans-serif;
-      color: $darkGray;
-    }
-    tr.pending-result {
-      .status {
-        color: orange;
-        float: right;
-      }
-    }
-  }
-  td.belongsToPanel {
-    padding-left: 30px;
-    span {
-      display: block;
-    }
-    span.range {
-      font-size: 12px;
-    }
-  }
 }
+
 .radiology-investigations {
-  .radiology-doc-item {
-    clear: both;
-    overflow: auto;
-    border-bottom: 1px solid $lightestGray;
-    padding-right: 5px;
-    a {
-      width: 80%;
-      float: left;
-      i {padding-left: 0;}
+    .radiology-doc-item {
+        clear: both;
+        overflow: auto;
+        border-bottom: 1px solid $lightestGray;
+        padding-right: 5px;
+
+        a {
+            width: 80%;
+            float: left;
+
+            i {
+                padding-left: 0;
+            }
+        }
     }
-  }
 }
+
 .toggle-btn {
-  padding: 2px;
-  font-family: arial;
-  font-size: 14px;
+    padding: 2px;
+    font-family: arial;
+    font-size: 14px;
 }
 
 .dosage-days {
-  .dosage {
-    float: left;
-  }
-  .copy {
-    font-size: 14px;
-    color: $mediumGray;
-  }    
-  .prn {
-    display: block;
-    margin-top: 5px;
-    font-size: 12px;
-  }
+    .dosage {
+        float: left;
+    }
+
+    .copy {
+        font-size: 14px;
+        color: $mediumGray;
+    }
+
+    .prn {
+        display: block;
+        margin-top: 5px;
+        font-size: 12px;
+    }
 }
 
 .visit-actions {
-  button {
-    float: right;
-    margin-left: 5px;
-    padding: 8px 10px;
-  }
+    button {
+        float: right;
+        margin-left: 5px;
+        padding: 8px 10px;
+    }
 }
 
- .no-visit {
-  padding: 30px 10px;
-  color: $mediumGray;
-  border: 1px solid $lightGray;
-  background: $lightestGray;
-  margin-top: 10px;
-  text-align: center;
-  border-radius: 3px;
+.no-visit {
+    padding: 30px 10px;
+    color: $mediumGray;
+    border: 1px solid $lightGray;
+    background: $lightestGray;
+    margin-top: 10px;
+    text-align: center;
+    border-radius: 3px;
 }
+
 .row-click {
-  cursor: pointer;
+    cursor: pointer;
 }
+
 .laborder-sub-heading {
-  @include clearfix();
-  font-size: 14px;
-  padding: 5px;
-  border-bottom: 1px solid $lightestGray;
-  background: $lighterGray;
-  color: $black;
-  cursor: pointer;
-  .toggle-btn {
-    padding: 2px 5px;
-    font-size: 12px;
-    border: 1px #d0d0d0 solid;
-  }
+    @include clearfix();
+    font-size: 14px;
+    padding: 5px;
+    border-bottom: 1px solid $lightestGray;
+    background: $lighterGray;
+    color: $black;
+    cursor: pointer;
+
+    .toggle-btn {
+        padding: 2px 5px;
+        font-size: 12px;
+        border: 1px #d0d0d0 solid;
+    }
 }
+
 .concept-set-group {
-  margin-bottom: 20px;
-  .checkbox-inline {
-    input[type="checkbox"], label.add-new.checkbox-btn {
-      width: auto!important;
-      margin-left: 0 !important;
+    margin-bottom: 20px;
+
+    .checkbox-inline {
+
+        input[type="checkbox"],
+        label.add-new.checkbox-btn {
+            width: auto !important;
+            margin-left: 0 !important;
+        }
+
+        label.add-new.checkbox-btn {
+            margin: 4px;
+        }
     }
-    label.add-new.checkbox-btn {
-      margin: 4px;
-    }
-  }
 }
-legend.mylegend {background: $white!important;}
+
+legend.mylegend {
+    background: $white !important;
+}
 
 .visits-navbar-section {
-  text-align: center;
+    text-align: center;
 }
+
 .visits-nav-bar {
     text-align: center;
     display: inline-block;
     margin: 0 auto 10px;
-    .prev-visit, .next-visit {
+
+    .prev-visit,
+    .next-visit {
         @include button;
         color: $success;
         display: inline-block;
         cursor: pointer;
+
         &:hover {
             text-decoration: none;
             color: darken($success, 5%);
         }
     }
-    .prev-visit.disabled, .next-visit.disabled {
+
+    .prev-visit.disabled,
+    .next-visit.disabled {
         color: $lightGray;
+
         &:hover {
             cursor: not-allowed;
         }
     }
+
     .visit-details {
         display: inline-block;
         background: $lightestGray;
@@ -529,12 +666,15 @@ legend.mylegend {background: $white!important;}
         color: $mediumGray;
         min-width: 190px;
         margin: 0;
+
         .visit-date {
             color: $darkGray;
             font-family: $OpenSansBoldFont;
         }
     }
-    i.fa-caret-right, i.fa-caret-left {
+
+    i.fa-caret-right,
+    i.fa-caret-left {
         padding: 0;
     }
 }
@@ -543,18 +683,27 @@ legend.mylegend {background: $white!important;}
     width: 50px;
     padding: 0;
 }
+
 .observation table tr td.value img {
     width: 30px;
     height: 30px;
     border: 3px solid $lightGray;
     cursor: pointer;
-    &:hover, &:active {
+
+    &:hover,
+    &:active {
         opacity: 0.8;
     }
 }
+
 .h-scroll {
-    .fa-stop {color: lighten($clinicalRemoveBtn, 20%);}
-    .fa-ok {color: green;}
+    .fa-stop {
+        color: lighten($clinicalRemoveBtn, 20%);
+    }
+
+    .fa-ok {
+        color: green;
+    }
 }
 
 a.visit:before {
@@ -563,129 +712,148 @@ a.visit:before {
     height: 20px;
     width: 140px;
 }
+
 .dashboard-patientInformation-section {
-  section.block {
-    background: none !important;
-  }
-  table {
-    td.name {
-       width: 35%;
+    section.block {
+        background: none !important;
     }
-    td.relationshipType{
-      text-indent: 10px;
+
+    table {
+        td.name {
+            width: 35%;
+        }
+
+        td.relationshipType {
+            text-indent: 10px;
+        }
+
+        td.value {
+            width: auto;
+        }
+
+        .patient-info {
+            border: 0;
+
+            td {
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                background: $bahmniTableHeaderBg;
+                border-top: 0;
+                position: relative;
+
+                .ipd-indication {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    background: $bahmniPrimaryBtnColorHover;
+                    color: white;
+                    padding: 4px 11px;
+                    border-radius: 0 2px 0 0;
+                    font-size: 20px;
+
+                    @media screen and (max-width: 1024px) {
+                        bottom: -1px;
+                        border-radius: 0;
+                        top: auto;
+                    }
+                }
+            }
+
+            .patient-img {
+                // display: inline-block; 
+                margin-right: 5px;
+                // float: left;
+                display: inline-block;
+                vertical-align: top;
+
+                img {
+                    height: 35px;
+                    width: auto;
+                    border: 1px solid $lightGray;
+                    border-radius: 100%;
+                }
+            }
+
+            .patient-value {
+                display: inline-block;
+                width: 86%;
+
+                span {
+                    font-size: 12px;
+                    color: $darkGray;
+                }
+
+                .patient-name {
+                    font-weight: bold;
+                    font-size: 14px;
+                    color: #000;
+                    margin-bottom: 3px;
+                }
+
+                .patient-gender-age {
+                    font-family: openSansBold;
+
+                    span {
+                        font-family: openSans;
+                    }
+                }
+
+                .patient-birth-time {
+                    display: inline-block;
+                    margin-right: 5px;
+                }
+
+                .patient-address {
+                    display: block;
+                    margin-top: 3px;
+                    color: $mediumGray;
+                }
+            }
+        }
+
+        .patient-estimated-text {
+            font-size: 12px;
+            font-style: italic;
+            color: #868686 !important;
+        }
     }
-    td.value {
-      width: auto;
-    }
-    .patient-info {
-        border: 0;
-      td {
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-        background: $bahmniTableHeaderBg;
-        border-top: 0;
-        position: relative;
-        .ipd-indication{
-          position: absolute;   
-          right: 0;   
-          top: 0;   
-          background: $bahmniPrimaryBtnColorHover;
-          color: white;   
-          padding: 4px 11px;   
-          border-radius: 0 2px 0 0;
-          font-size: 20px;
-          @media screen and (max-width: 1024px) {
-            bottom: -1px;
-            border-radius: 0;
-            top:auto;
-          }
-        }
-      }
-      .patient-img {
-         // display: inline-block; 
-         margin-right: 5px;
-         // float: left;
-        display: inline-block;
-        vertical-align: top;
-         img {
-          height: 35px;
-          width: auto;
-          border: 1px solid $lightGray;
-          border-radius: 100%;
-        }
-      }
-      .patient-value {
-        display: inline-block;
-        width: 86%;
-        span{
-          font-size: 12px;
-          color: $darkGray;
-        }
-        .patient-name {
-          font-weight: bold;
-          font-size: 14px;
-          color: #000;
-          margin-bottom: 3px;
-        }
-        .patient-gender-age {
-          font-family: openSansBold;
-          span{
-            font-family: openSans;
-          }
-        }
-        .patient-birth-time{
-          display: inline-block;
-          margin-right: 5px;
-        }
-        .patient-address {
-          display: block;
-          margin-top: 3px;
-          color: $mediumGray;
-        }
-      }
-    }
-    .patient-estimated-text{
-      font-size: 12px;
-      font-style: italic;
-      color: #868686 !important;
-    }
-  }
 }
 
 //Negating the global td.value width in clinical module
 
 .c3 {
-  td.value {
-    width: auto;
-  }
+    td.value {
+        width: auto;
+    }
 }
 
 .ng-dialog-all-details-page {
-  .visit-dashboard {
-    i {
-      width: 1.7em;
-    }
-    ul li {
-      background: #fff;
-      ul li {
-        span {
-          padding: 3px 10px !important;
-          &.formDataTime {
-            width: 234px;
-            text-align: right;
-            .formDataEdit {
-              padding: 0 !important;
-            }
-          }
-          &.formDataDate{
-            width:174px;
-          }
+    .visit-dashboard {
+        i {
+            width: 1.7em;
         }
-      }
+
+        ul li {
+            background: #fff;
+
+            ul li {
+                span {
+                    padding: 3px 10px !important;
+
+                    &.formDataTime {
+                        width: 234px;
+                        text-align: right;
+
+                        .formDataEdit {
+                            padding: 0 !important;
+                        }
+                    }
+
+                    &.formDataDate {
+                        width: 174px;
+                    }
+                }
+            }
+        }
     }
-  }
 }
-
-
-
-

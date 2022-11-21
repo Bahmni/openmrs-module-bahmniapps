@@ -44,4 +44,14 @@
         </div>
     </div>
     <ng-include src="'common/views/mobileHeader.html'"></ng-include>
+    <div class="tabs header-scrollable-tabs hidden-tablet-above" ng-if="visitTabConfig.showTabs()">
+        <scrollable-tabs>
+            <ul>
+                <li class="tab-item" ng-repeat="tab in visitTabConfig.tabs"
+                    ng-class="{'tab-selected' : visitTabConfig.isCurrentTab(tab)}">
+                    <a ng-click="switchTab(tab)">{{tab | titleTranslate}} </a>
+                </li>
+            </ul>
+        </scrollable-tabs>
+    </div>
 </div>
