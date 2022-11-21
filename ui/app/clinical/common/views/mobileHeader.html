@@ -8,7 +8,7 @@
             <i class="fa fa-headphones"></i>
         </button>
         <button type="button" class="btn-icon"
-            ng-click="printDashboard()" accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}"
+            ng-click="printDashboard() || print()" accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}"
             title="{{'CLINICAL_PRINT_TRANSLATION_KEY'|translate}}"
         >
             <i class="fa fa-print"></i>
@@ -16,7 +16,7 @@
         <button type="button" class="btn-icon" bm-gallery patient="patient" access-impression="true">
             <i class="fa fa-file-text" bm-lazy-image-observation-gallery-items promise="patientDocumentsPromise"></i>
         </button>
-        <button type="button" class="consultation-btn" ng-if="(visitHistory.activeVisit || retrospectiveEntry || allowConsultation()) && stateChange()"
+        <button type="button" class="consultation-btn" ng-if="(visitHistory.activeVisit || retrospectiveEntry || allowConsultation()) && (stateChange() || visitPage)"
             ng-click="openConsultation()" accesskey="{{'CONSULTATION_SHORTCUT_KEY' | translate}}"
             ng-bind-html="'CONSULTATION_TAB_KEY' | translate">
         </button>

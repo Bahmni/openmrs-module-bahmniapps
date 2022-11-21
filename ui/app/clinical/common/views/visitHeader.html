@@ -1,5 +1,5 @@
 <div bindonce class="dashboard-header opd-header-wrapper" id="consultation-header">
-    <div class="opd-header-bottom tabs">
+    <div class="opd-header-bottom tabs hidden-mobile">
         <bm-back-links></bm-back-links>
 
         <a class="back-btn dashboard-link" id="dashboard-link" ng-click="gotoPatientDashboard()" title="Back to patient dashboard">
@@ -43,4 +43,5 @@
            </button>
         </div>
     </div>
+    <ng-include src="'common/views/mobileHeader.html'"></ng-include>
 </div>
