@@ -55,9 +55,13 @@ Bahmni.Common.Obs.Observation = (function () {
             return this.isFileNameOfNewFormat() ? displayValue.substring(displayValue.lastIndexOf(this.getNewFormatFileNameSeparator()) + this.getNewFormatFileNameSeparator().length) : displayValue;
         },
         getChiefComplaintCodedComment: function () {
-            if (this.groupMembers.length > 1 && this.formNamespace != null && this.formFieldPath && this.formFieldPath.includes("History and Examination")) {
+            if (this.groupMembers.length > 1 && this.formNamespace != null && this.isPartOfHistoryAndExaminationForm()) {
                 return this.groupMembers[0].comment;
             }
+        },
+        isPartOfHistoryAndExaminationForm: function() {
+            // checks if the form is part of history and examination form
+            return this.formFieldPath && this.formFieldPath.includes("History and Examination");
         },
 
         getDisplayValue: function () {
