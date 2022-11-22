@@ -4,7 +4,6 @@ angular.module('bahmni.registration')
     .factory('patientService', ['$http', '$rootScope', '$bahmniCookieStore', '$q', 'patientServiceStrategy', 'sessionService', '$translate', 'appService', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceStrategy, sessionService, $translate, appService) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
-        var otpServiceUrl = Bahmni.Registration.Constants.otpServiceUrl;
 
         var search = function (query, identifier, addressFieldName, addressFieldValue, customAttributeValue,
                                offset, customAttributeFields, programAttributeFieldName, programAttributeFieldValue, addressSearchResultsConfig,
@@ -100,19 +99,6 @@ angular.module('bahmni.registration')
             return message;
         };
 
-        const smsAlert = function (patientId, name, age, gender, phoneNumber) {
-            const url = otpServiceUrl + "/notification/sms";
-            return $http({
-                url: url,
-                method: 'POST',
-                params: {
-                    phoneNumber: phoneNumber,
-                    message: getRegistrationMessage(patientId, name, age, gender)
-                },
-                withCredentials: true
-            });
-        };
-
         return {
             search: search,
             searchByIdentifier: searchByIdentifier,
@@ -122,7 +108,6 @@ angular.module('bahmni.registration')
             updateImage: updateImage,
             searchByNameOrIdentifier: searchByNameOrIdentifier,
             getAllPatientIdentifiers: getAllPatientIdentifiers,
-            smsAlert: smsAlert,
             getRegistrationMessage: getRegistrationMessage
         };
     }]);
