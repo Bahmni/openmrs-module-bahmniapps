@@ -59,7 +59,7 @@ Bahmni.Common.Obs.Observation = (function () {
                 return this.groupMembers[0].comment;
             }
         },
-        isPartOfHistoryAndExaminationForm: function() {
+        isPartOfHistoryAndExaminationForm: function () {
             // checks if the form is part of history and examination form
             return this.formFieldPath && this.formFieldPath.includes("History and Examination");
         },
