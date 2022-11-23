@@ -3,7 +3,7 @@
 angular.module('bahmni.common.util')
     .factory('smsService', ['$http', function ($http) {
         var otpServiceUrl = Bahmni.Common.Constants.otpServiceUrl;
-        var smsAlert = function (phoneNumber, message) {
+        var sendSMS = function (phoneNumber, message) {
             const url = otpServiceUrl + "/notification/sms";
             return $http({
                 url: url,
@@ -16,6 +16,6 @@ angular.module('bahmni.common.util')
             });
         };
         return {
-            smsAlert: smsAlert
+            sendSMS: sendSMS
         };
     }]);

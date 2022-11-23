@@ -202,26 +202,21 @@ angular.module('bahmni.registration')
                     if (errorMessage) {
                         messagingService.showMessage("error", errorMessage);
                         errorMessage = undefined;
-                    } else {
-                        sendSMS();
                     }
                 });
             };
 
             $scope.afterSave = function () {
                 messagingService.showMessage("info", "REGISTRATION_LABEL_SAVED");
-                $state.go("patient.edit", {
-                    patientUuid: $scope.patient.uuid
-                });
-            };
-
-            var sendSMS = function () {
                 var enableRegistrationSMSAlert = (appService.getAppDescriptor().getConfigValue("enableRegistrationSMSAlert") || Bahmni.Registration.Constants.enableRegistrationSMSAlert);
                 if (enableRegistrationSMSAlert && ($scope.patient.phoneNumber != undefined)) {
                     var name = $scope.patient.givenName + " " + $scope.patient.familyName;
                     var message = patientService.getRegistrationMessage(patientId, name, $scope.patient.age.years, $scope.patient.gender);
-                    smsService.smsAlert($scope.patient.phoneNumber, message);
+                    smsService.sendSMS($scope.patient.phoneNumber, message);
                 }
+                $state.go("patient.edit", {
+                    patientUuid: $scope.patient.uuid
+                });
             };
         }
     ]);
