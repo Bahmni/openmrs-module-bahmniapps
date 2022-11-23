@@ -5,7 +5,6 @@ angular.module('bahmni.common.util')
         var otpServiceUrl = Bahmni.Common.Constants.otpServiceUrl;
         var smsAlert = function (phoneNumber, message) {
             const url = otpServiceUrl + "/notification/sms";
-            console.log("otpservice url --- ", otpServiceUrl);
             return $http({
                 url: url,
                 method: 'POST',
