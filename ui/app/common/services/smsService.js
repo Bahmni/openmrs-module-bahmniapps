@@ -5,14 +5,13 @@ angular.module('bahmni.common.util')
         var otpServiceUrl = Bahmni.Common.Constants.otpServiceUrl;
         var sendSMS = function (phoneNumber, message) {
             const url = otpServiceUrl + "/notification/sms";
-            return $http({
-                url: url,
-                method: 'POST',
-                params: {
-                    phoneNumber: phoneNumber,
-                    message: message
-                },
-                withCredentials: true
+            var data = {
+                "phoneNumber": phoneNumber,
+                "message": message
+            };
+            return $http.post(url, data, {
+                withCredentials: true,
+                headers: {"Content-Type": "application/json"}
             });
         };
         return {
