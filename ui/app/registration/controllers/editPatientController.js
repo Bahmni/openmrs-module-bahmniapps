@@ -97,7 +97,7 @@ angular.module('bahmni.registration')
                 return $scope.readOnlyFields ? ($scope.readOnlyFields[field] ? true : false) : undefined;
             };
 
-            $scope.sendWhatsAppMessage = function () {
+            $scope.notifyOnWhatsAapp = function () {
                 var name = $scope.patient.givenName + " " + $scope.patient.familyName;
                 var whatsAppMessage = patientService.getRegistrationMessage($scope.patient.primaryIdentifier.identifier, name, $scope.patient.age.years, $scope.patient.gender);
                 var phoneNumber = $scope.patient.phoneNumber.replace("+", "");
