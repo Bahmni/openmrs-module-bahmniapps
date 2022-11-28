@@ -68,12 +68,13 @@
         background: rgba(0, 0, 0, 0.4);
     }
 
-    .mobile-menu {
+    .header-mobile-menu {
         position: fixed;
         top: 52px;
         bottom: 0;
         left: 0;
         min-width: 242px;
+        max-width: 100vw;
         z-index: 21001;
         background-color: #333;
         padding: 16px 20px 16px 35px;
@@ -158,7 +159,7 @@
 
     &.ng-hide {
         display: block !important;
-        .mobile-menu {
+        .header-mobile-menu {
             left: -100%;
         }
 
