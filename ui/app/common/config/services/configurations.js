@@ -78,4 +78,8 @@ angular.module('bahmni.common.config')
         this.defaultEncounterType = function () {
             return this.configs.defaultEncounterType;
         };
+
+        this.registrationSMSToggle = function () {
+            return this.configs.registrationSMSToggle;
+        };
     }]);

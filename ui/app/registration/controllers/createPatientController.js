@@ -208,8 +208,7 @@ angular.module('bahmni.registration')
 
             $scope.afterSave = function () {
                 messagingService.showMessage("info", "REGISTRATION_LABEL_SAVED");
-                var enableRegistrationSMSAlert = (appService.getAppDescriptor().getConfigValue("enableRegistrationSMSAlert") || Bahmni.Registration.Constants.enableRegistrationSMSAlert);
-                if (enableRegistrationSMSAlert && ($scope.patient.phoneNumber != undefined)) {
+                if ($rootScope.registrationSMSToggle == "true" && ($scope.patient.phoneNumber != undefined)) {
                     var name = $scope.patient.givenName + " " + $scope.patient.familyName;
                     var message = patientService.getRegistrationMessage(patientId, name, $scope.patient.age.years, $scope.patient.gender);
                     smsService.sendSMS($scope.patient.phoneNumber, message);
