@@ -17,14 +17,19 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    padding: 0;
+    padding: 0 10px;
     box-sizing: border-box;
     background: $bahmniSecondaryColor;
     height: 52px;
     width: 100%;
 
-    @media screen and (min-width: 769px) {
-        padding: 0 10px;
+    &.dashboard-header,
+    &.clinical-consultation {
+        padding: 0;
+
+        @media screen and (min-width: 769px) {
+            padding: 0 10px;
+        }
     }
 
     header {
