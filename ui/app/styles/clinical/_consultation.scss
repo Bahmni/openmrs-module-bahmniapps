@@ -12,10 +12,8 @@
         textarea {
             padding: 10px;
             margin: 10px;
-            width: 96%;
-            @media screen and (max-width: 1024px){
-                width:94%;
-            }
+            box-sizing: border-box;
+            width: calc(100% - 20px);
         }
     }
     .observation {

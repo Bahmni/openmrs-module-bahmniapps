@@ -61,6 +61,12 @@
         background: white;
         border-bottom-width: 0;
         padding-bottom: 11px;
+
+        @media screen and (max-width: 768px) {
+            width: calc(100% - 230px);
+            max-width: 200px;
+        }
+        
     }
 
     .tabs .tab [type="radio"]:checked ~ .inpage-tab-panel {
