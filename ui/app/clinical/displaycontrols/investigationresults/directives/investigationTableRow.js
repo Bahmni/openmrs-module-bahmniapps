@@ -17,7 +17,7 @@ angular.module('bahmni.clinical')
                 if (test.minNormal && test.maxNormal) {
                     return "(" + test.minNormal + " - " + test.maxNormal + ")";
                 } else if (test.minNormal && !test.maxNormal) {
-                    return "(" + test.minNormal + "<)";
+                    return "(>" + test.minNormal + ")";
                 } else if (!test.minNormal && test.maxNormal) {
                     return "(<" + test.maxNormal + ")";
                 } else {
