@@ -82,4 +82,8 @@ angular.module('bahmni.common.config')
         this.registrationSMSToggle = function () {
             return this.configs.registrationSMSToggle;
         };
+
+        this.helpDeskNumber = function () {
+            return this.configs.helpDeskNumber;
+        };
     }]);

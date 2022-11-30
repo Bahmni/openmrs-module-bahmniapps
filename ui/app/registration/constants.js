@@ -22,8 +22,7 @@ Bahmni.Registration.Constants = {
     registrationMessage: "REGISTRATION_MESSAGE",
     enableWhatsAppButton: false,
     enableDashboardRedirect: false,
-    dashboardUrl: "/bahmni/clinical/index.html#/default/patient/{{patientUuid}}/dashboard",
-    clinicName: "Bahmni"
+    dashboardUrl: "/bahmni/clinical/index.html#/default/patient/{{patientUuid}}/dashboard"
 };
 
 Bahmni.Registration.Constants.Errors = {
