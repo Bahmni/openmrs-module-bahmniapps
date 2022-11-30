@@ -1,10 +1,12 @@
 'use strict';
 
 Bahmni.Common.Obs.Observation = (function () {
-    var Observation = function (obs, conceptConfig) {
+    var Observation = function (obs, conceptConfig, $translate) {
         angular.extend(this, obs);
         this.concept = obs.concept;
         this.conceptConfig = conceptConfig;
+        // translate should be passed for chief complaint data check
+        this.translate = $translate;
     };
 
     Observation.prototype = {
@@ -55,15 +57,14 @@ Bahmni.Common.Obs.Observation = (function () {
             return this.isFileNameOfNewFormat() ? displayValue.substring(displayValue.lastIndexOf(this.getNewFormatFileNameSeparator()) + this.getNewFormatFileNameSeparator().length) : displayValue;
         },
         getChiefComplaintCodedComment: function () {
-            if (this.groupMembers.length > 1 && this.formNamespace != null && this.isPartOfHistoryAndExaminationForm()) {
+            if (this.isConceptNameChiefComplaintData()) {
                 return this.groupMembers[0].comment;
             }
         },
-        isPartOfHistoryAndExaminationForm: function () {
-            // checks if the form is part of history and examination form
-            return this.formFieldPath && this.formFieldPath.includes("History and Examination");
+        isConceptNameChiefComplaintData: function () {
+            // checks if the concept name  is Chief complaint data conceptset and it is part of form
+            return this.groupMembers.length > 1 && this.formNamespace != null && this.concept.name === this.translate.instant("CHIEF_COMPLAINT_DATA_CONCEPT_NAME_KEY");
         },
-
         getDisplayValue: function () {
             var value;
             if (this.type === "Boolean" || this.concept && this.concept.dataType === "Boolean") {
@@ -91,11 +92,11 @@ Bahmni.Common.Obs.Observation = (function () {
                 return this.complexData.display;
             }
 
-            if (this.groupMembers.length > 1 && this.formNamespace != null) {
-                if (this.groupMembers[0].value.name !== 'Other generic') {
-                    return this.groupMembers[0].value.name + " " + "since" + " " + this.groupMembers[1].value + " " + this.groupMembers[2].value.name;
+            if (this.isConceptNameChiefComplaintData()) {
+                if (this.groupMembers[0].value.name !== this.translate.instant("CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_KEY")) {
+                    return this.groupMembers[0].value.name + " " + this.translate.instant("SINCE_KEY") + " " + this.groupMembers[1].value + " " + this.groupMembers[2].value.name;
                 } else {
-                    return this.groupMembers[0].value.name + ' (' + this.groupMembers[1].value + ") " + "since" + " " + this.groupMembers[2].value + " " + this.groupMembers[3].value.name;
+                    return this.groupMembers[0].value.name + ' (' + this.groupMembers[1].value + ") " + this.translate.instant("SINCE_KEY") + " " + this.groupMembers[2].value + " " + this.groupMembers[3].value.name;
                 }
             }
 

@@ -364,5 +364,8 @@
     "DURATION_KEY": "Duration",
     "SAVE_KEY": "Save",
     "START_TELECON_KEY": "Start Teleconsultation",
-    "TELECON_ERROR_KEY": "Error while fetching teleconsultation link"
+    "TELECON_ERROR_KEY": "Error while fetching teleconsultation link",
+    "SINCE_KEY": "since",
+    "CHIEF_COMPLAINT_DATA_CONCEPT_NAME_KEY": "Chief Complaint Data",
+    "CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_KEY": "Other generic"
 }

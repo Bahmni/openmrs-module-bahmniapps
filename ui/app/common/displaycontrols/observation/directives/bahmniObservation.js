@@ -14,7 +14,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     var conceptsConfig = $scope.config.formType === Bahmni.Common.Constants.forms2Type ? {} :
                         appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
 
-                    observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
+                    observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig, null, $translate);
 
                     if ($scope.config.conceptNames) {
                         observations = _.filter(observations, function (observation) {
