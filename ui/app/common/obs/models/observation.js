@@ -60,6 +60,7 @@ Bahmni.Common.Obs.Observation = (function () {
             if (this.isConceptNameChiefComplaintData()) {
                 return this.groupMembers[0].comment;
             }
+            return '';
         },
         isConceptNameChiefComplaintData: function () {
             // checks if the concept name  is Chief complaint data conceptset and it is part of form
