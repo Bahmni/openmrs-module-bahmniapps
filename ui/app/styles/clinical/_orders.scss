@@ -178,7 +178,7 @@
             box-sizing: border-box;
             margin: 0 10px 2% 10px;
 
-            @media screen and (min-width: 768px) {
+            @media screen and (min-width: 769px) {
                 width: 30%;
                 float: left;
                 margin: 0 0 2% 10px;
@@ -197,6 +197,12 @@
             .multi-select-lab-tests {
                 width: 100%;
 
+                ul li {
+                    &.active a {
+                        background: #3D7474;
+                    }
+                }
+
                 ul li a {
                     color: $white;
                     background: $bahmniSecondaryColor;
@@ -207,10 +213,46 @@
                     &:hover {
                         background: #3D7474;
                     }
+                }
 
-                    &.active {
-                        background: #3D7474;
+                .toggle-complete-list {
+                    display: none;
+                }
+                @media screen and (max-width: 768px) {
+                    .show-fewer-tests {
+                        li:not(.toggle-complete-list) {
+                            display: none;
+                        }
+                        li.active {
+                            display: block;
+                        }
+    
+                        li.active + li {
+                            display: block;
+                        }
+    
+                        li.active + li + li {
+                            display: block;
+                        }
                     }
+
+                    .toggle-list-arrow {
+                        background: transparent;
+                        border: none;
+                        min-width: none;
+                        outline: none;
+                        border: none;
+                        padding: 0;
+                        color: #fff;
+                    }
+
+                    .toggle-complete-list {
+                        display: block;
+                        padding: 4px 0;
+                        text-align: center;
+                        background-color: #669999;
+                    }
+
                 }
             }
         }
@@ -220,7 +262,7 @@
             margin-right: 10px;
             box-sizing: border-box;
 
-            @media screen and  (min-width: 768px) {
+            @media screen and  (min-width: 769px) {
                 width: calc(70% - 30px);
                 float: right;
             }
@@ -267,6 +309,11 @@
                 padding: 20px 0 0 10px;
                 border-radius: 5px;
 
+                @media screen and (max-width: 768px) {
+                    margin-left: 10px;
+                    width: calc(100% - 10px);
+                }
+
                 ul li a {
                     padding: 8px 20px !important;
 
@@ -290,7 +337,7 @@
                 max-width: none;
                 margin-right: 10px;
 
-                @media screen and (min-width: 768px) {
+                @media screen and (min-width: 769px) {
                     width: calc(50% - 10px);
                     white-space: nowrap;
                     overflow: hidden;
@@ -314,6 +361,10 @@
             margin-top: 20px;
             border-radius: 5px 5px 0 0;
             border-top: 0;
+
+            @media screen and (max-width: 768px) {
+                margin-bottom: 40px;
+            }
 
             h2.section-title {
                 background: #3D7474;
