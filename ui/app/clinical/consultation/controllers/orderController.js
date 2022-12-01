@@ -11,7 +11,7 @@ angular.module('bahmni.clinical')
             $scope.enableRadiologyOrderOptions = RadiologyOrderOptionsConfig ? RadiologyOrderOptionsConfig.value : null;
             $scope.enableLabOrderOptions = LabOrderOptionsConfig ? LabOrderOptionsConfig.value : null;
             var testConceptToParentsMapping = {}; // A child concept could be part of multiple parent panels
-            $scope.hideLabTests = false;
+            $scope.hideLabTests = true;
 
             var collapseExistingActiveSection = function (section) {
                 if (section) {

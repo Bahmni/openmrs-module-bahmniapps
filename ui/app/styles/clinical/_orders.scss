@@ -136,6 +136,12 @@
         @include clearfix();
         margin: 10px;
         position: relative;
+        order: 1;
+        width: 100%;
+
+        .field-value {
+            position: relative;
+        }
 
         &.form .form-field .field-attribute label {
             width: auto;
@@ -163,8 +169,8 @@
         label.cross-button {
             color: #9D0101;
             position: absolute;
-            right: 1px;
-            top: -3px;
+            right: 2px;
+            top: 0;
             background: none;
             border: none;
             font-size: 18px;
@@ -173,21 +179,22 @@
 
     .dashboard-section-wrapper {
         margin: 0;
+        display: flex;
+        flex-wrap: wrap;
 
         .orders-section-left {
             box-sizing: border-box;
-            margin: 0 10px 2% 10px;
+            margin: 15px 10px;
+            width: 100%;
 
             @media screen and (min-width: 769px) {
                 width: 30%;
-                float: left;
-                margin: 0 0 2% 10px;
+                margin: 0 0 15px 10px;
+                order: 1;
             }
 
             @media screen and (min-width: 1024px) {
                 width: 25%;
-                float: left;
-                margin: 0 0 2% 10px;
             }
 
             * {
@@ -225,14 +232,14 @@
                         }
                         li.active {
                             display: block;
-                        }
-    
-                        li.active + li {
-                            display: block;
-                        }
-    
-                        li.active + li + li {
-                            display: block;
+
+                            & + li {
+                                display: block;
+
+                                & + li {
+                                    display: block;
+                                }
+                            }
                         }
                     }
 
@@ -243,7 +250,7 @@
                         outline: none;
                         border: none;
                         padding: 0;
-                        color: #fff;
+                        color: $white;
                     }
 
                     .toggle-complete-list {
@@ -258,18 +265,17 @@
         }
 
         .orders-section-right {
-            margin-top: 0%;
-            margin-right: 10px;
+            margin: 0 10px;
+            order: 1;
             box-sizing: border-box;
+            width: 100%;
 
             @media screen and  (min-width: 769px) {
                 width: calc(70% - 30px);
-                float: right;
             }
 
             @media screen and  (min-width: 1024px) {
                 width: calc(75% - 30px);
-                float: right;
             }
 
             * {
@@ -308,11 +314,6 @@
                 border: 1px solid #c0c0c0;
                 padding: 20px 0 0 10px;
                 border-radius: 5px;
-
-                @media screen and (max-width: 768px) {
-                    margin-left: 10px;
-                    width: calc(100% - 10px);
-                }
 
                 ul li a {
                     padding: 8px 20px !important;
@@ -361,10 +362,6 @@
             margin-top: 20px;
             border-radius: 5px 5px 0 0;
             border-top: 0;
-
-            @media screen and (max-width: 768px) {
-                margin-bottom: 40px;
-            }
 
             h2.section-title {
                 background: #3D7474;
