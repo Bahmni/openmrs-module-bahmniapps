@@ -36,7 +36,7 @@ describe("Observation", function () {
         });
 
         it("should return duration for an observation having multiple groupMembers and not null formspace", function () {
-            var observation = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{"value": {"name": "Test"}}, {"value": "5"}, {"value": {"name": "weeks"}}], concept: {conceptClass: 'Text'}}, mockTranslateService);
+            var observation = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{"value": {"name": "Test"}}, {"value": "5"}, {"value": {"name": "weeks"}}], concept: {conceptClass: 'Text'}}, null, mockTranslateService);
             expect(observation.getDisplayValue()).toBe("Test since 5 weeks");
         });
 
