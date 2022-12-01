@@ -2,6 +2,9 @@
 
 describe("Observation", function () {
     var Observation = Bahmni.Common.Obs.Observation;
+    var mockTranslateService = {instant: function (translateId) {
+        return "mockTranslatedReturnValue" + translateId;
+        }}
 
     describe("display Value", function () {
         it("should return yes and no for Boolean observation", function () {
@@ -33,7 +36,7 @@ describe("Observation", function () {
         });
 
         it("should return duration for an observation having multiple groupMembers and not null formspace", function () {
-            var observation = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{"value": {"name": "Test"}}, {"value": "5"}, {"value": {"name": "weeks"}}], concept: {conceptClass: 'Text'}});
+            var observation = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{"value": {"name": "Test"}}, {"value": "5"}, {"value": {"name": "weeks"}}], concept: {conceptClass: 'Text'}}, mockTranslateService);
             expect(observation.getDisplayValue()).toBe("Test since 5 weeks");
         });
 
