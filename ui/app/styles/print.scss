@@ -985,12 +985,7 @@ h3 {
                 display: inline-block;
             }
 
-            li.has-child .testUnderPanel {
-                width: 100% !important;
-            }
-
             li.has-child li.has-child .testUnderPanel {
-                width: 180px !important;
 
                 & + .testUnderPanel {
                     width: calc(100% - 190px) !important;
