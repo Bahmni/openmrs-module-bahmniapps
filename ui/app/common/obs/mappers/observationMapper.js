@@ -3,12 +3,12 @@
 Bahmni.Common.Obs.ObservationMapper = function () {
     var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
 
-    this.map = function (bahmniObservations, allConceptsConfig, dontSortByObsDateTime) {
-        var mappedObservations = mapObservations(bahmniObservations, allConceptsConfig, dontSortByObsDateTime);
+    this.map = function (bahmniObservations, allConceptsConfig, dontSortByObsDateTime, $translate) {
+        var mappedObservations = mapObservations(bahmniObservations, allConceptsConfig, dontSortByObsDateTime, $translate);
         return mapUIObservations(mappedObservations, allConceptsConfig);
     };
 
-    var mapObservations = function (bahmniObservations, allConceptsConfig, dontSortByObsDateTime) {
+    var mapObservations = function (bahmniObservations, allConceptsConfig, dontSortByObsDateTime, $translate) {
         var mappedObservations = [];
         if (dontSortByObsDateTime) {
             bahmniObservations = _.flatten(bahmniObservations);
@@ -17,9 +17,9 @@ Bahmni.Common.Obs.ObservationMapper = function () {
         }
         $.each(bahmniObservations, function (i, bahmniObservation) {
             var conceptConfig = bahmniObservation.formFieldPath ? [] : allConceptsConfig[bahmniObservation.concept.name] || [];
-            var observation = new Bahmni.Common.Obs.Observation(bahmniObservation, conceptConfig);
+            var observation = new Bahmni.Common.Obs.Observation(bahmniObservation, conceptConfig, $translate);
             if (observation.groupMembers && observation.groupMembers.length >= 0) {
-                observation.groupMembers = mapObservations(observation.groupMembers, allConceptsConfig, dontSortByObsDateTime);
+                observation.groupMembers = mapObservations(observation.groupMembers, allConceptsConfig, dontSortByObsDateTime, $translate);
             }
             mappedObservations.push(observation);
         });

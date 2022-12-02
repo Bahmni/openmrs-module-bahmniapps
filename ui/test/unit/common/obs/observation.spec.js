@@ -2,6 +2,23 @@
 
 describe("Observation", function () {
     var Observation = Bahmni.Common.Obs.Observation;
+    var mockTranslateService = {instant: function (translateId) {
+        var translatedValues = '';
+        switch (translateId) {
+            case "CHIEF_COMPLAINT_DATA_CONCEPT_NAME_KEY":
+                translatedValues = 'Chief Complaint Data';
+                break;
+            case "CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_KEY":
+                translatedValues = 'Other generic';
+                break;
+            case "CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_TEMPLATE_KEY":
+                translatedValues = 'Other generic (Test) since 5 weeks';
+                break;
+            case "CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY":
+                translatedValues = 'Test since 5 weeks';
+        }
+        return translatedValues;
+        }}
 
     describe("display Value", function () {
         it("should return yes and no for Boolean observation", function () {
@@ -33,7 +50,7 @@ describe("Observation", function () {
         });
 
         it("should return duration for an observation having multiple groupMembers and not null formspace", function () {
-            var observation = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{"value": {"name": "Test"}}, {"value": "5"}, {"value": {"name": "weeks"}}], concept: {conceptClass: 'Text'}});
+            var observation = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{"value": {"name": "Test"}}, {"value": "5"}, {"value": {"name": "weeks"}}], concept: {conceptClass: 'Text', name: "Chief Complaint Data"}}, null, mockTranslateService);
             expect(observation.getDisplayValue()).toBe("Test since 5 weeks");
         });
 

@@ -48,9 +48,9 @@
             <i class="fa fa-angle-up"></i>
         </button>
     </div>
-    <div ng-if="::observation.comment && !observation.isImageConcept() " class="notes inline-comments" ng-class="::{'print-notes': observation.comment, 'image-notes': observation.isImageConcept()}">
+    <div ng-if="::(observation.comment || observation.getChiefComplaintCodedComment()) && !observation.isImageConcept() " class="notes inline-comments" ng-class="::{'print-notes': observation.comment || observation.getChiefComplaintCodedComment(), 'image-notes': observation.isImageConcept()}">
         <i class="fa fa-comments left"></i>
-        <span style="overflow: hidden;" ng-if="::observation.comment" class="left" title="{{observation.comment}}">{{::observation.comment}}</span>
+        <span style="overflow: hidden;" ng-if="::observation.comment || observation.getChiefComplaintCodedComment()" class="left" title="{{observation.getChiefComplaintCodedComment() || observation.comment}}">{{:: observation.getChiefComplaintCodedComment() || observation.comment}}</span>
         <span class="left provider obs-label" style="padding-left:3px;clear:both;"
             provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}" title="{{observation.creatorName}}">
             <span ng-if="::observation.isFormElement()">{{::dateString(observation)}} </span>
