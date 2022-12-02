@@ -64,7 +64,7 @@ Bahmni.Common.Obs.Observation = (function () {
         },
         isConceptNameChiefComplaintData: function () {
             // checks if the concept name  is Chief complaint data conceptset and it is part of form
-            return this.groupMembers.length > 1 && this.formNamespace != null && this.concept.name === this.translate.instant("CHIEF_COMPLAINT_DATA_CONCEPT_NAME_KEY");
+            return this.groupMembers.length > 1 && this.formNamespace != null && this.translate && this.concept.name === this.translate.instant("CHIEF_COMPLAINT_DATA_CONCEPT_NAME_KEY");
         },
         getDisplayValue: function () {
             var value;
