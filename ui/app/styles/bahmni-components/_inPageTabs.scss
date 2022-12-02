@@ -62,8 +62,8 @@
         border-bottom-width: 0;
         padding-bottom: 11px;
 
-        @media screen and (max-width: 768px) {
-            width: calc(100% - 230px);
+        @media screen and (min-width: 320px) and (max-width: 768px) {
+            width: calc(100% - 210px);
             max-width: 200px;
         }
         
