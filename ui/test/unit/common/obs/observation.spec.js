@@ -2,7 +2,7 @@
 
 describe("Observation", function () {
     var Observation = Bahmni.Common.Obs.Observation;
-    var mockTranslateService = {instant: function (translateId, translateInterpolateParams) {
+    var mockTranslateService = {instant: function (translateId, translateInterpolateParams = {}) {
         var translatedValues = '';
         var { chiefComplaint, chiefComplaintText, duration, unit} = translateInterpolateParams;
         switch (translateId) {
@@ -13,10 +13,10 @@ describe("Observation", function () {
                 translatedValues = 'Other generic';
                 break;
             case "CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_TEMPLATE_KEY":
-                translatedValues = `${{chiefComplaint}} (${{chiefComplaintText}}) since ${{duration}} ${{unit}}`;
+                translatedValues = `${chiefComplaint} (${chiefComplaintText}) since ${duration} ${unit}`;
                 break;
             case "CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY":
-                translatedValues = `${{chiefComplaint}} since ${{duration}} ${{unit}}`;
+                translatedValues = `${chiefComplaint} since ${duration} ${unit}`;
         }
         return translatedValues;
         }}
