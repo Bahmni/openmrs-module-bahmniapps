@@ -973,7 +973,7 @@ h3 {
                 }
             }
             .value-text-only, .text-only{
-                width: calc(100% - 180px) !important;
+                width: calc(100% - 190px) !important;
                 padding: 3px 0px 0px !important;
                 display:inline-block;
             }
@@ -991,6 +991,10 @@ h3 {
 
             li.has-child li.has-child .testUnderPanel {
                 width: 180px !important;
+
+                & + .testUnderPanel {
+                    width: calc(100% - 190px) !important;
+                }
             }
             ul li ul li ul li ul li ul li ul li .tree-list-item {
             padding-left: 20px !important;
