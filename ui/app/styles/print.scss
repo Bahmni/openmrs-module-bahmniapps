@@ -973,13 +973,13 @@ h3 {
                 }
             }
             .value-text-only, .text-only{
-                width: calc(100% - 100px) !important;
+                width: calc(100% - 180px) !important;
                 padding: 3px 0px 0px !important;
                 display:inline-block;
             }
             .testUnderPanel{
                 //width: 65% !important;
-                width: 100px !important;
+                width: 180px !important;
                 padding: 3px 0px 0px !important;
                 font-weight: normal !important;
                 display: inline-block;
@@ -987,6 +987,10 @@ h3 {
 
             li.has-child .testUnderPanel {
                 width: 100% !important;
+            }
+
+            li.has-child li.has-child .testUnderPanel {
+                width: 180px !important;
             }
             ul li ul li ul li ul li ul li ul li .tree-list-item {
             padding-left: 20px !important;
