@@ -42,9 +42,9 @@
         padding: 7px 0 5px;
 
         button {
-            @include button($success, darken($success, 8%), $white);
+            @include button($bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%), $white);
             font-size: 14px;
-            border-color: darken($success, 12%);
+            border-color: darken($bahmniSecondaryColor, 15%);
         }
     }
 

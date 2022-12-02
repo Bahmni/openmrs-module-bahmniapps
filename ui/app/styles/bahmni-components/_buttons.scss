@@ -672,9 +672,9 @@ button.toggle{
   }
 }
 button.btn--add{
-  background: linear-gradient(to bottom, #A1D030, #88af28);
-  background-color: #88af28;
-  border: #88af28 1px solid;
+  background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
+  background-color: $bahmniSecondaryColor;
+  border: darken($bahmniSecondaryColor, 15%) 1px solid;
   color: $white;
   font-size: 13px !important;
   padding: 7px !important;
