@@ -1,12 +1,32 @@
+<div class="form search-container">
+    <section class="form-field fr">
+        <div class="field-attribute">
+            <label>{{ 'SEARCH_KEY'|translate }}:</label>
+        </div>
+        <div class="field-value">
+            <input type="text" ng-model="search.string" autofocus class="order_search_desktop">
+            <input type="text" ng-model="search.string" class="order_search_mobile">
+            <label ng-if="search.string.length > 0" class="fa fa-remove fl cross-button" ng-click="resetSearchString()"></label>
+        </div>
+    </section>
+</div>
 <section class="orders-section-left" xmlns="http://www.w3.org/1999/html">
         <div class="order-section-container">
             <!-- <span class="order-title">{{tab.topLevelConcept}}</span> -->
             <div class="multi-select-lab-tests">
-                <ul>
-                    <li ng-repeat="sample in getOrderTemplate(activeTab.name).setMembers">
-                        <a ng-click="showLeftCategoryTests(sample)" ng-class='sample.klass'>
+                <ul ng-class="{'show-fewer-tests': hideLabTests}">
+                    <li ng-repeat="sample in getOrderTemplate(activeTab.name).setMembers" ng-class='sample.klass'>
+                        <a ng-click="showLeftCategoryTests(sample)">
                             {{getName(sample)}}
                         </a>
+                    </li>
+                    <li class="toggle-complete-list">
+                        <button class="toggle-list-arrow" type="button" ng-click="toggleLabTests()" ng-show="hideLabTests">
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        <button class="toggle-list-arrow" type="button" ng-click="toggleLabTests()" ng-show="!hideLabTests">
+                            <i class="fa fa-caret-up"></i>
+                        </button>
                     </li>
                 </ul>
             </div>

@@ -652,6 +652,10 @@ concept-set {
       overflow-y: auto;
       overflow-x: hidden;
       z-index: 10000;
+
+      @media screen and (min-width: 769px) {
+        top: 188px;
+      }
     }
     .multi-select-lab-tests {
       width: 100% !important;
