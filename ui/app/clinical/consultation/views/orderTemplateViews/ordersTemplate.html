@@ -20,7 +20,7 @@
                             {{getName(sample)}}
                         </a>
                     </li>
-                    <li class="toggle-complete-list">
+                    <li class="toggle-complete-list" ng-show="getOrderTemplate(activeTab.name).setMembers && getOrderTemplate(activeTab.name).setMembers.length > 3">
                         <button class="toggle-list-arrow" type="button" ng-click="toggleLabTests()" ng-show="hideLabTests">
                             <i class="fa fa-caret-down"></i>
                         </button>
