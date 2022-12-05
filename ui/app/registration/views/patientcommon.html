@@ -8,15 +8,15 @@
                 <div class="field-value" id="patientNameLocal">
                     <span ng-repeat="nameField in patientNameDisplayOrder">
                         <input type="text" id="givenNameLocal" ng-model="patient.givenNameLocal" pattern-validate
-                               placeholder="{{::getTranslatedPatientControls(patientConfiguration.local()['placeholderForGivenName'])}}" focus-me="true"
+                               placeholder="{{::'REGISTRATION_LABEL_PATIENT_FIRST_NAME_LOCAL' | translate}}" focus-me="true"
                                ng-if="nameField === 'firstName'" ng-required={{localLanguageNameIsRequired('givenNameLocal')}}>
                         <input ng-show="::showMiddleName" type="text" id="middleNameLocal"
                                ng-model="patient.middleNameLocal"
                                pattern-validate
-                               placeholder="{{::getTranslatedPatientControls(patientConfiguration.local()['placeholderForMiddleName'])}}"
+                               placeholder="{{::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME_LOCAL' | translate}}"
                                ng-if="nameField === 'middleName'" ng-required={{localLanguageNameIsRequired('middleNameLocal')}}>
                         <input type="text" ng-show="::showLastName" id="familyNameLocal" ng-model="patient.familyNameLocal" pattern-validate
-                               placeholder="{{::getTranslatedPatientControls(patientConfiguration.local()['placeholderForFamilyName'])}}"
+                               placeholder="{{::'REGISTRATION_LABEL_PATIENT_FAMILY_NAME_LOCAL' | translate}}"
                                ng-if="nameField === 'lastName'" ng-required={{localLanguageNameIsRequired('familyNameLocal')}}>
                     </span>
                 </div>
