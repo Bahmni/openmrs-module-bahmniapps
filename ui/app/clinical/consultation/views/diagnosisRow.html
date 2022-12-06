@@ -7,36 +7,44 @@
     </div>
 
     <div ng-show="diagnosis.firstDiagnosis.revised" class="col col2">
-        <div class="view">
-            <span class="certainty">{{diagnosis.firstDiagnosis.certainty}}</span>
-            <span class="order">{{diagnosis.firstDiagnosis.order}}</span>
-            <span class="status">{{diagnosis.firstDiagnosis.diagnosisStatus}}</span>
+        <div class="col-header">
+            {{ ::'CLINICAL_INITIAL' | translate }}
         </div>
-        <div>
-            <span class="time-stamp">
-                <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
-            </span>
-            <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">
-                <provider-directive creator-name="{{diagnosis.firstDiagnosis.creatorName}}"
-                    provider-name="{{provider.name}}"></provider-directive>
-            </span>
+        <div class="col-body">
+            <div class="view">
+                <span class="certainty">{{diagnosis.firstDiagnosis.certainty}}</span>
+                <span class="order">{{diagnosis.firstDiagnosis.order}}</span>
+                <span class="status">{{diagnosis.firstDiagnosis.diagnosisStatus}}</span>
+            </div>
+            <div>
+                <span class="time-stamp">
+                    <span class="date">{{diagnosis.firstDiagnosis.diagnosisDateTime | bahmniDate}}</span>
+                </span>
+                <span class="provider" ng-repeat="provider in diagnosis.firstDiagnosis.providers">
+                    <provider-directive creator-name="{{diagnosis.firstDiagnosis.creatorName}}"
+                        provider-name="{{provider.name}}"></provider-directive>
+                </span>
+            </div>
         </div>
     </div>
     <div class="col col2" ng-show="!diagnosis.firstDiagnosis.revised"></div>
     <div class="col col3">
-        <div class="view">
-            <span class="certainty">{{diagnosis.certainty}}</span>
-            <span class="order">{{diagnosis.order}}</span>
-            <span class="status">{{diagnosis.diagnosisStatus}}</span>
-        </div>
-        <div>
-            <span class="time-stamp">
-                <span class="date">{{diagnosis.diagnosisDateTime | bahmniDate}}</span>
-            </span>
-            <span class="provider" ng-repeat="provider in diagnosis.providers">
-                <provider-directive creator-name="{{diagnosis.creatorName}}" provider-name="{{provider.name}}">
-                </provider-directive>
-            </span>
+        <div class="col-header">{{ ::'CLINICAL_CURRENT' | translate }}</div>
+        <div class="col-body">
+            <div class="view">
+                <span class="certainty">{{diagnosis.certainty}}</span>
+                <span class="order">{{diagnosis.order}}</span>
+                <span class="status">{{diagnosis.diagnosisStatus}}</span>
+            </div>
+            <div>
+                <span class="time-stamp">
+                    <span class="date">{{diagnosis.diagnosisDateTime | bahmniDate}}</span>
+                </span>
+                <span class="provider" ng-repeat="provider in diagnosis.providers">
+                    <provider-directive creator-name="{{diagnosis.creatorName}}" provider-name="{{provider.name}}">
+                    </provider-directive>
+                </span>
+            </div>
         </div>
     </div>
     <span class="message">{{ ::'CLINICAL_CHANGED' | translate }}!</span>

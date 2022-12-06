@@ -1,6 +1,7 @@
 .diagnosis {
     .table {
         overflow: hidden;
+
         .row:not(.diagnosis-row) {
             border-bottom: 1px solid $lightGray;
             display: flex;
@@ -10,11 +11,12 @@
                 flex-wrap: nowrap;
             }
         }
+
         .table-header.row {
             border-bottom: 1px solid $lightGray;
         }
     }
-    
+
     .col {
         margin: 0 !important;
         float: none;
@@ -22,9 +24,11 @@
         padding: 0;
         box-sizing: border-box;
     }
+
     .comment-toggle {
         margin: 0;
     }
+
     .diagnosis-toggle {
         padding: 7px 5px;
     }
@@ -58,9 +62,11 @@
     .col-body {
         padding: 10px 0;
     }
+
     input[type="number"] {
         width: 50px;
     }
+
     .col1 {
         width: 100%;
 
@@ -70,33 +76,40 @@
             margin-top: 0;
             float: left;
         }
+
         input[type="checkbox"] {
             margin-top: 8px;
         }
+
         label.add-new {
             margin-top: 10px;
             font-size: 12px;
         }
+
         .diagnosis-name,
         .diagnosis-date {
             width: 50%;
             padding: 0 10px;
             box-sizing: border-box;
         }
+
         .diagnosis-date {
             font-size: 13px;
         }
     }
+
     .col2 {
         width: 100%;
 
         button:first-child {
             margin-left: 10px;
         }
+
         &.notes-subscriber {
             width: 45%;
             padding: 0;
         }
+
         .subscriber-name {
             padding: 18px 10px 3px 0;
             text-align: right;
@@ -107,6 +120,7 @@
             display: inline-block;
             vertical-align: bottom;
         }
+
         .diagnosis-notes {
             display: inline-block;
             width: 60%;
@@ -115,6 +129,7 @@
             padding: 10px 10px 10px 0;
         }
     }
+
     .col3 {
         width: 100%;
 
@@ -122,19 +137,23 @@
             margin-left: 10px;
         }
     }
+
     .col4 {
         width: 50%;
 
         &.diagnosis-actions {
             font-size: 13px;
             width: 16%;
+
             a {
                 text-decoration: underline;
                 margin: 0 5px;
                 color: $bahmniLinkColor;
+
                 &:hover {
                     text-decoration: none;
                 }
+
                 &.followUp {
                     pointer-events: none;
                     text-decoration: none;
@@ -144,6 +163,7 @@
             }
         }
     }
+
     .col5 {
         width: 50%;
 
@@ -156,16 +176,19 @@
         .col {
             flex-grow: 1;
         }
+
         .col1 {
             width: 50%;
         }
 
-        .col2, .col3 {
+        .col2,
+        .col3 {
             width: 50%;
             max-width: 50%;
         }
 
-        .col4, .col5 {
+        .col4,
+        .col5 {
             width: auto;
         }
     }
@@ -176,7 +199,8 @@
             max-width: 29%;
         }
 
-        .col2, .col3 {
+        .col2,
+        .col3 {
             width: 24%;
             max-width: 24%;
         }
@@ -189,24 +213,30 @@
         border-bottom-right-radius: 0;
         border-right: 1;
     }
+
     button:last-child:not(.row-remover):not(.comment-toggle) {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
     }
+
     button {
         padding: 8px 7px;
         font-size: 11px;
     }
+
     .status button {
         border-radius: 3px;
     }
+
     button:focus {
         outline: 0;
         border: 2px solid $clinicalFormFocus;
     }
+
     button.active {
         color: $bahmniTertiaryColor;
         padding-top: 7px;
+
         span:before {
             font-family: FontAwesome;
             content: "\f00c";
@@ -222,18 +252,22 @@
         border: 1px solid #b3b3b3;
         border-bottom: none;
     }
+
     .new-diagnosis {
         border: 1px solid darken($lightGray, 10%);
         background: $white;
+
         @media screen and (max-width: 768px) {
             margin-top: 20px;
         }
+
         .row-remover {
             border: 1px solid $lightGray;
             border-radius: 5px;
             float: right;
             padding: 5px 10px;
             margin: 0 0 10px 10px;
+
             span {
                 font-size: 20px;
                 color: $clinicalRemoveBtn;
@@ -241,7 +275,7 @@
             }
         }
     }
-    
+
     .view-past,
     .edit-diagnosis {
         position: relative;
@@ -298,15 +332,18 @@
         }
 
         @media screen and (min-width: 768px) and (max-width: 991px) {
+
             .col1,
             .col2,
             .col3 {
                 width: calc(100% / 3);
-                max-width: calc(100% / 3);;
+                max-width: calc(100% / 3);
+                ;
             }
         }
 
         @media screen and (min-width: 992px) {
+
             .row-remover,
             button.add-condition {
                 margin-top: 0;
@@ -331,6 +368,7 @@
                 }
             }
         }
+
         .col1 {
             display: none;
 
@@ -338,46 +376,101 @@
                 display: block;
             }
         }
+
         .col4 {
             display: block;
             gap: 0;
+
             @media screen and (min-width: 768px) and (max-width: 992px) {
                 width: calc(100% / 3);
                 max-width: calc(100% / 3);
             }
         }
     }
+
     .view-past.edited {
         background-color: $clinicalHighlight;
+
         .message {
             display: block;
         }
     }
+
+    .history-diagnosis {
+        .table-header {
+            padding: 10px 0;
+
+            .col2,
+            .col3 {
+                display: none;
+
+                @media screen and (min-width: 768px) {
+                    display: block;
+                }
+            }
+        }
+
+        .diagnosis-row {
+            .view-past {
+
+                .col2,
+                .col3 {
+                    padding-left: 0;
+
+                    .col-body {
+                        padding-left: 10px;
+                    }
+
+                    @media screen and (min-width: 768px) {
+                        .col-header {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        @media screen and (min-width: 768px) and (max-width: 991px) {
+            .col1,
+            .col2,
+            .col3 {
+                width: calc(100% / 3);
+                max-width: calc(100% / 3);
+            }
+        }
+    }
 }
+
 .current-diagnosis,
 .history-diagnosis {
     .diagnosis-row {
         overflow: auto;
         clear: both;
+
         .view-past {
             overflow: auto;
             clear: both;
+
             .col {
                 padding-top: 10px;
                 padding-bottom: 10px;
             }
+
             .diagnosis-name {
                 padding-left: 10px;
                 font-size: 14px;
+
                 &.ruled-out {
                     color: $mediumGray;
                     text-decoration: line-through;
                 }
             }
+
             .col2,
             .col3 {
                 padding-left: 10px;
             }
+
             .col2,
             .col3 {
                 font-size: 12px;
@@ -386,14 +479,17 @@
                 .view {
                     margin-bottom: 5px;
                 }
+
                 .date {
                     margin-right: 5px;
                 }
             }
         }
+
         button.toggle {
             font-size: 100%;
             background: none;
+
             i {
                 @include button();
                 padding: 7px 10px;
@@ -414,23 +510,16 @@
         white-space: nowrap;
         border-radius: 3px !important;
     }
+
     .diagnosis {
+
         .comment-toggle,
         .toggle,
         .remove-diagnosis,
         .row-remover {
             width: auto;
         }
-        button:first-child {
-            margin-left: 10px;
-            border-right: 1px;
-            border-radius: 3px 3px 0 0;
-        }
-        button:last-child:not(.row-remover):not(.comment-toggle) {
-            border-radius: 0 0 3px 3px;
-            border-left: 1px;
-            margin-left: 10px;
-        }
+
         .view-past .message {
             font-size: 10px;
         }
@@ -441,16 +530,19 @@
     .history-diagnosis .diagnosis-row button.toggle {
         color: $mediumGray;
         padding: 0;
+
         &.has-notes {
             i {
                 color: orange;
             }
         }
+
         i {
             padding: 0;
             background: none;
             border: none;
             color: $mediumGray;
+
             &:hover {
                 background: none;
             }
@@ -461,32 +553,39 @@
 .diagnosis-row button.toggle.has-notes i {
     color: orange;
 }
+
 textarea.comment-section {
     margin: 10px;
     min-width: 80%;
 }
+
 button.add-condition {
     margin-top: 7px;
     font-size: 12px;
     padding: 11px 7px;
 }
+
 .condition-header {
     width: 56%;
     display: inline-block;
 }
+
 .conditions-display-contorl-overflow {
     height: 98%;
     overflow: auto;
 }
+
 .disable-conditions-in-retro-mode {
     background: $lightestGray;
     color: #999;
+
     input,
     button {
         pointer-events: none;
         background: $lightestGray;
         color: #999;
     }
+
     a {
         pointer-events: none;
         color: #999 !important;
