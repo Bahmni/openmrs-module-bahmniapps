@@ -1,4 +1,19 @@
 .diagnosis {
+    .table {
+        .row:not(.diagnosis-row) {
+            border-bottom: 1px solid $lightGray;
+            display: flex;
+            flex-wrap: wrap;
+
+            @media screen and (min-width: 992px) {
+                flex-wrap: nowrap;
+            }
+        }
+        .table-header.row {
+            border-bottom: 1px solid $lightGray;
+        }
+    }
+    
     .col {
         margin: 0 !important;
         float: none;
@@ -24,47 +39,7 @@
     .diagnosis-toggle {
         padding: 7px 5px;
     }
-    .table {
-        .row {
-            border-bottom: 1px solid $lightGray;
-            display: flex;
-            flex-wrap: wrap;
 
-            @media screen and (min-width: 992px) {
-                flex-wrap: nowrap;
-            }
-        }
-        .table-header.row {
-            border-bottom: 1px solid $lightGray;
-        }
-    }
-    .new-diagnosis,
-    .current-diagnosis,
-    .history-diagnosis {
-        margin-bottom: 25px;
-        border: 1px solid #b3b3b3;
-        border-bottom: none;
-    }
-    .new-diagnosis {
-        border: 1px solid darken($lightGray, 10%);
-        //margin: 35px 5px 20px 5px;
-        background: $white;
-        @media screen and (max-width: 768px) {
-            margin-top: 20px;
-        }
-        .row-remover {
-            border: 1px solid $lightGray;
-            border-radius: 5px;
-            float: right;
-            padding: 5px 10px;
-            margin-bottom: 10px;
-            span {
-                font-size: 20px;
-                color: $clinicalRemoveBtn;
-                padding: 0;
-            }
-        }
-    }
     .table-header {
         background: $lightestGray;
 
@@ -208,35 +183,16 @@
 
     @media screen and (min-width: 992px) {
         .col1 {
-            width: calc(100% / 3);
-            max-width: calc(100% / 3);
+            width: 29%;
+            max-width: 29%;
         }
 
         .col2, .col3 {
-            width: 22.5%;
-            max-width: 22.5%;
+            width: 24%;
+            max-width: 24%;
         }
     }
-    .view-past {
-        position: relative;
-        -webkit-transition: background-color 1s ease;
-        .message {
-            position: absolute;
-            -webkit-transition: display 1s ease;
-            right: 215px;
-            top: 20px;
-            color: orange;
-            margin-bottom: 5px;
-            font-size: 14px;
-            display: none;
-        }
-    }
-    .view-past.edited {
-        background-color: $clinicalHighlight;
-        .message {
-            display: block;
-        }
-    }
+
     button:first-child,
     button.accept-btn {
         margin-left: 10px;
@@ -244,10 +200,9 @@
         border-bottom-right-radius: 0;
         border-right: 1;
     }
-    button:last-child {
+    button:last-child:not(.row-remover):not(.comment-toggle) {
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
-        border-left: 1;
     }
     button {
         padding: 8px 7px;
@@ -270,6 +225,105 @@
             margin-right: 5px;
         }
     }
+
+    .new-diagnosis,
+    .current-diagnosis,
+    .history-diagnosis {
+        margin-bottom: 25px;
+        border: 1px solid #b3b3b3;
+        border-bottom: none;
+    }
+    .new-diagnosis {
+        border: 1px solid darken($lightGray, 10%);
+        background: $white;
+        @media screen and (max-width: 768px) {
+            margin-top: 20px;
+        }
+        .row-remover {
+            border: 1px solid $lightGray;
+            border-radius: 5px;
+            float: right;
+            padding: 5px 10px;
+            margin: 0 0 10px 10px;
+            span {
+                font-size: 20px;
+                color: $clinicalRemoveBtn;
+                padding: 0;
+            }
+        }
+    }
+    
+    .view-past,
+    .edit-diagnosis {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        transition: background-color 1s ease;
+
+        .message {
+            position: absolute;
+            transition: display 1s ease;
+            right: 215px;
+            top: 20px;
+            color: orange;
+            margin-bottom: 5px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .row-remover {
+            float: none;
+        }
+
+        .toggle {
+            float: none;
+            padding: 0;
+            margin-top: 7px;
+
+            @media screen and (min-width: 768px) {
+                margin-top: 0;
+            }
+        }
+
+        .col4 {
+            display: flex;
+            justify-content: flex-start;
+            gap: 8px;
+            width: 100%;
+        }
+
+        button.add-condition {
+            width: auto;
+        }
+
+        @media screen and (min-width: 992px) {
+            .row-remover,
+            button.add-condition {
+                margin-top: 0;
+            }
+
+            .diagnosis-toggle {
+                padding: 0;
+            }
+
+            .col4 {
+                justify-content: flex-end;
+                width: auto;
+            }
+        }
+    }
+
+    .edit-diagnosis {
+        .col-4 {
+            justify-content: flex-start;
+        }
+    }
+    .view-past.edited {
+        background-color: $clinicalHighlight;
+        .message {
+            display: block;
+        }
+    }
 }
 .current-diagnosis,
 .history-diagnosis {
@@ -280,8 +334,8 @@
             overflow: auto;
             clear: both;
             .col {
-                padding-top: 0;
-                padding-bottom: 5px;
+                padding-top: 10px;
+                padding-bottom: 10px;
             }
             .diagnosis-name {
                 padding-left: 10px;
@@ -291,7 +345,8 @@
                     text-decoration: line-through;
                 }
             }
-            .col2 {
+            .col2,
+            .col3 {
                 padding-left: 10px;
             }
             .col2,
@@ -312,7 +367,7 @@
             background: none;
             i {
                 @include button();
-                padding: 10px 5px 5px 8px;
+                padding: 7px 10px;
             }
         }
     }
@@ -336,7 +391,8 @@
         }
         .comment-toggle,
         .toggle,
-        .remove-diagnosis {
+        .remove-diagnosis,
+        .row-remover {
             width: auto;
         }
         button:first-child {
@@ -344,7 +400,7 @@
             border-right: 1px;
             border-radius: 3px 3px 0 0;
         }
-        button:last-child {
+        button:last-child:not(.row-remover):not(.comment-toggle) {
             border-radius: 0 0 3px 3px;
             border-left: 1px;
             margin-left: 10px;
