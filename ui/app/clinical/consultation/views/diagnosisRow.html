@@ -65,16 +65,31 @@
 
     <div class="col col1"></div>
     <div class="button-toggle col col2">
-        <buttons-radio class="btn-group" model='diagnosis.order' options='orderOptions'
+        <div class="col-header">
+            {{ ::'CLINICAL_ORDER' | translate }}
+        </div>
+        <div class="col-body">
+            <buttons-radio class="btn-group" model='diagnosis.order' options='orderOptions'
             dirty-check-flag='diagnosis.isDirty' ng-class="{'illegalValue': !diagnosis.isValidOrder()}" />
+        </div>
     </div>
     <div class="button-toggle col col3">
-        <buttons-radio class="small-btn" model='diagnosis.certainty' options='certaintyOptions'
+        <div class="col-header">
+            {{ ::'CLINICAL_CERTAINTY' | translate }}
+        </div>
+        <div class="col-body">
+            <buttons-radio class="small-btn" model='diagnosis.certainty' options='certaintyOptions'
             dirty-check-flag='diagnosis.isDirty' ng-class="{'illegalValue': !diagnosis.isValidCertainty()}" />
+        </div>
     </div>
 
     <div class="button-toggle status col col4" ng-show="isStatusConfigured()">
-        <buttons-radio class="small-btn status" model='diagnosis.diagnosisStatus' options='diagnosisStatus'
+        <div class="col-header">
+            {{ ::'CLINICAL_STATUS' | translate }}
+        </div>
+        <div class="col-body">
+            <buttons-radio class="small-btn status" model='diagnosis.diagnosisStatus' options='diagnosisStatus'
             dirty-check-flag='diagnosis.isDirty' />
+        </div>
     </div>
 </div>

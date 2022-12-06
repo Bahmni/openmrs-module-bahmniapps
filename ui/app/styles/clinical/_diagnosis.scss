@@ -1,5 +1,6 @@
 .diagnosis {
     .table {
+        overflow: hidden;
         .row:not(.diagnosis-row) {
             border-bottom: 1px solid $lightGray;
             display: flex;
@@ -20,18 +21,6 @@
         width: auto;
         padding: 0;
         box-sizing: border-box;
-
-        &:first-of-type {
-            .col-header {
-                border-radius: 5px 0 0 0;
-            }
-        }
-
-        &.col5 {
-            .col-header {
-                border-radius: 0 5px 0 0;
-            }
-        }
     }
     .comment-toggle {
         margin: 0;
@@ -221,7 +210,7 @@
         span:before {
             font-family: FontAwesome;
             content: "\f00c";
-            font-size: 18px;
+            font-size: 12px;
             margin-right: 5px;
         }
     }
@@ -263,12 +252,18 @@
         .message {
             position: absolute;
             transition: display 1s ease;
-            right: 215px;
-            top: 20px;
             color: orange;
             margin-bottom: 5px;
             font-size: 14px;
             display: none;
+            right: 20px;
+            bottom: 20px;
+
+            @media screen and(min-width: 992px) {
+                top: 20px;
+                bottom: auto;
+                right: 215px;
+            }
         }
 
         .row-remover {
@@ -280,20 +275,35 @@
             padding: 0;
             margin-top: 7px;
 
-            @media screen and (min-width: 768px) {
+            @media screen and (min-width: 992px) {
                 margin-top: 0;
             }
         }
 
         .col4 {
+            width: 100%;
             display: flex;
             justify-content: flex-start;
             gap: 8px;
-            width: 100%;
+
+            .col-body {
+                display: flex;
+                justify-content: flex-start;
+                gap: 8px;
+            }
         }
 
         button.add-condition {
             width: auto;
+        }
+
+        @media screen and (min-width: 768px) and (max-width: 991px) {
+            .col1,
+            .col2,
+            .col3 {
+                width: calc(100% / 3);
+                max-width: calc(100% / 3);;
+            }
         }
 
         @media screen and (min-width: 992px) {
@@ -314,8 +324,27 @@
     }
 
     .edit-diagnosis {
-        .col-4 {
-            justify-content: flex-start;
+        .col {
+            .col-header {
+                @media screen and (min-width: 992px) {
+                    display: none;
+                }
+            }
+        }
+        .col1 {
+            display: none;
+
+            @media screen and (min-width: 992px) {
+                display: block;
+            }
+        }
+        .col4 {
+            display: block;
+            gap: 0;
+            @media screen and (min-width: 768px) and (max-width: 992px) {
+                width: calc(100% / 3);
+                max-width: calc(100% / 3);
+            }
         }
     }
     .view-past.edited {
@@ -380,15 +409,12 @@
     border-bottom: 0;
 }
 
-@media screen and (max-width: 930px) {
+@media screen and (max-width: 991px) {
     .diagnosis .status button {
         white-space: nowrap;
         border-radius: 3px !important;
     }
     .diagnosis {
-        button {
-            width: 78px;
-        }
         .comment-toggle,
         .toggle,
         .remove-diagnosis,
@@ -407,7 +433,6 @@
         }
         .view-past .message {
             font-size: 10px;
-            top: 8px;
         }
     }
 }
@@ -437,7 +462,7 @@
     color: orange;
 }
 textarea.comment-section {
-    margin: 0 10px 10px 10px;
+    margin: 10px;
     min-width: 80%;
 }
 button.add-condition {
