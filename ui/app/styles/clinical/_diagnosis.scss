@@ -1,22 +1,46 @@
 .diagnosis {
-    .col{
-      margin: 0 !important;
+    .col {
+        margin: 0 !important;
+        float: none;
+        width: auto;
+        padding: 0;
+        box-sizing: border-box;
+
+        &:first-of-type {
+            .col-header {
+                border-radius: 5px 0 0 0;
+            }
+        }
+
+        &.col5 {
+            .col-header {
+                border-radius: 0 5px 0 0;
+            }
+        }
     }
-    .comment-toggle{
-      margin: 0;
+    .comment-toggle {
+        margin: 0;
     }
-    .diagnosis-toggle{
-      padding: 7px 5px;
+    .diagnosis-toggle {
+        padding: 7px 5px;
     }
     .table {
         .row {
             border-bottom: 1px solid $lightGray;
+            display: flex;
+            flex-wrap: wrap;
+
+            @media screen and (min-width: 992px) {
+                flex-wrap: nowrap;
+            }
         }
         .table-header.row {
             border-bottom: 1px solid $lightGray;
         }
     }
-    .new-diagnosis, .current-diagnosis, .history-diagnosis {
+    .new-diagnosis,
+    .current-diagnosis,
+    .history-diagnosis {
         margin-bottom: 25px;
         border: 1px solid #b3b3b3;
         border-bottom: none;
@@ -43,7 +67,7 @@
     }
     .table-header {
         background: $lightestGray;
-        border-radius: 5px 5px 0 0;
+
         span {
             font-size: 14px;
             white-space: nowrap;
@@ -53,11 +77,29 @@
             padding-left: 12px;
         }
     }
-    input[type=number] {
+
+    .col-header {
+        background: $lightestGray;
+        font-size: 14px;
+        white-space: nowrap;
+        color: $mediumGray;
+        font-family: $OpenSansBoldFont;
+        font-weight: normal;
+        padding: 10px 0 10px 12px;
+        min-height: 36px;
+        box-sizing: border-box;
+        border-bottom: 1px solid $lightGray;
+    }
+
+    .col-body {
+        padding: 10px 0;
+    }
+    input[type="number"] {
         width: 50px;
     }
     .col1 {
-        @include column(3);
+        width: 100%;
+
         input[type="text"] {
             min-width: 160px;
             margin-left: 10px;
@@ -67,226 +109,257 @@
         input[type="checkbox"] {
             margin-top: 8px;
         }
-        label.add-new {margin-top: 10px; font-size: 12px;}
-        width: 39%;
-        .diagnosis-name ,.diagnosis-date{
-          width: 50%;
-          padding: 0 10px;
-          box-sizing: border-box;
+        label.add-new {
+            margin-top: 10px;
+            font-size: 12px;
         }
-        .diagnosis-date{
-          font-size: 13px;
+        .diagnosis-name,
+        .diagnosis-date {
+            width: 50%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+        .diagnosis-date {
+            font-size: 13px;
         }
     }
-  .col2 {
-    @include column(3);
-    button:first-child {
-      margin-left: 10px;
-    }
-    width: 22%;
-    &.notes-subscriber{
-      width: 45%;
-      padding: 0;
-    }
-    .subscriber-name{
-      padding: 18px 10px 3px 0;
-      text-align: right;
-      font-size: 10px;
-      color: $mediumGray;
-      box-sizing: border-box;
-      width:36%;
-      display: inline-block;
-      vertical-align: bottom;
-    }
-    .diagnosis-notes{
-      display: inline-block;
-      width:60%;
-      box-sizing: border-box;
-      font-size: 13px;
-      padding: 10px 10px 10px 0;
-    }
-  }
-  .col3 {
-    @include column(3);
-    button:first-child {
-      margin-left: 10px;
-    }
-    width: 23%;
-  }
-  .col4 {
-    @include column(2);
-    width: 12%;
-    &.diagnosis-actions{
-      font-size: 13px;
-      width: 16%;
-      a{
-        text-decoration: underline;
-        margin:0 5px;
-        color: $bahmniLinkColor;
-        &:hover{
-          text-decoration: none;
+    .col2 {
+        width: 100%;
+
+        button:first-child {
+            margin-left: 10px;
         }
-        &.followUp{
-          pointer-events: none;
-          text-decoration: none;
-          color: #e7ac3e;
-          font-weight: bold;
+        &.notes-subscriber {
+            width: 45%;
+            padding: 0;
         }
-      }
+        .subscriber-name {
+            padding: 18px 10px 3px 0;
+            text-align: right;
+            font-size: 10px;
+            color: $mediumGray;
+            box-sizing: border-box;
+            width: 36%;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+        .diagnosis-notes {
+            display: inline-block;
+            width: 60%;
+            box-sizing: border-box;
+            font-size: 13px;
+            padding: 10px 10px 10px 0;
+        }
     }
-  }
-  .col5 {
-    @include column(1);
-    width: 3%;
-  }
-  .view-past {
-    position: relative;
-    -webkit-transition: background-color 1s ease;
-    .message {
-      position: absolute;
-      -webkit-transition: display 1s ease;
-      right: 215px;
-      top: 20px;
-      color: orange;
-      margin-bottom: 5px;
-      font-size: 14px;
-      display: none;
+    .col3 {
+        width: 100%;
+
+        button:first-child {
+            margin-left: 10px;
+        }
     }
-  }
-  .view-past.edited {
-    background-color: $clinicalHighlight;
-    .message {
-      display: block;
+    .col4 {
+        width: 50%;
+
+        &.diagnosis-actions {
+            font-size: 13px;
+            width: 16%;
+            a {
+                text-decoration: underline;
+                margin: 0 5px;
+                color: $bahmniLinkColor;
+                &:hover {
+                    text-decoration: none;
+                }
+                &.followUp {
+                    pointer-events: none;
+                    text-decoration: none;
+                    color: #e7ac3e;
+                    font-weight: bold;
+                }
+            }
+        }
     }
-  }
-  button:first-child ,button.accept-btn{
-    margin-left: 10px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-right: 1;
-  }
-  button:last-child {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-left: 1;
-  }
-  button {
-    padding: 8px 7px;
-    font-size: 11px;
-  }
-  .status button {
-    border-radius: 3px;
-  }
-  button:focus {
-    outline: 0;
-    border: 2px solid $clinicalFormFocus;
-  }
-  button.active {
-    color: $bahmniTertiaryColor;
-    padding-top: 7px;
-    span:before {
-      font-family: FontAwesome;
-      content: "\f00c";
-      font-size: 18px;
-      margin-right: 5px;
+    .col5 {
+        width: 50%;
+
+        .col-body {
+            padding-right: 10px;
+        }
     }
-  }
-}
-.current-diagnosis, .history-diagnosis {
-  .diagnosis-row {
-    overflow: auto;
-    clear: both;
+
+    @media screen and (min-width: 768px) {
+        .col {
+            flex-grow: 1;
+        }
+        .col1 {
+            width: 50%;
+        }
+
+        .col2, .col3 {
+            width: 50%;
+            max-width: 50%;
+        }
+
+        .col4, .col5 {
+            width: auto;
+        }
+    }
+
+    @media screen and (min-width: 992px) {
+        .col1 {
+            width: calc(100% / 3);
+            max-width: calc(100% / 3);
+        }
+
+        .col2, .col3 {
+            width: 22.5%;
+            max-width: 22.5%;
+        }
+    }
     .view-past {
-      overflow: auto;
-      clear: both;
-      .col {padding-top: 0; padding-bottom: 5px;}
-      .diagnosis-name {
-        padding-left: 10px;
-        font-size: 14px;
-        &.ruled-out {
-          color: $mediumGray;
-          text-decoration: line-through;
+        position: relative;
+        -webkit-transition: background-color 1s ease;
+        .message {
+            position: absolute;
+            -webkit-transition: display 1s ease;
+            right: 215px;
+            top: 20px;
+            color: orange;
+            margin-bottom: 5px;
+            font-size: 14px;
+            display: none;
         }
-      }
-      .col2 {padding-left: 10px;}
-      .col2, .col3 {
-        font-size: 12px;
-        margin-top: 5px;
-        
-        .view {margin-bottom: 5px;}
-        .date {
-          margin-right: 5px;
+    }
+    .view-past.edited {
+        background-color: $clinicalHighlight;
+        .message {
+            display: block;
         }
-      }
     }
-    button.toggle {
-      font-size: 100%;
-      background: none;
-      i {
-        @include button();
-        padding: 10px 5px 5px 8px;
-      }
+    button:first-child,
+    button.accept-btn {
+        margin-left: 10px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: 1;
     }
-  }
+    button:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-left: 1;
+    }
+    button {
+        padding: 8px 7px;
+        font-size: 11px;
+    }
+    .status button {
+        border-radius: 3px;
+    }
+    button:focus {
+        outline: 0;
+        border: 2px solid $clinicalFormFocus;
+    }
+    button.active {
+        color: $bahmniTertiaryColor;
+        padding-top: 7px;
+        span:before {
+            font-family: FontAwesome;
+            content: "\f00c";
+            font-size: 18px;
+            margin-right: 5px;
+        }
+    }
+}
+.current-diagnosis,
+.history-diagnosis {
+    .diagnosis-row {
+        overflow: auto;
+        clear: both;
+        .view-past {
+            overflow: auto;
+            clear: both;
+            .col {
+                padding-top: 0;
+                padding-bottom: 5px;
+            }
+            .diagnosis-name {
+                padding-left: 10px;
+                font-size: 14px;
+                &.ruled-out {
+                    color: $mediumGray;
+                    text-decoration: line-through;
+                }
+            }
+            .col2 {
+                padding-left: 10px;
+            }
+            .col2,
+            .col3 {
+                font-size: 12px;
+                margin-top: 5px;
+
+                .view {
+                    margin-bottom: 5px;
+                }
+                .date {
+                    margin-right: 5px;
+                }
+            }
+        }
+        button.toggle {
+            font-size: 100%;
+            background: none;
+            i {
+                @include button();
+                padding: 10px 5px 5px 8px;
+            }
+        }
+    }
 }
 
 .diagnosis .history-diagnosis .table-body .row.edit-diagnosis {
-  overflow: auto;
-  clear: both;
-  background: $lightestGray;
-  border-bottom: 0;
+    overflow: auto;
+    clear: both;
+    background: $lightestGray;
+    border-bottom: 0;
 }
 
-
-
 @media screen and (max-width: 930px) {
-  .diagnosis .status button {
-    white-space: nowrap;
-    border-radius: 3px!important;
-  }
-  .diagnosis {
-    .col1{
-      width:37%;
+    .diagnosis .status button {
+        white-space: nowrap;
+        border-radius: 3px !important;
     }
-    .col2{
-      width:18%;
+    .diagnosis {
+        button {
+            width: 78px;
+        }
+        .comment-toggle,
+        .toggle,
+        .remove-diagnosis {
+            width: auto;
+        }
+        button:first-child {
+            margin-left: 10px;
+            border-right: 1px;
+            border-radius: 3px 3px 0 0;
+        }
+        button:last-child {
+            border-radius: 0 0 3px 3px;
+            border-left: 1px;
+            margin-left: 10px;
+        }
+        .view-past .message {
+            font-size: 10px;
+            top: 8px;
+        }
     }
-    .col3{
-      width:18%;
-    }
-    .col4{
-      width:16%;
-    }
-    .col5{
-      width:9%;
-    }
-    button {
-      width: 78px;
-    }
-    .comment-toggle ,.toggle , .remove-diagnosis{
-      width:auto;
-    }
-    button:first-child {
-      margin-left: 10px;
-      border-right: 1px;
-      border-radius: 3px 3px 0 0;
-    }
-    button:last-child {
-      border-radius: 0 0 3px 3px;
-      border-left: 1px;
-      margin-left: 10px;
-    }
-    .view-past .message {
-      font-size: 10px;
-      top: 8px;
-    }
-  }
 }
 
 .visit {
     .history-diagnosis .diagnosis-row button.toggle {
         color: $mediumGray;
-        padding: 0;    
+        padding: 0;
         &.has-notes {
             i {
                 color: orange;
@@ -302,7 +375,6 @@
             }
         }
     }
-
 }
 
 .diagnosis-row button.toggle.has-notes i {
@@ -312,29 +384,30 @@ textarea.comment-section {
     margin: 0 10px 10px 10px;
     min-width: 80%;
 }
-button.add-condition{
-  margin-top: 7px;
-  font-size: 12px;
-  padding: 11px 7px;
+button.add-condition {
+    margin-top: 7px;
+    font-size: 12px;
+    padding: 11px 7px;
 }
 .condition-header {
-  width: 56%;
-  display: inline-block;
+    width: 56%;
+    display: inline-block;
 }
 .conditions-display-contorl-overflow {
-  height: 98%;
-  overflow: auto;
+    height: 98%;
+    overflow: auto;
 }
-.disable-conditions-in-retro-mode{
-  background: $lightestGray;
-  color: #999;
-  input, button{
-    pointer-events: none;
+.disable-conditions-in-retro-mode {
     background: $lightestGray;
     color: #999;
-  }
-  a {
-    pointer-events: none;
-    color: #999!important;
-  }
+    input,
+    button {
+        pointer-events: none;
+        background: $lightestGray;
+        color: #999;
+    }
+    a {
+        pointer-events: none;
+        color: #999 !important;
+    }
 }
