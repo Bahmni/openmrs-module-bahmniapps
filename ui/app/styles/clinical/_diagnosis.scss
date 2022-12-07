@@ -172,6 +172,10 @@
         }
     }
 
+    .col-filler {
+        display: none;
+    }
+
     @media screen and (min-width: 768px) {
         .col {
             flex-grow: 1;
@@ -190,6 +194,10 @@
         .col4,
         .col5 {
             width: auto;
+        }
+
+        .col-filler {
+            display: block;
         }
     }
 
@@ -338,7 +346,6 @@
             .col3 {
                 width: calc(100% / 3);
                 max-width: calc(100% / 3);
-                ;
             }
         }
 
@@ -356,6 +363,7 @@
             .col4 {
                 justify-content: flex-end;
                 width: auto;
+                max-height: 58px;
             }
         }
     }
@@ -396,6 +404,12 @@
         }
     }
 
+    .current-diagnosis {
+        .col-header {
+            display: none;
+        }
+    }
+
     .history-diagnosis {
         .table-header {
             padding: 10px 0;
@@ -419,6 +433,13 @@
 
                     .col-body {
                         padding-left: 10px;
+                    }
+
+                    .col-header {
+                        background: transparent;
+                        border: none;
+                        min-height: 0;
+                        padding: 0 10px;
                     }
 
                     @media screen and (min-width: 768px) {
