@@ -96,7 +96,7 @@ angular.module('bahmni.registration')
             message = message.replace("#clinicName", clinicName);
             message = message.replace("#patientId", patientId);
             message = message.replace("#name", name);
-            message = message.replace("#age", age + " years");
+            message = message.replace("#age", age);
             message = message.replace("#gender", gender);
             message = message.replace("#helpDeskNumber", $rootScope.helpDeskNumber);
             return message;
