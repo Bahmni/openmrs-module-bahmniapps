@@ -75,6 +75,12 @@
             margin-left: 10px;
             margin-top: 0;
             float: left;
+            padding: 5px 10px !important;
+
+            @media screen and (max-width: 320px) {
+                min-width: 0;
+                max-width: calc(100% - 105px);
+            }
         }
 
         input[type="checkbox"] {
@@ -135,6 +141,17 @@
 
         button:first-child {
             margin-left: 10px;
+        }
+
+        input[type="date"] {
+            margin-left: 10px;
+            min-width: 150px;
+            padding: 5px 10px !important;
+            margin-top: 0;
+        }
+
+        .comment-toggle {
+            margin-right: 10px;
         }
     }
 
@@ -217,19 +234,32 @@
     button:first-child,
     button.accept-btn {
         margin-left: 10px;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        border-right: 1;
-    }
-
-    button:last-child:not(.row-remover):not(.comment-toggle) {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
     }
 
     button {
         padding: 8px 7px;
         font-size: 11px;
+    }
+
+    .btn-group,
+    .small-btn {
+        button{
+            &:not(:first-child):not(:last-child) {
+                border-radius: 0;
+                border-left: none;
+            }
+
+            &:first-child:not(:only-child) {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+    
+            &:last-child:not(:only-child) {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-left: none;
+            }
+        }
     }
 
     .status button {
@@ -273,7 +303,7 @@
             border: 1px solid $lightGray;
             border-radius: 5px;
             float: right;
-            padding: 5px 10px;
+            padding: 7px 10px;
             margin: 0 0 10px 10px;
 
             span {
@@ -439,7 +469,7 @@
                         background: transparent;
                         border: none;
                         min-height: 0;
-                        padding: 0 10px;
+                        padding: 0 10px 10px;
                     }
 
                     @media screen and (min-width: 768px) {
@@ -457,6 +487,23 @@
             .col3 {
                 width: calc(100% / 3);
                 max-width: calc(100% / 3);
+            }
+        }
+    }
+
+    .current-diagnosis,
+    .history-diagnosis {
+        .col-body {
+            padding: 0;
+        }
+    }
+
+    .new-conditions {
+        .col4 {
+            width: 100%;
+
+            @media screen and (min-width: 768px) {
+                width: auto;
             }
         }
     }
