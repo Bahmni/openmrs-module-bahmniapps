@@ -44,6 +44,10 @@
             font-weight: normal;
             padding-left: 12px;
         }
+
+        .col2 .subscriber-name {
+            padding: 0 10px 0 0;
+        }
     }
 
     .col-header {
@@ -94,7 +98,7 @@
 
         .diagnosis-name,
         .diagnosis-date {
-            width: 50%;
+            width: 55%;
             padding: 0 10px;
             box-sizing: border-box;
         }
@@ -117,7 +121,7 @@
         }
 
         .subscriber-name {
-            padding: 18px 10px 3px 0;
+            padding: 10px;
             text-align: right;
             font-size: 10px;
             color: $mediumGray;
@@ -132,7 +136,7 @@
             width: 60%;
             box-sizing: border-box;
             font-size: 13px;
-            padding: 10px 10px 10px 0;
+            padding: 10px;
         }
     }
 
@@ -164,8 +168,12 @@
 
             a {
                 text-decoration: underline;
-                margin: 0 5px;
+                margin: 0 0 0 10px;
                 color: $bahmniLinkColor;
+
+                &:last-child {
+                    margin-right: 10px;
+                }
 
                 &:hover {
                     text-decoration: none;
@@ -294,6 +302,7 @@
     .new-diagnosis {
         border: 1px solid darken($lightGray, 10%);
         background: $white;
+        border-bottom: none;
 
         @media screen and (max-width: 768px) {
             margin-top: 20px;
@@ -440,7 +449,8 @@
         }
     }
 
-    .history-diagnosis {
+    .history-diagnosis,
+    .inactive-conditions {
         .table-header {
             padding: 10px 0;
 
@@ -503,6 +513,100 @@
             width: 100%;
 
             @media screen and (min-width: 768px) {
+                width: auto;
+            }
+        }
+    }
+
+    .active-conditions,
+    .history-conditions,
+    .inactive-conditions {
+        .section-title {
+            display: flex;
+
+             > * {
+                display: none;
+             }
+
+             .condition-header {
+                display: block;
+                width: 100%;
+             }
+        }
+
+        .table-body {
+            .row {
+                .col1 {
+                    padding: 10px 0;
+                }
+            }
+        }
+
+        .col1 {
+            width: 100%;
+            max-width: 100%;
+
+            .diagnosis-name {
+                width: 45%;
+                box-sizing: border-box;
+            }
+        }
+
+        .col2.notes-subscriber {
+            flex-grow: 1;
+            max-width: initial;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+
+            .subscriber-name {
+                text-align: left;
+                width: 45%;
+            }
+            .diagnosis-notes {
+                flex-grow: 1;
+                width: 55%;
+            }
+
+            .col-header {
+                width: 100%;
+            }
+        }
+
+        .col4.diagnosis-actions {
+            width: auto;
+            padding: 10px 0;
+        }
+
+        @media screen and (min-width: 992px) {
+            .section-title {
+                > * {
+                    display: block;
+                }
+                .condition-header {
+                    width: 45%;
+                }
+            }
+            .col1 {
+                width: 45%;
+                max-width: 45%;
+            }
+
+            .col2.notes-subscriber {
+                width: auto;
+
+                .subscriber-name {
+                    margin-right: 30px;
+                    width: auto;
+                }
+
+                .col-header {
+                    display: none;
+                }
+            }
+
+            .col4.diagnosis-actions {
+                flex-grow: initial;
                 width: auto;
             }
         }
@@ -631,11 +735,6 @@ button.add-condition {
     margin-top: 7px;
     font-size: 12px;
     padding: 11px 7px;
-}
-
-.condition-header {
-    width: 56%;
-    display: inline-block;
 }
 
 .conditions-display-contorl-overflow {
