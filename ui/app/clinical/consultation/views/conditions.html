@@ -65,39 +65,35 @@
 
 
     <div ng-if="consultation.conditions.length > 0" class="">
-        <div class="table new-diagnosis primary-section-grid">
+        <div class="table new-diagnosis primary-section-grid active-conditions">
             <h2 class="section-title">
-                <span class="condition-header">{{'CONDITION_LIST_CONDITIONS_ACTIVE'|translate}}</span>
-                <span>{{'CONDITION_LIST_NOTES'|translate}}</span>
+                <div class="condition-header">{{'CONDITION_LIST_CONDITIONS_ACTIVE'|translate}}</div>
+                <div>{{'CONDITION_LIST_NOTES'|translate}}</div>
             </h2>
             <div class="row" ng-if="filterConditions('ACTIVE').length == 0">
-                <div class="col col1">
-                    <div class="diagnosis-name">
-                        {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
-                    </div>
+                <div class="diagnosis-name">
+                    {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
                 </div>
             </div>
             <div ng-repeat="condition in filterConditions('ACTIVE')" class="table-body">
                 <ng-include src="'consultation/views/conditionRow.html'" />
             </div>
         </div>
-        <div class="table new-diagnosis primary-section-grid">
+        <div class="table new-diagnosis primary-section-grid history-conditions">
             <h2 class="section-title">
-                <span class="condition-header">{{'CONDITION_LIST_CONDITIONS_HISTORY_OF'|translate}}</span>
-                <span>{{'CONDITION_LIST_NOTES'|translate}}</span>
+                <div class="condition-header">{{'CONDITION_LIST_CONDITIONS_HISTORY_OF'|translate}}</div>
+                <div>{{'CONDITION_LIST_NOTES'|translate}}</div>
             </h2>
             <div class="row" ng-if="filterConditions('HISTORY_OF').length == 0">
-                <div class="col col1">
-                    <div class="diagnosis-name">
-                        {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
-                    </div>
+                <div class="diagnosis-name">
+                    {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
                 </div>
             </div>
             <div ng-repeat="condition in filterConditions('HISTORY_OF')" class="table-body">
                 <ng-include src="'consultation/views/conditionRow.html'" />
             </div>
         </div>
-        <div class="table new-diagnosis section-grid">
+        <div class="table new-diagnosis section-grid inactive-conditions">
             <div class="row table-header" toggle="toggles.expandInactive">
                 <div class="col col1">
                     <span>
