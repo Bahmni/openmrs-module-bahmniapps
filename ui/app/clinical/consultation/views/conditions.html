@@ -55,10 +55,10 @@
                     </button>
                 </div>
             </div>
-            <div class="" ng-show="consultation.condition.showNotes">
-                <textarea class="comment-section" maxlength="255" ng-model="consultation.condition.additionalDetail">
-                </textarea>
-            </div>
+        </div>
+        <div class="col col-comments" ng-show="consultation.condition.showNotes">
+            <textarea class="comment-section" maxlength="255" ng-model="consultation.condition.additionalDetail">
+            </textarea>
         </div>
 
     </div>
@@ -68,10 +68,10 @@
         <div class="table new-diagnosis primary-section-grid active-conditions">
             <h2 class="section-title">
                 <div class="condition-header">{{'CONDITION_LIST_CONDITIONS_ACTIVE'|translate}}</div>
-                <div>{{'CONDITION_LIST_NOTES'|translate}}</div>
+                <div class="notes-header">{{'CONDITION_LIST_NOTES'|translate}}</div>
             </h2>
             <div class="row" ng-if="filterConditions('ACTIVE').length == 0">
-                <div class="diagnosis-name">
+                <div class="exception-message">
                     {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
                 </div>
             </div>
@@ -82,10 +82,10 @@
         <div class="table new-diagnosis primary-section-grid history-conditions">
             <h2 class="section-title">
                 <div class="condition-header">{{'CONDITION_LIST_CONDITIONS_HISTORY_OF'|translate}}</div>
-                <div>{{'CONDITION_LIST_NOTES'|translate}}</div>
+                <div class="notes-header">{{'CONDITION_LIST_NOTES'|translate}}</div>
             </h2>
             <div class="row" ng-if="filterConditions('HISTORY_OF').length == 0">
-                <div class="diagnosis-name">
+                <div class="exception-message">
                     {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
                 </div>
             </div>
@@ -103,14 +103,13 @@
                     </span>
                 </div>
                 <div class="col col2 notes-subscriber">
-                    <span class="subscriber-name"></span>
                     <span>{{'CONDITION_LIST_NOTES'|translate}}</span>
                 </div>
             </div>
             <div ng-show="toggles.expandInactive">
                 <div class="row" ng-if="filterConditions('INACTIVE').length == 0">
                     <div class="col col1">
-                        <div class="diagnosis-name">
+                        <div class="exception-message">
                             {{'CONDITION_LIST_NO_CONDITIONS' | translate}}
                         </div>
                     </div>

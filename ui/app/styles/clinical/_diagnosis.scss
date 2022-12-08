@@ -23,6 +23,7 @@
         width: auto;
         padding: 0;
         box-sizing: border-box;
+        display: block;
     }
 
     .comment-toggle {
@@ -60,7 +61,11 @@
         padding: 10px 0 10px 12px;
         min-height: 36px;
         box-sizing: border-box;
-        border-bottom: 1px solid $lightGray;
+        border-bottom: none;
+
+        @media screen and(min-width: 992px) {
+            border-bottom: 1px solid $lightGray;
+        }
     }
 
     .col-body {
@@ -199,6 +204,16 @@
 
     .col-filler {
         display: none;
+    }
+
+    .col-comments {
+        width: 100%;
+        border-bottom: 1px solid $lightGray;
+    }
+
+    .exception-message {
+        width: 100%;
+        padding: 10px;
     }
 
     @media screen and (min-width: 768px) {
@@ -407,6 +422,10 @@
         }
     }
 
+    tr.view-past {
+        display: table-row;
+    }
+
     .edit-diagnosis {
         .col {
             .col-header {
@@ -532,6 +551,10 @@
                 display: block;
                 width: 100%;
              }
+
+             .notes-header {
+                padding-left: 10px;
+             }
         }
 
         .table-body {
@@ -578,7 +601,13 @@
             padding: 10px 0;
         }
 
-        @media screen and (min-width: 992px) {
+        @media screen and (min-width: 768px) and (max-width: 991px) {
+            .col4.diagnosis-actions {
+                width: 100%;
+            }
+        }
+
+        @media screen and (min-width: 768px) {
             .section-title {
                 > * {
                     display: block;
@@ -596,18 +625,38 @@
                 width: auto;
 
                 .subscriber-name {
-                    margin-right: 30px;
-                    width: auto;
+                    width: 150px;
                 }
 
                 .col-header {
                     display: none;
                 }
+
+                .diagnosis-notes {
+                    width: calc(100% - 155px);
+                }
             }
 
             .col4.diagnosis-actions {
                 flex-grow: initial;
-                width: auto;
+            }
+        }
+
+        @media screen and (min-width: 1200px) {
+            .col2.notes-subscriber {
+                .diagnosis-notes {
+                    padding-left: 30px;
+                }
+            }
+        }
+    }
+
+    .inactive-conditions {
+        .col2.notes-subscriber {
+            display: none;
+
+            @media screen and(min-width: 768px) {
+                display: block;
             }
         }
     }
@@ -675,6 +724,7 @@
     clear: both;
     background: $lightestGray;
     border-bottom: 0;
+    padding: 10px 0;
 }
 
 @media screen and (max-width: 991px) {
