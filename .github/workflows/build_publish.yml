@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: 10.16.3
       - name: Use Ruby 2.5
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.5
       - run: npm install -g bower
