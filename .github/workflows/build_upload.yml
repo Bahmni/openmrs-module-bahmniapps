@@ -1,0 +1,31 @@
+name: Build and Publish
+on:
+  push:
+    branches:
+      - master
+      - temporary
+
+jobs:
+  build-publish-docker-helm:
+    name: Build & Publish Docker Image & Helm Chart
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 10.16.3
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.16.3
+      - name: Use Ruby 2.5
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.5
+      - run: npm install -g bower
+      - run: npm install -g grunt-cli
+      - run: gem install compass
+      - run: npm install --global yarn
+      - name: Package
+        run: cd ui && yarn cache clean && /bin/bash ./scripts/package.sh
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifact
+          path: ui/dist/ 
