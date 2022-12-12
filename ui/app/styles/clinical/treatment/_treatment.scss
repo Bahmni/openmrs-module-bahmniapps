@@ -148,6 +148,9 @@
 
         .field-attribute {
             &.stop-date-label {
+                @media screen and (max-width: 768px) {
+                    width: 100%;
+                }
                 .control-label {
                     width: auto;
                 }
@@ -158,8 +161,17 @@
             margin-right: 5px;
 
             textarea {
-                height: 25px;
+                height: auto;
                 width: 540px;
+
+                @media screen and (max-width: 768px) {
+                    width: 80vw;
+                    height: auto;
+                }
+
+                @media screen and (min-width: 769px) and (max-width: 992px) {
+                    width: 400px;
+                }
             }
         }
     }
