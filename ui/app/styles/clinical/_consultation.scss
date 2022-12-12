@@ -48,6 +48,57 @@
             white-space: normal;
         }
     }
+
+    .diagnosis {
+        .col1 {
+            width: 40%;
+            max-width: 40%;
+
+            .diagnosis-name {
+                width: 100%;
+            }
+        }
+        .col2 {
+            max-width: calc(60% - 25px);
+            flex-grow: 1;
+        }
+
+        .col3 {
+            width: auto;
+            max-width: 100%;
+            text-align: right;
+            padding-right: 8px;
+
+            @media screen and (min-width: 768px) {
+                text-align: left;
+            }
+        }
+
+        .history-diagnosis {
+            .table-header {
+                .col2 {
+                    display: block;
+                }
+            }
+        }
+
+        .table-header {
+            .col2,
+            .col3 {
+                span {
+                    padding-left: 0;
+                }
+            }
+        }
+
+        .notes {
+            padding: 5px 12px;
+        }
+    }
+
+    &.visit .diagnosis .history-diagnosis .table-body .diagnosis-name {
+        padding: 0 10px;
+    }
 }
 
 .clinical-consultation {
