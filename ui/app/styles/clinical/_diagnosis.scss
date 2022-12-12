@@ -133,7 +133,7 @@
             box-sizing: border-box;
             width: 36%;
             display: inline-block;
-            vertical-align: bottom;
+            vertical-align: top;
         }
 
         .diagnosis-notes {
@@ -623,6 +623,7 @@
 
             .col2.notes-subscriber {
                 width: auto;
+                max-width: 55%;
 
                 .subscriber-name {
                     width: 150px;
@@ -657,6 +658,18 @@
 
             @media screen and(min-width: 768px) {
                 display: block;
+            }
+        }
+    }
+
+    .active-conditions {
+        @media screen and (min-width: 992px) {
+            .col2.notes-subscriber {
+                max-width: calc(55% - 210px);
+            }
+
+            .col4.diagnosis-actions {
+                min-width: 211px;
             }
         }
     }
