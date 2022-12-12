@@ -45,10 +45,16 @@
             font-weight: normal;
             padding-left: 12px;
         }
+    }
 
-        .col2 .subscriber-name {
-            padding: 0 10px 0 0;
-        }
+    .subscriber-name {
+        padding: 10px;
+        font-size: 10px;
+        color: $mediumGray;
+        box-sizing: border-box;
+        width: 36%;
+        display: inline-block;
+        vertical-align: top;
     }
 
     .col-header {
@@ -125,17 +131,6 @@
             padding: 0;
         }
 
-        .subscriber-name {
-            padding: 10px;
-            text-align: right;
-            font-size: 10px;
-            color: $mediumGray;
-            box-sizing: border-box;
-            width: 36%;
-            display: inline-block;
-            vertical-align: top;
-        }
-
         .diagnosis-notes {
             display: inline-block;
             width: 60%;
@@ -165,7 +160,7 @@
     }
 
     .col4 {
-        width: 50%;
+        width: 55%;
 
         &.diagnosis-actions {
             font-size: 13px;
@@ -195,7 +190,7 @@
     }
 
     .col5 {
-        width: 50%;
+        width: 45%;
 
         .col-body {
             padding-right: 10px;
@@ -222,13 +217,17 @@
         }
 
         .col1 {
-            width: 50%;
+            width: 55%;
         }
 
-        .col2,
+        .col2 {
+            width: 45%;
+            max-width: 45%;
+        }
+
         .col3 {
-            width: 50%;
-            max-width: 50%;
+            width: 55%;
+            max-width: 55%;
         }
 
         .col4,
@@ -243,14 +242,14 @@
 
     @media screen and (min-width: 992px) {
         .col1 {
-            width: 29%;
-            max-width: 29%;
+            width: 30%;
+            max-width: 30%;
         }
 
         .col2,
         .col3 {
-            width: 24%;
-            max-width: 24%;
+            width: 25%;
+            max-width: 25%;
         }
     }
 
@@ -568,9 +567,16 @@
         .col1 {
             width: 100%;
             max-width: 100%;
+            display: flex;
+            flex-wrap: wrap;
 
-            .diagnosis-name {
-                width: 45%;
+            .diagnosis-name,
+            .diagnosis-date {
+                width: 50%;
+                box-sizing: border-box;
+            }
+            .subscriber-name {
+                width: 100%;
                 box-sizing: border-box;
             }
         }
@@ -581,14 +587,8 @@
             width: 100%;
             display: flex;
             flex-wrap: wrap;
-
-            .subscriber-name {
-                text-align: left;
-                width: 45%;
-            }
             .diagnosis-notes {
                 flex-grow: 1;
-                width: 55%;
             }
 
             .col-header {
@@ -613,41 +613,37 @@
                     display: block;
                 }
                 .condition-header {
-                    width: 45%;
+                    width: 55%;
                 }
             }
             .col1 {
-                width: 45%;
-                max-width: 45%;
+                width: 55%;
+                max-width: 55%;
+
+                .diagnosis-name {
+                    width: 30%;
+                    box-sizing: border-box;
+                }
+    
+                .diagnosis-date,
+                .subscriber-name {
+                    width: 35%;
+                    box-sizing: border-box;
+                    padding: 0 10px;
+                }
             }
 
             .col2.notes-subscriber {
                 width: auto;
-                max-width: 55%;
-
-                .subscriber-name {
-                    width: 150px;
-                }
+                max-width: 45%;
 
                 .col-header {
                     display: none;
-                }
-
-                .diagnosis-notes {
-                    width: calc(100% - 155px);
                 }
             }
 
             .col4.diagnosis-actions {
                 flex-grow: initial;
-            }
-        }
-
-        @media screen and (min-width: 1200px) {
-            .col2.notes-subscriber {
-                .diagnosis-notes {
-                    padding-left: 30px;
-                }
             }
         }
     }
@@ -665,7 +661,7 @@
     .active-conditions {
         @media screen and (min-width: 992px) {
             .col2.notes-subscriber {
-                max-width: calc(55% - 210px);
+                max-width: calc(45% - 210px);
             }
 
             .col4.diagnosis-actions {
