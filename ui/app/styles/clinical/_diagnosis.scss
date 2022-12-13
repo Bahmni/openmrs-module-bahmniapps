@@ -569,6 +569,7 @@
             max-width: 100%;
             display: flex;
             flex-wrap: wrap;
+            justify-content: space-between;
 
             .diagnosis-name,
             .diagnosis-date {
