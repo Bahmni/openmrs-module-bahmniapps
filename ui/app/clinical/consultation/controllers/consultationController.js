@@ -171,6 +171,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return _.includes(currentPath, board.url);
                 });
                 if (board) {
+                    _.map($scope.availableBoards, function (availableBoard) {
+                        availableBoard.isSelectedTab = false;
+                    });
                     $scope.currentBoard = board;
                     $scope.currentBoard.isSelectedTab = true;
                 }
