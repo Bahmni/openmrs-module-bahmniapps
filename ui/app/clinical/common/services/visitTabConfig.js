@@ -24,6 +24,18 @@ angular.module('bahmni.clinical')
                     if (sortedSections.length > 0) {
                         results[1][tab].sections = sortedSections;
                     }
+                    if (results[1][tab].printSections) {
+                        var sortedPrintSections = _.sortBy(results[1][tab].printSections, function (asection) {
+                            return asection.printOrder;
+                        });
+                        if (sortedPrintSections.length > 0) {
+                            results[1][tab].printSections = sortedPrintSections;
+                            var groupedPrintSections = _.groupBy(sortedPrintSections, function (sec) {
+                                return sec.configType;
+                            });
+                            results[1][tab].groupedPrintSections = groupedPrintSections;
+                        }
+                    }
                 }
 
                 var mandatoryConfig = results[0].data;

@@ -1,0 +1,43 @@
+<style type="text/css">
+    table tr td {
+        border-collapse: collapse !important;
+    }
+    table, tr, td, ul, li {
+        border: none !important;
+		cellspacing: 0;
+		cellpadding: 0;
+    }
+</style>
+
+   <div>
+	    <div class="concept-set-container-view">
+			<h2 
+			  class="section-title">
+			  <span class="title-link"> {{::title | titleTranslate}} </span>
+			</h2>
+	        <section class="block hierarchy" ng-repeat="obs in ::obsToPrint">
+				<h2 
+				  class="section-title">
+				  <span class="title-link">{{obs.mainConceptName}}</span>
+				</h2>
+	           <ul class="form-field" ng-repeat="observation in ::obs track by $index">
+				<li ng-if="!$last">
+					<table style="width: 100%;">
+					  <tr>
+						<td style="width: 30%;">{{observation[0].concept.shortName}}</td>
+						<td style="width: 70%;">
+							<span ng-repeat="value in ::observation track by $index">
+								<span ng-if="value.concept.dataType==='Date'" ng-bind-html="value.valueAsString | bahmniDate"></span>
+								<span ng-if="value.concept.dataType!=='Date'" ng-bind-html="value.valueAsString.trim()"></span>
+								<span ng-if="value.duration > 0">{{value.getDurationDisplayValue().trim()}}</span>
+								<span ng-if="value.concept.units.length > 0">{{value.concept.units.trim()}}</span>
+								<span ng-if="!$last">,&nbsp;</span>
+							</span>
+						</td>
+					  </tr>
+					</table>
+				</li>
+			 </ul>
+	        </section>
+	    </div>
+    </div>

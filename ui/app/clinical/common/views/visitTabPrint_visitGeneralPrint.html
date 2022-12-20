@@ -1,0 +1,38 @@
+<html>
+<link rel="stylesheet" href="../styles/clinicalPrint.css" media="print"/> 
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/> -->
+<head>
+</head>
+
+<!-- <style>
+.footer {
+  clear: both;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 5%;
+  text-align: center;
+  vertical-align: middle;
+}
+</style> -->
+
+<body>
+    <table style="width: 100%;">
+        <tr>
+            <td  style="width: 50%;">
+                <img width="200px" style="margin-left: 20px;" height="80px" src="../images/bahmniLogoFull.png" >
+            </td>
+            <td style="text-align: left;width: 50%;">
+                <i class="fa fa-map-marker"></i>  &nbsp;&nbsp;Near IPLit Demo hospital Road,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  IPLit Demo Address <br><i class="fa fa-envelope"></i>  connect@iplitdemo.in | <i class="fa fa-globe"></i> www.iplitdemo.in <br><i class="fa fa-phone"></i>  &nbsp;+918369682321
+            </td>
+        </tr>
+    </table> 
+    <div class="print-wrapper print-patient-summary">
+        <div class="visit visit-summary-page" bindonce="visit" ng-include="'common/views/visitGeneralSummaryPrint.html'"></div>
+    </div>
+
+    <!-- <span style="white-space:pre-wrap;"> {{visitTabConfig.getPrintConfigForCurrentTab().additionalInfo}}
+        {{visitTabConfig.getPrintConfigForCurrentTab().footer}}
+    </span> -->
+</body>
+</html>

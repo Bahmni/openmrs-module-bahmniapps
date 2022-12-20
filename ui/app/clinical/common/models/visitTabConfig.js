@@ -15,4 +15,13 @@ Bahmni.Clinical.VisitTabConfig = function (tabs) {
             });
         });
     };
+
+    this.setVisitUuidsAndPatientUuidToThePrintSections = function (visitUuids, patientUuid) {
+        _.each(this.tabs, function (tab) {
+            _.each(tab.printSections, function (section) {
+                section.config.visitUuids = visitUuids;
+                section.config.patientUuid = patientUuid;
+            });
+        });
+    };
 };
