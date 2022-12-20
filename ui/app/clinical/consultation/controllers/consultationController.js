@@ -573,5 +573,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 }
             };
 
+            $scope.$on("patientContext:goToPatientDashboard", function () {
+                $scope.gotoPatientDashboard();
+            });
+
             initialize();
         }]);
