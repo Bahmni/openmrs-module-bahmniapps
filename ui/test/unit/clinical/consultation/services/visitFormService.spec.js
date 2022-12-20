@@ -2,14 +2,16 @@
 
 describe('visitFormService', function () {
 
-    var http;
+    var http, bahmniCookieStore;
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('bahmni.common.appFramework'));
 
     beforeEach(module(function ($provide) {
         http = jasmine.createSpyObj('http', ['get']);
         http.get.and.returnValue({"uuid": "12345"});
+        bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
         $provide.value('$http', http);
+        $provide.value('$bahmniCookieStore', bahmniCookieStore);
     }));
 
     beforeEach(inject(['visitFormService', function (visitFormService) {

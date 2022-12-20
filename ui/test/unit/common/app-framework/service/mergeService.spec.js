@@ -1,8 +1,10 @@
 describe("merge functionality", function (mergeService) {
 
-    var master;
+    var master, bahmniCookieStore;
     beforeEach(module('bahmni.common.appFramework'));
-    beforeEach(function () {
+    beforeEach(module(function ($provide) {
+        bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
+        $provide.value('$bahmniCookieStore', bahmniCookieStore);
         master = {
             a: {
                 c: "Hi",
@@ -13,7 +15,7 @@ describe("merge functionality", function (mergeService) {
             },
             b: "Hello"
         };
-    });
+    }));
 
     it("should change a leaf value", inject(['mergeService', function (mergeService) {
         var result = mergeService.merge(master, {

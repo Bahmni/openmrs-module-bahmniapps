@@ -2,7 +2,7 @@
 
 describe('treatmentConfig', function () {
 
-    var treatmentConfig, medicationConfig, masterConfig, translate, configurationService;
+    var treatmentConfig, medicationConfig, masterConfig, translate, configurationService, bahmniCookieStore;
     beforeEach(function () {
         medicationConfig = {
             "commonConfig": {},
@@ -62,6 +62,7 @@ describe('treatmentConfig', function () {
             appDescriptor.getConfigForPage.and.returnValue(medicationConfig);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
             spinner.forPromise.and.returnValue("drug-oncept-uuid");
+            bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
 
             configurationService = jasmine.createSpyObj('configurationService', ['getConfigurations']);
             configurationService.getConfigurations.and.returnValue(specUtil.respondWith({
@@ -77,6 +78,7 @@ describe('treatmentConfig', function () {
             $provide.value('spinner', spinner);
             $provide.value('$q', Q);
             $provide.value('$translate', translate);
+            $provide.value('$bahmniCookieStore', bahmniCookieStore);
         });
 
         inject(['treatmentConfig', function (_treatmentConfig) {

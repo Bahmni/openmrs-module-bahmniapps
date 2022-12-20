@@ -6,7 +6,7 @@ describe('Bacteriology Results Control', function () {
         scope,deferred, state,
         section,element,_bacteriologyResultsService, _observationsService, _encounterService, _auditLogService, appService, _spinner,mockedBacteriologyTabInitialization,patient={uuid:"patientUuid"},
         simpleHtml = '<bacteriology-results-control id="dashboard-drug-order-details" patient="patient" section="section"></bacteriology-results-control>',
-        mockDialog,mockConsultationInitialization;
+        mockDialog,mockConsultationInitialization, bahmniCookieStore;
     var bacteriologyTabData = {};
 
     var messageServiceMock = jasmine.createSpyObj('messagingService', ['showMessage']);
@@ -57,7 +57,7 @@ describe('Bacteriology Results Control', function () {
         appService.getAppDescriptor.and.returnValue(mockAppDescriptor);
         _spinner = jasmine.createSpyObj('spinner',['forPromise','then']);
         _spinner.forPromise.and.returnValue(specUtil.createFakePromise({}));
-
+        bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
 
         mockConsultationInitialization = function(){
             deferred = q.defer();
@@ -93,6 +93,7 @@ describe('Bacteriology Results Control', function () {
         $provide.value('consultationInitialization', mockConsultationInitialization);
         $provide.value('messagingService', messageServiceMock);
         $provide.value('$translate', {});
+        $provide.value('$bahmniCookieStore', bahmniCookieStore);
     }));
 
     var compileScope = function (isBeingPrinted) {
