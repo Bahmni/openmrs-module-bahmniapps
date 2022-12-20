@@ -118,7 +118,7 @@
   "REGISTRATION_TO_CLINICAL": "Save and go to Dashboard",
   "FILE_UPLOAD_MUST_BE_IMAGE": "File uploaded must be an image",
   "FILE_UPLOAD_MUST_BE_LESS_THAN": "File size should be less than",
-  "REGISTRATION_LABEL_PATIENT_FAMILY_NAME_LOCAL":"Last Name in Arabic",
-  "REGISTRATION_LABEL_PATIENT_MIDDLE_NAME_LOCAL":"Middle Name in Arabic",
-  "REGISTRATION_LABEL_PATIENT_FIRST_NAME_LOCAL":"First Name in Arabic"
+  "PATIENT_ATTRIBUTE_GIVEN_NAME_LOCAL": "First Name in Arabic",
+  "PATIENT_ATTRIBUTE_FAMILY_NAME_LOCAL": "Last Name in Arabic",
+  "PATIENT_ATTRIBUTE_MIDDLE_NAME_LOCAL": "Middle Name in Arabic"
 }
