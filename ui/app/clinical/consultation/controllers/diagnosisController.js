@@ -138,6 +138,11 @@ angular.module('bahmni.clinical')
             contextChangeHandler.add(contextChange);
 
             var mapConcept = function (result) {
+                if (result.data.code === 503) {
+                    $scope.errorMessage = result.data.error.message;
+                    $scope.noInternetConnection = true;
+                    return;
+                }
                 return _.map(result.data, function (concept) {
                     var response = {
                         value: concept.matchedName || concept.conceptName,
@@ -310,7 +315,7 @@ angular.module('bahmni.clinical')
                     diagnosisService.deleteDiagnosis(obsUUid).then(function () {
                         messagingService.showMessage('info', 'DELETED_MESSAGE');
                         var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0 ?
-                                          $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
+                        $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
                         return reloadDiagnosesSection(currentUuid);
                     }))
                     .then(function () {
