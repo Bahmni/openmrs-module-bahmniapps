@@ -135,7 +135,7 @@ angular.module('bahmni.registration')
 
             function updatePatientAddress (address, addressMap) {
                 for (var key in addressMap) {
-                    if (address[key] !== null) {
+                    if (address[key] && address[key] !== null) {
                         if (key === "line") {
                             $scope.patient.address[addressMap[key]] = address[key].join(" ");
                         } else { $scope.patient.address[addressMap[key]] = address[key]; }
