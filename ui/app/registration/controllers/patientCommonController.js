@@ -374,11 +374,13 @@ angular.module('bahmni.registration')
             $scope.$watch('patientLoaded', function () {
                 if ($scope.patientLoaded) {
                     executeShowOrHideRules();
-                    if ($scope.patient.extraIdentifiers !== undefined) {
-                        setAttributesToBeDisabled();
-                    }
-                    if ($rootScope.extenstionPatient !== undefined) {
-                        $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
+                    if (!$scope.createPatient) {
+                        if ($scope.patient.extraIdentifiers !== undefined) {
+                            setAttributesToBeDisabled();
+                        }
+                        if ($rootScope.extenstionPatient !== undefined) {
+                            $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
+                        }
                     }
                 }
             });
