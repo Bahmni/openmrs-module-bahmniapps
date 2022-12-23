@@ -120,6 +120,16 @@
             <div data-ng-switch-when="conditionsList" class="section">
                 <conditions-list params="section" patient="patient"></conditions-list>
             </div>
+            <div data-ng-switch-when="followUp" class="section">
+                <section class="block observation dashboard-section" id="follow-up">
+                    <ul bm-gallery access-impression="true">
+                        <bahmni-observation patient="::patient" visit-uuid="{{::visitUuid}}"
+                                            config="::section.config"
+                                            section-title="::section | titleTranslate"
+                                            class="section-title"></bahmni-observation>
+                    </ul>
+                </section>
+            </div>
         </div>
     </div>
 </div>
