@@ -47,6 +47,7 @@ angular.module('bahmni.registration')
                     if (popupWindowData.data.patient !== undefined) {
                         $rootScope.extenstionPatient = popupWindowData.data.patient;
                         if ($rootScope.extenstionPatient.id !== undefined) {
+                            $rootScope.isExistingPatient = true;
                             if ($rootScope.extenstionPatient.id !== $scope.patient.uuid) {
                                 $window.open(Bahmni.Registration.Constants.existingPatient + $rootScope.extenstionPatient.id, "_self");
                             }
@@ -378,7 +379,8 @@ angular.module('bahmni.registration')
                         if ($scope.patient.extraIdentifiers !== undefined) {
                             setAttributesToBeDisabled();
                         }
-                        if ($rootScope.extenstionPatient !== undefined) {
+                        if ($scope.isExistingPatient && $rootScope.extenstionPatient !== undefined) {
+                            $rootScope.isExistingPatient = false;
                             $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
                         }
                     }
