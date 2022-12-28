@@ -631,6 +631,16 @@ legend.mylegend {
     text-align: center;
 }
 
+.provider-info {
+    table td{
+        vertical-align: top;
+        padding-bottom: 15px;
+        line-height: 1.5;
+        table-layout: fixed;
+        width: 50%;
+    }
+}
+
 .visits-nav-bar {
     text-align: center;
     display: inline-block;

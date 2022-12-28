@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams',
-        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams) {
+    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService',
+        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
@@ -65,6 +65,19 @@ angular.module('bahmni.clinical')
                 $state.go('patient.dashboard.visit', {visitUuid: visitUuid});
             };
 
+            var getCertificateHeader = function () {
+                $scope.certificateHeader = {};
+                return locationService.getAllByTag("Login Location").then(function (response) {
+                    var locations = response.data.results;
+                    $scope.certificateHeader.name = locations[0].name;
+                    for (var i = 0; i < locations[0].attributes.length; i++) {
+                        var attributeDisplay = locations[0].attributes[i].display.split(": ");
+                        if (attributeDisplay[0] === Bahmni.Clinical.Constants.certificateHeader) {
+                            $scope.certificateHeader.address = attributeDisplay[1];
+                        }
+                    }
+                });
+            };
             var printOnPrint = function () {
                 if ($stateParams.print) {
                     printer.printFromScope("common/views/visitTabPrint.html", $scope, function () {
@@ -89,6 +102,7 @@ angular.module('bahmni.clinical')
                 var tabToOpen = getTab();
                 $scope.visitTabConfig.switchTab(tabToOpen);
                 printOnPrint();
+                getCertificateHeader();
             };
             init();
         }]);

@@ -1100,5 +1100,30 @@ h3 {
         div div .section {
             margin-bottom: 30px;
         }
+        .provider-info {
+            padding-bottom: 15px;
+            table {
+                border: none;
+                tr {
+                    border: none;
+                    .clinic-info {
+                        text-align: right;
+                    }
+                    td {
+                        border: none;
+                        font-size: large;
+                        vertical-align: top;
+                        table-layout: fixed;
+                        width: 50%;
+                        span {
+                            font-weight: bold;
+                        }
+                        .address {
+                            font-weight: normal;
+                        }
+                    }
+                }
+            }
+       }
     }
 }
