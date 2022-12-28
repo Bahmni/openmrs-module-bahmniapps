@@ -21,7 +21,7 @@ angular.module('bahmni.clinical')
                     var noOfOrders = $scope.consultation.orders.length;
                     var noOfObservations = $scope.consultation.observations.length;
                     if (outOfConsultationBoard && (noOfOrders > 0 || noOfObservations > 0 || ($scope[attrs.name] && $scope[attrs.name].$dirty))) {
-                        messagingService.showMessage('error', "{{'OBSERVATION_ERROR ' | translate }}");
+                        messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR ' | translate }}");
                         event.preventDefault();
                         spinner.hide(next.spinnerToken);
                     }
