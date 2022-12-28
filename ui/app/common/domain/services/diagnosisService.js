@@ -4,7 +4,8 @@ angular.module('bahmni.common.domain')
     .service('diagnosisService', ['$http', '$rootScope', function ($http, $rootScope) {
         var self = this;
         this.getAllFor = function (searchTerm, locale) {
-            const url = Bahmni.Common.Constants.emrapiConceptUrl;
+            // const url = Bahmni.Common.Constants.emrapiConceptUrl;
+            const url = Bahmni.Common.Constants.terminologyServicesUrl;
             const parameters = {term: searchTerm, limit: Bahmni.Common.Constants.emrapiDiagnosisLimit};
             if (locale) {
                 parameters.locale = locale;
