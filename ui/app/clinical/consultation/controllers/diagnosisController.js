@@ -43,6 +43,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.getDiagnosis = function (params) {
+                $scope.noInternetConnection = false;
                 return diagnosisService.getAllFor(params.term, $rootScope.currentUser.userProperties.defaultLocale).then(mapConcept);
             };
 
@@ -138,9 +139,10 @@ angular.module('bahmni.clinical')
             contextChangeHandler.add(contextChange);
 
             var mapConcept = function (result) {
-                if (result.data.error) {
+                if (result.data.code === 503) {
                     $scope.errorMessage = result.data.error.message;
-                    return [];
+                    $scope.noInternetConnection = true;
+                    return;
                 }
                 return _.map(result.data, function (concept) {
                     var response = {
