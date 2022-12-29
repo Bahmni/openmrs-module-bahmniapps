@@ -31,7 +31,7 @@
         <section class="concept-set-panel-right">
             <ul>
                 <li ng-repeat="conceptSet in allTemplates" ng-if="leftPanelConceptSet==conceptSet">
-                    <section class="concept-set-group section-grid" >
+                    <section class="concept-set-group section-grid" confirm-on-exit>
                         <ng-include src="'../common/concept-set/views/conceptSetGroupSection.html'"></ng-include>
                     </section>
                 </li>
