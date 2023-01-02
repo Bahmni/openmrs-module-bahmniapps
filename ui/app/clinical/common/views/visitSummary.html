@@ -5,8 +5,8 @@
     </div>
 </section>
 
-<section class="sections-group">
-    <ng-include src="'common/views/providerInfoPrint.html'"></ng-include>
+<section class="sections-group" ng-if="!isBeingPrinted">
+    <ng-include src="'common/views/providerInfo.html'"></ng-include>
 </section>
 
 <div ng-if="::(!clearBoard)" class="sections-group">

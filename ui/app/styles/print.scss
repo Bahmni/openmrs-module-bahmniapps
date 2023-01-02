@@ -206,6 +206,16 @@ h3 {
             text-decoration: none;
             font-weight: normal;
         }
+        .clinic-info{
+            font-size: 12pt;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+            font-weight: bold;
+            .address{
+                font-weight: normal;
+            }
+        }
 
     }
     .hierarchy ul li {
@@ -1096,34 +1106,14 @@ h3 {
     body {
         font-size: 20px;
     }
+    .provider-info {
+        background-color: lightgrey;
+        font-size: medium;
+        padding: 5px;
+    }
     .sections-group {
         div div .section {
             margin-bottom: 30px;
         }
-        .provider-info {
-            padding-bottom: 15px;
-            table {
-                border: none;
-                tr {
-                    border: none;
-                    .clinic-info {
-                        text-align: right;
-                    }
-                    td {
-                        border: none;
-                        font-size: large;
-                        vertical-align: top;
-                        table-layout: fixed;
-                        width: 50%;
-                        span {
-                            font-weight: bold;
-                        }
-                        .address {
-                            font-weight: normal;
-                        }
-                    }
-                }
-            }
-       }
     }
 }
