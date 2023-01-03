@@ -175,9 +175,12 @@
                                         ng-click="openIdentifierPopup(identifier.identifierType.name)">{{:: getDisplayName(identifier.identifierType.name)}}
                                     </button>
 
-                                    <button ng-repeat="extButton in extensionButtons" type="button"
-                                        ng-click="openIdentifierPopup(extButton.id)">{{:: extButton.display}}
-                                    </button>
+                                    <span ng-repeat="extButton in extensionButtons">
+                                        <span> {{:: extButton.link}} </span>
+                                        <button type="button"
+                                                ng-click="openIdentifierPopup(extButton.id)">{{:: extButton.display}}
+                                        </button>
+                                    </span>
                                 </div>
                         </div>
                     </article>
@@ -210,9 +213,12 @@
                                         ng-click="openIdentifierPopup(identifier.identifierType.name)">{{:: getDisplayName(identifier.identifierType.name)}}
                                     </button>
 
-                                    <button ng-repeat="extButton in extensionButtons" type="button"
-                                        ng-click="openIdentifierPopup(extButton.id)">{{:: extButton.display}}
-                                    </button>
+                                    <span ng-repeat="extButton in extensionButtons">
+                                        <span> {{:: extButton.link}} </span>
+                                        <button type="button"
+                                                ng-click="openIdentifierPopup(extButton.id)">{{:: extButton.display}}
+                                        </button>
+                                    </span>
                                 </div>
                         </div>
 
