@@ -23,7 +23,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
             $scope.showComment = true;
             $scope.showSaveAndContinueButton = true;
-            var dirtyConsultationForm = false;
+            $state.dirtyConsultationForm = false;
             $scope.visitHistory = visitHistory;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
             $scope.showControlPanel = false;
@@ -194,24 +194,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
 
             $scope.$on('event:changes-not-saved', function (event) {
-                dirtyConsultationForm = true;
-            });
-
-            $scope.$on('$stateChangeStart', function (event, next, current) {
-                var navigating = next.url.split("/")[1];
-                var allConsultationBoards = clinicalAppConfigService.getAllConsultationBoards();
-                var outOfConsultationBoard = true;
-                allConsultationBoards.map(function (board) {
-                    var consultationLink = board.url.split("/")[0];
-                    if (navigating.includes(consultationLink)) {
-                        outOfConsultationBoard = false;
-                    }
-                });
-              if (outOfConsultationBoard && dirtyConsultationForm) {
-                  messagingService.showMessage('error', "{{'OBSERVATION_ERROR ' | translate }}");
-                  event.preventDefault();
-                  spinner.hide(next.spinnerToken);
-              }
+                $state.dirtyConsultationForm = true;
             });
 
             var cleanUpListenerStateChangeStart = $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
@@ -542,7 +525,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             params.cachebuster = Math.random();
                             return encounterService.create(encounterData)
                             .then(function (saveResponse) {
-                                dirtyConsultationForm = false;
+                                $state.dirtyConsultationForm = false;
                                 var messageParams = {
                                     encounterUuid: saveResponse.data.encounterUuid,
                                     encounterType: saveResponse.data.encounterType

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate',
-        function (formService, spinner, $timeout, $translate) {
+    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', 'messagingService', 'clinicalAppConfigService', '$state',
+        function (formService, spinner, $timeout, $translate, messagingService, clinicalAppConfigService, $state) {
             var loadedFormDetails = {};
             var loadedFormTranslations = {};
             var unMountReactContainer = function (formUuid) {
@@ -79,6 +79,27 @@ angular.module('bahmni.common.conceptSet')
                     }
                 });
             };
+            var link = function ($scope, elem, attrs) {
+                $scope.$on('$stateChangeStart', function (event, next, current) {
+                    var navigating = next.url.split("/")[1];
+                    var allConsultationBoards = clinicalAppConfigService.getAllConsultationBoards();
+                    var outOfConsultationBoard = true;
+                    allConsultationBoards.map(function (board) {
+                        var consultationLink = board.url.split("/")[0];
+                        if (navigating.includes(consultationLink)) {
+                            outOfConsultationBoard = false;
+                        }
+                    });
+                    if ($scope.form.component && $scope.form.component.getValue().observations.length > 0) {
+                        $state.dirtyConsultationForm = true;
+                    }
+                    if (outOfConsultationBoard && $state.dirtyConsultationForm) {
+                        messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR ' | translate }}");
+                        event.preventDefault();
+                        spinner.hide(next.spinnerToken);
+                    }
+                });
+            };
 
             return {
                 restrict: 'E',
@@ -87,6 +108,7 @@ angular.module('bahmni.common.conceptSet')
                     patient: "=",
                     validateForm: "="
                 },
-                controller: controller
+                controller: controller,
+                link: link
             };
         }]);
