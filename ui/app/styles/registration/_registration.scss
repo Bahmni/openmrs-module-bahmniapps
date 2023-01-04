@@ -1,4 +1,3 @@
-
 @import "registrationHeader";
 @import "registrationSearch";
 @import "patientCommonInformation";
@@ -6,269 +5,330 @@
 @import "relationship";
 @import "patientDeathInformation";
 
-body{
-  font-size: 14px;
-  @media (max-width : 768px){
-    font-size: 15px;
-  }
+body {
+    font-size: 14px;
+
+    @media (max-width : 768px) {
+        font-size: 15px;
+    }
 }
-.reg-wrapper{
-  .reg-body-wrapper{
-    padding:10px 0;
-    @media (max-width : 768px){
-      padding:15px;
+
+.reg-wrapper {
+    .reg-body-wrapper {
+        padding: 10px 0;
+
+        @media (max-width : 768px) {
+            padding: 15px;
+        }
+
+        .observation-section {
+            width: 100%;
+
+            article {
+                width: 42%;
+                margin-left: 0;
+
+                @media (max-width : 950px) {
+                    width: 100% !important;
+                }
+
+                &.obs-section {
+                    width: 30% !important;
+                    margin-left: 3%;
+                    float: right;
+
+                    @media (max-width : 950px) {
+                        width: 100% !important;
+                        margin: 15px auto;
+                    }
+                }
+            }
+
+            .form-horizontal {
+                fieldset {
+                    label {
+                        float: left;
+                        width: 15em;
+                        margin-right: 15px;
+                        margin-left: 0;
+                        text-align: right;
+
+                        @media (max-width : 768px) {
+                            width: 17em;
+                        }
+
+                        @media (max-width : 580px) {
+                            text-align: left;
+                            width: 100%;
+                        }
+                    }
+
+                    .field-value {
+                        input {
+                            width: 12.5em !important;
+                        }
+
+                        textarea {
+                            width: 14em !important;
+                        }
+                    }
+
+                    &.hasLegend {
+                        .offset-label {
+                            padding-left: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.visit-patient-page {
+            .observation-section {
+                .field-value-buttonSelectType {
+                    max-width: 55%;
+                    width: auto;
+
+                    .multi-select-button-group button {
+                        width: 185px;
+                        text-align: center;
+                        padding-left: 10px;
+                        padding-right: 10px;
+
+                        @media screen and (max-width: 1024px) {
+                            width: 175px;
+                        }
+                    }
+
+                    @media screen and (max-width: 1060px) {
+                        max-width: 48%;
+                    }
+
+                    @media (max-width : 650px) {
+                        max-width: 40%;
+                    }
+                }
+
+                article {
+                    width: 60%;
+
+                    @media (max-width : 1024px) {
+                        width: 63%;
+                    }
+
+                    &.noShowLatest {
+                        width: 100%;
+
+                        .field-value-buttonSelectType {
+                            width: 66%;
+                        }
+                    }
+                }
+            }
+        }
+
+        @media screen and (max-width: 580px) {
+            form .form-field .field-value {
+                input[type="text"],
+                input[type="number"],
+                input[type="date"],
+                input[type="time"] {
+                    width: calc(100vw - 105px);
+                }
+                select {
+                    width: calc(100vw - 83px);
+                }
+            }
+        }
     }
-    .observation-section{
-      width: 100%;
-      article{
-        width: 42%;
-        margin-left: 0;
-        @media (max-width : 950px){
-          width: 100% !important;
+
+    .obs-section section {
+        .form-field {
+            padding: 0;
+            border-bottom: 0;
         }
-        &.obs-section{
-          width: 30% !important;
-          margin-left: 3%;
-          float: right;
-          @media (max-width : 950px){
-            width: 100% !important;
-            margin:15px auto;
-          }
+
+        &.hierarchy {
+            .testUnderPanel {
+                width: 40%;
+                display: inline-block;
+
+                label {
+                    margin-top: 0;
+                }
+            }
         }
-      }
-      .form-horizontal {
-        fieldset {
-          label {
-            float: left;
-            width: 15em;
-            margin-right: 15px;
-            margin-left: 0;
-            text-align: right;
-            @media (max-width : 768px){
-              width: 17em;
-            }
-            @media (max-width : 580px){
-              text-align: left;
-              width: 100%;
-            }
-          }
-          .field-value {
-            input{
-                width: 12.5em!important;
-            }
-            textarea{
-              width: 14em!important;
-            }
-          }
-          &.hasLegend{
-            .offset-label{
-              padding-left:0;
-            }
-          }
-        }
-      }
     }
-    &.visit-patient-page{
-      .observation-section{
-        .field-value-buttonSelectType{
-          max-width:55%;
-          width:auto;
-          .multi-select-button-group button{
-            width:185px;
-            text-align: center;
-            padding-left: 10px;
-            padding-right: 10px;
-            @media screen and (max-width: 1024px){
-              width:175px;
-            }
-          }
-          @media screen and (max-width: 1060px){
-            max-width:48%;
-          }
-          @media (max-width : 650px){
-            max-width:40%;
-          }
-        }
-        article{
-          width: 60%;
-          @media (max-width : 1024px){
-            width:63%;
-          }
-          &.noShowLatest{
-            width:100%;
-            .field-value-buttonSelectType {
-              width: 66%;
-            }
-          }
-        }
-      }
-    }
-  }
-  .obs-section section{
-    .form-field{
-      padding: 0;
-      border-bottom: 0;
-    }
-    &.hierarchy{
-      .testUnderPanel{
-        width: 40%;
-        display: inline-block;
-        label{
-          margin-top:0;
-        }
-      }
-    }
-  }
 }
+
 .extension-btn {
-  margin-left: 5px;
-  margin-top: 2px;
-  display: inline;
-  @media (max-width : 800px){
-    margin-left: 10px;
-  }
-  button {
-    margin-right: 5px;
-  }
+    margin-left: 5px;
+    margin-top: 2px;
+    display: inline;
+
+    @media (max-width : 800px) {
+        margin-left: 10px;
+    }
+
+    button {
+        margin-right: 5px;
+    }
 }
+
 .identifier-ui {
-  position: fixed;
-  z-index: 1;
-  padding-top: 100px;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.6);
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
 
-  .identifier-iframe {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 40%;
-    height: 600px;
-  }
-
-  .close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-
-  .close:hover, .close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-  }
-}
-
-.additional-attribute{
-  &.active{
-    .fa-caret-right{
-      display: none;
+    .identifier-iframe {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+        height: 600px;
     }
-    .fa-caret-down{
-      display: inline;
+
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 10px;
     }
-  }
-  .fa-caret-down{
-    display: none;
-  }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+}
+
+.additional-attribute {
+    &.active {
+        .fa-caret-right {
+            display: none;
+        }
+
+        .fa-caret-down {
+            display: inline;
+        }
+    }
+
+    .fa-caret-down {
+        display: none;
+    }
 
 }
 
-.showOn-desktop-registration{
-  display: block !important;
-  @media (max-width : 990px){
-    display: none !important;
-  }
-}
-
-.showOn-small-screen-registration{
-  display: none !important;
-  @media (max-width : 990px){
+.showOn-desktop-registration {
     display: block !important;
-    float: none !important;
-    clear: both;
-  }
+
+    @media (max-width : 990px) {
+        display: none !important;
+    }
 }
 
-.patientExistingIdentifier{
-  @media (max-width : 990px){
-    width: auto;
-    float: left;
-  }
+.showOn-small-screen-registration {
+    display: none !important;
+
+    @media (max-width : 990px) {
+        display: block !important;
+        float: none !important;
+        clear: both;
+    }
 }
-.otherInfoContainer{
-  input[type="number"]{
-    width: 12.5em!important;
-    @media (max-width : 800px){
-      width: 11.5em !important;
+
+.patientExistingIdentifier {
+    @media (max-width : 990px) {
+        width: auto;
+        float: left;
     }
-    @media (max-width : 768px){
-      width: 12.5em !important;
-    }
-  }
 }
-.reg-body-wrapper{
-  .form-field .field-value .autocomplete {
-    width: 296px;
-    input.concept-name.ui-autocomplete-input{
-      float: left;
-      min-width: 197px;
-      margin-right: 15px;
-      box-sizing: border-box;
-      @media (max-width : 768px){
-        float: left !important;
-      }
-      @media (max-width : 650px){
-        float:none !important;
-      }
+
+.otherInfoContainer {
+    input[type="number"] {
+        width: 12.5em !important;
+
+        @media (max-width : 800px) {
+            width: 11.5em !important;
+        }
+
+        @media (max-width : 768px) {
+            width: 12.5em !important;
+        }
     }
-    @media (max-width : 650px){
-      width:218px;
-    }
-  }
-  .form-field .field-value .autocomplete .accept-btn{
-    margin-top: 6px;
-  }
 }
+
+.reg-body-wrapper {
+    .form-field .field-value .autocomplete {
+        width: 296px;
+
+        input.concept-name.ui-autocomplete-input {
+            float: left;
+            min-width: 197px;
+            margin-right: 15px;
+            box-sizing: border-box;
+
+            @media (max-width : 768px) {
+                float: left !important;
+            }
+
+            @media (max-width : 650px) {
+                float: none !important;
+            }
+        }
+
+        @media (max-width : 650px) {
+            width: 218px;
+        }
+    }
+
+    .form-field .field-value .autocomplete .accept-btn {
+        margin-top: 6px;
+    }
+}
+
 .comment-toggle {
-  margin-top:4px;
+    margin-top: 4px;
 }
+
 .split-button {
-  margin: 2px 0;
+    margin: 2px 0;
 }
 
 
 .form-builder-row {
 
-  .label-wrap {
-    padding-right: 15px !important;
-    margin-top: 0 !important;
-    width: 200px !important;
-    label {
-      text-align: right;
-      font-size: 14px;
-      padding-right: 20px !important;
-    }
-  }
-  
-  legend {
-    width: auto !important;
-  }
+    .label-wrap {
+        padding-right: 15px !important;
+        margin-top: 0 !important;
+        width: 200px !important;
 
-  .Select-input {
-    input {
-      &:focus {
-        outline: none !important;
-        background: $focus;
-      }
+        label {
+            text-align: right;
+            font-size: 14px;
+            padding-right: 20px !important;
+        }
     }
-  }
+
+    legend {
+        width: auto !important;
+    }
+
+    .Select-input {
+        input {
+            &:focus {
+                outline: none !important;
+                background: $focus;
+            }
+        }
+    }
 
 }
