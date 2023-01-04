@@ -138,10 +138,9 @@ angular.module('bahmni.clinical')
             contextChangeHandler.add(contextChange);
 
             var mapConcept = function (result) {
-                if (result.data.code === 503) {
+                if (result.data.error) {
                     $scope.errorMessage = result.data.error.message;
-                    $scope.noInternetConnection = true;
-                    return;
+                    return [];
                 }
                 return _.map(result.data, function (concept) {
                     var response = {
