@@ -69,11 +69,13 @@ angular.module('bahmni.clinical')
                 $scope.certificateHeader = {};
                 return locationService.getAllByTag("Login Location").then(function (response) {
                     var locations = response.data.results;
-                    $scope.certificateHeader.name = locations[0].name;
-                    for (var i = 0; i < locations[0].attributes.length; i++) {
-                        var attributeDisplay = locations[0].attributes[i].display.split(": ");
-                        if (attributeDisplay[0] === Bahmni.Clinical.Constants.certificateHeader) {
-                            $scope.certificateHeader.address = attributeDisplay[1];
+                    if (locations !== null && locations.length > 0) {
+                        $scope.certificateHeader.name = locations[0].name;
+                        for (var i = 0; i < locations[0].attributes.length; i++) {
+                            var attributeDisplay = locations[0].attributes[i].display.split(": ");
+                            if (attributeDisplay[0] === Bahmni.Clinical.Constants.certificateHeader) {
+                                $scope.certificateHeader.address = attributeDisplay[1];
+                            }
                         }
                     }
                 });
