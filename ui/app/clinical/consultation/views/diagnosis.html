@@ -15,7 +15,7 @@
                                         id="name-{{$index}}" bahmni-autocomplete source="getDiagnosis"
                                         response-map="cleanOutDiagnosisList"
                                         ng-class="{
-                                                inputError: (noInternetConnection && diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer)
+                                                inputError: (errorMessage && diagnosis.codedAnswer.name) 
                                         }"
                                         on-select="getAddNewDiagnosisMethod(diagnosis)" ng-class="{
                                                 illegalValue: (diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid &&
@@ -34,8 +34,8 @@
                                                 }" ng-disabled="diagnosis.codedAnswer.uuid"><span></span>{{
                                             ::'CLINICAL_ACCEPT'| translate }}</button>
                                     </span>
-                                    <p class="errorText" ng-show="noInternetConnection && diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer">
-                                        {{ errorMessage }}
+                                    <p class="errorText" ng-show="errorMessage && diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer">
+                                        {{ errorMessage | translate }}
                                     </p>
                                 </div>
 
