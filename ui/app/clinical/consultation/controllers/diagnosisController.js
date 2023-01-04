@@ -43,6 +43,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.getDiagnosis = function (params) {
+                $scope.noInternetConnection = false;
                 return diagnosisService.getAllFor(params.term, $rootScope.currentUser.userProperties.defaultLocale).then(mapConcept);
             };
 
@@ -138,9 +139,10 @@ angular.module('bahmni.clinical')
             contextChangeHandler.add(contextChange);
 
             var mapConcept = function (result) {
-                if (result.data.error) {
-                    $scope.errorMessage = result.data.error.message;
-                    return [];
+                if (result.status >= 500) {
+                    $scope.errorMessage = result.data.error && result.data.error.message;
+                    $scope.noInternetConnection = true;
+                    return;
                 }
                 return _.map(result.data, function (concept) {
                     var response = {
@@ -274,9 +276,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.cleanOutDiagnosisList = function (allDiagnoses) {
-                return allDiagnoses.filter(function (diagnosis) {
+                return allDiagnoses ? allDiagnoses.filter(function (diagnosis) {
                     return !alreadyAddedToDiagnosis(diagnosis);
-                });
+                }) : [];
             };
 
             var alreadyAddedToDiagnosis = function (diagnosis) {

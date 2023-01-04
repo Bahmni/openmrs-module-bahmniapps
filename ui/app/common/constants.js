@@ -15,6 +15,8 @@ Bahmni.Common = Bahmni.Common || {};
     var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
     var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
     var IE_APPS_API = RESTWS_V1 + "/bahmniie";
+    // refactor to diagnosis search url
+    var TERMINOLOGY_SERVER_URL = RESTWS_V1 + "/terminologyServices";
 
     var serverErrorMessages = [
         {
