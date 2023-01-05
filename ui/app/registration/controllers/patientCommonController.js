@@ -23,25 +23,18 @@ angular.module('bahmni.registration')
             $scope.showExtIframe = false;
             var identifierExtnMap = new Map();
             $scope.attributesToBeDisabled = [];
-            $scope.extensionButtons = ($scope.regExtPoints[0] != null && $scope.regExtPoints[0].extensionButtons != null) ? $scope.regExtPoints[0].extensionButtons : null;
 
-            function isExtButtonDefined (id) {
-                for (var i = 0; i < $scope.extensionButtons.length; i++) {
-                    if ($scope.extensionButtons[i].id === id) {
-                        return true;
-                    }
+            $scope.getExtButtons = function (identifierType) {
+                var extensionPoint = getExtensionPoint(identifierType);
+                if (extensionPoint.extensionParams !== null && extensionPoint.extensionParams.buttons !== null) {
+                    return extensionPoint.extensionParams.buttons;
                 }
-                return false;
-            }
+                return null;
+            };
 
-            $scope.openIdentifierPopup = function (identifierType) {
+            $scope.openIdentifierPopup = function (identifierType, action) {
                 var iframe = $document[0].getElementById("extension-popup");
-                iframe.name = identifierType;
-                if (isExtButtonDefined(identifierType)) {
-                    iframe.src = $scope.regExtPoints[0].src;
-                } else {
-                    iframe.src = getExtensionPoint(identifierType).src;
-                }
+                iframe.src = getExtensionPoint(identifierType).src + "?action=" + action;
                 $scope.showExtIframe = true;
                 $window.addEventListener("message", function (popupWindowData) {
                     if (popupWindowData.data.patient !== undefined) {
@@ -88,13 +81,6 @@ angular.module('bahmni.registration')
                     }
                 }
                 return false;
-            };
-
-            $scope.getDisplayName = function (identifierType) {
-                var extenstionPoint = getExtensionPoint(identifierType);
-                if (extenstionPoint != null) {
-                    return extenstionPoint.extensionParams.linkDisplay;
-                }
             };
 
             function getExtensionPoint (identifierType) {
