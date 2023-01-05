@@ -90,6 +90,9 @@ angular.module('bahmni.common.conceptSet')
                             outOfConsultationBoard = false;
                         }
                     });
+                    if (next.url.includes("/dashboard") && $state.params.patientUuid === current.patientUuid) {
+                        outOfConsultationBoard = false;
+                    }
                     if ($scope.form.component && $scope.form.component.getValue().observations.length > 0) {
                         $state.dirtyConsultationForm = true;
                     }

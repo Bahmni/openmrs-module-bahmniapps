@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardController', ['$rootScope', '$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
+    .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
         '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter',
-        'messagingService', function ($rootScope, $scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
+        'messagingService', function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
                   $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext,
                                       $location, $filter, messagingService) {
             $scope.patient = patientContext.patient;
@@ -20,24 +20,28 @@ angular.module('bahmni.clinical')
                 return $state.current.name === 'patient.dashboard.show';
             };
 
-            $rootScope.$on("$locationChangeStart", function (event, nextUrl, currentUrl) {
+            $scope.$on('$stateChangeStart', function (event, next, current) {
+                var navigating = next.url.split("/")[1];
                 var allConsultationBoards = clinicalAppConfigService.getAllConsultationBoards();
                 var outOfConsultationBoard = true;
                 allConsultationBoards.map(function (board) {
                     var consultationLink = board.url.split("/")[0];
-                    if (nextUrl.includes(consultationLink)) {
+                    if (navigating.includes(consultationLink)) {
                         outOfConsultationBoard = false;
                     }
                 });
 
-                if (nextUrl.includes("/dashboard") && nextUrl.includes($stateParams.patientUuid)) {
+                if (next.url.includes("/dashboard") && $stateParams.patientUuid === current.patientUuid) {
                     outOfConsultationBoard = false;
                 }
 
                 if (outOfConsultationBoard && $state.dirtyConsultationForm) {
                     messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR ' | translate }}");
                     event.preventDefault();
-                    // spinner.hide(nextUrl.spinnerToken);
+                    spinner.hide(next.spinnerToken);
+                    $state.continueNavigation = false;
+                } else {
+                    $state.continueNavigation = true;
                 }
             });
 
