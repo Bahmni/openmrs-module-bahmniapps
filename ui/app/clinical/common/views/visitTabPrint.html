@@ -9,9 +9,14 @@
                 <img ng-if="visitTabConfig.getPrintConfigForCurrentTab().logo" class="logo" ng-src="{{visitTabConfig.getPrintConfigForCurrentTab().logo}}" alt="logo">
                 {{visitTabConfig.getPrintConfigForCurrentTab().title}}
             </h1>
+            <div class="clinic-info">
+                <span>{{certificateHeader.name}}</span><br>
+                <span class="address">{{certificateHeader.address}}</span>
+            </div>
             <h2>{{visitTabConfig.getPrintConfigForCurrentTab().header}}</h2>
         </div>
         <div ng-include="currentVisitUrl"></div>
     </div>
+    <div class="provider-info">Doctor name: {{provider[0].name}}</div>
 </body>
 </html>

@@ -206,6 +206,16 @@ h3 {
             text-decoration: none;
             font-weight: normal;
         }
+        .clinic-info{
+            font-size: 12pt;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+            font-weight: bold;
+            .address{
+                font-weight: normal;
+            }
+        }
 
     }
     .hierarchy ul li {
@@ -1095,6 +1105,11 @@ h3 {
 @media print {
     body {
         font-size: 20px;
+    }
+    .provider-info {
+        background-color: lightgrey;
+        font-size: medium;
+        padding: 5px;
     }
     .sections-group {
         div div .section {
