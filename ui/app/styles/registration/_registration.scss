@@ -18,7 +18,7 @@ body {
         padding: 10px 0;
 
         @media (max-width : 768px) {
-            padding: 15px;
+            padding: 15px 0;
         }
 
         .observation-section {
@@ -156,6 +156,12 @@ body {
                     margin-top: 0;
                 }
             }
+        }
+    }
+
+    .submit-btn-container {
+        button {
+            margin-bottom: 5px;
         }
     }
 }
@@ -315,6 +321,62 @@ body {
             text-align: right;
             font-size: 14px;
             padding-right: 20px !important;
+            width: calc(100% - 45px);
+            display: inline-block;
+        }
+
+        @media screen and (max-width: 768px) {
+            width: calc(100% - 40px) !important;
+            text-align: left;
+
+            label {
+                text-align: left;
+            }
+        }
+    }
+
+    .form-builder-column-wrapper .form-builder-column .form-field-wrap {
+        .label-wrap {
+            .form-builder-tooltip-trigger {
+                float: right;
+                margin-top: 8px;
+            }
+        }
+
+        .form-field-content-wrap {
+            align-items: flex-start;
+
+            @media screen and (max-width: 768px) {
+                flex-direction: column;
+            }
+        }
+
+        .obs-control-field {
+            @media screen and (max-width: 768px) {
+                width: 100%;
+                margin-top: 8px;
+
+                > div {
+                    width: 100%;
+                }
+
+                input {
+                    width: calc(100% - 20px);
+                }
+
+                textarea {
+                    width: 100% !important;
+                }
+
+                .form-control-buttons {
+                    max-width: 100% !important;
+                    margin-right: 0;
+
+                    button {
+                        width: 100%;
+                    }
+                }
+            }
         }
     }
 
