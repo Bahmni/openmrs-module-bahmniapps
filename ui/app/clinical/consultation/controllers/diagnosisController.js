@@ -139,9 +139,8 @@ angular.module('bahmni.clinical')
             contextChangeHandler.add(contextChange);
 
             var mapConcept = function (result) {
-                if (result.data.code === 503) {
-                    $scope.errorMessage = result.data.error.message;
-                    $scope.noInternetConnection = true;
+                if (result.status >= 500) {
+                    $scope.errorMessage = result.data.error && result.data.error.message;
                     return;
                 }
                 return _.map(result.data, function (concept) {
@@ -276,9 +275,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.cleanOutDiagnosisList = function (allDiagnoses) {
-                return allDiagnoses.filter(function (diagnosis) {
+                return allDiagnoses ? allDiagnoses.filter(function (diagnosis) {
                     return !alreadyAddedToDiagnosis(diagnosis);
-                });
+                }) : [];
             };
 
             var alreadyAddedToDiagnosis = function (diagnosis) {
