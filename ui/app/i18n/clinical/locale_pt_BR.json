@@ -94,6 +94,7 @@
     "CLINICAL_DIAGNOSIS_SECONDARY": "SECUNDÁRIA",
     "CLINICAL_DIAGNOSIS_CONFIRMED": "CONFIRMADA",
     "CLINICAL_DIAGNOSIS_PRESUMED": "PRESUMIDA",
+    "TERMINOLOGY_SERVER_ERROR_MESSAGE": "O servidor de terminologia não está disponível no momento. Por favor, tente novamente mais tarde.",
     "SAVE_ACCESS_KEY": "s",
     "CLINICAL_PRINT_TRANSLATION_KEY": "<u>I</u>mprimir",
     "CLINICAL_PRINT_ACCESS_KEY": "i",

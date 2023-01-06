@@ -247,6 +247,7 @@
   "CLINICAL_ORDER": "Ordre",
   "CLINICAL_CERTAINTY": "CERTITUDE",
   "CLINICAL_STATUS": "STATUT",
+  "TERMINOLOGY_SERVER_ERROR_MESSAGE": "Le serveur terminologique n'est pas disponible pour le moment. Veuillez réessayer plus tard.",
   "EROSION": "ÉROSION",
   "OBSTRETRICS": "Obstétrique",
   "TUBERCULOSIS_FOLLOW_UP": "Tuberculose, visite de suivi",

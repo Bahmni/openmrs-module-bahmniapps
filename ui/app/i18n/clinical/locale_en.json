@@ -228,6 +228,8 @@
     "CLINICAL_UPDATE": "Update",
     "CANCEL": "Cancel",
     "CLINICAL_ADD_AS_CONDITION": "Add as condition",
+    "TERMINOLOGY_SERVER_ERROR_MESSAGE": "The terminology server is unavailable right now. Please try again later.",
+
 
     "CONDITION_LIST_DISPLAY_CONTROL_TITLE": "Conditions",
     "CONDITION_LIST_ACTIVE":"Active",
