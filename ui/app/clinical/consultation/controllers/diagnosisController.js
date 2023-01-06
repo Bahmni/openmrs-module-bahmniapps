@@ -141,7 +141,6 @@ angular.module('bahmni.clinical')
             var mapConcept = function (result) {
                 if (result.status >= 500) {
                     $scope.errorMessage = result.data.error && result.data.error.message;
-                    $scope.noInternetConnection = true;
                     return;
                 }
                 return _.map(result.data, function (concept) {
