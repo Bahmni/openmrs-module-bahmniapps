@@ -119,10 +119,10 @@ angular.module('bahmni.common.conceptSet')
                         return value;
                     });
                     if (!alreadyPresent) {
-                        $state.params.dirtyConsultationForm = true;
+                        $state.dirtyConsultationForm = true;
                     }
 
-                    if (outOfConsultationBoard && $state.params.dirtyConsultationForm) {
+                    if (outOfConsultationBoard && $state.dirtyConsultationForm) {
                         messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR ' | translate }}");
                         event.preventDefault();
                         spinner.hide(next.spinnerToken);

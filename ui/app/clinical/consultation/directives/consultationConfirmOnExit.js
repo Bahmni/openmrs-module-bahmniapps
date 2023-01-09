@@ -16,7 +16,7 @@ angular.module('bahmni.clinical')
                         }
                         var isConsultationFormDirty = noOfOrders > 0 || noOfMedications > 0 || ($scope[attrs.name] && $scope[attrs.name].$dirty);
                         if (isConsultationFormDirty) {
-                            $state.params.dirtyConsultationForm = true;
+                            $state.dirtyConsultationForm = true;
                         }
                     });
                 }

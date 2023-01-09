@@ -35,13 +35,10 @@ angular.module('bahmni.clinical')
                     outOfConsultationBoard = false;
                 }
 
-                if (outOfConsultationBoard && $state.params.dirtyConsultationForm) {
+                if (outOfConsultationBoard && $state.dirtyConsultationForm) {
                     messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR ' | translate }}");
                     event.preventDefault();
                     spinner.hide(next.spinnerToken);
-                    $state.continueNavigation = false;
-                } else {
-                    $state.continueNavigation = true;
                 }
             });
 
