@@ -327,7 +327,7 @@ body {
 
         @media screen and (max-width: 768px) {
             width: calc(100% - 40px) !important;
-            text-align: left;
+            text-align: left !important;
 
             label {
                 text-align: left;
