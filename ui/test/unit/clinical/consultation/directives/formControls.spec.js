@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Form Controls", function () {
-    var element, scope, $compile, spinner, provide, formService, renderHelper, translate, messagingService, clinicalAppConfigService, $state;
+    var element, scope, $compile, spinner, provide, formService, renderHelper, translate, messagingService, clinicalAppConfigService;
 
     beforeEach(
         function () {
@@ -9,7 +9,7 @@ describe("Form Controls", function () {
             module(function ($provide) {
                 provide = $provide;
                 formService = jasmine.createSpyObj('formService', ['getFormDetail', 'getFormTranslations']);
-                spinner = jasmine.createSpyObj('spinner', ['hide']);
+                spinner = jasmine.createSpyObj('spinner', ['hide', 'forPromise']);
                 messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
                 clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getAllConsultationBoards']);
                 var state = jasmine.createSpyObj('$state', ['go']);
