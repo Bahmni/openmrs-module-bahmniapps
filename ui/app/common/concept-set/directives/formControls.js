@@ -65,6 +65,10 @@ angular.module('bahmni.common.conceptSet')
                     }
                 });
 
+                $scope.$on("event-changes-saved", function (event) {
+                    $scope.form.saved = false;
+                });
+
                 $scope.$on('$destroy', function () {
                     if ($scope.$parent.consultation && $scope.$parent.consultation.observationForms) {
                         if ($scope.form.component) {
@@ -93,10 +97,32 @@ angular.module('bahmni.common.conceptSet')
                     if (next.url.includes("/dashboard") && $state.params.patientUuid === current.patientUuid) {
                         outOfConsultationBoard = false;
                     }
+
+                    var checkAlreadyPresent = [];
+
                     if ($scope.form.component && $scope.form.component.getValue().observations.length > 0) {
-                        $state.dirtyConsultationForm = true;
+                        var formObservations = $scope.form.component.getValue().observations;
+                        if ($scope.$parent.consultation && $scope.$parent.consultation.observations) {
+                            for (var i = 0; i < $scope.form.component.getValue().observations.length; i++) {
+                                var observations = $scope.$parent.consultation.observations;
+                                for (var j = 0; j < $scope.$parent.consultation.observations.length; j++) {
+                                    if (formObservations[i].concept.uuid === observations[j].concept.uuid &&
+                                        formObservations[i].value === observations[j].value) {
+                                        checkAlreadyPresent[i] = true;
+                                    }
+                                }
+                            }
+                        }
                     }
-                    if (outOfConsultationBoard && $state.dirtyConsultationForm) {
+
+                    var alreadyPresent = checkAlreadyPresent.length > 0 && _.every(checkAlreadyPresent, function (value) {
+                        return value;
+                    });
+                    if (!alreadyPresent) {
+                        $state.params.dirtyConsultationForm = true;
+                    }
+
+                    if (outOfConsultationBoard && $state.params.dirtyConsultationForm) {
                         messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR ' | translate }}");
                         event.preventDefault();
                         spinner.hide(next.spinnerToken);

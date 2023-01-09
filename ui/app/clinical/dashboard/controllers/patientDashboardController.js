@@ -35,7 +35,7 @@ angular.module('bahmni.clinical')
                     outOfConsultationBoard = false;
                 }
 
-                if (outOfConsultationBoard && $state.dirtyConsultationForm) {
+                if (outOfConsultationBoard && $state.params.dirtyConsultationForm) {
                     messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR ' | translate }}");
                     event.preventDefault();
                     spinner.hide(next.spinnerToken);
