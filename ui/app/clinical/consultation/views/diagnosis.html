@@ -14,9 +14,6 @@
                                     <input ng-model="diagnosis.codedAnswer.name" type="text" name="name"
                                         id="name-{{$index}}" bahmni-autocomplete source="getDiagnosis"
                                         response-map="cleanOutDiagnosisList"
-                                        ng-class="{
-                                                inputError: (errorMessage && diagnosis.codedAnswer.name) 
-                                        }"
                                         on-select="getAddNewDiagnosisMethod(diagnosis)" ng-class="{
                                                 illegalValue: (diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid &&
                                                     !diagnosis.isNonCodedAnswer && allowOnlyCodedDiagnosis) || diagnosis.invalid,
@@ -34,9 +31,6 @@
                                                 }" ng-disabled="diagnosis.codedAnswer.uuid"><span></span>{{
                                             ::'CLINICAL_ACCEPT'| translate }}</button>
                                     </span>
-                                    <p class="errorText" ng-show="errorMessage && diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer">
-                                        {{ errorMessage | translate }}
-                                    </p>
                                 </div>
 
                             </div>
