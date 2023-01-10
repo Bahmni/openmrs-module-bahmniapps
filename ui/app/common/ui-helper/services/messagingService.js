@@ -14,6 +14,7 @@ angular.module('bahmni.common.uiHelper')
             messageObject.value = message;
             if (errorEvent) {
                 messageObject.isServerError = true;
+                this.createTimeout('error', 4000);
             } else if (level == 'info') {
                 this.createTimeout('info', 4000);
             }
