@@ -139,6 +139,14 @@ body {
                 }
             }
         }
+
+        &:not(.visit-patient-page) {
+            form .form-field .field-attribute label {
+                @media screen and (min-width: 769px) and (max-width: 992px) {
+                    text-align: left;
+                }
+            }
+        }
     }
 
     .obs-section section {
@@ -201,8 +209,8 @@ body {
 
 .extension-btn {
     margin-left: 5px;
-    margin-top: 2px;
-    display: inline;
+    margin-top: 4px;
+    display: inline-block;
 
     @media (max-width : 768px) {
         display: block;
@@ -352,88 +360,188 @@ body {
     margin: 2px 0;
 }
 
+.obs-section-form > div > .form-builder-row >.form-builder-column-wrapper >.form-builder-column {
+    padding: 5px 0;
 
-.form-builder-row {
-
-    .label-wrap {
-        padding-right: 15px !important;
-        margin-top: 0 !important;
-        width: 200px !important;
-
-        label {
-            text-align: right;
-            font-size: 14px;
-            padding-right: 20px !important;
-            width: calc(100% - 45px);
-            display: inline-block;
-        }
-
-        @media screen and (max-width: 768px) {
-            width: calc(100% - 40px) !important;
-            text-align: left !important;
-
-            label {
-                text-align: left;
-            }
-        }
+    & > .form-builder-fieldset {
+        margin: 15px 0 3px;
     }
+}
 
-    .form-builder-column-wrapper .form-builder-column .form-field-wrap {
-        .label-wrap {
-            .form-builder-tooltip-trigger {
-                float: right;
-                margin-top: 8px;
+.visit-patient-page {
+    .visit-patient {
+        .patient-identifier-name {
+            display: flex;
+
+            @media screen and (min-width: 769px) and (max-width: 992px) {
+                justify-content: center;
             }
-        }
-
-        .form-field-content-wrap {
-            align-items: flex-start;
 
             @media screen and (max-width: 768px) {
                 flex-direction: column;
             }
         }
+        
+        .form-field {
+            display: flex;
+            flex-wrap: nowrap;
+            &:first-of-type {
+                margin-right: 30px;
+            }
+            
+            @media screen and (max-width: 992px) {
+                .field-attribute label {
+                    width: 9em !important;
+                    text-align: left;
+                    float: none;
+                }
+            }
 
-        .obs-control-field {
+            @media screen and (min-width: 540px) and (max-width: 768px) {
+                .field-attribute label {
+                    float: left;
+                }
+            }
+
+            @media screen and (max-width: 320px) {
+                .field-attribute label {
+                    width: 5em !important;
+                }
+            }
+        }
+    }
+
+    .form-builder-row {
+
+        .label-wrap {
+            padding-right: 15px !important;
+            margin-top: 0 !important;
+            width: 200px !important;
+            flex: none !important;
+    
+            label {
+                text-align: right;
+                font-size: 14px;
+                padding-right: 20px !important;
+                width: calc(100% - 45px);
+                display: inline-block;
+            }
+    
             @media screen and (max-width: 768px) {
-                width: 100%;
-                margin-top: 8px;
+                width: calc(100% - 40px) !important;
+                text-align: left !important;
+    
+                label {
+                    text-align: left;
+                }
+            }
 
-                > div {
+            @media screen and (min-width: 769px) and (max-width: 1200px) {
+                width: 165px !important;
+            }
+        }
+    
+        .form-builder-column-wrapper .form-builder-column .form-field-wrap {
+            .label-wrap {
+                .form-builder-tooltip-trigger {
+                    float: right;
+                    margin-top: 8px;
+                }
+            }
+
+            .form-builder-tooltip-wrap {
+                position: absolute;
+                z-index: 10;
+                right: 0;
+                transform: translateY(calc(-100% - 5px));
+                width: auto;
+                min-width: 250px;
+    
+                .form-builder-tooltip-description {
+                    right: 0;
                     width: 100%;
+                    text-align: right;
+    
+                    i {
+                        bottom: -17px;
+                        right: 40px;
+                    }
                 }
 
-                input {
-                    width: calc(100% - 20px);
+                @media screen and (min-width: 769px) {
+                    right: auto;
+
+                    .form-builder-tooltip-description {
+                        right: auto;
+                        left: 0;
+
+                        i {
+                            right: auto;
+                            left: 40px;
+                        }
+                    }
                 }
 
-                textarea {
-                    width: 100% !important;
+                @media screen and (min-width: 769px) and (max-width: 1200px) {
+                    left: 105px;
                 }
 
-                .form-control-buttons {
-                    max-width: 100% !important;
-                    margin-right: 0;
-
-                    button {
+                @media screen and (min-width: 1201px) {
+                    left: 140px;
+                }
+            }
+    
+            
+    
+            .form-field-content-wrap {
+                align-items: flex-start;
+    
+                @media screen and (max-width: 768px) {
+                    flex-direction: column;
+                }
+            }
+    
+            .obs-control-field {
+                @media screen and (max-width: 768px) {
+                    width: 100%;
+                    margin-top: 8px;
+    
+                    > div {
                         width: 100%;
+                    }
+    
+                    input {
+                        width: calc(100% - 20px);
+                    }
+    
+                    textarea {
+                        width: 100% !important;
+                    }
+    
+                    .form-control-buttons {
+                        max-width: 100% !important;
+                        margin-right: 0;
+    
+                        button {
+                            width: 100%;
+                        }
                     }
                 }
             }
         }
-    }
-
-    legend {
-        width: auto !important;
-    }
-
-    .Select-input {
-        input {
-            &:focus {
-                outline: none !important;
-                background: $focus;
+    
+        legend {
+            width: auto !important;
+        }
+    
+        .Select-input {
+            input {
+                &:focus {
+                    outline: none !important;
+                    background: $focus;
+                }
             }
         }
+    
     }
-
 }
