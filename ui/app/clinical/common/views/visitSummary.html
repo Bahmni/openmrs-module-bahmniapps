@@ -5,6 +5,10 @@
     </div>
 </section>
 
+<section class="sections-group" ng-if="!isBeingPrinted">
+    <ng-include src="'common/views/providerInfo.html'"></ng-include>
+</section>
+
 <div ng-if="::(!clearBoard)" class="sections-group">
     <div ng-repeat="section in visitTabConfig.currentTab.sections">
         <div ng-switch="section.type">
