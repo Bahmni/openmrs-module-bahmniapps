@@ -1,5 +1,5 @@
 describe("Diagnosis Controller", function () {
-    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService;
+    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService, messagingService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     beforeEach(module('bahmni.clinical'));
@@ -15,6 +15,7 @@ describe("Diagnosis Controller", function () {
         };
         rootScope.currentUser = {privileges: [{name: "app:clinical:deleteDiagnosis"}, {name: "app:clinical"}]};
         rootScope.currentUser.userProperties = {defaultLocale: "en"};
+        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
 
         spyOn(DateUtil, 'today');
         mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig','getConfigValue']);
@@ -47,7 +48,8 @@ describe("Diagnosis Controller", function () {
             appService: appService,
             diagnosisService: mockDiagnosisService,
             $translate: translate,
-            retrospectiveEntryService: retrospectiveEntryService
+            retrospectiveEntryService: retrospectiveEntryService,
+            messagingService: messagingService
         });
     }));
 
@@ -105,6 +107,15 @@ describe("Diagnosis Controller", function () {
                 expect(list[0].concept.name).toBe("Cold, unspec.");
                 expect(list[0].concept.uuid).toBe("uuid1");
                 expect(list[0].lookup.name).toBe("Cold xyz");
+            });
+        });
+
+        it("should show an error message when the terminology server is unavailable", function () {
+            spyOn(mockDiagnosisService, 'getAllFor').and.returnValue(specUtil.simplePromise({ status: 503, data: {error: { message: "TERMINOLOGY_SERVER_ERROR_MESSAGE" }}}));
+            $scope.getDiagnosis({term: "T69.9XXA"}).then(function (list) {
+                expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("T69.9XXA", "en");
+                expect(list).toBeUndefined();
+                expect(messagingService.showMessage).toHaveBeenCalled();
             });
         });
     });
