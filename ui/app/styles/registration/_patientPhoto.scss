@@ -77,13 +77,21 @@ video {
     .row-clear {
         @include clearfix();
     }
+
+    .flex {
+        display: flex;
+
+        @media screen and (max-width: 540px) {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
 }
 
 .photoCaptureDialog {
     .photo-video-container {
         position: relative;
         width: 229px;
-        float: left;
         .photoCapture-left-overlay {
             position: absolute;
             height: 169px;
@@ -102,16 +110,24 @@ video {
         }
     }
     .photo-canvas-container {
-        float: left;
-        width: 188px;
+        width: 180px;
         margin-top: 6px;
-        margin-left: 30px !important;
+        margin-left: 5px;
+
+        @media screen and (min-width: 541px) {
+            margin-left: 30px !important;
+            width: 188px;
+        }
     }
     .take-photo-btn {
         margin: 10px 54px 5px 54px;
     }
     .confirmImage {
-        margin: 10px 5px 5px 55px;
+        margin: 10px 5px 5px 25px;
+
+        @media screen and (min-width: 541px) {
+            margin-left: 55px;
+        }
     }
 }
 
