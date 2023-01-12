@@ -644,18 +644,3 @@ div.duration.checkbox-inline {
       clear:both;
    }
 }
-
-.errorText {
-  color: darken($clinicalFormInvalid, 30%);
-  font-size: 12px;
-  margin-left: 10px;
-  margin-top: 5px;
-  display: block;
-}
-
-.inputError {
-  border: 2px solid darken($clinicalFormInvalid, 30%);
-  &:focus {
-    outline: none;
-  }
-}
