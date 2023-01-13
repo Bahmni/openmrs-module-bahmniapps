@@ -100,7 +100,7 @@ angular.module('bahmni.clinical')
                 });
             };
 
-            $scope.$on("event-changes-saved", function (event) {
+            $scope.$on("event:changes-saved", function (event) {
                 $scope.diagnosisForm.$setSubmitted();
                 $scope.diagnosisForm.$dirty = false;
             });

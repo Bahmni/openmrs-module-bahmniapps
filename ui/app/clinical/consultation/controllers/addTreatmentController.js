@@ -29,7 +29,7 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.$on("event-changes-saved", function (event) {
+            $scope.$on("event:changes-saved", function (event) {
                 $scope.addForm.$setSubmitted();
                 $scope.addForm.$dirty = false;
             });

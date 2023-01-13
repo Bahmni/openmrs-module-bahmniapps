@@ -122,7 +122,7 @@ angular.module('bahmni.clinical')
 
         $scope.consultation.preSaveHandler.register("dispositionSaveHandlerKey", saveDispositions);
 
-        $scope.$on("event-changes-saved", function (event) {
+        $scope.$on("event:changes-saved", function (event) {
             $scope.dispositionForm.$setSubmitted();
             $scope.dispositionForm.$dirty = false;
         });

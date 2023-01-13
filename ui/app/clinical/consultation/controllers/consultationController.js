@@ -193,10 +193,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return true;
             };
 
-            $scope.$on('event:changes-not-saved', function (event) {
-                $state.dirtyConsultationForm = true;
-            });
-
             var cleanUpListenerStateChangeStart = $scope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                 if ($scope.showSaveConfirmDialogConfig) {
                     if ($rootScope.hasVisitedConsultation && $scope.shouldDisplaySaveConfirmDialogForStateChange(toState, toParams, fromState, fromParams)) {
@@ -526,7 +522,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             return encounterService.create(encounterData)
                             .then(function (saveResponse) {
                                 $state.dirtyConsultationForm = false;
-                                $scope.$parent.$broadcast("event-changes-saved");
+                                $scope.$parent.$broadcast("event:changes-saved");
                                 var messageParams = {
                                     encounterUuid: saveResponse.data.encounterUuid,
                                     encounterType: saveResponse.data.encounterType

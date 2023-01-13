@@ -49,7 +49,7 @@ angular.module('bahmni.clinical')
                 handleSampleTypeOther();
             };
 
-            $scope.$on("event-changes-saved", function (event) {
+            $scope.$on("event:changes-saved", function (event) {
                 for (var i = 0; i < $scope.newSpecimens.length; i++) {
                     $scope.newSpecimens[i].$setSubmitted();
                     $scope.newSpecimens[i].$dirty = false;
