@@ -203,6 +203,166 @@ describe("patient dashboard controller", function () {
         expect(_clinicalDashboardConfig.currentTab.translationKey).toBe("DASHBOARD_TAB_PATIENT_SUMMARY_KEY");
     });
 
+    it('should show error message if there are dirty changes and navigating out of patient dashboard', function () {
+        spyOn(scope, '$on');
+        scope.$on.and.callThrough();
+        _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getAllConsultationBoards', 'getObsIgnoreList']);
+        _clinicalAppConfigService.getAllConsultationBoards.and.returnValue([{url: 'consultation'}, {url: 'observations'}]);
+        var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        spinner = jasmine.createSpyObj('spinner', ['hide', 'forPromise']);
+
+        diseaseTemplates = [
+            new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),
+            new Bahmni.Clinical.DiseaseTemplate({name: "Diabetes"}, diabetesDiseaseTemplate.observationTemplates)
+        ];
+
+        _state.dirtyConsultationForm = true;
+
+        _diseaseTemplateService.getLatestDiseaseTemplates.and.returnValue(specUtil.respondWith(diseaseTemplates));
+
+        _controller('PatientDashboardController', {
+            $scope: scope,
+            encounterService: jasmine.createSpy(),
+            clinicalAppConfigService: _clinicalAppConfigService,
+            clinicalDashboardConfig: _clinicalDashboardConfig,
+            visitSummary: {},
+            printer: {},
+            $state: _state,
+            spinner: spinner,
+            appService: _appService,
+            $stateParams: _stateParams,
+            diseaseTemplateService: _diseaseTemplateService,
+            patientContext: {patient: {}},
+            $location: location,
+            messagingService: messagingService
+        });
+
+        scope.$emit('$stateChangeStart', {url: '/dashboard/uuid'}, {patientUuid: 'uuid'});
+
+        expect(messagingService.showMessage).toHaveBeenCalled();
+        expect(spinner.hide).toHaveBeenCalled();
+    });
+
+    it('should not show error message if there are no dirty changes and navigating out of patient dashboard', function () {
+        spyOn(scope, '$on');
+        scope.$on.and.callThrough();
+        _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getAllConsultationBoards', 'getObsIgnoreList']);
+        _clinicalAppConfigService.getAllConsultationBoards.and.returnValue([{url: 'consultation'}, {url: 'observations'}]);
+        var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        spinner = jasmine.createSpyObj('spinner', ['hide', 'forPromise']);
+
+        diseaseTemplates = [
+            new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),
+            new Bahmni.Clinical.DiseaseTemplate({name: "Diabetes"}, diabetesDiseaseTemplate.observationTemplates)
+        ];
+
+        _state.dirtyConsultationForm = false;
+
+        _diseaseTemplateService.getLatestDiseaseTemplates.and.returnValue(specUtil.respondWith(diseaseTemplates));
+
+        _controller('PatientDashboardController', {
+            $scope: scope,
+            encounterService: jasmine.createSpy(),
+            clinicalAppConfigService: _clinicalAppConfigService,
+            clinicalDashboardConfig: _clinicalDashboardConfig,
+            visitSummary: {},
+            printer: {},
+            $state: _state,
+            spinner: spinner,
+            appService: _appService,
+            $stateParams: _stateParams,
+            diseaseTemplateService: _diseaseTemplateService,
+            patientContext: {patient: {}},
+            $location: location,
+            messagingService: messagingService
+        });
+
+        scope.$emit('$stateChangeStart', {url: '/dashboard/uuid'}, {patientUuid: 'patientUuid'});
+
+        expect(messagingService.showMessage).not.toHaveBeenCalled();
+        expect(spinner.hide).not.toHaveBeenCalled();
+    });
+
+    it('should not show error message if there are dirty changes but navigating inside patient dashboard', function () {
+        spyOn(scope, '$on');
+        scope.$on.and.callThrough();
+        _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getAllConsultationBoards', 'getObsIgnoreList']);
+        _clinicalAppConfigService.getAllConsultationBoards.and.returnValue([{url: 'consultation'}, {url: 'observations'}]);
+        var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        spinner = jasmine.createSpyObj('spinner', ['hide', 'forPromise']);
+
+        diseaseTemplates = [
+            new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),
+            new Bahmni.Clinical.DiseaseTemplate({name: "Diabetes"}, diabetesDiseaseTemplate.observationTemplates)
+        ];
+
+        _state.dirtyConsultationForm = true;
+
+        _diseaseTemplateService.getLatestDiseaseTemplates.and.returnValue(specUtil.respondWith(diseaseTemplates));
+
+        _controller('PatientDashboardController', {
+            $scope: scope,
+            encounterService: jasmine.createSpy(),
+            clinicalAppConfigService: _clinicalAppConfigService,
+            clinicalDashboardConfig: _clinicalDashboardConfig,
+            visitSummary: {},
+            printer: {},
+            $state: _state,
+            spinner: spinner,
+            appService: _appService,
+            $stateParams: _stateParams,
+            diseaseTemplateService: _diseaseTemplateService,
+            patientContext: {patient: {}},
+            $location: location,
+            messagingService: messagingService
+        });
+
+        scope.$emit('$stateChangeStart', {url: '/dashboard/patientUuid'}, {patientUuid: 'patientUuid'});
+
+        expect(messagingService.showMessage).not.toHaveBeenCalled();
+        expect(spinner.hide).not.toHaveBeenCalled();
+    });
+
+    it('should not show error message if there are dirty changes but navigating inside observation tabs', function () {
+        spyOn(scope, '$on');
+        scope.$on.and.callThrough();
+        _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getAllConsultationBoards', 'getObsIgnoreList']);
+        _clinicalAppConfigService.getAllConsultationBoards.and.returnValue([{url: 'consultation'}, {url: 'observations'}]);
+        var messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
+        spinner = jasmine.createSpyObj('spinner', ['hide', 'forPromise']);
+
+        diseaseTemplates = [
+            new Bahmni.Clinical.DiseaseTemplate({name: "Breast Cancer"}, breastCancerDiseaseTemplate.observationTemplates),
+            new Bahmni.Clinical.DiseaseTemplate({name: "Diabetes"}, diabetesDiseaseTemplate.observationTemplates)
+        ];
+
+        _state.dirtyConsultationForm = true;
+
+        _diseaseTemplateService.getLatestDiseaseTemplates.and.returnValue(specUtil.respondWith(diseaseTemplates));
+
+        _controller('PatientDashboardController', {
+            $scope: scope,
+            encounterService: jasmine.createSpy(),
+            clinicalAppConfigService: _clinicalAppConfigService,
+            clinicalDashboardConfig: _clinicalDashboardConfig,
+            visitSummary: {},
+            printer: {},
+            $state: _state,
+            spinner: spinner,
+            appService: _appService,
+            $stateParams: _stateParams,
+             diseaseTemplateService: _diseaseTemplateService,
+            patientContext: {patient: {}},
+            $location: location,
+            messagingService: messagingService
+        });
+
+        scope.$emit('$stateChangeStart', {url: '/consultation'}, {patientUuid: 'patientUuid'});
+
+        expect(messagingService.showMessage).not.toHaveBeenCalled();
+        expect(spinner.hide).not.toHaveBeenCalled();
+    });
+
     var breastCancerDiseaseTemplate =
         {
             "concept": {"name": "Breast Cancer"},
