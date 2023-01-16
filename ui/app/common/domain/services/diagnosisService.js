@@ -14,8 +14,6 @@ angular.module('bahmni.common.domain')
             })
             .then(function (response) {
                 return response;
-            }, function (error) {
-                return error;
             });
         };
 

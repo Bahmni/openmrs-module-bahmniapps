@@ -109,15 +109,6 @@ describe("Diagnosis Controller", function () {
                 expect(list[0].lookup.name).toBe("Cold xyz");
             });
         });
-
-        it("should show an error message when the terminology server is unavailable", function () {
-            spyOn(mockDiagnosisService, 'getAllFor').and.returnValue(specUtil.simplePromise({ status: 503, data: {error: { message: "TERMINOLOGY_SERVER_ERROR_MESSAGE" }}}));
-            $scope.getDiagnosis({term: "T69.9XXA"}).then(function (list) {
-                expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("T69.9XXA", "en");
-                expect(list).toBeUndefined();
-                expect(messagingService.showMessage).toHaveBeenCalled();
-            });
-        });
     });
 
     describe("should validate the diagnosis", function(){

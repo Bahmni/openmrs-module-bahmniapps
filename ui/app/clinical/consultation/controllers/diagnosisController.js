@@ -139,10 +139,6 @@ angular.module('bahmni.clinical')
             contextChangeHandler.add(contextChange);
 
             var mapConcept = function (result) {
-                if (result.status >= 500) {
-                    result.data.error && messagingService.showMessage('error', $translate.instant(result.data.error.message), true);
-                    return;
-                }
                 return _.map(result.data, function (concept) {
                     var response = {
                         value: concept.matchedName || concept.conceptName,
