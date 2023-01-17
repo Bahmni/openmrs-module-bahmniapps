@@ -14,7 +14,7 @@ angular.module('bahmni.common.uiHelper')
             messageObject.value = message.replace(/[\[\]]+/g, '');
             if (errorEvent) {
                 messageObject.isServerError = true;
-                this.createTimeout('error', 4000);
+                this.createTimeout('error', 6000);
             } else if (level == 'info') {
                 this.createTimeout('info', 4000);
             }
