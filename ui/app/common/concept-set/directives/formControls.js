@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate',
-        function (formService, spinner, $timeout, $translate) {
+    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', 'messagingService', 'clinicalAppConfigService', '$state',
+        function (formService, spinner, $timeout, $translate, messagingService, clinicalAppConfigService, $state) {
             var loadedFormDetails = {};
             var loadedFormTranslations = {};
             var unMountReactContainer = function (formUuid) {
@@ -80,6 +80,57 @@ angular.module('bahmni.common.conceptSet')
                 });
             };
 
+            function checkIfFormIsDirty ($scope) {
+                var checkAlreadyPresent = [];
+
+                if ($scope.form.component && $scope.form.component.getValue().observations.length > 0 &&
+                    $scope.$parent.consultation && $scope.$parent.consultation.observations) {
+                    var formObservations = $scope.form.component.getValue().observations;
+                    var observations = $scope.$parent.consultation.observations;
+                    for (var i = 0; i < formObservations.length; i++) {
+                        for (var j = 0; j < observations.length; j++) {
+                            if (formObservations[i].concept.uuid === observations[j].concept.uuid &&
+                                formObservations[i].value === observations[j].value) {
+                                checkAlreadyPresent[i] = true;
+                            }
+                        }
+                    }
+                }
+                return checkAlreadyPresent;
+            }
+
+            var link = function ($scope, elem, attrs) {
+                $scope.$on('$stateChangeStart', function (event, next, current) {
+                    var navigating = next.url.split("/")[1];
+                    var allConsultationBoards = clinicalAppConfigService.getAllConsultationBoards();
+                    var outOfConsultationBoard = true;
+                    allConsultationBoards.map(function (board) {
+                        var consultationLink = board.url.split("/")[0];
+                        if (navigating.includes(consultationLink)) {
+                            outOfConsultationBoard = false;
+                        }
+                    });
+                    if (next.url.includes("/dashboard") && $state.params.patientUuid === current.patientUuid) {
+                        outOfConsultationBoard = false;
+                    }
+
+                    var checkAlreadyPresent = checkIfFormIsDirty($scope);
+
+                    var alreadyPresent = checkAlreadyPresent.length > 0 && _.every(checkAlreadyPresent, function (value) {
+                        return value;
+                    });
+                    if (!alreadyPresent) {
+                        $state.dirtyConsultationForm = true;
+                    }
+
+                    if (outOfConsultationBoard && $state.dirtyConsultationForm) {
+                        messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR ' | translate }}");
+                        event.preventDefault();
+                        spinner.hide(next.spinnerToken);
+                    }
+                });
+            };
+
             return {
                 restrict: 'E',
                 scope: {
@@ -87,6 +138,7 @@ angular.module('bahmni.common.conceptSet')
                     patient: "=",
                     validateForm: "="
                 },
-                controller: controller
+                controller: controller,
+                link: link
             };
         }]);
