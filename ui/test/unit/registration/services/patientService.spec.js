@@ -4,6 +4,7 @@ describe('Patient resource', function () {
     var patientService;
     var patient;
     var sessionService;
+    var appService;
 
 
     var openmrsUrl = "http://blah";
@@ -73,8 +74,10 @@ describe('Patient resource', function () {
         module(function ($provide) {
             Bahmni.Registration.Constants.openmrsUrl = openmrsUrl;
             sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
+            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             $provide.value('$http', mockHttp);
             $provide.value('sessionService', sessionService);
+            $provide.value('appService', appService);
         });
 
         patientConfiguration = new Bahmni.Registration.PatientConfig([
@@ -120,7 +123,7 @@ describe('Patient resource', function () {
             customAttributeFields, programAttributeFieldName, programAttributeFieldValue);
 
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/patient/lucene");
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniCommonsSearchUrl + "/patient/lucene");
         expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
         expect(mockHttp.get.calls.mostRecent().args[1].params.identifier).toBe(identifier);
         expect(mockHttp.get.calls.mostRecent().args[1].params.addressFieldName).toBe(addressFieldName);

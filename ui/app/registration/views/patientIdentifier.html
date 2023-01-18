@@ -17,13 +17,12 @@
                        pattern-validate ng-change="identifier.generate()"
                        ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-2">
                     <div class="extension-btn" ng-show="showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)">
-                        <button type="button"
-                            ng-click="openIdentifierPopup(identifier.identifierType.name)">{{:: getDisplayName(identifier.identifierType.name)}}
-                        </button>
-
-                        <button ng-repeat="extButton in extensionButtons" type="button"
-                            ng-click="openIdentifierPopup(extButton.id)">{{:: extButton.display}}
-                        </button>
+                         <span ng-repeat="extButton in getExtButtons(identifier.identifierType.name)">
+                            <span> {{:: extButton.link}} </span>
+                            <button type="button"
+                                    ng-click="openIdentifierPopup(identifier.identifierType.name, extButton.action)">{{:: extButton.display}}
+                            </button>
+                        </span>
                     </div>
             </div>
         </article>
@@ -52,13 +51,12 @@
                        ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()"
                        ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
                     <div class="extension-btn" ng-show="showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)">
-                        <button type="button"
-                            ng-click="openIdentifierPopup(identifier.identifierType.name)">{{:: getDisplayName(identifier.identifierType.name)}}
-                        </button>
-
-                        <button ng-repeat="extButton in extensionButtons" type="button"
-                            ng-click="openIdentifierPopup(extButton.id)">{{:: extButton.display}}
-                        </button>
+                        <span ng-repeat="extButton in getExtButtons(identifier.identifierType.name)">
+                            <span> {{:: extButton.link}} </span>
+                            <button type="button"
+                                    ng-click="openIdentifierPopup(identifier.identifierType.name, extButton.action)">{{:: extButton.display}}
+                            </button>
+                        </span>
                     </div>
             </div>
 

@@ -30,7 +30,7 @@
                     <span data-ng-switch="::isAutoComplete('givenName')"
                           ng-if="::patientConfiguration.local()['showNameField'] && nameField === 'firstName'">
                           <input data-ng-switch-when="true"
-                                 type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
+                                 type="text" id="givenName" ng-disabled = "isDisabledAttribute('givenName')" ng-model="$parent.patient.givenName" non-blank pattern-validate
                                  my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                                  data-item-type="personName"
                                  placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
@@ -43,7 +43,7 @@
                     <span data-ng-switch="::isAutoComplete('givenName')"
                           ng-if="::!patientConfiguration.local()['showNameField'] && nameField === 'firstName'">
                       <input data-ng-switch-when="true"
-                             type="text" id="givenName" ng-model="$parent.patient.givenName" non-blank pattern-validate
+                             type="text" id="givenName" ng-disabled = "isDisabledAttribute('givenName')" ng-model="$parent.patient.givenName" non-blank pattern-validate
                              my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                              data-item-type="personName"
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_FIRSTNAME' | translate}}"
@@ -56,7 +56,7 @@
                     <span ng-show="::showMiddleName" data-ng-switch="::isAutoComplete('middleName')"
                           ng-if="nameField === 'middleName'">
                       <input data-ng-switch-when="true"
-                             type="text" id="middleName" ng-model="$parent.patient.middleName" pattern-validate
+                             type="text" id="middleName" ng-disabled = "isDisabledAttribute('middleName')" ng-model="$parent.patient.middleName" pattern-validate
                              my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                              data-item-type="personName"
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_MIDDLE_NAME' | translate}}"
@@ -69,14 +69,14 @@
                     <span ng-show="::showLastName" data-ng-switch="::isAutoComplete('familyName')"
                           ng-if="nameField === 'lastName'">
                       <input data-ng-switch-when="true"
-                             type="text" id="familyName" ng-model="$parent.patient.familyName"
+                             type="text" id="familyName" ng-disabled = "isDisabledAttribute('familyName')" ng-model="$parent.patient.familyName"
                              pattern-validate
                              my-autocomplete source="getAutoCompleteList" response-map="getDataResults"
                              data-item-type="personName"
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
                              title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
                       <input data-ng-switch-default
-                             type="text" id="familyName" ng-disabled=isDisabledAttribute('familyName') ng-model="patient.familyName"  pattern-validate
+                             type="text" id="familyName" ng-disabled = "isDisabledAttribute('familyName')" ng-model="patient.familyName"  pattern-validate
                              placeholder="{{ ::'REGISTRATION_LABEL_PATIENT_LAST_NAME' | translate}}"
                              title="{{::'REGISTRATION_LABEL_PATIENT_ENTER_LAST_NAME' | translate}}" ng-required="::isLastNameMandatory">
                     </span>

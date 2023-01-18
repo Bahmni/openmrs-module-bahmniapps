@@ -77,8 +77,12 @@
         max-width: 100vw;
         z-index: 21001;
         background-color: #333;
-        padding: 16px 20px 16px 35px;
+        padding: 16px 20px;
         transition: left linear 0.3s;
+
+        @media screen and (min-width: 320px) {
+            padding: 16px 20px 16px 35px;
+        }
     }
 
     .menu-item {
@@ -161,6 +165,10 @@
         display: block !important;
         .header-mobile-menu {
             left: -100%;
+
+            @media screen and (max-width: 320px) {
+                left: -200%;
+            }
         }
 
         .mobile-menu-overlay {

@@ -23,7 +23,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
             $scope.showComment = true;
             $scope.showSaveAndContinueButton = true;
-
+            $state.dirtyConsultationForm = false;
             $scope.visitHistory = visitHistory;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
             $scope.showControlPanel = false;
@@ -171,6 +171,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return _.includes(currentPath, board.url);
                 });
                 if (board) {
+                    _.map($scope.availableBoards, function (availableBoard) {
+                        availableBoard.isSelectedTab = false;
+                    });
                     $scope.currentBoard = board;
                     $scope.currentBoard.isSelectedTab = true;
                 }
@@ -521,6 +524,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             params.cachebuster = Math.random();
                             return encounterService.create(encounterData)
                             .then(function (saveResponse) {
+                                $state.dirtyConsultationForm = false;
+                                $scope.$parent.$broadcast("event:changes-saved");
                                 var messageParams = {
                                     encounterUuid: saveResponse.data.encounterUuid,
                                     encounterType: saveResponse.data.encounterType
@@ -569,6 +574,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return spinner.forPromise(Promise.resolve(displayErrors(error)));
                 }
             };
+
+            $scope.$on("patientContext:goToPatientDashboard", function () {
+                $scope.gotoPatientDashboard();
+            });
 
             initialize();
         }]);

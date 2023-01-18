@@ -1,4 +1,3 @@
-
 @import "registrationHeader";
 @import "registrationSearch";
 @import "patientCommonInformation";
@@ -6,269 +5,548 @@
 @import "relationship";
 @import "patientDeathInformation";
 
-body{
-  font-size: 14px;
-  @media (max-width : 768px){
-    font-size: 15px;
-  }
+body {
+    font-size: 14px;
+
+    @media (max-width : 768px) {
+        font-size: 15px;
+    }
 }
-.reg-wrapper{
-  .reg-body-wrapper{
-    padding:10px 0;
-    @media (max-width : 768px){
-      padding:15px;
+
+.reg-wrapper {
+    .reg-body-wrapper {
+        padding: 10px 0;
+
+        @media (max-width : 768px) {
+            padding: 15px 0;
+        }
+
+        .observation-section {
+            width: 100%;
+
+            article {
+                width: 42%;
+                margin-left: 0;
+
+                @media (max-width : 950px) {
+                    width: 100% !important;
+                }
+
+                &.obs-section {
+                    width: 30% !important;
+                    margin-left: 3%;
+                    float: right;
+
+                    @media (max-width : 950px) {
+                        width: 100% !important;
+                        margin: 15px auto;
+                    }
+                }
+            }
+
+            .form-horizontal {
+                fieldset {
+                    label {
+                        float: left;
+                        width: 15em;
+                        margin-right: 15px;
+                        margin-left: 0;
+                        text-align: right;
+
+                        @media (max-width : 768px) {
+                            width: 17em;
+                        }
+
+                        @media (max-width : 580px) {
+                            text-align: left;
+                            width: 100%;
+                        }
+                    }
+
+                    .field-value {
+                        input {
+                            width: 12.5em !important;
+                        }
+
+                        textarea {
+                            width: 14em !important;
+                        }
+                    }
+
+                    &.hasLegend {
+                        .offset-label {
+                            padding-left: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.visit-patient-page {
+            .observation-section {
+                .field-value-buttonSelectType {
+                    max-width: 55%;
+                    width: auto;
+
+                    .multi-select-button-group button {
+                        width: 185px;
+                        text-align: center;
+                        padding-left: 10px;
+                        padding-right: 10px;
+
+                        @media screen and (max-width: 1024px) {
+                            width: 175px;
+                        }
+                    }
+
+                    @media screen and (max-width: 1060px) {
+                        max-width: 48%;
+                    }
+
+                    @media (max-width : 650px) {
+                        max-width: 40%;
+                    }
+                }
+
+                article {
+                    width: 60%;
+
+                    @media (max-width : 1024px) {
+                        width: 63%;
+                    }
+
+                    &.noShowLatest {
+                        width: 100%;
+
+                        .field-value-buttonSelectType {
+                            width: 66%;
+                        }
+                    }
+                }
+            }
+        }
+
+        @media screen and (max-width: 580px) {
+            form .form-field .field-value {
+                input[type="text"],
+                input[type="number"],
+                input[type="date"],
+                input[type="time"] {
+                    width: calc(100vw - 105px);
+                }
+                select {
+                    width: calc(100vw - 83px);
+                }
+            }
+        }
+
+        &:not(.visit-patient-page) {
+            form .form-field .field-attribute label {
+                @media screen and (min-width: 769px) and (max-width: 992px) {
+                    text-align: left;
+                }
+            }
+        }
     }
-    .observation-section{
-      width: 100%;
-      article{
-        width: 42%;
-        margin-left: 0;
-        @media (max-width : 950px){
-          width: 100% !important;
+
+    .obs-section section {
+        .form-field {
+            padding: 0;
+            border-bottom: 0;
         }
-        &.obs-section{
-          width: 30% !important;
-          margin-left: 3%;
-          float: right;
-          @media (max-width : 950px){
-            width: 100% !important;
-            margin:15px auto;
-          }
+
+        &.hierarchy {
+            .testUnderPanel {
+                width: 40%;
+                display: inline-block;
+
+                label {
+                    margin-top: 0;
+                }
+            }
         }
-      }
-      .form-horizontal {
-        fieldset {
-          label {
-            float: left;
-            width: 15em;
-            margin-right: 15px;
-            margin-left: 0;
-            text-align: right;
-            @media (max-width : 768px){
-              width: 17em;
-            }
-            @media (max-width : 580px){
-              text-align: left;
-              width: 100%;
-            }
-          }
-          .field-value {
-            input{
-                width: 12.5em!important;
-            }
-            textarea{
-              width: 14em!important;
-            }
-          }
-          &.hasLegend{
-            .offset-label{
-              padding-left:0;
-            }
-          }
-        }
-      }
     }
-    &.visit-patient-page{
-      .observation-section{
-        .field-value-buttonSelectType{
-          max-width:55%;
-          width:auto;
-          .multi-select-button-group button{
-            width:185px;
-            text-align: center;
-            padding-left: 10px;
-            padding-right: 10px;
-            @media screen and (max-width: 1024px){
-              width:175px;
+
+    .submit-btn-container {
+        button {
+            margin-bottom: 5px;
+        }
+    }
+
+    .patient-image {
+        max-width: 250px;
+        @media screen and (min-width: 769px) {
+            max-width: 150px;
+        }
+    }
+
+    form .form-field.patient-name-wrapper {
+        @media screen and (min-width: 769px) and (max-width: 1200px) {
+            max-width: calc(100% - 245px);
+    
+            .field-value {
+                display: flex;
+                flex-wrap: wrap;
+                float: none;
             }
-          }
-          @media screen and (max-width: 1060px){
-            max-width:48%;
-          }
-          @media (max-width : 650px){
-            max-width:40%;
-          }
         }
-        article{
-          width: 60%;
-          @media (max-width : 1024px){
-            width:63%;
-          }
-          &.noShowLatest{
-            width:100%;
-            .field-value-buttonSelectType {
-              width: 66%;
-            }
-          }
-        }
-      }
     }
-  }
-  .obs-section section{
-    .form-field{
-      padding: 0;
-      border-bottom: 0;
-    }
-    &.hierarchy{
-      .testUnderPanel{
-        width: 40%;
-        display: inline-block;
-        label{
-          margin-top:0;
-        }
-      }
-    }
-  }
 }
+
+.photo-upload-dialog {
+
+    @media screen and (max-width: 360px) {
+        width: 98% !important;
+    }
+
+}
+
+.photo-capture-dialog {
+    @media screen and (max-width: 540px) {
+        width: 98% !important;
+    }
+}
+
 .extension-btn {
-  margin-left: 5px;
-  margin-top: 2px;
-  display: inline;
-  @media (max-width : 800px){
-    margin-left: 10px;
-  }
-  button {
-    margin-right: 5px;
-  }
+    margin-left: 5px;
+    margin-top: 4px;
+    display: inline-block;
+
+    @media (max-width : 768px) {
+        display: block;
+        margin-left: 0;
+        margin-top: 5px;
+    }
+
+    button {
+        margin-right: 5px;
+        margin-left: 5px;
+    }
 }
+
 .identifier-ui {
-  position: fixed;
-  z-index: 1;
-  padding-top: 100px;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.6);
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
 
-  .identifier-iframe {
-    background-color: #fefefe;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 40%;
-    height: 600px;
-  }
+    .identifier-iframe {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+        height: 600px;
 
-  .close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+        @media screen and (max-width: 540px) {
+            width: 90%;
+        }
 
-  .close:hover, .close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-  }
-}
-
-.additional-attribute{
-  &.active{
-    .fa-caret-right{
-      display: none;
+        @media screen and (min-width: 541px) and (max-width: 1024px) {
+            width: 80%;
+        }
     }
-    .fa-caret-down{
-      display: inline;
+
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 10px;
     }
-  }
-  .fa-caret-down{
-    display: none;
-  }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+}
+
+.additional-attribute {
+    &.active {
+        .fa-caret-right {
+            display: none;
+        }
+
+        .fa-caret-down {
+            display: inline;
+        }
+    }
+
+    .fa-caret-down {
+        display: none;
+    }
 
 }
 
-.showOn-desktop-registration{
-  display: block !important;
-  @media (max-width : 990px){
-    display: none !important;
-  }
-}
-
-.showOn-small-screen-registration{
-  display: none !important;
-  @media (max-width : 990px){
+.showOn-desktop-registration {
     display: block !important;
-    float: none !important;
-    clear: both;
-  }
+
+    @media (max-width : 990px) {
+        display: none !important;
+    }
 }
 
-.patientExistingIdentifier{
-  @media (max-width : 990px){
-    width: auto;
-    float: left;
-  }
+.showOn-small-screen-registration {
+    display: none !important;
+
+    @media (max-width : 990px) {
+        display: block !important;
+        float: none !important;
+        clear: both;
+    }
 }
-.otherInfoContainer{
-  input[type="number"]{
-    width: 12.5em!important;
-    @media (max-width : 800px){
-      width: 11.5em !important;
+
+.patientExistingIdentifier {
+    @media (max-width : 990px) {
+        width: auto;
+        float: left;
     }
-    @media (max-width : 768px){
-      width: 12.5em !important;
-    }
-  }
 }
-.reg-body-wrapper{
-  .form-field .field-value .autocomplete {
-    width: 296px;
-    input.concept-name.ui-autocomplete-input{
-      float: left;
-      min-width: 197px;
-      margin-right: 15px;
-      box-sizing: border-box;
-      @media (max-width : 768px){
-        float: left !important;
-      }
-      @media (max-width : 650px){
-        float:none !important;
-      }
+
+.otherInfoContainer {
+    input[type="number"] {
+        width: 12.5em !important;
+
+        @media (max-width : 800px) {
+            width: 11.5em !important;
+        }
+
+        @media (max-width : 768px) {
+            width: 12.5em !important;
+        }
     }
-    @media (max-width : 650px){
-      width:218px;
-    }
-  }
-  .form-field .field-value .autocomplete .accept-btn{
-    margin-top: 6px;
-  }
 }
+
+.reg-body-wrapper {
+    .form-field .field-value .autocomplete {
+        width: 296px;
+
+        input.concept-name.ui-autocomplete-input {
+            float: left;
+            min-width: 197px;
+            margin-right: 15px;
+            box-sizing: border-box;
+
+            @media (max-width : 768px) {
+                float: left !important;
+            }
+
+            @media (max-width : 650px) {
+                float: none !important;
+            }
+        }
+
+        @media (max-width : 650px) {
+            width: 218px;
+        }
+    }
+
+    .form-field .field-value .autocomplete .accept-btn {
+        margin-top: 6px;
+    }
+}
+
 .comment-toggle {
-  margin-top:4px;
+    margin-top: 4px;
 }
+
 .split-button {
-  margin: 2px 0;
+    margin: 2px 0;
 }
 
+.obs-section-form > div > .form-builder-row >.form-builder-column-wrapper >.form-builder-column {
+    padding: 5px 0;
 
-.form-builder-row {
-
-  .label-wrap {
-    padding-right: 15px !important;
-    margin-top: 0 !important;
-    width: 200px !important;
-    label {
-      text-align: right;
-      font-size: 14px;
-      padding-right: 20px !important;
+    & > .form-builder-fieldset {
+        margin: 15px 0 3px;
     }
-  }
-  
-  legend {
-    width: auto !important;
-  }
+}
 
-  .Select-input {
-    input {
-      &:focus {
-        outline: none !important;
-        background: $focus;
-      }
+.visit-patient-page {
+    .visit-patient {
+        .patient-identifier-name {
+            display: flex;
+
+            @media screen and (min-width: 769px) and (max-width: 992px) {
+                justify-content: center;
+            }
+
+            @media screen and (max-width: 768px) {
+                flex-direction: column;
+            }
+        }
+        
+        .form-field {
+            display: flex;
+            flex-wrap: nowrap;
+            &:first-of-type {
+                margin-right: 30px;
+            }
+            
+            @media screen and (max-width: 992px) {
+                .field-attribute label {
+                    width: 9em !important;
+                    text-align: left;
+                    float: none;
+                }
+            }
+
+            @media screen and (min-width: 540px) and (max-width: 768px) {
+                .field-attribute label {
+                    float: left;
+                }
+            }
+
+            @media screen and (max-width: 320px) {
+                .field-attribute label {
+                    width: 5em !important;
+                }
+            }
+        }
     }
-  }
 
+    .form-builder-row {
+
+        .label-wrap {
+            padding-right: 15px !important;
+            margin-top: 0 !important;
+            width: 200px !important;
+            flex: none !important;
+    
+            label {
+                text-align: right;
+                font-size: 14px;
+                padding-right: 20px !important;
+                width: calc(100% - 45px);
+                display: inline-block;
+            }
+    
+            @media screen and (max-width: 768px) {
+                width: calc(100% - 40px) !important;
+                text-align: left !important;
+    
+                label {
+                    text-align: left;
+                }
+            }
+
+            @media screen and (min-width: 769px) and (max-width: 1200px) {
+                width: 165px !important;
+            }
+        }
+    
+        .form-builder-column-wrapper .form-builder-column .form-field-wrap {
+            .label-wrap {
+                .form-builder-tooltip-trigger {
+                    float: right;
+                    margin-top: 8px;
+                }
+            }
+
+            .form-builder-tooltip-wrap {
+                position: absolute;
+                z-index: 10;
+                right: 0;
+                transform: translateY(calc(-100% - 5px));
+                width: auto;
+                min-width: 250px;
+    
+                .form-builder-tooltip-description {
+                    right: 0;
+                    width: 100%;
+                    text-align: right;
+    
+                    i {
+                        bottom: -17px;
+                        right: 40px;
+                    }
+
+                    .details {
+                        text-align: left;
+                    }
+                }
+
+                @media screen and (min-width: 769px) {
+                    right: auto;
+
+                    .form-builder-tooltip-description {
+                        right: auto;
+                        left: 0;
+
+                        i {
+                            right: auto;
+                            left: 40px;
+                        }
+                    }
+                }
+
+                @media screen and (min-width: 769px) and (max-width: 1200px) {
+                    left: 105px;
+                }
+
+                @media screen and (min-width: 1201px) {
+                    left: 140px;
+                }
+            }
+    
+            
+    
+            .form-field-content-wrap {
+                align-items: flex-start;
+    
+                @media screen and (max-width: 768px) {
+                    flex-direction: column;
+                }
+            }
+    
+            .obs-control-field {
+                @media screen and (max-width: 768px) {
+                    width: 100%;
+                    margin-top: 8px;
+    
+                    > div {
+                        width: 100%;
+                    }
+    
+                    input {
+                        width: calc(100% - 20px);
+                    }
+    
+                    textarea {
+                        width: 100% !important;
+                    }
+    
+                    .form-control-buttons {
+                        max-width: 100% !important;
+                        margin-right: 0;
+    
+                        button {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    
+        legend {
+            width: auto !important;
+        }
+    
+        .Select-input {
+            input {
+                &:focus {
+                    outline: none !important;
+                    background: $focus;
+                }
+            }
+        }
+    
+    }
 }

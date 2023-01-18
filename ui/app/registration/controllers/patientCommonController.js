@@ -23,30 +23,24 @@ angular.module('bahmni.registration')
             $scope.showExtIframe = false;
             var identifierExtnMap = new Map();
             $scope.attributesToBeDisabled = [];
-            $scope.extensionButtons = ($scope.regExtPoints[0] != null && $scope.regExtPoints[0].extensionButtons != null) ? $scope.regExtPoints[0].extensionButtons : null;
 
-            function isExtButtonDefined (id) {
-                for (var i = 0; i < $scope.extensionButtons.length; i++) {
-                    if ($scope.extensionButtons[i].id === id) {
-                        return true;
-                    }
+            $scope.getExtButtons = function (identifierType) {
+                var extensionPoint = getExtensionPoint(identifierType);
+                if (extensionPoint != null && extensionPoint.extensionParams !== null && extensionPoint.extensionParams.buttons !== null) {
+                    return extensionPoint.extensionParams.buttons;
                 }
-                return false;
-            }
+                return null;
+            };
 
-            $scope.openIdentifierPopup = function (identifierType) {
+            $scope.openIdentifierPopup = function (identifierType, action) {
                 var iframe = $document[0].getElementById("extension-popup");
-                iframe.name = identifierType;
-                if (isExtButtonDefined(identifierType)) {
-                    iframe.src = $scope.regExtPoints[0].src;
-                } else {
-                    iframe.src = getExtensionPoint(identifierType).src;
-                }
+                iframe.src = getExtensionPoint(identifierType).src + "?action=" + action;
                 $scope.showExtIframe = true;
                 $window.addEventListener("message", function (popupWindowData) {
                     if (popupWindowData.data.patient !== undefined) {
                         $rootScope.extenstionPatient = popupWindowData.data.patient;
                         if ($rootScope.extenstionPatient.id !== undefined) {
+                            $rootScope.isExistingPatient = true;
                             if ($rootScope.extenstionPatient.id !== $scope.patient.uuid) {
                                 $window.open(Bahmni.Registration.Constants.existingPatient + $rootScope.extenstionPatient.id, "_self");
                             }
@@ -89,13 +83,6 @@ angular.module('bahmni.registration')
                 return false;
             };
 
-            $scope.getDisplayName = function (identifierType) {
-                var extenstionPoint = getExtensionPoint(identifierType);
-                if (extenstionPoint != null) {
-                    return extenstionPoint.extensionParams.linkDisplay;
-                }
-            };
-
             function getExtensionPoint (identifierType) {
                 if ($scope.regExtPoints !== null) {
                     for (var i = 0; i < $scope.regExtPoints.length; i++) {
@@ -135,7 +122,7 @@ angular.module('bahmni.registration')
 
             function updatePatientAddress (address, addressMap) {
                 for (var key in addressMap) {
-                    if (address[key] !== null) {
+                    if (address[key] && address[key] !== null) {
                         if (key === "line") {
                             $scope.patient.address[addressMap[key]] = address[key].join(" ");
                         } else { $scope.patient.address[addressMap[key]] = address[key]; }
@@ -384,11 +371,14 @@ angular.module('bahmni.registration')
             $scope.$watch('patientLoaded', function () {
                 if ($scope.patientLoaded) {
                     executeShowOrHideRules();
-                    if ($scope.patient.extraIdentifiers !== undefined) {
-                        setAttributesToBeDisabled();
-                    }
-                    if ($rootScope.extenstionPatient !== undefined) {
-                        $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
+                    if (!$scope.createPatient) {
+                        if ($scope.patient.extraIdentifiers !== undefined) {
+                            setAttributesToBeDisabled();
+                        }
+                        if ($scope.isExistingPatient && $rootScope.extenstionPatient !== undefined) {
+                            $rootScope.isExistingPatient = false;
+                            $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
+                        }
                     }
                 }
             });

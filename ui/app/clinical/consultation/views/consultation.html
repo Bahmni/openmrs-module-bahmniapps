@@ -11,9 +11,7 @@
                 <div class="row table-header">
                     <div class="col col1"><span class="table-head-title">{{ 'CONSULTATION_TAB_NEW_DIAGNOSES_LABEL'|translate }}</span></div>
                     <div class="col col2"><span class="table-head-title">{{ 'CONSULTATION_TAB_DIAGNOSES_STATUS_LABEL'|translate }}</span></div>
-                    <div class="col col3"><span class="table-head-title"></span></div>
-                    <div class="col col4"><span class="table-head-title">{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL_DIAGNOSES_LABEL'|translate }}</span></div>
-                    <div class="col col5"><span class="table-head-title"></span></div>
+                    <div class="col col3"><span class="table-head-title">{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}</span></div>
                 </div>
                 <div class="table-body">
                     <div class="row diagnosis-row"
@@ -42,8 +40,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col col3"></div>
-                            <div class="col col4">
+                            <div class="col col3">
                                 <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments"
                                         ng-click="diagnosis.showComment = !diagnosis.showComment"
@@ -68,9 +65,7 @@
                 <div class="row table-header">
                     <div class="col col1"><span class="table-head-title">{{ 'CLINICAL_CURRENT'|translate }}</span></div>
                     <div class="col col2"><span class="table-head-title">{{ 'CONSULTATION_TAB_DIAGNOSES_STATUS_LABEL'|translate }}</span></div>
-                    <div class="col col3"><span class="table-head-title"></span></div>
-                    <div class="col col4"><span class="table-head-title">{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}</span></div>
-                    <div class="col col5"><span class="table-head-title"></span></div>
+                    <div class="col col3"><span class="table-head-title">{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}</span></div>
                 </div>
 
                 <div class="table-body">
@@ -99,8 +94,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col col3"></div>
-                            <div class="col col4">
+                            <div class="col col3">
                                 <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments"
                                         toggle="diagnosis.showComment"
@@ -125,9 +119,7 @@
                 <div class="row table-header">
                     <div class="col col1"><span class="table-head-title">{{ 'CONSULTATION_TAB_PAST_DIAGNOSES_LABEL'|translate }}</span></div>
                     <div class="col col2"><span class="table-head-title">{{ 'CONSULTATION_TAB_DIAGNOSES_STATUS_LABEL'|translate }}</span></div>
-                    <div class="col col3"><span class="table-head-title"></span></div>
-                    <div class="col col4"><span class="table-head-title">{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}</span></div>
-                    <div class="col col5"><span class="table-head-title"></span></div>
+                    <div class="col col3"><span class="table-head-title">{{ 'CONSULTATION_TAB_REVISED_DIAGNOSES_LABEL'|translate }}</span></div>
                 </div>
 
                 <div class="table-body">
@@ -156,8 +148,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col col3"></div>
-                            <div class="col col4">
+                            <div class="col col3">
                                 <i ng-show="diagnosis.revised" class="fa fa-ok fl"></i>
                                 <button class="toggle fr" ng-if="diagnosis.comments"
                                         ng-click="diagnosis.showComment = !diagnosis.showComment"
@@ -269,10 +260,12 @@
         </section>
     </div>
     <section class="block consultation-notes section-grid">
-        <h2 class="section-title">{{ 'CONSULTATION_TAB_CONSULTATION_NOTES_LABEL'|translate }}</h2>
-        <textarea ng-model="consultation.consultationNote.value" ng-change="onNoteChanged()"
-                  placeholder="{{ 'CLINICAL_ENTER_NOTES_PLACEHOLDER'|translate }} " rows="6" msd-elastic></textarea>
-    </section>
+        <form name="consultationForm" consultation-confirm-on-exit>
+            <h2 class="section-title">{{ 'CONSULTATION_TAB_CONSULTATION_NOTES_LABEL' | translate }}</h2>
+            <textarea ng-model="consultation.consultationNote.value" ng-change="onNoteChanged()"
+                      name="consultationNotes"
+                      placeholder="{{ 'CLINICAL_ENTER_NOTES_PLACEHOLDER'|translate }} " rows="6" msd-elastic></textarea>
+        </form></section>
 
 </article>
 

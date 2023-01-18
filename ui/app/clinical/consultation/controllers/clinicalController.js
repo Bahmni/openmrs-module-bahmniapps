@@ -33,13 +33,9 @@ angular.module('bahmni.clinical').controller('ClinicalController',
                 $scope.showTeleConsultationWindow = false;
                 var teleConsultationWindow = angular.element(document.getElementById('tele-consultation'));
                 teleConsultationWindow.css({
-                    top: '0px',
-                    left: '0px'
-                });
-                teleConsultationWindow.css({
                     position: 'fixed',
-                    top: '40%',
-                    left: '40%'
+                    top: '',
+                    left: ''
                 });
             };
 

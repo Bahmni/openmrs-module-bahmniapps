@@ -382,7 +382,7 @@ describe("ConsultationController", function () {
                 }
             };
             createController();
-
+            expect(scope.availableBoards[0].isSelectedTab).toBeFalsy();
             expect(scope.currentBoard).toEqual({
                 extensionPointId: "org.bahmni.clinical.consultation.board",
                 icon: "icon-user-md",
@@ -397,8 +397,7 @@ describe("ConsultationController", function () {
                 type: "link",
                 url: "treatment",
                 isSelectedTab: true
-            }
-            );
+            });
         });
 
         it("should set current tab based on the tab config provided", function () {
@@ -649,12 +648,15 @@ describe("ConsultationController", function () {
 
     describe("save", function () {
         it("should save encounter data", function (done) {
+            spyOn(scope.$parent, '$broadcast');
             scope.consultation = {discontinuedDrugs: [{dateStopped: new Date()}], preSaveHandler: new Bahmni.Clinical.Notifier(), postSaveHandler: new Bahmni.Clinical.Notifier(), observations: [], conditions: [{condition: {}}]};
             scope.patient = {
                 uuid: "patient-uuid"
             };
             diagnosisService.populateDiagnosisInformation.and.returnValue(specUtil.createFakePromise(scope.consultation));
             scope.save({toState: {}}).then(function () {
+                expect(scope.$parent.$broadcast).toHaveBeenCalledWith("event:changes-saved");
+                expect(state.dirtyConsultationForm).toBe(false);
                 expect(encounterService.create).toHaveBeenCalled();
                 expect(auditLogService.log).toHaveBeenCalledWith(scope.patient.uuid, "EDIT_ENCOUNTER", {encounterUuid: encounterData.encounterUuid, encounterType: encounterData.encounterType}, "MODULE_LABEL_CLINICAL_KEY");
                 expect(conditionsService.save).toHaveBeenCalledWith(scope.consultation.conditions, "patient-uuid");

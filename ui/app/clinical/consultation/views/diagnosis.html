@@ -1,81 +1,102 @@
-<form>
+<form name="diagnosisForm" consultation-confirm-on-exit>
     <fieldset>
         <div class="diagnosis" focus-on-input-errors>
             <div id="selectedNodesArea">
                 <div class="table new-diagnosis primary-section-grid">
-                    <div class="row table-header">
-                        <div class="col col1"><span>{{ ::'CLINICAL_DIAGNOSIS' | translate }}</span></div>
-                        <div class="col col2"><span>{{ ::'CLINICAL_ORDER' | translate }}</span></div>
-                        <div class="col col3"><span>{{ ::'CLINICAL_CERTAINTY' | translate }}</span></div>
-                        <div class="col col4" ng-show="isStatusConfigured()"><span>{{ ::'CLINICAL_STATUS' | translate }}</span></div>
-                    </div>
-
-                    <div ng-repeat="diagnosis in consultation.newlyAddedDiagnoses" ng-hide="diagnosis.voided" class="table-body">
+                    <div ng-repeat="diagnosis in consultation.newlyAddedDiagnoses" ng-hide="diagnosis.voided"
+                        class="table-body">
                         <div class="row">
                             <div class="col col1">
-                                <input ng-model="diagnosis.codedAnswer.name" type="text" name="name" id="name-{{$index}}"
-                                       bahmni-autocomplete source="getDiagnosis"
-                                       response-map="cleanOutDiagnosisList" on-select="getAddNewDiagnosisMethod(diagnosis)"
-                                       ng-class="{
-                                            illegalValue: (diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid &&
-                                                !diagnosis.isNonCodedAnswer && allowOnlyCodedDiagnosis) || diagnosis.invalid,
-                                            active: diagnosis.isNonCodedAnswer
-                                       }"
-                                       ng-change="restEmptyRowsToOne($index); diagnosis.clearCodedAnswerUuid(); checkInvalidDiagnoses()">
+                                <div class="col-header">
+                                    {{ ::'CLINICAL_DIAGNOSIS' | translate }}
+                                </div>
+                                <div class="col-body">
+                                    <input ng-model="diagnosis.codedAnswer.name" type="text" name="name"
+                                        id="name-{{$index}}" bahmni-autocomplete source="getDiagnosis"
+                                        response-map="cleanOutDiagnosisList"
+                                        on-select="getAddNewDiagnosisMethod(diagnosis)" ng-class="{
+                                                illegalValue: (diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid &&
+                                                    !diagnosis.isNonCodedAnswer && allowOnlyCodedDiagnosis) || diagnosis.invalid,
+                                                active: diagnosis.isNonCodedAnswer
+                                        }"
+                                        ng-change="restEmptyRowsToOne($index); diagnosis.clearCodedAnswerUuid(); checkInvalidDiagnoses()">
 
-                                <span ng-if="!allowOnlyCodedDiagnosis">
-                                    <button type="button" ng-model="diagnosis.isNonCodedAnswer"
+                                    <span ng-if="!allowOnlyCodedDiagnosis">
+                                        <button type="button" ng-model="diagnosis.isNonCodedAnswer"
                                             class="small-btn accept-btn" id="accept-button-{{$index}}"
                                             ng-click="diagnosis.setAsNonCodedAnswer() && restEmptyRowsToOne($index)"
                                             ng-class="{
-                                                illegalValue: diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer,
-                                                active: diagnosis.isNonCodedAnswer
-                                            }"
-                                            ng-disabled="diagnosis.codedAnswer.uuid"><span></span>{{ ::'CLINICAL_ACCEPT'| translate }}</button>
-                                </span>
+                                                    illegalValue: diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid && !diagnosis.isNonCodedAnswer,
+                                                    active: diagnosis.isNonCodedAnswer
+                                                }" ng-disabled="diagnosis.codedAnswer.uuid"><span></span>{{
+                                            ::'CLINICAL_ACCEPT'| translate }}</button>
+                                    </span>
+                                </div>
 
                             </div>
                             <div class="col col2">
-                                <buttons-radio class="btn-group" model='diagnosis.order' id="order-{{$index}}"
-                                               ng-class="{'illegalValue': !diagnosis.isValidOrder()}"
-                                               options='orderOptions'/>
+                                <div class="col-header">
+                                    {{ ::'CLINICAL_ORDER' | translate }}
+                                </div>
+                                <div class="col-body">
+                                    <buttons-radio class="btn-group" model='diagnosis.order' id="order-{{$index}}"
+                                        ng-class="{'illegalValue': !diagnosis.isValidOrder()}" options='orderOptions' />
+                                </div>
                             </div>
                             <div class="col col3">
-                                <buttons-radio class="small-btn" model='diagnosis.certainty' id="certainty-{{$index}}"
-                                               ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"
-                                               options='certaintyOptions'/>
+                                <div class="col-header">
+                                    {{ ::'CLINICAL_CERTAINTY' | translate }}
+                                </div>
+                                <div class="col-body">
+                                    <buttons-radio class="small-btn" model='diagnosis.certainty'
+                                        id="certainty-{{$index}}"
+                                        ng-class="{'illegalValue': !diagnosis.isValidCertainty()}"
+                                        options='certaintyOptions' />
+                                </div>
                             </div>
                             <div class="col col4" ng-show="isStatusConfigured()">
-                                <buttons-radio class="small-btn status" id="status-{{$index}}"
-                                               model='diagnosis.diagnosisStatus'
-                                               options='diagnosisStatus'/>
+                                <div class="col-header">
+                                    {{ ::'CLINICAL_STATUS' | translate }}
+                                </div>
+                                <div class="col-body">
+                                    <buttons-radio class="small-btn status" id="status-{{$index}}"
+                                        model='diagnosis.diagnosisStatus' options='diagnosisStatus' />
+                                </div>
                             </div>
                             <div class="col col5">
-                                <button type="button" class="small-btn row-remover" ng-click="removeObservation($index); checkInvalidDiagnoses()"
+                                <div class="col-header">
+                                </div>
+                                <div class="col-body">
+                                    <button type="button" class="small-btn row-remover"
+                                        ng-click="removeObservation($index); checkInvalidDiagnoses()"
                                         ng-show="diagnosis.codedAnswer.name">
-                                    <span class="fa fa-remove"></span>
-                                </button>
-                                <button type="button" toggle="diagnosis.showComments" class="comment-toggle fr" ng-class="{'has-notes': diagnosis.comments}">
-                                    <i class="fa fa-file-o" ng-hide="diagnosis.comments">
-                                        <i class="fa fa-plus-circle" ng-hide="diagnosis.showComments"></i><i class="fa fa-minus-circle" ng-show="diagnosis.showComments"></i>
-                                    </i>
-                                    <i class="fa fa-file-text-o" ng-show="diagnosis.comments"></i>
-                                </button>
+                                        <span class="fa fa-remove"></span>
+                                    </button>
+                                    <button type="button" toggle="diagnosis.showComments" class="comment-toggle fr"
+                                        ng-class="{'has-notes': diagnosis.comments}">
+                                        <i class="fa fa-file-o" ng-hide="diagnosis.comments">
+                                            <i class="fa fa-plus-circle" ng-hide="diagnosis.showComments"></i><i
+                                                class="fa fa-minus-circle" ng-show="diagnosis.showComments"></i>
+                                        </i>
+                                        <i class="fa fa-file-text-o" ng-show="diagnosis.comments"></i>
+                                    </button>
+                                </div>
                             </div>
-
-                            <div class="" ng-show="diagnosis.showComments">
-                                <textarea class="comment-section"  maxlength="255" ng-model="diagnosis.comments">
-                                </textarea>
-                            </div>
+                        </div>
+                        <div class="col col-comments" ng-show="diagnosis.showComments">
+                            <textarea class="comment-section" maxlength="255" ng-model="diagnosis.comments">
+                            </textarea>
                         </div>
                     </div>
 
                 </div>
 
-                <div class=" current-diagnosis section-grid" ng-if="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
+                <div class=" current-diagnosis section-grid"
+                    ng-if="consultation.savedDiagnosesFromCurrentEncounter.length > 0">
                     <h2 class="section-title">{{ ::'CLINICAL_CURRENT' | translate }}</h2>
                     <div class="table">
-                        <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst" class="table-body">
+                        <div ng-repeat="diagnosis in consultation.savedDiagnosesFromCurrentEncounter | primaryDiagnosisFirst"
+                            class="table-body">
                             <div class="row diagnosis-row" ng-if="!diagnosis.voided">
                                 <ng-include src="'consultation/views/diagnosisRow.html'" />
                             </div>
@@ -84,28 +105,27 @@
                 </div>
 
                 <div class="table history-diagnosis past-diagnosis section-grid"
-                     ng-if="consultation.pastDiagnoses.length > 0">
+                    ng-if="consultation.pastDiagnoses.length > 0">
                     <div class="row table-header" toggle="toggles.expandPastDiagnoses">
                         <div class="col col1">
-                          <span>
-                              <i class="fa fa-caret-down" ng-show="toggles.expandPastDiagnoses"></i>
-                              <i class="fa fa-caret-right" ng-hide="toggles.expandPastDiagnoses"></i>
-                              {{ ::'CLINICAL_PAST_DIAGNOSIS' | translate }}
-                          </span>
+                            <span>
+                                <i class="fa fa-caret-down" ng-show="toggles.expandPastDiagnoses"></i>
+                                <i class="fa fa-caret-right" ng-hide="toggles.expandPastDiagnoses"></i>
+                                {{ ::'CLINICAL_PAST_DIAGNOSIS' | translate }}
+                            </span>
                         </div>
                         <div class="col col2"><span>{{ ::'CLINICAL_INITIAL' | translate }}</span></div>
                         <div class="col col3"><span>{{ ::'CLINICAL_CURRENT' | translate }}</span></div>
                     </div>
                     <div ng-show="toggles.expandPastDiagnoses"
-                         ng-repeat="diagnosis in consultation.pastDiagnoses | primaryDiagnosisFirst"
-                         class="table-body">
+                        ng-repeat="diagnosis in consultation.pastDiagnoses | primaryDiagnosisFirst" class="table-body">
                         <div class="row diagnosis-row" ng-if="!diagnosis.voided">
-                            <ng-include src="'consultation/views/diagnosisRow.html'"/>
+                            <ng-include src="'consultation/views/diagnosisRow.html'" />
                         </div>
                     </div>
                 </div>
 
-                <ng-include ng-if="!hideConditions" src="'consultation/views/conditions.html'"/>
+                <ng-include ng-if="!hideConditions" src="'consultation/views/conditions.html'" />
             </div>
         </div>
     </fieldset>
