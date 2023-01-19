@@ -26,7 +26,7 @@ angular.module('bahmni.registration')
 
             $scope.getExtButtons = function (identifierType) {
                 var extensionPoint = getExtensionPoint(identifierType);
-                if (extensionPoint.extensionParams !== null && extensionPoint.extensionParams.buttons !== null) {
+                if (extensionPoint != null && extensionPoint.extensionParams !== null && extensionPoint.extensionParams.buttons !== null) {
                     return extensionPoint.extensionParams.buttons;
                 }
                 return null;
@@ -209,6 +209,16 @@ angular.module('bahmni.registration')
                     $scope.confirmationPrompt(event, toState, toParams);
                 }
             });
+
+            $scope.localLanguageNameIsRequired = function (nameType) {
+                personAttributes = _.keyBy($rootScope.patientConfiguration.attributeTypes, function (attribute) {
+                    return attribute.name;
+                });
+                if (_.isEmpty(nameType)) {
+                    return personAttributes.givenNameLocal.required || personAttributes.middleNameLocal.required || personAttributes.familyNameLocal.required;
+                }
+                return nameType && personAttributes[nameType] && personAttributes[nameType].required;
+            };
 
             $scope.confirmationPrompt = function (event, toState) {
                 if (dontSaveButtonClicked === false) {
