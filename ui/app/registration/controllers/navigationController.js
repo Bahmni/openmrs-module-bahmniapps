@@ -14,6 +14,7 @@ angular.module('bahmni.registration')
 
             $scope.logout = function () {
                 $rootScope.errorMessage = null;
+                console.log("Coming here ~~~~~~~~~~~~~~~~~~~~~ ");
                 sessionService.destroy().then(
                     function () {
                         $window.location = "../home/";

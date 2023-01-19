@@ -135,6 +135,30 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
+        var sendPrescriptions = function (pdfContent, patient) {
+            var deferred = $q.defer();
+            var subject = "Sending Prescriptions";
+            var body = "Hi" + " " + patient.name + ",/n" ;
+            var recipient = {"name": patient.name, "email": patient.email.value};
+            var params = {
+                "pdf": pdfContent,
+                "recipient": recipient,
+                "subject": subject,
+                "body": body,
+                "cc": [],
+                "bcc": []
+            };
+
+            $http.post(Bahmni.Common.Constants.sendViaEmailUrl, params, {
+                withCredentials: true,
+                headers: {"Accept": "application/json", "Content-Type": "application/json"}
+            }).then(function (response) {
+                deferred.resolve(response);
+            });
+
+            return deferred.promise;
+        };
+
         return {
             getActiveDrugOrders: getActiveDrugOrders,
             getConfig: getConfig,
@@ -142,6 +166,7 @@ angular.module('bahmni.clinical')
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
             getNonCodedDrugConcept: getNonCodedDrugConcept,
             getAllDrugOrdersFor: getAllDrugOrdersFor,
-            voidDrugOrder: voidDrugOrder
+            voidDrugOrder: voidDrugOrder,
+            sendPrescriptions: sendPrescriptions
         };
     }]);

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitHeaderController', ['$rootScope', '$scope', '$state', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'visitConfig', 'contextChangeHandler', '$location', '$stateParams', 'urlHelper',
-        function ($rootScope, $scope, $state, clinicalAppConfigService, patientContext, visitHistory, visitConfig, contextChangeHandler, $location, $stateParams, urlHelper) {
+    .controller('VisitHeaderController', ['$rootScope', '$scope', '$state', 'clinicalAppConfigService', 'patientContext', 'visitHistory', 'visitConfig', 'contextChangeHandler', '$location', '$stateParams', 'urlHelper', 'treatmentService',
+        function ($rootScope, $scope, $state, clinicalAppConfigService, patientContext, visitHistory, visitConfig, contextChangeHandler, $location, $stateParams, urlHelper, treatmentService) {
             $scope.patient = patientContext.patient;
             $scope.visitHistory = visitHistory;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
@@ -64,7 +64,23 @@ angular.module('bahmni.clinical')
                         var docDefinition = {
                             content: [{ image: data, width: 500 }]
                         };
-                        pdfMake.createPdf(docDefinition).download();
+                        var pdf = pdfMake.createPdf(docDefinition);
+                        pdf.getBase64((pdfContent) => {
+                            treatmentService.sendPrescriptions(pdfContent, $scope.patient);
+                        });
+//                        var pdf = pdfMake.createPdf(docDefinition);
+//                        pdf.getBuffer((buffer) => {
+//                            console.log('----------------------- Buffer -------------------------');
+//                            console.log(buffer);
+//                            console.log('------------------------------------------------');
+//                        });
+//
+//                        var pdf = pdfMake.createPdf(docDefinition);
+//                        pdf.getBlob((blob) => {
+//                            console.log('----------------------- Blob -------------------------');
+//                            console.log(blob);
+//                            console.log('------------------------------------------------');
+//                        });
                         /* var document = pdfMake.createPdf(docDefinition).download(); // getStream()
                         console.log('document ', document); */
                     }

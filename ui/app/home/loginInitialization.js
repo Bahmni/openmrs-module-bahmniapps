@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .factory('loginInitialization', ['$rootScope', '$q', 'locationService', 'spinner', 'messagingService',
-        function ($rootScope, $q, locationService, spinner, messagingService) {
+    .factory('loginInitialization', ['$rootScope', '$q', 'locationService', 'spinner', 'messagingService', 'sessionService',
+        function ($rootScope, $q, locationService, spinner, messagingService, sessionService) {
             var init = function () {
                 var deferrable = $q.defer();
                 locationService.getAllByTag("Login Location").then(
