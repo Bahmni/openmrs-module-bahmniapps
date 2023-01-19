@@ -7,7 +7,6 @@ angular.module('bahmni.clinical')
             $scope.isEmailPresent = $scope.patient.email ? true : false;
             $scope.isPhoneNumberPresent = $scope.patient.phoneNumber ? true : false;
             var patientParams = {"patientUuid": $scope.patient.uuid, "isEmailPresent": $scope.isEmailPresent, "isPhoneNumberPresent": $scope.isPhoneNumberPresent};
-            
 
             $scope.dashboardConfig = {};
             $scope.expandedViewConfig = {};
