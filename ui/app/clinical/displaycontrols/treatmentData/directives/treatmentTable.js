@@ -13,6 +13,10 @@ angular.module('bahmni.clinical')
                 }
                 return true;
             };
+
+            $scope.downloadPrescription = function (visitStartDate, visitUuid) {
+                $rootScope.$broadcast("event:downloadPrescriptionFromDashboard", visitStartDate, visitUuid);
+            };
         };
 
         return {
