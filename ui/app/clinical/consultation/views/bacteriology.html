@@ -5,7 +5,7 @@
             <span ng-bind-html="'BACTERIOLOGY_NOT_ALLOWED_IN_RETROSPECTIVE_MESSAGE'|translate"></span>
         </div>
         <div ng-repeat="newSpecimen in newSpecimens track by $id(newSpecimen)" class="sample-container">
-            <form class="form" name="newSpecimen"consultation-confirm-on-exit>
+            <form class="form">
                 <section class="section-grid">
                     <div class="section-title-wrapper clearfix">
                         <h2 class="section-title fl">{{'BACTERIOLOGY_TAB_TITLE_KEY' | translate}}</h2>
