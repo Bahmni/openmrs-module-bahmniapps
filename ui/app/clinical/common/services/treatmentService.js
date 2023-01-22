@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('treatmentService', ['$http', '$q', 'appService', '$rootScope', function ($http, $q, appService, $rootScope) {
+    .factory('treatmentService', ['$http', '$q', '$compile', '$timeout', 'spinner', 'appService', '$rootScope', 'smsService', function ($http, $q, $compile, $timeout, spinner, appService, $rootScope, smsService) {
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
@@ -135,6 +135,35 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
+        var sendSMSForTreatment = function (data) {
+            console.log("in treatmentService makePDFUrl --- ", data);
+            $http.get('common/views/prescriptionPrint.html').then(function (templateData) {
+                var template = templateData.data;
+                var printScope = $rootScope.$new();
+                angular.extend(printScope, data);
+                var element = $compile($('<div>' + template + '</div>'))(printScope);
+                var renderAndPrintPromise = $q.defer();
+                var waitForRenderAndPrint = function () {
+                    if (printScope.$$phase || $http.pendingRequests.length) {
+                        $timeout(waitForRenderAndPrint, 1000);
+                    } else {
+                        html2pdf().from(element.html()).toPdf().output('blob').then((pdfBlob) => {
+                            var pdfUrl = (URL.createObjectURL(pdfBlob, { type: "application/pdf" })).replace("blob:", "");
+                            console.log("pdfUrl --- ", pdfUrl);
+                            var message = "Hi " + data.patient.name + ", Please click the given link to download prescription " + pdfUrl;
+                            console.log("message -- ", message);
+                            smsService.sendSMS(data.patient.phoneNumber.value, message);
+                        });
+
+                        renderAndPrintPromise.resolve();
+                        printScope.$destroy();
+                    }
+                    return renderAndPrintPromise.promise;
+                };
+                spinner.forPromise(waitForRenderAndPrint());
+            });
+        };
+
         return {
             getActiveDrugOrders: getActiveDrugOrders,
             getConfig: getConfig,
@@ -142,6 +171,7 @@ angular.module('bahmni.clinical')
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
             getNonCodedDrugConcept: getNonCodedDrugConcept,
             getAllDrugOrdersFor: getAllDrugOrdersFor,
-            voidDrugOrder: voidDrugOrder
+            voidDrugOrder: voidDrugOrder,
+            sendSMSForTreatment: sendSMSForTreatment
         };
     }]);

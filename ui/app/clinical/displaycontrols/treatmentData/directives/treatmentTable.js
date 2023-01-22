@@ -2,7 +2,7 @@
 
 angular.module('bahmni.clinical')
     .directive('treatmentTable', function () {
-        var controller = function ($scope) {
+        var controller = function ($scope, $rootScope) {
             $scope.isOtherActiveSection = function (dateString) {
                 return dateString === Bahmni.Clinical.Constants.otherActiveDrugOrders;
             };
@@ -16,6 +16,10 @@ angular.module('bahmni.clinical')
 
             $scope.downloadPrescription = function (visitStartDate, visitUuid) {
                 $rootScope.$broadcast("event:downloadPrescriptionFromDashboard", visitStartDate, visitUuid);
+            };
+
+            $scope.sendPrescriptionSMS = function (visitStartDate, visitUuid) {
+                $rootScope.$broadcast("event:sendPrescriptionViaSMS", visitStartDate, visitUuid);
             };
         };
 
