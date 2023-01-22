@@ -13,13 +13,11 @@ describe("TreamentService", function () {
     beforeEach(module(function ($provide) {
         var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
-        var smsService = jasmine.createSpyObj('smsService', ['sendSMS']);
         appDescriptor.getConfigValue.and.returnValue({showDetailsWithinDateRange: false});
         appService.getAppDescriptor.and.returnValue(appDescriptor);
         $provide.value('$http', _$http);
         $provide.value('$q', Q);
         $provide.value('appService',appService);
-        $provide.value('smsService',smsService);
     }));
 
 
