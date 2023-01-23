@@ -5,8 +5,7 @@ angular.module('bahmni.clinical')
         function ($scope, ngDialog, visitActionsService) {
             var treatmentConfigParams = $scope.dashboard.getSectionByType("treatment") || {};
             $scope.isEmailPresent = $scope.patient.email ? true : false;
-            $scope.isPhoneNumberPresent = $scope.patient.phoneNumber ? true : false;
-            var patientParams = {"patientUuid": $scope.patient.uuid, "isEmailPresent": $scope.isEmailPresent, "isPhoneNumberPresent": $scope.isPhoneNumberPresent};
+            var patientParams = {"patientUuid": $scope.patient.uuid, "isEmailPresent": $scope.isEmailPresent};
 
             $scope.dashboardConfig = {};
             $scope.expandedViewConfig = {};
