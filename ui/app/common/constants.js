@@ -10,7 +10,6 @@ Bahmni.Common = Bahmni.Common || {};
     var RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
     var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
     var BAHMNI_COMMONS = RESTWS_V1 + "/bahmni";
-    var BAHMNI_API = RESTWS_V1 + "/bahmniapi";
     var EMRAPI = RESTWS + "/emrapi";
     var BACTERIOLOGY = RESTWS_V1;
     var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
@@ -76,7 +75,7 @@ Bahmni.Common = Bahmni.Common || {};
         diseaseTemplateUrl: BAHMNI_CORE + "/diseaseTemplates",
         AllDiseaseTemplateUrl: BAHMNI_CORE + "/diseaseTemplate",
         emrapiConceptUrl: EMRAPI + "/concept",
-        bahmniapiConceptUrl: BAHMNI_API + "/concept",
+        bahmniapiConceptUrl: BAHMNI_COMMONS + "/terminologies/concepts",
         encounterConfigurationUrl: BAHMNI_CORE + "/config/bahmniencounter",
         patientConfigurationUrl: BAHMNI_CORE + "/config/patient",
         drugOrderConfigurationUrl: BAHMNI_CORE + "/config/drugOrders",
