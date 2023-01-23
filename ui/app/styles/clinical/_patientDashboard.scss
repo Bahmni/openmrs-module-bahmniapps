@@ -542,34 +542,6 @@ category:  Layout - sections
         }
     }
 
-    .share-prescription-icon {
-        float: right;
-        margin-right: 10px;
-        position: relative;
-    }
-
-    .share-popup {
-        display: block;
-        position: absolute;
-        width: auto;
-        background-color: white;
-        right: 0px;
-        border: 1px solid rgb(102, 153, 153);
-        padding: 15px;
-        border-radius: 4px;
-        box-sizing: border-box;
-        white-space: nowrap;
-        top: 20px;
-        z-index: 20;
-        font-size: 20px;
-        color: black;
-    }
-
-    .disable-icon {
-        cursor: not-allowed;
-        opacity: .5;
-        pointer-events: auto;
-    }
 }
 
 table.dashboard-table {
