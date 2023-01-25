@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('initialization',
-    ['$rootScope', 'authenticator', 'appService', 'spinner', 'configurations', 'orderTypeService', 'mergeService', '$q', 'messagingService',
-        function ($rootScope, authenticator, appService, spinner, configurations, orderTypeService, mergeService, $q, messagingService) {
+    ['$rootScope', 'authenticator', 'appService', 'spinner', 'configurations', 'orderTypeService', 'mergeService', '$q', 'messagingService', 'locationService',
+        function ($rootScope, authenticator, appService, spinner, configurations, orderTypeService, mergeService, $q, messagingService, locationService) {
             return function (config) {
                 var loadConfigPromise = function () {
                     return configurations.load([
@@ -17,11 +17,15 @@ angular.module('bahmni.clinical').factory('initialization',
                         'stoppedOrderReasonConfig',
                         'genderMap',
                         'relationshipTypeMap',
-                        'defaultEncounterType'
+                        'defaultEncounterType',
+                        'prescriptionSMSToggle',
+                        'prescriptionEmailToggle'
                     ]).then(function () {
                         $rootScope.genderMap = configurations.genderMap();
                         $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
                         $rootScope.diagnosisStatus = (appService.getAppDescriptor().getConfig("diagnosisStatus") && appService.getAppDescriptor().getConfig("diagnosisStatus").value || "RULED OUT");
+                        $rootScope.prescriptionSMSToggle = configurations.prescriptionSMSToggle();
+                        $rootScope.prescriptionEmailToggle = configurations.prescriptionEmailToggle();
                     });
                 };
 
@@ -43,11 +47,18 @@ angular.module('bahmni.clinical').factory('initialization',
                     }
                 };
 
+                var loggedInLocation = function () {
+                    return locationService.getLoggedInLocation().then(function (location) {
+                        $rootScope.loggedInLocation = location;
+                    });
+                };
+
                 return spinner.forPromise(authenticator.authenticateUser()
                     .then(initApp)
                     .then(checkPrivilege)
                     .then(loadConfigPromise)
                     .then(mergeFormConditions)
+                    .then(loggedInLocation)
                     .then(orderTypeService.loadAll));
             };
         }

@@ -4,7 +4,7 @@ describe("PatientDashboardTreatmentController", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var scope, ngDialog;
+    var scope, ngDialog, treatmentService, smsService;
 
     var treatmentConfigParams = {
         title: "Treatments",
@@ -34,6 +34,8 @@ describe("PatientDashboardTreatmentController", function () {
         };
 
         ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
+        treatmentService = jasmine.createSpyObj('treatmentService', ['getMessageForPrescription']);
+        smsService = jasmine.createSpyObj('smsService', ['sendSMS']);
 
         var config = {
             "dashboardName": "General",
@@ -44,7 +46,9 @@ describe("PatientDashboardTreatmentController", function () {
 
         $controller('PatientDashboardTreatmentController', {
             $scope: scope,
-            ngDialog: ngDialog
+            ngDialog: ngDialog,
+            treatmentService: treatmentService,
+            smsService: smsService
         });
     })
     )
@@ -59,13 +63,13 @@ describe("PatientDashboardTreatmentController", function () {
     describe("Should fetch configuration", function () {
         it("should fetch dashboard params", function () {
             var expected = {};
-            _.extend(expected, treatmentConfigParams.dashboardConfig || {}, {patientUuid: "patient uuid", isEmailPresent: false});
+            _.extend(expected, treatmentConfigParams.dashboardConfig || {}, {patientUuid: "patient uuid", isEmailPresent: false, isPhoneNumberPresent: false});
             expect(expected).toEqual(scope.dashboardConfig);
         });
 
         it("should fetch summary page params", function () {
             var expected = {};
-            _.extend(expected, treatmentConfigParams.expandedViewConfig || {}, {patientUuid: "patient uuid", isEmailPresent: false});
+            _.extend(expected, treatmentConfigParams.expandedViewConfig || {}, {patientUuid: "patient uuid", isEmailPresent: false, isPhoneNumberPresent: false});
             expect(expected).toEqual(scope.expandedViewConfig);
         });
     });

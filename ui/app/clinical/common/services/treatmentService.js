@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('treatmentService', ['$http', '$q', 'appService', '$rootScope', function ($http, $q, appService, $rootScope) {
+    .factory('treatmentService', ['$http', '$q', 'appService', '$rootScope', '$filter', function ($http, $q, appService, $rootScope, $filter) {
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
@@ -135,6 +135,26 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
+        var getMessageForPrescription = function (patientData, drugOrderSection) {
+            var message = "Date: " + $filter("bahmniDate")(drugOrderSection.visitDate);
+            message += "\nPrescription For Patient: " + patientData.name + ", " + patientData.gender + ", " + patientData.age + "years.";
+            var doctorArray = [];
+            var prescriptionDetails = "";
+            for (var counter = 0; counter < drugOrderSection.drugOrders.length; counter++) {
+                var drugOrder = drugOrderSection.drugOrders[counter];
+                prescriptionDetails += "\n" + (counter + 1) + ". " + drugOrder.getDisplayName() + ", " + drugOrder.getDescriptionWithoutRouteAndDuration() + drugOrder.getSpanDetails() + ", start from " + $filter("bahmniDate")(drugOrder.effectiveStartDate);
+                if (drugOrder.isDiscontinuedOrStopped()) {
+                    prescriptionDetails += ", stopped on " + $filter("bahmniDate")(drugOrder.effectiveStopDate);
+                }
+                if (!doctorArray.includes("Dr. " + drugOrder.provider.name)) {
+                    doctorArray.push("Dr. " + drugOrder.provider.name);
+                }
+            }
+            var doctorDetails = "Doctor: " + doctorArray.join(", ") + " (" + $rootScope.loggedInLocation.name + ")";
+            message += "\n" + doctorDetails + prescriptionDetails;
+            return message;
+        };
+
         return {
             getActiveDrugOrders: getActiveDrugOrders,
             getConfig: getConfig,
@@ -142,6 +162,7 @@ angular.module('bahmni.clinical')
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
             getNonCodedDrugConcept: getNonCodedDrugConcept,
             getAllDrugOrdersFor: getAllDrugOrdersFor,
-            voidDrugOrder: voidDrugOrder
+            voidDrugOrder: voidDrugOrder,
+            getMessageForPrescription: getMessageForPrescription
         };
     }]);
