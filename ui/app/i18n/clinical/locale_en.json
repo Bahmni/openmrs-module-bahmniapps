@@ -369,5 +369,6 @@
     "CHIEF_COMPLAINT_DATA_CONCEPT_NAME_KEY": "Chief Complaint Data",
     "CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_KEY": "Other generic",
     "CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_TEMPLATE_KEY": "{{chiefComplaint}} ({{chiefComplaintText}}) since {{duration}} {{unit}}",
-    "CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY": "{{chiefComplaint}} since {{duration}} {{unit}}"
+    "CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY": "{{chiefComplaint}} since {{duration}} {{unit}}",
+    "PRESCRIPTION_MESSAGE": "Date: #visitDate\nPrescription For Patient: #patientName, #gender, #age years. \nDoctor: #doctorDetail\n#prescriptionDetails"
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('treatmentService', ['$http', '$q', 'appService', '$rootScope', '$filter', function ($http, $q, appService, $rootScope, $filter) {
+    .factory('treatmentService', ['$http', '$q', 'appService', '$rootScope', '$filter', '$translate', function ($http, $q, appService, $rootScope, $filter, $translate) {
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
@@ -136,13 +136,17 @@ angular.module('bahmni.clinical')
         };
 
         var getMessageForPrescription = function (patientData, drugOrderSection) {
-            var message = "Date: " + $filter("bahmniDate")(drugOrderSection.visitDate);
-            message += "\nPrescription For Patient: " + patientData.name + ", " + patientData.gender + ", " + patientData.age + "years.";
+            var message = $translate.instant(appService.getAppDescriptor().getConfigValue("prescriptionMessage") || Bahmni.Clinical.Constants.prescriptionMessage);
+            message = message.replace("#visitDate", $filter("bahmniDate")(drugOrderSection.visitDate));
+            message = message.replace("#patientName", patientData.name);
+            message = message.replace("#gender", patientData.gender);
+            message = message.replace("#age", patientData.age);
+
             var doctorArray = [];
             var prescriptionDetails = "";
             for (var counter = 0; counter < drugOrderSection.drugOrders.length; counter++) {
                 var drugOrder = drugOrderSection.drugOrders[counter];
-                prescriptionDetails += "\n" + (counter + 1) + ". " + drugOrder.getDisplayName() + ", " + drugOrder.getDescriptionWithoutRouteAndDuration() + drugOrder.getSpanDetails() + ", start from " + $filter("bahmniDate")(drugOrder.effectiveStartDate);
+                prescriptionDetails += (counter + 1) + ". " + drugOrder.getDisplayName() + ", " + drugOrder.getDescriptionWithoutRouteAndDuration() + drugOrder.getSpanDetails() + ", start from " + $filter("bahmniDate")(drugOrder.effectiveStartDate) + "\n";
                 if (drugOrder.isDiscontinuedOrStopped()) {
                     prescriptionDetails += ", stopped on " + $filter("bahmniDate")(drugOrder.effectiveStopDate);
                 }
@@ -150,8 +154,10 @@ angular.module('bahmni.clinical')
                     doctorArray.push("Dr. " + drugOrder.provider.name);
                 }
             }
-            var doctorDetails = "Doctor: " + doctorArray.join(", ") + " (" + $rootScope.loggedInLocation.name + ")";
-            message += "\n" + doctorDetails + prescriptionDetails;
+
+            message = message.replace("#doctorDetail", doctorArray.join(", "));
+            message = message.replace("#clinicName", $rootScope.loggedInLocation.name);
+            message = message.replace("#prescriptionDetails", prescriptionDetails);
             return message;
         };
 
