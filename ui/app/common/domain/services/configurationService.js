@@ -198,7 +198,7 @@ angular.module('bahmni.common.domain')
         configurationFunctions.prescriptionEmailToggle = function () {
             return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 params: {
-                    property: 'sms.enablePrescriptionEmailAlert'
+                    property: 'email.enablePrescriptionEmailAlert'
                 },
                 withCredentials: true,
                 transformResponse: [function (data) {
