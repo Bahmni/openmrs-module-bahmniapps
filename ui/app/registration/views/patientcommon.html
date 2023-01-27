@@ -152,7 +152,8 @@
 
         <section>
             <!--edit patient flow-->
-            <extra-patient-identifiers field-validation="::fieldValidation" patient="patient"></extra-patient-identifiers>
+            <ng-include src="'views/patientIdentifier.html'"></ng-include>
+<!--            <extra-patient-identifiers field-validation="::fieldValidation" patient="patient"></extra-patient-identifiers>-->
         </section>
 
         <legend class="registraion_legend" ng-if="patientConfiguration.customAttributeRows().length > 0">
