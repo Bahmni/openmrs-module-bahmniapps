@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', 'messagingService', 'clinicalAppConfigService', '$state',
-        function (formService, spinner, $timeout, $translate, messagingService, clinicalAppConfigService, $state) {
+    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', 'messagingService', 'appService', '$state',
+        function (formService, spinner, $timeout, $translate, messagingService, appService, $state) {
             var loadedFormDetails = {};
             var loadedFormTranslations = {};
             var unMountReactContainer = function (formUuid) {
@@ -99,10 +99,14 @@ angular.module('bahmni.common.conceptSet')
                 return checkAlreadyPresent;
             }
 
+            function getAllBoards () {
+                return appService.getAppDescriptor().getExtensions("org.bahmni.clinical.consultation.board", "link");
+            }
+
             var link = function ($scope, elem, attrs) {
                 $scope.$on('$stateChangeStart', function (event, next, current) {
                     var navigating = next.url.split("/")[1];
-                    var allConsultationBoards = clinicalAppConfigService.getAllConsultationBoards();
+                    var allConsultationBoards = getAllBoards();
                     var outOfConsultationBoard = true;
                     allConsultationBoards.map(function (board) {
                         var consultationLink = board.url.split("/")[0];

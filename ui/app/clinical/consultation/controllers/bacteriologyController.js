@@ -50,10 +50,8 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on("event:changes-saved", function (event) {
-                for (var i = 0; i < $scope.newSpecimens.length; i++) {
-                    $scope.newSpecimens[i].$setSubmitted();
-                    $scope.newSpecimens[i].$dirty = false;
-                }
+                $scope.newSpecimen.$setSubmitted();
+                $scope.newSpecimen.$dirty = false;
             });
 
             $scope.createNewSpecimen = function () {
