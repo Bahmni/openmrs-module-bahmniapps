@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardTreatmentController', ['$scope', 'ngDialog', 'visitActionsService',
-        function ($scope, ngDialog, visitActionsService) {
+    .controller('PatientDashboardTreatmentController', ['$scope', 'ngDialog', 'visitActionsService', 'treatmentService',
+        function ($scope, ngDialog, visitActionsService, treatmentService) {
             var treatmentConfigParams = $scope.dashboard.getSectionByType("treatment") || {};
             $scope.isEmailPresent = $scope.patient.email ? true : false;
             var patientParams = {"patientUuid": $scope.patient.uuid, "isEmailPresent": $scope.isEmailPresent};
@@ -21,6 +21,10 @@ angular.module('bahmni.clinical')
                     scope: $scope
                 });
             };
+
+            $scope.$on("event:sharePrescriptionsViaEmail", function (event, visitStartDate, visitUuid) {
+                treatmentService.sharePrescriptions({patient: $scope.patient, visitDate: visitStartDate, visitUuid: visitUuid});
+            });
 
             $scope.$on("event:downloadPrescriptionFromDashboard", function (event, visitStartDate, visitUuid) {
                 visitActionsService.printPrescription($scope.patient, visitStartDate, visitUuid);

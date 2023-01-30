@@ -17,6 +17,9 @@ angular.module('bahmni.clinical')
             $scope.downloadPrescription = function (visitStartDate, visitUuid) {
                 $rootScope.$broadcast("event:downloadPrescriptionFromDashboard", visitStartDate, visitUuid);
             };
+            $scope.sharePrescriptions = function (visitStartDate, visitUuid) {
+                $rootScope.$broadcast("event:sharePrescriptionsViaEmail", visitStartDate, visitUuid);
+            };
         };
 
         return {
