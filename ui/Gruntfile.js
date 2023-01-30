@@ -340,6 +340,15 @@ module.exports = function (grunt) {
                         src: [
                             '*.*'
                         ]
+                    },
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.nodeModules %>/bahmni-mf-host/dist',
+                        dest: '<%= yeoman.app %>/components/bahmni-mf-host/',
+                        src: [
+                            '*.*'
+                        ]
                     }
                 ]
             }

@@ -270,7 +270,7 @@ category: Layout - Button
   }
 }
 
-.button, button, input[type="submit"], input[type="button"],input[type="reset"], input[type="submit"], a.button {
+.button, button:not([class^="cds--"]), input[type="submit"], input[type="button"],input[type="reset"], input[type="submit"], a.button {
   @include button;
 
   &.task {
