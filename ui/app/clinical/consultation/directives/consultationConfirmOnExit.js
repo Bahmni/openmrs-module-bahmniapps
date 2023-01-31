@@ -9,21 +9,22 @@ angular.module('bahmni.clinical')
                         console.log("change");
                     };
                     $scope.$on('$stateChangeStart', function (event, next, current) {
-                        var noOfOrders = 0;
                         var noOfMedications = 0;
                         var navigating = next.url.split("/")[1];
                         var allConsultationBoards = clinicalAppConfigService.getAllConsultationBoards();
                         var outOfConsultationBoard = true;
                         if ($scope.consultation) {
                             if ($scope.consultation.orders) {
-                                noOfOrders = $scope.consultation.orders.length;
+                                if ($scope.consultation.orders.length !== $scope.consultation.investigations.length) {
+                                    $state.dirtyConsultationForm = true;
+                                }
                             }
                             if ($scope.consultation.newlyAddedTabTreatments && $scope.tabConfigName) {
                                 noOfMedications = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName].treatments.length;
                             }
                         }
 
-                        var isConsultationFormDirty = noOfOrders > 0 || noOfMedications > 0 || ($scope[attrs.name] && $scope[attrs.name].$dirty);
+                        var isConsultationFormDirty = noOfMedications > 0 || ($scope[attrs.name] && $scope[attrs.name].$dirty);
                         if (isConsultationFormDirty) {
                             $state.dirtyConsultationForm = true;
                         }
