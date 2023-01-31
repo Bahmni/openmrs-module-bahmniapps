@@ -98,6 +98,7 @@
   "TERMINOLOGY_SERVER_NOT_FOUND": "O servidor de terminologia não está disponível no momento. Por favor, tente novamente mais tarde.",
   "TERMINOLOGY_SERVER_ERROR": "Algo inesperado aconteceu. Entre em contato com o administrador do servidor de terminologia",
   "TERMINOLOGY_SERVICES_CONFIG_INVALID": "Configuração incorreta na propriedade global. Entre em contato com o Administrador",
+  "TERMINOLOGY_SERVICES_AT_LEAST_THREE_CHARS": "O termo de pesquisa deve ter pelo menos 3 caracteres",
   "SAVE_ACCESS_KEY": "s",
   "CLINICAL_PRINT_TRANSLATION_KEY": "<u>I</u>mprimir",
   "CLINICAL_PRINT_ACCESS_KEY": "i",
