@@ -29,11 +29,6 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.$on("event:changes-saved", function (event) {
-                $scope.addForm.$setSubmitted();
-                $scope.addForm.$dirty = false;
-            });
-
             $scope.treatmentActionLinks = clinicalAppConfigService.getTreatmentActionLink();
 
             var preFetchDrugsForGivenConceptSet = function () {

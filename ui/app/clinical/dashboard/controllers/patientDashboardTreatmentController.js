@@ -1,16 +1,17 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardTreatmentController', ['$scope', 'ngDialog',
-        function ($scope, ngDialog) {
+    .controller('PatientDashboardTreatmentController', ['$scope', 'ngDialog', 'visitActionsService',
+        function ($scope, ngDialog, visitActionsService) {
             var treatmentConfigParams = $scope.dashboard.getSectionByType("treatment") || {};
-            var patientUuidparams = {"patientUuid": $scope.patient.uuid};
+            $scope.isEmailPresent = $scope.patient.email ? true : false;
+            var patientParams = {"patientUuid": $scope.patient.uuid, "isEmailPresent": $scope.isEmailPresent};
 
             $scope.dashboardConfig = {};
             $scope.expandedViewConfig = {};
 
-            _.extend($scope.dashboardConfig, treatmentConfigParams.dashboardConfig || {}, patientUuidparams);
-            _.extend($scope.expandedViewConfig, treatmentConfigParams.expandedViewConfig || {}, patientUuidparams);
+            _.extend($scope.dashboardConfig, treatmentConfigParams.dashboardConfig || {}, patientParams);
+            _.extend($scope.expandedViewConfig, treatmentConfigParams.expandedViewConfig || {}, patientParams);
 
             $scope.openSummaryDialog = function () {
                 ngDialog.open({
@@ -20,6 +21,11 @@ angular.module('bahmni.clinical')
                     scope: $scope
                 });
             };
+
+            $scope.$on("event:downloadPrescriptionFromDashboard", function (event, visitStartDate, visitUuid) {
+                visitActionsService.printPrescription($scope.patient, visitStartDate, visitUuid);
+            });
+
             var cleanUpListener = $scope.$on('ngDialog.closing', function () {
                 $("body").removeClass('ngdialog-open');
             });
