@@ -9,6 +9,12 @@ angular.module('bahmni.common.uiHelper')
                     // eslint-disable-next-line no-undef
                     mountConsultation(elem[0]);
                 }
+
+                // eslint-disable-next-line angular/window-service
+                window.addEventListener('ADD_DIAGNOSIS', function (event) {
+                    console.log("Event Detail:");
+                    console.log("Search Value:", event.detail.searchValue, "Order value:", event.detail.orderValue);
+                });
             }
         };
     });
