@@ -20,7 +20,6 @@
                                                 active: diagnosis.isNonCodedAnswer
                                         }"
                                         ng-change="restEmptyRowsToOne($index); diagnosis.clearCodedAnswerUuid(); checkInvalidDiagnoses()">
-                                      
                                     <span ng-if="!allowOnlyCodedDiagnosis">
                                         <button type="button" ng-model="diagnosis.isNonCodedAnswer"
                                             class="small-btn accept-btn" id="accept-button-{{$index}}"

@@ -1,5 +1,5 @@
 describe("Diagnosis Controller", function () {
-    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService, messagingService;
+    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     beforeEach(module('bahmni.clinical'));
@@ -15,7 +15,6 @@ describe("Diagnosis Controller", function () {
         };
         rootScope.currentUser = {privileges: [{name: "app:clinical:deleteDiagnosis"}, {name: "app:clinical"}]};
         rootScope.currentUser.userProperties = {defaultLocale: "en"};
-        messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
 
         spyOn(DateUtil, 'today');
         mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig','getConfigValue']);
@@ -48,8 +47,7 @@ describe("Diagnosis Controller", function () {
             appService: appService,
             diagnosisService: mockDiagnosisService,
             $translate: translate,
-            retrospectiveEntryService: retrospectiveEntryService,
-            messagingService: messagingService
+            retrospectiveEntryService: retrospectiveEntryService
         });
     }));
 
