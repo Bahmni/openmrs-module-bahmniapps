@@ -270,9 +270,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.cleanOutDiagnosisList = function (allDiagnoses) {
-                return allDiagnoses.filter(function (diagnosis) {
+                return allDiagnoses ? allDiagnoses.filter(function (diagnosis) {
                     return !alreadyAddedToDiagnosis(diagnosis);
-                });
+                }) : [];
             };
 
             var alreadyAddedToDiagnosis = function (diagnosis) {
