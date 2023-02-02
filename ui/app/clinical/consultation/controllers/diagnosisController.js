@@ -143,11 +143,13 @@ angular.module('bahmni.clinical')
                         value: concept.matchedName || concept.conceptName,
                         concept: {
                             name: concept.conceptName,
-                            uuid: concept.conceptUuid
+                            uuid: concept.conceptUuid,
+                            conceptSystem: concept.conceptSystem
                         },
                         lookup: {
                             name: concept.matchedName || concept.conceptName,
-                            uuid: concept.conceptUuid
+                            uuid: concept.conceptUuid,
+                            conceptSystem: concept.conceptSystem
                         }
                     };
 
