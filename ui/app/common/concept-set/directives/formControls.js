@@ -142,6 +142,7 @@ angular.module('bahmni.common.conceptSet')
                     patient: "=",
                     validateForm: "="
                 },
-                controller: controller
+                controller: controller,
+                link: link
             };
         }]);

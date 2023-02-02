@@ -155,5 +155,4 @@ describe("consultationConfirmOnExit", function () {
         expect(spinner.hide).toHaveBeenCalled();
     });
 
-
 });
