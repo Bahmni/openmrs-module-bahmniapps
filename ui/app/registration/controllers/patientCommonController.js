@@ -46,7 +46,7 @@ angular.module('bahmni.registration')
                             }
                         } else $window.open(Bahmni.Registration.Constants.newPatient, "_self");
                         $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
-                        $scope.$digest();
+                        $scope.$apply();
                     }
                     if (popupWindowData.data.patientUuid !== undefined) {
                         $window.open(Bahmni.Registration.Constants.existingPatient + popupWindowData.data.patientUuid, "_self");
