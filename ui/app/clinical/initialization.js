@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('initialization',
-    ['$rootScope', 'authenticator', 'appService', 'spinner', 'configurations', 'orderTypeService', 'mergeService', '$q', 'messagingService', 'locationService',
-        function ($rootScope, authenticator, appService, spinner, configurations, orderTypeService, mergeService, $q, messagingService, locationService) {
+    ['$rootScope', 'authenticator', 'appService', 'spinner', 'configurations', 'orderTypeService', 'mergeService', '$q', 'messagingService',
+        function ($rootScope, authenticator, appService, spinner, configurations, orderTypeService, mergeService, $q, messagingService) {
             return function (config) {
                 var loadConfigPromise = function () {
                     return configurations.load([
@@ -47,18 +47,11 @@ angular.module('bahmni.clinical').factory('initialization',
                     }
                 };
 
-                var loggedInLocation = function () {
-                    return locationService.getLoggedInLocation().then(function (location) {
-                        $rootScope.loggedInLocation = location;
-                    });
-                };
-
                 return spinner.forPromise(authenticator.authenticateUser()
                     .then(initApp)
                     .then(checkPrivilege)
                     .then(loadConfigPromise)
                     .then(mergeFormConditions)
-                    .then(loggedInLocation)
                     .then(orderTypeService.loadAll));
             };
         }

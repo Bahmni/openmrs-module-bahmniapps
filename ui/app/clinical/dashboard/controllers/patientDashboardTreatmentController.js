@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('PatientDashboardTreatmentController', ['$scope', 'ngDialog', 'visitActionsService', 'smsService', 'treatmentService',
-        function ($scope, ngDialog, visitActionsService, smsService, treatmentService) {
+    .controller('PatientDashboardTreatmentController', ['$scope', 'ngDialog', 'visitActionsService',
+        function ($scope, ngDialog, visitActionsService) {
             var treatmentConfigParams = $scope.dashboard.getSectionByType("treatment") || {};
             $scope.isEmailPresent = $scope.patient.email ? true : false;
             $scope.isPhoneNumberPresent = $scope.patient.phoneNumber ? true : false;
@@ -25,11 +25,6 @@ angular.module('bahmni.clinical')
 
             $scope.$on("event:downloadPrescriptionFromDashboard", function (event, visitStartDate, visitUuid) {
                 visitActionsService.printPrescription($scope.patient, visitStartDate, visitUuid);
-            });
-
-            $scope.$on("event:sendSMSForPrescription", function (event, drugOrderSection) {
-                var patientData = {"name": $scope.patient.name, "gender": $scope.patient.gender, "age": $scope.patient.age};
-                smsService.sendSMS($scope.patient.phoneNumber.value, treatmentService.getMessageForPrescription(patientData, drugOrderSection));
             });
 
             var cleanUpListener = $scope.$on('ngDialog.closing', function () {

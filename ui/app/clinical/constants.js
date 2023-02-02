@@ -71,7 +71,7 @@ Bahmni.Clinical.Constants = (function () {
         adtPrivilege: "app:adt",
         adtForwardUrl: "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/",
         certificateHeader: "Certificate Header",
-        prescriptionMessage: "PRESCRIPTION_MESSAGE"
+        smsLanguage: "SMS_LANGUAGE"
     };
 })();
 

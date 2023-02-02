@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('treatmentService', ['$http', '$q', 'appService', '$rootScope', '$filter', '$translate', function ($http, $q, appService, $rootScope, $filter, $translate) {
+    .factory('treatmentService', ['$http', '$q', 'appService', '$rootScope', '$translate', function ($http, $q, appService, $rootScope, $translate) {
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
@@ -125,6 +125,21 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
+        var sendPrescriptionSMS = function (visitUuid) {
+            var deferred = $q.defer();
+            var locale = $translate.instant(appService.getAppDescriptor().getConfigValue("smsLanguage") || Bahmni.Clinical.Constants.smsLanguage);
+            $http.post(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/sendPrescriptionSMS", {"visitUuid": visitUuid, "locale": locale}, {
+                withCredentials: true,
+                headers: {"Content-Type": "application/json"}
+            }).success(function (response) {
+                if (response.status != 200) {
+                    response.error = true;
+                }
+                deferred.resolve(response);
+            });
+            return deferred.promise;
+        };
+
         var voidDrugOrder = function (drugOrder) {
             var deferred = $q.defer();
 
@@ -135,32 +150,6 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
-        var getMessageForPrescription = function (patientData, drugOrderSection) {
-            var message = $translate.instant(appService.getAppDescriptor().getConfigValue("prescriptionMessage") || Bahmni.Clinical.Constants.prescriptionMessage);
-            message = message.replace("#visitDate", $filter("bahmniDate")(drugOrderSection.visitDate));
-            message = message.replace("#patientName", patientData.name);
-            message = message.replace("#gender", patientData.gender);
-            message = message.replace("#age", patientData.age);
-
-            var doctorArray = [];
-            var prescriptionDetails = "";
-            for (var counter = 0; counter < drugOrderSection.drugOrders.length; counter++) {
-                var drugOrder = drugOrderSection.drugOrders[counter];
-                prescriptionDetails += (counter + 1) + ". " + drugOrder.getDisplayName() + ", " + drugOrder.getDescriptionWithoutRouteAndDuration() + drugOrder.getSpanDetails() + ", start from " + $filter("bahmniDate")(drugOrder.effectiveStartDate) + "\n";
-                if (drugOrder.isDiscontinuedOrStopped()) {
-                    prescriptionDetails += ", stopped on " + $filter("bahmniDate")(drugOrder.effectiveStopDate);
-                }
-                if (!doctorArray.includes("Dr. " + drugOrder.provider.name)) {
-                    doctorArray.push("Dr. " + drugOrder.provider.name);
-                }
-            }
-
-            message = message.replace("#doctorDetail", doctorArray.join(", "));
-            message = message.replace("#clinicName", $rootScope.loggedInLocation.name);
-            message = message.replace("#prescriptionDetails", prescriptionDetails);
-            return message;
-        };
-
         return {
             getActiveDrugOrders: getActiveDrugOrders,
             getConfig: getConfig,
@@ -169,6 +158,6 @@ angular.module('bahmni.clinical')
             getNonCodedDrugConcept: getNonCodedDrugConcept,
             getAllDrugOrdersFor: getAllDrugOrdersFor,
             voidDrugOrder: voidDrugOrder,
-            getMessageForPrescription: getMessageForPrescription
+            sendPrescriptionSMS: sendPrescriptionSMS
         };
     }]);

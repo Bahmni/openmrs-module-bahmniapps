@@ -2,7 +2,7 @@
 
 angular.module('bahmni.clinical')
     .directive('treatmentTable', function () {
-        var controller = function ($scope, $rootScope) {
+        var controller = function ($scope, $rootScope, treatmentService, messagingService) {
             $scope.prescriptionEmailToggle = $rootScope.prescriptionEmailToggle;
             $scope.prescriptionSMSToggle = $rootScope.prescriptionSMSToggle;
             $scope.isOtherActiveSection = function (dateString) {
@@ -20,8 +20,14 @@ angular.module('bahmni.clinical')
                 $rootScope.$broadcast("event:downloadPrescriptionFromDashboard", visitStartDate, visitUuid);
             };
 
-            $scope.sendSMSForPrescription = function (drugOrderSection) {
-                $rootScope.$broadcast("event:sendSMSForPrescription", drugOrderSection);
+            $scope.sendSMSForPrescription = function (visitUuid) {
+                treatmentService.sendPrescriptionSMS(visitUuid).then(function (data) {
+                    if (data.error) {
+                        messagingService.showMessage("error", "MESSAGE_SENDING_SMS_FAILURE");
+                    } else {
+                        messagingService.showMessage("info", "MESSAGE_SENDING_SMS_SUCCESS");
+                    }
+                });
             };
         };
 
