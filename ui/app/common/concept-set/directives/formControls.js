@@ -110,7 +110,7 @@ angular.module('bahmni.common.conceptSet')
                         var navigating = next.url.split("/")[1];
                         var allConsultationBoards = getAllBoards();
                         var outOfConsultationBoard = true;
-                        allConsultationBoards.map(function (board) {
+                        allConsultationBoards.forEach(function (board) {
                             var consultationLink = board.url.split("/")[0];
                             if (navigating.includes(consultationLink)) {
                                 outOfConsultationBoard = false;

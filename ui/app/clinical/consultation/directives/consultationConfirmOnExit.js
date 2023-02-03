@@ -14,10 +14,8 @@ angular.module('bahmni.clinical')
                         var allConsultationBoards = clinicalAppConfigService.getAllConsultationBoards();
                         var outOfConsultationBoard = true;
                         if ($scope.consultation) {
-                            if ($scope.consultation.orders) {
-                                if ($scope.consultation.orders.length !== $scope.consultation.investigations.length) {
-                                    $state.dirtyConsultationForm = true;
-                                }
+                            if ($scope.consultation.orders.length !== $scope.consultation.investigations.length) {
+                                $state.dirtyConsultationForm = true;
                             }
                             if ($scope.consultation.newlyAddedTabTreatments && $scope.tabConfigName) {
                                 noOfMedications = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName].treatments.length;
@@ -28,7 +26,7 @@ angular.module('bahmni.clinical')
                         if (isConsultationFormDirty) {
                             $state.dirtyConsultationForm = true;
                         }
-                        allConsultationBoards.map(function (board) {
+                        allConsultationBoards.forEach(function (board) {
                             var consultationLink = board.url.split("/")[0];
                             if (navigating.includes(consultationLink)) {
                                 outOfConsultationBoard = false;
