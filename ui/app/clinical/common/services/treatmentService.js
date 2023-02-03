@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('treatmentService', ['$http', '$q', '$compile', '$timeout', 'spinner', 'appService', '$rootScope', 'smsService', function ($http, $q, $compile, $timeout, spinner, appService, $rootScope, smsService) {
+    .factory('treatmentService', ['$http', '$q', '$compile', '$timeout', 'spinner', 'appService', '$rootScope', 'transmissionService', function ($http, $q, $compile, $timeout, spinner, appService, $rootScope, transmissionService) {
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
@@ -135,24 +135,20 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
-        var sharePrescriptions = function (data) {
-            console.log("in treatmentService makePDFUrl --- ", data);
+        var sharePrescriptions = function (prescriptionDetails) {
             $http.get('common/views/prescriptionPrint.html').then(function (templateData) {
                 var template = templateData.data;
                 var printScope = $rootScope.$new();
-                angular.extend(printScope, data);
+                angular.extend(printScope, prescriptionDetails);
                 var element = $compile($('<div>' + template + '</div>'))(printScope);
                 var renderAndSendPromise = $q.defer();
                 var waitForRenderAndSend = function () {
                     if (printScope.$$phase || $http.pendingRequests.length) {
                         $timeout(waitForRenderAndSend, 1000);
                     } else {
-                        html2pdf().from(element.html()).toPdf().output('blob').then(function (pdfBlob) {
-                            var pdfUrl = ((window.URL ? URL : webkitURL).createObjectURL(pdfBlob, { type: "application/pdf" }));
-                            console.log("pdfUrl --- ", pdfUrl);
-                            var message = "Hi " + data.patient.name + ", Please click the given link to download prescription " + pdfUrl;
-                            console.log("message -- ", message);
-                            smsService.sendSMS(data.patient.phoneNumber.value, message);
+                        var patient = prescriptionDetails.patient;
+                        html2pdf().from(element.html()).outputPdf().then(function (pdfContent) {
+                            transmissionService.sendEmail(btoa(pdfContent), { "name": patient.name, "email": patient.email.value }, prescriptionDetails);
                         });
                         renderAndSendPromise.resolve();
                         printScope.$destroy();

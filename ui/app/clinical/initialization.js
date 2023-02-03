@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical').factory('initialization',
-    ['$rootScope', 'authenticator', 'appService', 'spinner', 'configurations', 'orderTypeService', 'mergeService', '$q', 'messagingService',
-        function ($rootScope, authenticator, appService, spinner, configurations, orderTypeService, mergeService, $q, messagingService) {
+    ['$rootScope', 'authenticator', 'appService', 'spinner', 'configurations', 'orderTypeService', 'mergeService', '$q', 'messagingService', 'locationService',
+        function ($rootScope, authenticator, appService, spinner, configurations, orderTypeService, mergeService, $q, messagingService, locationService) {
             return function (config) {
                 var loadConfigPromise = function () {
                     return configurations.load([
@@ -36,6 +36,13 @@ angular.module('bahmni.clinical').factory('initialization',
                     }, config, ["dashboard", "visit", "medication"]);
                 };
 
+                var getLocationDetails = function () {
+                    locationService.getAllByTag("Visit Location").then(function (response) {
+                        $rootScope.locationName = response.data.results[0].name;
+                        $rootScope.locationAddress = response.data.results[0].attributes[0].display.split(":")[1].trim();
+                    });
+                };
+
                 var mergeFormConditions = function () {
                     var formConditions = Bahmni.ConceptSet.FormConditions;
                     if (formConditions) {
@@ -47,6 +54,7 @@ angular.module('bahmni.clinical').factory('initialization',
                     .then(initApp)
                     .then(checkPrivilege)
                     .then(loadConfigPromise)
+                    .then(getLocationDetails)
                     .then(mergeFormConditions)
                     .then(orderTypeService.loadAll));
             };
