@@ -24,6 +24,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             $scope.showComment = true;
             $scope.showSaveAndContinueButton = true;
             $state.dirtyConsultationForm = false;
+            $state.isSaveInProgress = false;
             $scope.visitHistory = visitHistory;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
             $scope.showControlPanel = false;
@@ -525,6 +526,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             return encounterService.create(encounterData)
                             .then(function (saveResponse) {
                                 $state.dirtyConsultationForm = false;
+                                $state.isSaveInProgress = true;
                                 $scope.$parent.$broadcast("event:changes-saved");
                                 var messageParams = {
                                     encounterUuid: saveResponse.data.encounterUuid,

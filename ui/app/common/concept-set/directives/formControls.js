@@ -20,6 +20,7 @@ angular.module('bahmni.common.conceptSet')
                 var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                 var validateForm = $scope.validateForm || false;
                 var locale = $translate.use();
+                $state.isSaveInProgress = false;
 
                 if (!loadedFormDetails[formUuid]) {
                     spinner.forPromise(formService.getFormDetail(formUuid, { v: "custom:(resources:(value))" })
@@ -105,32 +106,34 @@ angular.module('bahmni.common.conceptSet')
 
             var link = function ($scope, elem, attrs) {
                 $scope.$on('$stateChangeStart', function (event, next, current) {
-                    var navigating = next.url.split("/")[1];
-                    var allConsultationBoards = getAllBoards();
-                    var outOfConsultationBoard = true;
-                    allConsultationBoards.map(function (board) {
-                        var consultationLink = board.url.split("/")[0];
-                        if (navigating.includes(consultationLink)) {
+                    if (!$state.isSaveInProgress) {
+                        var navigating = next.url.split("/")[1];
+                        var allConsultationBoards = getAllBoards();
+                        var outOfConsultationBoard = true;
+                        allConsultationBoards.map(function (board) {
+                            var consultationLink = board.url.split("/")[0];
+                            if (navigating.includes(consultationLink)) {
+                                outOfConsultationBoard = false;
+                            }
+                        });
+                        if (next.url.includes("/dashboard") && $state.params.patientUuid === current.patientUuid) {
                             outOfConsultationBoard = false;
                         }
-                    });
-                    if (next.url.includes("/dashboard") && $state.params.patientUuid === current.patientUuid) {
-                        outOfConsultationBoard = false;
-                    }
 
-                    var checkAlreadyPresent = checkIfFormIsDirty($scope);
+                        var checkAlreadyPresent = checkIfFormIsDirty($scope);
 
-                    var alreadyPresent = checkAlreadyPresent.length > 0 && _.every(checkAlreadyPresent, function (value) {
-                        return value;
-                    });
-                    if (!alreadyPresent) {
-                        $state.dirtyConsultationForm = true;
-                    }
+                        var alreadyPresent = checkAlreadyPresent.length > 0 && _.every(checkAlreadyPresent, function (value) {
+                            return value;
+                        });
+                        if (!alreadyPresent) {
+                            $state.dirtyConsultationForm = true;
+                        }
 
-                    if (outOfConsultationBoard && $state.dirtyConsultationForm) {
-                        messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR ' | translate }}");
-                        event.preventDefault();
-                        spinner.hide(next.spinnerToken);
+                        if (outOfConsultationBoard && $state.dirtyConsultationForm) {
+                            messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR ' | translate }}");
+                            event.preventDefault();
+                            spinner.hide(next.spinnerToken);
+                        }
                     }
                 });
             };
