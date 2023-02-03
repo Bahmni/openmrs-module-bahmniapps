@@ -34,7 +34,7 @@ describe("PatientDashboardTreatmentController", function () {
         };
 
         ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
-        
+
         var config = {
             "dashboardName": "General",
             "sections": [treatmentConfigParams]
