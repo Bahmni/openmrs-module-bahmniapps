@@ -11,12 +11,14 @@
             </h1>
             <div class="clinic-info">
                 <span>{{certificateHeader.name}}</span><br>
-                <span class="address">{{certificateHeader.address}}</span>
+                <span class="address">{{certificateHeader.address}}</span> <br>
+            </div><br>
+            <div class="clinic-info">
+                <span> {{visitTabConfig.getPrintConfigForCurrentTab().header}}</span>
             </div>
-            <h1>{{visitTabConfig.getPrintConfigForCurrentTab().header}}</h1>
         </div>
         <div ng-include="currentVisitUrl"></div>
     </div>
-    <div class="provider-info">Doctor name: {{provider[0].name}}</div>
+    <div class="provider-info">{{provider[0].name}}</div>
 </body>
 </html>

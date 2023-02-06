@@ -14,7 +14,7 @@
             <td>District: <span class="value">{{patient.address.countyDistrict}}</span></td>
         </tr>
         <tr>
-            <td colspan="3">Visit Date: <span class="value">{{(visitDate | bahmniDate) || (visitSummary.startDateTime | bahmniDate)}}</span></td>
+            <td colspan="2">Visit Date: <span class="value">{{(visitDate | bahmniDate) || (visitSummary.startDateTime | bahmniDate)}}</span></td>
             <td>Doctor Name:
                 <span ng-show="$parent.currentUser.username || drugOrders[drugOrders.length-1].provider[0].name" class="ng-binding">
                    {{provider[0].name }}
