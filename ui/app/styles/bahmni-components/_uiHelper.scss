@@ -218,6 +218,9 @@ table {
 	  padding: 0 15px;
 		clear: both;
     }
+	&.registration-box-container{
+		overflow: auto;
+	}
     section.section-padding{
       padding-top: 14px;
     }
