@@ -4,7 +4,7 @@ describe("PatientDashboardTreatmentController", function () {
 
     beforeEach(module('bahmni.clinical'));
 
-    var scope, ngDialog;
+    var scope, ngDialog, treatmentService;
 
     var treatmentConfigParams = {
         title: "Treatments",
@@ -34,6 +34,7 @@ describe("PatientDashboardTreatmentController", function () {
         };
 
         ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
+        treatmentService = jasmine.createSpyObj('treatmentService', ['sharePrescriptions']);
 
         var config = {
             "dashboardName": "General",
@@ -44,7 +45,8 @@ describe("PatientDashboardTreatmentController", function () {
 
         $controller('PatientDashboardTreatmentController', {
             $scope: scope,
-            ngDialog: ngDialog
+            ngDialog: ngDialog,
+            treatmentService: treatmentService
         });
     })
     )
