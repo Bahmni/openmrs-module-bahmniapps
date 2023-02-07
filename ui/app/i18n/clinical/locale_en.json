@@ -228,6 +228,11 @@
     "CLINICAL_UPDATE": "Update",
     "CANCEL": "Cancel",
     "CLINICAL_ADD_AS_CONDITION": "Add as condition",
+    "TERMINOLOGY_SERVER_ERROR_MESSAGE": "The terminology server is unavailable right now. Please try again later.",
+    "TERMINOLOGY_SERVER_NOT_FOUND": "The terminology server is unavailable right now. Please try again later",
+    "TERMINOLOGY_SERVER_ERROR": "Something unexpected happened. Please contact Terminology Server Administrator",
+    "TERMINOLOGY_SERVICES_CONFIG_INVALID": "Misconfiguration in Global Property. Please contact Administrator",
+    "TERMINOLOGY_SERVICES_AT_LEAST_THREE_CHARS": "Search term must have at least 3 characters",
 
     "CONDITION_LIST_DISPLAY_CONTROL_TITLE": "Conditions",
     "CONDITION_LIST_ACTIVE":"Active",
