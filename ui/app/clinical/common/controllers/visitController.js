@@ -71,8 +71,8 @@ angular.module('bahmni.clinical')
                     var locations = response.data.results;
                     if (locations !== null && locations.length > 0) {
                         $scope.certificateHeader.name = locations[0].name;
-                        for (var i = 0; i < locations[0].attributes.length; i++) {
-                            var attributeDisplay = locations[0].attributes[i].display.split(": ");
+                        if (locations[0].attributes && locations[0].attributes.length > 0) {
+                            var attributeDisplay = locations[0].attributes[0].display.split(": ");
                             if (attributeDisplay[0] === Bahmni.Clinical.Constants.certificateHeader) {
                                 $scope.certificateHeader.address = attributeDisplay[1];
                             }
