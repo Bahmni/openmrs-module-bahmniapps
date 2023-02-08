@@ -5,9 +5,11 @@ angular.module('bahmni.registration')
         return {
             templateUrl: 'views/patientIdentifier.html',
             scope: {
-                fieldValidation: '=',
-                patient: '='
+                fieldValidation: '='
             },
-            restrict: 'E'
+            restrict: 'E',
+            link: function (scope) {
+                scope.controllerScope = scope.$parent;
+            }
         };
     });
