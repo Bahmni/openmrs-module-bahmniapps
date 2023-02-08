@@ -20,7 +20,7 @@
                          <span ng-repeat="extButton in controllerScope.getExtButtons(identifier.identifierType.name)">
                             <span> {{:: extButton.link}} </span>
                             <button type="button"
-                                    ng-click="openIdentifierPopup(identifier.identifierType.name, extButton.action)">{{:: extButton.display}}
+                                    ng-click="controllerScope.openIdentifierPopup(identifier.identifierType.name, extButton.action)">{{:: extButton.display}}
                             </button>
                         </span>
                     </div>
