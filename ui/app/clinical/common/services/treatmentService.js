@@ -127,7 +127,7 @@ angular.module('bahmni.clinical')
 
         var sendPrescriptionSMS = function (visitUuid) {
             var deferred = $q.defer();
-            var locale = $translate.instant(appService.getAppDescriptor().getConfigValue("smsLanguage") || Bahmni.Clinical.Constants.smsLanguage);
+            var locale = $translate.instant("SMS_LANGUAGE");
             $http.post(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/sendPrescriptionSMS", {"visitUuid": visitUuid, "locale": locale}, {
                 withCredentials: true,
                 headers: {"Content-Type": "application/json"}
