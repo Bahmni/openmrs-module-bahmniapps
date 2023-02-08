@@ -52,7 +52,7 @@
     "@bower_components/select2": "ivaynberg/select2#~3.4",
     "@bower_components/stacktrace-js": "stacktracejs/stacktrace.js#0.6.4",
     "@bower_components/zeroclipboard": "zeroclipboard/zeroclipboard#~2.1.0",
-    "bahmni-mf-host": "^0.0.2"
+    "bahmni-mf-host": "^0.0.3"
   },
   "devDependencies": {
     "@bower_components/Cortana": "Yago31/Cortana#~1.2.6",

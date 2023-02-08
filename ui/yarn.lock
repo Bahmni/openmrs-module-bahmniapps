@@ -858,10 +858,10 @@ bahmni-form-controls@^0.93.4:
     sinon-as-promised "^4.0.3"
     whatwg-fetch "^1.0.0"
 
-bahmni-mf-host@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/bahmni-mf-host/-/bahmni-mf-host-0.0.2.tgz#1b43ae57ce57e382530751f5c44fd5ca15b05498"
-  integrity sha512-1iXF6BsKGzerJWK1VDAhYMY6rKMSbsj/AuHNEhtAc13VOWydtpjYZ0JV3qPDh+4ku2nP13MzuyK+GGXquza1cQ==
+bahmni-mf-host@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/bahmni-mf-host/-/bahmni-mf-host-0.0.3.tgz#51879ce30b0cbd4981a68f2fc82f7953213bf3fc"
+  integrity sha512-P1gNN/RkU+o5ltg+dp7ZL3NDdEhv11eVIcnOGLXew83R2T+QkdPRzrN7HQhglMpQVpK1NI5H+/4s3WKWL+5XTQ==
   dependencies:
     react "^18.2.0"
     react-dom "^18.2.0"
