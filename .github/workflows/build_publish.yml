@@ -44,3 +44,24 @@ jobs:
           file: package/docker/Dockerfile
           push: true
           tags: bahmni/bahmni-web:snomed-${{ github.run_number }},bahmni/bahmni-web:snomed-latest
+
+  trigger:
+    name: Trigger Deployment Workflow
+    needs:
+      - build-publish-docker
+    runs-on: ubuntu-latest
+    env:
+      ORG_NAME: Bahmni
+      REPOSITORY_NAME: bahmni-docker
+      ENVIRONMENT: dev
+    steps:
+      - name: Create workflow_dispatch
+        run: |
+          trigger_result=$(curl -s -o trigger_response.txt -w "%{http_code}" -X POST -H "Accept: application/vnd.github.v3+json" -H 'authorization: Bearer ${{ secrets.BAHMNI_PAT }}' https://api.github.com/repos/${ORG_NAME}/${REPOSITORY_NAME}/actions/workflows/snomed-deploy.yml/dispatches -d '{"ref":"snomed-master","inputs":{"environment":"'"${ENVIRONMENT}"'"}}')
+          if [ $trigger_result == 204 ];then
+            echo "Trigger to $ORG_NAME/$REPOSITORY_NAME Success"
+          else
+            echo "Trigger to $ORG_NAME/$REPOSITORY_NAME Failed"
+            cat trigger_response.txt
+            exit 1
+          fi
