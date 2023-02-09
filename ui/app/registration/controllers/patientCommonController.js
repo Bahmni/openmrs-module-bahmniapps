@@ -46,7 +46,7 @@ angular.module('bahmni.registration')
                             }
                         } else $window.open(Bahmni.Registration.Constants.newPatient, "_self");
                         $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
-                        $scope.$apply();
+                        $scope.$digest();
                     }
                     if (popupWindowData.data.patientUuid !== undefined) {
                         $window.open(Bahmni.Registration.Constants.existingPatient + popupWindowData.data.patientUuid, "_self");
@@ -72,7 +72,7 @@ angular.module('bahmni.registration')
 
             $scope.showIdentifierVerificationButton = function (identifierType, identifierValue) {
                 var extenstionPoint = getExtensionPoint(identifierType);
-                if (extenstionPoint != null && identifierValue === undefined) {
+                if (extenstionPoint != null && identifierValue === undefined && _.some($rootScope.currentUser.privileges, {name: extenstionPoint.extensionParams.requiredPrivilege})) {
                     if (identifierExtnMap.get(extenstionPoint.id) === identifierType || identifierExtnMap.get(extenstionPoint.id) === undefined) {
                         if (identifierExtnMap.get(extenstionPoint.id) === undefined) {
                             identifierExtnMap.set(extenstionPoint.id, identifierType);
