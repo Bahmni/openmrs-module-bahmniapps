@@ -19,7 +19,7 @@
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             }).then(function (response) {
-                if(response.status != 200) {
+                if (response.status != 200) {
                     messagingService.showMessage("error", "Unable to send email");
                 } else {
                     messagingService.showMessage("info", "Mail sent successfully");
