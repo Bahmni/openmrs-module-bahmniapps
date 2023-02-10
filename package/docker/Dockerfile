@@ -1,4 +1,4 @@
-FROM httpd:2.4-alpine
+FROM amazoncorretto:8
 
 EXPOSE 8091
 COPY package/docker/httpd.conf /usr/local/apache2/conf
