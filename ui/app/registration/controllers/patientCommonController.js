@@ -72,7 +72,7 @@ angular.module('bahmni.registration')
 
             $scope.showIdentifierVerificationButton = function (identifierType, identifierValue) {
                 var extenstionPoint = getExtensionPoint(identifierType);
-                if (extenstionPoint != null && identifierValue === undefined) {
+                if (extenstionPoint != null && identifierValue === undefined && _.some($rootScope.currentUser.privileges, {name: extenstionPoint.extensionParams.requiredPrivilege})) {
                     if (identifierExtnMap.get(extenstionPoint.id) === identifierType || identifierExtnMap.get(extenstionPoint.id) === undefined) {
                         if (identifierExtnMap.get(extenstionPoint.id) === undefined) {
                             identifierExtnMap.set(extenstionPoint.id, identifierType);
