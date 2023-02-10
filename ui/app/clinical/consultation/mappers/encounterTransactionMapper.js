@@ -41,8 +41,9 @@ Bahmni.Clinical.EncounterTransactionMapper = function () {
 
         if (consultation.newlyAddedDiagnoses && consultation.newlyAddedDiagnoses.length > 0) {
             encounterData.bahmniDiagnoses = consultation.newlyAddedDiagnoses.map(function (diagnosis) {
+                var conceptSystem = diagnosis.codedAnswer.conceptSystem ? diagnosis.codedAnswer.conceptSystem + "/" : "";
                 return {
-                    codedAnswer: { uuid: !diagnosis.isNonCodedAnswer ? diagnosis.codedAnswer.uuid : undefined},
+                    codedAnswer: { uuid: !diagnosis.isNonCodedAnswer ? conceptSystem + diagnosis.codedAnswer.uuid : undefined},
                     freeTextAnswer: diagnosis.isNonCodedAnswer ? diagnosis.codedAnswer.name : undefined,
                     order: diagnosis.order,
                     certainty: diagnosis.certainty,
