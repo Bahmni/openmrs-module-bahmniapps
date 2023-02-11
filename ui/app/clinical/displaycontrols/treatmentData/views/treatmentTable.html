@@ -11,8 +11,8 @@
                     <i class="fa fa-share-alt" bm-pop-over-trigger>
                     </i>
                     <div class="share-popup" bm-pop-over-target>
-                        <i class="fa fa-envelope" ng-if="::prescriptionEmailToggle == 'true'" ng-class="{'disable-icon' : !params.isEmailPresent}"></i>
-                        <i class="fa fa-comment" ng-if="::prescriptionSMSToggle == 'true'" ng-class="{'disable-icon' : !params.isPhoneNumberPresent}" ng-click="sendSMSForPrescription(drugOrderSection.drugOrders[0].visit.uuid)"></i>
+                        <i class="fa fa-envelope" ng-if="::params.prescriptionEmailToggle == 'true'" ng-class="{'disable-icon' : !params.isEmailPresent}"></i>
+                        <i class="fa fa-comment" ng-if="::params.prescriptionSMSToggle == 'true'" ng-class="{'disable-icon' : !params.isPhoneNumberPresent}" ng-click="sendSMSForPrescription(drugOrderSection.drugOrders[0].visit.uuid)"></i>
                         <i class="fa fa-download" ng-click="downloadPrescription(drugOrderSection.visitDate, drugOrderSection.drugOrders[0].visit.uuid)"></i>
                     </div>
                 </div>
