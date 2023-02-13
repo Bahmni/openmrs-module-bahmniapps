@@ -91,9 +91,9 @@ angular.module('bahmni.registration')
         };
 
         var getRegistrationMessage = function (patientId, name, age, gender) {
-            var clinicName = $rootScope.loggedInLocation.name;
+            var locationName = $rootScope.visitLocation.name;
             var message = $translate.instant(appService.getAppDescriptor().getConfigValue("registrationMessage") || Bahmni.Registration.Constants.registrationMessage);
-            message = message.replace("#clinicName", clinicName);
+            message = message.replace("#clinicName", locationName);
             message = message.replace("#patientId", patientId);
             message = message.replace("#name", name);
             message = message.replace("#age", age);
