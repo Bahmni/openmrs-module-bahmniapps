@@ -61,12 +61,6 @@ angular.module('bahmni.registration').factory('initialization',
                 });
             };
 
-            var visitLocation = function () {
-                return locationService.getAllByTag("Visit Location").then(function (response) {
-                    $rootScope.visitLocation = response.data.results[0];
-                });
-            };
-
             var mergeFormConditions = function () {
                 var formConditions = Bahmni.ConceptSet.FormConditions;
                 if (formConditions) {
@@ -86,7 +80,6 @@ angular.module('bahmni.registration').factory('initialization',
                 .then(initAppConfigs)
                 .then(mapRelationsTypeWithSearch)
                 .then(loggedInLocation)
-                .then(visitLocation)
                 .then(loadValidators(appService.configBaseUrl(), "registration"))
                 .then(mergeFormConditions)
             );

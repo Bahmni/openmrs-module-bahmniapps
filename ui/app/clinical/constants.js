@@ -70,8 +70,7 @@ Bahmni.Clinical.Constants = (function () {
         globalPropertyToFetchActivePatients: 'emrapi.sqlSearch.activePatients',
         adtPrivilege: "app:adt",
         adtForwardUrl: "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/",
-        certificateHeader: "Certificate Header",
-        smsLanguage: "SMS_LANGUAGE"
+        certificateHeader: "Certificate Header"
     };
 })();
 
