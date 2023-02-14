@@ -99,12 +99,10 @@ angular.module('bahmni.registration')
 
             $scope.notifyOnWhatsAapp = function () {
                 var name = $scope.patient.givenName + " " + $scope.patient.familyName;
+                var whatsAppMessage = patientService.getRegistrationMessage($scope.patient.primaryIdentifier.identifier, name, $scope.patient.age.years, $scope.patient.gender);
                 var phoneNumber = $scope.patient.phoneNumber.replace("+", "");
-                patientService.getRegistrationMessage($scope.patient.primaryIdentifier.identifier, name, $scope.patient.age.years, $scope.patient.gender, function (message) {
-                    var url = "https://api.whatsapp.com/send?phone=" + phoneNumber + "&text=" + encodeURIComponent(message);
-                    window.open(url);
-                });
-                
+                var url = "https://api.whatsapp.com/send?phone=" + phoneNumber + "&text=" + encodeURIComponent(whatsAppMessage);
+                window.open(url);
             };
 
             $scope.afterSave = function () {
