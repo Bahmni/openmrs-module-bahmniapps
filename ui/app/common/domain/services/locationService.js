@@ -28,10 +28,35 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        var getRootVisitLocation = function (location, callback) {
+            if (location.parentLocation != null) {
+                getByUuid(location.parentLocation.uuid).then(function (response) {
+                    if (hasVisitLocationTag(response)) 
+                        getRootVisitLocation(response, callback);
+                    else 
+                        callback(location);
+                })
+                
+            } else {
+                callback(location);
+            }
+        }
+
+        var hasVisitLocationTag = function (location) {
+            if(location.tags) {
+                for(var i=0; i<location.tags.length; i++) {
+                    if(location.tags[i].display == "Visit Location")
+                        return true;
+                }
+            }
+            return false;
+        }
+        
         return {
             getAllByTag: getAllByTag,
             getLoggedInLocation: getLoggedInLocation,
             getByUuid: getByUuid,
-            getVisitLocation: getVisitLocation
+            getVisitLocation: getVisitLocation,
+            getRootVisitLocation: getRootVisitLocation
         };
     }]);

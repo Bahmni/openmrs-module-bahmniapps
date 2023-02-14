@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .factory('patientService', ['$http', '$rootScope', '$bahmniCookieStore', '$q', 'patientServiceStrategy', 'sessionService', '$translate', 'appService', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceStrategy, sessionService, $translate, appService) {
+    .factory('patientService', ['$http', '$rootScope', '$bahmniCookieStore', '$q', 'patientServiceStrategy', 'sessionService', '$translate', 'appService', 'locationService', function ($http, $rootScope, $bahmniCookieStore, $q, patientServiceStrategy, sessionService, $translate, appService, locationService) {
         var openmrsUrl = Bahmni.Registration.Constants.openmrsUrl;
         var baseOpenMRSRESTURL = Bahmni.Registration.Constants.baseOpenMRSRESTURL;
 
@@ -90,16 +90,26 @@ angular.module('bahmni.registration')
             return $http.post(url, data, config);
         };
 
-        var getRegistrationMessage = function (patientId, name, age, gender) {
-            var clinicName = $rootScope.loggedInLocation.name;
-            var message = $translate.instant(appService.getAppDescriptor().getConfigValue("registrationMessage") || Bahmni.Registration.Constants.registrationMessage);
-            message = message.replace("#clinicName", clinicName);
-            message = message.replace("#patientId", patientId);
-            message = message.replace("#name", name);
-            message = message.replace("#age", age);
-            message = message.replace("#gender", gender);
-            message = message.replace("#helpDeskNumber", $rootScope.helpDeskNumber);
-            return message;
+        var getLocation = function () {
+            var deferred = $q.defer();
+            locationService.getRootVisitLocation($rootScope.loggedInLocation, function(response) {
+                deferred.resolve(response);
+            });
+            return deferred.promise;
+        }
+
+        var getRegistrationMessage = function (patientId, name, age, gender, callback) {
+            getLocation().then(function (location) { 
+                var message = $translate.instant(appService.getAppDescriptor().getConfigValue("registrationMessage") || Bahmni.Registration.Constants.registrationMessage);
+                message = message.replace("#clinicName", location.name);
+                message = message.replace("#patientId", patientId);
+                message = message.replace("#name", name);
+                message = message.replace("#age", age);
+                message = message.replace("#gender", gender);
+                message = message.replace("#helpDeskNumber", $rootScope.helpDeskNumber);
+                callback(message);
+            });
+            
         };
 
         return {
