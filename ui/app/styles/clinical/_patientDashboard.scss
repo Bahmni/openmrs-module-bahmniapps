@@ -822,19 +822,12 @@ table.drug-order-table td.drug {
 
     li.video-concept {
         border-top: none;
-        height: 300px;
+        height: auto;
+        max-height: 300px;
         margin: 5px 15px;
         border: 1px solid $lightGray;
         position: relative;
         overflow: hidden;
-
-        @media screen and(max-width:1150px) {
-            height: auto;
-        }
-
-        @media screen and (max-width: 859px) {
-            height: 300px;
-        }
 
         .testUnderPanel {
             width: 100% !important;
@@ -910,6 +903,7 @@ table.drug-order-table td.drug {
 
             img {
                 max-width: 100%;
+                width: 100%;
             }
         }
     }
@@ -1464,12 +1458,8 @@ table.treatments-details-table {
     width: 50%;
     float: left;
 
-    @media screen and(max-width:1150px) {
+    @media screen and(max-width:540px) {
         width: 100%;
-    }
-
-    @media screen and (max-width: 859px) {
-        width: 50%;
     }
 }
 
@@ -1480,12 +1470,12 @@ table.treatments-details-table {
     .video-concept-show {
         width: 33.333%;
 
-        li.video-concept {
-            height: 310px !important;
-        }
-
         @media screen and (max-width: 859px) {
             width: 50%;
+        }
+
+        @media screen and(max-width:540px) {
+            width: 100%;
         }
     }
 }

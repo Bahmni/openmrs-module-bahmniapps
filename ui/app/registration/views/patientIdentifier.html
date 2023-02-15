@@ -1,8 +1,8 @@
-<section ng-controller="PatientCommonController">
-    <div ng-if="patient.uuid != undefined">
-        <article ng-repeat="identifier in patient.extraIdentifiers" class="form-field existing-patient">
+<section>
+    <div ng-if="controllerScope.patient.uuid != undefined">
+        <article ng-repeat="identifier in controllerScope.patient.extraIdentifiers" class="form-field existing-patient">
             <div class="field-attribute">
-                <label class="control-label" for="patientID">{{:: getTranslatedPatientControls(identifier.identifierType.name)}}
+                <label class="control-label" for="patientID">{{:: controllerScope.getTranslatedPatientControls(identifier.identifierType.name)}}
                     <span ng-show=":: identifier.identifierType.required && !identifier.hasIdentifierSources()"
                           class="asterick">*</span>
                 </label>
@@ -15,23 +15,23 @@
                        ng-if="!identifier.hasIdentifierSources()"
                        non-blank="identifier.identifierType.required && !identifier.hasIdentifierSources()"
                        pattern-validate ng-change="identifier.generate()"
-                       ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-2">
-                    <div class="extension-btn" ng-show="showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)">
-                         <span ng-repeat="extButton in getExtButtons(identifier.identifierType.name)">
+                       ng-disabled="controllerScope.readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-2">
+                    <div class="extension-btn" ng-show="controllerScope.showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)">
+                         <span ng-repeat="extButton in controllerScope.getExtButtons(identifier.identifierType.name)">
                             <span> {{:: extButton.link}} </span>
                             <button type="button"
-                                    ng-click="openIdentifierPopup(identifier.identifierType.name, extButton.action)">{{:: extButton.display}}
+                                    ng-click="controllerScope.openIdentifierPopup(identifier.identifierType.name, extButton.action)">{{:: extButton.display}}
                             </button>
                         </span>
                     </div>
             </div>
         </article>
     </div>
-    <div ng-if="patient.uuid == undefined">
-        <article ng-repeat="identifier in patient.extraIdentifiers"
+    <div ng-if="controllerScope.patient.uuid == undefined">
+        <article ng-repeat="identifier in controllerScope.patient.extraIdentifiers"
                  class="form-field existing-patient">
             <div class="field-attribute">
-                <label class="control-label" for="patientID">{{:: getTranslatedPatientControls(identifier.identifierType.name)}}
+                <label class="control-label" for="patientID">{{:: controllerScope.getTranslatedPatientControls(identifier.identifierType.name)}}
                     <span ng-show="::identifier.identifierType.required && !identifier.hasIdentifierSources()"
                           class="asterick">*</span>
                 </label>
@@ -40,7 +40,7 @@
                  class="field-value" id="patientID">
                 <select id="identifierPrefix" ng-model="identifier.selectedIdentifierSource"
                         ng-options="identifierSource.prefix for identifierSource in ::identifier.identifierType.identifierSources"
-                        ng-change="patient.generateIdentifier(identifier)"
+                        ng-change="controllerScope.patient.generateIdentifier(identifier)"
                         required>
                 </select>
             </div>
@@ -49,12 +49,12 @@
                        non-blank="identifier.isIdentifierRequired()" pattern-validate
                        ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
                        ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()"
-                       ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
-                    <div class="extension-btn" ng-show="showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)">
-                        <span ng-repeat="extButton in getExtButtons(identifier.identifierType.name)">
+                       ng-disabled="controllerScope.readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
+                    <div class="extension-btn" ng-show="controllerScope.showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)">
+                        <span ng-repeat="extButton in controllerScope.getExtButtons(identifier.identifierType.name)">
                             <span> {{:: extButton.link}} </span>
                             <button type="button"
-                                    ng-click="openIdentifierPopup(identifier.identifierType.name, extButton.action)">{{:: extButton.display}}
+                                    ng-click="controllerScope.openIdentifierPopup(identifier.identifierType.name, extButton.action)">{{:: extButton.display}}
                             </button>
                         </span>
                     </div>
@@ -65,15 +65,15 @@
                        non-blank="identifier.isIdentifierRequired()" pattern-validate
                        ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
                        ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()"
-                       ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
+                       ng-disabled="controllerScope.readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
 
                 <div class="fl">
                     <div class="field-attribute hasOldIdentifier-field-attribute">
-                        <label for="hasOldIdentifier" ng-show="::showEnterID" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' |
+                        <label for="hasOldIdentifier" ng-show="::controllerScope.showEnterID" class="control-label">{{::'REGISTRATION_LABEL_ENTER_ID' |
                             translate}}</label>
                     </div>
                     <div class="field-value">
-                        <input class="input-label-inline" ng-show="::showEnterID" type="checkbox"
+                        <input class="input-label-inline" ng-show="::controllerScope.showEnterID" type="checkbox"
                                id="hasOldIdentifier" ng-model="identifier.hasOldIdentifier"
                                ng-change="identifier.clearRegistrationNumber()">
                     </div>
@@ -81,9 +81,9 @@
             </div>
         </article>
     </div>
-    <div class="identifier-ui"  ng-hide="!showExtIframe">
+    <div class="identifier-ui"  ng-hide="!controllerScope.showExtIframe">
         <div class="identifier-iframe">
-            <span class="close" ng-click="closeIdentifierPopup()">&times;</span>
+            <span class="close" ng-click="controllerScope.closeIdentifierPopup()">&times;</span>
             <iframe id="extension-popup" height="95%" width="100%"></iframe>
         </div>
     </div>

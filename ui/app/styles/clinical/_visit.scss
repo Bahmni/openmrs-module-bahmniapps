@@ -26,14 +26,26 @@
                 background: #fff;
             }
 
-            ul li .tree-list-item .testUnderPanel {
-                width: 34.4% !important
+            ul li:not(.video-concept) .tree-list-item .testUnderPanel {
+                width: 34.4% !important;
             }
         }
     }
 
     @media screen and (max-width: 768px) {
         margin-top: 100px;
+    }
+
+    .video-concept-show {
+        width: 33.333%;
+
+        @media screen and (max-width: 859px) {
+            width: 50%;
+        }
+
+        @media screen and(max-width:540px) {
+            width: 100%;
+        }
     }
 }
 
