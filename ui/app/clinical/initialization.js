@@ -39,7 +39,7 @@ angular.module('bahmni.clinical').factory('initialization',
                 var getLocationDetails = function () {
                     locationService.getAllByTag("Visit Location").then(function (response) {
                         $rootScope.locationName = response.data.results[0].name;
-                        $rootScope.locationAddress = response.data.results[0].attributes[0].display.split(":")[1].trim();
+                        $rootScope.locationAddress = response.data.results[0].attributes[0] ? response.data.results[0].attributes[0].display.split(":")[1].trim() : null;
                     });
                 };
 

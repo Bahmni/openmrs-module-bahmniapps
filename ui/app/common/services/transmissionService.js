@@ -33,7 +33,7 @@
             var message = $translate.instant(Bahmni.Clinical.Constants.sharePrescriptionMailContent);
             message = message.replace("#recipientName", recipientName);
             message = message.replaceAll("#locationName", $rootScope.locationName);
-            message = message.replace("#locationAddress", $rootScope.locationAddress);
+            message = message.replace("#locationAddress", $rootScope.locationAddress ? $rootScope.locationAddress : "");
             message = message.replace("#visitDate", $filter("bahmniDate")(visit.visitDate));
             return message;
         };
