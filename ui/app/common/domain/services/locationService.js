@@ -35,7 +35,7 @@ angular.module('bahmni.common.domain')
                 return getByUuid(response.data.uuid);
             });
         };
-        
+
         return {
             getAllByTag: getAllByTag,
             getLoggedInLocation: getLoggedInLocation,

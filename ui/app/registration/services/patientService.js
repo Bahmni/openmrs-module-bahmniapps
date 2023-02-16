@@ -99,7 +99,6 @@ angular.module('bahmni.registration')
             message = message.replace("#gender", gender);
             message = message.replace("#helpDeskNumber", $rootScope.helpDeskNumber);
             return message;
-            
         };
 
         return {
