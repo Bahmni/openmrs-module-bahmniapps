@@ -62,8 +62,6 @@ describe('patient context', function () {
         scope.patient = {uuid: '123'};
         mockBackend = $httpBackend;
         mockBackend.expectGET('displaycontrols/patientContext/views/patientContext.html').respond("<div>dummy</div>");
-        mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=undefined&patientUuid=123&scope=latest').respond(observation);
-
     }));
 
     describe('initialization', function () {
@@ -83,6 +81,7 @@ describe('patient context', function () {
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=undefined&patientUuid=123&scope=latest').respond(observation);
             mockBackend.flush();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
@@ -112,6 +111,7 @@ describe('patient context', function () {
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=%7B%22personAttributes%22:%5B%22caste%22%5D%7D&patientUuid=123&scope=latest').respond(observation);
             mockBackend.flush();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
@@ -142,6 +142,7 @@ describe('patient context', function () {
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=%7B%22programAttributes%22:%5B%22Aadhar+Number%22%5D%7D&patientUuid=123&scope=latest').respond(observation);
             mockBackend.flush();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
@@ -172,6 +173,7 @@ describe('patient context', function () {
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=%7B%22additionalPatientIdentifiers%22:%5B%22National+Identifier%22%5D%7D&patientUuid=123&scope=latest').respond(observation);
             mockBackend.flush();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
@@ -208,6 +210,7 @@ describe('patient context', function () {
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=%7B%22programAttributes%22:%5B%22Aadhar+Number%22%5D,%22preferredIdentifier%22:%22Aadhar+Number%22%7D&patientUuid=123&scope=latest').respond(observation);
             mockBackend.flush();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
@@ -241,6 +244,7 @@ describe('patient context', function () {
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=%7B%22personAttributes%22:%5B%22Aadhar+Number%22%5D,%22preferredIdentifier%22:%22Aadhar+Number%22%7D&patientUuid=123&scope=latest').respond(observation);
             mockBackend.flush();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
@@ -275,6 +279,7 @@ describe('patient context', function () {
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=%7B%22programAttributes%22:%5B%22Aadhar+Number%22%5D,%22preferredIdentifier%22:%22Aadhar+Card+Number%22%7D&patientUuid=123&scope=latest').respond(observation);
             mockBackend.flush();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
@@ -312,6 +317,7 @@ describe('patient context', function () {
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=%7B%22personAttributes%22:%5B%22Aadhar+Number%22%5D,%22programAttributes%22:%5B%22Aadhar+Number%22%5D,%22preferredIdentifier%22:%22Aadhar+Number%22%7D&patientUuid=123&scope=latest').respond(observation);
             mockBackend.flush();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
@@ -348,6 +354,7 @@ describe('patient context', function () {
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=%7B%22personAttributes%22:%5B%22isUrban%22,%22cool%22%5D%7D&patientUuid=123&scope=latest').respond(observation);
             mockBackend.flush();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
@@ -388,6 +395,7 @@ describe('patient context', function () {
             var simpleHtml = '<patient-context patient="patient" show-name-and-image="clinicalDashBoardConfig.currentTab.printing.showNameAndImage"></patient-context>';
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=%7B%7D&patientUuid=123&scope=latest').respond(observation);
             mockBackend.flush();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
@@ -428,6 +436,7 @@ describe('patient context', function () {
             var simpleHtml = '<patient-context patient="patient" show-name-and-image="clinicalDashBoardConfig.currentTab.printing.showNameAndImage"></patient-context>';
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=%7B%7D&patientUuid=123&scope=latest').respond(observation);
             mockBackend.flush();
             var compiledElementScope = element.isolateScope();
             scope.$digest();
@@ -459,6 +468,7 @@ describe('patient context', function () {
             var simpleHtml = '<patient-context patient="patient"></patient-context>';
             var element = $compile(simpleHtml)(scope);
             scope.$digest();
+            mockBackend.expectGET('/openmrs/ws/rest/v1/bahmnicore/observations?concept=%7B%7D&patientUuid=123&scope=latest').respond(observation);
             mockBackend.flush();
             var compiledElementScope = element.isolateScope();
             scope.$digest();

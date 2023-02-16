@@ -4,11 +4,11 @@ angular.module('bahmni.clinical')
     .directive('patientContext', ['$state', '$translate', '$sce', 'patientService', 'observationsService', 'spinner', 'appService', function ($state, $translate, $sce, patientService, observationsService, spinner, appService) {
         var controller = function ($scope, $rootScope) {
             var patientContextConfig = appService.getAppDescriptor().getConfigValue('patientContext') || {};
-            $scope.obs = observationsService.fetch($scope.patient.uuid, [patientContextConfig.conceptName], "latest", null, null, null, null, null)
+            $scope.obs = observationsService.fetch($scope.patient.uuid, [appService.getAppDescriptor().getConfigValue("conceptName")], "latest", null, null, null, null, null)
             .then(function (response) {
                 var observations = new Bahmni.Common.Obs.ObservationMapper().map(response.data, []);
                 if (observations) {
-                    $scope.patientContext.observation = _.sortBy(observations, 'sortWeight')[0];
+                    $scope.patientObservation = _.sortBy(observations, 'sortWeight')[0];
                     $scope.showObs = true;
                 } else {
                     $scope.showObs = false;
