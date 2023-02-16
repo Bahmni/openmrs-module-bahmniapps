@@ -23,7 +23,7 @@
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                                     <div class="drug-dosage">
                                         <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong>
-                                        <div class="dosage-frequency">{{drugOrder.dosage}} | {{drugOrder.getFrequency()}} | {{drugOrder.getDurationAndDurationUnits()}}</div>
+                                        <div class="dosage-frequency">{{drugOrder.dosage}} | <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length">{{drugOrder.getFrequency()}} |</span> {{drugOrder.getDurationAndDurationUnits()}}</div>
                                     </div>
                                 </div>
 								<div class="button-group-wrapper">
