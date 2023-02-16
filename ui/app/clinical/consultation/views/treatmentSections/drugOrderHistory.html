@@ -21,8 +21,10 @@
                         <ul class="table-mimic">
 							<li id="ordered-drug-orders" ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
-                                    <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong>
-                                    {{drugOrder.getDescriptionWithQuantity()}}
+                                    <div class="drug-dosage">
+                                        <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong>
+                                        <div class="dosage-frequency">{{drugOrder.dosage}} | {{drugOrder.getFrequency()}} | {{drugOrder.getDurationAndDurationUnits()}}</div>
+                                    </div>
                                 </div>
 								<div class="button-group-wrapper">
                                     <div class="button-group">
@@ -58,9 +60,11 @@
                                         <div ng-if="getOrderReasonConcept(drugOrder) && drugOrder.isDiscontinuedOrStopped()">({{getOrderReasonConcept(drugOrder)}})</div>
                                     </span>
                                 </div>
-                                <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
-                                    {{drugOrder.additionalInstructions}}
-                                    <div class="footer-note fr">
+                                <div class="dosage-details">
+                                    <div><span ng-if="drugOrder.asNeeded">{{drugOrder.getAsNeededText(drugOrder.asNeeded)}},</span> {{drugOrder.route}}, {{drugOrder.instructions}} |</div>
+                                    <div ng-if="drugOrder.additionalInstructions">{{drugOrder.additionalInstructions}} |</div>
+                                    <div>{{drugOrder.getQuantityWithUnit()}}</div>
+                                    <div class="footer-note" ng-show="drugOrder.showAdditionalInstructions">
                                         <span class="time-stamp">
                                             <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
                                         </span>
