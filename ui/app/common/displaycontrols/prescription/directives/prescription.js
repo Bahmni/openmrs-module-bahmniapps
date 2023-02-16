@@ -25,6 +25,16 @@ angular.module('bahmni.common.displaycontrol.prescription')
                         .concat(drugOrdersSorted)
                         .uniqBy('uuid')
                         .value();
+                    if ($scope.printParams) {
+                        $scope.encounterDrugOrderMap = _($scope.drugOrders)
+                            .groupBy('encounterUuid')
+                            .map(function (items, encounterUuid) {
+                                return {
+                                    encounterUuid: encounterUuid,
+                                    drugOrders: _.map(items)
+                                };
+                            }).value();
+                    }
                 });
             };
             return {
