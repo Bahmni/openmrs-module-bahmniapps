@@ -29,7 +29,10 @@
                 <div class="form">
                     <input type="checkbox" ng-show="showBulkChangeToggle" ng-model="newTreatment.durationUpdateFlag"
                            class="treatmentChkBox"/>
-                    <strong class="drug-name">{{newTreatment.getDisplayName()}}</strong>&nbsp;{{newTreatment.getDescriptionWithQuantity()}}
+                    <div class="drug-dosage">
+                        <strong class="drug-name">{{newTreatment.getDisplayName()}}</strong>
+                        <div class="dosage-frequency">{{newTreatment.dosage}} | <span ng-show="newTreatment.getFrequency() && newTreatment.getFrequency().length">{{newTreatment.getFrequency()}} |</span> {{newTreatment.getDurationAndDurationUnits()}}</div>
+                    </div>
                 </div>
             </div>
             <div class="button-group-wrapper">
@@ -39,19 +42,15 @@
                     <button ng-confirm-click="remove($index)"
                             confirm-message="{{ 'REMOVE_CONFIRMATION_KEY' | translate }}"
                             ng-disabled="showBulkChangeToggle"><i class="fa fa-remove"></i></button>
-                    <button class="toggle" ng-class="{'has-notes': newTreatment.additionalInstructions}"
-                            toggle="newTreatment.showAdditionalInstructions"
-                             ng-disabled="showBulkChangeToggle">
-                        <i class="fa fa-minus-circle" ng-show="newTreatment.showAdditionalInstructions"></i>
-                        <i class="fa fa-plus-circle" ng-hide="newTreatment.showAdditionalInstructions"></i>
-                    </button>
                 </div>
             </div>
             <div class="start-date fr">
                 <span>from {{newTreatment.effectiveStartDate | bahmniDate}}</span>
             </div>
-            <div ng-show="newTreatment.showAdditionalInstructions" class="notes inline-notes">
-                {{newTreatment.additionalInstructions}}
+            <div class="dosage-details">
+                <div><span ng-if="newTreatment.asNeeded">{{newTreatment.getAsNeededText(newTreatment.asNeeded)}},</span> {{newTreatment.route}}, {{newTreatment.instructions}} |</div>
+                <div ng-if="newTreatment.additionalInstructions">{{newTreatment.additionalInstructions}} |</div>
+                <div>{{newTreatment.getQuantityWithUnit()}}</div>
             </div>
         </li>
     </ul>
