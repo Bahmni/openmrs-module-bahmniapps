@@ -31,7 +31,11 @@
                            class="treatmentChkBox"/>
                     <div class="drug-dosage">
                         <strong class="drug-name">{{newTreatment.getDisplayName()}}</strong>
-                        <div class="dosage-frequency">{{newTreatment.dosage}} | <span ng-show="newTreatment.getFrequency() && newTreatment.getFrequency().length">{{newTreatment.getFrequency()}} |</span> {{newTreatment.getDurationAndDurationUnits()}}</div>
+                        <div class="dosage-frequency">
+                            <span ng-show="newTreatment.dose">{{newTreatment.dose}} {{newTreatment.doseUnits}} | </span>
+                            <span ng-show="newTreatment.getFrequency() && newTreatment.getFrequency().length">{{newTreatment.getFrequency()}} | </span>
+                            {{newTreatment.getDurationAndDurationUnits()}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -48,8 +52,14 @@
                 <span>from {{newTreatment.effectiveStartDate | bahmniDate}}</span>
             </div>
             <div class="dosage-details">
-                <div><span ng-if="newTreatment.asNeeded">{{newTreatment.getAsNeededText(newTreatment.asNeeded)}},</span> {{newTreatment.route}}, {{newTreatment.instructions}} |</div>
-                <div ng-if="newTreatment.additionalInstructions">{{newTreatment.additionalInstructions}} |</div>
+                <div>
+                    <span ng-if="newTreatment.asNeeded">{{newTreatment.getAsNeededText(newTreatment.asNeeded)}}, </span>
+                    <span ng-if="newTreatment.route">{{newTreatment.route}}, </span>
+                    {{newTreatment.instructions}} | 
+                </div>
+                <div ng-if="newTreatment.additionalInstructions">
+                    {{newTreatment.additionalInstructions}} | 
+                </div>
                 <div>{{newTreatment.getQuantityWithUnit()}}</div>
             </div>
         </li>
