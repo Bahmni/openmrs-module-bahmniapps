@@ -51,6 +51,10 @@
         @media screen and (min-width: 1200px) {
             flex-direction: row;
         }
+
+        @media screen and (max-width: 300px) {
+            font-size: 10px;
+        }
     }
 
     .drug-name {
@@ -60,7 +64,7 @@
     .dosage-details {
         display: flex;
         gap: 5px;
-        width: 100%;
+        width: calc(100% - 20px);
         font-size: 14px;
         font-family: $OpenSansFont;
         padding-left: 10px;

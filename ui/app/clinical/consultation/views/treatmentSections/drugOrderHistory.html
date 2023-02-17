@@ -46,10 +46,6 @@
                                         <button class="refill-btn" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
                                             {{ ::'MEDICATION_REFILL' | translate }}
                                         </button>
-                                        <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)">
-                                            <i class="fa fa-plus-circle" ng-hide="drugOrder.showAdditionalInstructions"></i>
-                                            <i class="fa fa-minus-circle" ng-show="drugOrder.showAdditionalInstructions"></i>
-                                        </button>
                                     </div>
 								</div>
                                 <div class="start-date fr">
@@ -64,7 +60,7 @@
                                     <div><span ng-if="drugOrder.asNeeded">{{drugOrder.getAsNeededText(drugOrder.asNeeded)}},</span> {{drugOrder.route}}, {{drugOrder.instructions}} |</div>
                                     <div ng-if="drugOrder.additionalInstructions">{{drugOrder.additionalInstructions}} |</div>
                                     <div>{{drugOrder.getQuantityWithUnit()}}</div>
-                                    <div class="footer-note" ng-show="drugOrder.showAdditionalInstructions">
+                                    <div class="footer-note">
                                         <span class="time-stamp">
                                             <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
                                         </span>
