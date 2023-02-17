@@ -24,7 +24,7 @@
                                     <div class="drug-dosage">
                                         <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong>
                                         <div class="dosage-frequency">
-                                            <span ng-show="drugOrder.dosage">{{drugOrder.dosage}} | </span>
+                                            <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}} | </span>
                                             <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length">{{drugOrder.getFrequency()}} | </span> 
                                             {{drugOrder.getDurationAndDurationUnits()}}</div>
                                     </div>
