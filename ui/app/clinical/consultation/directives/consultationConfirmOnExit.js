@@ -38,7 +38,7 @@ angular.module('bahmni.clinical')
                         }
 
                         if (outOfConsultationBoard && $state.dirtyConsultationForm) {
-                            messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR ' | translate }}");
+                            messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR' | translate }}");
                             event.preventDefault();
                             spinner.hide(next.spinnerToken);
                         }
