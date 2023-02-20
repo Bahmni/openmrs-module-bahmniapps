@@ -4,6 +4,7 @@ on:
     branches:
       - snomed-master
       - 'snomed-release-*'
+      - temp-deploy
     tags:
       - 'snomed-[0-9]+.[0-9]+.[0-9]+'
 
