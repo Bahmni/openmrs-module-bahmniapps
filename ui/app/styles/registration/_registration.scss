@@ -124,6 +124,16 @@ body {
                     }
                 }
             }
+
+            .concept-set-container-view {
+                ul.form-field {
+                    margin-right: 0;
+
+                    li {
+                        width: 100%;
+                    }
+                }
+            }
         }
 
         @media screen and (max-width: 580px) {
