@@ -70,6 +70,15 @@ angular.module('bahmni.registration')
                 return false;
             }
 
+            $scope.showOnlyCreateButton = function (identifierTypes) {
+                for (var i = 0; i < identifierTypes.length; i++) {
+                    if (identifierTypes[i].registrationNumber) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+
             $scope.showIdentifierVerificationButton = function (identifierType, identifierValue) {
                 var extenstionPoint = getExtensionPoint(identifierType);
                 if (extenstionPoint != null && identifierValue === undefined && _.some($rootScope.currentUser.privileges, {name: extenstionPoint.extensionParams.requiredPrivilege})) {
