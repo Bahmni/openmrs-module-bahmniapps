@@ -34,7 +34,7 @@ angular.module('bahmni.registration')
 
             $scope.openIdentifierPopup = function (identifierType, action) {
                 var iframe = $document[0].getElementById("extension-popup");
-                iframe.src = getExtensionPoint(identifierType).src + "?action=" + action;
+                iframe.src = getExtensionPoint(identifierType).src + "?action=" + action + "&patientUuid=" + $scope.patient.uuid;
                 $scope.showExtIframe = true;
                 $window.addEventListener("message", function (popupWindowData) {
                     if (popupWindowData.data.patient !== undefined) {
@@ -70,6 +70,15 @@ angular.module('bahmni.registration')
                 return false;
             }
 
+            $scope.showOnlyCreateButton = function (identifierTypes) {
+                for (var i = 0; i < identifierTypes.length; i++) {
+                    if (identifierTypes[i].registrationNumber) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+
             $scope.showIdentifierVerificationButton = function (identifierType, identifierValue) {
                 var extenstionPoint = getExtensionPoint(identifierType);
                 if (extenstionPoint != null && identifierValue === undefined && _.some($rootScope.currentUser.privileges, {name: extenstionPoint.extensionParams.requiredPrivilege})) {
@@ -103,17 +112,19 @@ angular.module('bahmni.registration')
                 for (var i = 0; i < $scope.patient.extraIdentifiers.length; i++) {
                     var identifier = $scope.patient.extraIdentifiers[i];
                     for (var j = 0; j < patient.identifiers.length; j++) {
-                        var identifierType = patient.identifiers[j].type.text;
-                        if (identifier.identifierType.name === identifierType) {
-                            identifier.registrationNumber = patient.identifiers[j].value;
-                            var extensionParam = getExtensionPoint(identifierType).extensionParams;
-                            $scope.attributesToBeDisabled = extensionParam.nonEditable !== null ? extensionParam.nonEditable : null;
-                            identifier.generate();
-                            if (!identifierMatch) {
-                                extensionParam.addressMap !== null ? updatePatientAddress(patient.address[0], extensionParam.addressMap) : {};
-                                contactAttribute = extensionParam.contact ? extensionParam.contact : "primaryContact";
-                                changePatientDetails(patient);
-                                identifierMatch = true;
+                        if (patient.identifiers[j]) {
+                            var identifierType = patient.identifiers[j].type.text;
+                            if (identifier.identifierType.name === identifierType) {
+                                identifier.registrationNumber = patient.identifiers[j].value;
+                                var extensionParam = getExtensionPoint(identifierType).extensionParams;
+                                $scope.attributesToBeDisabled = extensionParam.nonEditable !== null ? extensionParam.nonEditable : null;
+                                identifier.generate();
+                                if (!identifierMatch) {
+                                    extensionParam.addressMap !== null ? updatePatientAddress(patient.address[0], extensionParam.addressMap) : {};
+                                    contactAttribute = extensionParam.contact ? extensionParam.contact : "primaryContact";
+                                    changePatientDetails(patient);
+                                    identifierMatch = true;
+                                }
                             }
                         }
                     }
@@ -140,31 +151,39 @@ angular.module('bahmni.registration')
                 for (var key in changedDetails) {
                     switch (key) {
                     case 'names':
-                        for (var i = 0; i < changedDetails.names.length; i++) {
-                            if (changedDetails.names[i].use === "preferred") {
-                                updatePatientName(changedDetails.names[i]);
-                                break;
+                        if (changedDetails.names != null) {
+                            for (var i = 0; i < changedDetails.names.length; i++) {
+                                if (changedDetails.names[i].use === "preferred") {
+                                    updatePatientName(changedDetails.names[i]);
+                                    break;
+                                }
                             }
+                            updatePatientName(changedDetails.names[0]);
                         }
-                        updatePatientName(changedDetails.names[0]);
                         break;
                     case 'gender':
-                        $scope.patient.gender = changedDetails.gender;
+                        if (changedDetails.gender) {
+                            $scope.patient.gender = changedDetails.gender;
+                        }
                         break;
                     case 'contactPoint':
-                        for (var i = 0; i < changedDetails.contactPoint.length; i++) {
-                            var contact = changedDetails.contactPoint[i];
-                            if (contact.system === "phone") { $scope.patient[contactAttribute] = contact.value; }
+                        if (changedDetails.contactPoint != null) {
+                            for (var i = 0; i < changedDetails.contactPoint.length; i++) {
+                                var contact = changedDetails.contactPoint[i];
+                                if (contact.system === "phone") { $scope.patient[contactAttribute] = contact.value; }
+                            }
                         }
                         break;
                     default:
                         var DateUtil = Bahmni.Common.Util.DateUtil;
-                        var age = DateUtil.diffInYearsMonthsDays(changedDetails.birthDate, DateUtil.now());
+                        var age = changedDetails.birthDate !== undefined ? DateUtil.diffInYearsMonthsDays(changedDetails.birthDate, DateUtil.now()) : null;
                         $scope.patient.birthdateEstimated = changedDetails.isBirthDateEstimated;
-                        $scope.patient.age.years = age.years;
-                        $scope.patient.age.months = age.months;
-                        $scope.patient.age.days = age.days;
-                        $scope.patient.calculateBirthDate();
+                        if (age !== null) {
+                            $scope.patient.age.years = age.years;
+                            $scope.patient.age.months = age.months;
+                            $scope.patient.age.days = age.days;
+                            $scope.patient.calculateBirthDate();
+                        }
                         break;
                     }
                 }
