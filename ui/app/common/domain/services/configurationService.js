@@ -183,6 +183,30 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        configurationFunctions.prescriptionSMSToggle = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                params: {
+                    property: 'bahmni.enableSMSPrescriptionOption'
+                },
+                withCredentials: true,
+                transformResponse: [function (data) {
+                    return data;
+                }]
+            });
+        };
+
+        configurationFunctions.prescriptionEmailToggle = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                params: {
+                    property: 'bahmni.enableEmailPrescriptionOption'
+                },
+                withCredentials: true,
+                transformResponse: [function (data) {
+                    return data;
+                }]
+            });
+        };
+
         configurationFunctions.helpDeskNumber = function () {
             return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 params: {

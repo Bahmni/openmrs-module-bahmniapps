@@ -59,13 +59,13 @@ describe("PatientDashboardTreatmentController", function () {
     describe("Should fetch configuration", function () {
         it("should fetch dashboard params", function () {
             var expected = {};
-            _.extend(expected, treatmentConfigParams.dashboardConfig || {}, {patientUuid: "patient uuid", isEmailPresent: false});
+            _.extend(expected, treatmentConfigParams.dashboardConfig || {}, {patientUuid: "patient uuid", isEmailPresent: false, isPhoneNumberPresent: false}, {prescriptionEmailToggle: undefined, prescriptionSMSToggle: undefined});
             expect(expected).toEqual(scope.dashboardConfig);
         });
 
         it("should fetch summary page params", function () {
             var expected = {};
-            _.extend(expected, treatmentConfigParams.expandedViewConfig || {}, {patientUuid: "patient uuid", isEmailPresent: false});
+            _.extend(expected, treatmentConfigParams.expandedViewConfig || {}, {patientUuid: "patient uuid", isEmailPresent: false, isPhoneNumberPresent: false}, {prescriptionEmailToggle: undefined, prescriptionSMSToggle: undefined});
             expect(expected).toEqual(scope.expandedViewConfig);
         });
     });

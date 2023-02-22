@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('treatmentService', ['$http', '$q', 'appService', '$rootScope', function ($http, $q, appService, $rootScope) {
+    .factory('treatmentService', ['$http', '$q', 'appService', '$rootScope', '$translate', function ($http, $q, appService, $rootScope, $translate) {
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
@@ -125,6 +125,21 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
+        var sendPrescriptionSMS = function (visitUuid) {
+            var deferred = $q.defer();
+            var locale = $translate.instant("SMS_LANGUAGE");
+            $http.post(Bahmni.Common.Constants.bahmniDrugOrderUrl + "/sendPrescriptionSMS", {"visitUuid": visitUuid, "locale": locale}, {
+                withCredentials: true,
+                headers: {"Content-Type": "application/json"}
+            }).success(function (response) {
+                if (response.status != 200) {
+                    response.error = true;
+                }
+                deferred.resolve(response);
+            });
+            return deferred.promise;
+        };
+
         var voidDrugOrder = function (drugOrder) {
             var deferred = $q.defer();
 
@@ -142,6 +157,7 @@ angular.module('bahmni.clinical')
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
             getNonCodedDrugConcept: getNonCodedDrugConcept,
             getAllDrugOrdersFor: getAllDrugOrdersFor,
-            voidDrugOrder: voidDrugOrder
+            voidDrugOrder: voidDrugOrder,
+            sendPrescriptionSMS: sendPrescriptionSMS
         };
     }]);

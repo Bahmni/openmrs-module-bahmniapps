@@ -5,6 +5,7 @@ describe('Treatment Table DisplayControl', function () {
         compile,
         mockBackend,
         rootScope,
+        treatmentService,
         params,
         simpleHtml = '<treatment-table drug-order-sections="treatmentSections" params="params"></treatment-table>';
 
@@ -23,11 +24,26 @@ describe('Treatment Table DisplayControl', function () {
 
     beforeEach(module('bahmni.clinical'));
 
+    beforeEach(module(function ($provide) {
+        treatmentService = jasmine.createSpyObj('treatmentService', ['sendPrescriptionSMS']);
+        $provide.value('treatmentService', treatmentService);
+    }));
+
     beforeEach(inject(['$compile', '$httpBackend', '$rootScope', function ($compile, $httpBackend, $rootScope) {
         compile = $compile;
         mockBackend = $httpBackend;
         rootScope = $rootScope;
     }]));
+
+    var mockTreatmentService = function (data) {
+        treatmentService.sendPrescriptionSMS.and.callFake(function () {
+            return {
+                then: function (callback) {
+                    return callback(data)
+                }
+            }
+        });
+    };
 
     it("should return true if the section is other active drug orders", function () {
         var scope = rootScope.$new();
