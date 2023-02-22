@@ -2,20 +2,18 @@
 
  angular.module('bahmni.common.util')
     .factory('transmissionService', ['$http', '$q', '$rootScope', 'locationService', '$bahmniCookieStore', '$translate', 'appService', 'visitService', '$filter', 'messagingService', function ($http, $q, $rootScope, locationService, $bahmniCookieStore, $translate, appService, visitService, $filter, messagingService) {
-        var sendEmail = function (pdfContent, recipient, visit) {
-            var subject = "Sending Prescriptions";
-            var body = getSharePrescriptionMailContent(recipient.name, visit);
-            var recipient = {"name": recipient.name, "email": recipient.email};
+        var sendEmail = function (pdfContent, fileName, subject, body, emailUrl, cc, bcc) {
             var params = {
                 "pdf": pdfContent,
-                "recipient": recipient,
+                "fileName": fileName,
                 "subject": subject,
                 "body": body,
-                "cc": [],
-                "bcc": []
+                "cc": cc,
+                "bcc": bcc
             };
             var deferred = $q.defer();
-            $http.post(Bahmni.Common.Constants.sendViaEmailUrl, params, {
+
+            $http.post(emailUrl, params, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             }).then(function (response) {
@@ -29,16 +27,17 @@
             return deferred.promise;
         };
 
-        var getSharePrescriptionMailContent = function (recipientName, visit) {
+        var getSharePrescriptionMailContent = function (prescriptionDetails) {
             var message = $translate.instant(Bahmni.Clinical.Constants.sharePrescriptionMailContent);
-            message = message.replace("#recipientName", recipientName);
+            message = message.replace("#recipientName", prescriptionDetails.patient.name);
             message = message.replaceAll("#locationName", $rootScope.locationName);
             message = message.replace("#locationAddress", $rootScope.locationAddress ? $rootScope.locationAddress : "");
-            message = message.replace("#visitDate", $filter("bahmniDate")(visit.visitDate));
+            message = message.replace("#visitDate", $filter("bahmniDate")(prescriptionDetails.visitDate));
             return message;
         };
 
         return {
-            sendEmail: sendEmail
+            sendEmail: sendEmail,
+            getSharePrescriptionMailContent: getSharePrescriptionMailContent
         };
     }]);

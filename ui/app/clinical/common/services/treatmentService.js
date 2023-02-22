@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('treatmentService', ['$http', '$q', '$compile', '$timeout', 'spinner', 'appService', '$rootScope', 'transmissionService', function ($http, $q, $compile, $timeout, spinner, appService, $rootScope, transmissionService) {
+    .factory('treatmentService', ['$http', '$q', '$compile', '$timeout', 'spinner', 'appService', '$rootScope', 'transmissionService', '$filter', function ($http, $q, $compile, $timeout, spinner, appService, $rootScope, transmissionService, $filter) {
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
@@ -146,9 +146,12 @@ angular.module('bahmni.clinical')
                     if (printScope.$$phase || $http.pendingRequests.length) {
                         $timeout(waitForRenderAndSend, 1000);
                     } else {
-                        var patient = prescriptionDetails.patient;
                         html2pdf().from(element.html()).outputPdf().then(function (pdfContent) {
-                            transmissionService.sendEmail(btoa(pdfContent), { "name": patient.name, "email": patient.email.value }, prescriptionDetails);
+                            var fileName = "precription_" + $filter("bahmniDate")(prescriptionDetails.visitDate).split(" ").join("-");
+                            var subject = "Sending Prescriptions";
+                            var body = transmissionService.getSharePrescriptionMailContent(prescriptionDetails);
+                            var emailUrl = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.sendViaEmailUrl, {'patientUuid': prescriptionDetails.patient.uuid});
+                            transmissionService.sendEmail(btoa(pdfContent), fileName, subject, body, emailUrl, [], []);
                         });
                         renderAndSendPromise.resolve();
                         printScope.$destroy();
