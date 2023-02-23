@@ -2,10 +2,9 @@
 
  angular.module('bahmni.common.util')
     .factory('transmissionService', ['$http', '$q', '$rootScope', 'locationService', '$bahmniCookieStore', '$translate', 'appService', 'visitService', '$filter', 'messagingService', function ($http, $q, $rootScope, locationService, $bahmniCookieStore, $translate, appService, visitService, $filter, messagingService) {
-        var sendEmail = function (pdfContent, fileName, subject, body, emailUrl, cc, bcc) {
+        var sendEmail = function (attachments, subject, body, emailUrl, cc, bcc) {
             var params = {
-                "pdf": pdfContent,
-                "fileName": fileName,
+                "mailAttachments": attachments,
                 "subject": subject,
                 "body": body,
                 "cc": cc,

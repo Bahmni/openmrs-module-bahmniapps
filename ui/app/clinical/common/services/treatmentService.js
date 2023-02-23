@@ -147,11 +147,16 @@ angular.module('bahmni.clinical')
                         $timeout(waitForRenderAndSend, 1000);
                     } else {
                         html2pdf().from(element.html()).outputPdf().then(function (pdfContent) {
-                            var fileName = "precription_" + $filter("bahmniDate")(prescriptionDetails.visitDate).split(" ").join("-");
+                            var attachments = [{
+                                "contentType": "application/pdf",
+                                "name": "Precription_" + $filter("bahmniDate")(prescriptionDetails.visitDate).split(" ").join("-") + ".pdf",
+                                "data": btoa(pdfContent),
+                                "url": null
+                            }];
                             var subject = "Sending Prescriptions";
                             var body = transmissionService.getSharePrescriptionMailContent(prescriptionDetails);
                             var emailUrl = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.sendViaEmailUrl, {'patientUuid': prescriptionDetails.patient.uuid});
-                            transmissionService.sendEmail(btoa(pdfContent), fileName, subject, body, emailUrl, [], []);
+                            transmissionService.sendEmail(attachments, subject, body, emailUrl, [], []);
                         });
                         renderAndSendPromise.resolve();
                         printScope.$destroy();
