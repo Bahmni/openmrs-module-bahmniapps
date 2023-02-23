@@ -28,11 +28,11 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        var getFacilityVisitLocationSummary = function (locationUuid) {
+        var getFacilityVisitLocation = function (locationUuid) {
             return $http.get(Bahmni.Common.Constants.bahmniFacilityLocationUrl + "/" + locationUuid, {
                 cache: true
             }).then(function (response) {
-                return response.data.locationSummary;
+                return response.data;
             });
         };
 
@@ -41,6 +41,6 @@ angular.module('bahmni.common.domain')
             getLoggedInLocation: getLoggedInLocation,
             getByUuid: getByUuid,
             getVisitLocation: getVisitLocation,
-            getFacilityVisitLocationSummary: getFacilityVisitLocationSummary
+            getFacilityVisitLocation: getFacilityVisitLocation
         };
     }]);
