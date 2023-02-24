@@ -55,7 +55,7 @@
                        non-blank="identifier.isIdentifierRequired()" pattern-validate
                        ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
                        ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()"
-                       >
+                       ng-disabled="controllerScope.readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
                     <div class="extension-btn" ng-show="controllerScope.showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)">
                         <span ng-repeat="extButton in controllerScope.getExtButtons(identifier.identifierType.name)">
                             <span> {{:: extButton.link}} </span>
