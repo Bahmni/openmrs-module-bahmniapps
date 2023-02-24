@@ -7,6 +7,8 @@ on:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
 
+  workflow_dispatch:
+
 jobs:
   build-publish-docker-helm:
     name: Build & Publish Docker Image & Helm Chart

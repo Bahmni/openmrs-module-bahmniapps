@@ -10,20 +10,26 @@
             <div class="field-value">
                 <input type="text" ng-model="identifier.identifier" disabled
                        ng-if="identifier.hasIdentifierSources()"/>
-
                 <input type="text" id="{{identifier.identifierType.name}}" ng-model="identifier.registrationNumber"
                        ng-if="!identifier.hasIdentifierSources()"
                        non-blank="identifier.identifierType.required && !identifier.hasIdentifierSources()"
                        pattern-validate ng-change="identifier.generate()"
                        ng-disabled="controllerScope.readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-2">
-                    <div class="extension-btn" ng-show="controllerScope.showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)">
-                         <span ng-repeat="extButton in controllerScope.getExtButtons(identifier.identifierType.name)">
-                            <span> {{:: extButton.link}} </span>
-                            <button type="button"
-                                    ng-click="controllerScope.openIdentifierPopup(identifier.identifierType.name, extButton.action)">{{:: extButton.display}}
+                <div class="extension-btn" ng-show="controllerScope.showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)">
+                    <span ng-switch="controllerScope.showOnlyCreateButton(controllerScope.patient.extraIdentifiers)" ng-repeat="extButton in controllerScope.getExtButtons(identifier.identifierType.name)">
+                        <span ng-switch-when="true">
+                            <button type="button" ng-if="extButton.link"
+                                ng-click="controllerScope.openIdentifierPopup(identifier.identifierType.name, extButton.action)">{{:: extButton.display}}
                             </button>
                         </span>
-                    </div>
+                        <span ng-switch-default>
+                            <span> {{:: extButton.link}} </span>
+                            <button type="button"
+                                ng-click="controllerScope.openIdentifierPopup(identifier.identifierType.name, extButton.action)">{{:: extButton.display}}
+                            </button>
+                        </span>
+                    </span>
+                </div>
             </div>
         </article>
     </div>
@@ -49,7 +55,7 @@
                        non-blank="identifier.isIdentifierRequired()" pattern-validate
                        ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
                        ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()"
-                       ng-disabled="controllerScope.readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
+                       >
                     <div class="extension-btn" ng-show="controllerScope.showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)">
                         <span ng-repeat="extButton in controllerScope.getExtButtons(identifier.identifierType.name)">
                             <span> {{:: extButton.link}} </span>
