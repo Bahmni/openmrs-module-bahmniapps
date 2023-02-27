@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', 'messagingService', 'appService', '$state', '$location',
-        function (formService, spinner, $timeout, $translate, messagingService, appService, $state, $location) {
+    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', 'messagingService', 'appService', '$state',
+        function (formService, spinner, $timeout, $translate, messagingService, appService, $state) {
             var loadedFormDetails = {};
             var loadedFormTranslations = {};
             var unMountReactContainer = function (formUuid) {
@@ -90,16 +90,14 @@ angular.module('bahmni.common.conceptSet')
                     var observations = $scope.$parent.consultation.observations;
                     for (var i = 0; i < formObservations.length; i++) {
                         for (var j = 0; j < observations.length; j++) {
-                            if (formObservations[i].concept.uuid === observations[j].concept.uuid) {
-                                checkAlreadyPresent[i] = formObservations[i].value === observations[j].value;
+                            if (formObservations[i].concept.uuid === observations[j].concept.uuid &&
+                                formObservations[i].value === observations[j].value) {
+                                checkAlreadyPresent[i] = true;
                             }
                         }
                     }
-                    var allValuesPresent = checkAlreadyPresent.length > 0 && _.every(checkAlreadyPresent, function (value) {
-                        return value;
-                    });
-                    return !allValuesPresent && (formObservations.length > 0 || observations.length > 0);
                 }
+                return checkAlreadyPresent;
             }
 
             function getAllBoards () {
@@ -108,8 +106,7 @@ angular.module('bahmni.common.conceptSet')
 
             var link = function ($scope, elem, attrs) {
                 $scope.$on('$stateChangeStart', function (event, next, current) {
-                    var currentPath = $location.path();
-                    if (!$state.isSaveInProgress && currentPath.includes("/dashboard")) {
+                    if (!$state.isSaveInProgress) {
                         var navigating = next.url.split("/")[1];
                         var allConsultationBoards = getAllBoards();
                         var outOfConsultationBoard = true;
@@ -123,7 +120,12 @@ angular.module('bahmni.common.conceptSet')
                             outOfConsultationBoard = false;
                         }
 
-                        if (checkIfFormIsDirty($scope)) {
+                        var checkAlreadyPresent = checkIfFormIsDirty($scope);
+
+                        var alreadyPresent = checkAlreadyPresent.length > 0 && _.every(checkAlreadyPresent, function (value) {
+                            return value;
+                        });
+                        if (!alreadyPresent) {
                             $state.dirtyConsultationForm = true;
                         }
 
