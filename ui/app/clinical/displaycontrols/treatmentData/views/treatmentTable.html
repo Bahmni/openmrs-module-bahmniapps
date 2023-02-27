@@ -11,7 +11,7 @@
                     <i class="fa fa-share-alt" bm-pop-over-trigger>
                     </i>
                     <div class="share-popup" bm-pop-over-target>
-                        <i class="fa fa-envelope" ng-class="{'disable-icon' : !params.isEmailPresent}"></i>
+                        <i class="fa fa-envelope" ng-class="{'disable-icon' : !params.isEmailPresent}" ng-click="sharePrescriptions(drugOrderSection.visitDate, drugOrderSection.drugOrders[0].visit.uuid)"></i>
                         <i class="fa fa-download" ng-click="downloadPrescription(drugOrderSection.visitDate, drugOrderSection.drugOrders[0].visit.uuid)"></i>
                     </div>
                 </div>

@@ -34,7 +34,8 @@ angular.module('bahmni.common.displaycontrol.prescription')
                 scope: {
                     patient: "=",
                     visitDate: "=",
-                    visitUuid: "="
+                    visitUuid: "=",
+                    printParams: "="
                 }
             };
         }]);
