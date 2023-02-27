@@ -23,7 +23,10 @@
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                                     <div class="drug-dosage">
                                         <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong>
-                                        <div class="dosage-frequency">{{drugOrder.dosage}} | <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length">{{drugOrder.getFrequency()}} |</span> {{drugOrder.getDurationAndDurationUnits()}}</div>
+                                        <div class="dosage-frequency">
+                                            <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}} | </span>
+                                            <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length">{{drugOrder.getFrequency()}} | </span> 
+                                            {{drugOrder.getDurationAndDurationUnits()}}</div>
                                     </div>
                                 </div>
 								<div class="button-group-wrapper">
@@ -46,10 +49,6 @@
                                         <button class="refill-btn" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
                                             {{ ::'MEDICATION_REFILL' | translate }}
                                         </button>
-                                        <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)">
-                                            <i class="fa fa-plus-circle" ng-hide="drugOrder.showAdditionalInstructions"></i>
-                                            <i class="fa fa-minus-circle" ng-show="drugOrder.showAdditionalInstructions"></i>
-                                        </button>
                                     </div>
 								</div>
                                 <div class="start-date fr">
@@ -61,10 +60,14 @@
                                     </span>
                                 </div>
                                 <div class="dosage-details">
-                                    <div><span ng-if="drugOrder.asNeeded">{{drugOrder.getAsNeededText(drugOrder.asNeeded)}},</span> {{drugOrder.route}}, {{drugOrder.instructions}} |</div>
-                                    <div ng-if="drugOrder.additionalInstructions">{{drugOrder.additionalInstructions}} |</div>
+                                    <div>
+                                        <span ng-if="drugOrder.asNeeded">{{drugOrder.getAsNeededText(drugOrder.asNeeded)}}, </span>
+                                        <span nf-if="drugOrder.route"> {{drugOrder.route}}, </span>
+                                        {{drugOrder.instructions}} | 
+                                    </div>
+                                    <div ng-if="drugOrder.additionalInstructions">{{drugOrder.additionalInstructions}} | </div>
                                     <div>{{drugOrder.getQuantityWithUnit()}}</div>
-                                    <div class="footer-note" ng-show="drugOrder.showAdditionalInstructions">
+                                    <div class="footer-note">
                                         <span class="time-stamp">
                                             <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
                                         </span>
