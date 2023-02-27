@@ -81,24 +81,6 @@ angular.module('bahmni.common.conceptSet')
                 });
             };
 
-            function checkFormGroupMembers (formGroupMembers, observationGroupMembers) {
-                var checkAlreadyPresent = [];
-                for (var i = 0; i < formGroupMembers.length; i++) {
-                    for (var j = 0; j < observationGroupMembers.length; j++) {
-                        if (formGroupMembers[i].concept.uuid === observationGroupMembers[j].concept.uuid) {
-                            if (formGroupMembers[i].value.uuid && observationGroupMembers[j].value.uuid) {
-                                checkAlreadyPresent[i] = formGroupMembers[i].value.uuid === observationGroupMembers[j].value.uuid;
-                            } else {
-                                checkAlreadyPresent[i] = formGroupMembers[i].value === observationGroupMembers[j].value;
-                            }
-                        }
-                    }
-                }
-                return checkAlreadyPresent.length > 0 && _.every(checkAlreadyPresent, function (value) {
-                    return value;
-                });
-            }
-
             function checkIfFormIsDirty ($scope) {
                 var checkAlreadyPresent = [];
 
@@ -109,13 +91,7 @@ angular.module('bahmni.common.conceptSet')
                     for (var i = 0; i < formObservations.length; i++) {
                         for (var j = 0; j < observations.length; j++) {
                             if (formObservations[i].concept.uuid === observations[j].concept.uuid) {
-                                if (formObservations[i].groupMembers.length > 0 && observations[j].groupMembers.length > 0) {
-                                    checkAlreadyPresent[i] = checkFormGroupMembers(formObservations[i].groupMembers, observations[j].groupMembers);
-                                } else if (formObservations[i].value.uuid && observations[j].value.uuid) {
-                                    checkAlreadyPresent[i] = formObservations[i].value.uuid === observations[j].value.uuid;
-                                } else {
-                                    checkAlreadyPresent[i] = formObservations[i].value === observations[j].value;
-                                }
+                                checkAlreadyPresent[i] = formObservations[i].value === observations[j].value;
                             }
                         }
                     }
