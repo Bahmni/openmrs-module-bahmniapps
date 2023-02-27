@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService',
-        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService) {
+    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService',
+        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
@@ -16,22 +16,18 @@ angular.module('bahmni.clinical')
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.visitUuid = $stateParams.visitUuid;
             var tab = $stateParams.tab;
-            $scope.$on('observations.providers', function (event, observations) {
-                var consultationObservations = observations.filter(function (obs) {
-                    return obs.encounterTypeName === 'Consultation';
-                });
 
-                if (consultationObservations && consultationObservations.length > 0) {
-                    consultationObservations.sort(function (obs1, obs2) {
-                        if (obs1.observationDateTime < obs2.observationDateTime) {
-                            return -1;
-                        } else if (obs1.observationDateTime > obs2.observationDateTime) {
-                            return 1;
-                        } else {
-                            return 0;
-                        }
+            visitService.getVisit($scope.visitUuid, 'custom:(uuid,visitType,startDatetime,stopDatetime,encounters:(uuid,encounterDatetime,provider:(display),encounterType:(display)))').then(function (response) {
+                if (response.data && response.data.encounters) {
+                    var encounters = response.data.encounters;
+                    encounters = encounters.filter(function (enc) {
+                        return enc.encounterType.display == 'Consultation';
+                    }).sort(function (a, b) {
+                        return a.encounterDatetime.localeCompare(b.encounterDatetime);
                     });
-                    $scope.providerNames = consultationObservations[0].providers[0].name;
+                    if (encounters && encounters.length > 0) {
+                        $scope.providerNames = encounters[0].provider.display;
+                    }
                 }
             });
 
