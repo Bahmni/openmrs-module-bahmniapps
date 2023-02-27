@@ -52,7 +52,7 @@ describe('PatientCommonController', function () {
                                 "city": "cityVillage",
                                 "state": "stateProvince",
                                 "postalCode": "postalCode",
-                                "line": "address1"
+                                "line": ["address1"]
                             }
                         }
                     }];
