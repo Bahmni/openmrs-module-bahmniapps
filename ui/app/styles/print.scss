@@ -340,6 +340,21 @@ h3 {
                 display: none;
             }
         }
+        h2.encounter-info {
+            text-align: left;
+            color: $black;
+            font-size: 9.5pt;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            line-height: normal;
+            padding: 0;
+            margin: 0;
+            border: 0;
+            text-decoration: none;
+            [class^="fa-"] {
+                display: none;
+            }
+        }
         .form-field {
             border: 0;
             .time {
@@ -396,6 +411,18 @@ h3 {
                         width: 15%;
                     }
                     &.start-date-heading {
+                        width: 12%;
+                    }
+                    &.enc-sl-no-heading {
+                        width: 10%;
+                    }
+                    &.enc-drug-name-heading{
+                        width: 33%;
+                    }
+                    &.enc-dosage-instructions-heading{
+                        width: 45%;
+                    }
+                    &.enc-start-date-heading {
                         width: 12%;
                     }
 
