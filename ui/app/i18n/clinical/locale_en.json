@@ -305,7 +305,6 @@
     "CONSULTATION_TAB_DIAGNOSES_NOTES_LABEL": "Diagnosis Notes",
     "CONSULTATION_TAB_DISPOSITIONS_NOTES_LABEL": "Disposition Notes",
     "CONSULTATION_TAB_CONSULTATION_NOTES_LABEL": "Consultation Notes",
-    "CONSULTATION_TAB_OBSERVATION_ERROR": "You have unsaved changes under consultation screen.\nPlease save the changes to continue.",
     "NOTES_LABEL": "Notes",
     "SELECTED_ORDERS_LABEL": "Selected Orders",
     "SELECTED_ORDERS_EMPTY_MESSAGE": "Selected orders is empty",

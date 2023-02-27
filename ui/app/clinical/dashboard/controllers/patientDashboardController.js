@@ -3,9 +3,8 @@
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
         '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter',
-        'messagingService', function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
-                  $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext,
-                                      $location, $filter, messagingService) {
+        function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
+                  $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter) {
             $scope.patient = patientContext.patient;
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.activeVisitData = {};
@@ -19,28 +18,6 @@ angular.module('bahmni.clinical')
             $scope.stateChange = function () {
                 return $state.current.name === 'patient.dashboard.show';
             };
-
-            $scope.$on('$stateChangeStart', function (event, next, current) {
-                var navigating = next.url.split("/")[1];
-                var allConsultationBoards = clinicalAppConfigService.getAllConsultationBoards();
-                var outOfConsultationBoard = true;
-                allConsultationBoards.map(function (board) {
-                    var consultationLink = board.url.split("/")[0];
-                    if (navigating.includes(consultationLink)) {
-                        outOfConsultationBoard = false;
-                    }
-                });
-
-                if (next.url.includes("/dashboard") && $stateParams.patientUuid === current.patientUuid) {
-                    outOfConsultationBoard = false;
-                }
-
-                if (outOfConsultationBoard && $state.dirtyConsultationForm) {
-                    messagingService.showMessage('error', "{{'CONSULTATION_TAB_OBSERVATION_ERROR' | translate }}");
-                    event.preventDefault();
-                    spinner.hide(next.spinnerToken);
-                }
-            });
 
             var cleanUpListenerSwitchDashboard = $scope.$on("event:switchDashboard", function (event, dashboard) {
                 $scope.init(dashboard);
