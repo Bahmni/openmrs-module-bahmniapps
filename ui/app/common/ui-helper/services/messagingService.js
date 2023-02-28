@@ -28,7 +28,9 @@ angular.module('bahmni.common.uiHelper')
             if (index >= 0) {
                 this.messages[level].splice(index, 1);
             }
-            this.messages[level].push(messageObject);
+            if (messageObject.value) {
+                this.messages[level].push(messageObject);
+            }
         };
 
         this.createTimeout = function (level, time) {
