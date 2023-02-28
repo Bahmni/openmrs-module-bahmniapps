@@ -48,7 +48,7 @@ angular.module('bahmni.clinical')
 
             var mapError = function (error) {
                 if (error.status >= 500) {
-                    messagingService.showMessage('error', "TERMINOLOGY_SERVER_ERROR_MESSAGE");
+                    messagingService.showMessage('error', "SERVER_ERROR_MESSAGE");
                 }
                 return [];
             };
