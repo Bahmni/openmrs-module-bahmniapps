@@ -187,7 +187,7 @@
     "CLINICAL_DIAGNOSIS_ORDER_SECONDARY": "SECONDARY",
     "CLINICAL_DIAGNOSIS_CERTAINTY_CONFIRMED": "CONFIRMED",
     "CLINICAL_DIAGNOSIS_CERTAINTY_PRESUMED": "PRESUMED",
-    "TERMINOLOGY_SERVER_ERROR_MESSAGE": "Algo inesperado aconteceu. Entre em contato com o administrador.",
+    "SERVER_ERROR_MESSAGE": "Algo inesperado aconteceu. Entre em contato com o administrador.",
 
     "CLINICAL_ACCEPT": "Accept",
     "CLINICAL_ACTION": "Action",
