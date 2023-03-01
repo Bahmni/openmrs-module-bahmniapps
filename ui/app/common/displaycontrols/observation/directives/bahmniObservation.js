@@ -44,6 +44,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                             $scope.bahmniObservations[0].isOpen = true;
                         }
                         providerInfoService.setProvider($scope.bahmniObservations[0].value);
+                        $scope.$emit("observations.providers", observations);
                     }
 
                     var formObservations = _.filter(observations, function (obs) {

@@ -49,11 +49,6 @@ angular.module('bahmni.clinical')
                 handleSampleTypeOther();
             };
 
-            $scope.$on("event:changes-saved", function (event) {
-                $scope.newSpecimen.$setSubmitted();
-                $scope.newSpecimen.$dirty = false;
-            });
-
             $scope.createNewSpecimen = function () {
                 var newSpecimen = new Bahmni.Clinical.Specimen(null, $scope.allSamples);
                 $scope.newSpecimens.push(newSpecimen);

@@ -1,7 +1,23 @@
 <link rel="stylesheet" href="../styles/clinicalPrint.css"/>
-<div class="print-wrapper prescription-print">
+<div class="print-wrapper prescription-print" ng-switch="encounterDrugOrderMap!=null">
+    <div class="print-header" ng-if="printParams">
+        <h1>
+            <img ng-if="printParams.logo" class="logo" ng-src="{{printParams.logo}}" alt="logo">
+            {{printParams.title}}
+        </h1>
+        <div class="clinic-info">
+            <span>{{printParams.locationName}}</span><br>
+            <span class="address">{{printParams.locationAddress}}</span> <br>
+        </div><br>
+        <div class="clinic-info">
+            <span> {{printParams.header}}</span>
+        </div>
+    </div>
     <ng-include src="'common/views/patientInfoPrint.html'"></ng-include>
-    <section bindonce="drugOrders">
+    <section ng-switch-when="true" bindonce="encounterDrugOrderMap">
+        <ng-include src="'common/views/treatmentPrintForPatient.html'"></ng-include>
+    </section>
+    <section ng-switch-default bindonce="drugOrders">
         <ng-include src="'common/views/treatmentSectionPrint.html'"></ng-include>
     </section>
 </div>

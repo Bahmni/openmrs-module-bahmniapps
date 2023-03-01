@@ -16,6 +16,24 @@ angular.module('bahmni.clinical')
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.visitUuid = $stateParams.visitUuid;
             var tab = $stateParams.tab;
+            $scope.$on('observations.providers', function (event, observations) {
+                var consultationObservations = observations.filter(function (obs) {
+                    return obs.encounterTypeName === 'Consultation';
+                });
+
+                if (consultationObservations && consultationObservations.length > 0) {
+                    consultationObservations.sort(function (obs1, obs2) {
+                        if (obs1.observationDateTime < obs2.observationDateTime) {
+                            return -1;
+                        } else if (obs1.observationDateTime > obs2.observationDateTime) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    });
+                    $scope.providerNames = consultationObservations[0].providers[0].name;
+                }
+            });
 
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);
@@ -30,7 +48,6 @@ angular.module('bahmni.clinical')
                 }
                 return true;
             };
-
             $scope.testResultClass = function (line) {
                 var style = {};
                 if ($scope.pendingResults(line)) {
@@ -80,6 +97,7 @@ angular.module('bahmni.clinical')
                     }
                 });
             };
+
             var printOnPrint = function () {
                 if ($stateParams.print) {
                     printer.printFromScope("common/views/visitTabPrint.html", $scope, function () {

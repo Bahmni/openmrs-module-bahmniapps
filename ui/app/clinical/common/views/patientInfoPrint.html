@@ -1,5 +1,5 @@
 <div class="patient-info">
-    <table>
+    <table ng-switch="encounterDrugOrderMap!=null">
         <tr>
             <td>Name: <span class="value">{{patient.name}}</span></td>
             <td>Age: <span class="value">
@@ -13,13 +13,15 @@
             <td>P.O: <span class="value">{{patient.address.address2}}</span></td>
             <td>District: <span class="value">{{patient.address.countyDistrict}}</span></td>
         </tr>
-        <tr>
+        <tr ng-switch-when="true">
+            <td colspan="3">Visit Date: <span class="value">{{(visitDate | bahmniDate) || (visitSummary.startDateTime | bahmniDate)}}</span></td>
+        </tr>
+        <tr ng-switch-default>
             <td colspan="2">Visit Date: <span class="value">{{(visitDate | bahmniDate) || (visitSummary.startDateTime | bahmniDate)}}</span></td>
             <td>Doctor Name:
-                <span ng-show="$parent.currentUser.username || drugOrders[drugOrders.length-1].provider[0].name" class="ng-binding">
-                   {{provider[0].name }}
+                <span ng-show="$providerNames || drugOrders[drugOrders.length-1].provider.name" class="ng-binding">
+                    {{providerNames ? providerNames : drugOrders[drugOrders.length-1].provider.name }}
                 </span>
-
             </td>
         </tr>
     </table>
