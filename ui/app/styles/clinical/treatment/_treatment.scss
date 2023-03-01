@@ -59,6 +59,10 @@
 
     .drug-name {
         width: auto;
+
+        @media screen and (min-width: 1200px) {
+            max-width: calc(100% - 310px);
+        }
     }
 
     .dosage-details {
