@@ -202,11 +202,8 @@
     "CLINICAL_DIAGNOSIS_PRESUMED": "PRESUNTA",
     "CLINICAL_ACCEPT": "Aceptar",
     "CLINICAL_ACTION": "Acción",
-    "TERMINOLOGY_SERVER_ERROR_MESSAGE": "El servidor de terminología no está disponible en este momento. Por favor, inténtelo de nuevo más tarde.",
-    "TERMINOLOGY_SERVER_NOT_FOUND": "El servidor de terminología no está disponible en este momento. Por favor, inténtelo de nuevo más tarde.",
-    "TERMINOLOGY_SERVER_ERROR": "Sucedió algo inesperado. Póngase en contacto con el administrador del servidor de terminología",
-    "TERMINOLOGY_SERVICES_CONFIG_INVALID": "Configuración incorrecta en la propiedad global. Póngase en contacto con el administrador",
-    "TERMINOLOGY_SERVICES_AT_LEAST_THREE_CHARS": "El término de búsqueda debe tener al menos 3 caracteres",
+    "SERVER_ERROR_MESSAGE": "Sucedió algo inesperado. Póngase en contacto con el administrador.",
+
     "CONDITION_LIST_DISPLAY_CONTROL_TITLE": "Condiciones",
     "CONDITION_LIST_ACTIVE": "Activo",
     "CONDITION_LIST_INACTIVE": "Inactivo",

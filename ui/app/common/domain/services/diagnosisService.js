@@ -25,6 +25,10 @@ angular.module('bahmni.common.domain')
             var url = Bahmni.Common.Constants.bahmniDeleteDiagnosisUrl;
             return $http.get(url, {
                 params: {obsUuid: obsUuid}
+            }, function (response) {
+                return response;
+            }, function (error) {
+                return error;
             });
         };
 

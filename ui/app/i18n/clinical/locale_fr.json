@@ -247,11 +247,8 @@
   "CLINICAL_ORDER": "Ordre",
   "CLINICAL_CERTAINTY": "CERTITUDE",
   "CLINICAL_STATUS": "STATUT",
-  "TERMINOLOGY_SERVER_ERROR_MESSAGE": "Le serveur terminologique n'est pas disponible pour le moment. Veuillez réessayer plus tard.",
-  "TERMINOLOGY_SERVER_NOT_FOUND": "Le serveur terminologique n'est pas disponible pour le moment. Veuillez réessayer plus tard.",
-  "TERMINOLOGY_SERVER_ERROR": "Quelque chose d'inattendu s'est produit. Veuillez contacter l'administrateur du serveur de terminologie",
-  "TERMINOLOGY_SERVICES_CONFIG_INVALID": "Mauvaise configuration dans la propriété globale. Veuillez contacter l'administrateur",
-  "TERMINOLOGY_SERVICES_AT_LEAST_THREE_CHARS": "Le terme de recherche doit comporter au moins 3 caractères",
+  "SERVER_ERROR_MESSAGE": "Quelque chose d'inattendu s'est produit. Veuillez contacter l'administrateur.",
+
   "EROSION": "ÉROSION",
   "OBSTRETRICS": "Obstétrique",
   "TUBERCULOSIS_FOLLOW_UP": "Tuberculose, visite de suivi",
