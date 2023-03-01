@@ -6,14 +6,15 @@ angular.module('bahmni.clinical')
             var treatmentConfigParams = $scope.dashboard.getSectionByType("treatment") || {};
             $scope.isEmailPresent = $scope.patient.email ? true : false;
             var patientParams = {"patientUuid": $scope.patient.uuid, "isEmailPresent": $scope.isEmailPresent};
+            var sharePrescriptionToggles = {"prescriptionEmailToggle": $rootScope.prescriptionEmailToggle};
             var printParams = treatmentConfigParams.prescriptionPrint || {};
-            printParams.locationName = $rootScope.locationName;
-            printParams.locationAddress = $rootScope.locationAddress;
+            printParams.locationName = $rootScope.facilityLocation.name;
+            printParams.locationAddress = $rootScope.facilityLocation.attributes[0] ? $rootScope.facilityLocation.attributes[0].display.split(":")[1].trim() : null;
 
             $scope.dashboardConfig = {};
             $scope.expandedViewConfig = {};
-            _.extend($scope.dashboardConfig, treatmentConfigParams.dashboardConfig || {}, patientParams);
-            _.extend($scope.expandedViewConfig, treatmentConfigParams.expandedViewConfig || {}, patientParams);
+            _.extend($scope.dashboardConfig, treatmentConfigParams.dashboardConfig || {}, patientParams, sharePrescriptionToggles);
+            _.extend($scope.expandedViewConfig, treatmentConfigParams.expandedViewConfig || {}, patientParams, sharePrescriptionToggles);
 
             $scope.openSummaryDialog = function () {
                 ngDialog.open({

@@ -29,8 +29,8 @@
         var getSharePrescriptionMailContent = function (prescriptionDetails) {
             var message = $translate.instant(Bahmni.Clinical.Constants.sharePrescriptionMailContent);
             message = message.replace("#recipientName", prescriptionDetails.patient.name);
-            message = message.replaceAll("#locationName", $rootScope.locationName);
-            message = message.replace("#locationAddress", $rootScope.locationAddress ? $rootScope.locationAddress : "");
+            message = message.replaceAll("#locationName", $rootScope.facilityLocation.name);
+            message = message.replace("#locationAddress", $rootScope.facilityLocation.attributes[0] ? $rootScope.facilityLocation.attributes[0].display.split(":")[1].trim() : "");
             message = message.replace("#visitDate", $filter("bahmniDate")(prescriptionDetails.visitDate));
             return message;
         };

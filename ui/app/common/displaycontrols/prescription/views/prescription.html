@@ -1,14 +1,11 @@
 <link rel="stylesheet" href="../styles/clinicalPrint.css"/>
 <div class="print-wrapper prescription-print" ng-switch="encounterDrugOrderMap!=null">
     <div class="print-header" ng-if="printParams">
-        <h1>
-            <img ng-if="printParams.logo" class="logo" ng-src="{{printParams.logo}}" alt="logo">
-            {{printParams.title}}
-        </h1>
+        <h1 class="print-title-with-logo"><img height="35px" width="35px" ng-if="printParams.logo" ng-src="{{printParams.logo}}" alt="logo"/>{{printParams.title}}</h1>
         <div class="clinic-info">
-            <span>{{printParams.locationName}}</span><br>
-            <span class="address">{{printParams.locationAddress}}</span> <br>
-        </div><br>
+            <span>{{printParams.locationName}}</span>
+            <span class="address">{{printParams.locationAddress}}</span>
+        </div>
         <div class="clinic-info">
             <span> {{printParams.header}}</span>
         </div>

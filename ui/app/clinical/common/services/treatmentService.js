@@ -153,7 +153,7 @@ angular.module('bahmni.clinical')
                                 "data": btoa(pdfContent),
                                 "url": null
                             }];
-                            var subject = "Sending Prescriptions";
+                            var subject = "Prescription for consultation at " + $rootScope.facilityLocation.name + " on " + $filter("bahmniDate")(prescriptionDetails.visitDate);
                             var body = transmissionService.getSharePrescriptionMailContent(prescriptionDetails);
                             var emailUrl = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.sendViaEmailUrl, {'patientUuid': prescriptionDetails.patient.uuid});
                             transmissionService.sendEmail(attachments, subject, body, emailUrl, [], []);

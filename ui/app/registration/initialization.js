@@ -62,7 +62,7 @@ angular.module('bahmni.registration').factory('initialization',
             };
 
             var facilityVisitLocation = function () {
-                return locationService.getFacilityVisitLocation($rootScope.loggedInLocation.uuid).then(function (response) {
+                return locationService.getFacilityVisitLocation().then(function (response) {
                     $rootScope.facilityVisitLocation = response;
                 });
             };
