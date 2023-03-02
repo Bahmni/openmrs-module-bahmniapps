@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService',
-        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService) {
+    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService',
+        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
@@ -16,14 +16,16 @@ angular.module('bahmni.clinical')
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.visitUuid = $stateParams.visitUuid;
             var tab = $stateParams.tab;
-            var encounterType = appService.getAppDescriptor().getConfigValue("encounterAttributes").encounterType;
-
+            var encounterTypes = visitConfig.currentTab.encounterContext ? visitConfig.currentTab.encounterContext.filterEncounterTypes : null;
             visitService.getVisit($scope.visitUuid, 'custom:(uuid,visitType,startDatetime,stopDatetime,encounters:(uuid,encounterDatetime,provider:(display),encounterType:(display)))').then(function (response) {
                 if (response.data && response.data.encounters) {
                     var encounters = response.data.encounters;
-                    encounters = encounters.filter(function (enc) {
-                        return enc.encounterType.display == encounterType;
-                    }).sort(function (a, b) {
+                    if (encounterTypes) {
+                        encounters = encounters.filter(function (enc) {
+                            return encounterTypes.includes(enc.encounterType.display);
+                        });
+                    }
+                    encounters = encounters.sort(function (a, b) {
                         return a.encounterDatetime.localeCompare(b.encounterDatetime);
                     });
                     if (encounters && encounters.length > 0) {

@@ -29,8 +29,6 @@ describe('VisitController', function () {
             }
         }
     };
-    var appService;
-    var appDescriptor;
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('stateMock'));
@@ -71,11 +69,6 @@ describe('VisitController', function () {
                         }]}});
         });
         scope.currentProvider = {uuid: ''};
-        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getExtensions','getConfigValue','encounterAttributes']);
-        appDescriptor.getExtensions.and.returnValue([]);
-        appDescriptor.getConfigValue.and.returnValue("Consultation");
-        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-        appService.getAppDescriptor.and.returnValue(appDescriptor);
         controller =   $controller('VisitController', {
                 $scope: scope,
                 $state: state,
@@ -88,8 +81,7 @@ describe('VisitController', function () {
                 visitConfig: visitTabConfig,
                 visitHistory:[],
                 $stateParams: {},
-                locationService: locationService,
-                appService: appService
+                locationService: locationService
             });
     }]));
 
