@@ -82,36 +82,69 @@ describe('DateUtil', function () {
         });
 
         describe('when fromDate is february', function () {
+            it("should calculate difference between dates when fromDate and toDate is leap year", function () {
+                var fromDate = new Date();
+                fromDate.setDate(28);
+                fromDate.setMonth(1);
+                fromDate.setFullYear(2000);
+                var toDate = new Date();
+                toDate.setDate(2);
+                toDate.setMonth(1);
+                toDate.setFullYear(2020);
+                var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
+
+                expect(period.years).toBe(19);
+                expect(period.months).toBe(11);
+                expect(period.days).toBe(3);
+            });
+
+            it("should calculate difference between dates when fromDate and toDate is non-leap year", function () {
+                var fromDate = new Date();
+                fromDate.setDate(26);
+                fromDate.setMonth(1);
+                fromDate.setFullYear(2011);
+                var toDate = new Date();
+                toDate.setDate(2);
+                toDate.setMonth(1);
+                toDate.setFullYear(2023);
+                var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
+
+                expect(period.years).toBe(11);
+                expect(period.months).toBe(11);
+                expect(period.days).toBe(4);
+            });
+
             it("should calculate difference between dates when fromDate is non-leap year", function () {
                 var fromDate = new Date();
                 fromDate.setDate(26);
                 fromDate.setMonth(1);
                 fromDate.setFullYear(2011);
                 var toDate = new Date();
-                toDate.setDate(15);
-                toDate.setMonth(2);
-                toDate.setFullYear(2011);
+                toDate.setDate(29);
+                toDate.setMonth(1);
+                toDate.setFullYear(2020);
                 var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
-                expect(period.years).toBe(0);
+                expect(period.years).toBe(9);
                 expect(period.months).toBe(0);
-                expect(period.days).toBe(17);
+                expect(period.days).toBe(3);
             });
 
             it("should calculate difference between dates when fromDate is leap year", function () {
                 var fromDate = new Date();
-                fromDate.setDate(26);
+                fromDate.setDate(25);
                 fromDate.setMonth(1);
-                fromDate.setFullYear(2012);
+                fromDate.setFullYear(2000);
                 var toDate = new Date();
-                toDate.setDate(15);
+                toDate.setDate(2);
                 toDate.setMonth(2);
-                toDate.setFullYear(2012);
+                toDate.setFullYear(2023);
+
                 var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
-                expect(period.years).toBe(0);
+                expect(period.years).toBe(23);
                 expect(period.months).toBe(0);
-                expect(period.days).toBe(18);
+                expect(period.days).toBe(6);
             });
         });
 
