@@ -17,11 +17,13 @@ angular.module('bahmni.clinical').factory('initialization',
                         'stoppedOrderReasonConfig',
                         'genderMap',
                         'relationshipTypeMap',
-                        'defaultEncounterType'
+                        'defaultEncounterType',
+                        'prescriptionEmailToggle'
                     ]).then(function () {
                         $rootScope.genderMap = configurations.genderMap();
                         $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
                         $rootScope.diagnosisStatus = (appService.getAppDescriptor().getConfig("diagnosisStatus") && appService.getAppDescriptor().getConfig("diagnosisStatus").value || "RULED OUT");
+                        $rootScope.prescriptionEmailToggle = configurations.prescriptionEmailToggle();
                     });
                 };
 
@@ -36,10 +38,17 @@ angular.module('bahmni.clinical').factory('initialization',
                     }, config, ["dashboard", "visit", "medication"]);
                 };
 
-                var getLocationDetails = function () {
-                    locationService.getAllByTag("Visit Location").then(function (response) {
-                        $rootScope.locationName = response.data.results[0].name;
-                        $rootScope.locationAddress = response.data.results[0].attributes[0] ? response.data.results[0].attributes[0].display.split(":")[1].trim() : null;
+                var facilityLocation = function () {
+                    return locationService.getFacilityVisitLocation(location.uuid).then(function (response) {
+                        if (response.uuid) {
+                            locationService.getByUuid(response.uuid).then(function (location) {
+                                $rootScope.facilityLocation = location;
+                            });
+                        } else {
+                            locationService.getLoggedInLocation().then(function (location) {
+                                $rootScope.facilityLocation = location;
+                            });
+                        }
                     });
                 };
 
@@ -54,7 +63,7 @@ angular.module('bahmni.clinical').factory('initialization',
                     .then(initApp)
                     .then(checkPrivilege)
                     .then(loadConfigPromise)
-                    .then(getLocationDetails)
+                    .then(facilityLocation)
                     .then(mergeFormConditions)
                     .then(orderTypeService.loadAll));
             };
