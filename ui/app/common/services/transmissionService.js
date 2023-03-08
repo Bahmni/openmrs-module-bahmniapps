@@ -17,9 +17,9 @@
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             }).then(function (response) {
                 if (response.data.statusLine.statusCode != 200) {
-                    messagingService.showMessage("error", "Unable to send email");
+                    messagingService.showMessage("error", response.data.statusLine.reasonPhrase);
                 } else {
-                    messagingService.showMessage("info", "Mail sent successfully");
+                    messagingService.showMessage("info", response.data.statusLine.reasonPhrase);
                 }
                 deferred.resolve(response);
             });
