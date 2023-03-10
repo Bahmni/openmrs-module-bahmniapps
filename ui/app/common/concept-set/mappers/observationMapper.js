@@ -1,5 +1,4 @@
 'use strict';
-
 Bahmni.ConceptSet.ObservationMapper = function () {
     var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
     var self = this;
@@ -7,7 +6,6 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     this.getObservationsForView = function (observations, conceptSetConfig) {
         return internalMapForDisplay(observations, conceptSetConfig);
     };
-
     var internalMapForDisplay = function (observations, conceptSetConfig) {
         var observationsForDisplay = [];
         _.forEach(observations, function (savedObs) {
@@ -42,41 +40,34 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         });
         return observationsForDisplay;
     };
-
     this.map = function (observations, rootConcept, conceptSetConfig) {
         var savedObs = findInSavedObservation(rootConcept, observations)[0];
         return mapObservation(rootConcept, savedObs, conceptSetConfig || {});
     };
-
     var findInSavedObservation = function (concept, observations) {
         return _.filter(observations, function (obs) {
             return obs && obs.concept && concept.uuid === obs.concept.uuid;
         });
     };
-
     var mapObservation = function (concept, savedObs, conceptSetConfig) {
         var obs = null;
         if (savedObs && (savedObs.isObservation || savedObs.isObservationNode)) {
             return savedObs;
         }
         var mappedGroupMembers = concept && concept.set ? mapObservationGroupMembers(savedObs ? savedObs.groupMembers : [], concept, conceptSetConfig) : [];
-
         if (concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName) {
             obs = newObservationNode(concept, savedObs, conceptSetConfig, mappedGroupMembers);
         } else {
             obs = newObservation(concept, savedObs, conceptSetConfig, mappedGroupMembers);
             new Bahmni.ConceptSet.MultiSelectObservations(conceptSetConfig).map(mappedGroupMembers);
         }
-
         mapTabularObs(mappedGroupMembers, concept, obs, conceptSetConfig);
         return obs;
     };
-
     function mapTabularObs (mappedGroupMembers, concept, obs, conceptSetConfig) {
         var tabularObsGroups = _.filter(mappedGroupMembers, function (member) {
             return conceptSetConfig[member.concept.name] && conceptSetConfig[member.concept.name]['isTabular'];
         });
-
         if (tabularObsGroups.length > 0) {
             var array = _.map(concept.setMembers, function (member) {
                 return member.name.name;
@@ -84,11 +75,9 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             tabularObsGroups.forEach(function (group) {
                 group.hidden = true;
             });
-
             var groupedObsGroups = _.groupBy(tabularObsGroups, function (group) {
                 return group.concept.name;
             });
-
             _.values(groupedObsGroups).forEach(function (groups) {
                 var tabularObservations = new Bahmni.ConceptSet.TabularObservations(groups, obs, conceptSetConfig);
                 obs.groupMembers.push(tabularObservations);
@@ -100,7 +89,6 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             obs.groupMembers.push.apply(obs.groupMembers, sortedGroupMembers);
         }
     }
-
     var mapObservationGroupMembers = function (observations, parentConcept, conceptSetConfig) {
         var observationGroupMembers = [];
         var conceptSetMembers = parentConcept.setMembers;
@@ -117,14 +105,12 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         });
         return observationGroupMembers;
     };
-
     var getDatatype = function (concept) {
         if (concept.dataType) {
             return concept.dataType;
         }
         return concept.datatype && concept.datatype.name;
     };
-
     // tODO : remove conceptUIConfig
     var newObservation = function (concept, savedObs, conceptSetConfig, mappedGroupMembers) {
         var observation = buildObservation(concept, savedObs, mappedGroupMembers);
@@ -134,19 +120,16 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         }
         return obs;
     };
-
     // TODO : remove conceptUIConfig
     var newObservationNode = function (concept, savedObsNode, conceptSetConfig, mappedGroupMembers) {
         var observation = buildObservation(concept, savedObsNode, mappedGroupMembers);
         return new Bahmni.ConceptSet.ObservationNode(observation, savedObsNode, conceptSetConfig, concept);
     };
-
     var showAddMoreButton = function (rootObservation) {
         var observation = this;
         var lastObservationByLabel = _.findLast(rootObservation.groupMembers, {label: observation.label});
         return lastObservationByLabel.uuid === observation.uuid;
     };
-
     function buildObservation (concept, savedObs, mappedGroupMembers) {
         var comment = savedObs ? savedObs.comment : null;
         return {
@@ -159,13 +142,13 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             showAddMoreButton: showAddMoreButton
         };
     }
-
     var createObservationForDisplay = function (observation, concept) {
         if (observation.value == null) {
             return;
         }
-        var observationValue = getObservationDisplayValue(observation);
-        observationValue = observation.durationObs ? observationValue + " " + getDurationDisplayValue(observation.durationObs) : observationValue;
+        var gridObservationDisplayValue = getGridObservationDisplayValue(observation);
+        var observationDisplayValue = getChiefComplaintString(gridObservationDisplayValue);
+        var observationValue = observation.durationObs ? observationDisplayValue + " " + getDurationDisplayValue(observation.durationObs) : observationDisplayValue;
         return {
             "value": observationValue, "abnormalObs": observation.abnormalObs, "duration": observation.durationObs,
             "provider": observation.provider, "label": getLabel(observation.concept),
@@ -173,7 +156,6 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             "comment": observation.comment, "uuid": observation.uuid
         };
     };
-
     var getObservationDisplayValue = function (observation) {
         if (observation.isBoolean || observation.type === "Boolean") {
             return observation.value === true ? "Yes" : "No";
@@ -187,22 +169,15 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         }
         return observation.value.shortName || observation.value.name || observation.value;
     };
-
-    var getDurationDisplayValue = function (duration) {
-        var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(duration.value);
-        if (durationForDisplay["value"] && durationForDisplay["unitName"]) {
-            return "since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"];
-        }
-        return "";
-    };
-
-    this.getGridObservationDisplayValue = function (observation) {
-        var memberValues = _.compact(_.map(observation.groupMembers, function (member) {
+    var getChiefComplaintString = function(observationValues) {
+        return observationValues.compliant + " since " + observationValues.duration + " " + observationValues.units;
+    }
+    var getGridObservationDisplayValue = function (observation) {
+        var groupMembers = _.compact(_.map(observation.groupMembers, function (member) {
             return getObservationDisplayValue(member);
         }));
-        return memberValues.join(', ');
+        return {'compliant':groupMembers[0],'duration':groupMembers[1],'units':groupMembers[2],};
     };
-
     var getLabel = function (concept) {
         var mappedConcept = conceptMapper.map(concept);
         return mappedConcept.shortName || mappedConcept.name;
