@@ -169,14 +169,18 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         }
         return observation.value.shortName || observation.value.name || observation.value;
     };
-    var getChiefComplaintString = function(observationValues) {
+    var getChiefComplaintString = function (observationValues) {
         return observationValues.compliant + " since " + observationValues.duration + " " + observationValues.units;
-    }
+    };
     var getGridObservationDisplayValue = function (observation) {
         var groupMembers = _.compact(_.map(observation.groupMembers, function (member) {
             return getObservationDisplayValue(member);
         }));
-        return {'compliant':groupMembers[0],'duration':groupMembers[1],'units':groupMembers[2],};
+        return {
+            'compliant': groupMembers[0],
+            'duration': groupMembers[1],
+            'units': groupMembers[2]
+        };
     };
     var getLabel = function (concept) {
         var mappedConcept = conceptMapper.map(concept);
