@@ -27,6 +27,12 @@ describe("ConceptSetObservationMapper", function() {
             "label": "Vitals",
             "possibleAnswers": [],
             "groupMembers": [{
+                "concept": comorbidityConcept,
+                "label": "Comorbidity",
+                "groupMembers": [],
+                "value": diabetesConcept,
+                "voided": false
+            },{
                 "concept": systolicConcept,
                 "label": "Systolic",
                 "groupMembers": [],
@@ -36,13 +42,41 @@ describe("ConceptSetObservationMapper", function() {
                 "concept": comorbidityConcept,
                 "label": "Comorbidity",
                 "groupMembers": [],
-                "value": diabetesConcept,
+                "value": hyperTensionConcept,
+                "voided": false
+            }],
+            "comment": null,
+            "voided": false
+        }];
+    };
+
+    var chiefComplaintObs = function() {
+        var headache = buildConcept("Headache", [], []);
+        var chiefComplaint = buildConcept("Chief Complaint", [], [], "Misc", "Coded");
+        var duration = buildConcept("Chief Complaint Duration", [], [], "Duration", "Numeric");
+        var chiefComplaintData = buildConcept("Chief Complaint Data", [chiefComplaint, duration], [], "Concept Details");
+        var unit = buildConcept('Chief Complaint Duration',[],[],"Units", "Coded");
+        var days = buildConcept('Days',[],[]);
+        return [{
+            "concept": chiefComplaintData,
+            "label": "Chief Complaint Data",
+            "groupMembers": [{
+                "concept": chiefComplaint,
+                "label": "Chief Complaint",
+                "groupMembers": [],
+                "value": headache,
                 "voided": false
             },{
-                "concept": comorbidityConcept,
-                "label": "Comorbidity",
+                "concept": duration,
+                "label": "Duration",
                 "groupMembers": [],
-                "value": hyperTensionConcept,
+                "value": 30,
+                "voided": false
+            },{
+                "concept": unit,
+                "label": "Units",
+                "groupMembers": [],
+                "value": days,
                 "voided": false
             }],
             "comment": null,
@@ -71,34 +105,12 @@ describe("ConceptSetObservationMapper", function() {
 
     it("should map ObservationNode", function() {
         var headache = buildConcept("Headache", [], []);
-        var chiefComplaint = buildConcept("Chief Complaint", [], [], "Misc", "Coded");
-        var duration = buildConcept("Chief Complaint Duration", [], [], "Duration", "Numeric");
-        var chiefComplaintData = buildConcept("Chief Complaint Data", [chiefComplaint, duration], [], "Concept Details");
-
-        var obs = [{
-            "concept": chiefComplaintData,
-            "label": "Chief Complaint Data",
-            "groupMembers": [{
-                "concept": chiefComplaint,
-                "label": "Chief Complaint",
-                "groupMembers": [],
-                "value": headache,
-                "voided": false
-            },{
-                "concept": duration,
-                "label": "Duration",
-                "groupMembers": [],
-                "value": 30,
-                "voided": false
-            }],
-            "comment": null,
-            "voided": false
-        }];
+        var obs = chiefComplaintObs();
 
         var rootConcept = obs[0].concept;
         var mappedObs = mapper.map(obs, rootConcept);
 
-        expect(mappedObs.groupMembers.length).toBe(2);
+        expect(mappedObs.groupMembers.length).toBe(3);
         expect(mappedObs).toEqual(jasmine.any(Bahmni.ConceptSet.ObservationNode));
         expect(mappedObs.value).toEqual(headache.name);
     });
@@ -178,23 +190,23 @@ describe("ConceptSetObservationMapper", function() {
         var obs = mapper.getObservationsForView(savedObs(), {});
 
         expect(obs.length).toBe(3);
-        expect(obs[0].value).toBe("90");
-        expect(obs[0].label).toBe("Systolic");
 
-        expect(obs[1].value).toEqual("Diabetes");
-        expect(obs[1].label).toBe("Comorbidity");
-
+        expect(obs[0].value).toEqual("Diabetes");
+        expect(obs[0].label).toBe("Comorbidity");
+        expect(obs[1].value).toBe("90");
+        expect(obs[1].label).toBe("Systolic");
         expect(obs[2].value).toEqual("HyperTension");
         expect(obs[2].label).toBe("Comorbidity");
     });
 
     it("should get observations for view when grid config is there", function () {
-        var savedObservations = savedObs();
-        savedObservations[0].concept.name = "Vitals";
-        var obs = mapper.getObservationsForView(savedObservations, {"Vitals": {grid: true}});
+        var chiefComplaintObservations = chiefComplaintObs();
+
+        chiefComplaintObservations[0].concept.name = "Vitals";
+        var obs = mapper.getObservationsForView(chiefComplaintObservations, {"Vitals": {grid: true}});
 
         expect(obs.length).toBe(1);
-        expect(obs[0].value).toBe("90, Diabetes, HyperTension");
+        expect(obs[0].value).toBe("Headache since 30 Days");
         expect(obs[0].label).toBe("Vitals");
 
     })
