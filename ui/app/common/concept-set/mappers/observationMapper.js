@@ -195,7 +195,6 @@ Bahmni.ConceptSet.ObservationMapper = function () {
 
     this.getGridObservationDisplayValue = function (observation) {
         var memberValues = _.compact(_.map(observation.groupMembers, function (member) {
-            console.log(member);
             return getObservationDisplayValue(member);
         }));
         return memberValues[0] + " since " + memberValues[1] + " " + memberValues[2];
