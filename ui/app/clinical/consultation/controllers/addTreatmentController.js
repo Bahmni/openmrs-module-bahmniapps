@@ -490,11 +490,169 @@ angular.module('bahmni.clinical')
                 return _.flatten(listOfDrugSynonyms);
             };
 
+            var generatePatientResource = function (patient) {
+                var patientResource = {
+                    resourceType: 'Patient',
+                    id: patient.uuid,
+                    name: [
+                        {
+                            use: 'official',
+                            family: patient.familyName,
+                            given: [patient.givenName]
+                        }
+                    ],
+                    gender: patient.gender === 'M' ? 'male' : 'female'
+                };
+                if (patient.birthdate) {
+                    patientResource.birthDate = new Date(patient.birthdate).toLocaleDateString('en-CA');
+                }
+                return {
+                    resource: patientResource
+                };
+            };
+
+            var createMedicationRequest = function (medication, patientUuid) {
+                var medicationRequest = {
+                    resourceType: 'MedicationRequest',
+                    id: medication.uuid,
+                    status: 'active',
+                    intent: 'order',
+                    subject: {
+                        reference: 'Patient/' + patientUuid
+                    },
+                    medicationCodeableConcept: {
+                        coding: [
+                            {
+                                code: medication.drug.uuid,
+                                display: medication.drug.name
+                            }
+                        ],
+                        text: medication.drugNameDisplay
+                    }
+                };
+                return {
+                    resource: medicationRequest
+                };
+            };
+
+            var createObservationResource = function (observation, patientUuid) {
+                var observationResource = {
+                    resourceType: 'Observation',
+                    id: observation.uuid,
+                    status: 'final',
+                    category: [
+                        {
+                            coding: [
+                                {
+                                    code: observation.concept.name,
+                                    display: observation.concept.name
+                                }
+                            ]
+                        }
+                    ],
+                    code: {
+                        coding: [
+                            {
+                                code: observation.value.uuid,
+                                display: observation.value.name
+                            }
+                        ],
+                        text: observation.value.name
+                    },
+                    subject: {
+                        reference: 'Patient/' + patientUuid
+                    }
+                };
+                return {
+                    resource: observationResource
+                };
+            };
+
+            var createConditionResource = function (condition, patientUuid) {
+                var conditionResource = {
+                    resourceType: 'Condition',
+                    id: condition.uuid,
+                    clinicalStatus: condition.status,
+                    code: {
+                        coding: [
+                            {
+                                code: condition.concept.uuid,
+                                display: condition.concept.name
+                            }
+                        ],
+                        text: condition.concept.name
+                    },
+                    subject: {
+                        reference: 'Patient/' + patientUuid
+                    }
+                };
+                if (angular.isNumber(condition.onSetDate) === 'number') {
+                    conditionResource.onsetDateTime = new Date(condition.onSetDate).toLocaleDateString('en-CA');
+                }
+                if (!conditionResource.onsetDateTime) {
+                    delete conditionResource.onsetDateTime;
+                }
+                return {
+                    resource: conditionResource
+                };
+            };
+
+            var createFhirBundle = function (patient, conditions, observations, medications) {
+                var patientResource = generatePatientResource(patient);
+                var encounterResource = conditions.map(function (condition) {
+                    return createConditionResource(condition, patient.uuid);
+                });
+                var observationResources = observations.map(function (observation) {
+                    return createObservationResource(observation, patient.uuid);
+                });
+                var medicationResources = medications.map(function (medication) {
+                    return createMedicationRequest(medication, patient.uuid);
+                });
+                var bundle = {
+                    resourceType: 'Bundle',
+                    type: 'collection',
+                    entry: [patientResource].concat(encounterResource, observationResources, medicationResources)
+                };
+                return bundle;
+            };
+
+            var createParams = function (consultationData) {
+                var patient = consultationData.patient;
+                var conditions = consultationData.conditions;
+                var observations = consultationData.observations.map(function (observation) {
+                    if (
+                        observation.groupMembers &&
+                        observation.groupMembers.length > 0 &&
+                        observation.groupMembers[0].groupMembers &&
+                        observation.groupMembers[0].groupMembers.length > 0
+                    ) {
+                        return observation.groupMembers[0].groupMembers[0];
+                    } else {
+                        return null;
+                    }
+                })
+                .filter(function (observation) {
+                    return observation;
+                });
+                var medications = consultationData.drugOrderGroups.map(group => group.drugOrders).flat();
+                return {
+                    patient,
+                    conditions,
+                    observations,
+                    medications
+                };
+            };
+
             (function () {
                 var selectedItem;
                 $scope.onSelect = function (item) {
                     selectedItem = item;
                     $scope.onChange();
+                    var consultationData = angular.copy($scope.consultation);
+                    consultationData.patient = $scope.patient;
+                    var params = createParams(consultationData);
+                    var bundle = createFhirBundle(params.patient, params.conditions, params.observations, params.medications);
+                    console.log('bundle', bundle);
                 };
                 $scope.onAccept = function () {
                     $scope.treatment.acceptedItem = $scope.treatment.drugNameDisplay;
@@ -553,7 +711,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.toggleDrugOrderAttribute = function (orderAttribute) {
-                orderAttribute.value = orderAttribute.value ? false : true;
+                orderAttribute.value = !orderAttribute.value;
             };
             contextChangeHandler.add(contextChange);
 
