@@ -23,7 +23,7 @@ Bahmni.Registration.Constants = {
     enableWhatsAppButton: false,
     enableDashboardRedirect: false,
     dashboardUrl: "/bahmni/clinical/index.html#/default/patient/{{patientUuid}}/dashboard",
-    certificateHeader: "Address Header"
+    certificateHeader: "Print Header"
 };
 
 Bahmni.Registration.Constants.Errors = {

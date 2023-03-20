@@ -65,7 +65,7 @@ describe('VisitController', function () {
         locationService.getAllByTag.and.callFake(function () {
             return specUtil.respondWith({"data": {"results": [
                         {name: "Bahmni", attributes: [
-                                { display: "Address Header: xyz" }]
+                                { display: "Print Header: xyz" }]
                         }]}});
         });
         scope.currentProvider = {uuid: ''};
