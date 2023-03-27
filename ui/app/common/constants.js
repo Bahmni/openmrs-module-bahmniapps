@@ -81,6 +81,7 @@ Bahmni.Common = Bahmni.Common || {};
         drugOrderConfigurationUrl: BAHMNI_CORE + "/config/drugOrders",
         emrEncounterUrl: EMRAPI + "/encounter",
         encounterUrl: RESTWS_V1 + "/encounter",
+        cdssUrl: RESTWS_V1 + "/cdss",
         locationUrl: RESTWS_V1 + "/location",
         bahmniVisitLocationUrl: BAHMNI_CORE + "/visitLocation",
         bahmniFacilityLocationUrl: BAHMNI_CORE + "/facilityLocation",
