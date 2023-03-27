@@ -513,7 +513,7 @@ angular.module('bahmni.clinical')
                     medicationCodeableConcept: {
                         id: medication.drug.uuid,
                         coding: [
-                           coding
+                            coding
                         ],
                         text: medication.drugNameDisplay
                     }
@@ -523,51 +523,19 @@ angular.module('bahmni.clinical')
                 };
             };
             var extractCodeInfo = function (medication) {
-                if(!(medication.drug.drugReferenceMaps && medication.drug.drugReferenceMaps.length > 0 )) {
+                if (!(medication.drug.drugReferenceMaps && medication.drug.drugReferenceMaps.length > 0)) {
                     return {
                         code: medication.drug.uuid,
                         display: medication.drug.name
-                    }
+                    };
                 } else {
                     var drugReferenceMap = medication.drug.drugReferenceMaps[0];
-                    return  {
+                    return {
                         system: 'http://snomed.info/sct',
                         code: drugReferenceMap.conceptReferenceTerm && drugReferenceMap.conceptReferenceTerm.display && drugReferenceMap.conceptReferenceTerm.display.split(':')[1].trim(),
                         display: medication.drug.name
-                    }
+                    };
                 }
-            }
-            var createObservationResource = function (observation, patientUuid) {
-                var observationResource = {
-                    resourceType: 'Observation',
-                    id: observation.uuid,
-                    status: 'final',
-                    category: [
-                        {
-                            coding: [
-                                {
-                                    code: observation.concept.name,
-                                    display: observation.concept.name
-                                }
-                            ]
-                        }
-                    ],
-                    code: {
-                        coding: [
-                            {
-                                code: observation.value.uuid,
-                                display: observation.value.name
-                            }
-                        ],
-                        text: observation.value.name
-                    },
-                    subject: {
-                        reference: 'Patient/' + patientUuid
-                    }
-                };
-                return {
-                    resource: observationResource
-                };
             };
 
             var createConditionResource = function (condition, patientUuid, isDiagnosis) {
@@ -586,12 +554,12 @@ angular.module('bahmni.clinical')
                     code: {
                         coding: [
                             {
-                                system:isDiagnosis? condition.codedAnswer.conceptSystem : (condition.concept.conceptSystem || 'http://snomed.info/sct'),
-                                code: isDiagnosis? condition.codedAnswer.uuid : condition.concept.uuid,
-                                display: isDiagnosis? condition.codedAnswer.name : condition.concept.name
+                                system: isDiagnosis ? condition.codedAnswer.conceptSystem : (condition.concept.conceptSystem || 'http://snomed.info/sct'),
+                                code: isDiagnosis ? condition.codedAnswer.uuid : condition.concept.uuid,
+                                display: isDiagnosis ? condition.codedAnswer.name : condition.concept.name
                             }
                         ],
-                        text:  isDiagnosis? condition.codedAnswer.name : condition.concept.name
+                        text: isDiagnosis ? condition.codedAnswer.name : condition.concept.name
                     },
                     subject: {
                         reference: 'Patient/' + patientUuid
@@ -613,12 +581,10 @@ angular.module('bahmni.clinical')
                 var encounterResource = conditions.filter(condition => !condition.uuid).map(function (condition) {
                     return createConditionResource(condition, patient.uuid, false);
                 });
-                encounterResource =encounterResource.concat(diagnosis.map(function (condition) {
+                encounterResource = encounterResource.concat(diagnosis.map(function (condition) {
                     return createConditionResource(condition, patient.uuid, true);
                 }));
-                // var observationResources = observations.map(function (observation) {
-                //     return createObservationResource(observation, patient.uuid);
-                // });
+
                 var medicationResources = medications.map(function (medication) {
                     return createMedicationRequest(medication, patient.uuid);
                 });
@@ -634,29 +600,19 @@ angular.module('bahmni.clinical')
                 var patient = consultationData.patient;
                 var conditions = consultationData.conditions;
                 var diagnosis = consultationData.newlyAddedDiagnoses;
-                // var observations = consultationData.observations.map(function (observation) {
-                //     if (
-                //         observation.groupMembers &&
-                //         observation.groupMembers.length > 0 &&
-                //         observation.groupMembers[0].groupMembers &&
-                //         observation.groupMembers[0].groupMembers.length > 0
-                //     ) {
-                //         return observation.groupMembers[0].groupMembers[0];
-                //     } else {
-                //         return null;
-                //     }
-                // })
-                // .filter(function (observation) {
-                //     return observation;
-                // });
                 var medications = consultationData.draftDrug;
                 return {
                     patient,
                     conditions,
                     diagnosis,
-                    // observations,
                     medications
                 };
+            };
+
+            var showInteractionPopup = function (interactions) {
+                interactions.map(function (interaction) {
+                    messagingService.showMessage('error', interaction.detail);
+                });
             };
 
             (function () {
@@ -669,7 +625,14 @@ angular.module('bahmni.clinical')
                     consultationData.draftDrug = [$scope.treatment].concat(consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments);
                     var params = createParams(consultationData);
                     var bundle = createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis);
-                    console.log('bundle', bundle);
+
+                    var interactions = drugService.getDrugInteraction(bundle);
+                    interactions.then(function (response) {
+                        $scope.interactions = response.data;
+                        if ($scope.interactions.length > 0) {
+                            showInteractionPopup($scope.interactions);
+                        }
+                    });
                 };
                 $scope.onAccept = function () {
                     $scope.treatment.acceptedItem = $scope.treatment.drugNameDisplay;
