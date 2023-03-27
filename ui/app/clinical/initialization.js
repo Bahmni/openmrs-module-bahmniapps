@@ -39,7 +39,7 @@ angular.module('bahmni.clinical').factory('initialization',
                 };
 
                 var facilityLocation = function () {
-                    return locationService.getFacilityVisitLocation(location.uuid).then(function (response) {
+                    return locationService.getFacilityVisitLocation().then(function (response) {
                         if (response.uuid) {
                             locationService.getByUuid(response.uuid).then(function (location) {
                                 $rootScope.facilityLocation = location;
