@@ -496,17 +496,6 @@ angular.module('bahmni.clinical')
                 });
                 return _.flatten(listOfDrugSynonyms);
             };
-
-            var generatePatientResource = function (patient) {
-                var patientResource = {
-                    resourceType: 'Patient',
-                    id: patient.uuid
-                };
-                return {
-                    resource: patientResource
-                };
-            };
-
             var createMedicationRequest = function (medication, patientUuid) {
                 var coding = extractCodeInfo(medication);
                 var medicationRequest = {
@@ -584,7 +573,6 @@ angular.module('bahmni.clinical')
             };
 
             var createFhirBundle = function (patient, conditions, medications, diagnosis) {
-                var patientResource = generatePatientResource(patient);
                 var encounterResource = conditions.filter(function (condition) {
                     return !condition.uuid;
                 }).map(function (condition) {
@@ -600,7 +588,7 @@ angular.module('bahmni.clinical')
                 var bundle = {
                     resourceType: 'Bundle',
                     type: 'collection',
-                    entry: [patientResource].concat(encounterResource, medicationResources)
+                    entry: [].concat(encounterResource, medicationResources)
                 };
                 return bundle;
             };
