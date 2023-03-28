@@ -32,7 +32,7 @@ angular.module('bahmni.common.domain')
         };
 
         this.createVisit = function (visitDetails) {
-            return $http.post(Bahmni.Common.Constants.visitUrl, visitDetails, {
+            return $http.post(Bahmni.Common.Constants.bamniVisitUrl, visitDetails, {
                 withCredentials: true
             });
         };

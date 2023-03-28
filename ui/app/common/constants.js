@@ -95,6 +95,7 @@ Bahmni.Common = Bahmni.Common || {};
         bahmniConceptAnswerUrl: RESTWS_V1 + "/bahmniconceptanswer",
         conceptSearchByFullNameUrl: RESTWS_V1 + "/concept?s=byFullySpecifiedName",
         visitUrl: RESTWS_V1 + "/visit",
+        bamniVisitUrl: BAHMNI_CORE + "/visit/startVisit",
         endVisitUrl: BAHMNI_CORE + "/visit/endVisit",
         endVisitAndCreateEncounterUrl: BAHMNI_CORE + "/visit/endVisitAndCreateEncounter",
         visitTypeUrl: RESTWS_V1 + "/visittype",

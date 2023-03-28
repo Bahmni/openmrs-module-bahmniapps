@@ -2,6 +2,7 @@
 
 describe('Registration Visit Service', function () {
     var visitService;
+    var bahmniVisitUrl = "/openmrs/ws/rest/v1/bahmnicore/visit/startVisit";
     var openmrsVisitUrl = "/openmrs/ws/rest/v1/visit";
     var endVisitUrl = "/openmrs/ws/rest/v1/endVisit";
     var endVisitAndCreateEncounterUrl = "/openmrs/ws/rest/v1/bahmnicore/visit/endVisitAndCreateEncounter";
@@ -27,7 +28,7 @@ describe('Registration Visit Service', function () {
         module('bahmni.common.domain');
         module(function ($provide) {
             Bahmni.Common.Constants.endVisitUrl = endVisitUrl;
-            Bahmni.Common.Constants.visitUrl = openmrsVisitUrl;
+            Bahmni.Common.Constants.bahmnivisitUrl = bahmniVisitUrl;
             $provide.value('$http', mockHttp);
         });
 
@@ -61,7 +62,7 @@ describe('Registration Visit Service', function () {
         visitService.createVisit(visitDetails);
 
         expect(mockHttp.post).toHaveBeenCalled();
-        expect(mockHttp.post.calls.mostRecent().args[0]).toBe(openmrsVisitUrl);
+        expect(mockHttp.post.calls.mostRecent().args[0]).toBe(bahmniVisitUrl);
         expect(mockHttp.post.calls.mostRecent().args[1]).toBe(visitDetails);
         expect(mockHttp.post.calls.mostRecent().args[2].withCredentials).toBeTruthy();
     });
