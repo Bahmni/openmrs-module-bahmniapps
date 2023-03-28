@@ -611,10 +611,10 @@ angular.module('bahmni.clinical')
                 var diagnosis = consultationData.newlyAddedDiagnoses;
                 var medications = consultationData.draftDrug;
                 return {
-                    patient,
-                    conditions,
-                    diagnosis,
-                    medications
+                    patient: patient,
+                    conditions: conditions,
+                    diagnosis: diagnosis,
+                    medications: medications
                 };
             };
 
