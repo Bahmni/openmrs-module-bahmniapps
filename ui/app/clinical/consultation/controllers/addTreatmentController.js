@@ -15,6 +15,7 @@ angular.module('bahmni.clinical')
             $scope.addTreatment = true;
             $scope.canOrderSetBeAdded = true;
             $scope.isSearchDisabled = false;
+            $scope.cdssEnabled = false;
 
             $scope.getFilteredOrderSets = function (searchTerm) {
                 if (searchTerm && searchTerm.length >= 3) {
@@ -127,6 +128,12 @@ angular.module('bahmni.clinical')
                     durationUnit: treatment.durationUnit
                 };
             };
+            var getCdssEnabled = function () {
+                drugService.getCdssEnabled().then(function (response) {
+                    $scope.cdssEnabled = response.data;
+                });
+            }
+            getCdssEnabled();
 
             var isSameDrugBeingDiscontinuedAndOrdered = function () {
                 var existingTreatment = false;
@@ -617,21 +624,23 @@ angular.module('bahmni.clinical')
                 $scope.onSelect = function (item) {
                     selectedItem = item;
                     $scope.onChange();
-                    var consultationData = angular.copy($scope.consultation);
-                    consultationData.patient = $scope.patient;
+                    if ($scope.cdssEnabled) {
+                        var consultationData = angular.copy($scope.consultation);
+                        consultationData.patient = $scope.patient;
 
-                    consultationData.draftDrug = [$scope.treatment].concat(
-                       consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : []
-                      );
-                    var params = createParams(consultationData);
-                    var bundle = createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis);
-                    var interactions = drugService.getDrugInteraction(bundle);
-                    interactions.then(function (response) {
-                        $scope.interactions = response.data;
-                        if ($scope.interactions.length > 0) {
-                            showInteractionPopup($scope.interactions);
-                        }
-                    });
+                        consultationData.draftDrug = [$scope.treatment].concat(
+                            consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : []
+                        );
+                        var params = createParams(consultationData);
+                        var bundle = createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis);
+                        var interactions = drugService.getDrugInteraction(bundle);
+                        interactions.then(function (response) {
+                            $scope.interactions = response.data;
+                            if ($scope.interactions.length > 0) {
+                                showInteractionPopup($scope.interactions);
+                            }
+                        });
+                    }
                 };
                 $scope.onAccept = function () {
                     $scope.treatment.acceptedItem = $scope.treatment.drugNameDisplay;

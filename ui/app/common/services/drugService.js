@@ -49,14 +49,26 @@ angular.module('bahmni.common.services')
         var getDrugInteraction = function (bundle) {
             return $http.post(Bahmni.Common.Constants.cdssUrl, bundle, {
                 withCredentials: true,
-                params: { interaction: 'medication-order-select'}
+                params: {interaction: 'medication-order-select'}
             });
+        };
+
+        var getCdssEnabled = function () {
+
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                method: "GET",
+                params: {
+                    property: 'cdss.enable'
+                },
+                withCredentials: true,
+            })
         };
 
         return {
             search: search,
             getRegimen: getRegimen,
             getSetMembersOfConcept: getSetMembersOfConcept,
-            getDrugInteraction: getDrugInteraction
+            getDrugInteraction: getDrugInteraction,
+            getCdssEnabled: getCdssEnabled
         };
     }]);
