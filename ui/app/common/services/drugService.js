@@ -49,7 +49,7 @@ angular.module('bahmni.common.services')
         var getDrugInteraction = function (bundle) {
             return $http.post(Bahmni.Common.Constants.cdssUrl, bundle, {
                 withCredentials: true,
-                params: { interaction: 'some'}
+                params: { interaction: 'medication-order-select'}
             });
         };
 
