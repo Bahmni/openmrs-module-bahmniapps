@@ -132,7 +132,7 @@ angular.module('bahmni.clinical')
                 drugService.getCdssEnabled().then(function (response) {
                     $scope.cdssEnabled = response.data;
                 });
-            }
+            };
             getCdssEnabled();
 
             var isSameDrugBeingDiscontinuedAndOrdered = function () {
