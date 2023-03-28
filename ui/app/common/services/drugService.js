@@ -54,14 +54,13 @@ angular.module('bahmni.common.services')
         };
 
         var getCdssEnabled = function () {
-
             return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 method: "GET",
                 params: {
                     property: 'cdss.enable'
                 },
-                withCredentials: true,
-            })
+                withCredentials: true
+            });
         };
 
         return {
