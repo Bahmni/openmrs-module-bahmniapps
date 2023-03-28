@@ -56,7 +56,7 @@ angular.module('bahmni.clinical')
 
             $scope.showDoseFractions = treatmentConfig.inputOptionsConfig.showDoseFractions;
             $scope.isDoseFractionsAvailable = function () {
-                return $scope.doseFractions && !_.isEmpty($scope.doseFractions) ? true : false;
+                return !!($scope.doseFractions && !_.isEmpty($scope.doseFractions));
             };
 
             $scope.isSelected = function (drug) {
@@ -611,10 +611,10 @@ angular.module('bahmni.clinical')
                 var diagnosis = consultationData.newlyAddedDiagnoses;
                 var medications = consultationData.draftDrug;
                 return {
-                    patient,
-                    conditions,
-                    diagnosis,
-                    medications
+                    patient: patient,
+                    conditions: conditions,
+                    diagnosis: diagnosis,
+                    medications: medications
                 };
             };
 
@@ -631,10 +631,12 @@ angular.module('bahmni.clinical')
                     $scope.onChange();
                     var consultationData = angular.copy($scope.consultation);
                     consultationData.patient = $scope.patient;
-                    consultationData.draftDrug = [$scope.treatment].concat(consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments);
+
+                    consultationData.draftDrug = [$scope.treatment].concat(
+                       consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : []
+                      );
                     var params = createParams(consultationData);
                     var bundle = createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis);
-
                     var interactions = drugService.getDrugInteraction(bundle);
                     interactions.then(function (response) {
                         $scope.interactions = response.data;
