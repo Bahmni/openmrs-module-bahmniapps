@@ -188,9 +188,13 @@ angular.module('bahmni.clinical')
                 _.each(refilledOrderGroupOrders, function (drugOrder) {
                     _.each(orderSetMembersOfMatchedOrderSet, function (orderSetMember) {
                         if (orderSetMember.orderTemplate.drug) {
-                            if (orderSetMember.orderTemplate.drug.uuid === _.get(drugOrder, 'drug.uuid')) { matchedMembers.push(orderSetMember); }
+                            if (orderSetMember.orderTemplate.drug.uuid === _.get(drugOrder, 'drug.uuid')) {
+                                matchedMembers.push(orderSetMember);
+                            }
                         } else {
-                            if (orderSetMember.concept.uuid === drugOrder.concept.uuid) { matchedMembers.push(orderSetMember); }
+                            if (orderSetMember.concept.uuid === drugOrder.concept.uuid) {
+                                matchedMembers.push(orderSetMember);
+                            }
                         }
                     });
                 });
@@ -201,11 +205,11 @@ angular.module('bahmni.clinical')
                         var baseDose = eachMember.orderTemplate.dosingInstructions.dose;
                         var drugName = eachMember.orderTemplate.concept.name;
                         return orderSetService.getCalculatedDose($scope.patient.uuid, drugName, baseDose, doseUnits, $scope.newOrderSet.name)
-                                     .then(function (calculatedDosage) {
-                                         refilledOrderGroupOrders[index].uniformDosingType.dose = calculatedDosage.dose;
-                                         refilledOrderGroupOrders[index].uniformDosingType.doseUnits = calculatedDosage.doseUnit;
-                                         refilledOrderGroupOrders[index].calculateQuantityAndUnit();
-                                     });
+                            .then(function (calculatedDosage) {
+                                refilledOrderGroupOrders[index].uniformDosingType.dose = calculatedDosage.dose;
+                                refilledOrderGroupOrders[index].uniformDosingType.doseUnits = calculatedDosage.doseUnit;
+                                refilledOrderGroupOrders[index].calculateQuantityAndUnit();
+                            });
                     }
                 });
 
@@ -466,7 +470,10 @@ angular.module('bahmni.clinical')
             var contextChange = function () {
                 var errorMessages = Bahmni.Clinical.Constants.errorMessages;
                 if (isSameDrugBeingDiscontinuedAndOrdered()) {
-                    return {allow: false, errorMessage: $translate.instant(errorMessages.discontinuingAndOrderingSameDrug)};
+                    return {
+                        allow: false,
+                        errorMessage: $translate.instant(errorMessages.discontinuingAndOrderingSameDrug)
+                    };
                 }
                 if ($scope.incompleteDrugOrders()) {
                     $scope.formInvalid = true;
@@ -578,7 +585,9 @@ angular.module('bahmni.clinical')
 
             var createFhirBundle = function (patient, conditions, medications, diagnosis) {
                 var patientResource = generatePatientResource(patient);
-                var encounterResource = conditions.filter(condition => !condition.uuid).map(function (condition) {
+                var encounterResource = conditions.filter(function (condition) {
+                    return !condition.uuid;
+                }).map(function (condition) {
                     return createConditionResource(condition, patient.uuid, false);
                 });
                 encounterResource = encounterResource.concat(diagnosis.map(function (condition) {
@@ -784,7 +793,9 @@ angular.module('bahmni.clinical')
                 $scope.newOrderSet.name = orderSet.name;
                 var orderSetMemberTemplates = _.map(orderSet.orderSetMembers, 'orderTemplate');
                 var promisesToCalculateDose = _.map(orderSetMemberTemplates, putCalculatedDose);
-                var returnOrderSet = function () { return orderSet; };
+                var returnOrderSet = function () {
+                    return orderSet;
+                };
                 return $q.all(promisesToCalculateDose).then(returnOrderSet);
             };
             var createDrugOrderViewModel = function (orderTemplate) {
