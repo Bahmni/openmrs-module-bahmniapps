@@ -177,6 +177,8 @@ describe("AddTreatmentController", function () {
             drugService.getSetMembersOfConcept.and.returnValue(defaultDrugsPromise);
             drugService = jasmine.createSpyObj('drugService', ['getDrugInteraction']);
             drugService.getDrugInteraction.and.returnValue(specUtil.respondWith([]));
+            drugService = jasmine.createSpyObj('drugService', ['getCdssEnabled']);
+            drugService.getCdssEnabled.and.returnValue(specUtil.respondWith(false));
 
             appService.getAppDescriptor.and.returnValue(appConfig);
             orderSets = [{
