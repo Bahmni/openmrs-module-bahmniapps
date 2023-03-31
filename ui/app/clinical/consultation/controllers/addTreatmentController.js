@@ -16,6 +16,7 @@ angular.module('bahmni.clinical')
             $scope.canOrderSetBeAdded = true;
             $scope.isSearchDisabled = false;
             $scope.cdssEnabled = false;
+            $scope.conceptSource = localStorage.getItem("conceptSource") || "";
 
             $scope.getFilteredOrderSets = function (searchTerm) {
                 if (searchTerm && searchTerm.length >= 3) {
@@ -504,7 +505,7 @@ angular.module('bahmni.clinical')
                 return _.flatten(listOfDrugSynonyms);
             };
             var createMedicationRequest = function (medication, patientUuid) {
-                var coding = extractCodeInfo(medication);
+                var coding = extractCodeInfo(medication, extractConceptSource);
                 var medicationRequest = {
                     resourceType: 'MedicationRequest',
                     id: medication.uuid,
@@ -525,7 +526,7 @@ angular.module('bahmni.clinical')
                     resource: medicationRequest
                 };
             };
-            var extractCodeInfo = function (medication) {
+            var extractCodeInfo = function (medication, callBack) {
                 if (!(medication.drug.drugReferenceMaps && medication.drug.drugReferenceMaps.length > 0)) {
                     return {
                         code: medication.drug.uuid,
@@ -533,13 +534,50 @@ angular.module('bahmni.clinical')
                     };
                 } else {
                     var drugReferenceMap = medication.drug.drugReferenceMaps[0];
-                    return {
-                        system: 'http://snomed.info/sct',
-                        code: drugReferenceMap.conceptReferenceTerm && drugReferenceMap.conceptReferenceTerm.display && drugReferenceMap.conceptReferenceTerm.display.split(':')[1].trim(),
-                        display: medication.drug.name
-                    };
+                    if(!$scope.conceptSource) {
+                        return drugService.getDrugConceptSourceMapping(medication.drug.uuid).then(function (response) {
+                            var bundle = response.data;
+                            var code = bundle.entry && bundle.entry.length > 0 && bundle.entry[0].resource.code;
+                            var conceptCode = code.coding.find(function (coding) {
+                                return coding.system;
+                            });
+                            if (conceptCode) {
+                                localStorage.setItem("conceptSource", conceptCode.system);
+                                $scope.conceptSource =  conceptCode.system;
+                                return {
+                                    system: $scope.conceptSource,
+                                    code: drugReferenceMap.conceptReferenceTerm && drugReferenceMap.conceptReferenceTerm.display && drugReferenceMap.conceptReferenceTerm.display.split(':')[1].trim(),
+                                    display: medication.drug.name
+                                };
+                            }
+                            else {
+                                return {
+                                    code: drugReferenceMap.conceptReferenceTerm && drugReferenceMap.conceptReferenceTerm.display && drugReferenceMap.conceptReferenceTerm.display.split(':')[1].trim(),
+                                    display: medication.drug.name
+                                };
+                            }
+                        });
+                    } else {
+                        return {
+                            system: $scope.conceptSource,
+                            code: drugReferenceMap.conceptReferenceTerm && drugReferenceMap.conceptReferenceTerm.display && drugReferenceMap.conceptReferenceTerm.display.split(':')[1].trim(),
+                            display: medication.drug.name
+                        };
+                    }
                 }
             };
+            var extractConceptSource = function (response) {
+                var bundle = response.data;
+                var code = bundle.entry && bundle.entry.length > 0 && bundle.entry[0].resource.code;
+                var conceptCode = code.coding.find(function (coding) {
+                    return coding.system;
+                });
+                if (conceptCode) {
+                    localStorage.setItem("conceptSource", conceptCode.system);
+                   return conceptCode.system;
+                }
+                return "";
+            }
 
             var createConditionResource = function (condition, patientUuid, isDiagnosis) {
                 var conditionResource = {
@@ -618,7 +656,6 @@ angular.module('bahmni.clinical')
                     messagingService.showMessage('error', interaction.detail);
                 });
             };
-
             (function () {
                 var selectedItem;
                 $scope.onSelect = function (item) {
@@ -656,7 +693,6 @@ angular.module('bahmni.clinical')
                             form: selectedItem.drug.dosageForm && selectedItem.drug.dosageForm.display,
                             uuid: selectedItem.drug.uuid,
                             drugReferenceMaps: selectedItem.drug.drugReferenceMaps
-
                         });
                         selectedItem = null;
                         return;

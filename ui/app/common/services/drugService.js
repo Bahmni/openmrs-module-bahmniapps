@@ -52,7 +52,16 @@ angular.module('bahmni.common.services')
                 params: {interaction: 'medication-order-select'}
             });
         };
+        var getDrugConceptSourceMapping = function (drugUuid) {
+            var params = {
+                _id: drugUuid
+            };
 
+            return $http.get(Bahmni.Common.Constants.fhirMedicationsUrl, {
+                params: params,
+                withCredentials: true
+            });
+        };
         var getCdssEnabled = function () {
             return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 method: "GET",
@@ -68,6 +77,7 @@ angular.module('bahmni.common.services')
             getRegimen: getRegimen,
             getSetMembersOfConcept: getSetMembersOfConcept,
             getDrugInteraction: getDrugInteraction,
+            getDrugConceptSourceMapping: getDrugConceptSourceMapping,
             getCdssEnabled: getCdssEnabled
         };
     }]);
