@@ -5,8 +5,9 @@ angular.module('bahmni.clinical')
         function ($scope, $rootScope, ngDialog, visitActionsService, treatmentService) {
             var treatmentConfigParams = $scope.dashboard.getSectionByType("treatment") || {};
             $scope.isEmailPresent = $scope.patient.email ? true : false;
-            var patientParams = {"patientUuid": $scope.patient.uuid, "isEmailPresent": $scope.isEmailPresent};
-            var sharePrescriptionToggles = {"prescriptionEmailToggle": $rootScope.prescriptionEmailToggle};
+            $scope.isPhoneNumberPresent = $scope.patient.phoneNumber ? true : false;
+            var patientParams = {"patientUuid": $scope.patient.uuid, "isEmailPresent": $scope.isEmailPresent, "isPhoneNumberPresent": $scope.isPhoneNumberPresent};
+            var sharePrescriptionToggles = {"prescriptionEmailToggle": $rootScope.prescriptionEmailToggle, "prescriptionSMSToggle": $rootScope.prescriptionSMSToggle};
             var printParams = treatmentConfigParams.prescriptionPrint || {};
             printParams.locationName = $rootScope.facilityLocation.name;
             printParams.locationAddress = $rootScope.facilityLocation.attributes[0] ? $rootScope.facilityLocation.attributes[0].display.split(":")[1].trim() : null;

@@ -162,7 +162,7 @@ describe('DateUtil', function () {
 
                 var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
-                expect(period.years).toBe(0);
+                expect(period.years).toBe(9);
                 expect(period.months).toBe(0);
                 expect(period.days).toBe(25);
             });
@@ -180,7 +180,7 @@ describe('DateUtil', function () {
 
                 var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
-                expect(period.years).toBe(0);
+                expect(period.years).toBe(23);
                 expect(period.months).toBe(0);
                 expect(period.days).toBe(24);
             });

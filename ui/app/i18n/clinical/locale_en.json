@@ -370,5 +370,8 @@
     "CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_KEY": "Other generic",
     "CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_TEMPLATE_KEY": "{{chiefComplaint}} ({{chiefComplaintText}}) since {{duration}} {{unit}}",
     "CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY": "{{chiefComplaint}} since {{duration}} {{unit}}",
-    "SHARE_PRESCRIPTION_MAIL_CONTENT": "Hi #recipientName,\nThanks for visiting #locationName on #visitDate. Your prescription is attached with this email. Wish you a speedy recovery.\nThanks.\n#locationName\n#locationAddress"
+    "SHARE_PRESCRIPTION_MAIL_CONTENT": "Hi #recipientName,\nThanks for visiting #locationName on #visitDate. Your prescription is attached with this email. Wish you a speedy recovery.\nThanks.\n#locationName\n#locationAddress",
+    "SMS_LANGUAGE": "en",
+    "MESSAGE_SENDING_SMS_SUCCESS" : "SMS sent successfully",
+    "MESSAGE_SENDING_SMS_FAILURE" : "Failed to send SMS . Please check SMS configuration settings"
 }
