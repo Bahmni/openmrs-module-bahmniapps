@@ -4,7 +4,7 @@ angular.module('bahmni.common.util')
     .factory('smsService', ['$http', 'messagingService', function ($http, messagingService) {
         var sendSMS = function (phoneNumber, message) {
             getSMSUrl().then(function (smsEndpoint) {
-                if(smsEndpoint.data != '') {
+                if (smsEndpoint.data != '') {
                     var data = {
                         "phoneNumber": phoneNumber,
                         "message": message
