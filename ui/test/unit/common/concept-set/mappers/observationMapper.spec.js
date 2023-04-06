@@ -84,6 +84,15 @@ describe("ConceptSetObservationMapper", function() {
         }];
     };
 
+    var translatedMessages = {
+        "CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY": "Headache since 30 Days"
+    };
+
+    var translate = jasmine.createSpyObj('$translate',['instant']);
+    translate.instant.and.callFake(function (key) {
+        return translatedMessages[key];
+    });
+
     it("should map observation tree", function() {
         var rootConcept = savedObs()[0].concept;
         var mappedObs = mapper.map(savedObs(), rootConcept, {});
@@ -203,7 +212,7 @@ describe("ConceptSetObservationMapper", function() {
         var chiefComplaintObservations = chiefComplaintObs();
 
         chiefComplaintObservations[0].concept.name = "Vitals";
-        var obs = mapper.getObservationsForView(chiefComplaintObservations, {"Vitals": {grid: true}});
+        var obs = mapper.getObservationsForView(chiefComplaintObservations, {"Vitals": {grid: true}}, translate);
 
         expect(obs.length).toBe(1);
         expect(obs[0].value).toBe("Headache since 30 Days");

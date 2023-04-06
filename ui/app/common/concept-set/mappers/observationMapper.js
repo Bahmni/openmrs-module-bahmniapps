@@ -4,23 +4,26 @@ Bahmni.ConceptSet.ObservationMapper = function () {
     var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
     var self = this;
     // TODO : Shouldn't this be in clinical module. Don't see a reason for this to be in concept-set code - Shruthi
-    this.getObservationsForView = function (observations, conceptSetConfig) {
-        return internalMapForDisplay(observations, conceptSetConfig);
+    this.getObservationsForView = function (observations, conceptSetConfig, $translate) {
+        return internalMapForDisplay(observations, conceptSetConfig, $translate);
     };
-
-    var internalMapForDisplay = function (observations, conceptSetConfig) {
+    var internalMapForDisplay = function (
+      observations,
+      conceptSetConfig,
+      $translate
+    ) {
         var observationsForDisplay = [];
         _.forEach(observations, function (savedObs) {
             if (savedObs.concept.conceptClass && (savedObs.concept.conceptClass === Bahmni.Common.Constants.conceptDetailsClassName || savedObs.concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName)) {
-                savedObs.value = self.getGridObservationDisplayValue(savedObs);
+                savedObs.value = self.getGridObservationDisplayValue(savedObs, $translate);
                 observationsForDisplay = observationsForDisplay.concat(createObservationForDisplay(savedObs, savedObs.concept));
             } else {
                 if (savedObs.concept.set) {
                     if (conceptSetConfig[savedObs.concept.name] && conceptSetConfig[savedObs.concept.name].grid) {
-                        savedObs.value = self.getGridObservationDisplayValue(savedObs);
+                        savedObs.value = self.getGridObservationDisplayValue(savedObs, $translate);
                         observationsForDisplay = observationsForDisplay.concat(createObservationForDisplay(savedObs, savedObs.concept));
                     } else {
-                        var groupMemberObservationsForDisplay = internalMapForDisplay(savedObs.groupMembers, conceptSetConfig);
+                        var groupMemberObservationsForDisplay = internalMapForDisplay(savedObs.groupMembers, conceptSetConfig, $translate);
                         observationsForDisplay = observationsForDisplay.concat(groupMemberObservationsForDisplay);
                     }
                 } else {
@@ -178,28 +181,75 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         if (!observation.value) {
             return "";
         }
-        if (typeof observation.value.name === 'object') {
+        if (typeof observation.value.name === "object") {
             var valueConcept = conceptMapper.map(observation.value);
             return valueConcept.shortName || valueConcept.name;
         }
-        return observation.value.shortName || observation.value.name || observation.value;
+        return (
+          observation.value.shortName || observation.value.name || observation.value
+        );
     };
-
+    var getObservationValue = function (groupMembers, $translate) {
+        var chiefComplaint = "";
+        var symptomDuration = "";
+        var durationUnit = "";
+        _.forEach(groupMembers, function (member) {
+            if (member && member.has($translate.instant("CHIEF_COMPLAINT_CODED_KEY"))) {
+                chiefComplaint = member.get($translate.instant("CHIEF_COMPLAINT_CODED_KEY"));
+            }
+            if (member && member.has($translate.instant("SIGN_SYMPTOM_DURATION_KEY"))) {
+                symptomDuration = member.get($translate.instant("SIGN_SYMPTOM_DURATION_KEY"));
+            }
+            if (member && member.has($translate.instant("CHIEF_COMPLAINT_DURATION_UNIT_KEY"))) {
+                durationUnit = member.get($translate.instant("CHIEF_COMPLAINT_DURATION_UNIT_KEY"));
+            }
+        });
+        return $translate.instant("CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY", {chiefComplaint: chiefComplaint, duration: symptomDuration, unit: durationUnit});
+    };
+    var getGroupMemberValue = function (observation, $translate) {
+        const chiefComplaintCoded = $translate.instant("CHIEF_COMPLAINT_CODED_KEY");
+        const symptomDuration = $translate.instant("SIGN_SYMPTOM_DURATION_KEY");
+        const durationUnit = $translate.instant("CHIEF_COMPLAINT_DURATION_UNIT_KEY");
+        if (
+          typeof observation.concept === "object" &&
+          observation.concept.name === chiefComplaintCoded) {
+            return new Map().set(chiefComplaintCoded, getObservationDisplayValue(observation));
+        }
+        if (
+          typeof observation.concept === "object" &&
+          observation.concept.name === symptomDuration
+        ) {
+            return new Map().set(symptomDuration, getObservationDisplayValue(observation));
+        }
+        if (
+          typeof observation.concept === "object" &&
+          observation.concept.name === durationUnit
+        ) {
+            return new Map().set(durationUnit, getObservationDisplayValue(observation));
+        }
+    };
     var getDurationDisplayValue = function (duration) {
-        var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(duration.value);
+        var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(
+            duration.value
+        );
         if (durationForDisplay["value"] && durationForDisplay["unitName"]) {
-            return "since " + durationForDisplay["value"] + " " + durationForDisplay["unitName"];
+            return (
+            "since " +
+            durationForDisplay["value"] +
+            " " +
+            durationForDisplay["unitName"]
+            );
         }
         return "";
     };
-
-    this.getGridObservationDisplayValue = function (observation) {
-        var memberValues = _.compact(_.map(observation.groupMembers, function (member) {
-            return getObservationDisplayValue(member);
-        }));
-        return memberValues[0] + " since " + memberValues[1] + " " + memberValues[2];
+    this.getGridObservationDisplayValue = function (observation, $translate) {
+        var memberValues = _.compact(
+            _.map(observation.groupMembers, function (member) {
+                return getGroupMemberValue(member, $translate);
+            })
+        );
+        return getObservationValue(memberValues, $translate);
     };
-
     var getLabel = function (concept) {
         var mappedConcept = conceptMapper.map(concept);
         return mappedConcept.shortName || mappedConcept.name;
