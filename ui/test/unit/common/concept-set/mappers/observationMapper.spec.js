@@ -1,7 +1,7 @@
 'use strict';
 
-describe("ConceptSetObservationMapper", function() {
-    var buildConcept = function(name, setMembers, answers, classname, datatype) {
+describe("ConceptSetObservationMapper", function () {
+    var buildConcept = function (name, setMembers, answers, classname, datatype) {
         return {
             "name": {name: name},
             "set": setMembers && setMembers.length > 0,
@@ -10,11 +10,11 @@ describe("ConceptSetObservationMapper", function() {
             setMembers: setMembers,
             answers: answers,
             "uuid": name + "_uuid"
-        }
+        };
     };
     var mapper = new Bahmni.ConceptSet.ObservationMapper();
 
-    var savedObs = function() {
+    var savedObs = function () {
         var diabetesConcept = buildConcept("Diabetes", [], []);
         var hivConcept = buildConcept("HIV", [], []);
         var hyperTensionConcept = buildConcept("HyperTension", [], []);
@@ -26,19 +26,20 @@ describe("ConceptSetObservationMapper", function() {
             "concept": vitalsConcept,
             "label": "Vitals",
             "possibleAnswers": [],
+            "formNamespace": "Bahmni",
             "groupMembers": [{
                 "concept": comorbidityConcept,
                 "label": "Comorbidity",
                 "groupMembers": [],
                 "value": diabetesConcept,
                 "voided": false
-            },{
+            }, {
                 "concept": systolicConcept,
                 "label": "Systolic",
                 "groupMembers": [],
                 "value": "90",
                 "voided": false
-            },{
+            }, {
                 "concept": comorbidityConcept,
                 "label": "Comorbidity",
                 "groupMembers": [],
@@ -50,29 +51,30 @@ describe("ConceptSetObservationMapper", function() {
         }];
     };
 
-    var chiefComplaintObs = function() {
+    var chiefComplaintObs = function () {
         var headache = buildConcept("Headache", [], []);
         var chiefComplaint = buildConcept("Chief Complaint", [], [], "Misc", "Coded");
         var duration = buildConcept("Chief Complaint Duration", [], [], "Duration", "Numeric");
         var chiefComplaintData = buildConcept("Chief Complaint Data", [chiefComplaint, duration], [], "Concept Details");
-        var unit = buildConcept('Chief Complaint Duration',[],[],"Units", "Coded");
-        var days = buildConcept('Days',[],[]);
+        var unit = buildConcept('Chief Complaint Duration', [], [], "Units", "Coded");
+        var days = buildConcept('Days', [], []);
         return [{
             "concept": chiefComplaintData,
             "label": "Chief Complaint Data",
+            "formNamespace": "Bahmni",
             "groupMembers": [{
                 "concept": chiefComplaint,
                 "label": "Chief Complaint",
                 "groupMembers": [],
                 "value": headache,
                 "voided": false
-            },{
+            }, {
                 "concept": duration,
                 "label": "Duration",
                 "groupMembers": [],
                 "value": 30,
                 "voided": false
-            },{
+            }, {
                 "concept": unit,
                 "label": "Units",
                 "groupMembers": [],
@@ -85,15 +87,16 @@ describe("ConceptSetObservationMapper", function() {
     };
 
     var translatedMessages = {
-        "CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY": "Headache since 30 Days"
+        "CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY": "Headache since 30 Days",
+        "CHIEF_COMPLAINT_DATA_CONCEPT_NAME_KEY": "Vitals"
     };
 
-    var translate = jasmine.createSpyObj('$translate',['instant']);
+    var translate = jasmine.createSpyObj('$translate', ['instant']);
     translate.instant.and.callFake(function (key) {
         return translatedMessages[key];
     });
 
-    it("should map observation tree", function() {
+    it("should map observation tree", function () {
         var rootConcept = savedObs()[0].concept;
         var mappedObs = mapper.map(savedObs(), rootConcept, {});
 
@@ -101,7 +104,7 @@ describe("ConceptSetObservationMapper", function() {
         expect(mappedObs.groupMembers[0].label).toEqual("Systolic");
     });
 
-    it("should map multiSelect Obs", function() {
+    it("should map multiSelect Obs", function () {
         var rootConcept = savedObs()[0].concept;
         var mappedObs = mapper.map(savedObs(), rootConcept, {"Comorbidity": {multiSelect: true}});
 
@@ -112,7 +115,7 @@ describe("ConceptSetObservationMapper", function() {
         expect(mappedObs.groupMembers[3].hidden).toBeTruthy();
     });
 
-    it("should map ObservationNode", function() {
+    it("should map ObservationNode", function () {
         var headache = buildConcept("Headache", [], []);
         var obs = chiefComplaintObs();
 
@@ -124,7 +127,7 @@ describe("ConceptSetObservationMapper", function() {
         expect(mappedObs.value).toEqual(headache.name);
     });
 
-    it("should map obsGroups as tabular observations if configured", function() {
+    it("should map obsGroups as tabular observations if configured", function () {
         var drug = buildConcept("Drug", [], []);
         var concentration = buildConcept("Concentration", [], []);
         var dstResult = buildConcept("DST Result", [drug, concentration], []);
@@ -210,14 +213,10 @@ describe("ConceptSetObservationMapper", function() {
 
     it("should get observations for view when grid config is there", function () {
         var chiefComplaintObservations = chiefComplaintObs();
-
         chiefComplaintObservations[0].concept.name = "Vitals";
         var obs = mapper.getObservationsForView(chiefComplaintObservations, {"Vitals": {grid: true}}, translate);
-
         expect(obs.length).toBe(1);
         expect(obs[0].value).toBe("Headache since 30 Days");
         expect(obs[0].label).toBe("Vitals");
-
-    })
-
+    });
 });
