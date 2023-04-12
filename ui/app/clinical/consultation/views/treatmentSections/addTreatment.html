@@ -259,9 +259,54 @@
                     </div>
                 </article>
 
+                <h3 ng-show="interactions && interactions.length > 0" class="orderSet-additional-info" ng-show="treatmentConfig.showAdditionalInformation()">
+                    {{"CDSS_" + interactions[0].indicator.toUpperCase() | translate}}
+                </h3>
+
+                    <div ng-repeat="interaction in interactions" class="cdss-alert" ng-class="{'alert-danger': interaction.indicator == 'critical', 'alert-warning': interaction.indicator == 'warning', 'alert-info': interaction.indicator == 'info'}" ng-show="interaction">
+                        <button ng-disabled="interaction.indicator == 'critical'" type="button" class="close" ng-click="closeAlert($index)">&times;</button>
+                        <i class="fa" aria-hidden="true"
+                             ng-class="{'fa-exclamation-triangle': interaction.indicator == 'critical' || interaction.indicator == 'warning', 'fa-info-circle': interaction.indicator == 'info'}"
+                        ></i>
+                        <div>
+                            <div ng-click="showAlertDetails($index)" class="cdss-alert-summary">
+                               
+                                    {{interaction.summary}}
+
+                                  <i class="fa" ng-class="{'fa-angle-up': interaction.showDetails, 'fa-angle-down': !interaction.showDetails}"></i>
+                                
+                            </div>
+                            <div class="cdss-alert-details" ng-show="interaction.showDetails">
+                                {{interaction.detail}}
+                                <div ng-show="interaction.indicator == 'critical'">
+                                     <div class="field-value">
+                                    <select id="uniform-dose-unit" class="form-field cdss-close-reason"
+                                            ng-options="item as item for item in auditOptions()"
+                                            required="true"
+                                            ng-model="treatment.audit"
+                                            >
+                                        <option value="">{{"CDSS_ALERT_DISMISSAL_REASON" | translate}}</option>
+                                    </select>
+                                </div>
+                                </div>
+                                <div class="operations fr clearfix">
+                                    <button 
+                                    ng-click="submitAudit($index)"
+                                     type="button" class="icon-button secondary-button" tabindex="-1" ng-click="" title="Close">
+                                       Close
+                                    </button>
+                                </div>
+                                </div>
+                               
+                            </div>
+                            
+                        </div>
+                    </div>
+
+
                 <div class="operations fr clearfix">
                     <button class="add-drug-btn secondary-button fl" type="submit" accesskey="{{ ::treatmentConfig.translate('addAccessKey', 'MEDICATION_ADD_ACCESS_KEY') }}"
-                            ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug">
+                            ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug || (interactions && interactions[0].indicator == 'critical')">
                              <span ng-bind-html="::treatmentConfig.translate('add', 'MEDICATION_ADD_BUTTON_LABEL')">
                         </span>
                     </button>
