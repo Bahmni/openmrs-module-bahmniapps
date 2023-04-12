@@ -280,12 +280,11 @@
                                 {{interaction.detail}}
                                 <div ng-show="interaction.indicator == 'critical'">
                                 <div class="field-attribute">
-                                    <label  class="start-date-label fl">{{::treatmentConfig.translate('dosingInstructions', 'MEDICATION_LABEL_DOSING_INSTRUCTIONS')}}</label>
+                                    <label  class="start-date-label fl">Select reason for dismissal</label>
                                 </div>
                                      <div class="field-value">
-                                    <select id="uniform-dose-unit" class="form-field cdss-close-reason"
+                                    <select id="cdss-audit" class="form-field cdss-close-reason"
                                             ng-options="item as item for item in auditOptions()"
-                                            required="true"
                                             ng-model="treatment.audit"
                                             >
                                         <option value="">{{"CDSS_ALERT_DISMISSAL_REASON" | translate}}</option>
