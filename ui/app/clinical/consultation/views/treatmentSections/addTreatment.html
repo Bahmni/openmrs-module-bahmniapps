@@ -279,6 +279,9 @@
                             <div class="cdss-alert-details" ng-show="interaction.showDetails">
                                 {{interaction.detail}}
                                 <div ng-show="interaction.indicator == 'critical'">
+                                <div class="field-attribute">
+                                    <label  class="start-date-label fl">{{::treatmentConfig.translate('dosingInstructions', 'MEDICATION_LABEL_DOSING_INSTRUCTIONS')}}</label>
+                                </div>
                                      <div class="field-value">
                                     <select id="uniform-dose-unit" class="form-field cdss-close-reason"
                                             ng-options="item as item for item in auditOptions()"
@@ -289,11 +292,11 @@
                                     </select>
                                 </div>
                                 </div>
-                                <div class="operations fr clearfix">
+                                <div class="operations fr clearfix" ng-show="interaction.indicator == 'critical'">
                                     <button 
                                     ng-click="submitAudit($index)"
                                      type="button" class="icon-button secondary-button" tabindex="-1" ng-click="" title="Close">
-                                       Close
+                                       Dismiss
                                     </button>
                                 </div>
                                 </div>
