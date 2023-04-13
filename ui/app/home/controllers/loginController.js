@@ -154,8 +154,7 @@ angular.module('bahmni.home')
                                 deferrable.reject(error);
                                 logAuditForLoginAttempts("USER_LOGIN_FAILED", true);
                             });
-                        })
-                        
+                        });
                     },
                     function (error) {
                         $scope.errorMessageTranslateKey = error;
