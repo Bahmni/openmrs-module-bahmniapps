@@ -182,7 +182,7 @@ angular.module('authentication')
             });
         };
 
-        this.updateSessionLocation = function(location) {
+        this.updateSessionLocation = function (location) {
             return $http({
                 method: 'POST',
                 url: Bahmni.Common.Constants.RESTWS_V1 + '/session',

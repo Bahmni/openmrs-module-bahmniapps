@@ -38,8 +38,8 @@ angular.module('bahmni.home')
 
             $scope.onLocationChange = function () {
                 var selectedLocation = getLocationFor($scope.selectedLocationUuid);
-                sessionService.updateSessionLocation({ name: selectedLocation.display, uuid: selectedLocation.uuid }).then(function() {
-                    $window.location.reload();    
+                sessionService.updateSessionLocation({ name: selectedLocation.display, uuid: selectedLocation.uuid }).then(function () {
+                    $window.location.reload();
                 });
             };
 
