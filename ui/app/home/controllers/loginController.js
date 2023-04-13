@@ -140,7 +140,7 @@ angular.module('bahmni.home')
                             deferrable.resolve(data);
                             return;
                         }
-                        sessionService.updateSessionLocation($scope.loginInfo.currentLocation).then(function () {
+                        sessionService.updateSession($scope.loginInfo.currentLocation, null).then(function () {
                             sessionService.loadCredentials().then(function () {
                                 onSuccessfulAuthentication();
                                 $rootScope.currentUser.addDefaultLocale($scope.selectedLocale);

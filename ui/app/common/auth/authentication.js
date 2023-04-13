@@ -182,13 +182,17 @@ angular.module('authentication')
             });
         };
 
-        this.updateSessionLocation = function (location) {
+        this.updateSession = function (location, locale) {
+            var requestData = {
+                "sessionLocation": location.uuid
+            };
+            if (locale) {
+                requestData.locale = locale;
+            }
             return $http({
                 method: 'POST',
                 url: Bahmni.Common.Constants.RESTWS_V1 + '/session',
-                data: {
-                    "sessionLocation": location.uuid
-                },
+                data: requestData,
                 headers: {'Content-Type': 'application/json'}
             }).then(function (response) {
                 $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
