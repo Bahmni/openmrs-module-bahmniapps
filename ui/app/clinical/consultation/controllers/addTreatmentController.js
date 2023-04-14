@@ -78,12 +78,13 @@ angular.module('bahmni.clinical')
 
             $scope.submitAudit = function (index) {
                 var patientUuid = $scope.patient.uuid;
-                var eventType = $scope.interactions[index].summary.replace(/"/g, '').substring(0, 97) + '...';
-                var message = 'Dismissed: ' + $scope.treatment.audit;
+                var message = $scope.interactions[index].summary.replace(/"/g, '');
+                var eventType = 'Dismissed: ' + $scope.treatment.audit;
                 drugService
                 .cdssAudit(patientUuid, eventType, message, 'CDSS')
                 .then(function (response) {
                     $scope.interactions.splice(index, 1);
+                    $scope.treatment.audit = '';
                 });
             };
 

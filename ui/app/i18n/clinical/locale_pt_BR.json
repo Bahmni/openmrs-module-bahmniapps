@@ -147,7 +147,7 @@
   "CDSS_WARNING": "Aviso",
   "CDSS_CRITICAL": "Crítica",
   "CDSS_INFO": "Informações",
-  "CDSS_ALERT_DISMISSAL_REASON": "Selecione o motivo do fechamento",
+  "CDSS_ALERT_DISMISSAL_REASON": "Selecione o motivo da demissão",
   "MEDICATION_DRUG_NAME_PLACEHOLDER": "Escolher Medicamento",
   "MEDICATION_CHANGE_DURATION_BUTTON": "Escolher Duração",
   "REMOVE_CONFIRMATION_KEY": "Você tem certeza que quer remover?",

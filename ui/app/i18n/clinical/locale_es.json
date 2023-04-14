@@ -144,7 +144,7 @@
   "CDSS_WARNING": "Advertencia",
   "CDSS_CRITICAL": "Crítica",
   "CDSS_INFO": "Información",
-  "CDSS_ALERT_DISMISSAL_REASON": "Seleccione el motivo del cierre",
+  "CDSS_ALERT_DISMISSAL_REASON": "Seleccione el motivo del despido",
   "MEDICATION_DRUG_NAME_PLACEHOLDER": "elija medicamento ",
   "MEDICATION_CHANGE_DURATION_BUTTON": "cambie duracion",
   "MEDICATION_ADD_BUTTON_LABEL": "<u>A</u>ñadir",

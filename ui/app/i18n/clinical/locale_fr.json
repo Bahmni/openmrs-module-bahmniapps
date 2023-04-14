@@ -147,7 +147,7 @@
   "CDSS_WARNING": "Avertissement",
   "CDSS_CRITICAL": "Critique",
   "CDSS_INFO": "Info",
-  "CDSS_ALERT_DISMISSAL_REASON": "Sélectionnez la raison de la fermeture",
+  "CDSS_ALERT_DISMISSAL_REASON": "Sélectionnez le motif du licenciement",
   "MEDICATION_DRUG_NAME_PLACEHOLDER": "Choisissez un médicament",
   "MEDICATION_CHANGE_DURATION_BUTTON": "Changer la durée",
   "MEDICATION_ADD_BUTTON_LABEL": "<u>A</u>jouter",

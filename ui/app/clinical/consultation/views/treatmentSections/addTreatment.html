@@ -279,21 +279,20 @@
                             <div class="cdss-alert-details" ng-show="interaction.showDetails">
                                 {{interaction.detail}}
                                 <div ng-show="interaction.indicator == 'critical'">
-                                <div class="field-attribute">
-                                    <label  class="start-date-label fl">Select reason for dismissal</label>
-                                </div>
                                      <div class="field-value">
                                     <select id="cdss-audit" class="form-field cdss-close-reason"
                                             ng-options="item as item for item in auditOptions()"
                                             ng-model="treatment.audit"
                                             >
-                                        <option value="">{{"CDSS_ALERT_DISMISSAL_REASON" | translate}}</option>
+                                        <option disabled value="">{{"CDSS_ALERT_DISMISSAL_REASON" | translate}}</option>
                                     </select>
                                 </div>
                               
                                 <div class="operations fr clearfix" ng-show="interaction.indicator == 'critical'">
+                                    <!-- only enable if reason has been selected -->
                                     <button 
                                     ng-click="submitAudit($index)"
+                                    ng-disabled="!treatment.audit"
                                      type="button" class="icon-button secondary-button" tabindex="1" title="Dismiss">
                                        Dismiss
                                     </button>

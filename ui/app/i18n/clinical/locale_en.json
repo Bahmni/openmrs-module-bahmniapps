@@ -152,7 +152,7 @@
     "MEDICATION_ADDITIONAL_INFORMATION_LABEL" :"Additional Information",
     "CDSS_WARNING" :"Warning",
     "CDSS_CRITICAL" :"Critical",
-    "CDSS_ALERT_DISMISSAL_REASON" :"Select reason for closing",
+    "CDSS_ALERT_DISMISSAL_REASON" :"Select reason for dismissal",
     "CDSS_INFO" :"Info",
     "MEDICATION_DRUG_NAME_PLACEHOLDER" :"Choose Drug",
     "MEDICATION_CHANGE_DURATION_BUTTON" :"Change Duration",
