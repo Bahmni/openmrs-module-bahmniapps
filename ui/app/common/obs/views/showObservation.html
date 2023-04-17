@@ -9,7 +9,7 @@
             }"/>
             <a href="{{'/document_images/' + observation.value}}" download ng-if="observation.isVideoConcept()" class="button btn fr btn-download"><i class="fa fa-download" aria-hidden="true"></i></a>
         </span>
-        <span ng-if="observation.groupMembers.length > 1 && observation.formNamespace != null && observation.groupMembers[0].concept.conceptClass != 'Image'" class="testUnderPanel left">
+        <span ng-if="observation.groupMembers.length > 1 && observation.formNamespace != null && observation.groupMembers[0].concept.conceptClass != 'Image' && observation.groupMembers[0].concept.conceptClass != 'Video'" class="testUnderPanel left">
             <label>{{::(observation.getDisplayValue())}}</label>
         </span>
         <span ng-if="observation.groupMembers.length==0 && !configIsObservationForImages && observation.concept.conceptClass != 'Image'" class="testUnderPanel left">
@@ -51,17 +51,17 @@
     <div ng-if="::(observation.comment || observation.getChiefComplaintCodedComment()) && !observation.isImageConcept() " class="notes inline-comments" ng-class="::{'print-notes': observation.comment || observation.getChiefComplaintCodedComment(), 'image-notes': observation.isImageConcept()}">
         <i class="fa fa-comments left"></i>
         <span style="overflow: hidden;" ng-if="::observation.comment || observation.getChiefComplaintCodedComment()" class="left" title="{{observation.getChiefComplaintCodedComment() || observation.comment}}">{{:: observation.getChiefComplaintCodedComment() || observation.comment}}</span>
-        <span class="left provider obs-label" style="padding-left:3px;clear:both;"
+        <span class="right provider"
             provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}" title="{{observation.creatorName}}">
             <span ng-if="::observation.isFormElement()">{{::dateString(observation)}} </span>
         </span>
     </div>
     <div ng-if="::observation.comment && observation.isImageConcept() " class="inline-comments" ng-class="::{'print-notes': observation.comment, 'image-notes': observation.isImageConcept()}">
-        <i class="fa fa-comments left"></i>
+        <i class="fa fa-comments"></i>
     </div>
-    <div ng-if="observation.showDetails" class="left notes inline-notes" ng-class="::{'print-notes': observation.showDetails}">
+    <div ng-if="observation.showDetails" class="notes inline-notes" ng-class="::{'print-notes': observation.showDetails}">
         <div class="footer-note">
-            <span class="left provider obs-label" style="padding-left:2px;clear:both;"
+            <span class="left provider"
                 provider-directive creator-name="{{::observation.creatorName}}" provider-name="{{::observation.providers[0].name}}" title="{{observation.creatorName}}">
                 <span ng-if="::observation.isFormElement()">{{::dateString(observation)}}</span>
             </span>

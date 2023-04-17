@@ -86,4 +86,8 @@ angular.module('bahmni.common.config')
         this.helpDeskNumber = function () {
             return this.configs.helpDeskNumber;
         };
+
+        this.prescriptionEmailToggle = function () {
+            return this.configs.prescriptionEmailToggle;
+        };
     }]);

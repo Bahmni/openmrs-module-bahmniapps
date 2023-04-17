@@ -10,6 +10,9 @@ angular.module('bahmni.common.uiHelper')
                 $scope.messages[level].forEach(function (message) {
                     string = string.concat(message.value);
                 });
+
+                navigator.clipboard.writeText(string);
+
                 return string;
             };
 

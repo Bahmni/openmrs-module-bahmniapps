@@ -21,7 +21,7 @@ Bahmni.Clinical.SpecimenMapper = function () {
 
     this.mapSpecimenToObservation = function (specimen) {
         var observation = {};
-        observation.dateCollected = moment(specimen.dateCollected).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+        observation.dateCollected = moment(specimen.dateCollected).format("YYYY-MM-DD");
         observation.existingObs = specimen.existingObs;
         observation.identifier = specimen.identifier;
         observation.sample = {};

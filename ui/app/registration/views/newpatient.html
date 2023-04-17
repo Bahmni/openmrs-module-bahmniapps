@@ -7,10 +7,10 @@
                 </legend>
                 <section class="clearfix">
                     <div class="photo-container-wrapper" ng-if="!disablePhotoCapture">
-                        <span class="pull-right photo-container">
-                            <img class="patient-image" ng-src="{{patient.image}}" fallback-src="../images/blank-user.gif">
+                        <div class="photo-container">
                             <div ng-model="patient.image" capture-photo="" class="capture-photo-btn"></div>
-                        </span>
+                            <img class="patient-image" ng-src="{{patient.image}}" fallback-src="../images/blank-user.gif">
+                        </div>
                     </div>
                 </section>
                 <section>

@@ -1,101 +1,192 @@
-.reg-header-wrapper{
-  .reg-header{
-    ul.top-nav{
-      float: left;
-      li{
-        display: inline-block;
-        a{
-          color: #fff;
-          font-weight: 700;
-          cursor: pointer;
-          text-decoration: none;
-          display: block;
-          padding: 14px 15px 15px 0;
-        }
-      }
-    }
-    .btn-user-info {
-      background: lighten($bahmniPrimaryColor, 10%);
-      padding: 17px 16px;
-      border: none;
-      border-radius: 0;
-      margin: 0;
-      color: $white;
-      &:focus {outline:0;}
-      i.mini {
-        font-size: .9em;
-      }
-      & + ul {
-        display: none;
-        &.active {
-          background: lighten($bahmniPrimaryColor, 10%);
-          display: block;
-          position: absolute;
-          right: 0;
-          top: 50px;
-          z-index: 1000;
-          @media screen and (max-width: $max-page-width) {
-            right:10px;
-          }
-        }
-        li {
-          float: left;
-          clear: both;
-          text-align: left;
-          padding-left: 10px;
-          border-bottom: 1px solid lighten($bahmniPrimaryColor, 10%);
-          margin: 0;
-          padding: 10px 10px 10px 5px;
-          color: $lightGray;
-          a{
-            color: $white;
-            &.disabled {
-              color: $lightGray;
-              .fa-user {
-                color: $lightGray;
-              }
+.reg-header-wrapper {
+    @mixin mobile-header-button {
+        margin-right: 5px;
+
+        a {
+            background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
+            border: 1px solid darken($bahmniSecondaryColor, 15%);
+            padding: 6px 5px 7px;
+            border-radius: 3px;
+            span {
+                display: none;
             }
-          }
         }
-      }
     }
-  }
-  .split-button ul{
-    &.hidden-options{
-      @media (max-width: 768px) {
-        width: 300px;
-        li {
-          margin-left: 50px;
+
+    .reg-header {
+        display: flex;
+
+        ul.top-nav {
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+
+            li {
+                font-size: 14px;
+
+                i {
+                    padding: 0;
+                }
+
+                a {
+                    color: #fff;
+                    font-weight: 700;
+                    cursor: pointer;
+                    text-decoration: none;
+                    display: block;
+                    padding: 0 5px 0 0;
+                }
+
+                @media screen and (min-width: 769px) {
+                    font-size: 16px;
+
+                    a {
+                        padding: 0 15px 0 0;
+                    }
+                    
+                }
+
+                &:first-of-type:not(:only-of-type) {
+                    @media screen and (max-width: 300px) {
+                       @include mobile-header-button; 
+                    }
+                }
+            }
+
+            &.has-print {
+                li:first-of-type:not(:only-of-type) {
+                    @media screen and (max-width: 375px) {
+                       @include mobile-header-button; 
+                    }
+                }
+
+                li {
+                    @media screen and (max-width: 300px) {
+                        @include mobile-header-button;
+                        margin-left: 0;
+                    }
+                }
+            }
         }
-      }
-    }
-    li{
-      &.primaryOption{
-        i{
-          display: none;
-          @media (max-width: 768px) {
-            display: inline-block;
-          }
+
+        .back-btn {
+            margin: 0 5px 0 0;
         }
-        span{
-          @media (max-width: 768px) {
-            display: none;
-          }
-        }
-        .buttonClass{
-          @media (max-width: 768px) {
-            max-width: 60px;
-            float: right;
-            margin-right: 100px;
-            height: 36px;
+
+        .btn-user-info {
+            background: inherit;
             padding: 0;
-            i.fa-print{
-              font-size: 23px;
-              padding-top: 5px;
+            border: none;
+            border-radius: 0;
+            margin: 0;
+            color: $white;
+
+            @media screen and (min-width: 769px) {
+                background: lighten($bahmniPrimaryColor, 10%);
+                padding: 0 16px;
             }
-          }
+
+            &:focus {
+                outline: 0;
+            }
+
+            i.mini {
+                font-size: .9em;
+            }
+
+            &+ul {
+                display: none;
+
+                &.active {
+                    background: lighten($bahmniPrimaryColor, 10%);
+                    display: block;
+                    position: absolute;
+                    right: 0;
+                    top: 50px;
+                    z-index: 1000;
+
+                    @media screen and (max-width: $max-page-width) {
+                        right: 10px;
+                    }
+                }
+
+                li {
+                    float: left;
+                    clear: both;
+                    text-align: left;
+                    padding-left: 10px;
+                    border-bottom: 1px solid lighten($bahmniPrimaryColor, 10%);
+                    margin: 0;
+                    padding: 10px 10px 10px 5px;
+                    color: $lightGray;
+
+                    a {
+                        color: $white;
+
+                        &.disabled {
+                            color: $lightGray;
+
+                            .fa-user {
+                                color: $lightGray;
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
+
+        .reg-header-right {
+            display: flex;
+        }
     }
-  }
+
+    .split-button ul {
+        &.hidden-options {
+            @media (max-width: 768px) {
+                width: auto;
+                top: 52px;
+                right: 58px;
+            }
+        }
+
+        li {
+            &.primaryOption {
+                width: auto;
+
+                i {
+                    display: none;
+
+                    @media (max-width: 768px) {
+                        display: inline-block;
+                    }
+                }
+
+                span {
+                    @media (max-width: 768px) {
+                        display: none;
+                    }
+                }
+
+                .buttonClass {
+                    @media (max-width: 768px) {
+                        max-width: 60px;
+                        float: right;
+                        height: 32px;
+                        padding: 0 6px;
+
+                        i.fa-print {
+                            font-size: 23px;
+                            padding-top: 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .split-button {
+        .toggle-button {
+            padding: 6px 10px;
+        }
+    }
 }

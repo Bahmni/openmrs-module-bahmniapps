@@ -206,6 +206,24 @@ h3 {
             text-decoration: none;
             font-weight: normal;
         }
+        .clinic-info{
+            font-size: 12pt;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 1%;
+            width: 50%;
+            font-weight: bold;
+            span { display: block }
+            .address{
+                margin-top: 10px;
+                font-weight: normal;
+            }
+        }
+        .print-title-with-logo{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
     }
     .hierarchy ul li {
@@ -330,6 +348,22 @@ h3 {
                 display: none;
             }
         }
+        h2.encounter-info {
+            text-align: left;
+            color: $black;
+            font-size: 9.5pt;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            line-height: normal;
+            padding: 0;
+            margin: 0;
+            margin-top: 1%;
+            border: 0;
+            text-decoration: none;
+            [class^="fa-"] {
+                display: none;
+            }
+        }
         .form-field {
             border: 0;
             .time {
@@ -386,6 +420,18 @@ h3 {
                         width: 15%;
                     }
                     &.start-date-heading {
+                        width: 12%;
+                    }
+                    &.enc-sl-no-heading {
+                        width: 10%;
+                    }
+                    &.enc-drug-name-heading{
+                        width: 33%;
+                    }
+                    &.enc-dosage-instructions-heading{
+                        width: 45%;
+                    }
+                    &.enc-start-date-heading {
                         width: 12%;
                     }
 
@@ -1095,6 +1141,11 @@ h3 {
 @media print {
     body {
         font-size: 20px;
+    }
+    .provider-info {
+        font-size: medium;
+        float: right;
+        padding: 5px;
     }
     .sections-group {
         div div .section {

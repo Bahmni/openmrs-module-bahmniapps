@@ -49,6 +49,7 @@ Bahmni.Clinical.Constants = (function () {
         messageForNoLabOrders: "NO_LAB_ORDERS_MESSAGE",
         messageForNoObservation: "NO_OBSERVATIONS_CAPTURED",
         messageForNoActiveVisit: "NO_ACTIVE_VISIT_MESSAGE",
+        sharePrescriptionMailContent: "SHARE_PRESCRIPTION_MAIL_CONTENT",
         dischargeSummaryConceptName: "Discharge Summary",
         flexibleDosingInstructionsClass: "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
         reviseAction: 'REVISE',
@@ -69,7 +70,8 @@ Bahmni.Clinical.Constants = (function () {
         bacteriologyConstants: bacteriologyConstants,
         globalPropertyToFetchActivePatients: 'emrapi.sqlSearch.activePatients',
         adtPrivilege: "app:adt",
-        adtForwardUrl: "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/"
+        adtForwardUrl: "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/",
+        certificateHeader: "Print Header"
     };
 })();
 

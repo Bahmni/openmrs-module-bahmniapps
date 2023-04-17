@@ -606,7 +606,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                     concept: {
                         dataType: 'Date'
                     },
-                    value: '10/10/2015'
+                    value: '10/10/2015',
+                    observationDateTime: new Date("10/10/2015")
                 }
             ];
 
@@ -656,7 +657,8 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                         name: "ConceptName",
                         dataType: 'Date'
                     },
-                    value: '10/10/2015'
+                    value: '10/10/2015',
+                    observationDateTime: new Date("10/10/2015")
                 }
             ];
 

@@ -15,9 +15,11 @@ describe("TreamentService", function () {
         var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         appDescriptor.getConfigValue.and.returnValue({showDetailsWithinDateRange: false});
         appService.getAppDescriptor.and.returnValue(appDescriptor);
+        var transmissionService = jasmine.createSpyObj('transmissionService', ['sendEmail']);
         $provide.value('$http', _$http);
         $provide.value('$q', Q);
         $provide.value('appService',appService);
+        $provide.value('transmissionService',transmissionService);
     }));
 
 

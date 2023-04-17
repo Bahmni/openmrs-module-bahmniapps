@@ -23,7 +23,10 @@
             </li>
         </ul>
         <div class="patient-info hidden-tablet-above">
-            <button type="button" class="prev-page" history-back>
+            <button type="button" class="prev-page" history-back ng-if="!allowNavigation">
+                <i class="fa fa-arrow-left"></i>
+            </button>
+            <button type="button" class="prev-page" ng-if="allowNavigation" ng-click="navigate()">
                 <i class="fa fa-arrow-left"></i>
             </button>
             <span class="name">{{patientContext.givenName}} {{patientContext.familyName}}</span>

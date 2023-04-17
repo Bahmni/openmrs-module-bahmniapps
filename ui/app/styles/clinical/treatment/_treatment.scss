@@ -18,16 +18,90 @@
         width: 100%;
         box-sizing: border-box;
 
-        @media screen and (min-width: 769px) {
+        @media screen and (min-width: 821px) and (max-width: 992px) {
+            width: calc(100% - 215px);
+            float: left;
+            font-size: 14px;
+        }
+
+        @media screen and (min-width: 993px) {
             width: 58%;
             float: left;
+            font-size: 14px;
+        }
+    }
+
+    .drug-dosage {
+        display: flex;
+        margin-bottom: 5px;
+        gap: 5px;
+        justify-content: space-between;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: flex-start;
+
+        @media screen and (min-width: 540px) and (max-width: 768px) {
+            flex-direction: row;
+        }
+
+        @media screen and (min-width: 769px) {
+            flex-direction: column;
+        }
+
+        @media screen and (min-width: 1200px) {
+            flex-direction: row;
+        }
+
+        @media screen and (max-width: 300px) {
+            font-size: 10px;
+        }
+    }
+
+    .drug-name {
+        width: auto;
+
+        @media screen and (min-width: 1200px) {
+            max-width: calc(100% - 310px);
+        }
+    }
+
+    .dosage-details {
+        display: flex;
+        gap: 5px;
+        width: calc(100% - 20px);
+        font-size: 14px;
+        font-family: $OpenSansFont;
+        padding-left: 10px;
+        line-height: 1.1;
+        flex-wrap: wrap;
+
+        .footer-note {
+            flex-grow: 1;
+            padding-right: 20px;
+
+            .provider {
+                float: none;
+            }
+        }
+    }
+
+    .dosage-frequency {
+        padding: 5px 8px;
+        border-radius: 20px;
+        background-color: #527a7a;
+        color: #fff;
+        box-sizing: border-box;
+        width: fit-content;
+        @media screen and (min-width: 1200px) {
+            min-width: 300px;
+            text-align: center;
         }
     }
 
     div.start-date span {
         line-height: 1em;
         padding-top: 7px;
-        font-family: OpenSansItalic;
+        font-family: OpenSansSemiBold;
         font-size: 12px;
         color: $mediumGray;
         display: block;
@@ -41,6 +115,10 @@
 
     .table-mimic {
         font-size: 12px;
+
+        li {
+            padding-bottom: 10px;
+        }
     }
 
     .footer-note .time-stamp {
@@ -81,9 +159,11 @@
         .refill-btn,
         .stop-drug-btn {
             padding: 6px !important;
+            line-height: 0.8em;
 
             @media screen and (max-width: 1024px) {
                 padding: 4px 6px !important;
+                line-height: 1.2em;
             }
         }
 
