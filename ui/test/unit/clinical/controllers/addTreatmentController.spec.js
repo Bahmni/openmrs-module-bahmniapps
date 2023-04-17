@@ -167,7 +167,7 @@ describe("AddTreatmentController", function () {
             }));
             locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation']);
 
-            drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
+            drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept', 'getDrugInteraction', 'getCdssEnabled', 'cdssAudit']);
             drugs = [
                 {name: "T", dosageForm: {display: "something"}, uuid: "123-12321"},
                 {name: "A", dosageForm: {display: "something"}, uuid: "123-12321"},
@@ -175,10 +175,9 @@ describe("AddTreatmentController", function () {
             ];
             defaultDrugsPromise = specUtil.respondWith(drugs);
             drugService.getSetMembersOfConcept.and.returnValue(defaultDrugsPromise);
-            drugService = jasmine.createSpyObj('drugService', ['getDrugInteraction']);
             drugService.getDrugInteraction.and.returnValue(specUtil.respondWith([]));
-            drugService = jasmine.createSpyObj('drugService', ['getCdssEnabled']);
-            drugService.getCdssEnabled.and.returnValue(specUtil.respondWith(false));
+            drugService.getCdssEnabled.and.returnValue(specUtil.respondWith(true));
+            drugService.cdssAudit.and.returnValue(specUtil.respondWith(true));
 
             appService.getAppDescriptor.and.returnValue(appConfig);
             orderSets = [{
@@ -525,6 +524,24 @@ describe("AddTreatmentController", function () {
 
                 scope.onAccept();
                 expect(scope.treatment.isNonCodedDrug).toBeFalsy();
+            });
+        });
+
+        describe("cdss alerts", function () {
+            it("should dismiss critical alert on submitting an audit", function () {
+                scope.interactions = [
+                    {
+                        uuid: 'some-uuid',
+                        indicator: 'critical',
+                        summary: 'Contraindication: Some Coded Drug is contraindicated with Some condition',
+                        detail: 'Some Coded Drug is contraindicated with Some condition'
+                    }
+                ];
+                scope.patient = {uuid: 'some-user-uuid'};
+                scope.treatment = {audit: "some-audit"};
+                scope.submitAudit(0).then(function () {
+                    expect(scope.interactions.length).toBe(0);
+                });
             });
         });
 

@@ -80,9 +80,9 @@ angular.module('bahmni.clinical')
                 var patientUuid = $scope.patient.uuid;
                 var message = $scope.interactions[index].summary.replace(/"/g, '');
                 var eventType = 'Dismissed: ' + $scope.treatment.audit;
-                drugService
+                return drugService
                 .cdssAudit(patientUuid, eventType, message, 'CDSS')
-                .then(function (response) {
+                .then(function () {
                     $scope.interactions.splice(index, 1);
                     $scope.treatment.audit = '';
                 });
