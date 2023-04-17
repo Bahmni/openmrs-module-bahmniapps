@@ -34,7 +34,7 @@ angular.module('bahmni.registration')
 
             $scope.openIdentifierPopup = function (identifierType, action) {
                 var iframe = $document[0].getElementById("extension-popup");
-                iframe.src = getExtensionPoint(identifierType).src + "?action=" + action + "&patientUuid=" + $scope.patient.uuid;
+                iframe.src = getExtensionPoint(identifierType).src + "?action=" + action;
                 $scope.showExtIframe = true;
                 $window.addEventListener("message", function (popupWindowData) {
                     if (popupWindowData.data.patient !== undefined) {

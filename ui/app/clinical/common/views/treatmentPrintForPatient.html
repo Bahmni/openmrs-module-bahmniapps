@@ -1,7 +1,7 @@
 <section class="block treatment-section" ng-show="encounterDrugOrderMap.length>0">
     <h2 class="section-title">Treatment</h2>
     <div ng-repeat="(key, value) in encounterDrugOrderMap">
-        <br/><h2 class="encounter-info">Consultation with {{value.drugOrders[value.drugOrders.length-1].provider.name}}</h2><br/>
+        <h2 class="encounter-info">Consultation with {{value.drugOrders[value.drugOrders.length-1].provider.name}}</h2>
         <table class="printPrescription">
             <tr>
                 <th class="enc-sl-no-heading">{{'TREATMENT_SL_NO'|translate}}</th>
@@ -29,5 +29,4 @@
             </tbody>
         </table>
     </div>
-    <br/>
 </section>

@@ -32,6 +32,7 @@ describe("PatientDashboardTreatmentController", function () {
         scope.patient = {
             uuid: "patient uuid"
         };
+        $rootScope.facilityLocation = { "name" : "Bahmni", "attributes" : []};
 
         ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
         treatmentService = jasmine.createSpyObj('treatmentService', ['sharePrescriptions']);
@@ -46,7 +47,8 @@ describe("PatientDashboardTreatmentController", function () {
         $controller('PatientDashboardTreatmentController', {
             $scope: scope,
             ngDialog: ngDialog,
-            treatmentService: treatmentService
+            treatmentService: treatmentService,
+            $rootScope: $rootScope
         });
     })
     )
@@ -61,13 +63,13 @@ describe("PatientDashboardTreatmentController", function () {
     describe("Should fetch configuration", function () {
         it("should fetch dashboard params", function () {
             var expected = {};
-            _.extend(expected, treatmentConfigParams.dashboardConfig || {}, {patientUuid: "patient uuid", isEmailPresent: false});
+            _.extend(expected, treatmentConfigParams.dashboardConfig || {}, {patientUuid: "patient uuid", isEmailPresent: false}, {prescriptionEmailToggle: undefined});
             expect(expected).toEqual(scope.dashboardConfig);
         });
 
         it("should fetch summary page params", function () {
             var expected = {};
-            _.extend(expected, treatmentConfigParams.expandedViewConfig || {}, {patientUuid: "patient uuid", isEmailPresent: false});
+            _.extend(expected, treatmentConfigParams.expandedViewConfig || {}, {patientUuid: "patient uuid", isEmailPresent: false}, {prescriptionEmailToggle: undefined});
             expect(expected).toEqual(scope.expandedViewConfig);
         });
     });

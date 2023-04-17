@@ -16,10 +16,10 @@
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
             }).then(function (response) {
-                if (response.status != 200) {
-                    messagingService.showMessage("error", "Unable to send email");
+                if (response.data.statusLine.statusCode != 200) {
+                    messagingService.showMessage("error", response.data.statusLine.reasonPhrase);
                 } else {
-                    messagingService.showMessage("info", "Mail sent successfully");
+                    messagingService.showMessage("info", response.data.statusLine.reasonPhrase);
                 }
                 deferred.resolve(response);
             });
@@ -29,8 +29,8 @@
         var getSharePrescriptionMailContent = function (prescriptionDetails) {
             var message = $translate.instant(Bahmni.Clinical.Constants.sharePrescriptionMailContent);
             message = message.replace("#recipientName", prescriptionDetails.patient.name);
-            message = message.replaceAll("#locationName", $rootScope.locationName);
-            message = message.replace("#locationAddress", $rootScope.locationAddress ? $rootScope.locationAddress : "");
+            message = message.replaceAll("#locationName", $rootScope.facilityLocation.name);
+            message = message.replace("#locationAddress", $rootScope.facilityLocation.attributes[0] ? $rootScope.facilityLocation.attributes[0].display.split(":")[1].trim() : "");
             message = message.replace("#visitDate", $filter("bahmniDate")(prescriptionDetails.visitDate));
             return message;
         };
