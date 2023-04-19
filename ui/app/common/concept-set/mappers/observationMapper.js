@@ -17,10 +17,10 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             if (savedObs.concept.conceptClass && (savedObs.concept.conceptClass === Bahmni.Common.Constants.conceptDetailsClassName || savedObs.concept.conceptClass.name === Bahmni.Common.Constants.conceptDetailsClassName)) {
                 if (isBahmniLite(observations, $translate)) {
                     savedObs.value = self.getGridObservationDisplayValue(savedObs, $translate);
-                    observationsForDisplay = observationsForDisplay.concat(createObservationForDisplay(savedObs, savedObs.concept));
+                    observationsForDisplay = observationsForDisplay.concat(createObservationForDisplay(savedObs, savedObs.concept, $translate));
                 } else {
                     var observationNode = new Bahmni.ConceptSet.ObservationNode(savedObs, savedObs, [], savedObs.concept);
-                    var obsToDisplay = createObservationForDisplay(observationNode, observationNode.primaryObs.concept);
+                    var obsToDisplay = createObservationForDisplay(observationNode, observationNode.primaryObs.concept, $translate);
                     if (obsToDisplay) {
                         observationsForDisplay.push(obsToDisplay);
                     }
@@ -29,7 +29,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
                 if (savedObs.concept.set) {
                     if (conceptSetConfig[savedObs.concept.name] && conceptSetConfig[savedObs.concept.name].grid) {
                         savedObs.value = self.getGridObservationDisplayValue(savedObs, $translate);
-                        observationsForDisplay = observationsForDisplay.concat(createObservationForDisplay(savedObs, savedObs.concept));
+                        observationsForDisplay = observationsForDisplay.concat(createObservationForDisplay(savedObs, savedObs.concept, $translate));
                     } else {
                         var groupMemberObservationsForDisplay = internalMapForDisplay(savedObs.groupMembers, conceptSetConfig, $translate);
                         observationsForDisplay = observationsForDisplay.concat(groupMemberObservationsForDisplay);
@@ -40,7 +40,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
                         obsToDisplay = savedObs;
                     } else if (!savedObs.hidden) {
                         var observation = newObservation(savedObs.concept, savedObs, []);
-                        obsToDisplay = createObservationForDisplay(observation, observation.concept);
+                        obsToDisplay = createObservationForDisplay(observation, observation.concept, $translate);
                     }
                     if (obsToDisplay) {
                         observationsForDisplay.push(obsToDisplay);
@@ -170,12 +170,12 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         };
     }
 
-    var createObservationForDisplay = function (observation, concept) {
+    var createObservationForDisplay = function (observation, concept, $translate) {
         if (observation.value == null) {
             return;
         }
         var observationValue = getObservationDisplayValue(observation);
-        observationValue = observation.durationObs ? observationValue + " " + getDurationDisplayValue(observation.durationObs) : observationValue;
+        observationValue = observation.durationObs ? observationValue + " " + getDurationDisplayValue(observation.durationObs, $translate) : observationValue;
         return {
             "value": observationValue,
             "abnormalObs": observation.abnormalObs,
@@ -243,16 +243,17 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             return new Map().set(durationUnit, getObservationDisplayValue(observation));
         }
     };
-    var getDurationDisplayValue = function (duration) {
+    var getDurationDisplayValue = function (duration, $translate) {
         var durationForDisplay = Bahmni.Common.Util.DateUtil.convertToUnits(
             duration.value
         );
         if (durationForDisplay["value"] && durationForDisplay["unitName"]) {
-            return (
-            "since " +
-            durationForDisplay["value"] +
-            " " +
-            durationForDisplay["unitName"]
+            return $translate.instant(
+        "CHIEF_COMPLAINT_DURATION_WITH_UNIT_TEMPLATE_KEY",
+                {
+                    duration: durationForDisplay["value"],
+                    unit: durationForDisplay["unitName"]
+                }
             );
         }
         return "";
