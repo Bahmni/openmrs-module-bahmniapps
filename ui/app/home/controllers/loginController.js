@@ -140,20 +140,21 @@ angular.module('bahmni.home')
                             deferrable.resolve(data);
                             return;
                         }
-                        sessionService.loadCredentials().then(function () {
-                            onSuccessfulAuthentication();
-                            $rootScope.currentUser.addDefaultLocale($scope.selectedLocale);
-                            userService.savePreferences().then(
-                                function () { deferrable.resolve(); },
-                                function (error) { deferrable.reject(error); }
-                            );
-                            logAuditForLoginAttempts("USER_LOGIN_SUCCESS");
-                        }, function (error) {
-                            $scope.errorMessageTranslateKey = error;
-                            deferrable.reject(error);
-                            logAuditForLoginAttempts("USER_LOGIN_FAILED", true);
-                        }
-                        );
+                        sessionService.updateSession($scope.loginInfo.currentLocation, null).then(function () {
+                            sessionService.loadCredentials().then(function () {
+                                onSuccessfulAuthentication();
+                                $rootScope.currentUser.addDefaultLocale($scope.selectedLocale);
+                                userService.savePreferences().then(
+                                    function () { deferrable.resolve(); },
+                                    function (error) { deferrable.reject(error); }
+                                );
+                                logAuditForLoginAttempts("USER_LOGIN_SUCCESS");
+                            }, function (error) {
+                                $scope.errorMessageTranslateKey = error;
+                                deferrable.reject(error);
+                                logAuditForLoginAttempts("USER_LOGIN_FAILED", true);
+                            });
+                        });
                     },
                     function (error) {
                         $scope.errorMessageTranslateKey = error;
