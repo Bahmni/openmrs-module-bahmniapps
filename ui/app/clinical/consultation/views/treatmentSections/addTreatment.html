@@ -278,6 +278,7 @@
                             </div>
                             <div class="cdss-alert-details" ng-show="interaction.showDetails">
                                 {{interaction.detail}}
+                                <a href="{{interaction.source.url}}" target="_blank">{{interaction.source.label}}</a>
                                 <div ng-show="interaction.indicator == 'critical'">
                                      <div class="field-value">
                                     <select id="cdss-audit" class="form-field cdss-close-reason"
@@ -289,7 +290,6 @@
                                 </div>
                               
                                 <div class="operations fr clearfix" ng-show="interaction.indicator == 'critical'">
-                                    <!-- only enable if reason has been selected -->
                                     <button 
                                     ng-click="submitAudit($index)"
                                     ng-disabled="!treatment.audit"
