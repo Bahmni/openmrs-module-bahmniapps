@@ -5,7 +5,52 @@ describe("drugOrderViewModel", function () {
     var sampleTreatment = function ( treatmentConfig, defaults, encounterDate) {
         return Bahmni.Tests.drugOrderViewModelMother.build(treatmentConfig, defaults, encounterDate);
     };
-
+    var activeDrugOrder = {
+        "uuid": "activeOrderUuid",
+        "action": "NEW",
+        "careSetting": "Outpatient",
+        "orderType": "Drug Order",
+        "orderNumber": "ORD-1234",
+        "autoExpireDate": null,
+        "scheduledDate": null,
+        "dateStopped": null,
+        "instructions": null,
+        "visit": {
+            "startDateTime": 1397028261000,
+            "uuid": "002efa33-4c4f-469f-968a-faedfe3a5e0c"
+        },
+        "drug": {
+            "form": "Injection",
+            "uuid": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
+            "strength": null,
+            "name": "Methylprednisolone 2ml"
+        },
+        "dosingInstructions": {
+            "quantity": 100,
+            "route": "Intramuscular",
+            "frequency": "Twice a day",
+            "doseUnits": "Tablespoon",
+            "asNeeded": false,
+            "quantityUnits": "Tablet",
+            "dose": 5,
+            "administrationInstructions": "{\"instructions\":\"In the evening\",\"additionalInstructions\":\"helylo\"}",
+            "numberOfRefills": null
+        },
+        "durationUnits": "Months",
+        "dateActivated": 1410322624000,
+        "commentToFulfiller": null,
+        "effectiveStartDate": 1410322624000,
+        "effectiveStopDate": null,
+        "orderReasonConcept": null,
+        "dosingInstructionType": "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
+        "previousOrderUuid": null,
+        "orderReasonText": null,
+        "duration": 10,
+        "concept": {
+            "shortName": "Methylprednisolone 2ml"
+        },
+        "provider": {name: "superman"}
+    };
     var treatmentConfig;
     beforeEach(function(){
         treatmentConfig = {
@@ -303,6 +348,14 @@ describe("drugOrderViewModel", function () {
         sampleTreatment.setFrequencyType(Bahmni.Clinical.Constants.dosingTypes.variable);
         expect(sampleTreatment.variableDosingType).not.toBe({});
         expect(sampleTreatment.variableDosingType.doseUnits).toEqual("Tablets");
+    });
+
+    it("should get the duration units from drug order set when order set is added", function() {
+        var sampleTreatment = new Bahmni.Clinical.DrugOrderViewModel({}, treatmentConfig);
+        sampleTreatment.frequencyType = Bahmni.Clinical.Constants.dosingTypes.uniform;
+        sampleTreatment.uniformDosingType.frequency = "Twice a day";
+        sampleTreatment.calculateDurationUnit(activeDrugOrder);
+        expect(sampleTreatment.durationUnit).toBe("Months");
     });
 
 
