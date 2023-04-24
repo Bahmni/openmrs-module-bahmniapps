@@ -25,7 +25,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
           savedObs.concept.conceptClass.name ===
             Bahmni.Common.Constants.conceptDetailsClassName)
       ) {
-                if (isBahmniLite(observations, $translate)) {
+                if (isConceptNameChiefComplaintData(observations, $translate)) {
                     savedObs.value = self.getGridObservationDisplayValue(
             savedObs,
             $translate
@@ -101,7 +101,7 @@ Bahmni.ConceptSet.ObservationMapper = function () {
         var savedObs = findInSavedObservation(rootConcept, observations)[0];
         return mapObservation(rootConcept, savedObs, conceptSetConfig || {});
     };
-    var isBahmniLite = function (observations, translate) {
+    var isConceptNameChiefComplaintData = function (observations, translate) {
         return (
       observations[0].groupMembers.length > 1 &&
       observations[0].formNamespace != null &&
