@@ -154,6 +154,7 @@
     "CDSS_CRITICAL" :"Critical",
     "CDSS_ALERT_DISMISSAL_REASON" :"Select reason for dismissal",
     "CDSS_INFO" :"Info",
+    "CDSS_ALERT_DISMISS": "Dismiss",
     "MEDICATION_DRUG_NAME_PLACEHOLDER" :"Choose Drug",
     "MEDICATION_CHANGE_DURATION_BUTTON" :"Change Duration",
     "MEDICATION_NEW_PRESCRIPTION": "New Prescription",

@@ -15,7 +15,7 @@ Bahmni.Common = Bahmni.Common || {};
     var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
     var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
     var IE_APPS_API = RESTWS_V1 + "/bahmniie";
-    var FHIR_URL = hostUrl + "/openmrs/ws/fhir2/R4";
+    var FHIR_BASE_URL = hostUrl + "/openmrs/ws/fhir2/R4";
 
     var serverErrorMessages = [
         {
@@ -83,7 +83,7 @@ Bahmni.Common = Bahmni.Common || {};
         emrEncounterUrl: EMRAPI + "/encounter",
         encounterUrl: RESTWS_V1 + "/encounter",
         cdssUrl: RESTWS_V1 + "/cdss",
-        fhirMedicationsUrl: FHIR_URL + "/Medication",
+        fhirMedicationsUrl: FHIR_BASE_URL + "/Medication",
         locationUrl: RESTWS_V1 + "/location",
         bahmniVisitLocationUrl: BAHMNI_CORE + "/visitLocation",
         bahmniOrderUrl: BAHMNI_CORE + "/orders",

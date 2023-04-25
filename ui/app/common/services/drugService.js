@@ -46,7 +46,7 @@ angular.module('bahmni.common.services')
             });
         };
 
-        var getDrugInteraction = function (bundle) {
+        var sendDiagnosisDrugBundle = function (bundle) {
             return $http.post(Bahmni.Common.Constants.cdssUrl, bundle, {
                 withCredentials: true,
                 params: { service: 'medication-order-select' }
@@ -89,7 +89,7 @@ angular.module('bahmni.common.services')
             search: search,
             getRegimen: getRegimen,
             getSetMembersOfConcept: getSetMembersOfConcept,
-            getDrugInteraction: getDrugInteraction,
+            sendDiagnosisDrugBundle: sendDiagnosisDrugBundle,
             getDrugConceptSourceMapping: getDrugConceptSourceMapping,
             getCdssEnabled: getCdssEnabled,
             cdssAudit: cdssAudit
