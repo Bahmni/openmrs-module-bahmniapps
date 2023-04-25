@@ -595,22 +595,25 @@ angular.module('bahmni.clinical')
             };
 
             var createConditionResource = function (condition, patientUuid, isDiagnosis) {
+                var conditionStatus = condition.status || condition.certainty;
+                var activeConditions = ['CONFIRMED', 'PRESUMED', 'ACTIVE'];
+                var status = activeConditions.indexOf(conditionStatus) > -1 ? 'active' : 'inactive';
                 var conditionResource = {
                     resourceType: 'Condition',
                     id: condition.uuid,
                     clinicalStatus: {
-                        "coding": [
+                        coding: [
                             {
-                                "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
-                                "code": "active",
-                                "display": "Active"
+                                code: status,
+                                display: status.charAt(0).toUpperCase() + status.slice(1),
+                                system: 'http://terminology.hl7.org/CodeSystem/condition-clinical'
                             }
                         ]
                     },
                     code: {
                         coding: [
                             {
-                                system: isDiagnosis ? condition.codedAnswer.conceptSystem : (condition.concept.conceptSystem || 'http://snomed.info/sct'),
+                                system: isDiagnosis ? condition.codedAnswer.conceptSystem : (condition.concept.conceptSystem || ''),
                                 code: isDiagnosis ? condition.codedAnswer.uuid : condition.concept.uuid,
                                 display: isDiagnosis ? condition.codedAnswer.name : condition.concept.name
                             }
