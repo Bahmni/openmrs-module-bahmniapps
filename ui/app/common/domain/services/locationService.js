@@ -28,10 +28,20 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        var getFacilityVisitLocation = function () {
+            var cookie = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);
+            return $http.get(Bahmni.Common.Constants.bahmniFacilityLocationUrl + "/" + cookie.uuid, {
+                cache: true
+            }).then(function (response) {
+                return response.data;
+            });
+        };
+
         return {
             getAllByTag: getAllByTag,
             getLoggedInLocation: getLoggedInLocation,
             getByUuid: getByUuid,
-            getVisitLocation: getVisitLocation
+            getVisitLocation: getVisitLocation,
+            getFacilityVisitLocation: getFacilityVisitLocation
         };
     }]);

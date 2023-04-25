@@ -21,7 +21,7 @@ angular.module('bahmni.clinical')
 
                 var startDate = null, endDate = null, getEffectiveOrdersOnly = false;
                 if (programConfig.showDetailsWithinDateRange) {
-                    startDate = $stateParamqs.dateEnrolled;
+                    startDate = $stateParams.dateEnrolled;
                     endDate = $stateParams.dateCompleted;
                     if (startDate || endDate) {
                         $scope.params.showOtherActive = false;

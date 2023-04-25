@@ -382,7 +382,7 @@ describe("ConsultationController", function () {
                 }
             };
             createController();
-
+            expect(scope.availableBoards[0].isSelectedTab).toBeFalsy();
             expect(scope.currentBoard).toEqual({
                 extensionPointId: "org.bahmni.clinical.consultation.board",
                 icon: "icon-user-md",
@@ -397,8 +397,7 @@ describe("ConsultationController", function () {
                 type: "link",
                 url: "treatment",
                 isSelectedTab: true
-            }
-            );
+            });
         });
 
         it("should set current tab based on the tab config provided", function () {

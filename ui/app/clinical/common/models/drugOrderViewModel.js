@@ -196,7 +196,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         return (!variableDosingType.morningDose && !variableDosingType.afternoonDose && !variableDosingType.eveningDose);
     };
 
-    var asNeeded = function (asNeeded) {
+    this.getAsNeededText = function (asNeeded) {
         if (asNeeded && config.translate) {
             return config.translate(null, 'MEDICATION_AS_NEEDED');
         } else if (asNeeded) {
@@ -227,7 +227,7 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
 
     var getOtherDescription = function (withRoute, withDuration) {
         var otherDescription = addDelimiter(blankIfFalsy(getInstructions()), ", ") +
-            addDelimiter(blankIfFalsy(asNeeded(self.asNeeded)), ', ');
+            addDelimiter(blankIfFalsy(self.getAsNeededText(self.asNeeded)), ', ');
         if (withRoute) {
             otherDescription = otherDescription + addDelimiter(blankIfFalsy(self.route), " - ");
         } else {

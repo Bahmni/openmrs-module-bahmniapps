@@ -52,7 +52,7 @@ describe('PatientCommonController', function () {
                                 "city": "cityVillage",
                                 "state": "stateProvince",
                                 "postalCode": "postalCode",
-                                "line": "address1"
+                                "line": ["address1"]
                             }
                         }
                     }];
@@ -443,7 +443,7 @@ it('checks that the confirmation popup is not prompted on the Registration secon
 
             var expectedPatient = {
                 age : { years : 22, months : 2, days : 24 },
-                address : { cityVillage : '', stateProvince : 'Madhya Pradesh', postalCode : '212021', address1 : 'A-12, Dholakpur' },
+                address : { stateProvince : 'Madhya Pradesh', postalCode : '212021', address1 : 'A-12, Dholakpur' },
                 extraIdentifiers : [ { identifierType : { name : 'ABHA' }, generate : function (){}, registrationNumber : '57-0517-6745-1839' },
                     { identifierType : { name : 'ABHA Address' }, generate : function (){}, registrationNumber : 'hina.p@sbx' } ],
                 calculateBirthDate : Function,

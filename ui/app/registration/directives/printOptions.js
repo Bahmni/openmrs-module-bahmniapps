@@ -21,7 +21,13 @@ angular.module('bahmni.registration')
                 };
 
                 $scope.print = function (option) {
-                    return registrationCardPrinter.print(option.templateUrl, $scope.patient, mapRegistrationObservations(), $scope.encounterDateTime);
+                    var location = $rootScope.facilityVisitLocation ? $rootScope.facilityVisitLocation : $rootScope.loggedInLocation;
+                    var locationAddress = "";
+                    var attributeDisplay = location.attributes[0] ? location.attributes[0].display.split(": ") : null;
+                    if (attributeDisplay && attributeDisplay[0] === Bahmni.Registration.Constants.certificateHeader) {
+                        locationAddress = attributeDisplay[1];
+                    }
+                    return registrationCardPrinter.print(option.templateUrl, $scope.patient, mapRegistrationObservations(), $scope.encounterDateTime, { "name": location.name, "address": locationAddress });
                 };
 
                 $scope.buttonText = function (option, type) {
