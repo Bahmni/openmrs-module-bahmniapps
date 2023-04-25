@@ -259,29 +259,28 @@
                     </div>
                 </article>
 
-                <h3 ng-show="interactions && interactions.length > 0" class="orderSet-additional-info" ng-show="treatmentConfig.showAdditionalInformation()">
-                    {{"CDSS_" + interactions[0].indicator.toUpperCase() | translate}}
+                <h3 ng-show="cdssaAlerts && cdssaAlerts.length > 0" class="cdss-alerts">
+                    {{"CDSS_" + cdssaAlerts[0].indicator.toUpperCase() | translate}}
                 </h3>
 
-                    <div ng-repeat="interaction in interactions" class="cdss-alert" ng-class="{'alert-danger': interaction.indicator == 'critical', 'alert-warning': interaction.indicator == 'warning', 'alert-info': interaction.indicator == 'info'}" ng-show="interaction">
-                        <button ng-disabled="interaction.indicator == 'critical'" type="button" class="close" ng-click="closeAlert($index)">&times;</button>
+                    <div ng-repeat="cdssAlert in cdssaAlerts" class="cdss-alert" ng-class="{'alert-danger': cdssAlert.indicator == 'critical', 'alert-warning': cdssAlert.indicator == 'warning', 'alert-info': cdssAlert.indicator == 'info'}" ng-show="cdssAlert">
+                        <button ng-disabled="cdssAlert.indicator == 'critical'" type="button" class="cdss-alert-close" ng-click="closeAlert($index)">&times;</button>
                         <i class="fa" aria-hidden="true"
-                             ng-class="{'fa-exclamation-triangle': interaction.indicator == 'critical' || interaction.indicator == 'warning', 'fa-info-circle': interaction.indicator == 'info'}"
+                             ng-class="{'fa-exclamation-triangle': cdssAlert.indicator == 'critical' || cdssAlert.indicator == 'warning', 'fa-info-circle': cdssAlert.indicator == 'info'}"
                         ></i>
                         <div>
-                            <div ng-click="showAlertDetails($index)" class="cdss-alert-summary">
-                               
-                                    {{interaction.summary}}
-
-                                  <i class="fa" ng-class="{'fa-angle-up': interaction.showDetails, 'fa-angle-down': !interaction.showDetails}"></i>
-                                
+                            <div ng-click="toggleAlertDetails($index)" class="cdss-alert-summary">
+                                <span>{{cdssAlert.summary}}</span>
+                                <i class="fa" ng-class="{'fa-angle-up': cdssAlert.showDetails, 'fa-angle-down': !cdssAlert.showDetails}"></i>
                             </div>
-                            <div class="cdss-alert-details" ng-show="interaction.showDetails">
-                                {{interaction.detail}}
-                                <a href="{{interaction.source.url}}" target="_blank">{{interaction.source.label}}</a>
-                                <div ng-show="interaction.indicator == 'critical'">
+                            <div class="cdss-alert-details" ng-show="cdssAlert.showDetails">
+                                <span>{{cdssAlert.detail}}</span>
+                                <a href="{{cdssAlert.source.url}}" target="_blank" ng-show="cdssAlert.source.url">
+                                    <i class="fa fa-question-circle"></i>
+                                </a>
+                                <div ng-show="cdssAlert.indicator == 'critical'">
                                      <div class="field-value">
-                                    <select id="cdss-audit" class="form-field cdss-close-reason"
+                                    <select id="cdss-audit" class="form-field cdss-alert-close-reason"
                                             ng-options="item as item for item in auditOptions()"
                                             ng-model="treatment.audit"
                                             >
@@ -289,12 +288,12 @@
                                     </select>
                                 </div>
                               
-                                <div class="operations fr clearfix" ng-show="interaction.indicator == 'critical'">
+                                <div class="operations fr clearfix" ng-show="cdssAlert.indicator == 'critical'">
                                     <button 
                                     ng-click="submitAudit($index)"
                                     ng-disabled="!treatment.audit"
                                      type="button" class="icon-button secondary-button" tabindex="1" title="Dismiss">
-                                       Dismiss
+                                        {{'CDSS_ALERT_DISMISS' | translate}}
                                     </button>
                                 </div>
                                 </div>
@@ -307,7 +306,7 @@
 
                 <div class="operations fr clearfix">
                     <button class="add-drug-btn secondary-button fl" type="submit" accesskey="{{ ::treatmentConfig.translate('addAccessKey', 'MEDICATION_ADD_ACCESS_KEY') }}"
-                            ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug || (interactions && interactions[0].indicator == 'critical')">
+                            ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug || (cdssaAlerts && cdssaAlerts[0].indicator == 'critical')">
                              <span ng-bind-html="::treatmentConfig.translate('add', 'MEDICATION_ADD_BUTTON_LABEL')">
                         </span>
                     </button>

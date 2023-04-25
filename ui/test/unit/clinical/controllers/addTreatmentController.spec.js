@@ -167,7 +167,7 @@ describe("AddTreatmentController", function () {
             }));
             locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation']);
 
-            drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept', 'getDrugInteraction', 'getCdssEnabled', 'cdssAudit']);
+            drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept', 'sendDiagnosisDrugBundle', 'getCdssEnabled', 'cdssAudit']);
             drugs = [
                 {name: "T", dosageForm: {display: "something"}, uuid: "123-12321"},
                 {name: "A", dosageForm: {display: "something"}, uuid: "123-12321"},
@@ -175,7 +175,7 @@ describe("AddTreatmentController", function () {
             ];
             defaultDrugsPromise = specUtil.respondWith(drugs);
             drugService.getSetMembersOfConcept.and.returnValue(defaultDrugsPromise);
-            drugService.getDrugInteraction.and.returnValue(specUtil.respondWith([]));
+            drugService.sendDiagnosisDrugBundle.and.returnValue(specUtil.respondWith([]));
             drugService.getCdssEnabled.and.returnValue(specUtil.respondWith(true));
             drugService.cdssAudit.and.returnValue(specUtil.respondWith(true));
 
@@ -529,7 +529,7 @@ describe("AddTreatmentController", function () {
 
         describe("cdss alerts", function () {
             it("should dismiss critical alert on submitting an audit", function () {
-                scope.interactions = [
+                scope.cdssaAlerts = [
                     {
                         uuid: 'some-uuid',
                         indicator: 'critical',
@@ -540,7 +540,7 @@ describe("AddTreatmentController", function () {
                 scope.patient = {uuid: 'some-user-uuid'};
                 scope.treatment = {audit: "some-audit"};
                 scope.submitAudit(0).then(function () {
-                    expect(scope.interactions.length).toBe(0);
+                    expect(scope.cdssaAlerts.length).toBe(0);
                 });
             });
         });

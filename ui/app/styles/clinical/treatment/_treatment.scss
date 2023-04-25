@@ -423,7 +423,7 @@
                 }
             }
 
-            h3.orderSet-additional-info {
+            h3.orderSet-additional-info, h3.cdss-alerts {
                 font-family: OpenSansBold;
                 color: $darkGray;
                 font-size: 13px;
@@ -488,9 +488,24 @@
 
                 .cdss-alert-details {
                     margin-top: 10px;
+                    .fa {
+                        cursor: pointer;
+                        display: inline-block;
+                        width: 18px;
+                        height: 18px;
+                        line-height: 18px;
+                        text-align: center;
+                        border-radius: 100%;
+                        font-size: 20px;
+                        color: #669999;
+                        box-shadow: 1px 1px 1px #ccc;
+                        background: #FFFFFF;
+                        padding: 0;
+                        margin-left: 5px;
+                    }
                 }
 
-                .close {
+                .cdss-alert-close {
                     position: absolute;
                     right: 0;
                     top: 0;
@@ -511,7 +526,7 @@
                 }
             }
 
-            .cdss-close-reason {
+            .cdss-alert-close-reason {
                 width: 100% !important;
             }
 

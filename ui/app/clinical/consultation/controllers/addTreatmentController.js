@@ -78,12 +78,12 @@ angular.module('bahmni.clinical')
 
             $scope.submitAudit = function (index) {
                 var patientUuid = $scope.patient.uuid;
-                var message = $scope.interactions[index].summary.replace(/"/g, '');
+                var message = $scope.cdssaAlerts[index].summary.replace(/"/g, '');
                 var eventType = 'Dismissed: ' + $scope.treatment.audit;
+                $scope.cdssaAlerts.splice(index, 1);
                 return drugService
                 .cdssAudit(patientUuid, eventType, message, 'CDSS')
                 .then(function () {
-                    $scope.interactions.splice(index, 1);
                     $scope.treatment.audit = '';
                 });
             };
@@ -516,16 +516,12 @@ angular.module('bahmni.clinical')
             };
 
             $scope.closeAlert = function (index) {
-                $scope.interactions.splice(index, 1);
+                $scope.cdssaAlerts.splice(index, 1);
             };
 
-            $scope.showAlertDetails = function (index) {
-                $scope.interactions[index].showDetails =
-                  !$scope.interactions[index].showDetails;
-            };
-
-            $scope.changeErrorNotes = function (index) {
-                $scope.interactions[index].comment = $scope.cdssNote;
+            $scope.toggleAlertDetails = function (index) {
+                $scope.cdssaAlerts[index].showDetails =
+                  !$scope.cdssaAlerts[index].showDetails;
             };
 
             $scope.getDataResults = function (drugs) {
@@ -694,9 +690,9 @@ angular.module('bahmni.clinical')
                         var params = createParams(consultationData);
                         createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
                         .then(function (bundle) {
-                            var interactions = drugService.getDrugInteraction(bundle);
-                            interactions.then(function (response) {
-                                $scope.interactions = sortInteractionsByStatus(response.data);
+                            var cdssaAlerts = drugService.sendDiagnosisDrugBundle(bundle);
+                            cdssaAlerts.then(function (response) {
+                                $scope.cdssaAlerts = sortInteractionsByStatus(response.data);
                             });
                         });
                     }
