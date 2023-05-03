@@ -732,6 +732,7 @@ angular.module('bahmni.clinical')
             $scope.clearForm = function () {
                 $scope.treatment = newTreatment();
                 $scope.formInvalid = false;
+                $scope.cdssaAlerts = [];
                 clearHighlights();
                 markVariable("startNewDrugEntry");
             };
