@@ -43,7 +43,7 @@ angular.module('bahmni.registration')
                     }
                 };
 
-                function setForwardActionKey() {
+                function setForwardActionKey () {
                     if (editActionsConfig.length === 0) {
                         $scope.forwardActionKey = self.hasActiveVisit ? (getForwardUrlEntryForVisitFromTheConfig() ? keyForActiveVisitEntry() : 'enterVisitDetails') : 'startVisit';
                     } else {
@@ -97,30 +97,30 @@ angular.module('bahmni.registration')
                 };
 
                 var goToForwardUrlPage = function (patientData) {
-                    var forwardUrl = appService.getAppDescriptor().formatUrl($scope.activeVisitConfig.forwardUrl, { 'patientUuid': patientData.patient.uuid });
+                    var forwardUrl = appService.getAppDescriptor().formatUrl($scope.activeVisitConfig.forwardUrl, {'patientUuid': patientData.patient.uuid});
                     $window.location.href = forwardUrl;
                 };
 
                 $scope.actions.followUpAction = function (patientProfileData) {
                     messagingService.clearAll();
                     switch ($scope.actions.submitSource) {
-                        case 'startVisit':
-                            var entry = getForwardUrlEntryForVisitFromTheConfig();
-                            var forwardUrl = entry ? entry.forwardUrl : undefined;
-                            return createVisit(patientProfileData, forwardUrl);
-                        case 'forwardAction':
-                            return goToForwardUrlPage(patientProfileData);
-                        case 'enterVisitDetails':
-                            return goToVisitPage(patientProfileData);
-                        case 'configAction':
-                            return handleConfigAction(patientProfileData);
-                        case 'save':
-                            $scope.afterSave();
+                    case 'startVisit':
+                        var entry = getForwardUrlEntryForVisitFromTheConfig();
+                        var forwardUrl = entry ? entry.forwardUrl : undefined;
+                        return createVisit(patientProfileData, forwardUrl);
+                    case 'forwardAction':
+                        return goToForwardUrlPage(patientProfileData);
+                    case 'enterVisitDetails':
+                        return goToVisitPage(patientProfileData);
+                    case 'configAction':
+                        return handleConfigAction(patientProfileData);
+                    case 'save':
+                        $scope.afterSave();
                     }
                 };
 
                 var handleConfigAction = function (patientProfileData) {
-                    var forwardUrl = appService.getAppDescriptor().formatUrl($scope.actionConfig.extensionParams.forwardUrl, { 'patientUuid': patientProfileData.patient.uuid });
+                    var forwardUrl = appService.getAppDescriptor().formatUrl($scope.actionConfig.extensionParams.forwardUrl, {'patientUuid': patientProfileData.patient.uuid});
                     if (!self.hasActiveVisit) {
                         createVisit(patientProfileData, forwardUrl);
                     } else {
@@ -150,7 +150,7 @@ angular.module('bahmni.registration')
                 };
                 var createVisit = function (patientProfileData, forwardUrl) {
                     if (isEmptyVisitLocation()) {
-                        $state.go('patient.edit', { patientUuid: $scope.patient.uuid }).then(function () {
+                        $state.go('patient.edit', {patientUuid: $scope.patient.uuid}).then(function () {
                             messagingService.showMessage("error", "NO_LOCATION_TAGGED_TO_VISIT_LOCATION");
                         });
                         return;
