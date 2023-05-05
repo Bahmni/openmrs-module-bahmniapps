@@ -83,6 +83,7 @@
     "MESSAGE_DIALOG_OPTION_COPY": "Erro de Cópia",
     "MESSAGE_DIALOG_OPTION_OKAY": "OK",
     "NO_LOCATION_TAGGED_TO_VISIT_LOCATION": "No location tagged to Visit Location Found",
+    "VISIT OF THIS PATIENT AT SAME LOCATION EXISTS": "A visita deste paciente no mesmo local já existe",
     "REGISTRATION_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
     "OBS_BOOLEAN_YES_KEY": "Yes",
     "OBS_BOOLEAN_NO_KEY": "No",
