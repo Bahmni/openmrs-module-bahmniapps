@@ -104,18 +104,18 @@ angular.module('bahmni.registration')
                 $scope.actions.followUpAction = function (patientProfileData) {
                     messagingService.clearAll();
                     switch ($scope.actions.submitSource) {
-                        case 'startVisit':
-                            var entry = getForwardUrlEntryForVisitFromTheConfig();
-                            var forwardUrl = entry ? entry.forwardUrl : undefined;
-                            return createVisit(patientProfileData, forwardUrl);
-                        case 'forwardAction':
-                            return goToForwardUrlPage(patientProfileData);
-                        case 'enterVisitDetails':
-                            return goToVisitPage(patientProfileData);
-                        case 'configAction':
-                            return handleConfigAction(patientProfileData);
-                        case 'save':
-                            $scope.afterSave();
+                    case 'startVisit':
+                        var entry = getForwardUrlEntryForVisitFromTheConfig();
+                        var forwardUrl = entry ? entry.forwardUrl : undefined;
+                        return createVisit(patientProfileData, forwardUrl);
+                    case 'forwardAction':
+                        return goToForwardUrlPage(patientProfileData);
+                    case 'enterVisitDetails':
+                        return goToVisitPage(patientProfileData);
+                    case 'configAction':
+                        return handleConfigAction(patientProfileData);
+                    case 'save':
+                        $scope.afterSave();
                     }
                 };
 
