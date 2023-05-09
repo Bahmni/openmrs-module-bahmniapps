@@ -170,7 +170,7 @@ angular.module('bahmni.registration')
                             }));
                         }
                         else {
-                            messagingService.showMessage("error", "VISIT OF THIS PATIENT AT SAME LOCATION EXISTS");
+                            messagingService.showMessage("error", "VISIT_OF_THIS_PATIENT_AT_SAME_LOCATION_EXISTS");
                         }
                     });
                 };
