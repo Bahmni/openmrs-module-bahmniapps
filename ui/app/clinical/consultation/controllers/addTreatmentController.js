@@ -15,6 +15,8 @@ angular.module('bahmni.clinical')
             $scope.addTreatment = true;
             $scope.canOrderSetBeAdded = true;
             $scope.isSearchDisabled = false;
+            $scope.cdssEnabled = false;
+            $scope.conceptSource = localStorage.getItem("conceptSource") || "";
 
             $scope.getFilteredOrderSets = function (searchTerm) {
                 if (searchTerm && searchTerm.length >= 3) {
@@ -56,7 +58,7 @@ angular.module('bahmni.clinical')
 
             $scope.showDoseFractions = treatmentConfig.inputOptionsConfig.showDoseFractions;
             $scope.isDoseFractionsAvailable = function () {
-                return $scope.doseFractions && !_.isEmpty($scope.doseFractions) ? true : false;
+                return !!($scope.doseFractions && !_.isEmpty($scope.doseFractions));
             };
 
             $scope.isSelected = function (drug) {
@@ -66,6 +68,24 @@ angular.module('bahmni.clinical')
 
             $scope.selectFromDefaultDrugList = function () {
                 $scope.onSelect($scope.treatment.selectedItem);
+            };
+
+            $scope.auditOptions = function () {
+                return appService
+                .getAppDescriptor()
+                .getConfigValue('cdssAuditOptions');
+            };
+
+            $scope.submitAudit = function (index) {
+                var patientUuid = $scope.patient.uuid;
+                var message = $scope.cdssaAlerts[index].summary.replace(/"/g, '');
+                var eventType = 'Dismissed: ' + $scope.treatment.audit;
+                $scope.cdssaAlerts.splice(index, 1);
+                return drugService
+                .cdssAudit(patientUuid, eventType, message, 'CDSS')
+                .then(function () {
+                    $scope.treatment.audit = '';
+                });
             };
 
             var markVariable = function (variable) {
@@ -127,6 +147,12 @@ angular.module('bahmni.clinical')
                     durationUnit: treatment.durationUnit
                 };
             };
+            var getCdssEnabled = function () {
+                drugService.getCdssEnabled().then(function (response) {
+                    $scope.cdssEnabled = response.data;
+                });
+            };
+            getCdssEnabled();
 
             var isSameDrugBeingDiscontinuedAndOrdered = function () {
                 var existingTreatment = false;
@@ -188,9 +214,13 @@ angular.module('bahmni.clinical')
                 _.each(refilledOrderGroupOrders, function (drugOrder) {
                     _.each(orderSetMembersOfMatchedOrderSet, function (orderSetMember) {
                         if (orderSetMember.orderTemplate.drug) {
-                            if (orderSetMember.orderTemplate.drug.uuid === _.get(drugOrder, 'drug.uuid')) { matchedMembers.push(orderSetMember); }
+                            if (orderSetMember.orderTemplate.drug.uuid === _.get(drugOrder, 'drug.uuid')) {
+                                matchedMembers.push(orderSetMember);
+                            }
                         } else {
-                            if (orderSetMember.concept.uuid === drugOrder.concept.uuid) { matchedMembers.push(orderSetMember); }
+                            if (orderSetMember.concept.uuid === drugOrder.concept.uuid) {
+                                matchedMembers.push(orderSetMember);
+                            }
                         }
                     });
                 });
@@ -201,11 +231,11 @@ angular.module('bahmni.clinical')
                         var baseDose = eachMember.orderTemplate.dosingInstructions.dose;
                         var drugName = eachMember.orderTemplate.concept.name;
                         return orderSetService.getCalculatedDose($scope.patient.uuid, drugName, baseDose, doseUnits, $scope.newOrderSet.name)
-                                     .then(function (calculatedDosage) {
-                                         refilledOrderGroupOrders[index].uniformDosingType.dose = calculatedDosage.dose;
-                                         refilledOrderGroupOrders[index].uniformDosingType.doseUnits = calculatedDosage.doseUnit;
-                                         refilledOrderGroupOrders[index].calculateQuantityAndUnit();
-                                     });
+                            .then(function (calculatedDosage) {
+                                refilledOrderGroupOrders[index].uniformDosingType.dose = calculatedDosage.dose;
+                                refilledOrderGroupOrders[index].uniformDosingType.doseUnits = calculatedDosage.doseUnit;
+                                refilledOrderGroupOrders[index].calculateQuantityAndUnit();
+                            });
                     }
                 });
 
@@ -466,7 +496,10 @@ angular.module('bahmni.clinical')
             var contextChange = function () {
                 var errorMessages = Bahmni.Clinical.Constants.errorMessages;
                 if (isSameDrugBeingDiscontinuedAndOrdered()) {
-                    return {allow: false, errorMessage: $translate.instant(errorMessages.discontinuingAndOrderingSameDrug)};
+                    return {
+                        allow: false,
+                        errorMessage: $translate.instant(errorMessages.discontinuingAndOrderingSameDrug)
+                    };
                 }
                 if ($scope.incompleteDrugOrders()) {
                     $scope.formInvalid = true;
@@ -482,6 +515,15 @@ angular.module('bahmni.clinical')
                 treatment.isBeingEdited = false;
             };
 
+            $scope.closeAlert = function (index) {
+                $scope.cdssaAlerts.splice(index, 1);
+            };
+
+            $scope.toggleAlertDetails = function (index) {
+                $scope.cdssaAlerts[index].showDetails =
+                  !$scope.cdssaAlerts[index].showDetails;
+            };
+
             $scope.getDataResults = function (drugs) {
                 var searchString = $scope.treatment.drugNameDisplay;
                 var listOfDrugSynonyms = _.map(drugs, function (drug) {
@@ -489,12 +531,174 @@ angular.module('bahmni.clinical')
                 });
                 return _.flatten(listOfDrugSynonyms);
             };
+            var createMedicationRequest = function (medication, patientUuid) {
+                return extractCodeInfo(medication).then(function (coding) {
+                    var medicationRequest = {
+                        resourceType: 'MedicationRequest',
+                        id: medication.uuid,
+                        status: 'active',
+                        intent: 'order',
+                        subject: {
+                            reference: 'Patient/' + patientUuid
+                        },
+                        medicationCodeableConcept: {
+                            id: medication.drug.uuid,
+                            coding: [
+                                coding
+                            ],
+                            text: medication.drugNameDisplay
+                        }
+                    };
+                    return {
+                        resource: medicationRequest
+                    };
+                });
+            };
+            var extractCodeInfo = function (medication, callBack) {
+                if (!(medication.drug.drugReferenceMaps && medication.drug.drugReferenceMaps.length > 0)) {
+                    return Promise.resolve({
+                        code: medication.drug.uuid,
+                        display: medication.drug.name
+                    });
+                } else {
+                    var drugReferenceMap = medication.drug.drugReferenceMaps[0];
+                    if (!$scope.conceptSource) {
+                        return drugService.getDrugConceptSourceMapping(medication.drug.uuid).then(function (response) {
+                            var bundle = response.data;
+                            var code = bundle.entry && bundle.entry.length > 0 && bundle.entry[0].resource.code;
+                            var conceptCode = code.coding.find(function (coding) {
+                                return coding.system;
+                            });
+                            if (conceptCode) {
+                                localStorage.setItem("conceptSource", conceptCode.system);
+                                $scope.conceptSource = conceptCode.system;
+                                return {
+                                    system: $scope.conceptSource,
+                                    code: drugReferenceMap.conceptReferenceTerm && drugReferenceMap.conceptReferenceTerm.display && drugReferenceMap.conceptReferenceTerm.display.split(':')[1].trim(),
+                                    display: medication.drug.name
+                                };
+                            } else {
+                                return {
+                                    code: medication.drug.uuid,
+                                    display: medication.drug.name
+                                };
+                            }
+                        });
+                    } else {
+                        return Promise.resolve({
+                            system: $scope.conceptSource,
+                            code: drugReferenceMap.conceptReferenceTerm && drugReferenceMap.conceptReferenceTerm.display && drugReferenceMap.conceptReferenceTerm.display.split(':')[1].trim(),
+                            display: medication.drug.name
+                        });
+                    }
+                }
+            };
+
+            var createConditionResource = function (condition, patientUuid, isDiagnosis) {
+                var conditionStatus = condition.status || condition.certainty;
+                var activeConditions = ['CONFIRMED', 'PRESUMED', 'ACTIVE'];
+                var status = activeConditions.indexOf(conditionStatus) > -1 ? 'active' : 'inactive';
+                var conditionResource = {
+                    resourceType: 'Condition',
+                    id: condition.uuid,
+                    clinicalStatus: {
+                        coding: [
+                            {
+                                code: status,
+                                display: status.charAt(0).toUpperCase() + status.slice(1),
+                                system: 'http://terminology.hl7.org/CodeSystem/condition-clinical'
+                            }
+                        ]
+                    },
+                    code: {
+                        coding: [
+                            {
+                                system: isDiagnosis ? condition.codedAnswer.conceptSystem : (condition.concept.conceptSystem || ''),
+                                code: isDiagnosis ? condition.codedAnswer.uuid : condition.concept.uuid,
+                                display: isDiagnosis ? condition.codedAnswer.name : condition.concept.name
+                            }
+                        ],
+                        text: isDiagnosis ? condition.codedAnswer.name : condition.concept.name
+                    },
+                    subject: {
+                        reference: 'Patient/' + patientUuid
+                    }
+                };
+                if (angular.isNumber(condition.onSetDate) === 'number') {
+                    conditionResource.onsetDateTime = new Date(condition.onSetDate).toLocaleDateString('en-CA');
+                }
+                if (!conditionResource.onsetDateTime) {
+                    delete conditionResource.onsetDateTime;
+                }
+                return {
+                    resource: conditionResource
+                };
+            };
+
+            var createFhirBundle = function (patient, conditions, medications, diagnosis) {
+                var encounterResource = conditions.filter(function (condition) {
+                    return !condition.uuid;
+                }).map(function (condition) {
+                    return createConditionResource(condition, patient.uuid, false);
+                });
+                encounterResource = encounterResource.concat(diagnosis.map(function (condition) {
+                    return createConditionResource(condition, patient.uuid, true);
+                }));
+
+                return Promise.all(medications.map(function (medication) {
+                    return createMedicationRequest(medication, patient.uuid).then(function (medicationResource) {
+                        return medicationResource;
+                    });
+                })).then(function (medicationResources) {
+                    return {
+                        resourceType: 'Bundle',
+                        type: 'collection',
+                        entry: [].concat(encounterResource, medicationResources)
+                    };
+                });
+            };
+
+            var createParams = function (consultationData) {
+                var patient = consultationData.patient;
+                var conditions = consultationData.conditions;
+                var diagnosis = consultationData.newlyAddedDiagnoses;
+                var medications = consultationData.draftDrug;
+                return {
+                    patient: patient,
+                    conditions: conditions,
+                    diagnosis: diagnosis,
+                    medications: medications
+                };
+            };
+
+            function sortInteractionsByStatus (arr) {
+                var order = { "critical": 0, "warning": 1, "info": 2 };
+                return arr.sort(function (a, b) {
+                    return order[a.indicator] - order[b.indicator];
+                });
+            }
 
             (function () {
                 var selectedItem;
                 $scope.onSelect = function (item) {
                     selectedItem = item;
                     $scope.onChange();
+                    if ($scope.cdssEnabled) {
+                        var consultationData = angular.copy($scope.consultation);
+                        consultationData.patient = $scope.patient;
+
+                        consultationData.draftDrug = [$scope.treatment].concat(
+                            consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : []
+                        );
+                        var params = createParams(consultationData);
+                        createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
+                        .then(function (bundle) {
+                            var cdssaAlerts = drugService.sendDiagnosisDrugBundle(bundle);
+                            cdssaAlerts.then(function (response) {
+                                $scope.cdssaAlerts = sortInteractionsByStatus(response.data);
+                            });
+                        });
+                    }
                 };
                 $scope.onAccept = function () {
                     $scope.treatment.acceptedItem = $scope.treatment.drugNameDisplay;
@@ -508,7 +712,8 @@ angular.module('bahmni.clinical')
                         $scope.treatment.changeDrug({
                             name: selectedItem.drug.name,
                             form: selectedItem.drug.dosageForm && selectedItem.drug.dosageForm.display,
-                            uuid: selectedItem.drug.uuid
+                            uuid: selectedItem.drug.uuid,
+                            drugReferenceMaps: selectedItem.drug.drugReferenceMaps
                         });
                         selectedItem = null;
                         return;
@@ -527,6 +732,7 @@ angular.module('bahmni.clinical')
             $scope.clearForm = function () {
                 $scope.treatment = newTreatment();
                 $scope.formInvalid = false;
+                $scope.cdssaAlerts = [];
                 clearHighlights();
                 markVariable("startNewDrugEntry");
             };
@@ -553,7 +759,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.toggleDrugOrderAttribute = function (orderAttribute) {
-                orderAttribute.value = orderAttribute.value ? false : true;
+                orderAttribute.value = !orderAttribute.value;
             };
             contextChangeHandler.add(contextChange);
 
@@ -644,7 +850,9 @@ angular.module('bahmni.clinical')
                 $scope.newOrderSet.name = orderSet.name;
                 var orderSetMemberTemplates = _.map(orderSet.orderSetMembers, 'orderTemplate');
                 var promisesToCalculateDose = _.map(orderSetMemberTemplates, putCalculatedDose);
-                var returnOrderSet = function () { return orderSet; };
+                var returnOrderSet = function () {
+                    return orderSet;
+                };
                 return $q.all(promisesToCalculateDose).then(returnOrderSet);
             };
             var createDrugOrderViewModel = function (orderTemplate) {
