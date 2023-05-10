@@ -595,6 +595,7 @@ angular.module('bahmni.clinical')
             };
 
             var createConditionResource = function (condition, patientUuid, isDiagnosis) {
+                var conceptLimitIndex =  isDiagnosis? -1 : condition.concept.uuid.lastIndexOf('/');
                 var conditionStatus = condition.status || condition.certainty;
                 var activeConditions = ['CONFIRMED', 'PRESUMED', 'ACTIVE'];
                 var status = activeConditions.indexOf(conditionStatus) > -1 ? 'active' : 'inactive';
@@ -613,8 +614,8 @@ angular.module('bahmni.clinical')
                     code: {
                         coding: [
                             {
-                                system: isDiagnosis ? condition.codedAnswer.conceptSystem : (condition.concept.conceptSystem || ''),
-                                code: isDiagnosis ? condition.codedAnswer.uuid : condition.concept.uuid,
+                                system: isDiagnosis ? condition.codedAnswer.conceptSystem : (conceptLimitIndex > -1  ? (condition.concept.uuid.substring(0, conceptLimitIndex) || '') : ''),
+                                code: isDiagnosis ? condition.codedAnswer.uuid : (conceptLimitIndex > -1  ? condition.concept.uuid.substring(conceptLimitIndex +1)  : condition.concept.uuid),
                                 display: isDiagnosis ? condition.codedAnswer.name : condition.concept.name
                             }
                         ],

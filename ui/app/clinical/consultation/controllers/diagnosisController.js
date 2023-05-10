@@ -172,6 +172,8 @@ angular.module('bahmni.clinical')
 
             $scope.getAddConditionMethod = function () {
                 return function (item) {
+                    var conceptSystem = item.lookup.conceptSystem ? item.lookup.conceptSystem + "/" : "";
+                    item.lookup.uuid = conceptSystem + item.lookup.uuid;
                     $scope.consultation.condition.concept.uuid = item.lookup.uuid;
                     item.value = $scope.consultation.condition.concept.name = item.lookup.name;
                 };
