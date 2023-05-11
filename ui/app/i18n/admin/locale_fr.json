@@ -6,5 +6,16 @@
     "selectLocation": "Choisir la localité",
     "clinical_key": "Clinique",
     "MESSAGE_DIALOG_OPTION_COPY": "Erreur d'exécution",
-    "MESSAGE_DIALOG_OPTION_OKAY": "Approuver"
+    "MESSAGE_DIALOG_OPTION_OKAY": "Approuver",
+    "PRIVILEGE_REQUIRED": "L'utilisateur est connecté mais n'a pas le privilège pertinent",
+    "FILTERS_HEADER_LABEL": "Filtres",
+    "START_FROM_FILTER_LABEL": "Commencer à partir de",
+    "USERNAME_FILTER_LABEL": "Nom d'utilisateur",
+    "ENTER_USERNAME_PLACEHOLDER": "Saisissez votre nom d'utilisateur",
+    "PATIENT_ID_FILTER_LABEL": "ID du patient",
+    "ENTER_PATIENT_ID_PLACEHOLDER": "Entrez l'identifiant du patient",
+    "FILTER_BUTTON_LABEL": "Filtre",
+    "AUDIT_LOG_TABLE_HEADER_LABEL": "Événements du journal d'audit",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "Aucun lien de navigation disponible.",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Veuillez sélectionner une valeur à partir de la saisie semi-automatique"
 }
