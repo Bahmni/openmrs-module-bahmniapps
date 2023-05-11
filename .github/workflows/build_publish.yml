@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ORG_NAME: Bahmni
-      REPOSITORY_NAME: bahmni-docker
+      REPOSITORY_NAME: snomed-bahmni-docker
       ENVIRONMENT: dev
     steps:
       - name: Create workflow_dispatch
