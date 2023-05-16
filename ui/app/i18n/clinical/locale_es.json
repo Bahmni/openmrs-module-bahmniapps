@@ -256,5 +256,13 @@
     "NO_IMAGE_YET_FOR_ORDER": "Aún no hay imagen disponible para ordenar",
     "LAB_ENTRY_KEY" : "Laboratorio",
     "START_TELECON_KEY": "Start Teleconsulta",
-    "TELECON_ERROR_KEY": "Error al obtener el enlace de teleconsulta"
+    "TELECON_ERROR_KEY": "Error al obtener el enlace de teleconsulta",
+    "FALSE_POSITIVE_ALERT": "La alerta se activó pero fue un falso positivo y no se necesita ninguna acción.",
+    "NOT_APPLICABLE_TO_THE_PATIENT": "La alerta no se aplica al paciente en cuestión.",
+    "ALREADY_RESOLVED_BY_MEDICATION_ADJUSTMENT": "La alerta se resolvió previamente ajustando la medicación del paciente.",
+    "ALREADY_MANAGED_BY_OTHER_MEANS": "La alerta fue gestionada previamente por otros medios y no se necesita tomar más medidas.",
+    "PATIENT_DECLINED_RECOMMENDED_ACTION": "El paciente rechazó la acción recomendada a pesar de la alerta.",
+    "CLINICIAN_JUDGMENT_OVERRODE_RECOMMENDATION": "El clínico utilizó su criterio para anular la recomendación generada por la alerta.",
+    "ALERT_TRIGGERED_IN_ERROR": "La alerta se activó por error y no se necesita tomar ninguna acción.",
+    "INSUFFICIENT_INFORMATION_TO_ACT_ON_ALERT": "No hay suficiente información disponible para actuar sobre la alerta."
 }
