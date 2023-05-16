@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.conditionsList', []);
 angular.module('bahmni.common.displaycontrol.conditionsList')
-    .directive('conditionsList', ['conditionsService', 'ngDialog', function (conditionsService, ngDialog) {
+    .directive('conditionsList', ['conditionsService', 'ngDialog', 'providerInfoService', function (conditionsService, ngDialog, providerInfoService) {
         var controller = function ($scope) {
             $scope.statuses = ['ACTIVE', 'HISTORY_OF'];
 
@@ -21,6 +21,7 @@ angular.module('bahmni.common.displaycontrol.conditionsList')
 
             return conditionsService.getConditions($scope.patient.uuid).then(function (conditions) {
                 $scope.conditions = conditions;
+                providerInfoService.setProvider($scope.conditions);
             });
         };
         return {

@@ -171,6 +171,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return _.includes(currentPath, board.url);
                 });
                 if (board) {
+                    _.map($scope.availableBoards, function (availableBoard) {
+                        availableBoard.isSelectedTab = false;
+                    });
                     $scope.currentBoard = board;
                     $scope.currentBoard.isSelectedTab = true;
                 }
@@ -569,6 +572,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return spinner.forPromise(Promise.resolve(displayErrors(error)));
                 }
             };
+
+            $scope.$on("patientContext:goToPatientDashboard", function () {
+                $scope.gotoPatientDashboard();
+            });
 
             initialize();
         }]);

@@ -7,10 +7,10 @@
                 <span ng-show= "isDigitized" class="right"><strong>{{::'REGISTRATION_LABEL_SCANNED' | translate}}</strong></span>
             </legend>
             <div class="photo-container-wrapper" ng-if="!disablePhotoCapture">
-                <span class="photo-container">
-                        <img class="patient-image" ng-src="{{patient.image}}" fallback-src="../images/blank-user.gif">
+                <div class="photo-container">
                         <div ng-model="patient.image" capture-photo class="capture-photo-btn"></div>
-                 </span>
+                        <img class="patient-image" ng-src="{{patient.image}}" fallback-src="../images/blank-user.gif">
+                 </div>
             </div>
             <article class="form-field">
                     <div class="field-attribute">

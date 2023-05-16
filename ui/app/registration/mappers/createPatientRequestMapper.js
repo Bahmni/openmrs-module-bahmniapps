@@ -68,7 +68,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
         } else if (age !== undefined) {
             mnt = moment(this.currentDate).subtract('days', age.days).subtract('months', age.months).subtract('years', age.years);
         }
-        return mnt.format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
+        return mnt.format('YYYY-MM-DD');
     };
 
     return CreatePatientRequestMapper;

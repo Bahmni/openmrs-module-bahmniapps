@@ -15,6 +15,7 @@ Bahmni.Common = Bahmni.Common || {};
     var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
     var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
     var IE_APPS_API = RESTWS_V1 + "/bahmniie";
+    var FHIR_BASE_URL = hostUrl + "/openmrs/ws/fhir2/R4";
 
     var serverErrorMessages = [
         {
@@ -81,8 +82,11 @@ Bahmni.Common = Bahmni.Common || {};
         drugOrderConfigurationUrl: BAHMNI_CORE + "/config/drugOrders",
         emrEncounterUrl: EMRAPI + "/encounter",
         encounterUrl: RESTWS_V1 + "/encounter",
+        cdssUrl: RESTWS_V1 + "/cdss",
+        fhirMedicationsUrl: FHIR_BASE_URL + "/Medication",
         locationUrl: RESTWS_V1 + "/location",
         bahmniVisitLocationUrl: BAHMNI_CORE + "/visitLocation",
+        bahmniFacilityLocationUrl: BAHMNI_CORE + "/facilityLocation",
         bahmniOrderUrl: BAHMNI_CORE + "/orders",
         bahmniDrugOrderUrl: BAHMNI_CORE + "/drugOrders",
         bahmniDispositionByVisitUrl: BAHMNI_CORE + "/disposition/visitWithLocale",
@@ -214,6 +218,7 @@ Bahmni.Common = Bahmni.Common || {};
         primaryOrderSetMemberAttributeTypeName: "Primary",
         bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen",
         bedFromVisit: RESTWS_V1 + "/beds",
+        sendViaEmailUrl: RESTWS_V1 + "/patient/{{patientUuid}}/send/email",
         ordersUrl: RESTWS_V1 + "/order",
         formDataUrl: RESTWS_V1 + "/obs",
         providerUrl: RESTWS_V1 + "/provider",
@@ -278,8 +283,7 @@ Bahmni.Common = Bahmni.Common || {};
         visit: "VISIT",
         defaultImageUploadSize: 500000, // Default patient profile photo size
         maxImageUploadSize: 9000000, // to ensure, extreme max size and prevent choking up server capacity (max size is 9MB)
-        adhocTeleconsultationLinkServiceUrl: RESTWS_V1 + "/adhocTeleconsultation/generateAdhocTeleconsultationLink",
-        otpServiceUrl: "/otp-service"
+        adhocTeleconsultationLinkServiceUrl: RESTWS_V1 + "/adhocTeleconsultation/generateAdhocTeleconsultationLink"
     };
 })();
 

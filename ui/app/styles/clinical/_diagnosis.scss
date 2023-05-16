@@ -335,6 +335,15 @@
                 padding: 0;
             }
         }
+        
+        .table-body:not(:first-of-type) {
+            .col-header {
+                @media screen and (min-width: 992px) {
+                    display: none;
+                }
+            }
+        }
+        
     }
 
     .view-past,

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('treatmentService', ['$http', '$q', 'appService', '$rootScope', function ($http, $q, appService, $rootScope) {
+    .factory('treatmentService', ['$http', '$q', '$compile', '$timeout', 'spinner', 'appService', '$rootScope', 'transmissionService', '$filter', function ($http, $q, $compile, $timeout, spinner, appService, $rootScope, transmissionService, $filter) {
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
@@ -135,6 +135,38 @@ angular.module('bahmni.clinical')
             return deferred.promise;
         };
 
+        var sharePrescriptions = function (prescriptionDetails) {
+            $http.get('common/views/prescriptionPrint.html').then(function (templateData) {
+                var template = templateData.data;
+                var printScope = $rootScope.$new();
+                angular.extend(printScope, prescriptionDetails);
+                var element = $compile($('<div>' + template + '</div>'))(printScope);
+                var renderAndSendPromise = $q.defer();
+                var waitForRenderAndSend = function () {
+                    if (printScope.$$phase || $http.pendingRequests.length) {
+                        $timeout(waitForRenderAndSend, 1000);
+                    } else {
+                        html2pdf().from(element.html()).outputPdf().then(function (pdfContent) {
+                            var attachments = [{
+                                "contentType": "application/pdf",
+                                "name": "Precription_" + $filter("bahmniDate")(prescriptionDetails.visitDate).split(" ").join("-") + ".pdf",
+                                "data": btoa(pdfContent),
+                                "url": null
+                            }];
+                            var subject = "Prescription for consultation at " + $rootScope.facilityLocation.name + " on " + $filter("bahmniDate")(prescriptionDetails.visitDate);
+                            var body = transmissionService.getSharePrescriptionMailContent(prescriptionDetails);
+                            var emailUrl = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.sendViaEmailUrl, {'patientUuid': prescriptionDetails.patient.uuid});
+                            transmissionService.sendEmail(attachments, subject, body, emailUrl, [], []);
+                        });
+                        renderAndSendPromise.resolve();
+                        printScope.$destroy();
+                    }
+                    return renderAndSendPromise.promise;
+                };
+                spinner.forPromise(waitForRenderAndSend());
+            });
+        };
+
         return {
             getActiveDrugOrders: getActiveDrugOrders,
             getConfig: getConfig,
@@ -142,6 +174,7 @@ angular.module('bahmni.clinical')
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
             getNonCodedDrugConcept: getNonCodedDrugConcept,
             getAllDrugOrdersFor: getAllDrugOrdersFor,
-            voidDrugOrder: voidDrugOrder
+            voidDrugOrder: voidDrugOrder,
+            sharePrescriptions: sharePrescriptions
         };
     }]);

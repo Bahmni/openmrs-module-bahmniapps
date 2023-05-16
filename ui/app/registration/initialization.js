@@ -61,6 +61,16 @@ angular.module('bahmni.registration').factory('initialization',
                 });
             };
 
+            var facilityVisitLocation = function () {
+                return locationService.getFacilityVisitLocation().then(function (response) {
+                    if (response.uuid) {
+                        locationService.getByUuid(response.uuid).then(function (location) {
+                            $rootScope.facilityVisitLocation = location;
+                        });
+                    }
+                });
+            };
+
             var mergeFormConditions = function () {
                 var formConditions = Bahmni.ConceptSet.FormConditions;
                 if (formConditions) {
@@ -80,6 +90,7 @@ angular.module('bahmni.registration').factory('initialization',
                 .then(initAppConfigs)
                 .then(mapRelationsTypeWithSearch)
                 .then(loggedInLocation)
+                .then(facilityVisitLocation)
                 .then(loadValidators(appService.configBaseUrl(), "registration"))
                 .then(mergeFormConditions)
             );
