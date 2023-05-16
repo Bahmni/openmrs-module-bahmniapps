@@ -1,0 +1,21 @@
+{
+    "userName": "ឈ្មោះអ្នកប្រើប្រាស់",
+    "password": "លេខសំងាត់",
+    "location": "ទីកន្លែង",
+    "login": "ចូល",
+    "selectLocation": "ជ្រើសរើសទីកន្លែង",
+    "clinical_key": "គ្លីនិកវេជ្ជសាស្រ្ត",
+    "MESSAGE_DIALOG_OPTION_COPY": "កំហុសច្បាប់ចម្លង",
+    "MESSAGE_DIALOG_OPTION_OKAY": "យល់ព្រម",
+    "PRIVILEGE_REQUIRED": "អ្នកប្រើបានចូលប៉ុន្តែគ្មានការអនុញ្ញាតចូលប្រើ",
+    "FILTERS_HEADER_LABEL": "តម្រង",
+    "START_FROM_FILTER_LABEL": "ចាប់ផ្តើម​ពី",
+    "USERNAME_FILTER_LABEL": "ឈ្មោះអ្នកប្រើប្រាស់",
+    "ENTER_USERNAME_PLACEHOLDER": "វាយបញ្ចូលឈ្មោះអ្នកប្រើប្រាស់",
+    "PATIENT_ID_FILTER_LABEL": "អត្តលេខអ្នកជម្ងឺ",
+    "ENTER_PATIENT_ID_PLACEHOLDER": "បញ្ចូល អត្តលេខអ្នកជម្ងឺ",
+    "FILTER_BUTTON_LABEL": "តម្រង",
+    "AUDIT_LOG_TABLE_HEADER_LABEL": "ពិនិត្យមើលកំណត់ហេតុ",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "គ្មានតំណភ្ជាប់រុករក",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "សូមជ្រើសរើសតម្លៃនៅក្នុងបញ្ជីបញ្ចប់ដោយស្វ័យប្រវត្តិ"
+}
