@@ -516,7 +516,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.closeAlert = function (index) {
-                $scope.cdssaAlerts.splice(index, 1);
+                $scope.cdssaAlerts = $scope.cdssaAlerts.filter(function (alert, alertIndex) {
+                    return alertIndex !== index;
+                });
             };
 
             $scope.toggleAlertDetails = function (index) {
@@ -554,7 +556,7 @@ angular.module('bahmni.clinical')
                     };
                 });
             };
-            var extractCodeInfo = function (medication, callBack) {
+            var extractCodeInfo = function (medication) {
                 if (!(medication.drug.drugReferenceMaps && medication.drug.drugReferenceMaps.length > 0)) {
                     return Promise.resolve({
                         code: medication.drug.uuid,

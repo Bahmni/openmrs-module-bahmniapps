@@ -528,15 +528,32 @@ describe("AddTreatmentController", function () {
         });
 
         describe("cdss alerts", function () {
+            var alerts = [
+                {
+                    uuid: 'some-uuid',
+                    indicator: 'critical',
+                    summary: 'Contraindication: Some Coded Drug is contraindicated with Some condition',
+                    detail: 'Some Coded Drug is contraindicated with Some condition'
+                }
+            ];
+
+            beforeEach(function () {
+                scope.cdssaAlerts = alerts;
+            });
+
+            it("should close alert on clicking close button", function () {
+                scope.closeAlert(0);
+                expect(scope.cdssaAlerts.length).toBe(0);
+            });
+
+            it("should toggle alert details on clicking toggle button", function () {
+                scope.toggleAlertDetails(0);
+                expect(scope.cdssaAlerts[0].showDetails).toBeTruthy();
+                scope.toggleAlertDetails(0);
+                expect(scope.cdssaAlerts[0].showDetails).toBeFalsy();
+            });
+
             it("should dismiss critical alert on submitting an audit", function () {
-                scope.cdssaAlerts = [
-                    {
-                        uuid: 'some-uuid',
-                        indicator: 'critical',
-                        summary: 'Contraindication: Some Coded Drug is contraindicated with Some condition',
-                        detail: 'Some Coded Drug is contraindicated with Some condition'
-                    }
-                ];
                 scope.patient = {uuid: 'some-user-uuid'};
                 scope.treatment = {audit: "some-audit"};
                 scope.submitAudit(0).then(function () {
