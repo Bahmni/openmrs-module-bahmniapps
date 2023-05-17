@@ -1,0 +1,21 @@
+{
+    "userName": "ຊື່ຜູ້ໃຊ້",
+    "password": "ລະຫັດຜ່ານ",
+    "location": "ພະແນກ",
+    "login": "ເຂົ້າ​ສູ່​ລະ​ບົບ",
+    "selectLocation": "ເລືອກພະແນກ",
+    "clinical_key": "ໝໍ",
+    "MESSAGE_DIALOG_OPTION_COPY": "ການຄັດລອກຜິດຜາດ",
+    "MESSAGE_DIALOG_OPTION_OKAY": "ຕົກລົງ",
+    "PRIVILEGE_REQUIRED": "ທ່ານໄດ້ເຂົ້າສູ່ລະບົບແລ້ວ ແຕ່ບໍ່ມີສິດໃຊ້ລະບົບ",
+    "FILTERS_HEADER_LABEL": "ຄັດກອງ",
+    "START_FROM_FILTER_LABEL": "ເລີ້ມຕົ້ງແຕ່",
+    "USERNAME_FILTER_LABEL": "ຊື່ຜູ້ໃຊ້",
+    "ENTER_USERNAME_PLACEHOLDER": "ໃສ່ຊື່ຜູ້ໃຊ້",
+    "PATIENT_ID_FILTER_LABEL": "ລະຫັດຄົນເຈັບ",
+    "ENTER_PATIENT_ID_PLACEHOLDER": "ໃສ່ລະຫັດຄົນເຈັບ",
+    "FILTER_BUTTON_LABEL": "ຂັດກອງ",
+    "AUDIT_LOG_TABLE_HEADER_LABEL": "ກວດສອບຂໍ້ມູນຍ້ອນຫຼັງ",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "ບໍ່ມີການເຊື່ອມຕໍ່ຫາລະບົບ",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "ກະລຸນາເລືອກຄ່າຈາກການເຮັດໂດຍອັດຕະໂນມັດ"
+}
