@@ -638,7 +638,7 @@ angular.module('bahmni.clinical')
                 };
             };
 
-            var createFhirBundle = function (patient, conditions, medications, diagnosis) {
+            $scope.createFhirBundle = function (patient, conditions, medications, diagnosis) {
                 var encounterResource = conditions.filter(function (condition) {
                     return !condition.uuid;
                 }).map(function (condition) {
@@ -694,7 +694,7 @@ angular.module('bahmni.clinical')
                             consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : []
                         );
                         var params = createParams(consultationData);
-                        createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
+                        $scope.createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
                         .then(function (bundle) {
                             var cdssaAlerts = drugService.sendDiagnosisDrugBundle(bundle);
                             cdssaAlerts.then(function (response) {
