@@ -72,8 +72,8 @@ angular.module('bahmni.clinical')
 
             $scope.auditOptions = function () {
                 return appService
-                .getAppDescriptor()
-                .getConfigValue('cdssAuditOptions');
+                  .getAppDescriptor()
+                  .getConfigValue('cdssDismissalOptionsToDisplay');
             };
 
             $scope.submitAudit = function (index) {
