@@ -167,7 +167,7 @@ describe("AddTreatmentController", function () {
             }));
             locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation']);
 
-            drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept', 'sendDiagnosisDrugBundle', 'getCdssEnabled', 'cdssAudit']);
+            drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept', 'sendDiagnosisDrugBundle', 'getCdssEnabled', 'cdssAudit', 'getDrugConceptSourceMapping']);
             drugs = [
                 {name: "T", dosageForm: {display: "something"}, uuid: "123-12321"},
                 {name: "A", dosageForm: {display: "something"}, uuid: "123-12321"},
@@ -178,6 +178,7 @@ describe("AddTreatmentController", function () {
             drugService.sendDiagnosisDrugBundle.and.returnValue(specUtil.respondWith([]));
             drugService.getCdssEnabled.and.returnValue(specUtil.respondWith(true));
             drugService.cdssAudit.and.returnValue(specUtil.respondWith(true));
+            drugService.getDrugConceptSourceMapping.and.returnValue(specUtil.respondWithPromise($q, {entry: []}));
 
             appService.getAppDescriptor.and.returnValue(appConfig);
             orderSets = [{
@@ -454,6 +455,60 @@ describe("AddTreatmentController", function () {
             expect(scope.treatments[2].drug.name).toEqual("ghi");
         });
 
+        describe("create FHIR bundle", function () {
+            var data = {
+                conditions: [],
+                diagnosis: [
+                    {
+                        codedAnswer: {
+                            name: 'Disease X',
+                            uuid: '235856003',
+                            conceptSystem: 'http://snomed.info/sct'
+                        },
+                        certainty: 'CONFIRMED',
+                        conceptName: 'Disease X'
+                    }
+                ],
+                medications: [
+                    {
+                        drugNameDisplay: 'Medication A 10 mg (Tablet)',
+                        drug: {
+                            name: 'Medication A 10 mg',
+                            uuid: 'ea21e269-0129-42ec-b769-346d7085157c',
+                            drugReferenceMaps: [
+                                {
+                                    display: 'Medication A 10 mg - SAME-AS',
+                                    uuid: 'a8c89f08-5eb0-428f-b934-201fabe8221b',
+                                    drug: {
+                                        uuid: 'ea21e269-0129-42ec-b769-346d7085157c',
+                                        display: 'Medication A 10 mg'
+                                    },
+                                    conceptReferenceTerm: {
+                                        uuid: '041bbed8-8319-445a-baa8-ef994898edd9',
+                                        display: 'SNOMED: 108600003'
+                                    },
+                                    conceptMapType: {
+                                        uuid: '35543629-7d8c-11e1-909d-c80aa9edcf4e',
+                                        display: 'SAME-AS'
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            };
+
+            it("should create FHIR bundle with diagnosis and medication orders", function () {
+                scope.consultation.newlyAddedDiagnoses = data.diagnosis;
+                scope.treatments = data.medications;
+                scope.createFhirBundle(scope.patient, data.conditions, data.medications, data.diagnosis).then(function (bundle) {
+                    expect(bundle.entry.length).toBe(2);
+                    expect(bundle.entry[0].resource.resourceType).toBe('Condition');
+                    expect(bundle.entry[1].resource.resourceType).toBe('MedicationRequest');
+                });
+            });
+        });
+
         describe("add free text drug order()", function () {
             it("should save as a free text drug order on click of accept button", function () {
                 var treatment = {drugNameDisplay: "Some New Drug", drug: {name: "CodedDrug"}};
@@ -528,15 +583,32 @@ describe("AddTreatmentController", function () {
         });
 
         describe("cdss alerts", function () {
+            var alerts = [
+                {
+                    uuid: 'some-uuid',
+                    indicator: 'critical',
+                    summary: 'Contraindication: Some Coded Drug is contraindicated with Some condition',
+                    detail: 'Some Coded Drug is contraindicated with Some condition'
+                }
+            ];
+
+            beforeEach(function () {
+                scope.cdssaAlerts = alerts;
+            });
+
+            it("should close alert on clicking close button", function () {
+                scope.closeAlert(0);
+                expect(scope.cdssaAlerts.length).toBe(0);
+            });
+
+            it("should toggle alert details on clicking toggle button", function () {
+                scope.toggleAlertDetails(0);
+                expect(scope.cdssaAlerts[0].showDetails).toBeTruthy();
+                scope.toggleAlertDetails(0);
+                expect(scope.cdssaAlerts[0].showDetails).toBeFalsy();
+            });
+
             it("should dismiss critical alert on submitting an audit", function () {
-                scope.cdssaAlerts = [
-                    {
-                        uuid: 'some-uuid',
-                        indicator: 'critical',
-                        summary: 'Contraindication: Some Coded Drug is contraindicated with Some condition',
-                        detail: 'Some Coded Drug is contraindicated with Some condition'
-                    }
-                ];
                 scope.patient = {uuid: 'some-user-uuid'};
                 scope.treatment = {audit: "some-audit"};
                 scope.submitAudit(0).then(function () {

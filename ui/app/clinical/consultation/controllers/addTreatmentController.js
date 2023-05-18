@@ -72,8 +72,8 @@ angular.module('bahmni.clinical')
 
             $scope.auditOptions = function () {
                 return appService
-                .getAppDescriptor()
-                .getConfigValue('cdssAuditOptions');
+                  .getAppDescriptor()
+                  .getConfigValue('cdssDismissalOptionsToDisplay');
             };
 
             $scope.submitAudit = function (index) {
@@ -516,7 +516,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.closeAlert = function (index) {
-                $scope.cdssaAlerts.splice(index, 1);
+                $scope.cdssaAlerts = $scope.cdssaAlerts.filter(function (alert, alertIndex) {
+                    return alertIndex !== index;
+                });
             };
 
             $scope.toggleAlertDetails = function (index) {
@@ -554,7 +556,7 @@ angular.module('bahmni.clinical')
                     };
                 });
             };
-            var extractCodeInfo = function (medication, callBack) {
+            var extractCodeInfo = function (medication) {
                 if (!(medication.drug.drugReferenceMaps && medication.drug.drugReferenceMaps.length > 0)) {
                     return Promise.resolve({
                         code: medication.drug.uuid,
@@ -595,6 +597,7 @@ angular.module('bahmni.clinical')
             };
 
             var createConditionResource = function (condition, patientUuid, isDiagnosis) {
+                var conceptLimitIndex = isDiagnosis ? -1 : condition.concept.uuid.lastIndexOf('/');
                 var conditionStatus = condition.status || condition.certainty;
                 var activeConditions = ['CONFIRMED', 'PRESUMED', 'ACTIVE'];
                 var status = activeConditions.indexOf(conditionStatus) > -1 ? 'active' : 'inactive';
@@ -613,8 +616,8 @@ angular.module('bahmni.clinical')
                     code: {
                         coding: [
                             {
-                                system: isDiagnosis ? condition.codedAnswer.conceptSystem : (condition.concept.conceptSystem || ''),
-                                code: isDiagnosis ? condition.codedAnswer.uuid : condition.concept.uuid,
+                                system: isDiagnosis ? condition.codedAnswer.conceptSystem : (conceptLimitIndex > -1 ? (condition.concept.uuid.substring(0, conceptLimitIndex) || '') : ''),
+                                code: isDiagnosis ? condition.codedAnswer.uuid : (conceptLimitIndex > -1 ? condition.concept.uuid.substring(conceptLimitIndex + 1) : condition.concept.uuid),
                                 display: isDiagnosis ? condition.codedAnswer.name : condition.concept.name
                             }
                         ],
@@ -635,7 +638,7 @@ angular.module('bahmni.clinical')
                 };
             };
 
-            var createFhirBundle = function (patient, conditions, medications, diagnosis) {
+            $scope.createFhirBundle = function (patient, conditions, medications, diagnosis) {
                 var encounterResource = conditions.filter(function (condition) {
                     return !condition.uuid;
                 }).map(function (condition) {
@@ -691,7 +694,7 @@ angular.module('bahmni.clinical')
                             consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : []
                         );
                         var params = createParams(consultationData);
-                        createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
+                        $scope.createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
                         .then(function (bundle) {
                             var cdssaAlerts = drugService.sendDiagnosisDrugBundle(bundle);
                             cdssaAlerts.then(function (response) {
@@ -726,6 +729,7 @@ angular.module('bahmni.clinical')
                         return;
                     }
                     delete $scope.treatment.drug;
+                    $scope.cdssaAlerts = [];
                 };
             })();
 
