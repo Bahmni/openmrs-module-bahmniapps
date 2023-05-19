@@ -1,43 +1,43 @@
 [main]
 host = https://www.transifex.com
 
-[bahmni.admin-app]
+[o:openmrs:p:bahmni:r:admin-app]
 file_filter = ui/app/i18n/admin/locale_<lang>.json
 source_file = ui/app/i18n/admin/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
-[bahmni.adt-app]
+[o:openmrs:p:bahmni:r:adt-app]
 file_filter = ui/app/i18n/adt/locale_<lang>.json
 source_file = ui/app/i18n/adt/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
-[bahmni.clinical-app]
+[o:openmrs:p:bahmni:r:clinical-app]
 file_filter = ui/app/i18n/clinical/locale_<lang>.json
 source_file = ui/app/i18n/clinical/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
-[bahmni.home-app]
+[o:openmrs:p:bahmni:r:home-app]
 file_filter = ui/app/i18n/home/locale_<lang>.json
 source_file = ui/app/i18n/home/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
-[bahmni.orders-app]
+[o:openmrs:p:bahmni:r:orders-app]
 file_filter = ui/app/i18n/orders/locale_<lang>.json
 source_file = ui/app/i18n/orders/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
-[bahmni.registration-app]
+[o:openmrs:p:bahmni:r:registration-app]
 file_filter = ui/app/i18n/registration/locale_<lang>.json
 source_file = ui/app/i18n/registration/locale_en.json
 source_lang = en
 type = KEYVALUEJSON
 
-[bahmni.reports-app]
+[o:openmrs:p:bahmni:r:reports-app]
 file_filter = ui/app/i18n/reports/locale_<lang>.json
 source_file = ui/app/i18n/reports/locale_en.json
 source_lang = en

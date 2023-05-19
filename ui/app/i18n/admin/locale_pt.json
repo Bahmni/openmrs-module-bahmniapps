@@ -1,0 +1,21 @@
+{
+    "userName": "Nome de utilizador",
+    "password": "Palavra-passe",
+    "location": "Localização",
+    "login": "Entrar",
+    "selectLocation": "Selecionar Localização",
+    "clinical_key": "Clínico",
+    "MESSAGE_DIALOG_OPTION_COPY": "Erro de Cópia",
+    "MESSAGE_DIALOG_OPTION_OKAY": "OK",
+    "PRIVILEGE_REQUIRED": "O usuário está registado, mas não tem o privilégio relevante",
+    "FILTERS_HEADER_LABEL": "Filtros",
+    "START_FROM_FILTER_LABEL": "Iniciar de",
+    "USERNAME_FILTER_LABEL": "Nome de Usuário ",
+    "ENTER_USERNAME_PLACEHOLDER": "Entrar com nome de Usuário ",
+    "PATIENT_ID_FILTER_LABEL": "ID do Paciente",
+    "ENTER_PATIENT_ID_PLACEHOLDER": "Entrar com ID do Paciente",
+    "FILTER_BUTTON_LABEL": "Filtro",
+    "AUDIT_LOG_TABLE_HEADER_LABEL": "Log de Eventos",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "Não há links de navegação disponíveis",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Por favor seleccione um valor definido "
+}
