@@ -1,7 +1,7 @@
 'use strict';
 
 describe("ObsGropingHelper", function () {
-    var conceptSetUiConfigService;
+    var conceptSetUiConfigService, translate;
 
     var allObservations = [
         {
@@ -20,8 +20,9 @@ describe("ObsGropingHelper", function () {
                 "dataType": "Coded",
                 "shortName": "Posture",
                 "conceptClass": "Misc",
-                "set": false,
+                "set": false
             },
+            "groupMembers": [],
             "valueAsString": "Sitting",
             "unknown": false,
             "uuid": "3df2eb81-d69b-405e-b70f-76852f9f4747",
@@ -33,7 +34,7 @@ describe("ObsGropingHelper", function () {
                 "dataType": "N/A",
                 "shortName": "Sitting",
                 "conceptClass": "Misc",
-                "set": false,
+                "set": false
             }
         },
         {
@@ -255,7 +256,7 @@ describe("ObsGropingHelper", function () {
                     "encounterUuid": "04458827-1dc1-44a5-8761-083b39f209ef",
                     "obsGroupUuid": "248bb0f7-1d18-41e2-bb22-f09100b2e513",
                     "creatorName": "Super Man",
-                    "formNamespace": null,
+                    "formNamespace": "Bahmni",
                     "formFieldPath": null,
                     "voided": false,
                     "voidReason": null,
@@ -309,17 +310,26 @@ describe("ObsGropingHelper", function () {
             "value": "false, 72.0"
         }
     ];
+
     beforeEach(function () {
         conceptSetUiConfigService = jasmine.createSpyObj('conceptSetUiConfigService', ['getConfig']);
         conceptSetUiConfigService.getConfig.and.returnValue({
-
         });
     });
 
+    var translatedMessages = {
+        "CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY": "Headache since 30 Days",
+        "CHIEF_COMPLAINT_DATA_CONCEPT_NAME_KEY": "Pulse Data"
+    };
+
+    var translate = jasmine.createSpyObj('$translate', ['instant']);
+    translate.instant.and.callFake(function (key) {
+        return translatedMessages[key];
+    });
 
     it("should not fail for empty set of observations", function () {
         var observations = [];
-        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService).groupObservations(observations);
+        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, translate).groupObservations(observations);
         expect(groupedObservationsArray.length).toBe(0);
     });
 
@@ -328,7 +338,7 @@ describe("ObsGropingHelper", function () {
             allObservations[0],
             allObservations[1]
         ];
-        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService).groupObservations(observations);
+        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, translate).groupObservations(observations);
         expect(groupedObservationsArray.length).toBe(1);
         expect(groupedObservationsArray[0].conceptSetName).toBe('Form2');
         expect(groupedObservationsArray[0].groupMembers.length).toBe(2);
@@ -338,7 +348,7 @@ describe("ObsGropingHelper", function () {
         var observations = [
             allObservations[2]
         ];
-        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService).groupObservations(observations);
+        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, translate).groupObservations(observations);
         expect(groupedObservationsArray.length).toBe(1);
         expect(groupedObservationsArray[0].conceptSetName).toBe('Vitals');
         expect(groupedObservationsArray[0].groupMembers.length).toBe(1);
@@ -350,7 +360,7 @@ describe("ObsGropingHelper", function () {
             allObservations[1],
             allObservations[2]
         ];
-        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService).groupObservations(observations);
+        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, translate).groupObservations(observations);
         expect(groupedObservationsArray.length).toBe(2);
 
         expect(groupedObservationsArray[0].conceptSetName).toBe('Vitals');
@@ -358,7 +368,5 @@ describe("ObsGropingHelper", function () {
 
         expect(groupedObservationsArray[1].conceptSetName).toBe('Form2');
         expect(groupedObservationsArray[1].groupMembers.length).toBe(2);
-
-
     });
 });

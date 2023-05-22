@@ -1,0 +1,21 @@
+{
+    "userName": "Người dùng",
+    "password": "Mật Khẩu",
+    "location": "Địa Điểm",
+    "login": "Đăng Nhập",
+    "selectLocation": "Chọn Vị Trí",
+    "clinical_key": "Lâm sàng",
+    "MESSAGE_DIALOG_OPTION_COPY": "Sao chép lỗi",
+    "MESSAGE_DIALOG_OPTION_OKAY": "Đồng ý",
+    "PRIVILEGE_REQUIRED": "Người dùng đăng nhập nhưng không có quyền có liên quan",
+    "FILTERS_HEADER_LABEL": "Lọc",
+    "START_FROM_FILTER_LABEL": "Ngày Bắt Đầu",
+    "USERNAME_FILTER_LABEL": "Tên Đăng Nhập",
+    "ENTER_USERNAME_PLACEHOLDER": "Nhập Vào Tên Đăng Nhập",
+    "PATIENT_ID_FILTER_LABEL": "Mã Bệnh Nhân",
+    "ENTER_PATIENT_ID_PLACEHOLDER": "Nhập Mã Bệnh Nhân",
+    "FILTER_BUTTON_LABEL": "Lọc",
+    "AUDIT_LOG_TABLE_HEADER_LABEL": "Nhật ký sự kiện",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "Không có liên kết nào khả dụng.",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Vui lòng chọn giá trị"
+}

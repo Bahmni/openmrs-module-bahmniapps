@@ -181,6 +181,24 @@ angular.module('authentication')
                 $rootScope.currentProvider = { uuid: providerUuid };
             });
         };
+
+        this.updateSession = function (location, locale) {
+            var requestData = {
+                "sessionLocation": location.uuid
+            };
+            if (locale) {
+                requestData.locale = locale;
+            }
+            return $http({
+                method: 'POST',
+                url: Bahmni.Common.Constants.RESTWS_V1 + '/session',
+                data: requestData,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function (response) {
+                $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
+                $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
+            });
+        };
     }]).factory('authenticator', ['$rootScope', '$q', '$window', 'sessionService', function ($rootScope, $q, $window, sessionService) {
         var authenticateUser = function () {
             var defer = $q.defer();

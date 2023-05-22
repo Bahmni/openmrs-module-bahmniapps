@@ -48,11 +48,6 @@ angular.module('bahmni.admin').service('adminOrderSetService', ['$http', '$q', f
             withCredentials: true
         }).then(function (result) {
             var config = result.data;
-            config.durationUnits = [
-                {name: "Day(s)", factor: 1},
-                {name: "Week(s)", factor: 7},
-                {name: "Month(s)", factor: 30}
-            ];
 
             return config;
         });

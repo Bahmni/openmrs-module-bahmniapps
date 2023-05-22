@@ -1,5 +1,3 @@
-'use strict';
-
 (function () {
     var findObservationByClassName = function (groupMembers, conceptClassName) {
         return _.find(groupMembers, function (member) {
@@ -96,30 +94,31 @@
             var observations = getGroupMembersWithoutClass(this.groupMembers, [Bahmni.Common.Constants.abnormalConceptClassName,
                 Bahmni.Common.Constants.unknownConceptClassName,
                 Bahmni.Common.Constants.durationConceptClassName]);
-
             if (_.isEmpty(observations)) {
                 return this.groupMembers[0];
             }
+
             var primaryObs = observations[1] && observations[1].uuid && !observations[1].voided ? observations[1] : observations[0];
             if (observations[0].isMultiSelect) {
                 return observations[0];
             }
+
             if (primaryObs.uuid && !primaryObs.voided) {
                 return primaryObs;
             }
+
             return observations[1] && (observations[1].value || observations[1].value === "") && !observations[1].voided ? observations[1] : observations[0];
         };
         Object.defineProperty(this, 'primaryObs', {
             enumerable: true,
             get: isFreeTextAutocompleteType(this.conceptUIConfig) ? getFreeTextPrimaryObservation : getFirstObservation
         });
-
         this.isObservationNode = true;
         this.uniqueId = _.uniqueId('observation_');
         this.durationObs = findObservationByClassName(this.groupMembers, Bahmni.Common.Constants.durationConceptClassName);
         this.abnormalObs = findObservationByClassName(this.groupMembers, Bahmni.Common.Constants.abnormalConceptClassName);
         this.unknownObs = findObservationByClassName(this.groupMembers, Bahmni.Common.Constants.unknownConceptClassName);
-        this.markedAsNonCoded = this.primaryObs.concept.dataType !== "Coded" && this.primaryObs.uuid;
+        this.markedAsNonCoded = true;
 
         if (savedObs) {
             this.uuid = savedObs.uuid;

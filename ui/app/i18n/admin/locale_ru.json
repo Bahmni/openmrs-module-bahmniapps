@@ -1,0 +1,21 @@
+{
+    "userName": "Имя пользователя",
+    "password": "Пароль",
+    "location": "Месторасположение",
+    "login": "Авторизоваться",
+    "selectLocation": "Выбрать месторасположение",
+    "clinical_key": "Клинический",
+    "MESSAGE_DIALOG_OPTION_COPY": "Ошибка копирования",
+    "MESSAGE_DIALOG_OPTION_OKAY": "ОК",
+    "PRIVILEGE_REQUIRED": "Пользователь авторизирован, но не имеет соответствующих привилегий",
+    "FILTERS_HEADER_LABEL": "Фильтры",
+    "START_FROM_FILTER_LABEL": "Начать с",
+    "USERNAME_FILTER_LABEL": "Имя пользователя",
+    "ENTER_USERNAME_PLACEHOLDER": "Введите имя пользователя",
+    "PATIENT_ID_FILTER_LABEL": "ID пациента",
+    "ENTER_PATIENT_ID_PLACEHOLDER": "Введите ID пациента",
+    "FILTER_BUTTON_LABEL": "Фильтр",
+    "AUDIT_LOG_TABLE_HEADER_LABEL": "проверка журнала событий",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "Доступные навигационные ссылки отсуствуют",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Пожалуйста, выберите значение из списка"
+}

@@ -6,5 +6,16 @@
     "selectLocation": "Selecionar Local",
     "clinical_key": "Clínico",
     "MESSAGE_DIALOG_OPTION_COPY": "Erro de Cópia",
-    "MESSAGE_DIALOG_OPTION_OKAY": "OK"
+    "MESSAGE_DIALOG_OPTION_OKAY": "OK",
+    "PRIVILEGE_REQUIRED": "O usuário está logado mas não tem os privilégios necessários",
+    "FILTERS_HEADER_LABEL": "Filtros",
+    "START_FROM_FILTER_LABEL": "Iniciando em",
+    "USERNAME_FILTER_LABEL": "Nome de usuário",
+    "ENTER_USERNAME_PLACEHOLDER": "Digite o nome de usuário",
+    "PATIENT_ID_FILTER_LABEL": "ID do Paciente",
+    "ENTER_PATIENT_ID_PLACEHOLDER": "Digite o ID do Paciente",
+    "FILTER_BUTTON_LABEL": "Filtro",
+    "AUDIT_LOG_TABLE_HEADER_LABEL": "Auditoria de eventos de log",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "Nenhum link de navegação disponível",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Selecione um valor para auto completar"
 }

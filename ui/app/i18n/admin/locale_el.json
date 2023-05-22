@@ -1,0 +1,21 @@
+{
+    "userName": "Όνομα Χρήστη",
+    "password": "Κωδικός",
+    "location": "Τοποθεσία",
+    "login": "Πρόσβαση",
+    "selectLocation": "Επιλέξτε Τοποθεσία",
+    "clinical_key": "Κλινικά",
+    "MESSAGE_DIALOG_OPTION_COPY": "Αντιγραφή Σφάλματος",
+    "MESSAGE_DIALOG_OPTION_OKAY": "ΟΚ",
+    "PRIVILEGE_REQUIRED": "Ο χρήστης έχει συνδεθεί αλλά δεν έχει σχετικά προνόμια",
+    "FILTERS_HEADER_LABEL": "Φίλτρα",
+    "START_FROM_FILTER_LABEL": "Αρχή Απο",
+    "USERNAME_FILTER_LABEL": "Ονομά Χρήστη",
+    "ENTER_USERNAME_PLACEHOLDER": "Εισαγωγή Ονόματος Χρήστη",
+    "PATIENT_ID_FILTER_LABEL": "Κωδικός Ασθενή",
+    "ENTER_PATIENT_ID_PLACEHOLDER": "Εισαγωγή Κωδικού Ασθενή",
+    "FILTER_BUTTON_LABEL": "Φίλτρο",
+    "AUDIT_LOG_TABLE_HEADER_LABEL": "Έλεγχος Γεγονότων Log",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "Μη διαδέσιμοι σύνδεσμοι",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Παρακαλώ επιλέξτε μια τιμή απο την αυτόματη συμπλήρωση"
+}

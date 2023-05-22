@@ -1,0 +1,21 @@
+{
+    "userName": "使用者名稱",
+    "password": "密碼",
+    "location": "地點",
+    "login": "登入",
+    "selectLocation": "選擇地點",
+    "clinical_key": "臨床實驗",
+    "MESSAGE_DIALOG_OPTION_COPY": "複製錯誤",
+    "MESSAGE_DIALOG_OPTION_OKAY": "好的",
+    "PRIVILEGE_REQUIRED": "使用者已登入但沒有相關權限",
+    "FILTERS_HEADER_LABEL": "篩選",
+    "START_FROM_FILTER_LABEL": "起始点",
+    "USERNAME_FILTER_LABEL": "使用者名稱",
+    "ENTER_USERNAME_PLACEHOLDER": "輸入使用者名稱",
+    "PATIENT_ID_FILTER_LABEL": "病人 ID",
+    "ENTER_PATIENT_ID_PLACEHOLDER": "輸入病人 ID",
+    "FILTER_BUTTON_LABEL": "篩選",
+    "AUDIT_LOG_TABLE_HEADER_LABEL": "审计日志事件",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "没有导航链接",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "請從自動完成中選擇一個值"
+}

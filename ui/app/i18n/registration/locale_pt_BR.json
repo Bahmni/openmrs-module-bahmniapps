@@ -1,4 +1,7 @@
 {
+    "SAVE_CONFIRMATION_DIALOG_MESSAGE_KEY": "You may have unsaved changes, please choose an option.",
+    "SAVE_CONFIRMATION_OPTION_DONT_SAVE_KEY": "Don't Save",
+    "SAVE_CONFIRMATION_OPTION_CANCEL_KEY": "Cancel",
     "REGISTRATION_TITLE_KEY": "Registro de Paciente",
     "REGISTRATION_LABEL_SCANNED": "Digitalizado",
     "REGISTRATION_LABEL_PAPER": "Papel",
@@ -46,6 +49,7 @@
     "REGISTRATION_LABEL_ENTER_NAME_ID": "Inserir Nome ou ID",
     "REGISTRATION_LABEL_VALID_PATIENT_IDENTIFIER": "Por favor, indique um identificador paciente válido",
     "REGISTRATION_LABEL_PROVIDER_AUTOCOMPLETE_LIST": "Por favor, seleccione um provedor da lista de preenchimento automático",
+    "REGISTRATION_LABEL_PATIENT_AUTOCOMPLETE_LIST": "Please select a patient from the autocomplete list",
     "REGISTRATION_LABEL_ENTER_NAME": "Inserir Nome",
     "REGISTRATION_LABEL_PERSON_NOT_FOUND": "Pessoa não encontrada",
     "REGISTRATION_LABEL_PATIENT_ID": "ID",
