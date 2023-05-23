@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - Bahmni-IPD-master
+      - ipd-docker-images
     paths-ignore:
       - "**.md"
 
