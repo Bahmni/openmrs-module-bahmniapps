@@ -281,7 +281,7 @@
                                 <div ng-show="cdssAlert.indicator == 'critical'">
                                      <div class="field-value">
                                     <select id="cdss-audit" class="form-field cdss-alert-close-reason"
-                                            ng-options="item as item for item in auditOptions()"
+                                            ng-options="item as (item | translate) for item in auditOptions()"
                                             ng-model="treatment.audit"
                                             >
                                         <option disabled value="">{{"CDSS_ALERT_DISMISSAL_REASON" | translate}}</option>
