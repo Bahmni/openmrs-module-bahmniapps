@@ -35,8 +35,8 @@ angular.module('bahmni.registration').factory('initialization',
                     if (attribute.format !== "org.openmrs.Location") {
                         return Promise.resolve(attribute);
                     }
-                    var locationTag = appService.getAppDescriptor().getConfigValue(attribute.name);
-                    return locationService.getAllByTag(locationTag).then(function (response) {
+                    var locationTags = appService.getAppDescriptor().getConfigValue(attribute.name, []);
+                    return locationService.getAllByTag(locationTags, "ANY").then(function (response) {
                         return Object.assign({}, attribute, {answers: response.data.results});
                     });
                 })).then(function (attributeTypes) {
