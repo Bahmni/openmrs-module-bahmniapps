@@ -25,9 +25,10 @@ angular.module('bahmni.common.patientSearch')
                 if (activePatientsList && activePatientsList.length > 0) {
                     $scope.getHeadings();
                 }
-                else{
-                    if($scope.activeHeaders.length != 0)
+                else {
+                    if ($scope.activeHeaders.length != 0) {
                         $scope.activeHeaders = [];
+                    }
                 }
             });
             if (patientSearchConfig && patientSearchConfig.serializeSearch) {
@@ -99,11 +100,12 @@ angular.module('bahmni.common.patientSearch')
 
         var setActiveHeadings = function (headings) {
             headings.map((heading) => {
-                var newHeading = { name: heading, sortInfo: heading }
-                if(!$scope.activeHeaders.find((activeHeader) => activeHeader.name == newHeading.name && activeHeader.sortInfo == newHeading.sortInfo))
+                var newHeading = { name: heading, sortInfo: heading };
+                if (!$scope.activeHeaders.find((activeHeader) => activeHeader.name == newHeading.name && activeHeader.sortInfo == newHeading.sortInfo)) {
                     $scope.activeHeaders.push(newHeading);
+                }
             });
-        }
+        };
 
         $scope.sortVisiblePatientsBy = function (sortColumn) {
             var emptyObjects = _.filter($scope.search.visiblePatients, function (visiblePatient) {
