@@ -139,10 +139,10 @@ angular.module('bahmni.common.patientSearch')
         $scope.isHeadingOfName = function (heading) {
             return _.includes(Bahmni.Common.PatientSearch.Constants.nameHeading, heading);
         };
-        $scope.getPrintableHeadings = function (patients) {
-            var headings = $scope.getHeadings(patients);
-            var printableHeadings = headings.filter(function (heading) {
-                return _.indexOf(Bahmni.Common.PatientSearch.Constants.printIgnoreHeadingsList, heading) === -1;
+        $scope.getPrintableHeadings = function () {
+            $scope.getHeadings();
+            var printableHeadings = $scope.activeHeaders.filter(function (heading) {
+                return _.indexOf(Bahmni.Common.PatientSearch.Constants.printIgnoreHeadingsList, heading.name) === -1;
             });
             return printableHeadings;
         };
