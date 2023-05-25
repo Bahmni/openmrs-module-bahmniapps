@@ -30,6 +30,19 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                 });
                 attributeValueConceptType.value = concept && concept.fullySpecifiedName;
             };
+
+            $scope.appendLocationNameToModel = function (attribute) {
+                var attributeLocationNameType = $scope.targetModel[attribute.name];
+                var location = _.find(attribute.answers, function (answer) {
+                    return answer.uuid === attributeLocationNameType.uuid;
+                });
+                attributeLocationNameType.display = location && location.display;
+                attributeLocationNameType.uuid = location && location.uuid;
+                attributeLocationNameType.links = [];
+                attributeLocationNameType.links.push(location && location.links[0]);
+                console.log(attributeLocationNameType);
+            };
+
             $scope.getTranslatedAttributeTypes = function (attribute) {
                 var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(attribute, Bahmni.Common.Constants.patientAttribute, $translate);
                 return translatedName;

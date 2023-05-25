@@ -49,6 +49,16 @@ Bahmni.Common.Domain.AttributeFormatter = (function () {
             });
             attr.value = attrDescription != undefined ? attrDescription.description : null;
             attr.hydratedObject = value.conceptUuid;
+        } else if (attributeType.format === "org.openmrs.Location") {
+            var attrDisplay = _.find(attributeType.answers, function (answer) {
+                if (answer.uuid === value.uuid) {
+                    return true;
+                }
+            });
+            attr.display = attrDisplay != undefined ? attrDisplay.display : null;
+            attr.uuid = attrDisplay.uuid;
+            attr.links = [];
+            attr.links.push(attrDisplay.links[0]);
         } else if (attributeType.format == "org.openmrs.util.AttributableDate" || attributeType.format == "org.openmrs.customdatatype.datatype.DateDatatype") {
             var mnt = moment(value);
             attr.value = mnt.format('YYYY-MM-DD');
