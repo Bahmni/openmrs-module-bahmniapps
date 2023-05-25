@@ -52,7 +52,7 @@
                         <!-- <th><strong>Sl.No</strong></th> -->
                         <th ng-repeat="heading in activeHeaders" ng-click="heading.sortInfo && sortVisiblePatientsBy(heading.sortInfo)">
                             <strong>{{ ::heading.name | translate }}</strong>
-                            <span ng-if="sortColumn == heading.sortInfo">
+                            <span class="sortIcons" ng-if="sortColumn == heading.sortInfo">
                                 <i class="fa fa-caret-up" ng-show="reverseSort"></i>
                                 <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
                             </span>
