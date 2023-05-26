@@ -65,12 +65,12 @@
                             {{$index + 1}}
                         </td> -->
                         <td ng-repeat="heading in activeHeaders">
-                            <a ng-if="::isHeadingOfLinkColumn(heading)"
+                            <a ng-if="::isHeadingOfLinkColumn(heading.name)"
                                ng-click="forwardPatient(row, heading)">{{::row[heading.name]}}</a>
-                            <span ng-if="::isHeadingOfName(heading)" ng-click="forwardPatient(row)">{{::row[heading.name]}}
+                            <span ng-if="::isHeadingOfName(heading.name)" ng-click="forwardPatient(row)">{{::row[heading.name]}}
                                 <i class="ipd-indication fa fa-bed" ng-if="::(row.hasBeenAdmitted===true||row.hasBeenAdmitted==='true')"></i>
                             </span>
-                            <span ng-if="::(!isHeadingOfLinkColumn(heading) && !isHeadingOfName(heading))">
+                            <span ng-if="::(!isHeadingOfLinkColumn(heading.name) && !isHeadingOfName(heading.name))">
                             {{::row[heading.name]}}
                             </span>
                         </td>
