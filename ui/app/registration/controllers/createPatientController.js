@@ -37,6 +37,10 @@ angular.module('bahmni.registration')
                     return personAttributeType.format === "org.openmrs.Concept";
                 };
 
+                var isLocation = function (personAttributeType) {
+                    return personAttributeType.format === "org.openmrs.Location";
+                };
+
                 var setDefaultAnswer = function (personAttributeType) {
                     $scope.patient[personAttributeType.name] = defaults[personAttributeType.name];
                 };
@@ -51,6 +55,21 @@ angular.module('bahmni.registration')
                         $scope.patient[personAttributeType.name] = {
                             conceptUuid: answer.conceptId,
                             value: answer.fullySpecifiedName
+                        };
+                    }).value();
+                };
+
+                var setDefaultLocation = function (personAttributeType) {
+                    var defaultAnswer = defaults[personAttributeType.name];
+                    var isDefaultAnswer = function (answer) {
+                        return answer.display === defaultAnswer;
+                    };
+
+                    _.chain(personAttributeType.answers).filter(isDefaultAnswer).each(function (answer) {
+                        $scope.patient[personAttributeType.name] = {
+                            uuid: answer.uuid,
+                            display: answer.display,
+                            links: answer.links
                         };
                     }).value();
                 };
@@ -80,6 +99,7 @@ angular.module('bahmni.registration')
                     .each(setDefaultAnswer).value();
 
                 _.chain(defaultsWithAnswers).filter(isConcept).each(setDefaultConcept).value();
+                _.chain(defaultsWithAnswers).filter(isLocation).each(setDefaultLocation).value();
                 _.chain(defaultsWithAnswers).filter(isDateType).each(setDefaultValue).value();
             };
 
