@@ -141,11 +141,6 @@
     "MEDICATION_DOSING_INSTRUCTIONS_PLACEHOLDER": "elija instruccion",
     "MEDICATION_LABEL_ADDITIONAL_INSTRUCTIONS": "Instrucciones adicionales",
     "MEDICATION_ADDITIONAL_INFORMATION_LABEL": "informacion adicional",
-    "CDSS_WARNING": "Advertencia",
-    "CDSS_CRITICAL": "Crítica",
-    "CDSS_INFO": "Información",
-    "CDSS_ALERT_DISMISSAL_REASON": "Seleccione el motivo del despido",
-    "CDSS_ALERT_DISMISS": "Despedir",
     "MEDICATION_DRUG_NAME_PLACEHOLDER": "elija medicamento ",
     "MEDICATION_CHANGE_DURATION_BUTTON": "cambie duracion",
     "MEDICATION_ADD_BUTTON_LABEL": "<u>A</u>ñadir",
@@ -207,8 +202,6 @@
     "CLINICAL_DIAGNOSIS_PRESUMED": "PRESUNTA",
     "CLINICAL_ACCEPT": "Aceptar",
     "CLINICAL_ACTION": "Acción",
-    "SERVER_ERROR_MESSAGE": "Sucedió algo inesperado. Póngase en contacto con el administrador.",
-
     "CONDITION_LIST_DISPLAY_CONTROL_TITLE": "Condiciones",
     "CONDITION_LIST_ACTIVE": "Activo",
     "CONDITION_LIST_INACTIVE": "Inactivo",
@@ -261,13 +254,5 @@
     "NO_IMAGE_YET_FOR_ORDER": "Aún no hay imagen disponible para ordenar",
     "LAB_ENTRY_KEY": "Laboratorio",
     "START_TELECON_KEY": "Start Teleconsulta",
-    "TELECON_ERROR_KEY": "Error al obtener el enlace de teleconsulta",
-    "FALSE_POSITIVE_ALERT": "La alerta se activó pero fue un falso positivo y no se necesita ninguna acción.",
-    "NOT_APPLICABLE_TO_THE_PATIENT": "La alerta no se aplica al paciente en cuestión.",
-    "ALREADY_RESOLVED_BY_MEDICATION_ADJUSTMENT": "La alerta se resolvió previamente ajustando la medicación del paciente.",
-    "ALREADY_MANAGED_BY_OTHER_MEANS": "La alerta fue gestionada previamente por otros medios y no se necesita tomar más medidas.",
-    "PATIENT_DECLINED_RECOMMENDED_ACTION": "El paciente rechazó la acción recomendada a pesar de la alerta.",
-    "CLINICIAN_JUDGMENT_OVERRODE_RECOMMENDATION": "El clínico utilizó su criterio para anular la recomendación generada por la alerta.",
-    "ALERT_TRIGGERED_IN_ERROR": "La alerta se activó por error y no se necesita tomar ninguna acción.",
-    "INSUFFICIENT_INFORMATION_TO_ACT_ON_ALERT": "No hay suficiente información disponible para actuar sobre la alerta."
+    "TELECON_ERROR_KEY": "Error al obtener el enlace de teleconsulta"
 }

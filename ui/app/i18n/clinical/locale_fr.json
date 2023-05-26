@@ -144,11 +144,6 @@
   "MEDICATION_DOSING_INSTRUCTIONS_PLACEHOLDER": "Choisissez l'instruction",
   "MEDICATION_LABEL_ADDITIONAL_INSTRUCTIONS": "Instruction supplémentaires",
   "MEDICATION_ADDITIONAL_INFORMATION_LABEL": "Information additionnelle",
-  "CDSS_WARNING": "Avertissement",
-  "CDSS_CRITICAL": "Critique",
-  "CDSS_INFO": "Info",
-  "CDSS_ALERT_DISMISSAL_REASON": "Sélectionnez le motif du licenciement",
-  "CDSS_ALERT_DISMISS": "Rejeter",
   "MEDICATION_DRUG_NAME_PLACEHOLDER": "Choisissez un médicament",
   "MEDICATION_CHANGE_DURATION_BUTTON": "Changer la durée",
   "MEDICATION_ADD_BUTTON_LABEL": "<u>A</u>jouter",
@@ -252,8 +247,6 @@
   "CLINICAL_ORDER": "Ordre",
   "CLINICAL_CERTAINTY": "CERTITUDE",
   "CLINICAL_STATUS": "STATUT",
-  "SERVER_ERROR_MESSAGE": "Quelque chose d'inattendu s'est produit. Veuillez contacter l'administrateur.",
-
   "EROSION": "ÉROSION",
   "OBSTRETRICS": "Obstétrique",
   "TUBERCULOSIS_FOLLOW_UP": "Tuberculose, visite de suivi",
@@ -300,13 +293,5 @@
   "SAVE_KEY": "sauver",
   "LAB_ENTRY_KEY": "Laboratoire",
   "START_TELECON_KEY": "Start Téléconsultation",
-  "TELECON_ERROR_KEY": "Erreur lors de la récupération du lien de téléconsultation",
-  "FALSE_POSITIVE_ALERT": "L'alerte a été déclenchée, mais c'était un faux positif et aucune action n'est nécessaire.",
-  "NOT_APPLICABLE_TO_THE_PATIENT": "L'alerte ne s'applique pas au patient en question.",
-  "ALREADY_RESOLVED_BY_MEDICATION_ADJUSTMENT": "L'alerte a été résolue précédemment en ajustant la médication du patient.",
-  "ALREADY_MANAGED_BY_OTHER_MEANS": "L'alerte a été précédemment gérée par d'autres moyens et aucune action supplémentaire n'est nécessaire.",
-  "PATIENT_DECLINED_RECOMMENDED_ACTION": "Le patient a refusé l'action recommandée malgré l'alerte.",
-  "CLINICIAN_JUDGMENT_OVERRODE_RECOMMENDATION": "Le clinicien a utilisé son jugement pour annuler la recommandation générée par l'alerte.",
-  "ALERT_TRIGGERED_IN_ERROR": "L'alerte a été déclenchée par erreur et aucune action n'est nécessaire.",
-  "INSUFFICIENT_INFORMATION_TO_ACT_ON_ALERT": "Il n'y a pas suffisamment d'informations disponibles pour agir sur l'alerte."
+  "TELECON_ERROR_KEY": "Erreur lors de la récupération du lien de téléconsultation"
 }
