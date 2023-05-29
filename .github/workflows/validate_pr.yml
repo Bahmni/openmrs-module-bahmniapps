@@ -2,7 +2,7 @@ name: Validate PR
 
 on:
  pull_request:
-    branches: [ snomed-master ]
+    branches: [ master ]
 
 jobs:
   build:
