@@ -94,7 +94,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
             attr.hydratedObject = value.conceptUuid;
         } else if (attributeType.format === "org.openmrs.Location") {
             var attrDescription = _.find(attributeType.answers, function (answer) {
-                if (answer.uuid === value) {
+                if (answer.uuid === value.uuid) {
                     return true;
                 }
             });
