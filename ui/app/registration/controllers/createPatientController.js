@@ -36,7 +36,6 @@ angular.module('bahmni.registration')
                 var isConcept = function (personAttributeType) {
                     return personAttributeType.format === "org.openmrs.Concept";
                 };
-                
                 var isLocation = function (personAttributeType) {
                     return personAttributeType.format === "org.openmrs.Location";
                 };
@@ -58,9 +57,7 @@ angular.module('bahmni.registration')
                         };
                     }).value();
                 };
-                
                 var setDefaultLocation = function (personAttributeType) {
-                    console.log("Default = ",defaults[personAttributeType.name]);
                     var defaultAnswer = defaults[personAttributeType.name];
                     var isDefaultAnswer = function (answer) {
                         return answer.name === defaultAnswer;
