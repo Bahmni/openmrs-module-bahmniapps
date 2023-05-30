@@ -92,6 +92,14 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
             attr.voided = true;
         } else if (attributeType.format === "org.openmrs.Concept") {
             attr.hydratedObject = value.conceptUuid;
+        } else if (attributeType.format === "org.openmrs.Location") {
+            var attrDescription = _.find(attributeType.answers, function (answer) {
+                if (answer.uuid === value.uuid) {
+                    return true;
+                }
+            });
+            attr.value = attrDescription != undefined ? attrDescription.name : null;
+            attr.uuid = value.uuid;
         } else if (attributeType.format === "org.openmrs.util.AttributableDate") {
             var mnt = moment(value);
             attr.value = mnt.format('YYYY-MM-DDTHH:mm:ss.SSSZZ');

@@ -25,6 +25,13 @@
             <option value=""></option>
         </select>
     </div>
+    <div class="left" data-ng-switch-when="org.openmrs.Location">
+        <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name].uuid"
+                ng-options="a.uuid as a.name for a in ::attribute.answers"
+                ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-change="appendLocationToModel(attribute); handleUpdate(attribute.name)">
+            <option value=""></option>
+        </select>
+    </div>
     <div class="left" data-ng-switch-when="org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype">
         <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name]"
                 ng-options="a.conceptId as a.description for a in ::attribute.answers"

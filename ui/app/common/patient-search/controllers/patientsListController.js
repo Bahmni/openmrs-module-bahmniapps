@@ -102,7 +102,7 @@ angular.module('bahmni.common.patientSearch')
             headings.map(function (heading) {
                 var newHeading = { name: heading, sortInfo: heading };
                 if (!$scope.activeHeaders.find(function (activeHeader) {
-                    return activeHeader.name === newHeading.name && activeHeader.sortInfo === newHeading.sortInfo;
+                    return activeHeader.name == newHeading.name && activeHeader.sortInfo == newHeading.sortInfo;
                 })) {
                     $scope.activeHeaders.push(newHeading);
                 }
