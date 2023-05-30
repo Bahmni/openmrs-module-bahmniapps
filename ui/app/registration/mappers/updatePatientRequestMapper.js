@@ -99,7 +99,7 @@ Bahmni.Registration.UpdatePatientRequestMapper = (function () {
                 }
             });
             attr.value = attrDescription != undefined ? attrDescription.name : null;
-            attr.uuid = value.uuid;
+            attr.hydratedObject = value.uuid;
         } else if (attributeType.format === "org.openmrs.util.AttributableDate") {
             var mnt = moment(value);
             attr.value = mnt.format('YYYY-MM-DDTHH:mm:ss.SSSZZ');
