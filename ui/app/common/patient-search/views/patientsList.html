@@ -50,7 +50,13 @@
                     <thead>
                     <tr>
                         <!-- <th><strong>Sl.No</strong></th> -->
-                        <th ng-repeat="heading in getHeadings(search.visiblePatients)"><strong>{{ ::heading | translate }}</strong></th>
+                        <th ng-repeat="heading in activeHeaders" ng-click="heading.sortInfo && sortVisiblePatientsBy(heading.sortInfo)">
+                            <strong>{{ ::heading.name | translate }}</strong>
+                            <span class="sortIcons" ng-if="sortColumn == heading.sortInfo">
+                                <i class="fa fa-caret-up" ng-show="reverseSort"></i>
+                                <i class="fa fa-caret-down" ng-show="!reverseSort"></i>
+                            </span>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -58,14 +64,14 @@
                         <!-- <td>
                             {{$index + 1}}
                         </td> -->
-                        <td ng-repeat="heading in getHeadings(search.visiblePatients)">
-                            <a ng-if="::isHeadingOfLinkColumn(heading)"
-                               ng-click="forwardPatient(row, heading)">{{::row[heading]}}</a>
-                            <span ng-if="::isHeadingOfName(heading)" ng-click="forwardPatient(row)">{{::row[heading]}}
+                        <td ng-repeat="heading in activeHeaders">
+                            <a ng-if="::isHeadingOfLinkColumn(heading.name)"
+                               ng-click="forwardPatient(row, heading)">{{::row[heading.name]}}</a>
+                            <span ng-if="::isHeadingOfName(heading.name)" ng-click="forwardPatient(row)">{{::row[heading.name]}}
                                 <i class="ipd-indication fa fa-bed" ng-if="::(row.hasBeenAdmitted===true||row.hasBeenAdmitted==='true')"></i>
                             </span>
-                            <span ng-if="::(!isHeadingOfLinkColumn(heading) && !isHeadingOfName(heading))">
-                            {{::row[heading]}}
+                            <span ng-if="::(!isHeadingOfLinkColumn(heading.name) && !isHeadingOfName(heading.name))">
+                            {{::row[heading.name]}}
                             </span>
                         </td>
                     </tr>
