@@ -99,9 +99,11 @@ angular.module('bahmni.common.patientSearch')
         };
 
         var setActiveHeadings = function (headings) {
-            headings.map((heading) => {
+            headings.map(function (heading) {
                 var newHeading = { name: heading, sortInfo: heading };
-                if (!$scope.activeHeaders.find((activeHeader) => activeHeader.name == newHeading.name && activeHeader.sortInfo == newHeading.sortInfo)) {
+                if (!$scope.activeHeaders.find(function (activeHeader) {
+                    return activeHeader.name == newHeading.name && activeHeader.sortInfo == newHeading.sortInfo;
+                })) {
                     $scope.activeHeaders.push(newHeading);
                 }
             });
