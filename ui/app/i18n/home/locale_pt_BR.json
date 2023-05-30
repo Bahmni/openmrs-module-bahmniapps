@@ -2,6 +2,7 @@
     "BAHMNI_PAGE_TITLE_KEY": "Início do Bahmni",
     "LOGIN_LABEL_LOGIN_KEY": "Entrar",
     "LOGIN_LABEL_SUBMIT_KEY": "Enviar",
+    "LOGIN_LOCATION_SELECTION_LABEL_KEY": "Submit Location br",
     "LOGIN_LABEL_ENTER_OTP_KEY": "Inserir OTP",
     "LOGIN_LABEL_USERNAME_KEY": "Nome de Usuário",
     "LOGIN_LABEL_PASSWORD_KEY": "Senha",
@@ -54,5 +55,6 @@
     "NO_FULFILMENT_MESSAGE": "No observations captured for this order.",
     "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "No navigation links available.",
     "ACCEPT": "Accept",
-    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Please select a value from auto complete"
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Please select a value from auto complete",
+    "LOGIN_LOCATION_PAGE_TITLE_TEXT": "Select login location br"
 }
