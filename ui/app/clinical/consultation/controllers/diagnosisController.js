@@ -43,14 +43,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.getDiagnosis = function (params) {
-                return diagnosisService.getAllFor(params.term, $rootScope.currentUser.userProperties.defaultLocale).then(mapConcept, mapError);
-            };
-
-            var mapError = function (error) {
-                if (error.status >= 500) {
-                    messagingService.showMessage('error', "SERVER_ERROR_MESSAGE");
-                }
-                return [];
+                return diagnosisService.getAllFor(params.term, $rootScope.currentUser.userProperties.defaultLocale).then(mapConcept);
             };
 
             var _canAdd = function (diagnosis) {
