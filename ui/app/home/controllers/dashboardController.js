@@ -21,7 +21,12 @@ angular.module('bahmni.home')
             var init = function () {
                 return locationService.getAllByTag("Login Location").then(function (response) {
                     $scope.locations = response.data.results;
-                    $scope.selectedLocationUuid = getCurrentLocation().uuid;
+                    const currentLoc = getCurrentLocation(); 
+                    if (currentLoc) {
+                        $scope.selectedLocationUuid = getCurrentLocation().uuid;    
+                    } else {
+                        $scope.selectedLocationUuid = null;
+                    }
                 }
                 );
             };
@@ -33,7 +38,12 @@ angular.module('bahmni.home')
             };
 
             $scope.isCurrentLocation = function (location) {
-                return getCurrentLocation().uuid === location.uuid;
+                const currentLoc = getCurrentLocation();
+                if (currentLoc) {
+                    return getCurrentLocation().uuid === location.uuid;
+                } else {
+                    return false;
+                } 
             };
 
             $scope.onLocationChange = function () {
