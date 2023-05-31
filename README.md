@@ -5,7 +5,7 @@
 [![Build and Publish](https://github.com/Bahmni/openmrs-module-bahmniapps/actions/workflows/build_publish.yml/badge.svg)](https://github.com/Bahmni/openmrs-module-bahmniapps/actions/workflows/build_publish.yml)
 
 1. This repository contains most of the frontend code for the **Bahmni EMR**. It is written in **AngularJS** with
-   only the Form viewer part utilising _React_. More details can be found [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3132686337/SNOMED+FHIR+Terminology+Server+Integration+with+Bahmni)
+   only the Form viewer part utilising _React_.
 2. See the sub-folder: `ui/app/` to understand which all modules of the EMR UI are contained in this codebase.
 3. Regarding the decision of migrating away from AngularJS and instead use React, please read this
    blog writeup: [Bahmni EMR - 1 M lines of code](https://medium.com/bahmni-blog/bahmni-emr-1million-lines-of-open-source-code-87e610e9a4ec)
@@ -71,11 +71,13 @@ This behaviour can be prevented by:
    ```
    <meta name=”robots” content=”noindex”>
    ```
+
    Additionally, in order to both _de-index_ the homepage and not follow the links, use the `noindex` with the `nofollow` metatag:
 
    ```
    <meta name=”robots” content=”noindex,nofollow”>
    ```
+
    > The same is already done [here](https://github.com/Bahmni/openmrs-module-bahmniapps/blob/master/package/docker/index.html#L5)
    >
 2. **Using an X-ROBOTS-TAG HTTP HEADER:**
@@ -87,5 +89,10 @@ This behaviour can be prevented by:
    ```
    Header set X-Robots-Tag "noindex, nofollow"
    ```
+
    > The same is already done [here](https://github.com/Bahmni/openmrs-module-bahmniapps/blob/master/package/docker/httpd.conf#L32)
    >
+
+### SNOMED Integration Support
+
+openmrs-module-bahmniapps also integrates with SNOMED for terminology lookup and CDSS. More details can be found in [this](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3132686337/SNOMED+FHIR+Terminology+Server+Integration+with+Bahmni) Wiki link
