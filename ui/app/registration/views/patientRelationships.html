@@ -67,6 +67,11 @@
                     <span ng-show="!showPersonNotFound(newRelationship)">{{newRelationship.content}}</span>
                     <span class="no-person" ng-show="duplicateRelationship(newRelationship)">{{ ::'REGISTRATION_LABEL_RELATIONSHIP_EXISTS' | translate}}</span>
                 </div>
+                <div class="relationship-extension-btn">
+                    <button type="button"
+                        ng-click="openAddPersonModal()">Add Person
+                    </button>
+                </div>
                 <div class="col col3 form-field">
                     <strong class="till-text">{{ ::'REGISTRATION_LABEL_TILL' | translate}}</strong>
                     <div class="field-attribute showOn-small-screen">
@@ -83,5 +88,10 @@
                 </div>
             </div>
         </div>
-    
+        <div class="add-person-ui"  ng-hide="!showIFrame">
+            <div class="add-person-iframe">
+                <span class="close" ng-click="closeAddPersonModal()">&times;</span>
+                <iframe id="relationship-extension-popup" height="95%" width="100%"></iframe>
+            </div>
+        </div>
 </div>
