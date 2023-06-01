@@ -31,8 +31,10 @@ angular.module('bahmni.home')
             var identifyLoginLocations = function(allLocations) {
                 var assignedLocations = userAssignedLocations();
                 if (assignedLocations.length == 0) {
+                    localStorage.removeItem("userAssignedLocations");
                     return allLocations;
                 } 
+                localStorage.setItem("userAssignedLocations",JSON.stringify(assignedLocations));
                 return assignedLocations;
             };
 

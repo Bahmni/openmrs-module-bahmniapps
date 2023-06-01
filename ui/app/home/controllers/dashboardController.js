@@ -18,17 +18,26 @@ angular.module('bahmni.home')
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;
             };
 
+            var setCurrentLoginLocationForUser = function () {
+                const currentLoc = getCurrentLocation(); 
+                if (currentLoc) {
+                    $scope.selectedLocationUuid = getCurrentLocation().uuid;    
+                } else {
+                    $scope.selectedLocationUuid = null;
+                }
+            }
+
             var init = function () {
+                const assignedLocations = localStorage.getItem("userAssignedLocations");
+                if (assignedLocations){
+                    $scope.locations = JSON.parse(assignedLocations);
+                    setCurrentLoginLocationForUser();
+                    return;
+                }
                 return locationService.getAllByTag("Login Location").then(function (response) {
                     $scope.locations = response.data.results;
-                    const currentLoc = getCurrentLocation(); 
-                    if (currentLoc) {
-                        $scope.selectedLocationUuid = getCurrentLocation().uuid;    
-                    } else {
-                        $scope.selectedLocationUuid = null;
-                    }
-                }
-                );
+                    setCurrentLoginLocationForUser();
+                });
             };
 
             var getLocationFor = function (uuid) {
