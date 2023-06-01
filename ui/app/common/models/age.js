@@ -24,11 +24,17 @@ angular.module('bahmni.common.models')
         };
 
         var calculateBirthDate = function (age) {
-            var birthDate = dateUtil.now();
-            birthDate = dateUtil.subtractYears(birthDate, age.years);
-            birthDate = dateUtil.subtractMonths(birthDate, age.months);
-            birthDate = dateUtil.subtractDays(birthDate, age.days);
-            return birthDate;
+            var date = dateUtil.now();
+            if (age.years) {
+                date.setFullYear(date.getFullYear() - age.years);
+            }
+            if (age.months) {
+                date.setMonth(date.getMonth() - age.months);
+            }
+            if (age.days) {
+                date.setDate(date.getDate() - age.days);
+            }
+            return date;
         };
 
         return {
