@@ -73,6 +73,15 @@ angular.module('bahmni.registration')
                 return personRelatedTo ? personRelatedTo.display : "";
             };
 
+            $scope.closeAddPersonModal = function () {
+                $scope.showIFrame = false;
+                return $scope.showIFrame;
+            };
+
+            $scope.openAddPersonModal = function () {
+                $scope.showIFrame = true;
+            };
+
             var getName = function (patient) {
                 return patient.givenName + (patient.middleName ? " " + patient.middleName : "") +
                     (patient.familyName ? " " + patient.familyName : "");
@@ -276,6 +285,7 @@ angular.module('bahmni.registration')
             var init = function () {
                 $scope.relationshipTypes = $rootScope.relationshipTypes;
                 $scope.patient.relationships = $scope.patient.relationships || [];
+                $scope.showIFrame = false;
             };
 
             init();
