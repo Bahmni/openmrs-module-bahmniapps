@@ -6,7 +6,6 @@ angular.module('bahmni.home')
             var redirectUrl = $location.search()['from'];
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
-            $scope.locations = initialData.locations;
             $scope.loginInfo = {};
             var localeLanguages = [];
 
@@ -17,6 +16,28 @@ angular.module('bahmni.home')
                 localTimeZone = localTimeZone.substring(1, localTimeZone.length - 1);
                 return localTimeZone;
             };
+            
+            var userAssignedLocations = function () {
+                if ($rootScope.currentUser.provider.attributes && $rootScope.currentUser.provider.attributes.length > 0) {
+                    return $rootScope.currentUser.provider.attributes.filter(function(attribute) {
+                        return attribute.attributeType.display === 'Assigned locations';
+                    }).map(function(attribute) {
+                        return { display : attribute.value.name, uuid : attribute.value.uuid};
+                    });
+                }
+                return [];
+            };
+
+            var identifyLoginLocations = function(allLocations) {
+                var assignedLocations = userAssignedLocations();
+                if (assignedLocations.length == 0) {
+                    return allLocations;
+                } 
+                return assignedLocations;
+            };
+
+            $scope.locations = identifyLoginLocations(initialData.locations);
+              
 
             var findLanguageByLocale = function (localeCode) {
                 return _.find(localeLanguages, function (localeLanguage) {
