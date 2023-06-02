@@ -4,7 +4,7 @@ Bahmni.ADT.WardDetails = {};
 
 Bahmni.ADT.WardDetails.create = function (details, diagnosisStatus) {
     var detailsMap = {};
-    var attributesToCopy = ["Bed", "Id", "Name", "Age", "Gender", "District", "Village", "Admission By", "Admission Time", "Disposition By", "Disposition Time", "ADT Notes"];
+    var attributesToCopy = ["Bed", "Ward", "Id", "Name", "Age", "Gender", "District", "Village", "Admission By", "Admission Time", "Disposition By", "Disposition Time", "ADT Notes"];
     var diagnosisProperties = ["Diagnosis", "Diagnosis Certainty", "Diagnosis Order", "Diagnosis Status", "Diagnosis Provider", "Diagnosis Datetime"];
     var hiddenAttributesToCopy = ["Patient Uuid", "Visit Uuid"];
 
