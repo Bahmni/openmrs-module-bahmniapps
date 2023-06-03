@@ -19,8 +19,8 @@ angular.module('bahmni.home')
             };
 
             var setCurrentLoginLocationForUser = function () {
-                const currentLoc = getCurrentLocation(); 
-                if (currentLoc) {
+                const currentLoginLocation = getCurrentLocation(); 
+                if (currentLoginLocation) {
                     $scope.selectedLocationUuid = getCurrentLocation().uuid;    
                 } else {
                     $scope.selectedLocationUuid = null;
@@ -28,9 +28,9 @@ angular.module('bahmni.home')
             }
 
             var init = function () {
-                const assignedLocations = localStorage.getItem("userAssignedLocations");
-                if (assignedLocations){
-                    $scope.locations = JSON.parse(assignedLocations);
+                const loginLocations = localStorage.getItem("loginLocations");
+                if (loginLocations){
+                    $scope.locations = JSON.parse(loginLocations);
                     setCurrentLoginLocationForUser();
                     return;
                 }

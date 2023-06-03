@@ -107,9 +107,9 @@ angular.module('bahmni.clinical')
                 $scope.date = retrospectiveDate ? new Date(retrospectiveDate) : new Date($scope.maxStartDate);
                 $scope.encounterProvider = getCurrentProvider();
                 selectedProvider = getCurrentProvider();
-                const assignedLocations = localStorage.getItem("userAssignedLocations");
-                if(assignedLocations){
-                    $scope.locations = JSON.parse(assignedLocations);
+                const loginLocations = localStorage.getItem("loginLocations");
+                if(loginLocations){
+                    $scope.locations = JSON.parse(loginLocations);
                     return;
                 }
                 return locationService.getAllByTag("Login Location").then(function (response) {

@@ -6,6 +6,7 @@ angular.module('bahmni.home')
             var redirectUrl = $location.search()['from'];
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
+            const LOGIN_LOCATIONS = "Login Locations"
             $scope.loginInfo = {};
             var localeLanguages = [];
 
@@ -17,25 +18,25 @@ angular.module('bahmni.home')
                 return localTimeZone;
             };
             
-            var userAssignedLocations = function () {
+            var userLoginLocations = function () {
                 if ($rootScope.currentUser.provider.attributes && $rootScope.currentUser.provider.attributes.length > 0) {
                     return $rootScope.currentUser.provider.attributes.filter(function(attribute) {
-                        return attribute.attributeType.display === 'Assigned locations';
+                        return attribute.attributeType.display === LOGIN_LOCATIONS;
                     }).map(function(attribute) {
                         return { display : attribute.value.name, uuid : attribute.value.uuid};
-                    });
+                  });
                 }
                 return [];
-            };
-
+              };
+              
             var identifyLoginLocations = function(allLocations) {
-                var assignedLocations = userAssignedLocations();
-                if (assignedLocations.length == 0) {
-                    localStorage.removeItem("userAssignedLocations");
+                var loginLocations = userLoginLocations();
+                if (loginLocations.length === 0) {
+                    localStorage.removeItem("loginLocations");
                     return allLocations;
                 } 
-                localStorage.setItem("userAssignedLocations",JSON.stringify(assignedLocations));
-                return assignedLocations;
+                localStorage.setItem("loginLocations",JSON.stringify(loginLocations));
+                return loginLocations;
             };
 
             $scope.locations = identifyLoginLocations(initialData.locations);
