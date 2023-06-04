@@ -17,17 +17,17 @@ angular.module('bahmni.home')
                 localTimeZone = localTimeZone.substring(1, localTimeZone.length - 1);
                 return localTimeZone;
             };
-            
+
             var userLoginLocations = function () {
                 if ($rootScope.currentUser.provider.attributes && $rootScope.currentUser.provider.attributes.length > 0) {
-                    return $rootScope.currentUser.provider.attributes.filter(function(attribute) {
+                    return $rootScope.currentUser.provider.attributes.filter(function (attribute) {
                         return attribute.attributeType.display === LOGIN_LOCATIONS;
-                    }).map(function(attribute) {
-                        return { display : attribute.value.name, uuid : attribute.value.uuid};
-                  });
+                    }).map(function (attribute) {
+                        return { display: attribute.value.name, uuid: attribute.value.uuid};
+                    });
                 }
                 return [];
-            };  
+            };
 
             var identifyLoginLocations = function (allLocations) {
                 var loginLocations = userLoginLocations();
@@ -94,9 +94,10 @@ angular.module('bahmni.home')
                 });
             });
 
-			var getLoginLocationUuid = function () {
-                return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
-            };
+            var getLoginLocationUuid = function () {
+				return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid : null;
+			};
+			
             var getLastLoggedinLocation = function () {
                 return _.find(initialData.locations, function (location) {
                     return location.uuid === getLoginLocationUuid();
