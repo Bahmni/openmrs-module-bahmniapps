@@ -47,8 +47,8 @@ angular.module('bahmni.home')
             };
 
             $scope.isCurrentLocation = function (location) {
-                const currentLoc = getCurrentLocation();
-                if (currentLoc) {
+                const currentLocation = getCurrentLocation();
+                if (currentLocation) {
                     return getCurrentLocation().uuid === location.uuid;
                 } else {
                     return false;

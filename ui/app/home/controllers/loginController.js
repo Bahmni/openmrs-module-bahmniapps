@@ -140,7 +140,6 @@ angular.module('bahmni.home')
                             deferrable.resolve(data);
                             return;
                         }
-                        //sessionService.updateSession($scope.loginInfo.currentLocation, null).then(function () {
                             sessionService.loadCredentials().then(function () {
                                 onSuccessfulAuthentication();
                                 $rootScope.currentUser.addDefaultLocale($scope.selectedLocale);
@@ -154,7 +153,6 @@ angular.module('bahmni.home')
                                 deferrable.reject(error);
                                 logAuditForLoginAttempts("USER_LOGIN_FAILED", true);
                             });
-                        //});
                     },
                     function (error) {
                         $scope.errorMessageTranslateKey = error;
@@ -212,7 +210,6 @@ angular.module('bahmni.home')
                             });
                         } else {
                             $state.go('loginLocation', {});
-                            //$location.url(landingPagePath);
                         }
                     }
                 );
