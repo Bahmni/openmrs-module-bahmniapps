@@ -52,7 +52,7 @@ angular.module('bahmni.home')
                     return getCurrentLocation().uuid === location.uuid;
                 } else {
                     return false;
-                } 
+                }
             };
 
             $scope.onLocationChange = function () {
