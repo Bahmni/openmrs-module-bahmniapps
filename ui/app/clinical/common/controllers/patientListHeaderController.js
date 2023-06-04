@@ -108,7 +108,7 @@ angular.module('bahmni.clinical')
                 $scope.encounterProvider = getCurrentProvider();
                 selectedProvider = getCurrentProvider();
                 const loginLocations = localStorage.getItem("loginLocations");
-                if(loginLocations){
+                if (loginLocations) {
                     $scope.locations = JSON.parse(loginLocations);
                     return;
                 }

@@ -19,17 +19,17 @@ angular.module('bahmni.home')
             };
 
             var setCurrentLoginLocationForUser = function () {
-                const currentLoginLocation = getCurrentLocation(); 
+                const currentLoginLocation = getCurrentLocation();
                 if (currentLoginLocation) {
-                    $scope.selectedLocationUuid = getCurrentLocation().uuid;    
+                    $scope.selectedLocationUuid = getCurrentLocation().uuid;
                 } else {
                     $scope.selectedLocationUuid = null;
                 }
-            }
+            };
 
             var init = function () {
                 const loginLocations = localStorage.getItem("loginLocations");
-                if (loginLocations){
+                if (loginLocations) {
                     $scope.locations = JSON.parse(loginLocations);
                     setCurrentLoginLocationForUser();
                     return;
