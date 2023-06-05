@@ -45,7 +45,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           file: package/docker/Dockerfile
           push: true
-          tags: bahmni/bahmni-web:snomed-${{ github.run_number }},bahmni/bahmni-web:snomed-latest
+          tags: bahmni/bahmni-web:snomed-1.0.0,bahmni/bahmni-web:snomed-latest
 
   trigger:
     name: Trigger Deployment Workflow
