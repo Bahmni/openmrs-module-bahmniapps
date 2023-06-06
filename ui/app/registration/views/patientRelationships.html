@@ -36,6 +36,11 @@
                     </div>
                     <span class="asterick showOn-desktop">*</span>
                 </div>
+                <div class="relationship-extension-btn">
+                    <button class="add-person-btn" type="button" ng-disabled="!newRelationship.relationshipType.uuid"
+                        ng-click="openPopupWindow(newRelationship)">{{ ::'REGISTRATION_LABEL_SELECT_PERSON' | translate }}
+                    </button>
+                </div>
                 <div class="col col2 form-field">
                     <div class="field-attribute showOn-small-screen">
                         <label>{{ 'REGISTRATION_ENTER_NAME_ID_LABEL'|translate }}
@@ -66,11 +71,6 @@
                     <span class="no-person" ng-show="showPersonNotFound(newRelationship)">{{ ::'REGISTRATION_LABEL_PERSON_NOT_FOUND' | translate}}</span>
                     <span ng-show="!showPersonNotFound(newRelationship)">{{newRelationship.content}}</span>
                     <span class="no-person" ng-show="duplicateRelationship(newRelationship)">{{ ::'REGISTRATION_LABEL_RELATIONSHIP_EXISTS' | translate}}</span>
-                </div>
-                <div class="relationship-extension-btn">
-                    <button type="button" style="outline: none;" ng-disabled="!newRelationship.relationshipType.uuid"
-                        ng-click="openPopupWindow(newRelationship)">{{ ::'REGISTRATION_LABEL_ADD_PERSON' | translate }}
-                    </button>
                 </div>
                 <div class="col col3 form-field">
                     <strong class="till-text">{{ ::'REGISTRATION_LABEL_TILL' | translate}}</strong>
