@@ -70,6 +70,11 @@ angular.module('bahmni.ot')
                     return newVar;
                 });
                 $scope.filters.statusList = [];
+                $scope.surgeonBasedView = appService.getAppDescriptor().getConfigValue("enableSurgeonBasedView");
+                $scope.surgeonViewAsDefault = $scope.surgeonBasedView && appService.getAppDescriptor().getConfigValue("defaultViewAsSugeonBased");
+                if ($scope.surgeonBasedView && $scope.surgeonViewAsDefault) {
+                    $rootScope.providerToggle = true;
+                }
                 setAppointmentStatusList($scope.view);
                 return locationService.getAllByTag('Operation Theater').then(function (response) {
                     $scope.locations = response.data.results;
@@ -99,6 +104,11 @@ angular.module('bahmni.ot')
             $scope.listView = function () {
                 $scope.view = 'List View';
                 $state.view = $scope.view;
+            };
+
+            $scope.providerView = function (providerToggle) {
+                $rootScope.providerToggle = providerToggle;
+                $rootScope.$broadcast("event:providerView", providerToggle);
             };
 
             var getBackGroundHSLColorFor = function (otCalendarColorAttribute) {
@@ -185,6 +195,12 @@ angular.module('bahmni.ot')
                 $scope.viewDate = Bahmni.Common.Util.DateUtil.addDays(date, 1);
                 $state.viewDate = $scope.viewDate;
             };
+
+            $scope.goToSelectedDate = function (date) {
+                $scope.viewDate = date;
+                $state.viewDate = $scope.viewDate;
+            };
+
             $scope.goToCurrentWeek = function () {
                 $scope.weekStartDate = Bahmni.Common.Util.DateUtil.getWeekStartDate(currentDate, $scope.startOfWeekCode);
                 $state.weekStartDate = $scope.weekStartDate;
@@ -207,6 +223,13 @@ angular.module('bahmni.ot')
             $scope.goToPreviousWeek = function () {
                 $scope.weekStartDate = Bahmni.Common.Util.DateUtil.subtractDays($scope.weekStartDate, 7);
                 $scope.weekEndDate = Bahmni.Common.Util.DateUtil.subtractDays($scope.weekEndDate, 7);
+                $state.weekStartDate = $scope.weekStartDate;
+                $state.weekEndDate = $scope.weekEndDate;
+            };
+
+            $scope.goToSelectedWeek = function (date) {
+                $scope.weekStartDate = date;
+                $scope.weekEndDate = Bahmni.Common.Util.DateUtil.addDays($scope.weekStartDate, 7);
                 $state.weekStartDate = $scope.weekStartDate;
                 $state.weekEndDate = $scope.weekEndDate;
             };
