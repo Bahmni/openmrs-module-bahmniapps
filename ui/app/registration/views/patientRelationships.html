@@ -68,8 +68,8 @@
                     <span class="no-person" ng-show="duplicateRelationship(newRelationship)">{{ ::'REGISTRATION_LABEL_RELATIONSHIP_EXISTS' | translate}}</span>
                 </div>
                 <div class="relationship-extension-btn">
-                    <button type="button"
-                        ng-click="openAddPersonModal()">Add Person
+                    <button type="button" style="outline: none;" ng-disabled="!newRelationship.relationshipType.uuid"
+                        ng-click="openPopupWindow(newRelationship)">{{ ::'REGISTRATION_LABEL_ADD_PERSON' | translate }}
                     </button>
                 </div>
                 <div class="col col3 form-field">
@@ -88,9 +88,9 @@
                 </div>
             </div>
         </div>
-        <div class="add-person-ui"  ng-hide="!showIFrame">
+        <div class="add-person-ui"  ng-hide="!showPopupWindow">
             <div class="add-person-iframe">
-                <span class="close" ng-click="closeAddPersonModal()">&times;</span>
+                <span class="close" ng-click="closePopupWindow()">&times;</span>
                 <iframe id="relationship-extension-popup" height="95%" width="100%"></iframe>
             </div>
         </div>
