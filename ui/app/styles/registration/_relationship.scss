@@ -7,6 +7,8 @@
     }
 
     .row {
+        display: flex;
+        flex-wrap: wrap;
         float: left;
         width: 100%;
 
@@ -22,25 +24,37 @@
                 font-size: 12px;
             }
 
-            width: 30%;
+            width: 25%;
             float: left;
+            
+            @media (max-width : 1024px) {
+                width: 25%;
+            }
+
+            @media (max-width : 990px) {
+                width: 35%;
+            }
 
             @media (max-width : 768px) {
                 width: 100%;
+            }
+
+            .field-value {
+                margin-left: 0.2rem;
             }
         }
 
         .col2 {
-            width: 38%;
+            width: 25%;
             float: left;
             text-align: left;
 
             @media (max-width : 1024px) {
-                width: 36%;
+                width: 25%;
             }
 
             @media (max-width : 990px) {
-                width: 31%;
+                width: 35%;
             }
 
             @media (max-width : 768px) {
@@ -48,8 +62,32 @@
             }
         }
 
+        .relationship-extension-btn {
+            width: 15%;
+            float: left;
+
+            @media (max-width : 1024px) {
+                width: 15%;
+            }
+
+            @media (max-width : 990px) {
+                width: 30%;
+            }
+
+            @media (max-width : 768px) {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                padding: 1% 0 0 0;
+            }
+
+            .add-person-btn {
+                margin: 0.2rem 0 0.2rem 0;
+            }
+        }
+
         .col3 {
-            width: 25%;
+            width: 28%;
             float: left;
             text-align: right;
 
@@ -58,7 +96,7 @@
             }
 
             @media (max-width : 990px) {
-                width: 36%;
+                width: 82%;
             }
 
             @media (max-width : 768px) {
