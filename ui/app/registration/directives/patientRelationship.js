@@ -11,8 +11,8 @@ angular.module('bahmni.registration')
             }
         };
     })
-    .controller('PatientRelationshipController', ['$window', '$scope', '$rootScope', 'spinner', 'patientService', 'providerService', 'appService', '$q',
-        function ($window, $scope, $rootScope, spinner, patientService, providerService, appService, $q) {
+    .controller('PatientRelationshipController', ['$window', '$scope', '$rootScope', 'spinner', 'patientService', 'providerService', 'appService', '$q', '$document',
+        function ($window, $scope, $rootScope, spinner, patientService, providerService, appService, $q, $document) {
             $scope.addPlaceholderRelationship = function () {
                 $scope.patient.newlyAddedRelationships.push({});
             };
@@ -73,13 +73,30 @@ angular.module('bahmni.registration')
                 return personRelatedTo ? personRelatedTo.display : "";
             };
 
-            $scope.closeAddPersonModal = function () {
-                $scope.showIFrame = false;
-                return $scope.showIFrame;
+            $scope.closePopupWindow = function () {
+                $scope.showPopupWindow = false;
             };
 
-            $scope.openAddPersonModal = function () {
-                $scope.showIFrame = true;
+            $scope.openPopupWindow = function (relationship) {
+                var iframe = $document[0].getElementById("relationship-extension-popup");
+                iframe.src = Bahmni.Registration.Constants.personManagementURL;
+                $scope.showPopupWindow = true;
+                $window.addEventListener("message", function (popupWindowData) {
+                    if (!_.isUndefined(popupWindowData.data.uuid)) {
+                        _.each($scope.patient.newlyAddedRelationships, function (newlyAddedRelationship) {
+                            if (newlyAddedRelationship.hasOwnProperty("relationshipType") &&
+                                newlyAddedRelationship.relationshipType.uuid === relationship.relationshipType.uuid) {
+                                if ($scope.isPatientRelationship(newlyAddedRelationship)) {
+                                    newlyAddedRelationship.patientIdentifier = popupWindowData.data.display;
+                                }
+                                else if ($scope.isProviderRelationship(newlyAddedRelationship)) {
+                                    newlyAddedRelationship.providerName = popupWindowData.data.display;
+                                }
+                                newlyAddedRelationship.personB = getPersonB(popupWindowData.data.display, popupWindowData.data.uuid);
+                            }
+                        });
+                    }
+                }, false);
             };
 
             var getName = function (patient) {
@@ -285,7 +302,7 @@ angular.module('bahmni.registration')
             var init = function () {
                 $scope.relationshipTypes = $rootScope.relationshipTypes;
                 $scope.patient.relationships = $scope.patient.relationships || [];
-                $scope.showIFrame = false;
+                $scope.showPopupWindow = false;
             };
 
             init();
