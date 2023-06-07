@@ -177,15 +177,9 @@ angular.module('bahmni.registration')
                         }
                         break;
                     default:
-                        var DateUtil = Bahmni.Common.Util.DateUtil;
-                        var age = changedDetails.birthDate !== undefined ? DateUtil.diffInYearsMonthsDays(changedDetails.birthDate, DateUtil.now()) : null;
                         $scope.patient.birthdateEstimated = changedDetails.isBirthDateEstimated;
-                        if (age !== null) {
-                            $scope.patient.age.years = age.years;
-                            $scope.patient.age.months = age.months;
-                            $scope.patient.age.days = age.days;
-                            $scope.patient.calculateBirthDate();
-                        }
+                        $scope.patient.birthdate = changedDetails.birthDate !== undefined ? new Date(changedDetails.birthDate) : new Date();
+                        $scope.patient.calculateAge();
                         break;
                     }
                 }
