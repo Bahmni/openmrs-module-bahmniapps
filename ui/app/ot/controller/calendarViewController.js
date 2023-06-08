@@ -70,11 +70,7 @@ angular.module('bahmni.ot')
                     return newVar;
                 });
                 $scope.filters.statusList = [];
-                $scope.surgeonBasedView = appService.getAppDescriptor().getConfigValue("enableSurgeonBasedView");
-                $scope.surgeonViewAsDefault = $scope.surgeonBasedView && appService.getAppDescriptor().getConfigValue("defaultViewAsSugeonBased");
-                if ($scope.surgeonBasedView && $scope.surgeonViewAsDefault) {
-                    $rootScope.providerToggle = true;
-                }
+                $rootScope.providerToggle = appService.getAppDescriptor().getConfigValue("defaultViewAsSugeonBased");
                 setAppointmentStatusList($scope.view);
                 return locationService.getAllByTag('Operation Theater').then(function (response) {
                     $scope.locations = response.data.results;

@@ -49,20 +49,19 @@ angular.module('bahmni.ot')
                             });
                         });
                         $scope.blockedOtsOfTheWeek = getBlockedOtsOfTheWeek();
-                        
-                        var setOTView =  function(providerToggle) {
+
+                        var setOTView = function (providerToggle) {
                             $scope.providerToggle = providerToggle;
                             if (providerToggle) {
                                 $scope.surgicalBlocks = surgicalBlocksBySurgeons;
                             } else {
                                 $scope.surgicalBlocks = surgicalBlocksByLocation;
                             }
-                        }
+                        };
                         setOTView($rootScope.providerToggle);
                         $scope.$on("event:providerView", function (event, providerToggle) {
                             setOTView(providerToggle);
                         });
-                        
                     });
             };
 
