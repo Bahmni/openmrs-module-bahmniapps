@@ -87,11 +87,9 @@
         <label class="calendar-btn-label" for="day-button">{{'OT_DAY_KEY' | translate}}</label>
     </p>
     <p class="calendar-btn-container">
-        <span ng-if="surgeonBasedView">
-            <input type="checkbox" ng-model="providerToggle" ng-change="providerView(providerToggle)" id="provider-toggle" name="provider-toggle"
-                class="switch-input">
-            <label for="provider-toggle" class="switch-label"> Provider View </label>
-        </span>
+        <input type="checkbox" ng-model="providerToggle" ng-change="providerView(providerToggle)" id="provider-toggle" name="provider-toggle"
+            class="switch-input">
+        <label for="provider-toggle" class="switch-label"> Provider View </label>
         <input type="radio" name="view" id="calendar-button" ng-model="view" value="Calendar"
                ng-click="calendarView()" required/>
         <label class="calendar-btn-label" for="calendar-button">{{'OT_CALENDAR_KEY' | translate}}</label>
