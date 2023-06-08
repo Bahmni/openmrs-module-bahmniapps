@@ -5,28 +5,26 @@ function getWatchers (element) {
 
     var watchers = [];
 
-    var f = function (element) {
+    var traverseScopes = function (element) {
         angular.forEach(['$scope', '$isolateScope'], function (scopeProperty) {
-            if (element.data() && element.data().hasOwnProperty(scopeProperty)) {
-                angular.forEach(element.data()[scopeProperty].$$watchers, function (watcher) {
+            var scope = element.data() && element.data()[scopeProperty];
+            if (scope && scope.$$watchers) {
+                angular.forEach(scope.$$watchers, function (watcher) {
                     watchers.push(watcher);
                 });
             }
         });
 
         angular.forEach(element.children(), function (childElement) {
-            f(angular.element(childElement));
+            traverseScopes(angular.element(childElement));
         });
     };
 
-    f(elementToWatch);
+    traverseScopes(elementToWatch);
 
     // Remove duplicate watchers
-    var watchersWithoutDuplicates = [];
-    angular.forEach(watchers, function (item) {
-        if (watchersWithoutDuplicates.indexOf(item) < 0) {
-            watchersWithoutDuplicates.push(item);
-        }
+     var watchersWithoutDuplicates = watchers.filter(function (item, index) {
+        return watchers.indexOf(item) === index;
     });
 
     console.log(watchersWithoutDuplicates);
