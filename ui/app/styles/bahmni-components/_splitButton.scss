@@ -25,6 +25,9 @@
             &.primaryOption{
                 width: 250px;
                 margin-left: 2px;
+                &:focus{
+                    margin-right: 2px;
+                }
                 button{
                     text-align: left;
                 }
