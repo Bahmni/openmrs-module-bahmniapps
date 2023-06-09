@@ -10,7 +10,7 @@
             </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="row in tableDetails | filter:searchText">
+        <tr ng-repeat="row in tableDetails | filter:searchTextFilter">
                 <td ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'">
                     <span ng-if="heading != 'Diagnosis' && heading != 'Id'">{{row[heading]}}</span>
                     <a ng-if="heading =='Id'" ng-click="gotoPatientDashboard(row['hiddenAttributes'].patientUuid, row['hiddenAttributes'].visitUuid)">
