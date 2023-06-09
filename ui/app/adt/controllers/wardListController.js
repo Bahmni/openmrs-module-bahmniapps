@@ -17,8 +17,6 @@ angular.module('bahmni.adt')
                     return true;
                 }
                 searchText = searchText.toLowerCase();
-                var admisisonTime = row["Admission Time"];
-                console.log(admisisonTime);
                 return (
                     (row.Bed && row.Bed.toLowerCase().includes(searchText)) ||
                     (row.Ward && row.Ward.toLowerCase().includes(searchText)) ||
