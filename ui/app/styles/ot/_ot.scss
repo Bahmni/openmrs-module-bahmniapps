@@ -214,19 +214,119 @@ div[ng-app="ot"] {
     }
   }
   .calendar-current-day {
-    margin: auto;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    width: 250px;
+    width: 60%;
     text-align: center;
-    bottom: 0;
-    height: 20px;
     font-weight: 600;
+    span {
+      position: relative;
+    }
+    button {
+      background: #fff;
+      border: 1px solid #95989a;
+      outline: none;
+      padding: 5px 10px;
+      border-radius: 3px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: inline-block;
+      color: #000;
+    }
+  }
+  .calendar-week-label {
+    cursor: pointer;
+    position: absolute;
+    background: #fff;
+    left: 16px;
+    padding: 5px;
+    text-align: center;
+    padding-top: 8px;
+    margin-top: 2px;
+    height: 7px;
+  }
+  .calendar-day-input {
+    background: #fff;
+    border: 1px solid #95989a;
+    outline: none;
+    width: 155px;
+    font-size: 14px;
+    padding: 5px;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: inline-block;
+    color: #000;
+    margin-left: 10px;
+    margin-right: 10px;
   }
   .calendar-btn-container, .day-btn-container {
-    label {
+    .switch-input {
+      display: none;
+    }
+    
+    .switch-label {
+      color: #000;
+      position: relative;
+      display: inline;
+      min-width: 112px;
+      width: 100%;
+      box-sizing: border-box;
+      cursor: pointer;
+      font-weight: 500;
+      text-align: left;
+      padding: 10px 44px 10px 0;
+      &:before, &:after {
+        content: "";
+        position: absolute;
+        margin: 0;
+        outline: 0;
+        top: 50%;
+        -ms-transform: translate(0, -50%);
+        -webkit-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+        -webkit-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+      }
+      &:before {
+        right: 2px;
+        width: 34px;
+        height: 14px;
+        background-color: #9E9E9E;
+        border-radius: 8px;
+      }
+      &:after {
+        right: 17px;
+        width: 20px;
+        height: 20px;
+        background-color: #FAFAFA;
+        border-radius: 50%;
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084);
+      }
+      .toggle--on {
+        display: none;
+      }
+      .toggle--off {
+        display: inline-block;
+      }
+    }
+    
+    .switch-input:checked + .switch-label {
+      &:before {
+        background-color: #A5D6A7;
+      }
+      &:after {
+        background-color: #4CAF50;
+        -ms-transform: translate(80%, -50%);
+        -webkit-transform: translate(80%, -50%);
+        transform: translate(80%, -50%);
+      }
+      .toggle--on {
+        display: inline-block;
+      }
+      .toggle--off {
+        display: none;
+      }
+    }
+    .calendar-btn-label {
       -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
       box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
       padding: 6px 10px;
@@ -241,7 +341,7 @@ div[ng-app="ot"] {
         opacity: 1;
       }
     }
-    input:checked + label {
+    input:checked + .calendar-btn-label {
       background: #d6d6d6;
     }
     input[value = "List View"]:checked + label {
@@ -259,6 +359,7 @@ div[ng-app="ot"] {
   }
   .day-btn-container {
     float: left;
+    margin-left: 10px;
   }
 }
 

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('otCalendarController', ['$scope', '$q', '$interval', 'spinner', 'locationService', 'surgicalAppointmentService', '$timeout',
-        function ($scope, $q, $interval, spinner, locationService, surgicalAppointmentService, $timeout) {
+    .controller('otCalendarController', ['$scope', '$rootScope', '$q', '$interval', 'spinner', 'locationService', 'surgicalAppointmentService', '$timeout', 'appService', 'surgicalAppointmentHelper',
+        function ($scope, $rootScope, $q, $interval, spinner, locationService, surgicalAppointmentService, $timeout, appService, surgicalAppointmentHelper) {
             var updateCurrentDayTimeline = function () {
                 $scope.currentTimeLineHeight = heightPerMin * Bahmni.Common.Util.DateUtil.diffInMinutes($scope.calendarStartDatetime, new Date());
             };
@@ -27,12 +27,20 @@ angular.module('bahmni.ot')
                 updateBlocksStartDatetimeAndBlocksEndDatetime();
                 $scope.rows = $scope.getRowsForCalendar();
                 return $q.all([locationService.getAllByTag('Operation Theater'),
-                    surgicalAppointmentService.getSurgicalBlocksInDateRange($scope.blocksStartDatetime, $scope.blocksEndDatetime, false, true)]).then(function (response) {
+                    surgicalAppointmentService.getSurgicalBlocksInDateRange($scope.blocksStartDatetime, $scope.blocksEndDatetime, false, true),
+                    surgicalAppointmentService.getSurgeons()]).then(function (response) {
                         $scope.locations = response[0].data.results;
                         $scope.weekDates = $scope.getAllWeekDates();
-                        $scope.surgicalBlocksByLocation = _.map($scope.locations, function (location) {
+                        var surgicalBlocksByLocation = _.map($scope.locations, function (location) {
                             return _.filter(response[1].data.results, function (surgicalBlock) {
                                 return surgicalBlock.location.uuid === location.uuid;
+                            });
+                        });
+                        var providerNames = appService.getAppDescriptor().getConfigValue("primarySurgeonsForOT");
+                        $scope.surgeons = surgicalAppointmentHelper.filterProvidersByName(providerNames, response[2].data.results);
+                        var surgicalBlocksBySurgeons = _.map($scope.surgeons, function (surgeon) {
+                            return _.filter(response[1].data.results, function (surgicalBlock) {
+                                return surgicalBlock.provider.uuid === surgeon.uuid;
                             });
                         });
                         $scope.surgicalBlocksByDate = _.map($scope.weekDates, function (weekDate) {
@@ -41,6 +49,19 @@ angular.module('bahmni.ot')
                             });
                         });
                         $scope.blockedOtsOfTheWeek = getBlockedOtsOfTheWeek();
+
+                        var setOTView = function (providerToggle) {
+                            $scope.providerToggle = providerToggle;
+                            if (providerToggle) {
+                                $scope.surgicalBlocks = surgicalBlocksBySurgeons;
+                            } else {
+                                $scope.surgicalBlocks = surgicalBlocksByLocation;
+                            }
+                        };
+                        setOTView($rootScope.providerToggle);
+                        $scope.$on("event:providerView", function (event, providerToggle) {
+                            setOTView(providerToggle);
+                        });
                     });
             };
 
