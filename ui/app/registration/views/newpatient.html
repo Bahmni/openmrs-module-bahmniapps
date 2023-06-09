@@ -42,6 +42,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div ng-show="::showPreRegistrationOption" class="field-value field-value-has-identifier">
+                            <div ng-show="true" class="fl"> 
+                                <div class="field-attribute hasOldIdentifier-field-attribute">
+                                    <label for="pre-registration-attribute" class="control-label">{{::'PRE_REGISTRATION_LABEL' | translate}}</label>
+                                </div>
+                                <div class="field-value">
+                                    <input type="checkbox" class="input-label-inline" id="pre-registration-attribute" ng-model="patient[preRegistrationAttribute]"
+                                            ng-change="patient[preRegistrationAttribute].handleUpdate()">
+                                </div>
+                            </div>
+                        </div>
                     </article>
                 </section>
             </div>
