@@ -1,8 +1,11 @@
-<div on-Scroll class="calendar">
+<div on-Scroll class="calendar" ng-switch="providerToggle">
     <!-- Please dont remove or alter the below class name -->
     <div class="calendar-location">
-        <p class="heading-cell" ng-repeat="location in locations">
+        <p ng-switch-default bindonce="locations" class="heading-cell" ng-repeat="location in locations">
             {{location.name}}
+        </p>
+        <p ng-switch-when="true" bindonce="surgeons" class="heading-cell" ng-repeat="surgeon in surgeons">
+            {{surgeon.person.display}}
         </p>
     </div>
     <div class="table-block">
@@ -14,7 +17,7 @@
         </div>
         <div class="ot-block-container">
             <div class="ot-block-wrapper">
-            <div class="ot-block" ng-repeat="(blockIndex, blocks) in surgicalBlocksByLocation">
+            <div class="ot-block" ng-repeat="(blockIndex, blocks) in surgicalBlocks">
                 <div ng-repeat="row in ::rows" class="calendar-cell">
                 </div>
                 <div ng-repeat="block in blocks | surgicalBlock:filterParams">
