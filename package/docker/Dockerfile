@@ -16,7 +16,7 @@ COPY ui/dist/. /usr/local/apache2/htdocs/bahmni/
 
 # Download Person Management App
 RUN <<EOR
-    LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' https://github.com/Arjun-Go/person-management-app/releases/latest)
+    LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' https://github.com/Bahmni/person-management-app/releases/latest)
     LATEST_VERSION=$(echo $LATEST_RELEASE | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
     ARTIFACT_URL="https://github.com/Bahmni/person-management-app/releases/download/$LATEST_VERSION/person-management-app.zip"
     wget $ARTIFACT_URL
