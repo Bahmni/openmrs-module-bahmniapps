@@ -36,6 +36,11 @@
                     </div>
                     <span class="asterick showOn-desktop">*</span>
                 </div>
+                <div class="relationship-extension-btn">
+                    <button class="add-person-btn" type="button" ng-disabled="!newRelationship.relationshipType.uuid"
+                        ng-click="openPopupWindow(newRelationship)">{{ ::'REGISTRATION_LABEL_SELECT_PERSON' | translate }}
+                    </button>
+                </div>
                 <div class="col col2 form-field">
                     <div class="field-attribute showOn-small-screen">
                         <label>{{ 'REGISTRATION_ENTER_NAME_ID_LABEL'|translate }}
@@ -83,5 +88,10 @@
                 </div>
             </div>
         </div>
-    
+        <div class="add-person-ui"  ng-hide="!showPopupWindow">
+            <div class="add-person-iframe">
+                <span class="close" ng-click="closePopupWindow()">&times;</span>
+                <iframe id="relationship-extension-popup" height="95%" width="100%"></iframe>
+            </div>
+        </div>
 </div>
