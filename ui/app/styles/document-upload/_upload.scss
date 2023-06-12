@@ -124,7 +124,6 @@
           }
           .concept-name {
             min-width: 200px;
-            margin: 0;
           }
           .concept-name.saved {
             font-family: $OpenSansBoldFont;
@@ -157,6 +156,10 @@
             .obs-comment-section{
               box-sizing: border-box;
               width:100% ;
+              &:focus{
+                margin-bottom: 2px;
+                margin-left: 2px;
+              }
             }
           }
           .file-actions {

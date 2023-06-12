@@ -24,6 +24,10 @@
             font-size:.9em;
             &.primaryOption{
                 width: 250px;
+                margin-left: 2px;
+                &:focus{
+                    margin-right: 2px;
+                }
                 button{
                     text-align: left;
                 }
@@ -64,7 +68,6 @@
     }
     .toggle-button {
         margin-top: 0;
-        margin-right: 0 !important;
         &:focus{
             outline: 2px solid $clinicalFormFocus;
         }

@@ -12,15 +12,19 @@
         }
       }
     }
+    > *{
+      margin: 0 3px 0 0;
+      &:last-child{
+        margin: 0;
+      }
+    }
     li.tab-item {
         float:left;
-        margin-bottom: -1px;
         a,button {
             padding: 15px 15px 14px;
             background: darken($bahmniSecondaryColor, 10%);
             display:inline-block;
             color: $white;
-            margin: 0 3px 0 0;
             border-radius: 5px 5px 0 0;
             text-decoration: none;
             line-height: 1.2em;
