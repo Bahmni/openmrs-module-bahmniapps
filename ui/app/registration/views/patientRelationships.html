@@ -1,15 +1,24 @@
 <div class="relationships-container form">
         <div class="history-relationship">
+            <div class="row">
+                <div class="col col1">
+                    <span>{{ 'REGISTRATION_HEADER_RELATIONSHIP_LABEL'|translate }}</span>
+                </div>
+                <div class="col col2">
+                    <span>{{ 'REGISTRATION_HEADER_NAME_LABEL'|translate }}</span>
+                </div>
+                <div class="col col3">
+                    <span>{{ 'REGISTRATION_HEADER_VALIDITY_DATE_LABEL'|translate }}</span>
+                </div>
+            </div>
             <div class="row" ng-repeat="relationship in patient.relationships track by $index" ng-hide="relationship.voided">
                 <div class="col col1">
                     <span>{{getRelationshipTypeForDisplay(relationship)}}</span>
                 </div>
                 <div class="col col2">
-                    <span>{{getRelatedToPersonForDisplay(relationship)}}</span>
-                    <span ng-if="isPatientRelationship(relationship)"><a ng-click="openPatientDashboardInNewTab(relationship)"><i class="fa fa-external-link"></i></a></span>
+                    <span><a ng-click="openPatientDashboardInNewTab(relationship)">{{getRelatedToPersonForDisplay(relationship)}}</a></span>
                 </div>
                 <div class="col col3">
-                    <strong class="till-text">{{ ::'REGISTRATION_LABEL_TILL' | translate}}</strong>
                     <span>{{relationship.endDate | bahmniDate}}</span>
                 </div>
                 <div class="col col4">

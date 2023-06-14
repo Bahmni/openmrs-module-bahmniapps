@@ -140,6 +140,9 @@
         overflow: hidden;
 
         .row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
             position: relative;
             &:nth-child(odd) {
                 background-color: #EFEFEF;
