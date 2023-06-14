@@ -10,25 +10,20 @@ angular.module('bahmni.adt')
             };
 
             $scope.searchText = '';
-
+                        
             $scope.searchTextFilter = function (row) {
                 var searchText = $scope.searchText;
                 if (!searchText) {
                     return true;
                 }
                 searchText = searchText.toLowerCase();
-                return (
-                    (row.Bed && row.Bed.toLowerCase().includes(searchText)) ||
-                    (row.Ward && row.Ward.toLowerCase().includes(searchText)) ||
-                    (row.Id && row.Id.toLowerCase().includes(searchText)) ||
-                    (row.Name && row.Name.toLowerCase().includes(searchText)) ||
-                    (row.Age && row.Age.toString().includes(searchText)) ||
-                    (row.Gender && row.Gender.toLowerCase().includes(searchText)) ||
-                    (row["Admission Time"] && row["Admission Time"].toLowerCase().includes(searchText)) ||
-                    (row["Disposition By"] && row["Disposition By"].toLowerCase().includes(searchText)) ||
-                    (row["Disposition Time"] && row["Disposition Time"].toLowerCase().includes(searchText)) ||
-                    (row["ADT Notes"] && row["ADT Notes"].toLowerCase().includes(searchText))
-                );
+                const excludedKeys = ["hiddenAttributes", "$$hashKey", "Diagnosis"];
+                const attributes = Object.keys(row).filter(key => !excludedKeys.includes(key));
+
+                return attributes.some(function (attribute) {
+                    const rowValue = row[attribute].toString();
+                    return rowValue && rowValue.toLowerCase().includes(searchText);
+                });
             };
             
             var getTableDetails = function () {
