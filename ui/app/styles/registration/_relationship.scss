@@ -141,11 +141,20 @@
 
     span {
         &.no-person {
+            padding: 0 0 0 0.625rem;
             color: red;
         }
     }
 
     .row {
+        .col2 {
+            text-align: left;
+            margin: auto;
+
+            @media (max-width : 1024px) {
+                width: 20%;
+            }
+        }
         .col4 {
             button {
                 margin-top: 4px;

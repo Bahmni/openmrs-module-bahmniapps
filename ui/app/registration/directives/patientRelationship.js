@@ -157,15 +157,13 @@ angular.module('bahmni.registration')
             };
 
             $scope.openPatientDashboardInNewTab = function (relationship) {
-                var personRelatedTo = getPersonRelatedTo(relationship);
                 var iframe = $document[0].getElementById("relationship-extension-popup");
-                iframe.src = Bahmni.Registration.Constants.personManagementURL;
+                iframe.src = Bahmni.Registration.Constants.personManagementEditPersonURL + "/" + relationship.personB.uuid;
                 $scope.showPopupWindow = true;
-                // $window.open(getPatientRegistrationUrl(personRelatedTo.uuid), '_blank');
-            };
-
-            var getPatientRegistrationUrl = function (patientUuid) {
-                return '#/patient/' + patientUuid;
+                $window.addEventListener("message", function () {
+                    $scope.showPopupWindow = false;
+                    $scope.$apply();
+                }, false);
             };
 
             $scope.getProviderList = function () {
