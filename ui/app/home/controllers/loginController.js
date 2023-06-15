@@ -118,6 +118,26 @@ angular.module('bahmni.home')
                 $scope.loginInfo.currentLocation = getLastLoggedinLocation();
             };
 
+            var checkIfUserHasProviderAttributes = function () {
+                return $rootScope.currentUser.provider && $rootScope.currentUser.provider.attributes && $rootScope.currentUser.provider.attributes.length > 0;
+            };
+
+            var saveUserAssignedLocationsToLocalStorage = function () {
+                var userAssignedLocations = $rootScope.currentUser.provider.attributes
+                  .filter(function (attribute) {
+                      return attribute.attributeType.display === "Login Locations";
+                  })
+                  .map(function (attribute) {
+                      return { display: attribute.value.name, uuid: attribute.value.uuid };
+                  });
+
+                if (userAssignedLocations.length > 0) {
+                    localStorage.setItem("loginLocations", JSON.stringify(userAssignedLocations));
+                } else {
+                    localStorage.removeItem("loginLocations");
+                }
+            };
+
             $scope.login = function () {
                 $scope.errorMessageTranslateKey = null;
                 var deferrable = $q.defer();
@@ -209,6 +229,11 @@ angular.module('bahmni.home')
                                 }
                             });
                         } else {
+                            if (checkIfUserHasProviderAttributes()) {
+                                saveUserAssignedLocationsToLocalStorage();
+                            } else {
+                                localStorage.removeItem("loginLocations");
+                            }
                             $state.go('loginLocation', {});
                         }
                     }

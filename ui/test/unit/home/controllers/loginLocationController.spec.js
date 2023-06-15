@@ -106,6 +106,10 @@ describe("LoginLocationController", function () {
 		rootScopeMock.currentUser = myUser;
 		scopeMock.loginInfo = {};
 		_spinner.forPromise.and.returnValue(specUtil.simplePromise({}));
+		localStorage.setItem('loginLocations', JSON.stringify([
+			{ display: 'Location 1', uuid: 'uuid1' },
+			{ display: 'Location 2', uuid: 'uuid2' }
+		   ]));
 	});
 
 	afterEach(function () {
@@ -113,33 +117,18 @@ describe("LoginLocationController", function () {
 	});
 
 	it("should return all locations if no login locations for the user exist", function () {
-		localStorage.setItem("loginLocations", JSON.stringify(allLocations));
+		localStorage.clear();
 		loginLocationController();
+
 		var allLocations = initialData.locations;
 
 		expect(scopeMock.locations).toEqual(allLocations);
 	});
 
 	it("should return login locations of the user if they exist", function () {
-		var myUser1 = {
-			provider: {
-				attributes: [
-					{
-						attributeType: {
-							display: "Login Locations",
-						},
-						value: {
-							name: "Location 1",
-							uuid: "123",
-						},
-					},
-				],
-			},
-		};
-		rootScopeMock.currentUser = myUser1;
 		loginLocationController();
 
-		var expectedLocations = [{ display: "Location 1", uuid: "123" }];
+		var expectedLocations = [{ display: 'Location 1', uuid: 'uuid1' },{ display: 'Location 2', uuid: 'uuid2' }];
 
 		expect(scopeMock.locations).toEqual(expectedLocations);
 	});

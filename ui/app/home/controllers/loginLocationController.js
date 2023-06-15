@@ -19,23 +19,15 @@ angular.module('bahmni.home')
             };
 
             var userLoginLocations = function () {
-                if ($rootScope.currentUser.provider.attributes && $rootScope.currentUser.provider.attributes.length > 0) {
-                    return $rootScope.currentUser.provider.attributes.filter(function (attribute) {
-                        return attribute.attributeType.display === LOGIN_LOCATIONS;
-                    }).map(function (attribute) {
-                        return { display: attribute.value.name, uuid: attribute.value.uuid};
-                    });
-                }
-                return [];
+                var loginLocations = localStorage.getItem("loginLocations");
+                return loginLocations ? JSON.parse(loginLocations) : [];
             };
 
             var identifyLoginLocations = function (allLocations) {
                 var loginLocations = userLoginLocations();
                 if (loginLocations.length === 0) {
-                    localStorage.removeItem("loginLocations");
                     return allLocations;
                 }
-                localStorage.setItem("loginLocations", JSON.stringify(loginLocations));
                 return loginLocations;
             };
 
