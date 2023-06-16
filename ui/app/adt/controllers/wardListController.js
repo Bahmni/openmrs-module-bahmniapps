@@ -9,6 +9,23 @@ angular.module('bahmni.adt')
                 $window.location = appService.getAppDescriptor().formatUrl(Bahmni.ADT.Constants.ipdDashboard, options, true);
             };
 
+            $scope.searchText = '';
+                        
+            $scope.searchTextFilter = function (row) {
+                var searchText = $scope.searchText;
+                if (!searchText) {
+                    return true;
+                }
+                searchText = searchText.toLowerCase();
+                const excludedKeys = ["hiddenAttributes", "$$hashKey", "Diagnosis"];
+                const attributes = Object.keys(row).filter(key => !excludedKeys.includes(key));
+
+                return attributes.some(function (attribute) {
+                    const rowValue = row[attribute].toString();
+                    return rowValue && rowValue.toLowerCase().includes(searchText);
+                });
+            };
+            
             var getTableDetails = function () {
                 var params = {
                     q: "emrapi.sqlGet.wardsListDetails",
