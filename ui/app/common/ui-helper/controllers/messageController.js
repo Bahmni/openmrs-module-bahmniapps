@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.uiHelper')
-    .controller('MessageController', ['$scope', 'messagingService', '$translate',
-        function ($scope, messagingService, $translate) {
+    .controller('MessageController', ['$scope', 'messagingService',
+        function ($scope, messagingService) {
             $scope.messages = messagingService.messages;
 
             $scope.getMessageText = function (level) {
@@ -10,11 +10,10 @@ angular.module('bahmni.common.uiHelper')
                 $scope.messages[level].forEach(function (message) {
                     string = string.concat(message.value);
                 });
-                var translatedMessage = $translate.instant(string);
 
-                navigator.clipboard.writeText(translatedMessage);
+                navigator.clipboard.writeText(string);
 
-                return translatedMessage;
+                return string;
             };
 
             $scope.hideMessage = function (level) {
