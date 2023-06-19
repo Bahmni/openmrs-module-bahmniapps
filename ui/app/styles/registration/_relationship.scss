@@ -16,17 +16,53 @@
 
         .col1 {
             margin-top: 0;
+            display: flex;
+            width: 35%;
+            float: left;
 
             label.add-new {
                 margin-top: 10px;
                 font-size: 12px;
             }
 
-            width: 30%;
-            float: left;
+            @media (max-width : 1024px) {
+                width: 25%;
+            }
+
+            @media (max-width : 990px) {
+                width: 35%;
+            }
 
             @media (max-width : 768px) {
                 width: 100%;
+            }
+
+            .field-value {
+                margin: 0 0.2rem 0 0.2rem;
+            }
+
+            .relationship-extension-btn {
+                float: left;
+                padding-left: 1.25rem;
+    
+                @media (max-width : 1024px) {
+                    width: 15%;
+                }
+    
+                @media (max-width : 990px) {
+                    width: 30%;
+                }
+    
+                @media (max-width : 768px) {
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+                    padding: 1% 0 0 0;
+                }
+    
+                .add-person-btn {
+                    margin: 0.2rem 0 0.2rem 0;
+                }
             }
         }
 
@@ -49,7 +85,7 @@
         }
 
         .col3 {
-            width: 25%;
+            width: 30%;
             float: left;
             text-align: right;
 
@@ -118,6 +154,7 @@
             }
         }
         .col4 {
+            margin-right: 0.5%;
             button {
                 margin-top: 4px;
 
@@ -125,6 +162,15 @@
                     position: absolute;
                     top: 0;
                     right: 3px;
+                }
+            }
+
+            .row-remover {
+                border: none;
+                background: none;
+
+                span {
+                    color: black;
                 }
             }
         }
@@ -214,6 +260,15 @@
 
             .col4 {
                 margin-left: .5%;
+
+                .row-remover {
+                    border: none;
+                    background: none;
+    
+                    span {
+                        color: black;
+                    }
+                }
 
                 button {
                     margin-top: 2px;
