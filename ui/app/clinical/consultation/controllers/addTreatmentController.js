@@ -51,14 +51,21 @@ angular.module('bahmni.clinical')
             }
 
             $scope.doseFractions = treatmentConfig.getDoseFractions();
-
             $scope.hideOrderSet = treatmentConfig.inputOptionsConfig.hideOrderSet;
 
             $scope.showDoseFractions = treatmentConfig.inputOptionsConfig.showDoseFractions;
             $scope.isDoseFractionsAvailable = function () {
                 return $scope.doseFractions && !_.isEmpty($scope.doseFractions) ? true : false;
             };
-
+            
+            $scope.isRuleMode = function (treatment) {
+                if(treatment.dosingRule != undefined || treatment.dosingRule != null){
+                    $scope.treatment.uniformDosingType.doseUnits = 'mg';
+                    return true
+                }
+                return false;
+            };
+            
             $scope.isSelected = function (drug) {
                 var selectedDrug = $scope.treatment.drug;
                 return selectedDrug && drug.drug.name === selectedDrug.name;
@@ -304,6 +311,21 @@ angular.module('bahmni.clinical')
                 $scope.treatment.calculateQuantityAndUnit();
             }, true);
 
+            $scope.calculateDose = function (treatment) {
+                if(treatment.dosingRule != null || treatment.dosingRule != undefined){
+                    var visitUuid = treatmentConfig.orderSet.calculateDoseOnlyOnCurrentVisitValues ? $scope.activeVisit.uuid : undefined;
+                    var calculatedDose = orderSetService.getCalculatedDose($scope.patient.uuid, treatment.drug.name, treatment.uniformDosingType.dose, "mg", '', treatment.dosingRule, visitUuid);
+                    calculatedDose.then(function (calculatedDosage) {    
+                        treatment.uniformDosingType.dose = calculatedDosage.dose;
+                        treatment.calculateQuantityAndUnit();
+                        return treatment;
+                    });
+                    return treatment
+                }
+            }
+
+            $scope.$watch('calculateDose', $scope.treatment, true);
+            
             $scope.add = function () {
                 var treatments = $scope.treatments;
                 if ($scope.treatment.isNewOrderSet) {
@@ -745,6 +767,16 @@ angular.module('bahmni.clinical')
                 });
             };
 
+            var showRulesInMedication = function (medicationConfig) {
+                $scope.showRulesInMedication = false;
+                if(medicationConfig !== 'undefined' && medicationConfig.tabConfig !== 'undefined' && medicationConfig.tabConfig.allMedicationTabConfig
+                 !== 'undefined' && medicationConfig.tabConfig.allMedicationTabConfig.orderSet !== 'undefined'){
+                    if(medicationConfig.tabConfig.allMedicationTabConfig.orderSet.showRulesInMedication){
+                        $scope.showRulesInMedication = true
+                    }
+                 }
+            }
+
             var init = function () {
                 $scope.consultation.removableDrugs = $scope.consultation.removableDrugs || [];
                 $scope.consultation.discontinuedDrugs = $scope.consultation.discontinuedDrugs || [];
@@ -754,6 +786,8 @@ angular.module('bahmni.clinical')
                 mergeActiveAndScheduledWithDiscontinuedOrders();
 
                 $scope.treatmentConfig = treatmentConfig;// $scope.treatmentConfig used only in UI
+                var medicationConfig = appService.getAppDescriptor().getConfigForPage('medication') || {};
+                showRulesInMedication(medicationConfig);
             };
             init();
         }]);
