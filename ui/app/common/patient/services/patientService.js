@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.patient')
-    .service('patientService', ['$http', 'sessionService', function ($http, sessionService) {
+    .service('patientService', ['$http', 'sessionService', 'appService', function ($http, sessionService, appService) {
         this.getPatient = function (uuid, rep) {
             if (!rep) {
                 rep = "full";
@@ -47,13 +47,7 @@ angular.module('bahmni.common.patient')
             }
             return $http.get(Bahmni.Common.Constants.bahmniCommonsSearchUrl + "/patient/lucene", {
                 method: "GET",
-                params: {
-                    filterOnAllIdentifiers: true,
-                    q: query,
-                    startIndex: offset,
-                    identifier: identifier,
-                    loginLocationUuid: sessionService.getLoginLocationUuid()
-                },
+                params: searchParams,
                 withCredentials: true
             });
         };
