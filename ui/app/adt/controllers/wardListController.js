@@ -10,7 +10,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.searchText = '';
-                        
+
             $scope.searchTextFilter = function (row) {
                 var searchText = $scope.searchText;
                 if (!searchText) {
@@ -25,7 +25,7 @@ angular.module('bahmni.adt')
                     return rowValue && rowValue.toLowerCase().includes(searchText);
                 });
             };
-            
+
             var getTableDetails = function () {
                 var params = {
                     q: "emrapi.sqlGet.wardsListDetails",
