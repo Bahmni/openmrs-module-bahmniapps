@@ -1,13 +1,15 @@
 'use strict';
 
 describe('patientService', function () {
-    var rootScope, mockBackend, patientService, sessionService;
+    var rootScope, mockBackend, patientService, sessionService, appService;
 
     beforeEach(function () {
         module('bahmni.common.patient');
         module(function($provide) {
             sessionService = jasmine.createSpyObj('sessionService', ['getLoginLocationUuid']);
             $provide.value('sessionService', sessionService);
+            appService = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+            $provide.value('appService', appService);
         });
 
         inject(function (_$rootScope_, _patientService_, $httpBackend) {
