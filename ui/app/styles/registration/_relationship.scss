@@ -19,7 +19,7 @@
         .col1 {
             margin-top: 0;
             display: flex;
-            width: 35%;
+            width: 33%;
             float: left;
 
             label.add-new {
@@ -147,9 +147,17 @@
     }
 
     .row {
+        .col1 {
+            .field-value {
+                select {
+                    min-width: 200px;
+                }
+            }
+        }
         .col2 {
             text-align: left;
             margin: auto;
+            margin-left: 0px;
 
             @media (max-width : 1024px) {
                 width: 20%;
@@ -227,7 +235,7 @@
             line-height: 30px;
 
             .col1 {
-                width: 34%;
+                width: 32%;
 
                 @media (max-width : 768px) {
                     width: calc(100% - 60px);
@@ -235,7 +243,7 @@
             }
 
             .col2 {
-                width: 33.3%;
+                width: 30.5%;
                 text-align: left;
 
                 @media (max-width : 1024px) {
@@ -244,7 +252,7 @@
             }
 
             .col3 {
-                width: 26.4%;
+                width: 31.3%;
                 text-align: left;
 
                 .till-text {
