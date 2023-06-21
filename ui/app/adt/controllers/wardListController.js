@@ -18,7 +18,9 @@ angular.module('bahmni.adt')
                 }
                 searchText = searchText.toLowerCase();
                 const excludedKeys = ["hiddenAttributes", "$$hashKey", "Diagnosis"];
-                const attributes = Object.keys(row).filter(key => !excludedKeys.includes(key));
+                var attributes = Object.keys(row).filter(function (key) {
+                    return !excludedKeys.includes(key);
+                });
 
                 return attributes.some(function (attribute) {
                     const rowValue = row[attribute].toString();
