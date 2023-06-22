@@ -110,16 +110,26 @@ angular.module('bahmni.common.patientSearch')
         };
 
         $scope.sortVisiblePatientsBy = function (sortColumn) {
-            var emptyObjects = _.filter($scope.search.visiblePatients, function (visiblePatient) {
-                return !_.property(sortColumn)(visiblePatient);
+            var emptyObjects = _.filter($scope.search.searchResults, function (visiblePatient) {
+              return !_.property(sortColumn)(visiblePatient);
             });
-
-            var nonEmptyObjects = _.difference($scope.search.visiblePatients, emptyObjects);
+          
+            var nonEmptyObjects = _.difference($scope.search.searchResults, emptyObjects);
             var sortedNonEmptyObjects = _.sortBy(nonEmptyObjects, function (visiblePatient) {
-                if (angular.isNumber(_.get(visiblePatient, sortColumn))) {
-                    return _.get(visiblePatient, sortColumn);
+                var value = _.get(visiblePatient, sortColumn);
+                if (!isNaN(Date.parse(value))) {
+                    var parsedDate = moment(value, "DD MMMM YYYY HH:mm:ss");
+                    if (parsedDate.isValid()) {
+                        return parsedDate.toDate().getTime();
+                    }
+                }         
+                else if (angular.isNumber(value)) {
+                    return value;
                 }
-                return _.get(visiblePatient, sortColumn).toLowerCase();
+                else if (angular.isString(value)) {
+                    return value.toLowerCase();
+                }
+                return value;
             });
             if ($scope.reverseSort) {
                 sortedNonEmptyObjects.reverse();
