@@ -4,7 +4,7 @@
             <table class="patient dashboard-table">
                 <tbody>
                 <tr class="patient-info">
-                    <td colspan="2">
+                    <td colspan="2" style="height: 50px;">
                         <span class="patient-img">
                             <img  class="patient-image" ng-src="{{::patient.image}}" fallback-src="../images/blank-user.gif">
                         </span>
@@ -20,8 +20,11 @@
                              <span class="patient-address">
                                  {{::addressLine}}
                              </span>
-                             <i class="ipd-indication fa fa-bed" ng-if="::hasBeenAdmitted"></i>
-                         </div>
+                        </div>
+                        <div class="icons-container">
+                            <i class="ipd-indication fa fa-bed" ng-if="::hasBeenAdmitted"></i>
+                            <i class="ipd-indication fa fa-solid fa-child" style="background-color: #F58C35; padding: 4px 15.289px;" ng-if="::patient.kid"></i>
+                        </div>
                      </td>
                 </tr>
                 <tr ng-if="::showBirthDate" >

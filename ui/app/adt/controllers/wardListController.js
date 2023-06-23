@@ -37,7 +37,7 @@ angular.module('bahmni.adt')
 
                 return queryService.getResponseFromQuery(params).then(function (response) {
                     $scope.tableDetails = Bahmni.ADT.WardDetails.create(response.data, $rootScope.diagnosisStatus);
-                    $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]) : [];
+                    $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]).filter(name => name !== 'kid') : [];
                 });
             };
             spinner.forPromise(getTableDetails());
