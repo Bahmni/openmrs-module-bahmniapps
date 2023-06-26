@@ -5,7 +5,7 @@ angular.module('bahmni.common.patientSearch')
     '$stateParams', '$bahmniCookieStore', 'printer', 'configurationService',
     function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, printer, configurationService) {
         $scope.preferExtraIdInSearchResults = appService.getAppDescriptor().getConfigValue("preferExtraIdInSearchResults");
-        var customPersonAttributeForPatientSearch = appService.getAppDescriptor().getConfigValue("customPersonAttributeForPatientSearch");
+        var personAttributeForPatientSearch = appService.getAppDescriptor().getConfigValue("personAttributeForPatientSearch");
         $scope.activeHeaders = [];
         const DEFAULT_FETCH_DELAY = 2000;
         var patientSearchConfig = appService.getAppDescriptor().getConfigValue("patientSearch");
@@ -49,7 +49,7 @@ angular.module('bahmni.common.patientSearch')
         };
 
         $scope.searchPatients = function () {
-            return spinner.forPromise(patientService.search($scope.search.searchParameter, customPersonAttributeForPatientSearch)).then(function (response) {
+            return spinner.forPromise(patientService.search($scope.search.searchParameter, personAttributeForPatientSearch)).then(function (response) {
                 $scope.search.updateSearchResults(response.data.pageOfResults);
                 if ($scope.search.hasSingleActivePatient()) {
                     $scope.forwardPatient($scope.search.activePatients[0]);
@@ -101,7 +101,7 @@ angular.module('bahmni.common.patientSearch')
 
         var setActiveHeadings = function (headings) {
             headings.map(function (heading) {
-                if (heading !== customPersonAttributeForPatientSearch) {
+                if (heading !== personAttributeForPatientSearch) {
                     var newHeading = { name: heading, sortInfo: heading };
                     if (!$scope.activeHeaders.find(function (activeHeader) {
                         return activeHeader.name == newHeading.name && activeHeader.sortInfo == newHeading.sortInfo;
