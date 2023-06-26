@@ -46,7 +46,7 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
     };
 
     self.updateSearchResults = function (patientList) {
-        const patients = patientList.map(patient => {
+        const patients = patientList.map(function (patient) {
             if (patient.customAttribute) {
                 patient.customAttribute = JSON.parse(patient.customAttribute);
             }
