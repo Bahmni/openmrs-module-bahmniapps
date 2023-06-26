@@ -1374,7 +1374,6 @@ table.treatments-details-table {
 
                 &.patient-name-image-container {
                     margin: 0;
-                    margin: 0;
                     border-left: none;
                     display: table;
 
@@ -1390,6 +1389,19 @@ table.treatments-details-table {
                         display: table-cell;
                         vertical-align: middle;
                         padding-left: 10px;
+                    }
+
+                    .kid-icon {
+                        display: table-cell;
+                        vertical-align: middle;
+                        padding-left: 10px;
+                    }
+
+                    i.ipd-indication {
+                        background: $bahmniPrimaryBtnColorHover;
+                        color: white;
+                        padding: 2px 8px;
+                        font-size: 18px;
                     }
                 }
             }

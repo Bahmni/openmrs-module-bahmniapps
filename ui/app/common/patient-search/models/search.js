@@ -46,7 +46,13 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
     };
 
     self.updateSearchResults = function (patientList) {
-        self.updatePatientList(patientList);
+        const patients = patientList.map(patient => {
+            if (patient.customAttribute) {
+                patient.customAttribute = JSON.parse(patient.customAttribute);
+            }
+            return patient;
+        });
+        self.updatePatientList(patients);
         if (self.activePatients.length === 0 && self.searchParameter != '') {
             self.noResultsMessage = "NO_RESULTS_FOUND";
         } else {
