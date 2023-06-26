@@ -10,7 +10,7 @@ angular.module('bahmni.adt')
             };
 
             $scope.searchText = '';
-                        
+
             $scope.searchTextFilter = function (row) {
                 var searchText = $scope.searchText;
                 if (!searchText) {
@@ -18,14 +18,16 @@ angular.module('bahmni.adt')
                 }
                 searchText = searchText.toLowerCase();
                 const excludedKeys = ["hiddenAttributes", "$$hashKey", "Diagnosis"];
-                const attributes = Object.keys(row).filter(key => !excludedKeys.includes(key));
+                var attributes = Object.keys(row).filter(function (key) {
+                    return !excludedKeys.includes(key);
+                });
 
                 return attributes.some(function (attribute) {
                     const rowValue = row[attribute].toString();
                     return rowValue && rowValue.toLowerCase().includes(searchText);
                 });
             };
-            
+
             var getTableDetails = function () {
                 var params = {
                     q: "emrapi.sqlGet.wardsListDetails",
@@ -35,7 +37,9 @@ angular.module('bahmni.adt')
 
                 return queryService.getResponseFromQuery(params).then(function (response) {
                     $scope.tableDetails = Bahmni.ADT.WardDetails.create(response.data, $rootScope.diagnosisStatus);
-                    $scope.tableHeadings = $scope.tableDetails.length > 0 ? Object.keys($scope.tableDetails[0]) : [];
+                    $scope.tableHeadings = $scope.tableDetails.length > 0 ?
+                        Object.keys($scope.tableDetails[0]).filter(function (name) { return name !== 'kid'; })
+                        : [];
                 });
             };
             spinner.forPromise(getTableDetails());

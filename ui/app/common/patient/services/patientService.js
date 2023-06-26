@@ -30,7 +30,7 @@ angular.module('bahmni.common.patient')
             });
         };
 
-        this.search = function (query, offset, identifier) {
+        this.search = function (query, customAttribute, offset, identifier) {
             offset = offset || 0;
             identifier = identifier || query;
             var searchParams = {
@@ -38,9 +38,10 @@ angular.module('bahmni.common.patient')
                 q: query,
                 startIndex: offset,
                 identifier: identifier,
-                loginLocationUuid: sessionService.getLoginLocationUuid()
+                loginLocationUuid: sessionService.getLoginLocationUuid(),
+                patientSearchResultsConfig: customAttribute
             };
-            if(appService.getAppDescriptor().getConfigValue("filterAttributeForAllSearch")) {
+            if (appService.getAppDescriptor().getConfigValue("filterAttributeForAllSearch")) {
                 searchParams.attributeToFilterOut = appService.getAppDescriptor().getConfigValue("filterAttributeForAllSearch");
             }
             return $http.get(Bahmni.Common.Constants.bahmniCommonsSearchUrl + "/patient/lucene", {
