@@ -111,9 +111,9 @@ angular.module('bahmni.common.patientSearch')
 
         $scope.sortVisiblePatientsBy = function (sortColumn) {
             var emptyObjects = _.filter($scope.search.searchResults, function (visiblePatient) {
-              return !_.property(sortColumn)(visiblePatient);
+                return !_.property(sortColumn)(visiblePatient);
             });
-          
+
             var nonEmptyObjects = _.difference($scope.search.searchResults, emptyObjects);
             var sortedNonEmptyObjects = _.sortBy(nonEmptyObjects, function (visiblePatient) {
                 var value = _.get(visiblePatient, sortColumn);
@@ -122,7 +122,7 @@ angular.module('bahmni.common.patientSearch')
                     if (parsedDate.isValid()) {
                         return parsedDate.toDate().getTime();
                     }
-                }         
+                }
                 else if (angular.isNumber(value)) {
                     return value;
                 }
