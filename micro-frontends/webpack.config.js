@@ -1,57 +1,70 @@
 const path = require("path");
 const cssExtract = require("mini-css-extract-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const packageJson = require("./package.json");
 const dependencies = packageJson.dependencies;
 
-const ipdURL = process.env.IPD_URL || "http://localhost:9001";
-
 module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
+    alias: {
+      react: path.resolve(__dirname, "./src/globalReact.js"),
+      'react-dom': path.resolve(__dirname, "./src/globalReactDom.js"),
+    }
   },
   entry: {
-    index: "./src/index.js",
+    ipd: "./src/ipd/index.js",
+    mfe_polyfills_angular_1_4: "./src/polyfill.js",
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
-    // library: "BahmniNextUI",
-    // libraryTarget: "umd",
-    // umdNamedDefine: true,
-    filename: "[name].[contenthash].js",
+    path: path.resolve(__dirname, "../ui/app/common/mfe-build"),
+    filename: "[name].min.js",
     clean: true,
   },
   devServer: {},
   plugins: [
-    new HtmlWebpackPlugin({
-      template: "./src/index.html",
-    }),
     new cssExtract({
-      filename: "styles.css",
+      filename: "mfe-styles.css",
     }),
     new ModuleFederationPlugin({
       name: "bahmni_mfe_host",
       filename: "remoteEntry.js",
       remotes: {
-          '@openmrs-mf/ipd': `bahmni_ipd@${ipdURL}/remoteEntry.js`,
+        "@openmrs-mf/ipd": dynamicRemote('bahmni_ipd', 'ipd'),
       },
       exposes: {},
       shared: {
-        ...dependencies,
+        "carbon-components-react": {
+          singleton: true,
+          eager: true,
+          requiredVersion: dependencies["carbon-components-react"],
+        },
+        "carbon-components": {
+          singleton: true,
+          eager: true,
+          requiredVersion: dependencies["carbon-components"],
+        },
+        "bahmni-carbon-ui": {
+          singleton: true,
+          eager: true,
+          requiredVersion: dependencies["bahmni-carbon-ui"],
+        },
         react: {
           singleton: true,
+          eager: true,
           requiredVersion: dependencies.react,
         },
         "react-dom": {
           singleton: true,
+          eager: true,
           requiredVersion: dependencies["react-dom"],
         },
       },
     }),
   ],
   module: {
+    // noParse: ['react'],
     rules: [
       {
         test: /\.m?js/,
@@ -76,5 +89,48 @@ module.exports = {
         use: [cssExtract.loader, "css-loader", "sass-loader"],
       },
     ],
-  }
+  },
+  externals: {
+    react: "React", // Exclude react from the bundled output
+    "react-dom": "ReactDOM", // Exclude react-dom from the bundled output
+  },
 };
+
+
+/**
+ * An alternative to providing build time URLs
+ * We need to do this string promise stuff because we need to resolve the host at run-time.
+ * This is the way, as documented here: https://webpack.js.org/concepts/module-federation/#promise-based-dynamic-remotes
+ * 
+ * @param {string} name The name of the remote, as given in it's ModuleFederationPlugin configuration
+ * @param {string} subPath The sub-path of the remote, as set-up in the proxy configuration
+ * 
+ * @returns {string} A string that can be evaluated to a promise that resolves to the remote
+ */
+function dynamicRemote(name, subPath) {
+  return `promise new Promise(resolve => {
+    const remoteUrl = new URL(window.location.href);
+    remoteUrl.pathname = '/${subPath}/remoteEntry.js';
+    remoteUrl.search = '';
+
+    const script = document.createElement('script')
+    script.src = remoteUrl.toString();
+    script.onload = () => {
+      // the injected script has loaded and is available on window
+      // we can now resolve this Promise
+      const proxy = {
+        get: (request) => window['${name}'].get(request),
+        init: (arg) => {
+          try {
+            return window['${name}'].init(arg)
+          } catch(e) {
+            console.log('remote container already initialized')
+          }
+        }
+      }
+      resolve(proxy)
+    }
+    // inject this script with the src set to the resolved remoteEntry.js
+    document.head.appendChild(script);
+  })`
+}
