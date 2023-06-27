@@ -138,7 +138,7 @@ angular.module('bahmni.registration')
                     return _.isEmpty($rootScope.visitLocation);
                 };
 
-                var visitExistsCheck = function (patientProfileData) {
+                var checkIfActiveVisitExists = function (patientProfileData) {
                     return $scope.visitControl.checkIfVisitExists(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function (response) {
                         var checkExists = response.data.results.length;
                         if (checkExists === 0) {
@@ -155,7 +155,7 @@ angular.module('bahmni.registration')
                         });
                         return;
                     }
-                    visitExistsCheck(patientProfileData).then(function (exists) {
+                    checkIfActiveVisitExists(patientProfileData).then(function (exists) {
                         if (exists) return messagingService.showMessage("error", "VISIT_OF_THIS_PATIENT_AT_SAME_LOCATION_EXISTS");
 
                         spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function (response) {
