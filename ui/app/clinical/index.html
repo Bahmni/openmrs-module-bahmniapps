@@ -17,6 +17,9 @@
         <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.bootstrap.min.css"/>
         <link rel="stylesheet" href="../components/ng-tags-input/ng-tags-input.min.css"/>
 
+        <!-- All styles from the microfrontends available -->
+        <link rel="stylesheet" href="../common/mfe-build/mfe-styles.css"/>
+
         <!-- build:css clinical.min.css -->
         <link rel="stylesheet" href="../styles/clinical.css"/>
         <!-- endbuild -->
@@ -76,9 +79,11 @@
         <script src="../components/angular-translate-handler-log/angular-translate-handler-log.min.js"></script>
         <script src="../components/angular-file-upload/dist/angular-file-upload.min.js"></script>
         <script src="../components/angular-elastic/elastic.js"></script>
+        <script src="../lib/angular-workers/dist/angular-workers.js"></script>
+
+        <!-- Adding react since an micro-frontend will be used -->
         <script src="../components/react/react.production.min.js"></script>
         <script src="../components/react-dom/react-dom.production.min.js"></script>
-        <script src="../lib/angular-workers/dist/angular-workers.js"></script>
 
         <script src="../components/bahmni-form-controls/helpers.js"></script>
         <script src="../components/bahmni-form-controls/bundle.js"></script>
@@ -314,6 +319,12 @@
         <script src="../common/domain/mappers/patientProgramMapper.js"></script>
         <script src="../common/uicontrols/concept-dropdown/directives/conceptDropdown.js"></script>
         <script src="../common/domain/services/programService.js"></script>
+
+        <!-- polyfill to add angular feature which will allow easy loading of mfe into angular component -->
+        <script src="../common/mfe-build/mfe_polyfills_angular_1_4.min.js"></script>
+
+        <!-- load the ipd mfe as angular components -->
+        <script src="../common/mfe-build/ipd.min.js"></script>
 
 
 
