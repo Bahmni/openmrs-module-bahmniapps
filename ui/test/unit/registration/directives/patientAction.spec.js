@@ -40,11 +40,11 @@ describe('PatientAction', function () {
                     return {uuid: "uuid"};
                 });
                 $location = jasmine.createSpyObj('$location', ['path']);
-                visitService = jasmine.createSpyObj('visitService', ['search', 'createVisit', 'checkVisit']);
+                visitService = jasmine.createSpyObj('visitService', ['search', 'createVisit', 'checkIfActiveVisitExists']);
                 visitService.search.and.returnValue(specUtil.simplePromise(input.visitSearchResults));
                 var visitResponse = {uuid: "visitUuid", visitType: {display: 'OPD'}};
                 visitService.createVisit.and.returnValue(specUtil.simplePromise({data: visitResponse}));
-                visitService.checkVisit.and.returnValue(specUtil.simplePromise({ data: { "results": [] } }));
+                visitService.checkIfActiveVisitExists.and.returnValue(specUtil.simplePromise({ data: { "results": [] } }));
                 encounterService = jasmine.createSpyObj('encounterService', ['']);
                 sessionService = jasmine.createSpyObj('sessionService', ['']);
                 messagingService = jasmine.createSpyObj('messagingService', ['showMessage', 'clearAll']);

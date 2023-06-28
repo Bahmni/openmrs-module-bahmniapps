@@ -18,8 +18,8 @@ Bahmni.Common.VisitControl = function (visitTypes, defaultVisitTypeName, encount
         self.selectedVisitType = visitType;
     };
 
-    self.checkIfVisitExists = function (patientUuid, visitLocationUuid) {
-        return visitService.checkVisit(patientUuid, visitLocationUuid);
+    self.checkIfActiveVisitExists = function (patientUuid, visitLocationUuid) {
+        return visitService.checkIfActiveVisitExists(patientUuid, visitLocationUuid);
     };
 
     self.createVisitOnly = function (patientUuid, visitLocationUuid) {

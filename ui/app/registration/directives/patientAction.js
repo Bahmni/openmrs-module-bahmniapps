@@ -139,7 +139,7 @@ angular.module('bahmni.registration')
                 };
 
                 var checkIfActiveVisitExists = function (patientProfileData) {
-                    return $scope.visitControl.checkIfVisitExists(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function (response) {
+                    return $scope.visitControl.checkIfActiveVisitExists(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function (response) {
                         var checkExists = response.data.results.length;
                         if (checkExists === 0) {
                             return false;
