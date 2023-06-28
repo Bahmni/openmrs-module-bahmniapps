@@ -14,6 +14,18 @@ describe("AddTreatmentController", function () {
     }));
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
+    var medicationConfig = {
+        "commonConfig": {},
+        "tabConfig": {
+            "allMedicationTabConfig": {
+                "orderSet": {
+                    "calculateDoseOnlyOnCurrentVisitValues": false,
+                    "showRulesInMedication":true
+                },
+            }
+        }
+    };
+
     var activeDrugOrder = {
         "uuid": "activeOrderUuid",
         "action": "NEW",
@@ -111,7 +123,7 @@ describe("AddTreatmentController", function () {
 
     var $q, scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService;
+        encounterDateTime, appDescriptor, appService, appConfig, defaultDrugsPromise, orderSetService, locationService;
 
 
     stateParams = {
@@ -163,6 +175,7 @@ describe("AddTreatmentController", function () {
             clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage']);
             orderSetService = jasmine.createSpyObj('orderSetService', ['getCalculatedDose', 'getOrderSetsByQuery']);
             scope.patient = {uuid: "patient.uuid"};
             orderSetService.getCalculatedDose.and.returnValue(specUtil.respondWithPromise($q, {
@@ -180,6 +193,8 @@ describe("AddTreatmentController", function () {
             drugService.getSetMembersOfConcept.and.returnValue(defaultDrugsPromise);
 
             appService.getAppDescriptor.and.returnValue(appConfig);
+            appService.getAppDescriptor.and.returnValue(appDescriptor);
+            appDescriptor.getConfigForPage.and.returnValue(medicationConfig);
             orderSets = [{
                 "orderSetId": 3,
                 "uuid": "497b959b-101b-41a8-8154-3f252b2771d7",
@@ -232,6 +247,7 @@ describe("AddTreatmentController", function () {
                 clinicalAppConfigService: clinicalAppConfigService,
                 ngDialog: ngDialog,
                 appService: appService,
+                appDescriptor: appDescriptor,
                 locationService :locationService,
                 drugService: drugService,
                 treatmentConfig: treatmentConfig,
