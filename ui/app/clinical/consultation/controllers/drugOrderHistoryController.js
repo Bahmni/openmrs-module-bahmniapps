@@ -12,6 +12,11 @@ angular.module('bahmni.clinical')
             var prescribedDrugOrders = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
+            $scope.showIPDCheckbox = false;
+
+            $scope.handleIPDCheckboxes = function () {
+                $scope.showIPDCheckbox = !$scope.showIPDCheckbox;
+            };
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];

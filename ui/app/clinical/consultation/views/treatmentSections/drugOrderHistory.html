@@ -15,11 +15,13 @@
                     <i  ng-init="allOrderAttributesOfNameSet(drugOrderGroup,orderAttribute.name)" class="fa fa-check" ng-show="drugOrderGroup[orderAttribute.name].selected" ></i>
                     {{orderAttribute.name}} All
                 </button>
+                <button class="secondary-button dispense-all-btn fr" ng-click="handleIPDCheckboxes()">{{ :: 'IPD_BUTTON' | translate }}</button>
                 <div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
                         <p ng-if="!drugOrderGroup.drugOrders.length" class="placeholder-text">{{ ::'MEDICATION_NO_RECENT_TREATMENT' | translate }}</p>
                         <ul class="table-mimic">
 							<li id="ordered-drug-orders" ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
+                                <input type="checkbox" class="treatmentChkBox" ng-model="drugOrder.isIPDDrug" ng-show="showIPDCheckbox" ng-change="toggleSelection(drugOrder)">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                                     <div class="drug-dosage">
                                         <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong>

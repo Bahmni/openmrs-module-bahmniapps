@@ -68,6 +68,9 @@ Bahmni.Clinical.DrugOrder = (function () {
         if (!drugOrder.dosingInstructions.quantityUnits) {
             drugOrder.dosingInstructions.quantityUnits = "Unit(s)";
         }
+        if (drugOrderData.isIPDDrug) {
+            drugOrder.careSetting = "INPATIENT";
+        }
         return drugOrder;
     };
 
