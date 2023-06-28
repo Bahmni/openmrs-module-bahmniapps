@@ -67,8 +67,8 @@
                         <td ng-repeat="heading in activeHeaders"  style="height: 50px;">
                             <a ng-if="::isHeadingOfLinkColumn(heading.name)"
                                ng-click="forwardPatient(row, heading)">{{::row[heading.name]}}</a>
-                            <div ng-if="::isHeadingOfName(heading.name)" ng-click="forwardPatient(row)">
-                                <div style="width: 85%;">
+                            <div ng-if="::isHeadingOfName(heading.name)" style="min-width: 150px" ng-click="forwardPatient(row)">
+                                <div style="width: 80%;">
                                     {{::row[heading.name]}}
                                 </div>
                                 <span class="icons-container">
