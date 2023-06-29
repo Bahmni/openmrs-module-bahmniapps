@@ -1,7 +1,7 @@
 <section class="section-grid new-drug-order" ng-if="treatments.length > 0">
     <div class="section-title-wrapper clearfix">
         <h2 class="section-title fl">{{ ::'MEDICATION_NEW_PRESCRIPTION' | translate}}</h2>
-        <button class="ipd-button" ng-click="handleIPDCheckboxes()">{{ :: 'IPD_BUTTON' | translate }}
+        <button class="ipd-button" ng-show="!showBulkChangeToggle" ng-click="handleIPDCheckboxes()">{{ ::'IPD_BUTTON' | translate }}
         </button>
         <button class="secondary-button fr bulk-toggle-btn" ng-show="!showBulkChangeToggle && showBulkChangeDuration"
                 ng-click="bulkChangeDuration()">{{ ::'MEDICATION_CHANGE_DURATION_BUTTON' | translate}}
@@ -30,8 +30,8 @@
             <div class="drug-details">
                 <div class="form">
                     <input type="checkbox" ng-show="showBulkChangeToggle" ng-model="newTreatment.durationUpdateFlag"
-                           class="treatmentChkBox"/>
-                    <input type="checkbox" ng-show="showIPDCheckbox" ng-click="updateIPDCheckbox(newTreatment)" class="treatmentChkBox"/>
+                    class="treatmentChkBox"/>
+                    <input type="checkbox" ng-show="showIPDCheckbox" ng-model="newTreatment.isIPDDrug" class="treatmentChkBox"/>
                     <div class="drug-dosage">
                         <strong class="drug-name">{{newTreatment.getDisplayName()}}</strong>
                         <div class="dosage-frequency">

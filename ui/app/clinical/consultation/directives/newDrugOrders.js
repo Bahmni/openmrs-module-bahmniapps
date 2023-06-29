@@ -4,11 +4,13 @@ angular.module('bahmni.clinical')
     .directive('newDrugOrders', ['messagingService', function (messagingService) {
         var controller = function ($scope, $rootScope) {
             $scope.showIPDCheckbox = false;
-            $scope.treatments.forEach(function (treatment) {
-                if (treatment.isIPDDrug === undefined) {
-                    treatment.isIPDDrug = false;
-                }
-            });
+            if ($scope.treatments.length > 0) {
+                $scope.treatments.forEach(function (treatment) {
+                    if (treatment.isIPDDrug === undefined) {
+                        treatment.isIPDDrug = false;
+                    }
+                });
+            }
             $scope.edit = function (drugOrder, index) {
                 $rootScope.$broadcast("event:editDrugOrder", drugOrder, index);
             };
@@ -51,14 +53,6 @@ angular.module('bahmni.clinical')
             $scope.handleIPDCheckboxes = function () {
                 $scope.showIPDCheckbox = !$scope.showIPDCheckbox;
                 return $scope.showIPDCheckbox;
-            };
-
-            $scope.updateIPDCheckbox = function (newTreatment) {
-                $scope.treatments.forEach(function (treatment) {
-                    if (treatment.uuid === newTreatment.uuid) {
-                        treatment.isIPDDrug = !newTreatment.isIPDDrug;
-                    }
-                });
             };
 
             var isDurationNullForAnyTreatment = function (treatments) {

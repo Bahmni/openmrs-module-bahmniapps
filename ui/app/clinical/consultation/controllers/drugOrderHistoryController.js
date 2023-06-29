@@ -18,6 +18,22 @@ angular.module('bahmni.clinical')
                 $scope.showIPDCheckbox = !$scope.showIPDCheckbox;
             };
 
+            $scope.toggleIsIPDDrug = function (drugOrder) {
+                $scope.consultation.drugOrderGroups.forEach(function (group) {
+                    group.drugOrders.forEach(function (order) {
+                        if (order.uuid === drugOrder.uuid) {
+                            if (order.careSetting === "INPATIENT") {
+                                order.careSetting = "OUTPATIENT";
+                            }
+                            else if (order.careSetting === "OUTPATIENT") {
+                                order.careSetting = "INPATIENT";
+                            }
+                        }
+                    });
+                });
+                console.log($scope.consultation.drugOrderGroups);
+            };
+
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];
                 createPrescribedDrugOrderGroups();
@@ -84,6 +100,17 @@ angular.module('bahmni.clinical')
                 });
                 $scope.consultation.drugOrderGroups = $scope.consultation.drugOrderGroups.concat(drugOrderGroups);
                 $scope.consultation.drugOrderGroups = _.sortBy($scope.consultation.drugOrderGroups, 'visitStartDate').reverse();
+                $scope.consultation.drugOrderGroups.map(function (drugOrderGroup) {
+                    drugOrderGroup.drugOrders = drugOrderGroup.drugOrders.map(function (drugOrder) {
+                        if (drugOrder.careSetting === "INPATIENT") {
+                            drugOrder.isIPDDrug = true;
+                        }
+                        else {
+                            drugOrder.isIPDDrug = false;
+                        }
+                        return drugOrder;
+                    });
+                });
             };
 
             $scope.stoppedOrderReasons = treatmentConfig.stoppedOrderReasonConcepts;

@@ -219,7 +219,6 @@
             .inpage-tab-panel {
                 .treatmentChkBox {
                     float: left;
-                    margin-left: revert;
                     margin-top: 9px;
                 }
             }
@@ -266,6 +265,14 @@
 
     .new-drug-order {
         margin: 0px 0 10px;
+    }
+
+    #new-drug-orders {
+        .treatmentChkBox {
+            float: left;
+            margin-left: revert;
+            margin-top: 9px;
+        }
     }
 
     .ipd-button {
