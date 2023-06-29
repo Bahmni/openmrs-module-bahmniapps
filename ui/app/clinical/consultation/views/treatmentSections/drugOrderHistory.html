@@ -15,7 +15,10 @@
                     <i  ng-init="allOrderAttributesOfNameSet(drugOrderGroup,orderAttribute.name)" class="fa fa-check" ng-show="drugOrderGroup[orderAttribute.name].selected" ></i>
                     {{orderAttribute.name}} All
                 </button>
-                <button class="secondary-button dispense-all-btn fr" ng-click="handleIPDCheckboxes()">{{ :: 'IPD_BUTTON' | translate }}</button>
+                <button class="secondary-button ipd-btn fr" ng-click="handleIPDCheckboxes()">
+                    <i class="fa fa-check" ng-show="toggleIPDButton"></i>
+                    {{ :: 'IPD_BUTTON' | translate }}
+                </button>
                 <div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
                         <p ng-if="!drugOrderGroup.drugOrders.length" class="placeholder-text">{{ ::'MEDICATION_NO_RECENT_TREATMENT' | translate }}</p>

@@ -13,8 +13,10 @@ angular.module('bahmni.clinical')
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
             $scope.showIPDCheckbox = false;
+            $scope.toggleIPDButton = false;
 
             $scope.handleIPDCheckboxes = function () {
+                $scope.toggleIPDButton = !$scope.toggleIPDButton;
                 $scope.showIPDCheckbox = !$scope.showIPDCheckbox;
             };
 
@@ -31,7 +33,6 @@ angular.module('bahmni.clinical')
                         }
                     });
                 });
-                console.log($scope.consultation.drugOrderGroups);
             };
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {

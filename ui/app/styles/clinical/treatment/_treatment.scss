@@ -275,14 +275,6 @@
         }
     }
 
-    .ipd-button {
-        background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
-        color: $white;
-        border:1px solid darken($bahmniSecondaryColor, 15%);
-        float: right;
-        margin-left: 5px;
-    }
-
     .highlight {
         background: $clinicalHighlight;
         border: 1px solid darken($clinicalHighlight, 10%);
@@ -297,6 +289,7 @@
     }
 
     .refill-drugs-btn,
+    .ipd-btn,
     .dispense-all-btn {
         font-size: 14px;
         margin-right: 0;
@@ -312,8 +305,13 @@
         }
     }
 
+    .ipd-btn,
     .dispense-all-btn {
         margin-right: 5px;
+    }
+
+    .ipd-btn.active {
+        color: #527a7a;
     }
 
     .bulk-edit-options-container {
@@ -353,6 +351,7 @@
     }
 
     .tabs .tab [type=radio]:checked~.dispense-all-btn,
+    .tabs .tab [type=radio]:checked~.ipd-btn,
     .tabs .tab [type=radio]:checked~.refill-drugs-btn {
         display: inline-block;
         line-height: 14px;
@@ -605,6 +604,15 @@
         clear: both;
     }
 
+    .new-drug-order {
+        .ipd-button {
+            background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
+            color: $white;
+            border:1px solid darken($bahmniSecondaryColor, 15%);
+            float: right;
+            margin-left: 5px;
+        }
+    }
 }
 
 @import "customDrugOrderHistory";
