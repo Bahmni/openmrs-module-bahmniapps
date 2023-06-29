@@ -81,24 +81,21 @@ angular.module('bahmni.registration')
                 var iframe = $document[0].getElementById("relationship-extension-popup");
                 iframe.src = Bahmni.Registration.Constants.personManagementURL;
                 $scope.showPopupWindow = true;
-                $window.addEventListener("message", function (popupWindowData) {
+                var popupEventListener = function (popupWindowData) {
                     if (!_.isUndefined(popupWindowData.data.uuid)) {
                         _.each($scope.patient.newlyAddedRelationships, function (newlyAddedRelationship) {
                             if (newlyAddedRelationship.hasOwnProperty("relationshipType") &&
-                                newlyAddedRelationship.relationshipType.uuid === relationship.relationshipType.uuid) {
-                                if ($scope.isPatientRelationship(newlyAddedRelationship)) {
-                                    newlyAddedRelationship.patientIdentifier = popupWindowData.data.display;
-                                }
-                                else if ($scope.isProviderRelationship(newlyAddedRelationship)) {
-                                    newlyAddedRelationship.providerName = popupWindowData.data.display;
-                                }
-                                newlyAddedRelationship.personB = getPersonB(popupWindowData.data.display, popupWindowData.data.uuid);
+                                newlyAddedRelationship.relationshipType.uuid === relationship.relationshipType.uuid &&
+                                newlyAddedRelationship.uuid === relationship.uuid) {
+                                relationship.personB = getPersonB(popupWindowData.data.display, popupWindowData.data.uuid);
                             }
                         });
                     }
                     $scope.showPopupWindow = false;
                     $scope.$apply();
-                }, false);
+                    $window.removeEventListener("message", popupEventListener);
+                };
+                $window.addEventListener("message", popupEventListener, false);
             };
 
             var getName = function (patient) {
