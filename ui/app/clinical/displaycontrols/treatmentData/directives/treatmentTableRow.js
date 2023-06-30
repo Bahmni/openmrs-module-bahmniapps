@@ -2,7 +2,8 @@
 
 angular.module('bahmni.clinical')
     .directive('treatmentTableRow', function () {
-        var controller = function ($scope) {
+        var controller = function ($scope, $rootScope, appService) {
+            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
             $scope.showDetails = false;
             if ($scope.params.showProvider === undefined) {
                 $scope.params.showProvider = true;

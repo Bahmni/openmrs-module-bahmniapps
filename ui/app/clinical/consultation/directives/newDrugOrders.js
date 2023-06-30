@@ -2,23 +2,29 @@
 
 angular.module('bahmni.clinical')
     .directive('newDrugOrders', ['messagingService', function (messagingService) {
-        var controller = function ($scope, $rootScope) {
-            $scope.showIPDCheckbox = false;
-            if ($scope.treatments.length > 0) {
-                $scope.treatments.forEach(function (treatment) {
-                    if (treatment.isIPDDrug === undefined) {
-                        treatment.isIPDDrug = false;
-                    }
-                });
+        var controller = function ($scope, $rootScope, appService) {
+            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
+            if ($scope.enableIPDFeature) {
+                $scope.showIPDCheckbox = false;
+                if ($scope.treatments.length > 0) {
+                    $scope.treatments.forEach(function (treatment) {
+                        if (treatment.isIPDDrug === undefined) {
+                            treatment.isIPDDrug = false;
+                        }
+                    });
+                }
+
+                $scope.handleIPDCheckboxes = function () {
+                    $scope.showIPDCheckbox = !$scope.showIPDCheckbox;
+                    return $scope.showIPDCheckbox;
+                };
             }
             $scope.edit = function (drugOrder, index) {
                 $rootScope.$broadcast("event:editDrugOrder", drugOrder, index);
             };
-
             $scope.remove = function (index) {
                 $rootScope.$broadcast("event:removeDrugOrder", index);
             };
-
             var defaultBulkDuration = function () {
                 return {
                     bulkDurationUnit: $scope.treatmentConfig.durationUnits ? $scope.treatmentConfig.durationUnits[0].name : ""
@@ -48,11 +54,6 @@ angular.module('bahmni.clinical')
                 }
                 clearBulkDurationChange();
                 $scope.bulkChangeDuration();
-            };
-
-            $scope.handleIPDCheckboxes = function () {
-                $scope.showIPDCheckbox = !$scope.showIPDCheckbox;
-                return $scope.showIPDCheckbox;
             };
 
             var isDurationNullForAnyTreatment = function (treatments) {

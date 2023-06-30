@@ -34,6 +34,7 @@
     .drug-dosage {
         display: flex;
         margin-bottom: 5px;
+        margin-right: 10px;
         gap: 5px;
         justify-content: space-between;
         flex-direction: column;
@@ -55,13 +56,19 @@
         @media screen and (max-width: 300px) {
             font-size: 10px;
         }
+
+        .ipd {
+            h3 {
+                margin-top: 0px;
+            }
+        }
     }
 
     .drug-name {
         width: auto;
 
         @media screen and (min-width: 1200px) {
-            max-width: calc(100% - 310px);
+            max-width: 30%;
         }
     }
 
@@ -308,10 +315,6 @@
     .ipd-btn,
     .dispense-all-btn {
         margin-right: 5px;
-    }
-
-    .ipd-btn.active {
-        color: #527a7a;
     }
 
     .bulk-edit-options-container {

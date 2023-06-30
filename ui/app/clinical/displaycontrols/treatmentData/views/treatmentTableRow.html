@@ -15,7 +15,9 @@
         <span class="fr">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
     </td>
     <td>
-        <span ng-if="drugOrder.careSetting === 'INPATIENT'"><a>{{ ::'ADD_TO_DRUG_CHART_KEY'|translate }}</a></span>
+        <span ng-if="enableIPDFeature && drugOrder.careSetting === 'INPATIENT'">
+            <a>{{ ::'ADD_TO_DRUG_CHART_KEY'|translate }}</a>
+        </span>
     </td>
 
     <td class="toggle-btn" toggle="drugOrder.showDetails" ng-if="::((params.showDetailsButton == true) && !drugOrder.additionalInstructions)">

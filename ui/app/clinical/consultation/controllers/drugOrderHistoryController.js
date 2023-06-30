@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'activeDrugOrders',
+    .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'activeDrugOrders', 'appService',
         'treatmentConfig', 'treatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope',
-        function ($scope, $filter, $stateParams, activeDrugOrders, treatmentConfig, treatmentService, spinner,
+        function ($scope, $filter, $stateParams, activeDrugOrders, appService, treatmentConfig, treatmentService, spinner,
                    drugOrderHistoryHelper, visitHistory, $translate, $rootScope) {
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
@@ -12,29 +12,32 @@ angular.module('bahmni.clinical')
             var prescribedDrugOrders = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
-            $scope.showIPDCheckbox = false;
-            $scope.toggleIPDButton = false;
+            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
 
-            $scope.handleIPDCheckboxes = function () {
-                $scope.toggleIPDButton = !$scope.toggleIPDButton;
-                $scope.showIPDCheckbox = !$scope.showIPDCheckbox;
-            };
+            if ($scope.enableIPDFeature) {
+                $scope.showIPDCheckbox = false;
+                $scope.toggleIPDButton = false;
 
-            $scope.toggleIsIPDDrug = function (drugOrder) {
-                $scope.consultation.drugOrderGroups.forEach(function (group) {
-                    group.drugOrders.forEach(function (order) {
-                        if (order.uuid === drugOrder.uuid) {
-                            if (order.careSetting === "INPATIENT") {
-                                order.careSetting = "OUTPATIENT";
+                $scope.handleIPDCheckboxes = function () {
+                    $scope.toggleIPDButton = !$scope.toggleIPDButton;
+                    $scope.showIPDCheckbox = !$scope.showIPDCheckbox;
+                };
+
+                $scope.toggleIsIPDDrug = function (drugOrder) {
+                    $scope.consultation.drugOrderGroups.forEach(function (group) {
+                        group.drugOrders.forEach(function (order) {
+                            if (order.uuid === drugOrder.uuid) {
+                                if (order.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient) {
+                                    order.careSetting = Bahmni.Clinical.Constants.careSetting.outPatient;
+                                }
+                                else if (order.careSetting === Bahmni.Clinical.Constants.careSetting.outPatient) {
+                                    order.careSetting = Bahmni.Clinical.Constants.careSetting.inPatient;
+                                }
                             }
-                            else if (order.careSetting === "OUTPATIENT") {
-                                order.careSetting = "INPATIENT";
-                            }
-                        }
+                        });
                     });
-                });
-            };
-
+                };
+            }
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];
                 createPrescribedDrugOrderGroups();
@@ -103,7 +106,7 @@ angular.module('bahmni.clinical')
                 $scope.consultation.drugOrderGroups = _.sortBy($scope.consultation.drugOrderGroups, 'visitStartDate').reverse();
                 $scope.consultation.drugOrderGroups.map(function (drugOrderGroup) {
                     drugOrderGroup.drugOrders = drugOrderGroup.drugOrders.map(function (drugOrder) {
-                        if (drugOrder.careSetting === "INPATIENT") {
+                        if (drugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient) {
                             drugOrder.isIPDDrug = true;
                         }
                         else {

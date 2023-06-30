@@ -15,9 +15,9 @@
                     <i  ng-init="allOrderAttributesOfNameSet(drugOrderGroup,orderAttribute.name)" class="fa fa-check" ng-show="drugOrderGroup[orderAttribute.name].selected" ></i>
                     {{orderAttribute.name}} All
                 </button>
-                <button class="secondary-button ipd-btn fr" ng-click="handleIPDCheckboxes()">
+                <button ng-show="enableIPDFeature" class="secondary-button ipd-btn fr" ng-click="handleIPDCheckboxes()">
                     <i class="fa fa-check" ng-show="toggleIPDButton"></i>
-                    {{ :: 'IPD_BUTTON' | translate }}
+                    {{ :: 'IPD_KEY' | translate }}
                 </button>
                 <div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
@@ -30,7 +30,13 @@
                                         <div class="dosage-frequency">
                                             <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}} | </span>
                                             <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length">{{drugOrder.getFrequency()}} | </span> 
-                                            {{drugOrder.getDurationAndDurationUnits()}}</div>
+                                            {{drugOrder.getDurationAndDurationUnits()}}
+                                        </div>
+                                        <div class="ipd">
+                                            <span ng-show="enableIPDFeature && showIPDCheckbox && drugOrder.isIPDDrug === true">
+                                                <h3>{{ ::'IPD_KEY' | translate }}</h3>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 								<div class="button-group-wrapper">
@@ -56,9 +62,6 @@
                                     </div>
 								</div>
                                 <div class="start-date fr">
-                                    <span ng-show="showIPDCheckbox && drugOrder.isIPDDrug === true">
-                                        <h3>{{ ::'IPD_KEY' | translate }}</h3>
-                                    </span>
                                     <span ng-if="showEffectiveFromDate(drugOrderGroup.visitStartDate, drugOrder.effectiveStartDate)"> {{ ::'MEDICATION_STARTED_ON' | translate }} {{drugOrder.effectiveStartDate | bahmniDate}}</span>
                                     <span class="stop-date">
                                         <div ng-if="drugOrder.isDiscontinuedOrStopped()">{{ ::'MEDICATION_STOPPED_ON' | translate }} {{drugOrder.dateStopped | bahmniDate}}</div>
