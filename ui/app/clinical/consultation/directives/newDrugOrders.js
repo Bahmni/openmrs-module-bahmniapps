@@ -6,7 +6,7 @@ angular.module('bahmni.clinical')
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
             if ($scope.enableIPDFeature) {
                 $scope.showIPDCheckbox = false;
-                if ($scope.treatments.length > 0) {
+                if ($scope.treatments !== undefined && $scope.treatments.length > 0) {
                     $scope.treatments.forEach(function (treatment) {
                         if (treatment.isIPDDrug === undefined) {
                             treatment.isIPDDrug = false;

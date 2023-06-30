@@ -15,7 +15,7 @@
                     <i  ng-init="allOrderAttributesOfNameSet(drugOrderGroup,orderAttribute.name)" class="fa fa-check" ng-show="drugOrderGroup[orderAttribute.name].selected" ></i>
                     {{orderAttribute.name}} All
                 </button>
-                <button ng-show="enableIPDFeature" class="secondary-button ipd-btn fr" ng-click="handleIPDCheckboxes()">
+                <button ng-show="enableIPDFeature && drugOrderGroup.drugOrders.length" class="secondary-button ipd-btn fr" ng-click="handleIPDCheckboxes()">
                     <i class="fa fa-check" ng-show="toggleIPDButton"></i>
                     {{ :: 'IPD_KEY' | translate }}
                 </button>
