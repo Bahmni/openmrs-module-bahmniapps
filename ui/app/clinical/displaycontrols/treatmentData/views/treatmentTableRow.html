@@ -14,9 +14,11 @@
     <td class="days" ng-if="::(!params.hideVisitDate)">
         <span class="fr">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
     </td>
-    <td>
+    <td class="add-to-drug-chart">
         <span ng-if="enableIPDFeature && drugOrder.careSetting === 'INPATIENT'">
-            <a>{{ ::'ADD_TO_DRUG_CHART_KEY'|translate }}</a>
+            <a>{{ ::'ADD_TO_DRUG_CHART_KEY'|translate }}
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            </a>
         </span>
     </td>
 

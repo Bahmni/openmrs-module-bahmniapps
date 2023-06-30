@@ -36,7 +36,7 @@
         margin-bottom: 5px;
         margin-right: 10px;
         gap: 5px;
-        justify-content: space-between;
+        justify-content: flex-start;
         flex-direction: column;
         flex-wrap: wrap;
         align-items: flex-start;
@@ -58,6 +58,11 @@
         }
 
         .ipd {
+            padding: 5px 0 0 5px;
+            width: 6%;
+            span {
+                float: right;
+            }
             h3 {
                 margin-top: 0px;
             }

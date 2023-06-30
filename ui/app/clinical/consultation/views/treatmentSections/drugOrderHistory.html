@@ -33,7 +33,7 @@
                                             {{drugOrder.getDurationAndDurationUnits()}}
                                         </div>
                                         <div class="ipd">
-                                            <span ng-show="enableIPDFeature && showIPDCheckbox && drugOrder.isIPDDrug === true">
+                                            <span ng-show="enableIPDFeature && drugOrder.careSetting === 'INPATIENT'">
                                                 <h3>{{ ::'IPD_KEY' | translate }}</h3>
                                             </span>
                                         </div>
