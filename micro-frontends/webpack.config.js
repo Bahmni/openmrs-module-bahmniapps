@@ -9,8 +9,8 @@ module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
     alias: {
-      react: path.resolve(__dirname, "./src/globalReact.js"),
-      'react-dom': path.resolve(__dirname, "./src/globalReactDom.js"),
+      react: path.resolve(__dirname, "./src/__mocks__/globalReact.js"),
+      'react-dom': path.resolve(__dirname, "./src/__mocks__/globalReactDom.js"),
     }
   },
   entry: {
@@ -25,7 +25,7 @@ module.exports = {
   devServer: {},
   plugins: [
     new cssExtract({
-      filename: "mfe-styles.css",
+      filename: "[name].min.css",
     }),
     new ModuleFederationPlugin({
       name: "bahmni_mfe_host",
