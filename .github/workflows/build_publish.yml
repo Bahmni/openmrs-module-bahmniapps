@@ -39,6 +39,9 @@ jobs:
       - run: npm install -g grunt-cli
       - run: gem install compass
       - run: npm install --global yarn
+      - name: Build micro-frontends
+        working-directory: micro-frontends
+        run: yarn install --frozen-lock-file && yarn build
       - name: Package
         run: cd ui && yarn cache clean && /bin/bash ./scripts/package.sh
       - name: Set up QEMU
