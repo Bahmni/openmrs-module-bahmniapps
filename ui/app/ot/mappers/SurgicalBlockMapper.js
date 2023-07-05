@@ -30,9 +30,20 @@ Bahmni.OT.SurgicalBlockMapper = function () {
     };
 
     var mapPrimaryDiagnoses = function (diagnosisObs) {
-        var primaryDiagnosesNames = _.filter(diagnosisObs, function (diagnosis) {
+        var uniqueDiagnoses = new Map();
+        _.each(diagnosisObs, function (diagnosis) {
+            var existingDiagnosis = uniqueDiagnoses.get(diagnosis.display);
+            if (existingDiagnosis) {
+                if (existingDiagnosis.obsDatetime < diagnosis.obsDatetime) {
+                    uniqueDiagnoses.set(diagnosis.display, diagnosis);
+                }
+            } else {
+                uniqueDiagnoses.set(diagnosis.display, diagnosis);
+            }
+        });
+        var primaryDiagnosesNames = _.filter(Array.from(uniqueDiagnoses.values()), function (diagnosis) {
             var obsGroupList = diagnosis.obsGroup.display.split(": ")[1].split(", ");
-            return _.includes(obsGroupList, "Primary");
+            return _.includes(obsGroupList, "Primary") && !(_.includes(obsGroupList, "Ruled Out Diagnosis"));
         }).map(function (diagnosis) {
             if (diagnosis.concept.display == "Non-coded Diagnosis") {
                 return diagnosis.value;
