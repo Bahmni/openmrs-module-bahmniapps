@@ -13,20 +13,27 @@ angular.module("bahmni.mfe.ipd", [
   "bahmni.common.domain",
 ]);
 
+
+/** MFE component 1: IpdDashboard 
+ *================================================= */
+
+/** Step 1: create a react2angular wrapper for the component */
 angular
   .module("bahmni.mfe.ipd")
   .component("mfeIpdDashboardRemote", react2angular(IpdDashboard));
 
+/** Step 2: create a controller to pass hostData and hostApi */
 function ipdDashboardController($rootScope, $scope, confirmBox) {
-  // manage the controller here
-  $scope.dashboardOptions = {
+
+  // Use hostData to pass data from bahmni to the micro-frontend component
+  $scope.hostData = {
     patient: {
       uuid: "--- DUMMY UUID FOR TESTING FROM HOST ---",
     },
   };
 
-  console.log("Setting up the new host controller");
-  $scope.hostInterface = {
+  // Use hostApi to provide callbacks to the micro-frontend component
+  $scope.hostApi = {
     onConfirm(event) {
       const dialogScope = {
         message:
@@ -46,8 +53,10 @@ function ipdDashboardController($rootScope, $scope, confirmBox) {
 }
 ipdDashboardController.$inject = ["$rootScope", "$scope", "confirmBox"];
 
+/** Step 3: bind the controller to the component by creating a new wrapper component */
 angular.module("bahmni.mfe.ipd").component("mfeIpdDashboard", {
   controller: ipdDashboardController,
   template:
-    '<mfe-ipd-dashboard-remote dashboard-options="dashboardOptions" host-interface="hostInterface"></mfe-ipd-dashboard-remote>',
+    '<mfe-ipd-dashboard-remote host-data="hostData" host-api="hostApi"></mfe-ipd-dashboard-remote>',
 });
+/** ================= End of component 1 ==========================  */

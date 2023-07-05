@@ -363,7 +363,7 @@
   "CHIEF_COMPLAINT_CODED_KEY": "Chief Complaint Coded",
   "SIGN_SYMPTOM_DURATION_KEY": "Sign/symptom duration",
   "CHIEF_COMPLAINT_DURATION_UNIT_KEY": "Chief Complaint Duration",
-  "DASHBOARD_TAB_IPD_KEY": "IPD",
+  "DASHBOARD_TAB_IPD_DEMO_KEY": "IPD demo",
   "FALSE_POSITIVE_ALERT": "The alert triggered, but it was a false positive and no action is needed.",
   "NOT_APPLICABLE_TO_THE_PATIENT": "The alert does not apply to the patient in question.",
   "ALREADY_RESOLVED_BY_MEDICATION_ADJUSTMENT": "The alert was previously resolved by adjusting the patient's medication.",
