@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .controller('otCalendarController', ['$scope', '$rootScope', '$q', '$interval', 'spinner', 'locationService', 'surgicalAppointmentService', '$timeout', 'appService', 'surgicalAppointmentHelper',
-        function ($scope, $rootScope, $q, $interval, spinner, locationService, surgicalAppointmentService, $timeout, appService, surgicalAppointmentHelper) {
+    .controller('otCalendarController', ['$scope', '$rootScope', '$q', '$interval', '$state', 'spinner', 'locationService', 'surgicalAppointmentService', '$timeout', 'appService', 'surgicalAppointmentHelper',
+        function ($scope, $rootScope, $q, $interval, $state, spinner, locationService, surgicalAppointmentService, $timeout, appService, surgicalAppointmentHelper) {
             var updateCurrentDayTimeline = function () {
                 $scope.currentTimeLineHeight = heightPerMin * Bahmni.Common.Util.DateUtil.diffInMinutes($scope.calendarStartDatetime, new Date());
             };
@@ -68,7 +68,9 @@ angular.module('bahmni.ot')
                 }
                 if (!$scope.otNotesField) {
                     $scope.emptyNoteError = true;
+                    return;
                 }
+                $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
             };
 
             $scope.noteForTheDay = ''; // "Note";
