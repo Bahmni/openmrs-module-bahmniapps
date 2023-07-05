@@ -26,15 +26,27 @@
       box-sizing: border-box;
       text-align: center;
       float: left;
-      border-bottom: .5px solid lightgrey;
       padding: 10px 0;
       font-family: OpenSansSemiBold;
     }
   }
+  .error{
+    color: #da1e28;
+    padding-top: 5px;
+  }
+  .notesTab{
+    top: 36px;
+    left: 80px;
+    width: 94%;
+    height: 30px;
+    position: absolute;
+    color: #161616;
+    border-radius: 4px;
+  }
   .calendar-time-container {
     clear: left;
     position: absolute;
-    top: 36px;
+    top: 75px;
     background: #fff;
     z-index: 19;
 
@@ -57,7 +69,7 @@
         left: 80px;
         overflow: auto;
         padding-bottom: 5px;
-        top: 36px;
+        top: 75px;
         width: calc(100% - 90px);
         right: 0;
       }

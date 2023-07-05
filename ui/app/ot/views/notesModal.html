@@ -1,0 +1,25 @@
+<div class="identifier-ui" ng-if="isModalVisible">
+    <div class="identifier-iframe">
+        <a class="close" style="padding-right: 20px" ng-click="closeNotes()">&times;</a>
+        <div style="padding: 20px">
+            <h6>{{'NOTE_TITLE' | translate}}</h6>
+            <textarea rows="5" id="notesID" class="notes-text-area" ng-model="otNotesField" ng-blur="setNotes(otNotesField)"></textarea>
+            <div ng-if="emptyNoteError" class="error">
+                {{'EMPTY_NOTES_ERROR' | translate }}
+            </div>
+            <div style="display: inline-block; margin-right: 20px">
+                <h6 style="color: black">{{'FROM' | translate}}</h6>
+                <input class="calendar-day-input ng-pristine ng-untouched ng-valid ng-valid-required" id="notesStartDate" type="date" ng-model="notesStartDate" required="" ng-change="setNotesStartDate(notesStartDate)"  ng-disabled="isEdit">
+            </div>
+            <div style="display: inline-block">
+                <h6 style="color: black">{{'TO' | translate}}</h6>
+                <input class="calendar-day-input ng-pristine ng-untouched ng-valid ng-valid-required" id="notesEndDate" type="date" ng-model="notesEndDate" required="" ng-change="setNotesEndDate(notesEndDate)" ng-disabled="isEdit">
+            </div>
+            <div ng-if="startDateBeforeEndDateError" class="error">
+                {{'FROM_DATE_BEFORE_TO_DATE_ERROR' | translate}}
+            </div>
+        </div>
+        <button class="cancel-button" ng-click="closeNotes()">{{'OT_CANCEL_KEY' | translate}}</button>
+        <button class="save-button" ng-click="saveNotes()">{{'SAVE' | translate}}</button>
+    </div>
+</div>
