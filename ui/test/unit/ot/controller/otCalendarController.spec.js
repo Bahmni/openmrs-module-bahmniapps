@@ -90,6 +90,7 @@ describe("otCalendarController", function () {
         controller('otCalendarController', {
             $scope: scope,
             locationService: locationService,
+            $state: state,
             $q: q,
             spinner: spinner,
             surgicalAppointmentService: surgicalAppointmentService,

@@ -3,7 +3,7 @@
         <div class="weekly-heading-cell" ng-repeat="index in [0, 1, 2, 3, 4, 5, 6]">
             <p class="heading-ot-date">{{weekStartDate | addDays: index | bahmniDateTimeWithFormat: 'Do MMM, ddd'}}</p>
             <div class="note" ng-if="::(!notesForWeek[index])" ng-style="styleForBlock(index)" ng-click="showNotesPopup(weekStartDate, index)"></div>
-            <div ng-if="::notesForWeek[index]" class="notes-text" ng-click="showNotesPopupEdit(weekStartDate, index, notesForWeek[index])">
+            <div ng-if="::notesForWeek[index]" class="notes-text" ng-click="showNotesPopupEdit(weekStartDate, index, notesForWeek[index])" title="{{notesForWeek[index]}}">
                 {{notesForWeek[index]}}
             </div>
         </div>

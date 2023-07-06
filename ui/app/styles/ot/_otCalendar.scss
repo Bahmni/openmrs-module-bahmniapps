@@ -44,6 +44,12 @@
     border-radius: 4px;
     overflow: scroll;
   }
+  .notes-text{
+    background-color: #EDF5FF;
+    padding: 5px;
+    height: 16px;
+    border: 1px solid #0043CE;
+  }
   .calendar-time-container {
     clear: left;
     position: absolute;
@@ -320,4 +326,5 @@
     padding: 0.3%;
     border-radius: 4px;
     position: absolute;
+    z-index: 20;
 }

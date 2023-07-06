@@ -80,6 +80,14 @@ angular.module('bahmni.ot')
             };
 
             var heightPerMin = 120 / $scope.dayViewSplit;
+            var showToolTipForNotes = function () {
+                $('.notes-text').tooltip({
+                    content: function () {
+                        return $(this).prop('title');
+                    },
+                    track: true
+                });
+            };
             var init = function () {
                 var dayStart = ($scope.dayViewStart || Bahmni.OT.Constants.defaultCalendarStartTime).split(':');
                 var dayEnd = ($scope.dayViewEnd || Bahmni.OT.Constants.defaultCalendarEndTime).split(':');
@@ -119,6 +127,7 @@ angular.module('bahmni.ot')
                             });
                         });
                         $scope.blockedOtsOfTheWeek = getBlockedOtsOfTheWeek();
+                        showToolTipForNotes();
 
                         var setOTView = function (providerToggle) {
                             $scope.providerToggle = providerToggle;
