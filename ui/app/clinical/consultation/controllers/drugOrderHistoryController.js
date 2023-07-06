@@ -14,7 +14,12 @@ angular.module('bahmni.clinical')
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
 
-            
+            if ($scope.enableIPDFeature) {
+                $scope.toggleCareSetting = function (drugOrder) {
+                    drugOrder.careSetting = drugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient ? Bahmni.Clinical.Constants.careSetting.outPatient : Bahmni.Clinical.Constants.careSetting.inPatient;
+                };
+            }
+
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];
                 createPrescribedDrugOrderGroups();
@@ -81,17 +86,6 @@ angular.module('bahmni.clinical')
                 });
                 $scope.consultation.drugOrderGroups = $scope.consultation.drugOrderGroups.concat(drugOrderGroups);
                 $scope.consultation.drugOrderGroups = _.sortBy($scope.consultation.drugOrderGroups, 'visitStartDate').reverse();
-                $scope.consultation.drugOrderGroups.map(function (drugOrderGroup) {
-                    drugOrderGroup.drugOrders = drugOrderGroup.drugOrders.map(function (drugOrder) {
-                        if (drugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient) {
-                            drugOrder.isIPDDrug = true;
-                        }
-                        else {
-                            drugOrder.isIPDDrug = false;
-                        }
-                        return drugOrder;
-                    });
-                });
             };
 
             $scope.stoppedOrderReasons = treatmentConfig.stoppedOrderReasonConcepts;
