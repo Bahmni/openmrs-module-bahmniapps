@@ -1,7 +1,8 @@
 'use strict';
 
 describe("otCalendarController", function () {
-    var scope, controller, q, spinner, state;
+    var scope, controller, q, spinner;
+    var state = jasmine.createSpyObj('$state', ['go']);
     var locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
     spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgicalBlocksInDateRange', 'getSurgeons']);
@@ -241,4 +242,63 @@ describe("otCalendarController", function () {
         });
     });
 
+    describe('notes', function () {
+        it('should set startDate and endDate to selectedDate when showNotesPopup is called', function () {
+            createController();
+            const weekStartDate = moment('2023-07-02').toDate();
+            const expectedDate = moment('2023-07-05').toDate();
+            scope.showNotesPopup(weekStartDate, 3);
+            expect(scope.notesStartDate).toEqual(expectedDate);
+            expect(scope.notesEndDate).toEqual(expectedDate);
+        });
+        it('should set startDate and endDate to selectedDate when we try to edit existing note', function () {
+            createController();
+            const weekStartDate = moment('2023-07-02').toDate();
+            const expectedDate = moment('2023-07-05').toDate();
+            scope.showNotesPopupEdit(weekStartDate, 3, 'note to show');
+            expect(scope.notesStartDate).toEqual(expectedDate);
+            expect(scope.notesEndDate).toEqual(expectedDate);
+        });
+        it('should clear startDate and endDate notes popup is closed', function () {
+            createController();
+            const weekStartDate = moment('2023-07-02').toDate();
+            const expectedDate = moment('2023-07-05').toDate();
+            scope.showNotesPopupEdit(weekStartDate, 3, 'note to show');
+            expect(scope.notesStartDate).toEqual(expectedDate);
+            expect(scope.notesEndDate).toEqual(expectedDate);
+            scope.closeNotes();
+            expect(scope.notesStartDate).toEqual(undefined);
+            expect(scope.notesEndDate).toEqual(undefined);
+            expect(scope.otNotesField).toEqual('');
+        });
+        it('should set the notes popup fields and save', function () {
+            createController();
+            const viewDate = moment('2023-07-05').toDate();
+            scope.setNotesStartDate(viewDate);
+            scope.setNotesEndDate(viewDate);
+            scope.setNotes('note to show');
+            scope.saveNotes();
+            expect(scope.notesStartDate).toEqual(viewDate);
+            expect(scope.notesEndDate).toEqual(viewDate);
+            expect(scope.otNotesField).toEqual('note to show');
+        });
+        it('should set error field for empty notes when we try to save empty notes', function () {
+            createController();
+            scope.setNotes('');
+            scope.saveNotes();
+            expect(scope.emptyNoteError).toEqual(true);
+        });
+        it('should set error field when start Date is before endDate', function () {
+            createController();
+            scope.setNotesStartDate(moment('2023-07-05').toDate());
+            scope.setNotesEndDate(moment('2023-07-02').toDate());
+            scope.saveNotes();
+            expect(scope.startDateBeforeEndDateError).toEqual(true);
+        });
+        it('should get styling of last block', function () {
+            createController();
+            const style = scope.styleForBlock(6);
+            expect(style).toEqual({ 'border-right': '.5px solid lightgrey'});
+        });
+    });
 });
