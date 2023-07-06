@@ -35,9 +35,9 @@
     padding-top: 5px;
   }
   .notesTab{
-    top: 36px;
+    top: 40px;
     left: 80px;
-    width: 94%;
+    width: calc(99% - 90px);
     height: 30px;
     position: absolute;
     color: #161616;
