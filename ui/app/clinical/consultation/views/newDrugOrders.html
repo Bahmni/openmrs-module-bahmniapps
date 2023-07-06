@@ -1,8 +1,6 @@
 <section class="section-grid new-drug-order" ng-if="treatments.length > 0">
     <div class="section-title-wrapper clearfix">
         <h2 class="section-title fl">{{ ::'MEDICATION_NEW_PRESCRIPTION' | translate}}</h2>
-        <button class="ipd-button" ng-show="enableIPDFeature && !showBulkChangeToggle" ng-click="handleIPDCheckboxes()">{{ ::'IPD_KEY' | translate }}
-        </button>
         <button class="secondary-button fr bulk-toggle-btn" ng-show="!showBulkChangeToggle && showBulkChangeDuration"
                 ng-click="bulkChangeDuration()">{{ ::'MEDICATION_CHANGE_DURATION_BUTTON' | translate}}
         </button>
@@ -31,7 +29,6 @@
                 <div class="form">
                     <input type="checkbox" ng-show="showBulkChangeToggle" ng-model="newTreatment.durationUpdateFlag"
                     class="treatmentChkBox"/>
-                    <input type="checkbox" ng-show="enableIPDFeature && showIPDCheckbox" ng-model="newTreatment.isIPDDrug" class="treatmentChkBox"/>
                     <div class="drug-dosage">
                         <strong class="drug-name">{{newTreatment.getDisplayName()}}</strong>
                         <div class="dosage-frequency">
@@ -44,6 +41,10 @@
             </div>
             <div class="button-group-wrapper">
                 <div class="button-group">
+                    <button ng-show="enableIPDFeature" class="ipd-btn" ng-click="toggleCareSetting(newTreatment)">
+                        <i class="fa fa-check" ng-show="newTreatment.careSetting === 'INPATIENT'"></i>
+                        {{ ::'IPD_BUTTON' | translate}}
+                    </button>
                     <button ng-click="edit(newTreatment, $index)" ng-disabled="showBulkChangeToggle"><i class="fa fa-edit"></i>
                     </button>
                     <button ng-confirm-click="remove($index)"

@@ -14,30 +14,7 @@ angular.module('bahmni.clinical')
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
 
-            if ($scope.enableIPDFeature) {
-                $scope.showIPDCheckbox = false;
-                $scope.toggleIPDButton = false;
-
-                $scope.handleIPDCheckboxes = function () {
-                    $scope.toggleIPDButton = !$scope.toggleIPDButton;
-                    $scope.showIPDCheckbox = !$scope.showIPDCheckbox;
-                };
-
-                $scope.toggleIsIPDDrug = function (drugOrder) {
-                    $scope.consultation.drugOrderGroups.forEach(function (group) {
-                        group.drugOrders.forEach(function (order) {
-                            if (order.uuid === drugOrder.uuid) {
-                                if (order.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient) {
-                                    order.careSetting = Bahmni.Clinical.Constants.careSetting.outPatient;
-                                }
-                                else if (order.careSetting === Bahmni.Clinical.Constants.careSetting.outPatient) {
-                                    order.careSetting = Bahmni.Clinical.Constants.careSetting.inPatient;
-                                }
-                            }
-                        });
-                    });
-                };
-            }
+            
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];
                 createPrescribedDrugOrderGroups();

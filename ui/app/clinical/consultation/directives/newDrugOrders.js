@@ -5,18 +5,8 @@ angular.module('bahmni.clinical')
         var controller = function ($scope, $rootScope, appService) {
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
             if ($scope.enableIPDFeature) {
-                $scope.showIPDCheckbox = false;
-                if ($scope.treatments !== undefined && $scope.treatments.length > 0) {
-                    $scope.treatments.forEach(function (treatment) {
-                        if (treatment.isIPDDrug === undefined) {
-                            treatment.isIPDDrug = false;
-                        }
-                    });
-                }
-
-                $scope.handleIPDCheckboxes = function () {
-                    $scope.showIPDCheckbox = !$scope.showIPDCheckbox;
-                    return $scope.showIPDCheckbox;
+                $scope.toggleCareSetting = function (newTreatment) {
+                    newTreatment.careSetting = newTreatment.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient ? Bahmni.Clinical.Constants.careSetting.outPatient : Bahmni.Clinical.Constants.careSetting.inPatient;
                 };
             }
             $scope.edit = function (drugOrder, index) {

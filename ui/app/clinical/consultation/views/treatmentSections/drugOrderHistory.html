@@ -15,10 +15,6 @@
                     <i  ng-init="allOrderAttributesOfNameSet(drugOrderGroup,orderAttribute.name)" class="fa fa-check" ng-show="drugOrderGroup[orderAttribute.name].selected" ></i>
                     {{orderAttribute.name}} All
                 </button>
-                <button ng-show="enableIPDFeature && drugOrderGroup.drugOrders.length" class="secondary-button ipd-btn fr" ng-click="handleIPDCheckboxes()">
-                    <i class="fa fa-check" ng-show="toggleIPDButton"></i>
-                    {{ :: 'IPD_KEY' | translate }}
-                </button>
                 <div class="inpage-tab-panel">
 					<div class="inpage-tab-content">
                         <p ng-if="!drugOrderGroup.drugOrders.length" class="placeholder-text">{{ ::'MEDICATION_NO_RECENT_TREATMENT' | translate }}</p>
@@ -32,15 +28,14 @@
                                             <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length">{{drugOrder.getFrequency()}} | </span> 
                                             {{drugOrder.getDurationAndDurationUnits()}}
                                         </div>
-                                        <div class="ipd">
-                                            <span ng-show="enableIPDFeature && drugOrder.careSetting === 'INPATIENT'">
-                                                <h3>{{ ::'IPD_KEY' | translate }}</h3>
-                                            </span>
-                                        </div>
                                     </div>
                                 </div>
 								<div class="button-group-wrapper">
                                     <div class="button-group">
+                                        <button ng-show="enableIPDFeature" class="ipd-btn" ng-click="toggleCareSetting()">
+                                            <i class="fa fa-check" ng-show="drugOrder.careSetting === 'INPATIENT'"></i>
+                                            {{ ::'IPD_BUTTON' | translate}}
+                                        </button>
                                         <button ng-repeat="orderAttribute in drugOrder.orderAttributes" show-if-privilege="{{dispensePrivilege}}"
                                                 class="dispense-btn" ng-disabled="shouldBeDisabled(drugOrder,orderAttribute)"
                                                 ng-click="updateOrderAttribute(drugOrder,orderAttribute)">
