@@ -88,6 +88,13 @@
         <script src="../components/bahmni-form-controls/helpers.js"></script>
         <script src="../components/bahmni-form-controls/bundle.js"></script>
 
+
+        <!-- polyfill to add angular feature which will allow easy loading of mfe into angular component -->
+        <script src="../common/mfe-build/mfe_polyfills_angular_1_4.min.js"></script>
+
+        <!-- load the ipd mfe as angular components -->
+        <script src="../common/mfe-build/ipd.min.js"></script>
+
         <!-- build:js clinical.min.js -->
         <script src="../common/constants.js"></script>
         <script src="../components/lodash/dist/lodash.min.js"></script>
@@ -319,12 +326,6 @@
         <script src="../common/domain/mappers/patientProgramMapper.js"></script>
         <script src="../common/uicontrols/concept-dropdown/directives/conceptDropdown.js"></script>
         <script src="../common/domain/services/programService.js"></script>
-
-        <!-- polyfill to add angular feature which will allow easy loading of mfe into angular component -->
-        <script src="../common/mfe-build/mfe_polyfills_angular_1_4.min.js"></script>
-
-        <!-- load the ipd mfe as angular components -->
-        <script src="../common/mfe-build/ipd.min.js"></script>
 
 
 
