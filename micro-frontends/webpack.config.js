@@ -18,7 +18,7 @@ module.exports = {
     mfe_polyfills_angular_1_4: "./src/polyfill.js",
   },
   output: {
-    path: path.resolve(__dirname, "../ui/app/common/mfe-build"),
+    path: path.resolve(__dirname, "../ui/app/micro-frontends-dist"),
     filename: "[name].min.js",
     clean: true,
   },
