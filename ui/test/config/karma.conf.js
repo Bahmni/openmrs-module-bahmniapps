@@ -9,14 +9,10 @@ module.exports = function (config) {
         files: [
             {pattern: 'test/data/*.json', watched: true, served: true, included: false},
             {pattern: 'app/images/*', included: false, served: true},
-            // angular core
             'app/components/q/q.js',
             'app/components/angular/angular.js',
-            'app/common/mfe-build/mfe_polyfills_angular_1_4.min.js',
-            // react core
-            'app/components/react/react.production.min.js',
-            'app/components/react-dom/react-dom.production.min.js',
-            // other stuff
+            // mock out all the micro-frontends
+            'test/__mocks__/micro-frontends.js',
             'app/components/ngDialog/js/ngDialog.js',
             'app/components/angular-route/angular-route.js',
             'app/components/angular-sanitize/angular-sanitize.js',
@@ -52,7 +48,6 @@ module.exports = function (config) {
             'app/components/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
             'app/components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
             'app/components/hustle/hustle.js',
-            'app/components/mfe-build/ipd.min.js',
             'app/lib/modernizr.custom.80690.js',
             'app/lib/angular-workers/dist/angular-workers.js',
             'app/common/constants.js',

@@ -19,7 +19,7 @@ ui/cacheAndroidDist
 ui/cacheChromeDist
 ui/app/styles/**/*.css
 ui/app/styles/*.css
-ui/app/common/mfe-build
+ui/app/micro-frontends-dist
 **/.DS_Store
 test_out
 omod/src/main/webapp/*
@@ -30,5 +30,5 @@ node_modules
 **/.idea/*
 ui/common.background.min.js
 
-micro-frontends/dist
 micro-frontends/node_modules
+ui/app/micro-frontends-dist

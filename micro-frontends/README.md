@@ -14,7 +14,7 @@ $ yarn install
 $ yarn build
 ```
 
-The build output is generated into `../ui/app/common/mfe-build/`. This is done so that the 
+The build output is generated into `../ui/app/micro-frontends-dist/`. This is done so that the 
 main bahmni-apps can reference the built files from there
 
 
