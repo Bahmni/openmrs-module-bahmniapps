@@ -19,6 +19,34 @@ angular.module('bahmni.ot')
                     return { 'border-right': '.5px solid lightgrey'};
                 }
             };
+            var setValidStartDate = function (viewDate) {
+                const currentDate = new Date(viewDate);
+                $scope.validStartDate = $scope.weekDates[0];
+                while ( currentDate > new Date($scope.weekDates[0])) {
+                    const prev = new Date(currentDate);
+                    currentDate.setDate(currentDate.getDate() - 1);
+                    if ($scope.notesForWeek[currentDate.getDate()]) {
+                        $scope.validStartDate = prev;
+                        break;
+                    }
+                }
+            };
+            var setValidEndDate = function (viewDate) {
+                const currentDate = new Date(viewDate);
+                $scope.validEndDate = $scope.weekDates[6];
+                while ( currentDate < new Date($scope.weekDates[6])) {
+                    const prev = new Date(currentDate);
+                    currentDate.setDate(currentDate.getDate() + 1);
+                    if ($scope.notesForWeek[currentDate.getDate()]) {
+                        $scope.validEndDate = prev;
+                        break;
+                    }
+                }
+            };
+            $scope.getNotesForDay = function (weekStartDate, index) {
+                const date = new Date(weekStartDate);
+                return $scope.notesForWeek[date.getDate() + index];
+            }
             $scope.showNotesPopup = function (weekStartDate, addIndex) {
                 const currentDate = new Date(weekStartDate);
                 if (addIndex === undefined) {
@@ -28,6 +56,11 @@ angular.module('bahmni.ot')
                 $scope.notesStartDate = currentDate;
                 $scope.notesEndDate = currentDate;
                 $scope.isModalVisible = true;
+                $scope.isDayView = $state.weekOrDay === 'day';
+                if(!$scope.isDayView) {
+                    setValidStartDate(currentDate);
+                    setValidEndDate(currentDate);
+                }
             };
             $scope.showNotesPopupEdit = function (weekStartDate, addIndex, note) {
                 const currentDate = new Date(weekStartDate);
@@ -47,11 +80,13 @@ angular.module('bahmni.ot')
                 $scope.isEdit = false;
             };
             $scope.setNotesEndDate = function (date) {
+                $scope.dateOutOfRangeError = date === undefined;
                 $scope.startDateBeforeEndDateError = date < $scope.notesStartDate;
                 $scope.notesEndDate = date;
             };
 
             $scope.setNotesStartDate = function (date) {
+                $scope.dateOutOfRangeError = date === undefined;
                 $scope.startDateBeforeEndDateError = date > $scope.notesEndDate;
                 $scope.notesStartDate = date;
             };
@@ -63,7 +98,7 @@ angular.module('bahmni.ot')
                 }
             };
             $scope.saveNotes = function () {
-                if ($scope.startDateBeforeEndDateError) {
+                if ($scope.startDateBeforeEndDateError || $scope.dateOutOfRangeError) {
                     return;
                 }
                 if (!$scope.otNotesField) {
@@ -75,8 +110,8 @@ angular.module('bahmni.ot')
 
             $scope.noteForTheDay = ''; // "Note";
             $scope.notesForWeek = {
-                // 0: 'note for day 1',
-                // 2: 'note for day 3'
+                // 2: 'note for 2nd July',
+                // 4: 'note for 3rd July'
             };
 
             var heightPerMin = 120 / $scope.dayViewSplit;
