@@ -29,6 +29,30 @@ Bahmni.OT.SurgicalBlockMapper = function () {
         return mappedAttributes;
     };
 
+    var mapPrimaryDiagnoses = function (diagnosisObs) {
+        var uniqueDiagnoses = new Map();
+        _.each(diagnosisObs, function (diagnosis) {
+            var existingDiagnosis = uniqueDiagnoses.get(diagnosis.display);
+            if (existingDiagnosis) {
+                if (existingDiagnosis.obsDatetime < diagnosis.obsDatetime) {
+                    uniqueDiagnoses.set(diagnosis.display, diagnosis);
+                }
+            } else {
+                uniqueDiagnoses.set(diagnosis.display, diagnosis);
+            }
+        });
+        var primaryDiagnosesNames = _.filter(Array.from(uniqueDiagnoses.values()), function (diagnosis) {
+            var obsGroupList = diagnosis.obsGroup.display.split(": ")[1].split(", ");
+            return _.includes(obsGroupList, "Primary") && !(_.includes(obsGroupList, "Ruled Out Diagnosis"));
+        }).map(function (diagnosis) {
+            if (diagnosis.concept.display == "Non-coded Diagnosis") {
+                return diagnosis.value;
+            }
+            return diagnosis.value.display;
+        }).join(", ");
+        return primaryDiagnosesNames;
+    };
+
     var mapSurgicalAppointment = function (openMrsSurgicalAppointment, attributeTypes, surgeonsList) {
         var surgicalAppointmentAttributes = mapOpenMrsSurgicalAppointmentAttributes(openMrsSurgicalAppointment.surgicalAppointmentAttributes, surgeonsList);
         return {
@@ -43,7 +67,8 @@ Bahmni.OT.SurgicalBlockMapper = function () {
             status: openMrsSurgicalAppointment.status,
             bedLocation: (openMrsSurgicalAppointment.bedLocation || ""),
             bedNumber: (openMrsSurgicalAppointment.bedNumber || ""),
-            surgicalAppointmentAttributes: new Bahmni.OT.SurgicalBlockMapper().mapAttributes(surgicalAppointmentAttributes, attributeTypes)
+            surgicalAppointmentAttributes: new Bahmni.OT.SurgicalBlockMapper().mapAttributes(surgicalAppointmentAttributes, attributeTypes),
+            primaryDiagnosis: mapPrimaryDiagnoses(openMrsSurgicalAppointment.patientObservations) || ""
         };
     };
 
