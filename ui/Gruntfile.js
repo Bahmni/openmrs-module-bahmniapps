@@ -20,7 +20,8 @@ module.exports = function (grunt) {
         'components/ngDialog/css/ngDialog-theme-plain.min.css',
         'components/ng-tags-input/ng-tags-input.bootstrap.min.css',
         'components/ng-tags-input/ng-tags-input.min.css',
-        'components/jquery-ui/themes/smoothness/jquery-ui.min.css'
+        'components/jquery-ui/themes/smoothness/jquery-ui.min.css',
+        'micro-frontends-dist/ipd.min.css'
     ];
 
     var libraryJSFiles = [
@@ -62,7 +63,10 @@ module.exports = function (grunt) {
         'components/angular-route/angular-route.min.js',
         'components/crypto-js/crypto-js.js',
         'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
-        'components/angular-ivh-treeview/dist/ivh-treeview.min.js'
+        'components/angular-ivh-treeview/dist/ivh-treeview.min.js',
+
+        'micro-frontends-dist/mfe_polyfills_angular_1_4.min.js',
+        'micro-frontends-dist/ipd.min.js'
     ];
 
     try {
@@ -483,7 +487,7 @@ module.exports = function (grunt) {
             files: {
                 expand: true,
                 cwd: '<%= yeoman.dist %>',
-                src: ['**/*.min.*.js'],
+                src: ['**/*.min.*.js', '!micro-frontends-dist/**/*.js'],
                 dest: '<%= yeoman.dist %>'
             }
         },
