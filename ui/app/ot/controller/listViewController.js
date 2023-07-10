@@ -27,8 +27,8 @@ angular.module('bahmni.ot')
                 var attributesRelatedToBed = [{heading: 'Status Change Notes', sortInfo: 'notes'},
                     {heading: 'Bed Location', sortInfo: 'bedLocation'},
                     {heading: 'Bed ID', sortInfo: 'bedNumber'}];
-
-                return listViewAttributes.concat(getSurgicalAttributesTableInfo(), attributesRelatedToBed);
+                var primaryDiagnosisInfo = [{heading: 'Primary Diagnoses', sortInfo: 'patientObservations'}];
+                return listViewAttributes.concat(getSurgicalAttributesTableInfo(), attributesRelatedToBed, primaryDiagnosisInfo);
             }
 
             function getFilteredSurgicalAttributeTypes () {
