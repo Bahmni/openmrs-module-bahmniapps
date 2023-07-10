@@ -5,7 +5,7 @@
         <table ng-repeat="drugOrderSection in ::drugOrderSections | orderBy: drugOrderSection.visitDate"
                class="repeated-table drug-order-table">
             <thead>
-            <th colspan="4" ng-if="::!isOtherActiveSection(drugOrderSection.visitDate)">
+            <th colspan="5" ng-if="::!isOtherActiveSection(drugOrderSection.visitDate)">
                 {{::'VISIT_ON_TRANSLATION_KEY'|translate}} {{::drugOrderSection.visitDate | bahmniDate}}
                 <div class="share-prescription-icon" ng-if="::!params.visitUuids" bm-pop-over autoclose="true" title="{{'CLINICAL_SHARE_PRESCRIPTION_KEY'|translate}}">
                     <i class="fa fa-share-alt" bm-pop-over-trigger>

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'activeDrugOrders',
+    .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'activeDrugOrders', 'appService',
         'treatmentConfig', 'treatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope',
-        function ($scope, $filter, $stateParams, activeDrugOrders, treatmentConfig, treatmentService, spinner,
+        function ($scope, $filter, $stateParams, activeDrugOrders, appService, treatmentConfig, treatmentService, spinner,
                    drugOrderHistoryHelper, visitHistory, $translate, $rootScope) {
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
@@ -12,6 +12,13 @@ angular.module('bahmni.clinical')
             var prescribedDrugOrders = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
+            $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
+
+            if ($scope.enableIPDFeature) {
+                $scope.toggleCareSetting = function (drugOrder) {
+                    drugOrder.careSetting = drugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient ? Bahmni.Clinical.Constants.careSetting.outPatient : Bahmni.Clinical.Constants.careSetting.inPatient;
+                };
+            }
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];

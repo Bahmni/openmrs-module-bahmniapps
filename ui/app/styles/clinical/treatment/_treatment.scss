@@ -169,6 +169,7 @@
             }
         }
 
+        button.ipd-btn,
         button.dispense-btn {
             font-family: OpenSansBold;
             color: $bahmniTertiaryColor;
@@ -260,6 +261,14 @@
 
     .new-drug-order {
         margin: 0px 0 10px;
+    }
+
+    #new-drug-orders {
+        .treatmentChkBox {
+            float: left;
+            margin-left: revert;
+            margin-top: 9px;
+        }
     }
 
     .highlight {
