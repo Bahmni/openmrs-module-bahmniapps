@@ -22,7 +22,7 @@ angular.module('bahmni.ot')
             var setValidStartDate = function (viewDate) {
                 const currentDate = new Date(viewDate);
                 $scope.validStartDate = $scope.weekDates[0];
-                while ( currentDate > new Date($scope.weekDates[0])) {
+                while (currentDate > new Date($scope.weekDates[0])) {
                     const prev = new Date(currentDate);
                     currentDate.setDate(currentDate.getDate() - 1);
                     if ($scope.notesForWeek[currentDate.getDate()]) {
@@ -34,7 +34,7 @@ angular.module('bahmni.ot')
             var setValidEndDate = function (viewDate) {
                 const currentDate = new Date(viewDate);
                 $scope.validEndDate = $scope.weekDates[6];
-                while ( currentDate < new Date($scope.weekDates[6])) {
+                while (currentDate < new Date($scope.weekDates[6])) {
                     const prev = new Date(currentDate);
                     currentDate.setDate(currentDate.getDate() + 1);
                     if ($scope.notesForWeek[currentDate.getDate()]) {
@@ -46,7 +46,7 @@ angular.module('bahmni.ot')
             $scope.getNotesForDay = function (weekStartDate, index) {
                 const date = new Date(weekStartDate);
                 return $scope.notesForWeek[date.getDate() + index];
-            }
+            };
             $scope.showNotesPopup = function (weekStartDate, addIndex) {
                 const currentDate = new Date(weekStartDate);
                 if (addIndex === undefined) {
@@ -57,7 +57,7 @@ angular.module('bahmni.ot')
                 $scope.notesEndDate = currentDate;
                 $scope.isModalVisible = true;
                 $scope.isDayView = $state.weekOrDay === 'day';
-                if(!$scope.isDayView) {
+                if (!$scope.isDayView) {
                     setValidStartDate(currentDate);
                     setValidEndDate(currentDate);
                 }
@@ -118,7 +118,8 @@ angular.module('bahmni.ot')
             var showToolTipForNotes = function () {
                 $('.notes-text').tooltip({
                     content: function () {
-                        return $(this).prop('title');
+                        var vm = (this);
+                        return $(vm).prop('title');
                     },
                     track: true
                 });
