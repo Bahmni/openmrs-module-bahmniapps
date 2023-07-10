@@ -18,6 +18,10 @@ Bahmni.Clinical.Constants = (function () {
         age: "Age",
         weight: "Weight"
     };
+    var careSetting = {
+        inPatient: "INPATIENT",
+        outPatient: "OUTPATIENT"
+    };
     var errorMessages = {
         discontinuingAndOrderingSameDrug: "DISCONTINUING_AND_ORDERING_SAME_DRUG_NOT_ALLOWED",
         incompleteForm: "INCOMPLETE_FORM_ERROR_MESSAGE",
@@ -71,7 +75,8 @@ Bahmni.Clinical.Constants = (function () {
         globalPropertyToFetchActivePatients: 'emrapi.sqlSearch.activePatients',
         adtPrivilege: "app:adt",
         adtForwardUrl: "../adt/#/patient/{{patientUuid}}/visit/{{visitUuid}}/",
-        certificateHeader: "Print Header"
+        certificateHeader: "Print Header",
+        careSetting: careSetting
     };
 })();
 

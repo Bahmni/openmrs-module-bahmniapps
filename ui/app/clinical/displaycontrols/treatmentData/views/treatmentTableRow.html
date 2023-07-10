@@ -14,6 +14,13 @@
     <td class="days" ng-if="::(!params.hideVisitDate)">
         <span class="fr">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
     </td>
+    <td class="add-to-drug-chart">
+        <span ng-if="enableIPDFeature && drugOrder.careSetting === 'INPATIENT'">
+            <a>{{ ::'ADD_TO_DRUG_CHART_KEY'|translate }}
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            </a>
+        </span>
+    </td>
 
     <td class="toggle-btn" toggle="drugOrder.showDetails" ng-if="::((params.showDetailsButton == true) && !drugOrder.additionalInstructions)">
         <button class="toggle fr">
@@ -34,7 +41,7 @@
     </td>
 </tr>
 <tr bm-show="drugOrder.showDetails" ng-if="::(!drugOrder.additionalInstructions && !params.hideVisitDate)">
-    <td colspan="4" class="notes inline-notes">
+    <td colspan="5" class="notes inline-notes">
         <div class="footer-note right">
             <span class="provider" ng-if="::params.showProvider">
                 <provider-directive creator-name="{{::drugOrder.creatorName}}" provider-name="{{::drugOrder.provider.name}}" provider-date="::drugOrder.effectiveStartDate"></provider-directive>
