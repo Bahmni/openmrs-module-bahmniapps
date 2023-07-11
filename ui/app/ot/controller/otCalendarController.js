@@ -97,13 +97,16 @@ angular.module('bahmni.ot')
                     $scope.emptyNoteError = false;
                 }
             };
-            $scope.saveNotes = function () {
+            $scope.saveNotes = async function () {
                 if ($scope.startDateBeforeEndDateError || $scope.dateOutOfRangeError) {
                     return;
                 }
                 if (!$scope.otNotesField) {
                     $scope.emptyNoteError = true;
                     return;
+                }
+                if($scope.isDayView){
+                    await surgicalAppointmentService.saveNoteForADay($scope.viewDate, $scope.otNotesField);
                 }
                 $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
             };
@@ -124,6 +127,11 @@ angular.module('bahmni.ot')
                     track: true
                 });
             };
+            const getNotes = function () {
+                if ($scope.weekOrDay === 'day') {
+                    return surgicalAppointmentService.getNotesForDay(new Date($scope.viewDate));
+                }
+            };
             var init = function () {
                 var dayStart = ($scope.dayViewStart || Bahmni.OT.Constants.defaultCalendarStartTime).split(':');
                 var dayEnd = ($scope.dayViewEnd || Bahmni.OT.Constants.defaultCalendarEndTime).split(':');
@@ -142,7 +150,8 @@ angular.module('bahmni.ot')
                 $scope.rows = $scope.getRowsForCalendar();
                 return $q.all([locationService.getAllByTag('Operation Theater'),
                     surgicalAppointmentService.getSurgicalBlocksInDateRange($scope.blocksStartDatetime, $scope.blocksEndDatetime, false, true),
-                    surgicalAppointmentService.getSurgeons()]).then(function (response) {
+                    surgicalAppointmentService.getSurgeons(),
+                    getNotes()]).then(function (response) {
                         $scope.locations = response[0].data.results;
                         $scope.weekDates = $scope.getAllWeekDates();
                         var surgicalBlocksByLocation = _.map($scope.locations, function (location) {
@@ -150,6 +159,12 @@ angular.module('bahmni.ot')
                                 return surgicalBlock.location.uuid === location.uuid;
                             });
                         });
+                        if (response[3] && response[3].status === 200) {
+                            $scope.noteForTheDay = response[3].data.noteText;
+                        }
+                        else {
+                            $scope.noteForTheDay = '';
+                        }
                         var providerNames = appService.getAppDescriptor().getConfigValue("primarySurgeonsForOT");
                         $scope.surgeons = surgicalAppointmentHelper.filterProvidersByName(providerNames, response[2].data.results);
                         var surgicalBlocksBySurgeons = _.map($scope.surgeons, function (surgeon) {

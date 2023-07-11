@@ -5,7 +5,6 @@ angular.module('bahmni.ot')
         return {
             restrict: 'E',
             require: '^otCalendar',
-            controller: "otCalendarController",
             templateUrl: "../ot/views/notesModal.html"
         };
     }]);

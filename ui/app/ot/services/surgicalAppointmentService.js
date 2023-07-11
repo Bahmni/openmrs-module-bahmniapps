@@ -66,4 +66,24 @@ angular.module('bahmni.ot')
                 withCredentials: true
             });
         };
+        this.getNotesForDay = function (date) {
+            return $http.get(Bahmni.OT.Constants.notesUrl, {
+                method: 'GET',
+                params: {
+                    noteType: 'OT Module',
+                    noteDate: date
+                },
+                withCredentials: true
+            });
+        };
+
+        this.saveNoteForADay = function (date, note) {
+            const payload = {
+                noteType: { name: "OT module" },
+                noteDate: date,
+                noteText: note
+            };
+            const headers = {"Accept": "application/json", "Content-Type": "application/json"};
+            return $http.post(Bahmni.OT.Constants.notesUrl, payload, headers);
+        };
     }]);
