@@ -2,32 +2,37 @@
 
 angular.module('bahmni.reports')
     .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, auditLogService) {
+        const format = _.values(reportService.getAvailableFormats());
+
         $scope.uploader = new FileUploader({
             url: Bahmni.Common.Constants.uploadReportTemplateUrl,
             removeAfterUpload: true,
             autoUpload: true
         });
-
         $scope.uploader.onSuccessItem = function (fileItem, response) {
             fileItem.report.reportTemplateLocation = response;
         };
-
-        $rootScope.default = _.isUndefined($rootScope.default) ? {reportsRequiringDateRange: {}, reportsNotRequiringDateRange: {}} : $rootScope.default;
+        $rootScope.default = _.isUndefined($rootScope.default) ? { reportsRequiringDateRange: { responseType: format[1] }, reportsNotRequiringDateRange: {} } : $rootScope.default;
         $scope.reportsDefined = true;
         $scope.enableReportQueue = appService.getAppDescriptor().getConfigValue("enableReportQueue");
-
         $scope.setDefault = function (item, header) {
             var setToChange = header === 'reportsRequiringDateRange' ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
             setToChange.forEach(function (report) {
                 report[item] = $rootScope.default[header][item];
             });
+            console.log('Persisted Default:', $rootScope.default[header][item]);
         };
 
+        console.log('Initial reportsRequiringDateRange.responseType:', $rootScope.default.reportsRequiringDateRange.responseType);
+        console.log('Initial reportsNotRequiringDateRange.responseType:', $scope);
+
         var isDateRangeRequiredFor = function (report) {
-            return _.find($rootScope.reportsRequiringDateRange, {name: report.name});
+            console.info("date chnge: ", report);
+            return _.find($rootScope.reportsRequiringDateRange, { name: report.name });
         };
 
         var validateReport = function (report) {
+            console.info("validate: ", report)
             if (!report.responseType) {
                 messagingService.showMessage("error", "Select format for the report: " + report.name);
                 return false;
@@ -71,7 +76,7 @@ angular.module('bahmni.reports')
         };
 
         var log = function (reportName) {
-            auditLogService.log(undefined, 'RUN_REPORT', {reportName: reportName}, "MODULE_LABEL_REPORTS_KEY");
+            auditLogService.log(undefined, 'RUN_REPORT', { reportName: reportName }, "MODULE_LABEL_REPORTS_KEY");
         };
 
         $scope.scheduleReport = function (report) {
@@ -97,6 +102,11 @@ angular.module('bahmni.reports')
             $scope.formats = _.pick(reportService.getAvailableFormats(), supportedFormats);
         };
 
+        var initializeDateRange = function () {
+            var supportedDateRange = appService.getAppDescriptor().getConfigValue("supportedDateRange") || _.keys(reportService.getAvailableDateRange());
+            $scope.dateRange = _.pick(reportService.getAvailableDateRange(), supportedDateRange);
+        };
+
         var initialization = function () {
             var reportList = appService.getAppDescriptor().getConfigForPage("reports");
             $rootScope.reportsRequiringDateRange = _.isUndefined($rootScope.reportsRequiringDateRange) ? _.values(reportList).filter(function (report) {
@@ -108,6 +118,7 @@ angular.module('bahmni.reports')
             $scope.reportsDefined = _.values(reportList).length > 0;
 
             initializeFormats();
+            initializeDateRange();
         };
 
         initialization();

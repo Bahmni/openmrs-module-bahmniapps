@@ -12,6 +12,7 @@
     "RUN_REPORT_BUTTON_KEY": "Run Report",
     "QUEUE_BUTTON_KEY": "Queue",
     "REPORT_FORMAT_KEY": "Format",
+    "REPORT_DATE_RANGE": "Select Date Range",
     "REPORTS_TITLE_KEY": "Reports",
     "REPORTS_TITLE_WITHOUT_DATE_RANGE_KEY": "Reports without Date Range",
     "REPORTS_MISSING_WARNING_MESSAGE_KEY": "New reports can be configured in a json file within openmrs/apps/reports/reports.json. Please consult the documentation for more information on configuring canned reports",

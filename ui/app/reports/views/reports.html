@@ -5,12 +5,21 @@
         <table class="alt-row form">
             <thead>
             <tr>
-                <th>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</th>
+                <th class="reports-container">
+                        <div>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</div>
+                        <div>
+                            {{::'REPORT_DATE_RANGE' | translate}}
+                            <select ng-model="default.reportsNotRequiringDateRange"
+                                    ng-options="type as label for (label , type) in ::dateRange">
+                            <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
+                            </select>
+                        </div>
+                </th>
                 <th class="reports-start-date">{{::'REPORTS_START_DATE_HEADER_KEY ' |translate}}
                     <span class="asterick">*</span>
                     <input ng-model="default.reportsRequiringDateRange.startDate" date-converter
                            class="form-field start-date" type="date" max="{{default.reportsRequiringDateRange.stopDate | date:'yyyy-MM-dd'}}"
-                           ng-change="setDefault('startDate', 'reportsRequiringDateRange')">
+                           ng-change="setDefault('startDate', 'reportsRequiringDateRange')">    
                 </th>
                 <th class="reports-stop-date">{{::'REPORTS_END_DATE_HEADER_KEY' |translate}}
                     <span class="asterick">*</span>
@@ -22,9 +31,9 @@
                     {{::'REPORT_FORMAT_KEY' | translate}}
                     <span class="asterick">*</span>
                     <select ng-model="default.reportsRequiringDateRange.responseType"
-                            ng-options="type as label for (label , type) in ::formats"
+                            ng-options="type as label for (label, type) in ::formats"
                             ng-change="setDefault('responseType', 'reportsRequiringDateRange')">
-                        <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
+                        <option value="">{{'CHOOSE_REPORT_FORMAT' | translate}}</option>
                     </select>
                 </th>
                 <th class="reports-action">
