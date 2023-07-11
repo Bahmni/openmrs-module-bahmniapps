@@ -12,6 +12,15 @@ angular.module('bahmni.reports')
             "CUSTOM EXCEL": "application/vnd.ms-excel-custom",
             "ODS": "application/vnd.oasis.opendocument.spreadsheet"
         };
+        var avaialbleDateRange = {
+            "Today": "today",
+            "This Week": "week",
+            "This Month": "month",
+            "This Quater": "quater",
+            "This Year": "year",
+            "Previous Week": "prev-week",
+            "Previous Month": "prev-month"
+        };
 
         var scheduleReport = function (report) {
             var url = Bahmni.Common.Constants.reportsUrl + "/schedule";
@@ -44,6 +53,9 @@ angular.module('bahmni.reports')
                 }
             });
         };
+        var getAvailableDateRange = function () {
+            return avaialbleDateRange;
+        };
         var deleteReport = function (id) {
             var url = Bahmni.Common.Constants.reportsUrl + "/delete/{0}";
             url = url.format(id);
@@ -63,6 +75,7 @@ angular.module('bahmni.reports')
             getFormatForMimeType: getFormatForMimeType,
             getMimeTypeForFormat: getMimeTypeForFormat,
             getAvailableFormats: getAvailableFormats,
+            getAvailableDateRange: getAvailableDateRange,
             scheduleReport: scheduleReport,
             getScheduledReports: getScheduledReports,
             deleteReport: deleteReport,

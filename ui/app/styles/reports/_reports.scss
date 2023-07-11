@@ -3,91 +3,128 @@
 		@include clearfix();
 		margin-top: 10px;
 	}
-	input[type="text"]{
-		width:12.5em;
+
+	input[type="text"] {
+		width: 12.5em;
 	}
+
 	table {
-		th, td {
+
+		th,
+		td {
 			font-size: 14px;
-			box-sizing:  border-box;
+			box-sizing: border-box;
 			padding: 5px;
 			vertical-align: top;
 			text-align: left;
-			border-right:none;
+			border-right: none;
 		}
+
 		thead th {
 			font-size: 16px;
 			border-bottom: 1px solid $lightGray;
-			input, select, button {
+
+			input,
+			select,
+			button {
 				font-size: 14px;
 			}
 		}
+
+		.reports-container {
+			display: flex;
+			align-items: center;
+			background-color: rgba(255, 152, 0, 0.94);
+		}
+
+		.reports-name {
+			flex: 1;
+		}
+
+		.reports-date-range {
+			flex: 1;
+			display: flex;
+			align-items: center;
+		}
+
 		.reports-start-date,
 		.reports-stop-date {
 			width: 170px;
 		}
+
 		.reports-format {
 			width: 200px;
 		}
+
 		.reports-action {
 			width: 150px;
-			padding-right:0;
+			padding-right: 0;
 		}
-		td.report-sort-date{
+
+		td.report-sort-date {
 			padding: 10px 5px;
 			color: #009384;
 			border: none;
-			font-family:$primaryBoldFont;
+			font-family: $primaryBoldFont;
 		}
-		td.reportStatus{
-			&--Queued{
+
+		td.reportStatus {
+			&--Queued {
 				color: rgba(255, 152, 0, 0.94);
 			}
-			&--Processing{
+
+			&--Processing {
 				color: #01BE24;
 			}
-			&--link a{
+
+			&--link a {
 				color: #0a5580;
 				text-decoration: underline;
 			}
-			&--error a{
+
+			&--error a {
 				color: red;
 				text-decoration: underline;
 			}
 		}
-		td button.delete-report{
+
+		td button.delete-report {
 			font-size: 1.2em;
 			padding: 0 !important;
 			color: #666;
 			line-height: 0;
 		}
+
 		td button.run-report {
 			font-size: 12px;
 			padding: 5px 6px;
 		}
 
 	}
-	.input-file-upload.custom-file{
+
+	.input-file-upload.custom-file {
 		width: 180px;
 		padding: 0;
 		margin-top: 3px;
-		border:none;
+		border: none;
 	}
 }
 
 // implementation Specific Export Reports
 
-a.button.small.report-download{
+a.button.small.report-download {
 	padding: 8px 10px;
-	i{
-		color:#666;
+
+	i {
+		color: #666;
 	}
 }
 
 .report.ngdialog.ngdialog-theme-default {
-	padding-top:200px;
-	.ngdialog-content{
-		height:auto;
+	padding-top: 200px;
+
+	.ngdialog-content {
+		height: auto;
 		padding: 10px;
 	}
 }
