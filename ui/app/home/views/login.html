@@ -53,20 +53,6 @@
                 </div>
             </div>
 
-            <div class="form-field">
-                <div class="field-attribute">
-                    <label for="location">
-                        {{'LOGIN_LABEL_LOCATION_KEY' | translate}} <span class="asterick">*</span>
-                    </label>
-                </div>
-                <div class="field-value">
-                    <select id="location" ng-model="loginInfo.currentLocation"
-                            ng-options="item as (item.display | translate) for item in locations | orderBy:'display'" required>
-                        <option value="">{{'LOGIN_LABEL_SELECT_LOCATION_KEY' | translate}}</option>
-                    </select>
-                </div>
-            </div>
-
             <div class="form-footer">
                 <button type="submit" class="confirm">{{'LOGIN_LABEL_LOGIN_KEY' | translate}}</button>
             </div>

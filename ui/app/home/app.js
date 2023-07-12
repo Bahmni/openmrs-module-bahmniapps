@@ -41,6 +41,16 @@ angular.module('bahmni.home', ['ui.router', 'httpErrorInterceptor', 'bahmni.comm
                         }
                     }
                 })
+            .state('loginLocation', {
+                url: '/loginLocation',
+                controller: 'LoginLocationController',
+                templateUrl: 'views/loginLocation.html',
+                resolve: {
+                    initialData: function (loginInitialization) {
+                        return loginInitialization();
+                    }
+                }
+            })
             .state('errorLog', {
                 url: '/errorLog',
                 controller: 'ErrorLogController',

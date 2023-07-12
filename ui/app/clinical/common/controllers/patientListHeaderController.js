@@ -107,12 +107,14 @@ angular.module('bahmni.clinical')
                 $scope.date = retrospectiveDate ? new Date(retrospectiveDate) : new Date($scope.maxStartDate);
                 $scope.encounterProvider = getCurrentProvider();
                 selectedProvider = getCurrentProvider();
-
+                const loginLocations = localStorage.getItem("loginLocations");
+                if (loginLocations) {
+                    $scope.locations = JSON.parse(loginLocations);
+                    return;
+                }
                 return locationService.getAllByTag("Login Location").then(function (response) {
                     $scope.locations = response.data.results;
-                    $scope.selectedLocationUuid = getCurrentCookieLocation().uuid;
-                }
-                );
+                });
             };
 
             return init();
