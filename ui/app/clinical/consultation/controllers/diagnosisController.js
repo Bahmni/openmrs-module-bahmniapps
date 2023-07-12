@@ -143,11 +143,13 @@ angular.module('bahmni.clinical')
                         value: concept.matchedName || concept.conceptName,
                         concept: {
                             name: concept.conceptName,
-                            uuid: concept.conceptUuid
+                            uuid: concept.conceptUuid,
+                            conceptSystem: concept.conceptSystem
                         },
                         lookup: {
                             name: concept.matchedName || concept.conceptName,
-                            uuid: concept.conceptUuid
+                            uuid: concept.conceptUuid,
+                            conceptSystem: concept.conceptSystem
                         }
                     };
 
@@ -163,6 +165,8 @@ angular.module('bahmni.clinical')
 
             $scope.getAddConditionMethod = function () {
                 return function (item) {
+                    var conceptSystem = item.lookup.conceptSystem ? item.lookup.conceptSystem + "/" : "";
+                    item.lookup.uuid = conceptSystem + item.lookup.uuid;
                     $scope.consultation.condition.concept.uuid = item.lookup.uuid;
                     item.value = $scope.consultation.condition.concept.name = item.lookup.name;
                 };
@@ -270,9 +274,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.cleanOutDiagnosisList = function (allDiagnoses) {
-                return allDiagnoses.filter(function (diagnosis) {
+                return allDiagnoses ? allDiagnoses.filter(function (diagnosis) {
                     return !alreadyAddedToDiagnosis(diagnosis);
-                });
+                }) : [];
             };
 
             var alreadyAddedToDiagnosis = function (diagnosis) {

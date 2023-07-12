@@ -15,6 +15,7 @@ Bahmni.Common = Bahmni.Common || {};
     var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
     var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
     var IE_APPS_API = RESTWS_V1 + "/bahmniie";
+    var FHIR_BASE_URL = hostUrl + "/openmrs/ws/fhir2/R4";
 
     var serverErrorMessages = [
         {
@@ -75,11 +76,14 @@ Bahmni.Common = Bahmni.Common || {};
         diseaseTemplateUrl: BAHMNI_CORE + "/diseaseTemplates",
         AllDiseaseTemplateUrl: BAHMNI_CORE + "/diseaseTemplate",
         emrapiConceptUrl: EMRAPI + "/concept",
+        bahmniapiConceptUrl: BAHMNI_COMMONS + "/terminologies/concepts",
         encounterConfigurationUrl: BAHMNI_CORE + "/config/bahmniencounter",
         patientConfigurationUrl: BAHMNI_CORE + "/config/patient",
         drugOrderConfigurationUrl: BAHMNI_CORE + "/config/drugOrders",
         emrEncounterUrl: EMRAPI + "/encounter",
         encounterUrl: RESTWS_V1 + "/encounter",
+        cdssUrl: RESTWS_V1 + "/cdss",
+        fhirMedicationsUrl: FHIR_BASE_URL + "/Medication",
         locationUrl: RESTWS_V1 + "/location",
         bahmniVisitLocationUrl: BAHMNI_CORE + "/visitLocation",
         bahmniFacilityLocationUrl: BAHMNI_CORE + "/facilityLocation",
