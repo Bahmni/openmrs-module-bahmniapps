@@ -1,8 +1,8 @@
 "use strict";
 
-angular.module('bahmni.orders').controller('OrderFulfillmentController', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'patientContext', 'orderService', 'orderObservationService',
+angular.module('bahmni.orders').controller('OrderFulfillmentController', ['$scope', '$rootScope', '$stateParams', '$state', '$q', 'patientContext', 'orderService', 'observationsService', 'orderObservationService',
     'orderTypeService', 'sessionService', 'encounterService', 'spinner', 'messagingService', 'appService', '$anchorScroll', 'orderFulfillmentConfig', 'contextChangeHandler', '$translate',
-    function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, orderObservationService,
+    function ($scope, $rootScope, $stateParams, $state, $q, patientContext, orderService, observationsService, orderObservationService,
               orderTypeService, sessionService, encounterService, spinner, messagingService, appService, $anchorScroll, orderFulfillmentConfig, contextChangeHandler, $translate) {
         $scope.patient = patientContext.patient;
         $scope.formName = $stateParams.orderType + Bahmni.Common.Constants.fulfillmentFormSuffix;
@@ -52,12 +52,43 @@ angular.module('bahmni.orders').controller('OrderFulfillmentController', ['$scop
                 });
             });
         };
+
+        var getObservationsForOrders = function () {
+            var orderLabelConcept = appService.getAppDescriptor().getConfigValue("orderLabelConcept");
+            if (orderLabelConcept) {
+                return observationsService.fetch(patientContext.patient.uuid, [orderLabelConcept], null, $scope.config.numberOfVisits, $scope.visitUuid, null, false)
+                .then(function (response) {
+                    $scope.selectedOrderLabel = new Map();
+                    var orderObservationsData = _(response.data)
+                                .groupBy('orderUuid')
+                                .map(function (items, orderUuid, concept) {
+                                    return {
+                                        orderUuid: orderUuid,
+                                        conceptValue: concept[orderUuid][0].value,
+                                        dataType: concept[orderUuid][0].concept.dataType
+                                    };
+                                }).value();
+                    orderObservationsData.forEach(function (item) {
+                        var orderUuid = item.orderUuid;
+                        var dataType = item.dataType;
+                        var conceptValue = item.conceptValue;
+
+                        if (dataType === "Coded") {
+                            $scope.selectedOrderLabel[orderUuid] = conceptValue.name;
+                        } else if (dataType === "Text") {
+                            $scope.selectedOrderLabel[orderUuid] = conceptValue;
+                        }
+                    });
+                });
+            }
+        };
+
         $scope.toggleShowOrderForm = function (order) {
             order.showForm = !order.showForm;
         };
 
         var init = function () {
-            return getActiveEncounter().then($scope.getOrders);
+            return getActiveEncounter().then(getObservationsForOrders).then($scope.getOrders);
         };
 
         spinner.forPromise(init());
