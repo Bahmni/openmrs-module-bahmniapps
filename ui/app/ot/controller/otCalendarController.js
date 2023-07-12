@@ -105,7 +105,7 @@ angular.module('bahmni.ot')
                     $scope.emptyNoteError = true;
                     return;
                 }
-                if($scope.isDayView){
+                if ($scope.isDayView) {
                     await surgicalAppointmentService.saveNoteForADay($scope.viewDate, $scope.otNotesField);
                 }
                 $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});

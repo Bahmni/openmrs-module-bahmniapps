@@ -15,42 +15,57 @@
   .calendar-location {
     padding-left: 80px;
     overflow: hidden;
-    display: flex;
     background: #fff;
     width: 94%;
+    float: left;
+    position: absolute;
+    z-index: 20;
     .heading-cell {
       width: 300px;
       box-sizing: border-box;
       text-align: center;
       float: left;
-      padding: 10px 0;
+      padding-bottom: 10px;
       font-family: OpenSansSemiBold;
     }
+  }
+  .day-heading{
+    position: absolute;
+    top: 55px;
   }
   .error{
     color: #da1e28;
     padding-top: 5px;
   }
-  .notesTab{
-    top: 40px;
-    left: 80px;
-    width: calc(99% - 90px);
-    height: 30px;
+  .heading-ot-date{
+    font-size: 24px;
+  }
+  .heading-ot{
+    padding-bottom: 10px;
+  }
+  .heading-ot-block{
+    padding: 10px 0;
+    display: inline-block;
     position: absolute;
+    left: 24px;
+  }
+  .notesTab{
+    width: calc(100% - 24px);
+    height: 30px;
     color: #161616;
-    border-radius: 4px;
     overflow: scroll;
   }
   .notes-text{
     background-color: #EDF5FF;
-    padding: 5px;
-    height: 16px;
+    padding: 8px;
+    height: auto;
     border: 1px solid #0043CE;
+    border-left: 4px solid #0043CE;
   }
   .calendar-time-container {
     clear: left;
     position: absolute;
-    top: 75px;
+    top: 100px;
     background: #fff;
     z-index: 19;
 
@@ -73,7 +88,7 @@
         left: 80px;
         overflow: auto;
         padding-bottom: 5px;
-        top: 75px;
+        top: 100px;
         width: calc(100% - 90px);
         right: 0;
       }
@@ -324,4 +339,9 @@
     border-radius: 4px;
     position: absolute;
     z-index: 20;
+}
+hr{
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  margin-top: 15px;
 }

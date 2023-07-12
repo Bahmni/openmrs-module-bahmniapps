@@ -13,16 +13,18 @@
         height: 30px;
       }
       .heading-ot-date{
-        font-family: OpenSansSemiBold;
-        padding-bottom: 5px;
+        font-size: 24px;
+      }
+      .heading-ot{
+        padding-bottom: 10px;
       }
       .notes-text{
         background-color: #EDF5FF;
-        padding: 5px;
-        height: 16px;
+        padding: 8px;
+        height: auto;
         border: 1px solid #0043CE;
+        border-left: 3px solid #0043CE;
         color: #161616;
-        border-radius: 4px;
         text-align: left;
         overflow: scroll;
       }

@@ -1,7 +1,8 @@
 <div on-Scroll class="calendar">
     <div class="calendar-location">
         <div class="weekly-heading-cell" ng-repeat="index in [0, 1, 2, 3, 4, 5, 6]">
-            <p class="heading-ot-date">{{weekStartDate | addDays: index | bahmniDateTimeWithFormat: 'Do MMM, ddd'}}</p>
+            <p class="heading-ot">{{weekStartDate | addDays: index | bahmniDateTimeWithFormat: 'ddd'}}</p>
+            <p class="heading-ot heading-ot-date">{{weekStartDate | addDays: index | bahmniDateTimeWithFormat: 'DD'}}</p>
             <div class="note" ng-if="(!getNotesForDay(weekStartDate, index))" ng-style="styleForBlock(index)" ng-click="showNotesPopup(weekStartDate, index)"></div>
             <div ng-if="getNotesForDay(weekStartDate, index)" class="notes-text" ng-click="showNotesPopupEdit(weekStartDate, index, notesForWeek[index])" title="{{getNotesForDay(weekStartDate, index)}}">
                 {{getNotesForDay(weekStartDate, index)}}
