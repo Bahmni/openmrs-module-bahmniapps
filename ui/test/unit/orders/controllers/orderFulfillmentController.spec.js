@@ -2,12 +2,16 @@
 
 describe("OrderFulfillmentController", function () {
 
-    var scope, rootScope, deferred, deferred1, q, $bahmniCookieStore, contextChangeHandler, translate;
+    var scope, rootScope, deferred, deferred1, deferred2, q, $bahmniCookieStore, contextChangeHandler, translate;
     var mockEncounterService = jasmine.createSpyObj('encounterService', ['find']);
     var mockOrderObservationService = jasmine.createSpyObj('orderObservationService', ['save']);
     var mockOrderTypeService = jasmine.createSpyObj('orderTypeService', ['getOrderTypeUuid']);
     var mockOrderService = jasmine.createSpyObj('orderService', ['getOrders', 'then']);
     var contextChangeHandlerService = jasmine.createSpyObj('contextChangeHandler',['execute']);
+    var mockObservationsService = jasmine.createSpyObj('observationsService', ['fetch']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    appService.getAppDescriptor.and.returnValue(appDescriptor);
 
     mockEncounterService.find.and.callFake(function(param) {
         deferred1 = q.defer();
@@ -19,6 +23,24 @@ describe("OrderFulfillmentController", function () {
             }
         });
         return deferred1.promise;
+    });
+
+    mockObservationsService.fetch.and.callFake(function(param) {
+        deferred2 = q.defer();
+        deferred2.resolve({
+            data: [
+                {
+                    "orderUuid": "orderOneUuid",
+                    "concept": {
+                        "dataType": "Coded",
+                    },
+                    "value": {
+                        "name": "Concept Value"
+                    }
+                }
+            ]
+        });
+        return deferred2.promise;
     });
 
     mockOrderService.getOrders.and.callFake(function(){
@@ -66,6 +88,8 @@ describe("OrderFulfillmentController", function () {
             orderTypeService: mockOrderTypeService,
             $stateParams: mockStateParams,
             orderService: mockOrderService,
+            observationsService: mockObservationsService,
+            appService: appService,
             $q :q,
             orderFulfillmentConfig: { conceptNames: ["Blood Pressure"]},
             contextChangeHandler: contextChangeHandlerService
