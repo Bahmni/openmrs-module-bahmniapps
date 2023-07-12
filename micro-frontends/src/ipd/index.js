@@ -3,6 +3,7 @@
 
 import { react2angular } from "react2angular";
 import { IpdDashboard } from "./IpdDashboard";
+import { DrugChartModal } from "./DrugChartModal";
 import "bahmni-carbon-ui/styles.css";
 
 angular.module("bahmni.mfe.ipd", [
@@ -60,3 +61,41 @@ angular.module("bahmni.mfe.ipd").component("mfeIpdDashboard", {
     '<mfe-ipd-dashboard-remote host-data="hostData" host-api="hostApi"></mfe-ipd-dashboard-remote>',
 });
 /** ================= End of component 1 ==========================  */
+
+angular
+  .module("bahmni.mfe.ipd")
+  .component("mfeIpdDrugChartModalRemote", react2angular(DrugChartModal));
+
+function ipdDrugChartModalController($rootScope, $scope, confirmBox) {
+
+  $scope.hostData = {
+    patient: {
+      uuid: "--- DUMMY UUID FOR TESTING FROM HOST ---",
+    },
+  };
+
+  $scope.hostApi = {
+    onConfirm(event) {
+      const dialogScope = {
+        message:
+          "This is a dialog triggered on the host in response to an event from IPD ",
+        okay(close) {
+          close();
+        },
+      };
+
+      confirmBox({
+        scope: dialogScope,
+        actions: [{ name: "okay", display: "Okay" }],
+        className: "ngdialog-theme-default",
+      });
+    },
+  };
+}
+ipdDrugChartModalController.$inject = ["$rootScope", "$scope", "confirmBox"];
+
+angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModal", {
+  controller: ipdDrugChartModalController,
+  template:
+    '<mfe-ipd-drug-chart-modal-remote host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-modal-remote>',
+});
