@@ -30,7 +30,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope, $translate) {
         }
 
         if (openmrsPatient.identifiers.length > 1) {
-            patient.additionalIdentifiers = openmrsPatient.identifiers.slice(1);
+            patient.additionalIdentifiers = parseIdentifiers(openmrsPatient.identifiers.slice(1));
         }
 
         if (openmrsPatient.person.birthdate) {
@@ -97,6 +97,17 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope, $translate) {
             return Bahmni.Common.Util.DateUtil.parse(dateStr.substr(0, 10));
         }
         return dateStr;
+    };
+
+    var parseIdentifiers = function (identifiers) {
+        var parseIdentifiers = {};
+        identifiers.forEach(function (identifier) {
+            if (identifier) {
+                var label = identifier.identifierType.display;
+                parseIdentifiers[label] = {"label": label, "value": identifier.identifier};
+            }
+        });
+        return parseIdentifiers;
     };
 
     var mapGenderText = function (genderChar) {
