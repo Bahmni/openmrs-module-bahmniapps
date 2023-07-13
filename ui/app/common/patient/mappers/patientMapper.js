@@ -29,7 +29,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope, $translate) {
             patient.identifier = primaryIdentifier ? primaryIdentifier : openmrsPatient.identifiers[0].identifier;
         }
 
-        if (openmrsPatient.identifiers.length > 1) {
+        if (openmrsPatient.identifiers && openmrsPatient.identifiers.length > 1) {
             patient.additionalIdentifiers = parseIdentifiers(openmrsPatient.identifiers.slice(1));
         }
 
@@ -102,7 +102,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope, $translate) {
     var parseIdentifiers = function (identifiers) {
         var parseIdentifiers = {};
         identifiers.forEach(function (identifier) {
-            if (identifier) {
+            if (identifier.identifierType) {
                 var label = identifier.identifierType.display;
                 parseIdentifiers[label] = {"label": label, "value": identifier.identifier};
             }
