@@ -19,9 +19,7 @@ export function DrugChartModal(props) {
 // Without propTypes, react2angular won't render the component
 DrugChartModal.propTypes = {
   hostData: PropTypes.shape({
-    patient: PropTypes.shape({
-      uuid: PropTypes.string.isRequired,
-    }).isRequired,
+    drugOrders: PropTypes.object,
   }),
   hostApi: PropTypes.shape({
     onConfirm: PropTypes.func,

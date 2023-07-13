@@ -62,6 +62,9 @@ angular.module("bahmni.mfe.ipd").component("mfeIpdDashboard", {
 });
 /** ================= End of component 1 ==========================  */
 
+/** MFE component 2: DrugChartModal
+ *================================================= */
+
 angular
   .module("bahmni.mfe.ipd")
   .component("mfeIpdDrugChartModalRemote", react2angular(DrugChartModal));
@@ -69,9 +72,7 @@ angular
 function ipdDrugChartModalController($rootScope, $scope, confirmBox) {
 
   $scope.hostData = {
-    patient: {
-      uuid: "--- DUMMY UUID FOR TESTING FROM HOST ---",
-    },
+    drugOrder: this.drug
   };
 
   $scope.hostApi = {
@@ -96,6 +97,10 @@ ipdDrugChartModalController.$inject = ["$rootScope", "$scope", "confirmBox"];
 
 angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModal", {
   controller: ipdDrugChartModalController,
+  bindings: {
+    drug: "="
+  },
   template:
     '<mfe-ipd-drug-chart-modal-remote host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-modal-remote>',
 });
+/** ================= End of component 2 ==========================  */

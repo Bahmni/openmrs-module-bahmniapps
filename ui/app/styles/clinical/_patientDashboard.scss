@@ -749,8 +749,8 @@ table.drug-order-table td.drug {
 }
 
 .add-to-drug-chart {
-    text-align: center;
-    span{
+    .drug-chart-link {
+        text-align: center;
         font-size: 11px;
     }
 }
