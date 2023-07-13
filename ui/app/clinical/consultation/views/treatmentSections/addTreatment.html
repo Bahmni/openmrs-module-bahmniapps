@@ -42,8 +42,20 @@
                     </div>
                 </article>
                 <div class="unit-wrap clearfix">
+                    <article class="form-field" ng-show="showRulesInMedication" >
+                        <div class="field-attribute">
+                            <label class="dose-label">{{ ::treatmentConfig.translate('rule', 'MEDICATION_LABEL_RULE') }} </label>
+                        </div>
+                        <div class="field-value">
+                            <select id="dosingrule" class="form-field frequency" ng-model="treatment.dosingRule"
+                                    ng-options="item as item for item in treatmentConfig.dosingRules" placeholder="Please select a rule" 
+                                    ng-disabled="!treatment.isUniformFrequency">
+                                <option value="">Choose Rule</option>
+                            </select>
+                        </div>
+                    </article>
                     <button ng-if="!treatmentConfig.isHiddenField('dosingTypeToggle')" type="button" class="icon-button exchange-btn fl"
-                            tabindex="-1" ng-click="treatment.toggleFrequency()">
+                            tabindex="-1" ng-click="treatment.toggleFrequency()" ng-disabled="isRuleMode(treatment)">
                         <i class="fa fa-exchange"></i>
                     </button>
                     <div class="frequency-widget uniform-frequency" ng-show="treatment.isUniformFrequency">
@@ -83,6 +95,7 @@
                                     <select id="uniform-dose-unit" class="form-field freq-choose-units" ng-model="treatment.uniformDosingType.doseUnits"
                                             ng-options="item.name as item.name for item in treatmentConfig.getDoseUnits()"
                                             ng-required="treatment.isUniformDoseUnitRequired()"
+                                            ng-disabled="isRuleMode(treatment)"
                                             ng-class="{'noFractionOptions' : !isDoseFractionsAvailable()}">
                                         <option value="">{{ ::treatmentConfig.translate('doseUnitsPlaceHolder', 'MEDICATION_DOSE_UNIT_PLACEHOLDER') }} </option>
                                     </select>
@@ -262,7 +275,7 @@
 
                 <div class="operations fr clearfix">
                     <button class="add-drug-btn secondary-button fl" type="submit" accesskey="{{ ::treatmentConfig.translate('addAccessKey', 'MEDICATION_ADD_ACCESS_KEY') }}"
-                            ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug">
+                        ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug" ng-click="calculateDose(treatment)">
                              <span ng-bind-html="::treatmentConfig.translate('add', 'MEDICATION_ADD_BUTTON_LABEL')">
                         </span>
                     </button>
