@@ -29,6 +29,10 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope, $translate) {
             patient.identifier = primaryIdentifier ? primaryIdentifier : openmrsPatient.identifiers[0].identifier;
         }
 
+        if (openmrsPatient.identifiers.length > 1) {
+            patient.additionalIdentifiers = openmrsPatient.identifiers.slice(1);
+        }
+
         if (openmrsPatient.person.birthdate) {
             patient.birthdate = parseDate(openmrsPatient.person.birthdate);
         }
