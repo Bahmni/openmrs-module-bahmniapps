@@ -6,7 +6,7 @@ export function DrugChartModal(props) {
 
   return (
     <>
-      <Suspense fallback={<p>Loading...</p>}>
+      <Suspense fallback={""}>
         <LazyApp
           hostData={props.hostData}
           hostApi={props.hostApi}
@@ -19,9 +19,9 @@ export function DrugChartModal(props) {
 // Without propTypes, react2angular won't render the component
 DrugChartModal.propTypes = {
   hostData: PropTypes.shape({
-    drugOrders: PropTypes.object,
-  }),
+    drugOrder: PropTypes.object,
+  }).isRequired,
   hostApi: PropTypes.shape({
-    onConfirm: PropTypes.func,
+    closeDrugChart: PropTypes.func,
   }),
 };

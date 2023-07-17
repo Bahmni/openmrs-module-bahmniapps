@@ -17,6 +17,10 @@ angular.module('bahmni.clinical')
                 $scope.selectedDrugOrder = drugOrder;
                 $scope.openModal = true;
             };
+            $scope.closeDrugChartModal = function () {
+                $scope.openModal = false;
+                $scope.$apply();
+            };
         };
 
         return {

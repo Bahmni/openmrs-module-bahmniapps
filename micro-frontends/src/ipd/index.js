@@ -69,36 +69,26 @@ angular
   .module("bahmni.mfe.ipd")
   .component("mfeIpdDrugChartModalRemote", react2angular(DrugChartModal));
 
-function ipdDrugChartModalController($rootScope, $scope, confirmBox) {
-
+function ipdDrugChartModalController($rootScope, $scope) {
+  var vm = this;
   $scope.hostData = {
-    drugOrder: this.drug
+    drugOrder: vm.drugOrder,
   };
 
   $scope.hostApi = {
-    onConfirm(event) {
-      const dialogScope = {
-        message:
-          "This is a dialog triggered on the host in response to an event from IPD ",
-        okay(close) {
-          close();
-        },
-      };
-
-      confirmBox({
-        scope: dialogScope,
-        actions: [{ name: "okay", display: "Okay" }],
-        className: "ngdialog-theme-default",
-      });
+    onModalClose: function(event) {
+      vm.closeDrugChart();
     },
   };
 }
-ipdDrugChartModalController.$inject = ["$rootScope", "$scope", "confirmBox"];
+
+ipdDrugChartModalController.$inject = ["$rootScope", "$scope"];
 
 angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModal", {
   controller: ipdDrugChartModalController,
   bindings: {
-    drug: "="
+    drugOrder: "=",
+    closeDrugChart: "&"
   },
   template:
     '<mfe-ipd-drug-chart-modal-remote host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-modal-remote>',
