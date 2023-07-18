@@ -6,6 +6,10 @@ angular.module('bahmni.clinical')
             $scope.selectedDrugOrder = {};
             $scope.openModal = false;
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
+            if ($scope.enableIPDFeature === true) {
+                $scope.drugChartModalScheduleFrequencies = appService.getAppDescriptor().getConfigValue("drugChartScheduleFrequencies");
+                $scope.drugChartModalStartTimeFrequencies = appService.getAppDescriptor().getConfigValue("drugChartStartTimeFrequencies");
+            }
             $scope.showDetails = false;
             if ($scope.params.showProvider === undefined) {
                 $scope.params.showProvider = true;

@@ -73,8 +73,9 @@ function ipdDrugChartModalController($rootScope, $scope) {
   var vm = this;
   $scope.hostData = {
     drugOrder: vm.drugOrder,
+    scheduleFrequencies: vm.scheduleFrequencies,
+    startTimeFrequencies: vm.startTimeFrequencies,
   };
-
   $scope.hostApi = {
     onModalClose: function(event) {
       vm.closeDrugChart();
@@ -88,6 +89,8 @@ angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModal", {
   controller: ipdDrugChartModalController,
   bindings: {
     drugOrder: "=",
+    scheduleFrequencies: "=",
+    startTimeFrequencies: "=",
     closeDrugChart: "&"
   },
   template:

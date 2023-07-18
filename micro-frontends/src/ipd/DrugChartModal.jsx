@@ -20,6 +20,8 @@ export function DrugChartModal(props) {
 DrugChartModal.propTypes = {
   hostData: PropTypes.shape({
     drugOrder: PropTypes.object,
+    scheduleFrequencies: PropTypes.array,
+    startTimeFrequencies: PropTypes.array,
   }).isRequired,
   hostApi: PropTypes.shape({
     closeDrugChart: PropTypes.func,
