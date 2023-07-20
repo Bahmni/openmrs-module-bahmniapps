@@ -21,6 +21,7 @@ module.exports = function (grunt) {
         'components/ng-tags-input/ng-tags-input.bootstrap.min.css',
         'components/ng-tags-input/ng-tags-input.min.css',
         'components/jquery-ui/themes/smoothness/jquery-ui.min.css',
+        'micro-frontends-dist/shared.min.css',
         'micro-frontends-dist/ipd.min.css'
     ];
 
@@ -65,8 +66,9 @@ module.exports = function (grunt) {
         'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
         'components/angular-ivh-treeview/dist/ivh-treeview.min.js',
 
-        'micro-frontends-dist/mfe_polyfills_angular_1_4.min.js',
-        'micro-frontends-dist/ipd.min.js'
+        'micro-frontends-dist/shared.min.js',
+        'micro-frontends-dist/ipd.min.js',
+        'micro-frontends-dist/next-ui.min.js'
     ];
 
     try {

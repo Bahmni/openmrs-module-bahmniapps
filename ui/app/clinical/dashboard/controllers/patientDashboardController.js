@@ -17,6 +17,16 @@ angular.module('bahmni.clinical')
             var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
             $state.discardChanges = false;
 
+            $scope.alergyData = {
+                name: 'Customised for me!!!'
+            };
+
+            $scope.alergyApi = {
+                callback: function () {
+                    alert("We have a full fledged problem");
+                }
+            };
+
             $scope.stateChange = function () {
                 return $state.current.name === 'patient.dashboard.show';
             };
