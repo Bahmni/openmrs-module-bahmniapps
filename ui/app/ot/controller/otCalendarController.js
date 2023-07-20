@@ -94,8 +94,11 @@ angular.module('bahmni.ot')
                 if (notes) {
                     $scope.emptyNoteError = false;
                 }
+                if (notes.id) {
+                    $scope.notesId = notes.id;
+                }
             };
-            $scope.saveNotes = async function () {
+            var notesInputValidation = function () {
                 if ($scope.startDateBeforeEndDateError || $scope.dateOutOfRangeError) {
                     return;
                 }
@@ -103,17 +106,22 @@ angular.module('bahmni.ot')
                     $scope.emptyNoteError = true;
                     return;
                 }
+            };
+
+            $scope.saveNotes = async function () {
+                notesInputValidation();
                 if ($scope.isDayView) {
                     await surgicalAppointmentService.saveNoteForADay($scope.viewDate, $scope.otNotesField);
-                } else
-                await surgicalAppointmentService.saveNoteForADay($scope.notesStartDate, $scope.otNotesField, $scope.notesEndDate);
+                } else {
+                    await surgicalAppointmentService.saveNoteForADay($scope.notesStartDate, $scope.otNotesField, $scope.notesEndDate);
+                }
                 $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
             };
 
-            $scope.noteForTheDay = ''; // "Note";
-            $scope.notesForWeek = {
-                // 2: 'note for 2nd July',
-                // 4: 'note for 3rd July'
+            $scope.updateNotes = async function () {
+                notesInputValidation();
+                await surgicalAppointmentService.updateNoteForADay($scope.noteId, $scope.otNotesField);
+                $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
             };
 
             var heightPerMin = 120 / $scope.dayViewSplit;
@@ -129,12 +137,10 @@ angular.module('bahmni.ot')
             const getNotes = function () {
                 if ($scope.weekOrDay === 'day') {
                     return surgicalAppointmentService.getNotes(new Date($scope.viewDate));
+                } else if ($scope.weekOrDay === 'week') {
+                    return surgicalAppointmentService.getNotes($scope.weekStartDate, getWeekDate(7));
                 }
-                    else if ($scope.weekOrDay === 'week') {
-                        return surgicalAppointmentService.getNotes($scope.weekStartDate, getWeekDate(7) );
-                    }
-
-                };
+            };
             var init = function () {
                 var dayStart = ($scope.dayViewStart || Bahmni.OT.Constants.defaultCalendarStartTime).split(':');
                 var dayEnd = ($scope.dayViewEnd || Bahmni.OT.Constants.defaultCalendarEndTime).split(':');
@@ -164,9 +170,10 @@ angular.module('bahmni.ot')
                         });
                         if (response[3] && response[3].status === 200) {
                             $scope.noteForTheDay = response[3].data.length > 0 ? response[3].data[0].noteText : '';
-                        }
-                        else {
+                            $scope.noteId = response[3].data.length > 0 ? response[3].data[0].noteId : '';
+                        } else {
                             $scope.noteForTheDay = '';
+                            $scope.noteId = '';
                         }
                         var providerNames = appService.getAppDescriptor().getConfigValue("primarySurgeonsForOT");
                         $scope.surgeons = surgicalAppointmentHelper.filterProvidersByName(providerNames, response[2].data.results);
@@ -181,18 +188,17 @@ angular.module('bahmni.ot')
                             });
                         });
 
+                        $scope.getNotesForWeek = function (weekStartDate, index) {
+                            const date = new Date(weekStartDate);
+                            return _.filter(response[3].data, function (note) {
+                                return new Date(note.noteDate).getDate() === (date.getDate() + index);
+                            });
+                        };
 
-                    $scope.getNotesForWeek = function (weekStartDate, index) {
-                        const date = new Date(weekStartDate);
-                        return _.filter(response[3].data, function (note) {
-                            return new Date(note.noteDate).getDate() === (date.getDate() + index);
-                        });
-                    }
-
-                    $scope.getNotesForDay = function (weekStartDate, index) {
-                        var notes = $scope.getNotesForWeek(weekStartDate, index);
-                        return notes.length > 0 ? notes[0].noteText : '';
-                    }
+                        $scope.getNotesForDay = function (weekStartDate, index) {
+                            var notes = $scope.getNotesForWeek(weekStartDate, index);
+                            return notes.length > 0 ? notes[0].noteText : '';
+                        };
 
                         $scope.blockedOtsOfTheWeek = getBlockedOtsOfTheWeek();
                         showToolTipForNotes();
@@ -213,8 +219,8 @@ angular.module('bahmni.ot')
             };
 
             $scope.isSurgicalBlockActiveOnGivenDate = function (surgicalBlock, weekDate) {
-                return Bahmni.Common.Util.DateUtil.isSameDate(moment(surgicalBlock.startDatetime).startOf('day').toDate(), weekDate)
-                    || moment(surgicalBlock.endDatetime).toDate() > weekDate;
+                return Bahmni.Common.Util.DateUtil.isSameDate(moment(surgicalBlock.startDatetime).startOf('day').toDate(), weekDate) ||
+                    moment(surgicalBlock.endDatetime).toDate() > weekDate;
             };
 
             $scope.intervals = function () {

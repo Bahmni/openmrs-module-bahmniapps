@@ -81,25 +81,30 @@ angular.module('bahmni.ot')
         var constructPayload = function (noteDate, note, noteEndDate) {
             const payload = [];
             const currentDate = new Date(noteDate);
-            while ( currentDate <= noteEndDate) {
+            // eslint-disable-next-line no-unmodified-loop-condition
+            while (currentDate <= noteEndDate) {
                 payload.push({
                     noteTypeName: "OT module",
                     noteDate: new Date(currentDate),
                     noteText: note
-                })
+                });
                 currentDate.setDate(currentDate.getDate() + 1);
             }
             return payload;
-        }
+        };
 
         this.saveNoteForADay = function (noteDate, note, noteEndDate) {
             const payload = noteEndDate != null ? constructPayload(noteDate, note, noteEndDate) : [{
-                    noteTypeName: "OT module",
-                    noteDate: noteDate,
-                    noteText: note
-                }];
+                noteTypeName: "OT module",
+                noteDate: noteDate,
+                noteText: note
+            }];
             const headers = {"Accept": "application/json", "Content-Type": "application/json"};
             return $http.post(Bahmni.OT.Constants.notesUrl, payload, headers);
         };
 
+        this.updateNoteForADay = function (noteId, note) {
+            const headers = {"Accept": "application/json", "Content-Type": "application/json"};
+            return $http.post(Bahmni.OT.Constants.notesUrl + "/" + noteId, note, headers);
+        };
     }]);
