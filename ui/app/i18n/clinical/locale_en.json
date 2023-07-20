@@ -197,6 +197,8 @@
   "ALERT_MESSAGE_ON_EXIT": "You have unsaved changes under consultation screen. Please save or discard them before proceeding.",
   "MESSAGE_DIALOG_OPTION_COPY": "Copy Error",
   "MESSAGE_DIALOG_OPTION_OKAY": "OK",
+  "MESSAGE_DIALOG_OPTION_REVIEW": "Review",
+  "MESSAGE_DIALOG_OPTION_DISCARD": "Discard",
   "LAB_ENTRY_KEY": "Lab Entry",
 
   "OBS_BOOLEAN_YES_KEY": "Yes",
