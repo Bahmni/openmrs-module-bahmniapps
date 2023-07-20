@@ -3,6 +3,7 @@
 angular.module('bahmni.reports')
     .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, auditLogService) {
         const format = _.values(reportService.getAvailableFormats());
+        const dateRange = _.values(reportService.getAvailableDateRange());
 
         $scope.uploader = new FileUploader({
             url: Bahmni.Common.Constants.uploadReportTemplateUrl,
@@ -12,27 +13,50 @@ angular.module('bahmni.reports')
         $scope.uploader.onSuccessItem = function (fileItem, response) {
             fileItem.report.reportTemplateLocation = response;
         };
-        $rootScope.default = _.isUndefined($rootScope.default) ? { reportsRequiringDateRange: { responseType: format[1] }, reportsNotRequiringDateRange: {} } : $rootScope.default;
+
+        $rootScope.default = _.isUndefined($rootScope.default) ? {
+            reportsRequiringDateRange: {
+                responseType: format[1],
+                dateRangeType: dateRange[0],
+                startDate: dateRange[0],
+                stopDate: dateRange[0],
+                report: {
+                    responseType: format[1]
+                }
+            },
+            reportsNotRequiringDateRange: {}
+        } : $rootScope.default;
         $scope.reportsDefined = true;
         $scope.enableReportQueue = appService.getAppDescriptor().getConfigValue("enableReportQueue");
         $scope.setDefault = function (item, header) {
             var setToChange = header === 'reportsRequiringDateRange' ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
             setToChange.forEach(function (report) {
-                report[item] = $rootScope.default[header][item];
+                if (item == 'dateRangeType') {
+                    $rootScope.default.reportsRequiringDateRange.startDate = $rootScope.default[header][item];
+                    $rootScope.default.reportsRequiringDateRange.stopDate = dateRange[0];
+                    report['startDate'] = $rootScope.default[header][item];
+                    report['stopDate'] = dateRange[0];
+                }
+                else if ($rootScope.default[header][item] === undefined) {
+                    $rootScope.reportsRequiringDateRange.forEach(report => {
+                        report.startDate = dateRange[0];
+                        report.stopDate = dateRange[0];
+                        report.responseType = format[1];
+                    })
+                }
+                else {
+                    report[item] = $rootScope.default[header][item];
+                }
             });
-            console.log('Persisted Default:', $rootScope.default[header][item]);
         };
 
-        console.log('Initial reportsRequiringDateRange.responseType:', $rootScope.default.reportsRequiringDateRange.responseType);
-        console.log('Initial reportsNotRequiringDateRange.responseType:', $scope);
+        console.log('Initial scope', $scope);
 
         var isDateRangeRequiredFor = function (report) {
-            console.info("date chnge: ", report);
             return _.find($rootScope.reportsRequiringDateRange, { name: report.name });
         };
 
         var validateReport = function (report) {
-            console.info("validate: ", report)
             if (!report.responseType) {
                 messagingService.showMessage("error", "Select format for the report: " + report.name);
                 return false;

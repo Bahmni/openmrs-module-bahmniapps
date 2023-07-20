@@ -9,8 +9,9 @@
                         <div>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</div>
                         <div>
                             {{::'REPORT_DATE_RANGE' | translate}}
-                            <select ng-model="default.reportsNotRequiringDateRange"
-                                    ng-options="type as label for (label , type) in ::dateRange">
+                            <select ng-model="default.reportsRequiringDateRange.dateRangeType"
+                                    ng-options="type as label for (label , type) in ::dateRange"
+                                    ng-change="setDefault('dateRangeType', 'reportsRequiringDateRange')">
                             <option value="">{{'CHOOSE_REPORT_FORMAT'|translate}}</option>
                             </select>
                         </div>
@@ -27,8 +28,7 @@
                            class="form-field start-date" type="date" min="{{default.reportsRequiringDateRange.startDate | date:'yyyy-MM-dd'}}"
                            ng-change="setDefault('stopDate', 'reportsRequiringDateRange')">
                 </th>
-                <th class="reports-format">
-                    {{::'REPORT_FORMAT_KEY' | translate}}
+                <th class="reports-format">{{::'REPORT_FORMAT_KEY' | translate}}
                     <span class="asterick">*</span>
                     <select ng-model="default.reportsRequiringDateRange.responseType"
                             ng-options="type as label for (label, type) in ::formats"
@@ -110,5 +110,4 @@
             </tbody>
         </table>
     </section>
-
 </div>
