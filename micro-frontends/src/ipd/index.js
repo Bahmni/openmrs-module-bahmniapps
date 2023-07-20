@@ -34,7 +34,7 @@ function ipdDashboardController($rootScope, $scope, confirmBox) {
 
   // Use hostApi to provide callbacks to the micro-frontend component
   $scope.hostApi = {
-    onConfirm(event) {
+    onConfirm() {
       const dialogScope = {
         message:
           "This is a dialog triggered on the host in response to an event from IPD ",

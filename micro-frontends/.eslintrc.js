@@ -23,6 +23,9 @@ module.exports = {
       version: "detect",
     },
   },
+  globals: {
+    angular: "readonly",
+  },
   overrides: [
     {
       files: ["*.spec.js", "*.spec.jsx"],
