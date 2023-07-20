@@ -9,13 +9,14 @@ module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
     alias: {
-      react: path.resolve(__dirname, "./src/globalReact.js"),
-      'react-dom': path.resolve(__dirname, "./src/globalReactDom.js"),
-    }
+      react: path.resolve(__dirname, "./src/__mocks__/globalReact.js"),
+      "react-dom": path.resolve(__dirname, "./src/__mocks__/globalReactDom.js"),
+    },
   },
   entry: {
     ipd: "./src/ipd/index.js",
-    mfe_polyfills_angular_1_4: "./src/polyfill.js",
+    "next-ui": "./src/next-ui/index.js",
+    shared: "./src/shared.js",
   },
   output: {
     path: path.resolve(__dirname, "../ui/app/micro-frontends-dist"),
@@ -25,13 +26,13 @@ module.exports = {
   devServer: {},
   plugins: [
     new cssExtract({
-      filename: "mfe-styles.css",
+      filename: "[name].min.css",
     }),
     new ModuleFederationPlugin({
       name: "bahmni_mfe_host",
       filename: "remoteEntry.js",
       remotes: {
-        "@openmrs-mf/ipd": dynamicRemote('bahmni_ipd', 'ipd'),
+        "@openmrs-mf/ipd": dynamicRemote("bahmni_ipd", "ipd"),
       },
       exposes: {},
       shared: {
@@ -96,15 +97,14 @@ module.exports = {
   },
 };
 
-
 /**
  * An alternative to providing build time URLs
  * We need to do this string promise stuff because we need to resolve the host at run-time.
  * This is the way, as documented here: https://webpack.js.org/concepts/module-federation/#promise-based-dynamic-remotes
- * 
+ *
  * @param {string} name The name of the remote, as given in it's ModuleFederationPlugin configuration
  * @param {string} subPath The sub-path of the remote, as set-up in the proxy configuration
- * 
+ *
  * @returns {string} A string that can be evaluated to a promise that resolves to the remote
  */
 function dynamicRemote(name, subPath) {
@@ -132,5 +132,5 @@ function dynamicRemote(name, subPath) {
     }
     // inject this script with the src set to the resolved remoteEntry.js
     document.head.appendChild(script);
-  })`
+  })`;
 }

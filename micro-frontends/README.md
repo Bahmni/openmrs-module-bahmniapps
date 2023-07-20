@@ -1,35 +1,30 @@
-# bahmni-carbon-ui
+# Bahmni Micro-Frontends
 
-## Next Gen UI library for Bahmni
+This directory of bahmniapps contains a webpack build system to package the various react
+micro-frontends (mfe) available.
 
-This is the UI component library for Bahmni and OpenMRS, built on top of Carbon Design system.
+## Find detailed documentation on the Wiki
+1. [Architecture of Bahmni micro-frontends](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3210477602/Micro-frontends+MFE+architecture+for+UI)
+2. [How to add/edit/integrate Bahmni micro-frontends](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3211755555/How+to+implement+micro-frontends)
 
-### Notes on local link
-
-To use a local copy of this lib with your project run the following commands
-
-```bash
-cd <project dir>/node_modules/react
-yarn link
-cd ../react-dom
-yarn link
-
-cd <bahmni-carbon-ui dir>
-yarn link
-yarn link react
-yarn link react-dom
-
-cd <project dir>
-yarn link bahmni-carbon-ui
+### Important commands
+#### install all dependencies
+```
+$ yarn install
 ```
 
-### Debug changes
+#### Test
+```
+$ yarn test
+```
+
+
 #### build
 ```
 $ yarn build
 ```
 
-The build output is generated into `../ui/app/micro-frontends-dist/`. This is done so that the 
+The build output is generated into `../ui/app/micro-frontends-dist/`. This is done so that the
 main bahmni-apps can reference the built files from there
 
 
@@ -43,8 +38,6 @@ shared.min.css            // Contains shared CSS across microfrontends including
 
 <mfe-name>.min.js         // angular module containing components from a single mfe
 <mfe-name>.min.css        // all the CSS for a given mfe
-
-mfe_polyfills_angular_1_4.min.js    // a polyfill required to load any <mfe-name>.min.js
 ```
 
 Currently, we have the following micro-frontends
