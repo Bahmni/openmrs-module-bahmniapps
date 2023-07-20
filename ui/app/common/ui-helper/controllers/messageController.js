@@ -34,18 +34,15 @@ angular.module("bahmni.common.uiHelper").controller("MessageController", [
             return $scope.messages.info.length > 0;
         };
 
+        $scope.isAlertMessagePresent = function () {
+            return $scope.messages.alert.length > 0;
+        }
+
         $scope.discardChanges = function (level) {
             $scope.isNavigating = false;
             $state.dirtyConsultationForm = false;
             $scope.hideMessage(level);
             $location.path('/default/patient/search');
         }
-
-        $scope.$on("$stateChangeStart", function (event, next, current) {
-            if (next.url.includes("/patient/search")) {
-                $scope.isNavigating = true;
-            }
-        })
-
     }
 ]);
