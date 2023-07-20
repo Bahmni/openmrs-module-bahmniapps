@@ -16,7 +16,6 @@ module.exports = {
   entry: {
     ipd: "./src/ipd/index.js",
     "next-ui": "./src/next-ui/index.js",
-    mfe_polyfills_angular_1_4: "./src/polyfill.js",
     shared: "./src/shared.js",
   },
   output: {

@@ -66,7 +66,7 @@ module.exports = function (grunt) {
         'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
         'components/angular-ivh-treeview/dist/ivh-treeview.min.js',
 
-        'micro-frontends-dist/mfe_polyfills_angular_1_4.min.js',
+        'micro-frontends-dist/shared.min.js',
         'micro-frontends-dist/ipd.min.js',
         'micro-frontends-dist/next-ui.min.js'
     ];
