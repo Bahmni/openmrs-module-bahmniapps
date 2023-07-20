@@ -3,6 +3,7 @@
 
 import { react2angular } from "react2angular";
 import { IpdDashboard } from "./IpdDashboard";
+import { DrugChartModal } from "./DrugChartModal";
 import "bahmni-carbon-ui/styles.css";
 
 angular.module("bahmni.mfe.ipd", [
@@ -60,3 +61,39 @@ angular.module("bahmni.mfe.ipd").component("mfeIpdDashboard", {
     '<mfe-ipd-dashboard-remote host-data="hostData" host-api="hostApi"></mfe-ipd-dashboard-remote>',
 });
 /** ================= End of component 1 ==========================  */
+
+/** MFE component 2: DrugChartModal
+ *================================================= */
+
+angular
+  .module("bahmni.mfe.ipd")
+  .component("mfeIpdDrugChartModalRemote", react2angular(DrugChartModal));
+
+function ipdDrugChartModalController($rootScope, $scope) {
+  var vm = this;
+  $scope.hostData = {
+    drugOrder: vm.drugOrder,
+    scheduleFrequencies: vm.scheduleFrequencies,
+    startTimeFrequencies: vm.startTimeFrequencies,
+  };
+  $scope.hostApi = {
+    onModalClose: function(event) {
+      vm.closeDrugChart();
+    },
+  };
+}
+
+ipdDrugChartModalController.$inject = ["$rootScope", "$scope"];
+
+angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModal", {
+  controller: ipdDrugChartModalController,
+  bindings: {
+    drugOrder: "=",
+    scheduleFrequencies: "=",
+    startTimeFrequencies: "=",
+    closeDrugChart: "&"
+  },
+  template:
+    '<mfe-ipd-drug-chart-modal-remote host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-modal-remote>',
+});
+/** ================= End of component 2 ==========================  */
