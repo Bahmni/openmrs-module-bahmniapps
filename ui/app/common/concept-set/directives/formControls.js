@@ -111,7 +111,7 @@ angular.module('bahmni.common.conceptSet')
                     if(!$state.dirtyConsultationForm) {
                     checkFormChanges($scope);
                     }
-                    if (next.url.split("/")[3] === 'search') {
+                    if (next.url.includes("/patient/search")) {
                         isNavigating = true;
                     }
                     if(isNavigating && $state.dirtyConsultationForm){
