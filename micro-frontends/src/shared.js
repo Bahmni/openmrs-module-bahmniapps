@@ -1,0 +1,1 @@
+import "bahmni-carbon-ui/styles.css";

@@ -4,7 +4,6 @@
 import { react2angular } from "react2angular";
 import { IpdDashboard } from "./IpdDashboard";
 import { DrugChartModal } from "./DrugChartModal";
-import "bahmni-carbon-ui/styles.css";
 
 angular.module("bahmni.mfe.ipd", [
   "ui.router",
