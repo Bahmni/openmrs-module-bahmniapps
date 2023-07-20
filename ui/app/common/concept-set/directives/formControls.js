@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate',
-        function (formService, spinner, $timeout, $translate) {
+    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', '$state', 'messagingService',
+        function (formService, spinner, $timeout, $translate, $state, messagingService) {
             var loadedFormDetails = {};
             var loadedFormTranslations = {};
             var unMountReactContainer = function (formUuid) {
@@ -78,6 +78,52 @@ angular.module('bahmni.common.conceptSet')
                         }
                     }
                 });
+                
+                function checkFormChanges($scope) {
+                    $state.dirtyConsultationForm = false;
+                    if($scope.form.observations.length>0) {
+                        if($scope.$parent.consultation.observations.length == 0) {
+                            $state.dirtyConsultationForm = true;
+                            return;
+                        }
+                        for(var i=0;i<$scope.form.observations.length;i++) {
+                            var formObservation = $scope.form.observations[i];
+                            for (var j = 0; j < $scope.$parent.consultation.observations.length; j++) {
+                                var consultationObservation = $scope.$parent.consultation.observations[j];
+                                if(consultationObservation.value !== formObservation.value){
+                                    $state.dirtyConsultationForm = true;
+                                }
+                                else {
+                                    $state.dirtyConsultationForm = false;
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $scope.$on('$stateChangeStart', function (event, next, current) {
+                    var isNavigating = false;
+                    if ($scope.form.component) {
+                        var formObservations = $scope.form.component.getValue();
+                        $scope.form.observations = formObservations.observations;
+                    }
+                    if(!$state.dirtyConsultationForm) {
+                    checkFormChanges($scope);
+                    }
+                    if (next.url.split("/")[3] === 'search') {
+                        isNavigating = true;
+                    }
+                    if(isNavigating && $state.dirtyConsultationForm){
+                        messagingService.showMessage('error', "{{'ALERT_MESSAGE_ON_EXIT' | translate }}");
+                        event.preventDefault();
+                        spinner.hide(next.spinnerToken);
+                    }
+                });
+
+                $scope.$on("event:changes-saved", function (event) {
+                    $state.dirtyConsultationForm = false;
+                });              
             };
 
             return {

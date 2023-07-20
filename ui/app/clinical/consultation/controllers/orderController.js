@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('OrderController', ['$scope', 'allOrderables', 'ngDialog', 'retrospectiveEntryService', 'appService', '$translate',
-        function ($scope, allOrderables, ngDialog, retrospectiveEntryService, appService, $translate) {
+    .controller('OrderController', ['$scope', '$state', 'allOrderables', 'ngDialog', 'retrospectiveEntryService', 'appService', '$translate',
+        function ($scope, $state, allOrderables, ngDialog, retrospectiveEntryService, appService, $translate) {
             $scope.consultation.orders = $scope.consultation.orders || [];
             $scope.consultation.childOrders = $scope.consultation.childOrders || [];
             $scope.allOrdersTemplates = allOrderables;
@@ -132,6 +132,12 @@ angular.module('bahmni.clinical')
                     order.isUrgent = order.urgency == "STAT" ? true : order.isUrgent;
                 });
             };
+
+            $scope.$on('$stateChangeStart', function(event, next, current) {
+                if($scope.consultation.orders.length !== $scope.consultation.investigations.length) {
+                    $state.dirtyConsultationForm = true;
+                  }
+            });
 
             $scope.getOrderTemplate = function (templateName) {
                 var key = '\'' + templateName + '\'';
