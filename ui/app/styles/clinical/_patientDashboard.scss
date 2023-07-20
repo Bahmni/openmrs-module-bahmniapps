@@ -750,8 +750,13 @@ table.drug-order-table td.drug {
 }
 
 .add-to-drug-chart {
-    text-align: center;
+    
     width: 20%;
+
+    .drug-chart-link {
+        font-size: 11px;
+        text-align: center;
+    }
     #add-icon {
         font-size: 14px;
     }

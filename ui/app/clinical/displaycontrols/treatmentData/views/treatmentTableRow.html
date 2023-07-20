@@ -15,11 +15,19 @@
         <span class="fr">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
     </td>
     <td class="add-to-drug-chart">
-        <span ng-if="enableIPDFeature && drugOrder.careSetting === 'INPATIENT'">
-            <a>{{ ::'ADD_TO_DRUG_CHART_KEY'|translate }}
-                <i id="add-icon" class="fa fa-plus-circle" aria-hidden="true"></i>
+        <span class="drug-chart-link" ng-if="enableIPDFeature && drugOrder.careSetting === 'INPATIENT'">
+            <a ng-click="openDrugChartModal(drugOrder)">
+                {{ ::'ADD_TO_DRUG_CHART_KEY'|translate }}
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
             </a>
         </span>
+        <div>
+            <mfe-ipd-drug-chart-modal drug-order="selectedDrugOrder" 
+            schedule-frequencies="drugChartModalScheduleFrequencies" 
+            start-time-frequencies="drugChartModalStartTimeFrequencies" 
+            close-drug-chart="closeDrugChartModal()" 
+            ng-if="openModal"></mfe-ipd-drug-chart-modal>
+        </div>
     </td>
 
     <td class="toggle-btn" toggle="drugOrder.showDetails" ng-if="::((params.showDetailsButton == true) && !drugOrder.additionalInstructions)">
