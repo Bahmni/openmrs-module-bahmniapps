@@ -12,7 +12,7 @@ angular.module('bahmni.clinical')
                         }
                         
                         if(isNavigating && $state.dirtyConsultationForm){
-                            messagingService.showMessage('error', "{{'ALERT_MESSAGE_ON_EXIT' | translate }}");
+                            messagingService.showMessage('alert', "{{'ALERT_MESSAGE_ON_EXIT' | translate }}");
                             event.preventDefault();
                             spinner.hide(next.spinnerToken);
                         }
