@@ -4,6 +4,7 @@ angular.module('bahmni.reports')
     .service('reportService', ['appService', '$bahmniCookieStore', '$http', function (appService, $bahmniCookieStore, $http) {
         var paperSize = appService.getAppDescriptor().getConfigValue("paperSize");
         var appName = appService.getAppName() ? appService.getAppName() : "reports";
+        let currentDate = new Date();
         var availableFormats = {
             "CSV": "text/csv",
             "HTML": "text/html",
@@ -13,13 +14,12 @@ angular.module('bahmni.reports')
             "ODS": "application/vnd.oasis.opendocument.spreadsheet"
         };
         var avaialbleDateRange = {
-            "Today": "today",
-            "This Week": "week",
-            "This Month": "month",
-            "This Quater": "quater",
-            "This Year": "year",
-            "Previous Week": "prev-week",
-            "Previous Month": "prev-month"
+            "Today": currentDate,
+            "This Month": new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+            "This Quater": new Date(currentDate.getFullYear(), Math.floor(currentDate.getMonth() / 3) * 3, 1),
+            "This Year": new Date(currentDate.getFullYear(), 0, 1),
+            "Previous Week": new Date(new Date().setDate(currentDate.getDate() - 6)),
+            "Previous Month": new Date(new Date().setDate(currentDate.getDate() - 30)),
         };
 
         var scheduleReport = function (report) {
