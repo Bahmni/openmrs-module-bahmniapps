@@ -33,3 +33,7 @@ Currently, we have the following micro-frontends
 
 1. `next-ui.min.js`: A local micro-fontend containing next gen react components to be used by bahmniapps
 2. `ipd.min.js`: The IPD micro-frontend talking to the remote IPD repository
+
+
+### Other notes
+1. For every micro-frontend angular module, don't forget to add an entry in the `ui/test/__mocks__/micro-frontends.js` file for mocking it out
