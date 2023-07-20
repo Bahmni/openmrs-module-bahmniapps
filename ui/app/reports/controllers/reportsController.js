@@ -50,8 +50,6 @@ angular.module('bahmni.reports')
             });
         };
 
-        console.log('Initial scope', $scope);
-
         var isDateRangeRequiredFor = function (report) {
             return _.find($rootScope.reportsRequiringDateRange, { name: report.name });
         };
