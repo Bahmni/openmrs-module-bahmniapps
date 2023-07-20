@@ -1,18 +1,23 @@
-"use strict";
+"use strict"
 
 angular.module('bahmni.clinical')
-    .directive('alertOnExit', ['exitAlertService', '$state',
-        function (exitAlertService, $state) {
+    .directive('alertOnExit', ['messagingService', 'spinner', '$state',
+        function (messagingService, spinner, $state) {
             return {
-                link: function ($scope) {
-                    $scope.$on('$stateChangeStart', function (event, next, current) {
-                        var uuid = $state.params.patientUuid;
-                        var currentUuid = current.patientUuid;
-                        var isNavigating = exitAlertService.setIsNavigating(next, uuid, currentUuid);
-                        $state.dirtyConsultationForm = $state.discardChanges ? false : $state.dirtyConsultationForm;
-                        exitAlertService.showExitAlert(isNavigating, $state.dirtyConsultationForm, event, next.spinnerToken);
+                link: function ($scope, elem, attrs) {
+                    $scope. $on ('$stateChangeStart', function (event, next, current) {
+                    var isNavigating = false;
+                        if (next.url.split("/")[3] === 'search') {
+                            isNavigating = true;
+                        }
+                        
+                        if(isNavigating && $state.dirtyConsultationForm){
+                            messagingService.showMessage('error', "{{'ALERT_MESSAGE_ON_EXIT' | translate }}");
+                            event.preventDefault () ;
+                            spinner.hide(next.spinnerToken);
+                        }
                     });
                 }
-            };
+            }
         }
     ]);

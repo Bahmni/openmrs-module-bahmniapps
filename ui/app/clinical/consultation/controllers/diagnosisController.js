@@ -56,13 +56,14 @@ angular.module('bahmni.clinical')
                 return canAdd;
             };
 
-            $scope.$on('$stateChangeStart', function () {
+            $scope. $on ('$stateChangeStart', function (event, next, current) {
                 if ($scope.diagnosisForm.$dirty) {
                     $state.dirtyConsultationForm = true;
-                }
+                  }
             });
 
-            $scope.$on("event:changes-saved", function () {
+            $scope.$on("event:changes-saved", function (event) {
+                $scope.diagnosisForm.$setSubmitted();
                 $scope.diagnosisForm.$dirty = false;
             });
 

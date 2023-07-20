@@ -54,14 +54,15 @@ angular.module('bahmni.clinical')
                 $scope.newSpecimens.push(newSpecimen);
             };
 
-            $scope.$on('$stateChangeStart', function () {
-                if ($scope.bacteriologyForm.$dirty) {
-                    $state.dirtyConsultationForm = true;
+            $scope.$on('$stateChangeStart', function (event, next, current) {
+                if($scope.consultation.newlyAddedSpecimens.length === 0) {
+                    $state.dirtyConsultationForm = false;
                 }
-            });
-
-            $scope.$on("event:changes-saved", function () {
-                $scope.bacteriologyForm.$dirty = false;
+                else {
+                    if($scope.consultation.newlyAddedSpecimens[0].dateCollected!==null){
+                        $state.dirtyConsultationForm = true;
+                    }
+                }
             });
 
             var contextChange = function () {

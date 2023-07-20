@@ -18,13 +18,14 @@ angular.module('bahmni.clinical')
             $scope.consultation.consultationNote.observationDateTime = null;
         };
 
-        $scope.$on('$stateChangeStart', function () {
+        $scope. $on ('$stateChangeStart', function (event, next, current) {
             if ($scope.consultationForm.$dirty) {
                 $state.dirtyConsultationForm = true;
-            }
+              }
         });
 
         $scope.$on("event:changes-saved", function (event) {
+            $scope.consultationForm.$setSubmitted();
             $scope.consultationForm.$dirty = false;
         });
 

@@ -95,16 +95,18 @@ angular.module('bahmni.clinical')
                     $scope.treatment.audit = '';
                 });
             };
-
-            $scope.$on('$stateChangeStart', function () {
-                if ($scope.addForm.$dirty && !$scope.clearButtonClicked) {
+        
+            $scope. $on ('$stateChangeStart', function (event, next, current) {
+                if ($scope.addForm.$dirty) {
                     $state.dirtyConsultationForm = true;
-                }
+                  }
             });
 
-            $scope.$on("event:changes-saved", function () {
+            $scope.$on("event:changes-saved", function (event) {
+                $scope.addForm.$setSubmitted();
                 $scope.addForm.$dirty = false;
             });
+
 
             var markVariable = function (variable) {
                 $scope[variable] = true;
