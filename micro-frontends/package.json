@@ -12,7 +12,16 @@
     "@babel/preset-react": "^7.22.3",
     "@testing-library/react": "12.1.5",
     "babel-loader": "^9.1.2",
+    "babel-jest": "^29.5.0",
+    "eslint": "^8.42.0",
+    "eslint-plugin-jest": "^27.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-config-prettier": "^8.8.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "jest-fetch-mock": "^3.0.3",
     "mini-css-extract-plugin": "^2.7.6",
+    "prettier": "^2.8.8",
     "resolve-url-loader": "^3.1.0",
     "webpack": "^5.86.0",
     "webpack-cli": "^5.1.4",
@@ -34,6 +43,9 @@
     "react2angular": "^4.0.6"
   },
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "test": "jest",
+    "test:ci": "yarn test --ci",
+    "lint": "eslint src/**/*.{js,jsx}"
   }
 }
