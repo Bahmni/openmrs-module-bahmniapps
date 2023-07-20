@@ -6,7 +6,7 @@
     </h2>
     <div class="order-section-container"  ng-show="addTreatment">
         <div class="Order-section-orderDrug clearfix">
-            <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form class="edit-drug-order-container">
+            <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form class="edit-drug-order-container" alert-on-exit>
                 <article class="form-field">
                     <div class="field-attribute">
                         <label>{{ ::treatmentConfig.translate('drugName', 'MEDICATION_DRUG_NAME_TITLE') }} </label>
