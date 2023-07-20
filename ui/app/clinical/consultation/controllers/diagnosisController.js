@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService', '$translate', 'retrospectiveEntryService',
-        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService, $translate, retrospectiveEntryService) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService', '$translate', 'retrospectiveEntryService', '$state',
+        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService, $translate, retrospectiveEntryService, $state) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.todayWithoutTime = DateUtil.getDateWithoutTime(DateUtil.today());
             $scope.toggles = {
@@ -55,6 +55,17 @@ angular.module('bahmni.clinical')
                 });
                 return canAdd;
             };
+
+            $scope. $on ('$stateChangeStart', function (event, next, current) {
+                if ($scope.diagnosisForm.$dirty) {
+                    $state.dirtyConsultationForm = true;
+                  }
+            });
+
+            $scope.$on("event:changes-saved", function (event) {
+                $scope.diagnosisForm.$setSubmitted();
+                $scope.diagnosisForm.$dirty = false;
+            });
 
             $scope.getAddNewDiagnosisMethod = function (diagnosisAtIndex) {
                 return function (item) {
