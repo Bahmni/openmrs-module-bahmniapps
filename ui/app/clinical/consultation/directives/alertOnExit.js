@@ -7,13 +7,13 @@ angular.module('bahmni.clinical')
                 link: function ($scope, elem, attrs) {
                     $scope. $on ('$stateChangeStart', function (event, next, current) {
                     var isNavigating = false;
-                        if (next.url.split("/")[3] === 'search') {
+                        if (next.url.includes("/patient/search")) {
                             isNavigating = true;
                         }
                         
                         if(isNavigating && $state.dirtyConsultationForm){
                             messagingService.showMessage('error', "{{'ALERT_MESSAGE_ON_EXIT' | translate }}");
-                            event.preventDefault () ;
+                            event.preventDefault();
                             spinner.hide(next.spinnerToken);
                         }
                     });
