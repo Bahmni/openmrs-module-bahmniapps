@@ -74,6 +74,7 @@ function ipdDrugChartModalController($rootScope, $scope) {
     drugOrder: vm.drugOrder,
     scheduleFrequencies: vm.scheduleFrequencies,
     startTimeFrequencies: vm.startTimeFrequencies,
+    enable24HourTimers: vm.enable24HourTimers,
   };
   $scope.hostApi = {
     onModalClose: function(event) {
@@ -90,6 +91,7 @@ angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModal", {
     drugOrder: "=",
     scheduleFrequencies: "=",
     startTimeFrequencies: "=",
+    enable24HourTimers: "=",
     closeDrugChart: "&"
   },
   template:

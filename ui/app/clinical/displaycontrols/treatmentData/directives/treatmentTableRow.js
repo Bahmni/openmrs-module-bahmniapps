@@ -6,6 +6,7 @@ angular.module('bahmni.clinical')
             $scope.selectedDrugOrder = {};
             $scope.openModal = false;
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
+            $scope.enable24HourTimers = appService.getAppDescriptor().getConfigValue("enable24HourTimers");
             if ($scope.enableIPDFeature === true) {
                 $scope.drugChartModalScheduleFrequencies = appService.getAppDescriptor().getConfigValue("drugChartScheduleFrequencies");
                 $scope.drugChartModalStartTimeFrequencies = appService.getAppDescriptor().getConfigValue("drugChartStartTimeFrequencies");

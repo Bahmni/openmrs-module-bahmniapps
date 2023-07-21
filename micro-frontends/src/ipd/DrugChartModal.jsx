@@ -22,6 +22,7 @@ DrugChartModal.propTypes = {
     drugOrder: PropTypes.object,
     scheduleFrequencies: PropTypes.array,
     startTimeFrequencies: PropTypes.array,
+    enable24HrTimeFormat: PropTypes.bool,
   }).isRequired,
   hostApi: PropTypes.shape({
     closeDrugChart: PropTypes.func,
