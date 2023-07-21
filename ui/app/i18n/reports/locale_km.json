@@ -29,6 +29,7 @@
     "REPORT_DELETE": "លុប",
     "REPORTS_HEADER_REPORTS": "របាយការណ៍",
     "REPORTS_HEADER_MY_REPORTS": "របាយការណ៍របស់ខ្ញុំ",
+    "REPORT_DATE_RANGE": "ជ្រើសរើសជួរកាលបរិច្ឆេទ",
     "NO_RESULTS_FOUND": "គ្មានលទ្ធផល",
     "PRIVILEGE_REQUIRED": "អ្នកប្រើបានចូលប៉ុន្តែគ្មានការអនុញ្ញាតចូលប្រើ",
     "NO_FULFILMENT_MESSAGE": "គ្មានការសង្កេតសម្រាប់បញ្ជានេះ",
