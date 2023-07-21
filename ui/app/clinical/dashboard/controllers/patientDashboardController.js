@@ -15,6 +15,7 @@ angular.module('bahmni.clinical')
             $scope.isDashboardPrinting = false;
             $scope.loadIPD = false;
             var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
+            $state.discardChanges = false;
 
             $scope.alergyData = {
                 name: 'Customised for me!!!'
