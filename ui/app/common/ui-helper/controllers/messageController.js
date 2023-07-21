@@ -38,6 +38,7 @@ angular.module("bahmni.common.uiHelper").controller("MessageController", [
 
         $scope.discardChanges = function (level) {
             $state.dirtyConsultationForm = false;
+            $state.discardChanges = true;
             $scope.hideMessage(level);
             $location.path('/default/patient/search');
         }
