@@ -109,7 +109,7 @@ angular.module('bahmni.common.conceptSet')
                         $scope.form.observations = formObservations.observations;
                     }
                     if(!$state.dirtyConsultationForm) {
-                    checkFormChanges($scope);
+                        checkFormChanges($scope);
                     }
                     if (next.url.includes("/patient/search")) {
                         isNavigating = true;
