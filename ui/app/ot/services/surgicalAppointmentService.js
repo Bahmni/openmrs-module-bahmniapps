@@ -66,7 +66,7 @@ angular.module('bahmni.ot')
                 withCredentials: true
             });
         };
-        this.getNotes = function (startDate, endDate) {
+        this.getBulkNotes = function (startDate, endDate) {
             return $http.get(Bahmni.OT.Constants.notesUrl, {
                 method: 'GET',
                 params: {

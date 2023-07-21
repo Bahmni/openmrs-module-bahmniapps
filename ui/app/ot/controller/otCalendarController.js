@@ -25,7 +25,7 @@ angular.module('bahmni.ot')
                 while (currentDate > new Date($scope.weekDates[0])) {
                     const prev = new Date(currentDate);
                     currentDate.setDate(currentDate.getDate() - 1);
-                    if ($scope.notesForWeek[currentDate.getDate()]) {
+                    if ($scope.getNotesForWeek[currentDate.getDate()]) {
                         $scope.validStartDate = prev;
                         break;
                     }
@@ -37,7 +37,7 @@ angular.module('bahmni.ot')
                 while (currentDate < new Date($scope.weekDates[6])) {
                     const prev = new Date(currentDate);
                     currentDate.setDate(currentDate.getDate() + 1);
-                    if ($scope.notesForWeek[currentDate.getDate()]) {
+                    if ($scope.getNotesForWeek[currentDate.getDate()]) {
                         $scope.validEndDate = prev;
                         break;
                     }
@@ -108,19 +108,19 @@ angular.module('bahmni.ot')
                 }
             };
 
-            $scope.saveNotes = async function () {
+            $scope.saveNotes = function () {
                 notesInputValidation();
                 if ($scope.isDayView) {
-                    await surgicalAppointmentService.saveNoteForADay($scope.viewDate, $scope.otNotesField);
+                    surgicalAppointmentService.saveNoteForADay($scope.viewDate, $scope.otNotesField);
                 } else {
-                    await surgicalAppointmentService.saveNoteForADay($scope.notesStartDate, $scope.otNotesField, $scope.notesEndDate);
+                    surgicalAppointmentService.saveNoteForADay($scope.notesStartDate, $scope.otNotesField, $scope.notesEndDate);
                 }
                 $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
             };
 
-            $scope.updateNotes = async function () {
+            $scope.updateNotes = function () {
                 notesInputValidation();
-                await surgicalAppointmentService.updateNoteForADay($scope.noteId, $scope.otNotesField);
+                surgicalAppointmentService.updateNoteForADay($scope.noteId, $scope.otNotesField);
                 $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
             };
 
@@ -136,9 +136,9 @@ angular.module('bahmni.ot')
             };
             const getNotes = function () {
                 if ($scope.weekOrDay === 'day') {
-                    return surgicalAppointmentService.getNotes(new Date($scope.viewDate));
+                    return surgicalAppointmentService.getBulkNotes(new Date($scope.viewDate, null));
                 } else if ($scope.weekOrDay === 'week') {
-                    return surgicalAppointmentService.getNotes($scope.weekStartDate, getWeekDate(7));
+                    return surgicalAppointmentService.getBulkNotes($scope.weekStartDate, getWeekDate(7));
                 }
             };
             var init = function () {
