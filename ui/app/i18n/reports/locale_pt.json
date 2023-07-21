@@ -34,6 +34,7 @@
     "NO_FULFILMENT_MESSAGE": "Não ha observações feitas para este paciente.",
     "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "Não há links de navegação disponíveis",
     "CHOOSE_REPORT_FORMAT": "Escolha o Formato",
+    "REPORT_DATE_RANGE": "Selecione o intervalo de datas",
     "ACCEPT": "Aceitar",
     "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Por favor seleccione um valor definido ",
     "CONCEPT_NOT_FOUND_MESSAGE": "Conceito não encontrado",
