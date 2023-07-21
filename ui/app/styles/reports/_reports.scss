@@ -31,22 +31,6 @@
 			}
 		}
 
-		.reports-container {
-			display: flex;
-			align-items: center;
-			background-color: rgba(255, 152, 0, 0.94);
-		}
-
-		.reports-name {
-			flex: 1;
-		}
-
-		.reports-date-range {
-			flex: 1;
-			display: flex;
-			align-items: center;
-		}
-
 		.reports-start-date,
 		.reports-stop-date {
 			width: 170px;
