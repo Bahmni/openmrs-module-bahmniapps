@@ -24,7 +24,5 @@ PatientAlergiesControl.propTypes = {
   hostApi: PropTypes.shape({
     callback: PropTypes.func.isRequired,
   }),
-  translations: PropTypes.shape({
-    ipdDemoKey: PropTypes.string.isRequired,
-  }),
+  translations: PropTypes.object.isRequired,
 };
