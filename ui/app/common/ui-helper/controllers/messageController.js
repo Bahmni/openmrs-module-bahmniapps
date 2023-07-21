@@ -8,7 +8,6 @@ angular.module("bahmni.common.uiHelper").controller("MessageController", [
     "$state",
     function ($scope, messagingService, $translate, $location, $state) {
         $scope.messages = messagingService.messages;
-        $scope.isNavigating = false;
 
         $scope.getMessageText = function (level) {
             var string = "";
@@ -39,7 +38,6 @@ angular.module("bahmni.common.uiHelper").controller("MessageController", [
         }
 
         $scope.discardChanges = function (level) {
-            $scope.isNavigating = false;
             $state.dirtyConsultationForm = false;
             $scope.hideMessage(level);
             $location.path('/default/patient/search');
