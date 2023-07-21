@@ -30,6 +30,7 @@
     "REPORTS_HEADER_REPORTS": "보고서",
     "REPORTS_HEADER_MY_REPORTS": "내 보고서",
     "NO_RESULTS_FOUND": "No results found",
+    "REPORT_DATE_RANGE": "기간 선택",
     "PRIVILEGE_REQUIRED": "User is logged in but doesn't have the relevant privilege",
     "NO_FULFILMENT_MESSAGE": "No observations captured for this order.",
     "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "No navigation links available.",
