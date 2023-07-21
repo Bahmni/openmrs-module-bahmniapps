@@ -5,10 +5,11 @@
         <table class="alt-row form">
             <thead>
             <tr>
-                <th class="reports-container">
+                <th style="display: flex; justify-content: space-between;">
                         <div>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</div>
-                        <div>
+                        <div style="width: 170px; margin-right: 25px;">
                             {{::'REPORT_DATE_RANGE' | translate}}
+                            <span class="asterick">*</span>
                             <select ng-model="default.reportsRequiringDateRange.dateRangeType"
                                     ng-options="type as label for (label , type) in ::dateRange"
                                     ng-change="setDefault('dateRangeType', 'reportsRequiringDateRange')">
