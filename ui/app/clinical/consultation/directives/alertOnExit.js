@@ -10,7 +10,9 @@ angular.module('bahmni.clinical')
                         if (next.url.includes("/patient/search")) {
                             isNavigating = true;
                         }
-                        
+                        if($state.discardChanges) {
+                            $state.dirtyConsultationForm = false;
+                        }
                         if(isNavigating && $state.dirtyConsultationForm){
                             messagingService.showMessage('alert', "{{'ALERT_MESSAGE_ON_EXIT' | translate }}");
                             event.preventDefault();
