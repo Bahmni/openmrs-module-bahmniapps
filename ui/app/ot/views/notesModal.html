@@ -22,7 +22,7 @@
             <div ng-if="startDateBeforeEndDateError" class="error">
                 {{'FROM_DATE_BEFORE_TO_DATE_ERROR' | translate}}
             </div>
-            <div ng-if="dateOutOfRangeError" class="error">
+            <div ng-if="dateOutOfRangeError && !isEdit" class="error">
                 {{'DATE_OUT_OF_RANGE_ERROR' | translate}}
             </div>
         </div>

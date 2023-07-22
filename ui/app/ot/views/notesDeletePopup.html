@@ -1,11 +1,11 @@
 <div class="identifier-ui" ng-if="showDeletePopUp">
-    <div class="identifier-iframe">
-        <a class="close" style="padding-right: 20px" ng-click="closeNotes()">&times;</a>
-        <div style="padding: 20px">
+    <div class="identifier-iframe" style="height: 150px">
+        <a class="close" style="padding-right: 20px" ng-click="closeDeletePopup()">&times;</a>
+        <div style="padding: 0 20px; display: flex; flex-direction: column;">
             <h6>{{'DELETE_NOTE_TITLE' | translate}}</h6>
-            <p>{{'DELETE_NOTE_MESSAGE' | translate}}</p>
+            <p style="color: #161616">{{'DELETE_NOTE_MESSAGE' | translate}}</p>
         </div>
-        <button class="cancel-button" ng-click="closeDeletePopup()">{{'NO' | translate}}</button>
-        <button class="delete-button" ng-click="deleteNotes()">{{'YES' | translate}}</button>
+        <button class="cancel-button" ng-click="closeDeletePopup()">{{'NO_KEY' | translate}}</button>
+        <button class="delete-button" ng-click="deleteNotes()">{{'YES_KEY' | translate}}</button>
     </div>
 </div>

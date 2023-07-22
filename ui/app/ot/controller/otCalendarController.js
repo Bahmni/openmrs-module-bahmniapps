@@ -16,6 +16,7 @@ angular.module('bahmni.ot')
             $scope.notesStartDate = false;
             $scope.notesEndDate = false;
             $scope.isEdit = false;
+            $scope.showDeletePopUp = false;
             $scope.styleForBlock = function (index) {
                 if (index === 6) {
                     return { 'border-right': '.5px solid lightgrey'};
@@ -30,11 +31,10 @@ angular.module('bahmni.ot')
             var setValidStartDate = function (viewDate) {
                 const currentDate = new Date(viewDate);
                 $scope.validStartDate = $scope.weekDates[0];
-                const notesForWeek = $scope.getNotesForWeek($scope.weekDates[0]);
                 while (currentDate > new Date($scope.weekDates[0])) {
                     const prev = new Date(currentDate);
                     currentDate.setDate(currentDate.getDate() - 1);
-                    if (notesForWeek[currentDate]) {
+                    if ($scope.notesForWeek[currentDate]) {
                         $scope.validStartDate = prev;
                         break;
                     }
@@ -43,11 +43,10 @@ angular.module('bahmni.ot')
             var setValidEndDate = function (viewDate) {
                 const currentDate = new Date(viewDate);
                 $scope.validEndDate = $scope.weekDates[6];
-                const notesForWeek = $scope.getNotesForWeek($scope.weekDates[0]);
                 while (currentDate < new Date($scope.weekDates[6])) {
                     const prev = new Date(currentDate);
                     currentDate.setDate(currentDate.getDate() + 1);
-                    if (notesForWeek[currentDate]) {
+                    if ($scope.notesForWeek[currentDate]) {
                         $scope.validEndDate = prev;
                         break;
                     }
@@ -78,6 +77,7 @@ angular.module('bahmni.ot')
                 $scope.notesEndDate = currentDate;
                 $scope.isModalVisible = true;
                 $scope.isEdit = true;
+                $scope.dateOutOfRangeError = false;
             };
             $scope.closeNotes = function () {
                 $scope.isModalVisible = false;
@@ -110,7 +110,6 @@ angular.module('bahmni.ot')
                 }
             };
             $scope.openDeletePopup = function () {
-                console.log("Clicked");
                 $scope.showDeletePopUp = true;
             };
             $scope.closeDeletePopup = function () {
@@ -142,7 +141,12 @@ angular.module('bahmni.ot')
 
             $scope.updateNotes = function () {
                 notesInputValidation();
-                surgicalAppointmentService.updateNoteForADay($scope.noteId, $scope.otNotesField);
+                console.log($scope.notesStartDate, $scope.noteId, $scope.weekOrDay );
+                let note;
+                if($scope.weekOrDay === "week"){
+                    note = $scope.notesForWeek[$scope.notesStartDate];
+                }
+                surgicalAppointmentService.updateNoteForADay(note ? note.noteId : $scope.noteId, $scope.otNotesField);
                 $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
             };
 
@@ -216,7 +220,7 @@ angular.module('bahmni.ot')
                             if (index === undefined) {
                                 const notesForAWeek = {};
                                 response[3].data.map((note) => {
-                                    notesForAWeek[new Date(note.noteDate)] = note.noteText;
+                                    notesForAWeek[new Date(note.noteDate)] = note;
                                 });
                                 return notesForAWeek;
                             }
@@ -224,6 +228,10 @@ angular.module('bahmni.ot')
                                 return new Date(note.noteDate).getDate() === (date.getDate() + index);
                             });
                         };
+
+                        if ($scope.weekOrDay === 'week') {
+                            $scope.notesForWeek = $scope.getNotesForWeek();
+                        }
 
                         $scope.getNotesForDay = function (weekStartDate, index) {
                             var notes = $scope.getNotesForWeek(weekStartDate, index);
