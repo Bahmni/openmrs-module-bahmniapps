@@ -27,7 +27,7 @@
             </div>
         </div>
         <button class="cancel-button" ng-click="closeNotes()">{{'OT_CANCEL_KEY' | translate}}</button>
-        <button ng-if="!noteId" class="save-button" ng-click="saveNotes()">{{'SAVE' | translate}}</button>
-        <button ng-if="noteId" class="save-button"  ng-click="updateNotes()">{{'UPDATE' | translate}}</button>
+        <button ng-if="!isEdit" class="save-button" ng-click="saveNotes()">{{'SAVE' | translate}}</button>
+        <button ng-if="isEdit" class="save-button"  ng-click="updateNotes()">{{'UPDATE' | translate}}</button>
     </div>
 </div>
