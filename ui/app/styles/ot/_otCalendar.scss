@@ -53,7 +53,9 @@
     width: calc(100% - 24px);
     height: 30px;
     color: #161616;
-    overflow: scroll;
+    &:hover{
+      background-color: #EDF5FF;
+    }
   }
   .notes-text{
     background-color: #EDF5FF;

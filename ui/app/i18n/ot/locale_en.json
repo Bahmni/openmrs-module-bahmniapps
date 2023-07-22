@@ -122,8 +122,8 @@
     "TO": "To",
     "FROM_DATE_BEFORE_TO_DATE_ERROR": "From date should be before To date",
     "DATE_OUT_OF_RANGE_ERROR": "Please select date within the valid range",
-    "DISCARD_NOTE_TITLE": "Delete Note?",
+    "DELETE_NOTE_TITLE": "Delete Note?",
     "YES_KEY": "Yes",
     "NO_KEY": "No",
-    "DELETE_NOTE_MESSAGE": "Are you sure, you want to delete the notes?"
+    "DELETE_NOTE_MESSAGE": "Are you sure, you want to delete the note?"
 }
