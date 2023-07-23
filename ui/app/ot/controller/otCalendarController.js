@@ -233,7 +233,9 @@ angular.module('bahmni.ot')
                                 return notesForAWeek;
                             }
                             return _.filter(response[3].data, function (note) {
-                                return new Date(note.noteDate).getDate() === (date.getDate() + index);
+                                const currentDate = new Date(date);
+                                currentDate.setDate(date.getDate() + index);
+                                return new Date(note.noteDate).getDate() === (currentDate).getDate();
                             });
                         };
 
