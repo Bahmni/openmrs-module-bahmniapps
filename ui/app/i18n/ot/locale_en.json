@@ -125,5 +125,6 @@
     "DELETE_NOTE_TITLE": "Delete Note?",
     "YES_KEY": "Yes",
     "NO_KEY": "No",
-    "DELETE_NOTE_MESSAGE": "Are you sure, you want to delete the note?"
+    "DELETE_NOTE_MESSAGE": "Are you sure, you want to delete the note?",
+    "NOTES_PLACEHOLDER": "Enter a maximum of 35 characters"
 }

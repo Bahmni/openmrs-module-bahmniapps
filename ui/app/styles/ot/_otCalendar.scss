@@ -50,7 +50,7 @@
     left: 24px;
   }
   .notesTab{
-    width: calc(100% - 24px);
+    width: calc(100% - 10px);
     height: 30px;
     color: #161616;
     &:hover{
@@ -59,12 +59,18 @@
   }
   .notes-text{
     background-color: #EDF5FF;
-    padding: 8px;
     height: auto;
     border: 1px solid #0043CE;
     border-left: 4px solid #0043CE;
     overflow: hidden;
     text-overflow: ellipsis;
+    div{
+      display: inline-block;
+      width: calc(100% - 54px);
+    }
+    > * {
+      padding: 8px;
+    }
   }
   .calendar-time-container {
     clear: left;
