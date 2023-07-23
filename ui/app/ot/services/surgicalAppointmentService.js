@@ -108,11 +108,8 @@ angular.module('bahmni.ot')
             return $http.post(Bahmni.OT.Constants.notesUrl + "/" + noteId, note, headers);
         };
         this.deleteNoteForADay = function (noteId) {
-            const headers = {"Accept": "application/json", "Content-Type": "application/json"};
-            return $http.delete(Bahmni.OT.Constants.notesUrl + "/" + noteId, {
-                ...headers,
-                params: {reason: "OT note for the day is no longer needed"},
-                withCredentials: true,
-            });
+            const headers = {"Accept": "application/json", "Content-Type": "application/json", params: {reason: "OT note for the day is no longer needed"},
+                withCredentials: true};
+            return $http.delete(Bahmni.OT.Constants.notesUrl + "/" + noteId, headers);
         };
     }]);

@@ -110,7 +110,7 @@ angular.module('bahmni.ot')
                 }
             };
             $scope.openDeletePopup = function (weekStartDate, index) {
-                if(weekStartDate) {
+                if (weekStartDate) {
                     $scope.currentDate = new Date(weekStartDate);
                     $scope.currentDate.setDate($scope.currentDate.getDate() + index);
                 }
@@ -120,7 +120,7 @@ angular.module('bahmni.ot')
                 $scope.showDeletePopUp = false;
             };
             $scope.deleteNotes = function () {
-                let noteId;
+                var noteId;
                 if ($scope.weekOrDay === "week") {
                     noteId = $scope.notesForWeek[$scope.currentDate].noteId;
                 }
@@ -150,7 +150,7 @@ angular.module('bahmni.ot')
 
             $scope.updateNotes = function () {
                 notesInputValidation();
-                let note;
+                var note;
                 if ($scope.weekOrDay === "week") {
                     note = $scope.notesForWeek[$scope.notesStartDate];
                 }
@@ -227,7 +227,7 @@ angular.module('bahmni.ot')
                             const date = new Date(weekStartDate);
                             if (index === undefined) {
                                 const notesForAWeek = {};
-                                response[3].data.map((note) => {
+                                response[3].data.map(function (note) {
                                     notesForAWeek[new Date(note.noteDate)] = note;
                                 });
                                 return notesForAWeek;
