@@ -3,7 +3,7 @@
         <a class="close" style="padding-right: 20px" ng-click="closeNotes()">&times;</a>
         <div style="padding: 20px">
             <h6>{{'NOTE_TITLE' | translate}}</h6>
-            <textarea rows="5" id="notesID" class="notes-text-area" ng-model="otNotesField" ng-blur="setNotes(otNotesField)" placeholder="{{'NOTES_PLACEHOLDER' | translate }}" maxlength="35"></textarea>
+            <textarea rows="5" id="notesID" class="notes-text-area" ng-model="otNotesField" ng-blur="setNotes(otNotesField)" placeholder="{{'NOTES_PLACEHOLDER' | translate }}" maxlength="150"></textarea>
             <div ng-if="emptyNoteError" class="error">
                 {{'EMPTY_NOTES_ERROR' | translate }}
             </div>

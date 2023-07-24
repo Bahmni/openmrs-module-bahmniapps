@@ -58,15 +58,19 @@
     }
   }
   .notes-text{
-    background-color: #EDF5FF;
+    background-color: #FCF4D6;
+    width: calc(100% - 10px);
+    color: #161616;
     height: auto;
-    border: 1px solid #0043CE;
-    border-left: 4px solid #0043CE;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    border: 1px solid #F1C21B;
+    border-left: 4px solid #F1C21B;
+    display: flex;
     div{
       display: inline-block;
       width: calc(100% - 54px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     > * {
       padding: 8px;

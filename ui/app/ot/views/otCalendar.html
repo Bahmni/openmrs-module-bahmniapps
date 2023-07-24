@@ -4,8 +4,8 @@
         <p class="heading-ot">{{viewDate | bahmniDateTimeWithFormat: 'ddd'}}</p>
         <p class="heading-ot heading-ot-date">{{viewDate | bahmniDateTimeWithFormat: 'DD'}}</p>
     </div>
-        <div class="notesTab"  ng-click="showNotesPopup(viewDate)" style="border: .5px solid lightgrey" ng-if="(!noteForTheDay)"></div>
-        <div class="notesTab notes-text" ng-style="getNotesStyle()" ng-if="noteForTheDay">
+        <div class="notesTab"  ng-click="showNotesPopup(viewDate)" style="border: .5px solid lightgrey" ng-if="!noteForTheDay"></div>
+        <div class="notes-text" ng-if="noteForTheDay">
             <div ng-click="showNotesPopupEdit(viewDate, 0, noteForTheDay)" title="{{noteForTheDay}}">
                 {{noteForTheDay}}
             </div>
@@ -50,7 +50,6 @@
                     ng-style = "{top : currentTimeLineHeight + 'px'}">
             </div>
             <ot-notes/>
-            <ot-notes-delete/>
             </div>
 
         </div>

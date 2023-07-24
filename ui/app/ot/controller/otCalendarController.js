@@ -10,8 +10,6 @@ angular.module('bahmni.ot')
                 $scope.blocksStartDatetime = $scope.weekOrDay === 'day' ? $scope.viewDate : moment($scope.weekStartDate).startOf('day');
                 $scope.blocksEndDatetime = $scope.weekOrDay === 'day' ? moment($scope.viewDate).endOf('day') : moment(Bahmni.Common.Util.DateUtil.getWeekEndDate($scope.weekStartDate)).endOf('day');
             };
-            const notesBackgroundColor = appService.getAppDescriptor().getConfigValue("notesBackgroundColor") || "#EDF5FF";
-            const notesBorderColor = appService.getAppDescriptor().getConfigValue("notesBorderColor") || "#0043CE";
             $scope.isModalVisible = false;
             $scope.notesStartDate = false;
             $scope.notesEndDate = false;
@@ -21,12 +19,6 @@ angular.module('bahmni.ot')
                 if (index === 6) {
                     return { 'border-right': '.5px solid lightgrey'};
                 }
-            };
-            $scope.getNotesStyle = function () {
-                return {
-                    "background-color": notesBackgroundColor,
-                    "border-color": notesBorderColor
-                };
             };
             var setValidStartDate = function (viewDate) {
                 const currentDate = new Date(viewDate);
@@ -82,6 +74,7 @@ angular.module('bahmni.ot')
             $scope.closeNotes = function () {
                 $scope.isModalVisible = false;
                 $scope.startDateBeforeEndDateError = false;
+                $scope.emptyNoteError = false;
                 $scope.dateOutOfRangeError = false;
                 $scope.notesStartDate = undefined;
                 $scope.notesEndDate = undefined;
@@ -105,7 +98,7 @@ angular.module('bahmni.ot')
                 if (notes) {
                     $scope.emptyNoteError = false;
                 }
-                if (notes.id) {
+                if (notes && notes.id) {
                     $scope.notesId = notes.id;
                 }
             };
@@ -128,7 +121,8 @@ angular.module('bahmni.ot')
                 $scope.showDeletePopUp = false;
                 $state.go("otScheduling", {viewDate: $scope.viewDate}, {reload: true});
             };
-            var notesInputValidation = function () {
+
+            $scope.saveNotes = function () {
                 if ($scope.startDateBeforeEndDateError || $scope.dateOutOfRangeError) {
                     return;
                 }
@@ -136,10 +130,6 @@ angular.module('bahmni.ot')
                     $scope.emptyNoteError = true;
                     return;
                 }
-            };
-
-            $scope.saveNotes = function () {
-                notesInputValidation();
                 if ($scope.isDayView) {
                     surgicalAppointmentService.saveNoteForADay($scope.viewDate, $scope.otNotesField);
                 } else {
@@ -149,7 +139,13 @@ angular.module('bahmni.ot')
             };
 
             $scope.updateNotes = function () {
-                notesInputValidation();
+                if ($scope.startDateBeforeEndDateError || $scope.dateOutOfRangeError) {
+                    return;
+                }
+                if (!$scope.otNotesField) {
+                    $scope.emptyNoteError = true;
+                    return;
+                }
                 var note;
                 if ($scope.weekOrDay === "week") {
                     note = $scope.notesForWeek[$scope.notesStartDate];
