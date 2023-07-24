@@ -11,6 +11,7 @@ export function PatientAlergiesControl(props) {
   return (
     <div>
       <span>Displaying alergy control from {props.hostData.name}</span>
+      <span>Translation: {props.translations?.ipdDemoKey}</span>
       <Button onClick={props.hostApi?.callback}>Click for callback</Button>
     </div>
   );
@@ -23,4 +24,5 @@ PatientAlergiesControl.propTypes = {
   hostApi: PropTypes.shape({
     callback: PropTypes.func.isRequired,
   }),
+  translations: PropTypes.object.isRequired,
 };
