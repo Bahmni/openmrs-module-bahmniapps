@@ -92,6 +92,7 @@ angular.module('bahmni.clinical')
                     $state.current.views['dashboard-content'].templateUrl : $state.current.views['dashboard-content'];
 
                 $scope.loadIPD = dashboard.translationKey === "DASHBOARD_IPD_DRUG_CHART_TAB_KEY";
+                $scope.loadAllergies = dashboard.translationKey === "DASHBOARD_NEXT_UI_ALLERGIES_KEY";
             };
 
             $scope.init(getCurrentTab());
