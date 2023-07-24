@@ -17,7 +17,8 @@ Bahmni.OT.Constants = (function () {
         defaultCalendarStartTime: '00:00',
         weekDays: {"Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5, "Saturday": 6, "Sunday": 7 },
         defaultWeekStartDayName: 'Sunday',
-        providerSurgicalAttributeFormat: 'org.openmrs.Provider'
+        providerSurgicalAttributeFormat: 'org.openmrs.Provider',
+        notesUrl: RESTWS_V1 + '/notes'
     };
 })();
 

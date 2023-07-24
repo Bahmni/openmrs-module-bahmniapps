@@ -61,9 +61,54 @@ angular.module('bahmni.ot')
                     v: "custom:(id,uuid," +
                     "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
                     "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,person:(age))," +
-                    "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,bedNumber,bedLocation,surgicalAppointmentAttributes,patientObservations))"
+                    "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,bedNumber,bedLocation,surgicalAppointmentAttributes))"
                 },
                 withCredentials: true
             });
+        };
+        this.getBulkNotes = function (startDate, endDate) {
+            return $http.get(Bahmni.OT.Constants.notesUrl, {
+                method: 'GET',
+                params: {
+                    noteType: 'OT Module',
+                    noteStartDate: startDate,
+                    noteEndDate: endDate
+                },
+                withCredentials: true
+            });
+        };
+
+        var constructPayload = function (noteDate, note, noteEndDate) {
+            const payload = [];
+            const currentDate = new Date(noteDate);
+            // eslint-disable-next-line no-unmodified-loop-condition
+            while (currentDate <= noteEndDate) {
+                payload.push({
+                    noteTypeName: "OT module",
+                    noteDate: new Date(currentDate),
+                    noteText: note
+                });
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            return payload;
+        };
+
+        this.saveNoteForADay = function (noteDate, note, noteEndDate) {
+            const payload = noteEndDate != null ? constructPayload(noteDate, note, noteEndDate) : [{
+                noteTypeName: "OT module",
+                noteDate: noteDate,
+                noteText: note
+            }];
+            const headers = {"Accept": "application/json", "Content-Type": "application/json"};
+            return $http.post(Bahmni.OT.Constants.notesUrl, payload, headers);
+        };
+
+        this.updateNoteForADay = function (noteId, note) {
+            const headers = {"Accept": "application/json", "Content-Type": "application/json"};
+            return $http.post(Bahmni.OT.Constants.notesUrl + "/" + noteId, note, headers);
+        };
+        this.deleteNoteForADay = function (noteId) {
+            const headers = {"Accept": "application/json", "Content-Type": "application/json", withCredentials: true};
+            return $http.delete(Bahmni.OT.Constants.notesUrl + "/" + noteId, headers);
         };
     }]);
