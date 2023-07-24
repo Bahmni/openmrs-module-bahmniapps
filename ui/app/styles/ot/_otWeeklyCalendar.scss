@@ -6,8 +6,40 @@
       text-align: center;
       float: left;
       border-bottom: .5px solid lightgrey;
-      padding: 10px 0;
-      font-family: OpenSansSemiBold;
+      padding: 5px 0;
+      .note{
+        border-left: .5px solid lightgrey;
+        width: 100%;
+        height: 33px;
+        &:hover{
+          background-color: #EDF5FF;
+        }
+      }
+      .heading-ot-date{
+        font-size: 24px;
+      }
+      .heading-ot{
+        padding-bottom: 10px;
+      }
+      .notes-text{
+        background-color: #FCF4D6;
+        height: auto;
+        border: 1px solid #F1C21B;
+        border-left: 3px solid #F1C21B;
+        color: #161616;
+        text-align: left;
+        display: flex;
+        div{
+          display: inline-block;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 80%;
+        }
+        > * {
+          padding: 8px 0 8px 8px;
+        }
+      }
     }
   }
   .table-block {
@@ -34,6 +66,103 @@
           }
         }
       }
+    }
+  }
+  .identifier-ui {
+    position: fixed;
+    z-index: 1000;
+    padding-top: 100px;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+
+    .identifier-iframe {
+      background-color: #fefefe;
+      position: relative;
+      margin: auto;
+      border: 1px solid #888;
+      padding: 20px 0;
+      width: 30%;
+      top: 100px;
+      height: 320px;
+
+      @media screen and (max-width: 540px) {
+        width: 90%;
+      }
+
+      @media screen and (min-width: 541px) and (max-width: 1024px) {
+        width: 80%;
+      }
+      .calendar-day-input {
+        background: #fff;
+        border: 1px solid #95989a;
+        outline: none;
+        width: 205px;
+        font-size: 14px;
+        padding: 5px;
+        border-radius: 3px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        display: inline-block;
+        color: #000;
+      }
+      button{
+        height: 64px;
+        width: 50%;
+        color: white;
+        border: none;
+        border-radius: 0;
+        background-image: none;
+        position: absolute;
+        bottom: 0;
+        text-align: left;
+      }
+
+      h6{
+        color: black;
+      }
+
+      .save-button{
+        right: 0;
+        background-color: #007d79;
+      }
+      .delete-button{
+        right: 0;
+        background-color: #da1e28;
+      }
+
+      .cancel-button{
+        left: 0;
+        background-color: #39393F;
+      }
+      .notes-text-area{
+        width: 95%;
+        border: 0.5px solid;
+        resize: none;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        border-radius: 4px;
+        &:focus{
+          background-color: white;
+        }
+      }
+    }
+
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
     }
   }
 }
