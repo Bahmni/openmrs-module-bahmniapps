@@ -375,5 +375,5 @@
   "CHIEF_COMPLAINT_CODED_KEY": "Chief Complaint Coded",
   "SIGN_SYMPTOM_DURATION_KEY": "Sign/symptom duration",
   "CHIEF_COMPLAINT_DURATION_UNIT_KEY": "Chief Complaint Duration",
-  "DASHBOARD_TAB_IPD_DEMO_KEY": "IPD demo"
+  "DASHBOARD_IPD_DRUG_CHART_TAB_KEY": "Drug Chart"
 }
