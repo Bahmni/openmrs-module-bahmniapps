@@ -5,6 +5,7 @@ on:
       - Bahmni-IPD-master
     paths-ignore:
       - "**.md"
+  workflow_dispatch:
 
 jobs:
   Trivy:
