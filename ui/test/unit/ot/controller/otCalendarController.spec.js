@@ -122,7 +122,7 @@ describe("otCalendarController", function () {
                 return {data: {results: surgeons}};
             });
             surgicalAppointmentService.getBulkNotes.and.callFake(function () {
-                return {data: {results: notes}};
+                return {data: notes}
             });
             createController();
 
@@ -138,7 +138,7 @@ describe("otCalendarController", function () {
                 return {data: {results: surgeons}};
             });
             surgicalAppointmentService.getBulkNotes.and.callFake(function () {
-                return {data: {results: notes}};
+                return {data: notes}
             });
             createController();
 
@@ -159,7 +159,7 @@ describe("otCalendarController", function () {
                 return {data: {results: surgeons}};
             });
             surgicalAppointmentService.getBulkNotes.and.callFake(function () {
-                return {data: {results: notes}};
+                return {data: notes}
             });
             createController();
 
@@ -177,7 +177,7 @@ describe("otCalendarController", function () {
                 return {data: {results: surgeons}};
             });
             surgicalAppointmentService.getBulkNotes.and.callFake(function () {
-                return {data: {results: notes}};
+                return {data: notes}
             });
             scope.weekOrDay = 'day';
             createController();
@@ -277,7 +277,7 @@ describe("otCalendarController", function () {
                 return {data: {results: surgeons}};
             });
             surgicalAppointmentService.getBulkNotes.and.callFake(function () {
-                return {data: {results: notes}};
+                return {data: notes}
             });
             createController();
             const weekStartDate = moment('2023-07-02').toDate();
@@ -296,7 +296,7 @@ describe("otCalendarController", function () {
                 return {data: {results: surgeons}};
             });
             surgicalAppointmentService.getBulkNotes.and.callFake(function () {
-                return {data: {results: notes}};
+                return {data: notes}
             });
             createController();
             const weekStartDate = moment('2023-07-02').toDate();
@@ -315,7 +315,7 @@ describe("otCalendarController", function () {
                 return {data: {results: surgeons}};
             });
             surgicalAppointmentService.getBulkNotes.and.callFake(function () {
-                return {data: {results: notes}};
+                return {data: notes}
             });
             createController();
             const weekStartDate = moment('2023-07-02').toDate();
@@ -338,7 +338,7 @@ describe("otCalendarController", function () {
                 return {data: {results: surgeons}};
             });
             surgicalAppointmentService.getBulkNotes.and.callFake(function () {
-                return {data: {results: notes}};
+                return {data: notes}
             });
             createController();
             const viewDate = moment('2023-07-05').toDate();
@@ -360,7 +360,7 @@ describe("otCalendarController", function () {
                 return {data: {results: surgeons}};
             });
             surgicalAppointmentService.getBulkNotes.and.callFake(function () {
-                return {data: {results: notes}};
+                return {data: notes}
             });
             createController();
             scope.setNotes('');
@@ -377,7 +377,7 @@ describe("otCalendarController", function () {
                 return {data: {results: surgeons}};
             });
             surgicalAppointmentService.getBulkNotes.and.callFake(function () {
-                return {data: {results: notes}};
+                return {data: notes}
             });
             createController();
             scope.setNotesStartDate(moment('2023-07-05').toDate());
@@ -395,7 +395,7 @@ describe("otCalendarController", function () {
                 return {data: {results: surgeons}};
             });
             surgicalAppointmentService.getBulkNotes.and.callFake(function () {
-                return {data: {results: notes}};
+                return {data: notes}
             });
             createController();
             const style = scope.styleForBlock(6);
