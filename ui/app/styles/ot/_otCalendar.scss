@@ -25,7 +25,8 @@
       box-sizing: border-box;
       text-align: center;
       float: left;
-      padding-bottom: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
       font-family: OpenSansSemiBold;
     }
   }
@@ -36,6 +37,7 @@
   .error{
     color: #da1e28;
     padding-top: 5px;
+    height: 15px;
   }
   .heading-ot-date{
     font-size: 24px;
@@ -44,28 +46,41 @@
     padding-bottom: 10px;
   }
   .heading-ot-block{
-    padding: 10px 0;
     display: inline-block;
     position: absolute;
     left: 24px;
   }
   .notesTab{
-    width: calc(100% - 24px);
+    width: calc(100% - 10px);
     height: 30px;
     color: #161616;
-    overflow: scroll;
+    &:hover{
+      background-color: #EDF5FF;
+    }
   }
   .notes-text{
-    background-color: #EDF5FF;
-    padding: 8px;
+    background-color: #FCF4D6;
+    width: calc(100% - 10px);
+    color: #161616;
     height: auto;
-    border: 1px solid #0043CE;
-    border-left: 4px solid #0043CE;
+    border: 1px solid #F1C21B;
+    border-left: 4px solid #F1C21B;
+    display: flex;
+    div{
+      display: inline-block;
+      width: calc(100% - 54px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    > * {
+      padding: 8px;
+    }
   }
   .calendar-time-container {
     clear: left;
     position: absolute;
-    top: 100px;
+    top: 94px;
     background: #fff;
     z-index: 19;
 
@@ -88,7 +103,7 @@
         left: 80px;
         overflow: auto;
         padding-bottom: 5px;
-        top: 100px;
+        top: 95px;
         width: calc(100% - 90px);
         right: 0;
       }

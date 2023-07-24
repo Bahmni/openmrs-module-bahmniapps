@@ -4,8 +4,11 @@
             <p class="heading-ot">{{weekStartDate | addDays: index | bahmniDateTimeWithFormat: 'ddd'}}</p>
             <p class="heading-ot heading-ot-date">{{weekStartDate | addDays: index | bahmniDateTimeWithFormat: 'DD'}}</p>
             <div class="note" ng-if="(!getNotesForDay(weekStartDate, index))" ng-style="styleForBlock(index)" ng-click="showNotesPopup(weekStartDate, index)"></div>
-            <div ng-if="getNotesForDay(weekStartDate, index)" class="notes-text" ng-click="showNotesPopupEdit(weekStartDate, index)" title="{{getNotesForDay(weekStartDate, index)}}">
-                {{getNotesForDay(weekStartDate, index)}}
+            <div ng-if="getNotesForDay(weekStartDate, index)" class="notes-text" >
+                <div ng-click="showNotesPopupEdit(weekStartDate, index)" title="{{getNotesForDay(weekStartDate, index)}}">
+                    {{getNotesForDay(weekStartDate, index)}}
+                </div>
+                <span ng-click="openDeletePopup(weekStartDate, index)"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
             </div>
         </div>
     </div>

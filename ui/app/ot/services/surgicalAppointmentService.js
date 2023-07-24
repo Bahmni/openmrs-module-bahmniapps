@@ -107,4 +107,8 @@ angular.module('bahmni.ot')
             const headers = {"Accept": "application/json", "Content-Type": "application/json"};
             return $http.post(Bahmni.OT.Constants.notesUrl + "/" + noteId, note, headers);
         };
+        this.deleteNoteForADay = function (noteId) {
+            const headers = {"Accept": "application/json", "Content-Type": "application/json", withCredentials: true};
+            return $http.delete(Bahmni.OT.Constants.notesUrl + "/" + noteId, headers);
+        };
     }]);
