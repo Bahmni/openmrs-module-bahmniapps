@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Form Controls", function () {
-    var element, scope, $compile, spinner, provide, formService, renderHelper, translate;
+    var element, scope, $compile, spinner, provide, formService, renderHelper, translate, $state;
 
     beforeEach(
         function () {
@@ -16,6 +16,7 @@ describe("Form Controls", function () {
                 };
                 provide.value('spinner', spinner);
                 provide.value('$translate', translate);
+                provide.value('$state', $state);
             });
 
             inject(function (_$compile_, $rootScope) {
