@@ -2,7 +2,7 @@
 
 describe("ConsultationSummaryController", function () {
 
-    var scope, conceptSetUiConfigService, rootScope, translate;
+    var scope, conceptSetUiConfigService, rootScope, translate, $state;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -56,7 +56,8 @@ describe("ConsultationSummaryController", function () {
             $scope: scope,
             $rootScope: rootScope,
             conceptSetUiConfigService: conceptSetUiConfigService,
-            $translate: translate
+            $translate: translate,
+            $state: $state
         });
     }));
 
