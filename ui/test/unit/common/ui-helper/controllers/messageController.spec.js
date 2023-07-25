@@ -4,7 +4,7 @@ describe("MessageController", function () {
 
     beforeEach(module('bahmni.common.uiHelper'));
 
-    var scope, controller, rootScope, messagingService;
+    var scope, controller, rootScope, messagingService, translate, $state, exitAlertService;
 
     beforeEach(inject(function ($controller, $rootScope) {
         controller = $controller;
@@ -16,7 +16,10 @@ describe("MessageController", function () {
     function createController() {
         return controller("MessageController", {
             $scope: scope,
-            messagingService : messagingService
+            $translate: translate,
+            messagingService : messagingService,
+            $state: $state,
+            exitAlertService: exitAlertService
         });
     }
 

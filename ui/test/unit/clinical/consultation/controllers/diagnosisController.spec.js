@@ -1,5 +1,5 @@
 describe("Diagnosis Controller", function () {
-    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService;
+    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService, $state;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     beforeEach(module('bahmni.clinical'));
@@ -41,6 +41,7 @@ describe("Diagnosis Controller", function () {
 
         $controller('DiagnosisController', {
             $scope: $scope,
+            $state: $state,
             $rootScope: rootScope,
             contextChangeHandler: contextChangeHandler,
             spinner: spinner,

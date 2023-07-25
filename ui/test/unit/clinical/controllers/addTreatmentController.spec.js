@@ -123,8 +123,7 @@ describe("AddTreatmentController", function () {
 
     var $q, scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appDescriptor, appService, appConfig, defaultDrugsPromise, orderSetService, locationService;
-
+        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService, $state;
 
     stateParams = {
         tabConfigName: null
@@ -251,7 +250,8 @@ describe("AddTreatmentController", function () {
                 locationService :locationService,
                 drugService: drugService,
                 treatmentConfig: treatmentConfig,
-                orderSetService: orderSetService
+                orderSetService: orderSetService,
+                $state: $state,
             });
             scope.treatments = [];
             scope.orderSetTreatments = [];
