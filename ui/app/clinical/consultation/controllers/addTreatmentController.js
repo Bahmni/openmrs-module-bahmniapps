@@ -103,7 +103,6 @@ angular.module('bahmni.clinical')
                 $scope.addForm.$dirty = false;
             });
 
-
             var markVariable = function (variable) {
                 $scope[variable] = true;
                 $timeout(function () {
