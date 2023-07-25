@@ -78,31 +78,30 @@ angular.module('bahmni.common.conceptSet')
                         }
                     }
                 });
-                
-                function checkFormChanges($scope) {
-                    $state.dirtyConsultationForm = false; 
+
+                function checkFormChanges ($scope) {
+                    $state.dirtyConsultationForm = false;
                     if ($scope.form.observations.length > 0) {
                         if ($scope.$parent.consultation.observations.length == 0) {
                             $state.dirtyConsultationForm = true;
                             return;
                         }
-                        $state.dirtyConsultationForm = $scope.form.observations.some((formObservation, index) => {
+                        $state.dirtyConsultationForm = $scope.form.observations.some(function (formObservation, index) {
                             const consultationObservation = $scope.$parent.consultation.observations[index];
                             return consultationObservation && consultationObservation.value !== formObservation.value;
                         });
                     }
                 }
-                
 
                 $scope.$on('$stateChangeStart', function (event, next, current) {
-                    var isNavigating; 
+                    var isNavigating;
                     var uuid = $state.params.patientUuid;
                     var currentUuid = current.patientUuid;
                     if ($scope.form.component) {
                         var formObservations = $scope.form.component.getValue();
                         $scope.form.observations = formObservations.observations;
                     }
-                    if(!$state.dirtyConsultationForm) {
+                    if (!$state.dirtyConsultationForm) {
                         checkFormChanges($scope);
                     }
                     isNavigating = exitAlertService.setIsNavigating(next, uuid, currentUuid);
@@ -112,7 +111,7 @@ angular.module('bahmni.common.conceptSet')
 
                 $scope.$on("event:changes-saved", function () {
                     $state.dirtyConsultationForm = false;
-                });              
+                });
             };
 
             return {
