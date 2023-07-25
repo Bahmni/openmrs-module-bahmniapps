@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', '$state', 'messagingService',
-        function (formService, spinner, $timeout, $translate, $state, messagingService) {
+    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', '$state', 'messagingService', 'exitAlertService',
+        function (formService, spinner, $timeout, $translate, $state, messagingService, exitAlertService) {
             var loadedFormDetails = {};
             var loadedFormTranslations = {};
             var unMountReactContainer = function (formUuid) {
@@ -80,30 +80,22 @@ angular.module('bahmni.common.conceptSet')
                 });
                 
                 function checkFormChanges($scope) {
-                    $state.dirtyConsultationForm = false;
-                    if($scope.form.observations.length>0) {
-                        if($scope.$parent.consultation.observations.length == 0) {
+                    $state.dirtyConsultationForm = false; 
+                    if ($scope.form.observations.length > 0) {
+                        if ($scope.$parent.consultation.observations.length == 0) {
                             $state.dirtyConsultationForm = true;
                             return;
                         }
-                        for(var i=0;i<$scope.form.observations.length;i++) {
-                            var formObservation = $scope.form.observations[i];
-                            for (var j = 0; j < $scope.$parent.consultation.observations.length; j++) {
-                                var consultationObservation = $scope.$parent.consultation.observations[j];
-                                if(consultationObservation.value !== formObservation.value){
-                                    $state.dirtyConsultationForm = true;
-                                }
-                                else {
-                                    $state.dirtyConsultationForm = false;
-                                    return;
-                                }
-                            }
-                        }
+                        $state.dirtyConsultationForm = $scope.form.observations.some((formObservation, index) => {
+                            const consultationObservation = $scope.$parent.consultation.observations[index];
+                            return consultationObservation && consultationObservation.value !== formObservation.value;
+                        });
                     }
                 }
+                
 
-                $scope.$on('$stateChangeStart', function (event, next, current) {
-                    var isNavigating = false;
+                $scope.$on('$stateChangeStart', function (event, next) {
+                    var isNavigating;
                     if ($scope.form.component) {
                         var formObservations = $scope.form.component.getValue();
                         $scope.form.observations = formObservations.observations;
@@ -111,20 +103,12 @@ angular.module('bahmni.common.conceptSet')
                     if(!$state.dirtyConsultationForm) {
                         checkFormChanges($scope);
                     }
-                    if (next.url.includes("/patient/search")) {
-                        isNavigating = true;
-                    }
-                    if($state.discardChanges) {
-                        $state.dirtyConsultationForm = false;
-                    }
-                    if(isNavigating && $state.dirtyConsultationForm){
-                        messagingService.showMessage('alert', "{{'ALERT_MESSAGE_ON_EXIT' | translate }}");
-                        event.preventDefault();
-                        spinner.hide(next.spinnerToken);
-                    }
+                    isNavigating = exitAlertService.setIsNavigating(next);
+                    $state.dirtyConsultationForm = exitAlertService.setDirtyConsultationForm();
+                    exitAlertService.showExitAlert(isNavigating, $state.dirtyConsultationForm, event, next.spinnerToken);
                 });
 
-                $scope.$on("event:changes-saved", function (event) {
+                $scope.$on("event:changes-saved", function () {
                     $state.dirtyConsultationForm = false;
                 });              
             };
