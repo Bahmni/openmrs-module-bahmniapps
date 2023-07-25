@@ -19,9 +19,9 @@ angular.module('bahmni.clinical')
         };
 
         $scope.$on('$stateChangeStart', function () {
-            if($scope.consultationForm.$dirty) {
+            if ($scope.consultationForm.$dirty) {
                 $state.dirtyConsultationForm = true;
-              }
+            }
         });
 
         $scope.$on("event:changes-saved", function (event) {
