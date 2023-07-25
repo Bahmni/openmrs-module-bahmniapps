@@ -1,11 +1,6 @@
 'use strict';
 
-angular.module("bahmni.common.uiHelper").controller("MessageController", [
-    "$scope",
-    "messagingService",
-    "$translate",
-    "$location",
-    "$state",
+angular.module("bahmni.common.uiHelper").controller("MessageController", [ "$scope", "messagingService", "$translate", "$location", "$state",
     function ($scope, messagingService, $translate, $location, $state) {
         $scope.messages = messagingService.messages;
 
@@ -37,7 +32,6 @@ angular.module("bahmni.common.uiHelper").controller("MessageController", [
         }
 
         $scope.discardChanges = function (level) {
-            $state.dirtyConsultationForm = false;
             $state.discardChanges = true;
             $scope.hideMessage(level);
             $location.path('/default/patient/search');
