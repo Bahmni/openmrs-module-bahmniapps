@@ -59,7 +59,7 @@ angular.module('bahmni.clinical')
             $scope.$on('$stateChangeStart', function () {
                 if ($scope.diagnosisForm.$dirty) {
                     $state.dirtyConsultationForm = true;
-                  }
+                }
             });
 
             $scope.$on("event:changes-saved", function () {

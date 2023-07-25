@@ -30,12 +30,12 @@ angular.module("bahmni.common.uiHelper").controller("MessageController", [ "$sco
 
         $scope.isAlertMessagePresent = function () {
             return $scope.messages.alert.length > 0;
-        }
+        };
 
         $scope.discardChanges = function (level) {
             $state.discardChanges = true;
             $scope.hideMessage(level);
             exitAlertService.redirectUrl();
-        }
+        };
     }
 ]);
