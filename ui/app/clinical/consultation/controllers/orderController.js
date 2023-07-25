@@ -133,9 +133,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on('$stateChangeStart', function () {
-                if($scope.consultation.orders.length !== $scope.consultation.investigations.length) {
+                if ($scope.consultation.orders.length !== $scope.consultation.investigations.length) {
                     $state.dirtyConsultationForm = true;
-                  }
+                }
             });
 
             $scope.getOrderTemplate = function (templateName) {
