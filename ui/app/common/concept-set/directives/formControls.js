@@ -94,8 +94,10 @@ angular.module('bahmni.common.conceptSet')
                 }
                 
 
-                $scope.$on('$stateChangeStart', function (event, next) {
-                    var isNavigating;
+                $scope.$on('$stateChangeStart', function (event, next, current) {
+                    var isNavigating; 
+                    var uuid = $state.params.patientUuid;
+                    var currentUuid = current.patientUuid;
                     if ($scope.form.component) {
                         var formObservations = $scope.form.component.getValue();
                         $scope.form.observations = formObservations.observations;
@@ -103,7 +105,7 @@ angular.module('bahmni.common.conceptSet')
                     if(!$state.dirtyConsultationForm) {
                         checkFormChanges($scope);
                     }
-                    isNavigating = exitAlertService.setIsNavigating(next);
+                    isNavigating = exitAlertService.setIsNavigating(next, uuid, currentUuid);
                     $state.dirtyConsultationForm = exitAlertService.setDirtyConsultationForm();
                     exitAlertService.showExitAlert(isNavigating, $state.dirtyConsultationForm, event, next.spinnerToken);
                 });
