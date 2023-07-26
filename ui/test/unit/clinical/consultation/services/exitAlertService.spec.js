@@ -12,6 +12,7 @@ describe('exitAlertService', function () {
         };
         $state = {
             newPatientUuid: '',
+            discardChanges: false,
             dirtyConsultationForm: true
         };
         $location = {
@@ -71,6 +72,23 @@ describe('exitAlertService', function () {
 
         exitAlertService.setIsNavigating(next, '', currentUuid);
         expect($state.newPatientUuid).toBe(currentUuid);
+    });
+
+    it('should return false for setDirtyConsultationForm when discardChanges is true', function () {
+        $state.discardChanges = true;
+        expect(exitAlertService.setDirtyConsultationForm()).toBe(false);
+    });
+
+    it('should return true for setDirtyConsultationForm when discardChanges is false and dirtyConsultationForm is true', function () {
+        $state.discardChanges = false;
+        $state.dirtyConsultationForm = true;
+        expect(exitAlertService.setDirtyConsultationForm()).toBe(true);
+    });
+
+    it('should return false for setDirtyConsultationForm when discardChanges is false and dirtyConsultationForm is false', function () {
+        $state.discardChanges = false;
+        $state.dirtyConsultationForm = false;
+        expect(exitAlertService.setDirtyConsultationForm()).toBe(false);
     });
 
     it('should redirect to patient search when isPatientSearch is true', function () {
