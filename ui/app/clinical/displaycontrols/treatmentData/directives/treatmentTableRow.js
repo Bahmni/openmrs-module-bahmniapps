@@ -26,6 +26,15 @@ angular.module('bahmni.clinical')
                 $scope.openModal = false;
                 $scope.$apply();
             };
+            $scope.cancelDrugChartModal = function () {
+                $scope.showModalWarningMessage = true;
+                $scope.openModal = false;
+                $scope.$apply();
+            };
+            $scope.closeWarnings = function () {
+                $scope.showModalWarningMessage = false;
+                $scope.$apply();
+            };
         };
 
         return {

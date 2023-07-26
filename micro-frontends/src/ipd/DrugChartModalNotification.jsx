@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React, { Suspense, lazy } from "react";
 
-export function DrugChartModal(props) {
-  const LazyApp = lazy(() => import("@openmrs-mf/ipd/DrugChartModal"));
+export function DrugChartModalNotification(props) {
+  const LazyApp = lazy(() => import("@openmrs-mf/ipd/DrugChartModalNotification"));
 
   return (
     <>
@@ -17,14 +17,12 @@ export function DrugChartModal(props) {
 }
 
 // Without propTypes, react2angular won't render the component
-DrugChartModal.propTypes = {
+DrugChartModalNotification.propTypes = {
   hostData: PropTypes.shape({
-    drugOrder: PropTypes.object,
-    scheduleFrequencies: PropTypes.array,
-    startTimeFrequencies: PropTypes.array,
-    enable24HrTimeFormat: PropTypes.bool,
+    message: PropTypes.string,
+    kind: PropTypes.string,
   }).isRequired,
   hostApi: PropTypes.shape({
-    closeDrugChart: PropTypes.func,
+    onClose: PropTypes.func,
   }),
 };

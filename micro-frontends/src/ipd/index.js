@@ -4,6 +4,7 @@
 import { react2angular } from "react2angular";
 import { IpdDashboard } from "./IpdDashboard";
 import { DrugChartModal } from "./DrugChartModal";
+import { DrugChartModalNotification } from "./DrugChartModalNotification";
 
 angular.module("bahmni.mfe.ipd", [
   "ui.router",
@@ -78,7 +79,16 @@ function ipdDrugChartModalController($rootScope, $scope) {
   };
   $scope.hostApi = {
     onModalClose: function(event) {
-      vm.closeDrugChart();
+      switch (event) {
+        case "drug-chart-modal-close-event":
+          vm.closeDrugChart();
+          break;
+        case "drug-chart-modal-cancel-event":
+          vm.cancelDrugChart();
+          break;
+        default:
+          break;
+      }
     },
   };
 }
@@ -92,9 +102,45 @@ angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModal", {
     scheduleFrequencies: "=",
     startTimeFrequencies: "=",
     enable24HourTimers: "=",
-    closeDrugChart: "&"
+    closeDrugChart: "&",
+    cancelDrugChart: "&",
   },
   template:
     '<mfe-ipd-drug-chart-modal-remote host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-modal-remote>',
 });
 /** ================= End of component 2 ==========================  */
+
+/** MFE component 3: DrugChartModalWarnings
+ * ================================================= */
+
+angular
+  .module("bahmni.mfe.ipd")
+  .component("mfeIpdDrugChartModalNotificationRemote", react2angular(DrugChartModalNotification));
+
+function ipdDrugChartModalNotificationController($rootScope, $scope) {
+  var vm = this;
+  $scope.hostData = {
+    message: "No medication tasks will be scheduled.",
+    kind: "warning",
+  };
+  $scope.hostApi = {
+    onClose: function(event) {
+      vm.closeWarnings();
+    }
+  }
+}
+
+ipdDrugChartModalNotificationController.$inject = ["$rootScope", "$scope"];
+
+angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModalNotification", {
+  controller: ipdDrugChartModalNotificationController,
+  bindings: {
+    message: "=",
+    kind: "=",
+    closeWarnings: "&",
+  },
+  template:
+    '<mfe-ipd-drug-chart-modal-notification-remote host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-modal-notification-remote>',
+});
+
+/** ================= End of component 3 ==========================  */
