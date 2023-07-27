@@ -3,11 +3,21 @@
 This directory of bahmniapps contains a webpack build system to package the various react
 micro-frontends (mfe) available.
 
+## Find detailed documentation on the Wiki
+1. [Architecture of Bahmni micro-frontends](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3210477602/Micro-frontends+MFE+architecture+for+UI) 
+2. [How to add/edit/integrate Bahmni micro-frontends](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3211755555/How+to+implement+micro-frontends)
+
 ### Important commands
 #### install all dependencies
 ```
 $ yarn install
 ```
+
+#### Test
+```
+$ yarn test
+```
+
 
 #### build
 ```
