@@ -78,7 +78,7 @@ function ipdDrugChartModalController($rootScope, $scope) {
     enable24HourTimers: vm.enable24HourTimers,
   };
   $scope.hostApi = {
-    onModalClose: function(event) {
+    onModalClose: function (event) {
       switch (event) {
         case "drug-chart-modal-close-event":
           vm.closeDrugChart();
@@ -127,7 +127,7 @@ function ipdDrugChartModalNotificationController($rootScope, $scope) {
     notificationKind: vm.notificationKind,
   };
   $scope.hostApi = {
-    onClose: function(event) {
+    onClose: function (event) {
       vm.closeWarnings();
     }
   }
