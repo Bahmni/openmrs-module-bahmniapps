@@ -109,9 +109,17 @@
         display: inline-block;
         color: #000;
       }
+      .date-selector{
+        display: flex;
+        gap: 20px;
+        > div {
+          width: 45%;
+          display: inline-block
+        }
+      }
       button{
         height: 64px;
-        width: 50%;
+        min-width: 50%;
         color: white;
         border: none;
         border-radius: 0;
