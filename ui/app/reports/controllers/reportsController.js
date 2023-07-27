@@ -42,7 +42,7 @@ angular.module('bahmni.reports')
                         report.startDate = dateRange[0];
                         report.stopDate = dateRange[0];
                         report.responseType = format[1];
-                    })
+                    });
                 }
                 else {
                     report[item] = $rootScope.default[header][item];
