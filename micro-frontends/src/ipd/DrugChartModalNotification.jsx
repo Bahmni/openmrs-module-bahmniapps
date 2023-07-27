@@ -19,8 +19,7 @@ export function DrugChartModalNotification(props) {
 // Without propTypes, react2angular won't render the component
 DrugChartModalNotification.propTypes = {
   hostData: PropTypes.shape({
-    message: PropTypes.string,
-    kind: PropTypes.string,
+    notificationKind: PropTypes.string,
   }).isRequired,
   hostApi: PropTypes.shape({
     onClose: PropTypes.func,

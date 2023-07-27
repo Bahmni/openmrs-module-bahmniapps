@@ -84,7 +84,10 @@ function ipdDrugChartModalController($rootScope, $scope) {
           vm.closeDrugChart();
           break;
         case "drug-chart-modal-cancel-event":
-          vm.cancelDrugChart();
+          vm.showWarningNotification();
+          break;
+        case "drug-chart-modal-save-event":
+          vm.showSuccessNotification();
           break;
         default:
           break;
@@ -103,7 +106,8 @@ angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModal", {
     startTimeFrequencies: "=",
     enable24HourTimers: "=",
     closeDrugChart: "&",
-    cancelDrugChart: "&",
+    showWarningNotification: "&",
+    showSuccessNotification: "&",
   },
   template:
     '<mfe-ipd-drug-chart-modal-remote host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-modal-remote>',
@@ -120,8 +124,7 @@ angular
 function ipdDrugChartModalNotificationController($rootScope, $scope) {
   var vm = this;
   $scope.hostData = {
-    message: "No medication tasks will be scheduled.",
-    kind: "warning",
+    notificationKind: vm.notificationKind,
   };
   $scope.hostApi = {
     onClose: function(event) {
@@ -135,8 +138,7 @@ ipdDrugChartModalNotificationController.$inject = ["$rootScope", "$scope"];
 angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModalNotification", {
   controller: ipdDrugChartModalNotificationController,
   bindings: {
-    message: "=",
-    kind: "=",
+    notificationKind: "=",
     closeWarnings: "&",
   },
   template:

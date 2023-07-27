@@ -26,13 +26,16 @@
             schedule-frequencies="drugChartModalScheduleFrequencies" 
             start-time-frequencies="drugChartModalStartTimeFrequencies" 
             close-drug-chart="closeDrugChartModal()"
-            cancel-drug-chart="cancelDrugChartModal()"
+            show-warning-notification="showWarningNotification()"
+            show-success-notification="showSuccessNotification()"
             enable-24-hour-timers="enable24HourTimers"
             ng-if="openModal"></mfe-ipd-drug-chart-modal>
-
-            <mfe-ipd-drug-chart-modal-notification ng-if="showModalWarningMessage"
-            close-warnings="closeWarnings()"></mfe-ipd-drug-chart-modal-notification>
         </div>
+        <mfe-ipd-drug-chart-modal-notification class="drug-chart-warnings"
+            ng-if="showModalWarningMessage"
+            notification-kind="kind"
+            close-warnings="closeWarnings()">
+        </mfe-ipd-drug-chart-modal-notification>
     </td>
 
     <td class="toggle-btn" toggle="drugOrder.showDetails" ng-if="::((params.showDetailsButton == true) && !drugOrder.additionalInstructions)">
