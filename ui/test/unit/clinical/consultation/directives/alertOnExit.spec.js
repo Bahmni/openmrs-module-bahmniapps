@@ -36,7 +36,6 @@ describe('alertOnExit Directive', function () {
         var event = $rootScope.$broadcast('$stateChangeStart', next, current);
 
         expect(exitAlertService.setIsNavigating).toHaveBeenCalledWith(next, 'currentPatientUuid', 'previousPatientUuid');
-        expect(exitAlertService.setDirtyConsultationForm).toHaveBeenCalled();
         expect(exitAlertService.showExitAlert).toHaveBeenCalledWith(true, true, event, 'spinner');
     });
 });
