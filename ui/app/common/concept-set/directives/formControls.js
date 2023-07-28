@@ -87,20 +87,19 @@ angular.module('bahmni.common.conceptSet')
                             $state.dirtyForm = true;
                             return;
                         }
-                        for(var i=0;i<$scope.form.observations.length;i++) {
+                        for (var i = 0; i < $scope.form.observations.length; i++) {
                             var formObservation = $scope.form.observations[i];
                             for (var j = 0; j < $scope.$parent.consultation.observations.length; j++) {
                                 var consultationObservation = $scope.$parent.consultation.observations[j];
-                                if((consultationObservation.value == formObservation.value) || (consultationObservation.value.uuid && formObservation.value.uuid && (consultationObservation.value.uuid == formObservation.value.uuid))) {
+                                if ((consultationObservation.value == formObservation.value) || (consultationObservation.value.uuid && formObservation.value.uuid && (consultationObservation.value.uuid == formObservation.value.uuid))) {
                                     isChanged[i] = false;
                                     break;
                                 } else {
                                     isChanged[i] = true;
                                 }
-
                             }
                         }
-                        if(isChanged.includes(true)) {
+                        if (isChanged.includes(true)) {
                             $state.dirtyForm = true;
                         }
                     }
@@ -118,7 +117,7 @@ angular.module('bahmni.common.conceptSet')
                         checkFormChanges($scope);
                     }
                     isNavigating = exitAlertService.setIsNavigating(next, uuid, currentUuid);
-                    $state.dirtyConsultationForm =  $state.discardChanges ? false : $state.dirtyForm;
+                    $state.dirtyConsultationForm = $state.discardChanges ? false : $state.dirtyForm;
                     exitAlertService.showExitAlert(isNavigating, $state.dirtyConsultationForm, event, next.spinnerToken);
                 });
 
