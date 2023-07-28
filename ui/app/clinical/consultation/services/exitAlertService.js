@@ -14,9 +14,6 @@ angular.module('bahmni.clinical')
                     next.url.includes("/patient/search") ? $state.isPatientSearch = true : $state.isPatientSearch = false;
                     return (next.url.includes("/patient/search") || (uuid !== currentUuid));
                 },
-                setDirtyConsultationForm: function () {
-                    return $state.discardChanges ? false : $state.dirtyConsultationForm;
-                },
                 redirectUrl: function () {
                     return $state.isPatientSearch ? $location.path('/default/patient/search') : $location.path('/default/patient/' + $state.newPatientUuid + "/dashboard");
                 }
