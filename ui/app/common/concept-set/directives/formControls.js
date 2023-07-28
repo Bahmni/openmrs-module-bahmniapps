@@ -80,16 +80,29 @@ angular.module('bahmni.common.conceptSet')
                 });
 
                 function checkFormChanges ($scope) {
-                    $state.dirtyConsultationForm = false;
+                    $state.dirtyForm = false;
+                    var isChanged = [];
                     if ($scope.form.observations.length > 0) {
                         if ($scope.$parent.consultation.observations.length == 0) {
-                            $state.dirtyConsultationForm = true;
+                            $state.dirtyForm = true;
                             return;
                         }
-                        $state.dirtyConsultationForm = $scope.form.observations.some(function (formObservation, index) {
-                            const consultationObservation = $scope.$parent.consultation.observations[index];
-                            return consultationObservation && consultationObservation.value !== formObservation.value;
-                        });
+                        for(var i=0;i<$scope.form.observations.length;i++) {
+                            var formObservation = $scope.form.observations[i];
+                            for (var j = 0; j < $scope.$parent.consultation.observations.length; j++) {
+                                var consultationObservation = $scope.$parent.consultation.observations[j];
+                                if((consultationObservation.value == formObservation.value) || (consultationObservation.value.uuid && formObservation.value.uuid && (consultationObservation.value.uuid == formObservation.value.uuid))) {
+                                    isChanged[i] = false;
+                                    break;
+                                } else {
+                                    isChanged[i] = true;
+                                }
+
+                            }
+                        }
+                        if(isChanged.includes(true)) {
+                            $state.dirtyForm = true;
+                        }
                     }
                 }
 
@@ -101,16 +114,17 @@ angular.module('bahmni.common.conceptSet')
                         var formObservations = $scope.form.component.getValue();
                         $scope.form.observations = formObservations.observations;
                     }
-                    if (!$state.dirtyConsultationForm) {
+                    if (!$state.dirtyForm && !$scope.changesSaved) {
                         checkFormChanges($scope);
                     }
                     isNavigating = exitAlertService.setIsNavigating(next, uuid, currentUuid);
-                    $state.dirtyConsultationForm = exitAlertService.setDirtyConsultationForm();
+                    $state.dirtyConsultationForm =  $state.discardChanges ? false : $state.dirtyForm;
                     exitAlertService.showExitAlert(isNavigating, $state.dirtyConsultationForm, event, next.spinnerToken);
                 });
 
                 $scope.$on("event:changes-saved", function () {
-                    $state.dirtyConsultationForm = false;
+                    $scope.changesSaved = true;
+                    $state.dirtyForm = false;
                 });
             };
 
