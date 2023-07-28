@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'carbon-components-react';
 
 /** NOTE: for reasons known only to react2angular,
- * any function nested inside one of the prop objects will be undefined at first and then later load up
+ * any functions passed in as props will be undefined at the start, even ones inside other objects
  * so you need to use the conditional operator like props.hostApi?.callback even though it is a mandatory prop
  */
 
@@ -11,7 +11,7 @@ export function PatientAlergiesControl(props) {
   return (
     <div>
       <span>Displaying alergy control from {props.hostData.name}</span>
-      <span>Translation: {props.translations?.ipdDemoKey}</span>
+      <span>Translation: {props.tx?.('SAMPLE_AT_LABEL')}</span>
       <Button onClick={props.hostApi?.callback}>Click for callback</Button>
     </div>
   );
@@ -24,5 +24,5 @@ PatientAlergiesControl.propTypes = {
   hostApi: PropTypes.shape({
     callback: PropTypes.func.isRequired,
   }),
-  translations: PropTypes.object.isRequired,
+  tx: PropTypes.func.isRequired,
 };

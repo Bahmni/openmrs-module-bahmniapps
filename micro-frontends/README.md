@@ -2,28 +2,22 @@
 
 ## Next Gen UI library for Bahmni
 
-This is the UI component library for Bahmni and OpenMRS, built on top of Carbon Design system.
+## Find detailed documentation on the Wiki
+1. [Architecture of Bahmni micro-frontends](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3210477602/Micro-frontends+MFE+architecture+for+UI) 
+2. [How to add/edit/integrate Bahmni micro-frontends](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3211755555/How+to+implement+micro-frontends)
 
-### Notes on local link
-
-To use a local copy of this lib with your project run the following commands
-
-```bash
-cd <project dir>/node_modules/react
-yarn link
-cd ../react-dom
-yarn link
-
-cd <bahmni-carbon-ui dir>
-yarn link
-yarn link react
-yarn link react-dom
-
-cd <project dir>
-yarn link bahmni-carbon-ui
+### Important commands
+#### install all dependencies
+```
+$ yarn install
 ```
 
-### Debug changes
+#### Test
+```
+$ yarn test
+```
+
+
 #### build
 ```
 $ yarn build
