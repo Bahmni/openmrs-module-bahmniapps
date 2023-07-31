@@ -87,6 +87,7 @@
   "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
   "MESSAGE_DIALOG_OPTION_OKAY": "OK",
   "NO_LOCATION_TAGGED_TO_VISIT_LOCATION": "No location tagged to Visit Location Found",
+  "VISIT_OF_THIS_PATIENT_AT_SAME_LOCATION_EXISTS": "An active visit for this patient already exists for this location. The system cannot create a duplicate visit.",
   "REGISTRATION_ADDTIONAL_IDENTIFIERS": "Additional Identifiers",
   "REGISTRATION_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
   "OBS_BOOLEAN_YES_KEY":"Yes",

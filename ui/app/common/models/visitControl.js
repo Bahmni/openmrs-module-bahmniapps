@@ -1,7 +1,7 @@
 'use strict';
 
 Bahmni.Common.VisitControl = function (visitTypes, defaultVisitTypeName, encounterService,
-                                       $translate, visitService) {
+    $translate, visitService) {
     var self = this;
     self.visitTypes = visitTypes;
     self.defaultVisitTypeName = defaultVisitTypeName;
@@ -16,6 +16,10 @@ Bahmni.Common.VisitControl = function (visitTypes, defaultVisitTypeName, encount
     self.startVisit = function (visitType) {
         self.onStartVisit();
         self.selectedVisitType = visitType;
+    };
+
+    self.checkIfActiveVisitExists = function (patientUuid, visitLocationUuid) {
+        return visitService.checkIfActiveVisitExists(patientUuid, visitLocationUuid);
     };
 
     self.createVisitOnly = function (patientUuid, visitLocationUuid) {

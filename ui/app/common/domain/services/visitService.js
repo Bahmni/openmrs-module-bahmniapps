@@ -37,6 +37,19 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        this.checkIfActiveVisitExists = function (patientUuid, visitLocationUuid) {
+            return $http.get(Bahmni.Common.Constants.visitUrl,
+                {
+                    params: {
+                        includeInactive: false,
+                        patient: patientUuid,
+                        location: visitLocationUuid
+                    },
+                    withCredentials: true
+                }
+            );
+        };
+
         this.getVisitSummary = function (visitUuid) {
             return $http.get(Bahmni.Common.Constants.visitSummaryUrl,
                 {
