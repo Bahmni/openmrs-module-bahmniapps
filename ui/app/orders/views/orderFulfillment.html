@@ -20,9 +20,11 @@
                 <div ng-if="order.showForm">
                     <orders-control patient="patient" order-uuid="order.orderUuid" config="config" message="message"
                                     show-title="false"></orders-control>
-                    <div>
+                    <div style="margin: 0 10px">
+                        <i ng-if="::(order.urgency === 'STAT')" class="fa fa-exclamation-triangle fa-grey show-before-active"></i>
                         <i ng-if="::order.commentToFulfiller" class="fa fa-comments"></i>
-                        <span>{{order.commentToFulfiller}}</span>
+                        <span>{{order.commentToFulfiller}}</span><br><br>
+                        <span>Provider: {{order.provider}}</span>
                     </div>
                     <concept-set patient="patient" ng-if="order.showForm"
                                  concept-set-name="formName"
