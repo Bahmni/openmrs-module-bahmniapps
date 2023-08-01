@@ -79,51 +79,70 @@ angular.module('bahmni.common.conceptSet')
                     }
                 });
 
+                function checkGroupMembers (formObservation, consultationObservation) {
+                    var isGroupMemberChanged = [];
+                    if (formObservation.groupMembers && formObservation.groupMembers.length > 0 && consultationObservation.groupMembers && consultationObservation.groupMembers.length > 0) {
+                        for (var k = 0; k < formObservation.groupMembers.length; k++) {
+                            var formGroupMember = formObservation.groupMembers[k];
+                            for (var l = 0; l < consultationObservation.groupMembers.length; l++) {
+                                var consultationGroupMember = consultationObservation.groupMembers[l];
+                                (formGroupMember.value && formGroupMember.value.uuid && consultationGroupMember.value && consultationGroupMember.value.uuid) ?
+                                isGroupMemberChanged[k] = (consultationGroupMember.value.uuid === formGroupMember.value.uuid) ? false : true :
+                                isGroupMemberChanged[k] = (consultationGroupMember.value === formGroupMember.value) ? false : true;
+                                if (!isGroupMemberChanged[k]) {
+                                    break;
+                                }
+                            }
+                        }
+                        return isGroupMemberChanged.includes(true) ? true : false;
+                    } else {
+                        if (formObservation.value && formObservation.value.uuid && consultationObservation.value && consultationObservation.value.uuid) {
+                            return (consultationObservation.value.uuid === formObservation.value.uuid) ? false : true;
+                        } else {
+                            return (consultationObservation.value === formObservation.value) ? false : true;
+                        }
+                    }
+                }
+
                 function checkFormChanges ($scope) {
-                    $state.dirtyForm = false;
                     var isChanged = [];
+                    $scope.dirtyForm = false;
                     if ($scope.form.observations.length > 0) {
-                        if ($scope.$parent.consultation.observations.length == 0) {
-                            $state.dirtyForm = true;
-                            return;
+                        if ($scope.$parent.consultation.observations.length === 0) {
+                            return true;
                         }
                         for (var i = 0; i < $scope.form.observations.length; i++) {
                             var formObservation = $scope.form.observations[i];
                             for (var j = 0; j < $scope.$parent.consultation.observations.length; j++) {
                                 var consultationObservation = $scope.$parent.consultation.observations[j];
-                                if ((consultationObservation.value == formObservation.value) || (consultationObservation.value.uuid && formObservation.value.uuid && (consultationObservation.value.uuid == formObservation.value.uuid))) {
-                                    isChanged[i] = false;
+                                isChanged[i] = checkGroupMembers(formObservation, consultationObservation);
+                                if (!isChanged[i]) {
                                     break;
-                                } else {
-                                    isChanged[i] = true;
                                 }
                             }
                         }
-                        if (isChanged.includes(true)) {
-                            $state.dirtyForm = true;
-                        }
+                        return isChanged.includes(true);
                     }
                 }
 
                 $scope.$on('$stateChangeStart', function (event, next, current) {
-                    var isNavigating;
                     var uuid = $state.params.patientUuid;
                     var currentUuid = current.patientUuid;
                     if ($scope.form.component) {
                         var formObservations = $scope.form.component.getValue();
                         $scope.form.observations = formObservations.observations;
                     }
-                    if (!$state.dirtyForm && !$scope.changesSaved) {
-                        checkFormChanges($scope);
+                    if (!$scope.changesSaved) {
+                        $scope.dirtyForm = checkFormChanges($scope);
                     }
-                    isNavigating = exitAlertService.setIsNavigating(next, uuid, currentUuid);
-                    $state.dirtyConsultationForm = $state.discardChanges ? false : $state.dirtyForm;
+                    var isNavigating = exitAlertService.setIsNavigating(next, uuid, currentUuid);
+                    $state.dirtyConsultationForm = $state.discardChanges ? false : $scope.dirtyForm;
                     exitAlertService.showExitAlert(isNavigating, $state.dirtyConsultationForm, event, next.spinnerToken);
                 });
 
                 $scope.$on("event:changes-saved", function () {
                     $scope.changesSaved = true;
-                    $state.dirtyForm = false;
+                    $scope.dirtyForm = false;
                 });
             };
 
