@@ -101,13 +101,11 @@ angular.module('bahmni.common.patientSearch')
 
         var setActiveHeadings = function (headings) {
             headings.map(function (heading) {
-                if (heading !== personAttributeForPatientSearch) {
-                    var newHeading = { name: heading, sortInfo: heading };
-                    if (!$scope.activeHeaders.find(function (activeHeader) {
-                        return activeHeader.name == newHeading.name && activeHeader.sortInfo == newHeading.sortInfo;
-                    })) {
-                        $scope.activeHeaders.push(newHeading);
-                    }
+                var newHeading = { name: heading, sortInfo: heading };
+                if (!$scope.activeHeaders.find(function (activeHeader) {
+                    return activeHeader.name == newHeading.name && activeHeader.sortInfo == newHeading.sortInfo;
+                })) {
+                    $scope.activeHeaders.push(newHeading);
                 }
             });
         };
