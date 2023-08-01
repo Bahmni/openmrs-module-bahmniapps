@@ -35,7 +35,7 @@ angular.module('bahmni.common.attributeTypes', []).directive('attributeTypes', [
                 var location = _.find(attribute.answers, function (answer) {
                     return answer.uuid === attributeValueLocation.uuid;
                 });
-                attributeValueLocation = {uuid: attributeValueLocation.uuid, value: location.name};
+                attributeValueLocation = {uuid: attributeValueLocation.uuid, value: location ? location.name : ''};
             };
             $scope.getTranslatedAttributeTypes = function (attribute) {
                 var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(attribute, Bahmni.Common.Constants.patientAttribute, $translate);
