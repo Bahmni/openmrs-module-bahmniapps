@@ -20,13 +20,14 @@ export function DrugChartModal(props) {
 DrugChartModal.propTypes = {
   hostData: PropTypes.shape({
     drugOrder: PropTypes.object,
+    patientId: PropTypes.string,
     scheduleFrequencies: PropTypes.array,
     startTimeFrequencies: PropTypes.array,
     enable24HrTimeFormat: PropTypes.bool,
   }).isRequired,
   hostApi: PropTypes.shape({
-    closeDrugChart: PropTypes.func,
-    showWarningNotification: PropTypes.func,
-    showSuccessNotification: PropTypes.func,
-  }),
+    onModalClose: PropTypes.func,
+    onModalSave: PropTypes.func,
+    onModalCancel: PropTypes.func,
+  }).isRequired,
 };

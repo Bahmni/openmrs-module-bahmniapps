@@ -23,5 +23,5 @@ DrugChartModalNotification.propTypes = {
   }).isRequired,
   hostApi: PropTypes.shape({
     onClose: PropTypes.func,
-  }),
+  }).isRequired,
 };

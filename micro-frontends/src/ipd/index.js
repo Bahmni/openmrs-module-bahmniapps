@@ -73,25 +73,20 @@ function ipdDrugChartModalController($rootScope, $scope) {
   var vm = this;
   $scope.hostData = {
     drugOrder: vm.drugOrder,
+    patientId: vm.patientId,
     scheduleFrequencies: vm.scheduleFrequencies,
     startTimeFrequencies: vm.startTimeFrequencies,
     enable24HourTimers: vm.enable24HourTimers,
   };
   $scope.hostApi = {
-    onModalClose: function (event) {
-      switch (event) {
-        case "drug-chart-modal-close-event":
-          vm.closeDrugChart();
-          break;
-        case "drug-chart-modal-cancel-event":
-          vm.showWarningNotification();
-          break;
-        case "drug-chart-modal-save-event":
-          vm.showSuccessNotification();
-          break;
-        default:
-          break;
-      }
+    onModalClose: function () {
+      vm.closeDrugChart();
+    },
+    onModalSave: function () {
+      vm.showSuccessNotification();
+    },
+    onModalCancel: function () {
+      vm.showWarningNotification();
     },
   };
 }
@@ -102,6 +97,7 @@ angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModal", {
   controller: ipdDrugChartModalController,
   bindings: {
     drugOrder: "=",
+    patientId: "=",
     scheduleFrequencies: "=",
     startTimeFrequencies: "=",
     enable24HourTimers: "=",
@@ -127,7 +123,7 @@ function ipdDrugChartModalNotificationController($rootScope, $scope) {
     notificationKind: vm.notificationKind,
   };
   $scope.hostApi = {
-    onClose: function (event) {
+    onClose() {
       vm.closeWarnings();
     }
   }
