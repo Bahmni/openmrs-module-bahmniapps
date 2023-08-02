@@ -88,6 +88,48 @@ angular.module('bahmni.common.patientSearch')
             }
             return [];
         };
+
+        var setActiveHeadings = function (headings) {
+            headings.map(function (heading) {
+                var newHeading = { name: heading, sortInfo: heading };
+                if (!$scope.activeHeaders.find(function (activeHeader) {
+                    return activeHeader.name == newHeading.name && activeHeader.sortInfo == newHeading.sortInfo;
+                })) {
+                    $scope.activeHeaders.push(newHeading);
+                }
+            });
+        };
+
+        $scope.sortVisiblePatientsBy = function (sortColumn) {
+            var emptyObjects = _.filter($scope.search.searchResults, function (visiblePatient) {
+                return !_.property(sortColumn)(visiblePatient);
+            });
+
+            var nonEmptyObjects = _.difference($scope.search.searchResults, emptyObjects);
+            var sortedNonEmptyObjects = _.sortBy(nonEmptyObjects, function (visiblePatient) {
+                var value = _.get(visiblePatient, sortColumn);
+                if (!isNaN(Date.parse(value))) {
+                    var parsedDate = moment(value, "DD MMMM YYYY HH:mm:ss");
+                    if (parsedDate.isValid()) {
+                        return parsedDate.toDate().getTime();
+                    }
+                }
+                else if (angular.isNumber(value)) {
+                    return value;
+                }
+                else if (angular.isString(value)) {
+                    return value.toLowerCase();
+                }
+                return value;
+            });
+            if ($scope.reverseSort) {
+                sortedNonEmptyObjects.reverse();
+            }
+            $scope.search.visiblePatients = sortedNonEmptyObjects.concat(emptyObjects);
+            $scope.sortColumn = sortColumn;
+            $scope.reverseSort = !$scope.reverseSort;
+        };
+
         $scope.isHeadingOfLinkColumn = function (heading) {
             var identifierHeading = _.includes(Bahmni.Common.PatientSearch.Constants.identifierHeading, heading);
             if (identifierHeading) {
