@@ -376,5 +376,11 @@
   "SIGN_SYMPTOM_DURATION_KEY": "Sign/symptom duration",
   "CHIEF_COMPLAINT_DURATION_UNIT_KEY": "Chief Complaint Duration",
   "DASHBOARD_IPD_DRUG_CHART_TAB_KEY": "Drug Chart",
-  "DASHBOARD_NEXT_UI_ALLERGIES_KEY": "Allergies"
+  "DASHBOARD_NEXT_UI_ALLERGIES_KEY": "Allergies",
+  "PRE_OP": "Pre-operative X-ray for diagnostic or planning purposes",
+  "POST_OP": "Post-operative X-ray for assessing healing or implant position",
+  "MONITORING": "Monitoring of progress for alignment / comparative purposes",
+  "FROM_CLINIC": "Request from clinic",
+  "FROM_WARD": "Request from ward",
+  "HIGH_RISK": "High Risk"
 }

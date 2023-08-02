@@ -12,6 +12,7 @@ angular.module('bahmni.clinical')
             $scope.enableLabOrderOptions = LabOrderOptionsConfig ? LabOrderOptionsConfig.value : null;
             var testConceptToParentsMapping = {}; // A child concept could be part of multiple parent panels
             $scope.hideLabTests = true;
+            $scope.noteOptions = appService.getAppDescriptor().getConfigValue("orderNotes");
 
             var collapseExistingActiveSection = function (section) {
                 if (section) {
@@ -225,6 +226,23 @@ angular.module('bahmni.clinical')
                     $scope.orderNoteText = printNotes + (order.previousNote || '');
                 } else if (($scope.orderNoteText || '').indexOf(printNotes) == -1) {
                     $scope.orderNoteText = $translate.instant(printNotes) + ($scope.orderNoteText || '');
+                }
+            };
+
+            $scope.shouldShowNoteOptions = function (orderId, noteName) {
+                var configuredOptions = $scope.noteOptions;
+                return _.some(configuredOptions, function (option) {
+                    return option.label.toLowerCase() === noteName.toLowerCase();
+                })
+                    && !orderId;
+            };
+
+            $scope.appendNotes = function (order, noteKey) {
+                const notesToAppend = $translate.instant(noteKey);
+                if (order.previousNote && !order.previousNote.includes(notesToAppend)) {
+                    $scope.orderNoteText = ((order.previousNote + '\n') || '') + notesToAppend;
+                } else if (!($scope.orderNoteText || '').includes(notesToAppend)) {
+                    $scope.orderNoteText = ($scope.orderNoteText ? $scope.orderNoteText + '\n' : '') + notesToAppend;
                 }
             };
 

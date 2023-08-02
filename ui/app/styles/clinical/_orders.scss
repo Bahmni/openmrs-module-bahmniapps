@@ -519,6 +519,17 @@
         border-left: #ddd 1px solid !important;
     }
 }
+.order-notes-button{
+    margin-right: 2px;
+    width: 115px
+}
+
+.order-note{
+    margin: 0 10px;
+    .note{
+        line-height: 20px;
+    }
+}
 
 .hierarchy ul li.image-preview {
     display: inline-block;
