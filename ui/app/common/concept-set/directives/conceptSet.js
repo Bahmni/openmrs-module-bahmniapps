@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', 'messagingService', 'conceptSetService', 'conceptSetUiConfigService', 'spinner',
-        function (contextChangeHandler, appService, observationsService, messagingService, conceptSetService, conceptSetUiConfigService, spinner) {
+    .directive('conceptSet', ['contextChangeHandler', 'appService', 'observationsService', 'messagingService', 'conceptSetService', 'conceptSetUiConfigService', 'spinner', '$state',
+        function (contextChangeHandler, appService, observationsService, messagingService, conceptSetService, conceptSetUiConfigService, spinner, $state) {
             var controller = function ($scope) {
                 var conceptSetName = $scope.conceptSetName;
                 var ObservationUtil = Bahmni.Common.Obs.ObservationUtil;
@@ -404,6 +404,18 @@ angular.module('bahmni.common.conceptSet')
                     if (formCondition) {
                         var flattenedObs = ObservationUtil.flattenObsToArray([rootObservation]);
                         runFormConditionForObs(true, formName, formCondition, conceptName, flattenedObs);
+                    }
+                });
+
+                $scope.$on('$stateChangeStart', function () {
+                    if ($scope.obsForm && $scope.obsForm.$dirty) {
+                        $state.dirtyConsultationForm = true;
+                    }
+                });
+
+                $scope.$on("event:changes-saved", function () {
+                    if ($scope.obsForm) {
+                        $scope.obsForm.$dirty = false;
                     }
                 });
 
