@@ -30,7 +30,8 @@ angular.module('bahmni.common.uiHelper')
                 }, false);
             };
 
-            var print = function (templateUrl, data) {
+            var print = function (templateUrl, data, pageTitle) {
+                pageTitle = pageTitle || null;
                 $rootScope.isBeingPrinted = true;
                 $http.get(templateUrl).then(function (templateData) {
                     var template = templateData.data;
@@ -38,6 +39,8 @@ angular.module('bahmni.common.uiHelper')
                     angular.extend(printScope, data);
                     var element = $compile($('<div>' + template + '</div>'))(printScope);
                     var renderAndPrintPromise = $q.defer();
+                    var originalTitle = angular.element(document).prop('title');
+                    pageTitle ? angular.element(document).prop('title', pageTitle) : angular.element(document).prop('title', originalTitle);
                     var waitForRenderAndPrint = function () {
                         if (printScope.$$phase || $http.pendingRequests.length) {
                             $timeout(waitForRenderAndPrint, 1000);
@@ -46,6 +49,7 @@ angular.module('bahmni.common.uiHelper')
                             printHtml(element.html()).then(function () {
                                 $rootScope.isBeingPrinted = false;
                                 renderAndPrintPromise.resolve();
+                                angular.element(document).prop('title', originalTitle);
                             });
                             printScope.$destroy();
                         }
