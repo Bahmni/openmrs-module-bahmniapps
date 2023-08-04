@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('treatmentService', ['$http', '$q', '$compile', '$timeout', 'spinner', 'appService', '$rootScope', 'transmissionService', '$filter', function ($http, $q, $compile, $timeout, spinner, appService, $rootScope, transmissionService, $filter) {
+    .factory('treatmentService', ['$http', '$q', '$compile', '$timeout', 'spinner', 'appService', '$rootScope', 'transmissionService', '$filter', 'printer', function ($http, $q, $compile, $timeout, spinner, appService, $rootScope, transmissionService, $filter, printer) {
         var createDrugOrder = function (drugOrder) {
             return Bahmni.Clinical.DrugOrder.create(drugOrder);
         };
@@ -167,6 +167,38 @@ angular.module('bahmni.clinical')
             });
         };
 
+        var getOrderedProviderAttributesForPrint = function (providerAttributeData) {
+            const providerAttributeTypesToFilter = appService.getAppDescriptor().getConfigValue("providerAttributesForPrint") || [];
+            var filteredProviderAttributes = providerAttributeData.filter(function (attribute) {
+                return providerAttributeTypesToFilter.includes(attribute.attributeType.display);
+            });
+            filteredProviderAttributes.sort(function (a, b) {
+                return providerAttributeTypesToFilter.indexOf(a.attributeType.display) - providerAttributeTypesToFilter.indexOf(b.attributeType.display);
+            });
+            return filteredProviderAttributes;
+        };
+
+        var printSelectedPrescriptions = function (drugOrdersForPrint, patient, additionalInfo) {
+            if (drugOrdersForPrint.length > 0) {
+                var encounterDrugOrderMap = Object.values(drugOrdersForPrint.reduce(function (orderMap, item) {
+                    const providerUuid = item.provider.uuid;
+                    if (!orderMap[providerUuid]) {
+                        orderMap[providerUuid] = {
+                            providerUuid: providerUuid,
+                            drugOrders: []
+                        };
+                    }
+                    orderMap[providerUuid].drugOrders.push(item);
+                    return orderMap;
+                }, {}));
+
+                var printParams = appService.getAppDescriptor().getConfigValue("prescriptionPrint") || {};
+                var templateUrl = appService.getAppDescriptor().getConfigValue("prescriptionPrintTemplateUrl") || '../common/displaycontrols/prescription/views/prescription.html';
+                var fileName = patient.givenName + patient.familyName + "_" + patient.identifier + "_Prescription";
+                printer.print(templateUrl, {patient: patient, encounterDrugOrderMap: encounterDrugOrderMap, printParams: printParams, additionalInfo: additionalInfo }, fileName);
+            }
+        };
+
         return {
             getActiveDrugOrders: getActiveDrugOrders,
             getConfig: getConfig,
@@ -175,6 +207,8 @@ angular.module('bahmni.clinical')
             getNonCodedDrugConcept: getNonCodedDrugConcept,
             getAllDrugOrdersFor: getAllDrugOrdersFor,
             voidDrugOrder: voidDrugOrder,
-            sharePrescriptions: sharePrescriptions
+            sharePrescriptions: sharePrescriptions,
+            printSelectedPrescriptions: printSelectedPrescriptions,
+            getOrderedProviderAttributesForPrint: getOrderedProviderAttributesForPrint
         };
     }]);
