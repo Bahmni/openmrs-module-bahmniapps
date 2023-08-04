@@ -344,7 +344,8 @@
     }
 
     .tabs .tab [type=radio]:checked~.dispense-all-btn,
-    .tabs .tab [type=radio]:checked~.refill-drugs-btn {
+    .tabs .tab [type=radio]:checked~.refill-drugs-btn,
+    .tabs .tab [type=radio]:checked~.print-drugs-btn {
         display: inline-block;
         line-height: 14px;
     }

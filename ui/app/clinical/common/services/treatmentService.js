@@ -169,7 +169,7 @@ angular.module('bahmni.clinical')
 
         var getOrderedProviderAttributesForPrint = function (providerAttributeData) {
             const providerAttributeTypesToFilter = appService.getAppDescriptor().getConfigValue("providerAttributesForPrint") || [];
-            var filteredProviderAttributes = providerAttributeData.filter((attribute) => {
+            var filteredProviderAttributes = providerAttributeData.filter(function (attribute) {
                 return providerAttributeTypesToFilter.includes(attribute.attributeType.display);
             });
             filteredProviderAttributes.sort(function (a, b) {
@@ -180,7 +180,7 @@ angular.module('bahmni.clinical')
 
         var printSelectedPrescriptions = function (drugOrdersForPrint, patient, additionalInfo) {
             if (drugOrdersForPrint.length > 0) {
-                var encounterDrugOrderMap = Object.values(drugOrdersForPrint.reduce((orderMap, item) => {
+                var encounterDrugOrderMap = Object.values(drugOrdersForPrint.reduce(function (orderMap, item) {
                     const providerUuid = item.provider.uuid;
                     if (!orderMap[providerUuid]) {
                         orderMap[providerUuid] = {
