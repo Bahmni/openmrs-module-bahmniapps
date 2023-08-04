@@ -22,12 +22,21 @@
             </a>
         </span>
         <div>
-            <mfe-ipd-drug-chart-modal drug-order="selectedDrugOrder" 
+            <mfe-ipd-drug-chart-modal drug-order="selectedDrugOrder"
+            patient-id="params.patientUuid" 
             schedule-frequencies="drugChartModalScheduleFrequencies" 
             start-time-frequencies="drugChartModalStartTimeFrequencies" 
-            close-drug-chart="closeDrugChartModal()" 
+            close-drug-chart="closeDrugChartModal()"
+            show-warning-notification="showWarningNotification()"
+            show-success-notification="showSuccessNotification()"
+            enable-24-hour-timers="enable24HourTimers"
             ng-if="openModal"></mfe-ipd-drug-chart-modal>
         </div>
+        <mfe-ipd-drug-chart-modal-notification class="drug-chart-warnings"
+            ng-if="showModalWarningMessage"
+            notification-kind="kind"
+            close-warnings="closeWarnings()">
+        </mfe-ipd-drug-chart-modal-notification>
     </td>
 
     <td class="toggle-btn" toggle="drugOrder.showDetails" ng-if="::((params.showDetailsButton == true) && !drugOrder.additionalInstructions)">
@@ -38,7 +47,7 @@
     </td>
 </tr>
 <tr ng-if="::drugOrder.additionalInstructions" ng-class="::{'has-test-notes': drugOrder.additionalInstructions}">
-    <td colspan="4" class="notes test-notes">
+    <td colspan="5" class="notes test-notes">
         <i class="fa fa-comments left"></i>
         <pre class="left">{{::drugOrder.additionalInstructions}}</pre>
         <div class="footer-note right">
