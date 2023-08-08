@@ -26,27 +26,28 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.ipdDashboardData = {
-                patient: {
-                    uuid: "--- DUMMY UUID FOR TESTING FROM HOST ---"
-                }
-            };
+            $scope.ipdDashboard = {
+                hostData: {
+                    patient: {
+                        uuid: "--- DUMMY UUID FOR TESTING FROM HOST ---"
+                    }
+                },
+                hostApi: {
+                    onConfirm: function () {
+                        const dialogScope = {
+                            message:
+                                "This is a dialog triggered on the host in response to an event from IPD ",
+                            okay: function (close) {
+                                close();
+                            }
+                        };
 
-            $scope.ipdDashboardApi = {
-                onConfirm: function () {
-                    const dialogScope = {
-                        message:
-                            "This is a dialog triggered on the host in response to an event from IPD ",
-                        okay: function (close) {
-                            close();
-                        }
-                    };
-
-                    confirmBox({
-                        scope: dialogScope,
-                        actions: [{ name: "okay", display: "Okay" }],
-                        className: "ngdialog-theme-default"
-                    });
+                        confirmBox({
+                            scope: dialogScope,
+                            actions: [{ name: "okay", display: "Okay" }],
+                            className: "ngdialog-theme-default"
+                        });
+                    }
                 }
             };
 

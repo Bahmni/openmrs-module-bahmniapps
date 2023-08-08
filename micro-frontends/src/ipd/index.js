@@ -14,11 +14,9 @@ angular.module("bahmni.mfe.ipd", [
   "bahmni.common.domain",
 ]);
 
-
 /** MFE component 1: IpdDashboard 
  *================================================= */
 
-/** Step 1: create a react2angular wrapper for the component */
 angular
   .module("bahmni.mfe.ipd")
   .component("mfeIpdDashboard", react2angular(IpdDashboard), {

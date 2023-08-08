@@ -21,51 +21,49 @@ angular.module('bahmni.clinical')
                 $scope.showDetails = !$scope.showDetails;
             };
 
-            $scope.drugChartModalData = {
-                drugOrder: $scope.drugOrder,
-                patientId: $scope.params.patientUuid,
-                scheduleFrequencies: drugChartModalScheduleFrequencies,
-                startTimeFrequencies: drugChartModalStartTimeFrequencies,
-                enable24HourTimers: enable24HourTimers,
-            }
-
-            $scope.drugChartModalApi = {
-                onModalClose: function () {
-                    $scope.openModal = false;
-                    $scope.$apply();
+            $scope.drugChartModal = {
+                hostData: {
+                    drugOrder: {},
+                    patientId: $scope.params.patientUuid,
+                    scheduleFrequencies: drugChartModalScheduleFrequencies,
+                    startTimeFrequencies: drugChartModalStartTimeFrequencies,
+                    enable24HourTimers: enable24HourTimers
                 },
-                onModalSave: function () {
-                    $scope.openModal = false;
-                    $scope.drugChartModalNotificationData.notificationKind = "success";
-                    $scope.showModalWarningMessage = true;
-                    $scope.$apply();
-                },
-                onModalCancel: function () {
-                    $scope.openModal = false;
-                    $scope.drugChartModalNotificationData.notificationKind = "warning";
-                    $scope.showModalWarningMessage = true;
-                    $scope.$apply();
-                },
+                hostApi: {
+                    onModalClose: function () {
+                        $scope.openModal = false;
+                        $scope.$apply();
+                    },
+                    onModalSave: function () {
+                        $scope.openModal = false;
+                        $scope.drugChartModalNotification.hostData.notificationKind = "success";
+                        $scope.showModalWarningMessage = true;
+                        $scope.$apply();
+                    },
+                    onModalCancel: function () {
+                        $scope.openModal = false;
+                        $scope.drugChartModalNotification.hostData.notificationKind = "warning";
+                        $scope.showModalWarningMessage = true;
+                        $scope.$apply();
+                    }
+                }
             };
 
-            $scope.drugChartModalNotificationData = {
-                notificationKind: ""
-            };
-
-            $scope.drugChartModalNotificationApi = {
-                onClose: function () {
-                    $scope.closeWarnings();
+            $scope.drugChartModalNotification = {
+                hostData: {
+                    notificationKind: ""
+                },
+                hostApi: {
+                    onClose: function () {
+                        $scope.showModalWarningMessage = false;
+                        $scope.$apply();
+                    }
                 }
             };
 
             $scope.openDrugChartModal = function (drugOrder) {
-                $scope.selectedDrugOrder = drugOrder;
+                $scope.drugChartModal.hostData.drugOrder = drugOrder;
                 $scope.openModal = true;
-            };
-
-            $scope.closeWarnings = function () {
-                $scope.showModalWarningMessage = false;
-                $scope.$apply();
             };
         };
 

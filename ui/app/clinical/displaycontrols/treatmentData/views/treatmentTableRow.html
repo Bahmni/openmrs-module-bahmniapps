@@ -22,13 +22,15 @@
             </a>
         </span>
         <div>
-            <mfe-ipd-drug-chart-modal host-data = "drugChartModalData"
-            host-api="drugChartModalApi"
-            ng-if="openModal"></mfe-ipd-drug-chart-modal>
+            <mfe-ipd-drug-chart-modal 
+                host-data="drugChartModal.hostData"
+                host-api="drugChartModal.hostApi"
+                ng-if="openModal">
+            </mfe-ipd-drug-chart-modal>
         </div>
         <mfe-ipd-drug-chart-modal-notification 
-            host-data="drugChartModalNotificationData"
-            host-api="drugChartModalNotificationApi"
+            host-data="drugChartModalNotification.hostData"
+            host-api="drugChartModalNotification.hostApi"
             class="drug-chart-warnings"
             ng-if="showModalWarningMessage">
         </mfe-ipd-drug-chart-modal-notification>
