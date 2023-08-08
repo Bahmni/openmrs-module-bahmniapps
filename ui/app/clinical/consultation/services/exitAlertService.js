@@ -5,7 +5,7 @@ angular.module('bahmni.clinical')
                 showExitAlert: function (isNavigating, dirtyConsultationForm, event, spinnerToken) {
                     if (isNavigating && dirtyConsultationForm) {
                         messagingService.showMessage('alert', "{{'ALERT_MESSAGE_ON_EXIT' | translate }}");
-                        $scope.reviewButtonFocused = true;
+                        $state.reviewButtonFocused = true;
                         event.preventDefault();
                         spinner.hide(spinnerToken);
                     }
