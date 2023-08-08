@@ -44,10 +44,10 @@
                             <div class="msg">{{ alert.value | translate}}</div>
                         </div>
                     </div>
-                </div>
-                <div class="alert-button-wrapper fr clearfix">
-                    <button type="button" ng-click="hideMessage('alert')" class="review-btn">{{ 'MESSAGE_DIALOG_OPTION_REVIEW' | translate }}</button>
-                    <button type="button" ng-click="discardChanges('alert')" class="discard-btn">{{ 'MESSAGE_DIALOG_OPTION_DISCARD' | translate }}</button>
+                    <div class="button-wrapper fr clearfix">
+                        <button type="button" ng-click="hideMessage('alert')" class="review-btn" ng-focus="reviewButtonFocused = true">{{ 'MESSAGE_DIALOG_OPTION_REVIEW' | translate }}</button>
+                        <button type="button" ng-click="discardChanges('alert')" class="discard-btn">{{ 'MESSAGE_DIALOG_OPTION_DISCARD' | translate }}</button>
+                    </div>
                 </div>
             </div>
         </li>
