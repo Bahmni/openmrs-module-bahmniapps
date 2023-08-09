@@ -259,11 +259,11 @@
                     </div>
                 </article>
 
-                <h3 ng-show="cdssaAlerts && cdssaAlerts.length > 0" class="cdss-alerts">
-                    {{"CDSS_" + cdssaAlerts[0].indicator.toUpperCase() | translate}}
+                <h3 ng-show="newAlerts && newAlerts.length > 0" class="cdss-alerts">
+                    {{"CDSS_" + newAlerts[0].indicator.toUpperCase() | translate}}
                 </h3>
 
-                    <div ng-repeat="cdssAlert in cdssaAlerts" class="cdss-alert" ng-class="{'alert-danger': cdssAlert.indicator == 'critical', 'alert-warning': cdssAlert.indicator == 'warning', 'alert-info': cdssAlert.indicator == 'info'}" ng-show="cdssAlert">
+                    <div ng-repeat="cdssAlert in newAlerts" class="cdss-alert" ng-class="{'alert-danger': cdssAlert.indicator == 'critical', 'alert-warning': cdssAlert.indicator == 'warning', 'alert-info': cdssAlert.indicator == 'info'}" ng-show="cdssAlert">
                         <button ng-disabled="cdssAlert.indicator == 'critical'" type="button" class="cdss-alert-close" ng-click="closeAlert($index)">&times;</button>
                         <i class="fa" aria-hidden="true"
                              ng-class="{'fa-exclamation-triangle': cdssAlert.indicator == 'critical' || cdssAlert.indicator == 'warning', 'fa-info-circle': cdssAlert.indicator == 'info'}"
@@ -306,7 +306,7 @@
 
                 <div class="operations fr clearfix">
                     <button class="add-drug-btn secondary-button fl" type="submit" accesskey="{{ ::treatmentConfig.translate('addAccessKey', 'MEDICATION_ADD_ACCESS_KEY') }}"
-                            ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug || (cdssaAlerts && cdssaAlerts[0].indicator == 'critical')">
+                            ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug || (newAlerts && newAlerts[0].indicator == 'critical')">
                              <span ng-bind-html="::treatmentConfig.translate('add', 'MEDICATION_ADD_BUTTON_LABEL')">
                         </span>
                     </button>

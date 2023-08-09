@@ -594,26 +594,27 @@ describe("AddTreatmentController", function () {
             ];
 
             beforeEach(function () {
-                scope.cdssaAlerts = alerts;
+                scope.cdssAlerts = alerts;
+                scope.newAlerts = alerts;
             });
 
             it("should close alert on clicking close button", function () {
                 scope.closeAlert(0);
-                expect(scope.cdssaAlerts.length).toBe(0);
+                expect(scope.newAlerts.length).toBe(0);
             });
 
             it("should toggle alert details on clicking toggle button", function () {
                 scope.toggleAlertDetails(0);
-                expect(scope.cdssaAlerts[0].showDetails).toBeTruthy();
+                expect(scope.newAlerts[0].showDetails).toBeTruthy();
                 scope.toggleAlertDetails(0);
-                expect(scope.cdssaAlerts[0].showDetails).toBeFalsy();
+                expect(scope.newAlerts[0].showDetails).toBeFalsy();
             });
 
             it("should dismiss critical alert on submitting an audit", function () {
                 scope.patient = {uuid: 'some-user-uuid'};
                 scope.treatment = {audit: "some-audit"};
                 scope.submitAudit(0).then(function () {
-                    expect(scope.cdssaAlerts.length).toBe(0);
+                    expect(scope.newAlerts.length).toBe(0);
                 });
             });
         });

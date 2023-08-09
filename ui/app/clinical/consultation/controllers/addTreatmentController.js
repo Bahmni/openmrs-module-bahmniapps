@@ -79,9 +79,9 @@ angular.module('bahmni.clinical')
 
             $scope.submitAudit = function (index) {
                 var patientUuid = $scope.patient.uuid;
-                var message = $scope.cdssaAlerts[index].summary.replace(/"/g, '');
+                var message = $scope.newAlerts[index].summary.replace(/"/g, '');
                 var eventType = 'Dismissed: ' + $scope.treatment.audit;
-                $scope.cdssaAlerts.splice(index, 1);
+                $scope.newAlerts.splice(index, 1);
                 return drugService
                 .cdssAudit(patientUuid, eventType, message, 'CDSS')
                 .then(function () {
@@ -527,14 +527,14 @@ angular.module('bahmni.clinical')
             };
 
             $scope.closeAlert = function (index) {
-                $scope.cdssaAlerts = $scope.cdssaAlerts.filter(function (alert, alertIndex) {
+                $scope.newAlerts = $scope.newAlerts.filter(function (_alert, alertIndex) {
                     return alertIndex !== index;
                 });
             };
 
             $scope.toggleAlertDetails = function (index) {
-                $scope.cdssaAlerts[index].showDetails =
-                  !$scope.cdssaAlerts[index].showDetails;
+                $scope.newAlerts[index].showDetails =
+                  !$scope.newAlerts[index].showDetails;
             };
 
             $scope.getDataResults = function (drugs) {
@@ -556,9 +556,7 @@ angular.module('bahmni.clinical')
                         },
                         medicationCodeableConcept: {
                             id: medication.drug.uuid,
-                            coding: [
-                                coding
-                            ],
+                            coding: coding,
                             text: medication.drugNameDisplay
                         }
                     };
@@ -569,10 +567,11 @@ angular.module('bahmni.clinical')
             };
             var extractCodeInfo = function (medication) {
                 if (!(medication.drug.drugReferenceMaps && medication.drug.drugReferenceMaps.length > 0)) {
-                    return Promise.resolve({
+                    return Promise.resolve([{
                         code: medication.drug.uuid,
-                        display: medication.drug.name
-                    });
+                        display: medication.drug.name,
+                        system: 'https://fhir.openmrs.org'
+                    }]);
                 } else {
                     var drugReferenceMap = medication.drug.drugReferenceMaps[0];
                     if (!$scope.conceptSource) {
@@ -585,24 +584,33 @@ angular.module('bahmni.clinical')
                             if (conceptCode) {
                                 localStorage.setItem("conceptSource", conceptCode.system);
                                 $scope.conceptSource = conceptCode.system;
-                                return {
+                                return [{
                                     system: $scope.conceptSource,
                                     code: drugReferenceMap.conceptReferenceTerm && drugReferenceMap.conceptReferenceTerm.display && drugReferenceMap.conceptReferenceTerm.display.split(':')[1].trim(),
                                     display: medication.drug.name
-                                };
-                            } else {
-                                return {
+                                }, {
                                     code: medication.drug.uuid,
+                                    system: 'https://fhir.openmrs.org',
                                     display: medication.drug.name
-                                };
+                                }];
+                            } else {
+                                return [{
+                                    code: medication.drug.uuid,
+                                    display: medication.drug.name,
+                                    system: 'https://fhir.openmrs.org'
+                                }];
                             }
                         });
                     } else {
-                        return Promise.resolve({
+                        return Promise.resolve([{
                             system: $scope.conceptSource,
                             code: drugReferenceMap.conceptReferenceTerm && drugReferenceMap.conceptReferenceTerm.display && drugReferenceMap.conceptReferenceTerm.display.split(':')[1].trim(),
                             display: medication.drug.name
-                        });
+                        }, {
+                            code: medication.drug.uuid,
+                            system: 'https://fhir.openmrs.org',
+                            display: medication.drug.name
+                        }]);
                     }
                 }
             };
@@ -692,6 +700,19 @@ angular.module('bahmni.clinical')
                 });
             }
 
+            function filterNewAlerts (cdssAlerts, drugMaps) {
+                return cdssAlerts.filter(function (alert) {
+                    if (alert.referenceMedication && alert.referenceMedication.coding && alert.referenceMedication.coding.length > 0) {
+                        var codes = [];
+                        alert.referenceMedication.coding.forEach(function (item) {
+                            codes.push(item.code);
+                        });
+
+                        return drugMaps[1] && codes.indexOf(drugMaps[1].trim()) !== -1;
+                    }
+                });
+            }
+
             (function () {
                 var selectedItem;
                 $scope.onSelect = function (item) {
@@ -707,9 +728,12 @@ angular.module('bahmni.clinical')
                         var params = createParams(consultationData);
                         $scope.createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
                         .then(function (bundle) {
-                            var cdssaAlerts = drugService.sendDiagnosisDrugBundle(bundle);
-                            cdssaAlerts.then(function (response) {
-                                $scope.cdssaAlerts = sortInteractionsByStatus(response.data);
+                            var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
+                            var drug = consultationData.draftDrug[0].drug;
+                            var drugMaps = drug.drugReferenceMaps[0] ? drug.drugReferenceMaps[0].conceptReferenceTerm.display.split(':') : [];
+                            cdssAlerts.then(function (response) {
+                                $scope.cdssAlerts = sortInteractionsByStatus(response.data);
+                                $scope.newAlerts = filterNewAlerts($scope.cdssAlerts, drugMaps);
                             });
                         });
                     }
@@ -740,14 +764,14 @@ angular.module('bahmni.clinical')
                         return;
                     }
                     delete $scope.treatment.drug;
-                    $scope.cdssaAlerts = [];
+                    $scope.cdssAlerts = [];
                 };
             })();
 
             $scope.clearForm = function () {
                 $scope.treatment = newTreatment();
                 $scope.formInvalid = false;
-                $scope.cdssaAlerts = [];
+                $scope.newAlerts = [];
                 clearHighlights();
                 markVariable("startNewDrugEntry");
             };
