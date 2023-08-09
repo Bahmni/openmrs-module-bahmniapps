@@ -263,6 +263,7 @@ angular.module('bahmni.clinical')
 
             $scope.$on("event:updateDrugOrderType", function (event, drugOrder) {
                 $scope.treatments.push(drugOrder);
+                $rootScope.$broadcast("event:drugOrderTypeUpdated", drugOrder);
             });
 
             $scope.$on("event:discontinueDrugOrder", function (event, drugOrder) {

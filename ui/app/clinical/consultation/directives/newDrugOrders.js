@@ -13,7 +13,7 @@ angular.module('bahmni.clinical')
                     return treatment.action === 'REVISE' || (treatment.disableIPDButton == true);
                 }
 
-                $scope.$on("event:updateDrugOrderType", function (event, drugOrder) {
+                $scope.$on("event:drugOrderTypeUpdated", function (event, drugOrder) {
                     $scope.treatments.forEach(function (treatment) {
                         if (treatment.uuid === drugOrder.uuid) {
                             treatment.disableIPDButton = true;
