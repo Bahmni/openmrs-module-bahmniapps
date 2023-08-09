@@ -4,6 +4,7 @@ angular.module('bahmni.reports')
     .service('reportService', ['appService', '$bahmniCookieStore', '$http', function (appService, $bahmniCookieStore, $http) {
         var paperSize = appService.getAppDescriptor().getConfigValue("paperSize");
         var appName = appService.getAppName() ? appService.getAppName() : "reports";
+        let currentDate = new Date();
         var availableFormats = {
             "CSV": "text/csv",
             "HTML": "text/html",
@@ -11,6 +12,14 @@ angular.module('bahmni.reports')
             "PDF": "application/pdf",
             "CUSTOM EXCEL": "application/vnd.ms-excel-custom",
             "ODS": "application/vnd.oasis.opendocument.spreadsheet"
+        };
+        var avaialbleDateRange = {
+            "Today": currentDate,
+            "This Month": new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
+            "This Quater": new Date(currentDate.getFullYear(), Math.floor(currentDate.getMonth() / 3) * 3, 1),
+            "This Year": new Date(currentDate.getFullYear(), 0, 1),
+            "Previous Week": new Date(new Date().setDate(currentDate.getDate() - 6)),
+            "Previous Month": new Date(new Date().setDate(currentDate.getDate() - 30))
         };
 
         var scheduleReport = function (report) {
@@ -44,6 +53,9 @@ angular.module('bahmni.reports')
                 }
             });
         };
+        var getAvailableDateRange = function () {
+            return avaialbleDateRange;
+        };
         var deleteReport = function (id) {
             var url = Bahmni.Common.Constants.reportsUrl + "/delete/{0}";
             url = url.format(id);
@@ -63,6 +75,7 @@ angular.module('bahmni.reports')
             getFormatForMimeType: getFormatForMimeType,
             getMimeTypeForFormat: getMimeTypeForFormat,
             getAvailableFormats: getAvailableFormats,
+            getAvailableDateRange: getAvailableDateRange,
             scheduleReport: scheduleReport,
             getScheduledReports: getScheduledReports,
             deleteReport: deleteReport,
