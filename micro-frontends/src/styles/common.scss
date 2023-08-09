@@ -1,0 +1,21 @@
+.overlay {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  top: 95px;
+  min-width: 540px;
+  z-index: 499;
+  overflow: scroll;
+  box-shadow: -1px 2px 3px 0px #aaa;
+  background-color: #fff;
+}
+.footer{
+  position: fixed;
+  width: calc(100% - 64px);
+  z-index: 55;
+  bottom: 0;
+  > span{
+    width: 270px;
+    height: 64px;
+  }
+}
