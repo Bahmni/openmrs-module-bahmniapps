@@ -34,7 +34,6 @@
     "NO_FULFILMENT_MESSAGE": "Никаких наблюдений, зафиксированных для этого заказа.",
     "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "\nНет доступных ссылок навигации.",
     "CHOOSE_REPORT_FORMAT": "Выберите формат",
-    "REPORT_DATE_RANGE": "Выберите диапазон дат",
     "ACCEPT": "Принять",
     "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "\nВыберите значение из автоматического завершения",
     "CONCEPT_NOT_FOUND_MESSAGE": "\nконцепция не найдена.",
