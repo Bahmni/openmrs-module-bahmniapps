@@ -2,9 +2,9 @@
 
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
-        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter', 'confirmBox',
+        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter',
         function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
-            $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter, confirmBox) {
+            $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter) {
             $scope.patient = patientContext.patient;
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.activeVisitData = {};
@@ -26,29 +26,10 @@ angular.module('bahmni.clinical')
                     alert("We have a full fledged problem");
                 }
             };
-
             $scope.ipdDashboard = {
                 hostData: {
-                    patient: {
-                        uuid: "--- DUMMY UUID FOR TESTING FROM HOST ---"
-                    }
-                },
-                hostApi: {
-                    onConfirm: function () {
-                        const dialogScope = {
-                            message:
-                                "This is a dialog triggered on the host in response to an event from IPD ",
-                            okay: function (close) {
-                                close();
-                            }
-                        };
-
-                        confirmBox({
-                            scope: dialogScope,
-                            actions: [{ name: "okay", display: "Okay" }],
-                            className: "ngdialog-theme-default"
-                        });
-                    }
+                    patientId: $stateParams.patientUuid,
+                    forDate: new Date().toUTCString()
                 }
             };
 
