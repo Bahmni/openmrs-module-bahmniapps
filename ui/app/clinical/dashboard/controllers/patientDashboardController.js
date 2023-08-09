@@ -2,9 +2,9 @@
 
 angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
-        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter',
+        '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter', 'confirmBox',
         function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
-                  $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter) {
+            $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter, confirmBox) {
             $scope.patient = patientContext.patient;
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.activeVisitData = {};
@@ -16,6 +16,41 @@ angular.module('bahmni.clinical')
             $scope.loadIPD = false;
             var programConfig = appService.getAppDescriptor().getConfigValue("program") || {};
             $state.discardChanges = false;
+
+            $scope.alergyData = {
+                name: 'Customised for me!!!'
+            };
+
+            $scope.alergyApi = {
+                callback: function () {
+                    alert("We have a full fledged problem");
+                }
+            };
+
+            $scope.ipdDashboard = {
+                hostData: {
+                    patient: {
+                        uuid: "--- DUMMY UUID FOR TESTING FROM HOST ---"
+                    }
+                },
+                hostApi: {
+                    onConfirm: function () {
+                        const dialogScope = {
+                            message:
+                                "This is a dialog triggered on the host in response to an event from IPD ",
+                            okay: function (close) {
+                                close();
+                            }
+                        };
+
+                        confirmBox({
+                            scope: dialogScope,
+                            actions: [{ name: "okay", display: "Okay" }],
+                            className: "ngdialog-theme-default"
+                        });
+                    }
+                }
+            };
 
             $scope.stateChange = function () {
                 return $state.current.name === 'patient.dashboard.show';

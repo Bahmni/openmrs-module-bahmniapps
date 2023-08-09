@@ -3,5 +3,5 @@
            disease-templates="diseaseTemplates" section-groups="sectionGroups" visit-history="visitHistory"
            active-visit-uuid="visitHistory.activeVisit.uuid" visit-summary="visitSummary" enrollment="enrollment">
 </dashboard>
-<mfe-ipd-dashboard ng-if="loadIPD" style="margin-top: 45px auto 0; display: block;"></mfe-ipd-dashboard>
+<mfe-ipd-dashboard ng-if="loadIPD" style="margin: 45px auto 0; display: block;" host-data="ipdDashboard.hostData" host-api="ipdDashboard.hostApi"></mfe-ipd-dashboard>
 <div ng-show ="!loadIPD && !stateChange()" ui-view="consultation-content" class="consultation-content"></div>
