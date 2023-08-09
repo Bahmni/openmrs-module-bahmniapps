@@ -36,6 +36,16 @@ angular.module('bahmni.clinical')
             });
         };
 
+        var getMedicationSchedulesForOrders = function (patientUuid, orderUuids) {
+            return $http.get(Bahmni.Common.Constants.medicationSchedulesForOrders, {
+                params: {
+                    patientUuid: patientUuid,
+                    orderUuids: orderUuids
+                },
+                withCredentials: true
+            });
+        }
+
         var getConfig = function () {
             return $http.get(Bahmni.Common.Constants.drugOrderConfigurationUrl, {
                 withCredentials: true
@@ -102,7 +112,7 @@ angular.module('bahmni.clinical')
 
         var getAllDrugOrdersFor = function (patientUuid, conceptSetToBeIncluded, conceptSetToBeExcluded, isActive, patientProgramUuid) {
             var deferred = $q.defer();
-            var params = {patientUuid: patientUuid};
+            var params = { patientUuid: patientUuid };
             if (conceptSetToBeIncluded) {
                 params.includeConceptSet = conceptSetToBeIncluded;
             }
@@ -155,7 +165,7 @@ angular.module('bahmni.clinical')
                             }];
                             var subject = "Prescription for consultation at " + $rootScope.facilityLocation.name + " on " + $filter("bahmniDate")(prescriptionDetails.visitDate);
                             var body = transmissionService.getSharePrescriptionMailContent(prescriptionDetails);
-                            var emailUrl = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.sendViaEmailUrl, {'patientUuid': prescriptionDetails.patient.uuid});
+                            var emailUrl = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.sendViaEmailUrl, { 'patientUuid': prescriptionDetails.patient.uuid });
                             transmissionService.sendEmail(attachments, subject, body, emailUrl, [], []);
                         });
                         renderAndSendPromise.resolve();
@@ -195,7 +205,7 @@ angular.module('bahmni.clinical')
                 var printParams = appService.getAppDescriptor().getConfigValue("prescriptionPrint") || {};
                 var templateUrl = appService.getAppDescriptor().getConfigValue("prescriptionPrintTemplateUrl") || '../common/displaycontrols/prescription/views/prescription.html';
                 var fileName = patient.givenName + patient.familyName + "_" + patient.identifier + "_Prescription";
-                printer.print(templateUrl, {patient: patient, encounterDrugOrderMap: encounterDrugOrderMap, printParams: printParams, additionalInfo: additionalInfo }, fileName);
+                printer.print(templateUrl, { patient: patient, encounterDrugOrderMap: encounterDrugOrderMap, printParams: printParams, additionalInfo: additionalInfo }, fileName);
             }
         };
 
@@ -204,6 +214,7 @@ angular.module('bahmni.clinical')
             getConfig: getConfig,
             getPrescribedDrugOrders: getPrescribedDrugOrders,
             getPrescribedAndActiveDrugOrders: getPrescribedAndActiveDrugOrders,
+            getMedicationSchedulesForOrders: getMedicationSchedulesForOrders,
             getNonCodedDrugConcept: getNonCodedDrugConcept,
             getAllDrugOrdersFor: getAllDrugOrdersFor,
             voidDrugOrder: voidDrugOrder,

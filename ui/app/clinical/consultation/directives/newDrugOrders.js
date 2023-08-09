@@ -8,6 +8,18 @@ angular.module('bahmni.clinical')
                 $scope.toggleCareSetting = function (newTreatment) {
                     newTreatment.careSetting = newTreatment.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient ? Bahmni.Clinical.Constants.careSetting.outPatient : Bahmni.Clinical.Constants.careSetting.inPatient;
                 };
+
+                $scope.shouldDisableIPDButton = function (treatment) {
+                    return treatment.action === 'REVISE' || (treatment.disableIPDButton == true);
+                }
+
+                $scope.$on("event:updateDrugOrderType", function (event, drugOrder) {
+                    $scope.treatments.forEach(function (treatment) {
+                        if (treatment.uuid === drugOrder.uuid) {
+                            treatment.disableIPDButton = true;
+                        }
+                    });
+                });
             }
             $scope.edit = function (drugOrder, index) {
                 $rootScope.$broadcast("event:editDrugOrder", drugOrder, index);
