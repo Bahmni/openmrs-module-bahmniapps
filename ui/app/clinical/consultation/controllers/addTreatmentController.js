@@ -19,6 +19,7 @@ angular.module('bahmni.clinical')
             $scope.clearButtonClicked = false;
             $scope.conceptSource = localStorage.getItem("conceptSource") || "";
 
+
             $scope.getFilteredOrderSets = function (searchTerm) {
                 if (searchTerm && searchTerm.length >= 3) {
                     orderSetService.getOrderSetsByQuery(searchTerm).then(function (response) {
@@ -97,7 +98,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on('$stateChangeStart', function () {
-                if ($scope.addForm.$dirty) {
+                if ($scope.addForm.$dirty && !$scope.clearButtonClicked) {
                     $state.dirtyConsultationForm = true;
                 }
             });
