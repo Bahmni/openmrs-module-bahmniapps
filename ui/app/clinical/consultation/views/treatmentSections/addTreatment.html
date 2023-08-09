@@ -310,7 +310,7 @@
                              <span ng-bind-html="::treatmentConfig.translate('add', 'MEDICATION_ADD_BUTTON_LABEL')">
                         </span>
                     </button>
-                    <button type="button" class="icon-button showInfo-btn fr reset-drug-form" tabindex="-1" ng-click="clearForm()" title="Clear">
+                    <button type="button" class="icon-button showInfo-btn fr reset-drug-form" tabindex="-1" ng-click="clearForm(); clearButtonClicked='true'" title="Clear">
                         {{'MEDICATION_CLEAR_BUTTON_LABEL'|translate}}
                     </button>
                 </div>
