@@ -15,6 +15,12 @@ angular.module('bahmni.clinical')
             $scope.addTreatment = true;
             $scope.canOrderSetBeAdded = true;
             $scope.isSearchDisabled = false;
+<<<<<<< HEAD
+=======
+            $scope.cdssEnabled = false;
+            $scope.clearButtonClicked = false;
+            $scope.conceptSource = localStorage.getItem("conceptSource") || "";
+>>>>>>> d20b1f973 (Parvathy | BAH-2359 | Add. Handle changes when clicked on clear button in medication tab)
 
             $scope.getFilteredOrderSets = function (searchTerm) {
                 if (searchTerm && searchTerm.length >= 3) {
@@ -94,7 +100,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on('$stateChangeStart', function () {
-                if ($scope.addForm.$dirty) {
+                if ($scope.addForm.$dirty && !$scope.clearButtonClicked) {
                     $state.dirtyConsultationForm = true;
                 }
             });
