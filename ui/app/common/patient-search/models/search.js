@@ -59,7 +59,7 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
     };
 
     self.filterPatients = function (matchingCriteria) {
-        matchingCriteria = matchingCriteria ? matchingCriteria : matchesNameOrId;
+        matchingCriteria = matchingCriteria || matchesNameOrId;
         self.searchResults = self.searchParameter ? self.activePatients.filter(matchingCriteria) : self.activePatients;
     };
 
@@ -105,7 +105,7 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
         } else if (patient.extraIdentifierVal) {
             extraIdentifier = patient.extraIdentifierVal;
         }
-        patient.extraIdentifier = patient.extraIdentifier ? patient.extraIdentifier : (extraIdentifier ? extraIdentifier : patient.identifier);
+        patient.extraIdentifier = patient.extraIdentifier ? patient.extraIdentifier : (extraIdentifier || patient.identifier);
         patient.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + patient.uuid;
         return patient;
     }

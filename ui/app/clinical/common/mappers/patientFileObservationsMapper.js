@@ -26,9 +26,9 @@ Bahmni.Clinical.PatientFileObservationsMapper = function () {
             });
         });
         patientFileRecords.sort(function (record1, record2) {
-            return record1.imageObservation.observationDateTime !== record2.imageObservation.observationDateTime ?
-            DateUtil.parse(record1.imageObservation.observationDateTime) - DateUtil.parse(record2.imageObservation.observationDateTime) :
-            record1.id - record2.id;
+            return record1.imageObservation.observationDateTime !== record2.imageObservation.observationDateTime
+            ? DateUtil.parse(record1.imageObservation.observationDateTime) - DateUtil.parse(record2.imageObservation.observationDateTime)
+            : record1.id - record2.id;
         });
         return patientFileRecords;
     };

@@ -130,8 +130,8 @@ angular.module('bahmni.clinical')
                 });
                 var isValidConditionForm = ($scope.consultation.condition.isEmpty() || $scope.consultation.condition.isValid());
                 return {
-                    allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0
-                    && invalidSavedDiagnosesFromCurrentEncounter.length === 0 && isValidConditionForm,
+                    allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0 &&
+                    invalidSavedDiagnosesFromCurrentEncounter.length === 0 && isValidConditionForm,
                     errorMessage: $scope.errorMessage
                 };
             };
@@ -313,8 +313,8 @@ angular.module('bahmni.clinical')
                 spinner.forPromise(
                     diagnosisService.deleteDiagnosis(obsUUid).then(function () {
                         messagingService.showMessage('info', 'DELETED_MESSAGE');
-                        var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0 ?
-                                          $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
+                        var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0
+                                          ? $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
                         return reloadDiagnosesSection(currentUuid);
                     }))
                     .then(function () {

@@ -41,8 +41,8 @@
         return this.conditionNonCoded || this.concept.shortName || this.concept.name;
     };
     Condition.prototype.isEmpty = function () {
-        return !this.status && !this.concept.name && !(this.isNonCoded || this.concept.uuid)
-            && !this.onSetDate && !this.additionalDetail;
+        return !this.status && !this.concept.name && !(this.isNonCoded || this.concept.uuid) &&
+            !this.onSetDate && !this.additionalDetail;
     };
 
     Condition.createFromDiagnosis = function (diagnosis) {

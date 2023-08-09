@@ -11,8 +11,8 @@ angular.module('bahmni.common.displaycontrol.observation')
                 $scope.showGroupDateTime = $scope.config.showGroupDateTime !== false;
 
                 var mapObservation = function (observations) {
-                    var conceptsConfig = $scope.config.formType === Bahmni.Common.Constants.forms2Type ? {} :
-                        appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
+                    var conceptsConfig = $scope.config.formType === Bahmni.Common.Constants.forms2Type ? {}
+                        : appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
 
                     observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig, null, $translate);
 

@@ -188,8 +188,8 @@ angular.module('bahmni.registration')
                 if (_.isEmpty(patientSearchResultConfigs)) {
                     resultsConfigNotFound = true;
                     patientSearchResultConfigs.address = {"fields": allSearchConfigs.address ? [allSearchConfigs.address.field] : []};
-                    patientSearchResultConfigs.personAttributes
-                        = {fields: allSearchConfigs.customAttributes ? allSearchConfigs.customAttributes.fields : {}};
+                    patientSearchResultConfigs.personAttributes =
+                        {fields: allSearchConfigs.customAttributes ? allSearchConfigs.customAttributes.fields : {}};
                 } else {
                     if (!patientSearchResultConfigs.address) patientSearchResultConfigs.address = {};
                     if (!patientSearchResultConfigs.personAttributes) patientSearchResultConfigs.personAttributes = {};

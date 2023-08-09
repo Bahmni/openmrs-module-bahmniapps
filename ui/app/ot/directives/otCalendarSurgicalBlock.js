@@ -106,9 +106,9 @@ angular.module('bahmni.ot')
             };
 
             $scope.canShowInCalendarView = function (surgicalAppointment) {
-                return $scope.isValidSurgicalAppointment(surgicalAppointment)
-                    && surgicalAppointment.derivedAttributes.expectedStartDatetime < getCalendarEndDateTime($scope.viewDate)
-                    && surgicalAppointment.derivedAttributes.expectedEndDatetime > getCalendarStartDateTime($scope.viewDate);
+                return $scope.isValidSurgicalAppointment(surgicalAppointment) &&
+                    surgicalAppointment.derivedAttributes.expectedStartDatetime < getCalendarEndDateTime($scope.viewDate) &&
+                    surgicalAppointment.derivedAttributes.expectedEndDatetime > getCalendarStartDateTime($scope.viewDate);
             };
 
             $scope.selectSurgicalBlock = function ($event) {

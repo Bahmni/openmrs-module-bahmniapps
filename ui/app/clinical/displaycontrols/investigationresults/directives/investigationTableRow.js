@@ -11,7 +11,7 @@ angular.module('bahmni.clinical')
             $scope.params = angular.extend(defaultParams, $scope.params);
 
             $scope.hasNotes = function () {
-                return $scope.test.notes || $scope.test.showNotes ? true : false;
+                return !!($scope.test.notes || $scope.test.showNotes);
             };
             $scope.getFormattedRange = function (test) {
                 if (test.minNormal && test.maxNormal) {

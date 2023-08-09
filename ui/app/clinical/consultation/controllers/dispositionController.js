@@ -16,8 +16,7 @@ angular.module('bahmni.clinical')
             var previousDispositionNotes = getPreviousDispositionNote();
             if (getSelectedConceptName($scope.dispositionCode, $scope.dispositionActions)) {
                 return _.cloneDeep(previousDispositionNotes) || {concept: {uuid: $scope.dispositionNoteConceptUuid}};
-            }
-            else {
+            } else {
                 return {concept: {uuid: $scope.dispositionNoteConceptUuid}};
             }
         };
@@ -52,12 +51,10 @@ angular.module('bahmni.clinical')
             var isVisitOpen = visitSummary ? _.isEmpty(visitSummary.stopDateTime) : false;
             if (visitSummary && visitSummary.isDischarged() && isVisitOpen) {
                 finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { code: defaultDispositions[0]});
-            }
-            else if (visitSummary && visitSummary.isAdmitted() && isVisitOpen) {
+            } else if (visitSummary && visitSummary.isAdmitted() && isVisitOpen) {
                 finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { code: defaultDispositions[2]});
                 finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { code: defaultDispositions[3]});
-            }
-            else {
+            } else {
                 finalDispositionActions = getDispositionActions(finalDispositionActions, dispositions, { code: defaultDispositions[1]});
             }
             return finalDispositionActions;

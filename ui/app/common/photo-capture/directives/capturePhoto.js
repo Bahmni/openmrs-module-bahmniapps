@@ -108,7 +108,11 @@ angular.module('bahmni.common.photoCapture')
             };
 
             captureDialogElement.dialog({
-                autoOpen: false, height: 300, width: 500, modal: true, dialogClass: 'photo-capture-dialog',
+                autoOpen: false,
+                height: 300,
+                width: 500,
+                modal: true,
+                dialogClass: 'photo-capture-dialog',
                 close: function () {
                     dialogOpen = false;
                     if (captureActiveStream) {
@@ -175,7 +179,11 @@ angular.module('bahmni.common.photoCapture')
             };
 
             uploadDialogElement.dialog({
-                autoOpen: false, height: 350, width: 350, modal: true, dialogClass: 'photo-upload-dialog',
+                autoOpen: false,
+                height: 350,
+                width: 350,
+                modal: true,
+                dialogClass: 'photo-upload-dialog',
                 close: function () {
                     dialogOpen = false;
                 }

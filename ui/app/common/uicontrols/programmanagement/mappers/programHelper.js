@@ -79,7 +79,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                         return progAttr.attributeType.display === configAttr.name;
                     });
 
-                    attr = attr ? attr : {
+                    attr = attr || {
                         value: ""
                     };
                     attr.attributeType = configAttr;

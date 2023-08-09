@@ -187,7 +187,7 @@ angular.module('bahmni.clinical')
 
             $scope.updateAllOrderAttributesByName = function (orderAttribute, drugOrderGroup) {
                 drugOrderGroup[orderAttribute.name] = drugOrderGroup[orderAttribute.name] || {};
-                drugOrderGroup[orderAttribute.name].selected = drugOrderGroup[orderAttribute.name].selected ? false : true;
+                drugOrderGroup[orderAttribute.name].selected = !drugOrderGroup[orderAttribute.name].selected;
 
                 drugOrderGroup.drugOrders.forEach(function (drugOrder) {
                     var selectedOrderAttribute = getAttribute(drugOrder, orderAttribute.name);

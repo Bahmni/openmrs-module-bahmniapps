@@ -4,11 +4,11 @@ Bahmni.Common.VisitSummary = function (visitSummary) {
     angular.extend(this, visitSummary);
 
     this.isAdmitted = function () {
-        return this.admissionDetails && this.admissionDetails.uuid ? true : false;
+        return !!(this.admissionDetails && this.admissionDetails.uuid);
     };
 
     this.isDischarged = function () {
-        return this.dischargeDetails && this.dischargeDetails.uuid ? true : false;
+        return !!(this.dischargeDetails && this.dischargeDetails.uuid);
     };
 
     this.getAdmissionEncounterUuid = function () {

@@ -45,11 +45,11 @@ angular.module('bahmni.clinical')
         $scope.activateTab($scope.tabs[0]);
 
         $scope.toggleNote = function () {
-            $scope.noteState = $scope.noteState ? false : true;
+            $scope.noteState = !$scope.noteState;
         };
 
         var init = function () {
-            $scope.noteState = $scope.consultation.labOrderNote && $scope.consultation.labOrderNote.value ? true : false;
+            $scope.noteState = !!($scope.consultation.labOrderNote && $scope.consultation.labOrderNote.value);
         };
 
         $scope.onNoteChanged = function () {

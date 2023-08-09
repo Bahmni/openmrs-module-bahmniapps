@@ -19,7 +19,7 @@ angular.module('bahmni.reports')
             "This Quater": new Date(currentDate.getFullYear(), Math.floor(currentDate.getMonth() / 3) * 3, 1),
             "This Year": new Date(currentDate.getFullYear(), 0, 1),
             "Previous Week": new Date(new Date().setDate(currentDate.getDate() - 6)),
-            "Previous Month": new Date(new Date().setDate(currentDate.getDate() - 30)),
+            "Previous Month": new Date(new Date().setDate(currentDate.getDate() - 30))
         };
 
         var scheduleReport = function (report) {

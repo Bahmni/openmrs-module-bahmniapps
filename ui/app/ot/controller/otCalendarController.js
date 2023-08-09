@@ -45,8 +45,8 @@ angular.module('bahmni.ot')
             };
 
             $scope.isSurgicalBlockActiveOnGivenDate = function (surgicalBlock, weekDate) {
-                return Bahmni.Common.Util.DateUtil.isSameDate(moment(surgicalBlock.startDatetime).startOf('day').toDate(), weekDate)
-                    || moment(surgicalBlock.endDatetime).toDate() > weekDate;
+                return Bahmni.Common.Util.DateUtil.isSameDate(moment(surgicalBlock.startDatetime).startOf('day').toDate(), weekDate) ||
+                    moment(surgicalBlock.endDatetime).toDate() > weekDate;
             };
 
             $scope.intervals = function () {

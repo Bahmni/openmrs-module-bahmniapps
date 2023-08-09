@@ -1,7 +1,7 @@
 'use strict';
 
 Modernizr.addTest('ios', function () {
-    return navigator.userAgent.match(/(iPad|iPhone|iPod)/i) ? true : false;
+    return !!navigator.userAgent.match(/(iPad|iPhone|iPod)/i);
 });
 
 Modernizr.addTest('windowOS', function () {

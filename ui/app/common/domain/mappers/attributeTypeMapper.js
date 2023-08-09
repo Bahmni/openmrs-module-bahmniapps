@@ -11,11 +11,11 @@ Bahmni.Common.Domain.AttributeTypeMapper = (function () {
                 var element = _.find(mandatoryAttributes, function (mandatoryAttribute) {
                     return mandatoryAttribute == mrsAttributeType.name;
                 });
-                return element ? true : false;
+                return !!element;
             };
 
             var getLocaleSpecificConceptName = function (concept, locale, conceptNameType) {
-                conceptNameType = conceptNameType ? conceptNameType : "SHORT";
+                conceptNameType = conceptNameType || "SHORT";
                 var localeSpecificName = _.filter(concept.names, function (name) {
                     return name.locale == locale && name.conceptNameType == conceptNameType;
                 });

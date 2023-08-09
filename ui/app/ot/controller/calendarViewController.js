@@ -107,10 +107,10 @@ angular.module('bahmni.ot')
             };
 
             $scope.isFilterApplied = function () {
-                return Object.keys($state.filterParams.locations).length != $scope.locations.length
-                        || !_.isEmpty($state.filterParams.providers)
-                        || !_.isEmpty($state.filterParams.patient)
-                        || !_.isEmpty($state.filterParams.statusList);
+                return Object.keys($state.filterParams.locations).length != $scope.locations.length ||
+                        !_.isEmpty($state.filterParams.providers) ||
+                        !_.isEmpty($state.filterParams.patient) ||
+                        !_.isEmpty($state.filterParams.statusList);
             };
 
             $scope.applyFilters = function () {

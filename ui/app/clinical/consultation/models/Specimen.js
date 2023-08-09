@@ -24,10 +24,10 @@ Bahmni.Clinical.Specimen = function (specimen, allSamples) {
     };
 
     self.isDirty = function () {
-        return (self.dateCollected && !self.type) ||
+        return !!((self.dateCollected && !self.type) ||
         (!self.dateCollected && !self.type && self.isAdditionalAttriburtesFilled()) ||
         (!self.dateCollected && self.type) ||
-        (!self.dateCollected && !self.type && self.identifier) || isDirtyRuleForFreeText() ? true : false;
+        (!self.dateCollected && !self.type && self.identifier) || isDirtyRuleForFreeText());
     };
 
     self.isEmpty = function () {

@@ -65,8 +65,10 @@ angular.module('bahmni.common.displaycontrol.observation')
 
                     };
                     var formName = value.formFieldPath.split('.')[0];
-                    var formBuilderForm = formBuilderForms.find(function (form) { return form.name ===
-                        formName; });
+                    var formBuilderForm = formBuilderForms.find(function (form) {
+                        return form.name ===
+                        formName;
+                    });
                     obsGroup.concept.shortName = formName;
                     var locale = localStorage.getItem("NG_TRANSLATE_LANG_KEY") || "en";
                     var formNameTranslations = formBuilderForm && formBuilderForm.nameTranslation
@@ -208,15 +210,13 @@ angular.module('bahmni.common.displaycontrol.observation')
                     _.forEach(recordObservations, function (recordObservation) {
                         obsGroup.groupMembers.push(recordObservation);
                     });
-                }
-                else if (record.control.type === 'section') {
+                } else if (record.control.type === 'section') {
                     var sectionGroup = self.createObsGroup(record, translationData);
                     self.createGroupMembers(record, sectionGroup, obsList, translationData);
                     if (sectionGroup.groupMembers.length > 0) {
                         obsGroup.groupMembers.push(sectionGroup);
                     }
-                }
-                else if (record.control.type === "table") {
+                } else if (record.control.type === "table") {
                     var tableGroup = self.createObsGroup(record, translationData);
                     var columns = record.control.columnHeaders;
                     self.createColumnGroupsForTable(record, columns, tableGroup, obsList, translationData);

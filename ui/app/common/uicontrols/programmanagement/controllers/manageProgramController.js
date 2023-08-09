@@ -144,8 +144,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 if (_.isEmpty(activePatientProgramState) && patientProgram.selectedState != undefined) {
                     return true;
                 }
-                return patientProgram.selectedState
-                    && (patientProgram.selectedState.uuid != activePatientProgramState.state.uuid);
+                return patientProgram.selectedState &&
+                    (patientProgram.selectedState.uuid != activePatientProgramState.state.uuid);
             };
 
             var isOutcomeSelected = function (patientProgram) {
@@ -167,8 +167,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 if (isProgramStateChanged(patientProgram, activePatientProgramState)) {
                     var startDate = getCurrentDate();
                     if (activePatientProgramState && DateUtil.isBeforeDate(startDate, activeStateDate)) {
-                        messagingService.showMessage("error", "PROGRAM_MANAGEMENT_STATE_CANT_START_BEFORE_KEY"
-                            + " (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
+                        messagingService.showMessage("error", "PROGRAM_MANAGEMENT_STATE_CANT_START_BEFORE_KEY" +
+                            " (" + DateUtil.formatDateWithoutTime(activeStateDate) + ")");
                         return;
                     }
                     patientProgram.states.push({

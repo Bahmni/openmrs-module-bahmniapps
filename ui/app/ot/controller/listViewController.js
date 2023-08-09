@@ -41,8 +41,8 @@ angular.module('bahmni.ot')
                     var attributeName = 'surgicalAppointmentAttributes.'.concat(attributeType.name, '.value');
                     return {
                         heading: attributeType.name,
-                        sortInfo: attributeType.format === Bahmni.OT.Constants.providerSurgicalAttributeFormat ?
-                            attributeName.concat('.person.display') : attributeName
+                        sortInfo: attributeType.format === Bahmni.OT.Constants.providerSurgicalAttributeFormat
+                            ? attributeName.concat('.person.display') : attributeName
                     };
                 });
             }
@@ -83,8 +83,8 @@ angular.module('bahmni.ot')
                             var surgicalAppointmentEndDateTime = Bahmni.Common.Util.DateUtil.addMinutes(surgicalAppointmentStartDateTime, surgicalAppointment.derivedAttributes.duration);
                             return surgicalAppointmentStartDateTime < endDatetime && surgicalAppointmentEndDateTime > startDatetime;
                         }
-                        return surgicalAppointment.derivedAttributes.expectedStartDate <= endDatetime
-                            && surgicalAppointment.derivedAttributes.expectedStartDate >= startDatetime;
+                        return surgicalAppointment.derivedAttributes.expectedStartDate <= endDatetime &&
+                            surgicalAppointment.derivedAttributes.expectedStartDate >= startDatetime;
                     });
                     return surgicalBlock;
                 });

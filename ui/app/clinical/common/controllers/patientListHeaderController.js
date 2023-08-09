@@ -48,7 +48,8 @@ angular.module('bahmni.clinical')
             };
 
             $scope.popUpHandler = function () {
-                $scope.dialog = ngDialog.open({ template: 'consultation/views/defaultDataPopUp.html', className: 'test ngdialog-theme-default',
+                $scope.dialog = ngDialog.open({ template: 'consultation/views/defaultDataPopUp.html',
+                    className: 'test ngdialog-theme-default',
                     controller: 'PatientListHeaderController'});
                 $('body').addClass('show-controller-back');
             };

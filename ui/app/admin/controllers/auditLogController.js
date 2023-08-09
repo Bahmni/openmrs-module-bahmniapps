@@ -92,7 +92,8 @@ angular.module('bahmni.admin')
                     return;
                 }
                 var params = {
-                    username: $scope.username, patientId: $scope.patientId,
+                    username: $scope.username,
+                    patientId: $scope.patientId,
                     startFrom: $scope.startDate
                 };
                 var promise = auditLogService.getLogs(mapParamsForRequest(params)).then(function (logs) {

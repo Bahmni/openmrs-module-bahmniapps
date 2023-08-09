@@ -112,7 +112,7 @@ Bahmni.DocumentUpload.Visit = function () {
     };
 
     this.isSaved = function (file) {
-        return file.obsUuid ? true : false;
+        return !!file.obsUuid;
     };
 
     this.removeFile = function (file) {
@@ -140,10 +140,10 @@ Bahmni.DocumentUpload.Visit = function () {
             return !file.voided && (!file.concept || !file.concept.editableName || !file.concept.uuid);
         });
 
-        return imageHasError ? true : false;
+        return !!imageHasError;
     };
 
     this.hasVisitType = function () {
-        return this.visitType && this.visitType.uuid ? true : false;
+        return !!(this.visitType && this.visitType.uuid);
     };
 };

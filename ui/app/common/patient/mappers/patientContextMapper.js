@@ -6,12 +6,12 @@ Bahmni.PatientContextMapper = function () {
         patientContext.uuid = patient.uuid;
         patientContext.givenName = patient.person.names[0].givenName;
         var familyName = patient.person.names[0].familyName;
-        patientContext.familyName = familyName ? familyName : "";
+        patientContext.familyName = familyName || "";
         patientContext.middleName = patient.person.names[0].middleName;
         patientContext.gender = patient.person.gender;
         if (patient.identifiers) {
             var primaryIdentifier = patient.identifiers[0].primaryIdentifier;
-            patientContext.identifier = primaryIdentifier ? primaryIdentifier : patient.identifiers[0].identifier;
+            patientContext.identifier = primaryIdentifier || patient.identifiers[0].identifier;
         }
 
         if (patient.person.birthdate) {

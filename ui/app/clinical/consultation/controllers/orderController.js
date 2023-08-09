@@ -92,7 +92,7 @@ angular.module('bahmni.clinical')
                 $scope.tabs = [];
                 _.forEach($scope.allOrdersTemplates, function (item) {
                     var conceptName = $scope.getName(item);
-                    $scope.tabs.push({name: conceptName ? conceptName : item.name.name, topLevelConcept: item.name.name});
+                    $scope.tabs.push({name: conceptName || item.name.name, topLevelConcept: item.name.name});
                 });
                 if ($scope.tabs) {
                     $scope.activateTab($scope.tabs[0]);
@@ -232,8 +232,8 @@ angular.module('bahmni.clinical')
                 var configuredOptions = getConfiguredOptions();
                 return _.some(configuredOptions, function (option) {
                     return option.toLowerCase() === 'needsprint';
-                })
-                && !isOrderSaved;
+                }) &&
+                !isOrderSaved;
             };
             $scope.isUrgent = function () {
                 var configuredOptions = getConfiguredOptions();

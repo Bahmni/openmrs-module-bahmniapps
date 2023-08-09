@@ -132,7 +132,7 @@ angular.module('bahmni.common.uiHelper')
             var validationMessage = attrs.validationMessage || 'Please enter a valid detail';
 
             var setValidity = function (value) {
-                var valid = value ? true : false;
+                var valid = !!value;
                 ngModelCtrl.$setValidity('blank', valid);
                 element[0].setCustomValidity(!valid ? validationMessage : '');
             };

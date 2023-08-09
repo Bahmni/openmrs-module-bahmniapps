@@ -26,7 +26,7 @@ Bahmni.PatientMapper = function (patientConfig, $rootScope, $translate) {
 
         if (openmrsPatient.identifiers) {
             var primaryIdentifier = openmrsPatient.identifiers[0].primaryIdentifier;
-            patient.identifier = primaryIdentifier ? primaryIdentifier : openmrsPatient.identifiers[0].identifier;
+            patient.identifier = primaryIdentifier || openmrsPatient.identifiers[0].identifier;
         }
 
         if (openmrsPatient.identifiers && openmrsPatient.identifiers.length > 1) {

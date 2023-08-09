@@ -13,10 +13,10 @@ Bahmni.ObservationForm = function (formUuid, user, formName, formVersion, observ
         self.alwaysShow = user.isFavouriteObsTemplate(self.conceptName);
         self.observations = [];
         _.each(observations, function (observation) {
-            var observationFormField = observation.formFieldPath ?
-                Bahmni.Common.Util.FormFieldPathUtil.getFormNameAndVersion(observation.formFieldPath) : null;
-            if (observationFormField && observationFormField.formName === formName
-                && observationFormField.formVersion == formVersion) {
+            var observationFormField = observation.formFieldPath
+                ? Bahmni.Common.Util.FormFieldPathUtil.getFormNameAndVersion(observation.formFieldPath) : null;
+            if (observationFormField && observationFormField.formName === formName &&
+                observationFormField.formVersion == formVersion) {
                 self.observations.push(observation);
             }
         });

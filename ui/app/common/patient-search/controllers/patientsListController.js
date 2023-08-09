@@ -22,8 +22,7 @@ angular.module('bahmni.common.patientSearch')
             });
             if (patientSearchConfig && patientSearchConfig.serializeSearch) {
                 getPatientCountSeriallyBySearchIndex(0);
-            }
-            else {
+            } else {
                 _.each($scope.search.searchTypes, function (searchType) {
                     _.isEmpty(searchType) || ($scope.search.searchType != searchType && getPatientCount(searchType, null));
                 });
@@ -52,7 +51,8 @@ angular.module('bahmni.common.patientSearch')
         };
         var getPatientCount = function (searchType, patientListSpinner) {
             if (searchType.handler) {
-                var params = { q: searchType.handler, v: "full",
+                var params = { q: searchType.handler,
+                    v: "full",
                     location_uuid: $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).uuid,
                     provider_uuid: $rootScope.currentProvider.uuid };
                 if (searchType.additionalParams) {
@@ -94,8 +94,7 @@ angular.module('bahmni.common.patientSearch')
                 return identifierHeading;
             } else if ($scope.search.searchType && $scope.search.searchType.links) {
                 return _.find($scope.search.searchType.links, {linkColumn: heading});
-            }
-            else if ($scope.search.searchType && $scope.search.searchType.linkColumn) {
+            } else if ($scope.search.searchType && $scope.search.searchType.linkColumn) {
                 return _.includes([$scope.search.searchType.linkColumn], heading);
             }
         };
@@ -153,8 +152,7 @@ angular.module('bahmni.common.patientSearch')
                 patientListSpinner = showSpinner(spinner, $(".tab-content"));
                 if (patientSearchConfig && patientSearchConfig.debounceSearch) {
                     debounceGetPatientCount(currentSearchType, patientListSpinner);
-                }
-                else {
+                } else {
                     getPatientCount(currentSearchType, patientListSpinner);
                 }
             }

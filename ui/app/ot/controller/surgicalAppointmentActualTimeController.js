@@ -23,8 +23,8 @@ angular.module('bahmni.ot').controller('surgicalAppointmentActualTimeController'
             var appointmentDuration = surgicalAppointmentHelper.getEstimatedDurationForAppointment(surgicalAppointment);
             $scope.actualStartTime = (surgicalAppointment.actualStartDatetime && moment(surgicalAppointment.actualStartDatetime).toDate()) ||
                 Bahmni.Common.Util.DateUtil.subtractSeconds(calculatedAppointmentEndTime, appointmentDuration * 60);
-            $scope.actualEndTime = (surgicalAppointment.actualEndDatetime && moment(surgicalAppointment.actualEndDatetime).toDate())
-                || calculatedAppointmentEndTime;
+            $scope.actualEndTime = (surgicalAppointment.actualEndDatetime && moment(surgicalAppointment.actualEndDatetime).toDate()) ||
+                calculatedAppointmentEndTime;
             $scope.notes = surgicalAppointment.notes;
             $scope.patientDisplayLabel = surgicalAppointmentHelper.getPatientDisplayLabel(surgicalAppointment.patient.display);
         };

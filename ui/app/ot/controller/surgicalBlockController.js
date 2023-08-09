@@ -168,8 +168,7 @@ angular.module('bahmni.ot')
                         return surgicalAppointment.sortWeight === appointment.sortWeight;
                     });
                     $scope.surgicalForm.surgicalAppointments[appointmentIndex] = surgicalAppointment;
-                }
-                else {
+                } else {
                     messagingService.showMessage('error', "{{'OT_SURGICAL_APPOINTMENT_EXCEEDS_BLOCK_DURATION' | translate}}");
                 }
             };

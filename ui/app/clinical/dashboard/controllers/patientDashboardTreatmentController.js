@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardTreatmentController', ['$scope', '$rootScope', 'ngDialog', 'visitActionsService', 'treatmentService',
         function ($scope, $rootScope, ngDialog, visitActionsService, treatmentService) {
             var treatmentConfigParams = $scope.dashboard.getSectionByType("treatment") || {};
-            $scope.isEmailPresent = $scope.patient.email ? true : false;
+            $scope.isEmailPresent = !!$scope.patient.email;
             var patientParams = {"patientUuid": $scope.patient.uuid, "isEmailPresent": $scope.isEmailPresent};
             var sharePrescriptionToggles = {"prescriptionEmailToggle": $rootScope.prescriptionEmailToggle};
             var printParams = treatmentConfigParams.prescriptionPrint || {};

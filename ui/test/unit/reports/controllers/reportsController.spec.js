@@ -53,6 +53,10 @@ describe("ReportsController", function () {
             "CSV": "text/csv",
             "HTML": "text/html"
         });
+        reportServiceMock.getAvailableDateRange.and.returnValue({
+            "Today": new Date(),
+            "This Month": new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+        });
 
         controller = $controller;
         controller('ReportsController', {
@@ -63,7 +67,7 @@ describe("ReportsController", function () {
             messagingService: messagingServiceMock,
             spinner: spinnerMock,
             $rootScope: rootScope,
-            FileUploader: function () {}
+            FileUploader: function () { }
         });
     }));
 
@@ -81,12 +85,43 @@ describe("ReportsController", function () {
             reportService: reportServiceMock,
             messagingService: messagingServiceMock,
             $rootScope: rootScope,
-            FileUploader: function () {}
+            FileUploader: function () { }
         });
 
         expect(_.keys(scope.formats).length).toBe(2);
         expect(scope.formats['CSV']).toBe('text/csv');
         expect(scope.formats['HTML']).toBe('text/html');
+    });
+
+    it('should initialise formats with HTML', function () {
+        mockAppDescriptor.getConfigValue.and.returnValue(['html']);
+        controller('ReportsController', {
+            $scope: scope,
+            appService: appServiceMock,
+            reportService: reportServiceMock,
+            messagingService: messagingServiceMock,
+            $rootScope: rootScope,
+            FileUploader: function () { }
+        });
+
+        expect(_.keys(rootScope.default.reportsRequiringDateRange.responseType).length).toBe(1);
+        expect(rootScope.default.reportsRequiringDateRange.responseType['HTML']).toBe('text/html');
+    });
+
+    it('should initialise date range with supportedDateRange config', function () {
+        mockAppDescriptor.getConfigValue.and.returnValue([new Date(), new Date(new Date().getFullYear(), new Date().getMonth(), 1)]);
+        controller('ReportsController', {
+            $scope: scope,
+            appService: appServiceMock,
+            reportService: reportServiceMock,
+            messagingService: messagingServiceMock,
+            $rootScope: rootScope,
+            FileUploader: function () { }
+        });
+
+        expect(_.keys(rootScope.default.reportsRequiringDateRange.dateRangeType).length).toBe(2);
+        expect(rootScope.default.reportsRequiringDateRange.dateRangeType['Today']).toBe(new Date());
+        expect(rootScope.default.reportsRequiringDateRange.dateRangeType['This Month']).toBe(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
     });
 
     it('should initialise all available formats when supportedFormats config is not specified', function () {
@@ -351,7 +386,7 @@ describe("ReportsController", function () {
                 messagingService: messagingServiceMock,
                 spinner: spinnerMock,
                 $rootScope: rootScope,
-                FileUploader: function () {}
+                FileUploader: function () { }
             });
         }));
 
@@ -379,7 +414,7 @@ describe("ReportsController", function () {
                 messagingService: messagingServiceMock,
                 spinner: spinnerMock,
                 $rootScope: rootScope,
-                FileUploader: function () {}
+                FileUploader: function () { }
             });
         }));
 
@@ -397,7 +432,7 @@ describe("ReportsController", function () {
             responseType: 'text/html'
         });
 
-        var messageParams = {reportName: 'Vitals'};
+        var messageParams = { reportName: 'Vitals' };
         expect(mockAuditLogService.log).toHaveBeenCalledWith(undefined, 'RUN_REPORT', messageParams, 'MODULE_LABEL_REPORTS_KEY');
     });
 

@@ -69,8 +69,7 @@ angular.module('bahmni.registration')
                 var setDefaultValue = function (personAttributeType) {
                     if (isDefaultValueToday(personAttributeType)) {
                         $scope.patient[personAttributeType.name] = new Date();
-                    }
-                    else {
+                    } else {
                         $scope.patient[personAttributeType.name] = '';
                     }
                 };
@@ -88,7 +87,7 @@ angular.module('bahmni.registration')
                     var notNullAttribute = _.find(section && section.attributes, function (attribute) {
                         return $scope.patient[attribute.name] !== undefined;
                     });
-                    section.expand = section.expanded || (notNullAttribute ? true : false);
+                    section.expand = section.expanded || (!!notNullAttribute);
                 });
             };
 
