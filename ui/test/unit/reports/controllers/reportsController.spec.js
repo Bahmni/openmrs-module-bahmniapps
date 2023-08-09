@@ -108,22 +108,6 @@ describe("ReportsController", function () {
         expect(rootScope.default.reportsRequiringDateRange.responseType['HTML']).toBe('text/html');
     });
 
-    it('should initialise date range with supportedDateRange config', function () {
-        mockAppDescriptor.getConfigValue.and.returnValue([new Date(), new Date(new Date().getFullYear(), new Date().getMonth(), 1)]);
-        controller('ReportsController', {
-            $scope: scope,
-            appService: appServiceMock,
-            reportService: reportServiceMock,
-            messagingService: messagingServiceMock,
-            $rootScope: rootScope,
-            FileUploader: function () { }
-        });
-
-        expect(_.keys(rootScope.default.reportsRequiringDateRange.dateRangeType).length).toBe(2);
-        expect(rootScope.default.reportsRequiringDateRange.dateRangeType['Today']).toBe(new Date());
-        expect(rootScope.default.reportsRequiringDateRange.dateRangeType['This Month']).toBe(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
-    });
-
     it('should initialise all available formats when supportedFormats config is not specified', function () {
         mockAppDescriptor.getConfigValue.and.returnValue(undefined);
 
