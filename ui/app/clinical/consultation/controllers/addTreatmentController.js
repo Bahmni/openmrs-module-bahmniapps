@@ -5,8 +5,8 @@ angular.module('bahmni.clinical')
         '$timeout', 'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
         'orderSetService', '$q', 'locationService', 'spinner', '$translate', '$state',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
-                  clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
-                  orderSetService, $q, locationService, spinner, $translate, $state) {
+            clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
+            orderSetService, $q, locationService, spinner, $translate, $state) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var scrollTop = _.partial($window.scrollTo, 0, 0);
@@ -15,12 +15,9 @@ angular.module('bahmni.clinical')
             $scope.addTreatment = true;
             $scope.canOrderSetBeAdded = true;
             $scope.isSearchDisabled = false;
-<<<<<<< HEAD
-=======
             $scope.cdssEnabled = false;
             $scope.clearButtonClicked = false;
             $scope.conceptSource = localStorage.getItem("conceptSource") || "";
->>>>>>> d20b1f973 (Parvathy | BAH-2359 | Add. Handle changes when clicked on clear button in medication tab)
 
             $scope.getFilteredOrderSets = function (searchTerm) {
                 if (searchTerm && searchTerm.length >= 3) {
@@ -83,8 +80,8 @@ angular.module('bahmni.clinical')
 
             $scope.auditOptions = function () {
                 return appService
-                  .getAppDescriptor()
-                  .getConfigValue('cdssDismissalOptionsToDisplay');
+                    .getAppDescriptor()
+                    .getConfigValue('cdssDismissalOptionsToDisplay');
             };
 
             $scope.submitAudit = function (index) {
@@ -93,10 +90,10 @@ angular.module('bahmni.clinical')
                 var eventType = 'Dismissed: ' + $scope.treatment.audit;
                 $scope.cdssaAlerts.splice(index, 1);
                 return drugService
-                .cdssAudit(patientUuid, eventType, message, 'CDSS')
-                .then(function () {
-                    $scope.treatment.audit = '';
-                });
+                    .cdssAudit(patientUuid, eventType, message, 'CDSS')
+                    .then(function () {
+                        $scope.treatment.audit = '';
+                    });
             };
 
             $scope.$on('$stateChangeStart', function () {
@@ -220,7 +217,7 @@ angular.module('bahmni.clinical')
                 setSortWeightForOrderSetDrugs(refilledOrderGroupOrders);
 
                 // Fetch the orderSet for the drugOrder
-                var matchedOrderSet = _.find(orderSets, {uuid: drugOrder.orderSetUuid});
+                var matchedOrderSet = _.find(orderSets, { uuid: drugOrder.orderSetUuid });
 
                 // Find the drugs in ordered DrugOrderSet which matches with the matchedOrderSet SetMembers
                 var orderSetMembersOfMatchedOrderSet = matchedOrderSet.orderSetMembers;
@@ -242,11 +239,11 @@ angular.module('bahmni.clinical')
                         var baseDose = eachMember.orderTemplate.dosingInstructions.dose;
                         var drugName = eachMember.orderTemplate.concept.name;
                         return orderSetService.getCalculatedDose($scope.patient.uuid, drugName, baseDose, doseUnits, $scope.newOrderSet.name)
-                                     .then(function (calculatedDosage) {
-                                         refilledOrderGroupOrders[index].uniformDosingType.dose = calculatedDosage.dose;
-                                         refilledOrderGroupOrders[index].uniformDosingType.doseUnits = calculatedDosage.doseUnit;
-                                         refilledOrderGroupOrders[index].calculateQuantityAndUnit();
-                                     });
+                            .then(function (calculatedDosage) {
+                                refilledOrderGroupOrders[index].uniformDosingType.dose = calculatedDosage.dose;
+                                refilledOrderGroupOrders[index].uniformDosingType.doseUnits = calculatedDosage.doseUnit;
+                                refilledOrderGroupOrders[index].calculateQuantityAndUnit();
+                            });
                     }
                 });
 
@@ -404,10 +401,10 @@ angular.module('bahmni.clinical')
             var getConflictingDrugOrder = function (newDrugOrder) {
                 var allDrugOrders = $scope.treatments.concat($scope.orderSetTreatments);
                 allDrugOrders = _.reject(allDrugOrders, newDrugOrder);
-                var unsavedNotBeingEditedOrders = _.filter(allDrugOrders, {isBeingEdited: false});
+                var unsavedNotBeingEditedOrders = _.filter(allDrugOrders, { isBeingEdited: false });
                 var existingDrugOrders;
                 if (newDrugOrder.isBeingEdited) {
-                    existingDrugOrders = _.reject($scope.consultation.activeAndScheduledDrugOrders, {uuid: newDrugOrder.previousOrderUuid});
+                    existingDrugOrders = _.reject($scope.consultation.activeAndScheduledDrugOrders, { uuid: newDrugOrder.previousOrderUuid });
                 } else {
                     existingDrugOrders = $scope.consultation.activeAndScheduledDrugOrders;
                 }
@@ -522,16 +519,16 @@ angular.module('bahmni.clinical')
             var contextChange = function () {
                 var errorMessages = Bahmni.Clinical.Constants.errorMessages;
                 if (isSameDrugBeingDiscontinuedAndOrdered()) {
-                    return {allow: false, errorMessage: $translate.instant(errorMessages.discontinuingAndOrderingSameDrug)};
+                    return { allow: false, errorMessage: $translate.instant(errorMessages.discontinuingAndOrderingSameDrug) };
                 }
                 if ($scope.incompleteDrugOrders()) {
                     $scope.formInvalid = true;
-                    return {allow: false};
+                    return { allow: false };
                 }
                 if ($scope.unaddedDrugOrders()) {
-                    return {allow: false, errorMessage: $translate.instant(errorMessages.incompleteForm)};
+                    return { allow: false, errorMessage: $translate.instant(errorMessages.incompleteForm) };
                 }
-                return {allow: true};
+                return { allow: true };
             };
 
             var setIsNotBeingEdited = function (treatment) {
@@ -641,7 +638,7 @@ angular.module('bahmni.clinical')
                 $scope.consultation.newlyAddedTreatments = allTreatmentsAcrossTabs.concat(includedOrderSetTreatments);
                 if ($scope.consultation.discontinuedDrugs) {
                     $scope.consultation.discontinuedDrugs.forEach(function (discontinuedDrug) {
-                        var removableOrder = _.find(activeDrugOrders, {uuid: discontinuedDrug.uuid});
+                        var removableOrder = _.find(activeDrugOrders, { uuid: discontinuedDrug.uuid });
                         if (discontinuedDrug) {
                             removableOrder.orderReasonText = discontinuedDrug.orderReasonText;
                             removableOrder.dateActivated = null;
@@ -755,7 +752,7 @@ angular.module('bahmni.clinical')
                 });
                 ngDialog.open({
                     template: 'consultation/views/treatmentSections/conflictingOrderSet.html',
-                    data: {'conflictingDrugOrders': conflictingDrugOrders}
+                    data: { 'conflictingDrugOrders': conflictingDrugOrders }
                 });
                 $scope.popupActive = true;
             };
@@ -786,7 +783,7 @@ angular.module('bahmni.clinical')
                     drugOrder.include = false;
                     ngDialog.open({
                         template: 'consultation/views/treatmentSections/conflictingOrderSet.html',
-                        data: {'conflictingDrugOrders': [conflictingDrugOrder]}
+                        data: { 'conflictingDrugOrders': [conflictingDrugOrder] }
                     });
                     $scope.popupActive = true;
                 }
@@ -796,7 +793,7 @@ angular.module('bahmni.clinical')
 
             var mergeActiveAndScheduledWithDiscontinuedOrders = function () {
                 _.each($scope.consultation.discontinuedDrugs, function (discontinuedDrug) {
-                    _.remove($scope.consultation.activeAndScheduledDrugOrders, {'uuid': discontinuedDrug.uuid});
+                    _.remove($scope.consultation.activeAndScheduledDrugOrders, { 'uuid': discontinuedDrug.uuid });
                     $scope.consultation.activeAndScheduledDrugOrders.push(discontinuedDrug);
                 });
             };
@@ -804,7 +801,7 @@ angular.module('bahmni.clinical')
             var showRulesInMedication = function (medicationConfig) {
                 $scope.showRulesInMedication = false;
                 if (medicationConfig !== 'undefined' && medicationConfig.tabConfig !== 'undefined' && medicationConfig.tabConfig.allMedicationTabConfig
-                 !== 'undefined' && medicationConfig.tabConfig.allMedicationTabConfig.orderSet !== 'undefined') {
+                    !== 'undefined' && medicationConfig.tabConfig.allMedicationTabConfig.orderSet !== 'undefined') {
                     if (medicationConfig.tabConfig.allMedicationTabConfig.orderSet.showRulesInMedication) {
                         $scope.showRulesInMedication = true;
                     }
