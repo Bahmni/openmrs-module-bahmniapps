@@ -25,8 +25,12 @@ angular.module('bahmni.clinical')
                 };
 
                 $scope.disableIPDButton = function (drugOrder) {
-                    return $scope.medicationSchedules.some(schedule => schedule.order.uuid === drugOrder.uuid);
-                }
+                    return ($scope.medicationSchedules &&
+                        $scope.medicationSchedules.some(function (schedule) {
+                            return schedule.order.uuid === drugOrder.uuid;
+                        })) ||
+                        !drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed;
+                };
             }
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
@@ -153,8 +157,10 @@ angular.module('bahmni.clinical')
             };
 
             const getActiveAndPrescribedDrugOrdersUuids = function () {
-                return $scope.consultation.activeAndScheduledDrugOrders.map(order => order.uuid);
-            }
+                return $scope.consultation.activeAndScheduledDrugOrders.map(function (drugOrder) {
+                    return drugOrder.uuid;
+                });
+            };
 
             spinner.forPromise(treatmentService.getMedicationSchedulesForOrders($stateParams.patientUuid, getActiveAndPrescribedDrugOrdersUuids()).then(function (response) {
                 $scope.medicationSchedules = response.data;

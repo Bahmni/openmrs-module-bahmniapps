@@ -24,9 +24,12 @@ describe("DrugOrderHistoryController", function () {
     beforeEach(inject(function (_$controller_, $rootScope, _$q_) {
         $q = _$q_;
         $controller = _$controller_;
-        _treatmentService = jasmine.createSpyObj('treatmentService', ['getPrescribedDrugOrders']);
+        _treatmentService = jasmine.createSpyObj('treatmentService', ['getPrescribedDrugOrders', 'getMedicationSchedulesForOrders']);
         _treatmentService.getPrescribedDrugOrders.and.callFake(function () {
             return specUtil.respondWithPromise($q, prescribedDrugOrders);
+        });
+        _treatmentService.getMedicationSchedulesForOrders.and.callFake(function () {
+            return specUtil.respondWithPromise($q, []);
         });
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue({
@@ -37,13 +40,13 @@ describe("DrugOrderHistoryController", function () {
 
         rootScope = $rootScope;
         spyOn($rootScope, '$broadcast');
-        $rootScope.visit = {startDate: 1410322624000};
+        $rootScope.visit = { startDate: 1410322624000 };
         scope = $rootScope.$new();
         scope.consultation = {
             preSaveHandler: new Bahmni.Clinical.Notifier(), discontinuedDrugs: [],
             activeAndScheduledDrugOrders: [Bahmni.Clinical.DrugOrderViewModel.createFromContract(scheduledOrder), Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder)]
         };
-        scope.currentBoard = {extensionParams: {}};
+        scope.currentBoard = { extensionParams: {} };
 
         var retrospectiveEntry = Bahmni.Common.Domain.RetrospectiveEntry.createFrom(Date.now());
         retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['getRetrospectiveEntry']);
@@ -59,7 +62,7 @@ describe("DrugOrderHistoryController", function () {
             activeDrugOrders: [activeDrugOrder, scheduledOrder],
             treatmentService: _treatmentService,
             retrospectiveEntryService: retrospectiveEntryService,
-            $stateParams: {patientUuid: "patientUuid"},
+            $stateParams: { patientUuid: "patientUuid" },
             visitContext: {},
             spinner: spinner,
             visitHistory: visitHistory,
@@ -100,7 +103,7 @@ describe("DrugOrderHistoryController", function () {
         it("should enable reason text for all concepts when nothing is configured", function () {
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(prescribedDrugOrders[0]);
 
-            drugOrder.orderReasonConcept = {name: {name: "Other"}};
+            drugOrder.orderReasonConcept = { name: { name: "Other" } };
             scope.discontinue(drugOrder);
 
             expect(drugOrder.orderReasonNotesEnabled).toBe(true);
@@ -119,7 +122,7 @@ describe("DrugOrderHistoryController", function () {
                         return false;
                 }
             };
-            drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
+            drugOrder.orderReasonConcept = { name: { name: "Adverse event" } };
             scope.discontinue(drugOrder);
 
             expect(drugOrder.orderReasonNotesEnabled).toBe(true);
@@ -137,11 +140,11 @@ describe("DrugOrderHistoryController", function () {
                         return false;
                 }
             };
-            drugOrder.orderReasonConcept = {name: {name: "Adverse event"}};
+            drugOrder.orderReasonConcept = { name: { name: "Adverse event" } };
             scope.updateFormConditions(drugOrder);
             expect(drugOrder.orderReasonNotesEnabled).toBe(true);
 
-            drugOrder.orderReasonConcept = {name: {name: "other event"}};
+            drugOrder.orderReasonConcept = { name: { name: "other event" } };
             scope.updateFormConditions(drugOrder);
             expect(drugOrder.orderReasonNotesEnabled).toBe(false);
 
@@ -201,7 +204,7 @@ describe("DrugOrderHistoryController", function () {
                     "strength": null,
                     "name": "Methylprednisolone 2ml"
                 },
-                 "concept": {
+                "concept": {
                     "shortName": "Methylprednisolone 2ml"
                 }
             };
@@ -267,7 +270,7 @@ describe("DrugOrderHistoryController", function () {
         "concept": {
             "shortName": "Methylprednisolone 2ml"
         },
-        "provider": {name: "superman"}
+        "provider": { name: "superman" }
     };
 
     var scheduledOrder = {
@@ -314,7 +317,7 @@ describe("DrugOrderHistoryController", function () {
         "concept": {
             "shortName": "Methylprednisolone 200ml"
         },
-        "provider": {name: "superman"}
+        "provider": { name: "superman" }
     };
 
     prescribedDrugOrders = [
@@ -364,6 +367,6 @@ describe("DrugOrderHistoryController", function () {
             "concept": {
                 "shortName": "Methylprednisolone 2ml"
             },
-            "provider": {name: "superman"}
+            "provider": { name: "superman" }
         }];
 });

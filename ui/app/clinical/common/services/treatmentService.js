@@ -44,7 +44,7 @@ angular.module('bahmni.clinical')
                 },
                 withCredentials: true
             });
-        }
+        };
 
         var getConfig = function () {
             return $http.get(Bahmni.Common.Constants.drugOrderConfigurationUrl, {

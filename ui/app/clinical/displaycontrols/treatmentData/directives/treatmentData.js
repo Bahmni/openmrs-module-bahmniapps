@@ -48,7 +48,7 @@ angular.module('bahmni.clinical')
 
                         for (var key in groupedByVisit) {
                             var values = Bahmni.Clinical.DrugOrder.Util.mergeContinuousTreatments(groupedByVisit[key]);
-                            treatmentSections.push({visitDate: key, drugOrders: values});
+                            treatmentSections.push({ visitDate: key, drugOrders: values });
                         }
                         if (!_.isEmpty(drugOrderResponse[Constants.otherActiveDrugOrders])) {
                             var mergedOtherActiveDrugOrders = Bahmni.Clinical.DrugOrder.Util.mergeContinuousTreatments(drugOrderResponse[Constants.otherActiveDrugOrders]);

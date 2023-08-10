@@ -226,7 +226,7 @@ Bahmni.Common = Bahmni.Common || {};
         passwordUrl: RESTWS_V1 + "/password",
         formUrl: RESTWS_V1 + "/form",
         allFormsUrl: RESTWS_V1 + "/bahmniie/form/allForms",
-        medicationSchedulesForOrders: IPD + "/schedule/type/medicationForOrders",
+        medicationSchedulesForOrders: IPD + "/schedule/type/medication",
         latestPublishedForms: RESTWS_V1 + "/bahmniie/form/latestPublishedForms",
         formTranslationsUrl: RESTWS_V1 + "/bahmniie/form/translations",
         sqlUrl: BAHMNI_CORE + "/sql",
