@@ -1,8 +1,18 @@
 'use strict';
 
-angular.module("bahmni.common.uiHelper").controller("MessageController", [ "$scope", "messagingService", "$translate", "$state", "exitAlertService",
+angular.module("bahmni.common.uiHelper").controller("MessageController", ["$scope", "messagingService", "$translate", "$state", "exitAlertService",
     function ($scope, messagingService, $translate, $state, exitAlertService) {
         $scope.messages = messagingService.messages;
+        $scope.getMessageText = function (level) {
+            var string = "";
+            $scope.messages[level].forEach(function (message) {
+                string = string.concat(message.value);
+            });
+
+            navigator.clipboard.writeText(string);
+
+            return string;
+        };
 
         $scope.hideMessage = function (level) {
             messagingService.hideMessages(level);
@@ -11,18 +21,6 @@ angular.module("bahmni.common.uiHelper").controller("MessageController", [ "$sco
         $scope.isErrorMessagePresent = function () {
             return $scope.messages.error.length > 0;
         };
-
-        $scope.isInfoMessagePresent = function () {
-            return $scope.messages.info.length > 0;
-        };
-
-        $scope.isAlertMessagePresent = function () {
-            return $scope.messages.alert.length > 0;
-        };
-
-            $scope.isErrorMessagePresent = function () {
-                return $scope.messages.error.length > 0;
-            };
 
         $scope.isInfoMessagePresent = function () {
             return $scope.messages.info.length > 0;

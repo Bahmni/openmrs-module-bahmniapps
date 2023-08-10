@@ -5,8 +5,8 @@ angular.module('bahmni.clinical')
         '$timeout', 'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
         'orderSetService', '$q', 'locationService', 'spinner', '$translate', '$state',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
-                  clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
-                  orderSetService, $q, locationService, spinner, $translate, $state) {
+            clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
+            orderSetService, $q, locationService, spinner, $translate, $state) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var scrollTop = _.partial($window.scrollTo, 0, 0);
@@ -18,7 +18,6 @@ angular.module('bahmni.clinical')
             $scope.cdssEnabled = false;
             $scope.clearButtonClicked = false;
             $scope.conceptSource = localStorage.getItem("conceptSource") || "";
-
 
             $scope.getFilteredOrderSets = function (searchTerm) {
                 if (searchTerm && searchTerm.length >= 3) {
@@ -81,8 +80,8 @@ angular.module('bahmni.clinical')
 
             $scope.auditOptions = function () {
                 return appService
-                  .getAppDescriptor()
-                  .getConfigValue('cdssDismissalOptionsToDisplay');
+                    .getAppDescriptor()
+                    .getConfigValue('cdssDismissalOptionsToDisplay');
             };
 
             $scope.submitAudit = function (index) {
@@ -91,10 +90,10 @@ angular.module('bahmni.clinical')
                 var eventType = 'Dismissed: ' + $scope.treatment.audit;
                 $scope.cdssaAlerts.splice(index, 1);
                 return drugService
-                .cdssAudit(patientUuid, eventType, message, 'CDSS')
-                .then(function () {
-                    $scope.treatment.audit = '';
-                });
+                    .cdssAudit(patientUuid, eventType, message, 'CDSS')
+                    .then(function () {
+                        $scope.treatment.audit = '';
+                    });
             };
 
             $scope.$on('$stateChangeStart', function () {
