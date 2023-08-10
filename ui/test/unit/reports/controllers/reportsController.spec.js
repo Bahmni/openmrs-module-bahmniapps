@@ -92,34 +92,21 @@ describe("ReportsController", function () {
         expect(scope.formats['HTML']).toBe('text/html');
     });
 
-    // it('should initialise formats with HTML', function () {
-    //     mockAppDescriptor.getConfigValue.and.returnValue(['html']);
-    //     controller('ReportsController', {
-    //         $scope: scope,
-    //         appService: appServiceMock,
-    //         reportService: reportServiceMock,
-    //         messagingService: messagingServiceMock,
-    //         $rootScope: rootScope,
-    //         FileUploader: function () { }
-    //     });
-    //     expect(_.keys(rootScope.default.reportsRequiringDateRange.responseType).length).toBe(1);
-    //     expect(rootScope.default.reportsRequiringDateRange.responseType['HTML']).toBe('text/html');
-    // });
+    it('should initialise date range with supportedDateRange config', function () {
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: new Date(),
+            startDate: new Date(),
+            stopDate: new Date(),
+        };
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+        scope.setDefault('startDate', 'reportsRequiringDateRange');
+        scope.setDefault('stopDate', 'reportsRequiringDateRange');
 
-    // it('should initialise date range with supportedDateRange config', function () {
-    //     mockAppDescriptor.getConfigValue.and.returnValue([new Date(), new Date(new Date().getFullYear(), new Date().getMonth(), 1)]);
-    //     controller('ReportsController', {
-    //         $scope: scope,
-    //         appService: appServiceMock,
-    //         reportService: reportServiceMock,
-    //         messagingService: messagingServiceMock,
-    //         $rootScope: rootScope,
-    //         FileUploader: function () { }
-    //     });
-    //     expect(_.keys(rootScope.default.reportsRequiringDateRange.dateRangeType).length).toBe(2);
-    //     expect(rootScope.default.reportsRequiringDateRange.dateRangeType['Today']).toBe(new Date());
-    //     expect(rootScope.default.reportsRequiringDateRange.dateRangeType['This Month']).toBe(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
-    // });
+        expect(_.keys(rootScope.default.reportsRequiringDateRange).length).toBe(3);
+        expect((rootScope.default.reportsRequiringDateRange.dateRangeType).getDate()).toBe(new Date().getDate());
+        expect(rootScope.reportsRequiringDateRange[0].startDate).toBe(rootScope.default.reportsRequiringDateRange.startDate);
+        expect(rootScope.reportsRequiringDateRange[0].stopDate).toBe(rootScope.default.reportsRequiringDateRange.stopDate);
+    });
 
     it('should initialise all available formats when supportedFormats config is not specified', function () {
         mockAppDescriptor.getConfigValue.and.returnValue(undefined);
