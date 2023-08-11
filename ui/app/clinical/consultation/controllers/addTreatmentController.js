@@ -764,7 +764,7 @@ angular.module('bahmni.clinical')
                         return;
                     }
                     delete $scope.treatment.drug;
-                    $scope.cdssAlerts = [];
+                    $scope.newAlerts = [];
                 };
             })();
 
