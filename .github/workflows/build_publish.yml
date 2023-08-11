@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - Bahmni-IPD-master
+      - Tzdatapackage
     paths-ignore:
       - "**.md"
   workflow_dispatch:
@@ -63,7 +64,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           file: package/docker/Dockerfile
           push: true
-          tags: bahmni/bahmni-web:ipd-${{ github.run_number }},bahmni/bahmni-web:ipd
+          tags: bahmni/bahmni-web:ipd-test
   trigger-workflow:
     name: Trigger workflow to deploy to Docker env
     needs:

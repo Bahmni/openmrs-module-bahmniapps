@@ -1,6 +1,7 @@
 FROM httpd:2.4-alpine
 
-RUN apk add -y --no-cache wget curl unzip
+RUN apk update && \
+    apk add --no-cache tzdata wget curl unzip
 
 EXPOSE 8091
 COPY package/docker/httpd.conf /usr/local/apache2/conf
