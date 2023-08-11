@@ -15,13 +15,17 @@ angular.module('bahmni.clinical')
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
             $scope.enablePrintSelectedDrugs = appService.getAppDescriptor().getConfigValue("enablePrintSelectedDrugs");
             $scope.selectedDrugs = {};
+            $rootScope.encounterId = $scope.consultation.encounterUuid;
 
             if ($scope.enableIPDFeature) {
                 $scope.updateOrderType = function (drugOrder) {
                     var updatedDrugOrder = angular.copy(drugOrder);
                     updatedDrugOrder.careSetting = updatedDrugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.outPatient ? Bahmni.Clinical.Constants.careSetting.inPatient : Bahmni.Clinical.Constants.careSetting.outPatient;
+                    if ($scope.consultation.encounterUuid === drugOrder.encounterUuid) {
+                        updatedDrugOrder.action = Bahmni.Clinical.Constants.orderActions.revise;
+                    }
                     $rootScope.$broadcast("event:updateDrugOrderType", updatedDrugOrder);
-                    $rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
+                    // $rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
                 };
 
                 $scope.disableIPDButton = function (drugOrder) {
@@ -29,7 +33,8 @@ angular.module('bahmni.clinical')
                         $scope.medicationSchedules.some(function (schedule) {
                             return schedule.order.uuid === drugOrder.uuid;
                         })) ||
-                        !drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed;
+                        !drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed ||
+                        $scope.consultation.encounterUuid !== drugOrder.encounterUuid;
                 };
             }
 
@@ -75,6 +80,7 @@ angular.module('bahmni.clinical')
                 if (treatmentConfig.drugOrderHistoryConfig.numberOfVisits !== undefined && treatmentConfig.drugOrderHistoryConfig.numberOfVisits !== null && treatmentConfig.drugOrderHistoryConfig.numberOfVisits === 0) {
                     $scope.consultation.drugOrderGroups = [$scope.consultation.drugOrderGroups[0]];
                 }
+                $rootScope.encounterId = $scope.consultation.encounterUuid;
             };
 
             $scope.isAnyDrugSelected = function () {

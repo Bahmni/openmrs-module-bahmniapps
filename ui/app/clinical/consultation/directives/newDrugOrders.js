@@ -10,16 +10,8 @@ angular.module('bahmni.clinical')
                 };
 
                 $scope.shouldDisableIPDButton = function (treatment) {
-                    return treatment.action === 'REVISE' || (treatment.disableIPDButton == true);
+                    return $rootScope.encounterId !== treatment.encounterUuid && treatment.encounterUuid !== undefined;
                 };
-
-                $scope.$on("event:drugOrderTypeUpdated", function (event, drugOrder) {
-                    $scope.treatments.forEach(function (treatment) {
-                        if (treatment.uuid === drugOrder.uuid) {
-                            treatment.disableIPDButton = true;
-                        }
-                    });
-                });
             }
             $scope.edit = function (drugOrder, index) {
                 $rootScope.$broadcast("event:editDrugOrder", drugOrder, index);
