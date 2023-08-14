@@ -4,7 +4,7 @@ angular.module('bahmni.reports')
     .service('reportService', ['appService', '$bahmniCookieStore', '$http', function (appService, $bahmniCookieStore, $http) {
         var paperSize = appService.getAppDescriptor().getConfigValue("paperSize");
         var appName = appService.getAppName() ? appService.getAppName() : "reports";
-        let currentDate = new Date();
+        var currentDate = new Date();
         var availableFormats = {
             "CSV": "text/csv",
             "HTML": "text/html",
