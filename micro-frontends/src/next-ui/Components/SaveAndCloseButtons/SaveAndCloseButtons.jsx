@@ -11,7 +11,7 @@ export const SaveAndCloseButtons = (props) => {
     return (
         <div className="footer">
             <Button kind="secondary" data-testid="cancel" onClick={onClose}>
-                <span><FormattedMessage id={'APPOINTMENT_CREATE_CANCEL'} defaultMessage={'Cancel'}/></span>
+                <span><FormattedMessage id={'CANCEL'} defaultMessage={'Cancel'}/></span>
             </Button>
             <Button kind="primary" onClick={onSave} data-testid="check-and-save" disabled={isSaveDisabled}>
                 { primaryButtonText }

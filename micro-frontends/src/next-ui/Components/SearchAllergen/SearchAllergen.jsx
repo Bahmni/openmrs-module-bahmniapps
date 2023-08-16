@@ -17,6 +17,11 @@ export function SearchAllergen(props) {
         { name: "Penicillin", kind: "Medication"},
         { name: "Narcotic agent", kind: "Medication"}];
 
+    const clearSearch = () => {
+        setIsSearchResultEmpty(false);
+        setSearchResults([]);
+    }
+
     const search = (key) => {
         const search =  allergens.filter((allergen) => {
             return allergen.name.toLowerCase().startsWith(key.toLowerCase());
@@ -34,10 +39,9 @@ export function SearchAllergen(props) {
                 Search Allergen
             </div>
             <div style={{padding: "12px 0"}}>
-                <Search id={"allergen-search"} placeholder={"Type to search Allergen"} onChange={(e) => {
-                    if(e.target.value.length === 0) {
-                        setIsSearchResultEmpty(false);
-                        setSearchResults([])
+                <Search id={"allergen-search"} placeholder={"Type to search Allergen"} onClear={clearSearch} onChange={(e) => {
+                    if(e.target.value && e.target.value.length === 0) {
+                        clearSearch();
                     }
                     else {
                         search(e.target.value);
