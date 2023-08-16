@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'drugService',
         '$timeout', 'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
-        'orderSetService', '$q', 'locationService', 'spinner', '$translate',
+        'orderSetService', '$q', 'locationService', 'spinner', '$translate', '$state',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
                   clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
-                  orderSetService, $q, locationService, spinner, $translate) {
+                  orderSetService, $q, locationService, spinner, $translate, $state) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var scrollTop = _.partial($window.scrollTo, 0, 0);
@@ -16,6 +16,7 @@ angular.module('bahmni.clinical')
             $scope.canOrderSetBeAdded = true;
             $scope.isSearchDisabled = false;
             $scope.cdssEnabled = false;
+            $scope.clearButtonClicked = false;
             $scope.conceptSource = localStorage.getItem("conceptSource") || "";
 
             $scope.getFilteredOrderSets = function (searchTerm) {
@@ -87,6 +88,16 @@ angular.module('bahmni.clinical')
                     $scope.treatment.audit = '';
                 });
             };
+
+            $scope.$on('$stateChangeStart', function () {
+                if ($scope.addForm.$dirty && !$scope.clearButtonClicked) {
+                    $state.dirtyConsultationForm = true;
+                }
+            });
+
+            $scope.$on("event:changes-saved", function () {
+                $scope.addForm.$dirty = false;
+            });
 
             var markVariable = function (variable) {
                 $scope[variable] = true;
