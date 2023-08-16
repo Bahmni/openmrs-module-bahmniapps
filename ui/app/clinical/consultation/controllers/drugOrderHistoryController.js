@@ -92,7 +92,7 @@ angular.module('bahmni.clinical')
 
                 Promise.all(promises).then(function () {
                     var additionalInfo = {};
-                    additionalInfo.visitType = currentVisit.visitType.display;
+                    additionalInfo.visitType = currentVisit ? currentVisit.visitType.display : "";
                     additionalInfo.currentDate = new Date();
                     additionalInfo.facilityLocation = $rootScope.facilityLocation;
                     treatmentService.printSelectedPrescriptions(drugOrdersForPrint, $scope.patient, additionalInfo);
