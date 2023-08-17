@@ -5,7 +5,7 @@
         <table class="alt-row form">
             <thead>
             <tr>
-                <th style="display: flex; justify-content: space-between;"></th>
+                <th style="display: flex; justify-content: space-between;">
                     <div>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</div>
                     <div style="width: 170px; margin-right: 25px;">
                         {{::'REPORT_DATE_RANGE' | translate}}
@@ -15,6 +15,7 @@
                                 ng-change="setDefault('dateRangeType', 'reportsRequiringDateRange')">
                         </select>
                     </div>
+                </th>    
                 <th class="reports-start-date">{{::'REPORTS_START_DATE_HEADER_KEY ' |translate}}
                     <span class="asterick">*</span>
                     <input ng-model="default.reportsRequiringDateRange.startDate" date-converter
