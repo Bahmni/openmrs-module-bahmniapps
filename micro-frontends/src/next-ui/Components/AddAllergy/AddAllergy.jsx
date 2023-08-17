@@ -9,11 +9,12 @@ import { isEmpty } from "lodash";
 import {RadioButton, RadioButtonGroup, TextArea} from "carbon-components-react";
 import { FormattedMessage } from "react-intl";
 import { ArrowLeft } from "@carbon/icons-react/next";
+import { SelectReactions } from "../SelectReactions/SelectReactions";
 
 export function AddAllergy(props) {
     const { onClose } = props;
     const [allergen, setAllergen] = React.useState({});
-    const [reactions, setReactions] = React.useState({});
+    const [reactions, setReactions] = React.useState([]);
     const [severity, setSeverity] = React.useState("");
     const [notes, setNotes] = React.useState("");
     const mild = { label: <FormattedMessage id={"MILD"} defaultMessage={"Mild"}/>, uuid: "1498AAAAA"};
@@ -41,8 +42,9 @@ export function AddAllergy(props) {
                         : <>
                             <div style={{color: "#0F62FE", display: "flex", gap: "5px", alignItems: "center", paddingBottom:"10px"}}>
                                 <ArrowLeft size={20} onClick={clearForm}/>
-                                <div onClick={clearForm}>back to Allergies</div>
+                                <div style={{cursor: "pointer"}} onClick={clearForm}>back to Allergies</div>
                             </div>
+                            <SelectReactions onChange={setReactions}/>
                             <div className={"section"}>
                                 <div style={{fontSize: "16px", fontWeight: 600, marginBottom:"10px"}}>
                                     <FormattedMessage id={"SEVERITY"} defaultMessage={"Severity"}/>
@@ -63,7 +65,7 @@ export function AddAllergy(props) {
                     }
                 </div>
                 <div>
-                    <SaveAndCloseButtons  onSave={()=>{console.log("Saved",allergen, reactions, severity,notes)}} onClose={()=>{console.log("Cancelled"); onClose()}} isSaveDisabled={false}/>
+                    <SaveAndCloseButtons  onSave={()=>{console.log("Saved",allergen, reactions, severity,notes)}} onClose={ onClose } isSaveDisabled={false}/>
                 </div>
             </div>
         </div>

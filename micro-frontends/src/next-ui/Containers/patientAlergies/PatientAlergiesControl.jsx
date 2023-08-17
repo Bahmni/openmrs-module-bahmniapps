@@ -15,11 +15,6 @@ export function PatientAlergiesControl(props) {
     const { isAddButtonEnabled = true } = props;
     const [showAddAllergyPanel, setShowAddAllergyPanel] = useState(false);
     return (
-    // <div>
-    //   <span>Displaying alergy control from {props.hostData.name}</span>
-    //   <span>Translation: {props.tx?.('SAMPLE_AT_LABEL')}</span>
-    //   <Button onClick={props.hostApi?.callback}>Click for callback</Button>
-    // </div>
       <div>
         <h2 className={"section-title"}>
             Allergies

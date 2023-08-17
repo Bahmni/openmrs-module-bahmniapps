@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import propTypes from "prop-types";
 import "../../../styles/common.scss";
 import {Link, Search, Tag} from "carbon-components-react";
 
 export function SearchAllergen(props) {
     const { onChange } = props;
-    const [searchResults, setSearchResults] = React.useState([]);
-    const [isSearchResultEmpty, setIsSearchResultEmpty] = React.useState(false);
+    const [searchResults, setSearchResults] = useState([]);
+    const [isSearchResultEmpty, setIsSearchResultEmpty] = useState(false);
 
     const allergens = [
         { name: "Eggs", kind: "Food"},
@@ -23,11 +23,18 @@ export function SearchAllergen(props) {
     }
 
     const search = (key) => {
-        const search =  allergens.filter((allergen) => {
-            return allergen.name.toLowerCase().startsWith(key.toLowerCase());
-        });
-        const secondSearch = allergens.filter((allergen) => {
-            return !(allergen.name.toLowerCase().startsWith(key.toLowerCase())) && allergen.name.toLowerCase().includes(key.toLowerCase())
+        if(!key){
+            clearSearch();
+            return;
+        }
+        let search =[], secondSearch = [];
+        allergens.map((allergen) => {
+            if(allergen.name.toLowerCase().startsWith(key.toLowerCase())) {
+                search.push(allergen);
+            }
+            else if(allergen.name.toLowerCase().includes(key.toLowerCase())) {
+                secondSearch.push(allergen);
+            }
         });
         search.push(...secondSearch);
         setSearchResults(search);
@@ -39,14 +46,8 @@ export function SearchAllergen(props) {
                 Search Allergen
             </div>
             <div style={{padding: "12px 0"}}>
-                <Search id={"allergen-search"} placeholder={"Type to search Allergen"} onClear={clearSearch} onChange={(e) => {
-                    if(e.target.value && e.target.value.length === 0) {
-                        clearSearch();
-                    }
-                    else {
-                        search(e.target.value);
-                    }
-                }}/>
+                <Search id={"allergen-search"} placeholder={"Type to search Allergen"}
+                        onChange={(e) => {search(e.target.value);}}/>
             </div>
             {
                 isSearchResultEmpty ? <div style={{padding: "12px 0"}}>No Allergen found</div> :
@@ -55,7 +56,7 @@ export function SearchAllergen(props) {
                         <span style={{display: "flex", alignItems: "center"}}>
                             {allergen.name}
                             &nbsp;
-                            <Tag type={"blue"} className={"tag"}>{allergen.kind}</Tag>
+                            <Tag type={"blue"}>{allergen.kind}</Tag>
                         </span>
                         <span>
                             <Link onClick={() => onChange(allergen)}>Reaction(s)</Link>
