@@ -38,7 +38,7 @@ angular.module('bahmni.reports')
                     report['stopDate'] = dateRange[0];
                 }
                 else if ($rootScope.default[header][item] === undefined) {
-                    $rootScope.reportsRequiringDateRange.forEach(report => {
+                    $rootScope.reportsRequiringDateRange.forEach(function (report) {
                         report.startDate = dateRange[0];
                         report.stopDate = dateRange[0];
                         report.responseType = format[1];
