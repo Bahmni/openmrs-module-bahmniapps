@@ -5,12 +5,22 @@
         <table class="alt-row form">
             <thead>
             <tr>
-                <th>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</th>
+                <th style="display: flex; justify-content: space-between;">
+                    <div>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</div>
+                    <div style="width: 170px; margin-right: 25px;">
+                        {{::'REPORT_DATE_RANGE' | translate}}
+                        <span class="asterick">*</span>
+                        <select ng-model="default.reportsRequiringDateRange.dateRangeType"
+                                ng-options="type as label for (label , type) in ::dateRange"
+                                ng-change="setDefault('dateRangeType', 'reportsRequiringDateRange')">
+                        </select>
+                    </div>
+                </th>    
                 <th class="reports-start-date">{{::'REPORTS_START_DATE_HEADER_KEY ' |translate}}
                     <span class="asterick">*</span>
                     <input ng-model="default.reportsRequiringDateRange.startDate" date-converter
                            class="form-field start-date" type="date" max="{{default.reportsRequiringDateRange.stopDate | date:'yyyy-MM-dd'}}"
-                           ng-change="setDefault('startDate', 'reportsRequiringDateRange')">
+                           ng-change="setDefault('startDate', 'reportsRequiringDateRange')"> 
                 </th>
                 <th class="reports-stop-date">{{::'REPORTS_END_DATE_HEADER_KEY' |translate}}
                     <span class="asterick">*</span>
