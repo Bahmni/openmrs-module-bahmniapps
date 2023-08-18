@@ -691,7 +691,7 @@ angular.module('bahmni.clinical')
 
             function filterNewAlerts (cdssAlerts, drugMaps) {
                 return cdssAlerts.filter(function (alert) {
-                    if(alert.referenceMedications && alert.referenceMedications.length > 0) {
+                    if (alert.referenceMedications && alert.referenceMedications.length > 0) {
                         var codes = [];
                         alert.referenceMedications.forEach(function (referenceMedication) {
                             if (referenceMedication && referenceMedication.coding && referenceMedication.coding.length > 0) {
