@@ -20,7 +20,7 @@ export function AddAllergy(props) {
     const mild = { label: <FormattedMessage id={"MILD"} defaultMessage={"Mild"}/>, uuid: "1498AAAAA"};
     const moderate = {label: <FormattedMessage id={"MODERATE"} defaultMessage={"Moderate"}/>, uuid: "1499AAAAA"};
     const severe = {label: <FormattedMessage id={"SEVERE"} defaultMessage={"Severe"}/>, uuid: "1500AAAAA"};
-    const [isFormTouched, setIsFormTouched] = React.useState(false);
+    const [isSaveEnabled, setIsSaveEnabled] = React.useState(false);
     const clearForm = () =>{
         setAllergen({});
         setReactions([]);
@@ -44,7 +44,10 @@ export function AddAllergy(props) {
                                 <ArrowLeft size={20} onClick={clearForm}/>
                                 <div style={{cursor: "pointer"}} onClick={clearForm}>back to Allergies</div>
                             </div>
-                            <SelectReactions onChange={setReactions}/>
+                            <SelectReactions onChange={(reactions) =>{
+                                setReactions(reactions);
+                                setIsSaveEnabled(reactions && reactions.length > 0)
+                            }}/>
                             <div className={"section"}>
                                 <div style={{fontSize: "16px", fontWeight: 600, marginBottom:"10px"}}>
                                     <FormattedMessage id={"SEVERITY"} defaultMessage={"Severity"}/>
@@ -65,7 +68,7 @@ export function AddAllergy(props) {
                     }
                 </div>
                 <div>
-                    <SaveAndCloseButtons  onSave={()=>{console.log("Saved",allergen, reactions, severity,notes)}} onClose={ onClose } isSaveDisabled={false}/>
+                    <SaveAndCloseButtons  onSave={()=>{console.log("Saved",allergen, reactions, severity,notes)}} onClose={ onClose } isSaveDisabled={!isSaveEnabled}/>
                 </div>
             </div>
         </div>
