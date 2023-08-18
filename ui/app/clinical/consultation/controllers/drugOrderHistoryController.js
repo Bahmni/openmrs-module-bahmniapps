@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'activeDrugOrders', 'appService',
         'treatmentConfig', 'treatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope', 'providerService',
         function ($scope, $filter, $stateParams, activeDrugOrders, appService, treatmentConfig, treatmentService, spinner,
-                   drugOrderHistoryHelper, visitHistory, $translate, $rootScope, providerService) {
+            drugOrderHistoryHelper, visitHistory, $translate, $rootScope, providerService) {
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var currentVisit = visitHistory.activeVisit;
@@ -17,8 +17,24 @@ angular.module('bahmni.clinical')
             $scope.selectedDrugs = {};
 
             if ($scope.enableIPDFeature) {
-                $scope.toggleCareSetting = function (drugOrder) {
-                    drugOrder.careSetting = drugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient ? Bahmni.Clinical.Constants.careSetting.outPatient : Bahmni.Clinical.Constants.careSetting.inPatient;
+                $scope.updateOrderType = function (drugOrder) {
+                    var updatedDrugOrder = angular.copy(drugOrder);
+                    updatedDrugOrder.careSetting = updatedDrugOrder.careSetting === Bahmni.Clinical.Constants.careSetting.outPatient ? Bahmni.Clinical.Constants.careSetting.inPatient : Bahmni.Clinical.Constants.careSetting.outPatient;
+                    if (updatedDrugOrder.previousOrderUuid !== undefined) {
+                        updatedDrugOrder.previousOrderUuid = null;
+                        updatedDrugOrder.scheduledDate = null;
+                    }
+                    $rootScope.$broadcast("event:updateDrugOrderType", updatedDrugOrder);
+                    $rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
+                };
+
+                $scope.disableIPDButton = function (drugOrder) {
+                    return ($scope.medicationSchedules &&
+                        $scope.medicationSchedules.some(function (schedule) {
+                            return schedule.order.uuid === drugOrder.uuid;
+                        })) ||
+                        !drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed ||
+                        $scope.consultation.encounterUuid !== drugOrder.encounterUuid;
                 };
             }
 
@@ -64,6 +80,7 @@ angular.module('bahmni.clinical')
                 if (treatmentConfig.drugOrderHistoryConfig.numberOfVisits !== undefined && treatmentConfig.drugOrderHistoryConfig.numberOfVisits !== null && treatmentConfig.drugOrderHistoryConfig.numberOfVisits === 0) {
                     $scope.consultation.drugOrderGroups = [$scope.consultation.drugOrderGroups[0]];
                 }
+                $rootScope.$broadcast("event:setEncounterId", $scope.consultation.encounterUuid);
             };
 
             $scope.isAnyDrugSelected = function () {
@@ -144,6 +161,17 @@ angular.module('bahmni.clinical')
                         createPrescriptionGroups($scope.consultation.activeAndScheduledDrugOrders);
                     }));
             };
+
+            const getActiveAndPrescribedDrugOrdersUuids = function () {
+                return $scope.consultation.activeAndScheduledDrugOrders.map(function (drugOrder) {
+                    return drugOrder.uuid;
+                });
+            };
+
+            $scope.enableIPDFeature && spinner.forPromise(treatmentService.getMedicationSchedulesForOrders($stateParams.patientUuid, getActiveAndPrescribedDrugOrdersUuids()).then(function (response) {
+                $scope.medicationSchedules = response.data;
+            }));
+
             $scope.getOrderReasonConcept = function (drugOrder) {
                 if (drugOrder.orderReasonConcept) {
                     return drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name;
@@ -280,7 +308,7 @@ angular.module('bahmni.clinical')
             };
 
             var getAttribute = function (drugOrder, attributeName) {
-                return _.find(drugOrder.orderAttributes, {name: attributeName});
+                return _.find(drugOrder.orderAttributes, { name: attributeName });
             };
 
             init();
