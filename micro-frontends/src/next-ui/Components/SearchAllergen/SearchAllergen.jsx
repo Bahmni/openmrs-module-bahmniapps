@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import propTypes from "prop-types";
 import "../../../styles/common.scss";
+import "./SearchAllergen.scss";
 import {Link, Search, Tag} from "carbon-components-react";
 
 export function SearchAllergen(props) {
@@ -42,18 +43,18 @@ export function SearchAllergen(props) {
     }
     return (
         <div className={"section"}>
-            <div style={{fontSize: "16px", fontWeight: 600, marginBottom:"10px"}}>
+            <div className={"font-large bold"}>
                 Search Allergen
             </div>
-            <div style={{padding: "12px 0"}}>
+            <div>
                 <Search id={"allergen-search"} placeholder={"Type to search Allergen"}
                         onChange={(e) => {search(e.target.value);}}/>
             </div>
             {
-                isSearchResultEmpty ? <div style={{padding: "12px 0"}}>No Allergen found</div> :
+                isSearchResultEmpty ? <div>No Allergen found</div> :
                 searchResults.map((allergen) => {
-                    return <div style={{display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: "10px"}}>
-                        <span style={{display: "flex", alignItems: "center"}}>
+                    return <div className={"allergen"}>
+                        <span className={"allergen"}>
                             {allergen.name}
                             &nbsp;
                             <Tag type={"blue"}>{allergen.kind}</Tag>

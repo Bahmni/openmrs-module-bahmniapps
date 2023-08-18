@@ -14,3 +14,13 @@
   margin-bottom: 80px;
   max-width: 500px;
 }
+.back-button{
+  color: #0F62FE;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding-bottom: 10px;
+  > * {
+    cursor: pointer;
+  }
+}

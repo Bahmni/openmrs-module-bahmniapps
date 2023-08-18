@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import propTypes from "prop-types";
 import { Close24 } from "@carbon/icons-react";
 import SaveAndCloseButtons from "../SaveAndCloseButtons/SaveAndCloseButtons.jsx";
@@ -39,32 +39,28 @@ export function AddAllergy(props) {
                         <div>
                             <SearchAllergen onChange={(allergen) => {setAllergen(allergen);}}/>
                         </div>
-                        : <>
-                            <div style={{color: "#0F62FE", display: "flex", gap: "5px", alignItems: "center", paddingBottom:"10px"}}>
+                        :<Fragment>
+                            <div className={"back-button"}>
                                 <ArrowLeft size={20} onClick={clearForm}/>
-                                <div style={{cursor: "pointer"}} onClick={clearForm}>back to Allergies</div>
+                                <div onClick={clearForm}>back to Allergies</div>
                             </div>
                             <SelectReactions onChange={(reactions) =>{
                                 setReactions(reactions);
                                 setIsSaveEnabled(reactions && reactions.length > 0)
                             }}/>
                             <div className={"section"}>
-                                <div style={{fontSize: "16px", fontWeight: 600, marginBottom:"10px"}}>
+                                <div className={"font-large bold"}>
                                     <FormattedMessage id={"SEVERITY"} defaultMessage={"Severity"}/>
                                 </div>
-                                <div style={{marginBottom: "10px"}}>
-                                    <RadioButtonGroup
-                                        key={"Severity"} onChange={(e) => {setSeverity(e);}}>
-                                        <RadioButton labelText={mild.label} value={mild.uuid}></RadioButton>
-                                        <RadioButton labelText={moderate.label} value={moderate.uuid}></RadioButton>
-                                        <RadioButton labelText={severe.label} value={severe.uuid}></RadioButton>
-                                    </RadioButtonGroup>
-                                </div>
-                                <div style={{marginBottom:"10px"}}>
-                                    <TextArea placeholder={"Additional comments such as onset date etc."} onBlur={(e) => {setNotes(e.target.value);}}/>
-                                </div>
+                                <RadioButtonGroup
+                                    key={"Severity"} onChange={(e) => {setSeverity(e);}}>
+                                    <RadioButton labelText={mild.label} value={mild.uuid}></RadioButton>
+                                    <RadioButton labelText={moderate.label} value={moderate.uuid}></RadioButton>
+                                    <RadioButton labelText={severe.label} value={severe.uuid}></RadioButton>
+                                </RadioButtonGroup>
+                                <TextArea placeholder={"Additional comments such as onset date etc."} onBlur={(e) => {setNotes(e.target.value);}}/>
                             </div>
-                        </>
+                        </Fragment>
                     }
                 </div>
                 <div>

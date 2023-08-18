@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import propTypes from "prop-types";
+import "../../../styles/common.scss";
 import {Checkbox, Search, Tag } from "carbon-components-react";
 
 export const SelectReactions = (props) => {
@@ -60,23 +61,26 @@ export const SelectReactions = (props) => {
 
     return (
         <div className={"section"}>
-            <div style={{fontSize: "16px", fontWeight: 600, marginBottom:"10px"}}>
+            <div className={"font-large bold"}>
                 Search Reaction
             </div>
-            <div style={{padding: "12px 0"}}>
-                <Search id={"allergen-search"} placeholder={"Type to search Reactions"}
+            <div>
+                <Search id={"reaction-search"} placeholder={"Type to search Reactions"}
                         onChange={(e) => {search(e.target.value);}}/>
             </div>
-            <div style={{paddingBottom: "12px"}}>
-                {selectedReactions.map((reactionId) => {
-                    return <Tag filter={true} type={"blue"} onClose={() => {
-                        allReactions[reactionId].isSelected = false;
-                        setSelectedReactions(selectedReactions.filter((reaction) => reaction !== reactionId));
-                    }}>{allReactions[reactionId].name}</Tag>
-                })}
-            </div>
-            <div style={{paddingBottom: "12px"}}>
-                {isSearchResultEmpty && <div style={{paddingBottom: "12px", fontSize: "12px"}}>Common Reactions</div>}
+            {selectedReactions.length > 0  &&
+                <div>
+                    {selectedReactions.map((reactionId) => {
+                        return <Tag filter={true} type={"blue"} onClose={() => {
+                            allReactions[reactionId].isSelected = false;
+                            setSelectedReactions(selectedReactions.filter((reaction) => reaction !== reactionId));
+                        }}>{allReactions[reactionId].name}</Tag>
+                    })}
+                </div>
+            }
+            {isSearchResultEmpty && <div className={"font-small"}>Common Reactions</div>}
+            <div>
+
                 {searchResults.map((reactionId) => {
                     return <Checkbox id={reactionId} labelText={allReactions[reactionId].name} checked={allReactions[reactionId].isSelected}
                                  onChange={(e) => {
