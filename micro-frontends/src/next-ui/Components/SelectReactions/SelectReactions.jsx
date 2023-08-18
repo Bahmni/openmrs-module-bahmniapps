@@ -28,7 +28,6 @@ export const SelectReactions = (props) => {
     const [allReactions,] = useState(reactions);
 
     const search = (key) => {
-        console.log(key);
         if(!key){
             setIsSearchResultEmpty(true);
             setSearchResults(initialReactionIds);
@@ -55,7 +54,6 @@ export const SelectReactions = (props) => {
         }
     }
     useEffect(()=>{
-        console.log("allReactions", allReactions);
         onChange(selectedReactions);
     }, [selectedReactions])
 
@@ -71,7 +69,7 @@ export const SelectReactions = (props) => {
             {selectedReactions.length > 0  &&
                 <div>
                     {selectedReactions.map((reactionId) => {
-                        return <Tag filter={true} type={"blue"} onClose={() => {
+                        return <Tag key={reactionId} filter={true} type={"blue"} onClose={() => {
                             allReactions[reactionId].isSelected = false;
                             setSelectedReactions(selectedReactions.filter((reaction) => reaction !== reactionId));
                         }}>{allReactions[reactionId].name}</Tag>
@@ -82,7 +80,7 @@ export const SelectReactions = (props) => {
             <div>
 
                 {searchResults.map((reactionId) => {
-                    return <Checkbox id={reactionId} labelText={allReactions[reactionId].name} checked={allReactions[reactionId].isSelected}
+                    return <Checkbox id={reactionId} key={reactionId} labelText={allReactions[reactionId].name} checked={allReactions[reactionId].isSelected}
                                  onChange={(e) => {
                                      allReactions[reactionId].isSelected = e;
                                      if(e) {

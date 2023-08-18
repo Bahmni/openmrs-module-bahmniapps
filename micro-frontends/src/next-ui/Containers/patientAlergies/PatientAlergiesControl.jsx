@@ -12,7 +12,8 @@ import {AddAllergy} from "../../Components/AddAllergy/AddAllergy";
  */
 
 export function PatientAlergiesControl(props) {
-    const { isAddButtonEnabled = true } = props;
+    const { isAddButtonEnabled = true, hostData } = props;
+    const { uuid } = hostData;
     const [showAddAllergyPanel, setShowAddAllergyPanel] = useState(false);
     return (
       <div>
