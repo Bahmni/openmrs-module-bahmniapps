@@ -13,7 +13,7 @@ export const SaveAndCloseButtons = (props) => {
             <Button kind="secondary" data-testid="cancel" onClick={onClose}>
                 <span><FormattedMessage id={'CANCEL'} defaultMessage={'Cancel'}/></span>
             </Button>
-            <Button kind="primary" onClick={onSave} data-testid="check-and-save" disabled={isSaveDisabled}>
+            <Button kind="primary" onClick={onSave} disabled={isSaveDisabled}>
                 { primaryButtonText }
             </Button>
         </div>
