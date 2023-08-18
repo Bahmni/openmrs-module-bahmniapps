@@ -35,8 +35,8 @@ export function AddAllergy(props) {
                     <Close24/>
                 </span>
                 <div className={"add-allergy-container"}>
-                    {  isEmpty(allergen)?
-                        <div>
+                    {  isEmpty(allergen) ?
+                        <div data-testid={"search-allergen"} >
                             <SearchAllergen onChange={(allergen) => {setAllergen(allergen);}}/>
                         </div>
                         :<Fragment>
@@ -44,21 +44,24 @@ export function AddAllergy(props) {
                                 <ArrowLeft size={20} onClick={clearForm}/>
                                 <div onClick={clearForm}>back to Allergies</div>
                             </div>
-                            <SelectReactions onChange={(reactions) =>{
-                                setReactions(reactions);
-                                setIsSaveEnabled(reactions && reactions.length > 0)
-                            }}/>
+                            <div data-testid={"select-reactions"}>
+                                <SelectReactions  onChange={(reactions) =>{
+                                    setReactions(reactions);
+                                    setIsSaveEnabled(reactions && reactions.length > 0)
+                                }}/>
+                            </div>
+
                             <div className={"section"}>
                                 <div className={"font-large bold"}>
                                     <FormattedMessage id={"SEVERITY"} defaultMessage={"Severity"}/>
                                 </div>
-                                <RadioButtonGroup
+                                <RadioButtonGroup name={"severity"}
                                     key={"Severity"} onChange={(e) => {setSeverity(e);}}>
                                     <RadioButton labelText={mild.label} value={mild.uuid}></RadioButton>
                                     <RadioButton labelText={moderate.label} value={moderate.uuid}></RadioButton>
                                     <RadioButton labelText={severe.label} value={severe.uuid}></RadioButton>
                                 </RadioButtonGroup>
-                                <TextArea placeholder={"Additional comments such as onset date etc."} onBlur={(e) => {setNotes(e.target.value);}}/>
+                                <TextArea labelText={""} placeholder={"Additional comments such as onset date etc."} onBlur={(e) => {setNotes(e.target.value);}}/>
                             </div>
                         </Fragment>
                     }

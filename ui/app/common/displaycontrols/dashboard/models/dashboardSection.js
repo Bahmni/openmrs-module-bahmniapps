@@ -23,7 +23,7 @@
     ];
 
     var getViewUrl = function (section) {
-        if(section.translationKey === "Allergies") {
+        if (section.translationKey === "Allergies") {
             return DISPLAY_CONTROL_REACT_URL;
         }
         if (section.isObservation) {
