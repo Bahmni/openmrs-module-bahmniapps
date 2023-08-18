@@ -15,7 +15,6 @@ angular.module('bahmni.clinical')
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
             $scope.enablePrintSelectedDrugs = appService.getAppDescriptor().getConfigValue("enablePrintSelectedDrugs");
             $scope.selectedDrugs = {};
-            $rootScope.encounterId = $scope.consultation.encounterUuid;
 
             if ($scope.enableIPDFeature) {
                 $scope.updateOrderType = function (drugOrder) {
@@ -81,7 +80,7 @@ angular.module('bahmni.clinical')
                 if (treatmentConfig.drugOrderHistoryConfig.numberOfVisits !== undefined && treatmentConfig.drugOrderHistoryConfig.numberOfVisits !== null && treatmentConfig.drugOrderHistoryConfig.numberOfVisits === 0) {
                     $scope.consultation.drugOrderGroups = [$scope.consultation.drugOrderGroups[0]];
                 }
-                $rootScope.encounterId = $scope.consultation.encounterUuid;
+                $rootScope.$broadcast("event:setEncounterId", $scope.consultation.encounterUuid);
             };
 
             $scope.isAnyDrugSelected = function () {
