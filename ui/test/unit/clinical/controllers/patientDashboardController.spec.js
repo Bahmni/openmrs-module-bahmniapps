@@ -4,7 +4,7 @@ describe("patient dashboard controller", function () {
     beforeEach(module('bahmni.clinical'));
 
     var scope, spinner, _clinicalDashboardConfig, _clinicalAppConfigService, _state, _appService, _diseaseTemplateService,
-        _stateParams, _controller, _appConfig, location, filter, confirmBox;
+        _stateParams, _controller, _appConfig, location, filter;
     var diseaseTemplates;
     location = {
         path: function () {
@@ -43,7 +43,6 @@ describe("patient dashboard controller", function () {
 
         _appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         _appConfig = jasmine.createSpyObj('appConfig', ['getConfigValue']);
-        confirmBox = jasmine.createSpyObj('confirmBox', ['show']);
 
         _appService.getAppDescriptor.and.returnValue(_appConfig);
         _diseaseTemplateService = jasmine.createSpyObj('diseaseTemplateService', ['getLatestDiseaseTemplates']);
@@ -118,7 +117,6 @@ describe("patient dashboard controller", function () {
             diseaseTemplateService: _diseaseTemplateService,
             patientContext: {patient: {}},
             $filter: filter,
-            confirmBox: confirmBox
 
         });
     });
@@ -156,7 +154,6 @@ describe("patient dashboard controller", function () {
             $stateParams: _stateParams,
             diseaseTemplateService: _diseaseTemplateService,
             patientContext: {patient: {}},
-            confirmBox: confirmBox
 
         });
     });
@@ -201,7 +198,6 @@ describe("patient dashboard controller", function () {
             diseaseTemplateService: _diseaseTemplateService,
             patientContext: {patient: {}},
             $location: location,
-            confirmBox: confirmBox
 
         });
         expect(_clinicalDashboardConfig.currentTab.translationKey).toBe("DASHBOARD_TAB_PATIENT_SUMMARY_KEY");
