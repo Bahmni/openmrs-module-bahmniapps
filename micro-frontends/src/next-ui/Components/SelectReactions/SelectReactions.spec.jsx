@@ -15,6 +15,10 @@ describe('Select reactions', function () {
         expect(container).toMatchSnapshot();
     });
 
+    it('should render SelectReactions with search bar', function () {
+        const { container } = render(<SelectReactions onChange={onChange}/>);
+        expect(container.querySelector(".bx--search--xl")).not.toBeNull();
+    });
     it('should render Common Reactions', function () {
         render(<SelectReactions onChange={onChange} />);
         expect(screen.getByText("Common Reactions")).toBeTruthy();

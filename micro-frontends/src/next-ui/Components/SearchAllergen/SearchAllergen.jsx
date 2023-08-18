@@ -10,13 +10,13 @@ export function SearchAllergen(props) {
     const [isSearchResultEmpty, setIsSearchResultEmpty] = useState(false);
 
     const allergens = [
-        { name: "Eggs", kind: "Food"},
-        { name: "Peanuts", kind: "Food"},
-        { name: "Seafood", kind: "Food"},
-        { name: "Bee", kind: "Environment"},
-        { name: "Serum", kind: "Biological"},
-        { name: "Penicillin", kind: "Medication"},
-        { name: "Narcotic agent", kind: "Medication"}];
+        { name: "Eggs", kind: "Food", uuid: "162301AAAAAA"},
+        { name: "Peanuts", kind: "Food", uuid: "162302AAAAAA"},
+        { name: "Seafood", kind: "Food", uuid: "162303AAAAAA"},
+        { name: "Bee", kind: "Environment", uuid: "162304AAAAAA"},
+        { name: "Serum", kind: "Biological", uuid: "162305AAAAAA"},
+        { name: "Penicillin", kind: "Medication", uuid: "162306AAAAAA"},
+        { name: "Narcotic agent", kind: "Medication", uuid: "162307AAAAAA"},];
 
     const clearSearch = () => {
         setIsSearchResultEmpty(false);
@@ -53,7 +53,7 @@ export function SearchAllergen(props) {
             {
                 isSearchResultEmpty ? <div>No Allergen found</div> :
                 searchResults.map((allergen) => {
-                    return <div className={"allergen"}>
+                    return <div key={allergen.uuid} className={"allergen"}>
                         <span className={"allergen"}>
                             {allergen.name}
                             &nbsp;
