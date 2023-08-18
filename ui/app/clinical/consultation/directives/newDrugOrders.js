@@ -5,8 +5,16 @@ angular.module('bahmni.clinical')
         var controller = function ($scope, $rootScope, appService) {
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
             if ($scope.enableIPDFeature) {
+                $rootScope.$on("event:setEncounterId", function (event, encounterId) {
+                    $scope.encounterId = encounterId;
+                });
+
                 $scope.toggleCareSetting = function (newTreatment) {
                     newTreatment.careSetting = newTreatment.careSetting === Bahmni.Clinical.Constants.careSetting.inPatient ? Bahmni.Clinical.Constants.careSetting.outPatient : Bahmni.Clinical.Constants.careSetting.inPatient;
+                };
+
+                $scope.shouldDisableIPDButton = function (treatment) {
+                    return $scope.encounterId !== treatment.encounterUuid && treatment.encounterUuid !== undefined;
                 };
             }
             $scope.edit = function (drugOrder, index) {

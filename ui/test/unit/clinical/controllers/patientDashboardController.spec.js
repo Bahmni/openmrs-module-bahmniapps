@@ -13,7 +13,7 @@ describe("patient dashboard controller", function () {
             return url;
         },
         search: function () {
-            return {currentTab: "DASHBOARD_TAB_PATIENT_SUMMARY_KEY", replace: function () {}};
+            return { currentTab: "DASHBOARD_TAB_PATIENT_SUMMARY_KEY", replace: function () {} };
         }
     };
 
@@ -116,7 +116,7 @@ describe("patient dashboard controller", function () {
             $stateParams: _stateParams,
             diseaseTemplateService: _diseaseTemplateService,
             patientContext: {patient: {}},
-            $filter: filter
+            $filter: filter,
 
         });
     });
@@ -153,7 +153,7 @@ describe("patient dashboard controller", function () {
             appService: _appService,
             $stateParams: _stateParams,
             diseaseTemplateService: _diseaseTemplateService,
-            patientContext: {patient: {}}
+            patientContext: {patient: {}},
 
         });
     });
@@ -197,7 +197,7 @@ describe("patient dashboard controller", function () {
             $stateParams: _stateParams,
             diseaseTemplateService: _diseaseTemplateService,
             patientContext: {patient: {}},
-            $location: location
+            $location: location,
 
         });
         expect(_clinicalDashboardConfig.currentTab.translationKey).toBe("DASHBOARD_TAB_PATIENT_SUMMARY_KEY");

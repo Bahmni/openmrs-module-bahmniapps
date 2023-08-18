@@ -4,7 +4,7 @@ angular.module('bahmni.clinical')
     .controller('PatientDashboardController', ['$scope', 'clinicalAppConfigService', 'clinicalDashboardConfig', 'printer',
         '$state', 'spinner', 'visitSummary', 'appService', '$stateParams', 'diseaseTemplateService', 'patientContext', '$location', '$filter',
         function ($scope, clinicalAppConfigService, clinicalDashboardConfig, printer,
-                  $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter) {
+            $state, spinner, visitSummary, appService, $stateParams, diseaseTemplateService, patientContext, $location, $filter) {
             $scope.patient = patientContext.patient;
             $scope.activeVisit = $scope.visitHistory.activeVisit;
             $scope.activeVisitData = {};
@@ -23,6 +23,12 @@ angular.module('bahmni.clinical')
             $scope.alergyApi = {
                 callback: function () {
                     alert("We have a full fledged problem");
+                }
+            };
+            $scope.ipdDashboard = {
+                hostData: {
+                    patientId: $stateParams.patientUuid,
+                    forDate: new Date().toUTCString()
                 }
             };
 
