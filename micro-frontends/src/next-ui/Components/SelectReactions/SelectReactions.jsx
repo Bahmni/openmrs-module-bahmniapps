@@ -76,9 +76,8 @@ export const SelectReactions = (props) => {
                     })}
                 </div>
             }
-            {isSearchResultEmpty && <div className={"font-small"}>Common Reactions</div>}
             <div>
-
+                {isSearchResultEmpty && <div className={"font-small"} style={{marginBottom: "8px", marginTop: "10px"}}>Common Reactions</div>}
                 {searchResults.map((reactionId) => {
                     return <Checkbox id={reactionId} key={reactionId} labelText={allReactions[reactionId].name} checked={allReactions[reactionId].isSelected}
                                  onChange={(e) => {

@@ -11,7 +11,7 @@ exports[`AddAllergy should render the component 1`] = `
       <div
         class="heading"
       >
-        Allergies and reactions
+        Allergies and Reactions
       </div>
       <span
         class="close"

@@ -29,8 +29,8 @@ describe("AddAllergy", () => {
     });
 
     it("should call onClose when close button is clicked", () => {
-        render(<AddAllergy onClose={onClose}/>);
-        fireEvent.click(document.querySelector(".close"));
+        const {container} = render(<AddAllergy onClose={onClose}/>);
+        fireEvent.click(container.querySelector(".close"));
         expect(onClose).toHaveBeenCalledTimes(1);
     });
 
@@ -55,9 +55,20 @@ describe("AddAllergy", () => {
         //select allergen
         selectAllergen();
 
-        expect(() => screen.getByText("search-allergen")).toThrowError();
+        expect(() => screen.getByTestId("search-allergen")).toThrowError();
         expect(screen.getByTestId("select-reactions")).not.toBeNull();
 
+    });
+
+    it('should show search Allergen ocClick of back button', () => {
+        render(<AddAllergy onClose={onClose}/>);
+        searchAllergen();
+        selectAllergen();
+        expect(() => screen.getByTestId("search-allergen")).toThrowError();
+        expect(screen.getByTestId("select-reactions")).not.toBeNull();
+        fireEvent.click(screen.getByText("Back to Allergies"));
+        expect(screen.getByTestId("search-allergen")).not.toBeNull();
+        expect(() => screen.getByTestId("select-reactions")).toThrowError();
     });
 
     it('should render severity after allergen is selected ', () => {

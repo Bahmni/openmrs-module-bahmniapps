@@ -1,27 +1,35 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { PatientAlergiesControl } from "./PatientAlergiesControl";
 
-it("works as a dummy test", () => {
-  const hostData = { name: "__test_name__" };
-  const hostApi = { callback: jest.fn() };
-  const tx = jest.fn().mockImplementation(key => {
-    switch (key) {
-      case "SAMPLE_AT_LABEL":
-        return "__test-translation__"
-    }
-    return '';
-  })
-  
-  render(<PatientAlergiesControl hostData={hostData} hostApi={hostApi} tx={tx}/>);
+describe("PatientAlergiesControl", () => {
+  it("should render the component", () => {
+    const { container } = render(<PatientAlergiesControl hostData={{uuid: "___patient_uuid__"}} />);
+    expect(container).toMatchSnapshot();
+  });
 
-  expect(screen.getByText('Displaying alergy control from __test_name__')).toBeTruthy();
-  expect(screen.getByText('Translation: __test-translation__')).toBeTruthy();
+  it('should show add button when isAddButton is enabled', () => {
+    const { container } = render(<PatientAlergiesControl hostData={{uuid: "___patient_uuid__"}} isAddButtonEnabled={true} />);
+    expect(container.querySelector('.add-button')).not.toBeNull();
+  });
 
-  const button = screen.getByRole('button', { name: 'Click for callback' });
-  expect(button).toBeTruthy();
-  fireEvent.click(button);
+  it('should not show add button when isAddButton is disabled', () => {
+    const { container } = render(<PatientAlergiesControl hostData={{uuid: "___patient_uuid__"}} isAddButtonEnabled={false} />);
+    expect(container.querySelector('.add-button')).toBeNull();
+  });
 
-  expect(hostApi.callback).toHaveBeenCalled();
+  it("should show the side panel when add button is clicked", () => {
+    const { container } = render(<PatientAlergiesControl hostData={{uuid: "___patient_uuid__"}}/>);
+    fireEvent.click(container.querySelector('.add-button'));
+    expect(container.querySelector(".overlay-next-ui")).not.toBeNull();
+  });
 
+  it("should not show the side panel when Cancel button is clicked", () => {
+    const { container, getByTestId } = render(<PatientAlergiesControl hostData={{uuid: "___patient_uuid__"}}/>);
+    fireEvent.click(container.querySelector('.add-button'));
+    expect(container.querySelector(".overlay-next-ui")).not.toBeNull();
+
+    fireEvent.click(getByTestId('cancel'));
+    expect(container.querySelector(".overlay-next-ui")).toBeNull();
+  });
 });

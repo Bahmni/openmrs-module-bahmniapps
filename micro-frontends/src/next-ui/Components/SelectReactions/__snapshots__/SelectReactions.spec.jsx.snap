@@ -70,12 +70,13 @@ exports[`Select reactions should render SelectReactions  1`] = `
         </button>
       </div>
     </div>
-    <div
-      class="font-small"
-    >
-      Common Reactions
-    </div>
     <div>
+      <div
+        class="font-small"
+        style="margin-bottom: 8px; margin-top: 10px;"
+      >
+        Common Reactions
+      </div>
       <div
         class="bx--form-item bx--checkbox-wrapper"
       >

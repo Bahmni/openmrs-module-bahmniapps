@@ -20,6 +20,8 @@ export function AddAllergy(props) {
     const mild = { label: <FormattedMessage id={"MILD"} defaultMessage={"Mild"}/>, uuid: "1498AAAAA"};
     const moderate = {label: <FormattedMessage id={"MODERATE"} defaultMessage={"Moderate"}/>, uuid: "1499AAAAA"};
     const severe = {label: <FormattedMessage id={"SEVERE"} defaultMessage={"Severe"}/>, uuid: "1500AAAAA"};
+    const backToAllergenText = <FormattedMessage id={"BACK_TO_ALLERGEN"} defaultMessage={"Back to Allergies"}/>;
+    const allergiesHeading = <FormattedMessage id={"ALLERGIES_HEADING"} defaultMessage={"Allergies and Reactions"}/>;
     const [isSaveEnabled, setIsSaveEnabled] = React.useState(false);
     const clearForm = () =>{
         setAllergen({});
@@ -30,7 +32,7 @@ export function AddAllergy(props) {
     return (
         <div className={"next-ui"}>
             <div className={"overlay-next-ui"}>
-                <div className={"heading"}>Allergies and reactions</div>
+                <div className={"heading"}>{allergiesHeading}</div>
                 <span className="close" onClick={onClose}>
                     <Close24/>
                 </span>
@@ -42,7 +44,7 @@ export function AddAllergy(props) {
                         :<Fragment>
                             <div className={"back-button"}>
                                 <ArrowLeft size={20} onClick={clearForm}/>
-                                <div onClick={clearForm}>back to Allergies</div>
+                                <div onClick={clearForm}>{backToAllergenText}</div>
                             </div>
                             <div data-testid={"select-reactions"}>
                                 <SelectReactions  onChange={(reactions) =>{

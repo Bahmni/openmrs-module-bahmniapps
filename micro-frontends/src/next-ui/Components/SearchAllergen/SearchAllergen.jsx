@@ -3,11 +3,15 @@ import propTypes from "prop-types";
 import "../../../styles/common.scss";
 import "./SearchAllergen.scss";
 import {Link, Search, Tag} from "carbon-components-react";
+import {FormattedMessage} from "react-intl";
 
 export function SearchAllergen(props) {
     const { onChange } = props;
     const [searchResults, setSearchResults] = useState([]);
     const [isSearchResultEmpty, setIsSearchResultEmpty] = useState(false);
+    const noAllergenText = <FormattedMessage id={'NO_ALLERGENS_FOUND'} defaultMessage={'No Allergen found'}/>;
+    const searchAllergenText = <FormattedMessage id={'SEARCH_ALLERGEN'} defaultMessage={'Search Allergen'}/>;
+    const reactionsLinkText = <FormattedMessage id={'REACTIONS'} defaultMessage={'Reaction(s)'}/>;
 
     const allergens = [
         { name: "Eggs", kind: "Food", uuid: "162301AAAAAA"},
@@ -43,15 +47,13 @@ export function SearchAllergen(props) {
     }
     return (
         <div className={"section"}>
-            <div className={"font-large bold"}>
-                Search Allergen
-            </div>
+            <div className={"font-large bold"}>{searchAllergenText}</div>
             <div>
                 <Search id={"allergen-search"} placeholder={"Type to search Allergen"}
                         onChange={(e) => {search(e.target.value);}}/>
             </div>
             {
-                isSearchResultEmpty ? <div>No Allergen found</div> :
+                isSearchResultEmpty ? <div>{noAllergenText}</div> :
                 searchResults.map((allergen) => {
                     return <div key={allergen.uuid} className={"allergen"}>
                         <span className={"allergen"}>
@@ -60,7 +62,7 @@ export function SearchAllergen(props) {
                             <Tag type={"blue"}>{allergen.kind}</Tag>
                         </span>
                         <span>
-                            <Link onClick={() => onChange(allergen)}>Reaction(s)</Link>
+                            <Link onClick={() => onChange(allergen)}>{reactionsLinkText}</Link>
                         </span>
                     </div>
                 })
