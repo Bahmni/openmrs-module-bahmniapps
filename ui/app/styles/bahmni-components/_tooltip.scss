@@ -32,7 +32,7 @@
   padding: 10px;
   position: absolute;
   z-index: 1;
-  top: 95%;
+  top: calc(100% + 10px);
   left: -70px;
   &:after {
     content: '';
