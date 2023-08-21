@@ -40,6 +40,14 @@
                                             <p>
                                                 {{getPreviousDrugAlert(drugOrder).summary}}
                                             </p>
+                                            <p>
+                                                <span>
+                                                    {{getPreviousDrugAlert(drugOrder).detail}}
+                                                </span>
+                                                 <a href="{{getPreviousDrugAlert(drugOrder).source.url}}" target="_blank" ng-show="getPreviousDrugAlert(drugOrder).source.url">
+                                                    <i class="fa fa-question-circle drug-link"></i>
+                                                </a>
+                                            </p>
                                             </div>
                                         <div class="dosage-frequency">
                                             <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}} | </span>

@@ -382,19 +382,7 @@ u, .add-drug-btninput[value]:first-letter {
 .cdss-alert-icon {
   border: none !important;
   background: none !important;
-  .critical {
-      &:hover {
-          color: #FF0000 !important;
-      }
-  }
-  .warning {
-      &:hover {
-          color: #FFA500 !important;
-    }
-  }
-  .info {
-      &:hover {
-          color: #00A3E0 !important;
-      }
+  i {
+    color: #8e8e8e;
   }
 }

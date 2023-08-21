@@ -1,27 +1,27 @@
 .ipd-test-results {
-	max-width: 70px;
-	overflow: hidden;
-	white-space: nowrap;
-	display: inline-block;
-	text-overflow: ellipsis;
+  max-width: 70px;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  text-overflow: ellipsis;
   cursor: pointer;
 }
 
 .tooltip {
-	position: absolute;
-	padding: 5px;
-	margin-left: 70px;
-	margin-top: -28px;
-	background: $clinicalInfoMessageBg;
-	border-radius: 5px;
-	box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
-	i {
-		color: $clinicalInfoMessageBg;
-		font-size: 20px;
-		position: absolute;
-		left: -10px;
-		top: 0px;
-	}
+  position: absolute;
+  padding: 5px;
+  margin-left: 70px;
+  margin-top: -28px;
+  background: $clinicalInfoMessageBg;
+  border-radius: 5px;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+  i {
+    color: $clinicalInfoMessageBg;
+    font-size: 20px;
+    position: absolute;
+    left: -10px;
+    top: 0px;
+  }
 }
 
 .cdss-tooltip {
@@ -46,7 +46,7 @@
     border-right: 5px solid transparent;
     border-bottom: 5px solid #393939;
   }
-  
+
   .cdss-tooltip__status {
     display: flex;
     align-items: center;
@@ -58,17 +58,21 @@
     color: black;
   }
   .status-critical {
-    background-color: #FFD6D8;
-    border: 1px solid #FF0000;
+    background-color: #ffd6d8;
+    border: 1px solid #ff0000;
   }
 
   .status-warning {
-    background-color: #FEEAD6;
-    border: 1px solid #FFA500;
+    background-color: #feead6;
+    border: 1px solid #ffa500;
   }
 
   .status-info {
-    background-color: #D5F5FF;
-    border: 1px solid #00A3E0;
+    background-color: #d5f5ff;
+    border: 1px solid #00a3e0;
+  }
+
+  .drug-link {
+    position: relative !important;
   }
 }
