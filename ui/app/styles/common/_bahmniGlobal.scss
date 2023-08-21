@@ -378,3 +378,23 @@ u, .add-drug-btninput[value]:first-letter {
 .ngdialog.ngdialog-theme-default .ngdialog-close {
       z-index: 999;
     }
+
+.cdss-alert-icon {
+  border: none !important;
+  background: none !important;
+  .critical {
+      &:hover {
+          color: #FF0000 !important;
+      }
+  }
+  .warning {
+      &:hover {
+          color: #FFA500 !important;
+    }
+  }
+  .info {
+      &:hover {
+          color: #00A3E0 !important;
+      }
+  }
+}

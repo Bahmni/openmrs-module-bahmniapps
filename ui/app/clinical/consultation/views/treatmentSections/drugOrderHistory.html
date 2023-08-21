@@ -21,8 +21,26 @@
                         <ul class="table-mimic">
 							<li id="ordered-drug-orders" ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
-                                    <div class="drug-dosage">
-                                        <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong>
+                                    <div class="drug-dosage relative" bm-pop-over autoclose="true">
+                                        <strong class="drug-name popover-trigger">
+                                            <span ng-if="cdssAlerts && getPreviousDrugAlert(drugOrder)" class="cdss-alert-icon" >
+                                                <i class="fa" bm-pop-over-trigger
+                                                ng-class="{'fa-exclamation-triangle critical': getPreviousDrugAlert(drugOrder).indicator == 'critical','fa-exclamation-triangle warning' : getPreviousDrugAlert(drugOrder).indicator == 'warning', 'fa-info-circle info': getPreviousDrugAlert(drugOrder).indicator == 'info'}"
+                                                >
+                                                </i>
+                                            </span>
+                                            {{drugOrder.getDisplayName()}}
+                                        </strong>
+                                        <div class="tooltip cdss-tooltip" bm-pop-over-target>
+                                            <div class="cdss-tooltip__status"
+                                            ng-class="{'status-critical': getPreviousDrugAlert(drugOrder).indicator == 'critical','status-warning' : getPreviousDrugAlert(drugOrder).indicator == 'warning', 'status-info': getPreviousDrugAlert(drugOrder).indicator == 'info'}"
+                                            >
+                                                Dismissed {{getPreviousDrugAlert(drugOrder).indicator}}
+                                            </div>
+                                            <p>
+                                                {{getPreviousDrugAlert(drugOrder).summary}}
+                                            </p>
+                                            </div>
                                         <div class="dosage-frequency">
                                             <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}} | </span>
                                             <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length">{{drugOrder.getFrequency()}} | </span> 

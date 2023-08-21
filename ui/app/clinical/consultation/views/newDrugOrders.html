@@ -29,8 +29,25 @@
                 <div class="form">
                     <input type="checkbox" ng-show="showBulkChangeToggle" ng-model="newTreatment.durationUpdateFlag"
                            class="treatmentChkBox"/>
-                    <div class="drug-dosage">
-                        <strong class="drug-name">{{newTreatment.getDisplayName()}}</strong>
+                    <div class="drug-dosage" bm-pop-over autoclose="true">
+                        <strong class="drug-name">
+                            <span ng-if="getPreviousDrugAlert(newTreatment)" class="cdss-alert-icon" >
+                                <i class="fa" bm-pop-over-trigger
+                                    ng-class="{'fa-exclamation-triangle critical': getPreviousDrugAlert(newTreatment).indicator == 'critical','fa-exclamation-triangle warning' : getPreviousDrugAlert(newTreatment).indicator == 'warning', 'fa-info-circle info': getPreviousDrugAlert(newTreatment).indicator == 'info'}">
+                                </i>
+                            </span>
+                            {{newTreatment.getDisplayName()}}
+                        </strong>
+                             <div class="tooltip cdss-tooltip" bm-pop-over-target>
+                                            <div class="cdss-tooltip__status"
+                                            ng-class="{'status-critical': getPreviousDrugAlert(newTreatment).indicator == 'critical','status-warning' : getPreviousDrugAlert(newTreatment).indicator == 'warning', 'status-info': getPreviousDrugAlert(newTreatment).indicator == 'info'}"
+                                            >
+                                                Dismissed {{getPreviousDrugAlert(newTreatment).indicator}}
+                                            </div>
+                                            <p>
+                                                {{getPreviousDrugAlert(newTreatment).summary}}
+                                            </p>
+                                            </div>
                         <div class="dosage-frequency">
                             <span ng-show="newTreatment.getDoseAndUnits()">{{newTreatment.getDoseAndUnits()}} | </span>
                             <span ng-show="newTreatment.getFrequency() && newTreatment.getFrequency().length">{{newTreatment.getFrequency()}} | </span>

@@ -187,7 +187,7 @@ angular.module('bahmni.clinical')
 
             $scope.updateAllOrderAttributesByName = function (orderAttribute, drugOrderGroup) {
                 drugOrderGroup[orderAttribute.name] = drugOrderGroup[orderAttribute.name] || {};
-                drugOrderGroup[orderAttribute.name].selected = drugOrderGroup[orderAttribute.name].selected ? false : true;
+                drugOrderGroup[orderAttribute.name].selected = !drugOrderGroup[orderAttribute.name].selected;
 
                 drugOrderGroup.drugOrders.forEach(function (drugOrder) {
                     var selectedOrderAttribute = getAttribute(drugOrder, orderAttribute.name);
@@ -228,6 +228,21 @@ angular.module('bahmni.clinical')
 
             var getAttribute = function (drugOrder, attributeName) {
                 return _.find(drugOrder.orderAttributes, {name: attributeName});
+            };
+
+            $scope.getPreviousDrugAlert = function (drugOrder) {
+                var drug = drugOrder.drug;
+                var cdssAlerts = $rootScope.cdssAlerts;
+                if (cdssAlerts) {
+                    return cdssAlerts.find(function (cdssAlert) {
+                        return cdssAlert.referenceMedications.some(function (referenceMedication) {
+                            return referenceMedication.coding.some(function (coding) {
+                                return drug.uuid === coding.code || drug.name === coding.display;
+                            });
+                        });
+                    });
+                }
+                return null;
             };
 
             init();

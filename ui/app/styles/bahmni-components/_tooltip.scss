@@ -23,3 +23,52 @@
 		top: 0px;
 	}
 }
+
+.cdss-tooltip {
+  background-color: #393939;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 12px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1;
+  top: 95%;
+  left: -70px;
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 10px;
+    margin-left: -5px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #393939;
+  }
+  
+  .cdss-tooltip__status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    padding: 0px 5px;
+    margin-bottom: 10px;
+    width: fit-content;
+    color: black;
+  }
+  .status-critical {
+    background-color: #FFD6D8;
+    border: 1px solid #FF0000;
+  }
+
+  .status-warning {
+    background-color: #FEEAD6;
+    border: 1px solid #FFA500;
+  }
+
+  .status-info {
+    background-color: #D5F5FF;
+    border: 1px solid #00A3E0;
+  }
+}
