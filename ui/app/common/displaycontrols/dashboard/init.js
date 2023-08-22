@@ -4,4 +4,4 @@ Bahmni.Common = Bahmni.Common || {};
 Bahmni.Common.DisplayControl = Bahmni.Common.DisplayControl || {};
 Bahmni.Common.DisplayControl.Dashboard = Bahmni.Common.DisplayControl.Dashboard || {};
 
-angular.module('bahmni.common.displaycontrol.dashboard', ['bahmni.mfe.nextUi']);
+angular.module('bahmni.common.displaycontrol.dashboard', []);
