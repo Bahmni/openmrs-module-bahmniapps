@@ -31,11 +31,11 @@
                            class="treatmentChkBox"/>
                     <div class="drug-dosage" bm-pop-over autoclose="true">
                         <strong class="drug-name">
-                            <span ng-if="getPreviousDrugAlert(newTreatment)" class="cdss-alert-icon" >
+                            <button ng-if="getPreviousDrugAlert(newTreatment)" class="cdss-alert-icon" >
                                 <i class="fa" bm-pop-over-trigger
                                     ng-class="{'fa-exclamation-triangle critical': getPreviousDrugAlert(newTreatment).indicator == 'critical','fa-exclamation-triangle warning' : getPreviousDrugAlert(newTreatment).indicator == 'warning', 'fa-info-circle info': getPreviousDrugAlert(newTreatment).indicator == 'info'}">
                                 </i>
-                            </span>
+                            </button>
                             {{newTreatment.getDisplayName()}}
                         </strong>
                              <div class="tooltip cdss-tooltip" bm-pop-over-target>

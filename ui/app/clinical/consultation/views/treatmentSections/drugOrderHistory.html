@@ -23,12 +23,12 @@
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                                     <div class="drug-dosage relative" bm-pop-over autoclose="true">
                                         <strong class="drug-name popover-trigger">
-                                            <span ng-if="cdssAlerts && getPreviousDrugAlert(drugOrder)" class="cdss-alert-icon" >
+                                            <button ng-if="cdssAlerts && getPreviousDrugAlert(drugOrder)" class="cdss-alert-icon" >
                                                 <i class="fa" bm-pop-over-trigger
                                                 ng-class="{'fa-exclamation-triangle critical': getPreviousDrugAlert(drugOrder).indicator == 'critical','fa-exclamation-triangle warning' : getPreviousDrugAlert(drugOrder).indicator == 'warning', 'fa-info-circle info': getPreviousDrugAlert(drugOrder).indicator == 'info'}"
                                                 >
                                                 </i>
-                                            </span>
+                                            </button>
                                             {{drugOrder.getDisplayName()}}
                                         </strong>
                                         <div class="tooltip cdss-tooltip" bm-pop-over-target>
