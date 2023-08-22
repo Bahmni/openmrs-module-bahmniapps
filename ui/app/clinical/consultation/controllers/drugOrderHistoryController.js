@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'activeDrugOrders', 'appService',
+    .controller('DrugOrderHistoryController', ['$q', '$scope', '$filter', '$stateParams', 'activeDrugOrders', 'appService',
         'treatmentConfig', 'treatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope', 'providerService', 'observationsService', 'diagnosisService',
-        function ($scope, $filter, $stateParams, activeDrugOrders, appService, treatmentConfig, treatmentService, spinner,
+        function ($q, $scope, $filter, $stateParams, activeDrugOrders, appService, treatmentConfig, treatmentService, spinner,
             drugOrderHistoryHelper, visitHistory, $translate, $rootScope, providerService, observationsService, diagnosisService) {
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
@@ -13,7 +13,7 @@ angular.module('bahmni.clinical')
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
-            $scope.enablePrintSelectedDrugs = appService.getAppDescriptor().getConfigValue("enablePrintSelectedDrugs");
+            $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
             $scope.selectedDrugs = {};
 
             if ($scope.enableIPDFeature) {
@@ -93,6 +93,8 @@ angular.module('bahmni.clinical')
                 var drugOrdersForPrint = [];
                 var promises = [];
                 var diagnosesCodes = "";
+                var dispenserInfo = [];
+                var observationsEntries = [];
 
                 angular.forEach($scope.selectedDrugs, function (selected, drugOrderIndex) {
                     var selectedDrugOrder = drugOrderIndex.split("/");
@@ -106,7 +108,7 @@ angular.module('bahmni.clinical')
                             promises.push(promise);
 
                             promise.then(function (response) {
-                                drugOrder.provider.attributes = treatmentService.getOrderedProviderAttributesForPrint(response.data.results);
+                                drugOrder.provider.attributes = treatmentService.getProviderAttributesForPrint(response.data.results, $scope.printPrescriptionFeature.providerAttributesForPrint);
                             }).catch(function (error) {
                                 console.error("Error fetching provider attributes: ", error);
                             });
@@ -115,32 +117,29 @@ angular.module('bahmni.clinical')
                     }
                 });
 
-                var diagnosesPromise = diagnosisService.getPatientDiagnosis($stateParams.patientUuid);
-                promises.push(diagnosesPromise);
-
-                diagnosesPromise.then(function (response) {
-                    var diagnoses = response.data;
-                    console.log(diagnoses);
+                var promise = $q.all([diagnosisService.getPatientDiagnosis($stateParams.patientUuid), providerService.getAttributesForProvider($rootScope.currentProvider.uuid), observationsService.fetch($stateParams.patientUuid, $scope.printPrescriptionFeature.observationsConcepts, "latest", null, null, null, null, null)]).then(function (response) {
+                    const diagnoses = response[0].data;
+                    const dispenserAttributes = response[1].data.results;
+                    observationsEntries = response[2].data;
+                    dispenserInfo = treatmentService.getProviderAttributesForPrint(dispenserAttributes, $scope.printPrescriptionFeature.providerAttributesForPrint);
                     angular.forEach(diagnoses, function (diagnosis) {
-                        console.log("g = ", diagnosis);
-                        if (diagnosis.order === "PRIMARY" && diagnosis.certainty === "CONFIRMED") {
+                        if (diagnosis.order === $scope.printPrescriptionFeature.printDiagnosis.order &&
+                            diagnosis.certainty === $scope.printPrescriptionFeature.printDiagnosis.certainity) {
                             if (diagnosesCodes.length > 0) {
                                 diagnosesCodes += ", ";
                             }
                             diagnosesCodes += diagnosis.codedAnswer.mappings[0].code;
                         }
                     });
-                }).catch(function (error) {
-                    console.error("Error fetching diagnosis: ", error);
                 });
+                promises.push(promise);
 
                 Promise.all(promises).then(function () {
                     var additionalInfo = {};
                     additionalInfo.visitType = currentVisit ? currentVisit.visitType.display : "";
                     additionalInfo.currentDate = new Date();
                     additionalInfo.facilityLocation = $rootScope.facilityLocation;
-                    treatmentService.printSelectedPrescriptions(drugOrdersForPrint, $scope.patient, additionalInfo, diagnosesCodes);
-                    console.log(diagnosesCodes);
+                    treatmentService.printSelectedPrescriptions($scope.printPrescriptionFeature, drugOrdersForPrint, $scope.patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries);
                     $scope.selectedDrugs = {};
                 }).catch(function (error) {
                     console.error("Error fetching details for print: ", error);
