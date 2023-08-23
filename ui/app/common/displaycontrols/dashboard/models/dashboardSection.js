@@ -22,7 +22,8 @@
         "conditionsList"
     ];
     var reactDisplayControls = [
-        "Allergies"
+        "Allergies",
+        "Forms"
     ];
 
     var getViewUrl = function (section) {

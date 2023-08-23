@@ -32,6 +32,13 @@ angular.module('bahmni.clinical')
                 }
             };
 
+            console.log('$scope.activeVisit', $scope);
+            console.log('$scope.activeVisit', $scope.activeVisit);
+            $scope.formsDisplayControl = {
+                patientId: $scope.patient.uuid,
+                encounterId: $scope.activeVisit != undefined ? $scope.activeVisit.encounters[0].uuid : undefined
+            };
+
             $scope.stateChange = function () {
                 return $state.current.name === 'patient.dashboard.show';
             };
