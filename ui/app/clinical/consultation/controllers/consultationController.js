@@ -473,9 +473,15 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 _.each($scope.consultation.observationForms, function (observationForm) {
                     if (valid && observationForm.component) {
                         var value = observationForm.component.getValue();
-                        if (value.errors) {
-                            messagingService.showMessage('error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
-                            valid = false;
+                       
+                        if (value.errors)
+                         {
+                            if ($state.current.name === "patient.dashboard.show.observations") {
+                                messagingService.showMessage('error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
+                            }
+                            else {
+                                messagingService.showMessage('error', "{{'CLINICAL_FORM_ERRORS_ON_OBSERVATION_TAB_MESSAGE_KEY' | translate }}");
+                            }
                         }
                     }
                 });
