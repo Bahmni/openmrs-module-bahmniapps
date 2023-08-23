@@ -18,8 +18,8 @@ angular.module('bahmni.reports')
             "This Month": new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
             "This Quarter": new Date(currentDate.getFullYear(), Math.floor(currentDate.getMonth() / 3) * 3, 1),
             "This Year": new Date(currentDate.getFullYear(), 0, 1),
-            "Previous Week": new Date(new Date().setDate(currentDate.getDate() - 6)),
-            "Previous Month": new Date(new Date().setDate(currentDate.getDate() - 30))
+            "Last 7 days": new Date(new Date().setDate(currentDate.getDate() - 6)),
+            "Last 30 days": new Date(new Date().setDate(currentDate.getDate() - 30))
         };
 
         var scheduleReport = function (report) {
