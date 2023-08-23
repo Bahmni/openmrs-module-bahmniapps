@@ -478,9 +478,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                          {
                             if ($state.current.name === "patient.dashboard.show.observations") {
                                 messagingService.showMessage('error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
+                                valid = false;
                             }
                             else {
                                 messagingService.showMessage('error', "{{'CLINICAL_FORM_ERRORS_ON_OBSERVATION_TAB_MESSAGE_KEY' | translate }}");
+                                valid = false;
                             }
                         }
                     }
@@ -499,7 +501,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     var errorMessage = discontinuedDrugOrderValidationMessage;
                     messagingService.showMessage('error', errorMessage);
                 }
-                return shouldAllow && !discontinuedDrugOrderValidationMessage && isObservationFormValid();
+                return shouldAllow && !discontinuedDrugOrderValidationMessage ;
             };
 
             var copyConsultationToScope = function (consultationWithDiagnosis) {
@@ -516,7 +518,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             });
 
             $scope.save = function (toStateConfig) {
-                if (!isFormValid()) {
+                if (isFormValid() && !isObservationFormValid()) {
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return $q.when({});
                 }
