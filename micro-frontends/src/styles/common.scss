@@ -1,0 +1,46 @@
+.overlay-next-ui {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  top: 95px;
+  min-width: 540px;
+  z-index: 499;
+  overflow: scroll;
+  box-shadow: -1px 2px 3px 0px #aaa;
+  background-color: #F4F4F4;
+}
+.footer{
+  position: fixed;
+  width: calc(100% - 64px);
+  z-index: 55;
+  bottom: 0;
+  > * {
+    width: 270px;
+    height: 64px;
+  }
+}
+.next-ui{
+  color: #393939;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.section{
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.font-small{
+  font-size: 12px;
+}
+
+.bold{
+  font-weight: 600;
+}
+
+.font-large{
+  font-size: 16px;
+}

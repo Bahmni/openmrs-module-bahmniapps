@@ -1,8 +1,7 @@
 <patient-context patient="patient" show-name-and-image="tabBeingPrinted.printing.showNameAndImage" class="dashboard-consultation" is-consultation="!stateChange()"></patient-context>
-<dashboard ng-show ="!loadIPD && stateChange()" patient="::patient" config="::isDashboardPrinting ? tabBeingPrinted : clinicalDashboardConfig.currentTab"
+<dashboard ng-show ="!loadIPD && !loadAllergies && stateChange()" patient="::patient" config="::isDashboardPrinting ? tabBeingPrinted : clinicalDashboardConfig.currentTab"
            disease-templates="diseaseTemplates" section-groups="sectionGroups" visit-history="visitHistory"
            active-visit-uuid="visitHistory.activeVisit.uuid" visit-summary="visitSummary" enrollment="enrollment">
 </dashboard>
 <!--<mfe-ipd-dashboard ng-if="loadIPD" style="margin: 45px auto 0; display: block;" host-data="ipdDashboard.hostData" host-api="ipdDashboard.hostApi"></mfe-ipd-dashboard>-->
-<mfe-next-ui-patient-alergies-control ng-if="loadIPD" style="display: block;" host-data="alergyData" host-api="alergyApi"></mfe-next-ui-patient-alergies-control>
 <div ng-show ="!loadIPD && !stateChange()" ui-view="consultation-content" class="consultation-content"></div>
