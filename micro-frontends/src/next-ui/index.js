@@ -1,5 +1,5 @@
 import { React2AngularBridgeBuilder } from "../utils/bridge-builder";
-import { PatientAlergiesControl } from "./patientAlergies/PatientAlergiesControl";
+import { PatientAlergiesControl } from "./Containers/patientAlergies/PatientAlergiesControl";
 
 const MODULE_NAME = "bahmni.mfe.nextUi";
 

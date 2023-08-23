@@ -1,0 +1,102 @@
+$interactive-01: #007d79;
+$interactive-02: #393939;
+$ui-05: #D0E2FF;
+$inverse-01: #0a74ff;
+$border-inverse: #0a74ff;
+$css--default-type: false;
+$css--reset: false;
+$css--body: false;
+@import "~carbon-components/scss/globals/scss/styles.scss";
+[class*="bx--"]{
+  &:disabled{
+    -webkit-text-fill-color: #8d8d8d;
+    opacity: 1;
+  }
+  font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+}
+.bx--content-switcher-btn{
+  $radius: 4px;
+  border-radius: 0;
+  color: #0a74ff;
+  border-color: #A6C8FF;
+  &:first-child{
+    border-top-left-radius: $radius;
+    border-bottom-left-radius: $radius;
+  }
+  &:last-child{
+    border-top-right-radius: $radius;
+    border-bottom-right-radius: $radius;
+  }
+  &.bx--content-switcher--selected{
+    border: solid;
+  }
+  &:after{
+    background-color: #edf5ff;
+  }
+  &:disabled{
+    -webkit-text-fill-color: $inverse-01;
+    background-color: #cde3ff;
+  }
+}
+.bx--btn--primary{
+  &:hover{
+    background-color: #004144;
+  }
+  background-color: #007d79;;
+}
+.bx--btn--secondary:hover{
+  background-color: #6f6f6f;
+}
+.bx--content-switcher-btn:hover{
+  color: #0a74ff;
+  background-color: #cde3ff;
+}
+.bx--search--xl:focus {
+  border: #ff832b;
+}
+.bx--checkbox-label:after{
+  border-bottom: 2px solid #fff;
+  border-left: 2px solid #fff;
+}
+.bx--select__arrow{
+  fill: #161616;
+}
+.bx--list-box__field{
+  vertical-align: middle;
+}
+.bx--number input[type='number']{
+  padding-right: 5rem;
+  min-width: 6rem;
+}
+.bx--label{
+  color: black;
+}
+.bx--tag--filter {
+  color: #0043CE;
+  background-color: $ui-05;
+}
+.bx--tabs--scrollable__nav-link {
+  width: 100% !important;
+}
+.bx--tab-content:focus {
+  outline: none;
+}
+.bx--list--nested {
+  margin-left: 0.75rem;
+}
+.bx--radio-button:checked+.bx--radio-button__label .bx--radio-button__appearance::before {
+  background-color: #0a74ff;
+}
+.bx--list-box__wrapper{
+  max-width: 250px;
+}
+.bx--number__control-btn{
+  border: none;
+}
+.bx--modal-container{
+  width: 500px;
+}
+.bx--date-picker .bx--date-picker-input__wrapper--warn~.bx--form-requirement {
+  color: #d48c08;
+  padding-left: 5px;
+}

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SaveAndCloseButtons should render the component 1`] = `
+<div>
+  <div
+    class="footer"
+  >
+    <button
+      class="bx--btn bx--btn--secondary"
+      data-testid="cancel"
+      tabindex="0"
+      type="button"
+    >
+      <span>
+        Cancel
+      </span>
+    </button>
+    <button
+      class="bx--btn bx--btn--primary"
+      tabindex="0"
+      type="button"
+    >
+      Save
+    </button>
+  </div>
+</div>
+`;
