@@ -385,8 +385,11 @@ u,
 .cdss-alert-icon {
   cursor: pointer;
   width: fit-content;
-  padding: 0px;
+  padding: 3px;
+  height: 24px;
   i {
     color: #8e8e8e;
+    width: auto !important;
+    font-size: 12px !important;
   }
 }
