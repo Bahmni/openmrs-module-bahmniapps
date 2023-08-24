@@ -5,8 +5,12 @@ angular.module('bahmni.registration')
         'messagingService', '$translate', '$filter',
         function ($rootScope, $scope, $location, $window, spinner, patientService, appService, messagingService, $translate, $filter) {
             $scope.results = [];
+            var searchDisplayOptions = appService.getAppDescriptor().getConfigValue("patientSearchResultOptions") || {};
+            var ignoredIdentifiers = new Set(searchDisplayOptions.ignorePatientIdentifiers || []);
+            $scope.showAge = searchDisplayOptions.showAge != null ? searchDisplayOptions.showAge : true;
+            $scope.showDOB = searchDisplayOptions.showDOB != null ? searchDisplayOptions.showDOB : false;
             $scope.extraIdentifierTypes = _.filter($rootScope.patientConfiguration.identifierTypes, function (identifierType) {
-                return !identifierType.primary;
+                return !identifierType.primary && !ignoredIdentifiers.has(identifierType.name);
             });
             var searching = false;
             var maxAttributesFromConfig = 5;
