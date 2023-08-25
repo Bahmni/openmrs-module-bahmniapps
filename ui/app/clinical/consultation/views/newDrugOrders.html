@@ -31,13 +31,13 @@
                            class="treatmentChkBox"/>
                     <div class="drug-dosage" bm-pop-over autoclose="true">
                         <strong class="drug-name">
-                            <button ng-if="newTreatment.alerts && newTreatment.alerts.length > 0" class="cdss-alert-icon" >
-                                <i class="fa fa-exclamation-triangle cdss-icon-medication" bm-pop-over-trigger></i>
+                            <button ng-if="newTreatment.alerts && newTreatment.alerts.length > 0" class="cdss-alert-icon" bm-pop-over-trigger>
+                                <i class="fa fa-exclamation-triangle cdss-icon-medication"></i>
                             </button>
                             {{newTreatment.getDisplayName()}}
                         </strong>
                         <div class="tooltip cdss-tooltip" bm-pop-over-target>
-                            <div ng-repeat="alert in drugOrder.alerts" class="tooltip-list">
+                            <div ng-repeat="alert in newTreatment.alerts" class="tooltip-list">
                                 <div class="cdss-tooltip__status"
                                     ng-class="{'status-critical': alert.indicator == 'critical','status-warning' : alert.indicator == 'warning', 'status-info': alert.indicator == 'info'}"
                                 >

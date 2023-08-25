@@ -23,8 +23,8 @@
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                                     <div class="drug-dosage relative">
                                         <strong class="drug-name popover-trigger">
-                                            <button ng-if="drugOrder.alerts && drugOrder.alerts.length > 0" class="cdss-alert-icon" >
-                                                <i class="fa cdss-icon-medication fa-exclamation-triangle" bm-pop-over-trigger>
+                                            <button ng-if="drugOrder.alerts && drugOrder.alerts.length > 0" class="cdss-alert-icon" bm-pop-over-trigger>
+                                                <i class="fa cdss-icon-medication fa-exclamation-triangle">
                                                 </i>
                                             </button>
                                             {{drugOrder.getDisplayName()}}
