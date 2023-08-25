@@ -23,7 +23,7 @@
         </form>
     </div>
     <ul class="table-mimic">
-        <li id="new-drug-orders" ng-repeat="newTreatment in treatments"
+        <li id="new-drug-orders" ng-repeat="newTreatment in getPreviousDrugAlerts(treatments)"
             ng-class="{highlight : newTreatment.isBeingEdited}">
             <div class="drug-details">
                 <div class="form">
@@ -31,23 +31,31 @@
                            class="treatmentChkBox"/>
                     <div class="drug-dosage" bm-pop-over autoclose="true">
                         <strong class="drug-name">
-                            <button ng-if="getPreviousDrugAlert(newTreatment)" class="cdss-alert-icon" >
+                            <button ng-if="newTreatment.alert" class="cdss-alert-icon" >
                                 <i class="fa" bm-pop-over-trigger
-                                    ng-class="{'fa-exclamation-triangle critical': getPreviousDrugAlert(newTreatment).indicator == 'critical','fa-exclamation-triangle warning' : getPreviousDrugAlert(newTreatment).indicator == 'warning', 'fa-info-circle info': getPreviousDrugAlert(newTreatment).indicator == 'info'}">
+                                    ng-class="{'fa-exclamation-triangle critical': newTreatment.alert.indicator == 'critical','fa-exclamation-triangle warning' : newTreatment.alert.indicator == 'warning', 'fa-info-circle info': newTreatment.alert.indicator == 'info'}">
                                 </i>
                             </button>
                             {{newTreatment.getDisplayName()}}
                         </strong>
-                             <div class="tooltip cdss-tooltip" bm-pop-over-target>
-                                            <div class="cdss-tooltip__status"
-                                            ng-class="{'status-critical': getPreviousDrugAlert(newTreatment).indicator == 'critical','status-warning' : getPreviousDrugAlert(newTreatment).indicator == 'warning', 'status-info': getPreviousDrugAlert(newTreatment).indicator == 'info'}"
-                                            >
-                                                Dismissed {{getPreviousDrugAlert(newTreatment).indicator}}
-                                            </div>
-                                            <p>
-                                                {{getPreviousDrugAlert(newTreatment).summary}}
-                                            </p>
-                                            </div>
+                        <div class="tooltip cdss-tooltip" bm-pop-over-target>
+                            <div class="cdss-tooltip__status"
+                                ng-class="{'status-critical': newTreatment.alert.indicator == 'critical','status-warning' : newTreatment.alert.indicator == 'warning', 'status-info': newTreatment.alert.indicator == 'info'}"
+                            >
+                                Dismissed {{newTreatment.alert.indicator}}
+                            </div>
+                            <p>
+                                {{newTreatment.alert.summary}}
+                            </p>
+                            <p>
+                                <span>
+                                    {{newTreatment.alert.detail}}
+                                </span>
+                                <a href="{{newTreatment.alert.source.url}}" target="_blank" ng-show="newTreatment.alert.source.url">
+                                    <i class="fa fa-question-circle drug-link"></i>
+                                </a>
+                            </p>
+                        </div>
                         <div class="dosage-frequency">
                             <span ng-show="newTreatment.getDoseAndUnits()">{{newTreatment.getDoseAndUnits()}} | </span>
                             <span ng-show="newTreatment.getFrequency() && newTreatment.getFrequency().length">{{newTreatment.getFrequency()}} | </span>
