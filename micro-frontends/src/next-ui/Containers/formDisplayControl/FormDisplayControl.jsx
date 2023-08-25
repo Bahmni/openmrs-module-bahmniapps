@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Accordion, AccordionItem } from "carbon-components-react";
 import "../../../styles/carbon-conflict-fixes.scss";
 import "../../../styles/carbon-theme.scss";
 import "../../../styles/common.scss";
 import { FormattedMessage } from "react-intl";
-import { fetchFormData } from "../../utils/FormDisplayControl/FormUtils"
-import { Accordion, AccordionItem } from "carbon-components-react";
+import { fetchFormData } from "../../utils/FormDisplayControl/FormUtils";
+import moment from "moment";
 /** NOTE: for reasons known only to react2angular,
  * any functions passed in as props will be undefined at the start, even ones inside other objects
  * so you need to use the conditional operator like props.hostApi?.callback even though it is a mandatory prop
@@ -17,8 +18,8 @@ export function FormDisplayControl(props) {
     //     const [showAddAllergyPanel, setShowAddAllergyPanel] = useState(false);
     const [formList, setFormList] = useState({});
     console.log('Props ', props);
-    useEffect(() => {
-        setFormList(buildResponseData(props?.hostData?.patientId));
+    useEffect(async () => {
+        setFormList(await buildResponseData(props?.hostData?.uuid));
     }, []);
     const noFormText = <FormattedMessage id={'NO_FORM'} defaultMessage={'No Form found for this patient....'} />;
     const formsHeading = <FormattedMessage id={'FORMS_HEADING'} defaultMessage={'Forms'} />;
@@ -32,6 +33,11 @@ export function FormDisplayControl(props) {
                 grouped[formEntry.formName].push({ date: formEntry.encounterDateTime, providerName: formEntry.providers[0].providerName });
             });
         }
+        Object.keys(grouped).forEach(function (key) {
+            grouped[key] = grouped[key].sort((a, b) => {
+                return new Date(b.date) - new Date(a.date);
+            });
+        })
         console.log('grouped buildResponseData', grouped);
         return grouped;
     };
@@ -82,7 +88,7 @@ export function FormDisplayControl(props) {
                                         return (
                                             <p>
                                                 <ul key={entry.date}>
-                                                    <li class="clearfix">{moment(new Date(entry.date)).format("DD/MM/YYYY HH:MM")}</li>
+                                                    <li class="clearfix">{moment(entry.date).format("DD/MM/YYYY HH:MM")}</li>
                                                     <li class="clearfix">{entry.providerName}</li>
                                                 </ul>
                                             </p>
@@ -154,8 +160,5 @@ export function FormDisplayControl(props) {
 }
 
 FormDisplayControl.propTypes = {
-    hostData: PropTypes.shape({
-        patientId: PropTypes.string,
-        encounterId: PropTypes.string,
-    }).isRequired,
+    hostData: PropTypes.object.isRequired,
 };

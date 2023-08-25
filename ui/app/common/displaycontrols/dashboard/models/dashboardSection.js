@@ -23,7 +23,7 @@
     ];
     var reactDisplayControls = [
         "Allergies",
-        "Forms"
+        "DASHBOARD_TITLE_FORMS_2_DISPLAY_CONTROL_KEY"
     ];
 
     var getViewUrl = function (section) {
