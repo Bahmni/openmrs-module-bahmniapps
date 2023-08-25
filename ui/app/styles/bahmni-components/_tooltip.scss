@@ -34,6 +34,8 @@
   z-index: 1;
   top: calc(100% + 10px);
   left: -70px;
+  max-height: 500px;
+  overflow-y: auto;
   &:after {
     content: '';
     position: absolute;
@@ -45,6 +47,11 @@
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-bottom: 5px solid #393939;
+  }
+  > div:not(:last-child){
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    margin-top: 10px;
   }
 
   .cdss-tooltip__status {
@@ -75,4 +82,9 @@
   .drug-link {
     position: relative !important;
   }
+}
+
+.tooltip-list {
+  padding-bottom: 10px;
+  padding-top: 10px;
 }

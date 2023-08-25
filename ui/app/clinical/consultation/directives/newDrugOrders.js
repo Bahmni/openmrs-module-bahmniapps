@@ -91,7 +91,7 @@ angular.module('bahmni.clinical')
                     var drug = drugOrder.drug;
                     var cdssAlerts = $rootScope.cdssAlerts;
                     if (cdssAlerts) {
-                        drugOrder.alert = cdssAlerts.find(function (cdssAlert) {
+                        drugOrder.alerts = cdssAlerts.filter(function (cdssAlert) {
                             return cdssAlert.referenceMedications.some(function (referenceMedication) {
                                 return referenceMedication.coding.some(function (coding) {
                                     return drug.uuid === coding.code || drug.name === coding.display;
