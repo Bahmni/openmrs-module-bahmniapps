@@ -230,19 +230,21 @@ angular.module('bahmni.clinical')
                 return _.find(drugOrder.orderAttributes, {name: attributeName});
             };
 
-            $scope.getPreviousDrugAlert = function (drugOrder) {
-                var drug = drugOrder.drug;
-                var cdssAlerts = $rootScope.cdssAlerts;
-                if (cdssAlerts) {
-                    return cdssAlerts.find(function (cdssAlert) {
-                        return cdssAlert.referenceMedications.some(function (referenceMedication) {
-                            return referenceMedication.coding.some(function (coding) {
-                                return drug.uuid === coding.code || drug.name === coding.display;
+            $scope.getPreviousDrugAlerts = function (drugOrders) {
+                drugOrders.forEach(function (drugOrder) {
+                    var drug = drugOrder.drug;
+                    var cdssAlerts = $rootScope.cdssAlerts;
+                    if (cdssAlerts) {
+                        drugOrder.alert = cdssAlerts.find(function (cdssAlert) {
+                            return cdssAlert.referenceMedications.some(function (referenceMedication) {
+                                return referenceMedication.coding.some(function (coding) {
+                                    return drug.uuid === coding.code || drug.name === coding.display;
+                                });
                             });
                         });
-                    });
-                }
-                return null;
+                    }
+                });
+                return drugOrders;
             };
 
             init();

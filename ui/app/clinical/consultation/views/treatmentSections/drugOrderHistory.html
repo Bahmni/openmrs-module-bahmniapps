@@ -19,13 +19,13 @@
 					<div class="inpage-tab-content">
                         <p ng-if="!drugOrderGroup.drugOrders.length" class="placeholder-text">{{ ::'MEDICATION_NO_RECENT_TREATMENT' | translate }}</p>
                         <ul class="table-mimic">
-							<li id="ordered-drug-orders" ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
+							<li id="ordered-drug-orders" ng-repeat="drugOrder in getPreviousDrugAlerts(drugOrderGroup.drugOrders)" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
                                     <div class="drug-dosage relative" bm-pop-over autoclose="true">
                                         <strong class="drug-name popover-trigger">
-                                            <button ng-if="cdssAlerts && getPreviousDrugAlert(drugOrder)" class="cdss-alert-icon" >
+                                            <button ng-if="drugOrder.alert" class="cdss-alert-icon" >
                                                 <i class="fa" bm-pop-over-trigger
-                                                ng-class="{'fa-exclamation-triangle critical': getPreviousDrugAlert(drugOrder).indicator == 'critical','fa-exclamation-triangle warning' : getPreviousDrugAlert(drugOrder).indicator == 'warning', 'fa-info-circle info': getPreviousDrugAlert(drugOrder).indicator == 'info'}"
+                                                ng-class="{'fa-exclamation-triangle critical': drugOrder.alert.indicator == 'critical','fa-exclamation-triangle warning' : drugOrder.alert.indicator == 'warning', 'fa-info-circle info': drugOrder.alert.indicator == 'info'}"
                                                 >
                                                 </i>
                                             </button>
@@ -33,18 +33,18 @@
                                         </strong>
                                         <div class="tooltip cdss-tooltip" bm-pop-over-target>
                                             <div class="cdss-tooltip__status"
-                                            ng-class="{'status-critical': getPreviousDrugAlert(drugOrder).indicator == 'critical','status-warning' : getPreviousDrugAlert(drugOrder).indicator == 'warning', 'status-info': getPreviousDrugAlert(drugOrder).indicator == 'info'}"
+                                            ng-class="{'status-critical': drugOrder.alert.indicator == 'critical','status-warning' : drugOrder.alert.indicator == 'warning', 'status-info': drugOrder.alert.indicator == 'info'}"
                                             >
-                                                Dismissed {{getPreviousDrugAlert(drugOrder).indicator}}
+                                                Dismissed {{drugOrder.alert.indicator}}
                                             </div>
                                             <p>
-                                                {{getPreviousDrugAlert(drugOrder).summary}}
+                                                {{drugOrder.alert.summary}}
                                             </p>
                                             <p>
                                                 <span>
-                                                    {{getPreviousDrugAlert(drugOrder).detail}}
+                                                    {{drugOrder.alert.detail}}
                                                 </span>
-                                                 <a href="{{getPreviousDrugAlert(drugOrder).source.url}}" target="_blank" ng-show="getPreviousDrugAlert(drugOrder).source.url">
+                                                 <a href="{{drugOrder.alert.source.url}}" target="_blank" ng-show="drugOrder.alert.source.url">
                                                     <i class="fa fa-question-circle drug-link"></i>
                                                 </a>
                                             </p>
