@@ -473,7 +473,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 _.each($scope.consultation.observationForms, function (observationForm) {
                     if (valid && observationForm.component) {
                         var value = observationForm.component.getValue();
-                       
                         if (value.errors)
                          {
                             if ($state.current.name === "patient.dashboard.show.observations") {
@@ -501,7 +500,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     var errorMessage = discontinuedDrugOrderValidationMessage;
                     messagingService.showMessage('error', errorMessage);
                 }
-                return shouldAllow && !discontinuedDrugOrderValidationMessage ;
+                if ($state.current.name === "patient.dashboard") {
+                    return shouldAllow && !discontinuedDrugOrderValidationMessage && isObservationFormValid();
+                }
+                return shouldAllow && !discontinuedDrugOrderValidationMessage;
             };
 
             var copyConsultationToScope = function (consultationWithDiagnosis) {
