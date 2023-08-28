@@ -36,7 +36,7 @@
   left: -70px;
   max-height: 500px;
   overflow-y: auto;
-  &:after {
+  &:before {
     content: '';
     position: absolute;
     bottom: 100%;
@@ -48,10 +48,12 @@
     border-right: 5px solid transparent;
     border-bottom: 5px solid #393939;
   }
-  > div:not(:last-child){
-    border-bottom: 1px solid #ccc;
+  > div:not(:nth-child(1)) {
     margin-bottom: 10px;
     margin-top: 10px;
+  }
+  > div:not(:last-child){
+    border-bottom: 1px solid #ccc;
   }
 
   .cdss-tooltip__status {
@@ -63,6 +65,9 @@
     margin-bottom: 10px;
     width: fit-content;
     color: black;
+  }
+  a {
+    margin-left: 5px;
   }
   .status-critical {
     background-color: #ffd6d8;
@@ -84,7 +89,7 @@
   }
 }
 
-.tooltip-list {
+.tooltip-list:not(:first-child) {
   padding-bottom: 10px;
   padding-top: 10px;
 }
