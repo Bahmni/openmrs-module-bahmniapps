@@ -31,8 +31,15 @@ angular.module('bahmni.clinical')
                     forDate: new Date().toUTCString()
                 }
             };
+            $scope.formData = {
+                hostData: {
+                    patientId: $scope.patient.uuid,
+                    encounterUuid: $scope.consultation.encounterUuid
+                }
+            };
 
-            console.log('$scope.activeVisit', $scope);
+            console.log('-<-$scope.activeVisit-->', $scope);
+            console.log('-<-$scope.activeVisit...consultation-->', $scope.consultation);
             console.log('$scope.activeVisit', $scope.activeVisit);
             $scope.formsDisplayControl = {
                 patientId: $scope.patient.uuid,
