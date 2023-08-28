@@ -2,7 +2,7 @@
     <section class="reg-search">
         <article class="search-seperator-l" ng-if="::patientIdentifierSearchConfig.show">
             <form name="searchByIdForm" ng-submit="searchById()" class="simple-form-ui clearfix" >
-                    <label for="registrationNumber"><strong>{{ ::'REGISTRATION_LABEL_PATIENT_ID' | translate}}</strong></label>
+                    <label for="registrationNumber"><strong style="padding-left: 5px;">{{ ::'REGISTRATION_LABEL_PATIENT_ID' | translate}}</strong></label>
                     <div class="search-patient-id fl">
                         <input tabindex="2" class="fl" type="text" id="registrationNumber"
                         ng-model="searchParameters.registrationNumber" focus-me="true"
@@ -62,7 +62,8 @@
                 <th><strong>{{ ::'REGISTRATION_LABEL_NAME' | translate}}</strong></th>
                 <th ng-repeat = "field in ::personSearchResultsConfig.fields track by $index"><strong>{{::convertToTableHeader(field)}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_GENDER' | translate}}</strong></th>
-                <th><strong>{{ ::'REGISTRATION_LABEL_AGE' | translate}}</strong></th>
+                <th ng-if="::showAge"><strong>{{ ::'REGISTRATION_LABEL_AGE' | translate}}</strong></th>
+                <th ng-if="::showDOB"><strong>{{ ::'REGISTRATION_LABEL_DOB' | translate}}</strong></th>
                 <th ng-repeat = "field in ::addressSearchResultsConfig.fields"><strong>{{::convertToTableHeader(getAddressColumnName(field))}}</strong></th>
                 <th><strong>{{ ::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
                 <th ng-if="::programAttributesSearchConfig.show"><strong>{{::convertToTableHeader(programAttributesSearchConfig.label)}}</strong></th>
@@ -82,7 +83,8 @@
                 <td>{{::result.givenName}} {{::result.middleName}} {{::result.familyName}}</td>
                 <td ng-repeat = "field in ::personSearchResultsConfig.fields track by $index">{{::result.customAttribute[field] || "" | bahmniDateInStrictMode}}</td>
                 <td>{{::result.gender}}</td>
-                <td>{{::result.age}}</td>
+                <td ng-if="::showAge">{{::result.age}}</td>
+                <td ng-if="::showDOB">{{::result.birthDate | bahmniDate}}</td>
                 <td ng-repeat = "field in ::addressSearchResultsConfig.fields">{{::result.addressFieldValue[field] || ""}}</td>
                 <td>{{::result.dateCreated | bahmniDate}}</td>
                 <td ng-if="::programAttributesSearchConfig.show">{{getProgramAttributeValues(result) | bahmniDateInStrictMode}}</td>
