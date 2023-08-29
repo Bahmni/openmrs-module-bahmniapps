@@ -76,7 +76,6 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid, scope.config, scope.visitUuid, startDate, endDate);
                 spinner.forPromise(pivotDataPromise, element);
                 pivotDataPromise.then(function (response) {
-                    const {obsConcepts, customSortNeeded} = scope.config;
                     var concepts = _.map(response.data.conceptDetails, function (conceptDetail) {
                         return {
                             name: conceptDetail.fullName,
@@ -86,10 +85,10 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                             units: conceptDetail.units
                         };
                     });
-                    if (customSortNeeded && obsConcepts) {
+                    if (scope.config.customSortNeeded && scope.config.obsConcepts) {
                         concepts.sort(function (a, b) {
-                            const indexOfA = obsConcepts.indexOf(a.name);
-                            const indexOfB = obsConcepts.indexOf(b.name);
+                            const indexOfA = scope.config.obsConcepts.indexOf(a.name);
+                            const indexOfB = scope.config.obsConcepts.indexOf(b.name);
                             return indexOfA - indexOfB;
                         });
                     }
