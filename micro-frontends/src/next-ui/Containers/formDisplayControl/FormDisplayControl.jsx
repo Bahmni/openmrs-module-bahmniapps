@@ -14,19 +14,16 @@ import moment from "moment";
  */
 
 export function FormDisplayControl(props) {
-    //     const { isAddButtonEnabled = true, hostData } = props;
-    //     const { uuid } = hostData;
-    //     const [showAddAllergyPanel, setShowAddAllergyPanel] = useState(false);
+    // console.log('Tuesday props : ', props);
     const noFormText = <FormattedMessage id={'NO_FORM'} defaultMessage={'No Form found for this patient....'} />;
-    const formsHeading = <FormattedMessage id={'FORMS_HEADING'} defaultMessage={'Forms'} />;
+    const formsHeading = <FormattedMessage id={'FORMS_HEADING'} defaultMessage={'Onservation Forms'} />;
 
     const [formList, setFormList] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const buildResponseData = async () => {
         try {
-            const formResponseData = await fetchFormData(props?.hostData?.uuid);
+            const formResponseData = await fetchFormData(props?.hostData?.patientUuid);
             var grouped = {};
-            console.log('formResponseData ', formResponseData);
             if (formResponseData?.length > 0) {
                 formResponseData.forEach(function (formEntry) {
                     grouped[formEntry.formName] = grouped[formEntry.formName] || [];
@@ -45,7 +42,6 @@ export function FormDisplayControl(props) {
                     return new Date(b.encounterDate) - new Date(a.encounterDate);
                 });
             })
-            console.log('grouped buildResponseData', grouped);
             setFormList(grouped);
         } catch (e) {
             console.log(e);
@@ -53,6 +49,11 @@ export function FormDisplayControl(props) {
             setLoading(false);
         }
     };
+
+    const showEdit = function(currentEncounterUUid) {
+        return props?.hostData?.showEditForActiveEncounter ? (props?.hostData?.encounterUuid === currentEncounterUUid) : true;
+    }
+    
     useEffect(() => {
         buildResponseData();
     }, []);
@@ -62,12 +63,9 @@ export function FormDisplayControl(props) {
             <h2 className={"section-title"}>
                 {formsHeading}
             </h2>
-            {isLoading ? <div>Loading... Please Wait</div> : (
+            {isLoading ? <div className="loading-message">Loading... Please Wait</div> : (
                 <div className={"placeholder-text"}>{Object.entries(formList).length > 0 ? (
-
                     Object.entries(formList).map(([key, value]) => {
-                        console.log('key ', key);
-                        console.log('value ', value);
                         const moreThanOneEntry = value.length > 1;
                         return (
                             moreThanOneEntry ? (<Accordion>
@@ -76,7 +74,7 @@ export function FormDisplayControl(props) {
                                         value.map((entry) => {
                                             return (
                                                 <div className={"row acc-spacing"}>
-                                                    <span className={"form-name-text"}><a className="form-link">{moment(entry.encounterDate).format("DD/MM/YYYY HH:MM")}</a><i className="fa fa-pencil"></i></span>
+                                                    <span className={"form-name-text"}><a className="form-link">{moment(entry.encounterDate).format("DD/MM/YYYY HH:MM")}</a>{showEdit(entry.encounterUuid) && <i className="fa fa-pencil"></i>}</span>
                                                     <span className={"form-provider-text"}>{entry.providerName}</span>
                                                 </div>
                                             );
@@ -85,38 +83,13 @@ export function FormDisplayControl(props) {
                                 </AccordionItem>
                             </Accordion>) :
                                 <div className={"row"}>
-                                    <span className={"form-non-accordion-text"}>{key}</span>
-                                    <span className={"form-non-accordion-text  form-date-align"}><a className="form-link">{moment(value[0].encounterDate).format("DD/MM/YYYY HH:MM")}</a><i className="fa fa-pencil"></i></span>
+                                    <span className={"form-non-accordion-text form-heading"}>{key}</span>
+                                    <span className={"form-non-accordion-text  form-date-align"}><a className="form-link">{moment(value[0].encounterDate).format("DD/MM/YYYY HH:MM")}</a>{showEdit(value[0].encounterUuid) && <i className="fa fa-pencil"></i>}</span>
                                     <span className={"form-non-accordion-text"}>{value[0].providerName}</span>
                                 </div>
 
                         );
                     }))
-                    /* (sampleList?.map((key, value) => {
-                        console.log('key ', key);
-                        console.log('value ', value);
-                        <Accordion>
-                            {sampleList[key]?.length > 1 ? (sampleList[key].forEach(entry => {
-                                return (
-                                    <AccordionItem title={key}>
-                                        <span>{entry['date']}</span>
-                                        <span>{entry['providerName']}</span>
-                                    </AccordionItem>
-                                );
-                            })) : <span>{sampleList[key]}   {sampleList[key]['date']}  {sampleList[key]['providerName']}</span>}
-    
-                        </Accordion>
-                    }))
-    
-                    (formList?.map(key => {
-                        return (
-                            <div key={key}>
-                                <span>{key}</span>
-                                <span>{formList[key]}</span>
-                            </div>
-                        );
-                    }))  */
-
                     : (noFormText)}
                 </div>
 

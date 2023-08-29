@@ -3,9 +3,15 @@
 angular.module('bahmni.common.displaycontrol.dashboard')
 
     .directive('dashboard', [function () {
-        var controller = function ($scope, $filter) {
+        var controller = function ($scope, $filter, appService) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
+            };
+
+            $scope.formData = {
+                patientUuid: $scope.patient.uuid,
+                encounterUuid: $scope.visitHistory != undefined ? ($scope.visitHistory.activeVisit ? ($scope.visitHistory.activeVisit.encounters.length > 0 ? $scope.visitHistory.activeVisit.encounters[0].uuid : undefined) : undefined) : undefined,
+                showEditForActiveEncounter: appService.getAppDescriptor().getConfigValue("showEditForActiveEncounter") ? true : false
             };
 
             var checkDisplayType = function (sections, typeToCheck, index) {
