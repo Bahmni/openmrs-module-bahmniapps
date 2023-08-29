@@ -10,7 +10,7 @@
         <table ng-class="::{'h-scroll':showOnPrint, 'pivot-table':showOnPrint, 'h-scroll-print': !showOnPrint}">
             <thead>
             <tr>
-                <th class="row-header-group">{{::groupBy}}</th>
+                <th class="row-header-group">{{::heading}}</th>
                 <th ng-repeat="concept in ::result.concepts track by $index">
                     <span>{{::concept.shortName}}</span>
                     <hint concept-details="concept"/>
@@ -34,7 +34,7 @@
                     </span>
                     </div>
                     <div ng-if="::!isLonger(columnResult.value)">
-                        <span ng-class="::{'is-abnormal': (columnResult.abnormal == true)}">{{::getColumnValue(columnResult.value, concept.name)}}</span>
+                        <span ng-class="::{'is-abnormal': (columnResult.abnormal == true)}" style="text-align: center">{{::getColumnValue(columnResult.value, concept.name)}}</span>
                     </div>
                 </td>
             </tr>

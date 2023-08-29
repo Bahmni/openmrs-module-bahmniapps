@@ -17,6 +17,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 }
 
                 scope.groupBy = scope.config.groupBy || "visits";
+                scope.heading = scope.config.rowHeading || scope.config.groupBy;
                 scope.groupByEncounters = scope.groupBy === "encounters";
                 scope.groupByVisits = scope.groupBy === "visits";
 
@@ -36,7 +37,8 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                     if (conceptName && conceptSetUiConfigService.getConfig()[conceptName] && conceptSetUiConfigService.getConfig()[conceptName].displayMonthAndYear == true) {
                         return Bahmni.Common.Util.DateUtil.getDateInMonthsAndYears(value);
                     }
-                    return scope.isLonger(value) ? value.substring(0, 10) + "..." : value;
+                    const number = Number.parseFloat(value);
+                    return number ? number : scope.isLonger(value) ? value.substring(0, 10) + "..." : value;
                 };
 
                 scope.scrollLeft = function () {
@@ -74,6 +76,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 var pivotDataPromise = pivotTableService.getPivotTableFor(scope.patientUuid, scope.config, scope.visitUuid, startDate, endDate);
                 spinner.forPromise(pivotDataPromise, element);
                 pivotDataPromise.then(function (response) {
+                    const {obsConcepts, customSortNeeded} = scope.config;
                     var concepts = _.map(response.data.conceptDetails, function (conceptDetail) {
                         return {
                             name: conceptDetail.fullName,
@@ -83,6 +86,13 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                             units: conceptDetail.units
                         };
                     });
+                    if (customSortNeeded && obsConcepts) {
+                        concepts.sort(function (a, b){
+                            const indexOfA = obsConcepts.indexOf(a.name);
+                            const indexOfB = obsConcepts.indexOf(b.name);
+                            return indexOfA - indexOfB;
+                        });
+                    }
                     var tabluarDataInAscOrderByDate = _(response.data.tabularData).toPairs().sortBy(0).fromPairs().value();
                     scope.result = {concepts: concepts, tabularData: tabluarDataInAscOrderByDate};
                     scope.hasData = !_.isEmpty(scope.result.tabularData);
