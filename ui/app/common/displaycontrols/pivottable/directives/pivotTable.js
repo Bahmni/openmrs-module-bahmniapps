@@ -87,7 +87,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                         };
                     });
                     if (customSortNeeded && obsConcepts) {
-                        concepts.sort(function (a, b){
+                        concepts.sort(function (a, b) {
                             const indexOfA = obsConcepts.indexOf(a.name);
                             const indexOfB = obsConcepts.indexOf(b.name);
                             return indexOfA - indexOfB;
