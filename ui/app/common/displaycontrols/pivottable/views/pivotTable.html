@@ -34,7 +34,7 @@
                     </span>
                     </div>
                     <div ng-if="::!isLonger(columnResult.value)">
-                        <span ng-class="::{'is-abnormal': (columnResult.abnormal == true)}" style="text-align: center">{{::getColumnValue(columnResult.value, concept.name)}}</span>
+                        <span ng-class="::{'is-abnormal': (columnResult.abnormal == true)}">{{::getColumnValue(columnResult.value, concept.name)}}</span>
                     </div>
                 </td>
             </tr>
