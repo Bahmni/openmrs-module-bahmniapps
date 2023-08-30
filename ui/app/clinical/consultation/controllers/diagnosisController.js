@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService', '$translate', 'retrospectiveEntryService',
-        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService, $translate, retrospectiveEntryService) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService', '$translate', 'retrospectiveEntryService', 'drugService',
+        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService, $translate, retrospectiveEntryService, drugService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.todayWithoutTime = DateUtil.getDateWithoutTime(DateUtil.today());
             $scope.toggles = {
@@ -22,6 +22,8 @@ angular.module('bahmni.clinical')
 
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
+
+            $scope.cdssEnabled = false;
 
             $scope.orderOptions = {
                 'CLINICAL_DIAGNOSIS_ORDER_PRIMARY': 'PRIMARY',
@@ -56,6 +58,100 @@ angular.module('bahmni.clinical')
                 return canAdd;
             };
 
+            var getCdssEnabled = function () {
+                drugService.getCdssEnabled().then(function (response) {
+                    $scope.cdssEnabled = response.data;
+                });
+            };
+            getCdssEnabled();
+
+            var medicationResource = function () {
+                var medications = $scope.consultation.activeAndScheduledDrugOrders;
+                const newMedications = $scope.consultation.newlyAddedTabTreatments;
+                var drugs = [];
+
+                function createDrugObject (medication) {
+                    return {
+                        "resourceType": "MedicationRequest",
+                        "id": medication.uuid,
+                        "status": "active",
+                        "intent": "order",
+                        "medicationCodeableConcept": {
+                            "coding": [
+                                {
+                                    display: medication.drug.name,
+                                    code: medication.concept.mappings ? medication.concept.mappings[0].code : medication.drug.uuid,
+                                    system: medication.concept.mappings ? medication.concept.mappings[0].source : 'https://fhir.openmrs.org'
+                                }
+                            ]
+                        },
+                        "subject": {
+                            "reference": "Patient/" + $scope.patient.uuid
+                        }
+                    };
+                }
+
+                if (medications && medications.length > 0) {
+                    medications.forEach(function (medication) {
+                        drugs.push({ resource: createDrugObject(medication) });
+                    });
+                }
+
+                if (newMedications && newMedications.allMedications && newMedications.allMedications.treatments.length > 0) {
+                    newMedications.allMedications.treatments.forEach(function (medication) {
+                        drugs.push({ resource: createDrugObject(medication) });
+                    });
+                }
+
+                return drugs;
+            };
+
+            var diagnosesResource = function () {
+                var diagnoses = [];
+                var diagnosisLists = [$scope.consultation.newlyAddedDiagnoses, $scope.consultation.savedDiagnosesFromCurrentEncounter, $scope.consultation.pastDiagnoses];
+
+                function createDiagnosisResource (diagnosis) {
+                    return {
+                        resourceType: 'Condition',
+                        id: diagnosis.uuid,
+                        clinicalStatus: {
+                            coding: [
+                                {
+                                    system: diagnosis.codedAnswer.mappings ? diagnosis.codedAnswer.mappings[0].source : 'https://fhir.openmrs.org',
+                                    code: diagnosis.codedAnswer.mappings ? diagnosis.codedAnswer.mappings[0].code : diagnosis.codedAnswer.uuid,
+                                    display: diagnosis.codedAnswer.name
+                                }
+                            ]
+                        },
+                        subject: {
+                            reference: 'Patient/' + $scope.patient.uuid
+                        }
+                    };
+                }
+
+                diagnosisLists.forEach(function (diagnosisList) {
+                    if (diagnosisList && diagnosisList.length > 0) {
+                        diagnosisList.forEach(function (diagnosis) {
+                            diagnoses.push({ resource: createDiagnosisResource(diagnosis) });
+                        });
+                    }
+                });
+
+                return diagnoses;
+            };
+
+            var bundleResource = function () {
+                var diagnoses = diagnosesResource();
+                var medications = medicationResource();
+                var bundle = {
+                    "resourceType": "Bundle",
+                    "type": "transaction",
+                    "entry": [].concat(diagnoses, medications)
+                };
+
+                return medications.length > 0 ? bundle : null;
+            };
+
             $scope.getAddNewDiagnosisMethod = function (diagnosisAtIndex) {
                 return function (item) {
                     var concept = item.lookup;
@@ -68,8 +164,87 @@ angular.module('bahmni.clinical')
                          change to say array[index]=newObj instead array.splice(index,1,newObj);
                          */
                         $scope.consultation.newlyAddedDiagnoses.splice(index, 1, diagnosis);
+                        if ($scope.cdssEnabled) {
+                            var bundle = bundleResource();
+                            if (bundle) {
+                                drugService.sendDiagnosisDrugBundle(bundle).then(function (response) {
+                                    var alerts = response.data;
+                                    $scope.cdssAlerts = alerts;
+                                    $rootScope.cdssAlerts = alerts;
+                                    getFlaggedSavedDiagnosisAlert();
+                                    getAlertForCurrentDiagnosis();
+                                });
+                            }
+                        }
                     }
                 };
+            };
+
+            $scope.isPastDiagnosisFlagged = function () {
+                var pastDiagnoses = $scope.consultation.pastDiagnoses;
+                var alerts = $scope.cdssAlerts;
+                var flaggedDiagnoses = [];
+                if (pastDiagnoses && pastDiagnoses.length > 0 && alerts && alerts.length > 0) {
+                    pastDiagnoses.forEach(function (diagnosis) {
+                        diagnosis.alert = alerts.find(function (cdssAlert) {
+                            return cdssAlert.referenceCondition.coding.some(function (coding) {
+                                var findMapping = diagnosis.codedAnswer.mappings.find(function (mapping) {
+                                    return mapping.code === coding.code;
+                                });
+                                return findMapping !== undefined;
+                            });
+                        });
+                        if (diagnosis.alert) {
+                            flaggedDiagnoses.push(diagnosis);
+                        }
+                    });
+                    $scope.consultation.pastDiagnoses = pastDiagnoses;
+                }
+                return flaggedDiagnoses.length > 0;
+            };
+
+            var getFlaggedSavedDiagnosisAlert = function () {
+                var alerts = $scope.cdssAlerts;
+                var diagnoses = $scope.consultation.savedDiagnosesFromCurrentEncounter;
+                var flaggedDiagnoses = [];
+                if (diagnoses && diagnoses.length > 0 && alerts && alerts.length > 0) {
+                    diagnoses.forEach(function (diagnosis) {
+                        diagnosis.alert = alerts.find(function (cdssAlert) {
+                            return cdssAlert.referenceCondition.coding.some(function (coding) {
+                                var findMapping = diagnosis.codedAnswer.mappings.find(function (mapping) {
+                                    return mapping.code === coding.code;
+                                });
+                                return findMapping !== undefined;
+                            });
+                        });
+                        if (diagnosis.alert) {
+                            flaggedDiagnoses.push(diagnosis);
+                        }
+                    });
+                    $scope.consultation.newlyAddedDiagnoses = diagnoses;
+                }
+                return flaggedDiagnoses;
+            };
+
+            var getAlertForCurrentDiagnosis = function () {
+                var alerts = $scope.cdssAlerts;
+                var diagnoses = $scope.consultation.newlyAddedDiagnoses;
+                var flaggedDiagnoses = [];
+                if (diagnoses && diagnoses.length > 0 && alerts && alerts.length > 0) {
+                    diagnoses.forEach(function (diagnosis) {
+                        diagnosis.alert = alerts.find(function (cdssAlert) {
+                            return cdssAlert.referenceCondition.coding.some(function (coding) {
+                                return diagnosis.codedAnswer.uuid === coding.code;
+                            });
+                        });
+                        if (diagnosis.alert) {
+                            diagnosis.alert.isActive = true;
+                            flaggedDiagnoses.push(diagnosis);
+                        }
+                    });
+                    $scope.consultation.newlyAddedDiagnoses = diagnoses;
+                }
+                return flaggedDiagnoses;
             };
 
             var addPlaceHolderDiagnosis = function () {
@@ -130,8 +305,8 @@ angular.module('bahmni.clinical')
                 });
                 var isValidConditionForm = ($scope.consultation.condition.isEmpty() || $scope.consultation.condition.isValid());
                 return {
-                    allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0
-                    && invalidSavedDiagnosesFromCurrentEncounter.length === 0 && isValidConditionForm,
+                    allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0 &&
+                    invalidSavedDiagnosesFromCurrentEncounter.length === 0 && isValidConditionForm,
                     errorMessage: $scope.errorMessage
                 };
             };
@@ -313,11 +488,12 @@ angular.module('bahmni.clinical')
                 spinner.forPromise(
                     diagnosisService.deleteDiagnosis(obsUUid).then(function () {
                         messagingService.showMessage('info', 'DELETED_MESSAGE');
-                        var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0 ?
-                                          $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
+                        var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0
+                                          ? $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
                         return reloadDiagnosesSection(currentUuid);
                     }))
                     .then(function () {
+                        // getFlaggedSavedDiagnosisAlert();
                     });
             };
             var clearBlankDiagnosis = true;
