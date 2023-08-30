@@ -177,7 +177,7 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var getProviderAttributesForPrint = function (attributeData, attributeTypesToFilter) {
+        var getOrderedProviderAttributesForPrint = function (attributeData, attributeTypesToFilter) {
             if (!attributeTypesToFilter) return;
             var filteredAttributes = attributeData.filter(function (attribute) {
                 return attributeTypesToFilter.includes(attribute.attributeType.display);
@@ -224,6 +224,6 @@ angular.module('bahmni.clinical')
             voidDrugOrder: voidDrugOrder,
             sharePrescriptions: sharePrescriptions,
             printSelectedPrescriptions: printSelectedPrescriptions,
-            getProviderAttributesForPrint: getProviderAttributesForPrint
+            getOrderedProviderAttributesForPrint: getOrderedProviderAttributesForPrint
         };
     }]);

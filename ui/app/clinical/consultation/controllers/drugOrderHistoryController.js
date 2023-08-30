@@ -108,7 +108,7 @@ angular.module('bahmni.clinical')
                             promises.push(promise);
 
                             promise.then(function (response) {
-                                drugOrder.provider.attributes = treatmentService.getProviderAttributesForPrint(response.data.results, $scope.printPrescriptionFeature.providerAttributesForPrint);
+                                drugOrder.provider.attributes = treatmentService.getOrderedProviderAttributesForPrint(response.data.results, $scope.printPrescriptionFeature.providerAttributesForPrint);
                             }).catch(function (error) {
                                 console.error("Error fetching provider attributes: ", error);
                             });
@@ -121,10 +121,11 @@ angular.module('bahmni.clinical')
                     const diagnoses = response[0].data;
                     const dispenserAttributes = response[1].data.results;
                     observationsEntries = response[2].data;
-                    dispenserInfo = treatmentService.getProviderAttributesForPrint(dispenserAttributes, $scope.printPrescriptionFeature.providerAttributesForPrint);
+                    dispenserInfo = treatmentService.getOrderedProviderAttributesForPrint(dispenserAttributes, $scope.printPrescriptionFeature.providerAttributesForPrint);
                     angular.forEach(diagnoses, function (diagnosis) {
                         if (diagnosis.order === $scope.printPrescriptionFeature.printDiagnosis.order &&
-                            diagnosis.certainty === $scope.printPrescriptionFeature.printDiagnosis.certainity) {
+                            diagnosis.certainty === $scope.printPrescriptionFeature.printDiagnosis.certainity &&
+                            diagnosis.codedAnswer !== null) {
                             if (diagnosesCodes.length > 0) {
                                 diagnosesCodes += ", ";
                             }
