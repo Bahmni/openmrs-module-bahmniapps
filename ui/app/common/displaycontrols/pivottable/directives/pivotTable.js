@@ -17,7 +17,7 @@ angular.module('bahmni.common.displaycontrol.pivottable').directive('pivotTable'
                 }
 
                 scope.groupBy = scope.config.groupBy || "visits";
-                scope.heading = scope.config.rowHeading || scope.config.groupBy;
+                scope.heading = scope.config.rowHeading || scope.groupBy;
                 scope.groupByEncounters = scope.groupBy === "encounters";
                 scope.groupByVisits = scope.groupBy === "visits";
 
