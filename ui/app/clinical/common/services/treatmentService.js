@@ -209,7 +209,16 @@ angular.module('bahmni.clinical')
                 };
                 var templateUrl = printPrescriptionFeatureConfig.templateUrl || '../common/displaycontrols/prescription/views/prescription.html';
                 var fileName = patient.givenName + patient.familyName + "_" + patient.identifier + "_Prescription";
-                printer.print(templateUrl, { patient: patient, encounterDrugOrderMap: encounterDrugOrderMap, printParams: printParams, additionalInfo: additionalInfo, diagnosesCodes: diagnosesCodes, dispenserInfo: dispenserInfo, observationsEntries: observationsEntries }, fileName);
+                const printData = {
+                    patient: patient,
+                    encounterDrugOrderMap: encounterDrugOrderMap,
+                    printParams: printParams,
+                    additionalInfo: additionalInfo,
+                    diagnosesCodes: diagnosesCodes,
+                    dispenserInfo: dispenserInfo,
+                    observationsEntries: observationsEntries
+                };
+                printer.print(templateUrl, printData, fileName);
             }
         };
 
