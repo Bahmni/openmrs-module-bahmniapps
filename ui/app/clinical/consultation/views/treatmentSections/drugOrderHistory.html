@@ -10,7 +10,7 @@
                     <span>{{drugOrderGroup.label | bahmniDate}}</span>
                     <i class="fa fa-star current-visit-icon" title="Current visit" ng-if="drugOrderGroup.isCurrentVisit"></i>
                 </label>
-                <button ng-show="enablePrintSelectedDrugs" ng-disabled="!isAnyDrugSelected()" type="submit" class="secondary-button print-drugs-btn fr" form="prescribedDrugs">{{ ::'MEDICATION_PRINT' | translate }}</button>
+                <button ng-show="printPrescriptionFeature" ng-disabled="!isAnyDrugSelected()" type="submit" class="secondary-button print-drugs-btn fr" form="prescribedDrugs">{{ ::'MEDICATION_PRINT' | translate }}</button>
                 <button class="secondary-button refill-drugs-btn fr" ng-click="refillAll(drugOrderGroup.drugOrders)" ng-if="!drugOrderGroupsEmpty()">{{ ::'MEDICATION_REFILL_ALL' | translate }}</button>
                 <button  ng-repeat="orderAttribute in getOrderAttributes()" class="secondary-button dispense-all-btn fr" show-if-privilege="{{dispensePrivilege}}" ng-if="!drugOrderGroupsEmpty()"  ng-click="updateAllOrderAttributesByName(orderAttribute,drugOrderGroup)" ng-disabled="!canUpdateAtLeastOneOrderAttributeOfName(drugOrderGroup,orderAttribute.name)">
                     <i  ng-init="allOrderAttributesOfNameSet(drugOrderGroup,orderAttribute.name)" class="fa fa-check" ng-show="drugOrderGroup[orderAttribute.name].selected" ></i>
@@ -56,7 +56,7 @@
                                         <button class="refill-btn" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
                                             {{ ::'MEDICATION_REFILL' | translate }}
                                         </button>
-                                        <input ng-show="enablePrintSelectedDrugs" type="checkbox" id="{{$parent.$index + '/' + drugOrder.uuid}}" name="selectedDrug"
+                                        <input ng-show="printPrescriptionFeature" type="checkbox" id="{{$parent.$index + '/' + drugOrder.uuid}}" name="selectedDrug"
                                             ng-model="selectedDrugs[$parent.$index + '/' + drugOrder.uuid]"/>
                                     </div>
 								</div>
