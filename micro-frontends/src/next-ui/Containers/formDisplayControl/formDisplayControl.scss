@@ -26,9 +26,19 @@
   border-bottom-width: thin;
 }
 
-.acc-spacing{
+.row-accordion{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom-style: solid;
+  border-bottom-color: #d9d7d7;
+  border-bottom-width: thin;
   padding-bottom: 5px;
+  &:last-child {
+    border-bottom: none;
+  }
 }
+
 .form-non-accordion-text{
   font-family: OpenSans, Arial, sans-serif;
   font-size: 14px;

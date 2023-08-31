@@ -104,6 +104,10 @@ $css--body: false;
   padding-right: 0;
   padding: 10px;
 }
+.bx--accordion__item--active .bx--accordion__content{
+  padding-top: 0;
+  padding-bottom: 0;
+}
 .bx--accordion__heading{
   max-width: 100%
 }

@@ -1,27 +1,141 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
-import { PatientAlergiesControl } from "./PatientAlergiesControl";
+import { fireEvent, render, screen, waitFor, mount } from "@testing-library/react";
+import { FormDisplayControl } from "./FormDisplayControl";
+import { mockFormResponseData } from "./FormDisplayControlMockData";
 
-it("works as a dummy test", () => {
-  const hostData = { name: "__test_name__" };
-  const hostApi = { callback: jest.fn() };
-  const tx = jest.fn().mockImplementation(key => {
-    switch (key) {
-      case "SAMPLE_AT_LABEL":
-        return "__test-translation__"
-    }
-    return '';
-  })
+const mockFetchFormData = jest.fn();
+
+jest.mock("../../utils/FormDisplayControl/FormUtils", () => ({
+  fetchFormData: () => mockFetchFormData(),
+}));
+
+jest.mock("../../Components/i18n/I18nProvider", () => ({
+  I18nProvider: ({ children }) => <div>{children}</div>
+}));
+
+const mockHostData = {
+  patientUuid: 'some-patient-uuid',
+  showEditForActiveEncounter: true,
+  encounterUuid: 'some-encounter-uuid'
+};
+ 
+describe('FormDisplayControl Component for empty mock data', () => {
+  it('should show no-forms-message when form entries are empty', async () => {
+    const mockWithPatientHostData = {
+      patientUuid: 'some-patient-uuid',
+      encounterUuid: undefined
+    };
+    mockFetchFormData.mockResolvedValueOnce({});
+    
+    const { container } = render(<FormDisplayControl hostData={mockWithPatientHostData} />);
+    
+    await waitFor(() => {
+      // expect(screen.getByText('No Form found for this patient....')).toBeTruthy();
+      expect(container.querySelector(".placeholder-text").innerHTML).toEqual('No Form found for this patient....');
+    });
+  });
+});
+
+describe('FormDisplayControl Component', () => {
   
-  render(<PatientAlergiesControl hostData={hostData} hostApi={hostApi} tx={tx}/>);
+  it("should render the component", () => {
+    const { container } = render(<FormDisplayControl hostData={mockHostData} />);
+    expect(container).toMatchSnapshot();
+  });
 
-  expect(screen.getByText('Displaying alergy control from __test_name__')).toBeTruthy();
-  expect(screen.getByText('Translation: __test-translation__')).toBeTruthy();
+  it('should show loading message', () => {
+    const { container } = render(<FormDisplayControl hostData={mockHostData} />);
+    expect(container.querySelector('.loading-message')).not.toBeNull();
+    expect(container.querySelector('.loading-message').innerHTML).toEqual('Loading... Please Wait');
+  });
 
-  const button = screen.getByRole('button', { name: 'Click for callback' });
-  expect(button).toBeTruthy();
-  fireEvent.click(button);
+});
 
-  expect(hostApi.callback).toHaveBeenCalled();
+;
+describe('FormDisplayControl Component with Accordion and Non-Accordion', () => {
 
+  beforeEach(() => {
+    mockFetchFormData.mockResolvedValue(mockFormResponseData);
+  });
+  // it("should render the component with form data", async() => {
+  //   mockFetchFormData.mockResolvedValueOnce(mockFormResponseData);
+  //   const { container } = render(<FormDisplayControl hostData={mockHostData} />);
+  //   await waitFor(() => {
+  //     expect(container).toMatchSnapshot();
+  //   });
+  // });
+  
+  it('should render accordion form entries when loading is done', async () => {
+    const { container } = render(<FormDisplayControl hostData={mockHostData} />);
+
+    await waitFor(() => {
+      expect(container.querySelectorAll(".bx--accordion__title")).toHaveLength(1);
+      expect(container.querySelector(".bx--accordion__title").innerHTML).toEqual('Pre Anaesthesia Assessment');
+      expect(container.querySelector(".row-accordion > .form-name-text > .form-link").innerHTML).toEqual('28/08/2023 15:08');
+      expect(container.querySelector(".row-accordion > .form-provider-text").innerHTML).toEqual('Doctor One');
+      
+    });
+  });
+
+  it('should render non-accordion form entries when loading is done', async () => {
+    const { container } = render(<FormDisplayControl hostData={mockHostData} />);
+
+    await waitFor(() => {
+      expect(container.querySelectorAll(".form-non-accordion-text")).toHaveLength(6);
+      expect(container.querySelectorAll(".form-non-accordion-text.form-heading")[0].innerHTML).toEqual('Orthopaedic Triage');
+      expect(container.querySelectorAll(".form-non-accordion-text.form-date-align > a")[0].innerHTML).toEqual('29/08/2023 08:08');
+      expect(container.querySelectorAll(".form-non-accordion-text")[2].innerHTML).toEqual('Doctor Two');
+      expect(container.querySelectorAll(".form-non-accordion-text.form-heading")[1].innerHTML).toEqual('Patient Progress Notes and Orders');
+      expect(container.querySelectorAll(".form-non-accordion-text.form-date-align > a")[1].innerHTML).toEqual('29/08/2023 08:08');
+      expect(container.querySelectorAll(".form-non-accordion-text")[5].innerHTML).toEqual('Doctor One');
+    });
+
+  });
+
+  it('should not see edit button for non-active-encounter entries and when showEditForActiveEncounter is true', async () => {
+    const { container } = render(<FormDisplayControl hostData={mockHostData} />);
+
+    await waitFor(() => {
+      expect(container.querySelectorAll(".fa.fa-pencil")).toHaveLength(0);
+    });
+  });
+
+  it('should see edit button for active-encounter entries and when showEditForActiveEncounter is true', async () => {
+    const activeEncounterMockHostData = {
+      patientUuid: 'some-patient-uuid',
+      showEditForActiveEncounter: true,
+      encounterUuid: '6e52cecd-a095-457f-9515-38cf9178cb50'
+    };
+    const { container } = render(<FormDisplayControl hostData={activeEncounterMockHostData} />);
+
+    await waitFor(() => {
+      expect(container.querySelectorAll(".fa.fa-pencil")).toHaveLength(2);
+    });
+  });
+
+  it('should see edit button for all entries and when showEditForActiveEncounter is false', async () => {
+    const activeEncounterMockHostData = {
+      patientUuid: 'some-patient-uuid',
+      showEditForActiveEncounter: false,
+      encounterUuid: '6e52cecd-a095-457f-9515-38cf9178cb50'
+    };
+    const { container } = render(<FormDisplayControl hostData={activeEncounterMockHostData} />);
+
+    await waitFor(() => {
+      expect(container.querySelectorAll(".fa.fa-pencil")).toHaveLength(4);
+    });
+  });
+
+  it('should see edit button for all entries and when showEditForActiveEncounter is not present', async () => {
+    const activeEncounterMockHostData = {
+      patientUuid: 'some-patient-uuid',
+      encounterUuid: '6e52cecd-a095-457f-9515-38cf9178cb50'
+    };
+    const { container } = render(<FormDisplayControl hostData={activeEncounterMockHostData} />);
+
+    await waitFor(() => {
+      expect(container.querySelectorAll(".fa.fa-pencil")).toHaveLength(4);
+    });
+  });
+  
 });

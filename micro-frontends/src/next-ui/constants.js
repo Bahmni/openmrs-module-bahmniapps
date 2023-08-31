@@ -1,3 +1,9 @@
+export const LS_LANG_KEY = "NG_TRANSLATE_LANG_KEY";
+export const BASE_URL =
+  typeof __webpack_public_path__ !== "undefined"
+    ? __webpack_public_path__
+    : "/";
+
 const hostUrl = localStorage.getItem("host")
   ? "https://" + localStorage.getItem("host")
   : "";

@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormDisplayControl Component should render the component 1`] = `
+<div>
+  <div>
+    <div>
+      <h2
+        class="section-title"
+      >
+        Observation Forms
+      </h2>
+      <div
+        class="loading-message"
+      >
+        Loading... Please Wait
+      </div>
+    </div>
+  </div>
+</div>
+`;
