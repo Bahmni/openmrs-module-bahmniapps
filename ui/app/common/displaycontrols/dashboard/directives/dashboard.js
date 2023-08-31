@@ -11,7 +11,8 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             $scope.formData = {
                 patientUuid: $scope.patient.uuid,
                 encounterUuid: $scope.visitHistory != undefined ? ($scope.visitHistory.activeVisit ? ($scope.visitHistory.activeVisit.encounters.length > 0 ? $scope.visitHistory.activeVisit.encounters[0].uuid : undefined) : undefined) : undefined,
-                showEditForActiveEncounter: appService.getAppDescriptor().getConfigValue("showEditForActiveEncounter") ? true : false
+                showEditForActiveEncounter: appService.getAppDescriptor().getConfigValue("showEditForActiveEncounter") ? true : false,
+                numberOfVisits: $scope.config.sections['forms-2.0'].dashboardConfig.maximumNoOfVisits ? $scope.config.sections['forms-2.0'].dashboardConfig.maximumNoOfVisits : undefined
             };
 
             var checkDisplayType = function (sections, typeToCheck, index) {

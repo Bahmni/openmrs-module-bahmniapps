@@ -23,7 +23,7 @@ export function FormDisplayControl(props) {
     const [isLoading, setLoading] = useState(true);
     const buildResponseData = async () => {
         try {
-            const formResponseData = await fetchFormData(props?.hostData?.patientUuid);
+            const formResponseData = await fetchFormData(props?.hostData?.patientUuid, props?.hostData?.numberOfVisits);
             var grouped = {};
             if (formResponseData?.length > 0) {
                 formResponseData.forEach(function (formEntry) {
