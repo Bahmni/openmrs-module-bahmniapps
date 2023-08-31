@@ -7,10 +7,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
         'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService', 'confirmBox',
         'virtualConsultService', 'adhocTeleconsultationService',
         function ($scope, $rootScope, $state, $location, $translate, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
-                  spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
-                  patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
-                  ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, confirmBox,
-                  virtualConsultService, adhocTeleconsultationService) {
+            spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
+            patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
+            ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, confirmBox,
+            virtualConsultService, adhocTeleconsultationService) {
             var ERROR = 1;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var getPreviousActiveCondition = Bahmni.Common.Domain.Conditions.getPreviousActiveCondition;
@@ -181,7 +181,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             var initialize = function () {
                 var appExtensions = clinicalAppConfigService.getAllConsultationBoards();
-                $scope.adtNavigationConfig = {forwardUrl: Bahmni.Clinical.Constants.adtForwardUrl, title: $translate.instant("CLINICAL_GO_TO_DASHBOARD_LABEL"), privilege: Bahmni.Clinical.Constants.adtPrivilege };
+                $scope.adtNavigationConfig = { forwardUrl: Bahmni.Clinical.Constants.adtForwardUrl, title: $translate.instant("CLINICAL_GO_TO_DASHBOARD_LABEL"), privilege: Bahmni.Clinical.Constants.adtPrivilege };
                 $scope.availableBoards = $scope.availableBoards.concat(appExtensions);
                 $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue('showSaveConfirmDialog');
                 var adtNavigationConfig = appService.getAppDescriptor().getConfigValue('adtNavigationConfig');
@@ -203,7 +203,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             event.preventDefault();
                             spinner.hide(toState.spinnerToken);
                             ngDialog.close();
-                            $scope.toStateConfig = {toState: toState, toParams: toParams};
+                            $scope.toStateConfig = { toState: toState, toParams: toParams };
                             $scope.displayConfirmationDialog();
                         }
                     }
@@ -212,7 +212,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             });
 
             $scope.adtNavigationURL = function (visitUuid) {
-                return appService.getAppDescriptor().formatUrl($scope.adtNavigationConfig.forwardUrl, {'patientUuid': $scope.patient.uuid, 'visitUuid': visitUuid});
+                return appService.getAppDescriptor().formatUrl($scope.adtNavigationConfig.forwardUrl, { 'patientUuid': $scope.patient.uuid, 'visitUuid': visitUuid });
             };
 
             var cleanUpListenerErrorsOnForm = $scope.$on("event:errorsOnForm", function () {
@@ -225,7 +225,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                         event.preventDefault();
                         $scope.targetUrl = event.currentTarget.getAttribute('href');
                     }
-                    ngDialog.openConfirm({template: '../common/ui-helper/views/saveConfirmation.html', scope: $scope});
+                    ngDialog.openConfirm({ template: '../common/ui-helper/views/saveConfirmation.html', scope: $scope });
                 }
                 if ($scope.showTeleConsultationWindow) {
                     var childScope = {};
@@ -235,7 +235,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                         event.preventDefault();
                         confirmBox({
                             scope: childScope,
-                            actions: [{name: 'ok', display: 'Ok'}],
+                            actions: [{ name: 'ok', display: 'Ok' }],
                             className: "ngdialog-theme-default delete-program-popup"
                         });
                     }
@@ -473,10 +473,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 _.each($scope.consultation.observationForms, function (observationForm) {
                     if (valid && observationForm.component) {
                         var value = observationForm.component.getValue();
-                       
-                        if (value.errors)
-                         {
-                            if ($state.current.name === "patient.dashboard.show.observations") {
+
+                        if (value.errors) {
+                            if ($state.current !== undefined && $state.current.name === "patient.dashboard.show.observations") {
                                 messagingService.showMessage('error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
                                 valid = false;
                             }
@@ -501,7 +500,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     var errorMessage = discontinuedDrugOrderValidationMessage;
                     messagingService.showMessage('error', errorMessage);
                 }
-                return shouldAllow && !discontinuedDrugOrderValidationMessage ;
+                return shouldAllow && !discontinuedDrugOrderValidationMessage;
             };
 
             var copyConsultationToScope = function (consultationWithDiagnosis) {
@@ -543,13 +542,12 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                         $rootScope.cdssAlerts = cdssAlerts;
                     }
                     preSaveEvents();
-                    return spinner.forPromise($q.all([preSavePromise(),
-                        encounterService.getEncounterType($state.params.programUuid, sessionService.getLoginLocationUuid())]).then(function (results) {
-                            var encounterData = results[0];
-                            encounterData.encounterTypeUuid = results[1].uuid;
-                            var params = angular.copy($state.params);
-                            params.cachebuster = Math.random();
-                            return encounterService.create(encounterData)
+                    return spinner.forPromise($q.all([preSavePromise(), encounterService.getEncounterType($state.params.programUuid, sessionService.getLoginLocationUuid())]).then(function (results) {
+                        var encounterData = results[0];
+                        encounterData.encounterTypeUuid = results[1].uuid;
+                        var params = angular.copy($state.params);
+                        params.cachebuster = Math.random();
+                        return encounterService.create(encounterData)
                             .then(function (saveResponse) {
                                 $state.dirtyConsultationForm = false;
                                 $state.orderRemoved = false;
@@ -591,7 +589,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                                 var message = Bahmni.Clinical.Error.translate(error) || "{{'CLINICAL_SAVE_FAILURE_MESSAGE_KEY' | translate}}";
                                 messagingService.showMessage('error', message);
                             });
-                        }));
+                    }));
                 } catch (error) {
                     var displayErrors = function (error) {
                         if (angular.isArray(error)) {
