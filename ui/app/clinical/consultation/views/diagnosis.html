@@ -11,6 +11,14 @@
                                     {{ ::'CLINICAL_DIAGNOSIS' | translate }}
                                 </div>
                                 <div class="col-body">
+                                    <span ng-if="diagnosis.alert" class="alert-item">
+                                        <button class="cdss-alert-icon button-alert alert-button">
+                                            <i class="fa cdss-icon-medication"
+                                            ng-class="{'fa-exclamation-triangle critical': diagnosis.alert.indicator == 'critical','fa-exclamation-triangle warning' : diagnosis.alert.indicator == 'warning', 'fa-info-circle info': diagnosis.alert.indicator == 'info'}"
+                                            >
+                                            </i>
+                                        </button>
+                                    </span>
                                     <input ng-model="diagnosis.codedAnswer.name" type="text" name="name"
                                         id="name-{{$index}}" bahmni-autocomplete source="getDiagnosis"
                                         response-map="cleanOutDiagnosisList"

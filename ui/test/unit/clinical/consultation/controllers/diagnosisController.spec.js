@@ -1,5 +1,5 @@
 describe("Diagnosis Controller", function () {
-    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService;
+    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService, drugService;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     beforeEach(module('bahmni.clinical'));
@@ -39,6 +39,14 @@ describe("Diagnosis Controller", function () {
 
         retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['isRetrospectiveMode']);
 
+        drugService = jasmine.createSpyObj('drugService', ['getCdssEnabled', 'sendDiagnosisDrugBundle']);
+
+        drugService.getCdssEnabled.and.returnValue(specUtil.respondWith(true));
+
+        drugService.sendDiagnosisDrugBundle.and.returnValue(specUtil.respondWith({
+            data: []
+        }));
+
         $controller('DiagnosisController', {
             $scope: $scope,
             $rootScope: rootScope,
@@ -47,7 +55,8 @@ describe("Diagnosis Controller", function () {
             appService: appService,
             diagnosisService: mockDiagnosisService,
             $translate: translate,
-            retrospectiveEntryService: retrospectiveEntryService
+            retrospectiveEntryService: retrospectiveEntryService,
+            drugService: drugService
         });
     }));
 
