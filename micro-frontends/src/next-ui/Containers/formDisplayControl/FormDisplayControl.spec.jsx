@@ -2,6 +2,7 @@ import React from "react";
 import { fireEvent, render, screen, waitFor, mount } from "@testing-library/react";
 import { FormDisplayControl } from "./FormDisplayControl";
 import { mockFormResponseData } from "./FormDisplayControlMockData";
+import moment from "moment";
 
 const mockFetchFormData = jest.fn();
 
@@ -71,7 +72,7 @@ describe('FormDisplayControl Component with Accordion and Non-Accordion', () => 
     await waitFor(() => {
       expect(container.querySelectorAll(".bx--accordion__title")).toHaveLength(1);
       expect(container.querySelector(".bx--accordion__title").innerHTML).toEqual('Pre Anaesthesia Assessment');
-      expect(container.querySelector(".row-accordion > .form-name-text > .form-link").innerHTML).toEqual('28/08/2023 15:08');
+      expect(container.querySelector(".row-accordion > .form-name-text > .form-link").innerHTML).toEqual(moment(1693217959000).format("DD/MM/YYYY HH:MM"));
       expect(container.querySelector(".row-accordion > .form-provider-text").innerHTML).toEqual('Doctor One');
       
     });
@@ -83,10 +84,10 @@ describe('FormDisplayControl Component with Accordion and Non-Accordion', () => 
     await waitFor(() => {
       expect(container.querySelectorAll(".form-non-accordion-text")).toHaveLength(6);
       expect(container.querySelectorAll(".form-non-accordion-text.form-heading")[0].innerHTML).toEqual('Orthopaedic Triage');
-      expect(container.querySelectorAll(".form-non-accordion-text.form-date-align > a")[0].innerHTML).toEqual('29/08/2023 08:08');
+      expect(container.querySelectorAll(".form-non-accordion-text.form-date-align > a")[0].innerHTML).toEqual(moment(1693277657000).format("DD/MM/YYYY HH:MM"));
       expect(container.querySelectorAll(".form-non-accordion-text")[2].innerHTML).toEqual('Doctor Two');
       expect(container.querySelectorAll(".form-non-accordion-text.form-heading")[1].innerHTML).toEqual('Patient Progress Notes and Orders');
-      expect(container.querySelectorAll(".form-non-accordion-text.form-date-align > a")[1].innerHTML).toEqual('29/08/2023 08:08');
+      expect(container.querySelectorAll(".form-non-accordion-text.form-date-align > a")[1].innerHTML).toEqual(moment(1693277657000).format("DD/MM/YYYY HH:MM"));
       expect(container.querySelectorAll(".form-non-accordion-text")[5].innerHTML).toEqual('Doctor One');
     });
 
