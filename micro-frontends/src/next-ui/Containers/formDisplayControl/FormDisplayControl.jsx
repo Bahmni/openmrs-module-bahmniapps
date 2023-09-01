@@ -4,7 +4,7 @@ import { Accordion, AccordionItem } from "carbon-components-react";
 import "../../../styles/carbon-conflict-fixes.scss";
 import "../../../styles/carbon-theme.scss";
 import "../../../styles/common.scss";
-import "./FormDisplayControl.scss";
+import "./formDisplayControl.scss";
 import { FormattedMessage } from "react-intl";
 import { fetchFormData } from "../../utils/FormDisplayControl/FormUtils";
 import moment from "moment";
