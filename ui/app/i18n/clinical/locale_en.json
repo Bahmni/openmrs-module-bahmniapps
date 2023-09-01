@@ -100,6 +100,7 @@
   "SAVE_ACCESS_KEY": "s",
   "CLINICAL_PRINT_TRANSLATION_KEY": "P<u>r</u>int",
   "CLINICAL_PRINT_ACCESS_KEY": "r",
+  "CLINICAL_SHARE_PRESCRIPTION_KEY": "Share or print the prescription",
   "VISIT_ON_TRANSLATION_KEY": "Visit On",
   "ENTERING_DATA_FOR_TRANSLATION_KEY": "Entering data for",
   "EDITITNG_DATA_FOR_ENCOUNTER_TRANSLATION_KEY": "Editing data for encounter",
