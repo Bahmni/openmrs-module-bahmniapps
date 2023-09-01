@@ -8,7 +8,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
             };
 
-            if($scope.patient !== undefined){
+            if ($scope.patient !== undefined) {
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
                     encounterUuid: $scope.activeEncounterUuid,
