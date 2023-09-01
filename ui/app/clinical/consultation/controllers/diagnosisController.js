@@ -106,10 +106,10 @@ angular.module('bahmni.clinical')
                 if (medications && medications.length > 0) {
                     medications.forEach(function (medication) {
                         if (!$scope.conceptSource) {
-                            drugService.getDrugConceptSourceMapping(medication.uuid).then(function (response) {
+                            drugService.getDrugConceptSourceMapping(medication.drug.uuid).then(function (response) {
                                 var bundle = response.data;
                                 var code = bundle.entry && bundle.entry.length > 0 && bundle.entry[0].resource.code;
-                                var conceptCode = code.coding.find(function (coding) {
+                                var conceptCode = code && code.coding.find(function (coding) {
                                     return coding.system;
                                 });
 
