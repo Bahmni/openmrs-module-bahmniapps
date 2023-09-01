@@ -2,10 +2,7 @@ import axios from "axios";
 import { FORM_BASE_URL } from "../../constants";
 
 export const fetchFormData = async (patientUuid, numberOfVisits) => {
-  console.log('FORM_BASE_URL Before',FORM_BASE_URL);
-  const apiURL = FORM_BASE_URL.replace('{patientUuid}',patientUuid)
-  console.log('FORM_BASE_URL After',apiURL);
-
+  const apiURL = FORM_BASE_URL.replace('{patientUuid}',patientUuid);
   const params = {
     formType: 'v2',
   }
@@ -14,7 +11,6 @@ export const fetchFormData = async (patientUuid, numberOfVisits) => {
   }
   try {
     const response = await axios.get(apiURL, { params });
-    console.log('fetchFormData', response);
     if(response.status === 200){
         return response.data;
     }
