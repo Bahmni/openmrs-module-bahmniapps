@@ -54,11 +54,11 @@ angular.module('bahmni.reports')
         var isPreviousMonth = function (date) {
             return (new Date(date).getMonth() === new Date().getMonth() - 1 && new Date(date).getFullYear() === new Date().getFullYear())
                 || (new Date(date).getMonth() === 11 && new Date(date).getFullYear() === new Date().getFullYear() - 1);
-        }
+        };
 
         var getPreviousMonthEndDate = function () {
             return new Date(new Date().getFullYear(), new Date().getMonth(), 0);
-        }
+        };
 
         var isDateRangeRequiredFor = function (report) {
             return _.find($rootScope.reportsRequiringDateRange, { name: report.name });
