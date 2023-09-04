@@ -69,7 +69,7 @@
                                     <div>{{drugOrder.getQuantityWithUnit()}}</div>
                                     <div class="footer-note">
                                         <span class="time-stamp">
-                                            <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
+                                            <span class="time">{{drugOrder.dateActivated | bahmniDateTime}}</span>
                                         </span>
                                         <span class="provider">
                                             <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"></provider-directive>
