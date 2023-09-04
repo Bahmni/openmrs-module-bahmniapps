@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor, mount } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { FormDisplayControl } from "./FormDisplayControl";
 import { mockFormResponseData } from "./FormDisplayControlMockData";
 import moment from "moment";
@@ -31,7 +31,7 @@ describe('FormDisplayControl Component for empty mock data', () => {
     const { container } = render(<FormDisplayControl hostData={mockWithPatientHostData} />);
     
     await waitFor(() => {
-      // expect(screen.getByText('No Form found for this patient....')).toBeTruthy();
+      expect(screen.getByText('No Form found for this patient....')).toBeTruthy();
       expect(container.querySelector(".placeholder-text").innerHTML).toEqual('No Form found for this patient....');
     });
   });
@@ -58,7 +58,8 @@ describe('FormDisplayControl Component with Accordion and Non-Accordion', () => 
   beforeEach(() => {
     mockFetchFormData.mockResolvedValue(mockFormResponseData);
   });
-  // it("should render the component with form data", async() => {
+  // TODO: fix this test
+  //  it("should render the component with form data", async() => {
   //   mockFetchFormData.mockResolvedValueOnce(mockFormResponseData);
   //   const { container } = render(<FormDisplayControl hostData={mockHostData} />);
   //   await waitFor(() => {
