@@ -100,3 +100,23 @@ $css--body: false;
   color: #d48c08;
   padding-left: 5px;
 }
+.bx--accordion__content{
+  padding-right: 0;
+  padding: 10px;
+}
+.bx--accordion__item--active .bx--accordion__content{
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.bx--accordion__heading{
+  max-width: 100%
+}
+.bx--accordion__arrow{
+  fill: #666666;
+}
+.bx--accordion__title{
+  margin: 0 0 0 10px;
+}
+.bx--accordion__item--active .bx--accordion__arrow{
+  fill: #666666;
+}

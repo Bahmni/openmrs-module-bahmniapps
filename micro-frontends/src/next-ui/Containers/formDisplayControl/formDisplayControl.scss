@@ -1,0 +1,93 @@
+.section-title{
+  font-family: OpenSans, Arial, sans-serif;
+  padding: 10px;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #FFFFFF;
+  font-size: 16px;
+  clear: both;
+  background: #669999;
+  position: relative;
+  border-radius: 2px 2px 0 0;
+}
+
+.placeholder-text{
+  background: #fff;
+  padding: 5px;
+  color: #444 !important;
+}
+
+.row{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom-style: solid;
+  border-bottom-color: #d9d7d7;
+  border-bottom-width: thin;
+}
+
+.row-accordion{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom-style: solid;
+  border-bottom-color: #d9d7d7;
+  border-bottom-width: thin;
+  padding-bottom: 5px;
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.form-non-accordion-text{
+  font-family: OpenSans, Arial, sans-serif;
+  font-size: 14px;
+  width: 50%;
+  justify-content: space-between;
+  &:last-child {
+    text-align: right;
+    padding-right: 10px;
+  }
+}
+
+.form-date-align{
+  text-align: right;
+}
+
+.form-accordion-text{
+  font-family: OpenSans, Arial, sans-serif;
+  padding: 10px;
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 10px;
+  justify-content: space-between;
+}
+
+.form-name-text{
+  padding-left: 15px;
+}
+
+.bx-accordion__arrow{
+  fill: #444444;
+}
+
+.form-accordion{
+  padding-right: 0%;
+}
+
+.form-link{
+  padding: 10px;
+}
+
+.form-heading{
+  color: #161616;
+}
+
+.form-link:hover {
+  text-decoration: underline;
+}
+
+.fa-pencil:hover{
+  color: #669999;
+}
