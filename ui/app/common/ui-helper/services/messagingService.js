@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.uiHelper')
     .service('messagingService', ['$rootScope', '$timeout', function ($rootScope, $timeout) {
-        this.messages = {error: [], info: []};
+        this.messages = {error: [], info: [], alert: []};
         var self = this;
 
         $rootScope.$on('event:serverError', function (event, errorMessage) {
@@ -41,5 +41,6 @@ angular.module('bahmni.common.uiHelper')
         this.clearAll = function () {
             self.messages["error"] = [];
             self.messages["info"] = [];
+            self.messages["alert"] = [];
         };
     }]);

@@ -1,30 +1,40 @@
 'use strict';
 
-angular.module('bahmni.common.uiHelper')
-    .controller('MessageController', ['$scope', 'messagingService',
-        function ($scope, messagingService) {
-            $scope.messages = messagingService.messages;
+angular.module("bahmni.common.uiHelper").controller("MessageController", [ "$scope", "messagingService", "$translate", "$state", "exitAlertService",
+    function ($scope, messagingService, $translate, $state, exitAlertService) {
+        $scope.messages = messagingService.messages;
 
-            $scope.getMessageText = function (level) {
-                var string = "";
-                $scope.messages[level].forEach(function (message) {
-                    string = string.concat(message.value);
-                });
+        $scope.getMessageText = function (level) {
+            var string = "";
+            $scope.messages[level].forEach(function (message) {
+                string = string.concat(message.value);
+            });
 
-                navigator.clipboard.writeText(string);
+            navigator.clipboard.writeText(string);
 
-                return string;
-            };
+            return string;
+        };
 
-            $scope.hideMessage = function (level) {
-                messagingService.hideMessages(level);
-            };
+        $scope.hideMessage = function (level) {
+            messagingService.hideMessages(level);
+        };
 
-            $scope.isErrorMessagePresent = function () {
-                return $scope.messages.error.length > 0;
-            };
+        $scope.isErrorMessagePresent = function () {
+            return $scope.messages.error.length > 0;
+        };
 
-            $scope.isInfoMessagePresent = function () {
-                return $scope.messages.info.length > 0;
-            };
-        }]);
+        $scope.isInfoMessagePresent = function () {
+            return $scope.messages.info.length > 0;
+        };
+
+        $scope.isAlertMessagePresent = function () {
+            return $scope.messages.alert.length > 0;
+        };
+
+        $scope.discardChanges = function (level) {
+            $state.discardChanges = true;
+            $scope.hideMessage(level);
+            exitAlertService.redirectUrl();
+        };
+    }
+]);

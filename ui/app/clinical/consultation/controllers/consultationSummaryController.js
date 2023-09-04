@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ConsultationSummaryController', ['$scope', '$translate', 'conceptSetUiConfigService', function ($scope, $translate, conceptSetUiConfigService) {
+    .controller('ConsultationSummaryController', ['$scope', '$state', '$translate', 'conceptSetUiConfigService', function ($scope, $state, $translate, conceptSetUiConfigService) {
         var geEditedDiagnosesFromPastEncounters = function () {
             var editedDiagnosesFromPastEncounters = [];
             $scope.consultation.pastDiagnoses.forEach(function (pastDiagnosis) {
@@ -17,6 +17,16 @@ angular.module('bahmni.clinical')
 //        TODO: Mihir, D3 : Hacky fix to update the datetime to current datetime on the server side. Ideal would be void the previous observation and create a new one.
             $scope.consultation.consultationNote.observationDateTime = null;
         };
+
+        $scope.$on('$stateChangeStart', function () {
+            if ($scope.consultationForm.$dirty) {
+                $state.dirtyConsultationForm = true;
+            }
+        });
+
+        $scope.$on("event:changes-saved", function (event) {
+            $scope.consultationForm.$dirty = false;
+        });
 
         var groupObservations = function () {
             var allObservations = $scope.consultation.observations;

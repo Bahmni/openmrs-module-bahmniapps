@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DispositionController', ['$scope', '$q', 'dispositionService', 'appService', 'retrospectiveEntryService', 'spinner', '$rootScope', '$translate', function ($scope, $q, dispositionService, appService, retrospectiveEntryService, spinner, $rootScope, $translate) {
+    .controller('DispositionController', ['$scope', '$state', '$q', 'dispositionService', 'appService', 'retrospectiveEntryService', 'spinner', '$rootScope', '$translate', function ($scope, $state, $q, dispositionService, appService, retrospectiveEntryService, spinner, $rootScope, $translate) {
         var consultation = $scope.consultation;
         var allDispositions = [];
         var getPreviousDispositionNote = function () {
@@ -119,6 +119,16 @@ angular.module('bahmni.clinical')
                 }
             }
         };
+
+        $scope.$on('$stateChangeStart', function () {
+            if ($scope.dispositionForm.$dirty) {
+                $state.dirtyConsultationForm = true;
+            }
+        });
+
+        $scope.$on("event:changes-saved", function () {
+            $scope.dispositionForm.$dirty = false;
+        });
 
         $scope.consultation.preSaveHandler.register("dispositionSaveHandlerKey", saveDispositions);
         $scope.$on('$destroy', saveDispositions);

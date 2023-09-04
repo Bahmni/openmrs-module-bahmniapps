@@ -3,10 +3,10 @@
 angular.module('bahmni.clinical')
     .controller('AddTreatmentController', ['$scope', '$rootScope', 'contextChangeHandler', 'treatmentConfig', 'drugService',
         '$timeout', 'clinicalAppConfigService', 'ngDialog', '$window', 'messagingService', 'appService', 'activeDrugOrders',
-        'orderSetService', '$q', 'locationService', 'spinner', '$translate',
+        'orderSetService', '$q', 'locationService', 'spinner', '$translate', '$state',
         function ($scope, $rootScope, contextChangeHandler, treatmentConfig, drugService, $timeout,
             clinicalAppConfigService, ngDialog, $window, messagingService, appService, activeDrugOrders,
-            orderSetService, $q, locationService, spinner, $translate) {
+            orderSetService, $q, locationService, spinner, $translate, $state) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var scrollTop = _.partial($window.scrollTo, 0, 0);
@@ -15,6 +15,9 @@ angular.module('bahmni.clinical')
             $scope.addTreatment = true;
             $scope.canOrderSetBeAdded = true;
             $scope.isSearchDisabled = false;
+            $scope.cdssEnabled = false;
+            $scope.clearButtonClicked = false;
+            $scope.conceptSource = localStorage.getItem("conceptSource") || "";
 
             $scope.getFilteredOrderSets = function (searchTerm) {
                 if (searchTerm && searchTerm.length >= 3) {
@@ -74,6 +77,34 @@ angular.module('bahmni.clinical')
             $scope.selectFromDefaultDrugList = function () {
                 $scope.onSelect($scope.treatment.selectedItem);
             };
+
+            $scope.auditOptions = function () {
+                return appService
+                    .getAppDescriptor()
+                    .getConfigValue('cdssDismissalOptionsToDisplay');
+            };
+
+            $scope.submitAudit = function (index) {
+                var patientUuid = $scope.patient.uuid;
+                var message = $scope.cdssaAlerts[index].summary.replace(/"/g, '');
+                var eventType = 'Dismissed: ' + $scope.treatment.audit;
+                $scope.cdssaAlerts.splice(index, 1);
+                return drugService
+                    .cdssAudit(patientUuid, eventType, message, 'CDSS')
+                    .then(function () {
+                        $scope.treatment.audit = '';
+                    });
+            };
+
+            $scope.$on('$stateChangeStart', function () {
+                if ($scope.addForm.$dirty && !$scope.clearButtonClicked) {
+                    $state.dirtyConsultationForm = true;
+                }
+            });
+
+            $scope.$on("event:changes-saved", function () {
+                $scope.addForm.$dirty = false;
+            });
 
             var markVariable = function (variable) {
                 $scope[variable] = true;
