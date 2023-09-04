@@ -72,6 +72,7 @@
   "REGISTRATION_TITLE_RELATIONSHIPS":"Relationships",
   "REGISTRATION_CONTENT_ENTERING_ID":"You are entering ID(s) which is ahead of the Sequence. It will create a gap in the Sequence. Do you want to continue?",
   "REGISTRATION_LABEL_SAVED" : "Saved",
+  "REGISTRATION_LABEL_SAVE_REDIRECTION" : "Saved and Visit Started Successfully",
   "REGISTRATION_NO_RESULTS_FOUND":"No results found",
   "REGISTRATION_INSUFFICIENT_PRIVILEGE": "You don't have privilege to do this action.",
   "REGISTRATION_LABEL_COULD_NOT_FIND_PATIENT":"Could not find patient with identifier {{patientIdentifier}}. Please verify the patient ID entered or create a new patient record with this ID.",
