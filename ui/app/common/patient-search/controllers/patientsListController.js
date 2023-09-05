@@ -176,6 +176,7 @@ angular.module('bahmni.common.patientSearch')
                 display: appExtn.extensionParams.display,
                 handler: appExtn.extensionParams.searchHandler,
                 forwardUrl: appExtn.extensionParams.forwardUrl,
+                targetedTab: appExtn.extensionParams.targetedTab || null,
                 id: appExtn.id,
                 params: appExtn.extensionParams.searchParams,
                 refreshTime: appExtn.extensionParams.refreshTime || 0,
@@ -234,8 +235,14 @@ angular.module('bahmni.common.patientSearch')
             if ($scope.search.searchType.links) {
                 link = _.find($scope.search.searchType.links, {linkColumn: heading}) || link;
             }
+            if ($scope.search.searchType.targetedTab) {
+                link.targetedTab = $scope.search.searchType.targetedTab;
+            }
             if (link.url && link.url !== null) {
-                $window.open(appService.getAppDescriptor().formatUrl(link.url, options, true), link.newTab ? "_blank" : "_self");
+                var newWindow = $window.open(appService.getAppDescriptor().formatUrl(link.url, options, true), link.newTab ? "_blank" : (link.targetedTab ? link.targetedTab : "_self"));
+                if (link.targetedTab) {
+                    $timeout(function () { newWindow.document.title = link.targetedTab; }, 100);
+                }
             }
         };
         var getPatientCountSeriallyBySearchIndex = function (index) {
