@@ -254,6 +254,5 @@
     "NO_IMAGE_YET_FOR_ORDER": "Aún no hay imagen disponible para ordenar",
     "LAB_ENTRY_KEY": "Laboratorio",
     "START_TELECON_KEY": "Start Teleconsulta",
-    "TELECON_ERROR_KEY": "Error al obtener el enlace de teleconsulta",
-    "DISMISSED_KEY": "Despedido"
+    "TELECON_ERROR_KEY": "Error al obtener el enlace de teleconsulta"
 }

@@ -293,6 +293,5 @@
   "SAVE_KEY": "sauver",
   "LAB_ENTRY_KEY": "Laboratoire",
   "START_TELECON_KEY": "Start Téléconsultation",
-  "TELECON_ERROR_KEY": "Erreur lors de la récupération du lien de téléconsultation",
-  "DISMISSED_KEY": "Rejeté"
+  "TELECON_ERROR_KEY": "Erreur lors de la récupération du lien de téléconsultation"
 }
