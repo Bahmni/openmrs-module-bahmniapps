@@ -86,22 +86,42 @@ angular.module('bahmni.clinical')
                 $scope.bulkDurationData.bulkDuration += stepperValue;
             };
 
-            $scope.getPreviousDrugAlerts = function (drugOrders) {
-                drugOrders.forEach(function (drugOrder) {
+            var getPreviousDrugAlerts = function () {
+                var treatments = $scope.treatments;
+                treatments.forEach(function (drugOrder) {
                     var drug = drugOrder.drug;
                     var cdssAlerts = $rootScope.cdssAlerts;
-                    if (cdssAlerts) {
-                        drugOrder.alerts = cdssAlerts.filter(function (cdssAlert) {
-                            return cdssAlert.referenceMedications.some(function (referenceMedication) {
-                                return referenceMedication.coding.some(function (coding) {
-                                    return drug.uuid === coding.code || drug.name === coding.display;
-                                });
+                    if (!cdssAlerts) return;
+                    drugOrder.alerts = cdssAlerts.filter(function (cdssAlert) {
+                        return cdssAlert.referenceMedications.some(function (
+                        referenceMedication
+                      ) {
+                            return referenceMedication.coding.some(function (
+                          coding
+                        ) {
+                                return (
+                            drug.uuid === coding.code ||
+                            drug.name === coding.display
+                                );
                             });
                         });
-                    }
+                    });
                 });
-                return drugOrders;
             };
+
+            var cdssAlertsWatcher = $rootScope.$watch('cdssAlerts', function () {
+                getPreviousDrugAlerts();
+            });
+
+            $scope.$watch('treatments', function (newValue, oldValue) {
+                if ((newValue && newValue) && newValue.length !== oldValue.length) {
+                    getPreviousDrugAlerts();
+                }
+            }, true);
+
+            $scope.$on('$destroy', function () {
+                cdssAlertsWatcher();
+            });
         };
         return {
             templateUrl: 'consultation/views/newDrugOrders.html',
