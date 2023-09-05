@@ -39,6 +39,7 @@
         flex-direction: column;
         flex-wrap: wrap;
         align-items: flex-start;
+        position: relative;
 
         @media screen and (min-width: 540px) and (max-width: 768px) {
             flex-direction: row;
@@ -678,6 +679,10 @@
 
     .frequencyField {
         clear: both;
+    }
+
+    .cdss-icon-medication {
+        font-size: 12px !important;
     }
 
 }

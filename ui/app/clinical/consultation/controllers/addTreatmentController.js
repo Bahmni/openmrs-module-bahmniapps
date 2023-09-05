@@ -726,6 +726,7 @@ angular.module('bahmni.clinical')
                             cdssAlerts.then(function (response) {
                                 $scope.cdssAlerts = sortInteractionsByStatus(response.data);
                                 $scope.newAlerts = filterNewAlerts($scope.cdssAlerts, drugMaps);
+                                $rootScope.cdssAlerts = $scope.cdssAlerts;
                             });
                         });
                     }
