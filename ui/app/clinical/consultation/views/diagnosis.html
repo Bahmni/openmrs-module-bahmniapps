@@ -11,10 +11,10 @@
                                     {{ ::'CLINICAL_DIAGNOSIS' | translate }}
                                 </div>
                                 <div class="col-body">
-                                    <span ng-if="diagnosis.alert" class="alert-item">
+                                    <span ng-if="diagnosis.alerts diagnosis.alerts.length > 0" class="alert-item">
                                         <button class="cdss-alert-icon button-alert alert-button">
                                             <i class="fa cdss-icon-medication"
-                                            ng-class="{'fa-exclamation-triangle critical': diagnosis.alert.indicator == 'critical','fa-exclamation-triangle warning' : diagnosis.alert.indicator == 'warning', 'fa-info-circle info': diagnosis.alert.indicator == 'info'}"
+                                            ng-class="{'fa-exclamation-triangle critical': diagnosis.alerts[0].indicator == 'critical','fa-exclamation-triangle warning' : diagnosis.alerts[0].indicator == 'warning', 'fa-info-circle info': diagnosis.alerts[0].indicator == 'info'}"
                                             >
                                             </i>
                                         </button>
