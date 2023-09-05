@@ -43,7 +43,8 @@ angular.module('bahmni.common.displaycontrol.navigationlinks')
                 {
                     "name": "labEntry",
                     "translationKey": "LAB_ENTRY_KEY",
-                    "url": "/lab/patient/{{patientUuid}}"
+                    "url": "/lab/patient/{{patientUuid}}",
+                    "title": "Lab Entry"
                 }
             ];
 
