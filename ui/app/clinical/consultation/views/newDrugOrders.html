@@ -23,7 +23,7 @@
         </form>
     </div>
     <ul class="table-mimic">
-        <li id="new-drug-orders" ng-repeat="newTreatment in getPreviousDrugAlerts(treatments)"
+        <li id="new-drug-orders" ng-repeat="newTreatment in treatments"
             ng-class="{highlight : newTreatment.isBeingEdited}">
             <div class="drug-details">
                 <div class="form">
@@ -37,24 +37,7 @@
                             {{newTreatment.getDisplayName()}}
                         </strong>
                         <div class="tooltip cdss-tooltip" bm-pop-over-target>
-                            <div ng-repeat="alert in newTreatment.alerts" class="tooltip-list">
-                                <div class="cdss-tooltip__status"
-                                    ng-class="{'status-critical': alert.indicator == 'critical','status-warning' : alert.indicator == 'warning', 'status-info': alert.indicator == 'info'}"
-                                >
-                                    Dismissed {{alert.indicator}}
-                                </div>
-                                <p>
-                                    {{alert.summary}}
-                                </p>
-                                <p>
-                                    <span>
-                                        {{alert.detail}}
-                                    </span>
-                                    <a href="{{alert.source.url}}" target="_blank" ng-show="alert.source.url">
-                                        <i class="fa fa-question-circle drug-link"></i>
-                                    </a>
-                                </p>
-                            </div>
+                            <cdss-popover alerts="newTreatment.alerts"></cdss-popover>
                         </div>
                         <div class="dosage-frequency">
                             <span ng-show="newTreatment.getDoseAndUnits()">{{newTreatment.getDoseAndUnits()}} | </span>
