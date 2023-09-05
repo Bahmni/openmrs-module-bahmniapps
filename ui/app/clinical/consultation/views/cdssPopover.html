@@ -1,0 +1,15 @@
+<div ng-repeat="alert in alerts" class="tooltip-list">
+  <div
+    class="cdss-tooltip__status"
+    ng-class="{'status-critical': alert.indicator == 'critical','status-warning' : alert.indicator == 'warning', 'status-info': alert.indicator == 'info'}"
+  >
+    {{ "DISMISSED_KEY" | translate}} {{alert.indicator}}
+  </div>
+  <p>{{alert.summary}}</p>
+  <p>
+    <span> {{alert.detail}} </span>
+    <a href="{{alert.source.url}}" target="_blank" ng-show="alert.source.url">
+      <i class="fa fa-question-circle drug-link"></i>
+    </a>
+  </p>
+</div>
