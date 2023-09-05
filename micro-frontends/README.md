@@ -37,10 +37,22 @@ main bahmni-apps can reference the built files from there
 Here is a description of all the files built
 
 ```
+i18n                      // Directory that containes all the translations
+shared.min.js             // Contains shared JS across microfrontends. should be loaded first
+shared.min.css            // Contains shared CSS across microfrontends including the carbon stylesheet. should be loaded first  
+
 <mfe-name>.min.js         // angular module containing components from a single mfe
 <mfe-name>.min.css        // all the CSS for a given mfe
 
 mfe_polyfills_angular_1_4.min.js    // a polyfill required to load any <mfe-name>.min.js
 ```
 
-Currently, we only have the `ipd.min.js` and `ipd.min.css`;
+Currently, we have the following micro-frontends
+
+1. `next-ui.min.js`: A local micro-fontend containing next gen react components to be used by bahmniapps
+2. `ipd.min.js`: The IPD micro-frontend talking to the remote IPD repository
+
+All the translations residing in `public` are copied as such and made available in the `micro-frontends-dist`.
+
+### Other notes
+1. For every micro-frontend angular module, don't forget to add an entry in the `ui/test/__mocks__/micro-frontends.js` file for mocking it out
