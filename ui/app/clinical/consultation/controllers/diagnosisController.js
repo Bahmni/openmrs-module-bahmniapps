@@ -227,6 +227,7 @@ angular.module('bahmni.clinical')
                                     var alerts = response.data;
                                     $scope.cdssAlerts = alerts;
                                     $rootScope.cdssAlerts = alerts;
+                                    isPastDiagnosisFlagged();
                                     getFlaggedSavedDiagnosisAlert();
                                     getAlertForCurrentDiagnosis();
                                 });
@@ -243,15 +244,15 @@ angular.module('bahmni.clinical')
                 });
             }
 
-            $scope.isPastDiagnosisFlagged = function () {
+            var isPastDiagnosisFlagged = function () {
                 var pastDiagnoses = $scope.consultation.pastDiagnoses;
                 var alerts = $scope.cdssAlerts;
                 var flaggedDiagnoses = [];
                 if (pastDiagnoses && pastDiagnoses.length > 0 && alerts && alerts.length > 0) {
                     pastDiagnoses.forEach(function (diagnosis) {
-                        diagnosis.alerts = alerts.find(function (cdssAlert) {
+                        diagnosis.alerts = alerts.filter(function (cdssAlert) {
                             return cdssAlert.referenceCondition.coding.some(function (coding) {
-                                var findMapping = diagnosis.codedAnswer.mappings.filter(function (mapping) {
+                                var findMapping = diagnosis.codedAnswer.mappings.find(function (mapping) {
                                     return mapping.code === coding.code;
                                 });
                                 return findMapping !== undefined;
@@ -262,20 +263,18 @@ angular.module('bahmni.clinical')
                             flaggedDiagnoses.push(diagnosis);
                         }
                     });
-                    // $scope.consultation.pastDiagnoses = pastDiagnoses;
                 }
-                return flaggedDiagnoses.length > 0;
+                $scope.pastDiagnosesAlerts = flaggedDiagnoses.length > 0;
             };
 
             var getFlaggedSavedDiagnosisAlert = function () {
                 var alerts = $scope.cdssAlerts;
                 var diagnoses = $scope.consultation.savedDiagnosesFromCurrentEncounter;
-                // var flaggedDiagnoses = [];
                 if (diagnoses && diagnoses.length > 0 && alerts && alerts.length > 0) {
                     diagnoses.forEach(function (diagnosis) {
-                        diagnosis.alerts = alerts.find(function (cdssAlert) {
+                        diagnosis.alerts = alerts.filter(function (cdssAlert) {
                             return cdssAlert.referenceCondition.coding.some(function (coding) {
-                                var findMapping = diagnosis.codedAnswer.mappings.filter(function (mapping) {
+                                var findMapping = diagnosis.codedAnswer.mappings.find(function (mapping) {
                                     return mapping.code === coding.code;
                                 });
                                 return findMapping !== undefined;
@@ -285,9 +284,7 @@ angular.module('bahmni.clinical')
                             diagnosis.alerts = sortAlerts(diagnosis.alerts);
                         }
                     });
-                    // $scope.consultation.newlyAddedDiagnoses = diagnoses;
                 }
-                // return flaggedDiagnoses;
             };
 
             var getAlertForCurrentDiagnosis = function () {
@@ -309,7 +306,6 @@ angular.module('bahmni.clinical')
                             flaggedDiagnoses.push(diagnosis);
                         }
                     });
-                    // $scope.consultation.newlyAddedDiagnoses = diagnoses;
                 }
                 return flaggedDiagnoses;
             };
