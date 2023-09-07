@@ -66,15 +66,19 @@ angular.module('bahmni.clinical')
             };
             getCdssEnabled();
 
-            function processMedication (medication) {
-                if (!medication.concept) return medication;
-                medication.concept.mappings = medication.concept.mappings && medication.concept.mappings.map(function (mapping) {
+            function formatMedication (medication) {
+                if (!medication || !medication.concept) {
+                    return medication;
+                }
+
+                medication.concept.mappings = medication.concept.mappings.map(function (mapping) {
                     return {
                         code: mapping.code || mapping.uuid,
                         source: mapping.source && mapping.source.match(/^(http|https):\/\//) ? mapping.source : $scope.conceptSource,
                         display: mapping.display
                     };
                 });
+
                 return medication;
             }
 
@@ -87,9 +91,9 @@ angular.module('bahmni.clinical')
                     "medicationCodeableConcept": {
                         "coding": medication.concept ? [
                             {
-                                display: medication.drug.name,
-                                code: medication.concept && medication.concept.mappings ? medication.concept.mappings[0].code : medication.drug.uuid,
-                                system: medication.concept && medication.concept.mappings ? medication.concept.mappings[0].source : conceptSource
+                                "display": medication.drug.name,
+                                "code": medication.concept.mappings[0].code,
+                                "system": medication.concept.mappings[0].source || conceptSource
                             }
                         ] : medication.drug.mappings
                     },
@@ -101,7 +105,7 @@ angular.module('bahmni.clinical')
 
             function getConceptSource (medication) {
                 if ($scope.conceptSource && medication.concept) {
-                    var mappedMedication = processMedication(medication);
+                    var mappedMedication = formatMedication(medication);
                     return Promise.resolve({
                         resource: createDrugObject(mappedMedication, $scope.conceptSource)
                     });
@@ -114,55 +118,52 @@ angular.module('bahmni.clinical')
                         return coding.system;
                     });
 
-                    if (!conceptCode) return;
+                    if (!conceptCode) {
+                        return;
+                    }
+
                     localStorage.setItem("conceptSource", conceptCode.system);
                     $scope.conceptSource = conceptCode.system;
+
                     if (!medication.concept) {
                         medication.drug.mappings = [{
                             code: conceptCode.code,
-                            source: conceptCode.system,
+                            system: conceptCode.system,
                             display: conceptCode.display || code.text
                         }];
                     }
-                    var mappedMedication = processMedication(medication);
-                    return {
-                        resource: createDrugObject(mappedMedication, $scope.conceptSource)
-                    };
+
+                    return Promise.resolve({
+                        resource: createDrugObject(medication, $scope.conceptSource)
+                    });
                 });
             }
 
             function medicationResource () {
                 var medications = $scope.consultation.activeAndScheduledDrugOrders;
-                const newMedications = $scope.consultation.newlyAddedTabTreatments;
-                var drugs = [];
+                var newMedications = $scope.consultation.newlyAddedTabTreatments;
 
                 function processMedications () {
                     if (medications && medications.length > 0) {
-                        medications.forEach(function (medication) {
-                            getConceptSource(medication).then(function (resource) {
-                                if (resource) {
-                                    drugs.push(resource);
-                                }
-                            });
-                        });
+                        return Promise.all(medications.map(function (medication) {
+                            return getConceptSource(medication);
+                        }));
                     }
                 }
 
                 function processNewMedications () {
                     if (newMedications && newMedications.allMedicationTabConfig && newMedications.allMedicationTabConfig.treatments.length > 0) {
-                        newMedications.allMedicationTabConfig.treatments.forEach(function (medication) {
-                            getConceptSource(medication).then(function (resource) {
-                                if (resource) {
-                                    drugs.push(resource);
-                                }
-                            });
-                        });
+                        return Promise.all(newMedications.allMedicationTabConfig.treatments.map(function (medication) {
+                            return getConceptSource(medication);
+                        }));
                     }
                 }
 
-                processMedications();
-                processNewMedications();
-                return Promise.resolve(drugs);
+                return Promise.all([processMedications(), processNewMedications()]).then(function (results) {
+                    return results.map(function (result) {
+                        return formatMedication(result) || [];
+                    });
+                });
             }
 
             function createDiagnosisResource (diagnosis) {
@@ -215,12 +216,12 @@ angular.module('bahmni.clinical')
                 var diagnoses = diagnosesResource();
                 return medicationResource().then(
                     function (medications) {
+                        var flatMedications = medications ? medications.flat() : [];
                         var bundle = {
                             "resourceType": "Bundle",
                             "type": "collection",
-                            "entry": [].concat(diagnoses, medications)
+                            "entry": [].concat(diagnoses, flatMedications)
                         };
-
                         return medications.length > 0 ? bundle : null;
                     }
                 );
