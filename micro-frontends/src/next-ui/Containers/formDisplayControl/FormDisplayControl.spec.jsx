@@ -32,7 +32,7 @@ describe('FormDisplayControl Component for empty mock data', () => {
     
     await waitFor(() => {
       expect(screen.getByText('No Form found for this patient....')).toBeTruthy();
-      expect(container.querySelector(".placeholder-text").innerHTML).toEqual('No Form found for this patient....');
+      expect(container.querySelector(".placeholder-text-forms-control").innerHTML).toEqual('No Form found for this patient....');
     });
   });
 });
