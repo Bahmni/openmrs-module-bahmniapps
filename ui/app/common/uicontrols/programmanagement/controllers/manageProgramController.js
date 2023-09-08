@@ -4,7 +4,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
     .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService',
         'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox',
         function ($scope, retrospectiveEntryService, $window, programService,
-                  spinner, messagingService, $stateParams, $q, confirmBox) {
+            spinner, messagingService, $stateParams, $q, confirmBox) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
@@ -62,8 +62,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 }), id);
                 $scope.programSelected = null;
                 $scope.patientProgramAttributes = {};
-                $scope.programEnrollmentDate = null;
-
+                $scope.programEnrollmentDate = new Date($scope.today + ".00:00:00");
                 updateActiveProgramsList();
             };
 
@@ -72,7 +71,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 $scope.programSelected = null;
                 $scope.workflowStateSelected = null;
                 $scope.patientProgramAttributes = {};
-                $scope.programEnrollmentDate = null;
+                $scope.programEnrollmentDate = new Date($scope.today + ".00:00:00");
                 updateActiveProgramsList();
                 if ($scope.patientProgram) {
                     $scope.patientProgram.editing = false;
@@ -213,7 +212,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 scope.delete = _.partial(voidPatientProgram, patientProgram, _);
                 confirmBox({
                     scope: scope,
-                    actions: [{name: 'cancel', display: 'cancel'}, {name: 'delete', display: 'delete'}],
+                    actions: [{ name: 'cancel', display: 'cancel' }, { name: 'delete', display: 'delete' }],
                     className: "ngdialog-theme-default delete-program-popup"
                 });
             };
@@ -236,6 +235,13 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.setWorkflowStates = function (program) {
                 $scope.patientProgramAttributes = {};
                 $scope.programWorkflowStates = $scope.getStates(program);
+                setInitialProgramWorkflowState();
+            };
+
+            var setInitialProgramWorkflowState = function () {
+                const defaultProgramWorkflowState = programService.getInitialProgramWorkflowState();
+                const matchingState = $scope.programWorkflowStates.filter(state => state.concept.display === defaultProgramWorkflowState);
+                $scope.initialProgramWorkflowState = matchingState.length > 0 ? matchingState[0] : "";
             };
 
             $scope.getStates = function (program) {
