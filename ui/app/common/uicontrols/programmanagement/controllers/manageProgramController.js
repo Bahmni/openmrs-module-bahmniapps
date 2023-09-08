@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.uicontrols.programmanagment')
     .controller('ManageProgramController', ['$scope', 'retrospectiveEntryService', '$window', 'programService',
-        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox',
+        'spinner', 'messagingService', '$stateParams', '$q', 'confirmBox', '$state',
         function ($scope, retrospectiveEntryService, $window, programService,
-            spinner, messagingService, $stateParams, $q, confirmBox) {
+            spinner, messagingService, $stateParams, $q, confirmBox, $state) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.programSelected = {};
             $scope.workflowStateSelected = {};
@@ -254,6 +254,18 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             $scope.canRemovePatientState = function (state) {
                 return state.endDate == null;
+            };
+
+            $scope.openPatientObservations = function () {
+                const url = $state.href("patient.dashboard.show.observations", {
+                    patientUuid: $scope.patient.uuid,
+                    programUuid: $scope.patientProgram?.program?.uuid,
+                    conceptSetGroupName: 'observations',
+                    dateEnrolled: $scope.patientProgram?.fromDate,
+                    dateCompleted: $scope.patientProgram?.toDate,
+                    enrollment: $scope.patientProgram?.uuid
+                });
+                window.open(url, '_blank');
             };
 
             $scope.removePatientState = function (patientProgram) {
