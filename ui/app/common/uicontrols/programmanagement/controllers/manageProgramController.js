@@ -15,6 +15,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.configName = $stateParams.configName;
             $scope.today = DateUtil.getDateWithoutTime(DateUtil.now());
             var id = "#programEnrollmentContainer";
+            const defaultProgram = programService.getDefaultProgram();
+            const programRedirectionConfig = programService.getProgramRedirectionConfig();
 
             var updateActiveProgramsList = function () {
                 spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid).then(function (programs) {
@@ -56,11 +58,13 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                 spinner.forPromise(programService.getAllPrograms().then(function (programs) {
                     $scope.allPrograms = programs;
                     $scope.allPrograms.showProgramSection = true;
+                    setDefaultProgram();
+                    $scope.programSelected = defaultProgram !== null ? $scope.initialProgram : null;
+                    $scope.workflowStateSelected = defaultProgram !== null ? $scope.initialProgramWorkflowState : null;
                 }), id);
                 spinner.forPromise(programService.getProgramAttributeTypes().then(function (programAttributeTypes) {
                     $scope.programAttributeTypes = programAttributeTypes;
                 }), id);
-                $scope.programSelected = null;
                 $scope.patientProgramAttributes = {};
                 $scope.programEnrollmentDate = new Date($scope.today + ".00:00:00");
                 updateActiveProgramsList();
@@ -68,8 +72,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             var successCallback = function () {
                 messagingService.showMessage("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
-                $scope.programSelected = null;
-                $scope.workflowStateSelected = null;
+                $scope.programSelected = defaultProgram !== null ? $scope.initialProgram : null;
+                $scope.workflowStateSelected = defaultProgram !== null ? $scope.initialProgramWorkflowState : null;
                 $scope.patientProgramAttributes = {};
                 $scope.programEnrollmentDate = new Date($scope.today + ".00:00:00");
                 updateActiveProgramsList();
@@ -235,17 +239,24 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.setWorkflowStates = function (program) {
                 $scope.patientProgramAttributes = {};
                 $scope.programWorkflowStates = $scope.getStates(program);
-                setInitialProgramWorkflowState();
             };
 
-            var setInitialProgramWorkflowState = function () {
-                const defaultProgramWorkflowState = programService.getInitialProgramWorkflowState();
-                const matchingState = $scope.programWorkflowStates.filter(function (state) {
-                    if (state.concept.display === defaultProgramWorkflowState) {
-                        return state;
-                    }
-                });
-                $scope.initialProgramWorkflowState = matchingState.length > 0 ? matchingState[0] : "";
+            var setDefaultProgram = function () {
+                if (defaultProgram !== null) {
+                    const initialProgram = $scope.allPrograms.filter(function (program) {
+                        if (program.name === defaultProgram.programName) {
+                            return program;
+                        }
+                    });
+                    $scope.initialProgram = initialProgram.length > 0 ? initialProgram[0] : "";
+                    $scope.setWorkflowStates($scope.initialProgram);
+                    const initialProgramWorkflowState = $scope.programWorkflowStates.filter(function (state) {
+                        if (state.concept.display === defaultProgram.stateName) {
+                            return state;
+                        }
+                    });
+                    $scope.initialProgramWorkflowState = initialProgramWorkflowState.length > 0 ? initialProgramWorkflowState[0] : "";
+                }
             };
 
             $scope.getStates = function (program) {
@@ -261,7 +272,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             };
 
             $scope.openPatientObservations = function () {
-                const url = $state.href("patient.dashboard.show.observations", {
+                const redirectionPoint = programRedirectionConfig ? programRedirectionConfig.redirectionPoint : "patient.dashboard.show";
+                const url = $state.href(redirectionPoint, {
                     patientUuid: $scope.patient.uuid,
                     programUuid: $scope.patientProgram && $scope.patientProgram.program && $scope.patientProgram.program.uuid,
                     conceptSetGroupName: 'observations',
@@ -269,7 +281,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                     dateCompleted: $scope.patientProgram && $scope.patientProgram.toDate,
                     enrollment: $scope.patientProgram && $scope.patientProgram.uuid
                 });
-                window.open(url, '_blank');
+                programRedirectionConfig && programRedirectionConfig.newTab ? $window.open(url, '_blank') : $window.open(url, '_self');
             };
 
             $scope.removePatientState = function (patientProgram) {

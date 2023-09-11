@@ -29,8 +29,7 @@
                         </div>
                         <div class="field-value">
                             <select ng-model="$parent.workflowStateSelected"
-                                    ng-options="state.concept.display for state in programWorkflowStates"
-                                    ng-init="$parent.workflowStateSelected = initialProgramWorkflowState">
+                                    ng-options="state.concept.display for state in programWorkflowStates">
                                 <option value="">{{'PROGRAM_MANAGEMENT_CHOOSE_STATE_KEY' | translate}}</option>
                             </select>
                         </div>

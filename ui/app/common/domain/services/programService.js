@@ -101,9 +101,14 @@ angular.module('bahmni.common.domain')
             return config ? config.showProgramStateInTimeline : false;
         };
 
-        var getInitialProgramWorkflowState = function () {
-            var initialProgramWorflowState = appService.getAppDescriptor().getConfigValue('initialProgramWorkflowState');
-            return initialProgramWorflowState ? initialProgramWorflowState : null;
+        var getDefaultProgram = function () {
+            var defaultProgram = appService.getAppDescriptor().getConfigValue('defaultProgram') || null;
+            return defaultProgram;
+        };
+
+        var getProgramRedirectionConfig = function () {
+            var config = appService.getAppDescriptor().getConfigValue('programRedirection');
+            return config ? config : null;
         };
 
         var getEnrollmentInfoFor = function (patientUuid, representation) {
@@ -126,6 +131,7 @@ angular.module('bahmni.common.domain')
             getProgramAttributeTypes: getProgramAttributeTypes,
             getProgramStateConfig: getProgramStateConfig,
             getEnrollmentInfoFor: getEnrollmentInfoFor,
-            getInitialProgramWorkflowState: getInitialProgramWorkflowState
+            getDefaultProgram: getDefaultProgram,
+            getProgramRedirectionConfig: getProgramRedirectionConfig
         };
     }]);
