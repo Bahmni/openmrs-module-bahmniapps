@@ -240,7 +240,11 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             var setInitialProgramWorkflowState = function () {
                 const defaultProgramWorkflowState = programService.getInitialProgramWorkflowState();
-                const matchingState = $scope.programWorkflowStates.filter(state => state.concept.display === defaultProgramWorkflowState);
+                const matchingState = $scope.programWorkflowStates.filter(function (state) {
+                    if (state.concept.display === defaultProgramWorkflowState) {
+                        return state;
+                    }
+                });
                 $scope.initialProgramWorkflowState = matchingState.length > 0 ? matchingState[0] : "";
             };
 
@@ -259,11 +263,11 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             $scope.openPatientObservations = function () {
                 const url = $state.href("patient.dashboard.show.observations", {
                     patientUuid: $scope.patient.uuid,
-                    programUuid: $scope.patientProgram?.program?.uuid,
+                    programUuid: $scope.patientProgram && $scope.patientProgram.program && $scope.patientProgram.program.uuid,
                     conceptSetGroupName: 'observations',
-                    dateEnrolled: $scope.patientProgram?.fromDate,
-                    dateCompleted: $scope.patientProgram?.toDate,
-                    enrollment: $scope.patientProgram?.uuid
+                    dateEnrolled: $scope.patientProgram && $scope.patientProgram.fromDate,
+                    dateCompleted: $scope.patientProgram && $scope.patientProgram.toDate,
+                    enrollment: $scope.patientProgram && $scope.patientProgram.uuid
                 });
                 window.open(url, '_blank');
             };
