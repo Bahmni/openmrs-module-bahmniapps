@@ -32,6 +32,14 @@ angular.module('bahmni.common.displaycontrol.forms')
                 var sortedFormDataByLatestDate = function (formData) {
                     return _.sortBy(formData, "obsDatetime").reverse();
                 };
+
+                $scope.showEditForActiveEncounter = function (encounterUuid) {
+                    if ($scope.section.dashboardConfig.showEditForActiveEncounter) {
+                        return $scope.activeEncounterUuid == encounterUuid;
+                    }
+                    return true;
+                };
+
                 $scope.doesUserHaveAccessToTheForm = function (data, action) {
                     if ((data.privileges != null) && (typeof data.privileges != undefined) && (data.privileges > 0)) {
                         var editable = [];
@@ -121,7 +129,8 @@ angular.module('bahmni.common.displaycontrol.forms')
 
                 $scope.dialogData = {
                     "patient": $scope.patient,
-                    "section": $scope.section
+                    "section": $scope.section,
+                    "activeEncounterUuid": $scope.activeEncounterUuid
                 };
             };
 
@@ -142,7 +151,8 @@ angular.module('bahmni.common.displaycontrol.forms')
                 scope: {
                     section: "=",
                     patient: "=",
-                    isOnDashboard: "="
+                    isOnDashboard: "=",
+                    activeEncounterUuid: "="
                 }
             };
         }
