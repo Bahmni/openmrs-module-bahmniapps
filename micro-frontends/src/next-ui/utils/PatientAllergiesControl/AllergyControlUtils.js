@@ -3,7 +3,6 @@ import { FETCH_CONCEPT_URL } from "../../constants";
 import { getLocale } from "../../Components/i18n/utils";
 
 export const  fetchAllergensOrReactions = async (conceptId) => {
-
   const locale= getLocale();
   const apiURL = FETCH_CONCEPT_URL.replace('{locale}',locale);
 
@@ -15,11 +14,8 @@ export const  fetchAllergensOrReactions = async (conceptId) => {
  
     try {
       const response = await axios.get(allergenOrReactionURL);
-      if(response.status === 200){
           return response.data;
-      }
     } catch (error) {
       console.error(error);
     }
   };
-  
