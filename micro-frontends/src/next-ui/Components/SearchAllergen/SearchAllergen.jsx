@@ -55,7 +55,7 @@ export function SearchAllergen(props) {
             {
                 isSearchResultEmpty ? <div>{noAllergenText}</div> :
                 searchResults.map((allergen) => {
-                    return <div key={allergen.uuid} className={"allergen"}>
+                    return <div onClick={() => onChange(allergen)} key={allergen.uuid} className={"allergen"}>
                         <span className={"allergen"}>
                             {allergen.name}
                             &nbsp;
