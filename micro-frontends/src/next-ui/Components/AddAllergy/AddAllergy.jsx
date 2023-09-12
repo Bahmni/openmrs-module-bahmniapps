@@ -12,7 +12,7 @@ import { ArrowLeft } from "@carbon/icons-react/next";
 import { SelectReactions } from "../SelectReactions/SelectReactions";
 
 export function AddAllergy(props) {
-    const { onClose } = props;
+    const { onClose, allergens, reaction } = props;
     const [allergen, setAllergen] = React.useState({});
     const [reactions, setReactions] = React.useState([]);
     const [severity, setSeverity] = React.useState("");
@@ -39,7 +39,7 @@ export function AddAllergy(props) {
                 <div className={"add-allergy-container"}>
                     {  isEmpty(allergen) ?
                         <div data-testid={"search-allergen"} >
-                            <SearchAllergen onChange={(allergen) => {setAllergen(allergen);}}/>
+                            <SearchAllergen allergens={allergens} onChange={(allergen) => {setAllergen(allergen);}}/>
                         </div>
                         :<Fragment>
                             <div className={"back-button"}>
@@ -47,7 +47,7 @@ export function AddAllergy(props) {
                                 <div onClick={clearForm}>{backToAllergenText}</div>
                             </div>
                             <div data-testid={"select-reactions"}>
-                                <SelectReactions  onChange={(reactions) =>{
+                                <SelectReactions reactions={reaction} onChange={(reactions) =>{
                                     setReactions(reactions);
                                     setIsSaveEnabled(reactions && reactions.length > 0)
                                 }}/>
@@ -77,5 +77,7 @@ export function AddAllergy(props) {
 }
 
 AddAllergy.propTypes = {
-    onClose: propTypes.func.isRequired
+    onClose: propTypes.func.isRequired,
+    allergens: propTypes.array.isRequired,
+    reaction: propTypes.object.isRequired
 }

@@ -4,23 +4,13 @@ import "../../../styles/common.scss";
 import "./SearchAllergen.scss";
 import {Link, Search, Tag} from "carbon-components-react";
 import {FormattedMessage} from "react-intl";
-
 export function SearchAllergen(props) {
-    const { onChange } = props;
+    const { onChange, allergens } = props;
     const [searchResults, setSearchResults] = useState([]);
     const [isSearchResultEmpty, setIsSearchResultEmpty] = useState(false);
     const noAllergenText = <FormattedMessage id={'NO_ALLERGENS_FOUND'} defaultMessage={'No Allergen found'}/>;
     const searchAllergenText = <FormattedMessage id={'SEARCH_ALLERGEN'} defaultMessage={'Search Allergen'}/>;
     const reactionsLinkText = <FormattedMessage id={'REACTIONS'} defaultMessage={'Reaction(s)'}/>;
-
-    const allergens = [
-        { name: "Eggs", kind: "Food", uuid: "162301AAAAAA"},
-        { name: "Peanuts", kind: "Food", uuid: "162302AAAAAA"},
-        { name: "Seafood", kind: "Food", uuid: "162303AAAAAA"},
-        { name: "Bee", kind: "Environment", uuid: "162304AAAAAA"},
-        { name: "Serum", kind: "Biological", uuid: "162305AAAAAA"},
-        { name: "Penicillin", kind: "Medication", uuid: "162306AAAAAA"},
-        { name: "Narcotic agent", kind: "Medication", uuid: "162307AAAAAA"},];
 
     const clearSearch = () => {
         setIsSearchResultEmpty(false);
@@ -72,5 +62,6 @@ export function SearchAllergen(props) {
 }
 
 SearchAllergen.propTypes = {
-    onChange: propTypes.func.isRequired
+    onChange: propTypes.func.isRequired,
+    allergens: propTypes.array.isRequired
 }
