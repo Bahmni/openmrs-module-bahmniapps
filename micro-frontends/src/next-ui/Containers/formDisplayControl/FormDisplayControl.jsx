@@ -7,6 +7,7 @@ import "../../../styles/common.scss";
 import "./formDisplayControl.scss";
 import { FormattedMessage } from "react-intl";
 import { fetchFormData } from "../../utils/FormDisplayControl/FormUtils";
+import { buildFormMap } from "../../utils/FormDisplayControl/FormView";
 import moment from "moment";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import ViewObservationForm from "../../Components/ViewObservationForm/ViewObservationForm";
@@ -75,8 +76,14 @@ export function FormDisplayControl(props) {
       : true;
   };
 
-  const openViewObservationForm = (formName) => {
+  const openViewObservationForm = async (formName, encounterUuid) => {
+    var formMap = {
+        "formName": formName,
+        "encounterUuid": encounterUuid,
+        "hasNoHierarchy": props?.hostData?.hasNoHierarchy
+    }
     setFormName(formName);
+    buildFormMap(formMap);
     setViewObservationForm(true);
   };
 
@@ -110,7 +117,7 @@ export function FormDisplayControl(props) {
                               <div key={index} className={"row-accordion"}>
                                 <span className={"form-name-text"}>
                                   <a
-                                    onClick={() => openViewObservationForm(key)}
+                                    onClick={() => openViewObservationForm(key, entry.encounterUuid)}
                                     className="form-link"
                                   >
                                     {moment(entry.encounterDate).format(
@@ -141,7 +148,7 @@ export function FormDisplayControl(props) {
                         >
                           <a
                             className="form-link"
-                            onClick={() => openViewObservationForm(key)}
+                            onClick={() => openViewObservationForm(key, value[0].encounterUuid)}
                           >
                             {moment(value[0].encounterDate).format(
                               "DD/MM/YYYY HH:MM"
