@@ -22,7 +22,7 @@
                             <span class="fr" ng-hide="::showFormsDate">{{data.obsDatetime || data.encounterDateTime | bahmniDateTime}}</span>
                             <span class="fr" ng-show="::showFormsDate">{{
                                 data.obsDatetime || data.encounterDateTime | bahmniDate}}</span>
-                            <span>{{data.providerList[0].name}}</span>
+                            <span ng-if="data.providerList.length > 0">{{data.providerList[0].name}}</span>
                             <span ng-show="doesUserHaveAccessToTheForm(data ,'view')"class="has-link fl formDataEdit"
                                   ng-dialog="../common/displaycontrols/forms/views/showObservationFormData.html"
                                   ng-dialog-class="ngdialog-theme-default ng-dialog-all-details-page ng-dialog-view"
