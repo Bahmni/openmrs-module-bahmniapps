@@ -13,21 +13,37 @@ import {fetchAllergensOrReactions} from "../../utils/PatientAllergiesControl/All
  * so you need to use the conditional operator like props.hostApi?.callback even though it is a mandatory prop
  */
 
+const AllergenKind = {
+    MEDICATION: "Medication",
+    FOOD: "Food",
+    ENVIRONMENT: "Environment"
+};
 export function PatientAlergiesControl(props) {
+
+
     const {  hostData } = props;
     const { activeVisit, allergyControlConceptIdMap } = hostData;
+
+
     const isAddButtonEnabled = activeVisit !== undefined || activeVisit !== null;
 
-
-  const extractData = (allergenData, allergenKind) =>
+  const extractAllergenData = (allergenData, allergenKind) =>
     allergenData?.setMembers
     ?.filter((allergen) => allergen.display !== "Other non-coded")
     .map((allergen) => {
       return {  name: allergen.display, kind: allergenKind, uuid: allergen.uuid };
     });
+    
+    const extractReactionData = (reactionData) =>
+    reactionData?.setMembers
+    ?.filter((reaction) => reaction.display !== "Other non-coded")
+    .map((reaction) => {
+      return {  name: reaction.names[0].display, uuid: reaction.uuid };
+    });
+  
 
     const TransformReactionData = (reactionData) => {
-      const extractedReactionData = extractData(reactionData, "Reaction");
+      const extractedReactionData = extractReactionData(reactionData, "Reaction");
       const reactions = {};
 
       extractedReactionData.forEach(item => {
@@ -37,16 +53,16 @@ export function PatientAlergiesControl(props) {
   }
 
     
-const TransformAllergenData = (drugAllergenData,foodAllergenData,environmentAllergenData) => {
+const TransformAllergenData = (medicationAllergenData,foodAllergenData,environmentAllergenData) => {
 
 
-  const drugAllergens = extractData(drugAllergenData, "Drug");
-  const environmentalAllergens = extractData(environmentAllergenData, "Environment");
-  const foodAllergens = extractData(foodAllergenData, "Food");
+  const medicationAllergens = extractAllergenData(medicationAllergenData, AllergenKind.MEDICATION);
+  const environmentalAllergens = extractAllergenData(environmentAllergenData, AllergenKind.ENVIRONMENT);
+  const foodAllergens = extractAllergenData(foodAllergenData, AllergenKind.FOOD);
 
 
      const allergens = [
-        ...drugAllergens,
+        ...medicationAllergens,
         ...environmentalAllergens,
         ...foodAllergens,
         ];
@@ -62,22 +78,21 @@ const TransformAllergenData = (drugAllergenData,foodAllergenData,environmentAlle
     const allergiesHeading = <FormattedMessage id={'ALLERGIES_HEADING'} defaultMessage={'Allergies'}/>;
     const addButtonText = <FormattedMessage id={'ADD_BUTTON_TEXT'} defaultMessage={'Add +'}/>;
 
-    const drugAllergenURL = allergyControlConceptIdMap.drugAllergenUuid;
+    const medicationAllergenURL = allergyControlConceptIdMap.medicationAllergenUuid;
     const foodAllergenURL = allergyControlConceptIdMap.foodAllergenUuid;
     const environmentAllergenURL = allergyControlConceptIdMap.environmentalAllergenUuid;
     const allergyReactionURL = allergyControlConceptIdMap.allergyReactionUuid;
 
     const buildAllergenAndReactionsData = async () => {
 
-      const urls = [drugAllergenURL, foodAllergenURL, environmentAllergenURL, allergyReactionURL];
+      const urls = [medicationAllergenURL, foodAllergenURL, environmentAllergenURL, allergyReactionURL];
 
         try {
-            const [drugResponseData, foodResponseData, environmentalResponseData, reactionResponseData] = await Promise.all(
+
+            const [medicationResponseData, foodResponseData, environmentalResponseData, reactionResponseData] = await Promise.all(
               urls.map(url => fetchAllergensOrReactions(url))
           );
-
-
-            const allergenData = TransformAllergenData(drugResponseData, foodResponseData, environmentalResponseData);
+            const allergenData = TransformAllergenData(medicationResponseData, foodResponseData, environmentalResponseData);
             const reactionsData = TransformReactionData(reactionResponseData);
 
             setTransformedAllergenData(allergenData);
