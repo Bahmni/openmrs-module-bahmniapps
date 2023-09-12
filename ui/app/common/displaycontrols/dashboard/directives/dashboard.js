@@ -13,7 +13,8 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     patientUuid: $scope.patient.uuid,
                     encounterUuid: $scope.activeEncounterUuid,
                     showEditForActiveEncounter: $scope.config.sections['forms-v2-react'].dashboardConfig.showEditForActiveEncounter || false,
-                    numberOfVisits: $scope.config.sections['forms-v2-react'].dashboardConfig.maximumNoOfVisits || undefined
+                    numberOfVisits: $scope.config.sections['forms-v2-react'].dashboardConfig.maximumNoOfVisits || undefined,
+                    hasNoHierarchy: $scope.hasNoHierarchy
                 };
             }
 
