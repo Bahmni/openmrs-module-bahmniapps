@@ -78,6 +78,7 @@ export function AddAllergy(props) {
               <div data-testid={"select-reactions"}>
                 <SelectReactions
                   reactions={reaction}
+                  selectedAllergen={allergen}
                   onChange={(reactions) => {
                     setReactions(reactions);
                     setIsSaveEnabled(reactions && reactions.length > 0);

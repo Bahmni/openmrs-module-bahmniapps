@@ -55,7 +55,7 @@ export function SearchAllergen(props) {
   };
   return (
     <div className={"section"}>
-      <div className={"font-large bold"}>{searchAllergenText}</div>
+      <div className={"font-large bold"}>{searchAllergenText}<span style={{ color: "#da1e28" }}>*</span></div>
       <div>
         <Search
           id={"allergen-search"}

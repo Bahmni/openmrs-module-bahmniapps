@@ -12,22 +12,36 @@ describe("Select reactions", function () {
     "105AA": { name: "Cough" },
   };
 
+  const mockSelectedAllergen = {
+    name: "Eggs",
+    kind: "Food",
+    uuid: "162301AAAAAA",
+  };
+
   const selectReaction = (container) => {
     const searchInput = container.querySelector(".bx--search-input");
     fireEvent.change(searchInput, { target: { value: "GI" } });
     const checkbox = screen.getByLabelText("GI Upset");
     fireEvent.click(checkbox);
   };
-  it("should render SelectReactions ", function () {
+  it("should render SelectReactions", function () {
     const { container } = render(
-      <SelectReactions onChange={onChange} reactions={mockReactions} />
+      <SelectReactions
+        onChange={onChange}
+        reactions={mockReactions}
+        selectedAllergen={mockSelectedAllergen}
+      />
     );
     expect(container).toMatchSnapshot();
   });
 
   it("should remove chiclets when reaction checkbox is unselected", function () {
     const { container, getAllByText, debug } = render(
-      <SelectReactions onChange={onChange} reactions={mockReactions} />
+      <SelectReactions
+        onChange={onChange}
+        reactions={mockReactions}
+        selectedAllergen={mockSelectedAllergen}
+      />
     );
 
     debug();
@@ -46,7 +60,11 @@ describe("Select reactions", function () {
 
   it("should unselected checkbox when corresponding Tag is closed", function () {
     const { container, getAllByText } = render(
-      <SelectReactions onChange={onChange} reactions={mockReactions} />
+      <SelectReactions
+        onChange={onChange}
+        reactions={mockReactions}
+        selectedAllergen={mockSelectedAllergen}
+      />
     );
     selectReaction(container);
     const tag = container.querySelector(".bx--tag");
@@ -62,18 +80,32 @@ describe("Select reactions", function () {
 
   it("should render SelectReactions with search bar", function () {
     const { container } = render(
-      <SelectReactions onChange={onChange} reactions={mockReactions} />
+      <SelectReactions
+        onChange={onChange}
+        reactions={mockReactions}
+        selectedAllergen={mockSelectedAllergen}
+      />
     );
     expect(container.querySelector(".bx--search--xl")).not.toBeNull();
   });
   it("should render Common Reactions", function () {
-    render(<SelectReactions onChange={onChange} reactions={mockReactions} />);
+    render(
+      <SelectReactions
+        onChange={onChange}
+        reactions={mockReactions}
+        selectedAllergen={mockSelectedAllergen}
+      />
+    );
     expect(screen.getByText("Common Reactions")).toBeTruthy();
   });
 
   it("should render Checkboxes based on Search text", function () {
     const { container } = render(
-      <SelectReactions onChange={onChange} reactions={mockReactions} />
+      <SelectReactions
+        onChange={onChange}
+        reactions={mockReactions}
+        selectedAllergen={mockSelectedAllergen}
+      />
     );
     const searchInput = container.querySelector(".bx--search-input");
     fireEvent.change(searchInput, { target: { value: "GI" } });
@@ -83,7 +115,11 @@ describe("Select reactions", function () {
 
   it("should show chiclets for selected reactions", function () {
     const { container, getAllByText } = render(
-      <SelectReactions onChange={onChange} reactions={mockReactions} />
+      <SelectReactions
+        onChange={onChange}
+        reactions={mockReactions}
+        selectedAllergen={mockSelectedAllergen}
+      />
     );
     selectReaction(container);
     const tag = container.querySelector(".bx--tag");

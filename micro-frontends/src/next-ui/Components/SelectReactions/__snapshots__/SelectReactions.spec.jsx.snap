@@ -1,14 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Select reactions should render SelectReactions  1`] = `
+exports[`Select reactions should render SelectReactions 1`] = `
 <div>
   <div
     class="section"
   >
     <div
+      class="font-large"
+      style="margin-bottom: 8px; margin-top: 10px;"
+    >
+      Selected Allergen: 
+      Eggs
+    </div>
+    <div
       class="font-large bold"
     >
-      Search Reaction
+      Search Reaction 
     </div>
     <div>
       <div

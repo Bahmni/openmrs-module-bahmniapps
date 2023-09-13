@@ -9,6 +9,11 @@ exports[`SearchAllergen should render SearchAllergen 1`] = `
       class="font-large bold"
     >
       Search Allergen
+      <span
+        style="color: rgb(218, 30, 40);"
+      >
+        *
+      </span>
     </div>
     <div>
       <div

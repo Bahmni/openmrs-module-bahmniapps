@@ -8,7 +8,7 @@ const getReactionIds = (reactions) => {
 };
 
 export const SelectReactions = (props) => {
-  const { onChange, reactions } = props;
+  const { onChange, reactions, selectedAllergen } = props;
   const initialReactionIds = getReactionIds(reactions);
   const [searchResults, setSearchResults] = useState(initialReactionIds);
   const [isSearchResultEmpty, setIsSearchResultEmpty] = useState(true);
@@ -52,7 +52,11 @@ export const SelectReactions = (props) => {
 
   return (
     <div className={"section"}>
-      <div className={"font-large bold"}>Search Reaction</div>
+      <div className={"font-large"}
+            style={{ marginBottom: "8px", marginTop: "10px" }}
+          >Selected Allergen: {selectedAllergen.name}</div>
+      <div className={"font-large bold"}>Search Reaction </div>
+      
       <div>
         <Search
           id={"reaction-search"}
@@ -127,4 +131,5 @@ export const SelectReactions = (props) => {
 SelectReactions.propTypes = {
   onChange: propTypes.func.isRequired,
   reactions: propTypes.object.isRequired,
+  selectedAllergen: propTypes.object.isRequired,
 };
