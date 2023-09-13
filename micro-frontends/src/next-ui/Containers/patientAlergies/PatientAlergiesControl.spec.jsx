@@ -1,54 +1,50 @@
 import React from "react";
-import { fireEvent, render, waitFor, screen, act } from "@testing-library/react";
+import { fireEvent, render, waitFor, screen } from "@testing-library/react";
 import { PatientAlergiesControl } from "./PatientAlergiesControl";
 
 const mockMedicationResponseData = {
-      uuid: "100340AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-      display: "Reference application allergic reactions",
-      setMembers: [
-        {
-          uuid: "100341AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-          display: "Allergic to bee stings",
-          names: [
-            {
-              uuid: "100342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              display: "Bee sting"
-            },
-          ]
-        },
+  uuid: "100340AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  display: "Reference application allergic reactions",
+  setMembers: [
+    {
+      uuid: "100341AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      display: "Allergic to bee stings",
+      names: [
         {
           uuid: "100342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-          display: "Allergic to cats",
-          names: [
-            {
-              uuid: "100342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              display: "Cat"
-            },
-          ]
+          display: "Bee sting",
         },
+      ],
+    },
+    {
+      uuid: "100342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      display: "Allergic to cats",
+      names: [
+        {
+          uuid: "100342AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          display: "Cat",
+        },
+      ],
+    },
+    {
+      uuid: "100343AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      display: "Allergic to dust",
+      names: [
         {
           uuid: "100343AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-          display: "Allergic to dust",
-          names: [
-            {
-              uuid: "100343AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              display: "Dust"
-            },
-          ]
+          display: "Dust",
         },
-      ]
-      
+      ],
+    },
+  ],
+};
 
-        };
-      
-      
-
-const mockFetchAllergensOrReactions = jest.fn().mockResolvedValue(mockMedicationResponseData);
-
+const mockFetchAllergensOrReactions = jest
+  .fn()
+  .mockResolvedValue(mockMedicationResponseData);
 
 jest.mock("../../utils/PatientAllergiesControl/AllergyControlUtils", () => ({
-  fetchAllergensOrReactions:() => mockFetchAllergensOrReactions()
-
+  fetchAllergensOrReactions: () => mockFetchAllergensOrReactions(),
 }));
 
 const testHostData = {
@@ -62,90 +58,89 @@ const testHostData = {
       uuid: "___visit_type_uuid__",
     },
   },
-  allergyControlConceptIdMap : {
+  allergyControlConceptIdMap: {
     medicationAllergenUuid: "drug_allergen_Uuid",
     foodAllergenUuid: "food_allergen_Uuid",
     environmentalAllergenUuid: "environmental_allergen_Uuid",
-    allergyReactionUuid: "allergy_reaction_Uuid"
-}
+    allergyReactionUuid: "allergy_reaction_Uuid",
+  },
 };
- const testHostDataWithoutActiveVisit = {
+const testHostDataWithoutActiveVisit = {
   patient: {
     uuid: "___patient_uuid__",
     givenName: "___patient_given_name__",
   },
   activeVisit: null,
-  allergyControlConceptIdMap : {
+  allergyControlConceptIdMap: {
     medicationAllergenUuid: "drug_allergen_Uuid",
     foodAllergenUuid: "food_allergen_Uuid",
     environmentalAllergenUuid: "environmental_allergen_Uuid",
-    allergyReactionUuid: "allergy_reaction_Uuid"
-}
+    allergyReactionUuid: "allergy_reaction_Uuid",
+  },
 };
 
-describe('PatientAlergiesControl', () => {
- 
-  it('renders loading message when isLoading is true', () => {
+describe("PatientAlergiesControl", () => {
+  it("renders loading message when isLoading is true", () => {
     render(<PatientAlergiesControl hostData={testHostData} />);
-    expect(screen.getByText('Loading... Please Wait')).not.toBeNull();
+    expect(screen.getByText("Loading... Please Wait")).not.toBeNull();
   });
 
-  it('renders allergies section when isLoading is false', async () => {
+  it("renders allergies section when isLoading is false", async () => {
     render(<PatientAlergiesControl hostData={testHostData} />);
-    
+
     await waitFor(() => {
-    expect(screen.getByText('Allergies')).not.toBeNull();
-    
+      expect(screen.getByText("Allergies")).not.toBeNull();
     });
   });
 
-  it('renders allergies section with Add button when active visit', async () => {
-    const { container }= render(<PatientAlergiesControl hostData={testHostData} />);
-    
-    await waitFor(() => {
-    expect(screen.getByText('Add +')).not.toBeNull();
-    expect(container.querySelector('.add-button')).not.toBeNull();
+  it("renders allergies section with Add button when active visit", async () => {
+    const { container } = render(
+      <PatientAlergiesControl hostData={testHostData} />
+    );
 
-    
+    await waitFor(() => {
+      expect(screen.getByText("Add +")).not.toBeNull();
+      expect(container.querySelector(".add-button")).not.toBeNull();
     });
   });
 
-  
+  it("renders allergies section without Add button when it is not active visit", async () => {
+    const { container } = render(
+      <PatientAlergiesControl hostData={testHostDataWithoutActiveVisit} />
+    );
 
-  it('renders allergies section without Add button when it is not active visit', async () => {
-    const { container }= render(<PatientAlergiesControl hostData={testHostDataWithoutActiveVisit} />);
-    
     await waitFor(() => {
-      expect(container.querySelector('.add-button')).toBeNull();
-  
+      expect(container.querySelector(".add-button")).toBeNull();
     });
   });
-
 
   it("should show the side panel when add button is clicked", async () => {
-    const { container } = render(<PatientAlergiesControl hostData={testHostData}/>);
+    const { container } = render(
+      <PatientAlergiesControl hostData={testHostData} />
+    );
 
-    await waitFor (() => {
-      expect(screen.getByText('Add +')).toBeTruthy();
+    await waitFor(() => {
+      expect(screen.getByText("Add +")).toBeTruthy();
     });
 
     const addButton = container.querySelector(".add-button");
     fireEvent.click(addButton);
     expect(container.querySelector(".overlay-next-ui")).not.toBeNull();
-
   });
 
-  it("should not show the side panel when Cancel button is clicked", async() => {
-    const { container, getByTestId } = render(<PatientAlergiesControl hostData={testHostData}/>);
-    await waitFor (() => {
-      expect(screen.getByText('Add +')).toBeTruthy();
+  it("should not show the side panel when Cancel button is clicked", async () => {
+    const { container, getByTestId } = render(
+      <PatientAlergiesControl hostData={testHostData} />
+    );
+    await waitFor(() => {
+      expect(screen.getByText("Add +")).toBeTruthy();
     });
 
     const addButton = container.querySelector(".add-button");
     fireEvent.click(addButton);
     expect(container.querySelector(".overlay-next-ui")).not.toBeNull();
 
-    fireEvent.click(getByTestId('cancel'));
+    fireEvent.click(getByTestId("cancel"));
     expect(container.querySelector(".overlay-next-ui")).toBeNull();
   });
 });
