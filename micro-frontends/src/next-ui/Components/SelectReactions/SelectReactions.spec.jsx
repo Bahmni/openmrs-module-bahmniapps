@@ -1,5 +1,5 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { SelectReactions } from "./SelectReactions";
 
 describe("Select reactions", function () {
@@ -36,7 +36,7 @@ describe("Select reactions", function () {
   });
 
   it("should remove chiclets when reaction checkbox is unselected", function () {
-    const { container, getAllByText, debug } = render(
+    const { container, getAllByText } = render(
       <SelectReactions
         onChange={onChange}
         reactions={mockReactions}
@@ -44,7 +44,6 @@ describe("Select reactions", function () {
       />
     );
 
-    debug();
     selectReaction(container);
     const tag = container.querySelector(".bx--tag");
     const checkbox = screen.getAllByLabelText("GI Upset")[1];
