@@ -12,23 +12,29 @@ const objectStructure = {
       value: null,
       children: [
         {
-          label: "Vitals",
-          value: null,
-          children: [
-            {
-              label: "Temperature",
-              value: "12",
-            },
-            {
-              label: "Pulse",
-              value: "12",
-            },
-            {
-              label: "Respiratory rate",
-              value: "12",
-              notes: "notes example",
-            },
-          ],
+          label: "Temperature (F)",
+          value: "100",
+          hiNormal: 99.86,
+          lowNormal: 95,
+          units: null,
+          isAbnormal: true,
+        },
+        {
+          label: "Pulse",
+          value: "12",
+          hiNormal: 100,
+          lowNormal: 60,
+          units: "beats/min",
+          isAbnormal: false,
+        },
+        {
+          label: "Respiratory rate",
+          value: "12",
+          notes: "notes example",
+          hiNormal: 18,
+          lowNormal: 12,
+          units: null,
+          isAbnormal: false,
         },
       ],
     },
@@ -49,16 +55,40 @@ const objectStructure = {
             {
               label: "Temperature",
               value: "12",
+              hiNormal: 99.86,
+              lowNormal: 95,
+              units: null,
+              isAbnormal: true,
             },
             {
               label: "Pulse",
               value: "12",
+              hiNormal: 100,
+              lowNormal: 60,
+              units: "beats/min",
+              isAbnormal: false,
             },
             {
               label: "Respiratory rate",
               value: "12",
+              hiNormal: 18,
+              lowNormal: 12,
+              units: null,
+              isAbnormal: false,
             },
           ],
+        },
+        {
+          label: "Comments1",
+          value:
+            "Duis ut fermentum ex. Integer sodales tellus tortor, vel congue lorem mollis nec. Nam eget massa massa",
+          children: [],
+        },
+        {
+          label: "Comments2",
+          value:
+            "Duis ut fermentum ex. Integer sodales tellus tortor, vel congue lorem mollis nec. Nam eget massa massa",
+          children: [],
         },
       ],
     },
@@ -78,16 +108,26 @@ const objectStructure = {
           value:
             "Duis ut fermentum ex. Integer sodales tellus tortor, vel congue lorem mollis nec. Nam eget massa massa",
           children: [],
-          notes: "notes example",
         },
         {
-            label: "Date of ops",
-            type: "date",
-            value:
-              "24-Sept-2023",
-            children: [],
-          },
+          label: "Date of ops",
+          type: "date",
+          value: "24-Sept-2023",
+          children: [],
+        },
       ],
+    },
+    {
+      title: "Primary diagnosis2",
+      value:
+        "Duis ut fermentum ex. Integer sodales tellus tortor, vel congue lorem mollis nec. Nam eget massa massa",
+      children: [],
+    },
+    {
+      title: "Primary diagnosis3",
+      value:
+        "Duis ut fermentum ex. Integer sodales tellus tortor, vel congue lorem mollis nec. Nam eget massa massa",
+      children: [],
     },
   ],
 };
