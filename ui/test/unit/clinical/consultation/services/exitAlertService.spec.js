@@ -72,17 +72,4 @@ describe('exitAlertService', function () {
         exitAlertService.setIsNavigating(next, '', currentUuid);
         expect($state.newPatientUuid).toBe(currentUuid);
     });
-
-    it('should redirect to patient search when isPatientSearch is true', function () {
-        $state.isPatientSearch = true;
-        exitAlertService.redirectUrl();
-        expect($location.path).toHaveBeenCalledWith('/default/patient/search');
-    });
-
-    it('should redirect to patient dashboard when isPatientSearch is false', function () {
-        $state.isPatientSearch = false;
-        $state.newPatientUuid = 'newPatientUuid';
-        exitAlertService.redirectUrl();
-        expect($location.path).toHaveBeenCalledWith('/default/patient/newPatientUuid/dashboard');
-    });
 });

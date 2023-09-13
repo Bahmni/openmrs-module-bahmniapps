@@ -1,6 +1,6 @@
 angular.module('bahmni.clinical')
-    .factory('exitAlertService', ['messagingService', 'spinner', '$state', '$location',
-        function (messagingService, spinner, $state, $location) {
+    .factory('exitAlertService', ['messagingService', 'spinner', '$state',
+        function (messagingService, spinner, $state) {
             return {
                 showExitAlert: function (isNavigating, dirtyConsultationForm, event, spinnerToken) {
                     if (isNavigating && dirtyConsultationForm) {
@@ -14,9 +14,6 @@ angular.module('bahmni.clinical')
                     $state.newPatientUuid = currentUuid;
                     next.url.includes("/patient/search") ? $state.isPatientSearch = true : $state.isPatientSearch = false;
                     return (next.url.includes("/patient/search") || (uuid !== currentUuid));
-                },
-                redirectUrl: function () {
-                    return $state.isPatientSearch ? $location.path('/default/patient/search') : $location.path('/default/patient/' + $state.newPatientUuid + "/dashboard");
                 }
             };
         }
