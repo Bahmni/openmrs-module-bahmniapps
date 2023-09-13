@@ -24,10 +24,10 @@ export function SearchAllergen(props) {
         }
         let search =[], secondSearch = [];
         allergens.map((allergen) => {
-            if(allergen.name.toLowerCase().startsWith(key.toLowerCase())) {
+            if(allergen.name.toLowerCase().startsWith(key.toLowerCase()) || allergen.kind.toLowerCase().startsWith(key.toLowerCase())) {
                 search.push(allergen);
             }
-            else if(allergen.name.toLowerCase().includes(key.toLowerCase())) {
+            else if(allergen.name.toLowerCase().includes(key.toLowerCase())|| allergen.kind.toLowerCase().includes(key.toLowerCase())) {
                 secondSearch.push(allergen);
             }
         });
@@ -47,7 +47,9 @@ export function SearchAllergen(props) {
                 searchResults.map((allergen) => {
                     return <div onClick={() => onChange(allergen)} key={allergen.uuid} className={"allergen"}>
                         <span className={"allergen"}>
+                            <span className={"allergen-name"}>
                             {allergen.name}
+                            </span>
                             &nbsp;
                             <Tag type={"blue"}>{allergen.kind}</Tag>
                         </span>
