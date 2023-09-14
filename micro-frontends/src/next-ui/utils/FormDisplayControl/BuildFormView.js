@@ -1,5 +1,7 @@
 import axios from "axios";
 import { GET_ALL_FORMS_BASE_URL, GET_FORMS_BASE_URL, GET_FORM_TRANSLATE_URL } from "../../constants";
+import { cloneDeep, remove } from "lodash";
+
 
 var getAllForms = async () => {
     const apiURL = GET_ALL_FORMS_BASE_URL;
@@ -67,7 +69,9 @@ export const build = async (bahmniObservations, hasNoHierarchy) => {
     var obs = createObsGroupForForm(bahmniObservations, formBuildForms);
     console.log('Friday__obs -->', obs);
     if (!hasNoHierarchy) {
-        updateObservationsWithFormDefinition(obs, formBuildForms);
+        const newObs = await updateObservationsWithFormDefinition(obs, formBuildForms);
+        console.log("inside hasNoHierarchy -> ", newObs)
+        return newObs;
     }
 };
 
@@ -88,9 +92,12 @@ var createMultiSelectObservation = function (observations) {
 };
 
 var preProcessMultiSelectObs = function (value) {
-    console.log('check-->', value);
-    console.log('check 2-->', value.slice(0));
-    var clonedGroupMembers = value.slice(0);
+    // console.log('check-->', value);
+    // console.log('check 2-->', value.slice(0));
+    // var clonedGroupMembers = value.slice(0);
+    console.log('check 2-->', value);
+    // var clonedGroupMembers = [...value];
+    var clonedGroupMembers = cloneDeep(value);
     console.log('Compare clonedGroupMembers -->', clonedGroupMembers);
     console.log('value -->', value);
 
@@ -170,11 +177,13 @@ var createObsGroupForForm = function (observations, formBuilderForms) {
     return observations;
 };
 
-var updateObservationsWithFormDefinition = function (observations, formBuildForms) {
+var updateObservationsWithFormDefinition = async function (observations, formBuildForms) {
     var allForms = formBuildForms;
-    observations.forEach( function (observation) {
+    for(let observation of observations) {
+    // observations.forEach(async function (observation) {
         var forms = [];
-        observation.value.forEach( function (form) {
+        for (let form of observation.value) {
+        // observation.value.forEach( async function (form) {
             if (form.concept.conceptClass) {
                 forms.push(form);
                 return;
@@ -184,7 +193,7 @@ var updateObservationsWithFormDefinition = function (observations, formBuildForm
             if (!observationForm) {
                 return;
             }
-            var response = getFormDetail(observationForm.uuid)
+            var response = await getFormDetail(observationForm.uuid)
             //doubt: which resource it should pick - response.resources[0].value;
             var formDetailsAsString = response.resources[0].value;
             if (formDetailsAsString) {
@@ -195,7 +204,7 @@ var updateObservationsWithFormDefinition = function (observations, formBuildForm
                 console.log('formDef.version', formDef.version);
                 console.log('locale', locale);
                 console.log('formDef.uuid', formDef.uuid);
-                var translationData = getFormTranslate(formDef.name, formDef.version, locale, formDef.uuid)
+                var translationData = await getFormTranslate(formDef.name, formDef.version, locale, formDef.uuid)
                 console.log('translationData -->', translationData);
                 forms.push(updateObservationsWithRecordTree(formDef, form, translationData));
                 observation.value = forms;
@@ -203,8 +212,9 @@ var updateObservationsWithFormDefinition = function (observations, formBuildForm
                 console.log('FFFinal observation -->', observation);
             }
             observation.value = forms;
-        });
-    });
+        };
+    };
+    return observations;
 };
 
 var getFormByFormName = function (formList, formName, formVersion) {
@@ -305,14 +315,20 @@ var createGroupMembers = function (recordTree, obsGroup, obsList, translationDat
     });
 };
 
+// var getRecordObservations = function (obsFormFieldPath, obsList) {
+//     var recordObservations = [];
+//     obsList.forEach(function (obs) {
+//         if(obs.formFieldPath && obs.formFieldPath === obsFormFieldPath){
+//             recordObservations.push(obs);
+//         }
+//     })  
+//     return recordObservations;
+// };
+
 var getRecordObservations = function (obsFormFieldPath, obsList) {
-    var recordObservations = [];
-    obsFormFieldPath.forEach(function (obs) {
-        if(obs.formFieldPath && obs.formFieldPath === obsFormFieldPath){
-            recordObservations.push(obs);
-        }
-    })  
-    return recordObservations;
+    return remove(obsList, function (obs) {
+        return obs.formFieldPath && obs.formFieldPath === obsFormFieldPath;
+    });
 };
 
 var createObsGroup = function (record, translationData) {

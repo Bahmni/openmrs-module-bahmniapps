@@ -1,49 +1,42 @@
 import React from "react";
 import propTypes from "prop-types";
 import { Document } from "@carbon/icons-react/next";
+import {
+  subLabels,
+  isAbnormal,
+} from "../../../utils/FormDisplayControl/FormView";
 import "../viewObservationForm.scss";
 // import { FormattedMessage } from "react-intl";
 
 export const TileItem = (props) => {
   const { items } = props;
 
-  const subLabels = (subItem) => {
-    let label = "";
-    const { lowNormal, hiNormal } = subItem;
-    if (lowNormal && hiNormal) {
-      label = `(${lowNormal} - ${hiNormal})`;
-    } else if (lowNormal && !hiNormal) {
-      label = `(>${lowNormal})`;
-    } else if (!lowNormal && hiNormal) {
-      label = `(<${hiNormal})`;
-    }
-    return <span className={"sub-label"}>{label}</span>;
-  };
-
   return (
     <>
       <div className="row-body">
         {items.map((item, index) => {
-          const hasSubItems = item?.children?.length > 0;
-
+          const hasSubItems = item?.groupMembers?.length > 0;
           return hasSubItems ? (
             <div key={index} className="sub-items-body">
-              <span className="sub-items-title">{item.label}</span>
+              <span className="sub-items-title">{item.concept.shortName}</span>
               <div className="row-body">
-                {item.children.map((subItem, index) => {
+                {item.groupMembers.map((subItem, index) => {
                   return (
                     <div
                       key={index}
                       className={`row-element ${
-                        subItem.isAbnormal ? "is-abnormal" : ""
+                        isAbnormal(subItem.interpretation) ? "is-abnormal" : ""
                       }`}
                     >
                       <div className="row-content">
                         <div className="row-label">
-                          {subItem.label}&nbsp;{subLabels(subItem)}
+                          {subItem.concept.shortName}&nbsp;
+                          <span className="sub-label">
+                            {subLabels(subItem.concept)}
+                          </span>
                         </div>
                         <div className="w-70">
-                          {subItem.value}&nbsp;{subItem.units || ""}
+                          {subItem.value}&nbsp;{subItem.concept.units || ""}
                         </div>
                       </div>
                       {subItem.notes && (
@@ -59,15 +52,21 @@ export const TileItem = (props) => {
             </div>
           ) : (
             <div
-              className={`row-element ${item.isAbnormal ? "is-abnormal" : ""}`}
+              className={`row-element ${
+                isAbnormal(item.interpretation) ? "is-abnormal" : ""
+              }`}
               key={index}
             >
               <div className="row-content">
                 <div className="row-label">
-                  {item.label}&nbsp;{subLabels(item)}
+                  {item.concept.shortName}&nbsp;
+                  <span className="sub-label">{subLabels(item.concept)}</span>
                 </div>
                 <div className="w-70">
-                  {item.value}&nbsp;{item.units || ""}
+                  {typeof item.value === "object"
+                    ? item.value.shortName
+                    : item.value}
+                  &nbsp;{item.concept.units || ""}
                 </div>
               </div>
               {item.notes && (

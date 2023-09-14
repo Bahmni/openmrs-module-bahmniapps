@@ -36,6 +36,7 @@ export function FormDisplayControl(props) {
   const [isLoading, setLoading] = useState(true);
   const [showViewObservationForm, setViewObservationForm] = useState(false);
   const [formName, setFormName] = useState("");
+  const [formData, setFormData] = useState([]);
 
   const buildResponseData = async () => {
     try {
@@ -83,7 +84,8 @@ export function FormDisplayControl(props) {
         "hasNoHierarchy": props?.hostData?.hasNoHierarchy
     }
     setFormName(formName);
-    buildFormMap(formMap);
+    const data = await buildFormMap(formMap);
+    setFormData(data[0].value[0].groupMembers);
     setViewObservationForm(true);
   };
 
@@ -169,6 +171,7 @@ export function FormDisplayControl(props) {
                 <ViewObservationForm
                   formName={formName}
                   closeViewObservationForm={closeViewObservationForm}
+                  formData={formData}
                 />
               ) : null}
             </div>
