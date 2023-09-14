@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SearchAllergen should render SearchAllergen  1`] = `
+exports[`SearchAllergen should render SearchAllergen 1`] = `
 <div>
   <div
     class="section"

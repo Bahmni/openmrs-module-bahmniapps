@@ -5,22 +5,26 @@
   top: 16px;
   cursor: pointer;
 }
-.heading{
+
+.heading {
   padding: 20px;
   font-size: 20px;
 }
-.add-allergy-container{
+
+.add-allergy-container {
   padding: 0 20px;
   margin-bottom: 80px;
   max-width: 500px;
 }
-.back-button{
+
+.back-button {
   color: #0F62FE;
   display: flex;
   gap: 5px;
   align-items: center;
   padding-bottom: 10px;
-  > * {
+
+  >* {
     cursor: pointer;
   }
 }

@@ -2,11 +2,28 @@
 
 angular.module('bahmni.common.displaycontrol.dashboard')
 
-    .directive('dashboard', [function () {
+    .directive('dashboard', ['appService', function (appService) {
         var controller = function ($scope, $filter) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
             };
+
+            if ($scope.patient !== undefined) {
+                $scope.formData = {
+                    patientUuid: $scope.patient.uuid,
+                    encounterUuid: $scope.activeEncounterUuid,
+                    showEditForActiveEncounter: appService.getAppDescriptor().getConfigValue("showEditForActiveEncounter") ? true : false,
+                    numberOfVisits: $scope.config.sections['forms-2.0'].dashboardConfig.maximumNoOfVisits ? $scope.config.sections['forms-2.0'].dashboardConfig.maximumNoOfVisits : undefined
+                };
+            }
+
+            if ($scope.patient !== undefined) {
+                $scope.allergyData = {
+                    patient: $scope.patient,
+                    activeVisit: $scope.visitHistory.activeVisit,
+                    allergyControlConceptIdMap: appService.getAppDescriptor().getConfigValue("allergyControlConceptIdMap")
+                };
+            }
 
             var checkDisplayType = function (sections, typeToCheck, index) {
                 return sections[index] && sections[index]['displayType'] && sections[index]['displayType'] === typeToCheck;
@@ -66,7 +83,8 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 visitHistory: "=",
                 activeVisitUuid: "=",
                 visitSummary: "=",
-                enrollment: "="
+                enrollment: "=",
+                activeEncounterUuid: "="
             }
         };
     }]);

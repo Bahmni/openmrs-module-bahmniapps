@@ -1,14 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Select reactions should render SelectReactions  1`] = `
+exports[`Select reactions should render SelectReactions 1`] = `
 <div>
   <div
     class="section"
   >
     <div
+      class="font-large"
+      style="margin-bottom: 8px; margin-top: 10px;"
+    >
+      Selected Allergen: 
+      Eggs
+    </div>
+    <div
       class="font-large bold"
     >
-      Search Reaction
+      Search Reaction 
     </div>
     <div>
       <div
@@ -82,12 +89,32 @@ exports[`Select reactions should render SelectReactions  1`] = `
       >
         <input
           class="bx--checkbox"
-          id="121670AAAAAAA"
+          id="101AA"
           type="checkbox"
         />
         <label
           class="bx--checkbox-label"
-          for="121670AAAAAAA"
+          for="101AA"
+        >
+          <span
+            class="bx--checkbox-label-text"
+            dir="auto"
+          >
+            GI Upset
+          </span>
+        </label>
+      </div>
+      <div
+        class="bx--form-item bx--checkbox-wrapper"
+      >
+        <input
+          class="bx--checkbox"
+          id="102AA"
+          type="checkbox"
+        />
+        <label
+          class="bx--checkbox-label"
+          for="102AA"
         >
           <span
             class="bx--checkbox-label-text"
@@ -102,12 +129,32 @@ exports[`Select reactions should render SelectReactions  1`] = `
       >
         <input
           class="bx--checkbox"
-          id="121671AAAAAAA"
+          id="103AA"
           type="checkbox"
         />
         <label
           class="bx--checkbox-label"
-          for="121671AAAAAAA"
+          for="103AA"
+        >
+          <span
+            class="bx--checkbox-label-text"
+            dir="auto"
+          >
+            Headache
+          </span>
+        </label>
+      </div>
+      <div
+        class="bx--form-item bx--checkbox-wrapper"
+      >
+        <input
+          class="bx--checkbox"
+          id="104AA"
+          type="checkbox"
+        />
+        <label
+          class="bx--checkbox-label"
+          for="104AA"
         >
           <span
             class="bx--checkbox-label-text"
@@ -122,58 +169,18 @@ exports[`Select reactions should render SelectReactions  1`] = `
       >
         <input
           class="bx--checkbox"
-          id="121672AAAAAAA"
+          id="105AA"
           type="checkbox"
         />
         <label
           class="bx--checkbox-label"
-          for="121672AAAAAAA"
-        >
-          <span
-            class="bx--checkbox-label-text"
-            dir="auto"
-          >
-            Anemia
-          </span>
-        </label>
-      </div>
-      <div
-        class="bx--form-item bx--checkbox-wrapper"
-      >
-        <input
-          class="bx--checkbox"
-          id="121673AAAAAAA"
-          type="checkbox"
-        />
-        <label
-          class="bx--checkbox-label"
-          for="121673AAAAAAA"
+          for="105AA"
         >
           <span
             class="bx--checkbox-label-text"
             dir="auto"
           >
             Cough
-          </span>
-        </label>
-      </div>
-      <div
-        class="bx--form-item bx--checkbox-wrapper"
-      >
-        <input
-          class="bx--checkbox"
-          id="121674AAAAAAA"
-          type="checkbox"
-        />
-        <label
-          class="bx--checkbox-label"
-          for="121674AAAAAAA"
-        >
-          <span
-            class="bx--checkbox-label-text"
-            dir="auto"
-          >
-            Headache
           </span>
         </label>
       </div>
