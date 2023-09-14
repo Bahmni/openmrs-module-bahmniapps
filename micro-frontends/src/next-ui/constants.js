@@ -9,4 +9,7 @@ const hostUrl = localStorage.getItem("host")
   : "";
 
 const RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
-export const FORM_BASE_URL = RESTWS_V1 + "/bahmnicore/patient/{patientUuid}/forms";
+export const FORM_BASE_URL =
+  RESTWS_V1 + "/bahmnicore/patient/{patientUuid}/forms";
+export const FETCH_CONCEPT_URL =
+  RESTWS_V1 + "/concept/{conceptUuid}?v=full&locale={locale}";

@@ -17,6 +17,14 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 };
             }
 
+            if ($scope.patient !== undefined) {
+                $scope.allergyData = {
+                    patient: $scope.patient,
+                    activeVisit: $scope.visitHistory.activeVisit,
+                    allergyControlConceptIdMap: appService.getAppDescriptor().getConfigValue("allergyControlConceptIdMap")
+                };
+            }
+
             var checkDisplayType = function (sections, typeToCheck, index) {
                 return sections[index] && sections[index]['displayType'] && sections[index]['displayType'] === typeToCheck;
             };
