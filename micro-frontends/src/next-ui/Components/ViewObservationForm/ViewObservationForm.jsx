@@ -158,7 +158,7 @@ export const ViewObservationForm = (props) => {
         <section className="content-body">
           <h2 className="section-title">{formName}</h2>
           <section className="section-body">
-            {dummyFormData.map((section, key) => {
+            {formData.map((section, key) => {
               return (
                 <Tile key={key}>
                   <div
