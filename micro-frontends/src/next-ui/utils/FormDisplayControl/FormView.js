@@ -12,7 +12,7 @@ var findByEncounterUuid = async (encounterUuid) => {
     console.log("outside the encounter service --> ", response);
     if (response.status === 200) {
       console.log("Inside the encounter service --> ", response.data);
-      return response.data;
+      return response.data.observations;
     }
     return [];
   } catch (error) {
@@ -30,7 +30,7 @@ var getFormNameAndVersion = function (path) {
 
 var fetchObservations = async (formMap) => {
   console.log("step1");
-  var observations = await findByEncounterUuid(formMap.encounterUuid).observations;
+  var observations = await findByEncounterUuid(formMap.encounterUuid);
   console.log("step2 -> ", observations);
   var observationsForSelectedForm = [];
   observations.forEach(function (obs) {
@@ -42,10 +42,30 @@ var fetchObservations = async (formMap) => {
     }
   });
   console.log("step3");
-  return build(observationsForSelectedForm, formMap.hasNoHierarchy);
+  return await build(
+    [{ value: observationsForSelectedForm }],
+    formMap.hasNoHierarchy
+  );
 };
 
 export const buildFormMap = async (formMap) => {
-  var formMap = await fetchObservations(formMap);
-  return formMap;
+  var formMap1 = await fetchObservations(formMap);
+  console.log("formMap1 -> ", formMap1);
+  return formMap1;
 };
+
+export const subLabels = (subItem) => {
+  let label = "";
+  const { lowNormal, hiNormal } = subItem;
+  if (lowNormal && hiNormal) {
+    label = `(${lowNormal} - ${hiNormal})`;
+  } else if (lowNormal && !hiNormal) {
+    label = `(>${lowNormal})`;
+  } else if (!lowNormal && hiNormal) {
+    label = `(<${hiNormal})`;
+  }
+  return label;
+};
+
+export const isAbnormal = (interpretation) =>
+  interpretation && interpretation.toUpperCase() === "ABNORMAL";
