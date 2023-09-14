@@ -1,5 +1,14 @@
-.allergen{
+.allergen {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 4px;
+}
+
+.allergen-name {
+  max-width: 75%;
+}
+
+.allergen:hover {
+  background-color: #f4f4f4;
 }
