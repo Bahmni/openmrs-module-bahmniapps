@@ -11,7 +11,6 @@ var getAllForms = async () => {
     try {
         const response = await axios.get(apiURL, { params });
         if (response.status === 200) {
-            console.log('getAllForms API --> ', response.data);
             return response.data;
         }
         return [];
@@ -28,7 +27,6 @@ var getFormDetail = async (formUuid ) => {
     try {
         const response = await axios.get(apiURL, { params });
         if (response.status === 200) {
-            console.log('getFormDetail API--> ', response.data);
             return response.data;
         }
         return [];
@@ -49,7 +47,6 @@ var getFormTranslate = async (formName, formVersion, locale, formUuid ) => {
     try {
         const response = await axios.get(apiURL, { params });
         if (response.status === 200) {
-            console.log('getAllForms --> ', response.data);
             return response.data;
         }
         return [];
@@ -59,15 +56,11 @@ var getFormTranslate = async (formName, formVersion, locale, formUuid ) => {
 };
 var formBuildForms = [];
 export const build = async (bahmniObservations, hasNoHierarchy) => {
-    console.log('bahmniObservations --> ', bahmniObservations);
     bahmniObservations.forEach(function (obs) {
-        console.log('obs -->', obs.value, " --> ", obs);
         obs.value = preProcessMultiSelectObs(obs.value);
     });
-    console.log('bahmniObservations after--> ', bahmniObservations);
     formBuildForms = await getAllForms();
     var obs = createObsGroupForForm(bahmniObservations, formBuildForms);
-    console.log('Friday__obs -->', obs);
     if (!hasNoHierarchy) {
         const newObs = await updateObservationsWithFormDefinition(obs, formBuildForms);
         console.log("inside hasNoHierarchy -> ", newObs)
@@ -88,7 +81,7 @@ var createMultiSelectObservation = function (observations) {
     multiSelectObject.type = "multiSelect";
     multiSelectObject.concept = observations[0].concept;
     multiSelectObject.encounterDateTime = observations[0].encounterDateTime;
-    // multiSelectObject.groupMembers = observations;
+    // multiSelectObject.groupMembers = observations; // might need to add observations based on other approaches.
     multiSelectObject.groupMembers = [];
     const multiSelectValue = observations.map(obs => obs.value && obs.value.shortName || obs.value)
     multiSelectObject.value = multiSelectValue.join(', ');
@@ -98,24 +91,14 @@ var createMultiSelectObservation = function (observations) {
     multiSelectObject.creatorName = observations[0].creatorName;
     multiSelectObject.formFieldPath = observations[0].formFieldPath;
     multiSelectObject.encounterUuid = observations[0].encounterUuid;
-    console.log('multiSelectObject -->', multiSelectObject);
     return multiSelectObject;
 };
 
 var preProcessMultiSelectObs = function (value) {
-    // console.log('check-->', value);
-    // console.log('check 2-->', value.slice(0));
-    // var clonedGroupMembers = value.slice(0);
-    console.log('check 2-->', value);
-    // var clonedGroupMembers = [...value];
     var clonedGroupMembers = cloneDeep(value);
-    console.log('Compare clonedGroupMembers -->', clonedGroupMembers);
-    console.log('value -->', value);
-
     clonedGroupMembers.forEach( function (member) {
         if (member && member.groupMembers.length === 0) {
             var obsWithSameFormFieldPath = getRecordObservations(member.formFieldPath, value);
-            console.log('obsWithSameFormFieldPath -->', obsWithSameFormFieldPath);
             if (obsWithSameFormFieldPath.length > 1) {
                 var multiSelectObject = createMultiSelectObservation(obsWithSameFormFieldPath);
                 value.push(multiSelectObject);
@@ -156,10 +139,8 @@ var createObsGroupForForm = function (observations, formBuilderForms) {
                     formName;
             });
             obsGroup.concept.shortName = formName;
-            console.log('formBuilderForm --> ', formBuilderForm);
             var locale = localStorage.getItem("NG_TRANSLATE_LANG_KEY") || "en";
             var formNameTranslations = formBuilderForm && formBuilderForm.nameTranslation ? JSON.parse(formBuilderForm.nameTranslation) : [];
-            console.log('formNameTranslations --> ', formNameTranslations);
             if (formNameTranslations.length > 0) {
                 var currentLabel = formNameTranslations.find(function (formNameTranslation) {
                         return formNameTranslation.locale === locale;
@@ -184,23 +165,19 @@ var createObsGroupForForm = function (observations, formBuilderForms) {
         });
         obs.value = newValues;
     });
-    console.log('Final observations', observations);
     return observations;
 };
 
 var updateObservationsWithFormDefinition = async function (observations, formBuildForms) {
     var allForms = formBuildForms;
     for(let observation of observations) {
-    // observations.forEach(async function (observation) {
         var forms = [];
         for (let form of observation.value) {
-        // observation.value.forEach( async function (form) {
             if (form.concept.conceptClass) {
                 forms.push(form);
                 return;
             }
             var observationForm = getFormByFormName(allForms, getFormName(form.groupMembers), getFormVersion(form.groupMembers));
-            console.log('Fri - observationForm', observationForm);
             if (!observationForm) {
                 return;
             }
@@ -211,16 +188,9 @@ var updateObservationsWithFormDefinition = async function (observations, formBui
                 var formDef = JSON.parse(formDetailsAsString);
                 formDef.version = observationForm.version;
                 var locale = localStorage["NG_TRANSLATE_LANG_KEY"] || "en";
-                console.log('formDef.name', formDef.name);
-                console.log('formDef.version', formDef.version);
-                console.log('locale', locale);
-                console.log('formDef.uuid', formDef.uuid);
                 var translationData = await getFormTranslate(formDef.name, formDef.version, locale, formDef.uuid)
-                console.log('translationData -->', translationData);
                 forms.push(updateObservationsWithRecordTree(formDef, form, translationData));
                 observation.value = forms;
-                console.log('FFFinal observation.value -->', observation.value);
-                console.log('FFFinal observation -->', observation);
             }
             observation.value = forms;
         };
@@ -250,9 +220,7 @@ var getFormVersion = function (members) {
 
 var updateObservationsWithRecordTree = function (formDef, form, translationData) {
     var recordTree = getRecordTree(formDef, form.groupMembers);
-    console.log('recordTree before  -->', recordTree);
     recordTree = JSON.parse(JSON.stringify(recordTree));
-    console.log('recordTree after  -->', recordTree);
     createGroupMembers(recordTree, form, form.groupMembers, translationData);
     return form;
 };
@@ -325,16 +293,6 @@ var createGroupMembers = function (recordTree, obsGroup, obsList, translationDat
         }
     });
 };
-
-// var getRecordObservations = function (obsFormFieldPath, obsList) {
-//     var recordObservations = [];
-//     obsList.forEach(function (obs) {
-//         if(obs.formFieldPath && obs.formFieldPath === obsFormFieldPath){
-//             recordObservations.push(obs);
-//         }
-//     })  
-//     return recordObservations;
-// };
 
 var getRecordObservations = function (obsFormFieldPath, obsList) {
     return remove(obsList, function (obs) {
