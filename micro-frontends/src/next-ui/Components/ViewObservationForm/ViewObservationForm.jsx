@@ -5,7 +5,6 @@ import TileItem from "./TileItem/TileItem";
 import { subLabels, isAbnormal, getValue } from "../../utils/FormDisplayControl/FormView";
 
 import "./viewObservationForm.scss";
-// import { FormattedMessage } from "react-intl";
 
 export const ViewObservationForm = (props) => {
   const { formName, closeViewObservationForm, formData, isViewFormLoading } =
@@ -25,9 +24,9 @@ export const ViewObservationForm = (props) => {
             <div>Loading... Please wait</div>
           ) : (
             <section className="section-body">
-              {formData.map((section, key) => {
+              {formData.map((section, index) => {
                 return (
-                  <Tile key={key}>
+                  <Tile key={index}>
                     <div
                       style={{
                         display: section?.groupMembers?.length
@@ -43,6 +42,7 @@ export const ViewObservationForm = (props) => {
                             ? "is-abnormal"
                             : ""
                         }`}
+                        data-testid={`section-label-${index}`}
                       >
                         {section.concept.shortName}&nbsp;
                         <span className="sub-label">
