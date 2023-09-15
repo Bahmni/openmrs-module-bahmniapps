@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import { ENCOUNTER_BASE_URL } from "../../constants";
 import { build } from "../FormDisplayControl/BuildFormView";
 
@@ -69,3 +70,22 @@ export const subLabels = (subItem) => {
 
 export const isAbnormal = (interpretation) =>
   interpretation && interpretation.toUpperCase() === "ABNORMAL";
+
+export const memberTypes = {
+  DATE: "Date",
+};
+
+export const formatDate = (value, format = "DD-MMM-YYYY") => {
+  return value ? moment(value).format(format) : value;
+};
+
+export const getValue = (member) => {
+  const { value = "", type } = member;
+  let finalValue = value?.shortName || value;
+  switch (type) {
+    case memberTypes.DATE:
+      finalValue = formatDate(finalValue, "DD MMM YY");
+      break;
+  }
+  return finalValue;
+};

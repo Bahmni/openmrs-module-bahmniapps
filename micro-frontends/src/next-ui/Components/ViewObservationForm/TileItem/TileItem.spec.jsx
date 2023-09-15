@@ -6,8 +6,7 @@ const initialProps = {
   items: [
     {
       concept: { shortName: "Comments" },
-      value:
-        "Duis ut fermentum ex. Integer sodales tellus tortor, vel congue lorem mollis nec. Nam eget massa massa",
+      value: "test comment text",
       groupMembers: [],
       notes: "notes example",
     },
@@ -22,6 +21,7 @@ const initialProps = {
             units: null,
           },
           value: "100",
+          interpretation: "Abnormal",
         },
         {
           concept: {
@@ -48,14 +48,24 @@ const initialProps = {
 };
 
 describe("TileItem", () => {
-  it("should render the component", () => {
+  it("should match the screenshot", () => {
     const { container } = render(<TileItem {...initialProps} />);
     expect(container).toMatchSnapshot();
   });
 
   it("should render the correct items", () => {
     render(<TileItem {...initialProps} />);
+    // label
     expect(screen.getByText("Comments")).toBeTruthy();
+    // sub label
     expect(screen.getByText("(60 - 100)")).toBeTruthy();
+    // value
+    expect(screen.getByText("test comment text")).toBeTruthy();
+  });
+
+  it("should highlight member in red if it is abnormal", () => {
+    render(<TileItem {...initialProps} />);
+    const element = screen.getByTestId("subItem-0");
+    expect(element.classList.contains("is-abnormal")).toBeTruthy();
   });
 });
