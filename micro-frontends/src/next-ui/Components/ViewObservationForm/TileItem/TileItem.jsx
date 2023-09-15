@@ -35,8 +35,9 @@ export const TileItem = (props) => {
                             {subLabels(subItem.concept)}
                           </span>
                         </div>
-                        <div className="w-70">
-                          {subItem.value}&nbsp;{subItem.concept.units || ""}
+                        <div className="row-value">
+                          {subItem.value?.shortName || subItem.value}
+                          &nbsp;{subItem.concept.units || ""}
                         </div>
                       </div>
                       {subItem.notes && (
@@ -62,10 +63,8 @@ export const TileItem = (props) => {
                   {item.concept.shortName}&nbsp;
                   <span className="sub-label">{subLabels(item.concept)}</span>
                 </div>
-                <div className="w-70">
-                  {typeof item.value === "object"
-                    ? item.value.shortName
-                    : item.value}
+                <div className="row-value">
+                  {item.value?.shortName || item.value}
                   &nbsp;{item.concept.units || ""}
                 </div>
               </div>

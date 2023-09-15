@@ -75,13 +75,24 @@ export const build = async (bahmniObservations, hasNoHierarchy) => {
     }
 };
 
+var getLatestObservationDateTime = function (groupMembers) {
+    var latestObservationDateTime = groupMembers[0].observationDateTime;
+    groupMembers.forEach(function (member) {
+        latestObservationDateTime = latestObservationDateTime < member.observationDateTime ? member.observationDateTime : latestObservationDateTime;
+    });
+    return latestObservationDateTime;
+};
+
 var createMultiSelectObservation = function (observations) {
     var multiSelectObject = {};
     multiSelectObject.type = "multiSelect";
     multiSelectObject.concept = observations[0].concept;
     multiSelectObject.encounterDateTime = observations[0].encounterDateTime;
-    multiSelectObject.groupMembers = observations;
-    multiSelectObject.conceptConfig = conceptConfig;
+    // multiSelectObject.groupMembers = observations;
+    multiSelectObject.groupMembers = [];
+    const multiSelectValue = observations.map(obs => obs.value && obs.value.shortName || obs.value)
+    multiSelectObject.value = multiSelectValue.join(', ');
+    // multiSelectObject.conceptConfig = conceptConfig;
     multiSelectObject.observationDateTime = getLatestObservationDateTime(observations);
     multiSelectObject.providers = observations[0].providers;
     multiSelectObject.creatorName = observations[0].creatorName;

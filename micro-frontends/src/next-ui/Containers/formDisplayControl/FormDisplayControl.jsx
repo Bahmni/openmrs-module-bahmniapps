@@ -24,7 +24,12 @@ export function FormDisplayControl(props) {
       defaultMessage={"No Form found for this patient...."}
     />
   );
-  const formsHeading = <FormattedMessage id={'DASHBOARD_TITLE_FORMS_2_DISPLAY_CONTROL_KEY'} defaultMessage={'Observation Forms'} />;
+  const formsHeading = (
+    <FormattedMessage
+      id={"DASHBOARD_TITLE_FORMS_2_DISPLAY_CONTROL_KEY"}
+      defaultMessage={"Observation Forms"}
+    />
+  );
   const loadingMessage = (
     <FormattedMessage
       id={"LOADING_MESSAGE"}
@@ -37,6 +42,7 @@ export function FormDisplayControl(props) {
   const [showViewObservationForm, setViewObservationForm] = useState(false);
   const [formName, setFormName] = useState("");
   const [formData, setFormData] = useState([]);
+  const [isViewFormLoading, setViewFormLoading] = useState(false);
 
   const buildResponseData = async () => {
     try {
@@ -79,14 +85,16 @@ export function FormDisplayControl(props) {
 
   const openViewObservationForm = async (formName, encounterUuid) => {
     var formMap = {
-        "formName": formName,
-        "encounterUuid": encounterUuid,
-        "hasNoHierarchy": props?.hostData?.hasNoHierarchy
-    }
+      formName: formName,
+      encounterUuid: encounterUuid,
+      hasNoHierarchy: props?.hostData?.hasNoHierarchy,
+    };
     setFormName(formName);
-    const data = await buildFormMap(formMap);
-    setFormData(data[0].value[0].groupMembers);
+    setViewFormLoading(true);
     setViewObservationForm(true);
+    const data = await buildFormMap(formMap);
+    setViewFormLoading(false);
+    setFormData(data[0].value[0].groupMembers);
   };
 
   const closeViewObservationForm = () => setViewObservationForm(false);
@@ -119,7 +127,12 @@ export function FormDisplayControl(props) {
                               <div key={index} className={"row-accordion"}>
                                 <span className={"form-name-text"}>
                                   <a
-                                    onClick={() => openViewObservationForm(key, entry.encounterUuid)}
+                                    onClick={() =>
+                                      openViewObservationForm(
+                                        key,
+                                        entry.encounterUuid
+                                      )
+                                    }
                                     className="form-link"
                                   >
                                     {moment(entry.encounterDate).format(
@@ -150,7 +163,12 @@ export function FormDisplayControl(props) {
                         >
                           <a
                             className="form-link"
-                            onClick={() => openViewObservationForm(key, value[0].encounterUuid)}
+                            onClick={() =>
+                              openViewObservationForm(
+                                key,
+                                value[0].encounterUuid
+                              )
+                            }
                           >
                             {moment(value[0].encounterDate).format(
                               "DD/MM/YYYY HH:MM"
@@ -169,6 +187,7 @@ export function FormDisplayControl(props) {
                 : noFormText}
               {showViewObservationForm ? (
                 <ViewObservationForm
+                  isViewFormLoading={isViewFormLoading}
                   formName={formName}
                   closeViewObservationForm={closeViewObservationForm}
                   formData={formData}

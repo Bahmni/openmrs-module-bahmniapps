@@ -52,7 +52,6 @@
 
   .row-body {
     background-color: #ffffff;
-    // border: 1px solid #c6c6c6;
     font-size: 14px;
     margin-top: 5px;
   }
@@ -76,6 +75,12 @@
     width: 30%;
     margin-right: 10px;
     word-break: break-word;
+  }
+
+  .row-value {
+    width: 70%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
   }
 
   .w-70 {
