@@ -10,9 +10,7 @@ var findByEncounterUuid = async (encounterUuid) => {
   };
   try {
     const response = await axios.get(apiURL, { params });
-    console.log("outside the encounter service --> ", response);
     if (response.status === 200) {
-      console.log("Inside the encounter service --> ", response.data);
       return response.data.observations;
     }
     return [];
@@ -29,10 +27,8 @@ var getFormNameAndVersion = function (path) {
   };
 };
 
-var fetchObservations = async (formMap) => {
-  console.log("step1");
+export const buildFormMap = async (formMap) => {
   var observations = await findByEncounterUuid(formMap.encounterUuid);
-  console.log("step2 -> ", observations);
   var observationsForSelectedForm = [];
   observations.forEach(function (obs) {
     if (obs.formFieldPath) {
@@ -42,17 +38,10 @@ var fetchObservations = async (formMap) => {
       }
     }
   });
-  console.log("step3");
   return await build(
     [{ value: observationsForSelectedForm }],
     formMap.hasNoHierarchy
   );
-};
-
-export const buildFormMap = async (formMap) => {
-  var formMap1 = await fetchObservations(formMap);
-  console.log("formMap1 -> ", formMap1);
-  return formMap1;
 };
 
 export const subLabels = (subItem) => {
