@@ -92,7 +92,7 @@ var createMultiSelectObservation = function (observations) {
     multiSelectObject.groupMembers = [];
     const multiSelectValue = observations.map(obs => obs.value && obs.value.shortName || obs.value)
     multiSelectObject.value = multiSelectValue.join(', ');
-    // multiSelectObject.conceptConfig = conceptConfig;
+    multiSelectObject.conceptConfig = {multiSelect: true};
     multiSelectObject.observationDateTime = getLatestObservationDateTime(observations);
     multiSelectObject.providers = observations[0].providers;
     multiSelectObject.creatorName = observations[0].creatorName;

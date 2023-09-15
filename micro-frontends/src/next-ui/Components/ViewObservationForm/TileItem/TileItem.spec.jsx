@@ -5,38 +5,42 @@ import TileItem from "./TileItem.jsx";
 const initialProps = {
   items: [
     {
-      label: "Comments",
+      concept: { shortName: "Comments" },
       value:
         "Duis ut fermentum ex. Integer sodales tellus tortor, vel congue lorem mollis nec. Nam eget massa massa",
-      children: [],
+      groupMembers: [],
       notes: "notes example",
     },
     {
-      label: "Vitals",
-      children: [
+      concept: { shortName: "Vitals" },
+      groupMembers: [
         {
-          label: "Temperature",
-          value: "12",
-          hiNormal: 99.86,
-          lowNormal: 95,
-          units: null,
-          isAbnormal: true,
+          concept: {
+            shortName: "Temperature (F)",
+            hiNormal: 99.86,
+            lowNormal: 95,
+            units: null,
+          },
+          value: "100",
         },
         {
-          label: "Pulse",
+          concept: {
+            shortName: "Pulse",
+            hiNormal: 100,
+            lowNormal: 60,
+            units: "beats/min",
+          },
           value: "12",
-          hiNormal: 100,
-          lowNormal: 60,
-          units: "beats/min",
-          isAbnormal: false,
         },
         {
-          label: "Respiratory rate",
+          concept: {
+            shortName: "Respiratory rate",
+            hiNormal: 18,
+            lowNormal: 12,
+            units: null,
+          },
           value: "12",
-          hiNormal: 18,
-          lowNormal: 12,
-          units: null,
-          isAbnormal: false,
+          notes: "notes example",
         },
       ],
     },

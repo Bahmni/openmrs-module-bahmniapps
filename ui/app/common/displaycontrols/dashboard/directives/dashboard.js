@@ -12,8 +12,8 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
                     encounterUuid: $scope.activeEncounterUuid,
-                    showEditForActiveEncounter: $scope.config.sections['forms-v2-react'].dashboardConfig.showEditForActiveEncounter || false,
-                    numberOfVisits: $scope.config.sections['forms-v2-react'].dashboardConfig.maximumNoOfVisits || undefined,
+                    showEditForActiveEncounter: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.showEditForActiveEncounter || false,
+                    numberOfVisits: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.maximumNoOfVisits || undefined,
                     hasNoHierarchy: $scope.hasNoHierarchy
                 };
             }
