@@ -5,4 +5,5 @@ angular.module('bahmni.clinical')
         function ($scope) {
             $scope.patient = $scope.ngDialogData.patient;
             $scope.section = $scope.ngDialogData.section;
+            $scope.activeEncounterUuid = $scope.ngDialogData.activeEncounterUuid;
         }]);

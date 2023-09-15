@@ -94,14 +94,7 @@
             </tbody>
         </table>
     </div>
-    <a class="back-btn dashboard-link" id="dashboard-link"
-       ui-sref="patient.dashboard.show({
-                               patientUuid: patient.uuid,
-                               programUuid: patientProgram.program.uuid,
-                               enrollment: patientProgram.uuid,
-                               conceptSetGroupName: 'observations',
-                               dateEnrolled: patientProgram.fromDate,
-                               dateCompleted: patientProgram.toDate})">
+    <a class="back-btn dashboard-link" id="dashboard-link" ng-click="openPatientObservations()">
         <span class="proggram-dashboard-text">
             <span class="patient-name">{{::patientProgram.display}} Dashboard</span>
         </span>
