@@ -63,7 +63,6 @@ export const build = async (bahmniObservations, hasNoHierarchy) => {
     var obs = createObsGroupForForm(bahmniObservations, formBuildForms);
     if (!hasNoHierarchy) {
         const newObs = await updateObservationsWithFormDefinition(obs, formBuildForms);
-        console.log("inside hasNoHierarchy -> ", newObs)
         return newObs;
     }
 };

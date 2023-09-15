@@ -107,11 +107,11 @@ export function FormDisplayControl(props) {
     <>
       <I18nProvider>
         <div>
-          <h2 className={"section-title"}>{formsHeading}</h2>
+          <h2 className={"forms-display-control-section-title"}>{formsHeading}</h2>
           {isLoading ? (
             <div className="loading-message">{loadingMessage}</div>
           ) : (
-            <div className={"placeholder-text"}>
+            <div className={"placeholder-text-forms-control"}>
               {Object.entries(formList).length > 0
                 ? Object.entries(formList).map(([key, value]) => {
                     const moreThanOneEntry = value.length > 1;
@@ -136,7 +136,7 @@ export function FormDisplayControl(props) {
                                     className="form-link"
                                   >
                                     {moment(entry.encounterDate).format(
-                                      "DD/MM/YYYY HH:MM"
+                                      "DD MMM YY h:mm a"
                                     )}
                                   </a>
                                   {showEdit(entry.encounterUuid) && (
@@ -152,7 +152,7 @@ export function FormDisplayControl(props) {
                         </AccordionItem>
                       </Accordion>
                     ) : (
-                      <div className={"row"}>
+                      <div className={"form-display-control-row"}>
                         <span
                           className={"form-non-accordion-text form-heading"}
                         >
@@ -171,7 +171,7 @@ export function FormDisplayControl(props) {
                             }
                           >
                             {moment(value[0].encounterDate).format(
-                              "DD/MM/YYYY HH:MM"
+                              "DD MMM YY h:mm a"
                             )}
                           </a>
                           {showEdit(value[0].encounterUuid) && (

@@ -62,6 +62,7 @@ export const isAbnormal = (interpretation) =>
 
 export const memberTypes = {
   DATE: "Date",
+  DATETIME: "Datetime",
 };
 
 export const formatDate = (value, format = "DD-MMM-YYYY") => {
@@ -75,6 +76,9 @@ export const getValue = (member) => {
     case memberTypes.DATE:
       finalValue = formatDate(finalValue, "DD MMM YY");
       break;
+    case memberTypes.DATETIME:
+    finalValue = formatDate(finalValue, "DD MMM YY h:mm a");
+    break;
   }
   return finalValue;
 };
