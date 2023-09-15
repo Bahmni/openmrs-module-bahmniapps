@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Tile } from "carbon-components-react";
 import propTypes from "prop-types";
 import TileItem from "./TileItem/TileItem";
-import { subLabels, isAbnormal } from "../../utils/FormDisplayControl/FormView";
+import { subLabels, isAbnormal, getValue } from "../../utils/FormDisplayControl/FormView";
 
 import "./viewObservationForm.scss";
 // import { FormattedMessage } from "react-intl";
@@ -59,7 +59,7 @@ export const ViewObservationForm = (props) => {
                               : ""
                           }`}
                         >
-                          {section.value?.shortName || section.value}
+                          {getValue(section)}
                           &nbsp;{section.concept.units || ""}
                         </div>
                       )}

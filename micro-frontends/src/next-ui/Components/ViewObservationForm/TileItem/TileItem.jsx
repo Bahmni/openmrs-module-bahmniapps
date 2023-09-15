@@ -4,9 +4,9 @@ import { Document } from "@carbon/icons-react/next";
 import {
   subLabels,
   isAbnormal,
+  getValue,
 } from "../../../utils/FormDisplayControl/FormView";
 import "../viewObservationForm.scss";
-// import { FormattedMessage } from "react-intl";
 
 export const TileItem = (props) => {
   const { items } = props;
@@ -27,6 +27,7 @@ export const TileItem = (props) => {
                       className={`row-element ${
                         isAbnormal(subItem.interpretation) ? "is-abnormal" : ""
                       }`}
+                      data-testid={`subItem-${index}`}
                     >
                       <div className="row-content">
                         <div className="row-label">
@@ -36,7 +37,7 @@ export const TileItem = (props) => {
                           </span>
                         </div>
                         <div className="row-value">
-                          {subItem.value?.shortName || subItem.value}
+                          {getValue(subItem)}
                           &nbsp;{subItem.concept.units || ""}
                         </div>
                       </div>
@@ -64,7 +65,7 @@ export const TileItem = (props) => {
                   <span className="sub-label">{subLabels(item.concept)}</span>
                 </div>
                 <div className="row-value">
-                  {item.value?.shortName || item.value}
+                  {getValue(item)}
                   &nbsp;{item.concept.units || ""}
                 </div>
               </div>

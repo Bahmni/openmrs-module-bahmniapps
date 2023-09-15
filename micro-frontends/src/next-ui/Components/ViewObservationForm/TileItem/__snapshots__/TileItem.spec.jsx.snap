@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TileItem should render the component 1`] = `
+exports[`TileItem should match the screenshot 1`] = `
 <div>
   <div
     class="row-body"
@@ -23,7 +23,7 @@ exports[`TileItem should render the component 1`] = `
         <div
           class="row-value"
         >
-          Duis ut fermentum ex. Integer sodales tellus tortor, vel congue lorem mollis nec. Nam eget massa massa
+          test comment text
            
           
         </div>
@@ -64,7 +64,8 @@ exports[`TileItem should render the component 1`] = `
         class="row-body"
       >
         <div
-          class="row-element "
+          class="row-element is-abnormal"
+          data-testid="subItem-0"
         >
           <div
             class="row-content"
@@ -91,6 +92,7 @@ exports[`TileItem should render the component 1`] = `
         </div>
         <div
           class="row-element "
+          data-testid="subItem-1"
         >
           <div
             class="row-content"
@@ -117,6 +119,7 @@ exports[`TileItem should render the component 1`] = `
         </div>
         <div
           class="row-element "
+          data-testid="subItem-2"
         >
           <div
             class="row-content"
