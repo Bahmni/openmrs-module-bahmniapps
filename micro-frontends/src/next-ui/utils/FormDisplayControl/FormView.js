@@ -15,7 +15,7 @@ var findByEncounterUuid = async (encounterUuid) => {
     }
     return [];
   } catch (error) {
-    console.error(error);
+    console.error("error -> ", error);
   }
 };
 
@@ -77,8 +77,8 @@ export const getValue = (member) => {
       finalValue = formatDate(finalValue, "DD MMM YY");
       break;
     case memberTypes.DATETIME:
-    finalValue = formatDate(finalValue, "DD MMM YY h:mm a");
-    break;
+      finalValue = formatDate(finalValue, "DD MMM YY h:mm a");
+      break;
   }
   return finalValue;
 };
