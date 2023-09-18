@@ -89,12 +89,16 @@ angular.module('bahmni.common.patientSearch')
 
         $scope.getHeadings = function () {
             if ($scope.search.activePatients && $scope.search.activePatients.length > 0) {
+                var ingoreHeadingList = Bahmni.Common.PatientSearch.Constants.tabularViewIgnoreHeadingsList.concat($scope.search.searchType.tabularViewIgnoreHeadingsList);
                 var headings = _.chain($scope.search.activePatients[0])
                     .keys()
                     .filter(function (heading) {
-                        return _.indexOf(Bahmni.Common.PatientSearch.Constants.tabularViewIgnoreHeadingsList, heading) === -1;
+                        return _.indexOf(ingoreHeadingList, heading) === -1;
                     })
                     .value();
+                if ($scope.search.searchType.tabularViewHeadingOrder) {
+                    headings.sort((a, b) => $scope.search.searchType.tabularViewHeadingOrder.indexOf(a) - $scope.search.searchType.tabularViewHeadingOrder.indexOf(b));
+                }
                 setActiveHeadings(headings);
             }
         };
@@ -178,6 +182,8 @@ angular.module('bahmni.common.patientSearch')
                 params: appExtn.extensionParams.searchParams,
                 refreshTime: appExtn.extensionParams.refreshTime || 0,
                 view: appExtn.extensionParams.view || Bahmni.Common.PatientSearch.Constants.searchExtensionTileViewType,
+                tabularViewHeadingOrder: appExtn.extensionParams.tabularViewHeadingOrder || [],
+                tabularViewIgnoreHeadingsList: appExtn.extensionParams.tabularViewIgnoreHeadingsList || [],
                 showPrint: appExtn.extensionParams.showPrint || false,
                 printHtmlLocation: appExtn.extensionParams.printHtmlLocation || null,
                 additionalParams: appExtn.extensionParams.additionalParams,
