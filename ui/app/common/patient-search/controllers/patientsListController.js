@@ -97,7 +97,9 @@ angular.module('bahmni.common.patientSearch')
                     })
                     .value();
                 if ($scope.search.searchType.tabularViewHeadingOrder) {
-                    headings.sort((a, b) => $scope.search.searchType.tabularViewHeadingOrder.indexOf(a) - $scope.search.searchType.tabularViewHeadingOrder.indexOf(b));
+                    headings.sort(function (a, b) {
+                        return $scope.search.searchType.tabularViewHeadingOrder.indexOf(a) - $scope.search.searchType.tabularViewHeadingOrder.indexOf(b);
+                    });
                 }
                 setActiveHeadings(headings);
             }
