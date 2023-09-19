@@ -231,15 +231,14 @@ angular.module('bahmni.common.patientSearch')
                 link.targetedTab = $scope.search.searchType.targetedTab;
             }
             if (link.url && link.url !== null) {
-                let redirectUrl = link.url;
+                var redirectUrl = link.url;
                 if (typeof link.url === 'object') {
-                    const rowName = patient[heading.name] ? patient[heading.name].replace(/\s/g, '').toLowerCase() : "";
+                    const rowName = patient[heading.name] ? patient[heading.name].replace(/\s/g, "").toLowerCase() : "";
                     redirectUrl = rowName && link.url[rowName] ? link.url[rowName] : link.url.default;
                 }
                 var newWindow = $window.open(
                 appService.getAppDescriptor().formatUrl(redirectUrl, options, true),
-                link.newTab ? '_blank' : link.targetedTab ? link.targetedTab : '_self',
-              );
+                link.newTab ? '_blank' : link.targetedTab ? link.targetedTab : '_self');
                 if (link.targetedTab) {
                     $timeout(function () {
                         newWindow.document.title = link.targetedTab;
