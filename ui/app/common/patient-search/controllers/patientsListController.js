@@ -236,10 +236,25 @@ angular.module('bahmni.common.patientSearch')
                 link.targetedTab = $scope.search.searchType.targetedTab;
             }
             if (link.url && link.url !== null) {
-                var newWindow = $window.open(appService.getAppDescriptor().formatUrl(link.url, options, true), link.newTab ? "_blank" : (link.targetedTab ? link.targetedTab : "_self"));
-                if (link.targetedTab) {
-                    $timeout(function () { newWindow.document.title = link.targetedTab; }, 100);
-                }
+                let redirectUrl = link.url;
+              if (typeof link.url === 'object') {
+                const rowName = patient[heading.name]?.replace(/\s/g, '')?.toLowerCase();
+                redirectUrl = rowName && link.url[rowName] ? link.url[rowName] : link.url.default;
+                var newWindow = $window.open(
+                  appService.getAppDescriptor().formatUrl(redirectUrl, options, true),
+                  link.newTab ? '_blank' : link.targetedTab ? link.targetedTab : '_self',
+                );
+              } 
+              var newWindow = $window.open(
+                appService.getAppDescriptor().formatUrl(redirectUrl, options, true),
+                link.newTab ? '_blank' : link.targetedTab ? link.targetedTab : '_self',
+              );
+              if (link.targetedTab) {
+                $timeout(function () {
+                  newWindow.document.title = link.targetedTab;
+                  newWindow.location.reload();
+                }, 1000);
+              }
             }
         };
         var getPatientCountSeriallyBySearchIndex = function (index) {
