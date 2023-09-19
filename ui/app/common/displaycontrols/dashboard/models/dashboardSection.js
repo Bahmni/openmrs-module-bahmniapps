@@ -23,11 +23,11 @@
     ];
     var reactDisplayControls = [
         "Allergies",
-        "DASHBOARD_TITLE_FORMS_2_DISPLAY_CONTROL_KEY"
+        "formsV2React"
     ];
 
     var getViewUrl = function (section) {
-        if (reactDisplayControls.includes(section.translationKey)) {
+        if (reactDisplayControls.includes(section.translationKey) || reactDisplayControls.includes(section.type)) {
             return DISPLAY_CONTROL_REACT_URL;
         }
         if (section.isObservation) {
