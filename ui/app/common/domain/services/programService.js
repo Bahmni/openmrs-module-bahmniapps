@@ -121,6 +121,11 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        var disableProgramOutcome = function () {
+            var config = appService.getAppDescriptor().getConfigValue('disableProgramOutcome');
+            return config ? config : false;
+        };
+
         return {
             getAllPrograms: getAllPrograms,
             enrollPatientToAProgram: enrollPatientToAProgram,
@@ -132,6 +137,7 @@ angular.module('bahmni.common.domain')
             getProgramStateConfig: getProgramStateConfig,
             getEnrollmentInfoFor: getEnrollmentInfoFor,
             getDefaultProgram: getDefaultProgram,
-            getProgramRedirectionConfig: getProgramRedirectionConfig
+            getProgramRedirectionConfig: getProgramRedirectionConfig,
+            disableProgramOutcome: disableProgramOutcome
         };
     }]);
