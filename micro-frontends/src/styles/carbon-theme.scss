@@ -120,3 +120,17 @@ $css--body: false;
 .bx--accordion__item--active .bx--accordion__arrow{
   fill: #666666;
 }
+
+.bx--modal-close {
+  outline: none;
+  border: none;
+  background: none !important;
+  top: -5px;
+  right: -5px;
+  padding: 0;
+}
+
+.bx--modal-close__icon {
+  height: 25px;
+  width: 25px;
+}

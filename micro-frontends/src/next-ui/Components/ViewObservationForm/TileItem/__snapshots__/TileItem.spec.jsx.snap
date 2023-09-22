@@ -49,7 +49,7 @@ exports[`TileItem should match the screenshot 1`] = `
             d="M10 22H22V24H10zM10 16H22V18H10z"
           />
         </svg>
-        notes example
+        notes example - by test provider
       </span>
     </div>
     <div
@@ -164,7 +164,7 @@ exports[`TileItem should match the screenshot 1`] = `
                 d="M10 22H22V24H10zM10 16H22V18H10z"
               />
             </svg>
-            notes example
+            nested children notes example - by test provider
           </span>
         </div>
       </div>

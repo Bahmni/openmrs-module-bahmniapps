@@ -16,6 +16,8 @@ const initialProps = {
       value: "105",
       groupMembers: [],
       interpretation: "Abnormal",
+      comment: "notes example",
+      providers: [{ name: "test provider" }],
     },
     {
       concept: { shortName: "Blood Pressure" },
@@ -57,6 +59,8 @@ describe("ViewObservationForm", () => {
     expect(screen.getByText("(60 - 100)")).toBeTruthy();
     // value
     expect(screen.getByText("105 beats/min")).toBeTruthy();
+    // notes
+    expect(screen.getByText("notes example - by test provider")).toBeTruthy();
   });
 
   it("should highlight member in red if it is abnormal", () => {
@@ -68,6 +72,6 @@ describe("ViewObservationForm", () => {
   it("should show loader", () => {
     const updatedProps = { ...initialProps, isViewFormLoading: true };
     render(<ViewObservationForm {...updatedProps} />);
-    expect(screen.getByText("Loading... Please wait")).toBeTruthy();
+    expect(screen.queryAllByText("Active loading indicator")).toHaveLength(2);
   });
 });

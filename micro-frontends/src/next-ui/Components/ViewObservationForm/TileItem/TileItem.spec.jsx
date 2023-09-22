@@ -8,7 +8,8 @@ const initialProps = {
       concept: { shortName: "Comments" },
       value: "test comment text",
       groupMembers: [],
-      notes: "notes example",
+      comment: "notes example",
+      providers: [{ name: "test provider" }],
     },
     {
       concept: { shortName: "Vitals" },
@@ -40,7 +41,8 @@ const initialProps = {
             units: null,
           },
           value: "12",
-          notes: "notes example",
+          comment: "nested children notes example",
+          providers: [{ name: "test provider" }],
         },
       ],
     },
@@ -61,6 +63,12 @@ describe("TileItem", () => {
     expect(screen.getByText("(60 - 100)")).toBeTruthy();
     // value
     expect(screen.getByText("test comment text")).toBeTruthy();
+    // notes
+    expect(screen.getByText("notes example - by test provider")).toBeTruthy();
+    // children notes
+    expect(
+      screen.getByText("nested children notes example - by test provider")
+    ).toBeTruthy();
   });
 
   it("should highlight member in red if it is abnormal", () => {

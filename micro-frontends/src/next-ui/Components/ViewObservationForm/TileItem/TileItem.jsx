@@ -41,10 +41,13 @@ export const TileItem = (props) => {
                           &nbsp;{subItem.concept.units || ""}
                         </div>
                       </div>
-                      {subItem.notes && (
+                      {subItem.comment && (
                         <span className="notes-section">
                           <Document className="document-icon" />
-                          {subItem.notes}
+                          {`${subItem.comment} - by ${
+                            (subItem.providers && subItem.providers[0]?.name) ||
+                            ""
+                          }`}
                         </span>
                       )}
                     </div>
@@ -69,10 +72,12 @@ export const TileItem = (props) => {
                   &nbsp;{item.concept.units || ""}
                 </div>
               </div>
-              {item.notes && (
+              {item.comment && (
                 <span className="notes-section">
                   <Document className="document-icon" />
-                  {item.notes}
+                  {`${item.comment} - by ${
+                    (item.providers && item.providers[0]?.name) || ""
+                  }`}
                 </span>
               )}
             </div>
