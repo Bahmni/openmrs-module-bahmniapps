@@ -63,6 +63,7 @@ export const isAbnormal = (interpretation) =>
 export const memberTypes = {
   DATE: "Date",
   DATETIME: "Datetime",
+  COMPLEX: "Complex",
 };
 
 export const formatDate = (value, format = "DD-MMM-YYYY") => {
@@ -70,14 +71,17 @@ export const formatDate = (value, format = "DD-MMM-YYYY") => {
 };
 
 export const getValue = (member) => {
-  const { value = "", type } = member;
+  const { value = "", type, complexData = {} } = member;
   let finalValue = value?.shortName || value;
   switch (type) {
     case memberTypes.DATE:
       finalValue = formatDate(finalValue, "DD MMM YY");
       break;
     case memberTypes.DATETIME:
-      finalValue = formatDate(finalValue, "DD MMM YY h:mm a");
+      finalValue = formatDate(finalValue, "DD MMM YY hh:mm a");
+      break;
+    case memberTypes.COMPLEX:
+      finalValue = complexData?.display || finalValue;
       break;
   }
   return finalValue;

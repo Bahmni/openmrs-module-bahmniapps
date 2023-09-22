@@ -1,8 +1,13 @@
 import React from "react";
-import { Modal, Tile } from "carbon-components-react";
+import { Modal, Tile, Loading } from "carbon-components-react";
 import propTypes from "prop-types";
+import { Document } from "@carbon/icons-react/next";
 import TileItem from "./TileItem/TileItem";
-import { subLabels, isAbnormal, getValue } from "../../utils/FormDisplayControl/FormView";
+import {
+  subLabels,
+  isAbnormal,
+  getValue,
+} from "../../utils/FormDisplayControl/FormView";
 
 import "./viewObservationForm.scss";
 
@@ -21,7 +26,9 @@ export const ViewObservationForm = (props) => {
         <section className="content-body">
           <h2 className="section-title">{formName}</h2>
           {isViewFormLoading ? (
-            <div>Loading... Please wait</div>
+            <div>
+              <Loading />
+            </div>
           ) : (
             <section className="section-body">
               {formData.map((section, index) => {
@@ -64,6 +71,15 @@ export const ViewObservationForm = (props) => {
                         </div>
                       )}
                     </div>
+                    {section.comment && (
+                      <span className="notes-section">
+                        <Document className="document-icon" />
+                        {`${section.comment} - by ${
+                          (section.providers && section.providers[0]?.name) ||
+                          ""
+                        }`}
+                      </span>
+                    )}
                   </Tile>
                 );
               })}
