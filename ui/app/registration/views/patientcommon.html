@@ -198,6 +198,7 @@
                             <input type="text" id="registrationNumber" ng-model="identifier.registrationNumber"
                                    non-blank="identifier.isIdentifierRequired()" pattern-validate
                                    ng-change="identifier.generate()" focus-on="identifier.hasOldIdentifier"
+                                   ng-blur="handleIdentifierUpdate(identifier.identifierType.uuid,$event)"
                                    ng-show="identifier.hasOldIdentifier || !identifier.hasIdentifierSources()"
                                    ng-disabled="readOnlyExtraIdentifiers.indexOf(identifier.identifierType.name)>-1">
                             <button class="verify-health-id-btn" ng-show="showIdentifierVerificationButton(identifier.identifierType.name,identifier.registrationNumber)" type="button"

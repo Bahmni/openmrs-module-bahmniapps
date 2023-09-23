@@ -270,7 +270,11 @@ Bahmni.Common = Bahmni.Common || {};
         bedmanagement: "BEDMANAGEMENT",
         bedmanagementDisposition: "BEDMANAGEMENT_DISPOSITION",
         loginConfig: "/bahmni_config/openmrs/apps/home/login_config.json",
-        visit: "VISIT"
+        visit: "VISIT",
+        globalPropertyToFetchDuplicatePatients: 'emrapi.sqlSearch.duplicatePatientsByIdentifier',
+        duplicateMatchPersonAttributes: ["nationalId"],
+        searchHiePatientUrl: RESTWS_V1 + "/openhimclient/patient",
+        duplicateMatchPatientIdTypes: ["787d41bd-4e77-410e-8bcc-cd77f6f7bdbf","33c5a97b-8529-415c-848f-d6943255c02a","882fbd6d-5469-412d-bd5c-59b8faaf6b0b"],
     };
 })();
 

@@ -44,6 +44,11 @@
                                     <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'REGISTRATON_LATEST_KEY'"></bahmni-observation>
                                 </article>
                             </div>
+                            <div class="clearfix">
+                                <article ng-if="::conceptSet.options.showLatest" class="obs-section fr" id="observationSection">
+                                    <bahmni-observation patient="patient" config="{conceptNames: conceptSet.options.conceptNames, scope: 'latest'}" section-title="'Registrtion Referral Information (HIE)'"></bahmni-observation>
+                                </article>
+                            </div>
                         </div>
                     </section>
                 </div>

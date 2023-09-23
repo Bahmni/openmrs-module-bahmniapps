@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('SearchPatientController', ['$rootScope', '$scope', '$location', '$window', 'spinner', 'patientService', 'appService',
+    .controller('SearchPatientController', ['$rootScope', '$scope', '$http', '$location', '$window', 'spinner', 'patientService', 'appService',
         'messagingService', '$translate', '$filter',
-        function ($rootScope, $scope, $location, $window, spinner, patientService, appService, messagingService, $translate, $filter) {
+        function ($rootScope, $scope, $http, $location, $window, spinner, patientService, appService, messagingService, $translate, $filter) {
             $scope.results = [];
+            $scope.hieResults = [];
             $scope.extraIdentifierTypes = _.filter($rootScope.patientConfiguration.identifierTypes, function (identifierType) {
                 return !identifierType.primary;
             });
@@ -232,6 +233,17 @@ angular.module('bahmni.registration')
                 return !$scope.searchParameters.name && !$scope.searchParameters.addressFieldValue && !$scope.searchParameters.customAttribute && !$scope.searchParameters.programAttributeFieldValue;
             };
 
+            $scope.disableSearchHieSearchButton = function () {
+                return !$scope.searchParameters.patHieId;
+            };
+
+            $scope.getHieExtraIdentifiers = function (identifierType, identifiers) {
+                var identifier =  identifiers.find(obj => {
+                    return obj.type === identifierType
+                });
+                return identifier.value;
+            };
+
             $scope.$watch(function () {
                 return $location.search();
             }, function () {
@@ -327,8 +339,38 @@ angular.module('bahmni.registration')
                 $location.search(queryParams);
             };
 
+            $scope.searchPatientsFromHie = function () {
+                if (!isUserPrivilegedForSearch()) {
+                    showInsufficientPrivMessage();
+                    return;
+                }
+                if ($scope.searchParameters.patHieId) {
+                    let identifier = $scope.searchParameters.patHieId;
+
+                    return $http.get(Bahmni.Common.Constants.searchHiePatientUrl, {
+                        method: "GET",
+                        params: {identifier: identifier},
+                        withCredentials: true
+                    }).then(function (response) {
+                        if (response.data) {
+                            let onlinePatients = [];
+                            response.data.entry &&  _.each(response.data.entry, function (entry) {
+                                onlinePatients.push(
+                                    Bahmni.Common.Util.FhirUtil.transformResponse(entry)
+                                );
+                            });
+                            $scope.hieResults = onlinePatients;
+                        }
+                    });
+                }
+            };
+
             $scope.resultsPresent = function () {
                 return angular.isDefined($scope.results) && $scope.results.length > 0;
+            };
+
+            $scope.hieResultsPresent = function () {
+                return angular.isDefined($scope.hieResults) && $scope.hieResults.length > 0;
             };
 
             $scope.editPatientUrl = function (url, options) {
@@ -365,6 +407,11 @@ angular.module('bahmni.registration')
 
             $scope.doExtensionAction = function (extension) {
                 var forwardTo = appService.getAppDescriptor().formatUrl(extension.url, { 'patientUuid': $scope.selectedPatient.uuid });
+
+                if ($scope.selectedPatient.local !== null && $scope.selectedPatient.local === false) {
+                    forwardTo = "/patient/new";
+                    $rootScope.hiePatient = $scope.selectedPatient;
+                }
                 if (extension.label === 'Print') {
                     var params = identifyParams(forwardTo);
                     if (params.launch === 'dialog') {

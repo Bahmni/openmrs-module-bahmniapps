@@ -29,4 +29,15 @@ angular.module('bahmni.common.uiHelper')
         return function (date, numberOfDays) {
             return Bahmni.Common.Util.DateUtil.addDays(date, numberOfDays);
         };
+    }).filter('extraIdentifiers', function () {
+        return function (extraIdentifiers) {
+            var list = extraIdentifiers.split(",");
+            var result = "";
+            var opening = "<p>"
+            var closing = "</p>"
+            list.forEach(element => {
+                result += opening+  element + closing + "<br/>";
+            });
+            return result;
+        };
     });

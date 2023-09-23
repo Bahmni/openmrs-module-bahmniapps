@@ -19,6 +19,7 @@
                  primary-option="::visitControl.defaultVisitType"
                  option-text="visitControl.startButtonText"
                  option-click="visitControl.startVisit"
+                 local-duplicate="localDuplicateFound"
                  class="right">
              </div>
         </span>
@@ -29,6 +30,8 @@
             </button>
         </span>
     </span>
-    <button type="submit" class="right submit-btn" ng-click="setSubmitSource('save')"
+    <button type="submit" class="right submit-btn" ng-click="setSubmitSource('save')" ng-disabled="localDuplicateFound"
             accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_SAVE' | translate"></button>
+    <button type="submit" class="right submit-btn" ng-click="setSubmitSource('save')" ng-disabled="localDuplicateFound"
+            accesskey="{{ ::'REGISTRATION_SAVE_ACCESS_KEY' | translate}}" ng-bind-html="::'REGISTRATION_LABEL_POST_TO_HIE' | translate"></button>
 </div>

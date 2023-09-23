@@ -41,6 +41,17 @@
                     </div>
                 </article>
             </form>
+            <form name="searchFromHIE" ng-submit="searchPatientsFromHie()">
+                <article class="fl">
+                    <label for="name"><strong>{{ ::'REGISTRATION_LABEL_HIE_ID' | translate}}</strong></label>
+                    <input tabindex="4" type="text" id="patHieId" ng-model="searchParameters.patHieId" placeholder="{{ ::'REGISTRATION_LABEL_ENTER_NAME' | translate}}">
+                </article>
+                <article class="fl">
+                    <div class="reg-srch-btn">
+                        <button tabindex="9" type="submit" ng-disabled="disableSearchHieSearchButton()">{{ ::'REGISTRATION_LABEL_HIE_SEARCH' | translate}}</button>
+                    </div>
+                </article>
+            </form>
 
         </article>
     </section>
@@ -86,6 +97,40 @@
                 <td ng-repeat = "field in ::addressSearchResultsConfig.fields">{{::result.addressFieldValue[field] || ""}}</td>
                 <td>{{::result.dateCreated | bahmniDate}}</td>
                 <td ng-if="::programAttributesSearchConfig.show">{{getProgramAttributeValues(result) | bahmniDateInStrictMode}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div ng-if="hieResultsPresent()" infinite-scroll="nextPage()" infinite-scroll-immediate-check="false" infinite-scroll-disabled="noMoreResultsPresent" class="registraition-search-results-container">
+        <table class="table">
+            <thead>
+            <tr>
+                <th><strong>{{ ::'REGISTRATION_LABEL_ID' | translate}}</strong></th>
+                <th ng-repeat = "type in ::extraIdentifierTypes track by $index"><strong>{{type.name}}</strong></th>
+                <th><strong>{{ ::'REGISTRATION_LABEL_NAME' | translate}}</strong></th>
+                <th><strong>{{ ::'REGISTRATION_LABEL_GENDER' | translate}}</strong></th>
+                <th><strong>{{ ::'REGISTRATION_LABEL_AGE' | translate}}</strong></th>
+                <th ng-repeat = "field in ::addressSearchResultsConfig.fields"><strong>{{::convertToTableHeader(getAddressColumnName(field))}}</strong></th>
+                <th><strong>{{ ::'REGISTRATION_LABEL_REGISTRATION_DATE' | translate}}</strong></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="hieResult in hieResults">
+                <td>
+                    <a tabindex="{{ :: 8 + $index + 1 }}" ng-if="::(searchActions.length > 0)" ng-click="forPatient(hieResult).doExtensionAction(searchActions[0])">
+                        {{::hieResult.identifier || 'Not Assigned'}}
+                    </a>
+                </td>
+                <td ng-repeat = "type in ::extraIdentifierTypes track by $index">
+                    {{::getHieExtraIdentifiers(type.name, hieResult.identifiers)}}
+                </td>
+
+                <td>{{::hieResult.given_name}} {{::hieResult.middle_name}} {{::hieResult.family_name}}</td>
+                <td>{{::hieResult.gender}}</td>
+                <td>{{::hieResult.age}}</td>
+                <td ng-repeat = "field in ::addressSearchResultsConfig.fields">{{::hieResult.addressFieldValue[field] || ""}}</td>
+                <td>{{::hieResult.dateCreated | bahmniDate}}</td>
             </tr>
             </tbody>
         </table>

@@ -1,0 +1,52 @@
+<div class="revise-refill-modal-wrapper" aria-labelledby="dialog-label">
+    <style type="text/css">
+        .ngdialog-content{
+            width: 50% !important;
+        }
+        .local-row {
+            color: red;
+        }
+    </style>
+    <div class="ngdialog-close clearfix"></div>
+    <!--<button id="modal-close-button" class="secondary-button" ng-click="cancelConfirmationDialog()">{{'VISIT_CHANGE_CONFIRMATION_OPTION_CANCEL_KEY' | translate}}</button>-->
+    <div>
+        <p translate="DUPLICATE_PATIENTS"></p>
+    </div>
+
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>{{::'NAME_KEY' | translate }}</th>
+                <th>{{::'GENDER_KEY' | translate }}</th>
+                <th>{{::'BIRTH_DATE_KEY' | translate }}</th>
+                <th>{{::'AGE_KEY' | translate }}</th>
+                <th>{{:: 'IDENTIFIERS_KEY' | translate }}</th>
+                <th>{{::'ACTIONS_KEY' | translate}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="patient in duplicatePatientsList" >
+                <td ng-class="{'local-row': patient.local}">{{::patient.given_name}} {{::patient.middle_name}} {{::patient.family_name}}</td>
+                <td>{{::patient.gender}}</td>
+                <td>{{::patient.birthdate | bahmniDate}}</td>
+                <td>{{::patient.age}}</td>
+                <td>
+                    <p ng-if="patient.local">Hospital No: {{::patient.primaryIdentifier}}</p>
+                    <p ng-repeat="identifier in formatExtraIdentifiers(patient.extraIdentifiers)">
+                        {{identifier}}
+                    </p>
+                </td>
+                <td>
+                    <a ng-show="patient.local" ng-click="continueWithPatient(patient) && closeThisDialog(0)">{{::'CONTINUE_WITH_PATIENT_KEY' | translate}}</a> <br>
+                    <a ng-show="!patient.local" ng-click="mergePatient(patient) && closeThisDialog(0)" >{{ ::'MERGE_PATIENT_KEY' | translate}}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <span class="ngdialog-end"></span>
+</div>
+
+

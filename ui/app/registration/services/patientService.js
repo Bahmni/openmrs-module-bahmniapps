@@ -90,6 +90,14 @@ angular.module('bahmni.registration')
             return $http.post(url, data, config);
         };
 
+        var searchHieByIdentifier = function (identifier) {
+            return $http.get(Bahmni.Common.Constants.searchHiePatientUrl, {
+                method: "GET",
+                params: {identifier: identifier},
+                withCredentials: true
+            })
+        }
+
         return {
             search: search,
             searchByIdentifier: searchByIdentifier,
@@ -98,6 +106,7 @@ angular.module('bahmni.registration')
             get: get,
             updateImage: updateImage,
             searchByNameOrIdentifier: searchByNameOrIdentifier,
-            getAllPatientIdentifiers: getAllPatientIdentifiers
+            getAllPatientIdentifiers: getAllPatientIdentifiers,
+            searchHieByIdentifier: searchHieByIdentifier
         };
     }]);

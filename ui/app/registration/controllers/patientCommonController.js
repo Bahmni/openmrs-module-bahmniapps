@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'patientService', 'spinner', '$location', 'ngDialog', '$window', '$state', '$document', '$translate',
-        function ($scope, $rootScope, $http, patientAttributeService, appService, patientService, spinner, $location, ngDialog, $window, $state, $document, $translate) {
+    .controller('PatientCommonController', ['$scope', '$rootScope', '$http', 'patientAttributeService', 'appService', 'patientService', 'sessionService', 'spinner', '$location', 'ngDialog', '$window', '$state', '$document', '$translate',
+        function ($scope, $rootScope, $http, patientAttributeService, appService, patientService, sessionService, spinner, $location, ngDialog, $window, $state, $document, $translate) {
             var autoCompleteFields = appService.getAppDescriptor().getConfigValue("autoCompleteFields", []);
             var showCasteSameAsLastNameCheckbox = appService.getAppDescriptor().getConfigValue("showCasteSameAsLastNameCheckbox");
             var personAttributes = [];
@@ -18,10 +18,60 @@ angular.module('bahmni.registration')
             $scope.showSaveConfirmDialogConfig = appService.getAppDescriptor().getConfigValue("showSaveConfirmDialog");
             $scope.showSaveAndContinueButton = false;
             $scope.regExtPoints = appService.getAppDescriptor().getExtensions("org.bahmni.registration.identifier", "link");
+            $rootScope.duplicatePatientsList = $rootScope.duplicatePatientsList || [];
+            $rootScope.duplicatePatientFound = false;
+            $rootScope.localDuplicateFound = false;
 
             $scope.showExtIframe = false;
             var identifierExtnMap = new Map();
             $scope.attributesToBeDisabled = [];
+
+            $scope.mergePatient = function (patient) {
+                if (patient.given_name) $scope.patient.givenName = patient.given_name;
+                if (patient.middle_name) $scope.patient.middleName = patient.middle_name;
+                if (patient.family_name) $scope.patient.familyName = patient.family_name;
+
+                if (patient.gender) {
+                    switch (patient.gender) {
+                        case 'male':
+                            $scope.patient.gender = 'M';
+                            break;
+                        case 'female':
+                            $scope.patient.gender = 'F';
+                            break;
+                    
+                        default:
+                            $scope.patient.gender = 'O';
+                            break;
+                    }
+                }                
+
+                // Age is auto-calculated
+                if (patient.birthdate) {
+                     $scope.patient.birthdate = Bahmni.Common.Util.DateUtil.parse(patient.birthdate);
+
+                    var age = Bahmni.Common.Util.DateUtil.diffInYearsMonthsDays($scope.patient.birthdate , Bahmni.Common.Util.DateUtil.now());
+                    $scope.patient.age.years = age.years;
+                    $scope.patient.age.months = age.months;
+                    $scope.patient.age.days = age.days;
+                }
+                
+                $scope.patient.hieUuid = patient.uuid;
+                _.each($scope.patient.extraIdentifiers, function (identifier,key) {
+                    var hieIdentifier = _.filter(patient.identifiers, function (hieIdentifier) {
+                        return hieIdentifier.type.toLowerCase() === identifier.identifierType.name.toLowerCase();
+                    });
+                    if (hieIdentifier.length > 0) {
+                        $scope.patient.extraIdentifiers[key].registrationNumber = hieIdentifier[0].value;
+                    }
+                });
+
+            };
+
+            if($rootScope.hiePatient) {
+                $scope.mergePatient($rootScope.hiePatient);
+                $rootScope.hiePatient = '';
+            }
 
             $scope.openIdentifierPopup = function (identifierType) {
                 var iframe = $document[0].getElementById("identifier-popup");
@@ -325,6 +375,75 @@ angular.module('bahmni.registration')
                 if (ruleFunction) {
                     executeRule(ruleFunction);
                 }
+            };
+
+            $scope.handleUpdate = function (attribute, e) {
+                var ruleFunction = Bahmni.Registration.AttributesConditions.rules && Bahmni.Registration.AttributesConditions.rules[attribute];
+                if (ruleFunction) {
+                    executeRule(ruleFunction);
+                }
+
+                // if (Bahmni.Common.Constants.duplicateMatchPersonAttributes.includes(attribute) && e && e.target.value) {
+                //     $rootScope.duplicatePatientsList = [];
+                //     var params = { q: Bahmni.Common.Constants.globalPropertyToFetchDuplicatePatients,
+                //         location_uuid: sessionService.getLoginLocationUuid(),
+                //         value: e.target.value};
+                //     findDuplicatePatients(params).then(function (response) {
+                //         var inEdit = response.data.some(function (params) {
+                //             return params.uuid === $scope.patient.uuid;
+                //         });
+                //         $rootScope.duplicatePatientFound = response.data.length > 0 && !inEdit;
+                //         $rootScope.localDuplicateFound = $rootScope.duplicatePatientFound ;
+                //         $rootScope.duplicatePatientsList = response.data;
+                //     }).then(function (params) {
+                //         findDuplicatePatientsInFhir(e.target.value);
+                //     });
+                // }
+            };
+
+            $scope.handleIdentifierUpdate = function (identifierTypeUuid, e) {
+                //TODO : Put all duplicateMatchPatientIdTypes in global properties
+                if (Bahmni.Common.Constants.duplicateMatchPatientIdTypes.includes(identifierTypeUuid) && e && e.target.value) {
+                    $rootScope.duplicatePatientsList = [];
+                    var params = { q: Bahmni.Common.Constants.globalPropertyToFetchDuplicatePatients,
+                        location_uuid: sessionService.getLoginLocationUuid(),
+                        value: e.target.value};
+                    findDuplicatePatients(params).then(function (response) {
+                        var inEdit = response.data.some(function (params) {
+                            return params.uuid === $scope.patient.uuid;
+                        });
+                        $rootScope.duplicatePatientFound = response.data.length > 0 && !inEdit;
+                        $rootScope.localDuplicateFound = $rootScope.duplicatePatientFound ;
+                        $rootScope.duplicatePatientsList = response.data;
+                    }).then(function (params) {
+                        findDuplicatePatientsInFhir(e.target.value);
+                    });
+                }
+            };
+
+            var findDuplicatePatients = function (params) {
+                return $http.get(Bahmni.Common.Constants.sqlUrl, {
+                    method: "GET",
+                    params: params,
+                    withCredentials: true
+                });
+            };
+
+            var findDuplicatePatientsInFhir = function (identifier) {
+                return patientService.searchHieByIdentifier(identifier).then(function (response) {
+                    if (response.data) {
+                        let onlinePatients = [];
+                        response.data.entry &&  _.each(response.data.entry, function (entry) {
+                            onlinePatients.push(
+                                Bahmni.Common.Util.FhirUtil.transformResponse(entry)
+                            );
+                        });
+                        if (!$rootScope.duplicatePatientFound) {
+                            $rootScope.duplicatePatientFound = onlinePatients.length > 0;
+                        }
+                        $rootScope.duplicatePatientsList = _.concat($rootScope.duplicatePatientsList, onlinePatients);
+                    }
+                });
             };
 
             var executeShowOrHideRules = function () {
