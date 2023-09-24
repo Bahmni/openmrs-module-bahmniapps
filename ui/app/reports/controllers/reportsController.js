@@ -32,7 +32,6 @@ angular.module('bahmni.reports')
             var setToChange = header === 'reportsRequiringDateRange' ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
             setToChange.forEach(function (report) {
                 if (item == 'dateRangeType') {
-                    console.log("dateRange: ", isPreviousMonth($rootScope.default[header][item]));
                     $rootScope.default.reportsRequiringDateRange.startDate = $rootScope.default[header][item];
                     $rootScope.default.reportsRequiringDateRange.stopDate = isPreviousMonth($rootScope.default[header][item]) ? getPreviousMonthEndDate() : dateRange[0];
                     report['startDate'] = $rootScope.default[header][item];
