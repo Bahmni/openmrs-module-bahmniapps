@@ -56,6 +56,14 @@
                     </div>
                 </td>
             </tr>
+            <tr ng-show="visitSummary.showDaysAdmitted"  class="view-past">
+                <td class="name">
+                    <span class="disposition-state">{{ "No. of days admitted" }}</span>
+                </td>
+                <td class="value">
+                    {{::visitSummary.daysAdmitted}}
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
