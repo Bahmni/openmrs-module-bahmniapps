@@ -94,18 +94,30 @@ describe("ReportsController", function () {
 
     it('should initialise date range with supportedDateRange config', function () {
         rootScope.default.reportsRequiringDateRange = {
-            dateRangeType: new Date(),
-            startDate: new Date(),
-            stopDate: new Date(),
+            dateRangeType: new Date()
         };
         scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
-        scope.setDefault('startDate', 'reportsRequiringDateRange');
-        scope.setDefault('stopDate', 'reportsRequiringDateRange');
 
         expect(_.keys(rootScope.default.reportsRequiringDateRange).length).toBe(3);
         expect((rootScope.default.reportsRequiringDateRange.dateRangeType).getDate()).toBe(new Date().getDate());
-        expect(rootScope.reportsRequiringDateRange[0].startDate).toBe(rootScope.default.reportsRequiringDateRange.startDate);
-        expect(rootScope.reportsRequiringDateRange[0].stopDate).toBe(rootScope.default.reportsRequiringDateRange.stopDate);
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getDate()).toBe(new Date().getDate());
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getDate()).toBe(new Date().getDate());
+    });
+
+    it("should return date and month for the previous month", function () {
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: new Date('1-Dec-2022')
+        };
+
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+
+        expect(_.keys(rootScope.default.reportsRequiringDateRange).length).toBe(3);
+        expect((rootScope.default.reportsRequiringDateRange.dateRangeType).getDate()).toBe(1);
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getDate()).toBe(1);
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getMonth()).toBe(11);
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getDate()).toBe(31);
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getMonth()).toBe(11);
+
     });
 
     it('should initialise all available formats when supportedFormats config is not specified', function () {
