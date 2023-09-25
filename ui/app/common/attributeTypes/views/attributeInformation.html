@@ -39,6 +39,13 @@
             <option value=""></option>
         </select>
     </div>
+    <div class="left" data-ng-switch-when="org.openmrs.customdatatype.datatype.ConceptDatatype">
+        <select id="{{::attribute.name}}" ng-model="targetModel[attribute.name]"
+                ng-options="a.conceptId as a.description for a in ::attribute.answers"
+                ng-disabled="::isReadOnly(attribute.name)" ng-required="{{::attribute.required}}" ng-blur="::handleUpdate(attribute.name)">
+            <option value=""></option>
+        </select>
+    </div>
     <div class="left" data-ng-switch-when="org.openmrs.customdatatype.datatype.FreeTextDatatype">
         <input
                 type="text" pattern-validate id="{{::attribute.name}}"
