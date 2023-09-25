@@ -107,7 +107,9 @@ export function FormDisplayControl(props) {
     <>
       <I18nProvider>
         <div>
-          <h2 className={"forms-display-control-section-title"}>{formsHeading}</h2>
+          <h2 className={"forms-display-control-section-title"}>
+            {formsHeading}
+          </h2>
           {isLoading ? (
             <div className="loading-message">{loadingMessage}</div>
           ) : (
@@ -136,7 +138,7 @@ export function FormDisplayControl(props) {
                                     className="form-link"
                                   >
                                     {moment(entry.encounterDate).format(
-                                      "DD MMM YY h:mm a"
+                                      "DD MMM YY hh:mm a"
                                     )}
                                   </a>
                                   {showEdit(entry.encounterUuid) && (
@@ -154,12 +156,16 @@ export function FormDisplayControl(props) {
                     ) : (
                       <div className={"form-display-control-row"}>
                         <span
-                          className={"form-non-accordion-text form-heading"}
+                          className={
+                            "form-non-accordion-text form-heading form-name"
+                          }
                         >
                           {key}
                         </span>
                         <span
-                          className={"form-non-accordion-text  form-date-align"}
+                          className={
+                            "form-non-accordion-text form-date-align form-date-time"
+                          }
                         >
                           <a
                             className="form-link"
@@ -171,14 +177,16 @@ export function FormDisplayControl(props) {
                             }
                           >
                             {moment(value[0].encounterDate).format(
-                              "DD MMM YY h:mm a"
+                              "DD MMM YY hh:mm a"
                             )}
                           </a>
                           {showEdit(value[0].encounterUuid) && (
                             <i className="fa fa-pencil"></i>
                           )}
                         </span>
-                        <span className={"form-non-accordion-text"}>
+                        <span
+                          className={"form-non-accordion-text provider-name"}
+                        >
                           {value[0].providerName}
                         </span>
                       </div>
