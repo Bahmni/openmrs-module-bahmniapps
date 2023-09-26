@@ -3,7 +3,7 @@
 exports[`SearchAllergen should render SearchAllergen 1`] = `
 <div>
   <div
-    class="section"
+    class="section-next-ui"
   >
     <div
       class="font-large bold"
