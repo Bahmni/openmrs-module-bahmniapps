@@ -36,7 +36,7 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
                 return true;
             };
         };
-        function calculateDaysAdmitted($scope){
+        function calculateDaysAdmitted ($scope) {
             if ($scope.visitSummary.admissionDetails && $scope.visitSummary.dischargeDetails) {
                 var admissionDate = new Date($scope.visitSummary.admissionDetails.date);
                 var dischargeDate = new Date($scope.visitSummary.dischargeDetails.date);
