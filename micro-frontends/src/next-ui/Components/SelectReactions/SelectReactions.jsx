@@ -51,12 +51,12 @@ export const SelectReactions = (props) => {
   }, [selectedReactions]);
 
   return (
-    <div className={"section"}>
+    <div className={"section-next-ui"}>
       <div className={"font-large"}
             style={{ marginBottom: "8px", marginTop: "10px" }}
           >Selected Allergen: {selectedAllergen.name}</div>
       <div className={"font-large bold"}>Search Reaction </div>
-      
+
       <div>
         <Search
           id={"reaction-search"}

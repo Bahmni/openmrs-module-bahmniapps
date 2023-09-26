@@ -54,7 +54,7 @@ export function SearchAllergen(props) {
     setIsSearchResultEmpty(search.length === 0);
   };
   return (
-    <div className={"section"}>
+    <div className={"section-next-ui"}>
       <div className={"font-large bold"}>{searchAllergenText}</div>
       <div>
         <Search
