@@ -10,6 +10,7 @@ describe('VisitController', function () {
     var $timeout;
     var getEncounterPromise;
     var locationService;
+    var appService;
     var configurations = {
         encounterConfig: function () {
         }
@@ -53,6 +54,7 @@ describe('VisitController', function () {
         $timeout = timeout;
         success = jasmine.createSpy();
         encounterService = jasmine.createSpyObj('encounterService', ['getEncountersForEncounterType']);
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         getEncounterPromise = specUtil.createServicePromise('getEncountersForEncounterType');
         encounterService.getEncountersForEncounterType.and.returnValue(getEncounterPromise);
         spyOn(clinicalAppConfigService, 'getVisitConfig').and.returnValue([]);
@@ -68,6 +70,13 @@ describe('VisitController', function () {
                                 { display: "Print Header: xyz" }]
                         }]}});
         });
+        appService.getAppDescriptor.and.returnValue({
+            getConfigValue: function () {
+                return "";
+            },
+            getConfig: function () {
+            }
+        });
         scope.currentProvider = {uuid: ''};
         controller =   $controller('VisitController', {
                 $scope: scope,
@@ -81,7 +90,8 @@ describe('VisitController', function () {
                 visitConfig: visitTabConfig,
                 visitHistory:[],
                 $stateParams: {},
-                locationService: locationService
+                locationService: locationService,
+                appService: appService
             });
     }]));
 
