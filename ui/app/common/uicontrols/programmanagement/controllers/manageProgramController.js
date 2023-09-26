@@ -74,6 +74,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             var successCallback = function () {
                 messagingService.showMessage("info", "CLINICAL_SAVE_SUCCESS_MESSAGE_KEY");
                 $scope.programSelected = defaultProgram !== null ? $scope.initialProgram : null;
+                $scope.programSelected != null && $scope.setWorkflowStates($scope.programSelected);
                 $scope.workflowStateSelected = defaultProgram !== null ? $scope.initialProgramWorkflowState : null;
                 $scope.patientProgramAttributes = {};
                 $scope.programEnrollmentDate = new Date($scope.today + ".00:00:00");
