@@ -122,8 +122,7 @@ angular.module('bahmni.common.domain')
         };
 
         var disableProgramOutcome = function () {
-            var config = appService.getAppDescriptor().getConfigValue('disableProgramOutcome');
-            return config ? config : false;
+            return appService.getAppDescriptor().getConfigValue('disableProgramOutcome') || false;
         };
 
         return {
