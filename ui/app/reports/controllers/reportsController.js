@@ -76,6 +76,9 @@ angular.module('bahmni.reports')
                 if (!report.stopDate) {
                     msg.push("end date");
                 }
+                if (report.startDate > report.stopDate) {
+                    msg.push("start date can not be greeater than stop date");
+                }
                 messagingService.showMessage("error", "Please select the " + msg.join(" and "));
                 return false;
             }
