@@ -20,7 +20,8 @@
   }
 
   .content-body {
-    border-radius: 4px;
+    border: 1px solid #669999;
+    border-radius: 4px 4px 0 0;
     box-shadow: 0px 4px 4px 0px #0000004f;
   }
 
@@ -34,7 +35,7 @@
     clear: both;
     background: #669999;
     position: sticky;
-    border-radius: 4px 4px 0 0;
+    border-radius: 0;
     top: 0;
   }
 
