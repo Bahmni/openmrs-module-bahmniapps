@@ -25,6 +25,7 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
                 if (isReady($scope)) {
                     stopWatching();
                     onReady($scope);
+                    calculateDaysAdmitted($scope);
                 }
             });
 
@@ -32,9 +33,20 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
                 if (!$scope.visitSummary || (!$scope.visitSummary.admissionDetails && !$scope.visitSummary.dischargeDetails)) {
                     return $scope.$emit("no-data-present-event") && false;
                 }
-
                 return true;
             };
+        };
+        var calculateDaysAdmitted = function ($scope) {
+            if ($scope.visitSummary.admissionDetails && $scope.visitSummary.dischargeDetails) {
+                var admissionDate = new Date($scope.visitSummary.admissionDetails.date);
+                var dischargeDate = new Date($scope.visitSummary.dischargeDetails.date);
+                var timeDifference = dischargeDate - admissionDate;
+                var daysAdmitted = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+                $scope.visitSummary.daysAdmitted = daysAdmitted;
+                $scope.visitSummary.showDaysAdmitted = true;
+            } else {
+                $scope.visitSummary.showDaysAdmitted = false;
+            }
         };
         return {
             restrict: 'E',

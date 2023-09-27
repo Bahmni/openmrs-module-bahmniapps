@@ -152,7 +152,7 @@ export function PatientAlergiesControl(props) {
         <div>{loadingMessage}</div>
       ) : (
         <div>
-          <h2 className={"section-title"}>
+          <h2 className={"section-title-next-ui"}>
             {allergiesHeading}
             {isAddButtonEnabled && (
               <div

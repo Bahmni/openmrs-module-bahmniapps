@@ -38,7 +38,7 @@ exports[`AddAllergy should render the component 1`] = `
           data-testid="search-allergen"
         >
           <div
-            class="section"
+            class="section-next-ui"
           >
             <div
               class="font-large bold"

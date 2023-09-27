@@ -86,7 +86,7 @@ export function AddAllergy(props) {
                 />
               </div>
 
-              <div className={"section"}>
+              <div className={"section-next-ui"}>
                 <div className={"font-large bold"}>
                   <FormattedMessage
                     id={"SEVERITY"}
