@@ -4,7 +4,7 @@ angular.module('bahmni.common.domain')
         var PatientProgramMapper = new Bahmni.Common.Domain.PatientProgramMapper();
 
         var getAllPrograms = function () {
-            return $http.get(Bahmni.Common.Constants.programUrl, { params: { v: 'default' } }).then(function (response) {
+            return $http.get(Bahmni.Common.Constants.programUrl, {params: {v: 'default'}}).then(function (response) {
                 var allPrograms = programHelper.filterRetiredPrograms(response.data.results);
                 _.forEach(allPrograms, function (program) {
                     program.allWorkflows = programHelper.filterRetiredWorkflowsAndStates(program.allWorkflows);
@@ -26,7 +26,7 @@ angular.module('bahmni.common.domain')
                     dateEnrolled: moment(dateEnrolled).format(Bahmni.Common.Constants.ServerDateTimeFormat),
                     attributes: attributeFormatter.removeUnfilledAttributes(attributeFormatter.getMrsAttributes(patientProgramAttributes, (programAttributeTypes || [])))
                 },
-                headers: { "Content-Type": "application/json" }
+                headers: {"Content-Type": "application/json"}
             };
             if (!_.isEmpty(stateUuid)) {
                 req.content.states = [
@@ -45,7 +45,7 @@ angular.module('bahmni.common.domain')
                 patientProgramUuid: patientProgramUuid,
                 patient: patientUuid
             };
-            return $http.get(Bahmni.Common.Constants.programEnrollPatientUrl, { params: params }).then(function (response) {
+            return $http.get(Bahmni.Common.Constants.programEnrollPatientUrl, {params: params}).then(function (response) {
                 var patientPrograms = response.data.results;
                 return getProgramAttributeTypes().then(function (programAttributeTypes) {
                     if (filterAttributesForProgramDisplayControl) {
@@ -61,7 +61,7 @@ angular.module('bahmni.common.domain')
             var req = {
                 url: Bahmni.Common.Constants.programEnrollPatientUrl + "/" + patientProgramUuid,
                 content: content,
-                headers: { "Content-Type": "application/json" }
+                headers: {"Content-Type": "application/json"}
             };
             return $http.post(req.url, req.content, req.headers);
         };
@@ -73,13 +73,13 @@ angular.module('bahmni.common.domain')
                     "!purge": "",
                     "reason": "User deleted the state."
                 },
-                headers: { "Content-Type": "application/json" }
+                headers: {"Content-Type": "application/json"}
             };
             return $http.delete(req.url, req.content, req.headers);
         };
 
         var getProgramAttributeTypes = function () {
-            return $http.get(Bahmni.Common.Constants.programAttributeTypes, { params: { v: 'custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)' } }).then(function (response) {
+            return $http.get(Bahmni.Common.Constants.programAttributeTypes, {params: {v: 'custom:(uuid,name,description,datatypeClassname,datatypeConfig,concept)'}}).then(function (response) {
                 var programAttributesConfig = appService.getAppDescriptor().getConfigValue("program");
 
                 var mandatoryProgramAttributes = [];
@@ -121,6 +121,10 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        var disableProgramOutcome = function () {
+            return appService.getAppDescriptor().getConfigValue('disableProgramOutcome') || false;
+        };
+
         return {
             getAllPrograms: getAllPrograms,
             enrollPatientToAProgram: enrollPatientToAProgram,
@@ -132,6 +136,7 @@ angular.module('bahmni.common.domain')
             getProgramStateConfig: getProgramStateConfig,
             getEnrollmentInfoFor: getEnrollmentInfoFor,
             getDefaultProgram: getDefaultProgram,
-            getProgramRedirectionConfig: getProgramRedirectionConfig
+            getProgramRedirectionConfig: getProgramRedirectionConfig,
+            disableProgramOutcome: disableProgramOutcome
         };
     }]);

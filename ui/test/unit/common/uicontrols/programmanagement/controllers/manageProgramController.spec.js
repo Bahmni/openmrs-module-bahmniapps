@@ -22,7 +22,7 @@ describe("ManageProgramController", function () {
         _provide = $provide;
         programService = jasmine.createSpyObj('programService', ['getPatientPrograms', 'getAllPrograms',
             'deletePatientState', 'getProgramAttributeTypes', 'updatePatientProgram',
-            'getDefaultProgram', 'getProgramRedirectionConfig']);
+            'getDefaultProgram', 'getProgramRedirectionConfig', 'disableProgramOutcome']);
 
         programService.getDefaultProgram.and.callFake(function () {
             deferred = q.defer();
@@ -44,7 +44,7 @@ describe("ManageProgramController", function () {
 
         programService.deletePatientState.and.callFake(function () {
             deferred = q.defer();
-            deferred.resolve({ data: { results: listOfPatientPrograms } });
+            deferred.resolve({data: {results: listOfPatientPrograms}});
             return deferred.promise;
         });
 
@@ -56,7 +56,7 @@ describe("ManageProgramController", function () {
 
         programService.updatePatientProgram.and.callFake(function () {
             deferred = q.defer();
-            deferred.resolve({ data: { results: listOfPatientPrograms } });
+            deferred.resolve({data: {results: listOfPatientPrograms}});
             return deferred.promise;
         });
 
@@ -70,14 +70,14 @@ describe("ManageProgramController", function () {
         $provide.value('spinner', _spinner);
         $provide.value('messagingService', messageService);
         $provide.value('retrospectiveEntryService', retrospectiveEntryService);
-        $provide.value('$stateParams', { configName: "default" });
+        $provide.value('$stateParams', {configName: "default"});
     }));
 
     beforeEach(inject(function ($controller, $rootScope, $q) {
         controller = $controller;
         rootScope = $rootScope;
         scope = $rootScope.$new();
-        scope.patient = { uuid: "some uuid" };
+        scope.patient = {uuid: "some uuid"};
         q = $q;
     }));
 
@@ -89,10 +89,10 @@ describe("ManageProgramController", function () {
                 "dateEnrolled": "2015-07-25T18:29:59.000+0000",
                 "dateCompleted": null,
                 "outcome": null,
-                "patient": { "uuid": "ad95e200-6196-4438-a078-16ad0506a473" },
+                "patient": {"uuid": "ad95e200-6196-4438-a078-16ad0506a473"},
                 "states": [
                     {
-                        state: { uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995' },
+                        state: {uuid: '1911a3ef-cfab-43c5-8810-7f594bfa8995'},
                         startDate: "2015-07-01",
                         endDate: "2015-07-15"
                     },
@@ -337,7 +337,7 @@ describe("ManageProgramController", function () {
         it("should save program attributes", function () {
             scope.$apply(setUp);
             var programToBeUpdated = listOfPatientPrograms.activePrograms[0];
-            programToBeUpdated.patientProgramAttributes = { "locationName": "Loc1" };
+            programToBeUpdated.patientProgramAttributes = {"locationName": "Loc1"};
 
             scope.updatePatientProgram(programToBeUpdated);
 
@@ -353,7 +353,7 @@ describe("ManageProgramController", function () {
             patientProgramToBeUpdated.states = []; //making sure there are no states assigned
 
             var newStateUuid = '8917ab09-52b4-4573-aefa-7f6e7bdf6d61';
-            patientProgramToBeUpdated.selectedState = { uuid: newStateUuid };
+            patientProgramToBeUpdated.selectedState = {uuid: newStateUuid};
             retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
                 return '2015-07-19';
             });
@@ -410,7 +410,7 @@ describe("ManageProgramController", function () {
             });
             var newStateUuid = '8417ab09-52b4-4573-aefa-7f6e7bdf6d61';
             expect(patientProgramToBeUpdated.states.length).toBe(2);
-            patientProgramToBeUpdated.selectedState = { uuid: newStateUuid };
+            patientProgramToBeUpdated.selectedState = {uuid: newStateUuid};
 
             scope.updatePatientProgram(patientProgramToBeUpdated);
 
@@ -432,7 +432,7 @@ describe("ManageProgramController", function () {
             });
             var currentActiveStateUuid = '1317ab09-52b4-4573-aefa-7f6e7bdf6d61';
             expect(patientProgramToBeUpdated.states.length).toBe(2);
-            patientProgramToBeUpdated.selectedState = { uuid: currentActiveStateUuid };
+            patientProgramToBeUpdated.selectedState = {uuid: currentActiveStateUuid};
 
             scope.updatePatientProgram(patientProgramToBeUpdated);
 
@@ -455,11 +455,11 @@ describe("ManageProgramController", function () {
             });
             programService.updatePatientProgram.and.callFake(function () {
                 deferred = q.defer();
-                deferred.reject({ data: { error: '' } });
+                deferred.reject({data: {error: ''}});
                 return deferred.promise;
             });
 
-            patientProgramToBeUpdated.selectedState = { uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61' };
+            patientProgramToBeUpdated.selectedState = {uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'};
             scope.updatePatientProgram(patientProgramToBeUpdated);
             scope.$digest();
             expect(messageService.showMessage).toHaveBeenCalledWith("error", "Failed to Save");
@@ -473,7 +473,7 @@ describe("ManageProgramController", function () {
         it("should validate if program is ending before the current running state", function () {
             scope.$apply(setUp);
             var programToBeUpdated = listOfPatientPrograms.activePrograms[0];
-            programToBeUpdated.outcomeData = { uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61' };
+            programToBeUpdated.outcomeData = {uuid: '1317ab09-52b4-4573-aefa-7f6e7bdf6d61'};
 
             retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
                 return '2015-07-12';
@@ -490,7 +490,7 @@ describe("ManageProgramController", function () {
             retrospectiveEntryService.getRetrospectiveDate.and.callFake(function () {
                 return '2015-07-19';
             });
-            programToBeUpdated.outcomeData = { uuid: 'outcome-uuid' };
+            programToBeUpdated.outcomeData = {uuid: 'outcome-uuid'};
 
             scope.updatePatientProgram(programToBeUpdated);
             scope.$digest();
