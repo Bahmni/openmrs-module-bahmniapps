@@ -38,6 +38,7 @@ angular.module('bahmni.reports')
                     report['stopDate'] = dateRange[0];
                 }
                 else if ($rootScope.default[header][item] === undefined) {
+                    $rootScope.default.reportsRequiringDateRange.startDate = dateRange[0];
                     $rootScope.reportsRequiringDateRange.forEach(function (report) {
                         report.startDate = dateRange[0];
                         report.stopDate = dateRange[0];
@@ -76,8 +77,8 @@ angular.module('bahmni.reports')
                 if (!report.stopDate) {
                     msg.push("end date");
                 }
-                if (report.startDate > report.stopDate) {
-                    msg.push("start date can not be greeater than stop date");
+                if ((report.startDate > report.stopDate)) {
+                    msg.push("start date can not be greater than stop date");
                 }
                 messagingService.showMessage("error", "Please select the " + msg.join(" and "));
                 return false;
