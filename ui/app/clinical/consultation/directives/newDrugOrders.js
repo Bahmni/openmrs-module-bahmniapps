@@ -88,7 +88,7 @@ angular.module('bahmni.clinical')
 
             var getPreviousDrugAlerts = function () {
                 var treatments = $scope.treatments;
-                treatments.forEach(function (drugOrder) {
+                treatments && treatments.forEach(function (drugOrder) {
                     var drug = drugOrder.drug;
                     var cdssAlerts = $rootScope.cdssAlerts;
                     if (!cdssAlerts) return;

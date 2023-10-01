@@ -189,7 +189,7 @@ angular.module('bahmni.clinical')
                 item.isActive = true;
                 item.detail = marked.parse(item.detail);
                 if (item.source && item.source.url) {
-                    item.detail = item.detail + ' <a href="' + item.source.url + '" target="_blank" ng-show="alert.source.url" class=""><i class="fa fa-question-circle"></i></a>';
+                    item.detail = item.detail + ' <a href="' + item.source.url + '" target="_blank" ng-show="alert.source.url" class="cdss_alert_source"><i class="fa fa-question-circle"></i></a>';
                 }
                 return item;
             });
