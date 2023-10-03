@@ -76,6 +76,7 @@ function createComponentWithTranslationForwarding(name, reactComponent) {
         host-data="hostData"
         host-api="hostApi"
         tx="tx"
+        app-service="appService"
       ></${templateNameForRemote}>
     `,
   });
@@ -110,14 +111,15 @@ function createComponent(name, reactComponent) {
  * A controller which forwards hostData & hostApi, but along with that, forwards the translation
  * function as tx
  */
-function translationForwardingController($scope, $translate) {
+function translationForwardingController($scope, $translate, appService) {
   const vm = this;
   $scope.hostData = vm.hostData;
   $scope.hostApi = vm.hostApi;
   $scope.tx = $translate.instant.bind($translate);
+  $scope.appService = appService;
 }
 
-translationForwardingController.$inject = ["$scope", "$translate"];
+translationForwardingController.$inject = ["$scope", "$translate","appService"];
 
 /** Utilities */
 function camelCaseToHyphenatedLowerCase(str) {
