@@ -64,7 +64,13 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                 restrict: 'E',
                 controller: controller,
                 link: link,
-                templateUrl: "../common/displaycontrols/diagnosis/views/diagnosisDisplayControl.html",
+                templateUrl: function (element, attrs) {
+                    if (attrs.templateUrl) {
+                        return attrs.templateUrl;
+                    } else {
+                        return "../common/displaycontrols/diagnosis/views/diagnosisDisplayControl.html";
+                    }
+                },
                 scope: {
                     patientUuid: "=",
                     config: "=",

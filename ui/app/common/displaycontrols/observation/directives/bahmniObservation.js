@@ -22,6 +22,13 @@ angular.module('bahmni.common.displaycontrol.observation')
                                 return _.toLower(conceptName) === _.toLower(_.get(observation, 'concept.name'));
                             });
                         });
+                        if ($scope.config.customSortNeeded && $scope.config.conceptNames) {
+                            observations.sort(function (a, b) {
+                                const indexOfA = $scope.config.conceptNames.indexOf(a.concept.name);
+                                const indexOfB = $scope.config.conceptNames.indexOf(b.concept.name);
+                                return indexOfA - indexOfB;
+                            });
+                        }
                     }
 
                     if ($scope.config.persistOrderOfConcepts) {
@@ -131,7 +138,13 @@ angular.module('bahmni.common.displaycontrol.observation')
                 restrict: 'E',
                 controller: controller,
                 link: link,
-                templateUrl: "../common/displaycontrols/observation/views/observationDisplayControl.html",
+                templateUrl: function (element, attrs) {
+                    if (attrs.templateUrl) {
+                        return attrs.templateUrl;
+                    } else {
+                        return "../common/displaycontrols/observation/views/observationDisplayControl.html";
+                    }
+                },
                 scope: {
                     patient: "=",
                     visitUuid: "@",
