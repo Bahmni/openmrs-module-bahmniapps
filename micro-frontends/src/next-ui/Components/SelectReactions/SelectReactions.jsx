@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import propTypes from "prop-types";
 import "../../../styles/common.scss";
 import { Checkbox, Search, Tag } from "carbon-components-react";
+import { FormattedMessage } from "react-intl";
 
 const getReactionIds = (reactions) => {
   return Object.keys(reactions);
@@ -53,10 +54,9 @@ export const SelectReactions = (props) => {
   return (
     <div className={"section-next-ui"}>
       <div className={"font-large"}
-            style={{ marginBottom: "8px", marginTop: "10px" }}
-          >Selected Allergen: {selectedAllergen.name}</div>
-      <div className={"font-large bold"}>Search Reaction </div>
-
+           style={{ marginBottom: "8px", marginTop: "10px" }}>
+        <FormattedMessage id={"SELECTED_ALLERGEN"} defaultMessage={"Selected Allergen:"}/> {selectedAllergen.name}</div>
+      <div className={"font-large bold"}><FormattedMessage id={"SEARCH_REACTION"} defaultMessage={"Search Reaction"}/><span className={"red-text"}>&nbsp;*</span></div>
       <div>
         <Search
           id={"reaction-search"}
@@ -95,7 +95,7 @@ export const SelectReactions = (props) => {
             className={"font-small"}
             style={{ marginBottom: "8px", marginTop: "10px" }}
           >
-            Common Reactions
+            <FormattedMessage id={"COMMON_REACTIONS"} defaultMessage={"Common Reactions"}/>
           </div>
         )}
         {searchResults.map((reactionId) => {

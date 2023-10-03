@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.dashboard')
 
-    .directive('dashboard', ['appService', function (appService) {
+    .directive('dashboard', ['appService', '$bahmniCookieStore', '$rootScope', function (appService, $bahmniCookieStore, $rootScope) {
         var controller = function ($scope, $filter) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
@@ -21,9 +21,12 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             if ($scope.patient !== undefined) {
                 $scope.allergyData = {
                     patient: $scope.patient,
+                    provider: $rootScope.currentProvider,
                     activeVisit: $scope.visitHistory.activeVisit,
                     allergyControlConceptIdMap: appService.getAppDescriptor().getConfigValue("allergyControlConceptIdMap")
                 };
+                $scope.appService = appService;
+                $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);
             }
 
             var checkDisplayType = function (sections, typeToCheck, index) {

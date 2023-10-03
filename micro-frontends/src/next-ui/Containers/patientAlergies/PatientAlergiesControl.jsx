@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import "../../../styles/carbon-conflict-fixes.scss";
 import "../../../styles/carbon-theme.scss";
@@ -6,7 +6,13 @@ import "../../../styles/common.scss";
 import "./patientAllergiesControl.scss";
 import { AddAllergy } from "../../Components/AddAllergy/AddAllergy";
 import { FormattedMessage } from "react-intl";
-import { fetchAllergensOrReactions } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
+import {
+  fetchAllergensOrReactions,
+  fetchAllergiesAndReactionsForPatient
+} from "../../utils/PatientAllergiesControl/AllergyControlUtils";
+import { ViewAllergiesAndReactions } from "../../Components/ViewAllergiesAndReactions/ViewAllergiesAndReactions";
+import { I18nProvider } from "../../Components/i18n/I18nProvider";
+import { NotificationCarbon } from "bahmni-carbon-ui";
 
 /** NOTE: for reasons known only to react2angular,
  * any functions passed in as props will be undefined at the start, even ones inside other objects
@@ -14,13 +20,13 @@ import { fetchAllergensOrReactions } from "../../utils/PatientAllergiesControl/A
  */
 
 const AllergenKind = {
-  MEDICATION: "Medication",
+  DRUG: "Drug",
   FOOD: "Food",
   ENVIRONMENT: "Environment",
 };
 export function PatientAlergiesControl(props) {
-  const { hostData } = props;
-  const { activeVisit, allergyControlConceptIdMap } = hostData;
+  const { hostData, appService } = props;
+  const { patient, provider, activeVisit, allergyControlConceptIdMap} = hostData;
 
   const isAddButtonEnabled = activeVisit && activeVisit.uuid;
 
@@ -52,6 +58,16 @@ export function PatientAlergiesControl(props) {
     return reactions;
   };
 
+  const TransformSeverityData = (severityData) => {
+    const {setMembers, answers} = severityData;
+    const severities = setMembers.length > 0 ? setMembers: answers;
+    const extractedSeverity = [];
+    severities.forEach( severity => {
+      extractedSeverity.push({ name: severity.display, uuid: severity.uuid });
+    });
+    return extractedSeverity.sort((a, b) => b.uuid - a.uuid);
+  }
+
   const TransformAllergenData = (
     medicationAllergenData,
     foodAllergenData,
@@ -59,7 +75,7 @@ export function PatientAlergiesControl(props) {
   ) => {
     const medicationAllergens = extractAllergenData(
       medicationAllergenData,
-      AllergenKind.MEDICATION
+      AllergenKind.DRUG
     );
     const environmentalAllergens = extractAllergenData(
       environmentAllergenData,
@@ -70,18 +86,42 @@ export function PatientAlergiesControl(props) {
       AllergenKind.FOOD
     );
 
-    const allergens = [
+    return [
       ...medicationAllergens,
       ...environmentalAllergens,
       ...foodAllergens,
     ];
-    return allergens;
   };
+
+  const allergiesAndReactionsForPatient = async () => {
+    const allergiesData = [];
+    const allergiesAndReactions = await fetchAllergiesAndReactionsForPatient(patient.uuid);
+    const allergies = allergiesAndReactions.entry;
+    allergies?.forEach((allergy) => {
+      const { resource } = allergy;
+      const allergen = resource.reaction[0]?.substance.coding[0].display;
+      const severity = resource.reaction[0].severity;
+      const note = resource.note && resource.note[0].text;
+      const date = new Date(resource.recordedDate);
+      const reactions =[]
+      const provider = resource.recorder?.display;
+      resource.reaction[0]?.manifestation.forEach((reaction) => {
+        reactions.push(reaction.coding[0].display);
+      });
+      allergiesData.push({allergen, severity, reactions, note, provider, date})
+    });
+    allergiesData.sort((a, b) => b.date - a.date);
+    setAllergiesAndReactions(allergiesData);
+  }
 
   const [showAddAllergyPanel, setShowAddAllergyPanel] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [transformedAllergenData, setTransformedAllergenData] = useState([]);
   const [transformedReactionData, setTransformedReactionData] = useState({});
+  const [transformedSeverityData, setTransformedSeverityData] = useState([]);
+  const [allergiesAndReactions, setAllergiesAndReactions] = useState([]);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
 
   const noAllergiesText = (
     <FormattedMessage
@@ -90,7 +130,7 @@ export function PatientAlergiesControl(props) {
     />
   );
   const allergiesHeading = (
-    <FormattedMessage id={"ALLERGIES_HEADING"} defaultMessage={"Allergies"} />
+    <FormattedMessage id={"ALLERGIES_DISPLAY_CONTROL_HEADING"} defaultMessage={"Allergies"} />
   );
   const addButtonText = (
     <FormattedMessage id={"ADD_BUTTON_TEXT"} defaultMessage={"Add +"} />
@@ -102,19 +142,13 @@ export function PatientAlergiesControl(props) {
     />
   );
 
-  const medicationAllergenURL =
-    allergyControlConceptIdMap.medicationAllergenUuid;
-  const foodAllergenURL = allergyControlConceptIdMap.foodAllergenUuid;
-  const environmentAllergenURL =
-    allergyControlConceptIdMap.environmentalAllergenUuid;
-  const allergyReactionURL = allergyControlConceptIdMap.allergyReactionUuid;
-
   const buildAllergenAndReactionsData = async () => {
     const urls = [
-      medicationAllergenURL,
-      foodAllergenURL,
-      environmentAllergenURL,
-      allergyReactionURL,
+      allergyControlConceptIdMap.medicationAllergenUuid,
+      allergyControlConceptIdMap.foodAllergenUuid,
+      allergyControlConceptIdMap.environmentalAllergenUuid,
+      allergyControlConceptIdMap.allergyReactionUuid,
+      allergyControlConceptIdMap.allergySeverityUuid
     ];
 
     try {
@@ -124,6 +158,7 @@ export function PatientAlergiesControl(props) {
         foodResponseData,
         environmentalResponseData,
         reactionResponseData,
+        severityResponseData
       ] = await Promise.all(urls.map((url) => fetchAllergensOrReactions(url)));
       const allergenData = TransformAllergenData(
         medicationResponseData,
@@ -132,8 +167,11 @@ export function PatientAlergiesControl(props) {
       );
       const reactionsData = TransformReactionData(reactionResponseData);
 
+      const severityData = TransformSeverityData(severityResponseData);
+
       setTransformedAllergenData(allergenData);
       setTransformedReactionData(reactionsData);
+      setTransformedSeverityData(severityData);
       setLoading(false);
     } catch (e) {
       console.log(e);
@@ -144,10 +182,12 @@ export function PatientAlergiesControl(props) {
 
   useEffect(() => {
     buildAllergenAndReactionsData();
+    allergiesAndReactionsForPatient();
   }, []);
 
   return (
     <>
+      <I18nProvider>
       {isLoading ? (
         <div>{loadingMessage}</div>
       ) : (
@@ -165,23 +205,41 @@ export function PatientAlergiesControl(props) {
               </div>
             )}
           </h2>
-          <div className={"placeholder-text"}>{noAllergiesText}</div>
-          {showAddAllergyPanel && (
+            {allergiesAndReactions.length === 0 ?<div className={"placeholder-text"}>{noAllergiesText}</div>:
+                <ViewAllergiesAndReactions allergies={allergiesAndReactions} showTextAsAbnormal={appService.getAppDescriptor().getConfigValue("showTextAsAbnormal")}/>
+            }
+          { showAddAllergyPanel && (
             <AddAllergy
               reaction={transformedReactionData}
               allergens={transformedAllergenData}
+              severityOptions={transformedSeverityData}
+              patient={patient}
+              provider={provider}
               data-testid={"allergies-overlay"}
               onClose={() => {
                 setShowAddAllergyPanel(false);
               }}
+              onSave={async (isSaveSuccess) => {
+                if(isSaveSuccess){
+                  setShowSuccessPopup(true);
+                  setShowAddAllergyPanel(false);
+                }
+                else if(isSaveSuccess === false){
+                  setShowErrorPopup(true);
+                }
+              }}
             />
           )}
+          <NotificationCarbon onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={"Allergy saved successfully"} hideCloseButton={true}/>
+          <NotificationCarbon onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={"Error saving allergy"} hideCloseButton={true}/>
         </div>
       )}
+      </I18nProvider>
     </>
   );
 }
 
 PatientAlergiesControl.propTypes = {
   hostData: PropTypes.object.isRequired,
+  appService: PropTypes.object.isRequired,
 };

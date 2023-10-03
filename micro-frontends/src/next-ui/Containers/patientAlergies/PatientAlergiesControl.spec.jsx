@@ -63,6 +63,7 @@ const testHostData = {
     foodAllergenUuid: "food_allergen_Uuid",
     environmentalAllergenUuid: "environmental_allergen_Uuid",
     allergyReactionUuid: "allergy_reaction_Uuid",
+    allergySeverityUuid: "allergy_severity_Uuid",
   },
 };
 const testHostDataWithoutActiveVisit = {
@@ -76,6 +77,7 @@ const testHostDataWithoutActiveVisit = {
     foodAllergenUuid: "food_allergen_Uuid",
     environmentalAllergenUuid: "environmental_allergen_Uuid",
     allergyReactionUuid: "allergy_reaction_Uuid",
+    allergySeverityUuid: "allergy_severity_Uuid",
   },
 };
 
