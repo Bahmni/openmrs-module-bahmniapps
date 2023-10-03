@@ -1,5 +1,7 @@
 {
   "NO_FORM": "No Form found for this patient....",
   "DASHBOARD_TITLE_FORMS_2_DISPLAY_CONTROL_KEY": "Observation Forms",
-  "LOADING_MESSAGE": "Loading... Please Wait"
+  "LOADING_MESSAGE": "Loading... Please Wait",
+  "NO_ALLERGIES": "No Allergies recorded for this patient."
+
 }
