@@ -6,6 +6,7 @@ import "../../../styles/common.scss";
 import "./patientAllergiesControl.scss";
 import { AddAllergy } from "../../Components/AddAllergy/AddAllergy";
 import { FormattedMessage } from "react-intl";
+import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import { fetchAllergensOrReactions } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
 
 /** NOTE: for reasons known only to react2angular,
@@ -148,36 +149,38 @@ export function PatientAlergiesControl(props) {
 
   return (
     <>
-      {isLoading ? (
-        <div>{loadingMessage}</div>
-      ) : (
-        <div>
-          <h2 className={"section-title"}>
-            {allergiesHeading}
-            {isAddButtonEnabled && (
-              <div
-                className={"add-button"}
-                onClick={() => {
-                  setShowAddAllergyPanel(true);
+      <I18nProvider>
+        {isLoading ? (
+          <div>{loadingMessage}</div>
+        ) : (
+          <div>
+            <h2 className={"section-title-next-ui"}>
+              {allergiesHeading}
+              {isAddButtonEnabled && (
+                <div
+                  className={"add-button"}
+                  onClick={() => {
+                    setShowAddAllergyPanel(true);
+                  }}
+                >
+                  {addButtonText}
+                </div>
+              )}
+            </h2>
+            <div className={"placeholder-text"}>{noAllergiesText}</div>
+            {showAddAllergyPanel && (
+              <AddAllergy
+                reaction={transformedReactionData}
+                allergens={transformedAllergenData}
+                data-testid={"allergies-overlay"}
+                onClose={() => {
+                  setShowAddAllergyPanel(false);
                 }}
-              >
-                {addButtonText}
-              </div>
+              />
             )}
-          </h2>
-          <div className={"placeholder-text"}>{noAllergiesText}</div>
-          {showAddAllergyPanel && (
-            <AddAllergy
-              reaction={transformedReactionData}
-              allergens={transformedAllergenData}
-              data-testid={"allergies-overlay"}
-              onClose={() => {
-                setShowAddAllergyPanel(false);
-              }}
-            />
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </I18nProvider>
     </>
   );
 }
