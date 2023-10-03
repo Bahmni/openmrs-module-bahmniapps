@@ -66,7 +66,6 @@ export function AddAllergy(props) {
       }
     }
     const response = await bahmniEncounter(payload);
-    console.log(response);
     if(response.status === 200){
       setIsSaveSuccess(true);
     }else{
@@ -74,7 +73,6 @@ export function AddAllergy(props) {
     }
   }
   useEffect(() => {
-    console.log('isSaveSuccess in useEffect', isSaveSuccess)
     onSave(isSaveSuccess);
   }, [isSaveSuccess]);
   return (
