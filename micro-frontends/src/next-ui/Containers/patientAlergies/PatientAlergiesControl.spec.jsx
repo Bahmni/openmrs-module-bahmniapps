@@ -47,6 +47,10 @@ jest.mock("../../utils/PatientAllergiesControl/AllergyControlUtils", () => ({
   fetchAllergensOrReactions: () => mockFetchAllergensOrReactions(),
 }));
 
+jest.mock("../../Components/i18n/I18nProvider", () => ({
+  I18nProvider: ({ children }) => <div>{children}</div>
+}));
+
 const testHostData = {
   patient: {
     uuid: "___patient_uuid__",
