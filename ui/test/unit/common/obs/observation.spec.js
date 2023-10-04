@@ -59,7 +59,7 @@ describe("Observation", function () {
 
         it("should return datetime in specific format", function () {
             var observation = new Observation({"type": "Datetime", "value": "2014-12-05 17:00:00"});
-            expect(observation.getDisplayValue()).toBe("05 Dec 14 5:00 pm");
+            expect(observation.getDisplayValue()).toBe("05 Dec 2014 5:00 pm");
         });
 
         it("should return empty if value is null", function () {
