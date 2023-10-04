@@ -103,7 +103,7 @@ describe("ensure that the directive show-observation works properly", function (
         scope.$digest();
 
         expect(compiledScope).not.toBeUndefined();
-        expect(compiledScope.dateString(observation)).toBe(moment(obsDate).format("DD MMM YY h:mm a"));
+        expect(compiledScope.dateString(observation)).toBe(moment(obsDate).format("DD MMM YYYY h:mm a"));
     });
 
     it("should open video in a new dialog", function () {

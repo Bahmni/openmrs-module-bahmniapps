@@ -201,7 +201,7 @@ describe("MyReportsController", function () {
 
     it("should convert unixTimeStamps to given format", function () {
         expect(scope.convertToDate(1474529795000, 'hh:mm A')).toEqual(moment(1474529795000).format('hh:mm A'));
-        expect(scope.convertToDate(1474529795000, "DD MMM YY")).toEqual(moment(1474529795000).format('DD MMM YY'));
+        expect(scope.convertToDate(1474529795000, "DD MMM YYYY")).toEqual(moment(1474529795000).format('DD MMM YYYY'));
         expect(scope.convertToDate(1474529795000, "MMMM Do YYYY, dddd")).toEqual(moment(1474529795000).format('MMMM Do YYYY, dddd'));
     });
 

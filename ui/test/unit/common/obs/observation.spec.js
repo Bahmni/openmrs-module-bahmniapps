@@ -71,15 +71,15 @@ describe("Observation", function () {
 
         it("should format date to bahmniDate  if value is of type date", function () {
             var observation = new Observation({"type": "Date", "value": "2012-12-10"});
-            expect(observation.getDisplayValue()).toBe("10 Dec 12");
+            expect(observation.getDisplayValue()).toBe("10 Dec 2012");
         });
         it("should format date in months and years if config is set to display in months and years", function(){
             var observation = new Observation({"type": "Date", "value": "2012-12-10"},{"displayMonthAndYear": true});
-            expect((observation.getDisplayValue())).toBe("Dec 12");
+            expect((observation.getDisplayValue())).toBe("Dec 2012");
         });
         it("should format date in text to months and years if config is set to display in months and years", function(){
             var observation = new Observation({"type": "text", "value": "2012-12-10"},{"displayMonthAndYear": true});
-            expect((observation.getDisplayValue())).toBe("Dec 12");
+            expect((observation.getDisplayValue())).toBe("Dec 2012");
         });
     });
 
