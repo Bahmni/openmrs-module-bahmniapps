@@ -2,8 +2,8 @@
 
 angular.module('bahmni.common.displaycontrol.dashboard')
 
-    .directive('dashboard', ['appService', '$stateParams', '$bahmniCookieStore', '$rootScope', function (appService, $stateParams, $bahmniCookieStore, $rootScope) {
-        var controller = function ($scope, $filter) {
+    .directive('dashboard', ['appService', function (appService) {
+        var controller = function ($scope, $filter, $rootScope) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
             };
@@ -15,9 +15,11 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     encounterUuid: $scope.activeEncounterUuid,
                     showEditForActiveEncounter: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.showEditForActiveEncounter || false,
                     numberOfVisits: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.maximumNoOfVisits || undefined,
-                    hasNoHierarchy: $scope.hasNoHierarchy
+                    hasNoHierarchy: $scope.hasNoHierarchy,
+                    currentUser: $rootScope.currentUser
                 };
             }
+            // console.log("formdata", $scope.formData);
 
             if ($scope.patient !== undefined) {
                 $scope.allergyData = {

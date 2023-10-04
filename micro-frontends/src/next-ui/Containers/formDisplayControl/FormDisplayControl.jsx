@@ -61,6 +61,7 @@ export function FormDisplayControl(props) {
             visitDate: formEntry.visitStartDateTime,
             providerName: formEntry.providers[0].providerName,
             providerUuid: formEntry.providers[0].uuid,
+            formVersion: formEntry.formVersion,
           });
         });
       }
