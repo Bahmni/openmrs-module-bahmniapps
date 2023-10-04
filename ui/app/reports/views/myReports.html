@@ -21,8 +21,8 @@
             <tr ng-repeat="report in reports[day.unixTimeStamp]" ng-hide="report.hidden">
                 <td>{{:: report.name }}</td>
                 <td>{{ :: convertToDate(report.requestDatetime , 'hh:mm A')}}</td>
-                <td>{{ :: convertToDate(report.startDate , "DD MMM YY")}}</td>
-                <td>{{ :: convertToDate(report.endDate , "DD MMM YY")}}</td>
+                <td>{{ :: convertToDate(report.startDate , "DD MMM YYYY")}}</td>
+                <td>{{ :: convertToDate(report.endDate , "DD MMM YYYY")}}</td>
                 <td> {{ :: getFormat(report.format) }}</td>
                 <td ng-if="report.status != 'Completed' && report.status != 'Error'" class="reportStatus reportStatus--{{report.status}}">{{ report.status }}</td>
                 <td ng-if="report.status == 'Completed'" class="reportStatus reportStatus--link">
