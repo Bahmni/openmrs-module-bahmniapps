@@ -7,9 +7,6 @@
   </div>
   <p>{{alert.summary}}</p>
   <p>
-    <span> {{alert.detail}} </span>
-    <a href="{{alert.source.url}}" target="_blank" ng-show="alert.source.url">
-      <i class="fa fa-question-circle drug-link"></i>
-    </a>
+    <span ng-bind-html="alert.detail"> {{alert.detail}} </span>
   </p>
 </div>

@@ -69,6 +69,11 @@
   a {
     margin-left: 5px;
   }
+  .cdss_alert_source {
+    i {
+      position: relative !important;
+    }
+  }
   .status-critical {
     background-color: #ffd6d8;
     border: 1px solid #ff0000;
