@@ -2,9 +2,9 @@
 
 angular.module('bahmni.clinical')
     .controller('DrugOrderHistoryController', ['$q', '$scope', '$filter', '$stateParams', 'activeDrugOrders', 'appService',
-        'treatmentConfig', 'treatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope', 'providerService', 'observationsService', 'diagnosisService',
+        'treatmentConfig', 'treatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope', 'providerService', 'observationsService', 'diagnosisService', 'allergyService',
         function ($q, $scope, $filter, $stateParams, activeDrugOrders, appService, treatmentConfig, treatmentService, spinner,
-            drugOrderHistoryHelper, visitHistory, $translate, $rootScope, providerService, observationsService, diagnosisService) {
+            drugOrderHistoryHelper, visitHistory, $translate, $rootScope, providerService, observationsService, diagnosisService, allergyService) {
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var currentVisit = visitHistory.activeVisit;
@@ -138,13 +138,25 @@ angular.module('bahmni.clinical')
                     });
                     promises.push(promise);
                 }
-
+                var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
+                    var allergies = response.data;
+                    var allergiesList = [];
+                    if (response.status === 200) {
+                        allergies.entry.forEach(function (allergy) {
+                            if (allergy.resource.code.coding) {
+                                allergiesList.push(allergy.resource.code.coding[0].display);
+                            }
+                        });
+                    }
+                    $scope.allergies = allergiesList.join(", ") || "";
+                });
+                promises.push(allergyPromise);
                 Promise.all(promises).then(function () {
                     var additionalInfo = {};
                     additionalInfo.visitType = currentVisit ? currentVisit.visitType.display : "";
                     additionalInfo.currentDate = new Date();
                     additionalInfo.facilityLocation = $rootScope.facilityLocation;
-                    treatmentService.printSelectedPrescriptions($scope.printPrescriptionFeature, drugOrdersForPrint, $scope.patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries);
+                    treatmentService.printSelectedPrescriptions($scope.printPrescriptionFeature, drugOrdersForPrint, $scope.patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries, $scope.allergies);
                     $scope.selectedDrugs = {};
                 }).catch(function (error) {
                     console.error("Error fetching details for print: ", error);

@@ -3,6 +3,7 @@ import propTypes from "prop-types";
 import "../../../styles/common.scss";
 import { Checkbox, Search, Tag } from "carbon-components-react";
 import { FormattedMessage } from "react-intl";
+import { cloneDeep } from "lodash";
 
 const getReactionIds = (reactions) => {
   return Object.keys(reactions);
@@ -14,8 +15,7 @@ export const SelectReactions = (props) => {
   const [searchResults, setSearchResults] = useState(initialReactionIds);
   const [isSearchResultEmpty, setIsSearchResultEmpty] = useState(true);
   const [selectedReactions, setSelectedReactions] = useState([]);
-
-  const [allReactions] = useState(reactions);
+  const allReactions = cloneDeep(reactions);
 
   const search = (key) => {
     if (!key) {
