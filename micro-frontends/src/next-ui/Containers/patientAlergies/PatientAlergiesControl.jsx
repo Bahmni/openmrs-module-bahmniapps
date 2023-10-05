@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "../../../styles/carbon-conflict-fixes.scss";
 import "../../../styles/carbon-theme.scss";
@@ -26,7 +26,7 @@ const AllergenKind = {
 };
 export function PatientAlergiesControl(props) {
   const { hostData, appService } = props;
-  const { patient, provider, activeVisit, allergyControlConceptIdMap} = hostData;
+  const { patient, provider, activeVisit, allergyControlConceptIdMap } = hostData;
 
   const isAddButtonEnabled = activeVisit && activeVisit.uuid;
 
