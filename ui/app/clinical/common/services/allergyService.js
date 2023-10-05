@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .factory('allergyService', ['$http', '$timeout', 'spinner', 'appService', function ($http, $timeout, spinner, appService) {
+    .factory('allergyService', ['$http', 'appService', function ($http, appService) {
         var getAllergyForPatient = function (patientUuid) {
             var patientAllergyURL = appService.getAppDescriptor().formatUrl(Bahmni.Common.Constants.patientAllergiesURL, {'patientUuid': patientUuid});
             return $http.get(patientAllergyURL, {
