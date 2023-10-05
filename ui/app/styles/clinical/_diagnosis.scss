@@ -1,6 +1,6 @@
 .diagnosis {
     .table {
-        overflow: hidden;
+        // overflow: hidden;
 
         .row:not(.diagnosis-row) {
             border-bottom: 1px solid $lightGray;
@@ -267,7 +267,8 @@
         padding: 0px;
     }
     .button-alert {
-        padding: 3px !important;
+        padding: 8px 7px !important;
+        height: auto !important;
     }
 
     .btn-group,
@@ -349,6 +350,98 @@
                     display: none;
                 }
             }
+        }
+        .alert-item {
+            float: left;
+            .alert-button {
+                padding: 8px 7px !important;
+                height: 100% !important;
+                .critical {
+                    color: #ff0000;
+                }
+                .warning {
+                    color: #ffa500;
+                }
+
+                .info {
+                    color: #00a3e0;
+                }
+            }
+        }
+
+        .new-diagnosis-alert {
+            padding: 10px;
+            margin-left: 10px;
+            a {
+                text-decoration: none;
+                color: #669998;
+            }
+        }
+
+        .bg-critical {
+            background-color: #ffd6d8;
+            border: 1px solid #ff0000;
+            position: relative;
+            &::before {
+                content: '';
+                position: absolute;
+                bottom: 100%;
+                left: 10px;
+                margin-left: -5px;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid #ff0000;
+            }
+        }
+
+        .bg-warning {
+            background-color: #feead6;
+            border: 1px solid #ffa500;
+            position: relative;
+            &::before {
+                content: '';
+                position: absolute;
+                bottom: 100%;
+                left: 10px;
+                margin-left: -5px;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid #ffa500;
+            }
+        }
+
+        .bg-info {
+            background-color: #d5f5ff;
+            border: 1px solid #00a3e0;
+            position: relative;
+            &::before {
+                content: '';
+                position: absolute;
+                bottom: 100%;
+                left: 10px;
+                margin-left: -5px;
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid #00a3e0;
+            }
+        }
+
+        i.critical {
+            color: #ff0000;
+        }
+
+        i.warning {
+            color: #ffa500;
+        }
+
+        i.info {
+            color: #00a3e0;
         }
         
     }
@@ -691,11 +784,9 @@
 .current-diagnosis,
 .history-diagnosis {
     .diagnosis-row {
-        overflow: auto;
         clear: both;
 
         .view-past {
-            overflow: auto;
             clear: both;
 
             .col {
@@ -712,7 +803,10 @@
                     text-decoration: line-through;
                 }
             }
-
+            
+            .history-alert {
+                left: -50px !important;
+            }
             .col2,
             .col3 {
                 padding-left: 10px;

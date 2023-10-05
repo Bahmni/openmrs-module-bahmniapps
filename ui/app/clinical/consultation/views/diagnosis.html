@@ -11,6 +11,14 @@
                                     {{ ::'CLINICAL_DIAGNOSIS' | translate }}
                                 </div>
                                 <div class="col-body">
+                                    <span ng-if="diagnosis.alerts && diagnosis.alerts.length > 0" class="alert-item">
+                                        <button class="cdss-alert-icon button-alert alert-button">
+                                            <i class="fa cdss-icon-medication"
+                                            ng-class="{'fa-exclamation-triangle': diagnosis.alerts[0].indicator == 'critical','fa-exclamation-triangle' : diagnosis.alerts[0].indicator == 'warning', 'fa-info-circle': diagnosis.alerts[0].indicator == 'info'}"
+                                            >
+                                            </i>
+                                        </button>
+                                    </span>
                                     <input ng-model="diagnosis.codedAnswer.name" type="text" name="name"
                                         id="name-{{$index}}" bahmni-autocomplete source="getDiagnosis"
                                         response-map="cleanOutDiagnosisList"
@@ -116,6 +124,11 @@
                         </div>
                         <div class="col col2"><span>{{ ::'CLINICAL_INITIAL' | translate }}</span></div>
                         <div class="col col3"><span>{{ ::'CLINICAL_CURRENT' | translate }}</span></div>
+                        <div class="col col4" ng-if="pastDiagnosesAlerts">
+                            <div class="cdss-alert-icon header-alert-icon">
+                                <i class="fa fa-exclamation-triangle"></i>
+                            </div>
+                        </div>
                     </div>
                     <div ng-show="toggles.expandPastDiagnoses"
                         ng-repeat="diagnosis in consultation.pastDiagnoses | primaryDiagnosisFirst" class="table-body">

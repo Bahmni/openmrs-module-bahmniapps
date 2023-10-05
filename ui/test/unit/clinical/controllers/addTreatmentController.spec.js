@@ -107,9 +107,143 @@ describe("AddTreatmentController", function () {
         "provider": {name: "superman"}
     };
 
+    var cdssBundle = {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+            {
+                "resource": {
+                    "resourceType": "Condition",
+                    "clinicalStatus": {
+                        "coding": [
+                            {
+                                "code": "active",
+                                "display": "Active",
+                                "system": "http://terminology.hl7.org/CodeSystem/condition-clinical"
+                            }
+                        ]
+                    },
+                    "code": {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "123456789",
+                                "display": "Placeholder Diagnosis"
+                            }
+                        ],
+                        "text": "Placeholder Diagnosis"
+                    },
+                    "subject": {
+                        "reference": "Patient/dc9444c6-ad55-4200-b6e9-407e025eb948"
+                    }
+                }
+            },
+            {
+                "resource": {
+                    "resourceType": "MedicationRequest",
+                    "status": "active",
+                    "intent": "order",
+                    "subject": {
+                        "reference": "Patient/dc9444c6-ad55-4200-b6e9-407e025eb948"
+                    },
+                    "medicationCodeableConcept": {
+                        "id": "987654321",
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654321",
+                                "display": "Placeholder Medication"
+                            },
+                            {
+                                "code": "987654321",
+                                "system": "https://example.com",
+                                "display": "Placeholder Medication"
+                            }
+                        ],
+                        "text": "Placeholder Medication"
+                    },
+                    "dosageInstruction": [
+                        {
+                            "text": "{\"instructions\":\"As directed\"}",
+                            "timing": {
+                                "event": [
+                                    "2023-10-01T05:58:27.000Z"
+                                ],
+                                "repeat": {
+                                    "duration": 3,
+                                    "durationUnit": "d"
+                                },
+                                "code": {
+                                    "coding": [
+                                        {
+                                            "code": "987654321",
+                                            "display": "Twice a day"
+                                        }
+                                    ],
+                                    "text": "Twice a day"
+                                }
+                            },
+                            "asNeededBoolean": false,
+                            "doseAndRate": [
+                                {
+                                    "doseQuantity": {
+                                        "value": 3,
+                                        "unit": "Tablet(s)",
+                                        "code": "987654321"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    };
+
+    var cdssResponse = [{
+        "uuid": "7b544b67-fbc7-48af-af95-ddaee09e836b",
+        "indicator": "warning",
+        "summary": "Contraindication: \"Placeholder Medication\" and \"Placeholder Medication\" with patient condition \"Placeholder Condition\" and \"Placeholder Condition\".",
+        "detail": "The use of Placeholder Medication is contraindicated when the patient has Placeholder Condition.",
+        "source": {
+            "label": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Atorvastatin#Contraindications"
+        },
+        "referenceMedications": [
+            {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "987654321",
+                        "display": "Placeholder Medication"
+                    },
+                    {
+                        "system": "https://example.com",
+                        "code": "987654321",
+                        "display": "Placeholder Medication"
+                    }
+                ]
+            }
+        ],
+        "referenceCondition": {
+            "coding": [
+                {
+                    "system": "https://example.com",
+                    "code": "123456789",
+                    "display": "Placeholder Condition"
+                },
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "123456789",
+                    "display": "Placeholder Condition"
+                }
+            ]
+        }
+    }];
+
     var $q, scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService;
+        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService, cdssService;
 
     stateParams = {
         tabConfigName: null
@@ -180,6 +314,13 @@ describe("AddTreatmentController", function () {
             drugService.cdssAudit.and.returnValue(specUtil.respondWith(true));
             drugService.getDrugConceptSourceMapping.and.returnValue(specUtil.respondWithPromise($q, {entry: []}));
 
+            cdssService = jasmine.createSpyObj('cdssService', ['createFhirBundle', 'sendDiagnosisDrugBundle', 'createParams', 'addNewAlerts', 'sortInteractionsByStatus']);
+            cdssService.createParams.and.returnValue(specUtil.respondWith({}));
+            cdssService.createFhirBundle.and.returnValue(specUtil.respondWith(cdssBundle));
+            cdssService.sendDiagnosisDrugBundle.and.returnValue(specUtil.respondWith(cdssResponse));
+            cdssService.addNewAlerts.and.returnValue(specUtil.respondWith(cdssResponse));
+            cdssService.sortInteractionsByStatus.and.returnValue(specUtil.respondWith(cdssResponse));
+
             appService.getAppDescriptor.and.returnValue(appConfig);
             orderSets = [{
                 "orderSetId": 3,
@@ -236,7 +377,8 @@ describe("AddTreatmentController", function () {
                 locationService: locationService,
                 drugService: drugService,
                 treatmentConfig: treatmentConfig,
-                orderSetService: orderSetService
+                orderSetService: orderSetService,
+                cdssService: cdssService
             });
             scope.treatments = [];
             scope.orderSetTreatments = [];
@@ -497,16 +639,6 @@ describe("AddTreatmentController", function () {
                     }
                 ]
             };
-
-            it("should create FHIR bundle with diagnosis and medication orders", function () {
-                scope.consultation.newlyAddedDiagnoses = data.diagnosis;
-                scope.treatments = data.medications;
-                scope.createFhirBundle(scope.patient, data.conditions, data.medications, data.diagnosis).then(function (bundle) {
-                    expect(bundle.entry.length).toBe(2);
-                    expect(bundle.entry[0].resource.resourceType).toBe('Condition');
-                    expect(bundle.entry[1].resource.resourceType).toBe('MedicationRequest');
-                });
-            });
         });
 
         describe("add free text drug order()", function () {

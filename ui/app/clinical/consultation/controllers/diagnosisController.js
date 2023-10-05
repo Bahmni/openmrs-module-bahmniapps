@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService', '$translate', 'retrospectiveEntryService',
-        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService, $translate, retrospectiveEntryService) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService', '$translate', 'retrospectiveEntryService', 'drugService', 'cdssService',
+        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService, $translate, retrospectiveEntryService, drugService, cdssService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.todayWithoutTime = DateUtil.getDateWithoutTime(DateUtil.today());
             $scope.toggles = {
@@ -22,6 +22,9 @@ angular.module('bahmni.clinical')
 
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
+
+            $scope.cdssEnabled = false;
+            $scope.conceptSource = localStorage.getItem('conceptSource') || '';
 
             $scope.orderOptions = {
                 'CLINICAL_DIAGNOSIS_ORDER_PRIMARY': 'PRIMARY',
@@ -56,6 +59,12 @@ angular.module('bahmni.clinical')
                 return canAdd;
             };
 
+            (function () {
+                drugService.getCdssEnabled().then(function (response) {
+                    $scope.cdssEnabled = response.data;
+                });
+            })();
+
             $scope.getAddNewDiagnosisMethod = function (diagnosisAtIndex) {
                 return function (item) {
                     var concept = item.lookup;
@@ -68,8 +77,93 @@ angular.module('bahmni.clinical')
                          change to say array[index]=newObj instead array.splice(index,1,newObj);
                          */
                         $scope.consultation.newlyAddedDiagnoses.splice(index, 1, diagnosis);
+                        if ($scope.cdssEnabled) {
+                            var consultationData = angular.copy($scope.consultation);
+                            consultationData.patient = $scope.patient;
+
+                            consultationData.draftDrug = consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : [];
+                            var params = cdssService.createParams(consultationData);
+                            cdssService.createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
+                            .then(function (bundle) {
+                                var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
+                                cdssAlerts.then(function (response) {
+                                    var alerts = response.data;
+
+                                    $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts);
+                                    isPastDiagnosisFlagged();
+                                    getFlaggedSavedDiagnosisAlert();
+                                    getAlertForCurrentDiagnosis();
+                                });
+                            });
+                        }
                     }
                 };
+            };
+
+            var isPastDiagnosisFlagged = function () {
+                var pastDiagnoses = $scope.consultation.pastDiagnoses;
+                var alerts = $scope.cdssAlerts;
+                var flaggedDiagnoses = [];
+                if (pastDiagnoses && pastDiagnoses.length > 0 && alerts && alerts.length > 0) {
+                    pastDiagnoses.forEach(function (diagnosis) {
+                        diagnosis.alerts = alerts.filter(function (cdssAlert) {
+                            return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
+                                var findMapping = diagnosis.codedAnswer.mappings.find(function (mapping) {
+                                    return mapping.code === coding.code;
+                                });
+                                return findMapping !== undefined;
+                            });
+                        });
+                        if (diagnosis.alerts) {
+                            diagnosis.alerts = cdssService.sortInteractionsByStatus(diagnosis.alerts);
+                            flaggedDiagnoses.push(diagnosis);
+                        }
+                    });
+                }
+                $scope.pastDiagnosesAlerts = flaggedDiagnoses.length > 0;
+            };
+
+            var getFlaggedSavedDiagnosisAlert = function () {
+                var alerts = $scope.cdssAlerts;
+                var diagnoses = $scope.consultation.savedDiagnosesFromCurrentEncounter;
+                if (diagnoses && diagnoses.length > 0 && alerts && alerts.length > 0) {
+                    diagnoses.forEach(function (diagnosis) {
+                        diagnosis.alerts = alerts.filter(function (cdssAlert) {
+                            return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
+                                var findMapping = diagnosis.codedAnswer.mappings.find(function (mapping) {
+                                    return mapping.code === coding.code;
+                                });
+                                return findMapping !== undefined;
+                            });
+                        });
+                        if (diagnosis.alerts) {
+                            diagnosis.alerts = cdssService.sortInteractionsByStatus(diagnosis.alerts);
+                        }
+                    });
+                }
+            };
+
+            var getAlertForCurrentDiagnosis = function () {
+                var alerts = $scope.cdssAlerts;
+                var diagnoses = $scope.consultation.newlyAddedDiagnoses;
+                var flaggedDiagnoses = [];
+                if (diagnoses && diagnoses.length > 0 && alerts && alerts.length > 0) {
+                    diagnoses.forEach(function (diagnosis) {
+                        diagnosis.alerts = alerts.filter(function (cdssAlert) {
+                            return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
+                                return diagnosis.codedAnswer.uuid === coding.code;
+                            });
+                        });
+                        if (diagnosis.alerts) {
+                            diagnosis.alerts.forEach(function (item) {
+                                item.isActive = true;
+                            });
+                            diagnosis.alerts = cdssService.sortInteractionsByStatus(diagnosis.alerts);
+                            flaggedDiagnoses.push(diagnosis);
+                        }
+                    });
+                }
+                return flaggedDiagnoses;
             };
 
             var addPlaceHolderDiagnosis = function () {
@@ -130,8 +224,8 @@ angular.module('bahmni.clinical')
                 });
                 var isValidConditionForm = ($scope.consultation.condition.isEmpty() || $scope.consultation.condition.isValid());
                 return {
-                    allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0
-                    && invalidSavedDiagnosesFromCurrentEncounter.length === 0 && isValidConditionForm,
+                    allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0 &&
+                    invalidSavedDiagnosesFromCurrentEncounter.length === 0 && isValidConditionForm,
                     errorMessage: $scope.errorMessage
                 };
             };
@@ -313,11 +407,12 @@ angular.module('bahmni.clinical')
                 spinner.forPromise(
                     diagnosisService.deleteDiagnosis(obsUUid).then(function () {
                         messagingService.showMessage('info', 'DELETED_MESSAGE');
-                        var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0 ?
-                                          $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
+                        var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0
+                                          ? $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
                         return reloadDiagnosesSection(currentUuid);
                     }))
                     .then(function () {
+                        // getFlaggedSavedDiagnosisAlert();
                     });
             };
             var clearBlankDiagnosis = true;
