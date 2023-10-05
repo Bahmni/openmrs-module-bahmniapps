@@ -111,6 +111,18 @@
   border-radius: 5px;
   padding: 10px 15px;
   box-sizing: border-box;
+  .section-title {
+    font-family: OpenSans,Arial,sans-serif;
+    padding: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #fff;
+    font-size: 16px;
+    clear: both;
+    background: #699;
+    position: relative;
+    border-radius: 2px 2px 0 0;
+  }
   a{
     color: #ffffff;
     font-size: 16px;
