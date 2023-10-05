@@ -138,6 +138,7 @@ angular.module('bahmni.clinical')
                     });
                     promises.push(promise);
                 }
+                $scope.allergies = "";
                 var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
                     var allergies = response.data;
                     var allergiesList = [];
@@ -148,7 +149,7 @@ angular.module('bahmni.clinical')
                             }
                         });
                     }
-                    $scope.allergies = allergiesList.join(", ") || "";
+                    $scope.allergies = allergiesList.join(", ");
                 });
                 promises.push(allergyPromise);
                 Promise.all(promises).then(function () {
