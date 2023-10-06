@@ -15,7 +15,7 @@ export const SelectReactions = (props) => {
   const [searchResults, setSearchResults] = useState(initialReactionIds);
   const [isSearchResultEmpty, setIsSearchResultEmpty] = useState(true);
   const [selectedReactions, setSelectedReactions] = useState([]);
-  const allReactions = cloneDeep(reactions);
+  const [allReactions] = useState(cloneDeep(reactions));
 
   const search = (key) => {
     if (!key) {

@@ -96,6 +96,7 @@ export function PatientAlergiesControl(props) {
   const allergiesAndReactionsForPatient = async () => {
     const allergiesData = [];
     const allergiesAndReactions = await fetchAllergiesAndReactionsForPatient(patient.uuid);
+    console.log('allergiesAndReactions', allergiesAndReactions)
     const allergies = allergiesAndReactions.entry;
     allergies?.forEach((allergy) => {
       const { resource } = allergy;

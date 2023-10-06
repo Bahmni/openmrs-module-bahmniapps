@@ -164,7 +164,7 @@ export function FormDisplayControl(props) {
                         </span>
                         <span
                           className={
-                            "form-non-accordion-text form-date-time"
+                            "form-non-accordion-text form-date-align form-date-time"
                           }
                         >
                           <a

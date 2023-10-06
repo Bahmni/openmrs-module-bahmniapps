@@ -9,13 +9,19 @@ exports[`Select reactions should render SelectReactions 1`] = `
       class="font-large"
       style="margin-bottom: 8px; margin-top: 10px;"
     >
-      Selected Allergen: 
+      Selected Allergen:
+       
       Eggs
     </div>
     <div
       class="font-large bold"
     >
-      Search Reaction 
+      Search Reaction
+      <span
+        class="red-text"
+      >
+         *
+      </span>
     </div>
     <div>
       <div
