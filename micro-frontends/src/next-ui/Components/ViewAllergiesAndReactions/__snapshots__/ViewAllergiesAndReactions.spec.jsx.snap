@@ -72,11 +72,11 @@ exports[`ViewAllergiesAndReactions should render ViewAllergiesAndReactions compo
             id="accordion-item-1"
           >
             <div
-              style="display: flex; justify-content: space-between; background-color: rgb(239, 248, 255);"
+              class="allergies-accordion-item"
             >
               <div />
               <div
-                style="padding: 10px;"
+                class="allergy-provider"
               >
                 Dr. John Doe
               </div>
@@ -137,7 +137,7 @@ exports[`ViewAllergiesAndReactions should render ViewAllergiesAndReactions compo
             id="accordion-item-2"
           >
             <div
-              style="display: flex; justify-content: space-between; background-color: rgb(239, 248, 255);"
+              class="allergies-accordion-item"
             >
               <div>
                 <div
@@ -164,7 +164,7 @@ exports[`ViewAllergiesAndReactions should render ViewAllergiesAndReactions compo
                 </div>
               </div>
               <div
-                style="padding: 10px;"
+                class="allergy-provider"
               >
                 Dr. Jane
               </div>

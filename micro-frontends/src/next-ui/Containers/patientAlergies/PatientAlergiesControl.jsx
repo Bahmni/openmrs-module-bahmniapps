@@ -94,22 +94,19 @@ export function PatientAlergiesControl(props) {
   };
 
   const allergiesAndReactionsForPatient = async () => {
-    const allergiesData = [];
     const allergiesAndReactions = await fetchAllergiesAndReactionsForPatient(patient.uuid);
-    console.log('allergiesAndReactions', allergiesAndReactions)
     const allergies = allergiesAndReactions.entry;
-    allergies?.forEach((allergy) => {
+    const allergiesData = allergies?.map((allergy) => {
       const { resource } = allergy;
       const allergen = resource.reaction[0]?.substance.coding[0].display;
       const severity = resource.reaction[0].severity;
       const note = resource.note && resource.note[0].text;
       const date = new Date(resource.recordedDate);
-      const reactions =[]
       const provider = resource.recorder?.display;
-      resource.reaction[0]?.manifestation.forEach((reaction) => {
-        reactions.push(reaction.coding[0].display);
+      const reactions = resource.reaction[0]?.manifestation.map((reaction) => {
+        return reaction.coding[0].display;
       });
-      allergiesData.push({allergen, severity, reactions, note, provider, date})
+      return {allergen, severity, reactions, note, provider, date};
     });
     allergiesData.sort((a, b) => b.date - a.date);
     setAllergiesAndReactions(allergiesData);
@@ -231,8 +228,8 @@ export function PatientAlergiesControl(props) {
               }}
             />
           )}
-          <NotificationCarbon onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={"Allergy saved successfully"} hideCloseButton={true}/>
-          <NotificationCarbon onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={"Error saving allergy"} hideCloseButton={true}/>
+          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={"Allergy saved successfully"} hideCloseButton={true}/>
+          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={"Error saving allergy"} hideCloseButton={true}/>
         </div>
       )}
       </I18nProvider>

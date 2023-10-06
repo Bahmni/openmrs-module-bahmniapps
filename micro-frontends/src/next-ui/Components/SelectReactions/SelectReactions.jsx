@@ -53,8 +53,7 @@ export const SelectReactions = (props) => {
 
   return (
     <div className={"section-next-ui"}>
-      <div className={"font-large"}
-           style={{ marginBottom: "8px", marginTop: "10px" }}>
+      <div className={"font-large selected-allergen"}>
         <FormattedMessage id={"SELECTED_ALLERGEN"} defaultMessage={"Selected Allergen:"}/> {selectedAllergen.name}</div>
       <div className={"font-large bold"}><FormattedMessage id={"SEARCH_REACTION"} defaultMessage={"Search Reaction"}/><span className={"red-text"}>&nbsp;*</span></div>
       <div>
@@ -91,10 +90,7 @@ export const SelectReactions = (props) => {
       )}
       <div>
         {isSearchResultEmpty && (
-          <div
-            className={"font-small"}
-            style={{ marginBottom: "8px", marginTop: "10px" }}
-          >
+          <div className={"font-small selected-allergen"}>
             <FormattedMessage id={"COMMON_REACTIONS"} defaultMessage={"Common Reactions"}/>
           </div>
         )}

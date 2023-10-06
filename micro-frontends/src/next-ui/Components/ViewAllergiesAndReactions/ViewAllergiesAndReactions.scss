@@ -24,3 +24,12 @@
 .bx--accordion__content{
   padding: 0;
 }
+.allergies-accordion-item{
+  display: flex;
+  justify-content: space-between;
+  background-color: #EFF8FF;
+  align-items: center;
+}
+.allergy-provider{
+  padding: 10px;
+}

@@ -23,13 +23,13 @@ export const ViewAllergiesAndReactions = (props) => {
                     </div>
                     return (<Accordion>
                         <AccordionItem title={title}>
-                            <div style={{display: "flex", justifyContent: "space-between", backgroundColor:"#EFF8FF"}}>
+                            <div className={"allergies-accordion-item"}>
                                 <div>
                                     {allergy.note &&
                                         <div className={"allergies-row-note"}><Document size={20}/>
                                             {allergy.note}</div>}
                                 </div>
-                                <div style={{padding: "10px"}}>
+                                <div className={"allergy-provider"}>
                                     {allergy.provider}
                                 </div>
                             </div>
