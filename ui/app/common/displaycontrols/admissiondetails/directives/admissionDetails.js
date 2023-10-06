@@ -37,15 +37,17 @@ angular.module('bahmni.common.displaycontrol.admissiondetails')
             };
         };
         var calculateDaysAdmitted = function ($scope) {
-            if ($scope.visitSummary.admissionDetails && $scope.visitSummary.dischargeDetails) {
-                var admissionDate = new Date($scope.visitSummary.admissionDetails.date);
-                var dischargeDate = new Date($scope.visitSummary.dischargeDetails.date);
-                var timeDifference = dischargeDate - admissionDate;
-                var daysAdmitted = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-                $scope.visitSummary.daysAdmitted = daysAdmitted;
-                $scope.visitSummary.showDaysAdmitted = true;
-            } else {
-                $scope.visitSummary.showDaysAdmitted = false;
+            if ($scope.visitSummary) {
+                if ($scope.visitSummary.admissionDetails && $scope.visitSummary.dischargeDetails) {
+                    var admissionDate = new Date($scope.visitSummary.admissionDetails.date);
+                    var dischargeDate = new Date($scope.visitSummary.dischargeDetails.date);
+                    var timeDifference = dischargeDate - admissionDate;
+                    var daysAdmitted = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+                    $scope.visitSummary.daysAdmitted = daysAdmitted;
+                    $scope.visitSummary.showDaysAdmitted = true;
+                } else {
+                    $scope.visitSummary.showDaysAdmitted = false;
+                }
             }
         };
         return {
