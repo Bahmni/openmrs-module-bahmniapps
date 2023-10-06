@@ -21,7 +21,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             if ($scope.patient !== undefined) {
                 $scope.allergyData = {
                     patient: $scope.patient,
-                    activeVisit: $scope.visitHistory.activeVisit,
+                    activeVisit: $scope.visitHistory ? $scope.visitHistory.activeVisit : null,
                     allergyControlConceptIdMap: appService.getAppDescriptor().getConfigValue("allergyControlConceptIdMap")
                 };
             }
