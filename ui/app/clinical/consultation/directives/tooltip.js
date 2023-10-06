@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("bahmni.clinical").directive("tooltip", function ($timeout) {
+angular.module("bahmni.clinical").directive("tooltip", ['$timeout', function ($timeout) {
     return {
         restrict: "A",
         link: function (scope, element, attrs) {
@@ -36,4 +36,4 @@ angular.module("bahmni.clinical").directive("tooltip", function ($timeout) {
             });
         }
     };
-});
+}]);
