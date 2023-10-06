@@ -86,6 +86,12 @@ angular.module('bahmni.clinical')
                 $scope.bulkDurationData.bulkDuration += stepperValue;
             };
 
+            $scope.hasActiveAlerts = function (alerts) {
+                return alerts.some(function (alert) {
+                    return alert.isActive;
+                });
+            };
+
             var getPreviousDrugAlerts = function () {
                 var treatments = $scope.treatments;
                 treatments && treatments.forEach(function (drugOrder) {

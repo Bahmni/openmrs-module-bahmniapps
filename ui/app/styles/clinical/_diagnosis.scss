@@ -356,25 +356,26 @@
             .alert-button {
                 padding: 8px 7px !important;
                 height: 100% !important;
-                .critical {
-                    color: #ff0000;
-                }
-                .warning {
-                    color: #ffa500;
-                }
-
-                .info {
-                    color: #00a3e0;
+                .icon {
+                    color: #8e8e8e;
                 }
             }
         }
 
         .new-diagnosis-alert {
             padding: 10px;
-            margin-left: 10px;
+            width: 100%;
             a {
                 text-decoration: none;
                 color: #669998;
+            }
+            .cdss-alert-close {
+                background: none;
+                border: none;
+                position: absolute;
+                right: 0;
+                top: 0;
+                font-size: 12px;
             }
         }
 

@@ -384,5 +384,6 @@
     "CDSS_ALERT_DISMISSAL_REASON" :"Select reason for dismissal",
     "CDSS_INFO" :"Info",
     "CDSS_ALERT_DISMISS": "Dismiss",
-    "DISMISSED_KEY": "Dismissed"
+    "DISMISSED_KEY": "Dismissed",
+    "CDSS_ALERT_SAVE_ERROR": "A CDSS Critical Alert needs to be addressed in Medications Tab before continuing with Save operation"
 }

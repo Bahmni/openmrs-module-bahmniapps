@@ -31,8 +31,8 @@
                            class="treatmentChkBox"/>
                     <div class="drug-dosage" bm-pop-over autoclose="true">
                         <strong class="drug-name">
-                            <button ng-if="newTreatment.alerts && newTreatment.alerts.length > 0" class="cdss-alert-icon" bm-pop-over-trigger>
-                                <i class="fa fa-exclamation-triangle cdss-icon-medication"></i>
+                            <button ng-if="newTreatment.alerts && newTreatment.alerts.length > 0 && !hasActiveAlerts(newTreatment.alerts)" class="cdss-alert-icon" bm-pop-over-trigger>
+                                <i class="fa fa-exclamation-circle cdss-icon-medication"></i>
                             </button>
                             {{newTreatment.getDisplayName()}}
                         </strong>
@@ -70,6 +70,7 @@
                 </div>
                 <div>{{newTreatment.getQuantityWithUnit()}}</div>
             </div>
+            <cdss-alert-row alerts="newTreatment.alerts" drug-order="drugOrder" consultation="consultation"></cdss-alert-row>
         </li>
     </ul>
 </section>

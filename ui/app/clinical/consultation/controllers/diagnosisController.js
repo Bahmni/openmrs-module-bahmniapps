@@ -77,27 +77,53 @@ angular.module('bahmni.clinical')
                          change to say array[index]=newObj instead array.splice(index,1,newObj);
                          */
                         $scope.consultation.newlyAddedDiagnoses.splice(index, 1, diagnosis);
-                        if ($scope.cdssEnabled) {
-                            var consultationData = angular.copy($scope.consultation);
-                            consultationData.patient = $scope.patient;
-
-                            consultationData.draftDrug = consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : [];
-                            var params = cdssService.createParams(consultationData);
-                            cdssService.createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
-                            .then(function (bundle) {
-                                var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
-                                cdssAlerts.then(function (response) {
-                                    var alerts = response.data;
-
-                                    $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts);
-                                    isPastDiagnosisFlagged();
-                                    getFlaggedSavedDiagnosisAlert();
-                                    getAlertForCurrentDiagnosis();
-                                });
-                            });
-                        }
+                        getAlerts();
                     }
                 };
+            };
+
+            function getAlerts () {
+                if ($scope.cdssEnabled) {
+                    var consultationData = angular.copy($scope.consultation);
+                    consultationData.patient = $scope.patient;
+
+                    consultationData.draftDrug = consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : [];
+                    var params = cdssService.createParams(consultationData);
+                    cdssService.createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
+                .then(function (bundle) {
+                    var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
+                    cdssAlerts.then(function (response) {
+                        var alerts = response.data;
+
+                        $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts);
+                        isPastDiagnosisFlagged();
+                        getFlaggedSavedDiagnosisAlert();
+                        getAlertForCurrentDiagnosis();
+                    });
+                });
+                }
+            }
+
+            $scope.hasActiveAlerts = function (alerts) {
+                return alerts.some(function (alert) {
+                    return alert.isActive;
+                });
+            };
+
+            $scope.closeAlert = function (diagnosis, alertIndex) {
+                var index = $scope.consultation.newlyAddedDiagnoses.findIndex(
+                    function (d) {
+                        return d.codedAnswer.uuid === diagnosis.codedAnswer.uuid;
+                    }
+                );
+                if (index === -1) return;
+                var diagnosisBeingEdited = $scope.consultation.newlyAddedDiagnoses[index];
+                var alert = diagnosisBeingEdited.alerts[alertIndex];
+                alert.isActive = false;
+                var cdssAlertIndex = $rootScope.cdssAlerts.findIndex(function (a) {
+                    return a.uuid === alert.uuid;
+                });
+                $rootScope.cdssAlerts[cdssAlertIndex].isActive = false;
             };
 
             var isPastDiagnosisFlagged = function () {
@@ -386,6 +412,7 @@ angular.module('bahmni.clinical')
             $scope.removeObservation = function (index) {
                 if (index >= 0) {
                     $scope.consultation.newlyAddedDiagnoses.splice(index, 1);
+                    getAlerts();
                 }
             };
 

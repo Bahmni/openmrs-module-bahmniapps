@@ -69,11 +69,6 @@
   a {
     margin-left: 5px;
   }
-  .cdss_alert_source {
-    i {
-      position: relative !important;
-    }
-  }
   .status-critical {
     background-color: #ffd6d8;
     border: 1px solid #ff0000;
@@ -89,12 +84,43 @@
     border: 1px solid #00a3e0;
   }
 
+  
   .drug-link {
     position: relative !important;
   }
 }
 
-.tooltip-list:not(:first-child) {
+.alert-detail {
+  display: block !important;
+  ul {
+    list-style: initial !important;
+    padding-left: 20px;
+
+    i {
+      position: relative !important;
+    }
+
+    li {
+      
+      border-bottom: none !important;
+      &::after, &::before {
+        content: none !important;
+      }
+    }
+
+    ul {
+      list-style: circle !important;
+    }
+
+  }
+}
+
+.tooltip-list {
+  i {
+    position: relative !important;
+  }
+  &:not(:first-child) {
   padding-bottom: 10px;
   padding-top: 10px;
+  }
 }
