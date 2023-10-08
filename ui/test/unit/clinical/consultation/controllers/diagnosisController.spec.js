@@ -1,5 +1,5 @@
 describe("Diagnosis Controller", function () {
-    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService;
+    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService, $state;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     beforeEach(module('bahmni.clinical'));
@@ -41,6 +41,7 @@ describe("Diagnosis Controller", function () {
 
         $controller('DiagnosisController', {
             $scope: $scope,
+            $state: $state,
             $rootScope: rootScope,
             contextChangeHandler: contextChangeHandler,
             spinner: spinner,
@@ -105,6 +106,18 @@ describe("Diagnosis Controller", function () {
                 expect(list[0].concept.name).toBe("Cold, unspec.");
                 expect(list[0].concept.uuid).toBe("uuid1");
                 expect(list[0].lookup.name).toBe("Cold xyz");
+            });
+        });
+
+        it("should make a call to diagnosis service getAllFor with concept source code", function () {
+            spyOn(mockDiagnosisService, 'getAllFor').and.returnValue(specUtil.simplePromise({data: [{"conceptName": "Cold, unspec.", "conceptUuid": "uuid1", "matchedName": null, "code": "T69.9XXA", "conceptSystem": "http://snomed.info/sct"}]}));
+            $scope.getDiagnosis({term: "T69.9XXA"}).then(function (list) {
+                expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("T69.9XXA", "en");
+                expect(list.length).toBe(1);
+                expect(list[0].value).toBe("Cold, unspec. (T69.9XXA)");
+                expect(list[0].concept.name).toBe("Cold, unspec.");
+                expect(list[0].concept.uuid).toBe("uuid1");
+                expect(list[0].lookup.conceptSystem).toBe("http://snomed.info/sct");
             });
         });
     });

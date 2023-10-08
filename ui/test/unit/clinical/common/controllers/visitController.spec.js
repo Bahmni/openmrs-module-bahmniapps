@@ -9,6 +9,7 @@ describe('VisitController', function () {
     var dateUtil;
     var $timeout;
     var getEncounterPromise;
+    var locationService;
     var configurations = {
         encounterConfig: function () {
         }
@@ -60,6 +61,13 @@ describe('VisitController', function () {
                 return "patient-document-encounter-typeuuid";
             }
         });
+        locationService = jasmine.createSpyObj('locationService', ['getAllByTag']);
+        locationService.getAllByTag.and.callFake(function () {
+            return specUtil.respondWith({"data": {"results": [
+                        {name: "Bahmni", attributes: [
+                                { display: "Print Header: xyz" }]
+                        }]}});
+        });
         scope.currentProvider = {uuid: ''};
         controller =   $controller('VisitController', {
                 $scope: scope,
@@ -72,7 +80,8 @@ describe('VisitController', function () {
                 printer: {},
                 visitConfig: visitTabConfig,
                 visitHistory:[],
-                $stateParams: {}
+                $stateParams: {},
+                locationService: locationService
             });
     }]));
 
@@ -116,7 +125,7 @@ describe('VisitController', function () {
         });
 
         it('should check data format', function () {
-            expect(scope.displayDate(new Date('2014', '7', '15', '12'))).toBe('15-Aug-14');
+            expect(scope.displayDate(new Date('2014', '7', '15', '12'))).toBe('15-Aug-2014');
         });
 
         it('should check test result class for expected style', function () {

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.diagnosis')
-    .directive('bahmniDiagnosis', ['diagnosisService', '$q', 'spinner', '$rootScope', '$filter', '$translate',
-        function (diagnosisService, $q, spinner, $rootScope, $filter, $translate) {
+    .directive('bahmniDiagnosis', ['diagnosisService', '$q', 'spinner', '$rootScope', '$filter', '$translate', 'providerInfoService',
+        function (diagnosisService, $q, spinner, $rootScope, $filter, $translate, providerInfoService) {
             var controller = function ($scope) {
                 var getAllDiagnosis = function () {
                     return diagnosisService.getDiagnoses($scope.patientUuid, $scope.visitUuid).then(function (response) {
@@ -13,6 +13,7 @@ angular.module('bahmni.common.displaycontrol.diagnosis')
                                 return diagnoses.diagnosisStatus !== $rootScope.diagnosisStatus;
                             });
                         }
+                        providerInfoService.setProvider($scope.allDiagnoses);
                         $scope.isDataPresent = function () {
                             if ($scope.allDiagnoses && $scope.allDiagnoses.length == 0) {
                                 $scope.$emit("no-data-present-event");

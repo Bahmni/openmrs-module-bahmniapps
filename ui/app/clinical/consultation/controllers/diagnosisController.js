@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService', '$translate', 'retrospectiveEntryService',
-        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService, $translate, retrospectiveEntryService) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService', '$translate', 'retrospectiveEntryService', '$state',
+        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService, $translate, retrospectiveEntryService, $state) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.todayWithoutTime = DateUtil.getDateWithoutTime(DateUtil.today());
             $scope.toggles = {
@@ -55,6 +55,16 @@ angular.module('bahmni.clinical')
                 });
                 return canAdd;
             };
+
+            $scope.$on('$stateChangeStart', function () {
+                if ($scope.diagnosisForm.$dirty) {
+                    $state.dirtyConsultationForm = true;
+                }
+            });
+
+            $scope.$on("event:changes-saved", function () {
+                $scope.diagnosisForm.$dirty = false;
+            });
 
             $scope.getAddNewDiagnosisMethod = function (diagnosisAtIndex) {
                 return function (item) {
@@ -143,11 +153,13 @@ angular.module('bahmni.clinical')
                         value: concept.matchedName || concept.conceptName,
                         concept: {
                             name: concept.conceptName,
-                            uuid: concept.conceptUuid
+                            uuid: concept.conceptUuid,
+                            conceptSystem: concept.conceptSystem
                         },
                         lookup: {
                             name: concept.matchedName || concept.conceptName,
-                            uuid: concept.conceptUuid
+                            uuid: concept.conceptUuid,
+                            conceptSystem: concept.conceptSystem
                         }
                     };
 
@@ -163,6 +175,8 @@ angular.module('bahmni.clinical')
 
             $scope.getAddConditionMethod = function () {
                 return function (item) {
+                    var conceptSystem = item.lookup.conceptSystem ? item.lookup.conceptSystem + "/" : "";
+                    item.lookup.uuid = conceptSystem + item.lookup.uuid;
                     $scope.consultation.condition.concept.uuid = item.lookup.uuid;
                     item.value = $scope.consultation.condition.concept.name = item.lookup.name;
                 };
@@ -270,9 +284,9 @@ angular.module('bahmni.clinical')
             };
 
             $scope.cleanOutDiagnosisList = function (allDiagnoses) {
-                return allDiagnoses.filter(function (diagnosis) {
+                return allDiagnoses ? allDiagnoses.filter(function (diagnosis) {
                     return !alreadyAddedToDiagnosis(diagnosis);
-                });
+                }) : [];
             };
 
             var alreadyAddedToDiagnosis = function (diagnosis) {

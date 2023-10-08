@@ -12,7 +12,7 @@ angular.module('bahmni.clinical').controller('ClinicalController',
                 var teleConsultationWindow = angular.element(document.getElementById('tele-consultation-meet'));
                 teleConsultationWindow.empty();
                 var meetId = params.uuid;
-                var domain = 'meet.jit.si';
+                var domain = appService.getAppDescriptor().getConfigValue('teleConsultationDomain');
 
                 if (params.link && params.link.trim().length > 0) {
                     var meetingUrl = new URL(params.link.trim());
@@ -33,13 +33,9 @@ angular.module('bahmni.clinical').controller('ClinicalController',
                 $scope.showTeleConsultationWindow = false;
                 var teleConsultationWindow = angular.element(document.getElementById('tele-consultation'));
                 teleConsultationWindow.css({
-                    top: '0px',
-                    left: '0px'
-                });
-                teleConsultationWindow.css({
                     position: 'fixed',
-                    top: '40%',
-                    left: '40%'
+                    top: '',
+                    left: ''
                 });
             };
 

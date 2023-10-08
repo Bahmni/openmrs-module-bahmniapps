@@ -1,0 +1,21 @@
+{
+    "userName": "사용자 이름",
+    "password": "암호",
+    "location": "위치",
+    "login": "로그인",
+    "selectLocation": "위치 선택",
+    "clinical_key": "임상적인",
+    "MESSAGE_DIALOG_OPTION_COPY": "오류 복사",
+    "MESSAGE_DIALOG_OPTION_OKAY": "확인",
+    "PRIVILEGE_REQUIRED": "User is logged in but doesn't have the relevant privilege",
+    "FILTERS_HEADER_LABEL": "Filters",
+    "START_FROM_FILTER_LABEL": "Start From",
+    "USERNAME_FILTER_LABEL": "Username",
+    "ENTER_USERNAME_PLACEHOLDER": "Enter Username",
+    "PATIENT_ID_FILTER_LABEL": "Patient ID",
+    "ENTER_PATIENT_ID_PLACEHOLDER": "Enter Patient ID",
+    "FILTER_BUTTON_LABEL": "Filter",
+    "AUDIT_LOG_TABLE_HEADER_LABEL": "Audit Log Events",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "No navigation links available.",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Please select a value from auto complete"
+}

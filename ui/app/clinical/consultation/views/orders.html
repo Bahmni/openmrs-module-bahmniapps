@@ -1,4 +1,4 @@
-<div class="order-list">
+<div class="order-list" alert-on-exit>
     <div ng-class="{'disableOrdersInRetroMode':isRetrospectiveMode()}">
         <div class="infoMsgRetrospectiveModeEnabled" ng-if="isRetrospectiveMode()">
             <i class="fa fa-info-circle"></i>
@@ -13,20 +13,7 @@
                 </h2>
             </div>
             <div ng-if="activeTab === tab" class="dashboard-section">
-                <div class="form search-container">
-                    <section class="form-field fr">
-                        <div class="field-attribute">
-                            <label>{{ 'SEARCH_KEY'|translate }}:</label>
-                        </div>
-                        <div class="field-value">
-                            <input type="text" ng-model="search.string" autofocus class="order_search_desktop">
-                            <input type="text" ng-model="search.string" class="order_search_mobile">
-                            <label ng-if="search.string.length > 0" class="fa fa-remove fl cross-button" ng-click="resetSearchString()"></label>
-                        </div>
-                    </section>
-                </div>
-                <div class="dashboard-section-wrapper clearfix">
-                    <div ng-include="'consultation/views/orderTemplateViews/ordersTemplate.html'"></div>
+                <div class="dashboard-section-wrapper clearfix" ng-include="'consultation/views/orderTemplateViews/ordersTemplate.html'">
                 </div>
             </div>
         </div>

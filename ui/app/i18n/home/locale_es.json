@@ -2,6 +2,7 @@
     "BAHMNI_PAGE_TITLE_KEY": "Inicio Bahmni",
     "LOGIN_LABEL_LOGIN_KEY": "Iniciar sesión",
     "LOGIN_LABEL_SUBMIT_KEY": "Enviar",
+    "LOGIN_LOCATION_SELECTION_LABEL_KEY": "Submit Location es",
     "LOGIN_LABEL_ENTER_OTP_KEY": "Ingresar OTP",
     "LOGIN_LABEL_USERNAME_KEY": "Nombre de usuario",
     "LOGIN_LABEL_PASSWORD_KEY": "Contraseña",
@@ -47,5 +48,13 @@
     "WARNING_SERVER_TIME_ZONE_MISMATCH": "La zona horaria del servidor ({{serverTime}}) es distinta de la hora/zona horaria de su navegador ({{localeTimeZone}}). Esto puede ocasionar que algunos datos o informes parezcan incorrectos. Por favor contacte al administrador para obtener más asistencia.",
     "LOGIN_PAGE_HEADER_TEXT": "INGRESO A BAHMNI EMR",
     "LOGIN_PAGE_TITLE_TEXT": "TEXTO DE TÍTULO",
-    "LOGIN_UNSUPPORTED_BROWSER_KEY": "Bahmni es compatible con el navegador Chrome/Firefox"
+    "LOGIN_UNSUPPORTED_BROWSER_KEY": "Bahmni is supported on Chrome/Firefox Browser",
+    "DOB_LABEL": "Fecha de Nacimiento",
+    "NO_RESULTS_FOUND": "No se han encontrado resultados",
+    "PRIVILEGE_REQUIRED": "El usuario ha iniciado sesión pero no posee el privilegio relevante",
+    "NO_FULFILMENT_MESSAGE": "No se han captado observaciones para esta orden.",
+    "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "No hay enlaces de navegación disponibles.",
+    "ACCEPT": "Aceptar",
+    "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Por favor seleccione un valor de la lista de autocompletar",
+    "LOGIN_LOCATION_PAGE_TITLE_TEXT": "Select login location es"
 }

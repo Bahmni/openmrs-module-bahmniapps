@@ -2,29 +2,56 @@
 
 angular.module('bahmni.reports')
     .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, auditLogService) {
+        const format = _.values(reportService.getAvailableFormats());
+        const dateRange = _.values(reportService.getAvailableDateRange());
+
         $scope.uploader = new FileUploader({
             url: Bahmni.Common.Constants.uploadReportTemplateUrl,
             removeAfterUpload: true,
             autoUpload: true
         });
-
         $scope.uploader.onSuccessItem = function (fileItem, response) {
             fileItem.report.reportTemplateLocation = response;
         };
 
-        $rootScope.default = _.isUndefined($rootScope.default) ? {reportsRequiringDateRange: {}, reportsNotRequiringDateRange: {}} : $rootScope.default;
+        $rootScope.default = _.isUndefined($rootScope.default) ? {
+            reportsRequiringDateRange: {
+                responseType: format[1],
+                dateRangeType: dateRange[0],
+                startDate: dateRange[0],
+                stopDate: dateRange[0],
+                report: {
+                    responseType: format[1]
+                }
+            },
+            reportsNotRequiringDateRange: {}
+        } : $rootScope.default;
         $scope.reportsDefined = true;
         $scope.enableReportQueue = appService.getAppDescriptor().getConfigValue("enableReportQueue");
-
         $scope.setDefault = function (item, header) {
             var setToChange = header === 'reportsRequiringDateRange' ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
             setToChange.forEach(function (report) {
-                report[item] = $rootScope.default[header][item];
+                if (item == 'dateRangeType') {
+                    $rootScope.default.reportsRequiringDateRange.startDate = $rootScope.default[header][item];
+                    $rootScope.default.reportsRequiringDateRange.stopDate = dateRange[0];
+                    report['startDate'] = $rootScope.default[header][item];
+                    report['stopDate'] = dateRange[0];
+                }
+                else if ($rootScope.default[header][item] === undefined) {
+                    $rootScope.reportsRequiringDateRange.forEach(function (report) {
+                        report.startDate = dateRange[0];
+                        report.stopDate = dateRange[0];
+                        report.responseType = format[1];
+                    });
+                }
+                else {
+                    report[item] = $rootScope.default[header][item];
+                }
             });
         };
 
         var isDateRangeRequiredFor = function (report) {
-            return _.find($rootScope.reportsRequiringDateRange, {name: report.name});
+            return _.find($rootScope.reportsRequiringDateRange, { name: report.name });
         };
 
         var validateReport = function (report) {
@@ -71,7 +98,7 @@ angular.module('bahmni.reports')
         };
 
         var log = function (reportName) {
-            auditLogService.log(undefined, 'RUN_REPORT', {reportName: reportName}, "MODULE_LABEL_REPORTS_KEY");
+            auditLogService.log(undefined, 'RUN_REPORT', { reportName: reportName }, "MODULE_LABEL_REPORTS_KEY");
         };
 
         $scope.scheduleReport = function (report) {
@@ -97,6 +124,11 @@ angular.module('bahmni.reports')
             $scope.formats = _.pick(reportService.getAvailableFormats(), supportedFormats);
         };
 
+        var initializeDateRange = function () {
+            var supportedDateRange = appService.getAppDescriptor().getConfigValue("supportedDateRange") || _.keys(reportService.getAvailableDateRange());
+            $scope.dateRange = _.pick(reportService.getAvailableDateRange(), supportedDateRange);
+        };
+
         var initialization = function () {
             var reportList = appService.getAppDescriptor().getConfigForPage("reports");
             $rootScope.reportsRequiringDateRange = _.isUndefined($rootScope.reportsRequiringDateRange) ? _.values(reportList).filter(function (report) {
@@ -108,6 +140,7 @@ angular.module('bahmni.reports')
             $scope.reportsDefined = _.values(reportList).length > 0;
 
             initializeFormats();
+            initializeDateRange();
         };
 
         initialization();

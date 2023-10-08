@@ -4,7 +4,7 @@ describe("MessageController", function () {
 
     beforeEach(module('bahmni.common.uiHelper'));
 
-    var scope, controller, rootScope, messagingService;
+    var scope, controller, rootScope, messagingService, translate, $state, exitAlertService;
 
     beforeEach(inject(function ($controller, $rootScope) {
         controller = $controller;
@@ -13,10 +13,21 @@ describe("MessageController", function () {
         messagingService = jasmine.createSpyObj("messagingService", ["hideMessages"]);
     }));
 
+    var translatedMessages = {
+        "SERVERERROR":"thisisservererror"
+    };
+    translate = jasmine.createSpyObj('$translate', ['instant']);
+    translate.instant.and.callFake(function (key) {
+        return translatedMessages[key];
+    });
+
     function createController() {
         return controller("MessageController", {
             $scope: scope,
-            messagingService : messagingService
+            $translate: translate,
+            messagingService : messagingService,
+            $state: $state,
+            exitAlertService: exitAlertService
         });
     }
 
@@ -31,7 +42,7 @@ describe("MessageController", function () {
     describe("method getMessageText", function () {
         it("should return concatenated message for the specified level", function () {
             createController();
-            scope.messages = {error:[{'value':'this'},{'value':"is"} ,{'value':"server"} ,{'value':"error"}]};
+            scope.messages = {error:[{'value':'SERVER'},{'value':"ERROR"}]};
             expect(scope.getMessageText('error')).toBe("thisisservererror");
         });
     });

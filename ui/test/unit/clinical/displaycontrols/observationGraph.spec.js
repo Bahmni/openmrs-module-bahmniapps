@@ -170,7 +170,7 @@ describe("Observation Graph", function () {
         var graphModel = [new Bahmni.Clinical.ObservationGraphLine({
             name: 'Height',
             units: "cm",
-            values: [{age: 178.9, Height: 45}]
+            values: [{age: 178.933, Height: 45}]
         })];
         var anyElement = null;
         expect(c3ChartSpy.render).toHaveBeenCalledWith(

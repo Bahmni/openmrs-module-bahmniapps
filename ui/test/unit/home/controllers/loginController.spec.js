@@ -7,7 +7,7 @@ describe('loginController', function () {
 
     beforeEach(function () {
         localeService = jasmine.createSpyObj('localeService', ['getLoginText', 'allowedLocalesList', 'serverDateTime', 'getLocalesLangs']);
-        sessionService = jasmine.createSpyObj('sessionService', ['loginUser', 'loadCredentials']);
+        sessionService = jasmine.createSpyObj('sessionService', ['loginUser', 'loadCredentials', 'updateSession']);
         auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
         currentUser = jasmine.createSpyObj('currentUser', ['addDefaultLocale', 'toContract']);
         _spinner = jasmine.createSpyObj('spinner', ['forPromise']);
@@ -15,6 +15,7 @@ describe('loginController', function () {
         sessionService.loginUser();
         sessionService.loginUser.and.returnValue(specUtil.simplePromise());
         sessionService.loadCredentials.and.returnValue(specUtil.simplePromise());
+        sessionService.updateSession.and.returnValue(specUtil.simplePromise());
         currentUser.addDefaultLocale.and.returnValue(specUtil.simplePromise({data: ""}));
         currentUser.toContract.and.returnValue(specUtil.simplePromise({data: ""}));
         localeService.allowedLocalesList.and.returnValue(specUtil.simplePromise({data: ""}));

@@ -21,12 +21,17 @@
 
     var searchWithDefaultConcept = function (searchMethod, request, response) {
         var searchTerm = _.toLower(request.term.trim());
+        var searchString = searchTerm.split(" ");
         var isMatching = function (answer) {
-            var conceptNameFound = _.find(answer.names, function (name) {
+            var nestedConceptNameFound = _.find(answer.names, function (name) {
                 return _.includes(_.toLower(name.name), searchTerm);
             });
-            var conceptDrugNameFound = _.includes(_.toLower(answer.name), searchTerm);
-            return conceptNameFound || conceptDrugNameFound;
+            var flag = true, conceptNameFound;
+            searchString.forEach(function (string) {
+                conceptNameFound = _.includes(_.toLower(answer.name), string);
+                flag = (flag && conceptNameFound);
+            });
+            return nestedConceptNameFound || (conceptNameFound && flag);
         };
         var responseMap = _.partial(constructSearchResult, _, searchTerm);
 

@@ -7,6 +7,14 @@
             <thead>
             <th colspan="4" ng-if="::!isOtherActiveSection(drugOrderSection.visitDate)">
                 {{::'VISIT_ON_TRANSLATION_KEY'|translate}} {{::drugOrderSection.visitDate | bahmniDate}}
+                <div class="share-prescription-icon" ng-if="::!params.visitUuids" bm-pop-over autoclose="true" title="{{'CLINICAL_SHARE_PRESCRIPTION_KEY'|translate}}">
+                    <i class="fa fa-share-alt" bm-pop-over-trigger>
+                    </i>
+                    <div class="share-popup" bm-pop-over-target>
+                        <i class="fa fa-envelope" ng-if="::params.prescriptionEmailToggle == 'true'" ng-class="{'disable-icon' : !params.isEmailPresent}" ng-click="sharePrescriptions(drugOrderSection.visitDate, drugOrderSection.drugOrders[0].visit.uuid)"></i>
+                        <i class="fa fa-download" ng-click="downloadPrescription(drugOrderSection.visitDate, drugOrderSection.drugOrders[0].visit.uuid)"></i>
+                    </div>
+                </div>
             </th>
             <th colspan="4" ng-if="::isOtherActiveSection(drugOrderSection.visitDate)">
                 {{::drugOrderSection.visitDate}}
@@ -18,6 +26,5 @@
                    ng-if="::drugOrderSection.drugOrders.length > 0">
             </tbody>
         </table>
-
     </div>
 </section>

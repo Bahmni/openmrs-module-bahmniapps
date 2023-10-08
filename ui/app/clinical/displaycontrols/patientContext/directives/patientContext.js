@@ -5,7 +5,7 @@ angular.module('bahmni.clinical')
         var controller = function ($scope, $rootScope) {
             var patientContextConfig = appService.getAppDescriptor().getConfigValue('patientContext') || {};
             $scope.initPromise = patientService.getPatientContext($scope.patient.uuid, $state.params.enrollment, patientContextConfig.personAttributes, patientContextConfig.programAttributes, patientContextConfig.additionalPatientIdentifiers);
-
+            $scope.allowNavigation = angular.isDefined($scope.isConsultation);
             $scope.initPromise.then(function (response) {
                 $scope.patientContext = response.data;
                 var programAttributes = $scope.patientContext.programAttributes;
@@ -31,6 +31,14 @@ angular.module('bahmni.clinical')
                 }
                 $scope.patientContext.gender = $rootScope.genderMap[$scope.patientContext.gender];
             });
+
+            $scope.navigate = function () {
+                if ($scope.isConsultation) {
+                    $scope.$parent.$parent.$broadcast("patientContext:goToPatientDashboard");
+                } else {
+                    $state.go("search.patientsearch");
+                }
+            };
         };
 
         var link = function ($scope, element) {
@@ -56,7 +64,8 @@ angular.module('bahmni.clinical')
             templateUrl: "displaycontrols/patientContext/views/patientContext.html",
             scope: {
                 patient: "=",
-                showNameAndImage: "=?"
+                showNameAndImage: "=?",
+                isConsultation: "=?"
             },
             controller: controller,
             link: link

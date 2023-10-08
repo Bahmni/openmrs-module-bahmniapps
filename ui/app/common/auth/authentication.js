@@ -48,23 +48,19 @@ angular.module('authentication')
         var createSession = function (username, password, otp) {
             var deferrable = $q.defer();
 
-            destroySessionFromServer().success(function () {
-                getAuthFromServer(username, password, otp).then(function (response) {
-                    if (response.status == 204) {
-                        deferrable.resolve({"firstFactAuthorization": true});
-                    }
-                    deferrable.resolve(response.data);
-                }, function (response) {
-                    if (response.status == 401) {
-                        deferrable.reject('LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY');
-                    } else if (response.status == 410) {
-                        deferrable.reject('LOGIN_LABEL_OTP_EXPIRED');
-                    } else if (response.status == 429) { // Too many requests
-                        deferrable.reject('LOGIN_LABEL_MAX_FAILED_ATTEMPTS');
-                    }
-                    deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
-                });
-            }).error(function () {
+            getAuthFromServer(username, password, otp).then(function (response) {
+                if (response.status == 204) {
+                    deferrable.resolve({"firstFactAuthorization": true});
+                }
+                deferrable.resolve(response.data);
+            }, function (response) {
+                if (response.status == 401) {
+                    deferrable.reject('LOGIN_LABEL_WRONG_OTP_MESSAGE_KEY');
+                } else if (response.status == 410) {
+                    deferrable.reject('LOGIN_LABEL_OTP_EXPIRED');
+                } else if (response.status == 429) { // Too many requests
+                    deferrable.reject('LOGIN_LABEL_MAX_FAILED_ATTEMPTS');
+                }
                 deferrable.reject('LOGIN_LABEL_LOGIN_ERROR_MESSAGE_KEY');
             });
             return deferrable.promise;
@@ -138,7 +134,8 @@ angular.module('authentication')
                 userService.getProviderForUser(data.results[0].uuid).then(function (providers) {
                     if (!_.isEmpty(providers.results) && hasAnyActiveProvider(providers.results)) {
                         $rootScope.currentUser = new Bahmni.Auth.User(data.results[0]);
-                        $rootScope.currentUser.currentLocation = $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName).name;
+                        $rootScope.currentUser.provider = providers.results[0];
+                        $rootScope.currentUser.currentLocation = null;
                         $rootScope.$broadcast('event:user-credentialsLoaded', data.results[0]);
                         deferrable.resolve(data.results[0]);
                     } else {
@@ -183,6 +180,24 @@ angular.module('authentication')
             }).success(function (data) {
                 var providerUuid = (data.results.length > 0) ? data.results[0].uuid : undefined;
                 $rootScope.currentProvider = { uuid: providerUuid };
+            });
+        };
+
+        this.updateSession = function (location, locale) {
+            var requestData = {
+                "sessionLocation": location.uuid
+            };
+            if (locale) {
+                requestData.locale = locale;
+            }
+            return $http({
+                method: 'POST',
+                url: Bahmni.Common.Constants.RESTWS_V1 + '/session',
+                data: requestData,
+                headers: {'Content-Type': 'application/json'}
+            }).then(function (response) {
+                $bahmniCookieStore.remove(Bahmni.Common.Constants.locationCookieName);
+                $bahmniCookieStore.put(Bahmni.Common.Constants.locationCookieName, {name: location.display, uuid: location.uuid}, {path: '/', expires: 7});
             });
         };
     }]).factory('authenticator', ['$rootScope', '$q', '$window', 'sessionService', function ($rootScope, $q, $window, sessionService) {

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q', '$translate',
-        function ($scope, $rootScope, $state, patientService, patient, spinner, appService, messagingService, ngDialog, $q, $translate) {
+    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'smsService', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q', '$translate',
+        function ($scope, $rootScope, $state, patientService, smsService, patient, spinner, appService, messagingService, ngDialog, $q, $translate) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.actions = {};
             var errorMessage;
@@ -12,6 +12,7 @@ angular.module('bahmni.registration')
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
             $scope.today = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime(dateUtil.now());
             $scope.moduleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
+            var patientId;
             var getPersonAttributeTypes = function () {
                 return $rootScope.patientConfiguration.attributeTypes;
             };
@@ -96,6 +97,7 @@ angular.module('bahmni.registration')
                 prepopulateDefaultsInFields();
                 expandSectionsWithDefaultValue();
                 $scope.patientLoaded = true;
+                $scope.createPatient = true;
             };
 
             init();
@@ -151,6 +153,7 @@ angular.module('bahmni.registration')
                 $scope.patient.registrationDate = dateUtil.now();
                 $scope.patient.newlyAddedRelationships = [{}];
                 $scope.actions.followUpAction(patientProfileData);
+                patientId = patientProfileData.patient.identifiers[0].identifier;
             };
 
             var createPatient = function (jumpAccepted) {
@@ -200,6 +203,12 @@ angular.module('bahmni.registration')
                     if (errorMessage) {
                         messagingService.showMessage("error", errorMessage);
                         errorMessage = undefined;
+                    } else {
+                        if ($rootScope.registrationSMSToggle == "true" && ($scope.patient.phoneNumber != undefined)) {
+                            var name = $scope.patient.givenName + " " + $scope.patient.familyName;
+                            var message = patientService.getRegistrationMessage(patientId, name, $scope.patient.age.years, $scope.patient.gender);
+                            smsService.sendSMS($scope.patient.phoneNumber, message);
+                        }
                     }
                 });
             };

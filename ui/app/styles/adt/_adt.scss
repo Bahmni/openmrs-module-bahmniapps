@@ -3,6 +3,7 @@
     .adt-disposition-action {
         margin: 5px 5px 0 0;
     }
+
     select.disposition-action {
         color: #363463;
         display: block;
@@ -12,22 +13,26 @@
         background-color: #FFF;
         border: 1px solid $lighterGray;
     }
+
     .patient-disposition-status {
         color: green;
         padding-top: 10px;
     }
+
     .form-horizontal fieldset label {
         text-align: left;
         margin-left: 0;
         padding-bottom: 5px;
     }
+
     .form-group .field-value textarea {
         width: 98%;
-        margin:0 0 5px 0;
+        margin: 0 0 5px 0;
     }
-    .submit-btn-container{
-        .admit_btn{
-            margin:0 5px; 
+
+    .submit-btn-container {
+        .admit_btn {
+            margin: 0 5px;
         }
     }
 }
@@ -42,50 +47,62 @@ div[ng-app="adt"] {
         -webkit-transform: translateX(-50%);
         color: $lightestGray;
     }
+
     .ward-list {
         .section-grid {
             margin-bottom: 10px;
         }
+
         .section-title {
             cursor: pointer;
             padding: 0;
+
             small {
                 color: beige;
             }
-            span.ward-header{
-              display: inline-block;
-              width:90%;
-              height: 37px;
-              padding: 10px;
+
+            span.ward-header {
+                display: inline-block;
+                width: 90%;
+                height: 37px;
+                padding: 10px;
             }
         }
-      .quick-links{
-        padding: 10px 0;
-      }
+
+        .quick-links {
+            padding: 10px 0;
+        }
     }
+
     .ward-details-cell {
         padding: 0;
     }
+
     .ward-details-container {
         width: 100%;
         max-width: $max-page-width;
         overflow-x: auto;
+
         table {
             font-size: 14px;
-            thead tr th{
+
+            thead tr th {
                 border: 1px solid #bebebe;
-                color:$black;
+                color: $black;
                 background: rgba(232, 232, 232, 1);
                 padding: 7px 10px;
-                &.bed-detail-column{
+
+                &.bed-detail-column {
                     width: 60px;
                 }
             }
+
             tbody tr:nth-child(even) {
                 background: $clinicalFormFocusBg;
             }
         }
-        .no-data-info{
+
+        .no-data-info {
             font-family: openSansBold;
             padding: 10px 0;
             display: inline-block;
@@ -93,29 +110,40 @@ div[ng-app="adt"] {
             width: 100%;
         }
     }
+
     .box {
         @media screen and (max-width: 859px) {
             margin-bottom: 15px;
         }
     }
 }
-.drug-details{
-    margin-top:15px;
+
+.drug-details {
+    margin-top: 15px;
 }
 
 .highlight-bed {
     border: 1px solid;
 }
+
 .ngdialog.ngdialog-theme-default.ng-dialog-adt-popUp .ngdialog-content {
     width: 500px;
     position: relative;
 }
+
 .ngdialog.ngdialog-theme-default {
     padding-bottom: 160px;
 }
+
 .ngdialog.ngdialog-theme-default.ng-dialog-all-details-page {
     padding: 0;
+
     .ngdialog-content {
-        width: 80%;
+        width: 90%;
+
+        @media screen and (min-width: 769px) {
+            width: 80%;
+        }
+
     }
 }

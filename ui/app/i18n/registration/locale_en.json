@@ -87,6 +87,7 @@
   "MESSAGE_DIALOG_OPTION_COPY" : "Copy Error",
   "MESSAGE_DIALOG_OPTION_OKAY": "OK",
   "NO_LOCATION_TAGGED_TO_VISIT_LOCATION": "No location tagged to Visit Location Found",
+  "VISIT_OF_THIS_PATIENT_AT_SAME_LOCATION_EXISTS": "An active visit for this patient already exists for this location. The system cannot create a duplicate visit.",
   "REGISTRATION_ADDTIONAL_IDENTIFIERS": "Additional Identifiers",
   "REGISTRATION_FORM_ERRORS_MESSAGE_KEY": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed",
   "OBS_BOOLEAN_YES_KEY":"Yes",
@@ -114,8 +115,11 @@
   "DELETE_LABEL": "Delete",
   "EDIT_LABEL": "Edit",
   "REGISTRATION_LABEL_RELATIONSHIP_EXISTS": "Given relationship already exists",
-  "REGISTRATION_WHATSAPP_MESSAGE": "Thank you for registering. Please note your Patient Registration Details : #patientId, #name, #gender, #age",
+  "REGISTRATION_MESSAGE": "Thank you for registering. Please note your Patient Registration Details : #patientId, #name, #gender, #age years",
   "REGISTRATION_TO_CLINICAL": "Save and go to Dashboard",
   "FILE_UPLOAD_MUST_BE_IMAGE": "File uploaded must be an image",
-  "FILE_UPLOAD_MUST_BE_LESS_THAN": "File size should be less than"
+  "FILE_UPLOAD_MUST_BE_LESS_THAN": "File size should be less than",
+  "PATIENT_ATTRIBUTE_GIVEN_NAME_LOCAL": "First Name in Arabic",
+  "PATIENT_ATTRIBUTE_FAMILY_NAME_LOCAL": "Last Name in Arabic",
+  "PATIENT_ATTRIBUTE_MIDDLE_NAME_LOCAL": "Middle Name in Arabic"
 }

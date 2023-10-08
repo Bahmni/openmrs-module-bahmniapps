@@ -2,7 +2,7 @@
 
 describe("ConsultationSummaryController", function () {
 
-    var scope, conceptSetUiConfigService, rootScope;
+    var scope, conceptSetUiConfigService, rootScope, translate, $state;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -49,11 +49,15 @@ describe("ConsultationSummaryController", function () {
         };
         
         conceptSetUiConfigService = jasmine.createSpyObj('conceptSetUiConfigService', ['getConfig']);
+        translate = jasmine.createSpyObj('$translate',['instant']);
+        translate.instant.and.returnValue("");
 
         $controller('ConsultationSummaryController', {
             $scope: scope,
             $rootScope: rootScope,
-            conceptSetUiConfigService: conceptSetUiConfigService
+            conceptSetUiConfigService: conceptSetUiConfigService,
+            $translate: translate,
+            $state: $state
         });
     }));
 

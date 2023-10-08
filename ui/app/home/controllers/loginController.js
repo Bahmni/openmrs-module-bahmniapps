@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.home')
-    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'auditLogService',
-        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, auditLogService) {
+    .controller('LoginController', ['$rootScope', '$scope', '$window', '$location', 'sessionService', 'initialData', 'spinner', '$q', '$stateParams', '$bahmniCookieStore', 'localeService', '$translate', 'userService', 'auditLogService', '$state',
+        function ($rootScope, $scope, $window, $location, sessionService, initialData, spinner, $q, $stateParams, $bahmniCookieStore, localeService, $translate, userService, auditLogService, $state) {
             var redirectUrl = $location.search()['from'];
             var landingPagePath = "/dashboard";
             var loginPagePath = "/login";
@@ -118,6 +118,26 @@ angular.module('bahmni.home')
                 $scope.loginInfo.currentLocation = getLastLoggedinLocation();
             };
 
+            var checkIfUserHasProviderAttributes = function () {
+                return $rootScope.currentUser.provider && $rootScope.currentUser.provider.attributes && $rootScope.currentUser.provider.attributes.length > 0;
+            };
+
+            var saveUserAssignedLocationsToLocalStorage = function () {
+                var userAssignedLocations = $rootScope.currentUser.provider.attributes
+                  .filter(function (attribute) {
+                      return attribute.attributeType.display === "Login Locations";
+                  })
+                  .map(function (attribute) {
+                      return { display: attribute.value.name, uuid: attribute.value.uuid };
+                  });
+
+                if (userAssignedLocations.length > 0) {
+                    localStorage.setItem("loginLocations", JSON.stringify(userAssignedLocations));
+                } else {
+                    localStorage.removeItem("loginLocations");
+                }
+            };
+
             $scope.login = function () {
                 $scope.errorMessageTranslateKey = null;
                 var deferrable = $q.defer();
@@ -144,16 +164,15 @@ angular.module('bahmni.home')
                             onSuccessfulAuthentication();
                             $rootScope.currentUser.addDefaultLocale($scope.selectedLocale);
                             userService.savePreferences().then(
-                                function () { deferrable.resolve(); },
-                                function (error) { deferrable.reject(error); }
-                            );
+                                    function () { deferrable.resolve(); },
+                                    function (error) { deferrable.reject(error); }
+                                );
                             logAuditForLoginAttempts("USER_LOGIN_SUCCESS");
                         }, function (error) {
                             $scope.errorMessageTranslateKey = error;
                             deferrable.reject(error);
                             logAuditForLoginAttempts("USER_LOGIN_FAILED", true);
-                        }
-                        );
+                        });
                     },
                     function (error) {
                         $scope.errorMessageTranslateKey = error;
@@ -210,7 +229,12 @@ angular.module('bahmni.home')
                                 }
                             });
                         } else {
-                            $location.url(landingPagePath);
+                            if (checkIfUserHasProviderAttributes()) {
+                                saveUserAssignedLocationsToLocalStorage();
+                            } else {
+                                localStorage.removeItem("loginLocations");
+                            }
+                            $state.go('loginLocation', {});
                         }
                     }
                 );

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams',
-        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams) {
+    .controller('VisitController', ['$scope', '$state', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService',
+        function ($scope, $state, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
@@ -16,6 +16,23 @@ angular.module('bahmni.clinical')
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.visitUuid = $stateParams.visitUuid;
             var tab = $stateParams.tab;
+            var encounterTypes = visitConfig.currentTab.encounterContext ? visitConfig.currentTab.encounterContext.filterEncounterTypes : null;
+            visitService.getVisit($scope.visitUuid, 'custom:(uuid,visitType,startDatetime,stopDatetime,encounters:(uuid,encounterDatetime,provider:(display),encounterType:(display)))').then(function (response) {
+                if (response.data && response.data.encounters) {
+                    var encounters = response.data.encounters;
+                    if (encounterTypes) {
+                        encounters = encounters.filter(function (enc) {
+                            return encounterTypes.includes(enc.encounterType.display);
+                        });
+                    }
+                    encounters = encounters.sort(function (a, b) {
+                        return a.encounterDatetime.localeCompare(b.encounterDatetime);
+                    });
+                    if (encounters && encounters.length > 0) {
+                        $scope.providerNames = encounters[0].provider.display;
+                    }
+                }
+            });
 
             $scope.isNumeric = function (value) {
                 return $.isNumeric(value);
@@ -30,7 +47,6 @@ angular.module('bahmni.clinical')
                 }
                 return true;
             };
-
             $scope.testResultClass = function (line) {
                 var style = {};
                 if ($scope.pendingResults(line)) {
@@ -47,7 +63,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.displayDate = function (date) {
-                return moment(date).format("DD-MMM-YY");
+                return moment(date).format("DD-MMM-YYYY");
             };
 
             $scope.$on("event:printVisitTab", function () {
@@ -63,6 +79,22 @@ angular.module('bahmni.clinical')
 
             $scope.loadVisit = function (visitUuid) {
                 $state.go('patient.dashboard.visit', {visitUuid: visitUuid});
+            };
+
+            var getCertificateHeader = function () {
+                $scope.certificateHeader = {};
+                return locationService.getAllByTag("Login Location").then(function (response) {
+                    var locations = response.data.results;
+                    if (locations !== null && locations.length > 0) {
+                        $scope.certificateHeader.name = locations[0].name;
+                        if (locations[0].attributes && locations[0].attributes.length > 0) {
+                            var attributeDisplay = locations[0].attributes[0].display.split(": ");
+                            if (attributeDisplay[0] === Bahmni.Clinical.Constants.certificateHeader) {
+                                $scope.certificateHeader.address = attributeDisplay[1];
+                            }
+                        }
+                    }
+                });
             };
 
             var printOnPrint = function () {
@@ -89,6 +121,7 @@ angular.module('bahmni.clinical')
                 var tabToOpen = getTab();
                 $scope.visitTabConfig.switchTab(tabToOpen);
                 printOnPrint();
+                getCertificateHeader();
             };
             init();
         }]);

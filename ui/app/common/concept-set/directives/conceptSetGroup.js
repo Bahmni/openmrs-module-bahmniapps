@@ -169,6 +169,9 @@ angular.module('bahmni.common.conceptSet')
                 $scope.leftPanelConceptSet.atLeastOneValueIsSet = selectedConceptSet.hasSomeValue();
                 $scope.leftPanelConceptSet.isAdded = true;
                 $scope.consultation.lastvisited = selectedConceptSet.id || selectedConceptSet.formUuid;
+                if ($rootScope.showLeftpanelToggle) {
+                    $rootScope.showLeftpanelToggle = false;
+                }
                 $(window).scrollTop(0);
             };
 

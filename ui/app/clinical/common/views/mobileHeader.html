@@ -1,0 +1,55 @@
+<div class="mobile-header-wrapper">
+    <button class="toggle-patient" type="button" type="button" ng-click="toggleMobileMenu()">
+        <i class="fa fa-bars fa-white fa-large"></i>
+    </button>
+    <div class="mobile-header-right">
+        <button ng-if="::clinicalDashboardConfig.allowAdhocTeleConsultation" type="button" ng-click="startAdhocTeleconsultationLink()"
+            class="btn-icon" title="{{'START_TELECON_KEY'|translate}}">
+            <i class="fa fa-headphones"></i>
+        </button>
+        <button type="button" class="btn-icon"
+            ng-click="printDashboard() || print()" accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}"
+            title="{{'CLINICAL_PRINT_TRANSLATION_KEY'|translate}}"
+        >
+            <i class="fa fa-print"></i>
+        </button>
+        <button type="button" class="btn-icon" bm-gallery patient="patient" access-impression="true">
+            <i class="fa fa-file-text" bm-lazy-image-observation-gallery-items promise="patientDocumentsPromise"></i>
+        </button>
+        <button type="button" class="consultation-btn" ng-if="(visitHistory.activeVisit || retrospectiveEntry || allowConsultation()) && (stateChange() || visitPage)"
+            ng-click="openConsultation()" accesskey="{{'CONSULTATION_SHORTCUT_KEY' | translate}}"
+            ng-bind-html="'CONSULTATION_TAB_KEY' | translate">
+        </button>
+        <button class="confirm consultation-btn" ng-show="availableBoards && !stateChange()" single-click="save()" accesskey="{{'SAVE_ACCESS_KEY' | translate}}">
+            <span class="text" ng-bind-html="'CLINICAL_SAVE_TRANSLATION_KEY'| translate"></span>
+        </button>
+    </div>
+</div>
+<aside class="mobile-menu-wrapper ng-hide hidden-tablet-above" ng-show="showMobileMenu">
+    <div class="mobile-menu-overlay" ng-click="toggleMobileMenu()">
+    </div>
+    <div class="header-mobile-menu">
+        <recent-patients></recent-patients>
+        <ul class="menu-list">
+            <li class="menu-item">
+                <a href="../home/index.html">
+                    <i class="fa fa-home"></i>
+                    <span>{{"BAHMNI_HOME_TRANSLATION_KEY"| translate}}</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#/default/patient/search">
+                    <i class="fa fa-group"></i>
+                    <span>{{"PATIENT_QUEUE_TRANSLATION_KEY"| translate}}</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a log-out>
+                    <i class="fa fa-sign-out"></i>
+                    <span>{{"LOGOUT_TRANSLATION_KEY"| translate}}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>
+<patient-context patient="patient" show-name-and-image="tabBeingPrinted.printing.showNameAndImage" class="dashboard-consultation hidden-tablet-above" ng-show="visitPage"></patient-context>

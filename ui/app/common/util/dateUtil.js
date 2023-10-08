@@ -83,7 +83,7 @@ Bahmni.Common.Util.DateUtil = {
     },
 
     getDateInMonthsAndYears: function (date, format) {
-        var format = format || "MMM YY";
+        var format = format || "MMM YYYY";
         var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
         if (!moment(dateRepresentation).isValid()) {
             return date;
@@ -96,7 +96,7 @@ Bahmni.Common.Util.DateUtil = {
         if (!moment(dateRepresentation).isValid()) {
             return datetime;
         }
-        return dateRepresentation ? moment(dateRepresentation).format("DD MMM YY h:mm a") : null;
+        return dateRepresentation ? moment(dateRepresentation).format("DD MMM YYYY h:mm a") : null;
     },
 
     formatDateWithoutTime: function (date) {
@@ -104,16 +104,16 @@ Bahmni.Common.Util.DateUtil = {
         if (!moment(dateRepresentation).isValid()) {
             return date;
         }
-        return dateRepresentation ? moment(dateRepresentation).format("DD MMM YY") : null;
+        return dateRepresentation ? moment(dateRepresentation).format("DD MMM YYYY") : null;
     },
 
     formatDateInStrictMode: function (date) {
         var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
         if (moment(dateRepresentation, 'YYYY-MM-DD', true).isValid()) {
-            return moment(dateRepresentation).format("DD MMM YY");
+            return moment(dateRepresentation).format("DD MMM YYYY");
         }
         if (moment(dateRepresentation, 'YYYY-MM-DDTHH:mm:ss.SSSZZ', true).isValid()) {
-            return moment(dateRepresentation).format("DD MMM YY");
+            return moment(dateRepresentation).format("DD MMM YYYY");
         }
         return date;
     },
@@ -202,7 +202,7 @@ Bahmni.Common.Util.DateUtil = {
             y: 0
         };
 
-        var daysFebruary = to.y % 4 != 0 || (to.y % 100 == 0 && to.y % 400 != 0) ? 28 : 29;
+        var daysFebruary = (from.y % 4 === 0 && from.y % 100 !== 0) || from.y % 400 === 0 ? 29 : 28;
         var daysInMonths = [31, daysFebruary, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         age.y = to.y - from.y;
         age.m = to.m - from.m;

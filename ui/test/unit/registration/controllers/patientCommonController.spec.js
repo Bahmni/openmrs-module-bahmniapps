@@ -52,7 +52,7 @@ describe('PatientCommonController', function () {
                                 "city": "cityVillage",
                                 "state": "stateProvince",
                                 "postalCode": "postalCode",
-                                "line": "address1"
+                                "line": ["address1"]
                             }
                         }
                     }];
@@ -432,21 +432,21 @@ it('checks that the confirmation popup is not prompted on the Registration secon
 
         it("should update registration page with demographics details from extension",function () {
 
-            scope.patient.age = {};
+            scope.patient.age = { years : 22, months : 2, days : 24 };
             scope.patient.address = {};
             scope.patient.extraIdentifiers = [{identifierType: {name : "ABHA"},generate : function (){}},
                 {identifierType: {name : "ABHA Address"},generate : function (){}}]
 
-            scope.patient.calculateBirthDate = function (){}
+            scope.patient.calculateAge = function () {}
 
-            spyOn(Bahmni.Common.Util.DateUtil,'diffInYearsMonthsDays').and.returnValue({ years : 22, months : 2, days : 24 })
 
             var expectedPatient = {
                 age : { years : 22, months : 2, days : 24 },
-                address : { cityVillage : '', stateProvince : 'Madhya Pradesh', postalCode : '212021', address1 : 'A-12, Dholakpur' },
+                birthdate: new Date("2000-01-01"),
+                address : { stateProvince : 'Madhya Pradesh', postalCode : '212021', address1 : 'A-12, Dholakpur' },
                 extraIdentifiers : [ { identifierType : { name : 'ABHA' }, generate : function (){}, registrationNumber : '57-0517-6745-1839' },
                     { identifierType : { name : 'ABHA Address' }, generate : function (){}, registrationNumber : 'hina.p@sbx' } ],
-                calculateBirthDate : Function,
+                calculateAge : Function,
                 primaryContact : '+919800083232',
                 gender : 'F',
                 givenName : 'Hina',
@@ -464,7 +464,7 @@ it('checks that the confirmation popup is not prompted on the Registration secon
             expect(patientKeys.length).toEqual(expectedPatientKeys.length);
 
             for (var i = 0; i < patientKeys.length; i++) {
-                if(patientKeys[i] !== 'extraIdentifiers' && patientKeys[i] !== 'calculateBirthDate')
+                if(patientKeys[i] !== 'extraIdentifiers' && patientKeys[i] !== 'calculateAge')
                     expect(scope.patient[patientKeys[i]]).toEqual(expectedPatient[patientKeys[i]]);
             }
             expect(scope.patient.extraIdentifiers[0].registrationNumber).toBe(expectedPatient.extraIdentifiers[0].registrationNumber)

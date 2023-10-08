@@ -24,14 +24,23 @@ angular.module('bahmni.registration')
             var identifierExtnMap = new Map();
             $scope.attributesToBeDisabled = [];
 
-            $scope.openIdentifierPopup = function (identifierType) {
-                var iframe = $document[0].getElementById("identifier-popup");
-                iframe.src = getExtensionPoint(identifierType).src;
+            $scope.getExtButtons = function (identifierType) {
+                var extensionPoint = getExtensionPoint(identifierType);
+                if (extensionPoint != null && extensionPoint.extensionParams !== null && extensionPoint.extensionParams.buttons !== null) {
+                    return extensionPoint.extensionParams.buttons;
+                }
+                return null;
+            };
+
+            $scope.openIdentifierPopup = function (identifierType, action) {
+                var iframe = $document[0].getElementById("extension-popup");
+                iframe.src = getExtensionPoint(identifierType).src + "?action=" + action;
                 $scope.showExtIframe = true;
                 $window.addEventListener("message", function (popupWindowData) {
                     if (popupWindowData.data.patient !== undefined) {
                         $rootScope.extenstionPatient = popupWindowData.data.patient;
                         if ($rootScope.extenstionPatient.id !== undefined) {
+                            $rootScope.isExistingPatient = true;
                             if ($rootScope.extenstionPatient.id !== $scope.patient.uuid) {
                                 $window.open(Bahmni.Registration.Constants.existingPatient + $rootScope.extenstionPatient.id, "_self");
                             }
@@ -61,9 +70,18 @@ angular.module('bahmni.registration')
                 return false;
             }
 
+            $scope.showOnlyCreateButton = function (identifierTypes) {
+                for (var i = 0; i < identifierTypes.length; i++) {
+                    if (identifierTypes[i].registrationNumber) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+
             $scope.showIdentifierVerificationButton = function (identifierType, identifierValue) {
                 var extenstionPoint = getExtensionPoint(identifierType);
-                if (extenstionPoint != null && identifierValue === undefined) {
+                if (extenstionPoint != null && identifierValue === undefined && _.some($rootScope.currentUser.privileges, {name: extenstionPoint.extensionParams.requiredPrivilege})) {
                     if (identifierExtnMap.get(extenstionPoint.id) === identifierType || identifierExtnMap.get(extenstionPoint.id) === undefined) {
                         if (identifierExtnMap.get(extenstionPoint.id) === undefined) {
                             identifierExtnMap.set(extenstionPoint.id, identifierType);
@@ -72,13 +90,6 @@ angular.module('bahmni.registration')
                     }
                 }
                 return false;
-            };
-
-            $scope.getDisplayName = function (identifierType) {
-                var extenstionPoint = getExtensionPoint(identifierType);
-                if (extenstionPoint != null) {
-                    return extenstionPoint.extensionParams.linkDisplay;
-                }
             };
 
             function getExtensionPoint (identifierType) {
@@ -101,17 +112,19 @@ angular.module('bahmni.registration')
                 for (var i = 0; i < $scope.patient.extraIdentifiers.length; i++) {
                     var identifier = $scope.patient.extraIdentifiers[i];
                     for (var j = 0; j < patient.identifiers.length; j++) {
-                        var identifierType = patient.identifiers[j].type.text;
-                        if (identifier.identifierType.name === identifierType) {
-                            identifier.registrationNumber = patient.identifiers[j].value;
-                            var extensionParam = getExtensionPoint(identifierType).extensionParams;
-                            $scope.attributesToBeDisabled = extensionParam.nonEditable !== null ? extensionParam.nonEditable : null;
-                            identifier.generate();
-                            if (!identifierMatch) {
-                                extensionParam.addressMap !== null ? updatePatientAddress(patient.address[0], extensionParam.addressMap) : {};
-                                contactAttribute = extensionParam.contact ? extensionParam.contact : "primaryContact";
-                                changePatientDetails(patient);
-                                identifierMatch = true;
+                        if (patient.identifiers[j]) {
+                            var identifierType = patient.identifiers[j].type.text;
+                            if (identifier.identifierType.name === identifierType) {
+                                identifier.registrationNumber = patient.identifiers[j].value;
+                                var extensionParam = getExtensionPoint(identifierType).extensionParams;
+                                $scope.attributesToBeDisabled = extensionParam.nonEditable !== null ? extensionParam.nonEditable : null;
+                                identifier.generate();
+                                if (!identifierMatch) {
+                                    extensionParam.addressMap !== null ? updatePatientAddress(patient.address[0], extensionParam.addressMap) : {};
+                                    contactAttribute = extensionParam.contact ? extensionParam.contact : "primaryContact";
+                                    changePatientDetails(patient);
+                                    identifierMatch = true;
+                                }
                             }
                         }
                     }
@@ -119,10 +132,15 @@ angular.module('bahmni.registration')
             };
 
             function updatePatientAddress (address, addressMap) {
+                $scope.patient.address = {};
                 for (var key in addressMap) {
-                    if (key === "line") {
-                        $scope.patient.address[addressMap[key]] = address[key] !== null ? address[key].join(" ") : "";
-                    } else { $scope.patient.address[addressMap[key]] = address[key] !== null ? address[key] : ""; }
+                    if (address[key] && address[key] !== null) {
+                        if (key === "line") {
+                            for (var index in addressMap[key]) {
+                                $scope.patient.address[addressMap[key][index]] = address[key][index];
+                            }
+                        } else { $scope.patient.address[addressMap[key]] = address[key]; }
+                    }
                 }
             }
 
@@ -136,31 +154,33 @@ angular.module('bahmni.registration')
                 for (var key in changedDetails) {
                     switch (key) {
                     case 'names':
-                        for (var i = 0; i < changedDetails.names.length; i++) {
-                            if (changedDetails.names[i].use === "preferred") {
-                                updatePatientName(changedDetails.names[i]);
-                                break;
+                        if (changedDetails.names != null) {
+                            for (var i = 0; i < changedDetails.names.length; i++) {
+                                if (changedDetails.names[i].use === "preferred") {
+                                    updatePatientName(changedDetails.names[i]);
+                                    break;
+                                }
                             }
+                            updatePatientName(changedDetails.names[0]);
                         }
-                        updatePatientName(changedDetails.names[0]);
                         break;
                     case 'gender':
-                        $scope.patient.gender = changedDetails.gender;
+                        if (changedDetails.gender) {
+                            $scope.patient.gender = changedDetails.gender;
+                        }
                         break;
                     case 'contactPoint':
-                        for (var i = 0; i < changedDetails.contactPoint.length; i++) {
-                            var contact = changedDetails.contactPoint[i];
-                            if (contact.system === "phone") { $scope.patient[contactAttribute] = contact.value; }
+                        if (changedDetails.contactPoint != null) {
+                            for (var i = 0; i < changedDetails.contactPoint.length; i++) {
+                                var contact = changedDetails.contactPoint[i];
+                                if (contact.system === "phone") { $scope.patient[contactAttribute] = contact.value; }
+                            }
                         }
                         break;
                     default:
-                        var DateUtil = Bahmni.Common.Util.DateUtil;
-                        var age = DateUtil.diffInYearsMonthsDays(changedDetails.birthDate, DateUtil.now());
                         $scope.patient.birthdateEstimated = changedDetails.isBirthDateEstimated;
-                        $scope.patient.age.years = age.years;
-                        $scope.patient.age.months = age.months;
-                        $scope.patient.age.days = age.days;
-                        $scope.patient.calculateBirthDate();
+                        $scope.patient.birthdate = changedDetails.birthDate !== undefined ? new Date(changedDetails.birthDate) : new Date();
+                        $scope.patient.calculateAge();
                         break;
                     }
                 }
@@ -205,6 +225,16 @@ angular.module('bahmni.registration')
                     $scope.confirmationPrompt(event, toState, toParams);
                 }
             });
+
+            $scope.localLanguageNameIsRequired = function (nameType) {
+                personAttributes = _.keyBy($rootScope.patientConfiguration.attributeTypes, function (attribute) {
+                    return attribute.name;
+                });
+                if (_.isEmpty(nameType)) {
+                    return personAttributes.givenNameLocal.required || personAttributes.middleNameLocal.required || personAttributes.familyNameLocal.required;
+                }
+                return nameType && personAttributes[nameType] && personAttributes[nameType].required;
+            };
 
             $scope.confirmationPrompt = function (event, toState) {
                 if (dontSaveButtonClicked === false) {
@@ -357,11 +387,14 @@ angular.module('bahmni.registration')
             $scope.$watch('patientLoaded', function () {
                 if ($scope.patientLoaded) {
                     executeShowOrHideRules();
-                    if ($scope.patient.extraIdentifiers !== undefined) {
-                        setAttributesToBeDisabled();
-                    }
-                    if ($rootScope.extenstionPatient !== undefined) {
-                        $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
+                    if (!$scope.createPatient) {
+                        if ($scope.patient.extraIdentifiers !== undefined) {
+                            setAttributesToBeDisabled();
+                        }
+                        if ($scope.isExistingPatient && $rootScope.extenstionPatient !== undefined) {
+                            $rootScope.isExistingPatient = false;
+                            $scope.updateInfoFromExtSource($rootScope.extenstionPatient);
+                        }
                     }
                 }
             });

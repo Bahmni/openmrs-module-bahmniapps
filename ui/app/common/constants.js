@@ -9,11 +9,13 @@ Bahmni.Common = Bahmni.Common || {};
     var RESTWS = hostUrl + "/openmrs/ws/rest";
     var RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
     var BAHMNI_CORE = RESTWS_V1 + "/bahmnicore";
+    var BAHMNI_COMMONS = RESTWS_V1 + "/bahmni";
     var EMRAPI = RESTWS + "/emrapi";
     var BACTERIOLOGY = RESTWS_V1;
     var BASE_URL = hostUrl + "/bahmni_config/openmrs/apps/";
     var CUSTOM_URL = hostUrl + "/implementation_config/openmrs/apps/";
     var IE_APPS_API = RESTWS_V1 + "/bahmniie";
+    var FHIR_BASE_URL = hostUrl + "/openmrs/ws/fhir2/R4";
 
     var serverErrorMessages = [
         {
@@ -69,22 +71,28 @@ Bahmni.Common = Bahmni.Common || {};
         timeDisplayFormat: "hh:mm",
         emrapiDiagnosisUrl: EMRAPI + "/diagnosis",
         bahmniDiagnosisUrl: BAHMNI_CORE + "/diagnosis/search",
+        emrapiDiagnosisLimit: Bahmni.Common.Constants && Bahmni.Common.Constants.emrapiDiagnosisLimit || 20,
         bahmniDeleteDiagnosisUrl: BAHMNI_CORE + "/diagnosis/delete",
         diseaseTemplateUrl: BAHMNI_CORE + "/diseaseTemplates",
         AllDiseaseTemplateUrl: BAHMNI_CORE + "/diseaseTemplate",
         emrapiConceptUrl: EMRAPI + "/concept",
+        bahmniapiConceptUrl: BAHMNI_COMMONS + "/terminologies/concepts",
         encounterConfigurationUrl: BAHMNI_CORE + "/config/bahmniencounter",
         patientConfigurationUrl: BAHMNI_CORE + "/config/patient",
         drugOrderConfigurationUrl: BAHMNI_CORE + "/config/drugOrders",
         emrEncounterUrl: EMRAPI + "/encounter",
         encounterUrl: RESTWS_V1 + "/encounter",
+        cdssUrl: RESTWS_V1 + "/cdss",
+        fhirMedicationsUrl: FHIR_BASE_URL + "/Medication",
         locationUrl: RESTWS_V1 + "/location",
         bahmniVisitLocationUrl: BAHMNI_CORE + "/visitLocation",
+        bahmniFacilityLocationUrl: BAHMNI_CORE + "/facilityLocation",
         bahmniOrderUrl: BAHMNI_CORE + "/orders",
         bahmniDrugOrderUrl: BAHMNI_CORE + "/drugOrders",
         bahmniDispositionByVisitUrl: BAHMNI_CORE + "/disposition/visitWithLocale",
         bahmniDispositionByPatientUrl: BAHMNI_CORE + "/disposition/patientWithLocale",
         bahmniSearchUrl: BAHMNI_CORE + "/search",
+        bahmniCommonsSearchUrl: BAHMNI_COMMONS + "/search",
         bahmniLabOrderResultsUrl: BAHMNI_CORE + "/labOrderResults",
         bahmniEncounterUrl: BAHMNI_CORE + "/bahmniencounter",
         conceptUrl: RESTWS_V1 + "/concept",
@@ -210,6 +218,7 @@ Bahmni.Common = Bahmni.Common || {};
         primaryOrderSetMemberAttributeTypeName: "Primary",
         bahmniBacteriologyResultsUrl: BACTERIOLOGY + "/specimen",
         bedFromVisit: RESTWS_V1 + "/beds",
+        sendViaEmailUrl: RESTWS_V1 + "/patient/{{patientUuid}}/send/email",
         ordersUrl: RESTWS_V1 + "/order",
         formDataUrl: RESTWS_V1 + "/obs",
         providerUrl: RESTWS_V1 + "/provider",
@@ -273,7 +282,8 @@ Bahmni.Common = Bahmni.Common || {};
         loginConfig: "/bahmni_config/openmrs/apps/home/login_config.json",
         visit: "VISIT",
         defaultImageUploadSize: 500000, // Default patient profile photo size
-        maxImageUploadSize: 9000000 // to ensure, extreme max size and prevent choking up server capacity (max size is 9MB)
+        maxImageUploadSize: 9000000, // to ensure, extreme max size and prevent choking up server capacity (max size is 9MB)
+        adhocTeleconsultationLinkServiceUrl: RESTWS_V1 + "/adhocTeleconsultation/generateAdhocTeleconsultationLink"
     };
 })();
 

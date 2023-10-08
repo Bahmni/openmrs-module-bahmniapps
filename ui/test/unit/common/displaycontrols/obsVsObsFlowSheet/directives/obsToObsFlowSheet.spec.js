@@ -606,11 +606,12 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                     concept: {
                         dataType: 'Date'
                     },
-                    value: '10/10/2015'
+                    value: '10/10/2015',
+                    observationDateTime: new Date("10/10/2015")
                 }
             ];
 
-            expect(compiledElementScope.commafy(observations)).toEqual("10 Oct 15");
+            expect(compiledElementScope.commafy(observations)).toEqual("10 Oct 2015");
         });
 
         it('should return just month and year if the concept datatype is date and configured to show month and year', function () {
@@ -656,11 +657,12 @@ describe('obsToObsFlowSheet DisplayControl', function () {
                         name: "ConceptName",
                         dataType: 'Date'
                     },
-                    value: '10/10/2015'
+                    value: '10/10/2015',
+                    observationDateTime: new Date("10/10/2015")
                 }
             ];
 
-            expect(compiledElementScope.commafy(observations)).toEqual("Oct 15");
+            expect(compiledElementScope.commafy(observations)).toEqual("Oct 2015");
         });
 
         it('should return abbreviation of the coded answer if the concept is coded and configured to show abbreviation', function () {

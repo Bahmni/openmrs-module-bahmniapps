@@ -1,0 +1,32 @@
+<section class="block treatment-section" ng-show="encounterDrugOrderMap.length>0">
+    <h2 class="section-title">Treatment</h2>
+    <div ng-repeat="(key, value) in encounterDrugOrderMap">
+        <h2 class="encounter-info">Consultation with {{value.drugOrders[value.drugOrders.length-1].provider.name}}</h2>
+        <table class="printPrescription">
+            <tr>
+                <th class="enc-sl-no-heading">{{'TREATMENT_SL_NO'|translate}}</th>
+                <th class="enc-drug-name-heading">{{'MEDICATION_DRUG_NAME_TITLE'|translate}}</th>
+                <th class="enc-dosage-instructions-heading">{{'MEDICATION_DOSAGE_INFORMATION_LABEL'|translate}}</th>
+                <th class="enc-start-date-heading">{{'MEDICATION_LABEL_START_DATE'|translate}}</th>
+            </tr>
+            <tbody ng-repeat="drugOrder in value.drugOrders" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
+            <tr>
+                <td>{{$index + 1}}.</td>
+                <td class="drug-name" bo-text="drugOrder.getDisplayName()" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}"></td>
+                <td class="dosage-form">
+                    <span bo-show="drugOrder.getDescription()" bo-text="drugOrder.getDescription()" ng-class="{'strike-text':drugOrder.isDiscontinuedOrStopped()}"></span>
+                    <span bo-show="!drugOrder.getDescription()" bo-text="' - '"></span>
+                    <span ng-if="drugOrder.isDiscontinuedOrStopped()" class="fr">stopped {{::drugOrder.effectiveStopDate | bahmniDate}}</span>
+                </td>
+                <td bo-text="(drugOrder.effectiveStartDate | bahmniDate)"></td>
+            </tr>
+            <tr ng-if="::drugOrder.additionalInstructions">
+                <td></td><td></td>
+                <td colspan="2" class="inline-notes notes">
+                    <p class="left"><strong>{{'TREATMENT_NOTES'|translate}}: </strong>{{drugOrder.additionalInstructions}}</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

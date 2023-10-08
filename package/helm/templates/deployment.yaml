@@ -52,22 +52,12 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           resources: {}
-          # volumeMounts:
-            # - mountPath: /usr/local/apache2/htdocs/bahmni
-            #   name: bahmni
-            # - mountPath: /usr/local/apache2/htdocs/bahmni/components
-            #   name: bahmni-components
-            # - mountPath: /usr/local/apache2/htdocs/bahmni/mf
-            #   name: bahmni-mf
+          volumeMounts:
+            - mountPath: /usr/local/apache2/htdocs/bahmni_config
+              name: bahmni-config
       restartPolicy: Always
-      # volumes:
-        # - name: bahmni
-        #   persistentVolumeClaim:
-        #     claimName: bahmni-pvc
-        # - name: bahmni-components
-        #   persistentVolumeClaim:
-        #     claimName: bahmni-components-pvc
-        # - name: bahmni-mf
-        #   persistentVolumeClaim:
-        #     claimName: bahmni-mf-pvc
+      volumes:
+        - name: bahmni-config
+          persistentVolumeClaim:
+            claimName: bahmni-config-pvc
 

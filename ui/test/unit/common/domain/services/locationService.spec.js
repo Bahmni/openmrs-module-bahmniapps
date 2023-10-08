@@ -7,13 +7,27 @@ describe('LocationService', function () {
         if(_.includes(params,"bahmnicore/visitLocation")){
             return {uuid: "visitLocationUuid"}
         }
+        else if(_.includes(params,"bahmnicore/facilityLocation")){
+            return {
+                then: function (successFunction) {
+                    var results = {
+                        uuid: "facilityVisitLocationUuid",
+                        name: "Facility Location"
+                    };
+                    return successFunction({data: results});
+                }
+            };
+        }
         else{
             return locationUuids;
         }
     };
 
-    var $http, mockBahmniCookieStore,
-        mockHttp = {
+    var mockBahmniCookieStore = jasmine.createSpyObj('bahmniCookieStore', ["get"]);
+    mockBahmniCookieStore.get.and.callFake(function () {
+        return {uuid: "locationUuid"};
+    });
+    var mockHttp = {
             defaults: {
                 headers: {
                     common: {
@@ -60,5 +74,13 @@ describe('LocationService', function () {
         expect(mockHttp.get).toHaveBeenCalled();
         expect(results.uuid).toBe("visitLocationUuid");
 
+    }]));
+
+    it('should get root location id for facility location which is tagged as a Visit Location', inject(['locationService', function(locationService){
+        var results = locationService.getFacilityVisitLocation();
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniFacilityLocationUrl+'/locationUuid');
+        expect(mockHttp.get).toHaveBeenCalled();
+        expect(results.uuid).toBe("facilityVisitLocationUuid");
+        expect(results.name).toBe("Facility Location");
     }]));
 });

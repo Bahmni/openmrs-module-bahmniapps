@@ -4,7 +4,7 @@ describe("ConsultationController", function () {
     var scope, rootScope, state, contextChangeHandler, urlHelper, location, clinicalAppConfigService,
         stateParams, appService, ngDialog, q, appDescriptor, controller, visitConfig, _window_, clinicalDashboardConfig,
         sessionService, conditionsService, encounterService, configurations, diagnosisService, messagingService, spinnerMock,
-        auditLogService,  confirmBox;
+        auditLogService,  confirmBox, virtualConsultService, adhocTeleconsultationService;
 
     var encounterData = {
         "bahmniDiagnoses": [],
@@ -144,7 +144,9 @@ describe("ConsultationController", function () {
             messagingService: messagingService,
             spinner: spinnerMock,
             auditLogService: auditLogService,
-            confirmBox: confirmBox
+            confirmBox: confirmBox,
+            virtualConsultService: virtualConsultService,
+            adhocTeleconsultationService: adhocTeleconsultationService
         });
     };
     var setUpServiceMocks = function () {
@@ -223,21 +225,35 @@ describe("ConsultationController", function () {
             },
             stoppedOrderReasonConfig: function () {
                 return {};
+            },
+            encounterConfig: function () {
+                return configurations;
+            },
+            getPatientDocumentEncounterTypeUuid: function () {
+                return "patientDocumentEncounterTypeUuid";
             }
         };
         conditionsService = jasmine.createSpyObj('conditionalService', ['save', 'getConditions']);
         conditionsService.save.and.returnValue(specUtil.simplePromise({}));
         conditionsService.getConditions.and.returnValue([{uuid: "condition-uuid", conditionNonCoded: "fever"}]);
-        encounterService = jasmine.createSpyObj('encounterService', ['getEncounterType', 'create']);
+        encounterService = jasmine.createSpyObj('encounterService', ['getEncounterType', 'create', 'getEncountersForEncounterType', 'then']);
         encounterService.getEncounterType.and.returnValue(specUtil.simplePromise({}));
+        encounterService.getEncountersForEncounterType.and.callFake(function () {
+            var deferred = Q.defer();
+            deferred.resolve({data: {results: []}});
+            return deferred.promise;
+        });
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         diagnosisService = jasmine.createSpyObj('diagnosisService', ['populateDiagnosisInformation']);
+        adhocTeleconsultationService = jasmine.createSpyObj('adhocTeleconsultationService', ['generateAdhocTeleconsultationLink']);
+        virtualConsultService = jasmine.createSpyObj('virtualConsultService', ['launchMeeting']);
         encounterService.create.and.returnValue(specUtil.createFakePromise(encounterData));
         encounterService.create.and.callFake(function () {
             var deferred = Q.defer();
             deferred.resolve({data: encounterData});
             return deferred.promise;
         });
+        encounterService.then.and.returnValue({data: {results: []}});
         spinnerMock = {
             forPromise: function (promise, element) {
                 return promise;
@@ -276,6 +292,7 @@ describe("ConsultationController", function () {
             expect(scope.togglePrintList).toBeFalsy();
             expect(scope.patient).toEqual({});
             expect(scope.showDashboardMenu).toBeFalsy();
+            expect(scope.showMobileMenu).toBeFalsy();
             expect(scope.showComment).toBeTruthy();
             expect(scope.consultationBoardLink).toEqual([]);
             expect(scope.showControlPanel).toBeFalsy();
@@ -365,7 +382,7 @@ describe("ConsultationController", function () {
                 }
             };
             createController();
-
+            expect(scope.availableBoards[0].isSelectedTab).toBeFalsy();
             expect(scope.currentBoard).toEqual({
                 extensionPointId: "org.bahmni.clinical.consultation.board",
                 icon: "icon-user-md",
@@ -380,8 +397,7 @@ describe("ConsultationController", function () {
                 type: "link",
                 url: "treatment",
                 isSelectedTab: true
-            }
-            );
+            });
         });
 
         it("should set current tab based on the tab config provided", function () {
@@ -551,6 +567,12 @@ describe("ConsultationController", function () {
             scope.toggleDashboardMenu();
 
             expect(scope.showDashboardMenu).toBeTruthy();
+        });
+
+        it("should toggle mobile menu", function () {
+            scope.toggleMobileMenu();
+
+            expect(scope.showMobileMenu).toBeTruthy();
         });
 
         it("should show dashboard menu", function () {
@@ -779,6 +801,40 @@ describe("ConsultationController", function () {
                 expect(messagingService.showMessage).toHaveBeenCalledWith('error', '[ERROR]');
                 done();
             });
+        });
+    });
+
+    describe("startAdhocTeleconsultationLink", function ()  {
+        it("should get ad-hoc teleconsultation link", function () {
+            scope.patient = {
+                uuid: "patient-uuid"
+            };
+            rootScope.currentUser = {
+                username: "username"
+            };
+            scope.adhocTeleconsultationData = {
+                uuid:"GAN203006",
+                link:"https://meet.jit.si/GAN203006",
+                notificationResults:[
+                    {
+                        uuid:"",
+                        medium:"EMAIL",
+                        status:1,
+                        message:"Unable to send tele-consultation appointment information through EMAIL"}
+                ]
+            };
+            console.log(adhocTeleconsultationService)
+            adhocTeleconsultationService.generateAdhocTeleconsultationLink.and.returnValue(specUtil.createFakePromise(scope.adhocTeleconsultationData));
+            scope.startAdhocTeleconsultationLink();
+            expect(adhocTeleconsultationService.generateAdhocTeleconsultationLink).toHaveBeenCalled();
+            expect(adhocTeleconsultationService.generateAdhocTeleconsultationLink).toHaveBeenCalledWith({
+                patientUuid: scope.patient.uuid,
+                provider: rootScope.currentUser.username
+            });
+            expect(virtualConsultService.launchMeeting).toHaveBeenCalledWith(
+                scope.adhocTeleconsultationData.uuid,
+                scope.adhocTeleconsultationData.link);
+            expect(messagingService.showMessage).toHaveBeenCalled();
         });
     });
 

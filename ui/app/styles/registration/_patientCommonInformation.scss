@@ -53,6 +53,7 @@ form .form-field{
 
 section.form-field-inline{
   @include clearfix();
+  margin: 0 -1.04167%;
   @media (max-width : 768px){
     margin-bottom: 0;
   }
@@ -65,7 +66,7 @@ section.form-field-inline{
     &.form-field{
       .field-attribute{
         label{
-          width: 17em;
+          width: 15em;
           @media (max-width : 990px) {
             text-align: left;
           }
@@ -192,7 +193,7 @@ section.form-field-inline{
       }
     }
     #birthtime{
-      @media (max-width : 768px) {
+      @media (min-width: 581px) and (max-width : 768px) {
         width: 12.5em;
       }
     }
@@ -252,9 +253,6 @@ section.form-field-inline{
               }
             }
           }
-        }
-        @media (max-width: 768px) {
-          padding-left: 10px;
         }
       }
       #patientID{

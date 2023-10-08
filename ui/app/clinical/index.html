@@ -106,7 +106,9 @@
         <script src="../common/util/dynamicResourceLoader.js"></script>
         <script src="../common/util/dynamicResourceLoader.js"></script>
         <script src="../common/util/translationUtil.js"></script>
+        <script src="../common/util/swipeUtil.js"></script>
         <script src="../common/util/genderUtil.js"></script>
+        <script src="../common/util/providerInfoService.js"></script>
 
         <script src="../common/models/init.js"></script>
         <script src="../common/models/age.js"></script>
@@ -142,6 +144,7 @@
         <script src="../common/patient-search/models/search.js"></script>
         <script src="../common/patient-search/directives/resize.js"></script>
         <script src="../common/patient-search/directives/scheduler.js"></script>
+        <script src="../common/patient-search/directives/scrollableTabs.js"></script>
         <script src="../common/patient-search/controllers/patientsListController.js"></script>
 
         <script src="../common/domain/init.js"></script>
@@ -183,6 +186,7 @@
         <script src="../common/ui-helper/directives/monthyearpicker.js"></script>
         <script src="../common/ui-helper/directives/toggle.js"></script>
         <script src="../common/ui-helper/directives/gallery.js"></script>
+        <script src="../common/ui-helper/directives/historyBack.js"></script>
         <script src="../common/ui-helper/directives/ngConfirmClick.js"></script>
         <script src="../common/ui-helper/directives/bmShow.js"></script>
         <script src="../common/ui-helper/directives/confirmOnExit.js"></script>
@@ -396,10 +400,13 @@
         <script src="consultation/services/labTestsProvider.js"></script>
         <script src="consultation/services/otherTestsProvider.js"></script>
         <script src="consultation/services/Notifier.js"></script>
+        <script src="consultation/services/adhocTeleconsultationService.js"></script>
+        <script src="consultation/services/exitAlertService.js"></script>
 
         <script src="consultation/services/treatmentConfig.js"></script>
         <script src="consultation/filters/observationValue.js"></script>
         <script src="consultation/directives/buttonsRadio.js"></script>
+        <script src="consultation/directives/alertOnExit.js"></script>
         <script src="consultation/directives/orderSelector.js"></script>
         <script src="consultation/directives/diagnosisAutoComplete.js"></script>
         <script src="consultation/directives/newDrugOrders.js"></script>
@@ -515,6 +522,7 @@
         <script src="../common/services/formService.js"></script>
         <script src="../common/services/pacsService.js"></script>
         <script src="../common/services/virtualConsultService.js"></script>
+        <script src="../common/services/transmissionService.js"></script>
         <script src="../common/domain/services/visitService.js"></script>
         <script src="../common/domain/services/diagnosisService.js"></script>
         <script src="../common/domain/services/conditionsService.js"></script>
@@ -539,5 +547,12 @@
         <script src="/bahmni_config/openmrs/apps/customDisplayControl/js/customControl.js"></script>
         <script src="/bahmni_config/openmrs/apps/clinical/formConditions.js"></script>
         <script src="/implementation_config/openmrs/apps/clinical/formConditions.js"></script>
+        <script src="/bahmni_config/openmrs/apps/clinical/common/diagnosisServiceConfig.js"></script>
+
+        <!-- HTML to PDF -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.41/pdfmake.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
     </body>
 </html>

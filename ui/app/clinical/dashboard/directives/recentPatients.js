@@ -6,6 +6,7 @@ angular.module('bahmni.clinical')
             var initialize = function () {
                 $scope.search = new Bahmni.Common.PatientSearch.Search(undefined);
                 $scope.showPatientsList = false;
+                $scope.showPatientsBySearch = false;
             };
 
             $scope.recentlyViewedPatients = _.take($rootScope.currentUser.recentlyViewedPatients, clinicalDashboardConfig.getMaxRecentlyViewedPatients());
@@ -21,6 +22,10 @@ angular.module('bahmni.clinical')
 
             $scope.togglePatientsList = function () {
                 $scope.showPatientsList = !$scope.showPatientsList;
+            };
+
+            $scope.hidePatientsBySearch = function () {
+                $scope.showPatientsBySearch = false;
             };
 
             $scope.hasPrevious = function () {
@@ -43,7 +48,13 @@ angular.module('bahmni.clinical')
                 $state.go('patient.dashboard', {configName: $scope.configName, patientUuid: patientUuid});
             };
 
+            $scope.clearSearch = function () {
+                $scope.search.searchParameter = '';
+                $('.search-input').focus();
+            };
+
             $scope.getActivePatients = function () {
+                $scope.showPatientsBySearch = true;
                 if ($scope.search.patientsCount() > 0) {
                     return;
                 }
@@ -60,6 +71,9 @@ angular.module('bahmni.clinical')
         return {
             restrict: 'E',
             controller: controller,
+            link: function (scope, element, attrs) {
+                scope.triggeredByButton = angular.isDefined(attrs.triggeredByButton);
+            },
             templateUrl: "dashboard/views/recentPatients.html"
         };
     });

@@ -4,7 +4,7 @@
     </div>
 	<div class="inpage">
 		<div class="tabs">
-			<div class="tab" ng-repeat="drugOrderGroup in consultation.drugOrderGroups">
+			<div class="tab" ng-repeat="drugOrderGroup in consultation.drugOrderGroups" ng-class="{'selected-tab': drugOrderGroup.selected }">
 				<input class="tab-radio" id="{{'drug-orders-tab-' + $index}}" name="tab-group-1" type="radio" ng-checked="drugOrderGroup.selected" ng-class="{}" tabindex="-1">
 				<label class="tab-label" for="{{'drug-orders-tab-' + $index}}">
                     <span>{{drugOrderGroup.label | bahmniDate}}</span>
@@ -21,8 +21,13 @@
                         <ul class="table-mimic">
 							<li id="ordered-drug-orders" ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
-                                    <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong>
-                                    {{drugOrder.getDescriptionWithQuantity()}}
+                                    <div class="drug-dosage">
+                                        <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong>
+                                        <div class="dosage-frequency">
+                                            <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}} | </span>
+                                            <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length">{{drugOrder.getFrequency()}} | </span> 
+                                            {{drugOrder.getDurationAndDurationUnits()}}</div>
+                                    </div>
                                 </div>
 								<div class="button-group-wrapper">
                                     <div class="button-group">
@@ -44,10 +49,6 @@
                                         <button class="refill-btn" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
                                             {{ ::'MEDICATION_REFILL' | translate }}
                                         </button>
-                                        <button class="toggle" ng-class="{'has-notes': drugOrder.additionalInstructions}" ng-click="toggleShowAdditionalInstructions(drugOrder)">
-                                            <i class="fa fa-plus-circle" ng-hide="drugOrder.showAdditionalInstructions"></i>
-                                            <i class="fa fa-minus-circle" ng-show="drugOrder.showAdditionalInstructions"></i>
-                                        </button>
                                     </div>
 								</div>
                                 <div class="start-date fr">
@@ -58,11 +59,17 @@
                                         <div ng-if="getOrderReasonConcept(drugOrder) && drugOrder.isDiscontinuedOrStopped()">({{getOrderReasonConcept(drugOrder)}})</div>
                                     </span>
                                 </div>
-                                <div ng-show="drugOrder.showAdditionalInstructions" class="notes inline-notes">
-                                    {{drugOrder.additionalInstructions}}
-                                    <div class="footer-note fr">
+                                <div class="dosage-details">
+                                    <div>
+                                        <span ng-if="drugOrder.asNeeded">{{drugOrder.getAsNeededText(drugOrder.asNeeded)}}, </span>
+                                        <span nf-if="drugOrder.route"> {{drugOrder.route}}, </span>
+                                        {{drugOrder.instructions}} | 
+                                    </div>
+                                    <div ng-if="drugOrder.additionalInstructions">{{drugOrder.additionalInstructions}} | </div>
+                                    <div>{{drugOrder.getQuantityWithUnit()}}</div>
+                                    <div class="footer-note">
                                         <span class="time-stamp">
-                                            <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
+                                            <span class="time">{{drugOrder.dateActivated | bahmniDateTime}}</span>
                                         </span>
                                         <span class="provider">
                                             <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"></provider-directive>

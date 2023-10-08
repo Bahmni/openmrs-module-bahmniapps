@@ -646,12 +646,16 @@ concept-set {
       position: fixed;
       width: inherit;
       height: auto;
-      top: 138px;
+      top: 188px;
       bottom: 50px;
       background: $white;
       overflow-y: auto;
       overflow-x: hidden;
       z-index: 10000;
+
+      @media screen and (min-width: 769px) {
+        top: 138px;
+      }
     }
     .multi-select-lab-tests {
       width: 100% !important;
@@ -679,7 +683,7 @@ concept-set {
             display: block;
             width: auto;
             margin-right: 25px;
-            word-break: break-all;
+            word-break: break-word;
             &.concept-set-name-extra {
               margin-right: 52px;
             }

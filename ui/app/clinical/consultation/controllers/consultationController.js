@@ -5,15 +5,19 @@ angular.module('bahmni.clinical').controller('ConsultationController',
         'spinner', 'encounterService', 'messagingService', 'sessionService', 'retrospectiveEntryService', 'patientContext', '$q',
         'patientVisitHistoryService', '$stateParams', '$window', 'visitHistory', 'clinicalDashboardConfig', 'appService',
         'ngDialog', '$filter', 'configurations', 'visitConfig', 'conditionsService', 'configurationService', 'auditLogService', 'confirmBox',
+        'virtualConsultService', 'adhocTeleconsultationService',
         function ($scope, $rootScope, $state, $location, $translate, clinicalAppConfigService, diagnosisService, urlHelper, contextChangeHandler,
                   spinner, encounterService, messagingService, sessionService, retrospectiveEntryService, patientContext, $q,
                   patientVisitHistoryService, $stateParams, $window, visitHistory, clinicalDashboardConfig, appService,
-                  ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, confirmBox) {
+                  ngDialog, $filter, configurations, visitConfig, conditionsService, configurationService, auditLogService, confirmBox,
+                  virtualConsultService, adhocTeleconsultationService) {
+            var ERROR = 1;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var getPreviousActiveCondition = Bahmni.Common.Domain.Conditions.getPreviousActiveCondition;
             $scope.togglePrintList = false;
             $scope.patient = patientContext.patient;
             $scope.showDashboardMenu = false;
+            $scope.showMobileMenu = false;
             $scope.stateChange = function () {
                 return $state.current.name === 'patient.dashboard.show';
             };
@@ -28,6 +32,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
 
             $scope.openConsultationInNewTab = function () {
                 $window.open('#' + $scope.consultationBoardLink, '_blank');
+            };
+
+            $scope.toggleMobileMenu = function () {
+                $scope.showMobileMenu = !$scope.showMobileMenu;
             };
 
             $scope.toggleDashboardMenu = function () {
@@ -56,6 +64,30 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     });
                     window.open(url, '_blank');
                 };
+            };
+
+            clinicalDashboardConfig.allowAdhocTeleConsultation = appService.getAppDescriptor().getConfigValue('allowAdhocTeleConsultation');
+
+            $scope.startAdhocTeleconsultationLink = function () {
+                adhocTeleconsultationService.generateAdhocTeleconsultationLink(
+                    {
+                        patientUuid: $scope.patient.uuid,
+                        provider: $rootScope.currentUser.username
+                    }).then(function (data) {
+                        if (!(data && data.data)) {
+                            messagingService.showMessage('error', "{{'TELECON_ERROR_KEY' | translate }}");
+                        }
+                        virtualConsultService.launchMeeting(data.data.uuid, data.data.link);
+                        if (data.data.notificationResults && data.data.notificationResults.length > 0) {
+                            var message = data.data.notificationResults[0].message;
+                            var status = data.data.notificationResults[0].status;
+                            if (status === ERROR) {
+                                messagingService.showMessage('error', message);
+                            } else {
+                                messagingService.showMessage('info', message);
+                            }
+                        }
+                    });
             };
 
             _.each(visitConfig.tabs, setVisitTabPrintAction);
@@ -139,6 +171,9 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return _.includes(currentPath, board.url);
                 });
                 if (board) {
+                    _.map($scope.availableBoards, function (availableBoard) {
+                        availableBoard.isSelectedTab = false;
+                    });
                     $scope.currentBoard = board;
                     $scope.currentBoard.isSelectedTab = true;
                 }
@@ -469,6 +504,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 $scope.dashboardDirty = true;
             };
 
+            var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
+            $scope.patientDocumentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
+                return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
+            });
+
             $scope.save = function (toStateConfig) {
                 if (!isFormValid()) {
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
@@ -484,6 +524,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             params.cachebuster = Math.random();
                             return encounterService.create(encounterData)
                             .then(function (saveResponse) {
+                                $state.dirtyConsultationForm = false;
+                                $scope.$parent.$broadcast("event:changes-saved");
                                 var messageParams = {
                                     encounterUuid: saveResponse.data.encounterUuid,
                                     encounterType: saveResponse.data.encounterType
@@ -532,6 +574,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return spinner.forPromise(Promise.resolve(displayErrors(error)));
                 }
             };
+
+            $scope.$on("patientContext:goToPatientDashboard", function () {
+                $scope.gotoPatientDashboard();
+            });
 
             initialize();
         }]);

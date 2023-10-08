@@ -1,160 +1,189 @@
-.photocontainer-spacing{
-  margin-bottom:57px;
+.photocontainer-spacing {
+    margin-bottom: 57px;
 }
-.photo-container-wrapper{
-  position:absolute;
-  top:50px;
-  right:10px;
-  border:7px solid $lightestGray;
-  @media (max-width : 768px){
-    left: 5px;
-    right: auto;
-  }
-  @media (max-width : 580px){
-    right: 10px;
-    left: auto;
-  }
+.photo-container-wrapper {
+    position:absolute;
+    top:50px;
+    right:10px;
+    @media (max-width : 768px){
+        position: static;
+    }
 }
-.capture-photo-btn, .upload-photo-btn {
-  position:absolute;
-  top:0px;
-  left:-56px;
-  @media (max-width : 768px){
-    top: 90px;
-    left: -7px;
-  }
-  @media (max-width : 580px){
-    top: -7px;
-    left: -58px;
-  }
-  .btn{
-    width:40px;
-    height:40px;
-    display: block;
-    margin-bottom: 5px;
-    background-position: 2px 3px;
-    background-repeat: no-repeat;
-  }
-  .camera-btn.btn{
-    background-image: image-url("photo.png");
-  }
-  .upload-btn.btn{
-    text-align: center;
-    padding: 0;
-    background: #dddddd;
-    font-size: 17px;
-    width: 43px;
-  }
+
+.photo-container {
+    display: flex;
+    justify-content: center;
+}
+
+.capture-photo-btn,
+.upload-photo-btn {
+    .btn {
+        width: 40px;
+        height: 40px;
+        display: block;
+        margin-bottom: 5px;
+        background-position: 2px 3px;
+        background-repeat: no-repeat;
+    }
+    .camera-btn.btn {
+        background-image: image-url("photo.png");
+    }
+    .upload-btn.btn {
+        text-align: center;
+        padding: 0;
+        background: #dddddd;
+        font-size: 17px;
+        width: 43px;
+    }
+}
+
+.capture-photo-btn {
+    margin-top: 6px;
+}
+
+.patient-image {
+    border:7px solid $lightestGray;
+    margin-left: 6px;
+    padding-bottom: 3px;
 }
 
 #photo-canvas-container {
-  text-align: center;
+    text-align: center;
 }
 
 #patient-image {
-  height: 125px;
-  width: 125px;
-  @media (max-width : 768px) {
-    height: 75px;
-    width: 75px;
-  }
+    height: 125px;
+    width: 125px;
+    @media (max-width: 768px) {
+        height: 75px;
+        width: 75px;
+    }
 }
 /***** photo dialog css start *****/
-video{
-  display:block;
+video {
+    display: block;
 }
 
-.photoCaptureDialog, .photoUploadDialog {
-  .photo-canvas-container{
-    canvas{
-      border:2px solid $white;
-      height:167px;
-      width:175px;
-      background: $lightestGray;
+.photoCaptureDialog,
+.photoUploadDialog {
+    .photo-canvas-container {
+        canvas {
+            border: 2px solid $white;
+            height: 167px;
+            width: 175px;
+            background: $lightestGray;
+        }
     }
-  }
-  .row-clear{
-    @include clearfix();
-  }
+    .row-clear {
+        @include clearfix();
+    }
+
+    .flex {
+        display: flex;
+
+        @media screen and (max-width: 540px) {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
 }
 
 .photoCaptureDialog {
-  .photo-video-container{
-    position:relative;
-    width:229px;
-    float:left;
-    .photoCapture-left-overlay{
-      position:absolute;
-      height:169px;
-      width:25px;
-      left:0px;
-      top:6px;
-      background: $lightestGray;
+    .photo-video-container {
+        position: relative;
+        width: 229px;
+        .photoCapture-left-overlay {
+            position: absolute;
+            height: 169px;
+            width: 25px;
+            left: 0px;
+            top: 6px;
+            background: $lightestGray;
+        }
+        .photoCapture-right-overlay {
+            position: absolute;
+            height: 169px;
+            width: 31px;
+            right: 0px;
+            top: 6px;
+            background: $lightestGray;
+        }
     }
-    .photoCapture-right-overlay{
-      position:absolute;
-      height:169px;
-      width:31px;
-      right:0px;
-      top:6px;
-      background: $lightestGray;
+    .photo-canvas-container {
+        width: 180px;
+        margin-top: 6px;
+        margin-left: 5px;
+
+        @media screen and (min-width: 541px) {
+            margin-left: 30px !important;
+            width: 188px;
+        }
     }
-  }
-  .photo-canvas-container{
-    float:left;
-    width:188px;
-    margin-top:6px;
-    margin-left:30px !important;
-  }
-  .take-photo-btn{
-    margin:10px 54px 5px 54px
-  }
-  .confirmImage{
-    margin:10px 5px 5px 55px;
-  }
+    .take-photo-btn {
+        margin: 10px 54px 5px 54px;
+    }
+    .confirmImage {
+        margin: 10px 5px 5px 25px;
+
+        @media screen and (min-width: 541px) {
+            margin-left: 55px;
+        }
+    }
 }
 
 .photoUploadDialog {
-  text-align: center;
-  .fileUpload, .photo-canvas-container, .confirmImage {
-    margin: 10px 5px 5px 5px;
-  }
+    text-align: center;
+    .fileUpload,
+    .photo-canvas-container,
+    .confirmImage {
+        margin: 10px 5px 5px 5px;
+    }
 }
 
-.non-printable{
-  .box-container.box-container-default{
-    .photo-container-wrapper{
-      top: 50px;
-      right: 17px;
+.non-printable {
+    .box-container.box-container-default {
+        .photo-container-wrapper {
+            top: 50px;
+            right: 17px;
+        }
     }
-  }
 }
 
 /*** overriding jquery styling start****/
-.ui-widget-header{
-  border:1px solid lighten($bahmniPrimaryColor, 10%);
-  background:$bahmniPrimaryColor;
+.ui-widget-header {
+    border: 1px solid lighten($bahmniPrimaryColor, 10%);
+    background: $bahmniPrimaryColor;
 }
 
-.ui-state-hover .ui-icon, .ui-state-focus .ui-icon{
-  background-image:url("../lib/jquery/images/ui-icons_222222_256x240.png");
+.ui-state-hover .ui-icon,
+.ui-state-focus .ui-icon {
+    background-image: url("../lib/jquery/images/ui-icons_222222_256x240.png");
 }
 
-.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight{
-  border: 1px solid #36CC4E;
-  background: #D6FACF;
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight,
+.ui-widget-header .ui-state-highlight {
+    border: 1px solid #36cc4e;
+    background: #d6facf;
 }
 
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus{
-  border: 1px solid #36CC4E;
-  background: #D6FACF;
-  font-weight: bold;
-  color: #048B24;
+.ui-state-hover,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-hover,
+.ui-state-focus,
+.ui-widget-content .ui-state-focus,
+.ui-widget-header .ui-state-focus {
+    border: 1px solid #36cc4e;
+    background: #d6facf;
+    font-weight: bold;
+    color: #048b24;
 }
 
-.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active{
-  border: 1px solid #107C22;
-  background: #FFF9D8;
-  color: #1EB642;
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active {
+    border: 1px solid #107c22;
+    background: #fff9d8;
+    color: #1eb642;
 }
 /**** overriding jquery styling end *****/

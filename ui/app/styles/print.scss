@@ -182,7 +182,7 @@ h3 {
     .print-header {
         text-align: center;
         color: $black;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         .logo {
             width: 35px;
             vertical-align: middle;
@@ -205,6 +205,24 @@ h3 {
             font-family: Arial, sans-serif;
             text-decoration: none;
             font-weight: normal;
+        }
+        .clinic-info{
+            font-size: 12pt;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 1%;
+            width: 50%;
+            font-weight: bold;
+            span { display: block }
+            .address{
+                margin-top: 10px;
+                font-weight: normal;
+            }
+        }
+        .print-title-with-logo{
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
     }
@@ -235,9 +253,27 @@ h3 {
     }
     .section-grid {
         border: 0;
+        .visible-print{
+            background: #ccc;
+            padding: 2px;
+            margin: 5px;
+            font-size: 12px;
+        }
+        .repeated-table {
+            padding: 5px;
+        }
+        th {
+            background: #ccc;
+        }
     }
     .dashboard-section,
     .visit-summary-page section.block {
+        table {
+            padding: 5px;
+            th {
+                background: #ccc;
+            }
+        }
         border: 0;
         margin: 0 0 5px;
         font-size: 7.5pt;
@@ -277,6 +313,7 @@ h3 {
         }
     }
     .dashboard-section section.block.hierarchy .value-text-only {
+        width: 40%;
         padding: 2px 5px;
     }
     .dashboard-section section.block.hierarchy .text-only {
@@ -287,6 +324,9 @@ h3 {
     }
     table.history-diagnosis tbody .notes.inline-notes .left {
         display: none !important;
+    }
+    table.history-diagnosis .name {
+        padding: 4px 0px 2px 10px;
     }
     section.block,
     .dashboard-section {
@@ -304,6 +344,22 @@ h3 {
             border: 0;
             text-transform: uppercase;
             text-decoration: underline;
+            [class^="fa-"] {
+                display: none;
+            }
+        }
+        h2.encounter-info {
+            text-align: left;
+            color: $black;
+            font-size: 9.5pt;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            line-height: normal;
+            padding: 0;
+            margin: 0;
+            margin-top: 1%;
+            border: 0;
+            text-decoration: none;
             [class^="fa-"] {
                 display: none;
             }
@@ -366,10 +422,22 @@ h3 {
                     &.start-date-heading {
                         width: 12%;
                     }
+                    &.enc-sl-no-heading {
+                        width: 10%;
+                    }
+                    &.enc-drug-name-heading{
+                        width: 33%;
+                    }
+                    &.enc-dosage-instructions-heading{
+                        width: 45%;
+                    }
+                    &.enc-start-date-heading {
+                        width: 12%;
+                    }
 
                 }
                 td {
-                    padding-top: 4px;
+                    padding: 5px 10px;
                     vertical-align: top;
                     &.inline-notes.notes {
                         padding-top: 0;
@@ -411,7 +479,7 @@ h3 {
                     &, td, th {
                         border: 0;
                         font-size: 9pt;
-                        padding: 0 5px;
+                        padding: 5px 10px;
                         font-family: Arial, sans-serif;
                         text-align: left;
                     }
@@ -494,9 +562,6 @@ h3 {
                     font-weight: normal;
                     background: #fff;
                     height: 15px;
-                }
-                td {
-                    padding: 0;
                 }
             }
             tbody tr th,
@@ -728,7 +793,7 @@ h3 {
            table tr {
                td,th{
                    font-size: 7pt;
-                   padding: 5px;
+                   padding: 5px 10px;
 
                    border: 1px solid $black !important;
                    &.monitoring-fixed-column{
@@ -876,10 +941,6 @@ h3 {
                     border: none !important;
                 }
                 .patient-info{
-                    padding: 0;
-                    td{
-                        padding: 0;
-                    }
                     .patient-value{
                         .patient-address {
                             display: inline-block;
@@ -958,19 +1019,57 @@ h3 {
                 }
             }
             .value-text-only, .text-only{
-                width: auto !important;
+                width: calc(100% - 190px) !important;
                 padding: 3px 0px 0px !important;
                 display:inline-block;
             }
             .testUnderPanel{
                 //width: 65% !important;
-                width: 484px !important;
+                width: 180px !important;
                 padding: 3px 0px 0px !important;
                 font-weight: normal !important;
+                display: inline-block;
+            }
+
+            li.has-child li.has-child .testUnderPanel {
+
+                & + .testUnderPanel {
+                    width: calc(100% - 190px) !important;
+                }
             }
             ul li ul li ul li ul li ul li ul li .tree-list-item {
             padding-left: 20px !important;
           }
+        }
+        .patient-info {
+            table{
+                border: 2px $darkerGrey solid !important;
+                border-collapse: collapse !important;
+                tr{
+                    border: 2px $darkerGrey solid !important;
+                    th{
+                        background: #EAEAEA !important;
+                        border: 2px $darkerGrey solid !important;
+                        vertical-align: middle;
+                    }
+                    td{
+                        background: #fff !important;
+                        border: 2px $darkerGrey solid !important;
+                        font-weight: bold;
+                        span{
+                            font-weight: normal;
+                        }
+                    }
+
+                }
+                &.h-scroll-print{
+                    tr{
+                        th{
+                            font-weight: bold !important;
+                        }
+                    }
+                }
+            }
         }
         table{
             border: 1px $lightGray solid !important;
@@ -986,17 +1085,8 @@ h3 {
                     background: #fff;
                     border: 1px $lightGray solid !important;
                 }
-
-            }
-            &.h-scroll-print{
-                tr{
-                    th{
-                        font-weight: bold !important;
-                    }
-                }
             }
         }
-
     }
     .dashboard-chronic-treatment-section .chronic-treatment .stopped{
         background: #fff !important;
@@ -1048,3 +1138,18 @@ h3 {
     }
 }
 
+@media print {
+    body {
+        font-size: 20px;
+    }
+    .provider-info {
+        font-size: medium;
+        float: right;
+        padding: 5px;
+    }
+    .sections-group {
+        div div .section {
+            margin-bottom: 30px;
+        }
+    }
+}

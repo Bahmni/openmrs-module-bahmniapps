@@ -5,8 +5,8 @@ angular.module('bahmni.registration')
         '$bahmniCookieStore', 'appService', 'visitService', 'sessionService', 'encounterService',
         'messagingService', '$translate', 'auditLogService',
         function ($window, $location, $state, spinner, $rootScope, $stateParams,
-                  $bahmniCookieStore, appService, visitService, sessionService, encounterService,
-                  messagingService, $translate, auditLogService) {
+            $bahmniCookieStore, appService, visitService, sessionService, encounterService,
+            messagingService, $translate, auditLogService) {
             var controller = function ($scope) {
                 var self = this;
                 var uuid = $stateParams.patientUuid;
@@ -138,6 +138,16 @@ angular.module('bahmni.registration')
                     return _.isEmpty($rootScope.visitLocation);
                 };
 
+                var checkIfActiveVisitExists = function (patientProfileData) {
+                    return $scope.visitControl.checkIfActiveVisitExists(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function (response) {
+                        var checkExists = response.data.results.length;
+                        if (checkExists === 0) {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    });
+                };
                 var createVisit = function (patientProfileData, forwardUrl) {
                     if (isEmptyVisitLocation()) {
                         $state.go('patient.edit', {patientUuid: $scope.patient.uuid}).then(function () {
@@ -145,17 +155,21 @@ angular.module('bahmni.registration')
                         });
                         return;
                     }
-                    spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function (response) {
-                        auditLogService.log(patientProfileData.patient.uuid, "OPEN_VISIT", {visitUuid: response.data.uuid, visitType: response.data.visitType.display}, 'MODULE_LABEL_REGISTRATION_KEY');
-                        if (forwardUrl) {
-                            var updatedForwardUrl = appService.getAppDescriptor().formatUrl(forwardUrl, {'patientUuid': patientProfileData.patient.uuid});
-                            $window.location.href = updatedForwardUrl;
-                        } else {
-                            goToVisitPage(patientProfileData);
-                        }
-                    }, function () {
-                        $state.go('patient.edit', {patientUuid: $scope.patient.uuid});
-                    }));
+                    checkIfActiveVisitExists(patientProfileData).then(function (exists) {
+                        if (exists) return messagingService.showMessage("error", "VISIT_OF_THIS_PATIENT_AT_SAME_LOCATION_EXISTS");
+
+                        spinner.forPromise($scope.visitControl.createVisitOnly(patientProfileData.patient.uuid, $rootScope.visitLocation).then(function (response) {
+                            auditLogService.log(patientProfileData.patient.uuid, "OPEN_VISIT", { visitUuid: response.data.uuid, visitType: response.data.visitType.display }, 'MODULE_LABEL_REGISTRATION_KEY');
+                            if (forwardUrl) {
+                                var updatedForwardUrl = appService.getAppDescriptor().formatUrl(forwardUrl, { 'patientUuid': patientProfileData.patient.uuid });
+                                $window.location.href = updatedForwardUrl;
+                            } else {
+                                goToVisitPage(patientProfileData);
+                            }
+                        }, function () {
+                            $state.go('patient.edit', { patientUuid: $scope.patient.uuid });
+                        }));
+                    });
                 };
 
                 init();

@@ -1,5 +1,5 @@
 <div bindonce class="dashboard-header opd-header-wrapper" id="consultation-header">
-    <div class="opd-header-bottom tabs">
+    <div class="opd-header-bottom tabs hidden-mobile">
         <bm-back-links></bm-back-links>
 
         <a class="back-btn dashboard-link" id="dashboard-link" ng-click="gotoPatientDashboard()" title="Back to patient dashboard">
@@ -17,11 +17,9 @@
                    <span class="close-icon">x</span>
                 </span>
                 <a ng-click="switchTab(tab)">{{tab | titleTranslate}}</a>
-
             </li>
             <li class="tab-item new-tab tab-active" bm-pop-over autoclose="true" ng-show="visitTabConfig.getUnOpenedTabs().length > 0">
                 <a id="addTabButton" bm-pop-over-trigger>+</a>
-
                 <div class="tab-submenu" bm-pop-over-target>
                     <ul>
                         <li ng-repeat="tab in visitTabConfig.getUnOpenedTabs()">
@@ -35,7 +33,6 @@
         <div class="dashboard-header-right-wrapper">
             <button class="dialog-button-group" ng-if="showPrint()" ng-click="print()" accesskey="{{'CLINICAL_PRINT_ACCESS_KEY'| translate}}" ng-bind-html="'CLINICAL_PRINT_TRANSLATION_KEY'|translate">
                 <i class="fa fa-print"></i>
-               
             </button>
             <span class="grouped-buttons" ng-if="visitHistory.activeVisit || retrospectiveEntry">
                 <a class=" btn--left btn--success "  ng-click="openConsultation()" ng-bind-html="'CONSULTATION_TAB_KEY' | translate"></a>
@@ -45,6 +42,16 @@
                <i class="fa fa-bars fa-white fa-large"></i>
            </button>
         </div>
-
+    </div>
+    <ng-include src="'common/views/mobileHeader.html'"></ng-include>
+    <div class="tabs header-scrollable-tabs hidden-tablet-above" ng-if="visitTabConfig.showTabs()">
+        <scrollable-tabs>
+            <ul>
+                <li class="tab-item" ng-repeat="tab in visitTabConfig.tabs"
+                    ng-class="{'tab-selected' : visitTabConfig.isCurrentTab(tab)}">
+                    <a ng-click="switchTab(tab)">{{tab | titleTranslate}} </a>
+                </li>
+            </ul>
+        </scrollable-tabs>
     </div>
 </div>

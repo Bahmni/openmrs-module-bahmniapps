@@ -1,19 +1,22 @@
 .touch {
     body.ngdialog-open {
         position: fixed;
-         #ClinicalController {
+
+        #ClinicalController {
             display: block !important;
             position: fixed;
             overflow: hidden;
             width: 100%;
             height: 100%;
         }
-        &.show-controller-back{
+
+        &.show-controller-back {
             #ClinicalController {
                 display: block !important;
 
             }
-            .ngdialog{
+
+            .ngdialog {
                 position: fixed !important;
             }
         }
@@ -36,6 +39,7 @@
     box-sizing: border-box;
     position: fixed;
     width: 100%;
+
     h5 {
         display: inline-block;
         color: $lightestGray;
@@ -44,12 +48,13 @@
         font-size: 16px;
         margin: 0;
     }
+
     h6 {
         display: inline-block;
         width: auto;
         float: right;
         margin: 17px 0px 13px;
-        border-bottom: 0!important;
+        border-bottom: 0 !important;
         color: $white;
         font-size: 16px;
         clear: right;
@@ -59,25 +64,32 @@
 .template-container {
     padding: 65px 20px;
     position: relative;
+
     section {
-        margin-bottom: 15px;
-        section, table {
+        margin-bottom: 0;
+
+        section,
+        table {
             margin: 0;
         }
+
         &.treatment-section {
             @extend %section-grid;
         }
     }
 
     table {
-        margin-top: 5px;
+        margin-top: 5px; 
     }
+
     .ipd-investigation tr th {
         background: $lightestGray;
     }
+
     td.value {
         width: 50%;
     }
+
     table.ipd-investigation td {
         display: block;
         height: 2.3em;
@@ -88,15 +100,16 @@
 
 
 .ngdialog-content {
-    font-size: 14px!important;
+    font-size: 14px !important;
     color: $darkGray;
     position: absolute;
-    top: 52px;
+    top: 10px;
     bottom: 0;
     left: 0;
     right: 0;
     overflow: auto;
     clear: both;
+
     table {
         th {
             background: $lightestGray;
@@ -104,20 +117,29 @@
             color: $mediumGray;
             padding: 5px 10px;
         }
-        tr:nth-child(even), tr:nth-child(odd) {
+
+        tr:nth-child(even),
+        tr:nth-child(odd) {
             background: $white;
         }
-        tr th, tr td {
+
+        tr th,
+        tr td {
             font-size: 14px;
             color: $darkGray;
             border: 0;
         }
-        td.toggle-btn{
+
+        td.toggle-btn {
             padding: 5px;
             width: 30px;
         }
-        &.h-scroll, &.pivot-table {
-            tr td, tr th {
+
+        &.h-scroll,
+        &.pivot-table {
+
+            tr td,
+            tr th {
                 border-bottom: 1px solid $lighterGray;
             }
         }
@@ -128,6 +150,7 @@
             td.days {
                 width: 150px;
             }
+
             td.dosage {
                 width: 40%;
                 font-size: 14px;
@@ -135,36 +158,39 @@
         }
     }
 }
-div.ngdialog-close {
-}
-.dashboard-treatment-section, .dashboard-laborders-section, .dashboard-visits-section, .dashboard-more-info {
-
-}
 
 .dialog-button-group {
-    margin-top: 10px; clear: both;
-    button:focus {outline: 2px solid $clinicalFormFocus;}
+    margin-top: 10px;
+    clear: both;
+
+    button:focus {
+        outline: 2px solid $clinicalFormFocus;
+    }
 }
 
-.ngdialog-theme-default{
-    &.ng-dialog-all-details-page{
+.ngdialog-theme-default {
+    &.ng-dialog-all-details-page {
         padding-bottom: 10px;
         padding-top: 0px;
-        top:52px;
+        top: 52px;
+
         @media (max-width :1024px) {
             overflow: hidden;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,.4);
+            background: rgba(0, 0, 0, .4);
         }
-        .ngdialog-overlay{
+
+        .ngdialog-overlay {
             top: 52px;
-            height:100%;
+            height: 100%;
+
             @media (max-width :1024px) {
                 right: 0px;
                 display: none;
             }
         }
+
         .ngdialog-close {
             border-radius: 5px;
             cursor: pointer;
@@ -173,6 +199,7 @@ div.ngdialog-close {
             top: 0;
             width: 30px;
             height: 30px;
+
             &:before {
                 display: block;
                 background: 0 0;
@@ -190,70 +217,80 @@ div.ngdialog-close {
                 width: 30px;
             }
         }
-        .ngdialog-content{
+
+        .ngdialog-content {
             max-width: 1180px;
             width: 100%;
             margin: 0 auto;
-            height: 98%;
-            margin-top: -52px;
-            margin-bottom: 20px;
+            height: calc(100% - 72px);
             padding: 0;
             overflow: hidden;
+
             @media (max-width :1024px) {
-                margin-left:auto;
-                margin-right:auto;
+                margin-left: auto;
+                margin-right: auto;
                 max-width: 1000px;
-                height:95%;
-                //height: 610px;
-                //min-height: 610px;
                 box-sizing: border-box;
-                padding: 0 0px 10px;
+                padding: 0 0 10px;
             }
+
             .template-container {
-                padding:10px 20px;
+                padding: 10px 20px;
                 width: 100%;
-                margin-bottom: 25px;
                 margin-top: 25px;
-                height:98%;
-                .concept-set-container{
-                    max-height: 605px;
+                height: calc(100% - 50px);
+                display: flex;
+                flex-direction: column;
+
+                @media (max-width :768px) {
+                    padding: 10px 15px;
+                    height: calc(100% - 25px);
+                }
+
+                .concept-set-container {
                     overflow-y: auto;
-                    height:84%;
-                    position: absolute;
-                    top:57px;
-                   &:-webkit-scrollbar-track{
-                       width:10px;
-                   }
-                    &.concept-set-container-lab{
-                        height:84%;
+                    flex-grow: 1;
+
+                    &:-webkit-scrollbar-track {
+                        width: 10px;
                     }
 
                 }
-                section{
-                    height: 98%;
-                    &.form-field-inline{
-                        height:auto;
+
+                section {
+                    height: 100%;
+
+                    &.form-field-inline {
+                        height: auto;
                     }
                 }
 
-                .edit-bacteriology-section ,.bacteriology-container, .bacteriology-container .sample-container ,.bacteriology-container .sample-container ,.bacteriology-container form{
-                    height:100%;
+                .edit-bacteriology-section,
+                .bacteriology-container,
+                .bacteriology-container .sample-container,
+                .bacteriology-container .sample-container,
+                .bacteriology-container form {
+                    height: 100%;
                     width: 100%;
                 }
-                .edit-bacteriology-section>div{
-                    width:100%;
-                    height:100%;
+
+                .edit-bacteriology-section>div {
+                    width: 100%;
+                    height: 100%;
                     position: relative;
                 }
-                .section-grid{
+
+                .section-grid {
                     position: absolute;
                     width: 100%;
-                    height: 97%;
+                    height: 100%;
                 }
+
                 @media (max-width :1024px) {
                     position: static;
                 }
-                h6{
+
+                h6 {
                     font-size: 1.5em;
                     color: #009384;
                     font-family: openSansSemiBold;
@@ -263,33 +300,41 @@ div.ngdialog-close {
         }
     }
 }
-.ng-dialog-all-details-page .ngdialog-content .template-container .concept-set-container {
-    width:97%;
 
+.ng-dialog-all-details-page .ngdialog-content .template-container .concept-set-container {
+    width: 100%;
+    flex-grow: 1;
 }
 
 .ng-dialog-view .ngdialog-content .template-container {
     overflow-y: auto;
-    section{
-        height:auto!important;
+    display: flex;
+    flex-direction: column;
+
+    section {
+        height: auto !important;
     }
+
     .concept-set-container {
-        height:84%;
+        flex-grow: 1;
     }
 }
+
 .ng-dialog-all-details-page.ng-dialog-edit .ngdialog-content .template-container .concept-set-container {
     width: 100%;
-    top: 41px;
-    height:84%;
+    height: calc(100% - 50px);
+
     section {
         height: auto;
     }
 
 }
-.ngdialog-theme-default.ng-dialog-all-details-page .ngdialog-content .template-container .concept-set-container-lab .section-grid{
-    position:static!important;
-    height:auto!important;
+
+.ngdialog-theme-default.ng-dialog-all-details-page .ngdialog-content .template-container .concept-set-container-lab .section-grid {
+    position: static !important;
+    height: auto !important;
 }
+
 .auto-scrollable-dialog .ngdialog-content {
-    height: auto!important;
+    height: auto !important;
 }

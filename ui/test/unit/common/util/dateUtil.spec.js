@@ -82,36 +82,69 @@ describe('DateUtil', function () {
         });
 
         describe('when fromDate is february', function () {
+            it("should calculate difference between dates when fromDate and toDate is leap year", function () {
+                var fromDate = new Date();
+                fromDate.setDate(28);
+                fromDate.setMonth(1);
+                fromDate.setFullYear(2000);
+                var toDate = new Date();
+                toDate.setDate(2);
+                toDate.setMonth(1);
+                toDate.setFullYear(2020);
+                var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
+
+                expect(period.years).toBe(19);
+                expect(period.months).toBe(11);
+                expect(period.days).toBe(3);
+            });
+
+            it("should calculate difference between dates when fromDate and toDate is non-leap year", function () {
+                var fromDate = new Date();
+                fromDate.setDate(26);
+                fromDate.setMonth(1);
+                fromDate.setFullYear(2011);
+                var toDate = new Date();
+                toDate.setDate(2);
+                toDate.setMonth(1);
+                toDate.setFullYear(2023);
+                var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
+
+                expect(period.years).toBe(11);
+                expect(period.months).toBe(11);
+                expect(period.days).toBe(4);
+            });
+
             it("should calculate difference between dates when fromDate is non-leap year", function () {
                 var fromDate = new Date();
                 fromDate.setDate(26);
                 fromDate.setMonth(1);
                 fromDate.setFullYear(2011);
                 var toDate = new Date();
-                toDate.setDate(15);
-                toDate.setMonth(2);
-                toDate.setFullYear(2011);
+                toDate.setDate(29);
+                toDate.setMonth(1);
+                toDate.setFullYear(2020);
                 var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
-                expect(period.years).toBe(0);
+                expect(period.years).toBe(9);
                 expect(period.months).toBe(0);
-                expect(period.days).toBe(17);
+                expect(period.days).toBe(3);
             });
 
             it("should calculate difference between dates when fromDate is leap year", function () {
                 var fromDate = new Date();
-                fromDate.setDate(26);
+                fromDate.setDate(25);
                 fromDate.setMonth(1);
-                fromDate.setFullYear(2012);
+                fromDate.setFullYear(2000);
                 var toDate = new Date();
-                toDate.setDate(15);
+                toDate.setDate(2);
                 toDate.setMonth(2);
-                toDate.setFullYear(2012);
+                toDate.setFullYear(2023);
+
                 var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
-                expect(period.years).toBe(0);
+                expect(period.years).toBe(23);
                 expect(period.months).toBe(0);
-                expect(period.days).toBe(18);
+                expect(period.days).toBe(6);
             });
         });
 
@@ -225,12 +258,12 @@ describe('DateUtil', function () {
     describe("formatDateWithTime", function () {
         it("should take a long representation of date and format", function () {
             var date = new Date(1427803080000);
-            expect(dateUtil.formatDateWithTime("1427803080000")).toEqual(moment(date).format("DD MMM YY h:mm a"));
+            expect(dateUtil.formatDateWithTime("1427803080000")).toEqual(moment(date).format("DD MMM YYYY h:mm a"));
         });
 
         it("should take a string representation of date and format", function () {
             var date = new Date();
-            expect(dateUtil.formatDateWithTime(moment(date).format(dateFormat))).toEqual(moment(date).format("DD MMM YY h:mm a"));
+            expect(dateUtil.formatDateWithTime(moment(date).format(dateFormat))).toEqual(moment(date).format("DD MMM YYYY h:mm a"));
         });
 
         it("should not break for undefined and return null", function () {
@@ -245,12 +278,12 @@ describe('DateUtil', function () {
     describe("formatDateWithoutTime", function () {
         it("should take a long representation of date and format", function () {
             var date = new Date(1427803080000);
-            expect(dateUtil.formatDateWithoutTime("1427803080000")).toEqual(moment(date).format("DD MMM YY"));
+            expect(dateUtil.formatDateWithoutTime("1427803080000")).toEqual(moment(date).format("DD MMM YYYY"));
         });
 
         it("should take a string representation of date and format", function () {
             var date = new Date();
-            expect(dateUtil.formatDateWithoutTime(moment(date).format(dateFormat))).toEqual(moment(date).format("DD MMM YY"));
+            expect(dateUtil.formatDateWithoutTime(moment(date).format(dateFormat))).toEqual(moment(date).format("DD MMM YYYY"));
         });
 
         it("should not break for undefined and return null", function () {
@@ -312,17 +345,17 @@ describe('DateUtil', function () {
 
     describe("getDateWithMonthsAndYears", function(){
         it("should return date with months and years", function(){
-           expect(dateUtil.getDateInMonthsAndYears(new Date('2014', '7', '15', '12','30','25'))).toBe('Aug 14');
+           expect(dateUtil.getDateInMonthsAndYears(new Date('2014', '7', '15', '12','30','25'))).toBe('Aug 2014');
         });
     });
 
     describe("formatDateInStrictMode", function(){
-       it("should return date in dd MMM yy format when date with yyyy-MM-dd format is passed", function(){
-          expect(dateUtil.formatDateInStrictMode('2016-02-10')).toBe('10 Feb 16');
+       it("should return date in dd MMM YYYY format when date with yyyy-MM-dd format is passed", function(){
+          expect(dateUtil.formatDateInStrictMode('2016-02-10')).toBe('10 Feb 2016');
        });
 
-       it("should return date in dd MMM yy format when date with yyyy-MM-ddTHH:mm:ss.SSSZ is passed", function(){
-           expect(dateUtil.formatDateInStrictMode('2016-03-01T10:30:00.000+0530')).toBe(moment('2016-03-01T10:30:00.000+0530').format('DD MMM YY'));
+       it("should return date in dd MMM YYYY format when date with yyyy-MM-ddTHH:mm:ss.SSSZ is passed", function(){
+           expect(dateUtil.formatDateInStrictMode('2016-03-01T10:30:00.000+0530')).toBe(moment('2016-03-01T10:30:00.000+0530').format('DD MMM YYYY'));
        });
 
        it("should return the string if the format does not match yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss.SSSZ", function(){

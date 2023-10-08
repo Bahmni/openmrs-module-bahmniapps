@@ -1,27 +1,41 @@
-'use strict';
+"use strict";
 
-angular.module('bahmni.common.uiHelper')
-    .controller('MessageController', ['$scope', 'messagingService',
-        function ($scope, messagingService) {
-            $scope.messages = messagingService.messages;
+angular.module("bahmni.common.uiHelper").controller("MessageController", [ "$scope", "messagingService", "$translate", "$state", "$location",
+    function ($scope, messagingService, $translate, $state, $location) {
+        $scope.messages = messagingService.messages;
 
-            $scope.getMessageText = function (level) {
-                var string = "";
-                $scope.messages[level].forEach(function (message) {
-                    string = string.concat(message.value);
-                });
-                return string;
-            };
+        $scope.getMessageText = function (level) {
+            var string = "";
+            $scope.messages[level].forEach(function (message) {
+                string = string.concat(message.value);
+            });
+            var translatedMessage = $translate.instant(string);
 
-            $scope.hideMessage = function (level) {
-                messagingService.hideMessages(level);
-            };
+            navigator.clipboard.writeText(translatedMessage);
 
-            $scope.isErrorMessagePresent = function () {
-                return $scope.messages.error.length > 0;
-            };
+            return translatedMessage;
+        };
 
-            $scope.isInfoMessagePresent = function () {
-                return $scope.messages.info.length > 0;
-            };
-        }]);
+        $scope.hideMessage = function (level) {
+            messagingService.hideMessages(level);
+        };
+
+        $scope.isErrorMessagePresent = function () {
+            return $scope.messages.error.length > 0;
+        };
+
+        $scope.isInfoMessagePresent = function () {
+            return $scope.messages.info.length > 0;
+        };
+
+        $scope.isAlertMessagePresent = function () {
+            return $scope.messages.alert.length > 0;
+        };
+
+        $scope.discardChanges = function (level) {
+            $state.discardChanges = true;
+            $scope.hideMessage(level);
+            return $state.isPatientSearch ? $location.path('/default/patient/search') : $location.path('/default/patient/' + $state.newPatientUuid + "/dashboard");
+        };
+    }
+]);

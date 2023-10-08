@@ -150,1077 +150,1388 @@ category:  Layout - sections
 */
 
 .pgContainer {
-  position: relative;
-  overflow-y: auto;
-  width: 100%;
-  height: 100%;
-  min-height: 860px;
-  right: 0;
-  padding-bottom: 10px;
-}
-.dashboard-date-picker {
-  float: left;
-  margin-left: 10px;
+    position: relative;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    min-height: 860px;
+    right: 0;
+    padding-bottom: 10px;
 }
 
-.print-list-wrapper{
-  &.active{
-    ul{
-      display: block;
+.dashboard-date-picker {
+    float: left;
+    margin-left: 10px;
+}
+
+.print-list-wrapper {
+    &.active {
+        ul {
+            display: block;
+        }
     }
-  }
-  ul{
-    display: none;
-    background: #fff;
-    position: absolute;
-    top: 46px;
-    width: 220px;
-    padding: 10px 10px 0;
-    li{
-      display: block;
-      padding-bottom: 10px;
-      cursor:pointer;
+
+    ul {
+        display: none;
+        background: #fff;
+        position: absolute;
+        top: 46px;
+        width: 220px;
+        padding: 10px 10px 0;
+
+        li {
+            display: block;
+            padding-bottom: 10px;
+            cursor: pointer;
+        }
     }
-  }
-  @media screen and (max-width: 700px){
-    diplay:none;
-  }
+
+    @media screen and (max-width: 700px) {
+        diplay: none;
+    }
 }
 
 .dashboard-sections-wrapper {
-  @include clearfix();
-  .dashboard-sections {
-    @include clearfix;
-    margin: 0;
-    box-sizing: border-box;
-    float: left;
-    width: 100%;
-    padding: 0;
-    &.halfpage-container{
-      width: 50%;
-      .LAYOUT_25_75{
-        width: 49.7%;
-        @media screen and (max-width: 760px) {
-          width:100%;
-          float:none;
-        }
-      }
-      &.dashboard-sections-left{
-        .LAYOUT_25_75{
-          width:48.3%;
-          @media screen and (max-width: 760px) {
-            width:100%;
-            float:none;
-          }
-        }
-      }
-      @media screen and (max-width: 859px) {
-        width: 100%;
-        margin: 0 auto;
-        padding: 0;
-        float: none;
-      }
-    }
-    &.dashboard-sections-right{
-      padding: 0px 0px 0px 5px;
-      @media screen and (max-width: 859px) {
-        padding: 0;
-      }
-    }
-    &.dashboard-sections-left{
-      padding: 0px 5px 0px 0px;
-      @media screen and (max-width: 859px) {
-        padding: 0;
-      }
-    }
-    &.three-fourth-page-container{
-      div.three-fourth-page{
+    @include clearfix();
+
+    .dashboard-sections {
+        @include clearfix;
+        margin: 0;
         box-sizing: border-box;
-          &.section-0{
-            padding-right: 5px;
-          }
-          &.section-1{
-            padding-left: 5px;
-          }
-      }
-      .LAYOUT_25_75{
-        width: 24.5%;
         float: left;
-        @media screen and (max-width: 760px) {
-          width:100%;
-          float:none;
-        }
-      }
+        width: 100%;
+        padding: 0;
 
-      .LAYOUT_75_25{
-        width: 75.5%;
-        float: left;
-        @media screen and (max-width: 760px) {
-          width:100%;
-          float:none;
-        }
-      }
-    }
-    .disease-date{
-      font-family: OpenSansSemiBold;
-      text-decoration: underline;
-    }
+        &.halfpage-container {
+            width: 50%;
 
-  }
+            .LAYOUT_25_75 {
+                width: 49.7%;
+
+                @media screen and (max-width: 760px) {
+                    width: 100%;
+                    float: none;
+                }
+            }
+
+            &.dashboard-sections-left {
+                .LAYOUT_25_75 {
+                    width: 48.3%;
+
+                    @media screen and (max-width: 760px) {
+                        width: 100%;
+                        float: none;
+                    }
+                }
+            }
+
+            @media screen and (max-width: 859px) {
+                width: 100%;
+                margin: 0 auto;
+                padding: 0;
+                float: none;
+            }
+        }
+
+        &.dashboard-sections-right {
+            padding: 0px 0px 0px 5px;
+
+            @media screen and (max-width: 859px) {
+                padding: 0;
+            }
+        }
+
+        &.dashboard-sections-left {
+            padding: 0px 5px 0px 0px;
+
+            @media screen and (max-width: 859px) {
+                padding: 0;
+            }
+        }
+
+        &.three-fourth-page-container {
+            div.three-fourth-page {
+                box-sizing: border-box;
+
+                &.section-0 {
+                    padding-right: 5px;
+                }
+
+                &.section-1 {
+                    padding-left: 5px;
+                }
+            }
+
+            .LAYOUT_25_75 {
+                width: 24.5%;
+                float: left;
+
+                @media screen and (max-width: 760px) {
+                    width: 100%;
+                    float: none;
+                }
+            }
+
+            .LAYOUT_75_25 {
+                width: 75.5%;
+                float: left;
+
+                @media screen and (max-width: 760px) {
+                    width: 100%;
+                    float: none;
+                }
+            }
+        }
+
+        .disease-date {
+            font-family: OpenSansSemiBold;
+            text-decoration: underline;
+        }
+
+    }
 
 }
-#diagnosisSection{
-  .ruled-out.diagnosis-name {
-    color: $mediumGray;
-    text-decoration: line-through;
-  }
+
+#diagnosisSection {
+    .ruled-out.diagnosis-name {
+        color: $mediumGray;
+        text-decoration: line-through;
+    }
 }
 
 .dashboard-section {
-  margin: 0;
-  margin-bottom: 10px;
-  font-size: 14px;
-  position: relative;
-  @include box-shadow-for-section();
-  @extend %section-grid;
-  .dashboard-section {
-    border:none;
-    margin-bottom: 0;
-    section .form-field{
-      border-bottom: none;
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 14px;
+    position: relative;
+    @include box-shadow-for-section();
+    @extend %section-grid;
+
+    .dashboard-section {
+        border: none;
+        margin-bottom: 0;
+
+        section .form-field {
+            border-bottom: none;
+        }
     }
-  }
-  .placeholder-message {
-    background: $lightGray;
-    color: $mediumGray;
+
+    .placeholder-message {
+        background: $lightGray;
+        color: $mediumGray;
+        padding: 10px;
+        text-align: center;
+        display: none;
+    }
+
+    .toggle {
+        width: 25px;
+        text-align: center;
+        box-sizing: border-box;
+
+        i {
+            padding: 0;
+        }
+    }
+
+    section.block {
+        padding: 0 !important;
+        border: 0;
+        background: $white;
+        //overflow-x: auto !important;
+    }
+
+    table {
+        margin: 0;
+        border-left: 0;
+        border-right: 0;
+        font-size: 14px;
+
+        td,
+        th {
+            vertical-align: top;
+        }
+
+        td.toggle-btn {
+            padding: 5px;
+            width: 30px;
+        }
+
+        th {
+            @media screen and (max-width: 1024px) {
+                font-size: 12px;
+            }
+        }
+    }
+
+    section {
+        label.date {
+            font-family: $OpenSansBoldFont;
+            background: $lightestGray;
+            padding: 10px;
+            display: block;
+            color: $mediumGray;
+        }
+
+        ul.navigation-link-container {
+            margin: 0;
+            padding: 0;
+
+            li {
+                display: block;
+                border-bottom: 1px $lightGray solid;
+
+                a {
+                    display: inline-block;
+                    padding: 8px 10px 7px;
+                    line-height: 1;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+
+                .order-sub-heading-container .order-sub-heading {
+                    padding-top: 7px;
+                    padding-right: 9px;
+                }
+            }
+        }
+
+        &.navigation-links-wrapper {
+            ul.navigation-link-container {
+                li {
+                    float: left;
+                    border-bottom: none;
+                    border-right: 1px $lightGray solid;
+                    padding: 0 6px;
+                    margin: 5px 0;
+
+                    &:last-child {
+                        border-right: 0;
+                    }
+
+                    a {
+                        padding: 4px 7px;
+                        display: block;
+                        border-radius: 4px;
+                        text-transform: capitalize;
+
+                        &:hover {
+                            text-decoration: none;
+                            background: #97C32D;
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+
+        .form-field-group .form-field {
+            border: 0;
+        }
+
+        .form-field .form-field {
+            padding: 0;
+            border: 0;
+
+            .form-field {
+                padding: 0;
+                border: 0;
+            }
+        }
+
+        .form-field {
+            border-bottom: 1px solid $lightGray;
+            padding: 5px;
+            font-size: 14px;
+            padding-left: 10px;
+            clear: both;
+
+            .field-attribute {
+                width: 45%;
+                display: inline-block;
+            }
+
+            .value-text-only {
+                display: inline-block;
+            }
+
+            .time {
+                font-size: 11px;
+                color: $mediumGray;
+                float: right;
+                padding-right: 5px;
+            }
+        }
+
+        .is-abnormal .field-attribute {
+            color: red;
+        }
+    }
+}
+
+.patient-dashboard.visit {
+    padding: 0;
+    margin-top: 45px;
+
+    @media screen and (max-width: 768px) {
+        margin-top: 95px;
+    }
+}
+
+.dashboard-visit-summary {
     padding: 10px;
-    text-align: center;
-    display: none;
-  }
-  .toggle {
-    width: 25px;
-    text-align: center;
-    box-sizing: border-box;
-    i {
-      padding: 0;
+}
+
+.dashboard-header {
+    width: 100%;
+    height: 52px;
+    background: $bahmniSecondaryColor;
+
+    h5 {
+        margin: 15px 0;
+        color: $lightestGray;
+        text-transform: capitalize;
+        display: inline-block;
+        font-size: 16px;
     }
-  }
-  section.block {
-    padding: 0!important;
-    border: 0;
-    background: $white;
-    //overflow-x: auto !important;
-  }
-  table {
+}
+
+.dashboard-treatment-section {
+    table {
+        margin: 0;
+        border-left: 0;
+        border-right: 0;
+
+        th,
+        td {
+            padding: 5px;
+        }
+
+        tr th {
+            color: $mediumGray;
+        }
+
+        tr,
+        td,
+        th {
+            border-left: 0 !important;
+            border-right: 0 !important;
+        }
+
+        h5 {
+            span {
+                font-size: 14px;
+                color: $lightGray;
+            }
+        }
+
+        td.dosage {
+            font-size: 12px;
+            width: 35%;
+        }
+
+        td.days {
+            font-size: 11px;
+            width: 10%;
+
+            span {
+                color: $mediumGray;
+            }
+        }
+    }
+}
+
+table.dashboard-table {
     margin: 0;
     border-left: 0;
     border-right: 0;
     font-size: 14px;
-    td, th {
-      vertical-align: top;
-    }
-    td.toggle-btn {
-      padding: 5px;
-      width: 30px;
-    }
-    th{
-      @media screen and (max-width: 1024px) {
-        font-size: 12px;
-      }
-    }
-  }
-  section {
-    label.date {
-      font-family: $OpenSansBoldFont;
-      background: $lightestGray;
-      padding: 10px;
-      display: block;
-      color: $mediumGray;
-    }
-    ul.navigation-link-container{
-      margin: 0;
-      padding: 0;
-      li{
-        display: block;
-        border-bottom: 1px $lightGray solid;
-        a{
-          display: inline-block;
-          padding: 8px 10px 7px;
-          line-height: 1;
-          &:hover{
-            text-decoration: underline;
-          }
-        }
-        .order-sub-heading-container .order-sub-heading{
-          padding-top: 7px;
-          padding-right: 9px;
-        }
-      }
-    }
-    &.navigation-links-wrapper{
-      ul.navigation-link-container{
-        li{
-          float: left;
-          border-bottom: none;
-          border-right: 1px $lightGray solid;
-          padding: 0 6px;
-          margin: 5px 0;
-          &:last-child{
-            border-right: 0;
-          }
-          a{
-            padding: 4px 7px;
-            display: block;
-            border-radius: 4px;
-            text-transform: capitalize;
-            &:hover{
-              text-decoration: none;
-              background: #97C32D;
-              color: #fff;
-            }
-          }
-        }
-      }
-    }
-    .form-field-group .form-field {
-      border: 0;
-    }
-    .form-field .form-field {
-      padding: 0;
-      border: 0;
-      .form-field {
-        padding: 0;
-        border: 0;}
-    }
-    .form-field {
-      border-bottom: 1px solid $lightGray;
-      padding: 5px;
-      font-size: 14px;
-      padding-left: 10px;
-      clear: both;
-      .field-attribute {
-        width: 45%;
-        display: inline-block;
-      }
-      .value-text-only {
-        display: inline-block;
-      }
-      .time {
-        font-size: 11px;
-        color: $mediumGray;
-        float: right;
-        padding-right: 5px;
-      }
-    }
-    .is-abnormal .field-attribute {
-      color: red;
-    }
-  }
-}
 
-.patient-dashboard.visit {padding: 0; margin-top: 45px}
-.dashboard-visit-summary {padding: 10px;}
-.dashboard-header {
-  width: 100%;
-  height: 52px;
-  background: $bahmniSecondaryColor;
-  h5 {
-    margin: 15px 0;
-    color: $lightestGray;
-    text-transform: capitalize;
-    display: inline-block;
-    font-size: 16px;
-  }
-}
-.dashboard-treatment-section {
-  table {
-    margin: 0;
-    border-left: 0;
-    border-right: 0;
-    th,td{
-      padding: 5px;
-    }
     tr th {
-      color: $mediumGray;
-    }
-    tr, td, th {
-      border-left: 0!important;
-      border-right: 0!important;
-    }
-    h5 {
-      span {
-        font-size: 14px;
-        color: $lightGray;
-      }
-    }
-    td.dosage {
-      font-size: 12px;
-      width: 35%;
-    }
-    td.days {
-      font-size: 11px;
-      width: 10%;
-      span {
         color: $mediumGray;
-      }
+        background: $lightestGray;
     }
-  }
-}
 
-table.dashboard-table {
-  margin: 0;
-  border-left: 0;
-  border-right: 0;
-  font-size: 14px;
-  tr th {
-    color: $mediumGray;
-    background: $lightestGray;
-  }
-  tr, td {
-    border-left: 0!important;
-    border-right: 0!important;
-  }
+    tr,
+    td {
+        border-left: 0 !important;
+        border-right: 0 !important;
+    }
 }
 
 table.drug-order-table td.drug {
-  &.active-drug  {
-    border-left: 3px solid orange !important;
-  }
-  &.scheduled-drug {
-    border-left: 3px solid green !important;
-  }
-  span.drug-attr-highlight{
-    background: $bahmniTertiaryColor;
-    color: #fff;
-    border-radius: 4px;
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    text-align: center;
-    padding-top: 2px;
-    margin-left: 0px;
-    font-size: 13px;
-  }
+    &.active-drug {
+        border-left: 3px solid orange !important;
+    }
+
+    &.scheduled-drug {
+        border-left: 3px solid green !important;
+    }
+
+    span.drug-attr-highlight {
+        background: $bahmniTertiaryColor;
+        color: #fff;
+        border-radius: 4px;
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        text-align: center;
+        padding-top: 2px;
+        margin-left: 0px;
+        font-size: 13px;
+    }
 }
 
 .placeholder-text {
-  font-size: 14px;
-  padding: 10px;
+    font-size: 14px;
+    padding: 10px;
 }
+
 .white-popup {
-  position: relative;
-  background: $white;
-  padding: 40px;
-  width: auto;
-  max-width: 200px;
-  margin: 20px auto;
-  text-align: center;
+    position: relative;
+    background: $white;
+    padding: 40px;
+    width: auto;
+    max-width: 200px;
+    margin: 20px auto;
+    text-align: center;
 }
+
 .dashboard-diagnosis-section {
-  .dashboard-table{
-    margin:0;
-  }
-  .diagnosis .history-diagnosis .table-body {
-    .row {background: $white;}
-    .diagnosis-name {
-      color: $darkGray;
-      float: left;
-      padding: 0 0 0 10px;
+    .dashboard-table {
+        margin: 0;
     }
-    .ruled-out.diagnosis-name {
-      color: $mediumGray;
-      text-decoration: line-through;
-    }
-  }
-  .table .col {padding: 6px 0;}
-  .col.col1 {
-    width: 60%;
-    float: left;
-  }
-  .col.col2 {
-    width: 35%;
-    float: right;
-    .order {
-      margin: 0;
-    }
-  }
-  .table-header {
-    .col.col2 {
-      span {padding: 0;}
-    }
-  }
-  .table-body {
-    .col.col2 {
-      font-size: 11px;
-      padding-left: 10px;
-      .view {
-        margin-bottom: 3px;
-        .date {
-          float: right;
-          color: $mediumGray;
-          padding-right: 10px;
+
+    .diagnosis .history-diagnosis .table-body {
+        .row {
+            background: $white;
         }
-      }
+
+        .diagnosis-name {
+            color: $darkGray;
+            float: left;
+            padding: 0 0 0 10px;
+        }
+
+        .ruled-out.diagnosis-name {
+            color: $mediumGray;
+            text-decoration: line-through;
+        }
     }
-  }
-}
-.dashboard-laborders-section {
-  table {
-    margin-top: 0;
-    tr {
-      border-left: 0;
+
+    .table .col {
+        padding: 6px 0;
     }
-    td {
-      border: 0;
-    }
-    td span.range {
-      font-size: 11px;
-      color: $mediumGray;
-    }
-    tr td.value {
-      width: 35%;
-      padding: 5px;
-      font-size: 12px;
-      color: $darkGray;
-      .line-value {
-        width: 50%;
+
+    .col.col1 {
+        width: 60%;
         float: left;
-      }
     }
-    tr td .fr.date {
-      float: right;
-      font-size: 11px;
-      color: $mediumGray;
-      i.fa-file-alt {
-        font-size: 16px;
-        color: orange;
-      }
-    }
-  }
-}
-.dashboard-programs-section {
 
+    .col.col2 {
+        width: 35%;
+        float: right;
+
+        .order {
+            margin: 0;
+        }
+    }
+
+    .table-header {
+        .col.col2 {
+            span {
+                padding: 0;
+            }
+        }
+    }
+
+    .table-body {
+        .col.col2 {
+            font-size: 11px;
+            padding-left: 10px;
+
+            .view {
+                margin-bottom: 3px;
+
+                .date {
+                    float: right;
+                    color: $mediumGray;
+                    padding-right: 10px;
+                }
+            }
+        }
+    }
 }
+
+.dashboard-laborders-section {
+    table {
+        margin-top: 0;
+
+        tr {
+            border-left: 0;
+        }
+
+        td {
+            border: 0;
+        }
+
+        td span.range {
+            font-size: 11px;
+            color: $mediumGray;
+        }
+
+        tr td.value {
+            width: 35%;
+            padding: 5px;
+            font-size: 12px;
+            color: $darkGray;
+
+            .line-value {
+                width: 50%;
+                float: left;
+            }
+        }
+
+        tr td .fr.date {
+            float: right;
+            font-size: 11px;
+            color: $mediumGray;
+
+            i.fa-file-alt {
+                font-size: 16px;
+                color: orange;
+            }
+        }
+    }
+}
+
+.dashboard-programs-section {}
+
 .dashboard-radiology-section {
-  .radiology-doc-item {
-    overflow: auto;
-    clear: both;
-    border-bottom: 1px solid $lightGray;
-    a {
-      padding: 5px 10px 7px 10px;
-      width: 77%;
-      float: left;
-      i {padding-left: 0;}
+    .radiology-doc-item {
+        overflow: auto;
+        clear: both;
+        border-bottom: 1px solid $lightGray;
+
+        a {
+            padding: 5px 10px 7px 10px;
+            width: 77%;
+            float: left;
+
+            i {
+                padding-left: 0;
+            }
+        }
+
+        span {
+            float: right;
+            font-size: 11px;
+            padding-right: 10px;
+            color: $mediumGray;
+        }
     }
-    span {
-      float: right;
-      font-size: 11px;
-      padding-right: 10px;
-      color: $mediumGray;
-    }
-  }
 }
 
-.testUnderPanel{
-  padding-left: 10px;
+.testUnderPanel {
+    padding-left: 10px;
 }
 
 .dashboard-section section .form-field.is-text {
-  overflow: auto;
-  clear: both;
-  padding-left: 10px;
-  .value-text-only {
-    line-height: 1.3em;
-  }
+    overflow: auto;
+    clear: both;
+    padding-left: 10px;
+
+    .value-text-only {
+        line-height: 1.3em;
+    }
 }
 
 
 
 .dashboard-section section.block.hierarchy {
-  .field-attribute {vertical-align: top;}
-  .testUnderPanel, .value-text-only, .date-text-only {display: inline-block; vertical-align: top;}
-  .testUnderPanel, .value-text-only {
-    width: 35%;
-    @media screen and (max-width: 700px) {
-      width:45%;
-    }
-  }
-  .testUnderPanel {
-    padding:0;
-    @media screen and (max-width: 700px) {
-      padding-right: 10px;
-    }
-  }
-  .date-text-only {width: 15%;}
-  .toggle i {padding: 0};
-  .img-concept {
-    border: 1px solid rgba($bahmniLinkColor, 0.5);
-    display: inline-block;
-    padding: 5px;
-    border-radius: 2px;
-    background: #fff;
-    margin: 0 4px;
-    transition: all .2s ease-in-out;
-    img {
-      vertical-align: top;
-      margin: 0;
-      padding: 0;
-      border: 1px solid $lighterGray;
-      width: 65px !important;
-      box-shadow: 0px 0px 3px $lightGray;
-      height: 65px !important;
-      transition: all .2s ease-in-out;
-    }
-    &:hover {
-      border: 1px solid rgba($bahmniLinkColor, 1);
-      box-shadow: inset 0px 0px 3px $lightGray;
-      img {
-        box-shadow: none;
-        border-color: $lightGray;
-      }
-    }
-  }
-  li.video-concept{
-    border-top:none;
-    height:300px;
-    margin:5px 15px;
-    border: 1px solid $lightGray;
-    position: relative;
-    overflow: hidden;
-    @media screen and(max-width:1150px){
-      height:auto;
-    }
-    @media screen and (max-width: 859px) {
-      height:300px;
-    }
-    .testUnderPanel{
-      width: 100% !important;
-      padding:3px 10px 0;
-      box-sizing: border-box;
-      .btn-download{
-        padding: 5px 10px;
-        background: #fff;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        color: #88af28;
-        font-size: 12px;
-        margin-bottom: 7px;
-      }
-    }
-    .tree-list-item{
-      padding-left: 0;
-    }
-    .toggle{
-      position: absolute;
-      right: 0;
-      padding-top: 6px;
+    .field-attribute {
+        vertical-align: top;
     }
 
-    pre{
-      width:92%;
+    .testUnderPanel,
+    .value-text-only,
+    .date-text-only {
+        display: inline-block;
+        vertical-align: top;
     }
-    .notes.inline-notes{
-      margin-top:-4px;
-    }
-    .footer-note{
-      text-align:left;
-      float: none;
-      clear:both;
-      padding-top: 5px;
-      padding-left: 20px;
-      .provider{
-        float: none;
-        clear: both;
-      }
-    }
-    .obs-video-thumb-container {
-      position: relative;
-      clear: both;
-      .obs-play-btn {
-        background: transparent;
-        color: rgb(169,169,169);
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
-        outline: none;
-        border: none;
-        width: 83px;
-        height: 50px;
-        padding: 0;
-        i {
-          font-size: 50px;
-          padding: 0;
+
+    .testUnderPanel,
+    .value-text-only {
+        width: 35%;
+
+        @media screen and (max-width: 700px) {
+            width: 44%;
         }
-      }
-      img {
-        max-width: 100%;
-      }
     }
-  }
+
+    .testUnderPanel {
+        padding: 0;
+
+        @media screen and (max-width: 700px) {
+            padding-right: 10px;
+        }
+    }
+
+    .date-text-only {
+        width: 15%;
+    }
+
+    .toggle i {
+        padding: 0
+    }
+
+    ;
+
+    .img-concept {
+        border: 1px solid rgba($bahmniLinkColor, 0.5);
+        display: inline-block;
+        padding: 5px;
+        border-radius: 2px;
+        background: #fff;
+        margin: 0 4px;
+        transition: all .2s ease-in-out;
+
+        img {
+            vertical-align: top;
+            margin: 0;
+            padding: 0;
+            border: 1px solid $lighterGray;
+            width: 65px !important;
+            box-shadow: 0px 0px 3px $lightGray;
+            height: 65px !important;
+            transition: all .2s ease-in-out;
+        }
+
+        &:hover {
+            border: 1px solid rgba($bahmniLinkColor, 1);
+            box-shadow: inset 0px 0px 3px $lightGray;
+
+            img {
+                box-shadow: none;
+                border-color: $lightGray;
+            }
+        }
+    }
+
+    li.video-concept {
+        border-top: none;
+        height: auto;
+        max-height: 300px;
+        margin: 5px 15px;
+        border: 1px solid $lightGray;
+        position: relative;
+        overflow: hidden;
+
+        .testUnderPanel {
+            width: 100% !important;
+            padding: 3px 10px 0;
+            box-sizing: border-box;
+
+            .btn-download {
+                padding: 5px 10px;
+                background: #fff;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                color: #88af28;
+                font-size: 12px;
+                margin-bottom: 7px;
+            }
+        }
+
+        .tree-list-item {
+            padding-left: 0;
+        }
+
+        .toggle {
+            position: absolute;
+            right: 0;
+            padding-top: 6px;
+        }
+
+        pre {
+            width: 92%;
+        }
+
+        .notes.inline-notes {
+            margin-top: -4px;
+        }
+
+        .footer-note {
+            text-align: left;
+            float: none;
+            clear: both;
+            padding-top: 5px;
+            padding-left: 20px;
+
+            .provider {
+                float: none;
+                clear: both;
+            }
+        }
+
+        .obs-video-thumb-container {
+            position: relative;
+            clear: both;
+
+            .obs-play-btn {
+                background: transparent;
+                color: rgb(169, 169, 169);
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: auto;
+                outline: none;
+                border: none;
+                width: 83px;
+                height: 50px;
+                padding: 0;
+
+                i {
+                    font-size: 50px;
+                    padding: 0;
+                }
+            }
+
+            img {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+    }
 }
 
 .dashboard-section {
-  .activeSince {
-    width:35%;
-    display:inline-block;
-    float: right;
-  }
+    .activeSince {
+        width: 35%;
+        display: inline-block;
+        float: right;
+    }
 }
-.template-container .dashboard-section section.block.hierarchy{
-  .testUnderPanel,.value-text-only {
-    width: 34.5% !important;
-  }
+
+.template-container .dashboard-section section.block.hierarchy {
+
+    .testUnderPanel,
+    .value-text-only {
+        width: 34.5% !important;
+    }
 }
 
 .dashboard-section section .form-field.is-text {
-  overflow: auto;
-  clear: both;
-  padding-left: 10px;
-  .value-text-only {
-    line-height: 1.3em;
-  }
+    overflow: auto;
+    clear: both;
+    padding-left: 10px;
+
+    .value-text-only {
+        line-height: 1.3em;
+    }
 }
 
 .history-diagnosis {
-  .name {
-    width: 40%;
-  }
-  .view {
-    font-size: 12px;
-  }
-  .date {
-    font-size: 11px;
-    text-align: right;
-  }
-  .toggle-btn {
-    width: 24px;
-    .toggle {
-      padding: 0;
-      margin: 0;
+    .name {
+        width: 40%;
+        padding: 4px 0px 2px 10px;
     }
-  }
-}
-table.pivot-table {
-  .tooltip {
-    margin-left: -5px;
-    margin-top: 0;
-    background: $darkGray;
-    color: white;
-    box-shadow: none;
-    bottom: 36px;
-    top: auto;
-    z-index: 1;
-    i {
-      color: $darkGray;
-      bottom: -15px;
-      left: 20px;
-      top: auto;
-    }
-    .details {
-      color: white !important;
-    }
-  }
-  &, * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-  }
-  span.range {
-    font-size: 11px;
-  }
-  .row-header-group {
-    min-height: 40px;
-    vertical-align: middle;
-    font-weight: bold;
-    font-family: $OpenSansBoldFont;
-    &:first-letter{
-      text-transform: capitalize;
-    }
-  }
-  thead th {
-    font-family: OpenSans, Arial, sans-serif;
-    font-weight: normal;
-    border-right: 0;
-  }
-  tr {
-    td, th {
-      line-height: 1.2em;
-      height: 36px;
-      max-height: 36px;
-      vertical-align: middle;
-      padding: 5px 10px;
-    }
-  }
-  tbody {
-    white-space: normal;
-    font-size: 12px;
-    tr {
-      th, td {
-        width: 80px;
-        padding: 5px;
+
+    .view {
         font-size: 12px;
-      }
-      th {
-        background: white;
-        font-weight: bold;
-        text-align: center;
-        border-right: none;
-        .time {
-          font-size: 12px;
-          color: darken($lightGray, 8%);
-          display: inline-block;
-          margin-top: 3px;
-          font-weight: normal;
-          font-family: OpenSans, Arial, sans-serif;
-        }
-      }
-      td {
-        position: relative;
-        .popover-trigger {
-          cursor: pointer;
-          color: $bahmniLinkColor;
-        }
-      }
     }
-  }
+
+    .date {
+        font-size: 11px;
+        text-align: right;
+    }
+
+    .toggle-btn {
+        width: 24px;
+
+        .toggle {
+            padding: 0;
+            margin: 0;
+        }
+    }
+}
+
+table.pivot-table {
+    .tooltip {
+        margin-left: -5px;
+        margin-top: 0;
+        background: $darkGray;
+        color: white;
+        box-shadow: none;
+        bottom: 36px;
+        top: auto;
+        z-index: 1;
+
+        i {
+            color: $darkGray;
+            bottom: -15px;
+            left: 20px;
+            top: auto;
+        }
+
+        .details {
+            color: white !important;
+        }
+    }
+
+    &,
+    * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    span.range {
+        font-size: 11px;
+    }
+
+    .row-header-group {
+        min-height: 40px;
+        vertical-align: middle;
+        font-weight: bold;
+        font-family: $OpenSansBoldFont;
+
+        &:first-letter {
+            text-transform: capitalize;
+        }
+    }
+
+    thead th {
+        font-family: OpenSans, Arial, sans-serif;
+        font-weight: normal;
+        border-right: 0;
+    }
+
+    tr {
+
+        td,
+        th {
+            line-height: 1.2em;
+            height: 36px;
+            max-height: 36px;
+            vertical-align: middle;
+            padding: 5px 10px;
+        }
+    }
+
+    tbody {
+        white-space: normal;
+        font-size: 12px;
+
+        tr {
+
+            th,
+            td {
+                width: 80px;
+                padding: 5px;
+                font-size: 12px;
+            }
+
+            th {
+                background: white;
+                font-weight: bold;
+                text-align: center;
+                border-right: none;
+
+                .time {
+                    font-size: 12px;
+                    color: darken($lightGray, 8%);
+                    display: inline-block;
+                    margin-top: 3px;
+                    font-weight: normal;
+                    font-family: OpenSans, Arial, sans-serif;
+                }
+            }
+
+            td {
+                position: relative;
+
+                .popover-trigger {
+                    cursor: pointer;
+                    color: $bahmniLinkColor;
+                }
+            }
+        }
+    }
 }
 
 .recent-patients {
-  display: inline-block;
-  position: relative;
-  float: left;
-  img{
-    height: 31px;
+    display: inline-block;
+    position: relative;
     float: left;
-  }
-  .back-btn{
-    padding: 5px 10px 3px !important
-  }
-  .recent-patients-header {
-    .prev-patient, .next-patient {
-      @include button;
-      color: $success;
-      display: inline-block;
-      cursor: pointer;
-      padding: 10px 15px 6px 15px;
-      float: left;
-      display: none; // As discussed with Vivek, hidden
-      &:hover {
-        text-decoration: none;
-        color: darken($success, 5%);
-      }
-    }
-    .prev-patient.disabled, .next-patient.disabled {
-      color: $lightGray;
-      &:hover {
-        cursor: not-allowed;
-      }
-    }
-    button{
-      padding: 10px 12px 9px;
-      float: left;
-      color: $white;
-      border: 1px solid darken($bahmniSecondaryColor, 15%);
-      background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
-    }
-  }
 
-  .recent-patients-panel {
-    position: absolute;
-    z-index: 1;
-    left: 0px;
-    top: 47px;
-    background: $white;
-    border: 1px solid $lightGray;
-    width: 330px;
-    max-height: 250px;
-    overflow-y: auto;
-    font-size: 14px;
-    color: $text;
-    border-radius: 0px 5px 5px 5px;
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, .50);
-    padding-bottom: 5px;
-    &::-webkit-scrollbar {
-      -webkit-appearance: none;
-      width: 2px;
-      height: 2px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      border-radius: 4px;
-      background-color: rgba(0, 0, 0, .5);
-      -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-    }
-    .recent-patients-search {
-      background: #F1F1F1;
-      padding: 10px;
-      box-sizing: border-box;
-      border-radius: 0 5px 0 0;
-      #patientIdentifier {
-        width: 100%;
-        color: #000;
-        padding: 2px 10px;
-        background-color: #FFF;
-        border: 1px solid #DDD;
-        box-sizing: border-box;
-      }
-    }
-
-    a, .recent_patient {
-      color: $mediumGray;
-      font-size: 14px;
-      border-bottom: 1px solid $lightGray;
-      padding: 13px 5px 12px 10px;
-      display: block;
-      &:hover {
-        text-decoration: underline;
-      }
-      span {
-        max-width: 220px;
-        display: inline-block;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        padding-right: 5px;
+    img {
+        height: 31px;
         float: left;
-        height:20px !important;
-      }
     }
-    .currentPatient {
-      a {
-        background: $lighterGray;
-      }
-    }
-    .recent_patient{
-      color: $black;
-      &:hover {
-        text-decoration: none;
-      }
-    }
-  }
-}
-.dashboard-tabular-obs-section {
-  &.dst-results {
-    .tabular-obs table {
-      table-layout: fixed;
-      @media screen and (max-width: 1024px) {
-        table-layout:auto;
-      }
-      td,th{
-        word-break: break-word;
-      }
-    }
-  }
-  .tabular-obs table tr td:first-child {
-    background: $lightestGray;
-    background-image: none;
-    color: $darkGray;
-  }
-  .tabular-obs table.tableAsColumn tr:first-child td {
-    background: $lightestGray !important;
-    font-family: OpenSansSemiBold;
-    color: $darkGray;
-  }
-  .tabular-obs table tr th.obsTableHeaderName{
-     width:155px;
-   }
-  .tabular-obs table tr th.obsTableEdit{
-    width:170px;
-  }
-  .tabular-obs table tr th.obsTableDate{
-    width:75px;
-    word-break: normal;
-  }
 
-  .tabular-obs table tr td.obsTableEdit{
-      width:170px;
-      span.obsTableData{
-        width:143px;
-        @media screen and (max-width: 1024px) {
-          width:135px;
+    .back-btn {
+        padding: 5px 10px 3px !important
+    }
+
+    .recent-patients-header {
+
+        .prev-patient,
+        .next-patient {
+            @include button;
+            color: $success;
+            display: inline-block;
+            cursor: pointer;
+            padding: 10px 15px 6px 15px;
+            float: left;
+            display: none; // As discussed with Vivek, hidden
+
+            &:hover {
+                text-decoration: none;
+                color: darken($success, 5%);
+            }
         }
-      }
-  }
+
+        .prev-patient.disabled,
+        .next-patient.disabled {
+            color: $lightGray;
+
+            &:hover {
+                cursor: not-allowed;
+            }
+        }
+
+        button {
+            padding: 10px 12px 9px;
+            float: left;
+            color: $white;
+            border: 1px solid darken($bahmniSecondaryColor, 15%);
+            background: linear-gradient(to bottom, $bahmniSecondaryColor, darken($bahmniSecondaryColor, 10%));
+        }
+    }
+
+    .recent-patients-panel {
+        position: absolute;
+        z-index: 1;
+        left: 0px;
+        top: 47px;
+        background: $white;
+        border: 1px solid $lightGray;
+        width: 330px;
+        max-height: 250px;
+        overflow-y: auto;
+        font-size: 14px;
+        color: $text;
+        border-radius: 0px 5px 5px 5px;
+        box-shadow: 2px 2px 20px rgba(0, 0, 0, .50);
+        padding-bottom: 5px;
+
+        &::-webkit-scrollbar {
+            -webkit-appearance: none;
+            width: 2px;
+            height: 2px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, .5);
+            -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+        }
+
+        .recent-patients-search {
+            background: #F1F1F1;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 0 5px 0 0;
+
+            .search-input {
+                width: 100%;
+                color: #000;
+                padding: 2px 25px 2px 10px;
+                background-color: #FFF;
+                border: 1px solid #DDD;
+                box-sizing: border-box;
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            z-index: 2;
+            right: 12px;
+            top: 14px;
+            border: none;
+            color: #a5a5a5;
+            font-size: 12px;
+            padding: 0;
+            background: transparent;
+        }
+
+        a,
+        .recent_patient {
+            color: $mediumGray;
+            font-size: 14px;
+            border-bottom: 1px solid $lightGray;
+            padding: 13px 5px 12px 10px;
+            display: block;
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            span {
+                max-width: 220px;
+                display: inline-block;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                padding-right: 5px;
+                float: left;
+                height: 20px !important;
+            }
+        }
+
+        .currentPatient {
+            a {
+                background: $lighterGray;
+            }
+        }
+
+        .recent_patient {
+            color: $black;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+.dashboard-tabular-obs-section {
+    &.dst-results {
+        .tabular-obs table {
+            table-layout: fixed;
+
+            @media screen and (max-width: 1024px) {
+                table-layout: auto;
+            }
+
+            td,
+            th {
+                word-break: break-word;
+            }
+        }
+    }
+
+    .tabular-obs table tr td:first-child {
+        background: $lightestGray;
+        background-image: none;
+        color: $darkGray;
+    }
+
+    .tabular-obs table.tableAsColumn tr:first-child td {
+        background: $lightestGray !important;
+        font-family: OpenSansSemiBold;
+        color: $darkGray;
+    }
+
+    .tabular-obs table tr th.obsTableHeaderName {
+        width: 155px;
+    }
+
+    .tabular-obs table tr th.obsTableEdit {
+        width: 170px;
+    }
+
+    .tabular-obs table tr th.obsTableDate {
+        width: 75px;
+        word-break: normal;
+    }
+
+    .tabular-obs table tr td.obsTableEdit {
+        width: 170px;
+
+        span.obsTableData {
+            width: 143px;
+
+            @media screen and (max-width: 1024px) {
+                width: 135px;
+            }
+        }
+    }
 }
 
 .dashboard-chronic-treatment-section {
-  .chronic-treatment {
-    overflow: auto;
-    .stopped {
-      background-color: lightsalmon;
+    .chronic-treatment {
+        overflow: auto;
+
+        .stopped {
+            background-color: lightsalmon;
+        }
+
+        .error {
+            background-color: red;
+        }
     }
-    .error {
-      background-color: red;
-    }
-  }
 }
 
 .ngdialog-content {
-  .dashboard-chronic-treatment-section {
-    .chronic-treatment {
-      border-radius: 0;
-      overflow:auto !important;
-    }
-    table {
-      tr {
-        th {
-          border: 1px solid $lighterGray;
+    .dashboard-chronic-treatment-section {
+        .chronic-treatment {
+            border-radius: 0;
+            overflow: auto !important;
         }
-        td {
-          border: 1px solid $lighterGray;
+
+        table {
+            tr {
+                th {
+                    border: 1px solid $lighterGray;
+                }
+
+                td {
+                    border: 1px solid $lighterGray;
+                }
+            }
         }
-      }
     }
-  }
 }
 
-table.treatments-details-table{
-  font-size: 12px;      
-  td{
-    border: none;
-    width: 18%;
-    padding: 10px 5px;
-    &.drug{
-      font-size: 14px !important;
-      padding: 10px;
+table.treatments-details-table {
+    font-size: 12px;
+
+    td {
+        border: none;
+        width: 18%;
+        padding: 10px 5px;
+
+        &.drug {
+            font-size: 14px !important;
+            padding: 10px;
+        }
+
+        &.toggle-btn {
+            width: 5%;
+        }
     }
-    &.toggle-btn{
-      width: 5%;
+
+    tr {
+        &.test-notes-parent {
+            border-bottom: 1px solid $lighterGray;
+        }
+
+        &.notes-open {
+            border-bottom: none !important;
+
+            td {
+                background: $clinicalNotesColor;
+            }
+        }
+
+        &.notes {
+            border-bottom: 1px solid $lighterGray;
+        }
     }
-  }
-  tr{
-    &.test-notes-parent {
-      border-bottom: 1px solid $lighterGray;
-    }
-    &.notes-open{
-      border-bottom: none !important;
-      td {
-        background: $clinicalNotesColor;
-      }
-    }
-    &.notes{
-      border-bottom: 1px solid $lighterGray;
-    }
-  }
 }
-.patient-dashboard small.hint{
-  padding-left: 3px;
+
+.patient-dashboard small.hint {
+    padding-left: 3px;
 }
-.patient-info-fixed-postion-container{
-  position: fixed;
-  top: 52px;
-  z-index: 998;
-  background: $lighterGray;
-  width: 100%;
-  left: 0;
-  box-shadow: 0px 1px 8px #686666;
-  border-bottom: 1px #699 solid;
-  div.patient-info-fixed{
+
+.patient-info-fixed-postion-container {
+    position: fixed;
+    top: 52px;
+    z-index: 998;
+    background: $lighterGray;
+    width: 100%;
+    left: 0;
+    box-shadow: 0px 1px 8px #686666;
+    border-bottom: 1px #699 solid;
+
+    div.patient-info-fixed {
+        @include clearfix;
+        max-width: 1300px;
+        margin: 2px auto 2px;
+        clear: both;
+        width: 100%;
+        padding: 0px 0px;
+        box-sizing: border-box;
+        font-family: openSansSemiBold;
+        height: 37px;
+        overflow: hidden;
+
+        ul {
+            li {
+                display: block;
+                float: left;
+                color: $black;
+                border-left: 2px #828181 solid;
+                margin: 10px 0px;
+                padding-left: 15px;
+                padding-right: 15px;
+
+                &.patient-name-image-container {
+                    margin: 0;
+                    margin: 0;
+                    border-left: none;
+                    display: table;
+
+                    .patient-image {
+                        display: table-cell;
+                        height: 35px;
+                        width: auto;
+                        border: 1px solid $lightGray;
+                        border-radius: 100%;
+                    }
+
+                    .patient-name {
+                        display: table-cell;
+                        vertical-align: middle;
+                        padding-left: 10px;
+                    }
+                }
+            }
+        }
+
+        .patient-info {
+            padding: 0 10px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            color: #333;
+
+            @media screen and (min-width: 769px) {
+                display: none;
+            }
+
+            .prev-page {
+                background: transparent;
+                outline: none;
+                padding: 0;
+                margin-right: 15px;
+
+                &:hover,
+                &:focus {
+                    opacity: 1;
+                    background: transparent;
+                }
+
+                .fa {
+                    color: #333;
+                }
+            }
+
+            .name {
+                margin-right: 5px;
+            }
+
+            .gender-age {
+                font-weight: 300;
+                font-family: 'OpenSans';
+            }
+        }
+    }
+}
+
+.dashboard-consultation {
+    .patient-info-fixed-postion-container {
+        @media screen and (max-width: 768px) {
+            box-shadow: none;
+            border-bottom: none;
+            div.patient-info-fixed {
+                height: 87px;
+
+                .patient-info {
+                    display: block;
+                    padding-top: 10px;
+                    box-sizing: border-box;
+                }
+            }
+            
+        }
+    }
+}
+
+.video-concept-show {
+    width: 50%;
+    float: left;
+
+    @media screen and(max-width:540px) {
+        width: 100%;
+    }
+}
+
+.ng-dialog-all-details-page .concept-set-container-view {
     @include clearfix;
-    max-width: 1300px;
-    margin: 2px auto 2px;
-    clear: both;
-    width: 100%;
-    padding: 0px 0px;
-    box-sizing: border-box;
-    font-family: openSansSemiBold;
-    height: 37px;
-    overflow: hidden;
-    ul{
-      li{
-        display: block;
-        float: left;
-        color: $black;
-        border-left: 2px #828181 solid;
-        margin: 10px 0px;
-        padding-left: 15px;
-        padding-right: 15px;
-        &.patient-name-image-container{
-          margin: 0;
-          margin: 0;
-          border-left: none;
-          display: table;
-          .patient-image{
-            display: table-cell;
-            height: 35px;
-            width: auto;
-            border: 1px solid $lightGray;
-            border-radius: 100%;
-          }
-          .patient-name{
-            display: table-cell;
-            vertical-align: middle;
-            padding-left: 10px;
-          }
+    background: $white;
+
+    .video-concept-show {
+        width: 33.333%;
+
+        @media screen and (max-width: 859px) {
+            width: 50%;
         }
-      }
+
+        @media screen and(max-width:540px) {
+            width: 100%;
+        }
     }
-  }
+}
 
-}
-.video-concept-show{
-  width:50%;
-  float: left;
-  @media screen and(max-width:1150px){
-    width: 100%;
-  }
-  @media screen and (max-width: 859px) {
-    width:50%;
-  }
-}
-.ng-dialog-all-details-page .concept-set-container-view{
-  @include clearfix;
-   background: $white;
-  .video-concept-show{
-    width:33.333%;
-    li.video-concept{
-      height:310px !important;
+
+h2.section-title.section-title-pivot {
+    overflow: hidden;
+    padding: 8px 10px 5px;
+
+    .btn-scrolling {
+        margin-top: -3px;
+
+        button {
+            margin-left: 10px;
+        }
     }
-    @media screen and (max-width: 859px) {
-      width:50%;
+
+}
+
+.obs-label {
+    font-size: xx-small;
+    text-overflow: clip;
+    max-width: 60px;
+    max-height: 27px;
+    overflow: hidden;
+    white-space: nowrap !important;
+    margin-left: -3px !important;
+}
+
+.obs-label-file {
+    font-size: xx-small;
+    text-overflow: clip;
+    max-width: 60px;
+    max-height: 27px;
+    overflow: hidden;
+    white-space: nowrap !important;
+}
+
+.obs-groups-container {
+    overflow-y: auto;
+    height: 140px;
+}
+
+.hr-obs {
+    margin-top: 2ch;
+    color: gray;
+    background-color: gray;
+    text-overflow: clip;
+    overflow: hidden;
+    border-bottom: thin;
+    width: 60px;
+    height: 1pt;
+}
+
+.adhoc-info-popup.ngdialog-theme-default {
+    .message {
+        word-break: break-all;
     }
-  }
 }
-
-
-h2.section-title.section-title-pivot{
-  overflow: hidden;
-  padding: 8px 10px 5px;
-
-  .btn-scrolling {
-    margin-top: -3px;
-    button {
-      margin-left: 10px;
-    }
-  }
-
-}
-
-.obs-label{
-  font-size: xx-small;
-  text-overflow: clip;
-  max-width: 60px;
-  max-height: 27px;
-  overflow: hidden;
-  white-space: pre !important;
-}
-
-.obs-groups-container{
-  overflow-y: auto;
-  height: 140px;
-}
-
-.hr-obs{
-  margin-top: 2ch;
-  color: gray;
-  background-color: gray;
-  text-overflow: clip;
-  overflow: hidden;
-  border-bottom: thin;
-  width: 60px;
-  height: 1pt;
-}
-

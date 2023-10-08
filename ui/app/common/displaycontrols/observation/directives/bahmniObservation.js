@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.displaycontrol.observation')
     .directive('bahmniObservation', ['encounterService', 'observationsService', 'appService', '$q', 'spinner', '$rootScope',
-        'formRecordTreeBuildService', '$translate',
+        'formRecordTreeBuildService', '$translate', 'providerInfoService',
         function (encounterService, observationsService, appService, $q, spinner, $rootScope,
-                  formRecordTreeBuildService, $translate) {
+                  formRecordTreeBuildService, $translate, providerInfoService) {
             var controller = function ($scope) {
                 $scope.print = $rootScope.isBeingPrinted || false;
 
@@ -14,7 +14,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                     var conceptsConfig = $scope.config.formType === Bahmni.Common.Constants.forms2Type ? {} :
                         appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
 
-                    observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig);
+                    observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig, null, $translate);
 
                     if ($scope.config.conceptNames) {
                         observations = _.filter(observations, function (observation) {
@@ -43,6 +43,7 @@ angular.module('bahmni.common.displaycontrol.observation')
                         } else {
                             $scope.bahmniObservations[0].isOpen = true;
                         }
+                        providerInfoService.setProvider($scope.bahmniObservations[0].value);
                     }
 
                     var formObservations = _.filter(observations, function (obs) {
