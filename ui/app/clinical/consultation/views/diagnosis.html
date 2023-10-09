@@ -5,8 +5,8 @@
                 <div class="table new-diagnosis primary-section-grid">
                     <div ng-repeat="diagnosis in consultation.newlyAddedDiagnoses" ng-hide="diagnosis.voided"
                         class="table-body">
-                        <div class="row" bm-pop-over autoclose="true">
-                            <div class="col col1">
+                        <div class="row">
+                            <div class="col col1" bm-pop-over autoclose="true">
                                 <div class="col-header">
                                     {{ ::'CLINICAL_DIAGNOSIS' | translate }}
                                 </div>

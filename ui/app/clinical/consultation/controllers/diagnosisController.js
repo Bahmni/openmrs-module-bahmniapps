@@ -181,9 +181,6 @@ angular.module('bahmni.clinical')
                             });
                         });
                         if (diagnosis.alerts) {
-                            diagnosis.alerts.forEach(function (item) {
-                                item.isActive = true;
-                            });
                             diagnosis.alerts = cdssService.sortInteractionsByStatus(diagnosis.alerts);
                             flaggedDiagnoses.push(diagnosis);
                         }
@@ -191,6 +188,16 @@ angular.module('bahmni.clinical')
                 }
                 return flaggedDiagnoses;
             };
+
+            var alertsWatch = $rootScope.$watch('cdssAlerts', function () {
+                isPastDiagnosisFlagged();
+                getFlaggedSavedDiagnosisAlert();
+                getAlertForCurrentDiagnosis();
+            });
+
+            $scope.$on('$destroy', function () {
+                alertsWatch();
+            });
 
             var addPlaceHolderDiagnosis = function () {
                 var diagnosis = new Bahmni.Common.Domain.Diagnosis('');
