@@ -181,6 +181,8 @@ angular.module('bahmni.clinical')
                 orderAttribute.value = valueToSet !== undefined ? valueToSet : !orderAttribute.value;
             };
 
+            console.log('Consultation: ', $scope.consultation);
+
             $scope.getOrderAttributes = function () {
                 return treatmentConfig.orderAttributes;
             };

@@ -761,6 +761,21 @@
         }
     }
 
+    .cdss-alert-audit-form {
+        display: flex;
+        align-items: center;
+        > div {
+            // width: calc(100% - 20px);
+            select {
+                width: 100%;
+            }
+            &:first-child {
+                margin-right: 10px;
+            }
+
+        }
+    }
+
     .bg-critical {
         background-color: #ffd6d8;
         border: 1px solid #ff0000;

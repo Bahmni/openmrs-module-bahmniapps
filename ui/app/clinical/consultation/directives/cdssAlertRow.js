@@ -73,21 +73,15 @@ angular.module('bahmni.clinical')
           .getConfigValue('cdssDismissalOptionsToDisplay');
     };
 
-    $scope.submitAudit = function (alert, drugOrder) {
-        const patientUuid = $stateParams.patientUuid;
-        const message = alert.summary.replace(/"/g, '');
-        const audit = $scope.consultation.activeAndScheduledDrugOrders.find(function (order) {
-            return drugOrder.uuid === order.uuid;
-        }).audit;
-        const eventType = 'Dismissed: ' + audit;
+    $scope.auditForm = {};
+
+    $scope.submitAudit = function (alert) {
+        var patientUuid = $stateParams.patientUuid;
+        var message = alert.summary.replace(/"/g, '');
+        var eventType = 'Dismissed: ' + $scope.auditForm.audit;
 
         $scope.closeAlert(alert);
-        return drugService.cdssAudit(patientUuid, eventType, message, 'CDSS')
-          .then(function () {
-              $scope.consultation.activeAndScheduledDrugOrders.forEach(function (drugOrder) {
-                  drugOrder.audit = '';
-              });
-          });
+        return drugService.cdssAudit(patientUuid, eventType, message, 'CDSS');
     };
 
     var cdssAlertsWatcher = $rootScope.$watch('cdssAlerts', getPreviousDrugAlerts);
