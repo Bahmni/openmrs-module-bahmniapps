@@ -61,10 +61,8 @@ export function PatientAlergiesControl(props) {
   const TransformSeverityData = (severityData) => {
     const {setMembers, answers} = severityData;
     const severities = setMembers.length > 0 ? setMembers: answers;
-    const extractedSeverity = [];
-    severities.forEach( severity => {
-      extractedSeverity.push({ name: severity.display, uuid: severity.uuid });
-    });
+    const extractedSeverity = severities.map((severity) =>
+        ({ name: severity.display, uuid: severity.uuid }));
     return extractedSeverity.sort((a, b) => b.uuid - a.uuid);
   }
 
@@ -98,7 +96,7 @@ export function PatientAlergiesControl(props) {
     const allergies = allergiesAndReactions.entry;
     const allergiesData = allergies?.map((allergy) => {
       const { resource } = allergy;
-      const allergen = resource.reaction[0]?.substance.coding[0].display;
+      const allergen = resource.reaction[0]?.substance?.coding?.[0].display;
       const severity = resource.reaction[0].severity;
       const note = resource.note && resource.note[0].text;
       const date = new Date(resource.recordedDate);
