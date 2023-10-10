@@ -125,6 +125,10 @@ angular.module('bahmni.common.domain')
             return appService.getAppDescriptor().getConfigValue('disableProgramOutcome') || false;
         };
 
+        const getObservationFormsConfig = () => {
+            return appService.getAppDescriptor().getConfigValue('observationForms') || {};
+        };
+
         return {
             getAllPrograms: getAllPrograms,
             enrollPatientToAProgram: enrollPatientToAProgram,
@@ -137,6 +141,7 @@ angular.module('bahmni.common.domain')
             getEnrollmentInfoFor: getEnrollmentInfoFor,
             getDefaultProgram: getDefaultProgram,
             getProgramRedirectionConfig: getProgramRedirectionConfig,
-            disableProgramOutcome: disableProgramOutcome
+            disableProgramOutcome: disableProgramOutcome,
+            getObservationFormsConfig
         };
     }]);

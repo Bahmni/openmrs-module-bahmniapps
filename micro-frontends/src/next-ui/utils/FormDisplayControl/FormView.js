@@ -1,7 +1,8 @@
 import axios from "axios";
-import moment from "moment";
 import { ENCOUNTER_BASE_URL } from "../../constants";
 import { build } from "../FormDisplayControl/BuildFormView";
+import { defaultDateFormat } from "../../constants";
+import { formatDate } from "../../index";
 
 var findByEncounterUuid = async (encounterUuid) => {
   const apiURL = ENCOUNTER_BASE_URL.replace("{encounterUuid}", encounterUuid);
@@ -66,19 +67,15 @@ export const memberTypes = {
   COMPLEX: "Complex",
 };
 
-export const formatDate = (value, format = "DD-MMM-YYYY") => {
-  return value ? moment(value).format(format) : value;
-};
-
 export const getValue = (member) => {
   const { value = "", type, complexData = {} } = member;
   let finalValue = value?.shortName || value;
   switch (type) {
     case memberTypes.DATE:
-      finalValue = formatDate(finalValue, "DD MMM YY");
+      finalValue = formatDate(finalValue, defaultDateFormat);
       break;
     case memberTypes.DATETIME:
-      finalValue = formatDate(finalValue, "DD MMM YY hh:mm a");
+      finalValue = formatDate(finalValue);
       break;
     case memberTypes.COMPLEX:
       finalValue = complexData?.display || finalValue;

@@ -1,3 +1,6 @@
+export const defaultDateFormat = "DD MMM YYYY";
+export const defaultDateTimeFormat = "DD MMM YYYY hh:mm a";
+
 export const LS_LANG_KEY = "NG_TRANSLATE_LANG_KEY";
 export const BASE_URL =
   typeof __webpack_public_path__ !== "undefined"
