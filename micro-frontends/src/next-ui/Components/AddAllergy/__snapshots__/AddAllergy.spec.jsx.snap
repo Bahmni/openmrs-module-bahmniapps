@@ -44,6 +44,11 @@ exports[`AddAllergy should render the component 1`] = `
               class="font-large bold"
             >
               Search Allergen
+              <span
+                class="red-text"
+              >
+                 *
+              </span>
             </div>
             <div>
               <div

@@ -6,16 +6,21 @@ exports[`Select reactions should render SelectReactions 1`] = `
     class="section"
   >
     <div
-      class="font-large"
-      style="margin-bottom: 8px; margin-top: 10px;"
+      class="font-large selected-allergen"
     >
-      Selected Allergen: 
+      Selected Allergen:
+       
       Eggs
     </div>
     <div
       class="font-large bold"
     >
-      Search Reaction 
+      Search Reaction
+      <span
+        class="red-text"
+      >
+         *
+      </span>
     </div>
     <div>
       <div
@@ -79,8 +84,7 @@ exports[`Select reactions should render SelectReactions 1`] = `
     </div>
     <div>
       <div
-        class="font-small"
-        style="margin-bottom: 8px; margin-top: 10px;"
+        class="font-small selected-allergen"
       >
         Common Reactions
       </div>

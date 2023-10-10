@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.dashboard')
 
-    .directive('dashboard', ['appService', function (appService) {
+    .directive('dashboard', ['appService', '$bahmniCookieStore', '$rootScope', function (appService, $bahmniCookieStore, $rootScope) {
         var controller = function ($scope, $filter) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
@@ -14,15 +14,19 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     encounterUuid: $scope.activeEncounterUuid,
                     showEditForActiveEncounter: appService.getAppDescriptor().getConfigValue("showEditForActiveEncounter") ? true : false,
                     numberOfVisits: $scope.config.sections['forms-2.0'].dashboardConfig.maximumNoOfVisits ? $scope.config.sections['forms-2.0'].dashboardConfig.maximumNoOfVisits : undefined
+                    hasNoHierarchy: $scope.hasNoHierarchy
                 };
             }
 
             if ($scope.patient !== undefined) {
                 $scope.allergyData = {
                     patient: $scope.patient,
-                    activeVisit: $scope.visitHistory.activeVisit,
+                    provider: $rootScope.currentProvider,
+                    activeVisit: $scope.visitHistory ? $scope.visitHistory.activeVisit : null,
                     allergyControlConceptIdMap: appService.getAppDescriptor().getConfigValue("allergyControlConceptIdMap")
                 };
+                $scope.appService = appService;
+                $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);
             }
 
             var checkDisplayType = function (sections, typeToCheck, index) {

@@ -9,7 +9,13 @@ const hostUrl = localStorage.getItem("host")
   : "";
 
 const RESTWS_V1 = hostUrl + "/openmrs/ws/rest/v1";
-export const FORM_BASE_URL =
-  RESTWS_V1 + "/bahmnicore/patient/{patientUuid}/forms";
-export const FETCH_CONCEPT_URL =
-  RESTWS_V1 + "/concept/{conceptUuid}?v=full&locale={locale}";
+
+export const FORM_BASE_URL = RESTWS_V1 + "/bahmnicore/patient/{patientUuid}/forms";
+export const ENCOUNTER_BASE_URL = RESTWS_V1 + "/bahmnicore/bahmniencounter/{encounterUuid}";
+export const GET_ALL_FORMS_BASE_URL = RESTWS_V1 + "/bahmniie/form/allForms";
+export const GET_FORMS_BASE_URL = RESTWS_V1 + "/form/{formUuid}";
+export const GET_FORM_TRANSLATE_URL = RESTWS_V1 + "/bahmniie/form/translate";
+export const FETCH_CONCEPT_URL = RESTWS_V1 + "/concept/{conceptUuid}?v=full&locale={locale}";
+export const BAHMNI_ENCOUNTER_URL = RESTWS_V1 + "/bahmnicore/bahmniencounter";
+export const ENCOUNTER_TYPE_URL = RESTWS_V1 + "/encountertype/{encounterType}";
+export const GET_ALLERGIES_URL = "/openmrs/ws/fhir2/R4/AllergyIntolerance?patient={patientId}&_summary=data"
