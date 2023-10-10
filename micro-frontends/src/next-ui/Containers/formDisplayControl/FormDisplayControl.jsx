@@ -11,6 +11,7 @@ import { buildFormMap } from "../../utils/FormDisplayControl/FormView";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import ViewObservationForm from "../../Components/ViewObservationForm/ViewObservationForm";
 import { formatDate } from "../../utils/utils";
+import EditObservationForm from "../../Components/EditObservationForm/EditObservationForm";
 
 /** NOTE: for reasons known only to react2angular,
  * any functions passed in as props will be undefined at the start, even ones inside other objects
@@ -40,9 +41,11 @@ export function FormDisplayControl(props) {
   const [formList, setFormList] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [showViewObservationForm, setViewObservationForm] = useState(false);
+  const [showEditObservationForm, setEditObservationForm] = useState(false);
   const [formName, setFormName] = useState("");
   const [formData, setFormData] = useState([]);
   const [isViewFormLoading, setViewFormLoading] = useState(false);
+  const [isEditFormLoading, setEditFormLoading] = useState(false);
 
   const buildResponseData = async () => {
     try {
@@ -98,10 +101,26 @@ export function FormDisplayControl(props) {
     setFormData(data[0].value[0].groupMembers);
   };
 
+  const openEditObservationForm = async (formName, encounterUuid) => {
+    var formMap = {
+      formName: formName,
+      encounterUuid: encounterUuid,
+      hasNoHierarchy: props?.hostData?.hasNoHierarchy,
+    };
+    setFormName(formName);
+    setEditFormLoading(true);
+    setEditObservationForm(true);
+    const data = await buildFormMap(formMap);
+    setEditFormLoading(false);
+    setFormData(data[0].value[0].groupMembers);
+  };
+
   const closeViewObservationForm = () => setViewObservationForm(false);
+  const closeEditObservationForm = () => setEditObservationForm(false);
 
   useEffect(() => {
     buildResponseData();
+    console.log("props", props);
   }, []);
 
   return (
@@ -141,7 +160,9 @@ export function FormDisplayControl(props) {
                                     {formatDate(entry.encounterDate)}
                                   </a>
                                   {showEdit(entry.encounterUuid) && (
-                                    <i className="fa fa-pencil"></i>
+                                    <i className="fa fa-pencil" onClick={()=> {
+                                      openEditObservationForm(key, entry.encounterUuid)
+                                    }}></i>
                                   )}
                                 </span>
                                 <span className={"form-provider-text"}>
@@ -178,7 +199,9 @@ export function FormDisplayControl(props) {
                             {formatDate(value[0].encounterDate)}
                           </a>
                           {showEdit(value[0].encounterUuid) && (
-                            <i className="fa fa-pencil"></i>
+                            <i className="fa fa-pencil" onClick={() => {
+                              openEditObservationForm(key, value[0].encounterUuid);
+                            }}></i>
                           )}
                         </span>
                         <span
@@ -195,6 +218,14 @@ export function FormDisplayControl(props) {
                   isViewFormLoading={isViewFormLoading}
                   formName={formName}
                   closeViewObservationForm={closeViewObservationForm}
+                  formData={formData}
+                />
+              ) : null}
+              {showEditObservationForm ? (
+                <EditObservationForm
+                  isEditFormLoading={isEditFormLoading}
+                  formName={formName}
+                  closeEditObservationForm={closeEditObservationForm}
                   formData={formData}
                 />
               ) : null}
