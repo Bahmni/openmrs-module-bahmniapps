@@ -89,7 +89,7 @@
             <div class="fl savedSpecimens-text">
                 <span>{{getDisplayName(savedSpecimen)}}</span>
                 <span>#{{savedSpecimen.identifier}}</span>
-                <span>{{ 'BACTERIOLOGY_ADDED_ON_KEY' | translate }} {{savedSpecimen.dateCollected | date: 'dd MMM yy'}}</span>
+                <span>{{ 'BACTERIOLOGY_ADDED_ON_KEY' | translate }} {{savedSpecimen.dateCollected | date: 'dd MMM yyyy'}}</span>
             </div>
             <div class="fr savedSpecimens-action">
                 <i class="fa fa-pencil" ng-click="editSpecimen(savedSpecimen)"></i>

@@ -244,7 +244,7 @@ angular.module('bahmni.common.patientSearch')
                 newTab: true
             } : {url: $scope.search.searchType.forwardUrl, newTab: false};
             if ($scope.search.searchType.links) {
-                link = _.find($scope.search.searchType.links, {linkColumn: heading}) || _.find($scope.search.searchType.links, { linkColumn: heading.name }) || link;
+                link = _.find($scope.search.searchType.links, {linkColumn: heading}) || _.find($scope.search.searchType.links, {linkColumn: heading && heading.name}) || link;
             }
             if ($scope.search.searchType.targetedTab) {
                 link.targetedTab = $scope.search.searchType.targetedTab;

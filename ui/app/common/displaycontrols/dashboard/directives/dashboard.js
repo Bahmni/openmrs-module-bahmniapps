@@ -22,7 +22,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 $scope.allergyData = {
                     patient: $scope.patient,
                     provider: $rootScope.currentProvider,
-                    activeVisit: $scope.visitHistory.activeVisit,
+                    activeVisit: $scope.visitHistory ? $scope.visitHistory.activeVisit : null,
                     allergyControlConceptIdMap: appService.getAppDescriptor().getConfigValue("allergyControlConceptIdMap")
                 };
                 $scope.appService = appService;
