@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, {Fragment, useEffect} from "react";
 import propTypes from "prop-types";
 import { Close24 } from "@carbon/icons-react";
 import SaveAndCloseButtons from "../SaveAndCloseButtons/SaveAndCloseButtons.jsx";
@@ -14,25 +14,15 @@ import {
 import { FormattedMessage } from "react-intl";
 import { ArrowLeft } from "@carbon/icons-react/next";
 import { SelectReactions } from "../SelectReactions/SelectReactions";
+import { bahmniEncounter, getEncounterType } from "../../utils/PatientAllergiesControl/AllergyControlUtils";
+import { getCookies } from "../../utils/cookieHandler/cookieHandler";
 
 export function AddAllergy(props) {
-  const { onClose, allergens, reaction } = props;
+  const { patient, provider, onClose, allergens, reaction, severityOptions, onSave } = props;
   const [allergen, setAllergen] = React.useState({});
   const [reactions, setReactions] = React.useState([]);
   const [severity, setSeverity] = React.useState("");
   const [notes, setNotes] = React.useState("");
-  const mild = {
-    label: <FormattedMessage id={"MILD"} defaultMessage={"Mild"} />,
-    uuid: "1498AAAAA",
-  };
-  const moderate = {
-    label: <FormattedMessage id={"MODERATE"} defaultMessage={"Moderate"} />,
-    uuid: "1499AAAAA",
-  };
-  const severe = {
-    label: <FormattedMessage id={"SEVERE"} defaultMessage={"Severe"} />,
-    uuid: "1500AAAAA",
-  };
   const backToAllergenText = (
     <FormattedMessage
       id={"BACK_TO_ALLERGEN"}
@@ -46,12 +36,45 @@ export function AddAllergy(props) {
     />
   );
   const [isSaveEnabled, setIsSaveEnabled] = React.useState(false);
+  const [isSaveSuccess, setIsSaveSuccess] = React.useState(null);
   const clearForm = () => {
     setAllergen({});
     setReactions([]);
     setNotes("");
     setSeverity("");
   };
+  const saveAllergies = async (allergen, reactions, severity, notes) => {
+    const {uuid: consultationUuid} = await getEncounterType('Consultation');
+    const cookies = getCookies();
+    const {uuid:locationUuid} = JSON.parse(cookies["bahmni.user.location"])
+    const allergyReactions = reactions.map((reaction) => {
+        return {reaction: reaction}
+    });
+    const payload = {
+      locationUuid,
+      patientUuid: patient.uuid,
+      providers: [{uuid: provider.uuid}],
+      encounterTypeUuid: consultationUuid,
+      allergy:{
+        allergen:{
+          allergenKind: allergen.kind.toUpperCase(),
+          codedAllergen: allergen.uuid
+        },
+        reactions: allergyReactions,
+        severity: severity,
+        comment: notes
+      }
+    }
+    const response = await bahmniEncounter(payload);
+    if(response.status === 200){
+      setIsSaveSuccess(true);
+    }else{
+      setIsSaveSuccess(false);
+    }
+  }
+  useEffect(() => {
+    onSave(isSaveSuccess);
+  }, [isSaveSuccess]);
   return (
     <div className={"next-ui"}>
       <div className={"overlay-next-ui"}>
@@ -81,7 +104,7 @@ export function AddAllergy(props) {
                   selectedAllergen={allergen}
                   onChange={(reactions) => {
                     setReactions(reactions);
-                    setIsSaveEnabled(reactions && reactions.length > 0);
+                    setIsSaveEnabled(reactions && severity && reactions.length > 0);
                   }}
                 />
               </div>
@@ -92,26 +115,24 @@ export function AddAllergy(props) {
                     id={"SEVERITY"}
                     defaultMessage={"Severity"}
                   />
+                  <span className={"red-text"}>&nbsp;*</span>
                 </div>
                 <RadioButtonGroup
                   name={"severity"}
                   key={"Severity"}
                   onChange={(e) => {
                     setSeverity(e);
+                    setIsSaveEnabled(reactions && reactions.length > 0 && e);
                   }}
                 >
-                  <RadioButton
-                    labelText={mild.label}
-                    value={mild.uuid}
-                  ></RadioButton>
-                  <RadioButton
-                    labelText={moderate.label}
-                    value={moderate.uuid}
-                  ></RadioButton>
-                  <RadioButton
-                    labelText={severe.label}
-                    value={severe.uuid}
-                  ></RadioButton>
+                  {severityOptions.map((option) => {
+                    return (
+                      <RadioButton
+                        labelText={option.name}
+                        value={option.uuid}
+                      ></RadioButton>
+                    );
+                  })}
                 </RadioButtonGroup>
                 <TextArea
                   labelText={""}
@@ -126,8 +147,8 @@ export function AddAllergy(props) {
         </div>
         <div>
           <SaveAndCloseButtons
-            onSave={() => {
-              console.log("Saved", allergen, reactions, severity, notes);
+            onSave={async () => {
+              await saveAllergies( allergen, reactions, severity, notes);
             }}
             onClose={onClose}
             isSaveDisabled={!isSaveEnabled}
@@ -142,4 +163,8 @@ AddAllergy.propTypes = {
   onClose: propTypes.func.isRequired,
   allergens: propTypes.array.isRequired,
   reaction: propTypes.object.isRequired,
+  onSave: propTypes.func.isRequired,
+  patient: propTypes.object.isRequired,
+  provider: propTypes.object.isRequired,
+  severityOptions: propTypes.array.isRequired
 };

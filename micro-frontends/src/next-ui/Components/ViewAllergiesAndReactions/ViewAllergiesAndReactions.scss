@@ -1,0 +1,35 @@
+.allergies-row{
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 10px;
+}
+.allergies-row-heading{
+  font-weight: 600;
+  background-color: #F1F1F1;
+  padding: 0 8px;
+  grid-template-columns: 1fr 2fr 1fr 12px;
+  div{
+    padding: 10px 0;
+  }
+}
+.allergies-row-note{
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  gap: 5px;
+  svg{
+    min-width: 20px;
+  }
+}
+.bx--accordion__content{
+  padding: 0;
+}
+.allergies-accordion-item{
+  display: flex;
+  justify-content: space-between;
+  background-color: #EFF8FF;
+  align-items: center;
+}
+.allergy-provider{
+  padding: 10px;
+}

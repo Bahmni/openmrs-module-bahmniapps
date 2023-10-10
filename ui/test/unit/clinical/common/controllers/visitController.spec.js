@@ -23,12 +23,21 @@ describe('VisitController', function () {
     var state;
     var rootScope;
     var controller;
+    var allergyService;
     var stubAllPromise = function () {
         return {
             then: function () {
                 return stubAllPromise();
             }
         }
+    };
+    var allergiesMock = {
+        data: {
+            entry: [
+                {resource: { code: {coding:[{display: "Eggs"}]}}}
+            ],
+        },
+        status: 200
     };
 
     beforeEach(module('bahmni.clinical'));
@@ -56,6 +65,8 @@ describe('VisitController', function () {
         encounterService = jasmine.createSpyObj('encounterService', ['getEncountersForEncounterType']);
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         getEncounterPromise = specUtil.createServicePromise('getEncountersForEncounterType');
+        allergyService = jasmine.createSpyObj('allergyService', ['getAllergyForPatient']);
+        allergyService.getAllergyForPatient.and.returnValue(Promise.resolve(allergiesMock));
         encounterService.getEncountersForEncounterType.and.returnValue(getEncounterPromise);
         spyOn(clinicalAppConfigService, 'getVisitConfig').and.returnValue([]);
         spyOn(configurations, 'encounterConfig').and.returnValue({
@@ -91,7 +102,8 @@ describe('VisitController', function () {
                 visitHistory:[],
                 $stateParams: {},
                 locationService: locationService,
-                appService: appService
+                appService: appService,
+                allergyService: allergyService,
             });
     }]));
 
@@ -143,6 +155,12 @@ describe('VisitController', function () {
             var expectedStyle =  {"pending-result": true, "header": true};
             expect(scope.testResultClass(inputLine)).toEqual(expectedStyle);
         });
+
+        it('should handle on print event', function () {
+            scope.visitTabConfig.currentTab.printing = {templateUrl: 'common/views/visitTabPrint.html', observationsConcepts: ["WEIGHT"]}
+            scope.$broadcast("event:printVisitTab", {});
+            expect(allergyService.getAllergyForPatient).toHaveBeenCalled();
+        })
     });
 
 });

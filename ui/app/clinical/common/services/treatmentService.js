@@ -188,7 +188,7 @@ angular.module('bahmni.clinical')
             return filteredAttributes;
         };
 
-        var printSelectedPrescriptions = function (printPrescriptionFeatureConfig, drugOrdersForPrint, patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries) {
+        var printSelectedPrescriptions = function (printPrescriptionFeatureConfig, drugOrdersForPrint, patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries, allergiesData) {
             if (drugOrdersForPrint.length > 0) {
                 var encounterDrugOrderMap = Object.values(drugOrdersForPrint.reduce(function (orderMap, item) {
                     const providerUuid = item.provider.uuid;
@@ -216,7 +216,8 @@ angular.module('bahmni.clinical')
                     additionalInfo: additionalInfo,
                     diagnosesCodes: diagnosesCodes,
                     dispenserInfo: dispenserInfo,
-                    observationsEntries: observationsEntries
+                    observationsEntries: observationsEntries,
+                    allergies: allergiesData
                 };
                 printer.print(templateUrl, printData, fileName);
             }
