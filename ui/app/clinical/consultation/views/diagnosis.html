@@ -93,7 +93,6 @@
                         </div>
                         <div class="row" ng-if="hasActiveAlerts(diagnosis.alerts)" ng-repeat="alert in diagnosis.alerts">
                             <div class="col-body new-diagnosis-alert bg-{{alert && alert.indicator}}" ng-if="alert.isActive">
-                                <button ng-show="alert.indicator !== 'critical'" type="button" class="cdss-alert-close" ng-click="closeAlert(diagnosis, $index)">&times;</button>
                                   <div>
                                       <p>
                                           <span>

@@ -110,22 +110,6 @@ angular.module('bahmni.clinical')
                 });
             };
 
-            $scope.closeAlert = function (diagnosis, alertIndex) {
-                var index = $scope.consultation.newlyAddedDiagnoses.findIndex(
-                    function (d) {
-                        return d.codedAnswer.uuid === diagnosis.codedAnswer.uuid;
-                    }
-                );
-                if (index === -1) return;
-                var diagnosisBeingEdited = $scope.consultation.newlyAddedDiagnoses[index];
-                var alert = diagnosisBeingEdited.alerts[alertIndex];
-                alert.isActive = false;
-                var cdssAlertIndex = $rootScope.cdssAlerts.findIndex(function (a) {
-                    return a.uuid === alert.uuid;
-                });
-                $rootScope.cdssAlerts[cdssAlertIndex].isActive = false;
-            };
-
             var isPastDiagnosisFlagged = function () {
                 var pastDiagnoses = $scope.consultation.pastDiagnoses;
                 var alerts = $scope.cdssAlerts;
