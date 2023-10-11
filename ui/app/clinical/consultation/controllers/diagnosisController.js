@@ -174,8 +174,6 @@ angular.module('bahmni.clinical')
             };
 
             var alertsWatch = $rootScope.$watch('cdssAlerts', function () {
-                isPastDiagnosisFlagged();
-                getFlaggedSavedDiagnosisAlert();
                 getAlertForCurrentDiagnosis();
             });
 

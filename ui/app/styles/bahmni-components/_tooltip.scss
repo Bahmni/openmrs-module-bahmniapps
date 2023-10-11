@@ -91,7 +91,13 @@
 }
 
 .alert-detail {
-  display: block !important;
+  display: flex !important;
+  align-items: baseline !important;
+  > span {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+  }
   ul {
     list-style: initial !important;
     padding-left: 20px;
@@ -112,6 +118,9 @@
       list-style: circle !important;
     }
 
+  }
+  .cdss_alert_source {
+    margin-top: auto !important;
   }
 }
 

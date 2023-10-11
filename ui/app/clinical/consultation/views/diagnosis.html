@@ -102,9 +102,13 @@
                                           </span>
                                           {{alert.summary}}
                                       </p>
-                                      <p>
-                                        <span class="alert-detail" ng-bind-html="alert.detail"></span>
-                                      </p>
+                                        <div class="alert-detail">
+                                            <span ng-bind-html="alert.detail"></span>
+                                            <span>
+                                                {{ "CDSS_ACTION" | translate}}
+                                            </span>
+                                            <a href="{{alert.source.url}}" target="_blank" ng-show="alert.source.url" class="cdss_alert_source"><i class="fa fa-question-circle"></i></a>
+                                        </div>
                                   </div>
                               </div>
 

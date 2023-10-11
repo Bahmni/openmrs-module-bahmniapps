@@ -108,17 +108,14 @@ angular.module('bahmni.clinical')
 
         var createConditionResource = function (condition, patientUuid, isDiagnosis) {
             var conceptLimitIndex = isDiagnosis ? -1 : condition.concept.uuid.lastIndexOf('/');
-            var conditionStatus = condition.status || condition.certainty;
-            var activeConditions = ['CONFIRMED', 'PRESUMED', 'ACTIVE'];
-            var status = activeConditions.indexOf(conditionStatus) > -1 ? 'active' : 'inactive';
             var conditionResource = {
                 resourceType: 'Condition',
                 id: condition.uuid,
                 clinicalStatus: {
                     coding: [
                         {
-                            code: status,
-                            display: status.charAt(0).toUpperCase() + status.slice(1),
+                            code: 'active',
+                            display: 'Active',
                             system: 'http://terminology.hl7.org/CodeSystem/condition-clinical'
                         }
                     ]
@@ -188,9 +185,6 @@ angular.module('bahmni.clinical')
             var activeAlerts = newAlerts.map(function (item) {
                 item.isActive = true;
                 item.detail = marked.parse(item.detail);
-                if (item.source && item.source.url) {
-                    item.detail = item.detail + ' <a href="' + item.source.url + '" target="_blank" ng-show="alert.source.url" class="cdss_alert_source"><i class="fa fa-question-circle"></i></a>';
-                }
                 return item;
             });
             if (!currentAlerts || (currentAlerts && currentAlerts.length === 0)) {
