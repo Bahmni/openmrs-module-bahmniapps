@@ -2,7 +2,7 @@
 
 angular.module('bahmni.common.displaycontrol.dashboard')
 
-    .directive('dashboard', ['appService', '$bahmniCookieStore', '$rootScope', function (appService, $bahmniCookieStore, $rootScope) {
+    .directive('dashboard', ['appService', '$stateParams', '$bahmniCookieStore', '$rootScope', function (appService, $stateParams, $bahmniCookieStore, $rootScope) {
         var controller = function ($scope, $filter) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
