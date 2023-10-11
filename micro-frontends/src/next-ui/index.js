@@ -1,8 +1,6 @@
-import moment from "moment";
 import { React2AngularBridgeBuilder } from "../utils/bridge-builder";
 import { PatientAlergiesControl } from "./Containers/patientAlergies/PatientAlergiesControl";
 import { FormDisplayControl } from "./Containers/formDisplayControl/FormDisplayControl";
-import { defaultDateTimeFormat } from "./constants";
 
 const MODULE_NAME = "bahmni.mfe.nextUi";
 
@@ -22,7 +20,3 @@ builder.createComponentWithTranslationForwarding(
   "FormDisplayControl",
   FormDisplayControl
 );
-
-export const formatDate = (value, format = defaultDateTimeFormat) => {
-  return value ? moment(value).format(format) : value;
-};

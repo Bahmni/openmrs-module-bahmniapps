@@ -10,7 +10,7 @@ import { fetchFormData } from "../../utils/FormDisplayControl/FormUtils";
 import { buildFormMap } from "../../utils/FormDisplayControl/FormView";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import ViewObservationForm from "../../Components/ViewObservationForm/ViewObservationForm";
-import { formatDate } from "../../index";
+import { formatDate } from "../../utils/utils";
 
 /** NOTE: for reasons known only to react2angular,
  * any functions passed in as props will be undefined at the start, even ones inside other objects

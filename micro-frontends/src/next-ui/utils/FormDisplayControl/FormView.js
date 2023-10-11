@@ -2,7 +2,7 @@ import axios from "axios";
 import { ENCOUNTER_BASE_URL } from "../../constants";
 import { build } from "../FormDisplayControl/BuildFormView";
 import { defaultDateFormat } from "../../constants";
-import { formatDate } from "../../index";
+import { formatDate } from "../../utils/utils";
 
 var findByEncounterUuid = async (encounterUuid) => {
   const apiURL = ENCOUNTER_BASE_URL.replace("{encounterUuid}", encounterUuid);
