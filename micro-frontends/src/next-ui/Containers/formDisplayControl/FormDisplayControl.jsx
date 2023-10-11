@@ -107,12 +107,12 @@ export function FormDisplayControl(props) {
       encounterUuid: encounterUuid,
       hasNoHierarchy: props?.hostData?.hasNoHierarchy,
     };
-    setFormName(formName);
     setEditFormLoading(true);
-    setEditObservationForm(true);
     const data = await buildFormMap(formMap);
-    setEditFormLoading(false);
+    setFormName(formName);
     setFormData(data[0].value[0].groupMembers);
+    setEditFormLoading(false);
+    setEditObservationForm(true);
   };
 
   const closeViewObservationForm = () => setViewObservationForm(false);
@@ -120,7 +120,6 @@ export function FormDisplayControl(props) {
 
   useEffect(() => {
     buildResponseData();
-    console.log("props", props);
   }, []);
 
   return (
@@ -226,6 +225,7 @@ export function FormDisplayControl(props) {
                   isEditFormLoading={isEditFormLoading}
                   formName={formName}
                   closeEditObservationForm={closeEditObservationForm}
+                  patient={props?.hostData?.patient}
                   formData={formData}
                 />
               ) : null}

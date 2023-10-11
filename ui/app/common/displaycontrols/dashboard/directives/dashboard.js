@@ -12,16 +12,13 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             if ($scope.patient !== undefined) {
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
+                    patient: $scope.patient,
                     encounterUuid: $scope.activeEncounterUuid,
                     showEditForActiveEncounter: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.showEditForActiveEncounter || false,
                     numberOfVisits: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.maximumNoOfVisits || undefined,
                     hasNoHierarchy: $scope.hasNoHierarchy,
                     currentUser: $rootScope.currentUser
                 };
-            }
-            // console.log("formdata", $scope.formData);
-
-            if ($scope.patient !== undefined) {
                 $scope.allergyData = {
                     patient: $scope.patient,
                     provider: $rootScope.currentProvider,
