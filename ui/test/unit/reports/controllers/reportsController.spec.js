@@ -108,6 +108,82 @@ describe("ReportsController", function () {
         expect(rootScope.reportsRequiringDateRange[0].stopDate).toBe(rootScope.default.reportsRequiringDateRange.stopDate);
     });
 
+    it("should return date and month for the this month", function () {
+        var currentDate = new Date();
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
+        };
+
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+
+        expect(_.keys(rootScope.default.reportsRequiringDateRange).length).toBe(3);
+        expect((rootScope.default.reportsRequiringDateRange.dateRangeType).getDate()).toBe(1);
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getDate()).toBe(1);
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getMonth()).toBe(currentDate.getMonth());
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getDate()).toBe(currentDate.getDate());
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getMonth()).toBe(currentDate.getMonth());
+    });
+
+    it("should return date and month for the this quarter", function () {
+        var currentDate = new Date();
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: new Date(currentDate.getFullYear(), Math.floor(currentDate.getMonth() / 3) * 3, 1)
+        };
+
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+
+        expect(_.keys(rootScope.default.reportsRequiringDateRange).length).toBe(3);
+        expect((rootScope.default.reportsRequiringDateRange.dateRangeType).getDate()).toBe(1);
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getDate()).toBe(1);
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getMonth()).toBe(currentDate.getMonth());
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getDate()).toBe(currentDate.getDate());
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getMonth()).toBe(currentDate.getMonth());
+    });
+
+    it("should return date and month for the this year", function () {
+        var currentDate = new Date();
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: new Date(currentDate.getFullYear(), 0, 1)
+        };
+
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+
+        expect(_.keys(rootScope.default.reportsRequiringDateRange).length).toBe(3);
+        expect((rootScope.default.reportsRequiringDateRange.dateRangeType).getDate()).toBe(1);
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getDate()).toBe(1);
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getMonth()).toBe(0);
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getDate()).toBe(currentDate.getDate());
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getMonth()).toBe(currentDate.getMonth());
+    });
+
+    it("should return date and month for last 7 days", function () {
+        var currentDate = new Date();
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: new Date(new Date().setDate(currentDate.getDate() - 6))
+        };
+
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+
+        expect(_.keys(rootScope.default.reportsRequiringDateRange).length).toBe(3);
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getDate()).toBe(rootScope.default.reportsRequiringDateRange.startDate.getDate());
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getMonth()).toBe(currentDate.getMonth());
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getDate()).toBe(currentDate.getDate());
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getMonth()).toBe(currentDate.getMonth());
+    });
+
+    it("should return date and month for last 30 days", function () {
+        var currentDate = new Date();
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: new Date(new Date().setDate(currentDate.getDate() - 30))
+        };
+
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+
+        expect(_.keys(rootScope.default.reportsRequiringDateRange).length).toBe(3);
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getDate()).toBe(rootScope.default.reportsRequiringDateRange.startDate.getDate());
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getDate()).toBe(currentDate.getDate());
+    });
+
     it('should initialise all available formats when supportedFormats config is not specified', function () {
         mockAppDescriptor.getConfigValue.and.returnValue(undefined);
 
