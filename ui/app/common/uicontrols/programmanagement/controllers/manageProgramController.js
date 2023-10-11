@@ -17,6 +17,14 @@ angular.module('bahmni.common.uicontrols.programmanagment')
             var id = "#programEnrollmentContainer";
             const defaultProgram = programService.getDefaultProgram();
             const programRedirectionConfig = programService.getProgramRedirectionConfig();
+            const observationFormsConfig = programService.getObservationFormsConfig() || {};
+
+            $scope.observationFormData = {
+                patientUuid: $scope.patient.uuid,
+                showEditForActiveEncounter: observationFormsConfig.showEditForActiveEncounter || true,
+                numberOfVisits: observationFormsConfig.numberOfVisits || 10,
+                hasNoHierarchy: $scope.hasNoHierarchy
+            };
 
             var updateActiveProgramsList = function () {
                 spinner.forPromise(programService.getPatientPrograms($scope.patient.uuid).then(function (programs) {

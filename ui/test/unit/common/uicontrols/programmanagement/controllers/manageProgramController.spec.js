@@ -22,7 +22,7 @@ describe("ManageProgramController", function () {
         _provide = $provide;
         programService = jasmine.createSpyObj('programService', ['getPatientPrograms', 'getAllPrograms',
             'deletePatientState', 'getProgramAttributeTypes', 'updatePatientProgram',
-            'getDefaultProgram', 'getProgramRedirectionConfig', 'disableProgramOutcome']);
+            'getDefaultProgram', 'getProgramRedirectionConfig', 'disableProgramOutcome', 'getObservationFormsConfig']);
 
         programService.getDefaultProgram.and.callFake(function () {
             deferred = q.defer();

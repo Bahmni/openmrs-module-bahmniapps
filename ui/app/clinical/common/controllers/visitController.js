@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService',
-        function ($scope, $state, $rootScope, $q, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService) {
+    .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService', 'allergyService',
+        function ($scope, $state, $rootScope, $q, encounterService, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService, allergyService) {
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
@@ -93,6 +93,20 @@ angular.module('bahmni.clinical')
                         });
                         promises.push(promise);
                     }
+                    $scope.allergies = "";
+                    var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
+                        var allergies = response.data;
+                        var allergiesList = [];
+                        if (response.status === 200) {
+                            allergies.entry.forEach(function (allergy) {
+                                if (allergy.resource.code.coding) {
+                                    allergiesList.push(allergy.resource.code.coding[0].display);
+                                }
+                            });
+                        }
+                        $scope.allergies = allergiesList.join(", ");
+                    });
+                    promises.push(allergyPromise);
 
                     Promise.all(promises).then(function () {
                         $scope.additionalInfo = {};

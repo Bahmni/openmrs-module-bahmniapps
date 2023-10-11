@@ -8,9 +8,9 @@ import "./formDisplayControl.scss";
 import { FormattedMessage } from "react-intl";
 import { fetchFormData } from "../../utils/FormDisplayControl/FormUtils";
 import { buildFormMap } from "../../utils/FormDisplayControl/FormView";
-import moment from "moment";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import ViewObservationForm from "../../Components/ViewObservationForm/ViewObservationForm";
+import { formatDate } from "../../utils/utils";
 
 /** NOTE: for reasons known only to react2angular,
  * any functions passed in as props will be undefined at the start, even ones inside other objects
@@ -137,9 +137,7 @@ export function FormDisplayControl(props) {
                                     }
                                     className="form-link"
                                   >
-                                    {moment(entry.encounterDate).format(
-                                      "DD MMM YY hh:mm a"
-                                    )}
+                                    {formatDate(entry.encounterDate)}
                                   </a>
                                   {showEdit(entry.encounterUuid) && (
                                     <i className="fa fa-pencil"></i>
@@ -176,9 +174,7 @@ export function FormDisplayControl(props) {
                               )
                             }
                           >
-                            {moment(value[0].encounterDate).format(
-                              "DD MMM YY hh:mm a"
-                            )}
+                            {formatDate(value[0].encounterDate)}
                           </a>
                           {showEdit(value[0].encounterUuid) && (
                             <i className="fa fa-pencil"></i>
