@@ -1,12 +1,15 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', 'treatmentConfig', '$stateParams',
-        function ($scope, clinicalAppConfigService, treatmentConfig, $stateParams) {
+    .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', 'treatmentConfig', '$stateParams', 'appService', '$filter',
+        function ($scope, clinicalAppConfigService, treatmentConfig, $stateParams, appService, $filter) {
             var init = function () {
                 var drugOrderHistoryConfig = treatmentConfig.drugOrderHistoryConfig || {};
                 $scope.drugOrderHistoryView = drugOrderHistoryConfig.view || 'default';
                 $scope.tabConfigName = $stateParams.tabConfigName || 'default';
+                $scope.config = appService.getAppDescriptor().getConfigValue("displayControlsOnMedicationTab") || {};
+                var dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
+                $scope.sectionGroups = dashboard.getSections([]);
 
                 var initializeTreatments = function () {
                     $scope.consultation.newlyAddedTabTreatments = $scope.consultation.newlyAddedTabTreatments || {};

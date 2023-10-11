@@ -2,11 +2,12 @@
 
 angular.module('bahmni.common.displaycontrol.dashboard')
 
-    .directive('dashboard', ['appService', function (appService) {
+    .directive('dashboard', ['appService','$stateParams', function (appService, $stateParams) {
         var controller = function ($scope, $filter) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
             };
+            $scope.tabConfigName = $stateParams.tabConfigName || 'default';
 
             if ($scope.patient !== undefined) {
                 $scope.formData = {
