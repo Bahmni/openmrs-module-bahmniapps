@@ -672,4 +672,8 @@ describe('programService', function () {
         mockBackend.flush();
     });
 
+    it('test getObservationFormsConfig', function () {
+        expect(programService.getObservationFormsConfig()).toBeTruthy();
+    });
+
 });
