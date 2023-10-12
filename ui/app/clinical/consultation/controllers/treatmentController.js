@@ -7,7 +7,7 @@ angular.module('bahmni.clinical')
                 var drugOrderHistoryConfig = treatmentConfig.drugOrderHistoryConfig || {};
                 $scope.drugOrderHistoryView = drugOrderHistoryConfig.view || 'default';
                 $scope.tabConfigName = $stateParams.tabConfigName || 'default';
-                $scope.config = appService.getAppDescriptor().getConfigValue("displayControlsOnMedicationTab") || {};
+                $scope.config = appService.getAppDescriptor().getConfigValue("medicationTabDisplayControls") || {};
                 var dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
                 $scope.sectionGroups = dashboard.getSections([]);
 
