@@ -2,7 +2,7 @@
 
 describe("conceptSet", function () {
     var appService, spinner, conceptSetUiConfigService, contextChangeHandler, observationsService,
-        messagingService, compile, scope, conceptSetService, httpBackend,element, compiledElementScope;
+        messagingService, compile, scope, conceptSetService, httpBackend,element, compiledElementScope, $state;
 
     beforeEach(function () {
         module('bahmni.common.conceptSet');
@@ -21,6 +21,7 @@ describe("conceptSet", function () {
             $provide.value('messagingService', messagingService);
             $provide.value('conceptSetUiConfigService', conceptSetUiConfigService);
             $provide.value('spinner', spinner);
+            $provide.value('$state', $state);
         });
         inject(function ($compile, $rootScope, $httpBackend) {
             compile = $compile;
