@@ -19,6 +19,11 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     hasNoHierarchy: $scope.hasNoHierarchy,
                     currentUser: $rootScope.currentUser
                 };
+                $scope.formApi = {
+                    handleEditSave: function (observations, editableObservations) {
+                        $rootScope.$broadcast("event:handleFormsV2Edit", observations, editableObservations);
+                    }
+                };
                 $scope.allergyData = {
                     patient: $scope.patient,
                     provider: $rootScope.currentProvider,

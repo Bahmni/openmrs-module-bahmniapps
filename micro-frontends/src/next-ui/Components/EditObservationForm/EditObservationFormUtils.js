@@ -53,3 +53,24 @@ export const getFormByFormName = function (formList, formName, formVersion) {
         return form.name === formName && form.version === formVersion;
     });
 };
+
+export const getFormNameAndVersion = function (path) {
+    var formNameAndVersion = (path.split("/")[0]).split('.');
+    return {
+        formName: formNameAndVersion[0],
+        formVersion: formNameAndVersion[1]
+    };
+};
+
+export const setEditableObservations = (observation, formName, formVersion, editableObservations) => {
+    var observationFormField = observation.formFieldPath ? getFormNameAndVersion(observation.formFieldPath) : null;
+    if (observationFormField && observationFormField.formName === formName && observationFormField.formVersion == formVersion) {
+      editableObservations.push(observation);
+    }
+  
+    if (observation.groupMembers) {
+      observation.groupMembers.forEach(function (groupMember) {
+        setEditableObservations(groupMember, formName, formVersion, editableObservations);
+      });
+    }
+  }

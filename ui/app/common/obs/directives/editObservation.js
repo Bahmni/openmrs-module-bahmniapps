@@ -96,6 +96,13 @@ angular.module('bahmni.common.obs')
                     contextChangeHandler.reset();
                 };
 
+                $scope.$on("event:handleFormsV2Edit", function (event, observations, editableObservations) {
+                    $scope.observation = observations;
+                    spinner.forPromise(init());
+                    $scope.editableObservations = editableObservations;
+                    $scope.save();
+                });
+
                 $scope.save = function () {
                     if (!isFormValid()) {
                         $scope.$parent.$parent.$broadcast("event:errorsOnForm");

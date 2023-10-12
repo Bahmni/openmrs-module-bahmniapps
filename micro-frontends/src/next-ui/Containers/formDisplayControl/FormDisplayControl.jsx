@@ -81,10 +81,14 @@ export function FormDisplayControl(props) {
     }
   };
 
-  const showEdit = function (currentEncounterUUid) {
+  const showEdit = function (currentEncounterUuid) {
     return props?.hostData?.showEditForActiveEncounter
-      ? props?.hostData?.encounterUuid === currentEncounterUUid
+      ? props?.hostData?.encounterUuid === currentEncounterUuid
       : true;
+  };
+
+  const handleEditSave = (observations, editableObservations) => {
+    props?.hostApi?.handleEditSave(observations, editableObservations);
   };
 
   const openViewObservationForm = async (formName, encounterUuid) => {
@@ -108,15 +112,19 @@ export function FormDisplayControl(props) {
       hasNoHierarchy: props?.hostData?.hasNoHierarchy,
     };
     setEditFormLoading(true);
+    setEditObservationForm(true);
     const data = await buildFormMap(formMap);
     setFormName(formName);
-    setFormData(data[0].value[0].groupMembers);
     setEditFormLoading(false);
-    setEditObservationForm(true);
+    setFormData(data[0].value[0].groupMembers);
   };
 
   const closeViewObservationForm = () => setViewObservationForm(false);
-  const closeEditObservationForm = () => setEditObservationForm(false);
+  const closeEditObservationForm = () => {
+    setFormData([]);
+    setFormName("");
+    setEditObservationForm(false);
+  }
 
   useEffect(() => {
     buildResponseData();
@@ -226,7 +234,8 @@ export function FormDisplayControl(props) {
                   formName={formName}
                   closeEditObservationForm={closeEditObservationForm}
                   patient={props?.hostData?.patient}
-                  formData={formData}
+                  formData={formData != [] && formData}
+                  handleEditSave={handleEditSave}
                 />
               ) : null}
             </div>
@@ -239,4 +248,5 @@ export function FormDisplayControl(props) {
 
 FormDisplayControl.propTypes = {
   hostData: PropTypes.object.isRequired,
+  hostApi: PropTypes.object.isRequired,
 };
