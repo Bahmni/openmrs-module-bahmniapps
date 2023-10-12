@@ -79,7 +79,6 @@ angular.module('bahmni.common.conceptSet')
                     }
                 });
                 function checkGroupMembers (formObservation, consultationObservation) {
-                    console.log('inside checkGroupMembers');
                     var isGroupMemberChanged = [];
                     if (formObservation.groupMembers && formObservation.groupMembers.length > 0 && consultationObservation.groupMembers && consultationObservation.groupMembers.length > 0) {
                         for (var k = 0; k < formObservation.groupMembers.length; k++) {

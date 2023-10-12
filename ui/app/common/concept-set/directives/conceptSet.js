@@ -414,7 +414,6 @@ angular.module('bahmni.common.conceptSet')
                 });
 
                 $scope.$on('$stateChangeStart', function () {
-                    console.log('inside stateChangeStart');
 
                     if ($scope.obsForm && $scope.obsForm.$dirty) {
                         $state.dirtyConsultationForm = true;
