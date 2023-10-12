@@ -18,6 +18,7 @@ describe('Dashboard', function () {
         appService.getAppDescriptor.and.returnValue(appDescriptor);
         $provide.value('appService',appService);
         $provide.value('$bahmniCookieStore', mockBahmniCookieStore);
+        $provide.value('$stateParams', {tabConfigName: 'default'});
     }));
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope) {
