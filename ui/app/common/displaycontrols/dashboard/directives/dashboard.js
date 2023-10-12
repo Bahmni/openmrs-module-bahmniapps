@@ -2,11 +2,33 @@
 
 angular.module('bahmni.common.displaycontrol.dashboard')
 
-    .directive('dashboard', [function () {
+    .directive('dashboard', ['appService', '$stateParams', '$bahmniCookieStore', '$rootScope', function (appService, $stateParams, $bahmniCookieStore, $rootScope) {
         var controller = function ($scope, $filter) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
             };
+            $scope.tabConfigName = $stateParams.tabConfigName || 'default';
+
+            if ($scope.patient !== undefined) {
+                $scope.formData = {
+                    patientUuid: $scope.patient.uuid,
+                    encounterUuid: $scope.activeEncounterUuid,
+                    showEditForActiveEncounter: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.showEditForActiveEncounter || false,
+                    numberOfVisits: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.maximumNoOfVisits || undefined,
+                    hasNoHierarchy: $scope.hasNoHierarchy
+                };
+            }
+
+            if ($scope.patient !== undefined) {
+                $scope.allergyData = {
+                    patient: $scope.patient,
+                    provider: $rootScope.currentProvider,
+                    activeVisit: $scope.visitHistory ? $scope.visitHistory.activeVisit : null,
+                    allergyControlConceptIdMap: appService.getAppDescriptor().getConfigValue("allergyControlConceptIdMap")
+                };
+                $scope.appService = appService;
+                $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName);
+            }
 
             var checkDisplayType = function (sections, typeToCheck, index) {
                 return sections[index] && sections[index]['displayType'] && sections[index]['displayType'] === typeToCheck;
@@ -66,7 +88,8 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 visitHistory: "=",
                 activeVisitUuid: "=",
                 visitSummary: "=",
-                enrollment: "="
+                enrollment: "=",
+                activeEncounterUuid: "="
             }
         };
     }]);
