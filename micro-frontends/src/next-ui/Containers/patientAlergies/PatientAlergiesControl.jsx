@@ -106,7 +106,7 @@ export function PatientAlergiesControl(props) {
       });
       return {allergen, severity, reactions, note, provider, date};
     });
-    allergiesData.sort((a, b) => b.date - a.date);
+    allergiesData.sort((a, b) => b?.date - a?.date);
     setAllergiesAndReactions(allergiesData);
   }
 

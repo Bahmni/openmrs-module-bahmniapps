@@ -142,7 +142,6 @@ angular.module('bahmni.clinical')
                 var allergyPromise = allergyService.getAllergyForPatient($scope.patient.uuid).then(function (response) {
                     var allergies = response.data;
                     var allergiesList = [];
-                    console.log(allergies);
                     if (response.status === 200 && allergies.entry) {
                         allergies.entry.forEach(function (allergy) {
                             if (allergy.resource.code.coding) {
