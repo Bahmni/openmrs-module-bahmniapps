@@ -4,9 +4,9 @@
             <i class="fa fa-info-circle"></i>
             <span ng-bind-html="'BACTERIOLOGY_NOT_ALLOWED_IN_RETROSPECTIVE_MESSAGE'|translate"></span>
         </div>
-        <div ng-repeat="newSpecimen in newSpecimens track by $id(newSpecimen)" class="sample-container">
-            <form class="form" name="bacteriologyForm" alert-on-exit>
-                <section class="section-grid">
+        <form class="form" name="bacteriologyForm" alert-on-exit>
+            <div ng-repeat="newSpecimen in newSpecimens track by $id(newSpecimen)" class="sample-container">
+                  <section class="section-grid">
                     <div class="section-title-wrapper clearfix">
                         <h2 class="section-title fl">{{'BACTERIOLOGY_TAB_TITLE_KEY' | translate}}</h2>
                         <input type="button" value="{{'BACTERIOLOGY_BUTTON_CLEAR_KEY' | translate}}"
@@ -83,8 +83,8 @@
                         </div>
                     </div>
                 </section>
-            </form>
-        </div>
+            </div>
+        </form>
         <div ng-repeat="savedSpecimen in savedSpecimens" class="savedSpecimens-container clearfix" ng-hide="isOnDashboard">
             <div class="fl savedSpecimens-text">
                 <span>{{getDisplayName(savedSpecimen)}}</span>
