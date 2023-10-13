@@ -23,7 +23,6 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             };
             $scope.showComment = true;
             $scope.showSaveAndContinueButton = true;
-
             $scope.visitHistory = visitHistory;
             $scope.consultationBoardLink = clinicalAppConfigService.getConsultationBoardLink();
             $scope.showControlPanel = false;
@@ -351,6 +350,11 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 if ($scope.currentBoard === board) {
                     return;
                 }
+                $scope.isObservationPage = board.id == "bahmni.clinical.consultation.observations" ? true : false;
+                $scope.isSave = false;
+                if ($scope.currentBoard) {
+                    $scope.isSwitchedFromObservationToOtherPage = $scope.currentBoard.id == "bahmni.clinical.consultation.observations" ? true : false;
+                }
                 if (!isFormValid()) {
                     $scope.$parent.$broadcast("event:errorsOnForm");
                     return;
@@ -489,10 +493,32 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                 return valid;
             };
 
+            var checkForObservationPageError = function (shouldAllow, contxChange) {
+                if (!$scope.isSave) {
+                    if ($scope.isSwitchedFromObservationToOtherPage && !shouldAllow) {
+                        $scope.isErrorPresentInObsTab = true;
+                        shouldAllow = $scope.isErrorPresentInObsTab;
+                    } else if ($scope.isSwitchedFromObservationToOtherPage && shouldAllow) {
+                        $scope.isErrorPresentInObsTab = false;
+                    }
+                } else if ($scope.isSave) {
+                    if ($scope.isErrorPresentInObsTab) {
+                        if (!$scope.isObservationPage) {
+                            var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
+                            messagingService.showMessage('error', errorMessage);
+                        } else if ($scope.isObservationPage) {
+                            $scope.isErrorPresentInObsTab = false;
+                        }
+                    }
+                }
+                return shouldAllow;
+            };
+
             var isFormValid = function () {
                 var contxChange = contextChange();
                 var shouldAllow = contxChange["allow"];
                 var discontinuedDrugOrderValidationMessage = discontinuedDrugOrderValidation($scope.consultation.discontinuedDrugs);
+                shouldAllow = checkForObservationPageError(shouldAllow, contxChange);
                 if (!shouldAllow) {
                     var errorMessage = contxChange["errorMessage"] ? contxChange["errorMessage"] : "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}";
                     messagingService.showMessage('error', errorMessage);
@@ -517,7 +543,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
             });
 
             $scope.save = function (toStateConfig) {
-                if (isFormValid() && !isObservationFormValid()) {
+                $scope.isSave = true;
+                if (!isFormValid() || !isObservationFormValid() || $scope.isErrorPresentInObsTab) {
                     $scope.$parent.$parent.$broadcast("event:errorsOnForm");
                     return $q.when({});
                 }

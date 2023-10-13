@@ -55,7 +55,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on('$stateChangeStart', function () {
-                if ($scope.bacteriologyForm.$dirty) {
+                if ($scope.bacteriologyForm && $scope.bacteriologyForm.$dirty) {
                     $state.dirtyConsultationForm = true;
                 }
             });

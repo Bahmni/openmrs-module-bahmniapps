@@ -445,6 +445,117 @@ describe("ConsultationController", function () {
             scope.showBoard(1);
             expect(scope.currentBoard.label).toBe('Treatment');
         });
+
+        it("should allow the observation tab with mandatory error fields to navigate to other tabs", function () {
+            scope.consultation = { observations: [{
+                conceptNameToDisplay: "Cleft Lip/Palate -Operative Report",
+                groupMembers : [{
+                    conceptNameToDisplay: "Anesthesia Start Time",
+                    valueAsString : "2023-10-01 15:07:00"
+                },
+                {
+                    conceptNameToDisplay: "Surgical Finish Time",
+                    valueAsString : "2023-10-10 15:06:00"
+                }]
+            }]};
+            location = {
+                path: function () {
+                }, url: function (url) {
+                    return "/default/patient/somePatientUuid/dashboard/concept-set-group/observations";
+                }
+            };
+            var observationTab = {
+                "default": true,
+                "extensionPointId": "org.bahmni.clinical.consultation.board",
+                "icon": "fa-user-md",
+                "id": "bahmni.clinical.consultation.observations",
+                "isSelectedTab": true,
+                "label": "Observations",
+                "order": 1,
+                "requiredPrivilege": "app:clinical:observationTab",
+                "translationKey": "OBSERVATIONS_BOARD_LABEL_KEY",
+                "type": "link",
+                "url": "concept-set-group/observations"
+            };
+            boards.push(observationTab);
+            
+            createController();
+            
+            var expectedCurrentBoard = observationTab;
+            expectedCurrentBoard.isSelectedTab = true;
+            expect(scope.currentBoard.id).toBe('bahmni.clinical.consultation.observations');
+            scope.isErrorPresentInObsTab = true
+            scope.showBoard(2);
+            spyOn(scope.$parent, '$broadcast');
+            expect(scope.$parent.$broadcast).not.toHaveBeenCalledWith('event:errorsOnForm');
+            expect(messagingService.showMessage).not.toHaveBeenCalledWith('error');
+        });
+        it("should throw error for mandatory fields for observation tab while saving from any other tab", function () {
+            scope.consultation = { observations: [{
+                conceptNameToDisplay: "Cleft Lip/Palate -Operative Report",
+                groupMembers : [{
+                    conceptNameToDisplay: "Anesthesia Start Time",
+                    valueAsString : "2023-10-01 15:07:00"
+                },
+                {
+                    conceptNameToDisplay: "Surgical Finish Time",
+                    valueAsString : "2023-10-10 15:06:00"
+                }]
+            }]};
+            scope.$parent = {
+                $parent: {
+                    $broadcast: function () {
+                        return {};
+                    }
+                }
+            };
+            scope.isErrorPresentInObsTab = true
+            scope.save();
+            spyOn(scope.$parent.$parent, '$broadcast');
+            expect(scope.isSave).toBe(true);
+            expect(scope.isErrorPresentInObsTab).toBe(true);
+            expect(messagingService.showMessage).toHaveBeenCalled();
+        });
+        it("should be able to save the consultation after the mandatory issue fix", function () {
+            scope.consultation = { observations: [{
+                conceptNameToDisplay: "Cleft Lip/Palate -Operative Report",
+                groupMembers : [{
+                    conceptNameToDisplay: "Anesthesia Start Time",
+                    valueAsString : "2023-10-01 15:07:00"
+                },
+                {
+                    conceptNameToDisplay: "Surgical Finish Time",
+                    valueAsString : "2023-10-10 15:06:00"
+                }]
+            }]};
+            location = {
+                path: function () {
+                }, url: function (url) {
+                    return "/default/patient/somePatientUuid/dashboard/concept-set-group/observations";
+                }
+            };
+            var observationTab = {
+                "default": true,
+                "extensionPointId": "org.bahmni.clinical.consultation.board",
+                "icon": "fa-user-md",
+                "id": "bahmni.clinical.consultation.observations",
+                "isSelectedTab": true,
+                "label": "Observations",
+                "order": 1,
+                "requiredPrivilege": "app:clinical:observationTab",
+                "translationKey": "OBSERVATIONS_BOARD_LABEL_KEY",
+                "type": "link",
+                "url": "concept-set-group/observations"
+            };
+            boards.push(observationTab);
+            
+            createController();
+            scope.isErrorPresentInObsTab = true
+            scope.isObservationPage = true
+            scope.save();
+            expect(scope.isSave).toBe(true);
+            expect(scope.isErrorPresentInObsTab).toBe(false);
+        });
     });
 
     describe("showSaveConfirmDialogConfig", function () {
