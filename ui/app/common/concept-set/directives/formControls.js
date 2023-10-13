@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate',
-        function (formService, spinner, $timeout, $translate) {
+    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', '$state', 'messagingService', 'exitAlertService',
+        function (formService, spinner, $timeout, $translate, $state, messagingService, exitAlertService) {
             var loadedFormDetails = {};
             var loadedFormTranslations = {};
             var unMountReactContainer = function (formUuid) {
@@ -77,6 +77,71 @@ angular.module('bahmni.common.conceptSet')
                             }
                         }
                     }
+                });
+                function checkGroupMembers (formObservation, consultationObservation) {
+                    var isGroupMemberChanged = [];
+                    if (formObservation.groupMembers && formObservation.groupMembers.length > 0 && consultationObservation.groupMembers && consultationObservation.groupMembers.length > 0) {
+                        for (var formGroupIndex = 0; formGroupIndex < formObservation.groupMembers.length; formGroupIndex++) {
+                            var formGroupMember = formObservation.groupMembers[formGroupIndex];
+                            for (var consultationGroupIndex = 0; consultationGroupIndex < consultationObservation.groupMembers.length; consultationGroupIndex++) {
+                                var consultationGroupMember = consultationObservation.groupMembers[consultationGroupIndex];
+                                (formGroupMember.value && formGroupMember.value.uuid && consultationGroupMember.value && consultationGroupMember.value.uuid) ?
+                                isGroupMemberChanged[formGroupIndex] = (consultationGroupMember.value.uuid === formGroupMember.value.uuid) ? false : true :
+                                isGroupMemberChanged[formGroupIndex] = (consultationGroupMember.value === formGroupMember.value) ? false : true;
+                                if (!isGroupMemberChanged[formGroupIndex]) {
+                                    break;
+                                }
+                            }
+                        }
+                        return isGroupMemberChanged.includes(true) ? true : false;
+                    } else {
+                        if (formObservation.value && formObservation.value.uuid && consultationObservation.value && consultationObservation.value.uuid) {
+                            return (consultationObservation.value.uuid === formObservation.value.uuid) ? false : true;
+                        } else {
+                            return (consultationObservation.value === formObservation.value) ? false : true;
+                        }
+                    }
+                }
+
+                function checkFormChanges ($scope) {
+                    var isChanged = [];
+                    $scope.dirtyForm = false;
+                    if ($scope.form.observations.length > 0) {
+                        if ($scope.$parent.consultation.observations.length === 0) {
+                            return true;
+                        }
+                        for (var formIndex = 0; formIndex < $scope.form.observations.length; formIndex++) {
+                            var formObservation = $scope.form.observations[i];
+                            for (var consultationIndex = 0; consultationIndex < $scope.$parent.consultation.observations.length; consultationIndex++) {
+                                var consultationObservation = $scope.$parent.consultation.observations[consultationIndex];
+                                isChanged[formIndex] = checkGroupMembers(formObservation, consultationObservation);
+                                if (!isChanged[formIndex]) {
+                                    break;
+                                }
+                            }
+                        }
+                        return isChanged.includes(true);
+                    }
+                }
+
+                $scope.$on('$stateChangeStart', function (event, next, current) {
+                    var uuid = $state.params.patientUuid;
+                    var currentUuid = current.patientUuid;
+                    if ($scope.form.component) {
+                        var formObservations = $scope.form.component.getValue();
+                        $scope.form.observations = formObservations.observations;
+                    }
+                    if (!$scope.changesSaved) {
+                        $scope.dirtyForm = checkFormChanges($scope);
+                    }
+                    var isNavigating = exitAlertService.setIsNavigating(next, uuid, currentUuid);
+                    $state.dirtyConsultationForm = $state.discardChanges ? false : $scope.dirtyForm;
+                    exitAlertService.showExitAlert(isNavigating, $state.dirtyConsultationForm, event, next.spinnerToken);
+                });
+
+                $scope.$on("event:changes-saved", function () {
+                    $scope.changesSaved = true;
+                    $scope.dirtyForm = false;
                 });
             };
 

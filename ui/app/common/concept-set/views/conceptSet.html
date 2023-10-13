@@ -1,4 +1,4 @@
-<form novalidate>
+<form name="obsForm" novalidate alert-on-exit>
     <div ng-if="::showEmptyConceptSetMessage" class="placeholder-text">{{::conceptSetName}} {{ 'CONCEPT_NOT_FOUND_MESSAGE'|translate }}</div>
 
     <concept concept-set-required="conceptSetRequired" root-observation="rootObservation" patient="::patient"
