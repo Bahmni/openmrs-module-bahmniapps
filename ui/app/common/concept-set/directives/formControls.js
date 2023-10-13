@@ -81,14 +81,14 @@ angular.module('bahmni.common.conceptSet')
                 function checkGroupMembers (formObservation, consultationObservation) {
                     var isGroupMemberChanged = [];
                     if (formObservation.groupMembers && formObservation.groupMembers.length > 0 && consultationObservation.groupMembers && consultationObservation.groupMembers.length > 0) {
-                        for (var k = 0; k < formObservation.groupMembers.length; k++) {
-                            var formGroupMember = formObservation.groupMembers[k];
-                            for (var l = 0; l < consultationObservation.groupMembers.length; l++) {
-                                var consultationGroupMember = consultationObservation.groupMembers[l];
+                        for (var formGroupIndex = 0; formGroupIndex < formObservation.groupMembers.length; formGroupIndex++) {
+                            var formGroupMember = formObservation.groupMembers[formGroupIndex];
+                            for (var consultationGroupIndex = 0; consultationGroupIndex < consultationObservation.groupMembers.length; consultationGroupIndex++) {
+                                var consultationGroupMember = consultationObservation.groupMembers[consultationGroupIndex];
                                 (formGroupMember.value && formGroupMember.value.uuid && consultationGroupMember.value && consultationGroupMember.value.uuid) ?
-                                isGroupMemberChanged[k] = (consultationGroupMember.value.uuid === formGroupMember.value.uuid) ? false : true :
-                                isGroupMemberChanged[k] = (consultationGroupMember.value === formGroupMember.value) ? false : true;
-                                if (!isGroupMemberChanged[k]) {
+                                isGroupMemberChanged[formGroupIndex] = (consultationGroupMember.value.uuid === formGroupMember.value.uuid) ? false : true :
+                                isGroupMemberChanged[formGroupIndex] = (consultationGroupMember.value === formGroupMember.value) ? false : true;
+                                if (!isGroupMemberChanged[formGroupIndex]) {
                                     break;
                                 }
                             }
@@ -110,12 +110,12 @@ angular.module('bahmni.common.conceptSet')
                         if ($scope.$parent.consultation.observations.length === 0) {
                             return true;
                         }
-                        for (var i = 0; i < $scope.form.observations.length; i++) {
+                        for (var formIndex = 0; formIndex < $scope.form.observations.length; formIndex++) {
                             var formObservation = $scope.form.observations[i];
-                            for (var j = 0; j < $scope.$parent.consultation.observations.length; j++) {
-                                var consultationObservation = $scope.$parent.consultation.observations[j];
-                                isChanged[i] = checkGroupMembers(formObservation, consultationObservation);
-                                if (!isChanged[i]) {
+                            for (var consultationIndex = 0; consultationIndex < $scope.$parent.consultation.observations.length; consultationIndex++) {
+                                var consultationObservation = $scope.$parent.consultation.observations[consultationIndex];
+                                isChanged[formIndex] = checkGroupMembers(formObservation, consultationObservation);
+                                if (!isChanged[formIndex]) {
                                     break;
                                 }
                             }
