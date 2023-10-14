@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from "prop-types";
 import { getLocale } from "../i18n/utils";
-import { getAllForms, getFormByFormName ,getFormDetail, getFormTranslations, setEditableObservations } from "./EditObservationFormUtils";
+import { getAllForms, getFormByFormName ,getFormDetail, getFormTranslations, setEditableObservations, flattenObsToArray } from "./EditObservationFormUtils";
+import { findByEncounterUuid } from '../../utils/FormDisplayControl/FormView';
 import { Modal, Loading } from 'carbon-components-react';
 import { FormattedMessage } from "react-intl";
 import { I18nProvider } from '../i18n/I18nProvider';
@@ -16,27 +17,46 @@ const EditObservationForm = (props) => {
         />
     );
 
-    const { formName, closeEditObservationForm, isEditFormLoading, patient, formData, handleEditSave } = props;
+    const { 
+        formName, 
+        closeEditObservationForm, 
+        isEditFormLoading, 
+        patient, 
+        formData, 
+        encounterUuid, 
+        consultationMapper,
+        handleEditSave, 
+        handleSaveError 
+    } = props;
     const [loadedFormDetails, setLoadedFormDetails] = useState({});
     const [loadedFormTranslations, setLoadedFormTranslations] = useState({});
     const [updatedObservations, setUpdatedObservations] = useState(null);
+    const [encounter, setEncounter] = useState(null);
+    const nodeId = "form-renderer";
 
     const handleSave = () => {
-        handleEditSave(formData, updatedObservations.getValue());
+        const editedObservations = updatedObservations.getValue();
+        if(editedObservations.errors && editedObservations.errors.length > 0) {
+            handleSaveError(editedObservations.errors);
+            return;
+        }
+        encounter.observations = editedObservations.observations;
+        handleEditSave(encounter);
     };
 
     useEffect(() => {
         const fetchFormDetails = async () => {
-            if( formData.length > 0 ) {
+            if( formData.length > 0 && encounterUuid !== null) {
+                const encounterTransaction = await findByEncounterUuid(encounterUuid);
+                setEncounter(consultationMapper.map(encounterTransaction));
+                
                 const formVersion = "1";
                 const allForms = await getAllForms();
                 const observationForm = getFormByFormName(allForms, formName, formVersion);
                 const formUuid = observationForm.uuid;
                 const locale = getLocale();
-                
                 const validateForm = false;
                 const collapse = false;
-                const nodeId = "form-renderer";
 
                 if (!loadedFormDetails[formUuid]) {
                     var formDetails = await getFormDetail(formUuid);
@@ -46,7 +66,7 @@ const EditObservationForm = (props) => {
 
                     setLoadedFormDetails((prevDetails) => ({ ...prevDetails, [formUuid]: formDetails }));
                     
-                    const formParams = { formName, formVersion, locale, formUuid };
+                    const formParams = { formName: formName, formVersion: formVersion, locale: locale, formUuid: formUuid };
                     const formTranslations = await getFormTranslations(formDetails.translationsUrl, formParams);
                     setLoadedFormTranslations((prevTranslations) => ({ ...prevTranslations, [formUuid]: formTranslations }));
 
@@ -60,7 +80,7 @@ const EditObservationForm = (props) => {
             }
         };
         fetchFormDetails();
-    }, [formData, formName, loadedFormDetails, loadedFormTranslations, patient]);
+    }, [formData, formName, loadedFormDetails, loadedFormTranslations, patient, encounterUuid]);
 
     return (
         <>
@@ -80,7 +100,7 @@ const EditObservationForm = (props) => {
                             </div>
                         <section className="content-body">
                             <section className='section-body'>
-                                <div id="form-renderer"></div>
+                                <div id={nodeId}></div>
                             </section>
                         </section>
                         </div>
@@ -97,6 +117,9 @@ EditObservationForm.propTypes = {
     isEditFormLoading: PropTypes.bool.isRequired,
     patient: PropTypes.object.isRequired,
     formData: PropTypes.object.isRequired,
-    handleSave: PropTypes.func.isRequired
+    encounterUuid: PropTypes.string.isRequired,
+    consultationMapper: PropTypes.object.isRequired,
+    handleSave: PropTypes.func.isRequired,
+    handleSaveError: PropTypes.func.isRequired
   };
 export default EditObservationForm;

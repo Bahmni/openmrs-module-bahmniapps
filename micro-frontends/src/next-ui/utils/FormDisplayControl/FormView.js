@@ -4,7 +4,7 @@ import { build } from "../FormDisplayControl/BuildFormView";
 import { defaultDateFormat } from "../../constants";
 import { formatDate } from "../../utils/utils";
 
-var findByEncounterUuid = async (encounterUuid) => {
+export const findByEncounterUuid = async (encounterUuid) => {
   const apiURL = ENCOUNTER_BASE_URL.replace("{encounterUuid}", encounterUuid);
   const params = {
     includeAll: false,
@@ -12,7 +12,7 @@ var findByEncounterUuid = async (encounterUuid) => {
   try {
     const response = await axios.get(apiURL, { params });
     if (response.status === 200) {
-      return response.data.observations;
+      return response.data;
     }
     return [];
   } catch (error) {
@@ -29,9 +29,9 @@ var getFormNameAndVersion = function (path) {
 };
 
 export const buildFormMap = async (formMap) => {
-  var observations = await findByEncounterUuid(formMap.encounterUuid);
+  var encounter = await findByEncounterUuid(formMap.encounterUuid);
   var observationsForSelectedForm = [];
-  observations.forEach(function (obs) {
+  encounter.observations.forEach(function (obs) {
     if (obs.formFieldPath) {
       var obsFormNameAndVersion = getFormNameAndVersion(obs.formFieldPath);
       if (obsFormNameAndVersion.formName === formMap.formName) {

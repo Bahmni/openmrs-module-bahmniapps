@@ -2,7 +2,8 @@
 
 angular.module('bahmni.common.displaycontrol.dashboard')
 
-    .directive('dashboard', ['appService', function (appService) {
+    .directive('dashboard', ['appService', 'configurations', 'encounterService', 'spinner', 'auditLogService','messagingService', '$state',
+        function (appService, configurations, encounterService, spinner, auditLogService, messagingService, $state) {
         var controller = function ($scope, $filter, $rootScope) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
@@ -17,11 +18,25 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     showEditForActiveEncounter: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.showEditForActiveEncounter || false,
                     numberOfVisits: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.maximumNoOfVisits || undefined,
                     hasNoHierarchy: $scope.hasNoHierarchy,
-                    currentUser: $rootScope.currentUser
+                    currentUser: $rootScope.currentUser,
+                    consultationMapper: new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
+                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept())
                 };
                 $scope.formApi = {
-                    handleEditSave: function (observations, editableObservations) {
-                        $rootScope.$broadcast("event:handleFormsV2Edit", observations, editableObservations);
+                    handleEditSave: function (encounter) {
+                        spinner.forPromise(encounterService.create(encounter).then(function (savedResponse) {
+                            var messageParams = {
+                                encounterUuid: savedResponse.data.encounterUuid,
+                                encounterType: savedResponse.data.encounterType
+                            };
+                            auditLogService.log($scope.patient.uuid, "EDIT_ENCOUNTER", messageParams, "MODULE_LABEL_CLINICAL_KEY");
+                            $rootScope.hasVisitedConsultation = false;
+                            $state.go($state.current, {}, {reload: true});
+                            messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
+                        }));
+                    },
+                    handleSaveError: function (errors) {
+                        messagingService.showMessage('error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
                     }
                 };
                 $scope.allergyData = {

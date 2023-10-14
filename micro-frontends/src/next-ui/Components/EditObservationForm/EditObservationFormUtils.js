@@ -73,4 +73,15 @@ export const setEditableObservations = (observation, formName, formVersion, edit
         setEditableObservations(groupMember, formName, formVersion, editableObservations);
       });
     }
-  }
+};
+
+export const flattenObsToArray = function (observations) {
+  var flattened = [];
+  flattened.push(...observations);
+  observations.forEach(function (obs) {
+      if (obs.groupMembers && obs.groupMembers.length > 0) {
+          flattened.push.apply(...flattenObsToArray(obs.groupMembers));
+      }
+  });
+  return flattened;
+};

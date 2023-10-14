@@ -46,6 +46,7 @@ export function FormDisplayControl(props) {
   const [formData, setFormData] = useState([]);
   const [isViewFormLoading, setViewFormLoading] = useState(false);
   const [isEditFormLoading, setEditFormLoading] = useState(false);
+  const [encounterUuid, setEncounterUuid] = useState("");
 
   const buildResponseData = async () => {
     try {
@@ -87,8 +88,12 @@ export function FormDisplayControl(props) {
       : true;
   };
 
-  const handleEditSave = (observations, editableObservations) => {
-    props?.hostApi?.handleEditSave(observations, editableObservations);
+  const handleEditSave = (encounter) => {
+    props?.hostApi?.handleEditSave(encounter);
+  };
+
+  const handleSaveError = (errors) => {
+    props?.hostApi?.handleSaveError(errors);
   };
 
   const openViewObservationForm = async (formName, encounterUuid) => {
@@ -115,6 +120,7 @@ export function FormDisplayControl(props) {
     setEditObservationForm(true);
     const data = await buildFormMap(formMap);
     setFormName(formName);
+    setEncounterUuid(encounterUuid);
     setEditFormLoading(false);
     setFormData(data[0].value[0].groupMembers);
   };
@@ -235,7 +241,10 @@ export function FormDisplayControl(props) {
                   closeEditObservationForm={closeEditObservationForm}
                   patient={props?.hostData?.patient}
                   formData={formData != [] && formData}
+                  encounterUuid={encounterUuid}
+                  consultationMapper = {props?.hostData?.consultationMapper}
                   handleEditSave={handleEditSave}
+                  handleSaveError={handleSaveError}
                 />
               ) : null}
             </div>
