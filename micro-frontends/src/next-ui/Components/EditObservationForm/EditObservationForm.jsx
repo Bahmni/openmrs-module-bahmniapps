@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from "prop-types";
 import { getLocale } from "../i18n/utils";
-import { getAllForms, getFormByFormName ,getFormDetail, getFormTranslations, setEditableObservations, flattenObsToArray } from "./EditObservationFormUtils";
+import { getAllForms, getFormByFormName ,getFormDetail, getFormTranslations, setEditableObservations } from "./EditObservationFormUtils";
 import { findByEncounterUuid } from '../../utils/FormDisplayControl/FormView';
 import { Modal, Loading } from 'carbon-components-react';
 import { FormattedMessage } from "react-intl";
@@ -20,7 +20,8 @@ const EditObservationForm = (props) => {
     const { 
         formName, 
         closeEditObservationForm, 
-        isEditFormLoading, 
+        isEditFormLoading,
+        setEditFormLoading, 
         patient, 
         formData, 
         encounterUuid, 
@@ -28,6 +29,7 @@ const EditObservationForm = (props) => {
         handleEditSave, 
         handleSaveError 
     } = props;
+
     const [loadedFormDetails, setLoadedFormDetails] = useState({});
     const [loadedFormTranslations, setLoadedFormTranslations] = useState({});
     const [updatedObservations, setUpdatedObservations] = useState(null);
@@ -74,11 +76,12 @@ const EditObservationForm = (props) => {
                     formData.forEach(function (observation) {
                         setEditableObservations(observation, formName, formVersion, editableObservations);
                     });
-                    
+                    setEditFormLoading(false);
                     setUpdatedObservations(window.renderWithControls(formDetails, editableObservations, nodeId, collapse, patient, validateForm, locale, formTranslations));
                 }
             }
         };
+
         fetchFormDetails();
     }, [formData, formName, loadedFormDetails, loadedFormTranslations, patient, encounterUuid]);
 
@@ -121,5 +124,6 @@ EditObservationForm.propTypes = {
     consultationMapper: PropTypes.object.isRequired,
     handleSave: PropTypes.func.isRequired,
     handleSaveError: PropTypes.func.isRequired
-  };
+};
+
 export default EditObservationForm;

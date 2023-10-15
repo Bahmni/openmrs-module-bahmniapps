@@ -121,7 +121,6 @@ export function FormDisplayControl(props) {
     const data = await buildFormMap(formMap);
     setFormName(formName);
     setEncounterUuid(encounterUuid);
-    setEditFormLoading(false);
     setFormData(data[0].value[0].groupMembers);
   };
 
@@ -245,6 +244,7 @@ export function FormDisplayControl(props) {
                   consultationMapper = {props?.hostData?.consultationMapper}
                   handleEditSave={handleEditSave}
                   handleSaveError={handleSaveError}
+                  setEditFormLoading={setEditFormLoading}
                 />
               ) : null}
             </div>

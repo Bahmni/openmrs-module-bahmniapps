@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.dashboard')
-
-    .directive('dashboard', ['appService', 'configurations', 'encounterService', 'spinner', 'auditLogService','messagingService', '$state',
-        function (appService, configurations, encounterService, spinner, auditLogService, messagingService, $state) {
+    .directive('dashboard', ['appService', 'configurations', 'encounterService', 'spinner', 'auditLogService', 'messagingService', '$state', function (appService, configurations, encounterService, spinner, auditLogService, messagingService, $state) {
         var controller = function ($scope, $filter, $rootScope) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
