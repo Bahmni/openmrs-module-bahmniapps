@@ -240,6 +240,7 @@ export function FormDisplayControl(props) {
                   consultationMapper = {props?.hostData?.consultationMapper}
                   handleEditSave={handleEditSave}
                   setEditFormLoading={setEditFormLoading}
+                  editErrorMessage={props?.hostData?.editErrorMessage}
                 />
               ) : null}
             </div>
@@ -252,5 +253,5 @@ export function FormDisplayControl(props) {
 
 FormDisplayControl.propTypes = {
   hostData: PropTypes.object.isRequired,
-  hostApi: PropTypes.object.isRequired,
+  hostApi: PropTypes.object.isRequired
 };

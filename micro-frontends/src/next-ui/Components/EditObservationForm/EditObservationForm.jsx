@@ -13,7 +13,7 @@ import "./EditObservationForm.scss";
 const EditObservationForm = (props) => {
     const saveButtonText = (
         <FormattedMessage
-          id={"SAVE_BUTTON_TEXT"}
+          id={"SAVE"}
           defaultMessage={"SAVE"}
         />
     );
@@ -27,7 +27,8 @@ const EditObservationForm = (props) => {
         formData, 
         encounterUuid, 
         consultationMapper,
-        handleEditSave
+        handleEditSave,
+        editErrorMessage
     } = props;
 
     const [loadedFormDetails, setLoadedFormDetails] = useState({});
@@ -110,7 +111,7 @@ const EditObservationForm = (props) => {
                         </div>
                     }
                 </Modal>
-                { editError && <ErrorNotification setEditError={setEditError}/> }
+                { editError && <ErrorNotification setEditError={setEditError} errorMessage={editErrorMessage}/> }
             </I18nProvider>
         </>
     );

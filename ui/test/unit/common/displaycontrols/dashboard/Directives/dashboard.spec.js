@@ -24,6 +24,7 @@ describe('Dashboard', function () {
         $provide.value('auditLogService', {});
         $provide.value('messagingService', {});
         $provide.value('$state', {});
+        $provide.value('$translate', {});
         $provide.value('configurations', {
             dosageFrequencyConfig: function () {
                 return {

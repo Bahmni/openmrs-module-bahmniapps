@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.dashboard')
-    .directive('dashboard', ['appService', 'configurations', 'encounterService', 'spinner', 'auditLogService', 'messagingService', '$state', function (appService, configurations, encounterService, spinner, auditLogService, messagingService, $state) {
+    .directive('dashboard', ['appService', '$stateParams', '$bahmniCookieStore', 'configurations', 'encounterService', 'spinner', 'auditLogService', 'messagingService', '$state', '$translate', function (appService, $stateParams, $bahmniCookieStore, configurations, encounterService, spinner, auditLogService, messagingService, $state, $translate) {
         var controller = function ($scope, $filter, $rootScope) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
@@ -18,7 +18,8 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                     hasNoHierarchy: $scope.hasNoHierarchy,
                     currentUser: $rootScope.currentUser,
                     consultationMapper: new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
-                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept())
+                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept()),
+                    editErrorMessage: $translate.instant('CLINICAL_FORM_ERRORS_MESSAGE_KEY')
                 };
                 $scope.formApi = {
                     handleEditSave: function (encounter) {

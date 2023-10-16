@@ -15,5 +15,5 @@
   "SEARCH_REACTION": "Search Reaction",
   "COMMON_REACTIONS": "Common Reactions",
   "ALLERGEN": "Allergen",
-  "SAVE_BUTTON_TEXT": "Save"
+  "EDIT_FORM_ERROR_MESSAGE": "Please enter a value in the mandatory fields or correct the value in the highlighted fields to proceed"
 }
