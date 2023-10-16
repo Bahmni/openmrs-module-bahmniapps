@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("bahmni.clinical").directive("tooltip", ['$timeout', function ($timeout) {
+angular.module("bahmni.clinical").directive("tooltip", [function () {
     return {
         restrict: "A",
         link: function (scope, element, attrs) {
@@ -17,12 +17,9 @@ angular.module("bahmni.clinical").directive("tooltip", ['$timeout', function ($t
 
             element.on("mouseover", function () {
                 var isTextTruncated = element[0].scrollWidth > element[0].clientWidth;
-
-                $timeout(function () {
-                    if (isTextTruncated) {
-                        tooltip.show();
-                    }
-                }, 1500);
+                if (isTextTruncated) {
+                    tooltip.show();
+                }
             });
 
             element.on("mouseout", function () {
