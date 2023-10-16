@@ -107,7 +107,7 @@ angular.module('bahmni.ot')
                 $rootScope.$broadcast("event:providerView", providerToggle);
             };
 
-            var getBackGroundHSLColorFor = function (otCalendarColorAttribute) { 
+            var getBackGroundHSLColorFor = function (otCalendarColorAttribute) {
                 var hue = otCalendarColorAttribute && otCalendarColorAttribute.value ? otCalendarColorAttribute.value.toString() : "0";
                 return "hsl(" + hue + ", 100%, 90%)";
             };
