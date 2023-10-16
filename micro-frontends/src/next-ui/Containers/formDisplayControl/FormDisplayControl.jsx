@@ -92,10 +92,6 @@ export function FormDisplayControl(props) {
     props?.hostApi?.handleEditSave(encounter);
   };
 
-  const handleSaveError = (errors) => {
-    props?.hostApi?.handleSaveError(errors);
-  };
-
   const openViewObservationForm = async (formName, encounterUuid) => {
     var formMap = {
       formName: formName,
@@ -243,7 +239,6 @@ export function FormDisplayControl(props) {
                   encounterUuid={encounterUuid}
                   consultationMapper = {props?.hostData?.consultationMapper}
                   handleEditSave={handleEditSave}
-                  handleSaveError={handleSaveError}
                   setEditFormLoading={setEditFormLoading}
                 />
               ) : null}

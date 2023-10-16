@@ -32,9 +32,6 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                             $state.go($state.current, {}, {reload: true});
                             messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
                         }));
-                    },
-                    handleSaveError: function (errors) {
-                        messagingService.showMessage('error', "{{'CLINICAL_FORM_ERRORS_MESSAGE_KEY' | translate }}");
                     }
                 };
                 $scope.allergyData = {

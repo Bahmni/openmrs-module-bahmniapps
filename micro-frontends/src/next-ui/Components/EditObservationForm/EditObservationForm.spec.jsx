@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import EditObservationForm from './EditObservationForm';
 
 describe('EditObservationForm', () => {
@@ -98,7 +98,6 @@ describe('EditObservationForm', () => {
         "encounterUuid": "847d26db-d1db-4176-b704-f906dee15fad",
         "consultationMapper": {},
         "handleEditSave": jest.fn(),
-        "handleSaveError": jest.fn(),
         "closeEditObservationForm": jest.fn(),
         "handleSave": jest.fn()
     };

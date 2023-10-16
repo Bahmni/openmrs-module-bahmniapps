@@ -6,6 +6,7 @@ import { findByEncounterUuid } from '../../utils/FormDisplayControl/FormView';
 import { Modal, Loading } from 'carbon-components-react';
 import { FormattedMessage } from "react-intl";
 import { I18nProvider } from '../i18n/I18nProvider';
+import ErrorNotification from '../ErrorNotification/ErrorNotification';
 
 import "./EditObservationForm.scss";
 
@@ -26,20 +27,20 @@ const EditObservationForm = (props) => {
         formData, 
         encounterUuid, 
         consultationMapper,
-        handleEditSave, 
-        handleSaveError 
+        handleEditSave
     } = props;
 
     const [loadedFormDetails, setLoadedFormDetails] = useState({});
     const [loadedFormTranslations, setLoadedFormTranslations] = useState({});
     const [updatedObservations, setUpdatedObservations] = useState(null);
+    const [editError, setEditError] = useState(false);
     const [encounter, setEncounter] = useState(null);
     const nodeId = "form-renderer";
 
     const handleSave = () => {
         const editedObservations = updatedObservations.getValue();
         if(editedObservations.errors && editedObservations.errors.length > 0) {
-            handleSaveError(editedObservations.errors);
+            setEditError(true);
             return;
         }
         encounter.observations = editedObservations.observations;
@@ -109,6 +110,7 @@ const EditObservationForm = (props) => {
                         </div>
                     }
                 </Modal>
+                { editError && <ErrorNotification setEditError={setEditError}/> }
             </I18nProvider>
         </>
     );
