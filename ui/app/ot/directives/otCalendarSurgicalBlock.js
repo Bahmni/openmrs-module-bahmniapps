@@ -27,7 +27,7 @@ angular.module('bahmni.ot')
                     return attribute.attributeType.display === 'otCalendarColor';
                 });
 
-                var hue = otCalendarColorAttribute ? otCalendarColorAttribute.value.toString() : "0";
+                var hue = otCalendarColorAttribute && otCalendarColorAttribute.value ? otCalendarColorAttribute.value.toString() : "0";
                 var backgroundColor = "hsl(" + hue + ", 100%, 90%)";
                 var borderColor = "hsl(" + hue + ",100%, 60%)";
                 return {
