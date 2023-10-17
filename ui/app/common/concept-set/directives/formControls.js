@@ -1,8 +1,7 @@
 'use strict';
-
 angular.module('bahmni.common.conceptSet')
-    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', '$state', 'messagingService', 'exitAlertService',
-        function (formService, spinner, $timeout, $translate, $state, messagingService, exitAlertService) {
+    .directive('formControls', ['formService', 'spinner', '$timeout', '$translate', '$state', 'messagingService',
+        function (formService, spinner, $timeout, $translate, $state, messagingService) {
             var loadedFormDetails = {};
             var loadedFormTranslations = {};
             var unMountReactContainer = function (formUuid) {
@@ -11,7 +10,6 @@ angular.module('bahmni.common.conceptSet')
                     unMountForm(document.getElementById(formUuid));
                 });
             };
-
             var controller = function ($scope) {
                 var formUuid = $scope.form.formUuid;
                 var formVersion = $scope.form.formVersion;
@@ -20,7 +18,6 @@ angular.module('bahmni.common.conceptSet')
                 var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                 var validateForm = $scope.validateForm || false;
                 var locale = $translate.use();
-
                 if (!loadedFormDetails[formUuid]) {
                     spinner.forPromise(formService.getFormDetail(formUuid, { v: "custom:(resources:(value))" })
                         .then(function (response) {
@@ -56,7 +53,6 @@ angular.module('bahmni.common.conceptSet')
                         unMountReactContainer($scope.form.formUuid);
                     }, 0, false);
                 }
-
                 $scope.$watch('form.collapseInnerSections', function () {
                     var collapse = $scope.form.collapseInnerSections && $scope.form.collapseInnerSections.value;
                     if (loadedFormDetails[formUuid]) {
@@ -64,13 +60,11 @@ angular.module('bahmni.common.conceptSet')
                             formUuid, collapse, $scope.patient, validateForm, locale, loadedFormTranslations[formUuid]);
                     }
                 });
-
                 $scope.$on('$destroy', function () {
                     if ($scope.$parent.consultation && $scope.$parent.consultation.observationForms) {
                         if ($scope.form.component) {
                             var formObservations = $scope.form.component.getValue();
                             $scope.form.observations = formObservations.observations;
-
                             var hasError = formObservations.errors;
                             if (!_.isEmpty(hasError)) {
                                 $scope.form.isValid = false;
@@ -102,7 +96,6 @@ angular.module('bahmni.common.conceptSet')
                         }
                     }
                 }
-
                 function checkFormChanges ($scope) {
                     var isChanged = [];
                     $scope.dirtyForm = false;
@@ -111,7 +104,7 @@ angular.module('bahmni.common.conceptSet')
                             return true;
                         }
                         for (var formIndex = 0; formIndex < $scope.form.observations.length; formIndex++) {
-                            var formObservation = $scope.form.observations[i];
+                            var formObservation = $scope.form.observations[formIndex];
                             for (var consultationIndex = 0; consultationIndex < $scope.$parent.consultation.observations.length; consultationIndex++) {
                                 var consultationObservation = $scope.$parent.consultation.observations[consultationIndex];
                                 isChanged[formIndex] = checkGroupMembers(formObservation, consultationObservation);
@@ -123,7 +116,6 @@ angular.module('bahmni.common.conceptSet')
                         return isChanged.includes(true);
                     }
                 }
-
                 $scope.$on('$stateChangeStart', function (event, next, current) {
                     var uuid = $state.params.patientUuid;
                     var currentUuid = current.patientUuid;
@@ -134,17 +126,22 @@ angular.module('bahmni.common.conceptSet')
                     if (!$scope.changesSaved) {
                         $scope.dirtyForm = checkFormChanges($scope);
                     }
-                    var isNavigating = exitAlertService.setIsNavigating(next, uuid, currentUuid);
+                    $state.newPatientUuid = currentUuid;
+                    next.url.includes("/patient/search") ? $state.isPatientSearch = true : $state.isPatientSearch = false;
+                    var isNavigating = next.url.includes("/patient/search") || (uuid !== currentUuid);
                     $state.dirtyConsultationForm = $state.discardChanges ? false : $scope.dirtyForm;
-                    exitAlertService.showExitAlert(isNavigating, $state.dirtyConsultationForm, event, next.spinnerToken);
+                    if (isNavigating && $state.dirtyConsultationForm) {
+                        messagingService.showMessage('alert', "{{'ALERT_MESSAGE_ON_EXIT' | translate }}");
+                        $state.reviewButtonFocused = true;
+                        event.preventDefault();
+                        spinner.hide(next.spinnerToken);
+                    }
                 });
-
                 $scope.$on("event:changes-saved", function () {
                     $scope.changesSaved = true;
                     $scope.dirtyForm = false;
                 });
             };
-
             return {
                 restrict: 'E',
                 scope: {
