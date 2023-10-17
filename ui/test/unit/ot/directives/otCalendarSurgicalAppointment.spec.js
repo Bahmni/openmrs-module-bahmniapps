@@ -9,10 +9,11 @@ describe("otCalendarSurgicalAppointment", function () {
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.ot'));
     beforeEach(module('bahmni.ot', function ($provide) {
-        mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig','getConfigValue']);
+        mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig','getConfigValue', 'formatUrl']);
         mockAppDescriptor.getConfigValue.and.returnValue({
             link: "/bahmni/clinical/#/default/patient/{{patientUuid}}/dashboard"
         });
+        mockAppDescriptor.formatUrl.and.returnValue("formattedUrl");
         mockAppService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
         provide = $provide;

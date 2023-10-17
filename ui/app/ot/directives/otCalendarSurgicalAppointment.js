@@ -5,7 +5,7 @@ angular.module('bahmni.ot')
         var link = function ($scope) {
             $scope.attributes = surgicalAppointmentHelper.getSurgicalAttributes($scope.surgicalAppointment);
             var patientUrls = appService.getAppDescriptor().getConfigValue("patientDashboardUrl");
-            $scope.patientDashboardUrl = patientUrls && patientUrls.link && patientUrls.link.replace("{{patientUuid}}", $scope.surgicalAppointment.patient.uuid);
+            $scope.patientDashboardUrl = patientUrls && patientUrls.link && appService.getAppDescriptor().formatUrl(patientUrls.link, {'patientUuid': $scope.surgicalAppointment.patient.uuid});
             $scope.goToForwardUrl = function ($event) {
                 $window.open($scope.patientDashboardUrl);
                 $event.stopPropagation();
