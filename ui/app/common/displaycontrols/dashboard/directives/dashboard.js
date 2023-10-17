@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.dashboard')
-
-    .directive('dashboard', ['appService', '$stateParams', '$bahmniCookieStore', '$rootScope', function (appService, $stateParams, $bahmniCookieStore, $rootScope) {
-        var controller = function ($scope, $filter) {
+    .directive('dashboard', ['appService', '$stateParams', '$bahmniCookieStore', 'configurations', 'encounterService', 'spinner', 'auditLogService', 'messagingService', '$state', '$translate', function (appService, $stateParams, $bahmniCookieStore, configurations, encounterService, spinner, auditLogService, messagingService, $state, $translate) {
+        var controller = function ($scope, $filter, $rootScope) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
             };
@@ -12,14 +11,30 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             if ($scope.patient !== undefined) {
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
+                    patient: $scope.patient,
                     encounterUuid: $scope.activeEncounterUuid,
                     showEditForActiveEncounter: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.showEditForActiveEncounter || false,
                     numberOfVisits: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.maximumNoOfVisits || undefined,
-                    hasNoHierarchy: $scope.hasNoHierarchy
+                    hasNoHierarchy: $scope.hasNoHierarchy,
+                    currentUser: $rootScope.currentUser,
+                    consultationMapper: new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
+                    configurations.consultationNoteConcept(), configurations.labOrderNotesConcept()),
+                    editErrorMessage: $translate.instant('CLINICAL_FORM_ERRORS_MESSAGE_KEY')
                 };
-            }
-
-            if ($scope.patient !== undefined) {
+                $scope.formApi = {
+                    handleEditSave: function (encounter) {
+                        spinner.forPromise(encounterService.create(encounter).then(function (savedResponse) {
+                            var messageParams = {
+                                encounterUuid: savedResponse.data.encounterUuid,
+                                encounterType: savedResponse.data.encounterType
+                            };
+                            auditLogService.log($scope.patient.uuid, "EDIT_ENCOUNTER", messageParams, "MODULE_LABEL_CLINICAL_KEY");
+                            $rootScope.hasVisitedConsultation = false;
+                            $state.go($state.current, {}, {reload: true});
+                            messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
+                        }));
+                    }
+                };
                 $scope.allergyData = {
                     patient: $scope.patient,
                     provider: $rootScope.currentProvider,

@@ -19,6 +19,42 @@ describe('Dashboard', function () {
         $provide.value('appService',appService);
         $provide.value('$bahmniCookieStore', mockBahmniCookieStore);
         $provide.value('$stateParams', {tabConfigName: 'default'});
+        $provide.value('encounterService', {});
+        $provide.value('spinner', {});
+        $provide.value('auditLogService', {});
+        $provide.value('messagingService', {});
+        $provide.value('$state', {});
+        $provide.value('$translate', {});
+        $provide.value('configurations', {
+            dosageFrequencyConfig: function () {
+                return {
+                    then: function (callback) {
+                        callback({data: {results: []}});
+                    }
+                };
+            },
+            dosageInstructionConfig: function () {
+                return {
+                    then: function (callback) {
+                        callback({data: {results: []}});
+                    }
+                };
+            },
+            consultationNoteConcept: function () {
+                return {
+                    then: function (callback) {
+                        callback({data: {results: []}});
+                    }
+                };
+            },
+            labOrderNotesConcept: function () {
+                return {
+                    then: function (callback) {
+                        callback({data: {results: []}});
+                    }
+                };
+            }
+        });
     }));
 
     beforeEach(inject(function ($compile, $httpBackend, $rootScope) {
