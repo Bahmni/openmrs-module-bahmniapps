@@ -232,5 +232,52 @@ describe("BahmniObservation", function () {
             expect(compiledElementScope.bahmniObservations[0].value.length).toEqual(1);
             expect(compiledElementScope.bahmniObservations[0].value[0].concept.name).toEqual("Vitals");
         });
+
+        it("should only fetch observations from config specific to particular form", function () {
+            scope.patient = {uuid: '123'};
+            scope.config = {
+                conceptNames: [
+                    "Surgeon",
+                ],
+                filterByFormName: "form1",
+            };
+            scope.section = {};
+            scope.observations = [
+                {
+                    concept: {
+                        name: "Surgeon",
+                        shortName: "Surgeon"
+                    },
+                    formFieldPath: "form1"
+                },
+                {
+                    concept: {
+                        name: "Surgeon",
+                        shortName: "Surgeon"
+                    },
+                    formFieldPath: "form2"
+                },
+            ];
+            var formResponse = { 
+                    data: { 
+                        resources: [
+                            { value: 'form1' }, 
+                            { value: 'form2' }
+                        ] 
+                    } 
+                };
+            
+            mockBackend.expectGET("/openmrs/ws/rest/v1/bahmniie/form/allForms?v=custom:(version,name,uuid)").respond(formResponse);
+            mockBackend.expectGET('../common/displaycontrols/observation/views/observationDisplayControl.html').respond("<div>dummy</div>");
+
+            var element = $compile(simpleHtml)(scope);
+            scope.$digest();
+            var compiledElementScope = element.isolateScope();
+            scope.$digest();
+        
+            expect(compiledElementScope.bahmniObservations[0].value.length).toEqual(1);
+            expect(compiledElementScope.bahmniObservations[0].value[0].concept.name).toEqual("Surgeon");
+            expect(compiledElementScope.bahmniObservations[0].value[0].formFieldPath).toEqual("form1");
+        });
     });
 });

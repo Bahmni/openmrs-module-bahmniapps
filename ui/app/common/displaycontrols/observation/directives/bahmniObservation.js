@@ -39,6 +39,10 @@ angular.module('bahmni.common.displaycontrol.observation')
                         $scope.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(observations);
                     }
 
+                    if ($scope.config.filterByFormName) {
+                        fetchFormSpecificObs($scope.config.filterByFormName);
+                    }
+
                     if (_.isEmpty($scope.bahmniObservations)) {
                         $scope.noObsMessage = $translate.instant(Bahmni.Common.Constants.messageForNoObservation);
                         $scope.$emit("no-data-present-event");
@@ -60,6 +64,25 @@ angular.module('bahmni.common.displaycontrol.observation')
                     if (formObservations.length > 0) {
                         formRecordTreeBuildService.build($scope.bahmniObservations, $scope.hasNoHierarchy);
                     }
+                };
+
+                var fetchFormSpecificObs = function (formName) {
+                    var obsFormNameAndVersion;
+                    var getFormNameAndVersion = Bahmni.Common.Util.FormFieldPathUtil.getFormNameAndVersion;
+                    $scope.bahmniObservations.forEach(function (bahmniObs, index) {
+                        bahmniObs.value = _.filter(bahmniObs.value, function (observation) {
+                            if (observation.formFieldPath) {
+                                obsFormNameAndVersion = getFormNameAndVersion(observation.formFieldPath);
+                                if (formName.toUpperCase() === obsFormNameAndVersion.formName.toUpperCase()) {
+                                    return observation;
+                                }
+                            }
+                        });
+                        if (bahmniObs.value.length <= 0) {
+                            $scope.bahmniObservations.splice(index, 1);
+                        }
+                    });
+                    console.log("$scope.bahmniObservations -- ", $scope.bahmniObservations);
                 };
 
                 var fetchObservations = function () {
