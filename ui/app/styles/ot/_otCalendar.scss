@@ -58,6 +58,11 @@
       background-color: #EDF5FF;
     }
   }
+  .provider-location-name{
+    display: grid;
+    grid-auto-flow: column;
+    overflow-x: scroll;
+  }
   .notes-text{
     background-color: #FCF4D6;
     width: calc(100% - 10px);
@@ -101,7 +106,8 @@
         position: absolute;
         display: flex;
         left: 80px;
-        overflow: auto;
+        overflow-x: scroll;
+        overflow-y: auto;
         padding-bottom: 5px;
         top: 95px;
         width: calc(100% - 90px);
@@ -120,7 +126,6 @@
         float: left;
         position: relative;
         padding-bottom: 20px;
-        overflow: hidden;
         border-right: 0.5px solid lightgrey;
         .surgical-block {
           width: calc(100% - 10px);
@@ -289,14 +294,17 @@
     }
     .surgicalblock-patientname {
       font-weight: 600;
-      color: #000;
+      color: #5394fc;
       font-size: 14px;
       padding: 0 10px 3px 1px;
+      cursor: pointer;
     }
-    p {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .ot-day-text{
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 2px 0;
+      }
     }
   }
   .surgicalblock-surgeon-name {

@@ -177,6 +177,11 @@
       padding-right: 20px;
       margin: 2% 0;
     }
+    .ot-text {
+      p{
+        white-space: nowrap;
+      }
+    }
   }
   .surgicalblock-surgeon-name {
     word-break: break-word;

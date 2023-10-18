@@ -584,5 +584,89 @@ describe("SurgicalBlockMapper", function () {
         expect(mappedAttributes.notes.value).toBe("");
         expect(mappedAttributes.notes.surgicalAppointmentAttributeType.name).toBe("notes");
     });
+
+    it('should map primary Diagnosis', function () {
+        const diagnosisObs =[
+            {
+                "uuid": "3936e653-aa98-4f55-a6d8-1fe20834f9bf",
+                "display": "Coded Diagnosis: Hemarthrosis hand",
+                "concept": {
+                    "uuid": "81c7149b-3f10-11e4-adec-0800271c1b75",
+                    "display": "Coded Diagnosis",
+                },
+                "obsDatetime": "2023-10-17T01:27:03.000+0530",
+                "accessionNumber": null,
+                "obsGroup": {
+                    "uuid": "0e8b32d7-59ab-4950-b4e8-fb85e2bab5f1",
+                    "display": "Visit Diagnoses: Confirmed, Primary, Hemarthrosis hand, 0e8b32d7-59ab-4950-b4e8-fb85e2bab5f1, false",
+                },
+                "valueCodedName": null,
+                "groupMembers": null,
+                "comment": null,
+                "location": {
+                    "uuid": "0fbbeaf4-f3ea-11ed-a05b-0242ac120002",
+                    "display": "CURE Ethiopia",
+                },
+                "order": null,
+                "encounter": {
+                    "uuid": "c463dfa2-b957-48a4-b48b-f581bcabb47b",
+                    "display": "Consultation 10/17/2023",
+                },
+                "voided": false,
+                "value": {
+                    "uuid": "742f0998-243c-4c86-94f7-0b176b0daf93",
+                    "display": "Hemarthrosis hand",
+                    "name": {
+                        "display": "Hemarthrosis hand",
+                        "uuid": "1cf38f1c-6fd3-4ef5-8728-880bbb1b4deb",
+                        "name": "Hemarthrosis hand",
+                        "locale": "en",
+                        "localePreferred": true,
+                        "conceptNameType": "FULLY_SPECIFIED",
+                        "resourceVersion": "1.9"
+                    },
+                    "datatype": {
+                        "uuid": "8d4a4c94-c2cc-11de-8d13-0010c6dffd0f",
+                        "display": "N/A"
+                    },
+                    "conceptClass": {
+                        "uuid": "8d4918b0-c2cc-11de-8d13-0010c6dffd0f",
+                        "display": "Diagnosis",
+                    },
+                    "set": false,
+                    "version": null,
+                    "retired": false,
+                    "names": [
+                        {
+                            "uuid": "1cf38f1c-6fd3-4ef5-8728-880bbb1b4deb",
+                            "display": "Hemarthrosis hand",
+                        }
+                    ],
+                    "descriptions": [
+                        {
+                            "uuid": "cfe4b845-5acd-4152-a29d-b77a42b92023",
+                            "display": "Hemarthrosis hand",
+                        }
+                    ],
+                    "mappings": [
+                        {
+                            "uuid": "c08ee0bc-8fed-4b49-8690-b6594e24e37d",
+                            "display": "ICD 10 - WHO: M25.049 (Hemarthrosis hand)",
+                        }
+                    ],
+                    "answers": [],
+                    "setMembers": [],
+                    "attributes": [],
+                    "resourceVersion": "2.0"
+                },
+                "valueModifier": null,
+                "formFieldPath": null,
+                "formFieldNamespace": null,
+                "resourceVersion": "1.11"
+            }
+        ]
+        var diagnosisInfo = surgicalBlockMapper.mapPrimaryDiagnoses(diagnosisObs);
+        expect(diagnosisInfo).toEqual('Hemarthrosis hand');
+    })
 });
 

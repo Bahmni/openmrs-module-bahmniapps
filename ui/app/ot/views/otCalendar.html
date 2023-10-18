@@ -12,7 +12,7 @@
             <span ng-click="openDeletePopup()"><i class="fa fa-trash-o" aria-hidden="true"></i></span>
         </div>
         <hr/>
-        <div style="display: flex;">
+        <div class="provider-location-name" on-horizontal-scroll="ot-block-wrapper">
             <p ng-switch-default bindonce="locations" class="heading-cell" ng-repeat="location in locations">
                 {{location.name}}
             </p>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="ot-block-container">
-            <div class="ot-block-wrapper">
+            <div class="ot-block-wrapper" on-horizontal-scroll="provider-location-name">
             <div class="ot-block" ng-repeat="(blockIndex, blocks) in surgicalBlocks">
                 <div ng-repeat="row in ::rows" class="calendar-cell">
                 </div>
