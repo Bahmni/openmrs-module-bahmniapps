@@ -8,7 +8,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             };
             $scope.tabConfigName = $stateParams.tabConfigName || 'default';
 
-            if ($scope.patient !== undefined) {
+            if ($scope.patient !== undefined && $state.current.name === 'patient.dashboard.show') {
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
                     patient: $scope.patient,
