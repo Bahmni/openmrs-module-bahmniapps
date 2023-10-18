@@ -81,7 +81,7 @@ angular.module('bahmni.common.conceptSet')
                                 var consultationGroupMember = consultationObservation.groupMembers[consultationGroupIndex];
                                 (formGroupMember.value && formGroupMember.value.uuid && consultationGroupMember.value && consultationGroupMember.value.uuid) ?
                                 isGroupMemberChanged[formGroupIndex] = (consultationGroupMember.value.uuid === formGroupMember.value.uuid) ? false : true :
-                                isGroupMemberChanged[formGroupIndex] = (consultationGroupMember.value === formGroupMember.value) ? false : true;
+                                isGroupMemberChanged[formGroupIndex] = (consultationGroupMember.value === formGroupMember.value || (formGroupMember.value && consultationGroupMember.value === formGroupMember.value.toString())) ? false : true;
                                 if (!isGroupMemberChanged[formGroupIndex]) {
                                     break;
                                 }
