@@ -92,7 +92,7 @@ angular.module('bahmni.common.conceptSet')
                         if (formObservation.value && formObservation.value.uuid && consultationObservation.value && consultationObservation.value.uuid) {
                             return (consultationObservation.value.uuid === formObservation.value.uuid) ? false : true;
                         } else {
-                            return (consultationObservation.value === formObservation.value || (formObservation.value && consultationObservation.value === formObservation.value.toString())) ? false : true;
+                            return !((consultationObservation.value === formObservation.value || (formObservation.value && consultationObservation.value === formObservation.value.toString())));
                         }
                     }
                 }
