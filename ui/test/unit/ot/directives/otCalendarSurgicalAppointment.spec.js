@@ -3,15 +3,29 @@
 describe("otCalendarSurgicalAppointment", function () {
     var simpleHtml = '<ot-calendar-surgical-appointment ' +
         'surgical-appointment="surgicalAppointment" background-color="blockDimensions.color" height-per-min="heightPerMin" filter-params="filterParams"/>';
-    var $compile, element, mockBackend, scope, surgicalAppointment;
+
+    var $compile, window, element, mockBackend, scope, surgicalAppointment, provide, mockAppDescriptor, mockAppService;
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.ot'));
-    beforeEach(inject(function (_$compile_, $rootScope, $httpBackend) {
+    beforeEach(module('bahmni.ot', function ($provide) {
+        mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig','getConfigValue', 'formatUrl']);
+        mockAppDescriptor.getConfigValue.and.returnValue({
+            link: "/bahmni/clinical/#/default/patient/{{patientUuid}}/dashboard"
+        });
+        mockAppDescriptor.formatUrl.and.returnValue("formattedUrl");
+        mockAppService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        mockAppService.getAppDescriptor.and.returnValue(mockAppDescriptor);
+        provide = $provide;
+        $provide.value('appService', mockAppService);
+    }));
+    beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $window) {
         scope = $rootScope.$new();
         $compile = _$compile_;
         mockBackend = $httpBackend;
+        window = $window
     }));
+
     beforeEach(function () {
         surgicalAppointment = {
                 "patient": {uuid: "168eed46-dabe-4b7b-a0d6-a8e4ccc02510", display: "IQ100032 - Sri Rama"},
@@ -68,7 +82,6 @@ describe("otCalendarSurgicalAppointment", function () {
             statusList: []
         };
     });
-
 
     it("should set the attributes of the surgical appointment", function () {
         scope.surgicalAppointment = surgicalAppointment;

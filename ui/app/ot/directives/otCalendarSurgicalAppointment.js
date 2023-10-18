@@ -1,9 +1,15 @@
 'use strict';
 
 angular.module('bahmni.ot')
-    .directive('otCalendarSurgicalAppointment', ['surgicalAppointmentHelper', function (surgicalAppointmentHelper) {
+    .directive('otCalendarSurgicalAppointment', ['surgicalAppointmentHelper', 'appService', '$window', function (surgicalAppointmentHelper, appService, $window) {
         var link = function ($scope) {
             $scope.attributes = surgicalAppointmentHelper.getSurgicalAttributes($scope.surgicalAppointment);
+            var patientUrls = appService.getAppDescriptor().getConfigValue("patientDashboardUrl");
+            $scope.patientDashboardUrl = patientUrls && patientUrls.link && appService.getAppDescriptor().formatUrl(patientUrls.link, {'patientUuid': $scope.surgicalAppointment.patient.uuid});
+            $scope.goToForwardUrl = function ($event) {
+                $window.open($scope.patientDashboardUrl);
+                $event.stopPropagation();
+            };
 
             var hasAppointmentStatusInFilteredStatusList = function () {
                 if (_.isEmpty($scope.filterParams.statusList)) {
