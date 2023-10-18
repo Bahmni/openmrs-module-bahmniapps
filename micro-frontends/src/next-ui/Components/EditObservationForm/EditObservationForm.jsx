@@ -66,9 +66,14 @@ const EditObservationForm = (props) => {
                 const encounterTransaction = await findByEncounterUuid(encounterUuid);
                 setEncounter(consultationMapper.map(encounterTransaction));
                 
-                const latestForms = await getLatestPublishedForms();
-                const formVersion = getFormVersion(latestForms, formName);
-                const observationForm = getFormByFormName(latestForms, formName, formVersion);
+                var formVersion = "1";
+                const allForms = await getAllForms();
+                allForms.forEach(function (form) {
+                    if(form.name === formName && formVersion < form.version) {
+                        formVersion = form.version;
+                    }
+                });
+                const observationForm = getFormByFormName(allForms, formName, formVersion);
                 const formUuid = observationForm.uuid;
                 const locale = getLocale();
                 const validateForm = false;
