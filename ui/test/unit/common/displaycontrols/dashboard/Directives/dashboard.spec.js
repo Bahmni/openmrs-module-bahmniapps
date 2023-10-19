@@ -21,7 +21,6 @@ describe('Dashboard', function () {
         $provide.value('$stateParams', {tabConfigName: 'default'});
         $provide.value('encounterService', {});
         $provide.value('spinner', {});
-        $provide.value('auditLogService', {});
         $provide.value('messagingService', {});
         $provide.value('$state', {});
         $provide.value('$translate', {});

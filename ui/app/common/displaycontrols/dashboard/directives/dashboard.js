@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.dashboard')
-    .directive('dashboard', ['appService', '$stateParams', '$bahmniCookieStore', 'configurations', 'encounterService', 'spinner', 'auditLogService', 'messagingService', '$state', '$translate', function (appService, $stateParams, $bahmniCookieStore, configurations, encounterService, spinner, auditLogService, messagingService, $state, $translate) {
+    .directive('dashboard', ['appService', '$stateParams', '$bahmniCookieStore', 'configurations', 'encounterService', 'spinner', 'messagingService', '$state', '$translate', function (appService, $stateParams, $bahmniCookieStore, configurations, encounterService, spinner, messagingService, $state, $translate) {
         var controller = function ($scope, $filter, $rootScope) {
             var init = function () {
+                $scope.tabConfigName = $stateParams.tabConfigName || 'default';
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
             };
-            $scope.tabConfigName = $stateParams.tabConfigName || 'default';
 
-            if ($scope.patient !== undefined) {
+            if ($scope.patient !== undefined && $state.current.name.includes('patient.dashboard.show')) {
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
                     patient: $scope.patient,
@@ -24,11 +24,13 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 $scope.formApi = {
                     handleEditSave: function (encounter) {
                         spinner.forPromise(encounterService.create(encounter).then(function (savedResponse) {
-                            var messageParams = {
-                                encounterUuid: savedResponse.data.encounterUuid,
-                                encounterType: savedResponse.data.encounterType
-                            };
-                            auditLogService.log($scope.patient.uuid, "EDIT_ENCOUNTER", messageParams, "MODULE_LABEL_CLINICAL_KEY");
+                            // TODO: Fix the Audit log Service
+
+                            // var messageParams = {
+                            //     encounterUuid: savedResponse.data.encounterUuid,
+                            //     encounterType: savedResponse.data.encounterType
+                            // };
+                            // auditLogService.log($scope.patient.uuid, "EDIT_ENCOUNTER", messageParams, "MODULE_LABEL_CLINICAL_KEY");
                             $rootScope.hasVisitedConsultation = false;
                             $state.go($state.current, {}, {reload: true});
                             messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
