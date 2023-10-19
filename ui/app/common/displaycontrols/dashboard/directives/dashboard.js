@@ -24,7 +24,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 $scope.formApi = {
                     handleEditSave: function (encounter) {
                         spinner.forPromise(encounterService.create(encounter).then(function (savedResponse) {
-                            //TODO: Fix the Audit log Service
+                            // TODO: Fix the Audit log Service
 
                             // var messageParams = {
                             //     encounterUuid: savedResponse.data.encounterUuid,
