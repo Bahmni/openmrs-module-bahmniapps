@@ -24,10 +24,13 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                 $scope.formApi = {
                     handleEditSave: function (encounter) {
                         spinner.forPromise(encounterService.create(encounter).then(function (savedResponse) {
-                            var messageParams = {
-                                encounterUuid: savedResponse.data.encounterUuid,
-                                encounterType: savedResponse.data.encounterType
-                            };
+                            //TODO: Fix the Audit log Service
+
+                            // var messageParams = {
+                            //     encounterUuid: savedResponse.data.encounterUuid,
+                            //     encounterType: savedResponse.data.encounterType
+                            // };
+                            // auditLogService.log($scope.patient.uuid, "EDIT_ENCOUNTER", messageParams, "MODULE_LABEL_CLINICAL_KEY");
                             $rootScope.hasVisitedConsultation = false;
                             $state.go($state.current, {}, {reload: true});
                             messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
