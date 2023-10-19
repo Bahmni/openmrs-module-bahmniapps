@@ -7,7 +7,7 @@ import "../../../styles/common.scss";
 import "./formDisplayControl.scss";
 import { FormattedMessage } from "react-intl";
 import { fetchFormData } from "../../utils/FormDisplayControl/FormUtils";
-import { buildFormMap } from "../../utils/FormDisplayControl/FormView";
+import { buildFormMap, findByEncounterUuid } from "../../utils/FormDisplayControl/FormView";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import ViewObservationForm from "../../Components/ViewObservationForm/ViewObservationForm";
 import { formatDate } from "../../utils/utils";
@@ -114,10 +114,10 @@ export function FormDisplayControl(props) {
     };
     setEditFormLoading(true);
     setEditObservationForm(true);
-    const data = await buildFormMap(formMap);
+    const data = await findByEncounterUuid(formMap.encounterUuid)
     setFormName(formName);
     setEncounterUuid(encounterUuid);
-    setFormData(data[0].value[0].groupMembers);
+    setFormData(data.observations);
   };
 
   const closeViewObservationForm = () => setViewObservationForm(false);

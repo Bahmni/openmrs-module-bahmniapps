@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from "prop-types";
 import { getLocale } from "../i18n/utils";
-import { getAllForms, getFormByFormName ,getFormDetail, getFormTranslations, setEditableObservations } from "./EditObservationFormUtils";
+import { getLatestPublishedForms, getFormByFormName ,getFormDetail, getFormTranslations, setEditableObservations } from "./EditObservationFormUtils";
 import { findByEncounterUuid } from '../../utils/FormDisplayControl/FormView';
 import { Modal, Loading } from 'carbon-components-react';
 import { FormattedMessage } from "react-intl";
@@ -48,20 +48,25 @@ const EditObservationForm = (props) => {
         handleEditSave(encounter);
     };
 
+    const getFormVersion = (latestForms, formName) => {
+        var formVersion = 1;
+        latestForms.forEach(function (form) {
+            if(form.name === formName) {
+                formVersion = form.version;
+            }
+        });
+        return formVersion;
+    };
+
     useEffect(() => {
         const fetchFormDetails = async () => {
             if( formData.length > 0 && encounterUuid !== null) {
                 const encounterTransaction = await findByEncounterUuid(encounterUuid);
                 setEncounter(consultationMapper.map(encounterTransaction));
                 
-                var formVersion = "1";
-                const allForms = await getAllForms();
-                allForms.forEach(function (form) {
-                    if(form.name === formName && formVersion < form.version) {
-                        formVersion = form.version;
-                    }
-                });
-                const observationForm = getFormByFormName(allForms, formName, formVersion);
+                const latestForms = await getLatestPublishedForms();
+                const formVersion = getFormVersion(latestForms, formName);
+                const observationForm = getFormByFormName(latestForms, formName, formVersion);
                 const formUuid = observationForm.uuid;
                 const locale = getLocale();
                 const validateForm = false;
@@ -72,7 +77,6 @@ const EditObservationForm = (props) => {
                     const formDetailsAsString = formDetails.resources[0].value;
                     formDetails = JSON.parse(formDetailsAsString);
                     formDetails.version = formVersion;
-
                     setLoadedFormDetails((prevDetails) => ({ ...prevDetails, [formUuid]: formDetails }));
                     
                     const formParams = { formName: formName, formVersion: formVersion, locale: locale, formUuid: formUuid };
