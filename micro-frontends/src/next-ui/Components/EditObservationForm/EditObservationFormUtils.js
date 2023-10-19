@@ -1,10 +1,26 @@
 import axios from "axios";
-import { GET_FORMS_BASE_URL,FORM_TRANSLATIONS_URL,GET_ALL_FORMS_BASE_URL } from "../../constants"
+import { GET_FORMS_BASE_URL,FORM_TRANSLATIONS_URL,GET_ALL_FORMS_BASE_URL,LATEST_PUBLISHED_FORMS_URL } from "../../constants"
 
 export const getFormDetail = async (formUuid ) => {
     const apiURL = GET_FORMS_BASE_URL.replace('{formUuid}', formUuid);
     const params = { 
         v: "custom:(resources:(value))"
+    };
+    try {
+        const response = await axios.get(apiURL, { params });
+        if (response.status === 200) {
+            return response.data;
+        }
+        return [];
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+export const getLatestPublishedForms = async (encounterUuid) => {
+    const apiURL = LATEST_PUBLISHED_FORMS_URL;
+    const params = {
+        encounterUuid: encounterUuid,
     };
     try {
         const response = await axios.get(apiURL, { params });
@@ -25,7 +41,7 @@ export const getFormTranslations = async (url, form) => {
       }
   
       const response = await axios.get(FORM_TRANSLATIONS_URL, { params: form });
-      return response.data;
+      return response.data[0];
     } catch (error) {
       console.error('Error fetching form translations:', error);
       throw error;
