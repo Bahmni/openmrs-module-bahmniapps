@@ -70,7 +70,7 @@ angular.module('bahmni.ot')
                     return newVar;
                 });
                 $scope.filters.statusList = [];
-                $rootScope.providerToggle = appService.getAppDescriptor().getConfigValue("defaultViewAsSugeonBased");
+                $rootScope.providerToggle = appService.getAppDescriptor().getConfigValue("defaultViewAsSurgeonBased");
                 setAppointmentStatusList($scope.view);
                 return locationService.getAllByTag('Operation Theater').then(function (response) {
                     $scope.locations = response.data.results;
