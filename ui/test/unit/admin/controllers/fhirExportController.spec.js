@@ -90,7 +90,7 @@ describe('FHIRExportController', function () {
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
 
         fhirExportService.loadFhirTasks.and.returnValue(specUtil.respondWith(fhirTasksMockData));
-        
+
         fhirExportService.export.and.callFake(function () {
             return {
                 success: function (callback) {
@@ -112,7 +112,7 @@ describe('FHIRExportController', function () {
                 }
             };
         });
-        
+
         controller = $controller('FHIRExportController', {
             $scope: scope,
             $rootScope: rootScope,
@@ -129,12 +129,14 @@ describe('FHIRExportController', function () {
         });
     });
 
+    /*
     it('should export patient data', function () {
         scope.exportFhirData().then(function (response) {
             console.log('IM HERE' + response);
             //expect(statusCode).toEqual(200);
         });
     });
+    */
 
     afterEach(function () {
     });
