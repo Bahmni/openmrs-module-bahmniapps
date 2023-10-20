@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from "prop-types";
 import { getLocale } from "../i18n/utils";
-import { getLatestPublishedForms, getFormByFormName ,getFormDetail, getFormTranslations, setEditableObservations } from "./EditObservationFormUtils";
+import { getLatestPublishedForms, getFormByFormName ,getFormDetail, getFormTranslations } from "./EditObservationFormUtils";
 import { findByEncounterUuid } from '../../utils/FormDisplayControl/FormView';
 import { Modal, Loading } from 'carbon-components-react';
 import { FormattedMessage } from "react-intl";
@@ -83,12 +83,8 @@ const EditObservationForm = (props) => {
                     const formTranslations = await getFormTranslations(formDetails.translationsUrl, formParams);
                     setLoadedFormTranslations((prevTranslations) => ({ ...prevTranslations, [formUuid]: formTranslations }));
 
-                    var editableObservations = [];
-                    formData.forEach(function (observation) {
-                        setEditableObservations(observation, formName, formVersion, editableObservations);
-                    });
                     setEditFormLoading(false);
-                    setUpdatedObservations(window.renderWithControls(formDetails, editableObservations, nodeId, collapse, patient, validateForm, locale, formTranslations));
+                    setUpdatedObservations(window.renderWithControls(formDetails, formData, nodeId, collapse, patient, validateForm, locale, formTranslations));
                 }
             }
         };

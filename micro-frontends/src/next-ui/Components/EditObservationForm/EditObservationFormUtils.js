@@ -77,27 +77,3 @@ export const getFormNameAndVersion = function (path) {
         formVersion: formNameAndVersion[1]
     };
 };
-
-export const setEditableObservations = (observation, formName, formVersion, editableObservations) => {
-    var observationFormField = observation.formFieldPath ? getFormNameAndVersion(observation.formFieldPath) : null;
-    if (observationFormField && observationFormField.formName === formName && observationFormField.formVersion == formVersion) {
-      editableObservations.push(observation);
-    }
-  
-    if (observation.groupMembers) {
-      observation.groupMembers.forEach(function (groupMember) {
-        setEditableObservations(groupMember, formName, formVersion, editableObservations);
-      });
-    }
-};
-
-export const flattenObsToArray = function (observations) {
-  var flattened = [];
-  flattened.push(...observations);
-  observations.forEach(function (obs) {
-      if (obs.groupMembers && obs.groupMembers.length > 0) {
-          flattened.push.apply(...flattenObsToArray(obs.groupMembers));
-      }
-  });
-  return flattened;
-};
