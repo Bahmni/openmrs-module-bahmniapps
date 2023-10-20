@@ -17,5 +17,7 @@
   "FILTER_BUTTON_LABEL": "Filter",
   "AUDIT_LOG_TABLE_HEADER_LABEL": "Audit Log Events",
   "NO_NAVIGATION_LINKS_AVAILABLE_MESSAGE": "No navigation links available.",
-  "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Please select a value from auto complete"
+  "SELECT_VALUE_FROM_AUTOCOMPLETE_DEFAULT_MESSAGE": "Please select a value from auto complete",
+  "EXPORT_PATIENT_REQUEST_SUBMITTED": "Request submitted. Click 'Refresh' to check status of export.",
+  "EXPORT_PATIENT_REQUEST_SUBMIT_ERROR": "FHIR export request failed. Please contact administrator."
 }
