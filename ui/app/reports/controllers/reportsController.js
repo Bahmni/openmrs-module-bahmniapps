@@ -1,9 +1,12 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, auditLogService) {
+    .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', '$translate', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, $translate, auditLogService) {
         const format = _.values(reportService.getAvailableFormats());
         const dateRange = _.values(reportService.getAvailableDateRange());
+        var getTranslatedMessage = function (key) {
+            return $translate.instant(key);
+        };
 
         $scope.uploader = new FileUploader({
             url: Bahmni.Common.Constants.uploadReportTemplateUrl,
@@ -78,7 +81,7 @@ angular.module('bahmni.reports')
                     msg.push("end date");
                 }
                 if ((report.startDate > report.stopDate)) {
-                    msg.push("start date can not be greater than stop date");
+                    msg.push(getTranslatedMessage("START_DATE_CANNOT_GREATER_THAN_STOP_DATE"));
                 }
                 messagingService.showMessage("error", "Please select the " + msg.join(" and "));
                 return false;
