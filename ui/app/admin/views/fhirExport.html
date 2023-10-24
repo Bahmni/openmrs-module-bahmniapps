@@ -39,6 +39,7 @@
         <table id="auditLogTable">
             <thead>
             <tr>
+                <th>User Name</th>
                 <th>Export Triggered Date</th>
                 <th>Start Date</th>
                 <th>End Date</th>
@@ -49,9 +50,10 @@
             </thead>
             <tbody>
             <tr ng-repeat="task in tasks">
+                <td style="text-align: center;">{{extractAttribute(task.resource.input,'FHIR Export User Name','valueString')}}</td>
                 <td style="text-align: center;">{{task.resource.authoredOn}}</td>
-                <td style="text-align: center;">{{extractAttribute(task.resource.input,'FHIR Export Start Date','valueString')}}</td>
-                <td style="text-align: center;">{{extractAttribute(task.resource.input,'FHIR Export End Date','valueString')}}</td>
+                <td style="text-align: center;">{{extractAttribute(task.resource.input,'FHIR Export Start Date','valueString') | bahmniDate}}</td>
+                <td style="text-align: center;">{{extractAttribute(task.resource.input,'FHIR Export End Date','valueString') | bahmniDate}}</td>
                 <td style="text-align: center;"><input type="checkbox" ng-disabled="true" ng-checked="extractBoolean(task.resource.input,'FHIR Export Anonymise Flag','valueString')"/></td>
                 <td style="text-align: center;">{{task.resource.status}}</td>
                 <td style="text-align: center;"><a ng-if="task.resource.status==='completed' && task.resource.output && task.resource.output[0].valueString" href="{{task.resource.output[0].valueString}}">Download</a></td>
