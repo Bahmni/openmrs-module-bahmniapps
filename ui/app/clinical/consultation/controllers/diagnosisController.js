@@ -87,27 +87,37 @@ angular.module('bahmni.clinical')
                          change to say array[index]=newObj instead array.splice(index,1,newObj);
                          */
                         $scope.consultation.newlyAddedDiagnoses.splice(index, 1, diagnosis);
-                        if ($scope.cdssEnabled) {
-                            var consultationData = angular.copy($scope.consultation);
-                            consultationData.patient = $scope.patient;
-
-                            consultationData.draftDrug = consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : [];
-                            var params = cdssService.createParams(consultationData);
-                            cdssService.createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
-                            .then(function (bundle) {
-                                var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
-                                cdssAlerts.then(function (response) {
-                                    var alerts = response.data;
-
-                                    $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts);
-                                    isPastDiagnosisFlagged();
-                                    getFlaggedSavedDiagnosisAlert();
-                                    getAlertForCurrentDiagnosis();
-                                });
-                            });
-                        }
+                        getAlerts();
                     }
                 };
+            };
+
+            function getAlerts () {
+                if ($scope.cdssEnabled) {
+                    var consultationData = angular.copy($scope.consultation);
+                    consultationData.patient = $scope.patient;
+
+                    consultationData.draftDrug = consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : [];
+                    var params = cdssService.createParams(consultationData);
+                    cdssService.createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
+                .then(function (bundle) {
+                    var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
+                    cdssAlerts.then(function (response) {
+                        var alerts = response.data;
+
+                        $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts);
+                        isPastDiagnosisFlagged();
+                        getFlaggedSavedDiagnosisAlert();
+                        getAlertForCurrentDiagnosis();
+                    });
+                });
+                }
+            }
+
+            $scope.hasActiveAlerts = function (alerts) {
+                return alerts.some(function (alert) {
+                    return alert.isActive;
+                });
             };
 
             var isPastDiagnosisFlagged = function () {
@@ -165,9 +175,6 @@ angular.module('bahmni.clinical')
                             });
                         });
                         if (diagnosis.alerts) {
-                            diagnosis.alerts.forEach(function (item) {
-                                item.isActive = true;
-                            });
                             diagnosis.alerts = cdssService.sortInteractionsByStatus(diagnosis.alerts);
                             flaggedDiagnoses.push(diagnosis);
                         }
@@ -175,6 +182,14 @@ angular.module('bahmni.clinical')
                 }
                 return flaggedDiagnoses;
             };
+
+            var alertsWatch = $rootScope.$watch('cdssAlerts', function () {
+                getAlertForCurrentDiagnosis();
+            });
+
+            $scope.$on('$destroy', function () {
+                alertsWatch();
+            });
 
             var addPlaceHolderDiagnosis = function () {
                 var diagnosis = new Bahmni.Common.Domain.Diagnosis('');
@@ -396,6 +411,7 @@ angular.module('bahmni.clinical')
             $scope.removeObservation = function (index) {
                 if (index >= 0) {
                     $scope.consultation.newlyAddedDiagnoses.splice(index, 1);
+                    getAlerts();
                 }
             };
 

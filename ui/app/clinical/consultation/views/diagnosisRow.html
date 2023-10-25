@@ -4,7 +4,7 @@
             <span ng-if="diagnosis.alerts && diagnosis.alerts.length > 0">
                  <button class="cdss-alert-icon button-alert" bm-pop-over-trigger>
                     <i class="fa cdss-icon-medication"
-                    ng-class="{'fa-exclamation-triangle critical': diagnosis.alerts[0].indicator == 'critical','fa-exclamation-triangle warning' : diagnosis.alerts[0].indicator == 'warning', 'fa-info-circle info': diagnosis.alerts[0].indicator == 'info'}"
+                    ng-class="{'fa-exclamation-circle critical': diagnosis.alerts[0].indicator == 'critical','fa-exclamation-triangle warning' : diagnosis.alerts[0].indicator == 'warning', 'fa-info-circle info': diagnosis.alerts[0].indicator == 'info'}"
                     >
                     </i>
                 </button>

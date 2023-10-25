@@ -259,54 +259,10 @@
                     </div>
                 </article>
 
-                <h3 ng-show="newAlerts && newAlerts.length > 0" class="cdss-alerts">
-                    {{"CDSS_" + newAlerts[0].indicator.toUpperCase() | translate}}
-                </h3>
-
-                    <div ng-repeat="cdssAlert in newAlerts" class="cdss-alert" ng-class="{'alert-danger': cdssAlert.indicator == 'critical', 'alert-warning': cdssAlert.indicator == 'warning', 'alert-info': cdssAlert.indicator == 'info'}" ng-show="cdssAlert">
-                        <button ng-disabled="cdssAlert.indicator == 'critical'" type="button" class="cdss-alert-close" ng-click="closeAlert($index)">&times;</button>
-                        <i class="fa" aria-hidden="true"
-                             ng-class="{'fa-exclamation-triangle': cdssAlert.indicator == 'critical' || cdssAlert.indicator == 'warning', 'fa-info-circle': cdssAlert.indicator == 'info'}"
-                        ></i>
-                        <div>
-                            <div ng-click="toggleAlertDetails($index)" class="cdss-alert-summary">
-                                <span>{{cdssAlert.summary}}</span>
-                                <i class="fa" ng-class="{'fa-angle-up': cdssAlert.showDetails, 'fa-angle-down': !cdssAlert.showDetails}"></i>
-                            </div>
-                            <div class="cdss-alert-details" ng-show="cdssAlert.showDetails">
-                                <span>{{cdssAlert.detail}}</span>
-                                <a href="{{cdssAlert.source.url}}" target="_blank" ng-show="cdssAlert.source.url">
-                                    <i class="fa fa-question-circle"></i>
-                                </a>
-                                <div ng-show="cdssAlert.indicator == 'critical'">
-                                     <div class="field-value">
-                                    <select id="cdss-audit" class="form-field cdss-alert-close-reason"
-                                            ng-options="item as (item | translate) for item in auditOptions()"
-                                            ng-model="treatment.audit"
-                                            >
-                                        <option disabled value="">{{"CDSS_ALERT_DISMISSAL_REASON" | translate}}</option>
-                                    </select>
-                                </div>
-                              
-                                <div class="operations fr clearfix" ng-show="cdssAlert.indicator == 'critical'">
-                                    <button 
-                                    ng-click="submitAudit($index)"
-                                    ng-disabled="!treatment.audit"
-                                     type="button" class="icon-button secondary-button" tabindex="1" title="Dismiss">
-                                        {{'CDSS_ALERT_DISMISS' | translate}}
-                                    </button>
-                                </div>
-                                </div>
-                               
-                            </div>
-                            
-                        </div>
-                    </div>
-
 
                 <div class="operations fr clearfix">
                     <button class="add-drug-btn secondary-button fl" type="submit" accesskey="{{ ::treatmentConfig.translate('addAccessKey', 'MEDICATION_ADD_ACCESS_KEY') }}"
-                            ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug || (newAlerts && newAlerts[0].indicator == 'critical')">
+                            ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug">
                              <span ng-bind-html="::treatmentConfig.translate('add', 'MEDICATION_ADD_BUTTON_LABEL')">
                         </span>
                     </button>

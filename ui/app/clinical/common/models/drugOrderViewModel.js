@@ -707,7 +707,6 @@ Bahmni.Clinical.DrugOrderViewModel.createFromContract = function (drugOrderRespo
         };
     }
     viewModel.instructions = administrationInstructions.instructions;
-    viewModel.audit = drugOrderResponse.audit;
     viewModel.additionalInstructions = administrationInstructions.additionalInstructions;
     viewModel.quantity = drugOrderResponse.dosingInstructions.quantity;
     viewModel.quantityUnit = drugOrderResponse.dosingInstructions.quantityUnits;

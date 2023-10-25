@@ -380,25 +380,30 @@ angular.module('bahmni.clinical')
                 if ($scope.treatment.isBeingEdited) {
                     treatments.splice($scope.treatment.currentIndex, 1, $scope.treatment);
                     $scope.treatment.isBeingEdited = false;
+                    getAlerts();
                 } else {
                     treatments.push($scope.treatment);
-                    if ($scope.cdssEnabled) {
-                        var consultationData = angular.copy($scope.consultation);
-                        consultationData.patient = $scope.patient;
-
-                        consultationData.draftDrug = consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : [];
-                        var params = cdssService.createParams(consultationData);
-                        cdssService.createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
-                        .then(function (bundle) {
-                            var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
-                            cdssAlerts.then(function (response) {
-                                var alerts = response.data;
-                                $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts);
-                            });
-                        });
-                    }
+                    getAlerts();
                 }
                 $scope.clearForm();
+            };
+
+            var getAlerts = function () {
+                if ($scope.cdssEnabled) {
+                    var consultationData = angular.copy($scope.consultation);
+                    consultationData.patient = $scope.patient;
+
+                    consultationData.draftDrug = consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : [];
+                    var params = cdssService.createParams(consultationData);
+                    cdssService.createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
+                    .then(function (bundle) {
+                        var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
+                        cdssAlerts.then(function (response) {
+                            var alerts = response.data;
+                            $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts);
+                        });
+                    });
+                }
             };
 
             var getConflictingDrugOrder = function (newDrugOrder) {

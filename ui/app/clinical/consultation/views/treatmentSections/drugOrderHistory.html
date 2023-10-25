@@ -24,7 +24,7 @@
                                     <div class="drug-dosage relative">
                                         <strong class="drug-name popover-trigger">
                                             <button ng-if="drugOrder.alerts && drugOrder.alerts.length > 0" class="cdss-alert-icon" bm-pop-over-trigger>
-                                                <i class="fa cdss-icon-medication fa-exclamation-triangle">
+                                                <i class="fa cdss-icon-medication fa-exclamation-circle">
                                                 </i>
                                             </button>
                                             {{drugOrder.getDisplayName()}}
@@ -109,6 +109,7 @@
                                         </article>
                                     </div>
                                 </div>
+                                <cdss-alert-row alerts="drugOrder.alerts" consultation="consultation"></cdss-alert-row>
 							</li>
 						</ul>
 					</div>
