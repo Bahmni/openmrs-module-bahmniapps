@@ -7,6 +7,7 @@ angular.module("bahmni.clinical").directive("tooltip", ['$timeout', function ($t
             var tooltip = angular.element('<div class="tooltip">');
             tooltip.text(attrs.tooltip);
 
+            // Tooltip element element positioning absolutely next to the element that the directive is applied to.
             tooltip.css({
                 position: "absolute",
                 top: element.offset().top + element.height(),
