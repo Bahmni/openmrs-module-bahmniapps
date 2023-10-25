@@ -19,15 +19,17 @@ angular.module("bahmni.clinical").directive("tooltip", ['$timeout', function ($t
             element.on("mouseover", function () {
                 var isTextTruncated = element[0].scrollWidth > element[0].clientWidth;
 
-                $timeout(function () {
-                    if (isTextTruncated) {
+                var isStillOnElement = true;
+                var timeoutId = $timeout(function () {
+                    if (isStillOnElement && isTextTruncated) {
                         tooltip.show();
                     }
-                }, 1500);
-            });
-
-            element.on("mouseout", function () {
-                tooltip.hide();
+                }, 1000);
+                element.on("mouseout", function () {
+                    isStillOnElement = false;
+                    clearTimeout(timeoutId);
+                    tooltip.hide();
+                });
             });
 
             angular.element(document.body).append(tooltip);
