@@ -129,15 +129,6 @@ describe('FHIRExportController', function () {
         });
     });
 
-    /*
-    it('should export patient data', function () {
-        scope.exportFhirData().then(function (response) {
-            console.log('IM HERE' + response);
-            //expect(statusCode).toEqual(200);
-        });
-    });
-    */
-
     afterEach(function () {
     });
 });
