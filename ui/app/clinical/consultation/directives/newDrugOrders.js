@@ -86,42 +86,11 @@ angular.module('bahmni.clinical')
                 $scope.bulkDurationData.bulkDuration += stepperValue;
             };
 
-            var getPreviousDrugAlerts = function () {
-                var treatments = $scope.treatments;
-                treatments && treatments.forEach(function (drugOrder) {
-                    var drug = drugOrder.drug;
-                    var cdssAlerts = $rootScope.cdssAlerts;
-                    if (!cdssAlerts) return;
-                    drugOrder.alerts = cdssAlerts.filter(function (cdssAlert) {
-                        return cdssAlert.referenceMedications.some(function (
-                        referenceMedication
-                      ) {
-                            return referenceMedication.coding.some(function (
-                          coding
-                        ) {
-                                return (
-                            drug.uuid === coding.code ||
-                            drug.name === coding.display
-                                );
-                            });
-                        });
-                    });
+            $scope.hasActiveAlerts = function (alerts) {
+                return alerts.some(function (alert) {
+                    return alert.isActive;
                 });
             };
-
-            var cdssAlertsWatcher = $rootScope.$watch('cdssAlerts', function () {
-                getPreviousDrugAlerts();
-            });
-
-            $scope.$watch('treatments', function (newValue, oldValue) {
-                if ((newValue && newValue) && newValue.length !== oldValue.length) {
-                    getPreviousDrugAlerts();
-                }
-            }, true);
-
-            $scope.$on('$destroy', function () {
-                cdssAlertsWatcher();
-            });
         };
         return {
             templateUrl: 'consultation/views/newDrugOrders.html',

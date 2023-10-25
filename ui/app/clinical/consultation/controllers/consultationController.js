@@ -515,6 +515,23 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return $q.when({});
                 }
                 try {
+                    var alerts = $rootScope.cdssAlerts || [];
+                    var activeAlerts = alerts.filter(function (alert) {
+                        return alert.indicator === 'critical' && alert.isActive;
+                    });
+
+                    if (activeAlerts && activeAlerts.length > 0) {
+                        messagingService.showMessage("error", "{{ 'CDSS_ALERT_SAVE_ERROR' | translate }}");
+                        return $q.when({});
+                    }
+
+                    var cdssAlerts = $rootScope.cdssAlerts;
+                    cdssAlerts && cdssAlerts.forEach(
+                        function (cdssAlert) {
+                            cdssAlert.isActive = false;
+                        }
+                    );
+                    $rootScope.cdssAlerts = cdssAlerts;
                     preSaveEvents();
                     return spinner.forPromise($q.all([preSavePromise(),
                         encounterService.getEncounterType($state.params.programUuid, sessionService.getLoginLocationUuid())]).then(function (results) {

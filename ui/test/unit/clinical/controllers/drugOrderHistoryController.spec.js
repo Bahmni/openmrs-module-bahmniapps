@@ -208,54 +208,6 @@ describe("DrugOrderHistoryController", function () {
         });
     });
 
-    describe("CDSS alerts", function () {
-        it("should add alerts property to drugs whose code matches CDSS alerts", function () {
-            rootScope.cdssAlerts = [
-                {
-                    "indicator": "critical",
-                    "summary": "Critical Alert",
-                    "detail": "This is a critical alert",
-                    "referenceMedications": [
-                        {
-                            "coding": [
-                                {
-                                    "code": "8d7e3dc0-f4ad-400c-9468-5a9e2b1f4230",
-                                    "display": "Methylprednisolone 2ml"
-
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ];
-            initController();
-            expect(scope.consultation.drugOrderGroups[0].drugOrders[0].alerts.length).toBe(1);
-        });
-
-        it("should not add alerts property to drugs whose code does not match CDSS alerts", function () {
-            rootScope.cdssAlerts = [
-                {
-                    "indicator": "critical",
-                    "summary": "Critical Alert",
-                    "detail": "This is a critical alert",
-                    "referenceMedications": [
-                        {
-                            "coding": [
-                                {
-                                    "code": "12345",
-                                    "display": "Methylprednisolone 4ml"
-
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ];
-            initController();
-            expect(scope.consultation.drugOrderGroups[0].drugOrders[1].alerts.length).toBe(0);
-        });
-    });
-
     activeDrugOrder = {
         "uuid": "activeOrderUuid",
         "action": "NEW",

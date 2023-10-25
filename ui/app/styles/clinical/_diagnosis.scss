@@ -84,6 +84,7 @@
 
     .col1 {
         width: 100%;
+        position: relative;
 
         input[type="text"] {
             min-width: 160px;
@@ -356,25 +357,26 @@
             .alert-button {
                 padding: 8px 7px !important;
                 height: 100% !important;
-                .critical {
-                    color: #ff0000;
-                }
-                .warning {
-                    color: #ffa500;
-                }
-
-                .info {
-                    color: #00a3e0;
+                .icon {
+                    color: #8e8e8e;
                 }
             }
         }
 
         .new-diagnosis-alert {
             padding: 10px;
-            margin-left: 10px;
+            width: 100%;
             a {
                 text-decoration: none;
                 color: #669998;
+            }
+            .cdss-alert-close {
+                background: none;
+                border: none;
+                position: absolute;
+                right: 0;
+                top: 0;
+                font-size: 12px;
             }
         }
 
@@ -382,54 +384,18 @@
             background-color: #ffd6d8;
             border: 1px solid #ff0000;
             position: relative;
-            &::before {
-                content: '';
-                position: absolute;
-                bottom: 100%;
-                left: 10px;
-                margin-left: -5px;
-                width: 0;
-                height: 0;
-                border-left: 5px solid transparent;
-                border-right: 5px solid transparent;
-                border-bottom: 5px solid #ff0000;
-            }
         }
 
         .bg-warning {
             background-color: #feead6;
             border: 1px solid #ffa500;
             position: relative;
-            &::before {
-                content: '';
-                position: absolute;
-                bottom: 100%;
-                left: 10px;
-                margin-left: -5px;
-                width: 0;
-                height: 0;
-                border-left: 5px solid transparent;
-                border-right: 5px solid transparent;
-                border-bottom: 5px solid #ffa500;
-            }
         }
 
         .bg-info {
             background-color: #d5f5ff;
             border: 1px solid #00a3e0;
             position: relative;
-            &::before {
-                content: '';
-                position: absolute;
-                bottom: 100%;
-                left: 10px;
-                margin-left: -5px;
-                width: 0;
-                height: 0;
-                border-left: 5px solid transparent;
-                border-right: 5px solid transparent;
-                border-bottom: 5px solid #00a3e0;
-            }
         }
 
         i.critical {
