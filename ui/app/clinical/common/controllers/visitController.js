@@ -19,6 +19,7 @@ angular.module('bahmni.clinical')
             $scope.showTrends = true;
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.visitUuid = $stateParams.visitUuid;
+            $scope.isActiveIpdVisit = $scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime === null;
             var tab = $stateParams.tab;
             var encounterTypes = visitConfig.currentTab.encounterContext ? visitConfig.currentTab.encounterContext.filterEncounterTypes : null;
             visitService.getVisit($scope.visitUuid, 'custom:(uuid,visitType,startDatetime,stopDatetime,encounters:(uuid,encounterDatetime,provider:(display),encounterType:(display)))').then(function (response) {

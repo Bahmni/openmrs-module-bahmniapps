@@ -1,1 +1,3 @@
-<div class="visit visit-summary-page" bindonce="visit" ng-include="'common/views/visitSummary.html'"></div>
+<div ng-if="!isActiveIpdVisit" class="visit visit-summary-page" bindonce="visit" ng-include="'common/views/visitSummary.html'"></div>
+
+<mfe-ipd-dashboard ng-if="isActiveIpdVisit" style="display: block;width: 100vw;margin-left: calc(50% - 50vw);" host-data="ipdDashboard.hostData" host-api="ipdDashboard.hostApi"></mfe-ipd-dashboard>
