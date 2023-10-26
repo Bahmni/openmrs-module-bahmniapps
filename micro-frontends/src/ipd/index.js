@@ -5,6 +5,7 @@ import { react2angular } from "react2angular";
 import { IpdDashboard } from "./IpdDashboard";
 import { DrugChartModal } from "./DrugChartModal";
 import { DrugChartModalNotification } from "./DrugChartModalNotification";
+import { DrugChartDashboard } from "./DrugChartDasboard";
 
 angular.module("bahmni.mfe.ipd", [
   "ui.router",
@@ -43,3 +44,13 @@ angular
     template:
       '<mfe-ipd-drug-chart-modal-notification host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-modal-notification>',
   });
+
+/** MFE component 4: DrugChartDashboard
+ *================================================= */
+
+angular
+    .module("bahmni.mfe.ipd")
+    .component("mfeDrugChartDashboard", react2angular(DrugChartDashboard), {
+        template:
+            '<mfe-drug-chart-dashboard host-data="hostData" host-api="hostApi"></mfe-drug-chart-dashboard>'
+    });

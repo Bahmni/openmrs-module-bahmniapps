@@ -11,7 +11,7 @@ angular.module('bahmni.clinical')
             $scope.showMobileMenu = false;
             $scope.visitPage = true;
             visitHistory.visits.forEach(function (visit) {
-                if(visit.uuid === $stateParams.visitUuid){
+                if (visit.uuid === $stateParams.visitUuid) {
                     $scope.isActiveIpdVisit = visit.stopDatetime === null && visit.visitType.name === "IPD";
                 }
             });
