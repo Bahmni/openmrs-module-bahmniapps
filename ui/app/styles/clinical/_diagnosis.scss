@@ -363,9 +363,12 @@
             }
         }
 
+        .new-diagnosis-alert-row {
+            width: 100%;
+        }
         .new-diagnosis-alert {
             padding: 10px;
-            width: 100%;
+            
             a {
                 text-decoration: none;
                 color: #669998;
@@ -378,6 +381,11 @@
                 top: 0;
                 font-size: 12px;
             }
+        }
+
+        .active-diagnosis-alert {
+            display: grid;
+            grid-template-columns: 2rem auto;
         }
 
         .bg-critical {

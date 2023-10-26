@@ -184,7 +184,7 @@ angular.module('bahmni.clinical')
         var addNewAlerts = function (newAlerts, currentAlerts) {
             var activeAlerts = newAlerts.map(function (item) {
                 item.isActive = true;
-                item.detail = marked.parse(item.detail);
+                item.detail = item.detail.indexOf('\n') > -1 ? marked.parse(item.detail) : item.detail;
                 return item;
             });
             if (!currentAlerts || (currentAlerts && currentAlerts.length === 0)) {
