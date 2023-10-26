@@ -272,6 +272,10 @@
         height: auto !important;
     }
 
+    .button-alert-condition {
+        padding: 3px !important;
+    }
+
     .btn-group,
     .small-btn {
         button{
@@ -352,6 +356,7 @@
                 }
             }
         }
+    }
         .alert-item {
             float: left;
             .alert-button {
@@ -418,7 +423,6 @@
             color: #00a3e0;
         }
         
-    }
 
     .view-past,
     .edit-diagnosis {
