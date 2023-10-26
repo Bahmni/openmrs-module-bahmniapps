@@ -6,7 +6,8 @@
             'drug': {
                 'name': drug.name,
                 'uuid': drug.uuid,
-                'form': drug.dosageForm.display
+                'form': drug.dosageForm.display,
+                'drugReferenceMaps': drug.drugReferenceMaps || []
             },
             'value': drug.name
         };
