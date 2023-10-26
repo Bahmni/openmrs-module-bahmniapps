@@ -56,6 +56,18 @@ angular.module('bahmni.clinical')
             });
         };
 
+        var extractConditionInfo = function (condition) {
+            var uuid = condition.concept.uuid.split('/');
+            var code = uuid[uuid.length - 1];
+            uuid.pop();
+            var system = uuid.join('/');
+            return {
+                code: code,
+                system: system,
+                display: condition.concept.name
+            };
+        };
+
         var extractCodeInfo = function (medication, conceptSource) {
             if (!(medication.drug.drugReferenceMaps && medication.drug.drugReferenceMaps.length > 0)) {
                 return Promise.resolve([{
@@ -108,26 +120,29 @@ angular.module('bahmni.clinical')
 
         var createConditionResource = function (condition, patientUuid, isDiagnosis) {
             var conceptLimitIndex = isDiagnosis ? -1 : condition.concept.uuid.lastIndexOf('/');
+            var conditionStatus = condition.status || condition.diagnosisStatus || condition.certainty;
+            var activeConditions = ['CONFIRMED', 'PRESUMED', 'ACTIVE'];
+            var status = (!conditionStatus || activeConditions.indexOf(conditionStatus) > -1) ? 'active' : 'inactive';
+            var conditionCoding = condition.concept ? extractConditionInfo(condition) : {
+                system: isDiagnosis ? condition.codedAnswer.conceptSystem : (conceptLimitIndex > -1 ? (condition.concept.uuid.substring(0, conceptLimitIndex) || '') : ''),
+                code: isDiagnosis ? condition.codedAnswer.uuid : (conceptLimitIndex > -1 ? condition.concept.uuid.substring(conceptLimitIndex + 1) : condition.concept.uuid),
+                display: isDiagnosis ? condition.codedAnswer.name : condition.concept.name
+            };
+
             var conditionResource = {
                 resourceType: 'Condition',
                 id: condition.uuid,
                 clinicalStatus: {
                     coding: [
                         {
-                            code: 'active',
-                            display: 'Active',
+                            code: status,
+                            display: status,
                             system: 'http://terminology.hl7.org/CodeSystem/condition-clinical'
                         }
                     ]
                 },
                 code: {
-                    coding: [
-                        {
-                            system: isDiagnosis ? condition.codedAnswer.conceptSystem : (conceptLimitIndex > -1 ? (condition.concept.uuid.substring(0, conceptLimitIndex) || '') : ''),
-                            code: isDiagnosis ? condition.codedAnswer.uuid : (conceptLimitIndex > -1 ? condition.concept.uuid.substring(conceptLimitIndex + 1) : condition.concept.uuid),
-                            display: isDiagnosis ? condition.codedAnswer.name : condition.concept.name
-                        }
-                    ],
+                    coding: [ conditionCoding ],
                     text: isDiagnosis ? condition.codedAnswer.name : condition.concept.name
                 },
                 subject: {
@@ -170,7 +185,7 @@ angular.module('bahmni.clinical')
 
         var createParams = function (consultationData) {
             var patient = consultationData.patient;
-            var conditions = consultationData.conditions;
+            var conditions = consultationData.condition && consultationData.condition.concept.uuid ? consultationData.conditions.concat(consultationData.condition) : consultationData.conditions;
             var diagnosis = consultationData.newlyAddedDiagnoses;
             var medications = consultationData.draftDrug;
             return {

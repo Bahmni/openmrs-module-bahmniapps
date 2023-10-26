@@ -34,6 +34,7 @@
             ng-show="alert.indicator == 'critical' && alert.isActive"
             ng-submit="submitAudit(alert)"
             class="cdss-alert-audit-form"
+            ng-click="$event.stopPropagation()"
           >
             <div class="field-value">
               <select
@@ -69,7 +70,6 @@
         <i
           class="fa fa-angle-up expand-details"
           ng-class="{'fa-angle-up': alert.showDetails, 'fa-angle-down': !alert.showDetails}"
-          ng-click="toggleDetails(alert)"
         ></i>
         <button
           ng-show="alert.indicator !== 'critical'"
@@ -77,7 +77,7 @@
           class="cdss-alert-close ng-hide"
           ng-click="closeAlert(alert)"
         >
-          ×
+          x
         </button>
       </div>
     </div>

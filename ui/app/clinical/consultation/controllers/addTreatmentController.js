@@ -500,6 +500,7 @@ angular.module('bahmni.clinical')
 
             $scope.$on("event:removeDrugOrder", function (event, index) {
                 $scope.treatments.splice(index, 1);
+                getAlerts();
             });
 
             $scope.incompleteDrugOrders = function () {

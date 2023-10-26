@@ -32,7 +32,7 @@ angular.module('bahmni.clinical')
                     });
 
                     drugOrder.alerts = drugOrder.alerts.map(function (item) {
-                        item.isActive = false;
+                        // item.isActive = false;
                         return item;
                     });
 

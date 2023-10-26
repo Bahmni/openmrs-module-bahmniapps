@@ -112,3 +112,6 @@
         </div>
     </div>
 </div>
+<div class="row" ng-if="hasActiveAlerts(diagnosis.alerts)" ng-repeat="alert in diagnosis.alerts">
+    <ng-include class="new-diagnosis-alert-row" src="'consultation/views/diagnosisAlertRow.html'" />
+</div>
