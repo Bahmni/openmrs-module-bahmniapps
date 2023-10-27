@@ -10,7 +10,11 @@ angular.module('bahmni.clinical')
             $scope.visitTabConfig = visitConfig;
             $scope.showMobileMenu = false;
             $scope.visitPage = true;
-
+            visitHistory.visits.forEach(function (visit) {
+                if (visit.uuid === $stateParams.visitUuid) {
+                    $scope.isActiveIpdVisit = visit.stopDatetime === null && visit.visitType.name === "IPD";
+                }
+            });
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.patientDocumentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
