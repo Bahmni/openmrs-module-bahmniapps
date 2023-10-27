@@ -24,7 +24,7 @@ angular.module('bahmni.clinical')
                                 "event": [medication.effectiveStartDate],
                                 "repeat": {
                                     "duration": medication.durationInDays,
-                                    "durationUnit": medication.durationUnit && medication.durationUnit[0].toLowerCase()
+                                    "durationUnit": 'd'
                                 },
                                 "code": {
                                     "coding": [
