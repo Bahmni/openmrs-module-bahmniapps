@@ -5,3 +5,5 @@
 </dashboard>
 <mfe-ipd-dashboard ng-if="loadIPD && stateChange()" style="margin: 45px auto 0; display: block;" host-data="ipdDashboard.hostData" host-api="ipdDashboard.hostApi"></mfe-ipd-dashboard>
 <div ng-show ="!stateChange()" ui-view="consultation-content" class="consultation-content"></div>
+<mfe-drug-chart-dashboard ng-if="loadIPD && stateChange()" style="margin: 45px auto 0; display: block;" host-data="ipdDashboard.hostData" host-api="ipdDashboard.hostApi"></mfe-drug-chart-dashboard>
+<div ng-show ="!stateChange()" ui-view="consultation-content" class="consultation-content"></div>
