@@ -416,6 +416,7 @@ angular.module('bahmni.clinical')
                 condition.status = status;
                 condition.onSetDate = DateUtil.today();
                 expandInactiveOnNewInactive(condition);
+                getAlerts();
             };
             var clearCondition = function () {
                 $scope.consultation.condition = new Bahmni.Common.Domain.Condition();

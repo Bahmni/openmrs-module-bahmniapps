@@ -210,7 +210,7 @@ angular.module('bahmni.clinical')
                     return currentAlert.uuid === alert.uuid;
                 });
                 if (getAlert) {
-                    if (alert.indicator !== getAlert.indicator) {
+                    if (alert.indicator !== getAlert.indicator || alert.summary !== getAlert.summary) {
                         alert.isActive = true;
                     } else {
                         alert.isActive = getAlert.isActive;
