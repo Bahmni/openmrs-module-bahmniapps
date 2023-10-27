@@ -261,6 +261,7 @@ angular.module('bahmni.clinical')
                 } */
 
                 $scope.refillDrug(drugOrder, alreadyActiveSimilarOrder);
+                getAlerts();
             });
 
             var refillDrugOrders = function (drugOrders) {
@@ -282,6 +283,7 @@ angular.module('bahmni.clinical')
             $scope.$on("event:refillDrugOrders", function (event, drugOrders) {
                 $scope.bulkSelectCheckbox = false;
                 refillDrugOrders(drugOrders);
+                getAlerts();
             });
 
             $scope.$on("event:discontinueDrugOrder", function (event, drugOrder) {
