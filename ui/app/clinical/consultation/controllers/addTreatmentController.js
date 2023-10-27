@@ -389,7 +389,8 @@ angular.module('bahmni.clinical')
                         var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
                         cdssAlerts.then(function (response) {
                             var alerts = response.data;
-                            $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts);
+                            var existingAlerts = $rootScope.cdssAlerts || [];
+                            $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts, existingAlerts);
                         });
                     });
                 }
