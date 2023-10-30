@@ -55,5 +55,8 @@
     "test": "jest",
     "test:ci": "yarn test --ci",
     "lint": "eslint src/**/*.{js,jsx}"
+  },
+  "resolutions": {
+    "browserify-sign": "^4.2.2"
   }
 }
