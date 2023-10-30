@@ -74,7 +74,10 @@ angular.module('bahmni.clinical')
         return drugService.cdssAudit(patientUuid, eventType, message, 'CDSS');
     };
 
-    var cdssAlertsWatcher = $rootScope.$watch('cdssAlerts', getPreviousDrugAlerts);
+    var cdssAlertsWatcher = $rootScope.$watch('cdssAlerts', function () {
+        if (!$rootScope.cdssAlerts) return;
+        getPreviousDrugAlerts();
+    });
 
     $scope.$on('$destroy', cdssAlertsWatcher);
 }])

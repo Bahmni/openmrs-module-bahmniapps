@@ -41,7 +41,10 @@ angular.module('bahmni.clinical')
                 };
 
                 $scope.$watch('consultation.newlyAddedTabTreatments', initializeTreatments);
-                $rootScope.$watch('cdssAlerts', getPreviousDrugAlerts, true);
+                $rootScope.$watch('cdssAlerts', function () {
+                    if (!$rootScope.cdssAlerts) return;
+                    getPreviousDrugAlerts();
+                }, true);
 
                 $scope.enrollment = $stateParams.enrollment;
                 $scope.treatmentConfig = treatmentConfig;
