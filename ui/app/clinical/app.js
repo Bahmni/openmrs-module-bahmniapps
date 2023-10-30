@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('consultation', ['ui.router', 'bahmni.clinical', 'bahmni.common.config', 'bahmni.common.patient',
-    'bahmni.common.uiHelper', 'bahmni.common.patientSearch', 'bahmni.common.obs', 'bahmni.common.i18n',
+    'bahmni.common.uiHelper', 'bahmni.common.patientSearch', 'bahmni.common.patientContext', 'bahmni.common.obs', 'bahmni.common.i18n',
     'bahmni.common.domain', 'bahmni.common.conceptSet', 'authentication', 'bahmni.common.appFramework',
     'bahmni.common.displaycontrol.documents', 'bahmni.common.displaycontrol.observation',
     'bahmni.common.displaycontrol.pivottable', 'bahmni.common.displaycontrol.dashboard', 'bahmni.common.gallery',

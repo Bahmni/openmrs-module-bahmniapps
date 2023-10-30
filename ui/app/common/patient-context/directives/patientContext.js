@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bahmni.clinical')
+angular.module('bahmni.common.patientContext')
     .directive('patientContext', ['$state', '$translate', '$sce', 'patientService', 'spinner', 'appService', function ($state, $translate, $sce, patientService, spinner, appService) {
         var controller = function ($scope, $rootScope) {
             var patientContextConfig = appService.getAppDescriptor().getConfigValue('patientContext') || {};
@@ -65,7 +65,7 @@ angular.module('bahmni.clinical')
 
         return {
             restrict: 'E',
-            templateUrl: "displaycontrols/patientContext/views/patientContext.html",
+            templateUrl: "../common/patient-context/views/patientContext.html",
             scope: {
                 patient: "=",
                 showNameAndImage: "=?",
