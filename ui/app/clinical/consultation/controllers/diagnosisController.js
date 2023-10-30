@@ -483,11 +483,9 @@ angular.module('bahmni.clinical')
                         messagingService.showMessage('info', 'DELETED_MESSAGE');
                         var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0
                                           ? $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
+                        getAlerts();
                         return reloadDiagnosesSection(currentUuid);
-                    }))
-                    .then(function () {
-                        // getFlaggedSavedDiagnosisAlert();
-                    });
+                    }));
             };
             var clearBlankDiagnosis = true;
             var removeBlankDiagnosis = function () {

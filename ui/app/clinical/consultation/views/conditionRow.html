@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col col1" ng-class="{'condition-alert-name': condition.alerts && condition.alerts.length > 0 && !hasActiveAlerts(condition.alerts)}" bm-pop-over autoclose="true">
-        <span ng-if="condition.alerts && condition.alerts.length > 0 && !hasActiveAlerts(condition.alerts)">
+        <span ng-if="condition.alerts && condition.alerts.length > 0 && !hasActiveAlerts(condition.alerts) && condition.status === 'ACTIVE'">
             <button class="cdss-alert-icon button-alert-condition" bm-pop-over-trigger>
                <i class="fa fa-exclamation-circle cdss-icon-medication">
                </i>
@@ -37,6 +37,6 @@
     </div>
 </div>
 
-<div class="row" ng-if="hasActiveAlerts(condition.alerts)" ng-repeat="alert in condition.alerts">
+<div class="row" ng-if="hasActiveAlerts(condition.alerts) && condition.status === 'ACTIVE'" ng-repeat="alert in condition.alerts">
     <ng-include class="new-diagnosis-alert-row" src="'consultation/views/diagnosisAlertRow.html'" />
 </div>
