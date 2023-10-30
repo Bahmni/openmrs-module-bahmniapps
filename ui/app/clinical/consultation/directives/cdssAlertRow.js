@@ -17,7 +17,7 @@ angular.module('bahmni.clinical')
             var drugOrders = order.drugOrders;
             drugOrders && drugOrders.forEach(function (drugOrder) {
                 var drug = drugOrder.drug;
-                var cdssAlerts = $rootScope.cdssAlerts;
+                var cdssAlerts = angular.copy($rootScope.cdssAlerts);
                 if (cdssAlerts) {
                     drugOrder.alerts = cdssAlerts.filter(function (cdssAlert) {
                         return cdssAlert.referenceMedications.some(function (referenceMedication) {
@@ -29,11 +29,6 @@ angular.module('bahmni.clinical')
                           );
                         }
                         );
-                    });
-
-                    drugOrder.alerts = drugOrder.alerts.map(function (item) {
-                        // item.isActive = false;
-                        return item;
                     });
 
                     drugOrder.alerts = sortInteractionsByStatus(drugOrder.alerts);
@@ -52,19 +47,14 @@ angular.module('bahmni.clinical')
         var alertItem = $rootScope.cdssAlerts.find(function (item) {
             return item.uuid === alert.uuid;
         });
+
         if (alertItem) {
             alertItem.isActive = false;
         }
     };
 
     $scope.toggleDetails = function (alert) {
-        var cdssAlerts = $rootScope.cdssAlerts;
-        var cdssAlert = cdssAlerts.find(function (cdssAlert) {
-            return cdssAlert.uuid === alert.uuid;
-        });
-        if (cdssAlert) {
-            cdssAlert.showDetails = !cdssAlert.showDetails;
-        }
+        alert.showDetails = !alert.showDetails;
     };
 
     $scope.auditOptions = function () {

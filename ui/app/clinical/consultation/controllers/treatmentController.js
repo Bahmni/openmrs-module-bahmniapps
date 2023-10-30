@@ -20,7 +20,7 @@ angular.module('bahmni.clinical')
                     var treatments = $scope.treatments;
                     treatments && treatments.forEach(function (drugOrder) {
                         var drug = drugOrder.drug;
-                        var cdssAlerts = $rootScope.cdssAlerts;
+                        var cdssAlerts = angular.copy($rootScope.cdssAlerts);
                         if (!cdssAlerts) return;
                         drugOrder.alerts = cdssAlerts.filter(function (cdssAlert) {
                             return cdssAlert.referenceMedications.some(function (
@@ -41,7 +41,7 @@ angular.module('bahmni.clinical')
                 };
 
                 $scope.$watch('consultation.newlyAddedTabTreatments', initializeTreatments);
-                $rootScope.$watch('cdssAlerts', getPreviousDrugAlerts);
+                $rootScope.$watch('cdssAlerts', getPreviousDrugAlerts, true);
 
                 $scope.enrollment = $stateParams.enrollment;
                 $scope.treatmentConfig = treatmentConfig;
