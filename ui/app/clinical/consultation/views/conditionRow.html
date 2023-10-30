@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col col1" bm-pop-over autoclose="true">
+    <div class="col col1" ng-class="{'condition-alert-name': condition.alerts && condition.alerts.length > 0 && !hasActiveAlerts(condition.alerts)}" bm-pop-over autoclose="true">
         <span ng-if="condition.alerts && condition.alerts.length > 0 && !hasActiveAlerts(condition.alerts)">
             <button class="cdss-alert-icon button-alert-condition" bm-pop-over-trigger>
                <i class="fa fa-exclamation-circle cdss-icon-medication">
