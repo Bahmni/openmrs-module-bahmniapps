@@ -6,7 +6,8 @@
                     <h2 class="section-title">
                         <i class="fa fa-caret-right" ng-hide="order.showForm"></i>
                         <i class="fa fa-caret-down" ng-show="order.showForm"></i>
-                        <span>{{order.concept.shortName || order.concept.name}}</span>
+                        <span><span style="font-weight: 900;">{{'ORDER_NAME' | translate}}:</span> {{order.concept.shortName || order.concept.name}}
+                            | <span style="font-weight: 900;">{{'ORDER_DATE' | translate}}:</span> {{order.orderDate | bahmniDateTime}} </span>
                         <!--<span class="fr">-->
                         <!--<span class="has-notes fa fa-file-text-o" ng-if="order.commentToFulfiller"></span>-->
                         <!--<span class="order-provider-nane">{{order.provider}}</span>-->
