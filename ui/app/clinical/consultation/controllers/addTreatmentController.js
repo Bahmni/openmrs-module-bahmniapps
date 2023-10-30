@@ -261,6 +261,7 @@ angular.module('bahmni.clinical')
                 } */
 
                 $scope.refillDrug(drugOrder, alreadyActiveSimilarOrder);
+                getAlerts();
             });
 
             var refillDrugOrders = function (drugOrders) {
@@ -282,6 +283,7 @@ angular.module('bahmni.clinical')
             $scope.$on("event:refillDrugOrders", function (event, drugOrders) {
                 $scope.bulkSelectCheckbox = false;
                 refillDrugOrders(drugOrders);
+                getAlerts();
             });
 
             $scope.$on("event:discontinueDrugOrder", function (event, drugOrder) {
@@ -389,7 +391,8 @@ angular.module('bahmni.clinical')
                         var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
                         cdssAlerts.then(function (response) {
                             var alerts = response.data;
-                            $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts);
+                            var existingAlerts = $rootScope.cdssAlerts || [];
+                            $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts, existingAlerts, bundle);
                         });
                     });
                 }
@@ -500,6 +503,7 @@ angular.module('bahmni.clinical')
 
             $scope.$on("event:removeDrugOrder", function (event, index) {
                 $scope.treatments.splice(index, 1);
+                getAlerts();
             });
 
             $scope.incompleteDrugOrders = function () {

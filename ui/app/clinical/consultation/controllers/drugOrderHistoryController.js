@@ -230,5 +230,11 @@ angular.module('bahmni.clinical')
                 return _.find(drugOrder.orderAttributes, {name: attributeName});
             };
 
+            $scope.hasActiveAlerts = function (alerts) {
+                return alerts.some(function (alert) {
+                    return alert.isActive;
+                });
+            };
+
             init();
         }]);
