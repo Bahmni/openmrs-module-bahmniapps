@@ -95,7 +95,7 @@ angular.module('bahmni.clinical')
                     cdssAlerts.then(function (response) {
                         var alerts = response.data;
                         var existingAlerts = $rootScope.cdssAlerts || [];
-                        $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts, existingAlerts);
+                        $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts, existingAlerts, bundle);
                         isPastDiagnosisFlagged();
                         getFlaggedSavedDiagnosisAlert();
                         getAlertForCurrentDiagnosis();

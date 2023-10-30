@@ -196,9 +196,68 @@ angular.module('bahmni.clinical')
             };
         };
 
-        var addNewAlerts = function (newAlerts, currentAlerts) {
+        var getAlertMedicationCodes = function (alert) {
+            if (alert.referenceMedications) {
+                return alert.referenceMedications.map(function (med) {
+                    return med.coding[0].code;
+                });
+            }
+            return [];
+        };
+
+        var getAlertConditionCodes = function (alert) {
+            if (alert.referenceCondition) {
+                return alert.referenceCondition.coding.map(function (cond) {
+                    return cond.code;
+                });
+            }
+            return [];
+        };
+
+        var getMedicationCodesFromEntry = function (entry) {
+            return entry.resource.medicationCodeableConcept.coding[0].code;
+        };
+
+        var getConditionCodesFromEntry = function (entry) {
+            return entry.resource.code.coding[0].code;
+        };
+
+        var isMedicationRequest = function (entry) {
+            return entry.resource.resourceType === 'MedicationRequest';
+        };
+
+        var isCondition = function (entry) {
+            return entry.resource.resourceType === 'Condition';
+        };
+
+        var checkAlertBundleMatch = function (alert, bundle) {
+            var alertMedicationCodes = getAlertMedicationCodes(alert);
+            var alertConditionCodes = getAlertConditionCodes(alert);
+
+            var bundleMedicationCodes = bundle.entry
+              .filter(isMedicationRequest)
+              .map(getMedicationCodesFromEntry);
+
+            var bundleConditionCodes = bundle.entry
+              .filter(isCondition)
+              .map(getConditionCodesFromEntry);
+
+            return (
+              alertMedicationCodes.some(function (code) {
+                  return bundleMedicationCodes.includes(code);
+              }) ||
+              alertConditionCodes.some(function (code) {
+                  return bundleConditionCodes.includes(code);
+              })
+            );
+        };
+
+        var addNewAlerts = function (newAlerts, currentAlerts, bundle) {
             var activeAlerts = newAlerts.map(function (item) {
-                item.isActive = true;
+                var isAlertInBundle = checkAlertBundleMatch(item, bundle);
+                if (isAlertInBundle) {
+                    item.isActive = true;
+                }
                 item.detail = item.detail.indexOf('\n') > -1 ? marked.parse(item.detail) : item.detail;
                 return item;
             });
@@ -206,7 +265,7 @@ angular.module('bahmni.clinical')
                 return activeAlerts;
             }
             var alerts = activeAlerts.map(function (alert) {
-                const getAlert = currentAlerts.find(function (currentAlert) {
+                var getAlert = currentAlerts.find(function (currentAlert) {
                     return currentAlert.uuid === alert.uuid;
                 });
                 if (getAlert) {
