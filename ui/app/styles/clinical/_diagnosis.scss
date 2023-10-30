@@ -272,6 +272,11 @@
         height: auto !important;
     }
 
+    .button-alert-condition {
+        padding: 8px 7px !important;
+        height: auto !important;
+    }
+
     .btn-group,
     .small-btn {
         button{
@@ -352,6 +357,7 @@
                 }
             }
         }
+    }
         .alert-item {
             float: left;
             .alert-button {
@@ -363,12 +369,15 @@
             }
         }
 
-        .new-diagnosis-alert {
-            padding: 10px;
+        .new-diagnosis-alert-row {
             width: 100%;
+        }
+        .new-diagnosis-alert {
+            padding: 10px !important;
+            
             a {
                 text-decoration: none;
-                color: #669998;
+                color: black !important;
             }
             .cdss-alert-close {
                 background: none;
@@ -378,6 +387,11 @@
                 top: 0;
                 font-size: 12px;
             }
+        }
+
+        .active-diagnosis-alert {
+            display: grid;
+            grid-template-columns: 2rem auto;
         }
 
         .bg-critical {
@@ -410,7 +424,6 @@
             color: #00a3e0;
         }
         
-    }
 
     .view-past,
     .edit-diagnosis {
@@ -611,6 +624,12 @@
         }
     }
 
+    .condition-alert-name {
+        display: flex;
+        align-items: center !important;
+        justify-content: flex-start !important;
+    }
+    
     .active-conditions,
     .history-conditions,
     .inactive-conditions {
