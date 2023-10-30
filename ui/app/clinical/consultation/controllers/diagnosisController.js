@@ -116,7 +116,7 @@ angular.module('bahmni.clinical')
                 var pastDiagnoses = $scope.consultation.pastDiagnoses;
                 var alerts = $scope.cdssAlerts;
                 var flaggedDiagnoses = [];
-                if (pastDiagnoses && pastDiagnoses.length > 0 && alerts && alerts.length > 0) {
+                if (pastDiagnoses && pastDiagnoses.length > 0) {
                     pastDiagnoses.forEach(function (diagnosis) {
                         diagnosis.alerts = alerts.filter(function (cdssAlert) {
                             return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
@@ -138,7 +138,7 @@ angular.module('bahmni.clinical')
             var getFlaggedSavedDiagnosisAlert = function () {
                 var alerts = $scope.cdssAlerts;
                 var diagnoses = $scope.consultation.savedDiagnosesFromCurrentEncounter;
-                if (diagnoses && diagnoses.length > 0 && alerts && alerts.length > 0) {
+                if (diagnoses && diagnoses.length > 0 && alerts) {
                     diagnoses.forEach(function (diagnosis) {
                         diagnosis.alerts = alerts.filter(function (cdssAlert) {
                             return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
@@ -159,7 +159,7 @@ angular.module('bahmni.clinical')
                 var alerts = $scope.cdssAlerts;
                 var diagnoses = $scope.consultation.newlyAddedDiagnoses;
                 var flaggedDiagnoses = [];
-                if (diagnoses && diagnoses.length > 0 && alerts && alerts.length > 0) {
+                if (diagnoses && diagnoses.length > 0 && alerts) {
                     diagnoses.forEach(function (diagnosis) {
                         diagnosis.alerts = alerts.filter(function (cdssAlert) {
                             return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
@@ -179,7 +179,7 @@ angular.module('bahmni.clinical')
                 var alerts = $scope.cdssAlerts;
                 var condition = $scope.consultation.condition;
                 var flaggedConditions = [];
-                if (condition && condition.concept && condition.concept.uuid && alerts && alerts.length > 0) {
+                if (condition && condition.concept && condition.concept.uuid && alerts) {
                     condition.alerts = alerts.filter(function (cdssAlert) {
                         return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
                             return condition.concept.uuid.includes(coding.code);
@@ -197,7 +197,7 @@ angular.module('bahmni.clinical')
                 var alerts = $scope.cdssAlerts;
                 var conditions = $scope.consultation.conditions;
                 var flaggedConditions = [];
-                if (conditions && conditions.length > 0 && alerts && alerts.length > 0) {
+                if (conditions && conditions.length > 0 && alerts) {
                     conditions.forEach(function (condition) {
                         condition.alerts = alerts.filter(function (cdssAlert) {
                             return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
@@ -213,15 +213,8 @@ angular.module('bahmni.clinical')
                 return flaggedConditions;
             };
 
-            if ($rootScope.cdssAlerts) {
-                isPastDiagnosisFlagged();
-                getFlaggedSavedDiagnosisAlert();
-                getAlertForCurrentDiagnosis();
-                getConditionAlerts();
-                getConditionsAlerts();
-            }
-
             var alertsWatch = $rootScope.$watch('cdssAlerts', function () {
+                if (!$rootScope.cdssAlerts) return;
                 isPastDiagnosisFlagged();
                 getFlaggedSavedDiagnosisAlert();
                 getAlertForCurrentDiagnosis();
