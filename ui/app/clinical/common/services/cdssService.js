@@ -160,6 +160,16 @@ angular.module('bahmni.clinical')
             };
         };
 
+        function createPatientResource (patient) {
+            var patientResource = {
+                resourceType: 'Patient',
+                id: patient.uuid
+            };
+            return {
+                resource: patientResource
+            };
+        }
+
         var createFhirBundle = function (patient, conditions, medications, diagnosis, conceptSource) {
             var encounterResource = conditions.filter(function (condition) {
                 return !condition.uuid;
@@ -175,11 +185,18 @@ angular.module('bahmni.clinical')
                     return medicationResource;
                 });
             })).then(function (medicationResources) {
-                return {
+                var bundleResource = {
                     resourceType: 'Bundle',
                     type: 'collection',
-                    entry: [].concat(encounterResource, medicationResources)
+                    entry: []
                 };
+                var patientResource = createPatientResource(patient);
+                if (medicationResources.length === 0 && encounterResource.length === 0) {
+                    bundleResource.entry = bundleResource.entry.concat(patientResource);
+                    return bundleResource;
+                }
+                bundleResource.entry = bundleResource.entry.concat(encounterResource, medicationResources);
+                return bundleResource;
             });
         };
 
