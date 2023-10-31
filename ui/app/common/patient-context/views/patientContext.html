@@ -13,8 +13,9 @@
                     <i class="ipd-indication fa fa-solid fa-child" style="background-color: #F58C35; padding: 3.6px; border-radius: 4px"></i>
                 </span>
             </li>
-            <li>{{patientContext.gender}}</li>
-            <li>{{patientContext.birthdate | birthDateToAgeText}}</li>
+            <li>{{'GENDER_KEY' | translate}} {{patientContext.gender}}</li>
+            <li>{{'AGE_KEY' | translate}} {{patientContext.birthdate | birthDateToAgeText}}</li>
+            <li>{{'DATE_OF_BIRTH_LABEL' | translate}} {{patientContext.birthdate | bahmniDate}}</li>
             <li ng-repeat="(key, value) in patientContext.personAttributes">
                 {{::value.description |translate}}: {{value.value}}
             </li>

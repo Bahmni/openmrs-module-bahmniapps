@@ -1,6 +1,8 @@
 <div>
     <div>
-        <div ng-repeat="order in orders" class="concept-set-group section-grid order-fullfilment-contianer">
+        <patient-context patient="patient"></patient-context>
+        <div class="order-fulfillment-container">
+        <div ng-repeat="order in orders" class="concept-set-group section-grid order-fulfillment">
             <div id="{{order.orderUuid}}" style="position: relative;">
                 <div class="concept-set-title" ng-click="toggleShowOrderForm(order)">
                     <h2 class="section-title">
@@ -33,6 +35,7 @@
                     </concept-set>
                 </div>
             </div>
+        </div>
         </div>
 
     </div>

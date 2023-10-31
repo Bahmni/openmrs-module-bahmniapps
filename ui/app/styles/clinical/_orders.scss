@@ -401,34 +401,36 @@
 .order-provider-nane {
     margin-right: 10px;
 }
-
-.order-fullfilment-contianer {
-    .dashboard-section {
-        border-right: 0;
-        border-radius: 0;
-    }
-
-    .concept-set-title {
-        .has-notes {
-            position: relative;
-            top: 2px;
-            padding-right: 5px;
-        }
-    }
-
-    .hierarchy ul li ul li span {
-        background: $lighterGray;
-    }
-
-    .hierarchy ul li ul li ul li {
-        font-size: 14px;
-
-        span {
-            background: #fff;
+.order-fulfillment-container {
+    margin-top: 3rem;
+    .order-fulfillment {
+        .dashboard-section {
+            border-right: 0;
+            border-radius: 0;
         }
 
-        ul li {
-            font-size: 13px;
+        .concept-set-title {
+            .has-notes {
+                position: relative;
+                top: 2px;
+                padding-right: 5px;
+            }
+        }
+
+        .hierarchy ul li ul li span {
+            background: $lighterGray;
+        }
+
+        .hierarchy ul li ul li ul li {
+            font-size: 14px;
+
+            span {
+                background: #fff;
+            }
+
+            ul li {
+                font-size: 13px;
+            }
         }
     }
 }
