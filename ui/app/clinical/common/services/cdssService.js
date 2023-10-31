@@ -190,8 +190,8 @@ angular.module('bahmni.clinical')
                     type: 'collection',
                     entry: []
                 };
-                var patientResource = createPatientResource(patient);
                 if (medicationResources.length === 0 && encounterResource.length === 0) {
+                    var patientResource = createPatientResource(patient);
                     bundleResource.entry = bundleResource.entry.concat(patientResource);
                     return bundleResource;
                 }
