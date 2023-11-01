@@ -94,7 +94,7 @@ angular.module('bahmni.clinical')
 
             var isPastDiagnosisFlagged = function () {
                 var pastDiagnoses = $scope.consultation.pastDiagnoses;
-                var alerts = $scope.cdssAlerts;
+                var alerts = $rootScope.cdssAlerts;
                 var flaggedDiagnoses = [];
                 if (pastDiagnoses && pastDiagnoses.length > 0) {
                     pastDiagnoses.forEach(function (diagnosis) {
@@ -116,7 +116,7 @@ angular.module('bahmni.clinical')
             };
 
             var getFlaggedSavedDiagnosisAlert = function () {
-                var alerts = $scope.cdssAlerts;
+                var alerts = $rootScope.cdssAlerts;
                 var diagnoses = $scope.consultation.savedDiagnosesFromCurrentEncounter;
                 if (diagnoses && diagnoses.length > 0 && alerts) {
                     diagnoses.forEach(function (diagnosis) {
@@ -136,7 +136,7 @@ angular.module('bahmni.clinical')
             };
 
             var getAlertForCurrentDiagnosis = function () {
-                var alerts = $scope.cdssAlerts;
+                var alerts = $rootScope.cdssAlerts;
                 var diagnoses = $scope.consultation.newlyAddedDiagnoses;
                 var flaggedDiagnoses = [];
                 if (diagnoses && diagnoses.length > 0 && alerts) {
@@ -156,10 +156,12 @@ angular.module('bahmni.clinical')
             };
 
             var getConditionAlerts = function () {
-                var alerts = $scope.cdssAlerts;
+                var alerts = $rootScope.cdssAlerts;
                 var condition = $scope.consultation.condition;
                 var flaggedConditions = [];
-                if (condition && condition.concept && condition.concept.uuid && alerts) {
+                if (condition && condition.concept && condition.concept.name === '' && alerts) {
+                    condition.alerts = [];
+                } else if (condition && condition.concept && condition.concept.uuid && alerts) {
                     condition.alerts = alerts.filter(function (cdssAlert) {
                         return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
                             return condition.concept.uuid.includes(coding.code);
@@ -174,7 +176,7 @@ angular.module('bahmni.clinical')
             };
 
             var getConditionsAlerts = function () {
-                var alerts = $scope.cdssAlerts;
+                var alerts = $rootScope.cdssAlerts;
                 var conditions = $scope.consultation.conditions;
                 var flaggedConditions = [];
                 if (conditions && conditions.length > 0 && alerts) {
@@ -271,6 +273,12 @@ angular.module('bahmni.clinical')
             };
             contextChangeHandler.add(contextChange);
 
+            $scope.$watch('consultation.condition.concept.name', function () {
+                if ($scope.consultation.condition.concept.name === '') {
+                    getAlerts();
+                }
+            });
+
             $scope.$watch('consultation.condition.status', getAlerts);
 
             $scope.$watch('consultation.conditions', getAlerts);
@@ -315,6 +323,7 @@ angular.module('bahmni.clinical')
                     item.lookup.uuid = conceptSystem + item.lookup.uuid;
                     $scope.consultation.condition.concept.uuid = item.lookup.uuid;
                     item.value = $scope.consultation.condition.concept.name = item.lookup.name;
+                    getAlerts();
                 };
             };
 
@@ -509,6 +518,8 @@ angular.module('bahmni.clinical')
                 });
                 if (emptyRows.length === 0) {
                     addPlaceHolderDiagnosis();
+                } else {
+                    getAlerts();
                 }
                 clearBlankDiagnosis = true;
             };
