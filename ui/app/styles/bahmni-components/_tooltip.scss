@@ -93,6 +93,7 @@
 .alert-detail {
   display: flex !important;
   align-items: baseline !important;
+  text-align: left !important;
   > span {
     display: flex !important;
     flex-direction: column !important;
@@ -125,6 +126,7 @@
 }
 
 .tooltip-list {
+  text-align: left !important;
   i {
     position: relative !important;
   }

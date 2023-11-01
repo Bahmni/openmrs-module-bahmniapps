@@ -747,7 +747,13 @@
             .operations, .field-value {
                 margin-top: 10px;
             }
+
+            .form-field {
+                padding: 0px !important;
+            }
         }
+
+
 
         .alert-controls {
             justify-content: space-between;

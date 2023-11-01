@@ -391,22 +391,7 @@ angular.module('bahmni.clinical')
             };
 
             var getAlerts = function () {
-                if ($scope.cdssEnabled) {
-                    var consultationData = angular.copy($scope.consultation);
-                    consultationData.patient = $scope.patient;
-
-                    consultationData.draftDrug = consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : [];
-                    var params = cdssService.createParams(consultationData);
-                    cdssService.createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
-                    .then(function (bundle) {
-                        var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
-                        cdssAlerts.then(function (response) {
-                            var alerts = response.data;
-                            var existingAlerts = $rootScope.cdssAlerts || [];
-                            $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts, existingAlerts, bundle);
-                        });
-                    });
-                }
+                return cdssService.getAlerts($scope.cdssEnabled, $scope.consultation, $scope.patient);
             };
 
             var getConflictingDrugOrder = function (newDrugOrder) {
@@ -798,7 +783,8 @@ angular.module('bahmni.clinical')
                 calculateDoseForTemplatesIn(orderSet)
                     .then(createDrugOrdersAndGetConflicts)
                     .then(showConflictMessageIfAny)
-                    .then(setUpNewOrderSet);
+                    .then(setUpNewOrderSet)
+                    .then(getAlerts);
             };
 
             $scope.removeOrderSet = function () {
@@ -818,6 +804,7 @@ angular.module('bahmni.clinical')
                     });
                     $scope.popupActive = true;
                 }
+                getAlerts();
             });
 
             $scope.consultation.preSaveHandler.register("drugOrderSaveHandlerKey", saveTreatment);

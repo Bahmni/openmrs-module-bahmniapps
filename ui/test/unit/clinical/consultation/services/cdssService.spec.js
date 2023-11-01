@@ -79,8 +79,9 @@ describe('cdssService', function () {
             $provide.value('drugService', drugService);
         });
 
-        inject(['cdssService', function (cdssServiceInjected) {
+        inject(['cdssService', '$rootScope', function (cdssServiceInjected, $rootScopeInjected) {
             cdssService = cdssServiceInjected;
+            rootScope = $rootScopeInjected;
         }]);
     });
 

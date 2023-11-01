@@ -314,11 +314,8 @@ describe("AddTreatmentController", function () {
             drugService.cdssAudit.and.returnValue(specUtil.respondWith(true));
             drugService.getDrugConceptSourceMapping.and.returnValue(specUtil.respondWithPromise($q, {entry: []}));
 
-            cdssService = jasmine.createSpyObj('cdssService', ['createFhirBundle', 'sendDiagnosisDrugBundle', 'createParams', 'addNewAlerts', 'sortInteractionsByStatus']);
-            cdssService.createParams.and.returnValue(specUtil.respondWith({}));
-            cdssService.createFhirBundle.and.returnValue(specUtil.respondWith(cdssBundle));
-            cdssService.sendDiagnosisDrugBundle.and.returnValue(specUtil.respondWith(cdssResponse));
-            cdssService.addNewAlerts.and.returnValue(specUtil.respondWith(cdssResponse));
+            cdssService = jasmine.createSpyObj('cdssService', ['createFhirBundle', 'sendDiagnosisDrugBundle', 'createParams', 'addNewAlerts', 'sortInteractionsByStatus', 'getAlerts']);
+            cdssService.getAlerts.and.returnValue(specUtil.respondWith(cdssResponse));
             cdssService.sortInteractionsByStatus.and.returnValue(specUtil.respondWith(cdssResponse));
 
             appService.getAppDescriptor.and.returnValue(appConfig);
