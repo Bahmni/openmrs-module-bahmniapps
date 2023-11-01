@@ -83,27 +83,7 @@ angular.module('bahmni.clinical')
             };
 
             function getAlerts () {
-                if ($scope.cdssEnabled) {
-                    var consultationData = angular.copy($scope.consultation);
-                    consultationData.patient = $scope.patient;
-
-                    consultationData.draftDrug = consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : [];
-                    var params = cdssService.createParams(consultationData);
-                    cdssService.createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
-                .then(function (bundle) {
-                    var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
-                    cdssAlerts.then(function (response) {
-                        var alerts = response.data;
-                        var existingAlerts = $rootScope.cdssAlerts || [];
-                        $rootScope.cdssAlerts = cdssService.addNewAlerts(alerts, existingAlerts, bundle);
-                        isPastDiagnosisFlagged();
-                        getFlaggedSavedDiagnosisAlert();
-                        getAlertForCurrentDiagnosis();
-                        getConditionAlerts();
-                        getConditionsAlerts();
-                    });
-                });
-                }
+                return cdssService.getAlerts($scope.cdssEnabled, $scope.consultation, $scope.patient);
             }
 
             $scope.hasActiveAlerts = function (alerts) {

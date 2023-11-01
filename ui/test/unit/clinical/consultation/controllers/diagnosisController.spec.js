@@ -181,12 +181,9 @@ describe("Diagnosis Controller", function () {
             data: []
         }));
 
-        cdssService = jasmine.createSpyObj('cdssService', ['createFhirBundle', 'sendDiagnosisDrugBundle', 'createParams', 'addNewAlerts', 'sortInteractionsByStatus']);
-        cdssService.createParams.and.returnValue(specUtil.respondWith({}));
-        cdssService.createFhirBundle.and.returnValue(specUtil.respondWith(cdssBundle));
-        cdssService.sendDiagnosisDrugBundle.and.returnValue(specUtil.respondWith(cdssResponse));
-        cdssService.addNewAlerts.and.returnValue(specUtil.respondWith(cdssResponse));
+        cdssService = jasmine.createSpyObj('cdssService', ['sortInteractionsByStatus', 'getAlerts']);
         cdssService.sortInteractionsByStatus.and.returnValue(specUtil.respondWith(cdssResponse));
+        cdssService.getAlerts.and.returnValue(specUtil.respondWith(cdssResponse));
 
         $controller('DiagnosisController', {
             $scope: $scope,

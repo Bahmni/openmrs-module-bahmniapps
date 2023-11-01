@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .service('cdssService', ['drugService', function (drugService) {
+    .service('cdssService', ['drugService', '$rootScope', function (drugService, $rootScope) {
         var createMedicationRequest = function (medication, patientUuid, conceptSource) {
             return extractCodeInfo(medication, conceptSource).then(function (coding) {
                 var medicationRequest = {
@@ -180,6 +180,10 @@ angular.module('bahmni.clinical')
                 return createConditionResource(condition, patient.uuid, true);
             }));
 
+            medications = medications.filter(function (medication) {
+                return angular.isDefined(medication.include) && medication.include || medication.include === undefined;
+            });
+
             return Promise.all(medications.map(function (medication) {
                 return createMedicationRequest(medication, patient.uuid, conceptSource).then(function (medicationResource) {
                     return medicationResource;
@@ -198,6 +202,27 @@ angular.module('bahmni.clinical')
                 bundleResource.entry = bundleResource.entry.concat(encounterResource, medicationResources);
                 return bundleResource;
             });
+        };
+
+        var getAlerts = function (cdssEnabled, consultation, patient) {
+            if (cdssEnabled) {
+                var consultationData = angular.copy(consultation);
+                consultationData.patient = patient;
+
+                var orderSetTreatments = consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.orderSetTreatments : [];
+                var drafts = consultationData.newlyAddedTabTreatments ? consultationData.newlyAddedTabTreatments.allMedicationTabConfig.treatments : [];
+                consultationData.draftDrug = drafts.concat(orderSetTreatments);
+                var params = createParams(consultationData);
+                createFhirBundle(params.patient, params.conditions, params.medications, params.diagnosis)
+                .then(function (bundle) {
+                    var cdssAlerts = drugService.sendDiagnosisDrugBundle(bundle);
+                    cdssAlerts.then(function (response) {
+                        var alerts = response.data;
+                        var existingAlerts = $rootScope.cdssAlerts || [];
+                        $rootScope.cdssAlerts = addNewAlerts(alerts, existingAlerts, bundle);
+                    });
+                });
+            }
         };
 
         var createParams = function (consultationData) {
@@ -309,6 +334,7 @@ angular.module('bahmni.clinical')
             createFhirBundle: createFhirBundle,
             createParams: createParams,
             addNewAlerts: addNewAlerts,
-            sortInteractionsByStatus: sortInteractionsByStatus
+            sortInteractionsByStatus: sortInteractionsByStatus,
+            getAlerts: getAlerts
         };
     }]);
