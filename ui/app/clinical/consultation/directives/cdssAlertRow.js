@@ -77,7 +77,7 @@ angular.module('bahmni.clinical')
     var cdssAlertsWatcher = $rootScope.$watch('cdssAlerts', function () {
         if (!$rootScope.cdssAlerts) return;
         getPreviousDrugAlerts();
-    });
+    }, true);
 
     $scope.$on('$destroy', cdssAlertsWatcher);
 }])
