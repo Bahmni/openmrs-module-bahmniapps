@@ -203,7 +203,9 @@ angular.module('bahmni.clinical')
         var createParams = function (consultationData) {
             var patient = consultationData.patient;
             var conditions = consultationData.condition && consultationData.condition.concept.uuid ? consultationData.conditions.concat(consultationData.condition) : consultationData.conditions;
-            var diagnosis = consultationData.newlyAddedDiagnoses;
+            var diagnosis = consultationData.newlyAddedDiagnoses && consultationData.newlyAddedDiagnoses.filter(function (diagnosis) {
+                return diagnosis.codedAnswer && diagnosis.codedAnswer.name;
+            }) || [];
             var medications = consultationData.draftDrug;
             return {
                 patient: patient,

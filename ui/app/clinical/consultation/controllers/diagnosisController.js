@@ -529,6 +529,8 @@ angular.module('bahmni.clinical')
                 });
                 if (emptyRows.length === 0) {
                     addPlaceHolderDiagnosis();
+                } else {
+                    getAlerts();
                 }
                 clearBlankDiagnosis = true;
             };
