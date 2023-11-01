@@ -8,6 +8,13 @@
             <button ng-click="appendNotes(ngDialogData, note.translationKey)" ng-show="shouldShowNoteOptions(ngDialogData.uuid, note.label)" class="fl btn-group order-notes-button">{{note.label}}</button>
         </div>
     </div>
+    <div ng-if="requestedByOptions && requestedByOptions.length > 0 && !ngDialogData.uuid" class="fl btn-group" style="display: flex;margin-right: 2px;justify-content: center;align-items:center;width: 80%;gap: 20px;">
+        {{'REQUESTED_BY_KEY' | translate}}
+        <select ng-model="requestedBy" style="padding: 4px" ng-change="appendNotes(ngDialogData, getTranslation('REQUESTED_BY_KEY') + ' ' +requestedBy)">
+            <option value="" disabled selected>Select an option</option>
+            <option ng-repeat="requestedByOption in requestedByOptions" value="{{requestedByOption}}">{{requestedByOption}}</option>
+        </select>
+    </div>
 
     <div class="btn-group fr">
         <span ng-if="ngDialogData.uuid">

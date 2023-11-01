@@ -388,5 +388,9 @@
   "FROM_CLINIC": "Request from clinic",
   "FROM_WARD": "Request from ward",
   "HIGH_RISK": "High Risk",
-  "DAYS_ADMITTED_MESSAGE": "Days in hospital"
+  "DAYS_ADMITTED_MESSAGE": "Days in hospital",
+  "GENDER_KEY": "Gender:",
+  "AGE_KEY": "Age:",
+  "DATE_OF_BIRTH_LABEL": "Date of Birth:",
+  "REQUESTED_BY_KEY": "Requested by"
 }

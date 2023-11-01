@@ -13,6 +13,8 @@ angular.module('bahmni.clinical')
             var testConceptToParentsMapping = {}; // A child concept could be part of multiple parent panels
             $scope.hideLabTests = true;
             $scope.noteOptions = appService.getAppDescriptor().getConfigValue("orderNotes");
+            $scope.requestedByOptions = appService.getAppDescriptor().getConfigValue("orderRequestedBy") || [];
+            $scope.requestedBy = "";
 
             var collapseExistingActiveSection = function (section) {
                 if (section) {
@@ -241,6 +243,10 @@ angular.module('bahmni.clinical')
                     return option.label.toLowerCase() === noteName.toLowerCase();
                 })
                     && !orderId;
+            };
+
+            $scope.getTranslation = function (key) {
+                return $translate.instant(key);
             };
 
             $scope.appendNotes = function (order, noteKey) {
