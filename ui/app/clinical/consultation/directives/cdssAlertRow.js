@@ -48,12 +48,9 @@ angular.module('bahmni.clinical')
             return item.uuid === alert.uuid;
         });
 
-        console.log('alertItem', alertItem);
-
         if (alertItem) {
             alertItem.isActive = false;
         }
-        console.log('RootScope', $rootScope.cdssAlerts);
     };
 
     $scope.toggleDetails = function (alert) {
