@@ -43,9 +43,12 @@ table.orderSet-table{
    }
   td{
     padding: 4px 7px !important;
-    .button-group-wrapper{
-      width: 100% !important;
-    }
+  }
+}
+
+.drug-order-table {
+  .button-group-wrapper{
+    width: 100% !important;
   }
 }
 
