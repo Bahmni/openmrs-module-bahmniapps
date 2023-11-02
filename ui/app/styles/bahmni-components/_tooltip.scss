@@ -35,7 +35,9 @@
   top: calc(100% + 10px);
   left: -70px;
   max-height: 500px;
+  max-width: 500px;
   overflow-y: auto;
+  word-wrap: break-word;
   &:before {
     content: '';
     position: absolute;
