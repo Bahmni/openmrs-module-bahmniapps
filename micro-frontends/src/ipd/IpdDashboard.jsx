@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Suspense, lazy } from "react";
 
 export function IpdDashboard(props) {
-  const LazyApp = lazy(() => import("@openmrs-mf/ipd/IpdDashboard"));
+  const LazyApp = lazy(() => import("@openmrs-mf/ipd/Dashboard"));
 
   return (
     <>

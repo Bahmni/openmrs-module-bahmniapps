@@ -85,7 +85,7 @@ describe('visitHeaderController', function () {
             $rootScope: rootScope,
             clinicalAppConfigService: mockClinicalAppConfigService,
             patientContext: {patient: {uuid: "patient_uuid"}},
-            visitHistory: {visits: [{uuid: "visitUuid", stopDatetime: null, visitType: {name: "IPD"}}]},
+            visitHistory: null,
             visitConfig: visitTabConfig,
             $stateParams: stateParams || {configName: "default"},
             contextChangeHandler: contextChangeHandler,
