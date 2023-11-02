@@ -2,7 +2,7 @@ name: Build and Publish
 on:
   push:
     branches:
-      - Bahmni-IPD-master
+      - Bahmni-IPD_master-golive-02-nov
     paths-ignore:
       - "**.md"
   workflow_dispatch:
