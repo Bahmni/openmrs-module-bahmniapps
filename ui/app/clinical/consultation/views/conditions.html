@@ -9,7 +9,7 @@
             <div class="col col1" bm-pop-over autoclose="true">
                 <div class="col-header">{{'CONDITION_LIST_CONDITION'|translate}}</div>
                 <div class="col-body">
-                    <span ng-if="consultation.condition.alerts && consultation.condition.alerts.length > 0 && !hasActiveAlerts(consultation.condition.alerts)" class="alert-item">
+                    <span ng-if="consultation.condition.alerts && consultation.condition.alerts.length > 0 && !hasActiveAlerts(consultation.condition.alerts) && (!consultation.condition.status || consultation.condition.status === 'ACTIVE')" class="alert-item">
                         <button class="cdss-alert-icon button-alert alert-button" bm-pop-over-trigger>
                             <i class="fa cdss-icon-medication fa-exclamation-circle">
                             </i>
@@ -69,7 +69,7 @@
             <textarea class="comment-section" maxlength="255" ng-model="consultation.condition.additionalDetail">
             </textarea>
         </div>
-        <div class="row" ng-if="hasActiveAlerts(consultation.condition.alerts)" ng-repeat="alert in consultation.condition.alerts">
+        <div class="row" ng-if="hasActiveAlerts(consultation.condition.alerts) && (!consultation.condition.status || consultation.condition.status === 'ACTIVE')" ng-repeat="alert in consultation.condition.alerts">
             <ng-include class="new-diagnosis-alert-row" src="'consultation/views/diagnosisAlertRow.html'" />
        </div>
     </div>

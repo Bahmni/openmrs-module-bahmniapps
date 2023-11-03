@@ -313,7 +313,7 @@ angular.module('bahmni.clinical')
                     return currentAlert.uuid === alert.uuid;
                 });
                 if (getAlert) {
-                    if (alert.indicator !== getAlert.indicator || alert.summary !== getAlert.summary) {
+                    if (alert.indicator !== getAlert.indicator || alert.summary.match(/\d+/g).join('') !== getAlert.summary.match(/\d+/g).join('')) {
                         alert.isActive = true;
                     } else {
                         alert.isActive = getAlert.isActive;
