@@ -403,6 +403,7 @@ angular.module('bahmni.clinical')
                 }
                 condition.voided = false;
                 updateOrAddCondition(new Bahmni.Common.Domain.Condition(condition));
+                getConditionsAlerts();
             };
             $scope.markAs = function (condition, status) {
                 condition.status = status;
