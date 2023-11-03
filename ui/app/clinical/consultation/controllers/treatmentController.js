@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', 'treatmentConfig', '$stateParams',
-        function ($scope, clinicalAppConfigService, treatmentConfig, $stateParams) {
+    .controller('TreatmentController', ['$scope', 'clinicalAppConfigService', 'treatmentConfig', '$stateParams', '$rootScope', 'cdssService',
+        function ($scope, clinicalAppConfigService, treatmentConfig, $stateParams, $rootScope, cdssService) {
             var init = function () {
                 var drugOrderHistoryConfig = treatmentConfig.drugOrderHistoryConfig || {};
                 $scope.drugOrderHistoryView = drugOrderHistoryConfig.view || 'default';
@@ -16,7 +16,35 @@ angular.module('bahmni.clinical')
                     $scope.newOrderSet = $scope.consultation.newlyAddedTabTreatments[$scope.tabConfigName].newOrderSet;
                 };
 
+                var getPreviousDrugAlerts = function () {
+                    var treatments = $scope.treatments;
+                    treatments && treatments.forEach(function (drugOrder) {
+                        var drug = drugOrder.drug;
+                        var cdssAlerts = angular.copy($rootScope.cdssAlerts);
+                        if (!cdssAlerts) return;
+                        drugOrder.alerts = cdssAlerts.filter(function (cdssAlert) {
+                            return cdssAlert.referenceMedications.some(function (
+                            referenceMedication
+                        ) {
+                                return referenceMedication.coding.some(function (
+                            coding
+                            ) {
+                                    return (
+                                drug.uuid === coding.code ||
+                                drug.name === coding.display
+                                    );
+                                });
+                            });
+                        });
+                        drugOrder.alerts = cdssService.sortInteractionsByStatus(drugOrder.alerts);
+                    });
+                };
+
                 $scope.$watch('consultation.newlyAddedTabTreatments', initializeTreatments);
+                $rootScope.$watch('cdssAlerts', function () {
+                    if (!$rootScope.cdssAlerts) return;
+                    getPreviousDrugAlerts();
+                }, true);
 
                 $scope.enrollment = $stateParams.enrollment;
                 $scope.treatmentConfig = treatmentConfig;

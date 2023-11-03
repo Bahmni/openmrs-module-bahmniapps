@@ -1,0 +1,16 @@
+<div class="col-body new-diagnosis-alert bg-{{alert && alert.indicator}}" ng-if="alert.isActive">
+    <div class="active-diagnosis-alert">
+          <i class="fa"
+                ng-class="{'fa-exclamation-triangle critical': alert.indicator == 'critical','fa-exclamation-triangle warning' : alert.indicator == 'warning', 'fa-info-circle info': alert.indicator == 'info'}"
+          ></i>
+          <div>
+          <p>
+            {{alert.summary}}
+          </p>
+          <div class="alert-detail">
+            <span ng-bind-html="alert.detail + ('CDSS_ACTION' | translate)"></span>
+              <a href="{{alert.source.url}}" target="_blank" ng-show="alert.source.url" class="cdss_alert_source"><i class="fa fa-question-circle"></i></a>
+          </div>
+      </div>
+    </div>
+</div>

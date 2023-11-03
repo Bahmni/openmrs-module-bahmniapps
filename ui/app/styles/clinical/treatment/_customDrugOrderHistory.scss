@@ -87,42 +87,42 @@ If each of a table rows have multiple possible actions associated with them, use
 
 */
 
-.drugOrderHistorySectionContainer{
-  .drugOrderTable{
-    width:100%;
+.drugOrderHistorySectionContainer {
+  .drugOrderTable {
+    width: 100%;
     position: relative !important;
-    clear:both;
-    overflow: hidden;
+    clear: both;
+    // overflow: hidden;
   }
-  .drugOrderTableScroll{
+  .drugOrderTableScroll {
     width: auto;
     overflow-x: auto;
     overflow-y: hidden;
-    margin-left:240px;
-    &.noOfActions-4-width{
+    margin-left: 240px;
+    &.noOfActions-4-width {
       margin-right: 200px;
     }
-    &.noOfActions-3-width{
+    &.noOfActions-3-width {
       margin-right: 165px;
     }
-    &.noOfActions-2-width{
+    &.noOfActions-2-width {
       margin-right: 130px;
     }
-    &.noOfActions-1-width{
+    &.noOfActions-1-width {
       margin-right: 90px;
     }
-    &.noOfActions-0-width{
+    &.noOfActions-0-width {
       margin-right: 75px;
     }
-    &.noOfActions--width{
+    &.noOfActions--width {
       margin-right: 65px;
     }
-    @media (max-width : 1024px){
+    @media (max-width: 1024px) {
       margin-left: 170px;
     }
   }
-  table.treatments-details-table{
-    u{
+  table.treatments-details-table {
+    u {
       border: none !important;
       font-family: openSans !important;
     }
@@ -140,23 +140,23 @@ If each of a table rows have multiple possible actions associated with them, use
       white-space: nowrap;
     }
     //table-layout: fixed;
-    tr{
-      &.edited{
+    tr {
+      &.edited {
         border-bottom: none;
       }
-      &.medicationDrugNotes{
+      &.medicationDrugNotes {
         border-top: 2px solid $clinicalNotesColor;
         background: $clinicalNotesColor;
-        td{
+        td {
           text-align: left;
-          padding-left:10px;
-          .additionalInstructions{
-            padding-right:10px;
+          padding-left: 10px;
+          .additionalInstructions {
+            padding-right: 10px;
           }
         }
       }
-      &.formStopReason{
-        td{
+      &.formStopReason {
+        td {
           padding: 4px 5px 7px;
         }
         .form-field {
@@ -164,208 +164,250 @@ If each of a table rows have multiple possible actions associated with them, use
           border-bottom: none;
           padding-bottom: 0px;
         }
-        .form-field .field-attribute{
-          font-size: 12px;         width: auto;
+        .form-field .field-attribute {
+          font-size: 12px;
+          width: auto;
         }
-        .form-field .field-attribute label{
+        .form-field .field-attribute label {
           margin-top: 3px !important;
           @media (max-width: 1024px) {
             margin-top: 7px !important;
           }
         }
         .form-field .field-value {
-          input[type="date"], select, textarea{
+          input[type="date"],
+          select,
+          textarea {
             margin-top: 0 !important;
           }
-          input[type="date"]{
+          input[type="date"] {
             width: 120px;
             padding: 2px 10px !important;
           }
-          select{
+          select {
             width: 140px;
             min-width: 140px;
             color: #363463;
             padding: 2px 10px;
             margin: 5px 0 0;
-            background-color: #FFF;
-            border: 1px solid #DDD;
+            background-color: #fff;
+            border: 1px solid #ddd;
           }
-          textarea{
+          textarea {
             width: 131px !important;
             padding: 2px 10px;
-            border: 1px solid #DDD;
+            border: 1px solid #ddd;
           }
           @media (max-width: 1024px) {
-            textarea{
+            textarea {
               width: 400px !important;
               height: 32px !important;
             }
-            select{
+            select {
               width: 197px !important;
             }
           }
         }
       }
-
     }
-    th{
+    th {
       background: $lightestGray;
       background-image: none;
       color: $darkGray;
-      width:113px;
+      width: 113px;
       font-family: openSansSemiBold;
-      &.active-drugs{
-        width:25%;
+      &.active-drugs {
+        width: 25%;
       }
-      &.drugName{
+      &.drugName {
         width: 240px;
         text-align: left;
         position: absolute;
-        top:auto;
-        left:0;
+        top: auto;
+        left: 0;
         box-sizing: border-box;
         border-right: none;
-        height:100%;
+        height: 100%;
         padding-left: 10px;
-        @media (max-width : 1024px){
+        @media (max-width: 1024px) {
           width: 170px;
         }
-        span{
+        span {
           z-index: 999;
           position: static;
           width: 100%;
         }
       }
-      &.stopReason{
-        width:160px;
+      &.stopReason {
+        width: 160px;
       }
-      &.instructions{
-        width:168px;
+      &.instructions {
+        width: 168px;
       }
-      &.empty-header{
+      &.empty-header {
         position: absolute;
         right: 0;
         top: auto;
         box-sizing: border-box;
-        height:100%;
-        &.noOfActions-4-width{
+        height: 100%;
+        &.noOfActions-4-width {
           width: 200px;
         }
-        &.noOfActions-3-width{
+        &.noOfActions-3-width {
           width: 165px;
         }
-        &.noOfActions-2-width{
+        &.noOfActions-2-width {
           width: 130px;
         }
-        &.noOfActions-1-width{
+        &.noOfActions-1-width {
           width: 90px;
         }
-        &.noOfActions-0-width{
+        &.noOfActions-0-width {
           width: 75px;
         }
-        &.noOfActions--width{
+        &.noOfActions--width {
           width: 65px;
         }
       }
     }
-    td{
+    td {
       text-align: center;
-      padding: 6px 5px 7px;
+      padding: 10px;
       vertical-align: middle;
-      &.drugName{
+      &.drugName {
         text-align: left;
         padding-left: 10px;
-        width: 240px;
+        // width: 240px;
         text-align: left;
         position: absolute;
-        top:auto;
-        left:0;
+        top: auto;
+        left: 0;
         box-sizing: border-box;
-        background: #EFEFF2;
+        background: #efeff2;
         border-bottom: 1px solid $lighterGray;
         white-space: nowrap;
-        overflow: hidden;
+        width: 240px;
+        // overflow: hidden;
         text-overflow: ellipsis;
-        @media (max-width : 1024px){
+        @media (max-width: 1024px) {
           width: 170px;
         }
-        span{
-          z-index: 999;
+        > span {
+          // z-index: 999;
           position: static;
+          display: flex;
+          align-items: center;
           width: 100%;
         }
-        .orderSetStagingAreaCheckbox{
-          margin: 1px 7px 0 0;
-          transform:scale(1.2);
+        span, > div {
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
-      }
-      &.drugNameStopForm{
-        padding: 6px 10px 43px;
-      }
-      &.drugNameAddNote{
-        padding: 6px 10px 31px;
-      }
-      &.drugNameStopFormAddNote{
-        padding: 6px 10px 85px;
-      }
-      &.buttonColumn{
-        position: absolute;
-        right:0;
-        top:auto;
-        padding: 2px 5px;
-        border-bottom: 1px solid $lighterGray;
-        background: #EFEFF2;
-        box-sizing: border-box;
-      }
-      &.buttonColumnStopForm{
-        padding: 2px 5px 38px;
-      }
-      &.buttonColumnAddNote{
-        padding: 2px 5px 26px;
-      }
-      &.buttonColumnStopFormAddNote{
-        padding: 2px 5px 82px;
-      }
-      &.noActionColumn{
-        padding: 3px 5px;
-      }
-      &.noOfActions-4-width{
-        width: 200px;
-      }
-      &.noOfActions-3-width{
-        width: 165px;
-      }
-      &.noOfActions-2-width{
-        width: 130px;
-      }
-      &.noOfActions-1-width{
-        width: 90px;
-      }
-      &.noOfActions-0-width{
-        width: 75px;
-      }
-      &.noOfActions--width{
-        width: 65px;
-      }
-      &.noActionColumnAddNote{
-        padding: 3px 5px 27px;
-      }
-      &.drug-stop-container{
-        padding: 0;
-      }
-      .button-group-wrapper{
-        width: auto;
-        padding:0 !important;
-        position: static;
-        button,button:hover{
-          i{
-            font-size: 1.8em;
-            padding:0 !important;
+
+        .medication-name {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          button {
+            min-width: auto !important;
           }
         }
-        .button-group{
+        .orderSetStagingAreaCheckbox {
+          margin: 1px 7px 0 0;
+          transform: scale(1.2);
+        }
+      }
+      &.drugNameStopForm {
+        padding: 6px 10px 43px;
+      }
+      &.drugNameAddNote {
+        padding: 6px 10px 31px;
+      }
+      &.drugNameStopFormAddNote {
+        padding: 6px 10px 85px;
+      }
+      &.buttonColumn {
+        position: absolute;
+        right: 0;
+        top: auto;
+        padding: 2px 5px;
+        border-bottom: 1px solid $lighterGray;
+        background: #efeff2;
+        box-sizing: border-box;
+      }
+      &.buttonColumnStopForm {
+        padding: 2px 5px 38px;
+      }
+      &.buttonColumnAddNote {
+        padding: 2px 5px 26px;
+      }
+      &.buttonColumnStopFormAddNote {
+        padding: 2px 5px 82px;
+      }
+      &.noActionColumn {
+        padding: 3px 5px;
+      }
+      &.noOfActions-4-width {
+        width: 200px;
+      }
+      &.noOfActions-3-width {
+        width: 165px;
+      }
+      &.noOfActions-2-width {
+        width: 130px;
+      }
+      &.noOfActions-1-width {
+        width: 90px;
+      }
+      &.noOfActions-0-width {
+        width: 75px;
+      }
+      &.noOfActions--width {
+        width: 65px;
+      }
+      &.noActionColumnAddNote {
+        padding: 3px 5px 27px;
+      }
+      &.drug-stop-container {
+        padding: 0;
+      }
+      .button-group-wrapper {
+        width: auto;
+        padding: 0 !important;
+        position: static;
+        overflow: hidden;
+        float: left !important;
+        button,
+        button:hover {
+          i {
+            font-size: 1.8em;
+            padding: 0 !important;
+          }
+        }
+        .button-group {
           float: left;
         }
+      }
+    }
+  }
+
+  .order-set-name {
+    .cdss-alert-icon {
+      margin-right: 5px !important;
+    }
+  }
+
+  .order-alerts {
+    td {
+      padding-left: 0px !important;
+      overflow: hidden !important;
+      white-space: normal !important;
+      p, a {
+        font-size: 12px !important;
+      }
+      .active-drug-alert {
+        padding: 5px 3px !important;
+        width: auto !important;
       }
     }
   }

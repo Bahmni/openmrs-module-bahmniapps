@@ -1,8 +1,142 @@
 describe("Diagnosis Controller", function () {
-    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService, $state;
+    var $scope, rootScope, contextChangeHandler,mockDiagnosisService, spinner, appService, mockAppDescriptor, q, deferred, mockDiagnosisData, translate, retrospectiveEntryService, $state, drugService, cdssService;;
     var DateUtil = Bahmni.Common.Util.DateUtil;
 
     beforeEach(module('bahmni.clinical'));
+
+    var cdssBundle = {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+            {
+                "resource": {
+                    "resourceType": "Condition",
+                    "clinicalStatus": {
+                        "coding": [
+                            {
+                                "code": "active",
+                                "display": "Active",
+                                "system": "http://terminology.hl7.org/CodeSystem/condition-clinical"
+                            }
+                        ]
+                    },
+                    "code": {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "123456789",
+                                "display": "Placeholder Diagnosis"
+                            }
+                        ],
+                        "text": "Placeholder Diagnosis"
+                    },
+                    "subject": {
+                        "reference": "Patient/dc9444c6-ad55-4200-b6e9-407e025eb948"
+                    }
+                }
+            },
+            {
+                "resource": {
+                    "resourceType": "MedicationRequest",
+                    "status": "active",
+                    "intent": "order",
+                    "subject": {
+                        "reference": "Patient/dc9444c6-ad55-4200-b6e9-407e025eb948"
+                    },
+                    "medicationCodeableConcept": {
+                        "id": "987654321",
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654321",
+                                "display": "Placeholder Medication"
+                            },
+                            {
+                                "code": "987654321",
+                                "system": "https://example.com",
+                                "display": "Placeholder Medication"
+                            }
+                        ],
+                        "text": "Placeholder Medication"
+                    },
+                    "dosageInstruction": [
+                        {
+                            "text": "{\"instructions\":\"As directed\"}",
+                            "timing": {
+                                "event": [
+                                    "2023-10-01T05:58:27.000Z"
+                                ],
+                                "repeat": {
+                                    "duration": 3,
+                                    "durationUnit": "d"
+                                },
+                                "code": {
+                                    "coding": [
+                                        {
+                                            "code": "987654321",
+                                            "display": "Twice a day"
+                                        }
+                                    ],
+                                    "text": "Twice a day"
+                                }
+                            },
+                            "asNeededBoolean": false,
+                            "doseAndRate": [
+                                {
+                                    "doseQuantity": {
+                                        "value": 3,
+                                        "unit": "Tablet(s)",
+                                        "code": "987654321"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    };
+
+    var cdssResponse = [{
+        "uuid": "7b544b67-fbc7-48af-af95-ddaee09e836b",
+        "indicator": "warning",
+        "summary": "Contraindication: \"Placeholder Medication\" and \"Placeholder Medication\" with patient condition \"Placeholder Condition\" and \"Placeholder Condition\".",
+        "detail": "The use of Placeholder Medication is contraindicated when the patient has Placeholder Condition.",
+        "source": {
+            "label": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Atorvastatin#Contraindications"
+        },
+        "referenceMedications": [
+            {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "987654321",
+                        "display": "Placeholder Medication"
+                    },
+                    {
+                        "system": "https://example.com",
+                        "code": "987654321",
+                        "display": "Placeholder Medication"
+                    }
+                ]
+            }
+        ],
+        "referenceCondition": {
+            "coding": [
+                {
+                    "system": "https://example.com",
+                    "code": "123456789",
+                    "display": "Placeholder Condition"
+                },
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "123456789",
+                    "display": "Placeholder Condition"
+                }
+            ]
+        }
+    }];
 
     beforeEach(inject(function ($controller, $rootScope, $q, diagnosisService) {
         $scope = $rootScope.$new();
@@ -35,9 +169,21 @@ describe("Diagnosis Controller", function () {
                 }
             }
         });
-        translate = jasmine.createSpyObj('$translate',['instant']);
+        translate = jasmine.createSpyObj('$translate', ['instant']);
 
         retrospectiveEntryService = jasmine.createSpyObj('retrospectiveEntryService', ['isRetrospectiveMode']);
+
+        drugService = jasmine.createSpyObj('drugService', ['getCdssEnabled', 'sendDiagnosisDrugBundle']);
+
+        drugService.getCdssEnabled.and.returnValue(specUtil.respondWith(true));
+
+        drugService.sendDiagnosisDrugBundle.and.returnValue(specUtil.respondWith({
+            data: []
+        }));
+
+        cdssService = jasmine.createSpyObj('cdssService', ['sortInteractionsByStatus', 'getAlerts']);
+        cdssService.sortInteractionsByStatus.and.returnValue(specUtil.respondWith(cdssResponse));
+        cdssService.getAlerts.and.returnValue(specUtil.respondWith(cdssResponse));
 
         $controller('DiagnosisController', {
             $scope: $scope,
@@ -48,7 +194,9 @@ describe("Diagnosis Controller", function () {
             appService: appService,
             diagnosisService: mockDiagnosisService,
             $translate: translate,
-            retrospectiveEntryService: retrospectiveEntryService
+            retrospectiveEntryService: retrospectiveEntryService,
+            drugService: drugService,
+            cdssService: cdssService
         });
     }));
 
