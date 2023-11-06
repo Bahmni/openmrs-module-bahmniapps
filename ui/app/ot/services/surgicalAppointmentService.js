@@ -61,7 +61,7 @@ angular.module('bahmni.ot')
                     activeBlocks: activeBlocks || false,
                     v: "custom:(id,uuid," +
                     "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
-                    "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,person:(age))," +
+                    "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,person:(age,gender,birthdate))," +
                     "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,bedNumber,bedLocation,surgicalAppointmentAttributes" +
                     (additionalCustomParam ? "," + additionalCustomParam : "") + "))"
                 },
