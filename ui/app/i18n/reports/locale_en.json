@@ -45,5 +45,5 @@
     "DELETE_LABEL": "Delete",
     "EDIT_LABEL": "Edit",
     "REPORT_DATE_RANGE": "Select Date Range",
-    "START_DATE_CANNOT_GREATER_THAN_STOP_DATE": "start date can not be greater than stop date"
+    "START_DATE_CANNOT_LATER_THAN_STOP_DATE": "start date can not be later than stop date"
 }

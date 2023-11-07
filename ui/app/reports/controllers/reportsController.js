@@ -81,7 +81,7 @@ angular.module('bahmni.reports')
                     msg.push("end date");
                 }
                 if ((report.startDate > report.stopDate)) {
-                    msg.push(getTranslatedMessage("START_DATE_CANNOT_GREATER_THAN_STOP_DATE"));
+                    msg.push(getTranslatedMessage("START_DATE_CANNOT_LATER_THAN_STOP_DATE"));
                 }
                 messagingService.showMessage("error", "Please select the " + msg.join(" and "));
                 return false;
