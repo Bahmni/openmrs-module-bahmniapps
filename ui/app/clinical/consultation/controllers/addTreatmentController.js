@@ -99,6 +99,14 @@ angular.module('bahmni.clinical')
                 $scope.addForm.$dirty = false;
             });
 
+            var postSave = $rootScope.$on('event:save-successful', function () {
+                getAlerts();
+            });
+
+            $scope.$on('$destroy', function () {
+                postSave();
+            });
+
             var markVariable = function (variable) {
                 $scope[variable] = true;
                 $timeout(function () {

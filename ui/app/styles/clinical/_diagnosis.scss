@@ -780,8 +780,14 @@
             }
 
             .diagnosis-name {
-                padding-left: 10px;
+                padding-left: 0px !important;
                 font-size: 14px;
+                display: flex;
+                align-items: center;
+
+                > span {
+                    margin-right: 10px;
+                }
 
                 &.ruled-out {
                     color: $mediumGray;
