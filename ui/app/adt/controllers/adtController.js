@@ -16,8 +16,7 @@ angular.module('bahmni.adt')
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
             $scope.hostData = {
-                patient: $scope.patient,
-                isInPatientDashboard: true
+                patient: $scope.patient
             };
 
             var getVisitTypeUuid = function (visitTypeName) {
