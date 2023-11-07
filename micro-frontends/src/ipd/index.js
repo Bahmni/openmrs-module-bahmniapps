@@ -3,9 +3,12 @@
 
 import { react2angular } from "react2angular";
 import { IpdDashboard } from "./IpdDashboard";
-import { DrugChartModal } from "./DrugChartModal";
-import { DrugChartModalNotification } from "./DrugChartModalNotification";
+// import { DrugChartModal } from "./DrugChartModal";
+// import { DrugChartModalNotification } from "./DrugChartModalNotification";
 import { DrugChartDashboard } from "./DrugChartDasboard";
+import { DrugChartSlider } from "./DrugChartSlider";
+import { DrugChartSliderNotification } from "./DrugChartSliderNotification";
+
 
 angular.module("bahmni.mfe.ipd", [
   "ui.router",
@@ -30,9 +33,9 @@ angular
 
 angular
   .module("bahmni.mfe.ipd")
-  .component("mfeIpdDrugChartModal", react2angular(DrugChartModal), {
+  .component("mfeIpdDrugChartSlider", react2angular(DrugChartSlider), {
     template:
-      '<mfe-ipd-drug-chart-modal host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-modal>',
+      '<mfe-ipd-drug-chart-slider host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-slider>',
   });
 
 /** MFE component 3: DrugChartModalNotification
@@ -40,9 +43,9 @@ angular
 
 angular
   .module("bahmni.mfe.ipd")
-  .component("mfeIpdDrugChartModalNotification", react2angular(DrugChartModalNotification), {
+  .component("mfeIpdDrugChartSliderNotification", react2angular(DrugChartSliderNotification), {
     template:
-      '<mfe-ipd-drug-chart-modal-notification host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-modal-notification>',
+      '<mfe-ipd-drug-chart-slider-notification host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-slider-notification>',
   });
 
 /** MFE component 4: DrugChartDashboard

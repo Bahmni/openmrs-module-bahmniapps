@@ -7,11 +7,11 @@ angular.module('bahmni.clinical')
             $scope.openModal = false;
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
             const enable24HourTimers = appService.getAppDescriptor().getConfigValue("enable24HourTimers");
-            var drugChartModalScheduleFrequencies = [];
-            var drugChartModalStartTimeFrequencies = [];
+            var drugChartSliderScheduleFrequencies = [];
+            var drugChartSliderStartTimeFrequencies = [];
             if ($scope.enableIPDFeature === true) {
-                drugChartModalScheduleFrequencies = appService.getAppDescriptor().getConfigValue("drugChartScheduleFrequencies");
-                drugChartModalStartTimeFrequencies = appService.getAppDescriptor().getConfigValue("drugChartStartTimeFrequencies");
+                drugChartSliderScheduleFrequencies = appService.getAppDescriptor().getConfigValue("drugChartScheduleFrequencies");
+                drugChartSliderStartTimeFrequencies = appService.getAppDescriptor().getConfigValue("drugChartStartTimeFrequencies");
             }
             $scope.showDetails = false;
             if ($scope.params.showProvider === undefined) {
@@ -21,12 +21,12 @@ angular.module('bahmni.clinical')
                 $scope.showDetails = !$scope.showDetails;
             };
 
-            $scope.drugChartModal = {
+            $scope.drugChartSlider = {
                 hostData: {
                     drugOrder: {},
                     patientId: $scope.params.patientUuid,
-                    scheduleFrequencies: drugChartModalScheduleFrequencies,
-                    startTimeFrequencies: drugChartModalStartTimeFrequencies,
+                    scheduleFrequencies: drugChartSliderScheduleFrequencies,
+                    startTimeFrequencies: drugChartSliderStartTimeFrequencies,
                     enable24HourTimers: enable24HourTimers
                 },
                 hostApi: {
@@ -36,20 +36,20 @@ angular.module('bahmni.clinical')
                     },
                     onModalSave: function () {
                         $scope.openModal = false;
-                        $scope.drugChartModalNotification.hostData.notificationKind = "success";
+                        $scope.drugChartSliderNotification.hostData.notificationKind = "success";
                         $scope.showModalWarningMessage = true;
                         $scope.$apply();
                     },
                     onModalCancel: function () {
                         $scope.openModal = false;
-                        $scope.drugChartModalNotification.hostData.notificationKind = "warning";
+                        $scope.drugChartSliderNotification.hostData.notificationKind = "warning";
                         $scope.showModalWarningMessage = true;
                         $scope.$apply();
                     }
                 }
             };
 
-            $scope.drugChartModalNotification = {
+            $scope.drugChartSliderNotification = {
                 hostData: {
                     notificationKind: ""
                 },
@@ -61,8 +61,8 @@ angular.module('bahmni.clinical')
                 }
             };
 
-            $scope.openDrugChartModal = function (drugOrder) {
-                $scope.drugChartModal.hostData.drugOrder = drugOrder;
+            $scope.openDrugChartSlider = function (drugOrder) {
+                $scope.drugChartSlider.hostData.drugOrder = drugOrder;
                 $scope.openModal = true;
             };
         };
