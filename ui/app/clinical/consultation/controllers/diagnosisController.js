@@ -218,6 +218,14 @@ angular.module('bahmni.clinical')
                 alertsWatch();
             });
 
+            var postSave = $rootScope.$on('event:save-successful', function () {
+                getAlerts();
+            });
+
+            $scope.$on('$destroy', function () {
+                postSave();
+            });
+
             var addPlaceHolderDiagnosis = function () {
                 var diagnosis = new Bahmni.Common.Domain.Diagnosis('');
                 $scope.consultation.newlyAddedDiagnoses.push(diagnosis);

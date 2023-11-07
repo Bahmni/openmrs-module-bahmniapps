@@ -573,6 +573,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                                                 notify: true,
                                                 reload: (toStateConfig !== undefined)
                                             });
+                                        }).then(function () {
+                                            $rootScope.$broadcast('event:save-successful');
                                         });
                                     }));
                             }).catch(function (error) {
