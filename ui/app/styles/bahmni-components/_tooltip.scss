@@ -35,9 +35,9 @@
   top: calc(100% + 10px);
   left: -70px;
   max-height: 500px;
+  min-width: 400px;
   max-width: 500px;
-  overflow-y: auto;
-  word-wrap: break-word;
+  text-wrap: wrap;
   &:before {
     content: '';
     position: absolute;
