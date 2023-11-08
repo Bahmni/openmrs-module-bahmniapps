@@ -3,8 +3,6 @@
 
 import { react2angular } from "react2angular";
 import { IpdDashboard } from "./IpdDashboard";
-// import { DrugChartModal } from "./DrugChartModal";
-// import { DrugChartModalNotification } from "./DrugChartModalNotification";
 import { DrugChartDashboard } from "./DrugChartDasboard";
 import { DrugChartSlider } from "./DrugChartSlider";
 import { DrugChartSliderNotification } from "./DrugChartSliderNotification";
