@@ -51,11 +51,19 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             },
             abstract: true,
             views: {
+                'header': {
+                    templateUrl: 'views/headerAdt.html',
+                    controller: function ($scope) {
+                        $scope.showClinicalDashboardLink = true;
+                    }
+                },
                 'content': {
                     template: '<ui-view/>'
-                }
+                },
+                'additional-header': {
+                    templateUrl: '../common/patient/header/views/header.html'
+                },
             },
-
             resolve: {
                 patientResolution: function ($stateParams, patientInitialization) {
                     return patientInitialization($stateParams.patientUuid);
