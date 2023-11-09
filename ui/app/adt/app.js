@@ -62,7 +62,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                 },
                 'additional-header': {
                     templateUrl: '../common/patient/header/views/header.html'
-                },
+                }
             },
             resolve: {
                 patientResolution: function ($stateParams, patientInitialization) {
