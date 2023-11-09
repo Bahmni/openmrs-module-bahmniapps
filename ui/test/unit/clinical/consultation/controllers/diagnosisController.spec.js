@@ -122,7 +122,7 @@ describe("Diagnosis Controller", function () {
                 ]
             }
         ],
-        "referenceCondition": {
+        "referenceConditions": [{
             "coding": [
                 {
                     "system": "https://example.com",
@@ -135,7 +135,7 @@ describe("Diagnosis Controller", function () {
                     "display": "Placeholder Condition"
                 }
             ]
-        }
+        }]
     }];
 
     beforeEach(inject(function ($controller, $rootScope, $q, diagnosisService) {

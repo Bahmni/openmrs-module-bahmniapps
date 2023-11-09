@@ -225,7 +225,7 @@ describe("AddTreatmentController", function () {
                 ]
             }
         ],
-        "referenceCondition": {
+        "referenceConditions": [{
             "coding": [
                 {
                     "system": "https://example.com",
@@ -238,7 +238,7 @@ describe("AddTreatmentController", function () {
                     "display": "Placeholder Condition"
                 }
             ]
-        }
+        }]
     }];
 
     var $q, scope, stateParams, rootScope, contextChangeHandler, newTreatment,

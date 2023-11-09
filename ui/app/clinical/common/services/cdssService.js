@@ -242,18 +242,30 @@ angular.module('bahmni.clinical')
 
         var getAlertMedicationCodes = function (alert) {
             if (alert.referenceMedications) {
-                return alert.referenceMedications.map(function (med) {
-                    return med.coding[0].code;
+                var codeList = [];
+                alert.referenceMedications.forEach(function (med) {
+                    var extractedCodes = med.coding.map(function (coding) {
+                        return coding.code;
+                    });
+                    codeList = codeList.concat(extractedCodes);
                 });
+                return codeList;
             }
             return [];
         };
 
         var getAlertConditionCodes = function (alert) {
-            if (alert.referenceCondition) {
-                return alert.referenceCondition.coding.map(function (cond) {
-                    return cond.code;
+            if (alert.referenceConditions) {
+                var codeList = [];
+                alert.referenceConditions.forEach(function (med) {
+                    var extractedCodes = med.coding.filter(function (cond) {
+                        return !localStorage.getItem("conceptSource") || cond.system.includes(localStorage.getItem("conceptSource"));
+                    }).map(function (coding) {
+                        return coding.code;
+                    });
+                    codeList = codeList.concat(extractedCodes);
                 });
+                return codeList;
             }
             return [];
         };
@@ -313,7 +325,9 @@ angular.module('bahmni.clinical')
                     return currentAlert.uuid === alert.uuid;
                 });
                 if (getAlert) {
-                    if (alert.indicator !== getAlert.indicator || alert.summary.match(/\d+/g).join('') !== getAlert.summary.match(/\d+/g).join('')) {
+                    if (alert.indicator !== getAlert.indicator || (alert.alertType === "High Dosage" && alert.summary.match(/\d+/g).sort().join('') !== getAlert.summary.match(/\d+/g).sort().join(''))) {
+                        alert.isActive = true;
+                    } else if (!isSubset(getAlertConditionCodes(getAlert), getAlertConditionCodes(alert)) || !isSubset(getAlertMedicationCodes(getAlert), getAlertMedicationCodes(alert))) {
                         alert.isActive = true;
                     } else {
                         alert.isActive = getAlert.isActive;
@@ -323,6 +337,11 @@ angular.module('bahmni.clinical')
             });
 
             return alerts;
+        };
+        var isSubset = function (oldList, newList) {
+            return newList.every(function (newItem) {
+                return oldList.includes(newItem);
+            });
         };
 
         var sortInteractionsByStatus = function (alerts) {
