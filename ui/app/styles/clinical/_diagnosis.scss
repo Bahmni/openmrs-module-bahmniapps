@@ -780,11 +780,13 @@
             }
 
             .diagnosis-name {
-                padding-left: 0px !important;
                 font-size: 14px;
                 display: flex;
                 align-items: center;
 
+                &.dismissed {
+                    padding-left: 0px !important;
+                }
                 > span {
                     margin-right: 10px;
                 }
