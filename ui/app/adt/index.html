@@ -11,6 +11,9 @@
         <link rel="stylesheet" href="../components/ngDialog/css/ngDialog-theme-plain.min.css"/>
 
         <link rel="stylesheet" href="../styles/clinical.css"/>
+        <link rel="stylesheet" href="../micro-frontends-dist/shared.min.css"/>
+        <link rel="stylesheet" href="../micro-frontends-dist/ipd.min.css"/>
+        <link rel="stylesheet" href="../micro-frontends-dist/next-ui.min.css"/>
         <!-- endbuild -->
         <title>ADT</title>
     </head>
@@ -53,6 +56,16 @@
         <script src="../components/ng-tags-input/ng-tags-input.min.js"></script>
         <script src="../lib/angular-workers/dist/angular-workers.js"></script>
 
+        <!-- Adding react since micro-frontends will be used -->
+        <script src="../components/react/react.production.min.js"></script>
+        <script src="../components/react-dom/react-dom.production.min.js"></script>
+
+        <!-- polyfill to add angular feature which will allow easy loading of mfe into angular component -->
+        <script src="../micro-frontends-dist/shared.min.js"></script>
+
+        <!-- load the ipd mfe as angular components -->
+        <script src="../micro-frontends-dist/ipd.min.js"></script>
+        <script src="../micro-frontends-dist/next-ui.min.js"></script>
 
         <!-- build:js adt.min.js -->
         <script src="../common/route-errorhandler/init.js"></script>
