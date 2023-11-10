@@ -109,11 +109,12 @@ angular.module('bahmni.clinical')
                 if (pastDiagnoses && pastDiagnoses.length > 0) {
                     pastDiagnoses.forEach(function (diagnosis) {
                         diagnosis.alerts = alerts.filter(function (cdssAlert) {
-                            return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
-                                var findMapping = diagnosis.codedAnswer.mappings.find(function (mapping) {
-                                    return mapping.code === coding.code;
+                            return cdssAlert.referenceConditions && cdssAlert.referenceConditions.some(function (referenceCondition) {
+                                return referenceCondition.coding.some(function (coding) {
+                                    return diagnosis.codedAnswer.mappings.some(function (mapping) {
+                                        return mapping.code === coding.code;
+                                    });
                                 });
-                                return findMapping !== undefined;
                             });
                         });
                         if (diagnosis.alerts) {
@@ -131,11 +132,12 @@ angular.module('bahmni.clinical')
                 if (diagnoses && diagnoses.length > 0 && alerts) {
                     diagnoses.forEach(function (diagnosis) {
                         diagnosis.alerts = alerts.filter(function (cdssAlert) {
-                            return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
-                                var findMapping = diagnosis.codedAnswer.mappings.find(function (mapping) {
-                                    return mapping.code === coding.code;
+                            return cdssAlert.referenceConditions && cdssAlert.referenceConditions.some(function (referenceCondition) {
+                                return referenceCondition.coding.some(function (coding) {
+                                    return diagnosis.codedAnswer.mappings.some(function (mapping) {
+                                        return mapping.code === coding.code;
+                                    });
                                 });
-                                return findMapping !== undefined;
                             });
                         });
                         if (diagnosis.alerts) {
@@ -152,8 +154,10 @@ angular.module('bahmni.clinical')
                 if (diagnoses && diagnoses.length > 0 && alerts) {
                     diagnoses.forEach(function (diagnosis) {
                         diagnosis.alerts = alerts.filter(function (cdssAlert) {
-                            return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
-                                return diagnosis.codedAnswer.uuid === coding.code;
+                            return cdssAlert.referenceConditions && cdssAlert.referenceConditions.some(function (referenceCondition) {
+                                return referenceCondition.coding.some(function (coding) {
+                                    return diagnosis.codedAnswer.uuid === coding.code;
+                                });
                             });
                         });
                         if (diagnosis.alerts) {
@@ -173,8 +177,10 @@ angular.module('bahmni.clinical')
                     condition.alerts = [];
                 } else if (condition && condition.concept && condition.concept.uuid && alerts) {
                     condition.alerts = alerts.filter(function (cdssAlert) {
-                        return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
-                            return condition.concept.uuid.includes(coding.code);
+                        return cdssAlert.referenceConditions && cdssAlert.referenceConditions.some(function (referenceCondition) {
+                            return referenceCondition.coding.some(function (coding) {
+                                return condition.concept.uuid.includes(coding.code);
+                            });
                         });
                     });
                     if (condition.alerts) {
@@ -192,8 +198,10 @@ angular.module('bahmni.clinical')
                 if (conditions && conditions.length > 0 && alerts) {
                     conditions.forEach(function (condition) {
                         condition.alerts = alerts.filter(function (cdssAlert) {
-                            return cdssAlert.referenceCondition && cdssAlert.referenceCondition.coding.some(function (coding) {
-                                return condition.concept.uuid.includes(coding.code);
+                            return cdssAlert.referenceConditions && cdssAlert.referenceConditions.some(function (referenceCondition) {
+                                return referenceCondition.coding.some(function (coding) {
+                                    return condition.concept.uuid.includes(coding.code);
+                                });
                             });
                         });
                         if (condition.alerts) {
@@ -490,7 +498,7 @@ angular.module('bahmni.clinical')
                     diagnosisService.deleteDiagnosis(obsUUid).then(function () {
                         messagingService.showMessage('info', 'DELETED_MESSAGE');
                         var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0
-                                          ? $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
+                            ? $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
                         getAlerts();
                         return reloadDiagnosesSection(currentUuid);
                     }));
