@@ -11,6 +11,9 @@ angular.module('bahmni.clinical')
                 $state.current.views['print-content'].templateUrl;
             var showProviderInfo = appService.getAppDescriptor().getConfigValue('showProviderInfoinVisits');
             $scope.showProviderInfo = showProviderInfo !== false ? true : showProviderInfo;
+            var showPatientInfo = appService.getAppDescriptor().getConfigValue('showPatientInfoInVisits');
+            var enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
+            $scope.showPatientInformation = showPatientInfo !== false ? true : showPatientInfo;
             $scope.visitHistory = visitHistory; // required as this visit needs to be overridden when viewing past visits
             $scope.visitSummary = visitSummary;
             $scope.visitTabConfig = visitConfig;
@@ -18,6 +21,7 @@ angular.module('bahmni.clinical')
             $scope.patientUuid = $stateParams.patientUuid;
             $scope.visitUuid = $stateParams.visitUuid;
             $scope.isActiveIpdVisit = $scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime === null;
+            $scope.showIPDDashboard = enableIPDFeature && $scope.isActiveIpdVisit;
             $scope.ipdDashboard = {
                 hostData: {
                     patient: {uuid: $scope.patientUuid}
