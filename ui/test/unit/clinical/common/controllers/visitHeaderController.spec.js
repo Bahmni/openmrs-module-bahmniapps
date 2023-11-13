@@ -3,7 +3,7 @@
 
 describe('visitHeaderController', function () {
     var scope, controller, rootScope, visitTabConfig, configurations, encounterService;
-    var mockClinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink', 'getAllConsultationBoards']);
+    var mockClinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink', 'getAllConsultationBoards', 'getIsIPDFeatureEnabled']);
     var mockLocation = jasmine.createSpyObj('$location', ['path', 'url']);
     var mockUrlHelper = {
         getPatientUrl: function () {
