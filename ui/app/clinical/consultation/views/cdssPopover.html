@@ -6,7 +6,7 @@
     {{ "DISMISSED_KEY" | translate}} {{alert.indicator}}
   </div>
   <p>
-    <b ng-if="alert.alertType === 'High Dosage'">{{alert.alertType}}: </b>
+    <b ng-if="alert.alertType === 'High Dosage' || alert.alertType === 'Dosage Exception'">{{alert.alertType}}: </b>
     {{alert.summary}}
     </p>
   <div class="alert-detail">

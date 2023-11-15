@@ -14,7 +14,7 @@
       <div>
         <div class="summary">
           <p ng-class="{'strike-text': !alert.isActive}">
-            <b ng-if="alert.alertType === 'High Dosage'">{{alert.alertType}}: </b>
+            <b ng-if="alert.alertType === 'High Dosage' || alert.alertType === 'Dosage Exception'">{{alert.alertType}}: </b>
             {{alert.summary}}</p>
         </div>
         <div
