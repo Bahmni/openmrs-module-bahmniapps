@@ -47,13 +47,20 @@ angular.module('bahmni.admin')
             var deferred = $q.defer();
             $scope.tasks = [];
             if (isUserPrivilegedForFhirExport()) {
+                fhirExportService.getUuidForConcept().then(function (response) {
+                    $scope.uuid = response && response.data && response.data.results && response.data.results[0] && response.data.results[0].uuid || null;
+                });
                 fhirExportService.loadFhirTasks().then(function (response) {
                     if (response.data && response.data.entry) {
-                        response.data.entry.map(function (task) {
+                        var fhirExportTasks = response.data.entry.filter(function (task) {
+                            return task.resource.basedOn && task.resource.basedOn.some(function (basedOn) {
+                                return basedOn.reference === $scope.uuid;
+                            });
+                        });
+                        $scope.tasks = fhirExportTasks.map(function (task) {
                             task.resource.authoredOn = convertToLocalDate(task.resource.authoredOn);
                             return task;
                         });
-                        $scope.tasks = response.data.entry;
                         deferred.resolve();
                     }
                 }).catch(function (error) {
