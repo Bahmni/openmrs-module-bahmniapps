@@ -3,6 +3,15 @@
 describe('FHIRExportController', function () {
     var scope, rootScope, controller, translate, fhirExportService, messagingService;
 
+    var conceptMockData = {
+        "results": [
+            {
+                "uuid": "dummyUuid",
+                "display": "FHIR Export Anonymise Flag"
+            }
+        ]
+    };
+
     var fhirTasksMockData = {
         "resourceType": "Bundle",
         "total": 1,
@@ -18,6 +27,12 @@ describe('FHIRExportController', function () {
                         "reference": "Practitioner/superman",
                         "type": "Practitioner"
                     },
+                    "basedOn": [
+                        {
+                            "reference": "dummyUuid",
+                            "type": "ServiceRequest"
+                        }
+                    ],
                     "input": [
                         {
                             "type": {
@@ -86,9 +101,10 @@ describe('FHIRExportController', function () {
         rootScope = $rootScope;
         $rootScope.currentUser = {privileges: [{name: Bahmni.Common.Constants.fhirExportPrivilege}, {name: Bahmni.Common.Constants.plainFhirExportPrivilege}]};
         translate = jasmine.createSpyObj('$translate', ['instant']);
-        fhirExportService = jasmine.createSpyObj('fhirExportService', ['loadFhirTasks', 'export', 'submitAudit']);
+        fhirExportService = jasmine.createSpyObj('fhirExportService', ['getUuidForConcept', 'loadFhirTasks', 'export', 'submitAudit']);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
 
+        fhirExportService.getUuidForConcept.and.returnValue(specUtil.respondWith(conceptMockData));
         fhirExportService.loadFhirTasks.and.returnValue(specUtil.respondWith(fhirTasksMockData));
 
         fhirExportService.export.and.callFake(function () {

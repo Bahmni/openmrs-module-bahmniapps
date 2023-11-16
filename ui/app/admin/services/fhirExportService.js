@@ -14,7 +14,7 @@ angular.module('bahmni.admin')
             s: 'default',
             v: 'default'
         };
-        return $http.get('https://localhost/openmrs/ws/rest/v1/concept', {params: params});
+        return $http.get(Bahmni.Common.Constants.conceptUrl, {params: params});
     };
 
     this.loadFhirTasks = function () {
