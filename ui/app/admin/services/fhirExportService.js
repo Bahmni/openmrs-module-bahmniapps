@@ -8,7 +8,7 @@ angular.module('bahmni.admin')
         return DateUtil.getDateTimeInSpecifiedFormat(localDate, 'MMMM Do, YYYY [at] h:mm:ss A');
     };
 
-    this.getUuidForConcept = function () {
+    this.getUuidForAnonymiseConcept = function () {
         const params = {
             name: 'FHIR Export Anonymise Flag',
             s: 'default',

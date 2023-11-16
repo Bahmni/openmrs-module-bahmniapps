@@ -47,7 +47,7 @@ angular.module('bahmni.admin')
             var deferred = $q.defer();
             $scope.tasks = [];
             if (isUserPrivilegedForFhirExport()) {
-                fhirExportService.getUuidForConcept().then(function (response) {
+                fhirExportService.getUuidForAnonymiseConcept().then(function (response) {
                     $scope.uuid = response && response.data && response.data.results && response.data.results[0] && response.data.results[0].uuid || null;
                 });
                 fhirExportService.loadFhirTasks().then(function (response) {
