@@ -8,6 +8,15 @@ angular.module('bahmni.admin')
         return DateUtil.getDateTimeInSpecifiedFormat(localDate, 'MMMM Do, YYYY [at] h:mm:ss A');
     };
 
+    this.getUuidForConcept = function () {
+        const params = {
+            name: 'FHIR Export Anonymise Flag',
+            s: 'default',
+            v: 'default'
+        };
+        return $http.get('https://localhost/openmrs/ws/rest/v1/concept', {params: params});
+    };
+
     this.loadFhirTasks = function () {
         const params = {
             "_sort:desc": "_lastUpdated",
