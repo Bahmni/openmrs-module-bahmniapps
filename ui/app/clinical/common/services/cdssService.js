@@ -45,7 +45,16 @@ angular.module('bahmni.clinical')
                                         "code": medication.drug.uuid
                                     }
                                 }
-                            ]
+                            ],
+                            "route": {
+                                "coding": [{
+                                    "system": conceptSource,
+                                    "code": "",
+                                    "display": medication.route
+                                }
+                                ],
+                                "text": medication.route
+                            }
                         }
                     ]
 
