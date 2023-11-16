@@ -4,9 +4,6 @@
 import { react2angular } from "react2angular";
 import { IpdDashboard } from "./IpdDashboard";
 import { DrugChartDashboard } from "./DrugChartDasboard";
-import { DrugChartSlider } from "./DrugChartSlider";
-import { DrugChartSliderNotification } from "./DrugChartSliderNotification";
-
 
 angular.module("bahmni.mfe.ipd", [
   "ui.router",
@@ -26,27 +23,8 @@ angular
       '<mfe-ipd-dashboard host-data="hostData" host-api="hostApi"></mfe-ipd-dashboard>'
   });
 
-/** MFE component 2: DrugChartModal
- *================================================= */
 
-angular
-  .module("bahmni.mfe.ipd")
-  .component("mfeIpdDrugChartSlider", react2angular(DrugChartSlider), {
-    template:
-      '<mfe-ipd-drug-chart-slider host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-slider>',
-  });
-
-/** MFE component 3: DrugChartModalNotification
- * ================================================= */
-
-angular
-  .module("bahmni.mfe.ipd")
-  .component("mfeIpdDrugChartSliderNotification", react2angular(DrugChartSliderNotification), {
-    template:
-      '<mfe-ipd-drug-chart-slider-notification host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-slider-notification>',
-  });
-
-/** MFE component 4: DrugChartDashboard
+/** MFE component 2: DrugChartDashboard
  *================================================= */
 
 angular
