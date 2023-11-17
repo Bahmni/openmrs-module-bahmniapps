@@ -1,6 +1,6 @@
 <div class="view-past row-click" ng-click="toggle(diagnosis)" ng-class="{'edited': diagnosis.isDirty}">
     <div class="col col1" bm-pop-over autoclose="true">
-        <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
+        <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus,'dismissed': diagnosis.alerts && diagnosis.alerts.length > 0 && !hasActiveAlerts(diagnosis.alerts)}">
             <span ng-if="diagnosis.alerts && diagnosis.alerts.length > 0 && !hasActiveAlerts(diagnosis.alerts)">
                  <button class="cdss-alert-icon button-alert" bm-pop-over-trigger>
                     <i class="fa fa-exclamation-circle cdss-icon-medication">

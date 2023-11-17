@@ -35,7 +35,12 @@
   top: calc(100% + 10px);
   left: -70px;
   max-height: 500px;
-  overflow-y: auto;
+  min-width: 400px;
+  max-width: 500px;
+  text-wrap: wrap;
+  * {
+    line-height: 1.5em;
+  }
   &:before {
     content: '';
     position: absolute;

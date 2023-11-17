@@ -780,8 +780,16 @@
             }
 
             .diagnosis-name {
-                padding-left: 10px;
                 font-size: 14px;
+                display: flex;
+                align-items: center;
+
+                &.dismissed {
+                    padding-left: 0px !important;
+                }
+                > span {
+                    margin-right: 10px;
+                }
 
                 &.ruled-out {
                     color: $mediumGray;

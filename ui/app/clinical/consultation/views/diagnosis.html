@@ -11,7 +11,7 @@
                                     {{ ::'CLINICAL_DIAGNOSIS' | translate }}
                                 </div>
                                 <div class="col-body">
-                                    <span ng-if="diagnosis.alerts && diagnosis.alerts.length > 0 && !hasActiveAlerts(diagnosis.alerts)" class="alert-item">
+                                    <span ng-if="diagnosis.alerts && diagnosis.alerts.length > 0 && !hasActiveAlerts(diagnosis.alerts) && (!diagnosis.diagnosisStatus || diagnosis.status === 'ACTIVE')" class="alert-item">
                                         <button class="cdss-alert-icon button-alert alert-button" bm-pop-over-trigger>
                                             <i class="fa cdss-icon-medication fa-exclamation-circle">
                                             </i>
@@ -91,7 +91,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" ng-if="hasActiveAlerts(diagnosis.alerts)" ng-repeat="alert in diagnosis.alerts">
+                        <div class="row" ng-if="hasActiveAlerts(diagnosis.alerts) && (!diagnosis.diagnosisStatus || diagnosis.diagnosisStatus === 'ACTIVE')" ng-repeat="alert in diagnosis.alerts">
                            <ng-include class="new-diagnosis-alert-row" src="'consultation/views/diagnosisAlertRow.html'" />
                       </div>
                         <div class="col col-comments" ng-show="diagnosis.showComments">
@@ -129,7 +129,7 @@
                         <div class="col col3"><span>{{ ::'CLINICAL_CURRENT' | translate }}</span></div>
                         <div class="col col4" ng-if="pastDiagnosesAlerts">
                             <div class="cdss-alert-icon header-alert-icon">
-                                <i class="fa fa-exclamation-triangle"></i>
+                                <i class="fa fa-exclamation-circle"></i>
                             </div>
                         </div>
                     </div>

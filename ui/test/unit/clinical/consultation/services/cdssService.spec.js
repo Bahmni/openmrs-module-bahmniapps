@@ -52,6 +52,35 @@ describe('cdssService', function () {
         ]
     };
 
+    var mockBundle = {
+        "entry": [
+            {
+                "resource": {
+                    "resourceType": "MedicationRequest",
+                    "medicationCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "dummySystem",
+                                "code": "987654321",
+                                "display": "Atorvastatin 10 mg oral tablet"
+                            }
+                        ],
+                    }
+                }
+            },
+            {
+                "resource": {
+                    "resourceType": "Condition",
+                    "code": {
+                        "coding": [{"system": "dummySystem", "code": "123456789", "display": "Asthma"}],
+                        "text": "Asthma"
+                    },
+                    "subject": {"reference": "Patient/c3182a92-c3a9-415a-900d-178146c87062"}
+                }
+            }
+        ]
+    };
+
     var cdssService;
     var drugService = jasmine.createSpyObj('drugService', ['getDrugConceptSourceMapping']);
     drugService.getDrugConceptSourceMapping.and.callFake(function () {
@@ -138,6 +167,369 @@ describe('cdssService', function () {
         expect(sortedAlerts[0].indicator).toEqual('critical');
         expect(sortedAlerts[1].indicator).toEqual('warning');
         expect(sortedAlerts[2].indicator).toEqual('info');
+    });
+
+    it('Should return alerts with active status when new alerts present in bundle', function () {
+        var newAlerts = [
+            {
+                uuid: 'alert_uuid_1',
+                indicator: 'warning',
+                isActive: false,
+                detail: 'Alert Detail 1',
+                source: {
+                    url: 'http://example.com'
+                },
+                "referenceMedications": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654321",
+                                "display": "Placeholder Medication1"
+                            },
+                            {
+                                "system": "https://example.com",
+                                "code": "987654321",
+                                "display": "Placeholder Medication1"
+                            }
+                        ]
+                    },
+                    {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654320",
+                                "display": "Placeholder Medication2"
+                            },
+                            {
+                                "system": "https://example.com",
+                                "code": "987654320",
+                                "display": "Placeholder Medication2"
+                            }
+                        ]
+                    }
+                ],
+                "referenceConditions": [{
+                    "coding": [
+                        {
+                            "system": "https://example.com",
+                            "code": "123456789",
+                            "display": "Placeholder Condition1"
+                        },
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "123456789",
+                            "display": "Placeholder Condition1"
+                        }
+                    ]
+                },
+                    {
+                        "coding": [
+                            {
+                                "system": "https://example.com",
+                                "code": "1234567890",
+                                "display": "Placeholder Condition2"
+                            },
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "1234567890",
+                                "display": "Placeholder Condition2"
+                            }
+                        ]
+                    }]
+            }
+        ];
+        var currentAlert = [
+        ];
+        var updatedAlerts = cdssService.addNewAlerts(newAlerts, currentAlert, mockBundle);
+        expect(updatedAlerts.length).toEqual(1);
+        expect(updatedAlerts[0].isActive).toEqual(true);
+    });
+    it('Should return alerts with inactive status when alerts are already dismissed for the resources present in bundle', function () {
+        var newAlerts = [
+            {
+                uuid: 'alert_uuid_1',
+                indicator: 'warning',
+                isActive: false,
+                detail: 'Alert Detail 1',
+                source: {
+                    url: 'http://example.com'
+                },
+                "referenceMedications": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654321",
+                                "display": "Placeholder Medication1"
+                            },
+                            {
+                                "system": "https://example.com",
+                                "code": "987654321",
+                                "display": "Placeholder Medication1"
+                            }
+                        ]
+                    },
+                    {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654320",
+                                "display": "Placeholder Medication2"
+                            },
+                            {
+                                "system": "https://example.com",
+                                "code": "987654320",
+                                "display": "Placeholder Medication2"
+                            }
+                        ]
+                    }
+                ],
+                "referenceConditions": [{
+                    "coding": [
+                        {
+                            "system": "https://example.com",
+                            "code": "123456789",
+                            "display": "Placeholder Condition1"
+                        },
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "123456789",
+                            "display": "Placeholder Condition1"
+                        }
+                    ]
+                },
+                    {
+                        "coding": [
+                            {
+                                "system": "https://example.com",
+                                "code": "1234567890",
+                                "display": "Placeholder Condition2"
+                            },
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "1234567890",
+                                "display": "Placeholder Condition2"
+                            }
+                        ]
+                    }]
+            }
+        ];
+        var currentAlert = [
+            {
+                uuid: 'alert_uuid_1',
+                indicator: 'warning',
+                isActive: false,
+                detail: 'Alert Detail 1',
+                source: {
+                    url: 'http://example.com'
+                },
+                "referenceMedications": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654321",
+                                "display": "Placeholder Medication1"
+                            },
+                            {
+                                "system": "https://example.com",
+                                "code": "987654321",
+                                "display": "Placeholder Medication1"
+                            }
+                        ]
+                    },
+                    {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654320",
+                                "display": "Placeholder Medication2"
+                            },
+                            {
+                                "system": "https://example.com",
+                                "code": "987654320",
+                                "display": "Placeholder Medication2"
+                            }
+                        ]
+                    }
+                ],
+                "referenceConditions": [{
+                    "coding": [
+                        {
+                            "system": "https://example.com",
+                            "code": "123456789",
+                            "display": "Placeholder Condition1"
+                        },
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "123456789",
+                            "display": "Placeholder Condition1"
+                        }
+                    ]
+                },
+                    {
+                        "coding": [
+                            {
+                                "system": "https://example.com",
+                                "code": "1234567890",
+                                "display": "Placeholder Condition2"
+                            },
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "1234567890",
+                                "display": "Placeholder Condition2"
+                            }
+                        ]
+                    }]
+            }
+        ];
+        var updatedAlerts = cdssService.addNewAlerts(newAlerts, currentAlert, mockBundle);
+        expect(updatedAlerts.length).toEqual(1);
+        expect(updatedAlerts[0].isActive).toEqual(false);
+    });
+    it('Should return alerts with active status when current alerts are  active for the resources present in bundle', function () {
+        var newAlerts = [
+            {
+                uuid: 'alert_uuid_1',
+                indicator: 'warning',
+                isActive: false,
+                detail: 'Alert Detail 1',
+                source: {
+                    url: 'http://example.com'
+                },
+                "referenceMedications": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654321",
+                                "display": "Placeholder Medication1"
+                            },
+                            {
+                                "system": "https://example.com",
+                                "code": "987654321",
+                                "display": "Placeholder Medication1"
+                            }
+                        ]
+                    },
+                    {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654320",
+                                "display": "Placeholder Medication2"
+                            },
+                            {
+                                "system": "https://example.com",
+                                "code": "987654320",
+                                "display": "Placeholder Medication2"
+                            }
+                        ]
+                    }
+                ],
+                "referenceConditions": [{
+                    "coding": [
+                        {
+                            "system": "https://example.com",
+                            "code": "123456789",
+                            "display": "Placeholder Condition1"
+                        },
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "123456789",
+                            "display": "Placeholder Condition1"
+                        }
+                    ]
+                },
+                    {
+                        "coding": [
+                            {
+                                "system": "https://example.com",
+                                "code": "1234567890",
+                                "display": "Placeholder Condition2"
+                            },
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "1234567890",
+                                "display": "Placeholder Condition2"
+                            }
+                        ]
+                    }]
+            }
+        ];
+        var currentAlert = [
+            {
+                uuid: 'alert_uuid_1',
+                indicator: 'warning',
+                isActive: true,
+                detail: 'Alert Detail 1',
+                source: {
+                    url: 'http://example.com'
+                },
+                "referenceMedications": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654321",
+                                "display": "Placeholder Medication1"
+                            },
+                            {
+                                "system": "https://example.com",
+                                "code": "987654321",
+                                "display": "Placeholder Medication1"
+                            }
+                        ]
+                    },
+                    {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654320",
+                                "display": "Placeholder Medication2"
+                            },
+                            {
+                                "system": "https://example.com",
+                                "code": "987654320",
+                                "display": "Placeholder Medication2"
+                            }
+                        ]
+                    }
+                ],
+                "referenceConditions": [{
+                    "coding": [
+                        {
+                            "system": "https://example.com",
+                            "code": "123456789",
+                            "display": "Placeholder Condition1"
+                        },
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "123456789",
+                            "display": "Placeholder Condition1"
+                        }
+                    ]
+                },
+                    {
+                        "coding": [
+                            {
+                                "system": "https://example.com",
+                                "code": "1234567890",
+                                "display": "Placeholder Condition2"
+                            },
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "1234567890",
+                                "display": "Placeholder Condition2"
+                            }
+                        ]
+                    }]
+            }
+        ];
+        var updatedAlerts = cdssService.addNewAlerts(newAlerts, currentAlert, mockBundle);
+        expect(updatedAlerts.length).toEqual(1);
+        expect(updatedAlerts[0].isActive).toEqual(true);
     });
 });
 

@@ -515,7 +515,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return $q.when({});
                 }
                 try {
-                    var alerts = $rootScope.cdssAlerts || [];
+                    var alerts = angular.copy($rootScope.cdssAlerts) || [];
                     var activeAlerts = alerts.filter(function (alert) {
                         return alert.indicator === 'critical' && alert.isActive;
                     });
@@ -525,13 +525,15 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                         return $q.when({});
                     }
 
-                    var cdssAlerts = $rootScope.cdssAlerts;
-                    cdssAlerts && cdssAlerts.forEach(
-                        function (cdssAlert) {
-                            cdssAlert.isActive = false;
-                        }
-                    );
-                    $rootScope.cdssAlerts = cdssAlerts;
+                    if (alerts && alerts.length > 0) {
+                        var cdssAlerts = alerts.map(
+                            function (cdssAlert) {
+                                cdssAlert.isActive = false;
+                                return cdssAlert;
+                            }
+                        );
+                        $rootScope.cdssAlerts = cdssAlerts;
+                    }
                     preSaveEvents();
                     return spinner.forPromise($q.all([preSavePromise(),
                         encounterService.getEncounterType($state.params.programUuid, sessionService.getLoginLocationUuid())]).then(function (results) {
@@ -571,6 +573,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                                                 notify: true,
                                                 reload: (toStateConfig !== undefined)
                                             });
+                                        }).then(function () {
+                                            $rootScope.$broadcast('event:save-successful');
                                         });
                                     }));
                             }).catch(function (error) {
