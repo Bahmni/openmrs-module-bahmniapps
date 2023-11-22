@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Forms Table display control", function () {
-    var element, scope, $compile, mockBackend, conceptSetService, visitFormService, q, spinner, formService, rootScope;
+    var element, scope, $compile, mockBackend, conceptSetService, visitFormService, q, spinner, formService, rootScope, ngDialog;
     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
 
     appService.getAppDescriptor.and.returnValue({
@@ -19,6 +19,7 @@ describe("Forms Table display control", function () {
         visitFormService = jasmine.createSpyObj('visitFormService', ['formData']);
         formService = jasmine.createSpyObj('formService', ['getAllPatientForms', 'getFormList']);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
+        ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
 
         spinner.forPromise.and.callFake(function (param) {
             return {
@@ -33,6 +34,7 @@ describe("Forms Table display control", function () {
         $provide.value('visitFormService', visitFormService);
         $provide.value('formService', formService);
         $provide.value('spinner', spinner);
+        $provide.value('ngDialog', ngDialog);
 
         $provide.value('$bahmniTranslate', {
             use: function () {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.dashboard')
-    .directive('dashboard', ['appService', '$stateParams', '$bahmniCookieStore', 'configurations', 'encounterService', 'spinner', 'auditLogService', 'messagingService', '$state', '$translate', function (appService, $stateParams, $bahmniCookieStore, configurations, encounterService, spinner, auditLogService, messagingService, $state, $translate) {
+    .directive('dashboard', ['appService', '$stateParams', '$bahmniCookieStore', 'configurations', 'encounterService', 'spinner', 'messagingService', '$state', '$translate', function (appService, $stateParams, $bahmniCookieStore, configurations, encounterService, spinner, messagingService, $state, $translate) {
         var controller = function ($scope, $filter, $rootScope) {
             var init = function () {
                 $scope.dashboard = Bahmni.Common.DisplayControl.Dashboard.create($scope.config || {}, $filter);
@@ -9,17 +9,19 @@ angular.module('bahmni.common.displaycontrol.dashboard')
             $scope.tabConfigName = $stateParams.tabConfigName || 'default';
 
             if ($scope.patient !== undefined) {
+                var dashboardConfig = $scope.config.sections['forms-v2-react'] ? $scope.config.sections['forms-v2-react'].dashboardConfig : null;
                 $scope.formData = {
                     patientUuid: $scope.patient.uuid,
                     patient: $scope.patient,
                     encounterUuid: $scope.activeEncounterUuid,
-                    showEditForActiveEncounter: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.showEditForActiveEncounter || false,
-                    numberOfVisits: $scope.config.sections['forms-v2-react'] && $scope.config.sections['forms-v2-react'].dashboardConfig && $scope.config.sections['forms-v2-react'].dashboardConfig.maximumNoOfVisits || undefined,
+                    showEditForActiveEncounter: dashboardConfig && dashboardConfig.showEditForActiveEncounter || false,
+                    numberOfVisits: dashboardConfig && dashboardConfig.maximumNoOfVisits || undefined,
                     hasNoHierarchy: $scope.hasNoHierarchy,
                     currentUser: $rootScope.currentUser,
                     consultationMapper: new Bahmni.ConsultationMapper(configurations.dosageFrequencyConfig(), configurations.dosageInstructionConfig(),
                     configurations.consultationNoteConcept(), configurations.labOrderNotesConcept()),
-                    editErrorMessage: $translate.instant('CLINICAL_FORM_ERRORS_MESSAGE_KEY')
+                    editErrorMessage: $translate.instant('CLINICAL_FORM_ERRORS_MESSAGE_KEY'),
+                    showPrintOption: (dashboardConfig && dashboardConfig.printing) ? true : false
                 };
                 $scope.formApi = {
                     handleEditSave: function (encounter) {
@@ -33,6 +35,16 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                             $state.go($state.current, {}, {reload: true});
                             messagingService.showMessage('info', "{{'CLINICAL_SAVE_SUCCESS_MESSAGE_KEY' | translate}}");
                         }));
+                    },
+                    printForm: function (observations) {
+                        var printData = {};
+                        var mappedObservations = new Bahmni.Common.Obs.ObservationMapper().map(observations, {}, null, $translate);
+                        printData.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(mappedObservations);
+                        printData.title = observations[0].formFieldPath.split(".")[0];
+                        printData.patient = $scope.patient;
+                        printData.printConfig = dashboardConfig ? dashboardConfig.printing : {};
+                        printData.printConfig.header = printData.title;
+                        formPrintService.printForm(printData, observations[0].encounterUuid, $rootScope.facilityLocation);
                     }
                 };
                 $scope.allergyData = {
