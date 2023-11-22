@@ -130,4 +130,11 @@
       position: fixed;
     }
   }
+
+  .print-button {
+    position: fixed;
+    z-index: 500;
+    right: 30px;
+    top: 40px;
+  }
 }

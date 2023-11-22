@@ -950,6 +950,13 @@ table.drug-order-table td.drug {
     }
 }
 
+.template-container .dashboard-section .form-print-button {
+    position: absolute;
+    z-index: 500;
+    right: 0;
+    top: 4px
+}
+
 .dashboard-section section .form-field.is-text {
     overflow: auto;
     clear: both;
