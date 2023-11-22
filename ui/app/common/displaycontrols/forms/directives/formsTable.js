@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.common.displaycontrol.forms')
-    .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService', 'appService', '$state', '$rootScope',
-        function (conceptSetService, spinner, $q, visitFormService, appService, $state, $rootScope) {
+    .directive('formsTable', ['conceptSetService', 'spinner', '$q', 'visitFormService', 'appService', '$state', '$rootScope', 'ngDialog',
+        function (conceptSetService, spinner, $q, visitFormService, appService, $state, $rootScope, ngDialog) {
             var defaultController = function ($scope) {
                 $scope.shouldPromptBrowserReload = true;
                 $scope.showFormsDate = appService.getAppDescriptor().getConfigValue("showFormsDate");
@@ -115,13 +115,28 @@ angular.module('bahmni.common.displaycontrol.forms')
                         },
                         section: {
                             title: data.concept.displayString
-                        }
+                        },
+                        showPrintOption: $scope.section.dashboardConfig.printing ? true : false,
+                        printForm: $scope.printForm
                     };
                 };
 
                 $scope.dialogData = {
                     "patient": $scope.patient,
                     "section": $scope.section
+                };
+
+                $scope.printForm = function () {
+                    $rootScope.$broadcast("event:printForm", $scope.section.dashboardConfig);
+                };
+
+                $scope.openDialog = function (data) {
+                    $scope.dialog = ngDialog.open({
+                        template: '../common/displaycontrols/forms/views/showObservationFormData.html',
+                        className: 'ngdialog-theme-default ng-dialog-all-details-page ng-dialog-view',
+                        data: $scope.getConfigToFetchDataAndShow(data),
+                        scope: $scope
+                    });
                 };
             };
 

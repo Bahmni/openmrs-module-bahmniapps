@@ -87,7 +87,7 @@ angular.module('bahmni.clinical')
                                     if ($scope.diagnosesCodes.length > 0) {
                                         $scope.diagnosesCodes += ", ";
                                     }
-                                    $scope.diagnosesCodes += diagnosis.codedAnswer.mappings[0].code;
+                                    $scope.diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
                                 }
                             });
                         });
