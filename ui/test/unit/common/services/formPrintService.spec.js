@@ -109,11 +109,12 @@ describe('FormPrintService', function () {
         mockAllergyService(allergyResponse);
         mockVisitService(visitSummaryResponse);
        
-        console.log("*********** formPrintService **************")
         formPrintService.printForm(printData, encounterUuid, location);
         scope.$digest();
         scope.$apply();
-        // expect(printer.print).toHaveBeenCalled();
-        // expect(printer.print).toHaveBeenCalledWith('common/views/formPrint.html', printData);
+        expect(diagnosisService.getPatientDiagnosis).toHaveBeenCalledWith('patientUuid');
+        expect(observationsService.fetch).toHaveBeenCalledWith('patientUuid', ["WEIGHT"], "latest", null, null, null, null, null);
+        expect(encounterService.findByEncounterUuid).toHaveBeenCalledWith('encounterUuid');
+        expect(allergyService.getAllergyForPatient).toHaveBeenCalledWith('patientUuid');
     });
 });
