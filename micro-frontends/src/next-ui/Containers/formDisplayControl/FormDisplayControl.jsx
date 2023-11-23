@@ -120,7 +120,11 @@ export function FormDisplayControl(props) {
     setFormData(data.observations);
   };
 
-  const closeViewObservationForm = () => setViewObservationForm(false);
+  const closeViewObservationForm = () => {
+    setFormData([]);
+    setFormName("");
+    setViewObservationForm(false);
+  }
   const closeEditObservationForm = () => {
     setFormData([]);
     setFormName("");
