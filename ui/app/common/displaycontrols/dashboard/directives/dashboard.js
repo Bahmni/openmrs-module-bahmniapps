@@ -40,7 +40,15 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                         var printData = {};
                         var mappedObservations = new Bahmni.Common.Obs.ObservationMapper().map(observations, {}, null, $translate);
                         printData.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(mappedObservations);
-                        printData.title = observations[0].formFieldPath.split(".")[0];
+                        observations.forEach(function (obs) {
+                            if (obs.formFieldPath) {
+                                printData.title = obs.formFieldPath.split(".")[0];
+                                return;
+                            } else if (obs.groupMembers.length > 0 && obs.groupMembers[0].formFieldPath) {
+                                printData.title = obs.groupMembers[0].formFieldPath.split(".")[0];
+                                return;
+                            }
+                        });
                         printData.patient = $scope.patient;
                         printData.printConfig = dashboardConfig ? dashboardConfig.printing : {};
                         printData.printConfig.header = printData.title;

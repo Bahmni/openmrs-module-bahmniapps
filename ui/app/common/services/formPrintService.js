@@ -70,11 +70,11 @@ angular.module('bahmni.common.util')
                         printData.additionalInfo.visitType = visitSummary ? visitSummary.visitType : null;
                         printData.additionalInfo.currentDate = new Date();
                         printData.additionalInfo.facilityLocation = location;
-                        var tabName = printData.printConfig.header.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, function (match, chr) {
+                        var tabName = printData.printConfig.header ? printData.printConfig.header.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, function (match, chr) {
                             return chr.toUpperCase();
                         }).replace(/^[a-z]/, function (match) {
                             return match.toUpperCase();
-                        });
+                        }) : "";
                         var pageTitle = printData.patient.givenName + printData.patient.familyName + "_" + printData.patient.identifier + "_" + tabName;
                         printer.print(templateUrl, printData, pageTitle);
                     }).catch(function (error) {
