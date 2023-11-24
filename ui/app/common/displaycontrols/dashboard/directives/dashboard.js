@@ -42,7 +42,7 @@ angular.module('bahmni.common.displaycontrol.dashboard')
                         var printData = {};
                         var mappedObservations = new Bahmni.Common.Obs.ObservationMapper().map(observations, {}, null, $translate);
                         printData.bahmniObservations = new Bahmni.Common.DisplayControl.Observation.GroupingFunctions().groupByEncounterDate(mappedObservations);
-                        _.forEach(observations, function (obs) {
+                        observations.forEach(function (obs) {
                             if (obs.formFieldPath) {
                                 printData.title = obs.formFieldPath.split(".")[0];
                                 return;
