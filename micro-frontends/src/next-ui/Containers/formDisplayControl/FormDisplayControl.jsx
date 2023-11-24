@@ -133,10 +133,13 @@ export function FormDisplayControl(props) {
     setEditFormLoading(true);
     setEditObservationForm(true);
     const data = await findByEncounterUuid(formMap.encounterUuid)
+    const filteredFormObs = data.observations.filter(obs =>
+      obs.formFieldPath?.includes(formName)
+    );
     setFormName(formName);
     setFormNameTranslations(formNameTranslations);
     setEncounterUuid(encounterUuid);
-    setFormData(data.observations);
+    setFormData(filteredFormObs);
   };
 
   const closeViewObservationForm = () => {
