@@ -24,11 +24,15 @@ describe("ReportsController", function () {
                 }
             }
         };
+
+    var originalDate;
+
     beforeEach(module('bahmni.reports'));
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
+        originalDate = window.Date;
 
         messagingServiceMock = jasmine.createSpyObj('messagingService', ['showMessage']);
         spinnerMock = jasmine.createSpyObj('spinner', ['forPromise']);
@@ -70,6 +74,10 @@ describe("ReportsController", function () {
         });
     }));
 
+    afterEach(function () {
+        window.Date = originalDate;
+    });
+    
     it("initializes report sets based on whether date range required or not", function () {
         expect(mockAppDescriptor.getConfigForPage).toHaveBeenCalledWith("reports");
         expect(rootScope.reportsRequiringDateRange.length).toBe(2);
@@ -104,20 +112,32 @@ describe("ReportsController", function () {
         expect(rootScope.reportsRequiringDateRange[0].stopDate.getDate()).toBe(new Date().getDate());
     });
 
-    it("should return date and month for the previous month", function () {
-        rootScope.default.reportsRequiringDateRange = {
-            dateRangeType: new Date('1-Dec-2022')
-        };
-
-        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
-
-        expect(_.keys(rootScope.default.reportsRequiringDateRange).length).toBe(3);
-        expect((rootScope.default.reportsRequiringDateRange.dateRangeType).getDate()).toBe(1);
-        expect(rootScope.reportsRequiringDateRange[0].startDate.getDate()).toBe(1);
-        expect(rootScope.reportsRequiringDateRange[0].startDate.getMonth()).toBe(11);
-        expect(rootScope.reportsRequiringDateRange[0].stopDate.getDate()).toBe(31);
-        expect(rootScope.reportsRequiringDateRange[0].stopDate.getMonth()).toBe(11);
-
+    const previousMonthTestCases = [
+        { currentDate: '1-Dec-2022', expectedStartDate: '1-Nov-2022', expectedStopDate: '30-Nov-2022' },
+        { currentDate: '3-Jan-2023', expectedStartDate: '1-Dec-2022', expectedStopDate: '31-Dec-2022' },
+        { currentDate: '5-Mar-2023', expectedStartDate: '1-Feb-2023', expectedStopDate: '28-Feb-2023' },
+        { currentDate: '5-Mar-2024', expectedStartDate: '1-Feb-2024', expectedStopDate: '29-Feb-2024' }
+    ];
+    
+    previousMonthTestCases.forEach(({ currentDate, expectedStartDate, expectedStopDate }) => {
+        it(`should return previous date and month when ${currentDate}`, function () {
+            var mockedDate = new Date(currentDate);
+            spyOn(window, 'Date').and.callFake(function (year, month, day) {
+                if (arguments.length === 3) {
+                    return new originalDate(year, month, day);
+                } else {
+                    return mockedDate;
+                }
+            });
+    
+            rootScope.default.reportsRequiringDateRange = {
+                dateRangeType: new originalDate(expectedStartDate),
+            };
+            scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+   
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getTime()).toBe(new originalDate(expectedStartDate).getTime());
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getTime()).toBe(new originalDate(expectedStopDate).getTime());
+        });
     });
 
     it('should initialise all available formats when supportedFormats config is not specified', function () {

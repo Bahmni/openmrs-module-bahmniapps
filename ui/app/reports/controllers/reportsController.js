@@ -51,8 +51,8 @@ angular.module('bahmni.reports')
         };
 
         var isPreviousMonth = function (date) {
-            return (new Date(date).getMonth() === new Date().getMonth() - 1 && new Date(date).getFullYear() === new Date().getFullYear())
-                || (new Date(date).getMonth() === 11 && new Date(date).getFullYear() === new Date().getFullYear() - 1);
+            return (date.getMonth() === new Date().getMonth() - 1 && date.getFullYear() === new Date().getFullYear())
+                || (date.getMonth() === 11 && date.getFullYear() === new Date().getFullYear() - 1);
         };
 
         var getPreviousMonthEndDate = function () {
