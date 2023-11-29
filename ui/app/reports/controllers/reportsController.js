@@ -33,14 +33,14 @@ angular.module('bahmni.reports')
             setToChange.forEach(function (report) {
                 if (item == 'dateRangeType') {
                     $rootScope.default.reportsRequiringDateRange.startDate = $rootScope.default[header][item];
-                    $rootScope.default.reportsRequiringDateRange.stopDate = dateRange[0];
+                    $rootScope.default.reportsRequiringDateRange.stopDate = isPreviousMonth($rootScope.default[header][item]) ? getPreviousMonthEndDate() : dateRange[0];
                     report['startDate'] = $rootScope.default[header][item];
-                    report['stopDate'] = dateRange[0];
+                    report['stopDate'] = isPreviousMonth($rootScope.default[header][item]) ? getPreviousMonthEndDate() : dateRange[0];
                 }
                 else if ($rootScope.default[header][item] === undefined) {
                     $rootScope.reportsRequiringDateRange.forEach(function (report) {
                         report.startDate = dateRange[0];
-                        report.stopDate = dateRange[0];
+                        report.stopDate = isPreviousMonth(dateRange[0]) ? getPreviousMonthEndDate() : dateRange[0];
                         report.responseType = format[1];
                     });
                 }
@@ -48,6 +48,15 @@ angular.module('bahmni.reports')
                     report[item] = $rootScope.default[header][item];
                 }
             });
+        };
+
+        var isPreviousMonth = function (date) {
+            return (date.getMonth() === new Date().getMonth() - 1 && date.getFullYear() === new Date().getFullYear())
+                || (date.getMonth() === 11 && date.getFullYear() === new Date().getFullYear() - 1);
+        };
+
+        var getPreviousMonthEndDate = function () {
+            return new Date(new Date().getFullYear(), new Date().getMonth(), 0);
         };
 
         var isDateRangeRequiredFor = function (report) {
