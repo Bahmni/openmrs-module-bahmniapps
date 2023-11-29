@@ -100,7 +100,7 @@ describe("ReportsController", function () {
         expect(scope.formats['HTML']).toBe('text/html');
     });
 
-    it('should initialise date range with supportedDateRange config', function () {
+    it('should return the same start and stop date when selected date range is today', function () {
         rootScope.default.reportsRequiringDateRange = {
             dateRangeType: new Date()
         };
@@ -120,7 +120,7 @@ describe("ReportsController", function () {
     ];
     
     previousMonthTestCases.forEach(({ currentDate, expectedStartDate, expectedStopDate }) => {
-        it(`should return previous date and month when ${currentDate}`, function () {
+        it(`should return previous month start and stop date when current date is ${currentDate} and selected date range is previous month`, function () {
             var mockedDate = new Date(currentDate);
             spyOn(window, 'Date').and.callFake(function (year, month, day) {
                 if (arguments.length === 3) {
