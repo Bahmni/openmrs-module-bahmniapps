@@ -1,4 +1,7 @@
-<a ng-show="enableIPDFeature" ng-click="openCareView()" class="care-view-label" href>{{ 'CARE_VIEW_LABEL'|translate }}</a>
+<a href ng-show="enableIPDFeature" style="float: right;" ng-click="openCareView()">
+    {{ 'CARE_VIEW_LABEL'|translate }}
+</a>
+
 <adt-patient-search></adt-patient-search>
 
 <!-- The following sections will be moved to appropriate places inside the patient search section if bed management is configured -->
@@ -9,3 +12,4 @@
     </li>
     <div ui-view="wards" id="ward-list" ng-show="search.searchType==undefined" class="opd-content-wrapper"></div>
 </div>
+<mfe-ipd-care-view-dashboard ng-show="showCareViewDashboard" style="display: block;width: 100vw;margin-left: calc(50% - 50vw);" host-data="hostData"></mfe-ipd-care-view-dashboard>

@@ -41,7 +41,7 @@ angular
 
 angular
 .module("bahmni.mfe.ipd")
-.component("mfeCareViewDashboard", react2angular(CareViewDashboard), {
+.component("mfeIpdCareViewDashboard", react2angular(CareViewDashboard), {
     template:
         '<mfe-ipd-care-view-dashboard host-data="hostData" host-api="hostApi"></mfe-ipd-care-view-dashboard>'
 });
