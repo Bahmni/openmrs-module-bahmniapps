@@ -15,9 +15,14 @@ angular.module('bahmni.adt')
             $scope.adtObservations = [];
             $scope.dashboardConfig = appService.getAppDescriptor().getConfigValue('dashboard');
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
+            $scope.showCareViewDashboard = false;
             $scope.getAdtConceptConfig = $scope.dashboardConfig.conceptName;
             $scope.hostData = {
                 patient: $scope.patient
+            };
+
+            $scope.openCareView = function () {
+                $scope.showCareViewDashboard = true;
             };
 
             var getVisitTypeUuid = function (visitTypeName) {
