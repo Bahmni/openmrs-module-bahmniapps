@@ -1,9 +1,12 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, auditLogService) {
+    .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', '$translate', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, $translate, auditLogService) {
         const format = _.values(reportService.getAvailableFormats());
         const dateRange = _.values(reportService.getAvailableDateRange());
+        var getTranslatedMessage = function (key) {
+            return $translate.instant(key);
+        };
 
         $scope.uploader = new FileUploader({
             url: Bahmni.Common.Constants.uploadReportTemplateUrl,
@@ -38,6 +41,7 @@ angular.module('bahmni.reports')
                     report['stopDate'] = isPreviousMonth($rootScope.default[header][item]) ? getPreviousMonthEndDate() : dateRange[0];
                 }
                 else if ($rootScope.default[header][item] === undefined) {
+                    $rootScope.default.reportsRequiringDateRange.startDate = dateRange[0];
                     $rootScope.reportsRequiringDateRange.forEach(function (report) {
                         report.startDate = dateRange[0];
                         report.stopDate = isPreviousMonth(dateRange[0]) ? getPreviousMonthEndDate() : dateRange[0];
@@ -84,6 +88,9 @@ angular.module('bahmni.reports')
                 }
                 if (!report.stopDate) {
                     msg.push("end date");
+                }
+                if ((report.startDate > report.stopDate)) {
+                    msg.push(getTranslatedMessage("START_DATE_CANNOT_LATER_THAN_STOP_DATE"));
                 }
                 messagingService.showMessage("error", "Please select the " + msg.join(" and "));
                 return false;
