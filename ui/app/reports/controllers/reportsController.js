@@ -34,18 +34,19 @@ angular.module('bahmni.reports')
         $scope.enableReportQueue = appService.getAppDescriptor().getConfigValue("enableReportQueue");
         $scope.setDefault = function (item, header) {
             var setToChange = header === 'reportsRequiringDateRange' ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
+            var isPreviousMonth = $rootScope.default[header][item].getTime() === dateRange[2].getTime();
             setToChange.forEach(function (report) {
                 if (item == 'dateRangeType') {
                     $rootScope.default.reportsRequiringDateRange.startDate = $rootScope.default[header][item];
-                    $rootScope.default.reportsRequiringDateRange.stopDate = isPreviousMonth($rootScope.default[header][item]) ? getPreviousMonthEndDate() : dateRange[0];
+                    $rootScope.default.reportsRequiringDateRange.stopDate = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
                     report['startDate'] = $rootScope.default[header][item];
-                    report['stopDate'] = isPreviousMonth($rootScope.default[header][item]) ? getPreviousMonthEndDate() : dateRange[0];
+                    report['stopDate'] = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
                 }
                 else if ($rootScope.default[header][item] === undefined) {
                     $rootScope.default.reportsRequiringDateRange.startDate = dateRange[0];
                     $rootScope.reportsRequiringDateRange.forEach(function (report) {
                         report.startDate = dateRange[0];
-                        report.stopDate = isPreviousMonth(dateRange[0]) ? getPreviousMonthEndDate() : dateRange[0];
+                        report.stopDate = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
                         report.responseType = format[1];
                     });
                 }
@@ -53,11 +54,6 @@ angular.module('bahmni.reports')
                     report[item] = $rootScope.default[header][item];
                 }
             });
-        };
-
-        var isPreviousMonth = function (date) {
-            return (date.getMonth() === new Date().getMonth() - 1 && date.getFullYear() === new Date().getFullYear())
-                || (date.getMonth() === 11 && date.getFullYear() === new Date().getFullYear() - 1);
         };
 
         var getPreviousMonthEndDate = function () {
