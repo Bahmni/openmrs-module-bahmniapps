@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.reports')
-.controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', '$translate', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, $translate, auditLogService) {
+    .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', '$translate', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, $translate, auditLogService) {
         const format = _.values(reportService.getAvailableFormats());
         const dateRange = _.values(reportService.getAvailableDateRange());
 
@@ -41,16 +41,14 @@ angular.module('bahmni.reports')
                     $rootScope.default.reportsRequiringDateRange.stopDate = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
                     report['startDate'] = $rootScope.default[header][item];
                     report['stopDate'] = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
-                }
-                else if ($rootScope.default[header][item] === undefined) {
+                } else if ($rootScope.default[header][item] === undefined) {
                     $rootScope.default.reportsRequiringDateRange.startDate = dateRange[0];
                     $rootScope.reportsRequiringDateRange.forEach(function (report) {
                         report.startDate = dateRange[0];
                         report.stopDate = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
                         report.responseType = format[1];
                     });
-                }
-                else {
+                } else {
                     report[item] = $rootScope.default[header][item];
                 }
             });
