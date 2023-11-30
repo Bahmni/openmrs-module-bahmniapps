@@ -8,7 +8,7 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                     var config = angular.extend(baseTreatmentConfig, result.data);
                     config.frequencies = _(config.frequencies)
                         .reverse()
-                        .sortBy({'name': 'Immediately'})
+                        .sortBy({'uuid': '0'})
                         .sortBy({'name': 'SOS'})
                         .reverse()
                         .value();
@@ -83,6 +83,9 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                     },
                     isAutoCompleteForAllConcepts: function () {
                         return !(this.getDrugConceptSet());
+                    },
+                    isACheckBox: function () {
+                        return drugOrderOptions.asNeededToBeACheckbox;
                     },
                     showAdditionalInformation: function () {
                         var additionalInformationFields = ["sos", "additionalInstructions", "dosingInstructions"];
