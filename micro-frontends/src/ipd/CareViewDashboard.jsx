@@ -9,6 +9,7 @@ export function CareViewDashboard(props) {
             <Suspense fallback={<p>Loading...</p>}>
                 <LazyApp
                     hostData={props.hostData}
+                    hostApi={props.hostApi}
                 />
             </Suspense>
         </>
@@ -19,5 +20,8 @@ export function CareViewDashboard(props) {
 CareViewDashboard.propTypes = {
     hostData: PropTypes.shape({
         patientId: PropTypes.string,
+    }).isRequired,
+    hostApi: PropTypes.shape({
+        onHome: PropTypes.func,
     }).isRequired,
 };
