@@ -12,4 +12,4 @@
     </li>
     <div ui-view="wards" id="ward-list" ng-show="search.searchType==undefined" class="opd-content-wrapper"></div>
 </div>
-<mfe-ipd-care-view-dashboard ng-show="showCareViewDashboard" style="display: block;width: 100vw;margin-left: calc(50% - 50vw);" host-data="hostData"></mfe-ipd-care-view-dashboard>
+<mfe-ipd-care-view-dashboard ng-if="showCareViewDashboard" style="display: block;width: 100vw;margin-left: calc(50% - 50vw);" host-data="hostData" host-api="hostApi"></mfe-ipd-care-view-dashboard>

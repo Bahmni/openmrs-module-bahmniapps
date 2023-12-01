@@ -34,6 +34,12 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                             $scope.showCareViewDashboard = true;
                         };
                         $scope.hostData = {};
+                        $scope.hostApi = {
+                            onHome: function () {
+                                $scope.showCareViewDashboard = false;
+                                $scope.$apply();
+                            }
+                        };
                         $scope.isBedManagementEnabled = appService.getAppDescriptor().getConfig("isBedManagementEnabled").value;
                         $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
                     }
