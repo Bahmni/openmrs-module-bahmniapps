@@ -33,7 +33,7 @@ angular.module('bahmni.common.obs')
             };
             $scope.displayLabel = function (observation) {
                 if ($scope.displayNameType === 'FSN') {
-                    return observation.conceptFSN || observation.concept.name;
+                    return observation.concept.name;
                 } else {
                     return (observation.concept.shortName.charAt(0).toUpperCase() + observation.concept.shortName.slice(1)) || observation.concept.name;
                 }
