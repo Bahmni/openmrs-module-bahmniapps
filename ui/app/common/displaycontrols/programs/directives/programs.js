@@ -29,7 +29,7 @@ angular.module('bahmni.common.displaycontrol.programs')
                 $scope.getAttributeValue = function (attribute) {
                     if (isDateFormat(attribute.attributeType.format)) {
                         return Bahmni.Common.Util.DateUtil.formatDateWithoutTime(attribute.value);
-                    } else if (isCodedConceptFormat(attribute.attributeType.format)) {
+                    } else if (isCodedConceptFormat(attribute.attributeType.format) || isOpenmrsConceptFormat(attribute.attributeType.format)) {
                         var mrsAnswer = attribute.value;
                         var displayName = mrsAnswer.display;
                         if (mrsAnswer.names && mrsAnswer.names.length == 2) {
@@ -55,6 +55,11 @@ angular.module('bahmni.common.displaycontrol.programs')
                 var isCodedConceptFormat = function (format) {
                     return format == "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype";
                 };
+
+                var isOpenmrsConceptFormat = function (format) {
+                    return format == "org.openmrs.customdatatype.datatype.ConceptDatatype";
+                };
+
                 $scope.translateProgram = function (program) {
                     var translatedName = Bahmni.Common.Util.TranslationUtil.translateAttribute(program, Bahmni.Common.Constants.program, $translate);
                     return translatedName;
