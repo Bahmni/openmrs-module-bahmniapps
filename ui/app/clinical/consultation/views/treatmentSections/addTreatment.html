@@ -229,12 +229,15 @@
                     </div>
                     <div class="field-value">
                         <button id="SOS" type="button" class="grid-row-element fl"
-                                ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)"
+                        ng-if="!treatmentConfig.isACheckBox()"        
+                        ng-class="{active: treatment.asNeeded}" ng-click="toggleAsNeeded(treatment)"
                                 accesskey="{{ ::treatmentConfig.translate('asNeededButtonAccessKey', 'MEDICATION_AS_NEEDED_ACCESS_KEY') }} ">
                             <i class="fa fa-ok"></i>
                         <span ng-bind-html="::treatmentConfig.translate('asNeededButton', 'MEDICATION_AS_NEEDED_BUTTON_PLACEHOLDER')">
                         </span>
                         </button>
+                        <input type="checkbox" id="asNeededcheckbox" ng-if="treatmentConfig.isACheckBox()" ng-click="toggleAsNeeded(treatment)"
+                        ng-checked="treatment.asNeeded">
                     </div>
                 </article>
                 <article class="form-field" ng-if="!treatmentConfig.isHiddenField('dosingInstructions')">
