@@ -34,7 +34,7 @@ angular.module('bahmni.reports')
         $scope.enableReportQueue = appService.getAppDescriptor().getConfigValue("enableReportQueue");
         $scope.setDefault = function (item, header) {
             var setToChange = header === 'reportsRequiringDateRange' ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
-            var isPreviousMonth = $rootScope.default[header][item] && $rootScope.default[header][item].getTime() === dateRange[2].getTime();
+            var isPreviousMonth = $rootScope.default[header][item] && $rootScope.default[header][item] === dateRange[2];
             setToChange.forEach(function (report) {
                 if (item == 'dateRangeType') {
                     $rootScope.default.reportsRequiringDateRange.startDate = $rootScope.default[header][item];
