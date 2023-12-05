@@ -238,20 +238,21 @@ describe("ReportsController", function () {
                     return mockedDate;
                 }
             });
+            var previousMonthStartDate = new originalDate(expectedStartDate);
             reportServiceMock.getAvailableDateRange.and.returnValue({
                 "Today": mockedDate,
                 "This Month": new originalDate('1-Jan-2023'),
-                "Previous Month": new originalDate(expectedStartDate)
+                "Previous Month": previousMonthStartDate
             });
             setupController();
 
             rootScope.default.reportsRequiringDateRange = {
-                dateRangeType: new originalDate(expectedStartDate),
+                dateRangeType: previousMonthStartDate,
             };
             scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
         
-            expect(rootScope.reportsRequiringDateRange[0].startDate.getTime()).toBe(new originalDate(expectedStartDate).getTime());
-            expect(rootScope.reportsRequiringDateRange[0].stopDate.getTime()).toBe(new originalDate(expectedStopDate).getTime());
+            expect(rootScope.reportsRequiringDateRange[0].startDate).toEqual(new originalDate(expectedStartDate));
+            expect(rootScope.reportsRequiringDateRange[0].stopDate).toEqual(new originalDate(expectedStopDate));
         });
     });
 
