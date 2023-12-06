@@ -71,7 +71,7 @@
         <button type="button" ng-click="goToNextWeek()"><i class="fa fa-angle-right"></i></button>
     </p>
 
-    <p class="calendar-current-day" ng-if="weekOrDay === 'day'">
+    <p class="calendar-current-day" ng-show="weekOrDay === 'day'">
         <button ng-click="goToPreviousDate(viewDate)"><i class="fa fa-angle-left"></i></button>
         <input class="calendar-day-input" type="date" ng-model="viewDate" required ng-change="goToSelectedDate(viewDate)"/>
         <button ng-click="goToNextDate(viewDate)"><i class="fa fa-angle-right"></i></button>
