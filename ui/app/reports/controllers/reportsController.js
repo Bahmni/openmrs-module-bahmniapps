@@ -28,10 +28,10 @@ angular.module('bahmni.reports')
             },
             reportsNotRequiringDateRange: {}
         };
-        
+
         $scope.reportsDefined = true;
         $scope.enableReportQueue = appService.getAppDescriptor().getConfigValue("enableReportQueue");
-        
+
         $scope.setDefault = function (item, header) {
             var setToChange = (header === 'reportsRequiringDateRange') ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
             var isPreviousMonth = $rootScope.default[header][item] === dateRange[2];
@@ -45,12 +45,11 @@ angular.module('bahmni.reports')
                     report.startDate = $filter('date')(dateRange[0], 'yyyy-MM-dd');
                     report.stopDate = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
                     report.responseType = format[1];
-                } 
-                else {
+                } else {
                     report[item] = $rootScope.default[header][item];
                 }
             });
-        };  
+        };
 
         var getPreviousMonthEndDate = function () {
             return new Date(new Date().getFullYear(), new Date().getMonth(), 0);
@@ -72,8 +71,8 @@ angular.module('bahmni.reports')
                 }
                 report.reportTemplateLocation = report.config.macroTemplatePath;
             }
-                        report.startDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.startDate);
-                        report.stopDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.stopDate);
+            report.startDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.startDate);
+            report.stopDate = Bahmni.Common.Util.DateUtil.getDateWithoutTime(report.stopDate);
             if (isDateRangeRequiredFor(report) && (!report.startDate || !report.stopDate)) {
                 var msg = [];
                 if (!report.startDate) {
