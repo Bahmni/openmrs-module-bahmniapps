@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', '$translate', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, $translate, auditLogService) {
+    .controller('ReportsController', ['$scope', '$filter', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', '$translate', 'auditLogService', function ($scope, $filter, appService, reportService, FileUploader, messagingService, spinner, $rootScope, $translate, auditLogService) {
         const format = _.values(reportService.getAvailableFormats());
         const dateRange = _.values(reportService.getAvailableDateRange());
 
@@ -35,7 +35,6 @@ angular.module('bahmni.reports')
         $scope.setDefault = function (item, header) {
             var setToChange = (header === 'reportsRequiringDateRange') ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
             var isPreviousMonth = $rootScope.default[header][item] === dateRange[2];
-        
             angular.forEach(setToChange, function (report) {
                 if (item === 'dateRangeType') {
                     $rootScope.default.reportsRequiringDateRange.startDate = $rootScope.default[header][item];
@@ -43,13 +42,11 @@ angular.module('bahmni.reports')
                     report.startDate = $rootScope.default[header][item];
                     report.stopDate = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
                 } else if (_.isUndefined($rootScope.default[header][item])) {
-                    $rootScope.default.reportsRequiringDateRange.startDate = dateRange[0];
-                    angular.forEach($rootScope.reportsRequiringDateRange, function (report) {
-                        report.startDate = dateRange[0];
-                        report.stopDate = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
-                        report.responseType = format[1];
-                    });
-                } else {
+                    report.startDate = $filter('date')(dateRange[0], 'yyyy-MM-dd');
+                    report.stopDate = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
+                    report.responseType = format[1];
+                } 
+                else {
                     report[item] = $rootScope.default[header][item];
                 }
             });
