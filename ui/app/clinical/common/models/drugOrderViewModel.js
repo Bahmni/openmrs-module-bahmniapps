@@ -427,16 +427,18 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
     };
 
     var setDurationUnitsBasedOnFrequency = function () {
-        inputOptionsConfig.autopopulateDurationBasedOnFrequency.forEach(function (frequency) {
-            if (frequency.frequencyName === self.uniformDosingType.frequency) {
-                self.duration = frequency.duration;
-                durationUnits.forEach(function (durationUnit) {
-                    if (durationUnit.name === frequency.durationUnit) {
-                        self.durationUnit = durationUnit.name;
-                    }
-                });
-            }
-        });
+        if (inputOptionsConfig.autopopulateDurationBasedOnFrequency != undefined) {
+            inputOptionsConfig.autopopulateDurationBasedOnFrequency.forEach(function (frequency) {
+                if (frequency.frequencyName === self.uniformDosingType.frequency) {
+                    self.duration = frequency.duration;
+                    durationUnits.forEach(function (durationUnit) {
+                        if (durationUnit.name === frequency.durationUnit) {
+                            self.durationUnit = durationUnit.name;
+                        }
+                    });
+                }
+            });
+        }
     };
 
     this.calculateQuantityAndUnit = function () {
