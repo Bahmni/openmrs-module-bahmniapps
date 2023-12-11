@@ -536,6 +536,23 @@ describe("drugOrderViewModel", function () {
 
             expect(treatment.isActive()).toBe(false);
         })
+
+        it("should set dose and unit based on config frequency", function(){
+                treatmentConfig.inputOptionsConfig = {
+                    "autopopulateDurationBasedOnFrequency" : [
+                        {
+                        "frequencyName":"Twice a Day",
+                        "duration":1,
+                        "durationUnit":"Day(s)"
+                      }
+                    ]
+                };
+                var treatment = sampleTreatmentWithUniformDosing(3, "Capsule", "Twice a Day");
+                treatment.calculateQuantityAndUnit();
+                
+                expect(treatment.duration).toBe(1);
+                expect(treatment.durationUnit).toBe("Day(s)");
+            });
     });
 
     describe("Discontinued", function () {
