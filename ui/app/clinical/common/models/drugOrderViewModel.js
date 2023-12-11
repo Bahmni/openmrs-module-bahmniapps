@@ -426,22 +426,22 @@ Bahmni.Clinical.DrugOrderViewModel = function (config, proto, encounterDate) {
         }
     };
 
-    var setDurationUnitsBasedOnFrequency = function (){
-       inputOptionsConfig.autopopulateDurationBasedOnFrequency.forEach(function (frequency) {
-        if(frequency.frequencyName === self.uniformDosingType.frequency){
-            self.duration=frequency.duration;
-            durationUnits.forEach(function (durationUnit) {
-                if(durationUnit.name === frequency.durationUnit){
-                    self.durationUnit = durationUnit.name;
-                }
-            });
-       }
-    });
-    }
+    var setDurationUnitsBasedOnFrequency = function () {
+        inputOptionsConfig.autopopulateDurationBasedOnFrequency.forEach(function (frequency) {
+            if (frequency.frequencyName === self.uniformDosingType.frequency) {
+                self.duration = frequency.duration;
+                durationUnits.forEach(function (durationUnit) {
+                    if (durationUnit.name === frequency.durationUnit) {
+                        self.durationUnit = durationUnit.name;
+                    }
+                });
+            }
+        });
+    };
 
     this.calculateQuantityAndUnit = function () {
         self.calculateDurationInDays();
-        setDurationUnitsBasedOnFrequency()
+        setDurationUnitsBasedOnFrequency();
         if (!self.quantityEnteredManually && !self.quantityEnteredViaEdit) {
             if (self.frequencyType === Bahmni.Clinical.Constants.dosingTypes.uniform) {
                 var mantissa = self.uniformDosingType.doseFraction ? self.uniformDosingType.doseFraction.value : 0;
