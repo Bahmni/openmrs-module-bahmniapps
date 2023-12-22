@@ -36,6 +36,13 @@ angular.module('bahmni.clinical')
                         !drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed ||
                         $scope.consultation.encounterUuid !== drugOrder.encounterUuid;
                 };
+
+                $scope.disableEditButton = function (drugOrder) {
+                    return ($scope.medicationSchedules &&
+                        $scope.medicationSchedules.some(function (schedule) {
+                            return schedule.order.uuid === drugOrder.uuid;
+                        }));
+                };
             }
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
