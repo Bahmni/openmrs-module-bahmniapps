@@ -10,14 +10,6 @@ angular.module('bahmni.clinical')
             $scope.visitTabConfig = visitConfig;
             $scope.showMobileMenu = false;
             $scope.visitPage = true;
-            var enableIPDFeature = clinicalAppConfigService.getIsIPDFeatureEnabled();
-
-            visitHistory.visits.forEach(function (visit) {
-                if (visit.uuid === $stateParams.visitUuid) {
-                    $scope.isActiveIpdVisit = visit.stopDatetime === null && visit.visitType.name === "IPD";
-                }
-            });
-            $scope.showPatientHeader = !(enableIPDFeature && $scope.isActiveIpdVisit);
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.patientDocumentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);
