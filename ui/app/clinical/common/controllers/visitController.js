@@ -22,7 +22,9 @@ angular.module('bahmni.clinical')
             $scope.isActiveIpdVisit = $scope.visitSummary.visitType === "IPD" && $scope.visitSummary.stopDateTime === null;
             $scope.ipdDashboard = {
                 hostData: {
-                    patient: {uuid: $scope.patientUuid}
+                    patient: {uuid: $scope.patientUuid},
+                    forDate: new Date().toUTCString(),
+                    provider: $rootScope.currentProvider
                 },
                 hostApi: {
                     navigation: {

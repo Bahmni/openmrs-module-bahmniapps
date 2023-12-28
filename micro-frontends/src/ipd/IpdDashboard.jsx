@@ -18,10 +18,7 @@ export function IpdDashboard(props) {
 
 // Without propTypes, react2angular won't render the component
 IpdDashboard.propTypes = {
-  hostData: PropTypes.shape({
-    patientId: PropTypes.string,
-    forDate: PropTypes.instanceOf(Date),
-  }).isRequired,
+  hostData: PropTypes.object.isRequired,
   hostApi: PropTypes.shape({
     navigation: PropTypes.shape({
       dischargeSummary: PropTypes.func.isRequired,
