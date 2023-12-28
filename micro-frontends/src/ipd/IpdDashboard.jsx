@@ -9,6 +9,7 @@ export function IpdDashboard(props) {
       <Suspense fallback={<p>Loading...</p>}>
         <LazyApp
           hostData={props.hostData}
+          hostApi={props.hostApi}
         />
       </Suspense>
     </>
@@ -20,5 +21,10 @@ IpdDashboard.propTypes = {
   hostData: PropTypes.shape({
     patientId: PropTypes.string,
     forDate: PropTypes.instanceOf(Date),
+  }).isRequired,
+  hostApi: PropTypes.shape({
+    navigation: PropTypes.shape({
+      dischargeSummary: PropTypes.func.isRequired,
+    }).isRequired,
   }).isRequired,
 };

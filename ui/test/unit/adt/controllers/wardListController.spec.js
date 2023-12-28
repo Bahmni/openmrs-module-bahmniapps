@@ -1,21 +1,20 @@
 'use strict';
 
 describe('WardListController', function () {
-
     var controller, rootScope, scope, queryService, appService, window;
 
     beforeEach(function () {
         module('bahmni.adt');
         module(function ($provide) {
-          var realAppDescriptor = new Bahmni.Common.AppFramework.AppDescriptor();
-          realAppDescriptor.getConfigValue = function (config) {
-              if (config === 'enableIPDFeature') {
-                  return false;
-              }
-          };
+            var realAppDescriptor = new Bahmni.Common.AppFramework.AppDescriptor();
+            realAppDescriptor.getConfigValue = function (config) {
+                if (config === 'enableIPDFeature') {
+                    return false;
+                }
+            };
 
-          appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
-          appService.getAppDescriptor.and.returnValue(realAppDescriptor);
+            appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+            appService.getAppDescriptor.and.returnValue(realAppDescriptor);
             $provide.value('appService', {});
             queryService = jasmine.createSpyObj('queryService', ['getResponseFromQuery']);
             queryService.getResponseFromQuery.and.returnValue(specUtil.createServicePromise('queryService'));
@@ -51,38 +50,38 @@ describe('WardListController', function () {
     });
 
     describe('searchTextFilter', function () {
-          it('should return true when search text is empty', function () {
+        it('should return true when search text is empty', function () {
             expect(scope.searchTextFilter({})).toBe(true);
-          });
+        });
 
-          it('should return true for row matching exact search text (case-insensitive)', function () {
+        it('should return true for row matching exact search text (case-insensitive)', function () {
             scope.searchText = 'test';
             expect(scope.searchTextFilter({ name: 'TEST' })).toBe(true);
             expect(scope.searchTextFilter({ description: 'testValue' })).toBe(true);
-          });
+        });
 
-          it('should return true for row containing search text (case-insensitive)', function () {
+        it('should return true for row containing search text (case-insensitive)', function () {
             scope.searchText = 'Value';
             expect(scope.searchTextFilter({ name: 'Any Value' })).toBe(true);
             expect(scope.searchTextFilter({ details: 'This has some Value' })).toBe(true);
-          });
+        });
 
-          it('should return false for row with no matching text', function () {
+        it('should return false for row with no matching text', function () {
             scope.searchText = 'other';
             expect(scope.searchTextFilter({ name: 'Test Name' })).toBe(false);
             expect(scope.searchTextFilter({ details: 'No Match Here' })).toBe(false);
-          });
+        });
 
-          it('should exclude specified keys from search', function () {
+        it('should exclude specified keys from search', function () {
             scope.searchText = 'hidden';
             expect(scope.searchTextFilter({ hiddenAttributes: 'hidden data' })).toBe(false);
             expect(scope.searchTextFilter({ $$hashKey: 'hash' })).toBe(false);
-          });
+        });
 
-          it('should search on all non-excluded keys', function () {
+        it('should search on all non-excluded keys', function () {
             scope.searchText = 'giardiasis';
             expect(scope.searchTextFilter({ name: 'John Doe', primaryDiagnoses: 'Giardiasis', secondaryDiagnoses: 'Hay Fever' })).toBe(true);
-          });
+        });
     });
 });
 
