@@ -9,6 +9,7 @@ export function IpdDashboard(props) {
       <Suspense fallback={<p>Loading...</p>}>
         <LazyApp
           hostData={props.hostData}
+          hostApi={props.hostApi}
         />
       </Suspense>
     </>
@@ -17,5 +18,10 @@ export function IpdDashboard(props) {
 
 // Without propTypes, react2angular won't render the component
 IpdDashboard.propTypes = {
-  hostData: PropTypes.object.isRequired
+  hostData: PropTypes.object.isRequired,
+  hostApi: PropTypes.shape({
+    navigation: PropTypes.shape({
+      dischargeSummary: PropTypes.func.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
