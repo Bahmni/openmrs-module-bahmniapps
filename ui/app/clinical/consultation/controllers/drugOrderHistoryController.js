@@ -72,6 +72,7 @@ angular.module('bahmni.clinical')
                 var refillableDrugOrders = drugOrderHistoryHelper.getRefillableDrugOrders(orderSetOrdersAndDrugOrders.drugOrders, getPreviousVisitDrugOrders(), showOnlyActive);
                 return _(orderSetOrdersAndDrugOrders.orderSetOrders)
                     .concat(refillableDrugOrders)
+                    .filter(_.identity)
                     .uniqBy('uuid')
                     .value();
             };
