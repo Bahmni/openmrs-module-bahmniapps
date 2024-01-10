@@ -24,7 +24,9 @@ angular.module('bahmni.clinical')
                 hostData: {
                     patient: {uuid: $scope.patientUuid},
                     forDate: new Date().toUTCString(),
-                    provider: $rootScope.currentProvider
+                    provider: $rootScope.currentProvider,
+                    visitSummary: $scope.visitSummary,
+                    visitUuid: $scope.visitUuid
                 },
                 hostApi: {
                     navigation: {
