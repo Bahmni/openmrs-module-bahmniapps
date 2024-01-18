@@ -55,8 +55,7 @@ angular.module('bahmni.clinical')
                     if (order.uuid) {
                         order.isDiscontinued = true;
                         $state.orderRemoved = true;
-                    } 
-                    else {
+                    } else {
                         _.remove($scope.consultation.orders, order);
                     }
                 }

@@ -44,7 +44,7 @@ describe("OrderController", function () {
             retrospectiveEntryService: retrospectiveEntryService,
             appService: appServiceMock,
             $translate: translate,
-            $state: $state
+            $state: {}
         });
     }));
 
