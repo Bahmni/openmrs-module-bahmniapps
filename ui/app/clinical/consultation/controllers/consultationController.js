@@ -525,6 +525,7 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             return encounterService.create(encounterData)
                             .then(function (saveResponse) {
                                 $state.dirtyConsultationForm = false;
+                                $state.orderRemoved = false;
                                 $scope.$parent.$broadcast("event:changes-saved");
                                 var messageParams = {
                                     encounterUuid: saveResponse.data.encounterUuid,
