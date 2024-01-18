@@ -102,5 +102,3 @@ This behaviour can be prevented by:
 ### SNOMED Integration Support
 
 openmrs-module-bahmniapps also integrates with SNOMED for terminology lookup and CDSS. More details can be found in [this](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3132686337/SNOMED+FHIR+Terminology+Server+Integration+with+Bahmni) Wiki link
-=======
-   > The same is already done [here](https://github.com/Bahmni/openmrs-module-bahmniapps/blob/master/package/docker/httpd.conf#L32)

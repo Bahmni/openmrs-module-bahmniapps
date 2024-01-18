@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService', '$translate', 'retrospectiveEntryService', '$state',
-        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService, $translate, retrospectiveEntryService, $state) {
+    .controller('DiagnosisController', ['$scope', '$rootScope', 'diagnosisService', 'messagingService', 'contextChangeHandler', 'spinner', 'appService', '$translate', 'retrospectiveEntryService', '$state', 'drugService', 'cdssService',
+        function ($scope, $rootScope, diagnosisService, messagingService, contextChangeHandler, spinner, appService, $translate, retrospectiveEntryService, $state, drugService, cdssService) {
             var DateUtil = Bahmni.Common.Util.DateUtil;
             $scope.todayWithoutTime = DateUtil.getDateWithoutTime(DateUtil.today());
             $scope.toggles = {
@@ -22,6 +22,9 @@ angular.module('bahmni.clinical')
 
             $scope.placeholder = "Add Diagnosis";
             $scope.hasAnswers = false;
+
+            $scope.cdssEnabled = false;
+            $scope.conceptSource = localStorage.getItem('conceptSource') || '';
 
             $scope.orderOptions = {
                 'CLINICAL_DIAGNOSIS_ORDER_PRIMARY': 'PRIMARY',
@@ -66,6 +69,12 @@ angular.module('bahmni.clinical')
                 $scope.diagnosisForm.$dirty = false;
             });
 
+            (function () {
+                drugService.getCdssEnabled().then(function (response) {
+                    $scope.cdssEnabled = response.data;
+                });
+            })();
+
             $scope.getAddNewDiagnosisMethod = function (diagnosisAtIndex) {
                 return function (item) {
                     var concept = item.lookup;
@@ -78,9 +87,152 @@ angular.module('bahmni.clinical')
                          change to say array[index]=newObj instead array.splice(index,1,newObj);
                          */
                         $scope.consultation.newlyAddedDiagnoses.splice(index, 1, diagnosis);
+                        getAlerts();
                     }
                 };
             };
+
+            function getAlerts () {
+                return cdssService.getAlerts($scope.cdssEnabled, $scope.consultation, $scope.patient);
+            }
+
+            $scope.hasActiveAlerts = function (alerts) {
+                return alerts.some(function (alert) {
+                    return alert.isActive;
+                });
+            };
+
+            var isPastDiagnosisFlagged = function () {
+                var pastDiagnoses = $scope.consultation.pastDiagnoses;
+                var alerts = $rootScope.cdssAlerts;
+                var flaggedDiagnoses = [];
+                if (pastDiagnoses && pastDiagnoses.length > 0) {
+                    pastDiagnoses.forEach(function (diagnosis) {
+                        diagnosis.alerts = alerts.filter(function (cdssAlert) {
+                            return cdssAlert.referenceConditions && cdssAlert.referenceConditions.some(function (referenceCondition) {
+                                return referenceCondition.coding.some(function (coding) {
+                                    return diagnosis.codedAnswer.mappings.some(function (mapping) {
+                                        return mapping.code === coding.code;
+                                    });
+                                });
+                            });
+                        });
+                        if (diagnosis.alerts) {
+                            diagnosis.alerts = cdssService.sortInteractionsByStatus(diagnosis.alerts);
+                            flaggedDiagnoses.push(diagnosis);
+                        }
+                    });
+                }
+                $scope.pastDiagnosesAlerts = flaggedDiagnoses.length > 0;
+            };
+
+            var getFlaggedSavedDiagnosisAlert = function () {
+                var alerts = $rootScope.cdssAlerts;
+                var diagnoses = $scope.consultation.savedDiagnosesFromCurrentEncounter;
+                if (diagnoses && diagnoses.length > 0 && alerts) {
+                    diagnoses.forEach(function (diagnosis) {
+                        diagnosis.alerts = alerts.filter(function (cdssAlert) {
+                            return cdssAlert.referenceConditions && cdssAlert.referenceConditions.some(function (referenceCondition) {
+                                return referenceCondition.coding.some(function (coding) {
+                                    return diagnosis.codedAnswer.mappings.some(function (mapping) {
+                                        return mapping.code === coding.code;
+                                    });
+                                });
+                            });
+                        });
+                        if (diagnosis.alerts) {
+                            diagnosis.alerts = cdssService.sortInteractionsByStatus(diagnosis.alerts);
+                        }
+                    });
+                }
+            };
+
+            var getAlertForCurrentDiagnosis = function () {
+                var alerts = $rootScope.cdssAlerts;
+                var diagnoses = $scope.consultation.newlyAddedDiagnoses;
+                var flaggedDiagnoses = [];
+                if (diagnoses && diagnoses.length > 0 && alerts) {
+                    diagnoses.forEach(function (diagnosis) {
+                        diagnosis.alerts = alerts.filter(function (cdssAlert) {
+                            return cdssAlert.referenceConditions && cdssAlert.referenceConditions.some(function (referenceCondition) {
+                                return referenceCondition.coding.some(function (coding) {
+                                    return diagnosis.codedAnswer.uuid === coding.code;
+                                });
+                            });
+                        });
+                        if (diagnosis.alerts) {
+                            diagnosis.alerts = cdssService.sortInteractionsByStatus(diagnosis.alerts);
+                            flaggedDiagnoses.push(diagnosis);
+                        }
+                    });
+                }
+                return flaggedDiagnoses;
+            };
+
+            var getConditionAlerts = function () {
+                var alerts = $rootScope.cdssAlerts;
+                var condition = $scope.consultation.condition;
+                var flaggedConditions = [];
+                if (condition && condition.concept && condition.concept.name === '' && alerts) {
+                    condition.alerts = [];
+                } else if (condition && condition.concept && condition.concept.uuid && alerts) {
+                    condition.alerts = alerts.filter(function (cdssAlert) {
+                        return cdssAlert.referenceConditions && cdssAlert.referenceConditions.some(function (referenceCondition) {
+                            return referenceCondition.coding.some(function (coding) {
+                                return condition.concept.uuid.includes(coding.code);
+                            });
+                        });
+                    });
+                    if (condition.alerts) {
+                        condition.alerts = cdssService.sortInteractionsByStatus(condition.alerts);
+                        flaggedConditions.push(condition);
+                    }
+                }
+                return flaggedConditions;
+            };
+
+            var getConditionsAlerts = function () {
+                var alerts = $rootScope.cdssAlerts;
+                var conditions = $scope.consultation.conditions;
+                var flaggedConditions = [];
+                if (conditions && conditions.length > 0 && alerts) {
+                    conditions.forEach(function (condition) {
+                        condition.alerts = alerts.filter(function (cdssAlert) {
+                            return cdssAlert.referenceConditions && cdssAlert.referenceConditions.some(function (referenceCondition) {
+                                return referenceCondition.coding.some(function (coding) {
+                                    return condition.concept.uuid.includes(coding.code);
+                                });
+                            });
+                        });
+                        if (condition.alerts) {
+                            condition.alerts = cdssService.sortInteractionsByStatus(condition.alerts);
+                            flaggedConditions.push(condition);
+                        }
+                    });
+                }
+                return flaggedConditions;
+            };
+
+            var alertsWatch = $rootScope.$watch('cdssAlerts', function () {
+                if (!$rootScope.cdssAlerts) return;
+                isPastDiagnosisFlagged();
+                getFlaggedSavedDiagnosisAlert();
+                getAlertForCurrentDiagnosis();
+                getConditionAlerts();
+                getConditionsAlerts();
+            }, true);
+
+            $scope.$on('$destroy', function () {
+                alertsWatch();
+            });
+
+            var postSave = $rootScope.$on('event:save-successful', function () {
+                getAlerts();
+            });
+
+            $scope.$on('$destroy', function () {
+                postSave();
+            });
 
             var addPlaceHolderDiagnosis = function () {
                 var diagnosis = new Bahmni.Common.Domain.Diagnosis('');
@@ -140,12 +292,30 @@ angular.module('bahmni.clinical')
                 });
                 var isValidConditionForm = ($scope.consultation.condition.isEmpty() || $scope.consultation.condition.isValid());
                 return {
-                    allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0
-                    && invalidSavedDiagnosesFromCurrentEncounter.length === 0 && isValidConditionForm,
+                    allow: invalidnewlyAddedDiagnoses.length === 0 && invalidPastDiagnoses.length === 0 &&
+                    invalidSavedDiagnosesFromCurrentEncounter.length === 0 && isValidConditionForm,
                     errorMessage: $scope.errorMessage
                 };
             };
             contextChangeHandler.add(contextChange);
+
+            $scope.$watch('consultation.condition.concept.name', function () {
+                if ($scope.consultation.condition.concept.name === '') {
+                    getAlerts();
+                }
+            });
+
+            $scope.$watch('consultation.condition.status', getAlerts);
+
+            $scope.$watch('consultation.conditions', getAlerts);
+
+            $scope.$watch('consultation.newlyAddedDiagnoses', function (present, previous) {
+                present.forEach(function (diagnosis, index) {
+                    if (previous[index] && previous[index].diagnosisStatus !== diagnosis.diagnosisStatus) {
+                        getAlerts();
+                    }
+                });
+            }, true);
 
             var mapConcept = function (result) {
                 return _.map(result.data, function (concept) {
@@ -179,6 +349,7 @@ angular.module('bahmni.clinical')
                     item.lookup.uuid = conceptSystem + item.lookup.uuid;
                     $scope.consultation.condition.concept.uuid = item.lookup.uuid;
                     item.value = $scope.consultation.condition.concept.name = item.lookup.name;
+                    getAlerts();
                 };
             };
 
@@ -248,11 +419,13 @@ angular.module('bahmni.clinical')
                 }
                 condition.voided = false;
                 updateOrAddCondition(new Bahmni.Common.Domain.Condition(condition));
+                getConditionsAlerts();
             };
             $scope.markAs = function (condition, status) {
                 condition.status = status;
                 condition.onSetDate = DateUtil.today();
                 expandInactiveOnNewInactive(condition);
+                getAlerts();
             };
             var clearCondition = function () {
                 $scope.consultation.condition = new Bahmni.Common.Domain.Condition();
@@ -302,6 +475,7 @@ angular.module('bahmni.clinical')
             $scope.removeObservation = function (index) {
                 if (index >= 0) {
                     $scope.consultation.newlyAddedDiagnoses.splice(index, 1);
+                    getAlerts();
                 }
             };
 
@@ -323,12 +497,11 @@ angular.module('bahmni.clinical')
                 spinner.forPromise(
                     diagnosisService.deleteDiagnosis(obsUUid).then(function () {
                         messagingService.showMessage('info', 'DELETED_MESSAGE');
-                        var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0 ?
-                                          $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
+                        var currentUuid = $scope.consultation.savedDiagnosesFromCurrentEncounter.length > 0
+                            ? $scope.consultation.savedDiagnosesFromCurrentEncounter[0].encounterUuid : "";
+                        getAlerts();
                         return reloadDiagnosesSection(currentUuid);
-                    }))
-                    .then(function () {
-                    });
+                    }));
             };
             var clearBlankDiagnosis = true;
             var removeBlankDiagnosis = function () {
@@ -372,6 +545,8 @@ angular.module('bahmni.clinical')
                 });
                 if (emptyRows.length === 0) {
                     addPlaceHolderDiagnosis();
+                } else {
+                    getAlerts();
                 }
                 clearBlankDiagnosis = true;
             };

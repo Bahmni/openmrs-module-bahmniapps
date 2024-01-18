@@ -1,11 +1,20 @@
 <div class="row">
-    <div class="col col1">
+    <div class="col col1" ng-class="{'condition-alert-name': condition.alerts && condition.alerts.length > 0 && !hasActiveAlerts(condition.alerts)}" bm-pop-over autoclose="true">
+        <span ng-if="condition.alerts && condition.alerts.length > 0 && !hasActiveAlerts(condition.alerts) && condition.status === 'ACTIVE'">
+            <button class="cdss-alert-icon button-alert-condition" bm-pop-over-trigger>
+               <i class="fa fa-exclamation-circle cdss-icon-medication">
+               </i>
+           </button>
+       </span>
         <div class="diagnosis-name">{{ condition.displayString() }}</div>
         <div ng-if="condition.activeSince" class="diagnosis-date">
             {{'CONDITION_LIST_ACTIVE_SINCE'|translate}} {{condition.activeSince | bahmniDate}}
         </div>
         <div class="subscriber-name">
             <span ng-if="condition.creator">{{'CONDITION_LIST_CREATED_BY'|translate}} {{condition.creator}}</span>
+        </div>
+        <div class="tooltip cdss-tooltip history-alert" bm-pop-over-target>
+            <cdss-popover alerts="condition.alerts"></cdss-popover>
         </div>
     </div>
     <div class="col col2 notes-subscriber">
@@ -26,4 +35,8 @@
             {{'CONDITION_LIST_SET_AS_INACTIVE'|translate}}
         </a>
     </div>
+</div>
+
+<div class="row" ng-if="hasActiveAlerts(condition.alerts) && condition.status === 'ACTIVE'" ng-repeat="alert in condition.alerts">
+    <ng-include class="new-diagnosis-alert-row" src="'consultation/views/diagnosisAlertRow.html'" />
 </div>

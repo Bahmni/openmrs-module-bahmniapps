@@ -1,9 +1,13 @@
 'use strict';
 
 angular.module('bahmni.reports')
-    .controller('ReportsController', ['$scope', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', 'auditLogService', function ($scope, appService, reportService, FileUploader, messagingService, spinner, $rootScope, auditLogService) {
+    .controller('ReportsController', ['$scope', '$filter', 'appService', 'reportService', 'FileUploader', 'messagingService', 'spinner', '$rootScope', '$translate', 'auditLogService', function ($scope, $filter, appService, reportService, FileUploader, messagingService, spinner, $rootScope, $translate, auditLogService) {
         const format = _.values(reportService.getAvailableFormats());
         const dateRange = _.values(reportService.getAvailableDateRange());
+
+        var getTranslatedMessage = function (key) {
+            return $translate.instant(key);
+        };
 
         $scope.uploader = new FileUploader({
             url: Bahmni.Common.Constants.uploadReportTemplateUrl,
@@ -14,40 +18,46 @@ angular.module('bahmni.reports')
             fileItem.report.reportTemplateLocation = response;
         };
 
-        $rootScope.default = _.isUndefined($rootScope.default) ? {
+        $rootScope.default = $rootScope.default || {
             reportsRequiringDateRange: {
                 responseType: format[1],
                 dateRangeType: dateRange[0],
                 startDate: dateRange[0],
                 stopDate: dateRange[0],
-                report: {
-                    responseType: format[1]
-                }
+                report: { responseType: format[1] }
             },
             reportsNotRequiringDateRange: {}
-        } : $rootScope.default;
+        };
+
         $scope.reportsDefined = true;
         $scope.enableReportQueue = appService.getAppDescriptor().getConfigValue("enableReportQueue");
+
         $scope.setDefault = function (item, header) {
-            var setToChange = header === 'reportsRequiringDateRange' ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
-            setToChange.forEach(function (report) {
-                if (item == 'dateRangeType') {
+            var setToChange = (header === 'reportsRequiringDateRange') ? $rootScope.reportsRequiringDateRange : $rootScope.reportsNotRequiringDateRange;
+            var isPreviousMonth = $rootScope.default[header][item] === dateRange[2];
+            for (var i = 0; i < setToChange.length; i++) {
+                var report = setToChange[i];
+                if (item === 'dateRangeType') {
                     $rootScope.default.reportsRequiringDateRange.startDate = $rootScope.default[header][item];
-                    $rootScope.default.reportsRequiringDateRange.stopDate = dateRange[0];
-                    report['startDate'] = $rootScope.default[header][item];
-                    report['stopDate'] = dateRange[0];
-                }
-                else if ($rootScope.default[header][item] === undefined) {
+                    $rootScope.default.reportsRequiringDateRange.stopDate = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
+                    report.startDate = $rootScope.default[header][item];
+                    report.stopDate = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
+                } else if (_.isUndefined($rootScope.default[header][item])) {
+                    $rootScope.default.reportsRequiringDateRange.startDate = dateRange[0];
                     $rootScope.reportsRequiringDateRange.forEach(function (report) {
-                        report.startDate = dateRange[0];
-                        report.stopDate = dateRange[0];
+                        report.startDate = $filter('date')(dateRange[0], 'yyyy-MM-dd');
+                        report.stopDate = isPreviousMonth ? getPreviousMonthEndDate() : dateRange[0];
                         report.responseType = format[1];
                     });
-                }
-                else {
+                    break;
+                } else {
                     report[item] = $rootScope.default[header][item];
                 }
-            });
+            }
+        };
+
+        var getPreviousMonthEndDate = function () {
+            return new Date(new Date().getFullYear(), new Date().getMonth(), 0);
         };
 
         var isDateRangeRequiredFor = function (report) {
@@ -75,6 +85,9 @@ angular.module('bahmni.reports')
                 }
                 if (!report.stopDate) {
                     msg.push("end date");
+                }
+                if ((report.startDate > report.stopDate)) {
+                    msg.push(getTranslatedMessage("START_DATE_CANNOT_LATER_THAN_STOP_DATE"));
                 }
                 messagingService.showMessage("error", "Please select the " + msg.join(" and "));
                 return false;

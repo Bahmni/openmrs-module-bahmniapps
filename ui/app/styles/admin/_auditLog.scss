@@ -58,6 +58,23 @@
         padding: 0;
       }
     }
+    form {
+      display: flex;
+      align-items: center;
+      button[type="submit"] {
+        margin-left: auto;
+      }
+      > div {
+        display: flex;
+        align-items: center;
+        label {
+          margin-top: 4px !important;
+        }
+        input {
+          margin-top: 8px;
+        }
+      }
+    }
   }
 }
 
