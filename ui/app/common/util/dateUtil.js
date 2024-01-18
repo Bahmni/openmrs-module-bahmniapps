@@ -273,6 +273,10 @@ Bahmni.Common.Util.DateUtil = {
         return longDate ? moment(longDate).format("YYYY-MM-DDTHH:mm:ss.SSS") : null;
     },
 
+    parseLongDateToServerFormatWithTimezone: function (longDate) {
+        return longDate ? moment(longDate).format("YYYY-MM-DDTHH:mm:ss.SSSZZ") : null;
+    },
+
     parseServerDateToDate: function (longDate) {
         return longDate ? moment(longDate, "YYYY-MM-DDTHH:mm:ss.SSSZZ").toDate() : null;
     },

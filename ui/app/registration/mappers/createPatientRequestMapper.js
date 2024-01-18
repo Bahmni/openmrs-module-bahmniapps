@@ -37,7 +37,7 @@ Bahmni.Registration.CreatePatientRequestMapper = (function () {
                     birthdate: this.getBirthdate(patient.birthdate, patient.age),
                     birthdateEstimated: patient.birthdateEstimated,
                     gender: patient.gender,
-                    birthtime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormat(patient.birthtime),
+                    birthtime: Bahmni.Common.Util.DateUtil.parseLongDateToServerFormatWithTimezone(patient.birthtime),
                     personDateCreated: patient.registrationDate,
                     attributes: new Bahmni.Common.Domain.AttributeFormatter().getMrsAttributes(patient, patientAttributeTypes),
                     dead: patient.dead,
