@@ -54,6 +54,7 @@ angular.module('bahmni.clinical')
                 if (order) {
                     if (order.uuid) {
                         order.isDiscontinued = true;
+                        $state.orderRemoved = true;
                     } else {
                         _.remove($scope.consultation.orders, order);
                     }
@@ -133,7 +134,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.$on('$stateChangeStart', function () {
-                if ($scope.consultation.orders.length !== $scope.consultation.investigations.length) {
+                if ($state.orderRemoved || ($scope.consultation.orders.length > $scope.consultation.investigations.length)) {
                     $state.dirtyConsultationForm = true;
                 }
             });
