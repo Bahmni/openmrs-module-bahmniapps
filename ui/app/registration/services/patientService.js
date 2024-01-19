@@ -45,6 +45,7 @@ angular.module('bahmni.registration')
             return $http.get(Bahmni.Common.Constants.bahmniCommonsSearchUrl + "/patient/lucene", {
                 method: "GET",
                 params: {
+                    identifier: query,
                     filterOnAllIdentifiers: true,
                     q: query,
                     s: "byIdOrName",
