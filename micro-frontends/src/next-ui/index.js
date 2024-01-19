@@ -1,6 +1,7 @@
 import { React2AngularBridgeBuilder } from "../utils/bridge-builder";
 import { PatientAlergiesControl } from "./Containers/patientAlergies/PatientAlergiesControl";
 import { FormDisplayControl } from "./Containers/formDisplayControl/FormDisplayControl";
+import { ProviderNotifications } from "./Containers/providerNotifications/ProviderNotifications";
 
 const MODULE_NAME = "bahmni.mfe.nextUi";
 
@@ -19,4 +20,9 @@ builder.createComponentWithTranslationForwarding(
 builder.createComponentWithTranslationForwarding(
   "FormDisplayControl",
   FormDisplayControl
+);
+
+builder.createComponentWithTranslationForwarding(
+  "ProviderNotifications",
+  ProviderNotifications
 );
