@@ -1,0 +1,31 @@
+.patient-list-content {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: start;
+    padding: 10px;
+
+    .content-info {
+        margin-left: 20px;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: start;
+        align-items: start;
+
+        .notes {
+            background-color: #ededed;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: start;
+            align-items: end;
+
+            .patient-list-button {
+                margin-left: 10px;
+
+                @media screen and (max-width: 640px) {
+                    margin-left: 0;
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+}
