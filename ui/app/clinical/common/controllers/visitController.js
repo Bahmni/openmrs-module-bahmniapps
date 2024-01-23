@@ -30,9 +30,9 @@ angular.module('bahmni.clinical')
                 },
                 hostApi: {
                     navigation: {
-                        dischargeSummary: function () {
-                            const dischargeSummaryUrl = $state.href('patient.dashboard.visit', {visitUuid: $scope.visitUuid});
-                            $window.open(dischargeSummaryUrl, '_blank');
+                        visitSummary: function () {
+                            const visitSummaryUrl = $state.href('patient.dashboard.visit', {visitUuid: $scope.visitUuid});
+                            $window.open(visitSummaryUrl, '_blank');
                         }
                     }
                 }
