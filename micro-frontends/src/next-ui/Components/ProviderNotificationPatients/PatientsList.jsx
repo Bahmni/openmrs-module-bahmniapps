@@ -9,9 +9,8 @@ import {
 } from "../../utils/providerNotifications/ProviderNotificationUtils";
 import { getCookies } from "../../utils/cookieHandler/cookieHandler";
 import { SQL_PROPERTY } from "../../constants";
-import {
-    calculateAgeFromEpochDOB, formatArrayDateToDefaultDateFormat,
-} from "../../utils/utils";
+import { calculateAgeFromEpochDOB } from "../../utils/utils";
+import moment from "moment";
 
 const PatientsList = () => {
   const [PatientListWithMedications, setPatientListWithMedications] = useState(
@@ -26,29 +25,27 @@ const PatientsList = () => {
       SQL_PROPERTY,
       provider_uuid.currentProvider.uuid
     );
-      const PatientListGroupedByIdentifier = response.reduce(
-          (accumulator, item) => {
-              if (!accumulator[item.identifier]) {
-                  accumulator[item.identifier] = [];
-              }
-              accumulator[item.identifier].push(item);
-              return accumulator;
-          },
-          {}
-      );
+    const PatientListGroupedByIdentifier = response.reduce(
+      (accumulator, item) => {
+        if (!accumulator[item.identifier]) {
+          accumulator[item.identifier] = [];
+        }
+        accumulator[item.identifier].push(item);
+        return accumulator;
+      },
+      {}
+    );
 
-      const sortMedicationList = Object.values(PatientListGroupedByIdentifier)
+    const sortMedicationList = Object.values(PatientListGroupedByIdentifier);
+    sortMedicationList.map((item) => {
+      return item.sort((a, b) => {
+        const dateA = moment(a.administered_date_time);
+        const dateB = moment(b.administered_date_time);
+        return dateB.diff(dateA);
+      });
+    });
 
-      sortMedicationList.map((item) => {
-          return item.sort(
-              (a, b) =>
-                  formatArrayDateToDefaultDateFormat(b.administered_date_time) - formatArrayDateToDefaultDateFormat(a.administered_date_time)
-          );
-      })
-
-      console.log("sortMedicationList",sortMedicationList);
-
-      setPatientListWithMedications(sortMedicationList);
+    setPatientListWithMedications(sortMedicationList);
   };
 
   useEffect(() => {
@@ -71,10 +68,10 @@ const PatientsList = () => {
                 />
               }
             >
-              {item && item.map((medication) => (
-                  <PatientListContent patientMedicationDetails={medication}/>
-              ))
-              }
+              {item &&
+                item.map((medication) => (
+                  <PatientListContent patientMedicationDetails={medication} />
+                ))}
             </AccordionItem>
           ))}
       </Accordion>
