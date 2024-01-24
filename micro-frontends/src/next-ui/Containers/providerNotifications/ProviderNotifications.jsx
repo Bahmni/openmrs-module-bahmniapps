@@ -7,7 +7,8 @@ import PatientsList from '../../Components/ProviderNotificationPatients/Patients
 
 export function ProviderNotifications(props) {
     const acknowledgementRequiredText = <FormattedMessage id="AKNOWLEDGEMENT_REQUIRED_TEXT" defaultMessage="Acknowledgement required" />;
-    const archiveText = <FormattedMessage id="ARCHIVE_TEXT" defaultMessage="Archive" />;
+
+
     return (
         <div className='provider-notifications-next-ui'>
             <ComboBox
@@ -22,10 +23,7 @@ export function ProviderNotifications(props) {
 
             <div className='provider-notification-headers'>
                 <span>{acknowledgementRequiredText}</span>
-                <Link href="#" className="notification-link">{archiveText}</Link>
             </div>
-
-            
             <PatientsList />
         </div>
     )
