@@ -10,8 +10,7 @@ import {
 import { getCookies } from "../../utils/cookieHandler/cookieHandler";
 import { SQL_PROPERTY } from "../../constants";
 import {
-  formatArrayDateToDefaultDateFormat,
-  calculateAgeFromEpochDOB,
+    calculateAgeFromEpochDOB, formatArrayDateToDefaultDateFormat,
 } from "../../utils/utils";
 
 const PatientsList = () => {
@@ -27,19 +26,29 @@ const PatientsList = () => {
       SQL_PROPERTY,
       provider_uuid.currentProvider.uuid
     );
-    const PatientListGroupedByIdentifier = response.reduce(
-      (accumulator, item) => {
-        if (!accumulator[item.identifier]) {
-          accumulator[item.identifier] = [];
-        }
-        accumulator[item.identifier].push(item);
-        return accumulator;
-      },
-      {}
-    );
-    setPatientListWithMedications(
-      Object.values(PatientListGroupedByIdentifier)
-    );
+      const PatientListGroupedByIdentifier = response.reduce(
+          (accumulator, item) => {
+              if (!accumulator[item.identifier]) {
+                  accumulator[item.identifier] = [];
+              }
+              accumulator[item.identifier].push(item);
+              return accumulator;
+          },
+          {}
+      );
+
+      const sortMedicationList = Object.values(PatientListGroupedByIdentifier)
+
+      sortMedicationList.map((item) => {
+          return item.sort(
+              (a, b) =>
+                  formatArrayDateToDefaultDateFormat(b.administered_date_time) - formatArrayDateToDefaultDateFormat(a.administered_date_time)
+          );
+      })
+
+      console.log("sortMedicationList",sortMedicationList);
+
+      setPatientListWithMedications(sortMedicationList);
   };
 
   useEffect(() => {
@@ -62,7 +71,10 @@ const PatientsList = () => {
                 />
               }
             >
-              hello ipd
+              {item && item.map((medication) => (
+                  <PatientListContent patientMedicationDetails={medication}/>
+              ))
+              }
             </AccordionItem>
           ))}
       </Accordion>

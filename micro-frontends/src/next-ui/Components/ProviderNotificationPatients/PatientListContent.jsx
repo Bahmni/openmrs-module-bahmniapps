@@ -1,11 +1,12 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Button, TextArea } from 'carbon-components-react';
 import './PatientListContent.scss';
 import { Title } from "bahmni-carbon-ui";
+import { formatArrayDateToDefaultDateFormat } from "../../utils/utils";
 
-const PatientListContent = (props) => {
+const PatientListContent = ({patientMedicationDetails}) => {
     const [notes, setNotes] = useState('');
-    const { administered_date_time, administered_drug_name , gender } = props;
+    const { administered_date_time, administered_drug_name } = patientMedicationDetails;
 
     const handleInputChange = (e) => {
         // props.hostApi.updateNotificationMessage(event.target.value)
@@ -18,7 +19,7 @@ const PatientListContent = (props) => {
 
   return (
     <div className='patient-list-content'>
-        <span>{administered_date_time}</span>
+        <span>{formatArrayDateToDefaultDateFormat(administered_date_time)}</span>
         <div className='content-info'>
             <span>{administered_drug_name}</span>
             <div className='notes'>
