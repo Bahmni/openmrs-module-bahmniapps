@@ -19,6 +19,6 @@
         </div>
         <div ng-include="currentVisitUrl"></div>
     </div>
-    <div class="provider-info">{{provider[0].name}}</div>
+    <div ng-if="visitTabConfig.getPrintConfigForCurrentTab().hideProviderName" class="provider-info">{{provider[0].name}}</div>
 </body>
 </html>
