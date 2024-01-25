@@ -16,13 +16,13 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
-                        <td class="normal fixed-column">
+                        <th class="normal">
                             <span bo-text="testOrderLabel.testName"></span>
                             <span ng-show="::accessions.hasRange(testOrderLabel)" class="range">
                                 <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
                             </span>
                             <span ng-if="::!params.showOrders" bo-text="testOrderLabel.testUnitOfMeasurement" ng-show="::accessions.hasUnits(testOrderLabel)" class="range" ></span>
-                        </td>
+                        </th>
                         <td ng-repeat="dateLabel in accessions.getDateLabels()"
                             ng-class="::{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}"
                             ng-if="::!params.hideVisitDate">
