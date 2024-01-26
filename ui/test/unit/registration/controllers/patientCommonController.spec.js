@@ -48,6 +48,7 @@ describe('PatientCommonController', function () {
                             ],
                             "nonEditable": ["givenName", "middleName", "familyName", "gender", "birthDate", "age"],
                             "linkDisplay": "Verify ABHA",
+                            "isMiddleNameFieldPresent": true,
                             "addressMap": {
                                 "city": "cityVillage",
                                 "state": "stateProvince",
@@ -424,7 +425,7 @@ it('checks that the confirmation popup is not prompted on the Registration secon
                     value: "57-0517-6745-1839"
                 }
             ],
-            names: [{familyName: 'Patel', givenName: ['Hina',''], use: ''}],
+            names: [{familyName: 'Patel', givenName: ['Hina'], use: ''}],
             birthDate: "2000",
             isBirthDateEstimated: true
         }
