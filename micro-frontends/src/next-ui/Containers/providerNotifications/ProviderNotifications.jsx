@@ -11,18 +11,8 @@ export function ProviderNotifications(props) {
 
     return (
         <div className='provider-notifications-next-ui'>
-            <ComboBox
-                id="search"
-                titleText=""
-                placeholder="Search a Patient"
-                // items={props.hostData.notifications}
-                // itemToString={(item) => (item ? item.text : '')}
-                // onChange={(event) => props.hostApi.selectNotification(event.selectedItem)}
-                // selectedItem={props.hostData.selectedNotification}
-            />
-
-            <div className='provider-notification-headers'>
-                <span>{acknowledgementRequiredText}</span>
+          <div className='provider-notification-headers'>
+                <span>{acknowledgementRequiredText}: </span>
             </div>
             <PatientsList />
         </div>
