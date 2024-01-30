@@ -479,7 +479,7 @@ h3 {
                     &, td, th {
                         border: 0;
                         font-size: 9pt;
-                        padding: 5px 10px;
+                        padding: 0px 10px !important;
                         font-family: Arial, sans-serif;
                         text-align: left;
                     }
@@ -539,7 +539,6 @@ h3 {
             }
             .testUnderPanel {
                 width: 37%;
-                font-weight: bold;
                 padding-left: 0;
                 .visit-start-date {
                     margin-right: 0;
@@ -681,6 +680,7 @@ h3 {
     }
     .is-abnormal {
         color: $black !important;
+        font-weight: bold !important;
     }
     button.toggle {
         display: none;
@@ -955,6 +955,80 @@ h3 {
         }
         .tabular-obs,.chronic-treatment, .dashboard-more-info .block{
             margin-top: 4px;
+        }
+        .hierarchy {
+            ul{
+                padding-left: 0 !important;
+                li{
+                    overflow: auto;
+                    clear: none;
+                    background: #fff;
+                    .tree-list-item{
+                        padding: 3px 5px !important;
+                        &:first-child{
+                            padding-top:0 !important;
+                        }
+                    }
+                    ul{
+                        overflow: hidden;
+                        padding-left: 0 !important;
+                        li{
+                            &:nth-of-type(odd){
+                                background: #fff;
+                            }
+                            &:nth-of-type(even){
+                               background: #D9D8D8;
+                            }
+                            ul{
+                                padding-left: 0 !important;
+                                li{
+                                    ul{
+                                        li{
+                                            padding-left: 10px !important;
+                                            .tree-list-item{
+                                                padding: 0px 5px 0px 0px !important;
+                                            }
+                                            &:nth-of-type(odd){
+                                                background: #fff !important;
+                                                ul{
+                                                    li{
+                                                        .testUnderPanel{
+                                                            padding-right: 38% !important;
+                                                        }
+                                                        background: transparent !important;
+                                                    }
+                                                }
+                                            }
+                                            &:nth-of-type(even){
+                                                background: #D9D8D8 !important;
+                                                ul{
+                                                    li{
+                                                        padding: 0px 20% 0px 0px;
+                                                        background: transparent !important;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .value-text-only, .text-only{
+                width: auto !important;
+                padding: 0px 0px 0px !important;
+                display:inline-block;
+            }
+            .testUnderPanel{
+                //width: 65% !important;
+                width: 484px !important;
+                padding: 0px 0px 0px !important;
+            }
+            ul li ul li ul li ul li ul li ul li .tree-list-item {
+            padding-left: 20px !important;
+          }
         }
         .patient-info {
             table{
