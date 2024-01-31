@@ -7,9 +7,13 @@ export const formatDate = (value, format = defaultDateTimeFormat) => {
 };
 
 export const formatArrayDateToDefaultDateFormat = (dateTimeArray) => {
-  const dateTimeMoment = moment(dateTimeArray);
-  dateTimeMoment.month(dateTimeArray[1] - 1);
-  return formatDate(dateTimeMoment, "DD/MM/YYYY");
+  const year = dateTimeArray[0];
+  const month = dateTimeArray[1];
+  const day = dateTimeArray[2];
+
+  const formattedDate = `${day}/${month}/${year}`;
+
+  return formattedDate;
 };
 
 export const calculateAgeFromEpochDOB = (epochDateOfBirth) => {

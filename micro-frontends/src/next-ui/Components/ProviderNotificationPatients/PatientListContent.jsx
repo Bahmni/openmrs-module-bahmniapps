@@ -24,6 +24,7 @@ const PatientListContent = ({ patientMedicationDetails, providerUuid , refreshPa
       notes: [{ authorUuid: providerUuid, text: notes }]}, medication_administration_uuid
     );
     refreshPatients();
+    setNotes("");
   };
 
   return (
@@ -38,6 +39,7 @@ const PatientListContent = ({ patientMedicationDetails, providerUuid , refreshPa
             placeholder="Enter Notes"
             rows={1}
             required={true}
+            value={notes}
             onChange={(e)=> setNotes(e.target.value)}
           />
           <Button
