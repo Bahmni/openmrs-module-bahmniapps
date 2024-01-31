@@ -24,7 +24,7 @@ export const updateEmergencyMedication = async (emergencyMedication, medicationA
             emergencyMedication
         );
     } catch (error) {
-        return error;
+        console.error(error);
     }
 };
 
