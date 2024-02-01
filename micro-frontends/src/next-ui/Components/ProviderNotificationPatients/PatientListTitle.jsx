@@ -24,7 +24,7 @@ const PatientListTitle = (props) => {
         }}>
           {identifier}
         </Link>
-        <span>&nbsp;|&nbsp;</span>
+        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
         <span>{`${name} (${gender}) . ${age}yrs`}</span>
       </div>
     </div>
