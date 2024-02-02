@@ -50,11 +50,9 @@ describe("Observation", function () {
             expect(observation.getDisplayValue()).toBe("1 since 2 Hours");
         });
 
-        it("should return duration for an observation having multiple groupMembers and not null formspace", function () {
-            var observation = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{"value": {"name": "Test"}}, {"value": "5"}, {"value": {"name": "weeks"}}], concept: {conceptClass: 'Text', name: "Chief Complaint Data"}}, null, mockTranslateService);
-            var observationWithOtherGeneric = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{"value": {"name": "Other generic"}}, {"value": "Test"}, {"value": "5"}, {"value": {"name": "weeks"}}], concept: {conceptClass: 'Text', name: "Chief Complaint Data"}}, null, mockTranslateService);
-            expect(observation.getDisplayValue()).toBe("Test since 5 weeks");
-            expect(observationWithOtherGeneric.getDisplayValue()).toBe("Other generic (Test) since 5 weeks");
+        it("should return observation of concept details concept class sorted and concatenated by comma", function () {
+            var observation = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{ "conceptSortWeight" : 2, "value": {"name": "Test"}}, {"conceptSortWeight" : 3, "value": "5"}, {"conceptSortWeight" : 4, "value": { "name": "weeks"}}], concept: {conceptClass: "Concept Details", name: "Chief Complaint Data"}}, null, mockTranslateService);
+            expect(observation.getDisplayValue()).toBe("Test, 5, weeks");
         });
 
         it("should return datetime in specific format", function () {

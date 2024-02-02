@@ -93,12 +93,20 @@ Bahmni.Common.Obs.Observation = (function () {
                 return this.complexData.display;
             }
 
-            if (this.isConceptNameChiefComplaintData()) {
-                if (this.groupMembers[0].value.name !== this.translate.instant("CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_KEY")) {
-                    return this.translate.instant("CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY", {chiefComplaint: this.groupMembers[0].value.name, duration: this.groupMembers[1].value, unit: this.groupMembers[2].value.name});
-                } else {
-                    return this.translate.instant("CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_TEMPLATE_KEY", {chiefComplaint: this.groupMembers[0].value.name, chiefComplaintText: this.groupMembers[1].value, duration: this.groupMembers[2].value, unit: this.groupMembers[3].value.name});
-                }
+            if (this.isConceptClassConceptDetails() && this.groupMembers.length > 0) {
+                var sortedGroupMembers = this.groupMembers.sort(function (a, b) {
+                    return a.conceptSortWeight - b.conceptSortWeight;
+                });
+                var obsValueList = [];
+                sortedGroupMembers.forEach(function (obs) {
+                    if (obs.value && obs.value.name) {
+                        obsValueList.push(obs.value.name);
+                    }
+                    else {
+                        obsValueList.push(obs.value);
+                    }
+                });
+                return obsValueList.join(", ");
             }
 
             value = this.value;

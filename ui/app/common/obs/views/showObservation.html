@@ -9,7 +9,7 @@
             }"/>
             <a href="{{'/document_images/' + observation.value}}" download ng-if="observation.isVideoConcept()" class="button btn fr btn-download"><i class="fa fa-download" aria-hidden="true"></i></a>
         </span>
-        <span ng-if="observation.isConceptNameChiefComplaintData() && observation.groupMembers.length > 1 && observation.formNamespace != null && observation.groupMembers[0].concept.conceptClass != 'Image' && observation.groupMembers[0].concept.conceptClass != 'Video'" class="testUnderPanel left">
+        <span ng-if="observation.isConceptClassConceptDetails() && observation.groupMembers.length > 0 && observation.formNamespace != null && observation.groupMembers[0].concept.conceptClass != 'Image' && observation.groupMembers[0].concept.conceptClass != 'Video'" class="testUnderPanel left">
             <label>{{::(observation.getDisplayValue())}}</label>
         </span>
         <span ng-if="observation.groupMembers.length==0 && !configIsObservationForImages && observation.concept.conceptClass != 'Image'" class="testUnderPanel left">
