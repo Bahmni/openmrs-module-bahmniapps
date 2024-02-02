@@ -94,11 +94,40 @@ Bahmni.Common.Obs.Observation = (function () {
             }
 
             if (this.isConceptNameChiefComplaintData()) {
-                if (this.groupMembers[0].value.name !== this.translate.instant("CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_KEY")) {
-                    return this.translate.instant("CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY", {chiefComplaint: this.groupMembers[0].value.name, duration: this.groupMembers[1].value, unit: this.groupMembers[2].value.name});
-                } else {
-                    return this.translate.instant("CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_TEMPLATE_KEY", {chiefComplaint: this.groupMembers[0].value.name, chiefComplaintText: this.groupMembers[1].value, duration: this.groupMembers[2].value, unit: this.groupMembers[3].value.name});
+                var chiefComplaint = null;
+                var chiefComplaintText = null;
+                var duration = null;
+                var unit = null;
+
+                this.groupMembers.forEach(function (obs) {
+                    if (obs.type === "Numeric") {
+                        duration = obs.value;
+                    } else if (obs.concept.name === this.translate.instant("CHIEF_COMPLAINT_DURATION_UNIT_KEY")) {
+                        unit = obs.value.name;
+                    } else {
+                        if (obs.type === "Text") {
+                            chiefComplaintText = obs.value;
+                        }
+                        else {
+                            chiefComplaint = obs.value.name;
+                        }
+                    }
+                }.bind(this));
+
+                if (chiefComplaint === this.translate.instant("CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_KEY")) {
+                    return this.translate.instant("CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_TEMPLATE_KEY", {
+                        chiefComplaint: chiefComplaint,
+                        chiefComplaintText: chiefComplaintText,
+                        duration: duration,
+                        unit: unit
+                    });
                 }
+
+                return this.translate.instant("CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY", {
+                    chiefComplaint: chiefComplaint || chiefComplaintText,
+                    duration: duration,
+                    unit: unit
+                });
             }
 
             value = this.value;

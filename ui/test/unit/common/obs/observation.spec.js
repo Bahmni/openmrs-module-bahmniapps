@@ -15,6 +15,9 @@ describe("Observation", function () {
             case "CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_TEMPLATE_KEY":
                 translatedValues = `${chiefComplaint} (${chiefComplaintText}) since ${duration} ${unit}`;
                 break;
+            case "CHIEF_COMPLAINT_DURATION_UNIT_KEY":
+                translatedValues = 'Chief Complaint Duration';
+                break;
             case "CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY":
                 translatedValues = `${chiefComplaint} since ${duration} ${unit}`;
         }
@@ -51,8 +54,8 @@ describe("Observation", function () {
         });
 
         it("should return duration for an observation having multiple groupMembers and not null formspace", function () {
-            var observation = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{"value": {"name": "Test"}}, {"value": "5"}, {"value": {"name": "weeks"}}], concept: {conceptClass: 'Text', name: "Chief Complaint Data"}}, null, mockTranslateService);
-            var observationWithOtherGeneric = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{"value": {"name": "Other generic"}}, {"value": "Test"}, {"value": "5"}, {"value": {"name": "weeks"}}], concept: {conceptClass: 'Text', name: "Chief Complaint Data"}}, null, mockTranslateService);
+            var observation = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{"concept" : {"name" : null}, "value": {"name": "Test"}}, {"type": "Numeric", "value": "5"}, {"concept": {"name": "Chief Complaint Duration"}, "value": { "name": "weeks"}}], concept: {conceptClass: 'Text', name: "Chief Complaint Data"}}, null, mockTranslateService);
+            var observationWithOtherGeneric = new Observation({"type": "Numeric", "formNamespace": "TestNameSpace", "groupMembers": [{"concept" : {"name" : null}, "value": {"name": "Other generic"}}, {"type": "Text", "concept" : {"name" : null}, "value": "Test"}, {"type": "Numeric", "value": "5"}, {"concept": {"name" : "Chief Complaint Duration"}, "value": {"name": "weeks"}}], concept: {conceptClass: 'Text', name: "Chief Complaint Data"}}, null, mockTranslateService);
             expect(observation.getDisplayValue()).toBe("Test since 5 weeks");
             expect(observationWithOtherGeneric.getDisplayValue()).toBe("Other generic (Test) since 5 weeks");
         });
