@@ -1,12 +1,14 @@
 describe("loading config functionality", function () {
 
-    var loadConfigService, mockHttp, $q = Q;
+    var loadConfigService, mockHttp, $q = Q, bahmniCookieStore;
 
     beforeEach(module('bahmni.common.appFramework'));
     beforeEach(module(function($provide) {
         mockHttp = jasmine.createSpyObj('$http',['get']);
+        bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
         $provide.value('$http',mockHttp);
         $provide.value('$q', $q);
+        $provide.value('$bahmniCookieStore', bahmniCookieStore);
     }));
 
     beforeEach(inject(['loadConfigService',

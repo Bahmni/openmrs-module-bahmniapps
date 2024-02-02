@@ -2,7 +2,7 @@
 
 describe('mergeLocaleFilesService', function () {
 
-    var mergeLocaleFilesService, mergeService;
+    var mergeLocaleFilesService, mergeService, bahmniCookieStore;
     var _$http;
     var baseFile = {"KEY1" : "This is base key"};
     var customFile = {"KEY1" : "This is custom key"};
@@ -12,8 +12,10 @@ describe('mergeLocaleFilesService', function () {
         module('bahmni.common.appFramework');
         module(function ($provide){
             _$http = jasmine.createSpyObj('$http', ['get']);
+            bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
             $provide.value('$http', _$http);
             $provide.value('$q', Q);
+            $provide.value('$bahmniCookieStore', bahmniCookieStore);
         });
 
         inject(function (_mergeLocaleFilesService_, _mergeService_) {

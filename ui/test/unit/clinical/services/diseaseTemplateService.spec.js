@@ -1,7 +1,7 @@
 'use strict';
 
 describe("DiseaseTemplateService", function () {
-    var _clinicalAppConfigService, _$http;
+    var _clinicalAppConfigService, _$http, bahmniCookieStore;
 
     var mockHttp = function(method,data){
         _$http[method].and.returnValue(specUtil.createFakePromise(data));
@@ -10,6 +10,7 @@ describe("DiseaseTemplateService", function () {
     beforeEach(module('bahmni.common.appFramework'));
 
     beforeEach(module(function () {
+        bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
         _clinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getAllConceptsConfig', 'getDiseaseTemplateConfig']);
         _clinicalAppConfigService.getAllConceptsConfig.and.returnValue({});
         _clinicalAppConfigService.getDiseaseTemplateConfig.and.returnValue({});
@@ -21,6 +22,7 @@ describe("DiseaseTemplateService", function () {
         $provide.value('clinicalAppConfigService', _clinicalAppConfigService);
         $provide.value('$http', _$http);
         $provide.value('$q', Q);
+        $provide.value('$bahmniCookieStore', bahmniCookieStore);
     }));
 
     beforeEach(inject(['diseaseTemplateService', function (diseaseTemplateService) {

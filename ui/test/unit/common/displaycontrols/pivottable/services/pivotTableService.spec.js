@@ -1,7 +1,7 @@
 'use strict';
 
 describe("PivotTableService", function () {
-    var diseaseSummaryConfig, _$http;
+    var diseaseSummaryConfig, _$http, bahmniCookieStore;
 
     beforeEach(module('bahmni.common.displaycontrol.pivottable'));
     beforeEach(module('bahmni.common.appFramework'));
@@ -17,6 +17,7 @@ describe("PivotTableService", function () {
             "endDate": "endDate"
         };
         _$http = jasmine.createSpyObj('$http', ['get', 'post']);
+        bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
 
     }));
 
@@ -24,6 +25,7 @@ describe("PivotTableService", function () {
         $provide.value('diseaseSummaryConfig', diseaseSummaryConfig);
         $provide.value('$http', _$http);
         $provide.value('$q', Q);
+        $provide.value('$bahmniCookieStore', bahmniCookieStore);
     }));
 
     beforeEach(inject(['pivotTableService', function (pivotTableService) {

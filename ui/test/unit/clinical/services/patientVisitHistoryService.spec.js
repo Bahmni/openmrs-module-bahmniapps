@@ -1,11 +1,12 @@
 describe("patientVisitHistoryService", function() {
-	var rootScope, patientVisitHistoryService, visitService, visits;
-
+	var rootScope, patientVisitHistoryService, visitService, visits, bahmniCookieStore;
     beforeEach(module('bahmni.clinical'));
 
     beforeEach(module(function($provide){
 		visitService = jasmine.createSpyObj('visitService', ['search']);;
-        $provide.value('visitService', visitService);    	
+		bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get']);
+        $provide.value('visitService', visitService);
+        $provide.value('$bahmniCookieStore', bahmniCookieStore);
     }));
 
     beforeEach(inject(function ($rootScope) {
