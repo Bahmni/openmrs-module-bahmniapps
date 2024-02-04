@@ -16,9 +16,10 @@ COPY ui/dist/. /usr/local/apache2/htdocs/bahmni/
 
 # Download Person Management App
 RUN <<EOR
-    LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' https://github.com/Bahmni/person-management-app/releases/latest)
-    LATEST_VERSION=$(echo $LATEST_RELEASE | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
-    ARTIFACT_URL="https://github.com/Bahmni/person-management-app/releases/download/$LATEST_VERSION/person-management-app.zip"
+    RELEASE_URL="https://github.com/Bahmni/person-management-app/releases/tag/v-11"
+    RELEASE_TAG=$(curl -L -s -H 'Accept: application/json' $RELEASE_URL)
+    VERSION_TAG=$(echo $RELEASE_TAG | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+    ARTIFACT_URL="https://github.com/Bahmni/person-management-app/releases/download/$VERSION_TAG/person-management-app.zip"
     wget $ARTIFACT_URL
     unzip person-management-app.zip -d /usr/local/apache2/htdocs/
     rm person-management-app.zip
