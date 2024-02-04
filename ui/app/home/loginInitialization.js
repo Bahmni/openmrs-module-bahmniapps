@@ -12,9 +12,13 @@ angular.module('bahmni.home')
                     function (response) {
                         deferrable.reject();
                         if (response.status) {
-                            response = 'MESSAGE_START_OPENMRS';
+                            if(response.status == 401) { //unauthorized
+                                location.reload();
+                            } else {
+                                response = 'MESSAGE_START_OPENMRS';
+                                messagingService.showMessage('error', response);
+                            }
                         }
-                        messagingService.showMessage('error', response);
                     }
                 );
                 return deferrable.promise;
