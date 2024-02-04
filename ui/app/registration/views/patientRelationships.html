@@ -51,7 +51,7 @@
 <!--                    </div>-->
                 </div>
                 <div class="col col2 form-field">
-                    <div class="field-value" ng-show="newRelationship.personB.display">
+                    <div class="field-value-patient" ng-show="getChosenRelationshipType(newRelationship) === 'patient' && newRelationship.personB.display">
                         <span>
                             <a ng-click="openPatientDashboardInNewTab(newRelationship)">{{newRelationship.personB.display}}</a>
                         </span>

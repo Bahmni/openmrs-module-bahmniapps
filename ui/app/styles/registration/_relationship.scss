@@ -46,7 +46,7 @@
             .relationship-extension-btn {
                 float: left;
                 padding-left: 1.25rem;
-    
+
                 @media (max-width : 1024px) {
                     width: 15%;
                 }
@@ -61,10 +61,6 @@
                     width: 100%;
                     padding: 1% 0 0 0;
                 }
-    
-                .add-person-btn {
-                    margin: 0.2rem 0 0.2rem 0;
-                }
             }
         }
 
@@ -72,6 +68,11 @@
             width: 25%;
             float: left;
             text-align: left;
+            display: flex;
+
+            .add-person-btn {
+                margin: 0.2rem 0 0.2rem 0;
+            }
 
             @media (max-width : 1024px) {
                 width: 25%;
@@ -158,6 +159,13 @@
             text-align: left;
             margin: auto;
             margin-left: 0px;
+
+            .field-value-patient {
+                display: flex;
+                align-items: center;
+                margin-right: 10px;
+            }
+
 
             @media (max-width : 1024px) {
                 width: 20%;
