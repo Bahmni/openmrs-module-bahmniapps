@@ -2,11 +2,11 @@ import React from "react";
 import { WarningAlt16 } from "@carbon/icons-react";
 import { Link } from "carbon-components-react";
 import "./PatientListTitle.scss";
-import { getPatientDashboardUrl } from "../../utils/providerNotifications/ProviderNotificationUtils";
+import { getPatientIPDDashboardUrl } from "../../utils/providerNotifications/ProviderNotificationUtils";
 
 const PatientListTitle = (props) => {
 
-  const { noOfDrugs, identifier, name, age, gender, patientUuid } = props;
+  const { noOfDrugs, identifier, name, age, gender, patientUuid, visitUuid } = props;
 
   return (
     <div className="patient-list-tile-content">
@@ -18,9 +18,9 @@ const PatientListTitle = (props) => {
         <Link href="#" className="patient-id" onClick={(e) => {
             e.stopPropagation();
             window.open(
-                getPatientDashboardUrl(patientUuid),
-                "_blank"
-            )
+              getPatientIPDDashboardUrl(patientUuid, visitUuid),
+              "_blank"
+          )
         }}>
           {identifier}
         </Link>
