@@ -1,8 +1,7 @@
 import axios from "axios";
 import { EMERGENCY_MEDICATIONS_BASE_URL, GET_DRUG_ACKNOWLEDGEMENT_URL, GET_PROVIDER_UUID_URL } from "../../constants";
-
-export const getPatientDashboardUrl = (patientUuid) =>
-    `/bahmni/clinical/#/default/patient/${patientUuid}/dashboard?currentTab=DASHBOARD_TAB_GENERAL_KEY`;
+export const getPatientIPDDashboardUrl = (patientUuid, visitUuid) =>
+    `/bahmni/clinical/index.html#/default/patient/${patientUuid}/dashboard/visit/ipd/${visitUuid}/`;
 export const getEmergencyDrugAcknowledgements = async (locationUuid, property, providerUuid) => {
     const apiURL = GET_DRUG_ACKNOWLEDGEMENT_URL.replace("{location_uuid}", locationUuid).replace("{property}", property).replace("{provider_uuid}",providerUuid);
 

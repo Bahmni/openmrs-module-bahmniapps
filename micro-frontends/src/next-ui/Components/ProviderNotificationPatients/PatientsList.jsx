@@ -68,6 +68,7 @@ const PatientsList = () => {
                   gender={item[0].gender}
                   identifier={item[0].identifier}
                   patientUuid={item[0].patient_uuid}
+                  visitUuid={item[0].visit_uuid}
                 />
               }
             >
