@@ -6,7 +6,19 @@ import { getPatientIPDDashboardUrl } from "../../utils/providerNotifications/Pro
 
 const PatientListTitle = (props) => {
 
-  const { noOfDrugs, identifier, name, age, gender, patientUuid, visitUuid } = props;
+  const { noOfDrugs, identifier, name, age, gender, patientUuid, visitUuid, openedWindow, setOpenedWindow } = props;
+
+  const handleOpenWindow = () => {
+    const url = getPatientIPDDashboardUrl(patientUuid, visitUuid);
+    if (openedWindow && !openedWindow.closed) {
+      openedWindow.location.href = url;
+      if (openedWindow.focus) {
+        openedWindow.focus();
+      }
+    } else {
+      setOpenedWindow(window.open(url, '_blank'));
+    }
+  }
 
   return (
     <div className="patient-list-tile-content">
@@ -17,15 +29,11 @@ const PatientListTitle = (props) => {
       <div className="patient-info">
         <Link href="#" className="patient-id" onClick={(e) => {
             e.stopPropagation();
-            window.open(
-              getPatientIPDDashboardUrl(patientUuid, visitUuid),
-              "_blank"
-          )
+            handleOpenWindow();
         }}>
-          {identifier}
+            {`(${identifier})`}
         </Link>
-        <span>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-        <span>{`${name} (${gender}) . ${age}yrs`}</span>
+        <span>{`${name} - ${gender}, ${age}`}</span>
       </div>
     </div>
   );
