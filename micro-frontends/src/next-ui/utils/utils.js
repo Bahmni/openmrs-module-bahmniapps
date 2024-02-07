@@ -1,6 +1,5 @@
 import moment from "moment";
 import { defaultDateTimeFormat } from "../constants";
-import { differenceInYears } from "date-fns";
 
 export const formatDate = (value, format = defaultDateTimeFormat) => {
   return value ? moment(value).format(format) : value;
@@ -17,8 +16,16 @@ export const formatArrayDateToDefaultDateFormat = (dateTimeArray) => {
 };
 
 export const calculateAgeFromEpochDOB = (epochDateOfBirth) => {
-  const dateOfBirth = new Date(epochDateOfBirth);
-  const currentDate = new Date();
-  const ageInYears = differenceInYears(currentDate, dateOfBirth);
-  return ageInYears;
+  const dob = moment(epochDateOfBirth);
+  const now = moment();
+  const years = now.diff(dob, 'years');
+  dob.add(years, 'years');
+  const days = now.diff(dob, 'days');
+  return `${years} years ${days} days`;
 };
+
+export const parseDateArray = (dateArray) => {
+  const dateString = dateArray.join('-');
+  return moment(dateString, 'YYYY-MM-DD-HH-mm-ss');
+};
+
