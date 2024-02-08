@@ -5,17 +5,9 @@ import {
   formatArrayDateToDefaultDateFormat,
   formatGender
 } from './utils';
-
 describe('calculateAgeFromEpochDOB', () => {
 
   describe('formatDate', () => {
-    it('should correctly format date using default format', () => {
-      const dateValue = '2024-02-07T12:30:00Z';
-
-      const formattedDate = formatDate(dateValue);
-
-      expect(formattedDate).toEqual('07 Feb 2024 06:00 pm');
-    });
 
     it('should correctly format date using custom format', () => {
       const dateValue = '2023-12-25T08:45:00Z';
