@@ -21,7 +21,7 @@ describe("PatientListTitle Component", () => {
     identifier: "PID123",
     name: "John Doe",
     age: 30,
-    gender: "Male",
+    gender: "M",
     patientUuid: "patient123",
     visitUuid: "visit123",
     openedWindow: null,
@@ -31,7 +31,7 @@ describe("PatientListTitle Component", () => {
   it("should render correctly", () => {
     const { queryByText } = render(<PatientListTitle {...props} />);
     expect(queryByText(`(${props.identifier})`)).toBeTruthy();
-    expect(queryByText(`${props.name} - ${props.gender}, ${props.age}`)).toBeTruthy();
+    expect(queryByText(`${props.name} - Male, ${props.age}`)).toBeTruthy();
   });
 
   it("should render the warning icon and number of drugs", () => {

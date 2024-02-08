@@ -1,4 +1,10 @@
-import { calculateAgeFromEpochDOB, parseDateArray, formatDate, formatArrayDateToDefaultDateFormat } from './utils';
+import {
+  calculateAgeFromEpochDOB,
+  parseDateArray,
+  formatDate,
+  formatArrayDateToDefaultDateFormat,
+  formatGender
+} from './utils';
 
 describe('calculateAgeFromEpochDOB', () => {
 
@@ -29,6 +35,26 @@ describe('calculateAgeFromEpochDOB', () => {
     });
   });
 
+  describe('formatGender function', () => {
+    test('should return "Male" when gender is "M"', () => {
+      const gender = "M";
+      const formattedGender = formatGender(gender);
+      expect(formattedGender).toEqual("Male");
+    });
+
+    test('should return "Female" when gender is "F"', () => {
+      const gender = "F";
+      const formattedGender = formatGender(gender);
+      expect(formattedGender).toEqual("Female");
+    });
+
+    test('should return "Other" when gender is neither "M" nor "F"', () => {
+      const gender = "X";
+      const formattedGender = formatGender(gender);
+      expect(formattedGender).toEqual("Other");
+    });
+  });
+
   describe('formatArrayDateToDefaultDateFormat', () => {
     it('should correctly format date array to default format', () => {
       const dateArray = [2024, 2, 7];
@@ -52,9 +78,9 @@ describe('calculateAgeFromEpochDOB', () => {
       new Date('2024-02-07T00:00:00Z').getTime()
     );
 
-    expect(calculateAgeFromEpochDOB(946684800000)).toEqual('24 years 37 days');
+    expect(calculateAgeFromEpochDOB(946684800000)).toEqual('24 years 1 months 6 days');
 
-    expect(calculateAgeFromEpochDOB(631123200000)).toEqual('34 years 37 days');
+    expect(calculateAgeFromEpochDOB(631123200000)).toEqual('34 years 1 months 6 days');
 
     Date.now.mockRestore();
   });

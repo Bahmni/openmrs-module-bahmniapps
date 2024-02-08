@@ -7,6 +7,7 @@ import {
   updateEmergencyMedication
 } from "../../utils/providerNotifications/ProviderNotificationUtils";
 import { verifierFunction} from "../../constants";
+import PropTypes from "prop-types";
 
 const PatientListContent = ({ patientMedicationDetails, providerUuid , refreshPatients}) => {
   const [notes, setNotes] = useState("");
@@ -53,6 +54,17 @@ const PatientListContent = ({ patientMedicationDetails, providerUuid , refreshPa
       </div>
     </div>
   );
+};
+
+PatientListContent.propTypes = {
+  patientMedicationDetails: PropTypes.shape({
+    administered_date_time: PropTypes.string.isRequired,
+    administered_drug_name: PropTypes.string.isRequired,
+    medication_administration_performer_uuid: PropTypes.string.isRequired,
+    medication_administration_uuid: PropTypes.string.isRequired
+  }).isRequired,
+  providerUuid: PropTypes.string.isRequired,
+  refreshPatients: PropTypes.func.isRequired
 };
 
 export default PatientListContent;

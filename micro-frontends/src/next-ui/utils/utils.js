@@ -15,13 +15,33 @@ export const formatArrayDateToDefaultDateFormat = (dateTimeArray) => {
   return formattedDate;
 };
 
+export const formatGender = (gender) => {
+  let formattedGender;
+
+  if (gender === "M") {
+    formattedGender = "Male";
+  } else if (gender === "F") {
+    formattedGender = "Female";
+  } else {
+    formattedGender = "Other";
+  }
+
+  return formattedGender;
+};
+
 export const calculateAgeFromEpochDOB = (epochDateOfBirth) => {
   const dob = moment(epochDateOfBirth);
   const now = moment();
+
   const years = now.diff(dob, 'years');
   dob.add(years, 'years');
+
+  const months = now.diff(dob, 'months');
+  dob.add(months, 'months');
+
   const days = now.diff(dob, 'days');
-  return `${years} years ${days} days`;
+
+  return `${years} years ${months} months ${days} days`;
 };
 
 export const parseDateArray = (dateArray) => {
