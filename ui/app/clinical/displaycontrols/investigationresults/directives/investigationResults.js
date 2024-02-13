@@ -6,7 +6,8 @@ angular.module('bahmni.clinical')
             var defaultParams = {
                 showTable: true,
                 showChart: true,
-                numberOfVisits: 1
+                numberOfVisits: 1,
+                chartConfig: {}
             };
             $scope.params = angular.extend(defaultParams, $scope.params);
 
