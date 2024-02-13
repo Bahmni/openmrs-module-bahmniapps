@@ -41,7 +41,9 @@ Bahmni.Clinical.TabularLabOrderResults = (function () {
                 return date;
             });
             if (sortResultColumnsLatestFirst) {
-                dates.sort((a, b) => b.date - a.date);
+                dates.sort(function (a, b) {
+                    return b.date - a.date;
+                });
             }
             return dates;
         };
@@ -49,7 +51,9 @@ Bahmni.Clinical.TabularLabOrderResults = (function () {
         this.getTestOrderLabels = function () {
             var orders = this.tabularResult.orders;
             if (sortLabOrdersByName) {
-                orders.sort((a, b) => a.testName.localeCompare(b.testName));
+                orders.sort(function (a, b) {
+                    return a.testName.localeCompare(b.testName);
+                });
             }
             return orders;
         };
