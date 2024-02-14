@@ -19,7 +19,7 @@ describe("Diagnosis Controller", function () {
         spyOn(DateUtil, 'today');
         mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfig','getConfigValue']);
         mockAppDescriptor.getConfig.and.returnValue({value: true});
-        mockAppDescriptor.getConfigValue.and.returnValue(true);
+        mockAppDescriptor.getConfigValue.and.returnValue(30);
 
         appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         appService.getAppDescriptor.and.returnValue(mockAppDescriptor);
@@ -100,7 +100,7 @@ describe("Diagnosis Controller", function () {
         it("should make a call to diagnosis service getAllFor with synonym", function () {
             spyOn(mockDiagnosisService, 'getAllFor').and.returnValue(specUtil.simplePromise({data: [{"conceptName":"Cold, unspec.","conceptUuid":"uuid1","matchedName":"Cold xyz","code":"T69.9XXA"}]}));
             $scope.getDiagnosis({term:"T69.9XXA"}).then(function (list) {
-                expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("T69.9XXA", "en");
+                expect(mockDiagnosisService.getAllFor).toHaveBeenCalledWith("T69.9XXA", "en", 30);
                 expect(list.length).toBe(1);
                 expect(list[0].value).toBe("Cold xyz => Cold, unspec. (T69.9XXA)");
                 expect(list[0].concept.name).toBe("Cold, unspec.");
