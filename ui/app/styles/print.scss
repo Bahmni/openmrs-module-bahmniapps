@@ -486,7 +486,8 @@ h3 {
                     .name,
                     .drug,
                     .testUnderPanel {
-                        width: 45%;
+                        width: 37%;
+                        padding-right: 2.5% !important;
                     }
                     .value,
                     .dosage {
@@ -993,7 +994,7 @@ h3 {
                                                 ul{
                                                     li{
                                                         .testUnderPanel{
-                                                            padding-right: 38% !important;
+                                                            padding-right: 2.75% !important;
                                                         }
                                                         background: transparent !important;
                                                     }
@@ -1023,7 +1024,7 @@ h3 {
             }
             .testUnderPanel{
                 //width: 65% !important;
-                width: 484px !important;
+                width: 38% !important;
                 padding: 0px 0px 0px !important;
             }
             ul li ul li ul li ul li ul li ul li .tree-list-item {
