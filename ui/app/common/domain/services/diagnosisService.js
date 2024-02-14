@@ -6,8 +6,7 @@ angular.module('bahmni.common.domain')
         this.getAllFor = function (searchTerm, locale) {
             var url = Bahmni.Common.Constants.emrapiConceptUrl;
             var searchLimit = appService.getAppDescriptor().getConfigValue("diagnosisSugesstionLimit");
-          console.log("Search Limit:", searchLimit);
-          var parameters = { term: searchTerm, limit: searchLimit };
+            var parameters = { term: searchTerm, limit: searchLimit };
             if (locale) {
                 parameters.locale = locale;
             }
