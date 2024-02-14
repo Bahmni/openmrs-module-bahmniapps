@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('diagnosisService', ['$http', '$rootScope', function ($http, $rootScope) {
+    .service('diagnosisService', ['$http', '$rootScope', 'appService', function ($http, $rootScope, appService) {
         var self = this;
         this.getAllFor = function (searchTerm, locale) {
             var url = Bahmni.Common.Constants.emrapiConceptUrl;
-            var parameters = { term: searchTerm, limit: Bahmni.Common.Constants.emrapiDiagnosisLimit };
+            var searchLimit = appService.getAppDescriptor().getConfigValue("diagnosisSugesstionLimit");
+          console.log("Search Limit:", searchLimit);
+          var parameters = { term: searchTerm, limit: searchLimit };
             if (locale) {
                 parameters.locale = locale;
             }
