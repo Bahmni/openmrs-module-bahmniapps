@@ -121,6 +121,11 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                     tabConfig.durationUnits = tabConfig.inputOptionsConfig.durationUnitsFactors || defaultDurationUnitsFactors;
 
                     tabConfig.orderSet = tabConfig.orderSet || {};
+                    if(tabConfig.orderSet && tabConfig.orderSet.hideDefaultRuleList) {
+                        medicationTabConfig.dosingRules = medicationTabConfig.dosingRules.filter(function(item) {
+                            return tabConfig.orderSet.hideDefaultRuleList.indexOf(item) === -1;
+                        });
+                    }
                     var showDoseFractions = tabConfig.inputOptionsConfig.showDoseFractions;
                     tabConfig.inputOptionsConfig.showDoseFractions = showDoseFractions ? showDoseFractions : false;
                     tabConfig.drugOrderHistoryConfig = tabConfig.drugOrderHistoryConfig || {};
