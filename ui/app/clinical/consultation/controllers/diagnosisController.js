@@ -265,7 +265,7 @@ angular.module('bahmni.clinical')
             $scope.checkInvalidDiagnoses = function () {
                 $scope.errorMessage = "";
                 $scope.consultation.newlyAddedDiagnoses.forEach(function (diagnosis) {
-                    if (isInvalidDiagnosis(diagnosis)) {
+                    if (isInvalidDiagnosis(diagnosis) || isDuplicateDiagnosis(diagnosis)) {
                         $scope.errorMessage = "{{'CLINICAL_DUPLICATE_DIAGNOSIS_ERROR_MESSAGE' | translate }}";
                     }
                 });
@@ -280,9 +280,20 @@ angular.module('bahmni.clinical')
                 return diagnosis.invalid;
             };
 
+            var isDuplicateDiagnosis = function (diagnosis) {
+                var codedAnswers = _.map(_.remove(_.map($scope.consultation.savedDiagnosesFromCurrentEncounter, function (diagnosis) {
+                    return diagnosis.codedAnswer.name || diagnosis.freeTextAnswer;
+                }), function (answer) {
+                    return answer !== undefined;
+                }));
+                var codedAnswersCount = _.countBy(codedAnswers);
+                diagnosis.duplicate = (diagnosis.codedAnswer.name && codedAnswersCount[diagnosis.codedAnswer.name] > 0);
+                return diagnosis.duplicate;
+            };
+
             var contextChange = function () {
                 var invalidnewlyAddedDiagnoses = $scope.consultation.newlyAddedDiagnoses.filter(function (diagnosis) {
-                    return isInvalidDiagnosis(diagnosis) || !$scope.isValid(diagnosis);
+                    return isInvalidDiagnosis(diagnosis) || !$scope.isValid(diagnosis) || isDuplicateDiagnosis(diagnosis);
                 });
                 var invalidSavedDiagnosesFromCurrentEncounter = $scope.consultation.savedDiagnosesFromCurrentEncounter.filter(function (diagnosis) {
                     return !$scope.isValid(diagnosis);
