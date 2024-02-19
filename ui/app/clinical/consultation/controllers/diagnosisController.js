@@ -43,8 +43,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.getDiagnosis = function (params) {
-                var searchLimit = appService.getAppDescriptor().getConfigValue("diagnosisSuggestionLimit");
-                return diagnosisService.getAllFor(params.term, $rootScope.currentUser.userProperties.defaultLocale, searchLimit).then(mapConcept);
+                return diagnosisService.getAllFor(params.term, $rootScope.currentUser.userProperties.defaultLocale).then(mapConcept);
             };
 
             var _canAdd = function (diagnosis) {
