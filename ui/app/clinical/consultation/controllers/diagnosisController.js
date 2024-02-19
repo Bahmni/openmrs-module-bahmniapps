@@ -285,9 +285,11 @@ angular.module('bahmni.clinical')
                     return diagnosis.codedAnswer.name || diagnosis.freeTextAnswer;
                 }), function (answer) {
                     return answer !== undefined;
-                }));
+                }), function (answer) {
+                    return answer.toLowerCase();
+                });
                 var codedAnswersCount = _.countBy(codedAnswers);
-                diagnosis.duplicate = (diagnosis.codedAnswer.name && codedAnswersCount[diagnosis.codedAnswer.name] > 0);
+                diagnosis.duplicate = (diagnosis.codedAnswer.name && codedAnswersCount[diagnosis.codedAnswer.name.toLowerCase()] > 0);
                 return diagnosis.duplicate;
             };
 
