@@ -22,7 +22,7 @@
                                         response-map="cleanOutDiagnosisList"
                                         on-select="getAddNewDiagnosisMethod(diagnosis)" ng-class="{
                                                 illegalValue: (diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid &&
-                                                    !diagnosis.isNonCodedAnswer && allowOnlyCodedDiagnosis) || diagnosis.invalid || diagnosis.duplicate,
+                                                    !diagnosis.isNonCodedAnswer && allowOnlyCodedDiagnosis) || diagnosis.duplicate,
                                                 active: diagnosis.isNonCodedAnswer
                                         }"
                                         ng-change="restEmptyRowsToOne($index); diagnosis.clearCodedAnswerUuid(); checkInvalidDiagnoses()">
