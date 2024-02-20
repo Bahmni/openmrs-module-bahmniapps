@@ -1,12 +1,13 @@
 'use strict';
 
 Bahmni.Common.Obs.Observation = (function () {
-    var Observation = function (obs, conceptConfig, $translate) {
+    var Observation = function (obs, conceptConfig, $translate, obsGroupDisplayFormat) {
         angular.extend(this, obs);
         this.concept = obs.concept;
         this.conceptConfig = conceptConfig;
         // translate should be passed for chief complaint data check
         this.translate = $translate;
+        this.obsGroupDisplayFormat = obsGroupDisplayFormat;
     };
 
     Observation.prototype = {
@@ -66,6 +67,14 @@ Bahmni.Common.Obs.Observation = (function () {
             // checks if the concept name  is Chief complaint data conceptset and it is part of form
             return this.groupMembers.length > 1 && this.formNamespace != null && this.translate && this.concept.name === this.translate.instant("CHIEF_COMPLAINT_DATA_CONCEPT_NAME_KEY");
         },
+        isObsGroupCanBeFormatted: function () {
+            if(this.groupMembers.length > 0 && this.obsGroupDisplayFormat !== null){
+                if((this.formNamespace === null && this.obsGroupUuid !== null) || this.formNamespace !== null){
+                    return this.obsGroupDisplayFormat.hasOwnProperty(this.concept.name);
+                }
+            }
+            return false;
+        },
         getDisplayValue: function () {
             var value;
             if (this.type === "Boolean" || this.concept && this.concept.dataType === "Boolean") {
@@ -93,20 +102,43 @@ Bahmni.Common.Obs.Observation = (function () {
                 return this.complexData.display;
             }
 
-            if (this.isConceptNameChiefComplaintData()) {
-                if (this.groupMembers[0].value.name !== this.translate.instant("CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_KEY")) {
-                    return this.translate.instant("CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY", {chiefComplaint: this.groupMembers[0].value.name, duration: this.groupMembers[1].value, unit: this.groupMembers[2].value.name});
-                } else {
-                    return this.translate.instant("CHIEF_COMPLAINT_DATA_OTHER_CONCEPT_TEMPLATE_KEY", {chiefComplaint: this.groupMembers[0].value.name, chiefComplaintText: this.groupMembers[1].value, duration: this.groupMembers[2].value, unit: this.groupMembers[3].value.name});
+            if(this.obsGroupDisplayFormat !== undefined) {
+                if (this.isObsGroupCanBeFormatted()) {
+                    var group = this.obsGroupDisplayFormat[this.concept.name];
+                    var interpolateParams = {};
+                    this.groupMembers.forEach(function (item) {
+                        if (group.displayObsFormat.concepts.includes(item.concept.name)) {
+                            interpolateParams[item.concept.name.replace(/[ ()/,]+/g, '')] = item.value.name || item.value;
+                        }
+                    });
+                    return this.translate.instant(group.displayObsFormat.translationKey, interpolateParams);
                 }
             }
 
-            value = this.value;
-            var displayValue = value && (value.shortName || (value.name && (value.name.name || value.name)) || value);
-            if (this.duration) {
-                displayValue = displayValue + " " + this.getDurationDisplayValue();
+            if(this.groupMembers.length <= 0) {
+                value = this.value;
+                var displayValue = value && (value.shortName || (value.name && (value.name.name || value.name)) || value);
+                if (this.duration) {
+                    displayValue = displayValue + " " + this.getDurationDisplayValue();
+                }
+                return displayValue;
             }
-            return displayValue;
+
+            if (this.isConceptClassConceptDetails() && this.groupMembers.length > 0) {
+                var sortedGroupMembers = this.groupMembers.sort(function (a, b) {
+                    return a.conceptSortWeight - b.conceptSortWeight;
+                });
+                var obsValueList = [];
+                sortedGroupMembers.forEach(function (obs) {
+                    if (obs.value && obs.value.name) {
+                        obsValueList.push(obs.value.name);
+                    }
+                    else {
+                        obsValueList.push(obs.value);
+                    }
+                });
+                return obsValueList.join(", ");
+            }
         },
 
         getDurationDisplayValue: function () {

@@ -3,12 +3,12 @@
 Bahmni.Common.Obs.ObservationMapper = function () {
     var conceptMapper = new Bahmni.Common.Domain.ConceptMapper();
 
-    this.map = function (bahmniObservations, allConceptsConfig, dontSortByObsDateTime, $translate) {
-        var mappedObservations = mapObservations(bahmniObservations, allConceptsConfig, dontSortByObsDateTime, $translate);
+    this.map = function (bahmniObservations, allConceptsConfig, dontSortByObsDateTime, $translate, obsGroupDisplayFormat) {
+        var mappedObservations = mapObservations(bahmniObservations, allConceptsConfig, dontSortByObsDateTime, $translate, obsGroupDisplayFormat);
         return mapUIObservations(mappedObservations, allConceptsConfig);
     };
 
-    var mapObservations = function (bahmniObservations, allConceptsConfig, dontSortByObsDateTime, $translate) {
+    var mapObservations = function (bahmniObservations, allConceptsConfig, dontSortByObsDateTime, $translate, obsGroupDisplayFormat) {
         var mappedObservations = [];
         if (dontSortByObsDateTime) {
             bahmniObservations = _.flatten(bahmniObservations);
@@ -17,9 +17,9 @@ Bahmni.Common.Obs.ObservationMapper = function () {
         }
         $.each(bahmniObservations, function (i, bahmniObservation) {
             var conceptConfig = bahmniObservation.formFieldPath ? [] : allConceptsConfig[bahmniObservation.concept.name] || [];
-            var observation = new Bahmni.Common.Obs.Observation(bahmniObservation, conceptConfig, $translate);
+            var observation = new Bahmni.Common.Obs.Observation(bahmniObservation, conceptConfig, $translate,obsGroupDisplayFormat);
             if (observation.groupMembers && observation.groupMembers.length >= 0) {
-                observation.groupMembers = mapObservations(observation.groupMembers, allConceptsConfig, dontSortByObsDateTime, $translate);
+                observation.groupMembers = mapObservations(observation.groupMembers, allConceptsConfig, dontSortByObsDateTime, $translate, obsGroupDisplayFormat);
             }
             mappedObservations.push(observation);
         });
