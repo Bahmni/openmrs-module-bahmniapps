@@ -286,6 +286,20 @@ describe("Diagnosis Controller", function () {
             expect($scope.errorMessage).toBe("{{'CLINICAL_DUPLICATE_DIAGNOSIS_ERROR_MESSAGE' | translate }}");
 
         })
+
+        it("should throw error message for duplicate diagnosis which is already saved in current encounter", function(){
+            $scope.consultation.newlyAddedDiagnoses = [{codedAnswer:{name:"abc"}}];
+            $scope.consultation.savedDiagnosesFromCurrentEncounter = [{codedAnswer:{name:"abc"}}]
+            $scope.checkInvalidDiagnoses();
+            expect($scope.errorMessage).toBe("{{'CLINICAL_DUPLICATE_DIAGNOSIS_ERROR_MESSAGE' | translate }}");
+        });
+
+        it("should throw error message for duplicate diagnosis which is already saved in current encounter based on case insensitivity", function(){
+            $scope.consultation.newlyAddedDiagnoses = [{codedAnswer:{name:"AbC"}}];
+            $scope.consultation.savedDiagnosesFromCurrentEncounter = [{codedAnswer:{name:"abc"}}]
+            $scope.checkInvalidDiagnoses();
+            expect($scope.errorMessage).toBe("{{'CLINICAL_DUPLICATE_DIAGNOSIS_ERROR_MESSAGE' | translate }}");
+        })
     });
 
     describe("removing blank diagnosis", function() {
