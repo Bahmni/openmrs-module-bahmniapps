@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.conceptSet')
-    .factory('conceptGroupFormatService', ['$http', '$translate', 'appService', function ($http, $translate, appService) {
+    .factory('conceptGroupFormatService', ['$translate', 'appService', function ($translate, appService) {
         var conceptGroupFormatConfig = appService.getAppDescriptor().getConfigValue("obsGroupDisplayFormat") || {};
         var isConceptDefinedInConfig = function (observation) {
             if (observation.groupMembers.length > 0) {
