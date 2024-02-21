@@ -2,21 +2,19 @@
 
 angular.module('bahmni.common.displaycontrol.observation')
     .directive('bahmniObservation', ['encounterService', 'observationsService', 'appService', '$q', 'spinner', '$rootScope',
-        'formRecordTreeBuildService', '$translate', 'providerInfoService',
+        'formRecordTreeBuildService', '$translate', 'providerInfoService', 'conceptGroupFormatService',
         function (encounterService, observationsService, appService, $q, spinner, $rootScope,
-                  formRecordTreeBuildService, $translate, providerInfoService) {
+                  formRecordTreeBuildService, $translate, providerInfoService, conceptGroupFormatService) {
             var controller = function ($scope) {
                 $scope.print = $rootScope.isBeingPrinted || false;
 
                 $scope.showGroupDateTime = $scope.config.showGroupDateTime !== false;
 
-                var obsGroupDisplayFormat = appService.getAppDescriptor().getConfigValue("obsGroupDisplayFormat");
-
                 var mapObservation = function (observations) {
                     var conceptsConfig = $scope.config.formType === Bahmni.Common.Constants.forms2Type ? {} :
                         appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
 
-                    observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig, null, $translate, obsGroupDisplayFormat);
+                    observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig, null, $translate, conceptGroupFormatService);
 
                     if ($scope.config.conceptNames) {
                         observations = _.filter(observations, function (observation) {

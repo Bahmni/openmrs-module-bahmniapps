@@ -69,14 +69,14 @@
         </div>
     </div>
     <div>
-        <ul ng-if="::(!observation.isFormElement() && !print && !observation.isConceptClassConceptDetails() && !observation.isObsGroupCanBeFormatted())" class="hidden-print">
+        <ul ng-if="::(!observation.isFormElement() && !print && !observation.isObsGroupFormatted())" class="hidden-print">
             <show-observation  show-details-button="::showDetailsButton" ng-if="::!observation.isFormElement()" ng-repeat="member in observation.groupMembers"
                           observation="::member" patient="::patient" show-date="::showDate" show-time="::showTime"
                           config-is-observation-for-images="::configIsObservationForImages"
                           ng-class="{'video-concept-show': member.isVideoConcept()}" display-name-type="::displayNameType"></show-observation>
         </ul>
     </div>
-    <ul ng-if="::(!observation.isFormElement() && print && !observation.isConceptClassConceptDetails() && !observation.isObsGroupCanBeFormatted())" class="visible-print">
+    <ul ng-if="::(!observation.isFormElement() && print && !conceptGroupFormatService.isConceptClassConceptDetails() && !observation.isObsGroupFormatted())" class="visible-print">
         <show-observation show-details-button="showDetailsButton" ng-if="::!observation.isFormElement()" ng-repeat="member in observation.groupMembers"
                           observation="::member" patient="::patient" show-date="::showDate" show-time="::showTime"
                           config-is-observation-for-images="::configIsObservationForImages" display-name-type="::displayNameType"></show-observation>
