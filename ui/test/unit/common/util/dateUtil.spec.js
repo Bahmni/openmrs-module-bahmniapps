@@ -1,6 +1,8 @@
 describe('DateUtil', function () {
     var dateUtil = Bahmni.Common.Util.DateUtil;
     var dateFormat = "YYYY-MM-DDTHH:mm:ss.SSS";
+    const clientTimeDisplayFormat = "h:mm a";
+    const clientDateDisplayFormat = "DD MMM YYYY";
 
     it("should parse datetime string format", function () {
         var parsed = dateUtil.parseDatetime("2015-12-05 16:02:45");
@@ -258,12 +260,12 @@ describe('DateUtil', function () {
     describe("formatDateWithTime", function () {
         it("should take a long representation of date and format", function () {
             var date = new Date(1427803080000);
-            expect(dateUtil.formatDateWithTime("1427803080000")).toEqual(moment(date).format("DD MMM YYYY h:mm a"));
+            expect(dateUtil.formatDateWithTime("1427803080000")).toEqual(moment(date).format(clientDateDisplayFormat + " " + clientTimeDisplayFormat));
         });
 
         it("should take a string representation of date and format", function () {
             var date = new Date();
-            expect(dateUtil.formatDateWithTime(moment(date).format(dateFormat))).toEqual(moment(date).format("DD MMM YYYY h:mm a"));
+            expect(dateUtil.formatDateWithTime(moment(date).format(dateFormat))).toEqual(moment(date).format(clientDateDisplayFormat + " " + clientTimeDisplayFormat));
         });
 
         it("should not break for undefined and return null", function () {
@@ -278,12 +280,12 @@ describe('DateUtil', function () {
     describe("formatDateWithoutTime", function () {
         it("should take a long representation of date and format", function () {
             var date = new Date(1427803080000);
-            expect(dateUtil.formatDateWithoutTime("1427803080000")).toEqual(moment(date).format("DD MMM YYYY"));
+            expect(dateUtil.formatDateWithoutTime("1427803080000")).toEqual(moment(date).format(clientDateDisplayFormat));
         });
 
         it("should take a string representation of date and format", function () {
             var date = new Date();
-            expect(dateUtil.formatDateWithoutTime(moment(date).format(dateFormat))).toEqual(moment(date).format("DD MMM YYYY"));
+            expect(dateUtil.formatDateWithoutTime(moment(date).format(dateFormat))).toEqual(moment(date).format(clientDateDisplayFormat));
         });
 
         it("should not break for undefined and return null", function () {
@@ -298,12 +300,12 @@ describe('DateUtil', function () {
     describe("formatTime", function () {
         it("should take a long representation of date and format", function () {
             var date = new Date(1427803080000);
-            expect(dateUtil.formatTime("1427803080000")).toEqual(moment(date).format("h:mm a"));
+            expect(dateUtil.formatTime("1427803080000")).toEqual(moment(date).format(clientTimeDisplayFormat));
         });
 
         it("should take a string representation of date and format", function () {
             var date = new Date();
-            expect(dateUtil.formatTime(moment(date).format(dateFormat))).toEqual(moment(date).format("h:mm a"));
+            expect(dateUtil.formatTime(moment(date).format(dateFormat))).toEqual(moment(date).format(clientTimeDisplayFormat));
         });
 
         it("should not break for undefined and return null", function () {
@@ -355,7 +357,7 @@ describe('DateUtil', function () {
        });
 
        it("should return date in dd MMM YYYY format when date with yyyy-MM-ddTHH:mm:ss.SSSZ is passed", function(){
-           expect(dateUtil.formatDateInStrictMode('2016-03-01T10:30:00.000+0530')).toBe(moment('2016-03-01T10:30:00.000+0530').format('DD MMM YYYY'));
+           expect(dateUtil.formatDateInStrictMode('2016-03-01T10:30:00.000+0530')).toBe(moment('2016-03-01T10:30:00.000+0530').format(clientDateDisplayFormat));
        });
 
        it("should return the string if the format does not match yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss.SSSZ", function(){
