@@ -99,12 +99,20 @@ Bahmni.Common.Util.DateUtil = {
         return dateRepresentation ? moment(dateRepresentation).format("DD MMM YYYY h:mm a") : null;
     },
 
-    formatDateWithoutTime: function (date) {
-        var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
+    formatDateWithoutTime: function (dateTime) {
+        var dateRepresentation = isNaN(Number(dateTime)) ? dateTime : Number(dateTime);
         if (!moment(dateRepresentation).isValid()) {
-            return date;
+            return dateTime;
         }
         return dateRepresentation ? moment(dateRepresentation).format("DD MMM YYYY") : null;
+    },
+
+    formatDateWithoutTimeToLocal: function (dateTime) {
+        var dateRepresentation = isNaN(Number(dateTime)) ? dateTime : Number(dateTime);
+        if (!moment(dateRepresentation).isValid()) {
+            return dateTime;
+        }
+        return dateRepresentation ? moment.utc(dateTime).local().format("DD MMM YYYY") : null;
     },
 
     formatDateInStrictMode: function (date) {
@@ -118,12 +126,20 @@ Bahmni.Common.Util.DateUtil = {
         return date;
     },
 
-    formatTime: function (date) {
-        var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
+    formatTime: function (dateTime) {
+        var dateRepresentation = isNaN(Number(dateTime)) ? dateTime : Number(dateTime);
         if (!moment(dateRepresentation).isValid()) {
-            return date;
+            return dateTime;
         }
         return dateRepresentation ? moment(dateRepresentation).format("h:mm a") : null;
+    },
+
+    formatDateTimeToLocal: function (dateTime) {
+        var dateRepresentation = isNaN(Number(dateTime)) ? dateTime : Number(dateTime);
+        if (!moment(dateRepresentation).isValid()) {
+            return dateTime;
+        }
+        return dateRepresentation ? moment.utc(dateTime).local().format("h:mm A") : null;
     },
 
     getDate: function (dateTime) {
