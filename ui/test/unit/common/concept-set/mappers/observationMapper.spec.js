@@ -1,7 +1,12 @@
 'use strict';
 
-describe("ConceptSetObservationMapper", function () {
-    var buildConcept = function (name, setMembers, answers, classname, datatype) {
+describe("ConceptSetObservationMapper", function() {
+    var conceptGroupFormatService;
+    beforeEach(function () {
+        conceptGroupFormatService = jasmine.createSpyObj('conceptGroupFormatService', ['isObsGroupFormatted', 'groupObs']);
+    });
+
+    var buildConcept = function(name, setMembers, answers, classname, datatype) {
         return {
             "name": {name: name},
             "set": setMembers && setMembers.length > 0,
@@ -26,20 +31,19 @@ describe("ConceptSetObservationMapper", function () {
             "concept": vitalsConcept,
             "label": "Vitals",
             "possibleAnswers": [],
-            "formNamespace": "Bahmni",
             "groupMembers": [{
-                "concept": comorbidityConcept,
-                "label": "Comorbidity",
-                "groupMembers": [],
-                "value": diabetesConcept,
-                "voided": false
-            }, {
                 "concept": systolicConcept,
                 "label": "Systolic",
                 "groupMembers": [],
                 "value": "90",
                 "voided": false
-            }, {
+            },{
+                "concept": comorbidityConcept,
+                "label": "Comorbidity",
+                "groupMembers": [],
+                "value": diabetesConcept,
+                "voided": false
+            },{
                 "concept": comorbidityConcept,
                 "label": "Comorbidity",
                 "groupMembers": [],
@@ -56,45 +60,27 @@ describe("ConceptSetObservationMapper", function () {
         var chiefComplaint = buildConcept("Chief Complaint", [], [], "Misc", "Coded");
         var duration = buildConcept("Chief Complaint Duration", [], [], "Duration", "Numeric");
         var chiefComplaintData = buildConcept("Chief Complaint Data", [chiefComplaint, duration], [], "Concept Details");
-        var unit = buildConcept('Chief Complaint Duration', [], [], "Units", "Coded");
-        var days = buildConcept('Days', [], []);
+
         return [{
             "concept": chiefComplaintData,
             "label": "Chief Complaint Data",
-            "formNamespace": "Bahmni",
             "groupMembers": [{
                 "concept": chiefComplaint,
                 "label": "Chief Complaint",
                 "groupMembers": [],
                 "value": headache,
                 "voided": false
-            }, {
+            },{
                 "concept": duration,
                 "label": "Duration",
                 "groupMembers": [],
                 "value": 30,
-                "voided": false
-            }, {
-                "concept": unit,
-                "label": "Units",
-                "groupMembers": [],
-                "value": days,
                 "voided": false
             }],
             "comment": null,
             "voided": false
         }];
     };
-
-    var translatedMessages = {
-        "CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY": "Headache since 30 Days",
-        "CHIEF_COMPLAINT_DATA_CONCEPT_NAME_KEY": "Vitals"
-    };
-
-    var translate = jasmine.createSpyObj('$translate', ['instant']);
-    translate.instant.and.callFake(function (key) {
-        return translatedMessages[key];
-    });
 
     it("should map observation tree", function () {
         var rootConcept = savedObs()[0].concept;
@@ -122,7 +108,7 @@ describe("ConceptSetObservationMapper", function () {
         var rootConcept = obs[0].concept;
         var mappedObs = mapper.map(obs, rootConcept);
 
-        expect(mappedObs.groupMembers.length).toBe(3);
+        expect(mappedObs.groupMembers.length).toBe(2);
         expect(mappedObs).toEqual(jasmine.any(Bahmni.ConceptSet.ObservationNode));
         expect(mappedObs.value).toEqual(headache.name);
     });
@@ -199,24 +185,30 @@ describe("ConceptSetObservationMapper", function () {
     });
 
     it("should get observations for view", function () {
-        var obs = mapper.getObservationsForView(savedObs(), {});
+        var obs = mapper.getObservationsForView(savedObs(), {}, conceptGroupFormatService);
 
         expect(obs.length).toBe(3);
+        expect(obs[0].value).toBe("90");
+        expect(obs[0].label).toBe("Systolic");
 
-        expect(obs[0].value).toEqual("Diabetes");
-        expect(obs[0].label).toBe("Comorbidity");
-        expect(obs[1].value).toBe("90");
-        expect(obs[1].label).toBe("Systolic");
+        expect(obs[1].value).toEqual("Diabetes");
+        expect(obs[1].label).toBe("Comorbidity");
+
         expect(obs[2].value).toEqual("HyperTension");
         expect(obs[2].label).toBe("Comorbidity");
     });
 
     it("should get observations for view when grid config is there", function () {
-        var chiefComplaintObservations = chiefComplaintObs();
-        chiefComplaintObservations[0].concept.name = "Vitals";
-        var obs = mapper.getObservationsForView(chiefComplaintObservations, {"Vitals": {grid: true}}, translate);
+        var savedObservations = savedObs();
+        savedObservations[0].concept.name = "Vitals";
+
+        conceptGroupFormatService.isObsGroupFormatted.and.returnValue(true);
+        conceptGroupFormatService.groupObs.and.returnValue("90, Diabetes, HyperTension");
+
+        var obs = mapper.getObservationsForView(savedObservations, {"Vitals": {grid: true}}, conceptGroupFormatService);
+
         expect(obs.length).toBe(1);
-        expect(obs[0].value).toBe("Headache since 30 Days");
+        expect(obs[0].value).toBe("90, Diabetes, HyperTension");
         expect(obs[0].label).toBe("Vitals");
     });
 });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ConsultationSummaryController', ['$scope', '$state', '$translate', 'conceptSetUiConfigService', function ($scope, $state, $translate, conceptSetUiConfigService) {
+    .controller('ConsultationSummaryController', ['$scope', '$state', 'conceptSetUiConfigService', 'conceptGroupFormatService', function ($scope, $state, conceptSetUiConfigService, conceptGroupFormatService) {
         var geEditedDiagnosesFromPastEncounters = function () {
             var editedDiagnosesFromPastEncounters = [];
             $scope.consultation.pastDiagnoses.forEach(function (pastDiagnosis) {
@@ -39,7 +39,7 @@ angular.module('bahmni.clinical')
                 }
                 return true;
             });
-            return new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, $translate).groupObservations(allObservations);
+            return new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, conceptGroupFormatService).groupObservations(allObservations);
         };
 
         $scope.groupedObservations = groupObservations();
