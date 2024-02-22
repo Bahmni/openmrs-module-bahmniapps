@@ -120,5 +120,6 @@
     "FILE_UPLOAD_MUST_BE_LESS_THAN": "File size should be less than",
     "PATIENT_ATTRIBUTE_GIVEN_NAME_LOCAL": "First Name in Arabic",
     "PATIENT_ATTRIBUTE_FAMILY_NAME_LOCAL": "Last Name in Arabic",
-    "PATIENT_ATTRIBUTE_MIDDLE_NAME_LOCAL": "Middle Name in Arabic"
+    "PATIENT_ATTRIBUTE_MIDDLE_NAME_LOCAL": "Middle Name in Arabic",
+    "VISIT_OF_THIS_PATIENT_AT_SAME_LOCATION_EXISTS": "A visita deste paciente no mesmo local já existe"
 }

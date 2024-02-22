@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.displaycontrol.observation')
     .directive('bahmniObservation', ['encounterService', 'observationsService', 'appService', '$q', 'spinner', '$rootScope',
-        'formRecordTreeBuildService', '$translate', 'providerInfoService',
+        'formRecordTreeBuildService', '$translate', 'providerInfoService', 'conceptGroupFormatService',
         function (encounterService, observationsService, appService, $q, spinner, $rootScope,
-                  formRecordTreeBuildService, $translate, providerInfoService) {
+                  formRecordTreeBuildService, $translate, providerInfoService, conceptGroupFormatService) {
             var controller = function ($scope) {
                 $scope.print = $rootScope.isBeingPrinted || false;
 
@@ -14,12 +14,13 @@ angular.module('bahmni.common.displaycontrol.observation')
                     var conceptsConfig = $scope.config.formType === Bahmni.Common.Constants.forms2Type ? {} :
                         appService.getAppDescriptor().getConfigValue("conceptSetUI") || {};
 
-                    observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig, null, $translate);
+                    observations = new Bahmni.Common.Obs.ObservationMapper().map(observations, conceptsConfig, null, $translate, conceptGroupFormatService);
 
                     if ($scope.config.conceptNames) {
                         observations = _.filter(observations, function (observation) {
                             return _.some($scope.config.conceptNames, function (conceptName) {
-                                return _.toLower(conceptName) === _.toLower(_.get(observation, 'concept.name'));
+                                var comparableAttr = observation.conceptFSN != null ? 'conceptFSN' : 'concept.name';
+                                return _.toLower(conceptName) === _.toLower(_.get(observation, comparableAttr));
                             });
                         });
                     }

@@ -1,4 +1,4 @@
-<form>
+<form name="diagnosisForm" alert-on-exit>
     <fieldset>
         <div class="diagnosis" focus-on-input-errors>
             <div id="selectedNodesArea">
@@ -6,17 +6,23 @@
                     <div ng-repeat="diagnosis in consultation.newlyAddedDiagnoses" ng-hide="diagnosis.voided"
                         class="table-body">
                         <div class="row">
-                            <div class="col col1">
+                            <div class="col col1" bm-pop-over autoclose="true">
                                 <div class="col-header">
                                     {{ ::'CLINICAL_DIAGNOSIS' | translate }}
                                 </div>
                                 <div class="col-body">
+                                    <span ng-if="diagnosis.alerts && diagnosis.alerts.length > 0 && !hasActiveAlerts(diagnosis.alerts) && (!diagnosis.diagnosisStatus || diagnosis.status === 'ACTIVE')" class="alert-item">
+                                        <button class="cdss-alert-icon button-alert alert-button" bm-pop-over-trigger>
+                                            <i class="fa cdss-icon-medication fa-exclamation-circle">
+                                            </i>
+                                        </button>
+                                    </span>
                                     <input ng-model="diagnosis.codedAnswer.name" type="text" name="name"
                                         id="name-{{$index}}" bahmni-autocomplete source="getDiagnosis"
                                         response-map="cleanOutDiagnosisList"
                                         on-select="getAddNewDiagnosisMethod(diagnosis)" ng-class="{
                                                 illegalValue: (diagnosis.codedAnswer.name && !diagnosis.codedAnswer.uuid &&
-                                                    !diagnosis.isNonCodedAnswer && allowOnlyCodedDiagnosis) || diagnosis.invalid,
+                                                    !diagnosis.isNonCodedAnswer && allowOnlyCodedDiagnosis) || diagnosis.duplicate,
                                                 active: diagnosis.isNonCodedAnswer
                                         }"
                                         ng-change="restEmptyRowsToOne($index); diagnosis.clearCodedAnswerUuid(); checkInvalidDiagnoses()">
@@ -32,7 +38,9 @@
                                             ::'CLINICAL_ACCEPT'| translate }}</button>
                                     </span>
                                 </div>
-
+                                <div class="tooltip cdss-tooltip history-alert" bm-pop-over-target>
+                                    <cdss-popover alerts="diagnosis.alerts"></cdss-popover>
+                                </div>
                             </div>
                             <div class="col col2">
                                 <div class="col-header">
@@ -83,6 +91,9 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row" ng-if="hasActiveAlerts(diagnosis.alerts) && (!diagnosis.diagnosisStatus || diagnosis.diagnosisStatus === 'ACTIVE')" ng-repeat="alert in diagnosis.alerts">
+                           <ng-include class="new-diagnosis-alert-row" src="'consultation/views/diagnosisAlertRow.html'" />
+                      </div>
                         <div class="col col-comments" ng-show="diagnosis.showComments">
                             <textarea class="comment-section" maxlength="255" ng-model="diagnosis.comments">
                             </textarea>
@@ -116,6 +127,11 @@
                         </div>
                         <div class="col col2"><span>{{ ::'CLINICAL_INITIAL' | translate }}</span></div>
                         <div class="col col3"><span>{{ ::'CLINICAL_CURRENT' | translate }}</span></div>
+                        <div class="col col4" ng-if="pastDiagnosesAlerts">
+                            <div class="cdss-alert-icon header-alert-icon">
+                                <i class="fa fa-exclamation-circle"></i>
+                            </div>
+                        </div>
                     </div>
                     <div ng-show="toggles.expandPastDiagnoses"
                         ng-repeat="diagnosis in consultation.pastDiagnoses | primaryDiagnosisFirst" class="table-body">

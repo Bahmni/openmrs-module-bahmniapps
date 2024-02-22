@@ -83,7 +83,7 @@ Bahmni.Common.Util.DateUtil = {
     },
 
     getDateInMonthsAndYears: function (date, format) {
-        var format = format || "MMM YY";
+        var format = format || "MMM YYYY";
         var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
         if (!moment(dateRepresentation).isValid()) {
             return date;
@@ -96,7 +96,7 @@ Bahmni.Common.Util.DateUtil = {
         if (!moment(dateRepresentation).isValid()) {
             return datetime;
         }
-        return dateRepresentation ? moment(dateRepresentation).format("DD MMM YY h:mm a") : null;
+        return dateRepresentation ? moment(dateRepresentation).format("DD MMM YYYY h:mm a") : null;
     },
 
     formatDateWithoutTime: function (date) {
@@ -104,16 +104,16 @@ Bahmni.Common.Util.DateUtil = {
         if (!moment(dateRepresentation).isValid()) {
             return date;
         }
-        return dateRepresentation ? moment(dateRepresentation).format("DD MMM YY") : null;
+        return dateRepresentation ? moment(dateRepresentation).format("DD MMM YYYY") : null;
     },
 
     formatDateInStrictMode: function (date) {
         var dateRepresentation = isNaN(Number(date)) ? date : Number(date);
         if (moment(dateRepresentation, 'YYYY-MM-DD', true).isValid()) {
-            return moment(dateRepresentation).format("DD MMM YY");
+            return moment(dateRepresentation).format("DD MMM YYYY");
         }
         if (moment(dateRepresentation, 'YYYY-MM-DDTHH:mm:ss.SSSZZ', true).isValid()) {
-            return moment(dateRepresentation).format("DD MMM YY");
+            return moment(dateRepresentation).format("DD MMM YYYY");
         }
         return date;
     },
@@ -270,7 +270,7 @@ Bahmni.Common.Util.DateUtil = {
     },
 
     parseLongDateToServerFormat: function (longDate) {
-        return longDate ? moment(longDate).format("YYYY-MM-DDTHH:mm:ss.SSS") : null;
+        return longDate ? moment(longDate).format("YYYY-MM-DDTHH:mm:ss.SSSZZ") : null;
     },
 
     parseServerDateToDate: function (longDate) {

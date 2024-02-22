@@ -305,6 +305,18 @@ table.investigation-chart {
     }
 }
 
+.fixed-column {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 5px;
+  left: 0px;
+  border-left: 1px solid #ddd;
+  text-align: left;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  background-color: #fff;
+}
+
 .expand-investigation-chart {
     display: table;
     width: 100%;

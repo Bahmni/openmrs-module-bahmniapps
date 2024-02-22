@@ -8,7 +8,7 @@
                 <p class="placeholder-text">{{'NO_LAB_ORDERS_FOR_PATIENT_MESSAGE_KEY' | translate}}</p>
             </div>
             <table class="investigation-chart" bindonce="accessions">
-                <thead ng-if="::!params.hideVisitDate">
+                <thead ng-if="::!params.hideResultsColumn">
                     <tr>
                         <th nowrap>&nbsp;</th>
                         <td nowrap ng-repeat="dateLabel in accessions.getDateLabels()">{{::dateLabel.date | bahmniDate}}</td>
@@ -16,7 +16,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
-                        <td class="normal">
+                        <td class="normal fixed-column">
                             <span bo-text="testOrderLabel.testName"></span>
                             <span ng-show="::accessions.hasRange(testOrderLabel)" class="range">
                                 <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
@@ -25,7 +25,7 @@
                         </td>
                         <td ng-repeat="dateLabel in accessions.getDateLabels()"
                             ng-class="::{'has-uploaded-file': accessions.hasUploadedFiles(dateLabel, testOrderLabel)}"
-                            ng-if="::!params.hideVisitDate">
+                            ng-if="::!params.hideResultsColumn">
                             <span ng-init="results = accessions.getResult(dateLabel, testOrderLabel)">
                                 <span bm-pop-over autoclose="true" class="test-result" ng-repeat="res in results">
                                     <span ng-class="::{'referred-out': res.referredOut}">

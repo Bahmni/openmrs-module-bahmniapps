@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('OrderController', ['$scope', 'allOrderables', 'ngDialog', 'retrospectiveEntryService', 'appService', '$translate',
-        function ($scope, allOrderables, ngDialog, retrospectiveEntryService, appService, $translate) {
+    .controller('OrderController', ['$scope', '$state', 'allOrderables', 'ngDialog', 'retrospectiveEntryService', 'appService', '$translate',
+        function ($scope, $state, allOrderables, ngDialog, retrospectiveEntryService, appService, $translate) {
             $scope.consultation.orders = $scope.consultation.orders || [];
             $scope.consultation.childOrders = $scope.consultation.childOrders || [];
             $scope.allOrdersTemplates = allOrderables;
@@ -54,6 +54,7 @@ angular.module('bahmni.clinical')
                 if (order) {
                     if (order.uuid) {
                         order.isDiscontinued = true;
+                        $state.orderRemoved = true;
                     } else {
                         _.remove($scope.consultation.orders, order);
                     }
@@ -69,6 +70,7 @@ angular.module('bahmni.clinical')
                 } else {
                     var createdOrder = Bahmni.Clinical.Order.create(test);
                     $scope.consultation.orders.push(createdOrder);
+                    $state.orderCreated = true;
                 }
             };
 
@@ -131,6 +133,12 @@ angular.module('bahmni.clinical')
                     order.isUrgent = order.urgency == "STAT" ? true : order.isUrgent;
                 });
             };
+
+            $scope.$on('$stateChangeStart', function () {
+                if ($state.orderRemoved || $state.orderCreated) {
+                    $state.dirtyConsultationForm = true;
+                }
+            });
 
             $scope.getOrderTemplate = function (templateName) {
                 var key = '\'' + templateName + '\'';
