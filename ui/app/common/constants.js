@@ -69,6 +69,8 @@ Bahmni.Common = Bahmni.Common || {};
         dateFormat: "dd/mm/yyyy",
         dateDisplayFormat: "DD-MMM-YYYY",
         timeDisplayFormat: "hh:mm",
+        clientTimeDisplayFormat: "hh:mm A",
+        clientDateDisplayFormat: "DD MMM YYYY",
         emrapiDiagnosisUrl: EMRAPI + "/diagnosis",
         bahmniDiagnosisUrl: BAHMNI_CORE + "/diagnosis/search",
         emrapiDiagnosisLimit: Bahmni.Common.Constants && Bahmni.Common.Constants.emrapiDiagnosisLimit || 20,
