@@ -10,7 +10,7 @@ angular.module('bahmni.registration')
             $scope.addressHierarchyConfigs = appService.getAppDescriptor().getConfigValue("addressHierarchy");
             $scope.disablePhotoCapture = appService.getAppDescriptor().getConfigValue("disablePhotoCapture");
             $scope.showEnterID = configValueForEnterId === null ? true : configValueForEnterId;
-            $scope.preRegistrationAttribute = appService.getAppDescriptor().getConfigValue('preRegistrationAttribute');
+            $scope.prePatientAttribute = appService.getAppDescriptor().getConfigValue('prePatientAttribute');
             $scope.today = Bahmni.Common.Util.DateTimeFormatter.getDateWithoutTime(dateUtil.now());
             $scope.moduleName = appService.getAppDescriptor().getConfigValue('registrationModuleName');
             var patientId;
@@ -82,7 +82,7 @@ angular.module('bahmni.registration')
 
                 _.chain(defaultsWithAnswers).filter(isConcept).each(setDefaultConcept).value();
                 _.chain(defaultsWithAnswers).filter(isDateType).each(setDefaultValue).value();
-                $scope.patient[$scope.preRegistrationAttribute] = false;
+                $scope.patient[$scope.prePatientAttribute] = false;
             };
 
             var expandSectionsWithDefaultValue = function () {
