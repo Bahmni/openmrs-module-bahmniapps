@@ -825,11 +825,7 @@ angular.module('bahmni.clinical')
             });
 
             $scope.checkForContinuousMedication = function (route) {
-                if ($scope.continuousMedicationRoutes.includes(route)) {
-                    $scope.isContinuousMedication = true;
-                } else {
-                    $scope.isContinuousMedication = false;
-                }
+                $scope.isContinuousMedication = $scope.continuousMedicationRoutes.includes(route);
             };
 
             var setContinuousMedicationRoutes = function (medicationConfig) {
