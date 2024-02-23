@@ -163,6 +163,10 @@ body {
         .form-field {
             padding: 0;
             border-bottom: 0;
+            .value-text-only {
+                display: inline-block;
+                width: 60%;
+            }
         }
 
         &.hierarchy {
