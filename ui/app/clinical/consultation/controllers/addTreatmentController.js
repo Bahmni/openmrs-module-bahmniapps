@@ -818,7 +818,7 @@ angular.module('bahmni.clinical')
                 }
             });
 
-            $scope.$watch('treatment.quantity', function(newValue) {
+            $scope.$watch('treatment.quantity', function (newValue) {
                 if (newValue === 0 && $scope.isContinuousMedication && !$scope.treatment.uniformDosingType.frequency) {
                     $scope.treatment.quantity = null;
                 }
