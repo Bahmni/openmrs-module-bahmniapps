@@ -34,9 +34,9 @@
                                         </div>
                                 
                                         <div class="dosage-frequency">
-                                            <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}} | </span>
-                                            <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length">{{drugOrder.getFrequency()}} | </span> 
-                                            {{drugOrder.getDurationAndDurationUnits()}}
+                                            <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}}</span>
+                                            <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length"> | {{drugOrder.getFrequency()}}</span> 
+                                            <span ng-show="drugOrder.getDurationAndDurationUnits()"> | {{drugOrder.getDurationAndDurationUnits()}}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -78,10 +78,10 @@
                                     <div>
                                         <span ng-if="drugOrder.asNeeded">{{drugOrder.getAsNeededText(drugOrder.asNeeded)}}, </span>
                                         <span nf-if="drugOrder.route"> {{drugOrder.route}}, </span>
-                                        {{drugOrder.instructions}} | 
+                                        {{drugOrder.instructions}}
                                     </div>
-                                    <div ng-if="drugOrder.additionalInstructions">{{drugOrder.additionalInstructions}} | </div>
-                                    <div>{{drugOrder.getQuantityWithUnit()}}</div>
+                                    <div ng-if="drugOrder.additionalInstructions"> | {{drugOrder.additionalInstructions}}</div>
+                                    <div ng-if="drugOrder.getQuantityWithUnit()"> | {{drugOrder.getQuantityWithUnit()}}</div>
                                     <div class="footer-note">
                                         <span class="time-stamp">
                                             <span class="time">{{drugOrder.dateActivated | bahmniDateTime}}</span>

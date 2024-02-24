@@ -110,7 +110,7 @@
                                         ng-change="treatment.calculateDurationUnit(treatmentConfig.durationUnits)"
                                         ng-options="item.name as item.name for item in treatmentConfig.getFrequencies()"
                                         ng-disabled="!treatment.isUniformDosingType()"
-                                        ng-required="treatment.isUniformFrequency">
+                                        ng-required="treatment.isUniformFrequency && !isContinuousMedication">
                                     <option value="">{{ ::treatmentConfig.translate('frequencyUnitsPlaceHolder', 'MEDICATION_FREQUENCY_UNIT_PLACEHOLDER') }} </option>
                                 </select>
                             </div>
@@ -121,7 +121,7 @@
                             </div>
                             <div class="field-value">
                                 <select id="route" class="route" ng-model="treatment.route"
-                                        ng-options="item.name as item.name for item in treatmentConfig.getRoutes()">
+                                        ng-options="item.name as item.name for item in treatmentConfig.getRoutes()" ng-change="checkForContinuousMedication(treatment.route)">
                                     <option value="">{{ ::treatmentConfig.translate('routePlaceHolder', 'MEDICATION_ROUTE_PLACEHOLDER') }} </option>
                                 </select>
                             </div>
@@ -190,7 +190,7 @@
                             <input id="duration" class=" duration"
                                    type="number" min="1"
                                    ng-model="treatment.duration" ng-change="treatment.calculateDurationInDays()"
-                                   ng-required="treatment.isDurationRequired" ng-pattern="/^[0-9]+$/"/>
+                                   ng-required="treatment.isDurationRequired && !isContinuousMedication" ng-pattern="/^[0-9]+$/"/>
                         </div>
                     </article>
                     <article class="form-field ">
@@ -201,7 +201,7 @@
                             <select  ng-if="!treatmentConfig.isHiddenField('durationUnits')" id="duration-unit"
                                      class=" duration-unit" ng-model="treatment.durationUnit"
                                      ng-options="item.name as item.name for item in treatmentConfig.getDurationUnits()"
-                                     required></select>
+                                     ng-required="!isContinuousMedication"></select>
                         </div>
                     </article>
                 </div>
@@ -215,7 +215,7 @@
                             <div class="field-value">
                                 <input id="quantity" class="quantity fl" type="number" min="0.1" step="any"
                                        ng-model="treatment.quantity" ng-change="treatment.setQuantityEnteredManually()"
-                                       ng-required="treatment.isDurationRequired"/>
+                                       ng-required="treatment.isDurationRequired && !isContinuousMedication"/>
                             </div>
                         </article>
                         <article class="form-field fl">
