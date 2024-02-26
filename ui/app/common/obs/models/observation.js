@@ -68,7 +68,7 @@ Bahmni.Common.Obs.Observation = (function () {
             return this.groupMembers.length > 1 && this.formNamespace != null && this.translate && this.concept.name === this.translate.instant("CHIEF_COMPLAINT_DATA_CONCEPT_NAME_KEY");
         },
         isObsGroupFormatted: function () {
-            return this.conceptGroupFormatService.isObsGroupFormatted(this);
+            return this.conceptGroupFormatService !== undefined && this.conceptGroupFormatService.isObsGroupFormatted(this);
         },
         getDisplayValue: function () {
             var value;
@@ -106,7 +106,7 @@ Bahmni.Common.Obs.Observation = (function () {
                 return displayValue;
             }
 
-            return this.conceptGroupFormatService.groupObs(this);
+            return this.conceptGroupFormatService !== undefined && this.conceptGroupFormatService.groupObs(this);
         },
 
         getDurationDisplayValue: function () {
