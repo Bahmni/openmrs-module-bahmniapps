@@ -19,15 +19,15 @@ describe("labOrderResultService", function() {
         ], 
         "tabularResult": {
             "values":[
-                {"testOrderIndex":0,"dateIndex":0,"abnormal":false,"result":"25.0"},
-                {"testOrderIndex":1,"dateIndex":0,"abnormal":false,"result":"55.0"},
-                {"testOrderIndex":2,"dateIndex":0,"abnormal":false,"result":"85.0"}
+                {"testOrderIndex": 0, "dateIndex": 0, "abnormal": false, "result": "25.0"},
+                {"testOrderIndex": 1, "dateIndex": 0, "abnormal": false, "result": "55.0"},
+                {"testOrderIndex": 2, "dateIndex": 0, "abnormal": false, "result": "85.0"}
             ], "orders":[
-                {"minNormal":0.0,"maxNormal":6.0,"testName":"ZN Stain(Sputum)","testUnitOfMeasurement":"%","index":0, "panelName": "Routine Blood"},
-                {"minNormal":0.0,"maxNormal":6.0,"testName":"CD4 Test","testUnitOfMeasurement":"%","index":1},
-                {"minNormal":0.0,"maxNormal":6.0,"testName":"Platelets","testUnitOfMeasurement":"%","index":2, "panelName": "Routine Blood"}
+                {"index":0, "minNormal": 0.0, "maxNormal": 0.0, "testName": "ZN Stain(Sputum)", "testUnitOfMeasurement":"%", "panelName": "Routine Blood"},
+                {"index":1, "minNormal": 0.0, "maxNormal": 0.0, "testName": "CD4 Test", "testUnitOfMeasurement":"%"},
+                {"index":2, "minNormal": 0.0, "maxNormal": 0.0, "testName": "Platelets", "testUnitOfMeasurement":"%", "panelName": "Routine Blood"}
             ], "dates":[
-                {"index":0,"date":"30-May-2014"}
+                {"index":0, "date": "30-May-2014"}
             ]
         }
     };
@@ -58,6 +58,19 @@ describe("labOrderResultService", function() {
             groupOrdersByPanel: true
         };
 
+        it("should group tabularResult by panel", function(done){
+            labOrderResultService.getAllForPatient(params).then(function(results) {
+                expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toBe("123");
+
+                expect(results.tabular.tabularResult.orders[0].isPanel).toBeFalsy();
+                expect(results.tabular.tabularResult.orders[0].orderName).toBe("CD4 Test");
+                expect(results.tabular.tabularResult.orders[1].isPanel).toBeTruthy();
+                expect(results.tabular.tabularResult.orders[1].orderName).toBe("Routine Blood");
+                expect(results.tabular.tabularResult.orders[1].tests.length).toBe(2);
+                done();
+            });
+        });
+        
         it("should fetch all Lab orders & results and group by accessions", function(done){
             labOrderResultService.getAllForPatient(params).then(function(results) {
                 expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toBe("123");
@@ -91,14 +104,5 @@ describe("labOrderResultService", function() {
             });
         });
 
-        it("should group tabularResult by panel", function(done){
-            labOrderResultService.getAllForPatient(params).then(function(results) {
-                expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toBe("123");
-
-                expect(results.tabular.tabularResult.orders[0].isPanel).toBeFalsy();
-                expect(results.tabular.tabularResult.orders[1].tests.length).toBe(2);
-                done();
-            });
-        });
     });
 });
