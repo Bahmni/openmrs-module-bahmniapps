@@ -16,11 +16,16 @@ describe("labOrderResultService", function() {
             {"accessionUuid": "uuid1", "accessionDateTime":1401437955000, "testName": "Haemoglobin", "panelName": "Routine Blood"},
             {"accessionUuid": "uuid1", "accessionDateTime":1401437955000, "testName": "ESR", "panelName": "Routine Blood"},
             {"accessionUuid": "uuid2", "accessionDateTime":1401437956000, "testName": "ZN Stain(Sputum)"},
-        ], "tabularResult": {
+        ], 
+        "tabularResult": {
             "values":[
                 {"testOrderIndex":0,"dateIndex":0,"abnormal":false,"result":"25.0"},
+                {"testOrderIndex":1,"dateIndex":0,"abnormal":false,"result":"55.0"},
+                {"testOrderIndex":2,"dateIndex":0,"abnormal":false,"result":"85.0"}
             ], "orders":[
-                {"minNormal":0.0,"maxNormal":6.0,"testName":"ZN Stain(Sputum)","testUnitOfMeasurement":"%","index":0}
+                {"minNormal":0.0,"maxNormal":6.0,"testName":"ZN Stain(Sputum)","testUnitOfMeasurement":"%","index":0, "panelName": "Routine Blood"},
+                {"minNormal":0.0,"maxNormal":6.0,"testName":"CD4 Test","testUnitOfMeasurement":"%","index":1},
+                {"minNormal":0.0,"maxNormal":6.0,"testName":"Platelets","testUnitOfMeasurement":"%","index":2, "panelName": "Routine Blood"}
             ], "dates":[
                 {"index":0,"date":"30-May-2014"}
             ]
@@ -49,7 +54,8 @@ describe("labOrderResultService", function() {
     describe("getAllForPatient", function(){
         var params = {
             patientUuid: "123",
-            numberOfVisits: 1
+            numberOfVisits: 1,
+            groupOrdersByPanel: true
         };
 
         it("should fetch all Lab orders & results and group by accessions", function(done){
@@ -61,6 +67,7 @@ describe("labOrderResultService", function() {
                 done();
             });
         });
+
         it("should sort by accession date and group by panel", function(done){
             labOrderResultService.getAllForPatient(params).then(function(results) {
                 expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toBe("123");
@@ -80,6 +87,16 @@ describe("labOrderResultService", function() {
                 expect(results.labAccessions[1][2].isPanel).toBeTruthy();
                 expect(results.labAccessions[1][2].orderName).toBe("Routine Blood");
                 expect(results.labAccessions[1][2].tests.length).toBe(2);
+                done();
+            });
+        });
+
+        it("should group tabularResult by panel", function(done){
+            labOrderResultService.getAllForPatient(params).then(function(results) {
+                expect(mockHttp.get.calls.mostRecent().args[1].params.patientUuid).toBe("123");
+
+                expect(results.tabular.tabularResult.orders[0].isPanel).toBeFalsy();
+                expect(results.tabular.tabularResult.orders[1].tests.length).toBe(2);
                 done();
             });
         });
