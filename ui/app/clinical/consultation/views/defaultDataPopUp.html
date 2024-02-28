@@ -16,7 +16,7 @@
     </div>
     <div class="input-container date-widget-container">
         <label show-if-privilege="{{retrospectivePrivilege}}" for="retro-date-label" class="retro-date-label" >{{ 'RETROSPECTIVE_POPUP_DATA_FOR_LABEL'|translate }}</label>
-        <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="date" max="{{maxStartDate}}"/>
+        <input show-if-privilege="{{retrospectivePrivilege}}" class="retro-date-widget" type="date" ng-model="date" max="{{maxStartDate}}" min="{{minStartDate}}"/>
     </div>
     <div class="retro-widget-button-wrapper">
         <button class="retro-widget-button ok_btn" ng-click="windowReload()">{{ 'OKAY_LABEL' | translate}}</button>

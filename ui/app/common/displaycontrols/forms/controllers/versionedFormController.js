@@ -109,6 +109,27 @@ angular.module('bahmni.common.displaycontrol.forms')
                 } else { return true; }
             };
 
+            $scope.retrospectiveDateCheck = function (data) {
+                var hasPrivilege = _.some($rootScope.currentUser.privileges, {name: 'allowDashboardFormsEdit'});
+                var dashboardFormsEditDateThreshold = appService.getAppDescriptor().getConfigValue('dashboardFormsEditDateThreshold');
+                if (hasPrivilege || !dashboardFormsEditDateThreshold) {
+                    return true;
+                }
+                var formDate = new Date(data.obsDatetime || data.encounterDateTime);
+                var currentDate = new Date();
+                var thresholdDate = new Date(new Date().setDate(dashboardFormsEditDateThreshold));
+
+                var startDate = new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1, 0);
+                if (currentDate > thresholdDate) {
+                    startDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1, 0);
+                }
+
+                if (formDate >= startDate) {
+                    return true;
+                }
+                return false;
+            };
+
             $scope.getDisplayName = function (data) {
                 if ($scope.formsWithNameTranslations && $scope.formsWithNameTranslations.length > 0) {
                     var formWithNameTranslation = $scope.formsWithNameTranslations.find(function (formWithNameTranslation) {
