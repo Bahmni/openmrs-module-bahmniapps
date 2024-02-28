@@ -4,7 +4,7 @@ angular.module('bahmni.common.patientSearch')
 .controller('PatientsListController', ['$scope', '$window', 'patientService', '$rootScope', 'appService', 'spinner',
     '$stateParams', '$bahmniCookieStore', 'printer', 'configurationService',
     function ($scope, $window, patientService, $rootScope, appService, spinner, $stateParams, $bahmniCookieStore, printer, configurationService) {
-        $scope.preferExtraIdInSearchResults = appService.getAppDescriptor().getConfigValue("preferExtraIdInSearchResults");
+        var preferredExtraIdInPatientList = appService.getAppDescriptor().getConfigValue("preferredExtraIdInPatientList");
         const DEFAULT_FETCH_DELAY = 2000;
         var patientSearchConfig = appService.getAppDescriptor().getConfigValue("patientSearch");
         var patientListSpinner;
@@ -206,6 +206,17 @@ angular.module('bahmni.common.patientSearch')
                     return getPatientCountSeriallyBySearchIndex(index + 1);
                 });
             }
+        };
+        $scope.getIdentifierValue = function (patient) {
+            if (preferredExtraIdInPatientList !== null) {
+                var identifierIndex = patient.extraIdentifiers !== undefined ? patient.extraIdentifiers.split(",").indexOf(preferredExtraIdInPatientList) : -1;
+                if (identifierIndex >= 0) {
+                    if (patient.extraIdentifierVal !== undefined && patient.extraIdentifierVal) {
+                        return patient.extraIdentifierVal.split(",")[identifierIndex];
+                    }
+                }
+            }
+            return patient.identifier;
         };
         initialize();
     }

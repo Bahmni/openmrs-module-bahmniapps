@@ -95,17 +95,6 @@ Bahmni.Common.PatientSearch.Search = function (searchTypes) {
             return patient[column];
         }).join(" - ");
 
-        var extraIdentifier = null;
-        if (patient.extraIdentifiers) {
-            var objIdentifiers = JSON.parse(patient.extraIdentifiers);
-            for (var key in objIdentifiers) {
-                extraIdentifier = objIdentifiers[key];
-                break;
-            }
-        } else if (patient.extraIdentifierVal) {
-            extraIdentifier = patient.extraIdentifierVal;
-        }
-        patient.extraIdentifier = patient.extraIdentifier ? patient.extraIdentifier : (extraIdentifier ? extraIdentifier : patient.identifier);
         patient.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + patient.uuid;
         return patient;
     }
