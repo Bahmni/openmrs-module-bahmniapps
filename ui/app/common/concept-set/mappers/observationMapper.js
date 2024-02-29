@@ -197,6 +197,10 @@ Bahmni.ConceptSet.ObservationMapper = function () {
             return observation.value.shortName || observation.value.name || observation.value;
         }
 
+        if (observation.durationObs !== undefined) {
+            return observation.primaryObs && (observation.primaryObs.value.shortName || observation.primaryObs.value.name || observation.primaryObs.value);
+        }
+
         return conceptGroupFormatService.groupObs(observation);
     };
 
