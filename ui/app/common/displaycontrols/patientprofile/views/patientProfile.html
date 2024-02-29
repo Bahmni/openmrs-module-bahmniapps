@@ -23,7 +23,7 @@
                         </div>
                         <div class="icons-container">
                             <i class="ipd-indication fa fa-bed" ng-if="::hasBeenAdmitted"></i>
-                            <i class="ipd-indication fa fa-solid fa-child" style="background-color: #F58C35; padding: 4px 15.289px;" ng-if="::(patient.kid && patient.kid.value)"></i>
+                            <i ng-if="::patient[iconAttributeName] && patient[iconAttributeName].value.toString() === iconAttributeValue" class="ipd-indication custom-icon-style" ng-class="::icon" ng-style="{{::iconStyle}}"></i>
                         </div>
                      </td>
                 </tr>

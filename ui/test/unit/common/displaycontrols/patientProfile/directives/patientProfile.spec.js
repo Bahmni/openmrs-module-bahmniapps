@@ -1,7 +1,7 @@
 'use strict';
 
 describe("Patient Profile display control", function () {
-    var element, scope, $compile, mockBackend, $window, $q, openMRSPatientMockData, visitService, translateFilter;
+    var element, scope, $compile, mockBackend, $window, $q, openMRSPatientMockData, visitService, translateFilter, appService;
 
     beforeEach(module('ngHtml2JsPreprocessor'));
     beforeEach(module('bahmni.common.patient'));
@@ -29,6 +29,11 @@ describe("Patient Profile display control", function () {
 
         visitService = jasmine.createSpyObj('visitService', ['getVisit']);
         $provide.value('visitService', visitService);
+
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+        var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
+        $provide.value('appService', appService);
 
         var patientService = jasmine.createSpyObj('patientService', ['getRelationships', 'getPatient']);
         patientService.getRelationships.and.callFake(function (param) {

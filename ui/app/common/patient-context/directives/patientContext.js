@@ -30,9 +30,16 @@ angular.module('bahmni.common.patientContext')
                     $scope.patientContext.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + $scope.patientContext.uuid;
                 }
                 $scope.patientContext.gender = $rootScope.genderMap[$scope.patientContext.gender];
+                const iconAttributeName = appService.getAppDescriptor().getConfigValue('iconAttributeName');
+                const iconAttributeValue = appService.getAppDescriptor().getConfigValue('iconAttributeValueForContext');
+                $scope.icon = appService.getAppDescriptor().getConfigValue('icon');
+                $scope.iconStyle = appService.getAppDescriptor().getConfigValue('iconStyle');
+                $scope.showIcon = iconAttributeName && iconAttributeValue && $scope.patientContext.personAttributes
+                                    && $scope.patientContext.personAttributes[iconAttributeName]
+                                    && $scope.patientContext.personAttributes[iconAttributeName].value === iconAttributeValue;
+
                 if ($scope.patientContext.personAttributes) {
-                    $scope.patientContext.kid = $scope.patientContext.personAttributes.kid;
-                    delete $scope.patientContext.personAttributes.kid;
+                    delete $scope.patientContext.personAttributes[iconAttributeName];
                 }
             });
 
