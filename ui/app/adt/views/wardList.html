@@ -12,7 +12,12 @@
         <tbody>
         <tr ng-repeat="row in tableDetails | filter:searchTextFilter">
                 <td ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'">
-                    <span ng-if="heading != 'Diagnosis' && heading != 'Id'">{{row[heading]}}</span>
+                    <div ng-if="heading != 'Diagnosis' && heading != 'Id'">
+                        {{row[heading]}}
+                        <span ng-if="::(row[iconAttributeName] === iconAttributeValue && heading === 'Name')" class="icons-container">
+                            <i class="ipd-indication" ng-class="::icon" ng-style="{{::iconStyle}}"></i>
+                        </span>
+                    </div>
                     <a ng-if="heading =='Id'" ng-click="gotoPatientDashboard(row['hiddenAttributes'].patientUuid, row['hiddenAttributes'].visitUuid)">
                         {{row[heading]}}
                     </a>

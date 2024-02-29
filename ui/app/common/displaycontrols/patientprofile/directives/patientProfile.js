@@ -31,8 +31,8 @@
     };
     angular.module('bahmni.common.displaycontrol.patientprofile')
         .directive('patientProfile', ['patientService', 'spinner', '$sce', '$rootScope', '$stateParams', '$window', '$translate',
-            'configurations', '$q', 'visitService',
-            function (patientService, spinner, $sce, $rootScope, $stateParams, $window, $translate, configurations, $q, visitService) {
+            'configurations', '$q', 'visitService', 'appService',
+            function (patientService, spinner, $sce, $rootScope, $stateParams, $window, $translate, configurations, $q, visitService, appService) {
                 var controller = function ($scope) {
                     $scope.isProviderRelationship = function (relationship) {
                         return _.includes($rootScope.relationshipTypeMap.provider, relationship.relationshipType.aIsToB);
@@ -41,6 +41,10 @@
                         var configName = $stateParams.configName || Bahmni.Common.Constants.defaultExtensionName;
                         $window.open("../clinical/#/" + configName + "/patient/" + patientUuid + "/dashboard");
                     };
+                    $scope.iconAttributeName = appService.getAppDescriptor().getConfigValue('iconAttributeName');
+                    $scope.iconAttributeValue = appService.getAppDescriptor().getConfigValue('iconAttributeValue');
+                    $scope.icon = appService.getAppDescriptor().getConfigValue('icon');
+                    $scope.iconStyle = appService.getAppDescriptor().getConfigValue('iconStyle');
                     var assignPatientDetails = function () {
                         var patientMapper = new Bahmni.PatientMapper(configurations.patientConfig(), $rootScope, $translate);
                         return patientService.getPatient($scope.patientUuid).then(function (response) {
