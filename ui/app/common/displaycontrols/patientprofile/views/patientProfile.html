@@ -20,8 +20,11 @@
                              <span class="patient-address">
                                  {{::addressLine}}
                              </span>
-                             <i class="ipd-indication fa fa-bed" ng-if="::hasBeenAdmitted"></i>
-                         </div>
+                        </div>
+                        <div class="icons-container">
+                            <i class="ipd-indication fa fa-bed" ng-if="::hasBeenAdmitted"></i>
+                            <i ng-if="::patient[iconAttributeName] && patient[iconAttributeName].value.toString() === iconAttributeValue" class="ipd-indication custom-icon-style" ng-class="::icon" ng-style="{{::iconStyle}}"></i>
+                        </div>
                      </td>
                 </tr>
                 <tr ng-if="::showBirthDate" >
