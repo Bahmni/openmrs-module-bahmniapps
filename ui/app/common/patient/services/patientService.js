@@ -41,8 +41,10 @@ angular.module('bahmni.common.patient')
                 loginLocationUuid: sessionService.getLoginLocationUuid(),
                 patientSearchResultsConfig: customAttribute
             };
-            if (appService.getAppDescriptor().getConfigValue("filterAttributeForAllSearch")) {
-                searchParams.attributeToFilterOut = appService.getAppDescriptor().getConfigValue("filterAttributeForAllSearch");
+            const filterAttributeForSearch = appService.getAppDescriptor().getConfigValue("filterAttributeForAllSearch") || {};
+            if (filterAttributeForSearch) {
+                searchParams.attributeToFilterOut = filterAttributeForSearch.attrName;
+                searchParams.attributeValueToFilterOut = filterAttributeForSearch.attrValue;
             }
             return $http.get(Bahmni.Common.Constants.bahmniCommonsSearchUrl + "/patient/lucene", {
                 method: "GET",
