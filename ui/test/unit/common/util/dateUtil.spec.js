@@ -40,11 +40,11 @@ describe('DateUtil', function () {
         it("should calculate difference between dates when month and day are same", function () {
             var fromDate = new Date();
             var toDate = new Date();
-            toDate.setFullYear(toDate.getFullYear()+2);
+            toDate.setFullYear(toDate.getFullYear()+4);
 
             var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
-            expect(period.years).toBe(2);
+            expect(period.years).toBe(4);
             expect(period.months).toBe(0);
             expect(period.days).toBe(0);
         });

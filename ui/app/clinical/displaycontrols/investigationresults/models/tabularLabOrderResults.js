@@ -1,7 +1,7 @@
 'use strict';
 
 Bahmni.Clinical.TabularLabOrderResults = (function () {
-    var TabularLabOrderResults = function (tabularResult, accessionConfig, sortLabOrdersByName, sortResultColumnsLatestFirst) {
+    var TabularLabOrderResults = function (tabularResult, accessionConfig, sortResultColumnsLatestFirst) {
         var self = this;
         this.tabularResult = tabularResult;
 
@@ -50,11 +50,6 @@ Bahmni.Clinical.TabularLabOrderResults = (function () {
 
         this.getTestOrderLabels = function () {
             var orders = this.tabularResult.orders;
-            if (sortLabOrdersByName) {
-                orders.sort(function (a, b) {
-                    return a.testName.localeCompare(b.testName);
-                });
-            }
             return orders;
         };
 
