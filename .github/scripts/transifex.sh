@@ -15,12 +15,20 @@ if [ ! -f .tx/config ]; then
     exit 1
 fi
 
-echo "Pushing translation source file to Transifex..."
-tx push -s
+if [ "$1" == "push" ]; then
+    echo "Pushing translation source file to Transifex..."
+    tx push -s
+elif [ "$1" == "pull" ]; then
+    echo "Pulling translations from Transifex..."
+    tx pull -t -s --mode reviewed --use-git-timestamps
+else
+    echo "Invalid operation. Please specify either 'push' or 'pull'."
+    exit 1
+fi
 
 if [ $? -ne 0 ]; then
-    echo "Error: Transifex push failed. Please check the error message above."
+    echo "Error: Transifex operation failed. Please check the error message above."
     exit 1
 else
-    echo "Translation source file successfully pushed to Transifex."
+    echo "Transifex operation completed successfully."
 fi
