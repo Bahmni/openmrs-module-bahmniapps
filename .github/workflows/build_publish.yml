@@ -40,7 +40,7 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Push Translations to Transifex
         run: |
-          bash .github/scripts/transifex.sh
+          bash .github/scripts/transifex.sh push
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
       - name: Set up Docker Buildx
