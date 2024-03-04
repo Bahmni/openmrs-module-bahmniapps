@@ -296,6 +296,19 @@ describe("AddTreatmentController", function () {
             expect(scope.treatments.length).toBe(0);
         });
 
+        it("should add treatment object to list of treatments if patient weight is captured in given timeframe", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.addTreatmentWithPatientWeight = {
+                "duration": 604800,
+                "conceptNames": ["Weight"]
+            };
+            scope.currentEpoch = 1900000;
+            scope.obs = [{observationDateTime: 1890000}];
+            scope.add();
+            expect(scope.treatments.length).toBe(1);
+        });
+
         it("adds treatment object to list of treatments if newOrderSet flag is false", function () {
             var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
             treatment.isNewOrderSet = false;
