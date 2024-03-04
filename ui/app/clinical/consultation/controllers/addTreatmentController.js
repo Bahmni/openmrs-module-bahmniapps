@@ -843,7 +843,7 @@ angular.module('bahmni.clinical')
                 if (!$scope.addTreatmentWithPatientWeight.hasOwnProperty('duration')) {
                     return $scope.addForm.$valid && $scope.calculateDose(treatment);
                 } else {
-                    if ($scope.obs.length > 0 && (($scope.currentEpoch - $scope.obs[0].observationDateTime)/1000 <= $scope.addTreatmentWithPatientWeight.duration)) {
+                    if ($scope.obs.length > 0 && (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 <= $scope.addTreatmentWithPatientWeight.duration)) {
                         $scope.addToNewTreatment = true;
                         return $scope.addForm.$valid && $scope.calculateDose(treatment);
                     } else {
