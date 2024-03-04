@@ -848,7 +848,7 @@ angular.module('bahmni.clinical')
                         return $scope.addForm.$valid && $scope.calculateDose(treatment);
                     } else {
                         $scope.addToNewTreatment = false;
-                        messagingService.showMessage("error", $translate.instant("ENTER_PATIENT_WEIGHT_ERROR", { conceptNames: $scope.addTreatmentWithPatientWeight.conceptNames }));
+                        messagingService.showMessage("error", $translate.instant("ENTER_PATIENT_WEIGHT_ERROR"));
                     }
                 }
             };
