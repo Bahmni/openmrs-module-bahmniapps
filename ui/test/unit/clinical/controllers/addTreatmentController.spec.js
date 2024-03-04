@@ -175,13 +175,13 @@ describe("AddTreatmentController", function () {
             clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
-            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage', 'getConfigValue']);
             orderSetService = jasmine.createSpyObj('orderSetService', ['getCalculatedDose', 'getOrderSetsByQuery']);
             scope.patient = { uuid: "patient.uuid" };
             orderSetService.getCalculatedDose.and.returnValue(specUtil.respondWithPromise($q, {
                 dose: 20, doseUnit: 'mg'
             }));
-            locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation'])
+            locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation']);
 
             drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
             drugs = [
