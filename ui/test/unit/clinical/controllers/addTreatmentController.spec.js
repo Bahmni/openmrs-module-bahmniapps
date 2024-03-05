@@ -19,9 +19,9 @@ describe("AddTreatmentController", function () {
             "allMedicationTabConfig": {
                 "orderSet": {
                     "calculateDoseOnlyOnCurrentVisitValues": false,
-                    "showRulesInMedication":true,
+                    "showRulesInMedication": true,
                     "dosageRuleUnitsMap": {
-                        "mg/kg": ["mg","ml"]
+                        "mg/kg": ["mg", "ml"]
                     }
                 }
             }
@@ -312,7 +312,7 @@ describe("AddTreatmentController", function () {
             clinicalAppConfigService.getTreatmentActionLink.and.returnValue([]);
             appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             appConfig = jasmine.createSpyObj('appConfig', ['getConfig']);
-            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage']);
+            appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigForPage', 'getConfigValue']);
             orderSetService = jasmine.createSpyObj('orderSetService', ['getCalculatedDose', 'getOrderSetsByQuery']);
             calculateQuantityAndUnit= jasmine.createSpy('calculateQuantityAndUnit');
             scope.patient = {uuid: "patient.uuid"};
@@ -429,6 +429,31 @@ describe("AddTreatmentController", function () {
     describe("add()", function () {
         beforeEach(function () {
             scope.treatments = [];
+        });
+
+        it("should not add treatment object to list of treatments if no patient weight is captured", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.addTreatmentWithPatientWeight = {
+                "duration": 604800,
+                conceptNames: ["Weight"]
+            };
+            scope.obs = [];
+            scope.add();
+            expect(scope.treatments.length).toBe(0);
+        });
+
+        it("should add treatment object to list of treatments if patient weight is captured in given timeframe", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.addTreatmentWithPatientWeight = {
+                "duration": 604800,
+                "conceptNames": ["Weight"]
+            };
+            scope.currentEpoch = 1900000;
+            scope.obs = [{observationDateTime: 1890000}];
+            scope.add();
+            expect(scope.treatments.length).toBe(1);
         });
 
         it("adds treatment object to list of treatments if newOrderSet flag is false", function () {
