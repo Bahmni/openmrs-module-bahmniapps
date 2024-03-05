@@ -38,10 +38,9 @@ describe('DateUtil', function () {
 
     describe('diffInYearsMonthsDays', function () {
         it("should calculate difference between dates when month and day are same", function () {
-            var fromDate = new Date();
-            var toDate = new Date();
-            toDate.setFullYear(toDate.getFullYear()+4);
-
+            var fromDate = new Date("2020-01-15");
+            var toDate = new Date("2024-01-15");
+            
             var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
             expect(period.years).toBe(4);
