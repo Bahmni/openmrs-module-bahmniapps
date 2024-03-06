@@ -9,7 +9,11 @@ angular.module('bahmni.clinical')
             var sharePrescriptionToggles = {"prescriptionEmailToggle": $rootScope.prescriptionEmailToggle};
             var printParams = treatmentConfigParams.prescriptionPrint || {};
             printParams.locationName = $rootScope.facilityLocation.name;
-            printParams.locationAddress = $rootScope.facilityLocation.attributes[0] ? $rootScope.facilityLocation.attributes[0].display.split(":")[1].trim() : null;
+
+            const printHeaderAttributes = $rootScope.facilityLocation.attributes.filter(function (attribute) {
+                return attribute.display.includes('Print Header') && !attribute.voided;
+            });
+            printParams.locationAddress = printHeaderAttributes[0] ? printHeaderAttributes[0].display.split(":")[1].trim() : null;
 
             $scope.dashboardConfig = {};
             $scope.expandedViewConfig = {};
@@ -39,3 +43,4 @@ angular.module('bahmni.clinical')
 
             $scope.$on("$destroy", cleanUpListener);
         }]);
+
