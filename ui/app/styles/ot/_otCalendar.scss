@@ -27,7 +27,8 @@
       float: left;
       padding: 10px 0;
       border-bottom: 1px solid #ddd;
-      font-family: OpenSansSemiBold;
+      border-top: 1px solid #ddd;
+      font-family: OpenSansSemiBold, serif;
     }
   }
   .day-heading{
@@ -61,6 +62,8 @@
   .provider-location-name{
     display: grid;
     grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    margin-top: 15px;
     overflow-x: scroll;
   }
   .notes-text{
