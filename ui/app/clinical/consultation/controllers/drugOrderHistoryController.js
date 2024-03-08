@@ -98,11 +98,11 @@ angular.module('bahmni.clinical')
                 });
             };
 
-            $scope.selectAllDrugs = function (drugOrderGroup,index) {
-                    if(!$scope.autoSelectNotAllowed) {
-                    angular.forEach(drugOrderGroup.drugOrders, function (drugOrder){
-                        $scope.selectedDrugs[`${index}/${drugOrder.uuid}`] = true
-                    })
+            $scope.selectAllDrugs = function (drugOrderGroup, index) {
+                if (!$scope.autoSelectNotAllowed) {
+                    angular.forEach(drugOrderGroup.drugOrders, function (drugOrder) {
+                        $scope.selectedDrugs[index + "/" + drugOrder.uuid] = true;
+                    });
                 }
             };
 
