@@ -55,7 +55,12 @@ angular.module('bahmni.orders').controller('OrderFulfillmentController', ['$scop
         };
 
         var getObservationsForOrders = function () {
-            var orderLabelConcept = appService.getAppDescriptor().getConfigValue("orderLabelConcept");
+            var orderLabelConcept;
+            angular.forEach($scope.sections, function (section, key) {
+                if (key === $scope.formName) {
+                    orderLabelConcept = $scope.sections[key].orderLabelConcept;
+                }
+            });
             if (orderLabelConcept) {
                 return observationsService.fetch(patientContext.patient.uuid, [orderLabelConcept], null, $scope.config.numberOfVisits, $scope.visitUuid, null, false)
                 .then(function (response) {
@@ -88,8 +93,41 @@ angular.module('bahmni.orders').controller('OrderFulfillmentController', ['$scop
             order.showForm = !order.showForm;
         };
 
+        $scope.isOrderFromOrdersTab = function () {
+            return $scope.sections[$scope.formName].type == "order";
+        };
+
+        $scope.isOrderFromForms = function () {
+            return $scope.sections[$scope.formName].type == "form";
+        };
+
         var init = function () {
-            return getActiveEncounter().then(getObservationsForOrders).then($scope.getOrders);
+            $scope.sections = appService.getAppDescriptor().getConfigValue("sections");
+            return getActiveEncounter().then(getObservationsForOrders).then(function () {
+                if ($scope.isOrderFromOrdersTab()) {
+                    $scope.getOrders();
+                } else if ($scope.isOrderFromForms()) {
+                    observationsService.fetch($scope.patient.uuid, $scope.sections[$scope.formName].conceptNames, null, null, null, null, null, null).then(function (response) {
+                        var orders = _.chain(response.data)
+                        .groupBy('visitStartDateTime')
+                        .value();
+                        angular.forEach(orders, function (order, key) {
+                            order.formName = $scope.orderType;
+                            order.orderDate = key;
+                            order.showForm = true;
+                            order.hasObservations = false;
+                            order.bahmniObservations = [];
+                        });
+                        $scope.orders = orders;
+                    });
+                    observationsService.fetch($scope.patient.uuid, $scope.config.conceptNames, null, null, null, null, null, null).then(function (response) {
+                        var obs = _.chain(response.data)
+                        .groupBy('visitStartDateTime')
+                        .value();
+                        console.log(obs);
+                    });
+                }
+            });
         };
 
         spinner.forPromise(init());
@@ -115,26 +153,40 @@ angular.module('bahmni.orders').controller('OrderFulfillmentController', ['$scop
                 $scope.$parent.$broadcast("event:errorsOnForm");
                 return $q.when({});
             }
-            var savePromise = orderObservationService.save($scope.orders, $scope.patient, sessionService.getLoginLocationUuid());
-            spinner.forPromise(savePromise.then(function () {
-                $state.transitionTo($state.current, $state.params, {
-                    reload: true,
-                    inherit: false,
-                    notify: true
-                }).then(function () {
-                    messagingService.showMessage('info', 'Saved');
+            if ($scope.isOrderFromOrdersTab()) {
+                var savePromise = orderObservationService.save($scope.orders, $scope.patient, sessionService.getLoginLocationUuid());
+                spinner.forPromise(savePromise.then(function () {
+                    $state.transitionTo($state.current, $state.params, {
+                        reload: true,
+                        inherit: false,
+                        notify: true
+                    }).then(function () {
+                        messagingService.showMessage('info', 'Saved');
+                    });
+                }).catch(function (error) {
+                    var message = $translate.instant("DEFAULT_SERVER_ERROR_MESSAGE");
+                    try {
+                    /* This is a dirty fix to do, the real reason of failure is because of there is no visit type assosiated with
+                    save request to create a new visit in mrs.
+                    */
+                        if (error.data.error.message.indexOf("Visit Type is required") >= 0) {
+                            message = $translate.instant("VISIT_CLOSED_CREATE_NEW_ERROR_MESSAGE");
+                        }
+                    } catch (e) { /* ignore the error */ }
+                    messagingService.showMessage('error', message);
+                }
+                ));
+            } else if ($scope.isOrderFromForms()) {
+                var bahmniObs = [];
+                angular.forEach($scope.orders, function (order) {
+                    bahmniObs.push.apply(bahmniObs, order.bahmniObservations);
                 });
-            }).catch(function (error) {
-                var message = $translate.instant("DEFAULT_SERVER_ERROR_MESSAGE");
-                try {
-                /* This is a dirty fix to do, the real reason of failure is because of there is no visit type assosiated with
-                 save request to create a new visit in mrs.
-                  */
-                    if (error.data.error.message.indexOf("Visit Type is required") >= 0) {
-                        message = $translate.instant("VISIT_CLOSED_CREATE_NEW_ERROR_MESSAGE");
-                    }
-                } catch (e) { /* ignore the error */ }
-                messagingService.showMessage('error', message);
-            }));
+                console.log($scope.encounter, "Pre");
+                $scope.encounter.observations.push.apply($scope.encounter.observations, bahmniObs);
+                console.log($scope.encounter);
+                encounterService.create($scope.encounter).then(function () {
+                    console.log("hi", response.data);
+                });
+            }
         });
     }]);

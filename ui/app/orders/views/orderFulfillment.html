@@ -1,45 +1,78 @@
 <div>
     <div>
         <patient-context patient="patient"></patient-context>
-        <div class="order-fulfillment-container">
-        <div ng-repeat="order in orders" class="concept-set-group section-grid order-fulfillment">
-            <div id="{{order.orderUuid}}" style="position: relative;">
-                <div class="concept-set-title" ng-click="toggleShowOrderForm(order)">
-                    <h2 class="section-title">
-                        <i class="fa fa-caret-right" ng-hide="order.showForm"></i>
-                        <i class="fa fa-caret-down" ng-show="order.showForm"></i>
-                        <span>{{'ORDER_NAME' | translate}}: {{order.concept.shortName || order.concept.name}}
-                            | {{'ORDER_DATE' | translate}}: {{order.orderDate | bahmniDateTime}} </span>
-                        <!--<span class="fr">-->
-                        <!--<span class="has-notes fa fa-file-text-o" ng-if="order.commentToFulfiller"></span>-->
-                        <!--<span class="order-provider-nane">{{order.provider}}</span>-->
-                        <!--<span class="order-created-date">{{order.orderDate | bahmniDateTime}}</span>-->
-                        <!--</span>-->
+        <div ng-if="isOrderFromOrdersTab()" class="order-fulfillment-container">
+            <div ng-repeat="order in orders" class="concept-set-group section-grid order-fulfillment">
+                <div id="{{order.orderUuid}}" style="position: relative;">
+                    <div class="concept-set-title" ng-click="toggleShowOrderForm(order)">
+                        <h2 class="section-title">
+                            <i class="fa fa-caret-right" ng-hide="order.showForm"></i>
+                            <i class="fa fa-caret-down" ng-show="order.showForm"></i>
+                            <span ng-if="isOrderFromOrdersTab()">{{'ORDER_NAME' | translate}}: {{order.concept.shortName || order.concept.name}}
+                                | {{'ORDER_DATE' | translate}}: {{order.orderDate | bahmniDateTime}} </span>
+                            <!--<span class="fr">-->
+                            <!--<span class="has-notes fa fa-file-text-o" ng-if="order.commentToFulfiller"></span>-->
+                            <!--<span class="order-provider-nane">{{order.provider}}</span>-->
+                            <!--<span class="order-created-date">{{order.orderDate | bahmniDateTime}}</span>-->
+                            <!--</span>-->
 
-                        <span ng-if="!order.hasObservations" class="order-label">New</span>
-                        <span ng-if="selectedOrderLabel[order.orderUuid]" class="order-label">{{selectedOrderLabel[order.orderUuid]}} </span>
-                    </h2>
-                </div>
-                <div ng-if="order.showForm">
-                    <orders-control patient="patient" order-uuid="order.orderUuid" config="config" message="message"
-                                    show-title="false"></orders-control>
-                    <div class="order-note">
-                        <i ng-if="::(order.urgency === 'STAT')" class="fa fa-exclamation-triangle fa-orange show-before-active"></i>
-                        <i ng-if="::order.commentToFulfiller" class="fa fa-comments"></i>
-                        <span ng-if="::order.commentToFulfiller" class="note">{{order.commentToFulfiller}}<br><br></span>
-                        <span>Provider: {{order.provider}}</span>
+                            <span ng-if="!order.hasObservations" class="order-label">New</span>
+                            <span ng-if="selectedOrderLabel[order.orderUuid]" class="order-label">{{selectedOrderLabel[order.orderUuid]}} </span>
+                        </h2>
                     </div>
-                    <concept-set patient="patient" ng-if="order.showForm"
-                                 concept-set-name="formName"
-                                 observations="order.bahmniObservations" show-title="false" section-id="order.orderUuid">
-                    </concept-set>
+                    <div ng-if="order.showForm">
+                        <orders-control patient="patient" order-uuid="order.orderUuid" config="config" message="message"
+                                        show-title="false"></orders-control>
+                        <div class="order-note">
+                            <i ng-if="::(order.urgency === 'STAT')" class="fa fa-exclamation-triangle fa-orange show-before-active"></i>
+                            <i ng-if="::order.commentToFulfiller" class="fa fa-comments"></i>
+                            <span ng-if="::order.commentToFulfiller" class="note">{{order.commentToFulfiller}}<br><br></span>
+                            <span>Provider: {{order.provider}}</span>
+                        </div>
+                            <concept-set patient="patient" ng-if="order.showForm"
+                                        concept-set-name="formName"
+                                        observations="order.bahmniObservations" show-title="false" section-id="order.orderUuid">
+                            </concept-set>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
-
+        <div ng-if="isOrderFromForms()" class="order-fulfillment-container">
+            <div ng-repeat="order in orders" class="concept-set-group section-grid order-fulfillment">
+                <div id="{{order.orderUuid}}" style="position: relative;">
+                    <div class="concept-set-title" ng-click="toggleShowOrderForm(order)">
+                        <h2 class="section-title">
+                            <i class="fa fa-caret-right" ng-hide="order.showForm"></i>
+                            <i class="fa fa-caret-down" ng-show="order.showForm"></i>
+                            <span ng-if="isOrderFromForms()">{{'ORDER_NAME' | translate}}: {{order.formName}}
+                                | {{'ORDER_DATE' | translate}}: {{order.orderDate | bahmniDateTime}} </span>
+                            <span ng-if="!order.hasObservations" class="order-label">New</span>
+                            <span ng-if="selectedOrderLabel[order.orderUuid]" class="order-label">{{selectedOrderLabel[order.orderUuid]}} </span>
+                        </h2>
+                    </div>
+                    <div ng-if="order.showForm">
+                        <orders-control patient="patient" order-uuid="order.orderUuid" config="config" message="message"
+                                        show-title="false"></orders-control>
+                        <div class="order-note">
+                            <i ng-if="::(order.urgency === 'STAT')" class="fa fa-exclamation-triangle fa-orange show-before-active"></i>
+                            <i ng-if="::order.commentToFulfiller" class="fa fa-comments"></i>
+                            <span ng-if="::order.commentToFulfiller" class="note">{{order.commentToFulfiller}}<br><br></span>
+                            <span>Provider: {{order.provider}}</span>
+                        </div>
+                            <concept-set patient="patient" ng-if="order.showForm"
+                                        concept-set-name="formName"
+                                        observations="order.bahmniObservations" show-title="false" section-id="order.orderUuid">
+                            </concept-set>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
-    <div ng-show="orders && orders.length == 0">
+    <div ng-show="orders && isOrderFromOrdersTab() && orders.length == 0">
+        <div class="placeholder-text">{{getEmptyMessage()}}</div>
+    </div>
+    <div ng-show="orders && isOrderFromForms() && orders.length == 0">
         <div class="placeholder-text">{{getEmptyMessage()}}</div>
     </div>
 </div>
