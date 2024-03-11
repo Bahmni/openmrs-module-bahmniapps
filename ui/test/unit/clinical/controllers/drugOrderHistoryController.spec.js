@@ -98,6 +98,26 @@ describe("DrugOrderHistoryController", function () {
         it("should get prescribed and active Drugorders with correct no of visits ", function () {
             expect(_treatmentService.getPrescribedDrugOrders).toHaveBeenCalledWith("patientUuid", true, 4, undefined, undefined);
         });
+        it("should selectAllDrugs for print", function () {
+            translate.instant.and.returnValue("Recent");
+            initController();
+            expect(scope.consultation.drugOrderGroups.length).toBe(3);
+
+            scope.selectAllDrugs(scope.consultation.drugOrderGroups[0], 0);
+            expect(Object.keys(scope.selectedDrugs).length).toBe(3);
+            expect()
+        })
+        it("should selectAllDrugs for print", function () {
+            translate.instant.and.returnValue("Recent");
+            initController();
+            expect(scope.consultation.drugOrderGroups.length).toBe(3);
+            
+            scope.autoSelectNotAllowed = true
+
+            scope.selectAllDrugs(scope.consultation.drugOrderGroups[0], 0);
+            expect(Object.keys(scope.selectedDrugs).length).toBe(0);
+            expect()
+        })
     });
 
     describe("when conditionally enable or disable order reason text for drug stoppage", function () {
