@@ -33,7 +33,9 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                         $scope.openCareView = function () {
                             $scope.showCareViewDashboard = true;
                         };
-                        $scope.hostData = {};
+                        $scope.hostData = {
+                            provider: $rootScope.currentProvider
+                        };
                         $scope.hostApi = {
                             onHome: function () {
                                 $scope.showCareViewDashboard = false;
