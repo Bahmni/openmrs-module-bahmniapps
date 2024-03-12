@@ -6,7 +6,12 @@ on:
       - 'release-*'
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
-
+  workflow_run:
+    workflows: [Pull Translations from Transifex]
+    types: [completed]
+    branches:
+      - master
+      - 'release-*'
   workflow_dispatch:
 
 jobs:
