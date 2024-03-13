@@ -178,7 +178,7 @@ angular.module('bahmni.clinical')
             return filteredProviderAttributes;
         };
 
-        var printSelectedPrescriptions = function (drugOrdersForPrint, patient, additionalInfo) {
+        var printSelectedPrescriptions = function (printPrescriptionFeatureConfig, drugOrdersForPrint, patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries, allergiesData) {
             if (drugOrdersForPrint.length > 0) {
                 var encounterDrugOrderMap = Object.values(drugOrdersForPrint.reduce(function (orderMap, item) {
                     const providerUuid = item.provider.uuid;
@@ -192,10 +192,24 @@ angular.module('bahmni.clinical')
                     return orderMap;
                 }, {}));
 
-                var printParams = appService.getAppDescriptor().getConfigValue("prescriptionPrint") || {};
-                var templateUrl = appService.getAppDescriptor().getConfigValue("prescriptionPrintTemplateUrl") || '../common/displaycontrols/prescription/views/prescription.html';
+                var printParams = {
+                    title: printPrescriptionFeatureConfig.title || "",
+                    header: printPrescriptionFeatureConfig.header || "",
+                    logo: printPrescriptionFeatureConfig.logo || ""
+                };
+                var templateUrl = printPrescriptionFeatureConfig.templateUrl || '../common/displaycontrols/prescription/views/prescription.html';
                 var fileName = patient.givenName + patient.familyName + "_" + patient.identifier + "_Prescription";
-                printer.print(templateUrl, {patient: patient, encounterDrugOrderMap: encounterDrugOrderMap, printParams: printParams, additionalInfo: additionalInfo }, fileName);
+                const printData = {
+                    patient: patient,
+                    encounterDrugOrderMap: encounterDrugOrderMap,
+                    printParams: printParams,
+                    additionalInfo: additionalInfo,
+                    diagnosesCodes: diagnosesCodes,
+                    dispenserInfo: dispenserInfo,
+                    observationsEntries: observationsEntries,
+                    allergies: allergiesData
+                };
+                printer.print(templateUrl, printData, fileName);
             }
         };
 

@@ -223,7 +223,7 @@ describe("ReportsController", function () {
 
     const previousMonthTestCases = [
         { currentDate: '1-Dec-2022', expectedStartDate: '1-Nov-2022', expectedStopDate: '30-Nov-2022' },
-        { currentDate: '3-Jan-2023', expectedStartDate: '1-Dec-2022', expectedStopDate: '31-Dec-2024' },
+        { currentDate: '3-Jan-2023', expectedStartDate: '1-Dec-2022', expectedStopDate: '31-Dec-2022' },
         { currentDate: '5-Mar-2023', expectedStartDate: '1-Feb-2023', expectedStopDate: '28-Feb-2023' },
         { currentDate: '5-Mar-2024', expectedStartDate: '1-Feb-2024', expectedStopDate: '29-Feb-2024' }
     ];

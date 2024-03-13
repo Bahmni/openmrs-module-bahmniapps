@@ -16,7 +16,6 @@ angular.module('bahmni.clinical')
             $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
             $scope.selectedDrugs = {};
 
-
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
                 $scope.consultation.drugOrderGroups = [];
                 createPrescribedDrugOrderGroups();
