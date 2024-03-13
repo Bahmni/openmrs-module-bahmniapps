@@ -44,6 +44,12 @@ describe("DrugOrderHistoryController", function () {
         retrospectiveEntryService.getRetrospectiveEntry.and.returnValue(retrospectiveEntry);
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         visitHistory = {};
+        appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+                appService.getAppDescriptor.and.returnValue({
+                    getConfigValue: function (config) {
+                        return false;
+                    }
+                });
     }));
 
     var initController = function () {
@@ -57,7 +63,8 @@ describe("DrugOrderHistoryController", function () {
             visitContext: {},
             spinner: spinner,
             visitHistory: visitHistory,
-            treatmentConfig: treatmentConfig
+            treatmentConfig: treatmentConfig,
+            appService: appService
         });
         rootScope.$apply();
     };
