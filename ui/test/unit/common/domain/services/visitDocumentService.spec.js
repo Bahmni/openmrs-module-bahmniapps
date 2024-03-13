@@ -1,7 +1,7 @@
 "use strict";
 
 describe("visitDocumentService", function () {
-    var _$http, _provide, visitDocumentService, _auditLogService, _configurations;
+    var _$http, _provide, visitDocumentService, _auditLogService, _configurations, messagingService, translate, roundToNearestHalf;
     beforeEach(function () {
         module('bahmni.common.domain');
         module(function ($provide) {
@@ -14,11 +14,15 @@ describe("visitDocumentService", function () {
             _configurations = jasmine.createSpyObj("configurations", ["encounterConfig"]);
             _configurations.encounterConfig.and.returnValue(encounterConfig);
             _provide = $provide;
+            messagingService = jasmine.createSpyObj('messagingService', ['showMessage', 'clearAll']);
+            translate = jasmine.createSpyObj('$translate', ['instant']);
         });
         inject(function () {
             _provide.value('$http', _$http);
             _provide.value('auditLogService', _auditLogService);
             _provide.value('configurations', _configurations);
+            _provide.value('messagingService', messagingService);
+            _provide.value('$translate', translate);
         });
         inject(function (_visitDocumentService_) {
             visitDocumentService = _visitDocumentService_;
@@ -154,6 +158,46 @@ describe("visitDocumentService", function () {
         expect(_$http.post).toHaveBeenCalledWith(Bahmni.Common.Constants.RESTWS_V1 + "/bahmnicore/visitDocument", visitDocuments);
         expect(_auditLogService.log).toHaveBeenCalledWith(visitDocuments.patientUuid, 'OPEN_VISIT', {visitUuid: visitDocumentResponse.visitUuid, visitType: "OPD"}, "Patient Document");
         expect(_auditLogService.log).toHaveBeenCalledWith(visitDocuments.patientUuid, 'EDIT_ENCOUNTER', {encounterUuid: visitDocumentResponse.encounterUuid, encounterType: "Patient Document"}, "Patient Document");
+    });
+
+    it('should throw error when uploading files greater than maximum allowed size', function (done) {
+        var file = "data:image/jpeg;base64asldkjfldasflladsfjaldsfkdsaklf";
+        var patientUuid = "test-patient-uuid";
+        var encounterTypeName = "test-encounter-name";
+        var fileName = "test-file.jpeg";
+        var fileType = "image";
+        var data = {error: {message: "The file size exceeds the maximum allowed limit"}};
+        var maxAllowedSize = 7;
+    
+        _$http.post.and.returnValue(specUtil.respondWithPromise(Q, {error: data}));
+    
+        visitDocumentService.saveFile(file, patientUuid, encounterTypeName, fileName, fileType).then(function (response) {
+            fail("The success callback should not be called");
+        }).catch(function (error) {
+            expect(error.data.error.message).toEqual(data.error.message);
+            expect(messagingService.showMessage).toHaveBeenCalledWith("error", jasmine.any(String));
+            expect(messagingService.showMessage.calls.argsFor(0)[1]).toContain(maxAllowedSize * 0.70); 
+        }).finally(done);
+    });
+        
+    describe("roundToNearestHalf", function () {
+        beforeEach(inject(function() {
+            roundToNearestHalf = function (value) {
+                var floorValue = Math.floor(value);
+                if ((value - floorValue) < 0.5) {
+                    return floorValue;
+                }
+                return floorValue + 0.5;
+            };
+        }));
+        it('should round to nearest half when value is greater than or equal to 0.5', function() {
+            expect(roundToNearestHalf(3.7)).toBe(3.5);
+            expect(roundToNearestHalf(6.9)).toBe(6.5);
+            expect(roundToNearestHalf(4.2)).toBe(4);
+            expect(roundToNearestHalf(7.4)).toBe(7);
+            expect(roundToNearestHalf(4.5)).toBe(4.5);
+            expect(roundToNearestHalf(5.5)).toBe(5.5);
+        });
     });
 
     describe("getFileType", function () {
