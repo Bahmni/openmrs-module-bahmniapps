@@ -17,7 +17,8 @@
                 <tbody>
                     <tr ng-repeat="testOrderLabel in accessions.getTestOrderLabels()">
                         <td class="normal fixed-column">
-                            <span bo-text="testOrderLabel.testName"></span>
+                            <span ng-if="!testOrderLabel.isPanel" bo-text="testOrderLabel.testName" ng-style="{'padding-left': params.chartConfig.groupByPanel && testOrderLabel.panelName ? '20px' : ''}"></span>
+                            <span ng-if="testOrderLabel.isPanel" bo-text="testOrderLabel.orderName" class="labPanel"></span>
                             <span ng-show="::accessions.hasRange(testOrderLabel)" class="range">
                                 <span bo-text="'(' + testOrderLabel.minNormal + ' - ' + testOrderLabel.maxNormal + ')'"></span>
                             </span>

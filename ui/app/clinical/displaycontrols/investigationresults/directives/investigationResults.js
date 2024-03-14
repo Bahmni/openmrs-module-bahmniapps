@@ -17,8 +17,8 @@ angular.module('bahmni.clinical')
                 visitUuids: $scope.params.visitUuids,
                 initialAccessionCount: $scope.params.initialAccessionCount,
                 latestAccessionCount: $scope.params.latestAccessionCount,
-                sortLabOrdersByName: $scope.params.chartConfig.sortLabOrdersByName,
-                sortResultColumnsLatestFirst: $scope.params.chartConfig.sortResultColumnsLatestFirst
+                sortResultColumnsLatestFirst: $scope.params.chartConfig.sortResultColumnsLatestFirst,
+                groupOrdersByPanel: $scope.params.chartConfig.groupByPanel
             };
             $scope.initialization = labOrderResultService.getAllForPatient(params)
                 .then(function (results) {
