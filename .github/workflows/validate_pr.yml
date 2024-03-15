@@ -21,5 +21,13 @@ jobs:
       - run: npm install -g grunt-cli 
       - run: gem install compass  
       - run: npm install --global yarn
+      - name: Install dependencies
+        run: cd ui && yarn install
+      - name: Run tests
+        run: cd ui && yarn test
+      - name: Run linter
+        run: cd ui && yarn lint
+      - name: Build
+        run: cd ui && yarn build
       - name: Package
         run : cd ui && yarn cache clean && /bin/bash ./scripts/package.sh

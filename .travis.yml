@@ -14,7 +14,7 @@ before_install:
 install:
   - npm install -g yarn
   - gem install compass
-  - cd ui && yarn
+  - cd ui && yarn install
   - cat npm-debug.log || true
 
 script: yarn ci
