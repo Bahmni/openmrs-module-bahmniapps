@@ -115,16 +115,32 @@ export function FormDisplayControl(props) {
     setEditFormLoading(true);
     setEditObservationForm(true);
     const data = await findByEncounterUuid(formMap.encounterUuid)
+    const filteredFormObs = data.observations.filter(obs =>
+      obs.formFieldPath?.includes(formName)
+    );
     setFormName(formName);
     setEncounterUuid(encounterUuid);
-    setFormData(data.observations);
+    setFormData(filteredFormObs);
   };
 
-  const closeViewObservationForm = () => setViewObservationForm(false);
+  const closeViewObservationForm = () => {
+    setFormData([]);
+    setFormName("");
+    setViewObservationForm(false);
+  }
   const closeEditObservationForm = () => {
     setFormData([]);
     setFormName("");
     setEditObservationForm(false);
+  }
+
+  const printForm = () => {
+    formData.map(function(obs) {
+      if (obs?.groupMembers?.length > 0) {
+        obs.encounterDateTime = obs?.groupMembers[0].encounterDateTime;
+      }
+    })
+    props?.hostApi?.printForm(formData);
   }
 
   useEffect(() => {
@@ -227,6 +243,8 @@ export function FormDisplayControl(props) {
                   formName={formName}
                   closeViewObservationForm={closeViewObservationForm}
                   formData={formData}
+                  showPrintOption={props?.hostData?.showPrintOption}
+                  printForm={printForm}
                 />
               ) : null}
               {showEditObservationForm ? (

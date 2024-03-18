@@ -8,7 +8,7 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                     var config = angular.extend(baseTreatmentConfig, result.data);
                     config.frequencies = _(config.frequencies)
                         .reverse()
-                        .sortBy({'name': 'Immediately'})
+                        .sortBy({'uuid': '0'})
                         .sortBy({'name': 'SOS'})
                         .reverse()
                         .value();
@@ -84,6 +84,9 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                     isAutoCompleteForAllConcepts: function () {
                         return !(this.getDrugConceptSet());
                     },
+                    isACheckBox: function () {
+                        return drugOrderOptions.asNeededToBeACheckbox;
+                    },
                     showAdditionalInformation: function () {
                         var additionalInformationFields = ["sos", "additionalInstructions", "dosingInstructions"];
                         var hiddenAdditionalInformationFields = _.intersection(additionalInformationFields, drugOrderOptions.hiddenFields);
@@ -118,6 +121,11 @@ angular.module('bahmni.clinical').factory('treatmentConfig',
                     tabConfig.durationUnits = tabConfig.inputOptionsConfig.durationUnitsFactors || defaultDurationUnitsFactors;
 
                     tabConfig.orderSet = tabConfig.orderSet || {};
+                    if (tabConfig.orderSet && tabConfig.orderSet.hideDefaultRuleList) {
+                        medicationTabConfig.dosingRules = medicationTabConfig.dosingRules.filter(function (item) {
+                            return tabConfig.orderSet.hideDefaultRuleList.indexOf(item) === -1;
+                        });
+                    }
                     var showDoseFractions = tabConfig.inputOptionsConfig.showDoseFractions;
                     tabConfig.inputOptionsConfig.showDoseFractions = showDoseFractions ? showDoseFractions : false;
                     tabConfig.drugOrderHistoryConfig = tabConfig.drugOrderHistoryConfig || {};

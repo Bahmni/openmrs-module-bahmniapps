@@ -1,7 +1,7 @@
 'use strict';
 
 describe("BahmniObservation", function () {
-    var appService, scope, $compile, mockBackend, observationsService, q, spinner, formHierarchyService, encounterService, providerInfoService;
+    var appService, scope, $compile, mockBackend, observationsService, q, spinner, formHierarchyService, encounterService, providerInfoService, formPrintService;
     var simpleHtml = '<bahmni-observation section="section" patient="patient" is-on-dashboard="true" config="config" enrollment="enrollment" observations="observations"></bahmni-observation>';
 
     beforeEach(module('ngHtml2JsPreprocessor'));
@@ -28,6 +28,7 @@ describe("BahmniObservation", function () {
         formHierarchyService = jasmine.createSpyObj('formHierarchyService',['build']);
         encounterService = jasmine.createSpyObj('encounterService',['findByEncounterUuid']);
         providerInfoService = jasmine.createSpyObj('providerInfoService', ['setProvider']);
+        formPrintService = jasmine.createSpyObj('formPrintService', ['printForm']);
         formHierarchyService.build.and.returnValue(null);
 
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
@@ -46,6 +47,7 @@ describe("BahmniObservation", function () {
         $provide.value('formHierarchyService',formHierarchyService);
         $provide.value('encounterService',encounterService);
         $provide.value('providerInfoService',providerInfoService);
+        $provide.value('formPrintService',formPrintService);
     }));
 
     beforeEach(inject(function (_$compile_, $rootScope, $httpBackend, $q) {

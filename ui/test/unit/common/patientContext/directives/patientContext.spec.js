@@ -8,7 +8,7 @@ describe('patient context', function () {
         $provide.value('patientService', patientService);
     }));
 
-    beforeEach(module('bahmni.clinical', function ($provide) {
+    beforeEach(module('bahmni.common.patientContext', function ($provide) {
         spinner = jasmine.createSpyObj('spinner', ['forPromise']);
         mockAppDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
         mockAppService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
@@ -27,7 +27,7 @@ describe('patient context', function () {
         $compile = _$compile_;
         scope.patient = {uuid: '123'};
         mockBackend = $httpBackend;
-        mockBackend.expectGET('displaycontrols/patientContext/views/patientContext.html').respond("<div>dummy</div>");
+        mockBackend.expectGET('../common/patient-context/views/patientContext.html').respond("<div>dummy</div>");
     }));
 
     describe('initialization', function () {

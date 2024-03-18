@@ -2,9 +2,9 @@
 
 angular.module('bahmni.common.displaycontrol.observation')
     .directive('bahmniObservation', ['encounterService', 'observationsService', 'appService', '$q', 'spinner', '$rootScope',
-        'formRecordTreeBuildService', '$translate', 'providerInfoService',
+        'formRecordTreeBuildService', '$translate', 'providerInfoService', 'formPrintService',
         function (encounterService, observationsService, appService, $q, spinner, $rootScope,
-                  formRecordTreeBuildService, $translate, providerInfoService) {
+                  formRecordTreeBuildService, $translate, providerInfoService, formPrintService) {
             var controller = function ($scope) {
                 $scope.print = $rootScope.isBeingPrinted || false;
 
@@ -69,20 +69,18 @@ angular.module('bahmni.common.displaycontrol.observation')
                 var fetchFormSpecificObs = function (formName) {
                     var obsFormNameAndVersion;
                     var getFormNameAndVersion = Bahmni.Common.Util.FormFieldPathUtil.getFormNameAndVersion;
-                    $scope.bahmniObservations.forEach(function (bahmniObs, index) {
+                    for (var index = $scope.bahmniObservations.length - 1; index >= 0; index--) {
+                        var bahmniObs = $scope.bahmniObservations[index];
                         bahmniObs.value = _.filter(bahmniObs.value, function (observation) {
                             if (observation.formFieldPath) {
                                 obsFormNameAndVersion = getFormNameAndVersion(observation.formFieldPath);
-                                if (formName.toUpperCase() === obsFormNameAndVersion.formName.toUpperCase()) {
-                                    return observation;
-                                }
+                                return formName.toUpperCase() === obsFormNameAndVersion.formName.toUpperCase();
                             }
                         });
                         if (bahmniObs.value.length <= 0) {
                             $scope.bahmniObservations.splice(index, 1);
                         }
-                    });
-                    console.log("$scope.bahmniObservations -- ", $scope.bahmniObservations);
+                    }
                 };
 
                 var fetchObservations = function () {
@@ -151,6 +149,20 @@ angular.module('bahmni.common.displaycontrol.observation')
                     "patient": $scope.patient,
                     "section": $scope.section
                 };
+
+                $scope.$on("event:printForm", function (event, dashboardConfig) {
+                    var printData = {};
+                    printData.bahmniObservations = $scope.bahmniObservations;
+                    $scope.bahmniObservations.forEach(function (obs) {
+                        printData.title = obs.value[0].concept.name;
+                    });
+                    printData.patient = $scope.patient;
+                    printData.printConfig = dashboardConfig ? dashboardConfig.printing : {};
+                    printData.printConfig.header = printData.title;
+                    if ($scope.bahmniObservations && $scope.config.encounterUuid && $scope.patient) {
+                        formPrintService.printForm(printData, $scope.config.encounterUuid, $rootScope.facilityLocation);
+                    }
+                });
             };
 
             var link = function ($scope, element) {

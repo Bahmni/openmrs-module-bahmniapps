@@ -5,6 +5,7 @@
     width: 80%;
     height: 84%;
     max-width: 1180px;
+    top: 96px;
   }
 
   .bx--modal-content {
@@ -122,5 +123,18 @@
 
   .is-abnormal {
     color: red;
+  }
+
+  @media (min-width: 42rem) {
+    .bx--modal-container {
+      position: fixed;
+    }
+  }
+
+  .print-button {
+    position: fixed;
+    z-index: 500;
+    right: 30px;
+    top: 40px;
   }
 }

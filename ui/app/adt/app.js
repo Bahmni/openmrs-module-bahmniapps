@@ -28,8 +28,20 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             views: {
                 'content': {
                     templateUrl: 'views/home.html',
-                    controller: function ($scope, appService) {
+                    controller: function ($rootScope, $scope, appService) {
+                        $scope.showCareViewDashboard = false;
+                        $scope.openCareView = function () {
+                            $scope.showCareViewDashboard = true;
+                        };
+                        $scope.hostData = {};
+                        $scope.hostApi = {
+                            onHome: function () {
+                                $scope.showCareViewDashboard = false;
+                                $scope.$apply();
+                            }
+                        };
                         $scope.isBedManagementEnabled = appService.getAppDescriptor().getConfig("isBedManagementEnabled").value;
+                        $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
                     }
                 },
                 'wards@home': {
@@ -53,18 +65,21 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             views: {
                 'header': {
                     templateUrl: 'views/headerAdt.html',
-                    controller: function ($scope) {
+                    controller: function ($scope, appService) {
                         $scope.showClinicalDashboardLink = true;
+                        $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
                     }
                 },
                 'content': {
                     template: '<ui-view/>'
                 },
                 'additional-header': {
-                    templateUrl: '../common/patient/header/views/header.html'
+                    templateUrl: '../common/patient/header/views/header.html',
+                    controller: function ($scope, appService) {
+                        $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
+                    }
                 }
             },
-
             resolve: {
                 patientResolution: function ($stateParams, patientInitialization) {
                     return patientInitialization($stateParams.patientUuid);

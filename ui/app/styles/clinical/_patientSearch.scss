@@ -88,6 +88,8 @@
     }
 
     .ward-details-container {
+        display: flex;
+        flex-direction: column;
         table {
             &.patient-list-table {
                 th {

@@ -36,6 +36,13 @@ angular.module('bahmni.clinical')
                         !drugOrder.isActive() || !drugOrder.isDiscontinuedAllowed ||
                         $scope.consultation.encounterUuid !== drugOrder.encounterUuid;
                 };
+
+                $scope.disableEditButton = function (drugOrder) {
+                    return ($scope.medicationSchedules &&
+                        $scope.medicationSchedules.some(function (schedule) {
+                            return schedule.order.uuid === drugOrder.uuid;
+                        }));
+                };
             }
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
@@ -65,6 +72,7 @@ angular.module('bahmni.clinical')
                 var refillableDrugOrders = drugOrderHistoryHelper.getRefillableDrugOrders(orderSetOrdersAndDrugOrders.drugOrders, getPreviousVisitDrugOrders(), showOnlyActive);
                 return _(orderSetOrdersAndDrugOrders.orderSetOrders)
                     .concat(refillableDrugOrders)
+                    .filter(_.identity)
                     .uniqBy('uuid')
                     .value();
             };
@@ -132,7 +140,7 @@ angular.module('bahmni.clinical')
                                 if (diagnosesCodes.length > 0) {
                                     diagnosesCodes += ", ";
                                 }
-                                diagnosesCodes += diagnosis.codedAnswer.mappings[0].code;
+                                diagnosesCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
                             }
                         });
                     });

@@ -102,7 +102,8 @@
   "resolutions": { 
     "**/**/xmlhttprequest-ssl": "^1.6.1",
     "**/**/handlebars": "^4.7.7",
-    "**/**/uglify-js": "^2.4.24"
+    "**/**/uglify-js": "^2.4.24",
+    "follow-redirects": "^1.15.4"
   },
   "scripts": {
     "test": "karma start test/config/karma.conf.js",

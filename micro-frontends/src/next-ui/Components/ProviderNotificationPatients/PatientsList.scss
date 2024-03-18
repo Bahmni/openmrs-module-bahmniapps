@@ -1,0 +1,20 @@
+.patient-list-dropdown {
+    li.bx--accordion__item {
+        padding: 0;
+        margin-bottom: 12px;
+        background-color: transparent;
+        border: 1px solid #007d79;
+    }
+
+    li.bx--accordion__item:hover {
+        border: transparent;
+    }
+}
+
+.patient-list-content .content-info .notes {
+    background-color: transparent;
+}
+
+.patient-list-content {
+    border-bottom: 1px solid #C6C6C6;
+}

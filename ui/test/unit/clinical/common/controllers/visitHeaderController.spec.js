@@ -3,7 +3,7 @@
 
 describe('visitHeaderController', function () {
     var scope, controller, rootScope, visitTabConfig, configurations, encounterService;
-    var mockClinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink', 'getAllConsultationBoards']);
+    var mockClinicalAppConfigService = jasmine.createSpyObj('clinicalAppConfigService', ['getConsultationBoardLink', 'getAllConsultationBoards', 'getIsIPDFeatureEnabled']);
     var mockLocation = jasmine.createSpyObj('$location', ['path', 'url']);
     var mockUrlHelper = {
         getPatientUrl: function () {
@@ -85,7 +85,7 @@ describe('visitHeaderController', function () {
             $rootScope: rootScope,
             clinicalAppConfigService: mockClinicalAppConfigService,
             patientContext: {patient: {uuid: "patient_uuid"}},
-            visitHistory: null,
+            visitHistory: {visits: [{uuid: "visitUuid", stopDatetime: null, visitType: {name: "IPD"}}]},
             visitConfig: visitTabConfig,
             $stateParams: stateParams || {configName: "default"},
             contextChangeHandler: contextChangeHandler,
