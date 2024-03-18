@@ -57,7 +57,7 @@ angular.module('bahmni.orders').controller('OrderFulfillmentController', ['$scop
         var getObservationsForOrders = function () {
             var orderLabelConcept = appService.getAppDescriptor().getConfigValue("orderLabelConcept");
             if (orderLabelConcept) {
-                return observationsService.fetch(patientContext.patient.uuid, [orderLabelConcept], null, $scope.config.numberOfVisits, $scope.visitUuid, null, false)
+                return observationsService.fetch(patientContext.patient.uuid, [orderLabelConcept[$scope.formName]], null, $scope.config.numberOfVisits, $scope.visitUuid, null, false)
                 .then(function (response) {
                     $scope.selectedOrderLabel = new Map();
                     var orderObservationsData = _(response.data)
