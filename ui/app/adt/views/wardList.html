@@ -3,14 +3,15 @@
     <span ng-if="tableDetails.length == 0" class="no-data-info">
         {{ 'EMPTY_WARD_MESSAGE'|translate }}
     </span>
-    <table class="table ward-details-content" ng-if="tableDetails.length > 0">
-        <thead>
+    <div style="overflow-x: scroll">
+        <table class="table ward-details-content" ng-if="tableDetails.length > 0">
+            <thead>
             <tr>
                 <th ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'" ng-class="{'bed-detail-column' : $index == 0}">{{heading | titleTranslate}}</th>
             </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="row in tableDetails | filter:searchTextFilter">
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in tableDetails | filter:searchTextFilter">
                 <td ng-repeat="heading in tableHeadings" ng-if="heading != 'hiddenAttributes'">
                     <div ng-if="heading != 'Diagnosis' && heading != 'Id'">
                         {{row[heading]}}
@@ -31,6 +32,7 @@
                     </div>
                 </td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
