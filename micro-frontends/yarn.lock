@@ -3918,10 +3918,10 @@ bahmni-carbon-ui@0.1.9:
     prop-types "^15.8.1"
     react-intl "^6.4.4"
 
-bahmni-form-controls@^0.93.12:
-  version "0.93.12"
-  resolved "https://registry.yarnpkg.com/bahmni-form-controls/-/bahmni-form-controls-0.93.12.tgz#ff8aff5de7a8da1e0c302aeb1633bf71f58afaa1"
-  integrity sha512-YevJ+ISUIp+e+Ra7zQG5dBooJuDTLR0OCfmfuLawD4UjAYG3HjWOWKn6CFcpcT9qohI6NUPwKs2HWg2y/2ysKg==
+bahmni-form-controls@^0.93.15:
+  version "0.93.15"
+  resolved "https://registry.yarnpkg.com/bahmni-form-controls/-/bahmni-form-controls-0.93.15.tgz#7d72295f4d974297d1ddefaee8f5d0558508ee45"
+  integrity sha512-Bdx80qoOBLUsM3NDpDBYWWK7BhGP5k3Tnm+I+PuCt1+YU+L6noTSEJ+o5WxjF/7m0rNfSvt4dOVSuqiiGOH2Ng==
   dependencies:
     base64-inline-loader "^1.1.0"
     classnames "^2.2.5"
