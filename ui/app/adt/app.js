@@ -28,19 +28,9 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             views: {
                 'content': {
                     templateUrl: 'views/home.html',
-                    controller: function ($rootScope, $scope, appService) {
-                        $scope.showCareViewDashboard = false;
-                        $scope.openCareView = function () {
-                            $scope.showCareViewDashboard = true;
-                        };
-                        $scope.hostData = {
-                            provider: $rootScope.currentProvider
-                        };
-                        $scope.hostApi = {
-                            onHome: function () {
-                                $scope.showCareViewDashboard = false;
-                                $scope.$apply();
-                            }
+                    controller: function ($rootScope, $scope, appService, $state) {
+                        $scope.goToCareView = function () {
+                            $state.go('careViewDashboard');
                         };
                         $scope.isBedManagementEnabled = appService.getAppDescriptor().getConfig("isBedManagementEnabled").value;
                         $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue('enableIPDFeature');
@@ -56,6 +46,15 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             },
             resolve: {
                 initialization: 'initialization'
+            }
+        })
+        .state('careViewDashboard', {
+            url: '/home/careViewDashboard',
+            views: {
+                'content': {
+                    template: '<mfe-ipd-care-view-dashboard style="display: block;width: 100vw;margin-left: calc(50% - 50vw);" host-data="hostData" host-api="hostApi"></mfe-ipd-care-view-dashboard>',
+                    controller: 'CareViewController'
+                }
             }
         })
         .state('patient', {
