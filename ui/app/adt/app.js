@@ -53,16 +53,7 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
             views: {
                 'content': {
                     template: '<mfe-ipd-care-view-dashboard style="display: block;width: 100vw;margin-left: calc(50% - 50vw);" host-data="hostData" host-api="hostApi"></mfe-ipd-care-view-dashboard>',
-                    controller: function ($rootScope, $scope, $state) {
-                        $scope.hostData = {
-                            provider: $rootScope.currentProvider
-                        };
-                        $scope.hostApi = {
-                            onHome: function () {
-                                $state.go('home');
-                            }
-                        };
-                    }
+                    controller: 'CareViewController'
                 }
             }
         })
