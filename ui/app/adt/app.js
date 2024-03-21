@@ -55,6 +55,9 @@ angular.module('adt').config(['$stateProvider', '$httpProvider', '$urlRouterProv
                     template: '<mfe-ipd-care-view-dashboard style="display: block;width: 100vw;margin-left: calc(50% - 50vw);" host-data="hostData" host-api="hostApi"></mfe-ipd-care-view-dashboard>',
                     controller: 'CareViewController'
                 }
+            },
+            resolve: {
+                initialization: 'initialization'
             }
         })
         .state('patient', {
