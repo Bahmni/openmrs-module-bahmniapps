@@ -45,7 +45,10 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Push Translations to Transifex
         run: |
-          bash .github/scripts/transifex.sh push
+          curl -o transifex.sh https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/transifex.sh
+          chmod +x transifex.sh
+          ./transifex.sh push
+          rm transifex.sh
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
       - name: Set up Docker Buildx
