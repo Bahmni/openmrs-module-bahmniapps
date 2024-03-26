@@ -3,11 +3,16 @@
 describe('surgicalAppointmentService', function () {
     var surgicalAppointmentService;
     var mockHttp = jasmine.createSpyObj('$http', ['get', 'post']);
+     var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+     var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+         appDescriptor.getConfigValue.and.returnValue({additionalCustomParam: ""});
+         appService.getAppDescriptor.and.returnValue(appDescriptor);
 
     beforeEach(function () {
         module('bahmni.ot');
         module(function ($provide) {
             $provide.value('$http', mockHttp);
+            $provide.value('appService', appService);
         });
 
         inject(['surgicalAppointmentService', function (surgicalAppointmentServiceInjected) {

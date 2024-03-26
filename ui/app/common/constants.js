@@ -228,6 +228,7 @@ Bahmni.Common = Bahmni.Common || {};
         ordersUrl: RESTWS_V1 + "/order",
         formDataUrl: RESTWS_V1 + "/obs",
         providerUrl: RESTWS_V1 + "/provider",
+        providerAttributeUrl: RESTWS_V1 + "/provider/{{providerUuid}}/attribute",
         drugUrl: RESTWS_V1 + "/drug",
         orderTypeUrl: RESTWS_V1 + "/ordertype",
         userUrl: RESTWS_V1 + "/user",
@@ -289,7 +290,8 @@ Bahmni.Common = Bahmni.Common || {};
         visit: "VISIT",
         defaultImageUploadSize: 500000, // Default patient profile photo size
         maxImageUploadSize: 9000000, // to ensure, extreme max size and prevent choking up server capacity (max size is 9MB)
-        adhocTeleconsultationLinkServiceUrl: RESTWS_V1 + "/adhocTeleconsultation/generateAdhocTeleconsultationLink"
+        adhocTeleconsultationLinkServiceUrl: RESTWS_V1 + "/adhocTeleconsultation/generateAdhocTeleconsultationLink",
+        patientAllergiesURL: FHIR_BASE_URL + "/AllergyIntolerance?patient={{patientUuid}}&_summary=data"
     };
 })();
 
