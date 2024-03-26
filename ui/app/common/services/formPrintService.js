@@ -17,12 +17,12 @@ angular.module('bahmni.common.util')
                                 printData.observationsEntries = response[1].data;
                                 angular.forEach(diagnoses, function (diagnosis) {
                                     if (diagnosis.order === printData.printConfig.printDiagnosis.order &&
-                                        diagnosis.certainty === printData.printConfig.printDiagnosis.certainity ) {
+                                        diagnosis.certainty === printData.printConfig.printDiagnosis.certainity) {
                                         if (printData.diagnosesWithCodes.length > 0) {
                                             printData.diagnosesWithCodes += ", ";
                                         }
                                         if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length !== 0) {
-                                           printData.diagnosesWithCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
+                                            printData.diagnosesWithCodes += diagnosis.codedAnswer.mappings[0].code + " - " + diagnosis.codedAnswer.name;
                                         }
                                         else if (diagnosis.codedAnswer !== null && diagnosis.codedAnswer.mappings.length == 0) {
                                             printData.diagnosesWithCodes += diagnosis.codedAnswer.name;
