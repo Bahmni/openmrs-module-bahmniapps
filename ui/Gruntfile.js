@@ -20,7 +20,8 @@ module.exports = function (grunt) {
         'components/ngDialog/css/ngDialog-theme-plain.min.css',
         'components/ng-tags-input/ng-tags-input.bootstrap.min.css',
         'components/ng-tags-input/ng-tags-input.min.css',
-        'components/jquery-ui/themes/smoothness/jquery-ui.min.css'
+        'components/jquery-ui/themes/smoothness/jquery-ui.min.css',
+        'micro-frontends-dist/*.min.css'
     ];
 
     var libraryJSFiles = [
@@ -62,7 +63,8 @@ module.exports = function (grunt) {
         'components/angular-route/angular-route.min.js',
         'components/crypto-js/crypto-js.js',
         'components/jquery-ui/ui/minified/jquery-ui.custom.min.js',
-        'components/angular-ivh-treeview/dist/ivh-treeview.min.js'
+        'components/angular-ivh-treeview/dist/ivh-treeview.min.js',
+        'micro-frontends-dist/*.min.js'
     ];
 
     try {
@@ -298,7 +300,8 @@ module.exports = function (grunt) {
                             'styles/fonts/**/*',
                             'clinical/config/*.json',
                             'i18n/**/*.json',
-                            'lib/**/*'
+                            'lib/**/*',
+                            "micro-frontends-dist/i18n/**/*.json"
                         ]
                     }
                 ]
@@ -353,14 +356,14 @@ module.exports = function (grunt) {
                         src: ['clinical.*.js'],
                         dest: '<%= yeoman.dist %>/clinical/'
                     },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.*.js'], dest: '<%= yeoman.dist %>/adt/'},
+                    { expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.*.js'], dest: '<%= yeoman.dist %>/adt/' },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
                         src: ['orders.*.js'],
                         dest: '<%= yeoman.dist %>/orders/'
                     },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['home.*.js'], dest: '<%= yeoman.dist %>/home/'},
+                    { expand: true, cwd: '<%= yeoman.dist %>', src: ['home.*.js'], dest: '<%= yeoman.dist %>/home/' },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
@@ -373,7 +376,7 @@ module.exports = function (grunt) {
                         src: ['admin.*.js'],
                         dest: '<%= yeoman.dist %>/admin/'
                     },
-                    {expand: true, cwd: '<%= yeoman.root %>', src: ['common.*.js'], dest: '<%= yeoman.dist %>/'},
+                    { expand: true, cwd: '<%= yeoman.root %>', src: ['common.*.js'], dest: '<%= yeoman.dist %>/' },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
@@ -404,7 +407,7 @@ module.exports = function (grunt) {
                         src: ['clinical.*.css'],
                         dest: '<%= yeoman.dist %>/clinical/'
                     },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.*.css'], dest: '<%= yeoman.dist %>/adt/'},
+                    { expand: true, cwd: '<%= yeoman.dist %>', src: ['adt.*.css'], dest: '<%= yeoman.dist %>/adt/' },
                     {
                         expand: true,
                         cwd: '<%= yeoman.dist %>',
@@ -453,7 +456,7 @@ module.exports = function (grunt) {
                         src: ['document-upload.*.css'],
                         dest: '<%= yeoman.dist %>/document-upload/'
                     },
-                    {expand: true, cwd: '<%= yeoman.dist %>', src: ['ot.*.css'], dest: '<%= yeoman.dist %>/ot/'}
+                    { expand: true, cwd: '<%= yeoman.dist %>', src: ['ot.*.css'], dest: '<%= yeoman.dist %>/ot/' }
                 ]
             }
         },
@@ -483,7 +486,7 @@ module.exports = function (grunt) {
             files: {
                 expand: true,
                 cwd: '<%= yeoman.dist %>',
-                src: ['**/*.min.*.js'],
+                src: ['**/*.min.*.js', '!micro-frontends-dist/**/*.js'],
                 dest: '<%= yeoman.dist %>'
             }
         },

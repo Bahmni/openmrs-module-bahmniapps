@@ -43,6 +43,7 @@ angular.module('bahmni.orders').controller('OrderFulfillmentController', ['$scop
                 var data = response.data;
                 $scope.orders.push.apply($scope.orders, data);
                 $scope.orders.forEach(function (order) {
+                    order.commentToFulfiller = order.commentToFulfiller && order.commentToFulfiller.replaceAll('\n', ' | ');
                     order.bahmniObservations = _.filter($scope.encounter.observations, function (observation) {
                         return observation.orderUuid === order.orderUuid;
                     });

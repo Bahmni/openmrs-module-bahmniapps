@@ -133,7 +133,7 @@
 
         @media screen and (min-width:769px) {
             float: right;
-            width: 215px;
+            width: 255px;
         }
 
         button.toggle.has-notes {
@@ -169,6 +169,7 @@
             }
         }
 
+        button.ipd-btn,
         button.dispense-btn {
             font-family: OpenSansBold;
             color: $bahmniTertiaryColor;
@@ -262,6 +263,14 @@
         margin: 0px 0 10px;
     }
 
+    #new-drug-orders {
+        .treatmentChkBox {
+            float: left;
+            margin-left: revert;
+            margin-top: 9px;
+        }
+    }
+
     .highlight {
         background: $clinicalHighlight;
         border: 1px solid darken($clinicalHighlight, 10%);
@@ -276,7 +285,8 @@
     }
 
     .refill-drugs-btn,
-    .dispense-all-btn {
+    .dispense-all-btn,
+    .print-drugs-btn {
         font-size: 14px;
         margin-right: 0;
         display: none;
@@ -293,6 +303,10 @@
 
     .dispense-all-btn {
         margin-right: 5px;
+    }
+
+    .print-drugs-btn {
+        margin-left: 5px;
     }
 
     .bulk-edit-options-container {
@@ -332,7 +346,8 @@
     }
 
     .tabs .tab [type=radio]:checked~.dispense-all-btn,
-    .tabs .tab [type=radio]:checked~.refill-drugs-btn {
+    .tabs .tab [type=radio]:checked~.refill-drugs-btn,
+    .tabs .tab [type=radio]:checked~.print-drugs-btn {
         display: inline-block;
         line-height: 14px;
     }

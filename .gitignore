@@ -19,6 +19,7 @@ ui/cacheAndroidDist
 ui/cacheChromeDist
 ui/app/styles/**/*.css
 ui/app/styles/*.css
+ui/app/micro-frontends-dist
 **/.DS_Store
 test_out
 omod/src/main/webapp/*
@@ -28,3 +29,6 @@ node_modules
 *.tern-port
 **/.idea/*
 ui/common.background.min.js
+
+micro-frontends/node_modules
+ui/app/micro-frontends-dist

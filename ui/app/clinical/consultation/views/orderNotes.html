@@ -3,6 +3,12 @@
 
     <textarea ng-model="$parent.orderNoteText" focus-on="true" rows="4" ng-disabled="ngDialogData.uuid">{{ngDialogData.previousNote}}</textarea>
     <button ng-click="appendPrintNotes(ngDialogData)" class="fl btn-group" ng-show="isPrintShown(ngDialogData.uuid)">{{ 'CLINICAL_ORDER_RADIOLOGY_NEED_PRINT_BUTTON' | translate}}</button>
+    <div style="width: 80%">
+        <div ng-repeat=" note in noteOptions">
+            <button ng-click="appendNotes(ngDialogData, note.translationKey)" ng-show="shouldShowNoteOptions(ngDialogData.uuid, note.label)" class="fl btn-group order-notes-button">{{note.label}}</button>
+        </div>
+    </div>
+
     <div class="btn-group fr">
         <span ng-if="ngDialogData.uuid">
             {{ 'ORDER_CAN_NOT_EDIT_AFTER_SAVE_MESSAGE'|translate }}

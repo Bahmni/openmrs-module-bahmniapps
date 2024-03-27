@@ -30,6 +30,12 @@ describe("OrderController", function () {
                 };
             }
         };
+        appDescriptor.getConfigValue = function (param) {
+            return [{
+                "label": "OP",
+                "translationKey": "OP_KEY"
+            }]
+        }
         appServiceMock.getAppDescriptor = function() { return appDescriptor };
 
         var translate = jasmine.createSpyObj('$translate',['instant']);

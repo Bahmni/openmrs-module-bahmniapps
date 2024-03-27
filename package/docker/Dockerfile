@@ -1,5 +1,8 @@
 FROM httpd:2.4-alpine
 
+RUN apk update && \
+    apk add --no-cache tzdata wget curl unzip
+
 EXPOSE 8091
 COPY package/docker/httpd.conf /usr/local/apache2/conf
 COPY package/docker/systemdate.sh /usr/local/apache2/cgi-bin/systemdate

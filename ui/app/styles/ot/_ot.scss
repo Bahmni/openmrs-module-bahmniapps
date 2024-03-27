@@ -442,6 +442,10 @@ div[ng-app="ot"] {
     .status-cancelled {
       background: #fcb6b6;
     }
+    .list-view-primary-diagnosis {
+      min-width: 300px;
+      white-space: normal;
+    }
   }
 }
 

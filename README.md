@@ -37,8 +37,12 @@ These steps need to performed ONLY the FIRST TIME you set up this code.
 
 ### Build commands
 
-**NOTE:** Run these commands from within the `ui` sub-folder.
+Run these commands from within the `micro-frontends` sub-folder
+1. `yarn install`
+2. `yarn build`
+3. If build is successful, the `../ui/app/micro-frontends-dist` folder has the set of files which can be used by the angular modules for their build
 
+Run these commands from within the `ui` sub-folder.
 1. `yarn install`
 2. `yarn ci` (will internally trigger grunt)
 3. If build is successful, the `dist` folder has the set of files to be deployed in Apache (or in Vagrant).
