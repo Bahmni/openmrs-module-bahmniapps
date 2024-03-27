@@ -267,15 +267,21 @@ describe("PatientsListController", function () {
             });
 
             it('should print headings which are filtered from ignore headings list', function(){
-                var patients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl',programUuid: 'programUuid',enrollment: 'enrollmentUuid', DQ_COLUMN_TITLE_ACTION: 'action url'}];
-                var headings = scope.getHeadings(patients);
-                expect(headings).toEqual(['emr_id', 'treatment', 'DQ_COLUMN_TITLE_ACTION']);
+                scope.search.activePatients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl',programUuid: 'programUuid',enrollment: 'enrollmentUuid', DQ_COLUMN_TITLE_ACTION: 'action url'}];
+                scope.getHeadings();
+                expect(scope.activeHeaders).toEqual([ 
+                    { name : 'emr_id', sortInfo : 'emr_id' }, 
+                    { name : 'treatment', sortInfo : 'treatment' }, 
+                    { name : 'DQ_COLUMN_TITLE_ACTION', sortInfo : 'DQ_COLUMN_TITLE_ACTION' } 
+                ]);
             });
 
             it('should print headings which are filtered from ignore headings list and print headings list', function(){
-                var patients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl', DQ_COLUMN_TITLE_ACTION: 'action url'}];
-                var headings = scope.getPrintableHeadings(patients);
-                expect(headings).toEqual(['emr_id', 'treatment']);
+                scope.search.activePatients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl', DQ_COLUMN_TITLE_ACTION: 'action url'}];
+                var headings = scope.getPrintableHeadings();
+                expect(headings).toEqual([ 
+                    { name : 'emr_id', sortInfo : 'emr_id' }, 
+                    { name : 'treatment', sortInfo : 'treatment' }]);
             });
 
          it('should print page from the config', function(){
