@@ -16,8 +16,10 @@ export const SelectReactions = (props) => {
   const [isSearchResultEmpty, setIsSearchResultEmpty] = useState(true);
   const [selectedReactions, setSelectedReactions] = useState([]);
   const [allReactions] = useState(cloneDeep(reactions));
+  const [searchKey, setSearchKey] = useState("");
 
   const search = (key) => {
+    setSearchKey(key)
     if (!key) {
       setIsSearchResultEmpty(true);
       setSearchResults(initialReactionIds);
@@ -48,6 +50,9 @@ export const SelectReactions = (props) => {
     }
   };
   useEffect(() => {
+    if(selectedReactions.length > 0){
+      setSearchKey("")
+    }
     onChange(selectedReactions);
   }, [selectedReactions]);
 
@@ -60,6 +65,7 @@ export const SelectReactions = (props) => {
         <Search
           id={"reaction-search"}
           placeholder={"Type to search Reactions"}
+          value={searchKey}
           onChange={(e) => {
             search(e.target.value);
           }}
