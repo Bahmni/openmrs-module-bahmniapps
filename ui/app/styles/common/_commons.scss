@@ -1,0 +1,63 @@
+.user-actions {
+  background: lighten($bahmniPrimaryColor, 10%);
+  padding: 15px;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  height: 50px;
+  float: right;
+
+  @media screen and (max-width: 959px) {
+    margin: 0;
+    padding: 15px;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+
+  i.mini {
+    font-size: .9em;
+  }
+
+  &+ul {
+    display: none;
+
+    &.active {
+      background: lighten($bahmniPrimaryColor, 10%);
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 50px;
+      z-index: 10000;
+
+      @media screen and (max-width: 959px) {
+        top: 49px;
+        right: 0;
+      }
+    }
+
+    li {
+      float: left;
+      clear: both;
+      text-align: left;
+      border-bottom: 1px solid lighten($bahmniPrimaryColor, 10%);
+      margin: 0;
+
+      a {
+        padding: 10px 5px;
+        display: inline-block;
+        min-width: 160px;
+        color: #fff;
+      }
+
+      a.disabled {
+        color: $lightGray;
+
+        .fa-user {
+          color: $lightGray;
+        }
+      }
+    }
+  }
+}
