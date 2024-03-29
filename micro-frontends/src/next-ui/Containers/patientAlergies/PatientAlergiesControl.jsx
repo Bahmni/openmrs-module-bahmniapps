@@ -23,6 +23,7 @@ const AllergenKind = {
   DRUG: "Drug",
   FOOD: "Food",
   ENVIRONMENT: "Environment",
+  OTHER: "Other",
 };
 export function PatientAlergiesControl(props) {
   const { hostData, appService } = props;
@@ -68,7 +69,8 @@ export function PatientAlergiesControl(props) {
   const TransformAllergenData = (
     medicationAllergenData,
     foodAllergenData,
-    environmentAllergenData
+    environmentAllergenData,
+    otherAllergenData,
   ) => {
     const medicationAllergens = extractAllergenData(
       medicationAllergenData,
@@ -83,10 +85,16 @@ export function PatientAlergiesControl(props) {
       AllergenKind.FOOD
     );
 
+    const otherAllergens = extractAllergenData(
+      otherAllergenData,
+      AllergenKind.OTHER
+    );
+
     return [
       ...medicationAllergens,
       ...environmentalAllergens,
       ...foodAllergens,
+      ...otherAllergens,
     ];
   };
 
@@ -99,11 +107,12 @@ export function PatientAlergiesControl(props) {
       const severity = resource.reaction[0].severity;
       const note = resource.note && resource.note[0].text;
       const date = new Date(resource.recordedDate);
+      const datetime = moment(resource.recordedDate).format('DD MMM YYYY hh:mm a');
       const provider = resource.recorder?.display;
       const reactions = resource.reaction[0]?.manifestation.map((reaction) => {
         return reaction.coding[0].display;
       });
-      return {allergen, severity, reactions, note, provider, date};
+      return {allergen, severity, reactions, note, provider, date, datetime};
     });
     allergiesData && allergiesData.sort((a, b) => b?.date - a?.date);
     allergiesData ? setAllergiesAndReactions(allergiesData) : setAllergiesAndReactions([]);
@@ -142,6 +151,7 @@ export function PatientAlergiesControl(props) {
       allergyControlConceptIdMap.medicationAllergenUuid,
       allergyControlConceptIdMap.foodAllergenUuid,
       allergyControlConceptIdMap.environmentalAllergenUuid,
+      allergyControlConceptIdMap.otherAllergenUuid,
       allergyControlConceptIdMap.allergyReactionUuid,
       allergyControlConceptIdMap.allergySeverityUuid
     ];
@@ -152,13 +162,15 @@ export function PatientAlergiesControl(props) {
         medicationResponseData,
         foodResponseData,
         environmentalResponseData,
+        otherResponseData,
         reactionResponseData,
         severityResponseData
       ] = await Promise.all(urls.map((url) => fetchAllergensOrReactions(url)));
       const allergenData = TransformAllergenData(
         medicationResponseData,
         foodResponseData,
-        environmentalResponseData
+        environmentalResponseData,
+        otherResponseData
       );
       const reactionsData = TransformReactionData(reactionResponseData);
 
