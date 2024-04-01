@@ -13,6 +13,7 @@ import {
 import { ViewAllergiesAndReactions } from "../../Components/ViewAllergiesAndReactions/ViewAllergiesAndReactions";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import { NotificationCarbon } from "bahmni-carbon-ui";
+import moment from "moment";
 
 /** NOTE: for reasons known only to react2angular,
  * any functions passed in as props will be undefined at the start, even ones inside other objects
@@ -107,7 +108,7 @@ export function PatientAlergiesControl(props) {
       const severity = resource.reaction[0].severity;
       const note = resource.note && resource.note[0].text;
       const date = new Date(resource.recordedDate);
-      const datetime = moment(resource.recordedDate).format('DD MMM YYYY hh:mm a');
+      const datetime = moment(resource.recordedDate).format('DD MMM YYYY h:mm a');
       const provider = resource.recorder?.display;
       const reactions = resource.reaction[0]?.manifestation.map((reaction) => {
         return reaction.coding[0].display;
