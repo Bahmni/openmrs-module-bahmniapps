@@ -40,6 +40,8 @@ angular.module('bahmni.common.patient')
                     q: query,
                     startIndex: offset,
                     identifier: identifier,
+                    s: "byIdOrName",
+                    filterOnAllIdentifiers: true,
                     loginLocationUuid: sessionService.getLoginLocationUuid()
                 },
                 withCredentials: true
