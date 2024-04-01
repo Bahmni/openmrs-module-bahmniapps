@@ -428,6 +428,11 @@ concept-set {
     padding-bottom: 30px;
     display: inline-block;
   }
+  table {
+    th, td {
+      width: 50%;
+    }
+  }
 }
 
 .field-value .concept-description {
