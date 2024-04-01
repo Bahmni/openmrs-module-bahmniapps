@@ -10,6 +10,7 @@ jest.mock('../../utils/providerNotifications/ProviderNotificationUtils', () => (
   getEmergencyDrugAcknowledgements: () => mockGetEmergencyDrugAcknowledgements(),
   getProvider: jest.fn().mockResolvedValue({currentProvider: {uuid: 'mock-provider-uuid'}}),
   sortMedicationList: () => mockSortMedicationList,
+  getPatientIPDDashboardUrl: jest.fn(),
 }));
 
 jest.mock('./PatientListContent', () => 'PatientListContent');
