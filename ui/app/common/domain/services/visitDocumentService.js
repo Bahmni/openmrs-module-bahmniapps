@@ -54,8 +54,12 @@ angular.module('bahmni.common.domain')
                 return response;
             }, function (error) {
                 if (error.status === 413) {
-                    var maxAllowedSize = roundToNearestHalf(error.data.maxDocumentSizeMB * 0.70);
-                    messagingService.showMessage("error", $translate.instant("FILE_SIZE_LIMIT_EXCEEDED_MESSAGE", { maxAllowedSize: maxAllowedSize }));
+                    if (!isNaN(error.data.maxDocumentSizeMB)) {
+                        var maxAllowedSize = roundToNearestHalf(error.data.maxDocumentSizeMB * 0.70);
+                        messagingService.showMessage("error", $translate.instant("FILE_SIZE_LIMIT_EXCEEDED_MESSAGE", { maxAllowedSize: maxAllowedSize }));
+                    } else {
+                        messagingService.showMessage("error", $translate.instant("SIZE_LIMIT_EXCEEDED_MESSAGE"));
+                    }
                 }
                 return $q.reject(error);
             });
