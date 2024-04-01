@@ -1,4 +1,5 @@
 <section>
+   	<ul show-if-privilege="{{::section.dashboardConfig.requiredPrivilege}}">
     <h2 class="has-toggle section-title" ng-if="::section | titleTranslate">
         <span class="section-label">{{:: section | titleTranslate}}</span>
     </h2>
@@ -62,4 +63,5 @@
             </tbody>
         </table>
     </div>
+	</ul>
 </section>

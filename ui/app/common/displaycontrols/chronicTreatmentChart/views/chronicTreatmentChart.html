@@ -1,5 +1,6 @@
 <section class="dashboard-chronic-treatment-section dashboard-tabular-obs-section" id="regimen"
      ng-class="{'noTable' :(regimen.rows.length == 0),'hasTable' :(regimen.rows.length > 0 && section.rotateInPrint)}">
+	<ul show-if-privilege="{{::section.dashboardConfig.requiredPrivilege}}"> 
     <section ng-class="{'rotate':section.rotateInPrint}">
         <h2 ng-if="!isClickable()" class="section-title">{{section | titleTranslate}}</h2>
         <h2 ng-if="isClickable()"
@@ -32,4 +33,5 @@
             </section>
         </div>
     </section>
+	</ul>
 </section>
