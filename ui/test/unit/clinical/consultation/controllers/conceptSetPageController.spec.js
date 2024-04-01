@@ -1,7 +1,7 @@
 'use strict';
 
 describe('ConceptSetPageController', function () {
-    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, formService;
+    var scope, controller, rootScope, conceptSetService, configurations, clinicalAppConfigService, state, encounterConfig, spinner, messagingService, translate, stateParams, formService, appService, appDescriptor;
     stateParams = {conceptSetGroupName: "concept set group name"};
     var extension = {"extension": {
         extensionParams: {}
@@ -44,11 +44,15 @@ describe('ConceptSetPageController', function () {
                 "allowAddMore": true
             }
         };
+        rootScope.currentProvider = {uuid:'212332-233322'};
         clinicalAppConfigService.getAllConceptsConfig.and.returnValue(configs);
         configurations = jasmine.createSpyObj("configurations", ["encounterConfig"]);
         configurations.encounterConfig.and.returnValue(encounterConfig);
         conceptSetService = jasmine.createSpyObj("conceptSetService", ["getConcept", "getObsTemplatesForProgram"]);
         formService = jasmine.createSpyObj("formService", ["getFormList"]);
+        appService = jasmine.createSpyObj("appService", ["getAppDescriptor"]);
+        appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+        appService.getAppDescriptor.and.returnValue(appDescriptor);
         spinner = jasmine.createSpyObj("spinner", ["forPromise"]);
         messagingService = jasmine.createSpyObj('messagingService', ['showMessage']);
         translate = jasmine.createSpyObj('$translate',['instant']);
@@ -64,6 +68,7 @@ describe('ConceptSetPageController', function () {
             $stateParams: stateParams,
             conceptSetService: conceptSetService,
             formService: formService,
+            appService: appService,
             clinicalAppConfigService: clinicalAppConfigService,
             messagingService: messagingService,
             configurations: configurations,
@@ -118,7 +123,7 @@ describe('ConceptSetPageController', function () {
                 }
             };
             createController();
-
+            scope.$apply();
             expect(scope.allTemplates).toBeTruthy();
             expect(scope.allTemplates.length).toEqual(1);
             expect(scope.allTemplates[0].conceptName).toEqual("abcd");
@@ -202,7 +207,7 @@ describe('ConceptSetPageController', function () {
                 }
             };
             createController();
-
+            scope.$apply();
             expect(scope.allTemplates).toBeTruthy();
             expect(scope.allTemplates.length).toEqual(2);
             expect(scope.allTemplates[0].conceptName).toEqual("abcd");
@@ -230,7 +235,7 @@ describe('ConceptSetPageController', function () {
             mockConceptSetService(conceptResponseData);
             mockformService(data);
             createController();
-
+            scope.$apply();
             expect(scope.allTemplates).toBeTruthy();
             expect(scope.allTemplates.length).toEqual(2);
             expect(scope.allTemplates[0].conceptName).toEqual("abcd");
@@ -260,7 +265,7 @@ describe('ConceptSetPageController', function () {
             }};
 
             createController();
-
+            scope.$apply();
             expect(scope.allTemplates).toBeTruthy();
             expect(scope.allTemplates.length).toEqual(1);
             expect(scope.allTemplates[0].conceptName).toEqual("abcd");
@@ -314,7 +319,7 @@ describe('ConceptSetPageController', function () {
                 privileges: []
             }];
             createController();
-
+            scope.$apply();
             expect(scope.allTemplates).toBeTruthy();
             expect(scope.allTemplates.length).toEqual(3);
 
@@ -353,7 +358,7 @@ describe('ConceptSetPageController', function () {
                 }
             };
             createController();
-
+            scope.$apply();
             expect(scope.allTemplates).toBeTruthy();
             expect(scope.allTemplates.length).toEqual(2);
 
@@ -401,7 +406,7 @@ describe('ConceptSetPageController', function () {
             };
 
             createController();
-
+            scope.$apply();
             expect(scope.allTemplates.length).toEqual(4);
             expect(scope.consultation.selectedObsTemplate.length).toEqual(2);
 
@@ -471,7 +476,7 @@ describe('ConceptSetPageController', function () {
             scope.consultation.lastvisited = 'concept-set-123';
 
             createController();
-
+            scope.$apply();
             expect(scope.consultation.observations.length).toBe(2);
             expect(scope.consultation.selectedObsTemplate[0].label).toBe("Followup Assessment");
             expect(scope.consultation.selectedObsTemplate[1].label).toBe("Baseline");

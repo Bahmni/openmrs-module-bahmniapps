@@ -51,6 +51,7 @@ Bahmni.Clinical.Constants = (function () {
         messageForNoActiveVisit: "NO_ACTIVE_VISIT_MESSAGE",
         sharePrescriptionMailContent: "SHARE_PRESCRIPTION_MAIL_CONTENT",
         dischargeSummaryConceptName: "Discharge Summary",
+        viewFormsPrivilege: "app:clinical:viewFormsFor",
         flexibleDosingInstructionsClass: "org.openmrs.module.bahmniemrapi.drugorder.dosinginstructions.FlexibleDosingInstructions",
         reviseAction: 'REVISE',
         asDirectedInstruction: 'As directed',
