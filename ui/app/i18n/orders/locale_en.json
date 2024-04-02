@@ -27,5 +27,14 @@
     "NEW_ORDER_LABEL": "New",
     "NO_ORDERS_PRESENT": "No order of type {{orderType}} for this patient.",
     "DEFAULT_SERVER_ERROR_MESSAGE": "An error has occurred on the server. Information not saved.",
-    "VISIT_CLOSED_CREATE_NEW_ERROR_MESSAGE": "Visit already closed, create new visit to fulfill the order"
+    "VISIT_CLOSED_CREATE_NEW_ERROR_MESSAGE": "Visit already closed, create new visit to fulfill the order",
+    "ORDER_DATE": "Order Date",
+    "ORDER_NAME": "Order Name",
+    "CLINICAL_YEARS_TRANSLATION_KEY": "years",
+    "CLINICAL_MONTHS_TRANSLATION_KEY": "months",
+    "CLINICAL_DAYS_TRANSLATION_KEY": "days",
+    "GENDER_KEY": "Gender:",
+    "AGE_KEY": "Age:",
+    "DATE_OF_BIRTH_LABEL": "Date of Birth:",
+    "LOGOUT_TRANSLATION_KEY": "Logout"
 }

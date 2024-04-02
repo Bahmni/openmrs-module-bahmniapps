@@ -17,6 +17,14 @@ describe("CareViewController", function () {
     sessionService.destroy.and.returnValue({
         then: function() { }
     });
+    auditLogService = jasmine.createSpyObj('auditLogService', ['log']);
+    sessionService = jasmine.createSpyObj('sessionService', ['destroy']);
+    auditLogService.log.and.returnValue({
+        then: function(callback) { return callback(); }
+    });
+    sessionService.destroy.and.returnValue({
+        then: function() { }
+    });
     let mockProvider = {name: "__test__provider"}
     var createController = function () {
 
