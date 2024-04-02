@@ -60,8 +60,12 @@ describe('VisitController', function () {
         allergyService.getAllergyForPatient.and.returnValue(Promise.resolve(allergiesMock));
         encounterService.getEncountersForEncounterType.and.returnValue(getEncounterPromise);
         $location.search.and.returnValue({source: "clinical"});
-        auditLogService.log.and.returnValue({});
-        sessionService.destroy.and.returnValue({});
+        auditLogService.log.and.returnValue({
+            then: function(callback) { return callback(); }
+        });
+        sessionService.destroy.and.returnValue({
+            then: function() { }
+        });
         spyOn(clinicalAppConfigService, 'getVisitConfig').and.returnValue([]);
         spyOn(configurations, 'encounterConfig').and.returnValue({
             getPatientDocumentEncounterTypeUuid: function () {
@@ -157,7 +161,13 @@ describe('VisitController', function () {
             scope.visitTabConfig.currentTab.printing = {templateUrl: 'common/views/visitTabPrint.html', observationsConcepts: ["WEIGHT"]}
             scope.$broadcast("event:printVisitTab", {});
             expect(allergyService.getAllergyForPatient).toHaveBeenCalled();
-        })
+        });
+
+        it('should call auditLogService.log and sessionService.destroy on logout', function (){
+            scope.ipdDashboard.hostApi.onLogOut();
+            expect(auditLogService.log).toHaveBeenCalled();
+            expect(sessionService.destroy).toHaveBeenCalled();
+        });
     });
 
 });
