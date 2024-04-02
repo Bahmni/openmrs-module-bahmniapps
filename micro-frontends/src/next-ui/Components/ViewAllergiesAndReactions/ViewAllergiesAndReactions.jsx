@@ -31,7 +31,7 @@ export const ViewAllergiesAndReactions = (props) => {
                                             {allergy.note}</div>}
                                 </div>
                                 <div className={"allergy-provider"}>
-                                    {allergy.provider}
+                                    {allergy.provider + " " + allergy.datetime}
                                 </div>
                             </div>
                         </AccordionItem>
