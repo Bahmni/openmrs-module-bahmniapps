@@ -10,15 +10,15 @@
                 {{visitTabConfig.getPrintConfigForCurrentTab().title}}
             </h1>
             <div class="clinic-info">
-                <span>{{certificateHeader.name}}</span><br>
-                <span class="address">{{certificateHeader.address}}</span> <br>
-            </div><br>
+                <span>{{certificateHeader.name}}</span>
+                <span class="address">{{certificateHeader.address}}</span>
+            </div>
             <div class="clinic-info">
                 <span> {{visitTabConfig.getPrintConfigForCurrentTab().header}}</span>
             </div>
         </div>
         <div ng-include="currentVisitUrl"></div>
     </div>
-    <div class="provider-info">{{provider[0].name}}</div>
+    <div ng-if="!visitTabConfig.getPrintConfigForCurrentTab().hideProviderName" class="provider-info">{{provider[0].name}}</div>
 </body>
 </html>

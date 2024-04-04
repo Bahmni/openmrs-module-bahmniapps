@@ -1,0 +1,46 @@
+name: Pull Translations from Transifex
+
+on:
+  schedule:
+    - cron: '0 0 1 * *' 
+  workflow_dispatch:
+
+jobs:
+  pull-translations:
+    name: Pull Translations from Transifex
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Pull Translations from Transifex
+        run: |
+          curl -o transifex.sh https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/transifex.sh
+          chmod +x transifex.sh
+          ./transifex.sh pull
+          rm transifex.sh
+        env:
+          TX_TOKEN: ${{ secrets.TX_TOKEN }}
+
+      - name: Commit and push changes
+        id: auto-commit-action
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "[Bahmni Infra] | Add. Update Translation Resources"
+          branch: ${{ github.ref }}
+          file_pattern: 'ui/app/i18n/**/*.json'
+          repository: .
+          commit_user_name: Bahmni Infra
+          commit_user_email: infrastructure@bahmni.org
+          commit_author: bahmni-infra <infrastructure@bahmni.org>
+
+      - name: Check for changes
+        run: |
+          if [[ steps.auto-commit-action.outputs.changes_detected == 'true' ]]; then
+            echo "Changes Detected. Translation Resources Updated."
+          else
+            echo "No Changes Detected. Project Already Up-To-Date."
+          fi

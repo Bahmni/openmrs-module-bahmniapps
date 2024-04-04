@@ -3,7 +3,6 @@
 angular.module('bahmni.common.conceptSet')
     .factory('conceptSetService', ['$http', '$q', '$bahmniTranslate', function ($http, $q, $bahmniTranslate) {
         var getConcept = function (params, cache) {
-            params['locale'] = params['locale'] || $bahmniTranslate.use();
             return $http.get(Bahmni.Common.Constants.conceptSearchByFullNameUrl, {
                 params: params,
                 cache: cache

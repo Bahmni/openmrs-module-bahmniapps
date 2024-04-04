@@ -18,12 +18,26 @@ angular.module('bahmni.home')
                 return $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) ? $bahmniCookieStore.get(Bahmni.Common.Constants.locationCookieName) : null;
             };
 
+            var setCurrentLoginLocationForUser = function () {
+                const currentLoginLocation = getCurrentLocation();
+                if (currentLoginLocation) {
+                    $scope.selectedLocationUuid = getCurrentLocation().uuid;
+                } else {
+                    $scope.selectedLocationUuid = null;
+                }
+            };
+
             var init = function () {
+                const loginLocations = localStorage.getItem("loginLocations");
+                if (loginLocations) {
+                    $scope.locations = JSON.parse(loginLocations);
+                    setCurrentLoginLocationForUser();
+                    return;
+                }
                 return locationService.getAllByTag("Login Location").then(function (response) {
                     $scope.locations = response.data.results;
-                    $scope.selectedLocationUuid = getCurrentLocation().uuid;
-                }
-                );
+                    setCurrentLoginLocationForUser();
+                });
             };
 
             var getLocationFor = function (uuid) {
@@ -33,7 +47,12 @@ angular.module('bahmni.home')
             };
 
             $scope.isCurrentLocation = function (location) {
-                return getCurrentLocation().uuid === location.uuid;
+                const currentLocation = getCurrentLocation();
+                if (currentLocation) {
+                    return getCurrentLocation().uuid === location.uuid;
+                } else {
+                    return false;
+                }
             };
 
             $scope.onLocationChange = function () {

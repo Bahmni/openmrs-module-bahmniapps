@@ -24,11 +24,15 @@ describe("ReportsController", function () {
                 }
             }
         };
+
+    var originalDate;
+
     beforeEach(module('bahmni.reports'));
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
         rootScope = $rootScope;
+        originalDate = window.Date;
 
         messagingServiceMock = jasmine.createSpyObj('messagingService', ['showMessage']);
         spinnerMock = jasmine.createSpyObj('spinner', ['forPromise']);
@@ -46,15 +50,27 @@ describe("ReportsController", function () {
         mockAppDescriptor.getConfigForPage.and.returnValue(typicalReportConfig);
         appServiceMock.getAppDescriptor.and.returnValue(mockAppDescriptor);
 
-        reportServiceMock = jasmine.createSpyObj('reportService', ['scheduleReport', 'getAvailableFormats', 'getMimeTypeForFormat']);
+        reportServiceMock = jasmine.createSpyObj('reportService', ['scheduleReport', 'getAvailableFormats', 'getAvailableDateRange', 'getMimeTypeForFormat']);
         scheduleReportPromise = specUtil.createServicePromise('scheduleReport');
         reportServiceMock.scheduleReport.and.returnValue(scheduleReportPromise);
         reportServiceMock.getAvailableFormats.and.returnValue({
             "CSV": "text/csv",
             "HTML": "text/html"
         });
-
+        reportServiceMock.getAvailableDateRange.and.returnValue({
+            "Today": new Date(),
+            "This Month": new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+            "Previous Month": new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1)
+        });
         controller = $controller;
+        setupController();
+    }));
+
+    afterEach(function () {
+        window.Date = originalDate;
+    });
+
+    function setupController() {
         controller('ReportsController', {
             $scope: scope,
             appService: appServiceMock,
@@ -63,10 +79,10 @@ describe("ReportsController", function () {
             messagingService: messagingServiceMock,
             spinner: spinnerMock,
             $rootScope: rootScope,
-            FileUploader: function () {}
+            FileUploader: function () { }
         });
-    }));
-
+    }
+    
     it("initializes report sets based on whether date range required or not", function () {
         expect(mockAppDescriptor.getConfigForPage).toHaveBeenCalledWith("reports");
         expect(rootScope.reportsRequiringDateRange.length).toBe(2);
@@ -75,18 +91,169 @@ describe("ReportsController", function () {
 
     it('should initialise formats based on the supportedFormats config', function () {
         mockAppDescriptor.getConfigValue.and.returnValue(['csv', 'html']);
-        controller('ReportsController', {
-            $scope: scope,
-            appService: appServiceMock,
-            reportService: reportServiceMock,
-            messagingService: messagingServiceMock,
-            $rootScope: rootScope,
-            FileUploader: function () {}
-        });
+        setupController();
 
         expect(_.keys(scope.formats).length).toBe(2);
         expect(scope.formats['CSV']).toBe('text/csv');
         expect(scope.formats['HTML']).toBe('text/html');
+    });
+
+    it('should return the same start and stop date when selected date range is today', function () {
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: new Date()
+        };
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+
+        expect(_.keys(rootScope.default.reportsRequiringDateRange).length).toBe(3);
+        expect((rootScope.default.reportsRequiringDateRange.dateRangeType).getDate()).toBe(new Date().getDate());
+        expect(rootScope.reportsRequiringDateRange[0].startDate.getDate()).toBe(new Date().getDate());
+        expect(rootScope.reportsRequiringDateRange[0].stopDate.getDate()).toBe(new Date().getDate());
+    });
+    
+    it("should return the correct start and stop date when selected date range is last 30 days", function () {
+        var mockedDate = new Date('20-Dec-2023');
+        var expectedStartDate = new originalDate('20-Nov-2023');
+        spyOn(window, 'Date').and.callFake(function () {
+            return mockedDate;
+        });
+        reportServiceMock.getAvailableDateRange.and.returnValue({
+            "Today": mockedDate,
+            "This Month": new originalDate('1-Dec-2023'),
+            "Previous Month": new originalDate('1-Nov-2023')
+        });
+        setupController();
+
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: expectedStartDate,
+        };
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+
+        expect(rootScope.reportsRequiringDateRange[0].startDate).toEqual(expectedStartDate);
+        expect(rootScope.reportsRequiringDateRange[0].stopDate).toEqual(mockedDate);
+    });
+    
+    it("should return the correct start and stop date when selected date range is last 7 days", function () {
+        var mockedDate = new Date('20-Dec-2023');
+        var expectedStartDate = new originalDate('13-Dec-2023');
+        spyOn(window, 'Date').and.callFake(function () {
+            return mockedDate;
+        });
+        reportServiceMock.getAvailableDateRange.and.returnValue({
+            "Today": mockedDate,
+            "This Month": new originalDate('1-Dec-2023'),
+            "Previous Month": new originalDate('1-Nov-2023')
+        });
+        setupController();
+
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: expectedStartDate,
+        };
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+
+        expect(rootScope.reportsRequiringDateRange[0].startDate).toEqual(expectedStartDate);
+        expect(rootScope.reportsRequiringDateRange[0].stopDate).toEqual(mockedDate);
+    });
+    
+    it("should return the correct start and stop date when selected date range is this year", function () {
+        var mockedDate = new Date('20-Dec-2023');
+        var expectedStartDate = new originalDate('1-Jan-2023');
+        spyOn(window, 'Date').and.callFake(function () {
+            return mockedDate;
+        });
+        reportServiceMock.getAvailableDateRange.and.returnValue({
+            "Today": mockedDate,
+            "This Month": new originalDate('1-Dec-2023'),
+            "Previous Month": new originalDate('1-Nov-2023')
+        });
+        setupController();
+
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: expectedStartDate,
+        };
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+
+        expect(rootScope.reportsRequiringDateRange[0].startDate).toEqual(expectedStartDate);
+        expect(rootScope.reportsRequiringDateRange[0].stopDate).toEqual(mockedDate);
+    });
+    
+    it("should return the correct start and stop date when selected date range is this quarter", function () {
+        var mockedDate = new Date('20-Dec-2023');
+        var expectedStartDate = new originalDate('1-Oct-2023');
+        spyOn(window, 'Date').and.callFake(function () {
+            return mockedDate;
+        });
+        reportServiceMock.getAvailableDateRange.and.returnValue({
+            "Today": mockedDate,
+            "This Month": new originalDate('1-Dec-2023'),
+            "Previous Month": new originalDate('1-Nov-2023')
+        });
+        setupController();
+
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: expectedStartDate,
+        };
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+
+        expect(rootScope.reportsRequiringDateRange[0].startDate).toEqual(expectedStartDate);
+        expect(rootScope.reportsRequiringDateRange[0].stopDate).toEqual(mockedDate);
+    });
+    
+    it("should return the correct start and stop date when selected date range is this month", function () {
+        var mockedDate = new Date('20-Dec-2023');
+        var expectedStartDate = new originalDate('1-Dec-2023');
+        spyOn(window, 'Date').and.callFake(function () {
+            return mockedDate;
+        });
+        reportServiceMock.getAvailableDateRange.and.returnValue({
+            "Today": mockedDate,
+            "This Month": new originalDate('1-Dec-2023'),
+            "Previous Month": new originalDate('1-Nov-2023')
+        });
+        setupController();
+
+        rootScope.default.reportsRequiringDateRange = {
+            dateRangeType: expectedStartDate,
+        };
+        scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+
+        expect(rootScope.reportsRequiringDateRange[0].startDate).toEqual(expectedStartDate);
+        expect(rootScope.reportsRequiringDateRange[0].stopDate).toEqual(mockedDate);
+    });
+    
+
+    const previousMonthTestCases = [
+        { currentDate: '1-Dec-2022', expectedStartDate: '1-Nov-2022', expectedStopDate: '30-Nov-2022' },
+        { currentDate: '3-Jan-2023', expectedStartDate: '1-Dec-2022', expectedStopDate: '31-Dec-2022' },
+        { currentDate: '5-Mar-2023', expectedStartDate: '1-Feb-2023', expectedStopDate: '28-Feb-2023' },
+        { currentDate: '5-Mar-2024', expectedStartDate: '1-Feb-2024', expectedStopDate: '29-Feb-2024' }
+    ];
+    
+    previousMonthTestCases.forEach(({ currentDate, expectedStartDate, expectedStopDate }) => {
+        it(`should return previous month start and stop date when current date is ${currentDate} and selected date range is previous month`, function () {
+            var mockedDate = new Date(currentDate);
+            spyOn(window, 'Date').and.callFake(function (year, month, day) {
+                if (arguments.length === 3) {
+                    return new originalDate(year, month, day);
+                } else {
+                    return mockedDate;
+                }
+            });
+            var previousMonthStartDate = new originalDate(expectedStartDate);
+            reportServiceMock.getAvailableDateRange.and.returnValue({
+                "Today": mockedDate,
+                "This Month": new originalDate('1-Jan-2023'),
+                "Previous Month": previousMonthStartDate
+            });
+            setupController();
+
+            rootScope.default.reportsRequiringDateRange = {
+                dateRangeType: previousMonthStartDate,
+            };
+            scope.setDefault('dateRangeType', 'reportsRequiringDateRange');
+        
+            expect(rootScope.reportsRequiringDateRange[0].startDate).toEqual(new originalDate(expectedStartDate));
+            expect(rootScope.reportsRequiringDateRange[0].stopDate).toEqual(new originalDate(expectedStopDate));
+        });
     });
 
     it('should initialise all available formats when supportedFormats config is not specified', function () {
@@ -351,7 +518,7 @@ describe("ReportsController", function () {
                 messagingService: messagingServiceMock,
                 spinner: spinnerMock,
                 $rootScope: rootScope,
-                FileUploader: function () {}
+                FileUploader: function () { }
             });
         }));
 
@@ -379,7 +546,7 @@ describe("ReportsController", function () {
                 messagingService: messagingServiceMock,
                 spinner: spinnerMock,
                 $rootScope: rootScope,
-                FileUploader: function () {}
+                FileUploader: function () { }
             });
         }));
 
@@ -397,7 +564,7 @@ describe("ReportsController", function () {
             responseType: 'text/html'
         });
 
-        var messageParams = {reportName: 'Vitals'};
+        var messageParams = { reportName: 'Vitals' };
         expect(mockAuditLogService.log).toHaveBeenCalledWith(undefined, 'RUN_REPORT', messageParams, 'MODULE_LABEL_REPORTS_KEY');
     });
 

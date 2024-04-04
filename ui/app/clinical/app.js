@@ -104,7 +104,7 @@ angular.module('consultation')
                 abstract: true,
                 views: {
                     'content': {
-                        template: '<div ui-view="dashboard-header"></div> <div ui-view="dashboard-content"></div>' +
+                        template: '<div ui-view="dashboard-header"></div> <div ui-view="dashboard-content" alert-on-exit></div>' +
                         '<patient-control-panel patient="patient" visit-history="visitHistory" visit="visit" show="showControlPanel" consultation="consultation"/>',
                         controller: function ($scope, visitHistory, consultationContext, followUpConditionConcept) {
                             $scope.visitHistory = visitHistory;

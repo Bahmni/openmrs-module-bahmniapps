@@ -1,6 +1,6 @@
 .diagnosis {
     .table {
-        overflow: hidden;
+        // overflow: hidden;
 
         .row:not(.diagnosis-row) {
             border-bottom: 1px solid $lightGray;
@@ -84,6 +84,7 @@
 
     .col1 {
         width: 100%;
+        position: relative;
 
         input[type="text"] {
             min-width: 160px;
@@ -262,6 +263,19 @@
         padding: 8px 7px;
         font-size: 11px;
     }
+    .header-alert-icon {
+        height: auto !important;
+        padding: 0px;
+    }
+    .button-alert {
+        padding: 8px 7px !important;
+        height: auto !important;
+    }
+
+    .button-alert-condition {
+        padding: 8px 7px !important;
+        height: auto !important;
+    }
 
     .btn-group,
     .small-btn {
@@ -343,8 +357,73 @@
                 }
             }
         }
-        
     }
+        .alert-item {
+            float: left;
+            .alert-button {
+                padding: 8px 7px !important;
+                height: 100% !important;
+                .icon {
+                    color: #8e8e8e;
+                }
+            }
+        }
+
+        .new-diagnosis-alert-row {
+            width: 100%;
+        }
+        .new-diagnosis-alert {
+            padding: 10px !important;
+            
+            a {
+                text-decoration: none;
+                color: black !important;
+            }
+            .cdss-alert-close {
+                background: none;
+                border: none;
+                position: absolute;
+                right: 0;
+                top: 0;
+                font-size: 12px;
+            }
+        }
+
+        .active-diagnosis-alert {
+            display: grid;
+            grid-template-columns: 2rem auto;
+        }
+
+        .bg-critical {
+            background-color: #ffd6d8;
+            border: 1px solid #ff0000;
+            position: relative;
+        }
+
+        .bg-warning {
+            background-color: #feead6;
+            border: 1px solid #ffa500;
+            position: relative;
+        }
+
+        .bg-info {
+            background-color: #d5f5ff;
+            border: 1px solid #00a3e0;
+            position: relative;
+        }
+
+        i.critical {
+            color: #ff0000;
+        }
+
+        i.warning {
+            color: #ffa500;
+        }
+
+        i.info {
+            color: #00a3e0;
+        }
+        
 
     .view-past,
     .edit-diagnosis {
@@ -545,6 +624,12 @@
         }
     }
 
+    .condition-alert-name {
+        display: flex;
+        align-items: center !important;
+        justify-content: flex-start !important;
+    }
+    
     .active-conditions,
     .history-conditions,
     .inactive-conditions {
@@ -684,11 +769,9 @@
 .current-diagnosis,
 .history-diagnosis {
     .diagnosis-row {
-        overflow: auto;
         clear: both;
 
         .view-past {
-            overflow: auto;
             clear: both;
 
             .col {
@@ -697,15 +780,26 @@
             }
 
             .diagnosis-name {
-                padding-left: 10px;
                 font-size: 14px;
+                display: flex;
+                align-items: center;
+
+                &.dismissed {
+                    padding-left: 0px !important;
+                }
+                > span {
+                    margin-right: 10px;
+                }
 
                 &.ruled-out {
                     color: $mediumGray;
                     text-decoration: line-through;
                 }
             }
-
+            
+            .history-alert {
+                left: -50px !important;
+            }
             .col2,
             .col3 {
                 padding-left: 10px;

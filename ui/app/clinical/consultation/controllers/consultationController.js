@@ -515,6 +515,25 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                     return $q.when({});
                 }
                 try {
+                    var alerts = angular.copy($rootScope.cdssAlerts) || [];
+                    var activeAlerts = alerts.filter(function (alert) {
+                        return alert.indicator === 'critical' && alert.isActive;
+                    });
+
+                    if (activeAlerts && activeAlerts.length > 0) {
+                        messagingService.showMessage("error", "{{ 'CDSS_ALERT_SAVE_ERROR' | translate }}");
+                        return $q.when({});
+                    }
+
+                    if (alerts && alerts.length > 0) {
+                        var cdssAlerts = alerts.map(
+                            function (cdssAlert) {
+                                cdssAlert.isActive = false;
+                                return cdssAlert;
+                            }
+                        );
+                        $rootScope.cdssAlerts = cdssAlerts;
+                    }
                     preSaveEvents();
                     return spinner.forPromise($q.all([preSavePromise(),
                         encounterService.getEncounterType($state.params.programUuid, sessionService.getLoginLocationUuid())]).then(function (results) {
@@ -524,6 +543,10 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                             params.cachebuster = Math.random();
                             return encounterService.create(encounterData)
                             .then(function (saveResponse) {
+                                $state.dirtyConsultationForm = false;
+                                $state.orderRemoved = false;
+                                $state.orderCreated = false;
+                                $scope.$parent.$broadcast("event:changes-saved");
                                 var messageParams = {
                                     encounterUuid: saveResponse.data.encounterUuid,
                                     encounterType: saveResponse.data.encounterType
@@ -552,6 +575,8 @@ angular.module('bahmni.clinical').controller('ConsultationController',
                                                 notify: true,
                                                 reload: (toStateConfig !== undefined)
                                             });
+                                        }).then(function () {
+                                            $rootScope.$broadcast('event:save-successful');
                                         });
                                     }));
                             }).catch(function (error) {

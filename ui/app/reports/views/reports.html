@@ -5,17 +5,27 @@
         <table class="alt-row form">
             <thead>
             <tr>
-                <th>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</th>
+                <th style="display: flex; justify-content: space-between;">
+                    <div>{{::'REPORTS_NAME_HEADER_KEY' | translate}}</div>
+                    <div style="width: 170px; margin-right: 25px;">
+                        {{::'REPORT_DATE_RANGE' | translate}}
+                        <span class="asterick">*</span>
+                        <select ng-model="default.reportsRequiringDateRange.dateRangeType"
+                                ng-options="type as label for (label , type) in ::dateRange"
+                                ng-change="setDefault('dateRangeType', 'reportsRequiringDateRange')">
+                        </select>
+                    </div>
+                </th>    
                 <th class="reports-start-date">{{::'REPORTS_START_DATE_HEADER_KEY ' |translate}}
                     <span class="asterick">*</span>
                     <input ng-model="default.reportsRequiringDateRange.startDate" date-converter
                            class="form-field start-date" type="date" max="{{default.reportsRequiringDateRange.stopDate | date:'yyyy-MM-dd'}}"
-                           ng-change="setDefault('startDate', 'reportsRequiringDateRange')">
+                           ng-change="setDefault('startDate', 'reportsRequiringDateRange')"> 
                 </th>
                 <th class="reports-stop-date">{{::'REPORTS_END_DATE_HEADER_KEY' |translate}}
                     <span class="asterick">*</span>
                     <input ng-model="default.reportsRequiringDateRange.stopDate" date-converter
-                           class="form-field start-date" type="date" min="{{default.reportsRequiringDateRange.startDate | date:'yyyy-MM-dd'}}"
+                           class="form-field stop-date" type="date" min="{{default.reportsRequiringDateRange.startDate | date:'yyyy-MM-dd'}}"
                            ng-change="setDefault('stopDate', 'reportsRequiringDateRange')">
                 </th>
                 <th class="reports-format">
@@ -35,12 +45,10 @@
             <tr ng-repeat="report in ::reportsRequiringDateRange" show-if-privilege="{{:: report.requiredPrivilege}}">
                 <td>{{:: report.name |translate }}</td>
                 <td class="reports-start-date">
-                    <input date-converter class="form-field start-date" type="date" max="{{report.stopDate | date:'yyyy-MM-dd'}}"
-                           ng-model="report.startDate">
+                    <input date-converter class="form-field start-date" type="date" max="{{report.stopDate | date:'yyyy-MM-dd'}}" ng-model="report.startDate">  
                 </td>
                 <td class="reports-stop-date">
-                    <input date-converter class="form-field stop-date" type="date" min="{{report.startDate | date:'yyyy-MM-dd'}}"
-                            ng-model="report.stopDate">
+                    <input date-converter class="form-field stop-date" type="date" min="{{report.startDate | date:'yyyy-MM-dd'}}" ng-model="report.stopDate">
                 </td>
                 <td class="reports-format">
                     <select ng-model="report.responseType" ng-options="type as label for (label , type) in ::formats">

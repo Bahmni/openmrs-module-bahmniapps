@@ -1,9 +1,18 @@
 <div class="view-past row-click" ng-click="toggle(diagnosis)" ng-class="{'edited': diagnosis.isDirty}">
-    <div class="col col1">
-        <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus}">
+    <div class="col col1" bm-pop-over autoclose="true">
+        <span class="diagnosis-name" ng-class="{'ruled-out': diagnosis.diagnosisStatus,'dismissed': diagnosis.alerts && diagnosis.alerts.length > 0 && !hasActiveAlerts(diagnosis.alerts)}">
+            <span ng-if="diagnosis.alerts && diagnosis.alerts.length > 0 && !hasActiveAlerts(diagnosis.alerts)">
+                 <button class="cdss-alert-icon button-alert" bm-pop-over-trigger>
+                    <i class="fa fa-exclamation-circle cdss-icon-medication">
+                    </i>
+                </button>
+            </span>
             <span ng-if="diagnosis.codedAnswer.name">{{diagnosis.getDisplayName()}}</span>
             <span ng-if="diagnosis.freeTextAnswer">{{diagnosis.freeTextAnswer}}</span>
         </span>
+            <div class="tooltip cdss-tooltip history-alert" bm-pop-over-target>
+                <cdss-popover alerts="diagnosis.alerts"></cdss-popover>
+            </div>
     </div>
 
     <div ng-show="diagnosis.firstDiagnosis.revised" class="col col2">
@@ -100,4 +109,7 @@
             dirty-check-flag='diagnosis.isDirty' />
         </div>
     </div>
+</div>
+<div class="row" ng-if="hasActiveAlerts(diagnosis.alerts)" ng-repeat="alert in diagnosis.alerts">
+    <ng-include class="new-diagnosis-alert-row" src="'consultation/views/diagnosisAlertRow.html'" />
 </div>

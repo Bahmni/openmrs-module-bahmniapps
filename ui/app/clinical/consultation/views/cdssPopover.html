@@ -1,0 +1,16 @@
+<div ng-repeat="alert in alerts" class="tooltip-list">
+  <div
+    class="cdss-tooltip__status"
+    ng-class="{'status-critical': alert.indicator == 'critical','status-warning' : alert.indicator == 'warning', 'status-info': alert.indicator == 'info'}"
+  >
+    {{ "DISMISSED_KEY" | translate}} {{alert.indicator}}
+  </div>
+  <p>
+    <b ng-if="alert.alertType === 'High Dosage' || alert.alertType === 'Validation Error'">{{alert.alertType}}: </b>
+    {{alert.summary}}
+    </p>
+  <div class="alert-detail">
+    <span ng-bind-html="alert.detail"></span>
+    <a href="{{alert.source.url}}" target="_blank" ng-show="alert.source.url" class="cdss_alert_source"><i class="fa fa-question-circle"></i></a>
+  </div>
+</div>

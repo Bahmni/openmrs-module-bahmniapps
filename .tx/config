@@ -2,43 +2,94 @@
 host = https://www.transifex.com
 
 [o:openmrs:p:bahmni:r:admin-app]
-file_filter = ui/app/i18n/admin/locale_<lang>.json
-source_file = ui/app/i18n/admin/locale_en.json
-source_lang = en
-type = KEYVALUEJSON
+file_filter            = ui/app/i18n/admin/locale_<lang>.json
+source_file            = ui/app/i18n/admin/locale_en.json
+source_lang            = en
+type                   = KEYVALUEJSON
+replace_edited_strings = false
+keep_translations      = false
 
 [o:openmrs:p:bahmni:r:adt-app]
-file_filter = ui/app/i18n/adt/locale_<lang>.json
-source_file = ui/app/i18n/adt/locale_en.json
-source_lang = en
-type = KEYVALUEJSON
+file_filter            = ui/app/i18n/adt/locale_<lang>.json
+source_file            = ui/app/i18n/adt/locale_en.json
+source_lang            = en
+type                   = KEYVALUEJSON
+replace_edited_strings = false
+keep_translations      = false
+
+[o:openmrs:p:bahmni:r:appointments-app]
+file_filter            = ui/app/i18n/appointments/locale_<lang>.json
+source_file            = ui/app/i18n/appointments/locale_en.json
+type                   = KEYVALUEJSON
+minimum_perc           = 0
+resource_name          = Appointments App
+replace_edited_strings = false
+keep_translations      = false
 
 [o:openmrs:p:bahmni:r:clinical-app]
-file_filter = ui/app/i18n/clinical/locale_<lang>.json
-source_file = ui/app/i18n/clinical/locale_en.json
-source_lang = en
-type = KEYVALUEJSON
+file_filter            = ui/app/i18n/clinical/locale_<lang>.json
+source_file            = ui/app/i18n/clinical/locale_en.json
+source_lang            = en
+type                   = KEYVALUEJSON
+replace_edited_strings = false
+keep_translations      = false
+
+[o:openmrs:p:bahmni:r:document-upload-app]
+file_filter            = ui/app/i18n/document-upload/locale_<lang>.json
+source_file            = ui/app/i18n/document-upload/locale_en.json
+type                   = KEYVALUEJSON
+minimum_perc           = 0
+resource_name          = Document Upload App
+replace_edited_strings = false
+keep_translations      = false
 
 [o:openmrs:p:bahmni:r:home-app]
-file_filter = ui/app/i18n/home/locale_<lang>.json
-source_file = ui/app/i18n/home/locale_en.json
-source_lang = en
-type = KEYVALUEJSON
+file_filter            = ui/app/i18n/home/locale_<lang>.json
+source_file            = ui/app/i18n/home/locale_en.json
+source_lang            = en
+type                   = KEYVALUEJSON
+replace_edited_strings = false
+keep_translations      = false
+
+[o:openmrs:p:bahmni:r:ipd-app]
+file_filter            = ui/app/i18n/ipd/locale_<lang>.json
+source_file            = ui/app/i18n/ipd/locale_en.json
+type                   = KEYVALUEJSON
+minimum_perc           = 0
+resource_name          = IPD App
+replace_edited_strings = false
+keep_translations      = false
 
 [o:openmrs:p:bahmni:r:orders-app]
-file_filter = ui/app/i18n/orders/locale_<lang>.json
-source_file = ui/app/i18n/orders/locale_en.json
-source_lang = en
-type = KEYVALUEJSON
+file_filter            = ui/app/i18n/orders/locale_<lang>.json
+source_file            = ui/app/i18n/orders/locale_en.json
+source_lang            = en
+type                   = KEYVALUEJSON
+replace_edited_strings = false
+keep_translations      = false
+
+[o:openmrs:p:bahmni:r:ot-app]
+file_filter            = ui/app/i18n/ot/locale_<lang>.json
+source_file            = ui/app/i18n/ot/locale_en.json
+type                   = KEYVALUEJSON
+minimum_perc           = 0
+resource_name          = OT App
+replace_edited_strings = false
+keep_translations      = false
 
 [o:openmrs:p:bahmni:r:registration-app]
-file_filter = ui/app/i18n/registration/locale_<lang>.json
-source_file = ui/app/i18n/registration/locale_en.json
-source_lang = en
-type = KEYVALUEJSON
+file_filter            = ui/app/i18n/registration/locale_<lang>.json
+source_file            = ui/app/i18n/registration/locale_en.json
+source_lang            = en
+type                   = KEYVALUEJSON
+replace_edited_strings = false
+keep_translations      = false
 
 [o:openmrs:p:bahmni:r:reports-app]
-file_filter = ui/app/i18n/reports/locale_<lang>.json
-source_file = ui/app/i18n/reports/locale_en.json
-source_lang = en
-type = KEYVALUEJSON
+file_filter            = ui/app/i18n/reports/locale_<lang>.json
+source_file            = ui/app/i18n/reports/locale_en.json
+source_lang            = en
+type                   = KEYVALUEJSON
+replace_edited_strings = false
+keep_translations      = false
+

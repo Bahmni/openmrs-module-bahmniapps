@@ -39,6 +39,7 @@
         flex-direction: column;
         flex-wrap: wrap;
         align-items: flex-start;
+        position: relative;
 
         @media screen and (min-width: 540px) and (max-width: 768px) {
             flex-direction: row;
@@ -74,6 +75,7 @@
         padding-left: 10px;
         line-height: 1.1;
         flex-wrap: wrap;
+        padding-bottom: 10px;
 
         .footer-note {
             flex-grow: 1;
@@ -117,7 +119,7 @@
         font-size: 12px;
 
         li {
-            padding-bottom: 10px;
+            padding-bottom: 0px;
         }
     }
 
@@ -423,13 +425,111 @@
                 }
             }
 
-            h3.orderSet-additional-info {
+            h3.orderSet-additional-info, h3.cdss-alerts {
                 font-family: OpenSansBold;
                 color: $darkGray;
                 font-size: 13px;
                 border-bottom: 1px solid $lightGray;
                 padding: 20px 0 5px;
                 margin: 0 0 10px;
+            }
+
+            .cdss-alert {
+                position: relative;
+                margin: 0 0 10px;
+                padding: 10px;
+                border-radius: 3px;
+                box-sizing: border-box;
+                font-size: 13px;
+                color: $darkGray;
+                line-height: 1.5em;
+                display: flex;
+
+                > i {
+                    flex-shrink: 0;
+                }
+                > div {
+                    margin-left: 0.75rem;
+                    margin-right: 0.75rem;
+                }
+
+                .cdss-alert-text {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+                &.alert-danger {
+                    background: #FFD6D8;
+                    i {
+                        color: #FF0000;
+                    }
+                }
+                &.alert-warning {
+                    background: #FEEAD6;
+                    i {
+                        color: #FFA500;
+                    }
+                }
+                &.alert-info {
+                    background: #D5F5FF;
+                    i {
+                        color: #00A3E0;
+                    }
+                }
+                .cdss-alert-summary {
+                    cursor: pointer;
+                    position: relative;
+                    i {
+                        position: absolute;
+                        right: -15px;
+                        bottom: 0px;
+                        line-height: 1;
+                        color: $darkGray;
+                        text-shadow: 0 1px 0 #fff;
+                    }
+                }
+
+                .cdss-alert-details {
+                    margin-top: 10px;
+                    .fa {
+                        cursor: pointer;
+                        display: inline-block;
+                        width: 18px;
+                        height: 18px;
+                        line-height: 18px;
+                        text-align: center;
+                        border-radius: 100%;
+                        font-size: 20px;
+                        color: #669999;
+                        box-shadow: 1px 1px 1px #ccc;
+                        background: #FFFFFF;
+                        padding: 0;
+                        margin-left: 5px;
+                    }
+                }
+
+                .cdss-alert-close {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    font-size: 12px;
+                    font-weight: bold;
+                    line-height: 1;
+                    color: #000;
+                    text-shadow: 0 1px 0 #fff;
+                    background: transparent;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    text-align: center;
+                    border-radius: 50%;
+                    border: none;
+                    padding: 0;
+                    cursor: pointer;
+                    transition: opacity .15s ease-in-out;
+                }
+            }
+
+            .cdss-alert-close-reason {
+                width: 100% !important;
             }
 
             #SOS {
@@ -582,6 +682,144 @@
         clear: both;
     }
 
+    .cdss-icon-medication {
+        color: #8e8e8e;
+        padding: 0px !important;
+        margin: 0px 2px;
+    }
+
+    .active-drug-alert {
+        width: calc(100% - 22px);
+        padding: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        display: grid;
+        grid-template-columns: 2rem auto 4rem;
+        > div {
+            display: flex;
+            &:first-child {
+                align-items: flex-start !important;
+            }
+            &:not(:last-child) {
+                flex-direction: column;
+                justify-content: flex-start !important;
+                margin-top: 5px !important;
+            }
+            
+        }
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+        .cdss-alert-close {
+            background: none;
+            border: none;
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 12px;
+            z-index: 1;
+        }
+        .summary {
+            position: relative;
+            .expand-details {
+                position: absolute;
+                right: 0;
+                top: calc(100% - 5px);
+                font-size: 12px;
+                font-weight: bold;
+                line-height: 1;
+                color: #000;
+                text-shadow: 0 1px 0 #fff;
+                background: transparent;
+                width: 1.5rem;
+                height: 1.5rem;
+                text-align: center;
+                border-radius: 50%;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+                transition: opacity .15s ease-in-out;
+            }
+        }
+        .cdss-alert-details {
+            margin-top: 10px;
+            .operations, .field-value {
+                margin-top: 10px;
+            }
+
+            .form-field {
+                padding: 0px !important;
+            }
+        }
+
+
+
+        .alert-controls {
+            justify-content: space-between;
+            align-items: flex-start;
+            button, i {
+                padding: 5px !important;
+                position: relative !important;
+                font-size: 16px;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .cdss-alert-audit-form {
+        display: flex;
+        align-items: center;
+        > div {
+            // width: calc(100% - 20px);
+            select {
+                width: 100%;
+            }
+            &:first-child {
+                margin-right: 10px;
+            }
+
+        }
+    }
+
+    .bg-critical {
+        background-color: #ffd6d8;
+        border: 1px solid #ff0000;
+        position: relative;
+    }
+
+    .bg-warning {
+        background-color: #feead6;
+        border: 1px solid #ffa500;
+        position: relative;
+    }
+
+    .bg-info {
+        background-color: #d5f5ff;
+        border: 1px solid #00a3e0;
+        position: relative;
+    }
+
+    .bg-inactive {
+        background-color: #f5f5f5;
+        border: 1px solid #ccc;
+        position: relative;
+    }
+
+    i.critical {
+        color: #ff0000;
+    }
+
+    i.warning {
+        color: #ffa500;
+    }
+
+    i.info {
+        color: #00a3e0;
+    }
+    i.inactive {
+        color: #8e8e8e !important;
+    }
 }
 
 @import "customDrugOrderHistory";

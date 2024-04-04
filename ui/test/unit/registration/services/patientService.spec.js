@@ -141,7 +141,7 @@ describe('Patient resource', function () {
         var query = "demo";
         patientService.searchByNameOrIdentifier(query, 100);
         expect(mockHttp.get).toHaveBeenCalled();
-        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniSearchUrl + "/patient");
+        expect(mockHttp.get.calls.mostRecent().args[0]).toBe(Bahmni.Common.Constants.bahmniCommonsSearchUrl + "/patient/lucene");
         expect(mockHttp.get.calls.mostRecent().args[1].params.q).toBe(query);
         expect(mockHttp.get.calls.mostRecent().args[1].params.limit).toBe(100);
         expect(mockHttp.get.calls.mostRecent().args[1].params.s).toBe("byIdOrName");

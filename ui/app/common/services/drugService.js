@@ -1,7 +1,7 @@
 'use strict';
 angular.module('bahmni.common.services')
     .factory('drugService', ['$http', function ($http) {
-        var v = 'custom:(uuid,strength,name,dosageForm,concept:(uuid,name,names:(name)))';
+        var v = 'custom:(uuid,strength,drugReferenceMaps,name,dosageForm,concept:(uuid,name,names:(name)))';
         var search = function (drugName, conceptUuid) {
             var params = {
                 v: v,
@@ -46,9 +46,52 @@ angular.module('bahmni.common.services')
             });
         };
 
+        var sendDiagnosisDrugBundle = function (bundle) {
+            return $http.post(Bahmni.Common.Constants.cdssUrl, bundle, {
+                withCredentials: true,
+                params: { service: 'medication-order-select' }
+            });
+        };
+
+        var cdssAudit = function (patientUuid, eventType, message, module) {
+            var alertData = {
+                patientUuid: patientUuid,
+                eventType: eventType,
+                message: message,
+                module: module
+            };
+            return $http.post(Bahmni.Common.Constants.auditLogUrl, alertData, {
+                withCredentials: true
+            });
+        };
+
+        var getDrugConceptSourceMapping = function (drugUuid) {
+            var params = {
+                _id: drugUuid
+            };
+
+            return $http.get(Bahmni.Common.Constants.fhirMedicationsUrl, {
+                params: params,
+                withCredentials: true
+            });
+        };
+        var getCdssEnabled = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                method: "GET",
+                params: {
+                    property: 'cdss.enable'
+                },
+                withCredentials: true
+            });
+        };
+
         return {
             search: search,
             getRegimen: getRegimen,
-            getSetMembersOfConcept: getSetMembersOfConcept
+            getSetMembersOfConcept: getSetMembersOfConcept,
+            sendDiagnosisDrugBundle: sendDiagnosisDrugBundle,
+            getDrugConceptSourceMapping: getDrugConceptSourceMapping,
+            getCdssEnabled: getCdssEnabled,
+            cdssAudit: cdssAudit
         };
     }]);

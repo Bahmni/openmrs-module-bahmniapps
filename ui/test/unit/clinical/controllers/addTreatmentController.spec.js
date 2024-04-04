@@ -1,7 +1,6 @@
 'use strict';
 
 describe("AddTreatmentController", function () {
-
     beforeEach(module('bahmni.common.uiHelper'));
     beforeEach(module('bahmni.common.services'));
     beforeEach(module('bahmni.clinical'));
@@ -108,11 +107,143 @@ describe("AddTreatmentController", function () {
         "provider": {name: "superman"}
     };
 
+    var cdssBundle = {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+            {
+                "resource": {
+                    "resourceType": "Condition",
+                    "clinicalStatus": {
+                        "coding": [
+                            {
+                                "code": "active",
+                                "display": "Active",
+                                "system": "http://terminology.hl7.org/CodeSystem/condition-clinical"
+                            }
+                        ]
+                    },
+                    "code": {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "123456789",
+                                "display": "Placeholder Diagnosis"
+                            }
+                        ],
+                        "text": "Placeholder Diagnosis"
+                    },
+                    "subject": {
+                        "reference": "Patient/dc9444c6-ad55-4200-b6e9-407e025eb948"
+                    }
+                }
+            },
+            {
+                "resource": {
+                    "resourceType": "MedicationRequest",
+                    "status": "active",
+                    "intent": "order",
+                    "subject": {
+                        "reference": "Patient/dc9444c6-ad55-4200-b6e9-407e025eb948"
+                    },
+                    "medicationCodeableConcept": {
+                        "id": "987654321",
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "987654321",
+                                "display": "Placeholder Medication"
+                            },
+                            {
+                                "code": "987654321",
+                                "system": "https://example.com",
+                                "display": "Placeholder Medication"
+                            }
+                        ],
+                        "text": "Placeholder Medication"
+                    },
+                    "dosageInstruction": [
+                        {
+                            "text": "{\"instructions\":\"As directed\"}",
+                            "timing": {
+                                "event": [
+                                    "2023-10-01T05:58:27.000Z"
+                                ],
+                                "repeat": {
+                                    "duration": 3,
+                                    "durationUnit": "d"
+                                },
+                                "code": {
+                                    "coding": [
+                                        {
+                                            "code": "987654321",
+                                            "display": "Twice a day"
+                                        }
+                                    ],
+                                    "text": "Twice a day"
+                                }
+                            },
+                            "asNeededBoolean": false,
+                            "doseAndRate": [
+                                {
+                                    "doseQuantity": {
+                                        "value": 3,
+                                        "unit": "Tablet(s)",
+                                        "code": "987654321"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        ]
+    };
+
+    var cdssResponse = [{
+        "uuid": "7b544b67-fbc7-48af-af95-ddaee09e836b",
+        "indicator": "warning",
+        "summary": "Contraindication: \"Placeholder Medication\" and \"Placeholder Medication\" with patient condition \"Placeholder Condition\" and \"Placeholder Condition\".",
+        "detail": "The use of Placeholder Medication is contraindicated when the patient has Placeholder Condition.",
+        "source": {
+            "label": "Wikipedia",
+            "url": "https://en.wikipedia.org/wiki/Atorvastatin#Contraindications"
+        },
+        "referenceMedications": [
+            {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "987654321",
+                        "display": "Placeholder Medication"
+                    },
+                    {
+                        "system": "https://example.com",
+                        "code": "987654321",
+                        "display": "Placeholder Medication"
+                    }
+                ]
+            }
+        ],
+        "referenceConditions": [{
+            "coding": [
+                {
+                    "system": "https://example.com",
+                    "code": "123456789",
+                    "display": "Placeholder Condition"
+                },
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "123456789",
+                    "display": "Placeholder Condition"
+                }
+            ]
+        }]
+    }];
 
     var $q, scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService;
-
+        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService, $state, cdssService;
 
     stateParams = {
         tabConfigName: null
@@ -168,9 +299,9 @@ describe("AddTreatmentController", function () {
             orderSetService.getCalculatedDose.and.returnValue(specUtil.respondWithPromise($q, {
                 dose: 20, doseUnit: 'mg'
             }));
-            locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation'])
+            locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation']);
 
-            drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
+            drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept', 'sendDiagnosisDrugBundle', 'getCdssEnabled', 'cdssAudit', 'getDrugConceptSourceMapping']);
             drugs = [
                 {name: "T", dosageForm: {display: "something"}, uuid: "123-12321"},
                 {name: "A", dosageForm: {display: "something"}, uuid: "123-12321"},
@@ -178,6 +309,14 @@ describe("AddTreatmentController", function () {
             ];
             defaultDrugsPromise = specUtil.respondWith(drugs);
             drugService.getSetMembersOfConcept.and.returnValue(defaultDrugsPromise);
+            drugService.sendDiagnosisDrugBundle.and.returnValue(specUtil.respondWith([]));
+            drugService.getCdssEnabled.and.returnValue(specUtil.respondWith(true));
+            drugService.cdssAudit.and.returnValue(specUtil.respondWith(true));
+            drugService.getDrugConceptSourceMapping.and.returnValue(specUtil.respondWithPromise($q, {entry: []}));
+
+            cdssService = jasmine.createSpyObj('cdssService', ['createFhirBundle', 'sendDiagnosisDrugBundle', 'createParams', 'addNewAlerts', 'sortInteractionsByStatus', 'getAlerts']);
+            cdssService.getAlerts.and.returnValue(specUtil.respondWith(cdssResponse));
+            cdssService.sortInteractionsByStatus.and.returnValue(specUtil.respondWith(cdssResponse));
 
             appService.getAppDescriptor.and.returnValue(appConfig);
             orderSets = [{
@@ -217,10 +356,10 @@ describe("AddTreatmentController", function () {
                         results: orderSets
                     }
                 },
-                then : function(cb) {
+                then: function (cb) {
                     cb(this.response);
                 }
-            }
+            };
             orderSetService.getOrderSetsByQuery.and.returnValue(fakePromise);
             $controller('AddTreatmentController', {
                 $scope: scope,
@@ -232,16 +371,18 @@ describe("AddTreatmentController", function () {
                 clinicalAppConfigService: clinicalAppConfigService,
                 ngDialog: ngDialog,
                 appService: appService,
-                locationService :locationService,
+                locationService: locationService,
                 drugService: drugService,
                 treatmentConfig: treatmentConfig,
-                orderSetService: orderSetService
+                orderSetService: orderSetService,
+                $state: $state,
+                cdssService: cdssService
             });
             scope.treatments = [];
             scope.orderSetTreatments = [];
             scope.newOrderSet = {};
             scope.getFilteredOrderSets('dumm');
-        })
+        });
     };
     beforeEach(initController);
 
@@ -265,7 +406,7 @@ describe("AddTreatmentController", function () {
     describe("add()", function () {
         beforeEach(function () {
             scope.treatments = [];
-        })
+        });
 
         it("adds treatment object to list of treatments if newOrderSet flag is false", function () {
             var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {drug: {name: true}});
@@ -415,7 +556,7 @@ describe("AddTreatmentController", function () {
             scope.add();
             expect(scope.treatments.length).toEqual(2);
             var drugOrderToBeSaved = scope.treatments.filter(function (treatment) {
-                return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-11-30")
+                return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-11-30");
             })[0];
             expect(DateUtil.isSameDateTime(drugOrderToBeSaved.effectiveStopDate, DateUtil.subtractSeconds("2014-12-02", 1))).toBeTruthy();
         });
@@ -454,6 +595,50 @@ describe("AddTreatmentController", function () {
             expect(scope.treatments[2].drug.name).toEqual("ghi");
         });
 
+        describe("create FHIR bundle", function () {
+            var data = {
+                conditions: [],
+                diagnosis: [
+                    {
+                        codedAnswer: {
+                            name: 'Disease X',
+                            uuid: '235856003',
+                            conceptSystem: 'http://snomed.info/sct'
+                        },
+                        certainty: 'CONFIRMED',
+                        conceptName: 'Disease X'
+                    }
+                ],
+                medications: [
+                    {
+                        drugNameDisplay: 'Medication A 10 mg (Tablet)',
+                        drug: {
+                            name: 'Medication A 10 mg',
+                            uuid: 'ea21e269-0129-42ec-b769-346d7085157c',
+                            drugReferenceMaps: [
+                                {
+                                    display: 'Medication A 10 mg - SAME-AS',
+                                    uuid: 'a8c89f08-5eb0-428f-b934-201fabe8221b',
+                                    drug: {
+                                        uuid: 'ea21e269-0129-42ec-b769-346d7085157c',
+                                        display: 'Medication A 10 mg'
+                                    },
+                                    conceptReferenceTerm: {
+                                        uuid: '041bbed8-8319-445a-baa8-ef994898edd9',
+                                        display: 'SNOMED: 108600003'
+                                    },
+                                    conceptMapType: {
+                                        uuid: '35543629-7d8c-11e1-909d-c80aa9edcf4e',
+                                        display: 'SAME-AS'
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            };
+        });
+
         describe("add free text drug order()", function () {
             it("should save as a free text drug order on click of accept button", function () {
                 var treatment = {drugNameDisplay: "Some New Drug", drug: {name: "CodedDrug"}};
@@ -469,7 +654,13 @@ describe("AddTreatmentController", function () {
                 var treatment = {drugNameDisplay: "Some New Drug", drug: {name: "CodedDrug"}};
                 scope.treatment = treatment;
                 treatment.changeDrug = jasmine.createSpy(treatment, 'changeDrug');
-
+                scope.consultation = {
+                    patient: {
+                        uuid: 'a751f0da-39ab-45a3-db52-21706f5ed201'
+                    },
+                    conditions: [],
+                    newlyAddedDiagnoses: []
+                };
                 scope.onSelect({
                     drug: {
                         name: "CodedDrug",
@@ -482,9 +673,10 @@ describe("AddTreatmentController", function () {
 
                 scope.onChange();
                 expect(treatment.changeDrug).toHaveBeenCalledWith({
-                    name: "CodedDrug",
-                    form: "Once",
-                    uuid: "CodedDrugUuid"
+                    name: 'CodedDrug',
+                    form: 'Once',
+                    uuid: 'CodedDrugUuid',
+                    drugReferenceMaps: undefined
                 });
 
                 expect(scope.treatment.selectedItem).toBeUndefined();
@@ -517,6 +709,42 @@ describe("AddTreatmentController", function () {
 
                 scope.onAccept();
                 expect(scope.treatment.isNonCodedDrug).toBeFalsy();
+            });
+        });
+
+        describe("cdss alerts", function () {
+            var alerts = [
+                {
+                    uuid: 'some-uuid',
+                    indicator: 'critical',
+                    summary: 'Contraindication: Some Coded Drug is contraindicated with Some condition',
+                    detail: 'Some Coded Drug is contraindicated with Some condition'
+                }
+            ];
+
+            beforeEach(function () {
+                scope.cdssAlerts = alerts;
+                scope.newAlerts = alerts;
+            });
+
+            it("should close alert on clicking close button", function () {
+                scope.closeAlert(0);
+                expect(scope.newAlerts.length).toBe(0);
+            });
+
+            it("should toggle alert details on clicking toggle button", function () {
+                scope.toggleAlertDetails(0);
+                expect(scope.newAlerts[0].showDetails).toBeTruthy();
+                scope.toggleAlertDetails(0);
+                expect(scope.newAlerts[0].showDetails).toBeFalsy();
+            });
+
+            it("should dismiss critical alert on submitting an audit", function () {
+                scope.patient = {uuid: 'some-user-uuid'};
+                scope.treatment = {audit: "some-audit"};
+                scope.submitAudit(0).then(function () {
+                    expect(scope.newAlerts.length).toBe(0);
+                });
             });
         });
 
@@ -584,14 +812,12 @@ describe("AddTreatmentController", function () {
         });
     });
     describe("Detect Overlapping orders amongst new orders on Save", function () {
-
         describe("should allow potentially overlapping order whose dates can be set and be resolved", function () {
-
             var encounterDate = DateUtil.parse("2014-12-02");
 
             beforeEach(function () {
                 scope.treatments = [];
-            })
+            });
 
             it("new drug orders for dates 2-4 and 5-6 and 4-5 in this order", function () {
                 var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({},
@@ -637,7 +863,7 @@ describe("AddTreatmentController", function () {
                 expect(scope.treatment).not.toEqual(dec5_dec6order);
                 expect(scope.treatments.length).toEqual(2);
                 var dec5_dec6orderAfterSave = scope.treatments.filter(function (treatment) {
-                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-05")
+                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-05");
                 })[0];
 
                 expect(DateUtil.isSameDateTime(dec5_dec6orderAfterSave.effectiveStartDate, DateUtil.parse("2014-12-05"))).toBeTruthy();
@@ -651,7 +877,7 @@ describe("AddTreatmentController", function () {
                 expect(scope.treatment).not.toEqual(dec4_dec5order);
                 expect(scope.treatments.length).toEqual(3);
                 var dec4_dec5orderAfterSave = scope.treatments.filter(function (treatment) {
-                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-04")
+                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-04");
                 })[0];
 
                 expect(DateUtil.isSameDateTime(dec4_dec5orderAfterSave.effectiveStartDate, DateUtil.parse("2014-12-04"))).toBeTruthy();
@@ -704,7 +930,7 @@ describe("AddTreatmentController", function () {
                 expect(scope.treatment).not.toEqual(dec4_dec5order);
                 expect(scope.treatments.length).toEqual(2);
                 var dec4_dec5orderAfterSave = scope.treatments.filter(function (treatment) {
-                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-04")
+                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-04");
                 })[0];
 
                 expect(DateUtil.isSameDateTime(dec4_dec5orderAfterSave.effectiveStartDate, DateUtil.parse("2014-12-04"))).toBeTruthy();
@@ -718,7 +944,7 @@ describe("AddTreatmentController", function () {
                 expect(scope.treatment).not.toEqual(dec5_dec6order);
                 expect(scope.treatments.length).toEqual(3);
                 var dec5_dec6orderAfterSave = scope.treatments.filter(function (treatment) {
-                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-05")
+                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-05");
                 })[0];
 
                 expect(DateUtil.isSameDateTime(dec5_dec6orderAfterSave.effectiveStartDate, DateUtil.parse("2014-12-05"))).toBeTruthy();
@@ -772,7 +998,7 @@ describe("AddTreatmentController", function () {
                 expect(scope.treatment).not.toEqual(dec5_dec6order);
                 expect(scope.treatments.length).toEqual(2);
                 var dec5_dec6orderAfterSave = scope.treatments.filter(function (treatment) {
-                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-05")
+                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-05");
                 })[0];
 
                 expect(DateUtil.isSameDateTime(dec5_dec6orderAfterSave.effectiveStartDate, DateUtil.parse("2014-12-05"))).toBeTruthy();
@@ -786,7 +1012,7 @@ describe("AddTreatmentController", function () {
                 expect(scope.treatment).not.toEqual(dec4_dec5order);
                 expect(scope.treatments.length).toEqual(3);
                 var dec4_dec5orderAfterSave = scope.treatments.filter(function (treatment) {
-                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-04")
+                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-04");
                 })[0];
 
                 expect(DateUtil.isSameDateTime(dec4_dec5orderAfterSave.effectiveStartDate, DateUtil.parse("2014-12-04"))).toBeTruthy();
@@ -794,7 +1020,6 @@ describe("AddTreatmentController", function () {
                 expect(DateUtil.isSameDateTime(dec4_dec5orderAfterSave.scheduledDate, DateUtil.parse("2014-12-04"))).toBeTruthy();
                 expect(dec4_dec5orderAfterSave.autoExpireDate).toBeUndefined();
             });
-
         });
 
         describe("should allow potentially overlapping order whose dates can be set and be resolved", function () {
@@ -802,7 +1027,7 @@ describe("AddTreatmentController", function () {
 
             beforeEach(function () {
                 scope.treatments = [];
-            })
+            });
 
             it("existing drug orders for dates 2-3 and 3-4 and revised drug order for 2-3", function () {
                 var dec2_dec3order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
@@ -868,19 +1093,17 @@ describe("AddTreatmentController", function () {
                 scope.add();
                 expect(scope.treatments.length).toEqual(1);
                 expect(DateUtil.isSameDateTime(dec2_dec4order.autoExpireDate, DateUtil.subtractSeconds("2014-12-04 00:00:00", 1))).toBeTruthy();
-
-            })
+            });
         });
 
         describe("should not allow overlapping order", function () {
             var encounterDate = DateUtil.parse("2014-12-02");
 
             beforeEach(function () {
-                scope.treatments = []
-            })
+                scope.treatments = [];
+            });
 
             it("new orders for dates 2-4 and 3-6", function () {
-
                 var dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
@@ -1036,7 +1259,6 @@ describe("AddTreatmentController", function () {
                 scope.add();
                 expect(scope.treatments.length).toEqual(2);
 
-
                 var overlappingOrder = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
                         name: "abc",
@@ -1102,7 +1324,6 @@ describe("AddTreatmentController", function () {
     });
 
     describe("Detect Overlapping orders with existing Orders on Save", function () {
-
         describe("should allow potentially overlapping order whose dates can be set and be resolved", function () {
             var encounterDate = DateUtil.parse("2014-12-02");
 
@@ -1142,7 +1363,7 @@ describe("AddTreatmentController", function () {
                 scope.add();
                 expect(scope.treatments.length).toEqual(3);
                 var drugOrderToBeSaved = scope.treatments.filter(function (treatment) {
-                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-04")
+                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-04");
                 })[0];
 
                 expect(DateUtil.isSameDateTime(drugOrderToBeSaved.effectiveStartDate, DateUtil.parse("2014-12-04"))).toBeTruthy();
@@ -1187,7 +1408,7 @@ describe("AddTreatmentController", function () {
                 scope.add();
                 expect(scope.treatments.length).toEqual(3);
                 var drugOrderToBeSaved = scope.treatments.filter(function (treatment) {
-                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-06")
+                    return DateUtil.isSameDate(treatment.effectiveStartDate, "2014-12-06");
                 })[0];
                 expect(DateUtil.isSameDateTime(drugOrderToBeSaved.effectiveStartDate, DateUtil.parse("2014-12-06"))).toBeTruthy();
                 expect(DateUtil.isSameDateTime(drugOrderToBeSaved.effectiveStopDate, DateUtil.parse("2014-12-07"))).toBeTruthy();
@@ -1196,9 +1417,7 @@ describe("AddTreatmentController", function () {
             });
         });
 
-
         describe("should not allow overlapping order", function () {
-
             it("should not allow conflicting orders for dates 2-4 and new drug order for 3-6", function () {
                 var encounterDate = DateUtil.parse("2014-12-02");
 
@@ -1359,8 +1578,8 @@ describe("AddTreatmentController", function () {
                     durationInDays: 2,
                     concept: {
                         name: "abc",
-                        shortName:"abc"
-                    },
+                        shortName: "abc"
+                    }
                 }, encounterDate);
                 var dec5_dec6order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                     drug: {
@@ -1392,10 +1611,9 @@ describe("AddTreatmentController", function () {
     });
 
     describe("After selection from ng-dialog", function () {
-
         beforeEach(function () {
             scope.treatments = [];
-        })
+        });
         it("should edit the drug order if conflicting order is unsaved when revise is selected", function () {
             var encounterDate = DateUtil.parse("2014-12-02");
 
@@ -1431,7 +1649,6 @@ describe("AddTreatmentController", function () {
             expect(dec2_dec4order.isBeingEdited).toBeTruthy();
             expect(scope.treatment.isBeingEdited).toBeTruthy();
             expect(scope.treatments.length).toBe(1);
-
         });
         it("should edit the drug order if conflicting order is a saved order when revise is selected", function () {
             var encounterDate = DateUtil.parse("2014-12-02");
@@ -1448,7 +1665,6 @@ describe("AddTreatmentController", function () {
             }, encounterDate);
             scope.consultation.activeAndScheduledDrugOrders = [dec2_dec4order];
             expect(scope.treatments.length).toEqual(0);
-
 
             var new_dec2_dec4order = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, {
                 drug: {
@@ -1472,11 +1688,8 @@ describe("AddTreatmentController", function () {
             expect(scope.treatment.previousOrderUuid).toBe("some-uuid");
             scope.add();
             expect(scope.treatments.length).toEqual(1);
-
         });
-
     });
-
 
     describe("Save", function () {
         it("should check for any incomplete drug orders", function () {
@@ -1487,7 +1700,6 @@ describe("AddTreatmentController", function () {
             scope.addForm = {$invalid: true, $valid: false};
 
             expect(scope.incompleteDrugOrders()).toBeTruthy();
-
         });
         it("should check for any unadded drug orders", function () {
             scope.addForm = {$valid: true};
@@ -1510,7 +1722,7 @@ describe("AddTreatmentController", function () {
         };
 
         beforeEach(function () {
-            scope.treatments = []
+            scope.treatments = [];
         });
 
         it("should do nothing if form is blank", function () {
@@ -1542,7 +1754,6 @@ describe("AddTreatmentController", function () {
             scope.clearForm();
             expect(scope.startNewDrugEntry).toBeTruthy();
         });
-
     });
 
     describe("Edit DrugOrder()", function () {
@@ -1592,7 +1803,6 @@ describe("AddTreatmentController", function () {
     });
 
     describe("saveTreatment()", function () {
-
         it("should not save the treatment if a discontinued drug order is added at the same time", function () {
             var drugOrder = Bahmni.Tests.drugOrderViewModelMother.build({}, []);
             drugOrder.durationUnit = {name: "Days"};
@@ -1605,7 +1815,6 @@ describe("AddTreatmentController", function () {
             scope.addForm = {};
             scope.consultation.newlyAddedTreatments = [];
             scope.consultation.newlyAddedTreatments.push(drugOrder);
-
 
             var discontinuedDrug = drugOrder;
             discontinuedDrug.isMarkedForDiscontinue = true;
@@ -1657,7 +1866,6 @@ describe("AddTreatmentController", function () {
 
     describe("when discontinued", function () {
         it("should mark the drug order for discontinue", function () {
-
             var drugOrder = Bahmni.Clinical.DrugOrderViewModel.createFromContract(activeDrugOrder);
 
             rootScope.$broadcast("event:discontinueDrugOrder", drugOrder);
@@ -1730,12 +1938,11 @@ describe("AddTreatmentController", function () {
 
             expect(scope.consultation.discontinuedDrugs.length).toBe(1);
             expect(scope.consultation.discontinuedDrugs[0]).toBe(drugOrder1);
-        })
+        });
     });
 
     describe("add orderset", function () {
         it("should add order set drugs to orderSetTreatments list in scope", function () {
-
             var orderSetDate = moment("2015-03-02").toDate();
             var stopDate = moment("2015-03-04").toDate();
             scope.newOrderSet.date = orderSetDate;
@@ -1754,10 +1961,8 @@ describe("AddTreatmentController", function () {
             expect(firstOrderSetTreatment.durationUnit).toEqual("Day(s)");
             expect(firstOrderSetTreatment.additionalInstructions).toEqual("Additional Instructions");
             expect(firstOrderSetTreatment.quantity).toEqual(80);
-            //expect(ngDialog.open).not.toHaveBeenCalled();
+            // expect(ngDialog.open).not.toHaveBeenCalled();
             expect(scope.isSearchDisabled).toBeTruthy();
-
-
         });
 
         it('should reset include flag for all orderSetTreatments if any of them is conflicting with active or scheduled drug', function () {
@@ -1776,8 +1981,7 @@ describe("AddTreatmentController", function () {
             expect(scope.orderSetTreatments[0].include).toBeFalsy();
             expect(scope.orderSetTreatments[1].include).toBeFalsy();
             expect(ngDialog.open).toHaveBeenCalled();
-
-        })
+        });
     });
 
     describe("remove orderset", function () {
@@ -1793,7 +1997,7 @@ describe("AddTreatmentController", function () {
             expect(scope.orderSetTreatments.length).toBe(0);
             expect(scope.newOrderSet).toEqual({});
             expect(scope.isSearchDisabled).toBeFalsy();
-        })
+        });
     });
 
     describe('include orderSetMember checkbox', function () {
@@ -1816,6 +2020,6 @@ describe("AddTreatmentController", function () {
 
             expect(orderSetDrugOrder.include).toBeFalsy();
             expect(ngDialog.open).toHaveBeenCalled();
-        })
-    })
+        });
+    });
 });

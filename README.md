@@ -65,28 +65,40 @@ Resources to build the following docker images can be found in the [package](/pa
 
 ## Prevent Search Engines from Indexing the homepage
 
+
 >⚠️ : Search Engines are able to index the Bahmni App homepage. 
 
 This behaviour can be prevented by:
 
-1. **Adding a “noindex” metatag:** 
-   
+1. **Adding a “noindex” metatag:**
+
    The following tag should be inserted in the `<head>` section of the homepage's HTML markup:
+
    ```
    <meta name=”robots” content=”noindex”>
    ```
+
    Additionally, in order to both _de-index_ the homepage and not follow the links, use the `noindex` with the `nofollow` metatag:
+
    ```
    <meta name=”robots” content=”noindex,nofollow”>
    ```
-   > The same is already done [here](https://github.com/Bahmni/openmrs-module-bahmniapps/blob/master/package/docker/index.html#L5)
 
+   > The same is already done [here](https://github.com/Bahmni/openmrs-module-bahmniapps/blob/master/package/docker/index.html#L5)
+   >
 2. **Using an X-ROBOTS-TAG HTTP HEADER:**
 
    An `X-Robots-Tag` can be added to the HTTP response header. It has basically the same effect as a `noindex` tag, but with the additional options to specify conditions for different search engines. For more information, please see Google’s guide [here](https://developers.google.com/search/docs/advanced/robots/robots_meta_tag). Here are examples of X-Robots-Tag for specific functions:
-  
+
    - To de-index a web page:
+
    ```
    Header set X-Robots-Tag "noindex, nofollow"
    ```
+
    > The same is already done [here](https://github.com/Bahmni/openmrs-module-bahmniapps/blob/master/package/docker/httpd.conf#L32)
+   >
+
+### SNOMED Integration Support
+
+openmrs-module-bahmniapps also integrates with SNOMED for terminology lookup and CDSS. More details can be found in [this](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3132686337/SNOMED+FHIR+Terminology+Server+Integration+with+Bahmni) Wiki link

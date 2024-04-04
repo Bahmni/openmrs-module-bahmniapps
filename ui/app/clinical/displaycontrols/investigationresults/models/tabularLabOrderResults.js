@@ -1,7 +1,7 @@
 'use strict';
 
 Bahmni.Clinical.TabularLabOrderResults = (function () {
-    var TabularLabOrderResults = function (tabularResult, accessionConfig) {
+    var TabularLabOrderResults = function (tabularResult, accessionConfig, sortResultColumnsLatestFirst) {
         var self = this;
         this.tabularResult = tabularResult;
 
@@ -34,16 +34,23 @@ Bahmni.Clinical.TabularLabOrderResults = (function () {
         init();
 
         this.getDateLabels = function () {
-            return this.tabularResult.dates.map(function (date) {
+            var dates = this.tabularResult.dates.map(function (date) {
                 if (moment(date.date, "DD-MMM-YYYY", true).isValid()) {
                     date.date = moment(date.date, "DD-MMM-YYYY").toDate();
                 }
                 return date;
             });
+            if (sortResultColumnsLatestFirst) {
+                dates.sort(function (a, b) {
+                    return b.date - a.date;
+                });
+            }
+            return dates;
         };
 
         this.getTestOrderLabels = function () {
-            return this.tabularResult.orders;
+            var orders = this.tabularResult.orders;
+            return orders;
         };
 
         this.hasRange = function (testOrderLabel) {
