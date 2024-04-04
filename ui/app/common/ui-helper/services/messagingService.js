@@ -11,7 +11,7 @@ angular.module('bahmni.common.uiHelper')
 
         this.showMessage = function (level, message, errorEvent) {
             var messageObject = {'value': '', 'isServerError': false};
-            messageObject.value = message.replace(/\[|\]|null/g, '');
+            messageObject.value = message ? message.replace(/\[|\]|null/g, '') : " ";
             if (errorEvent) {
                 messageObject.isServerError = true;
                 if (!self.messages[level].length) {
