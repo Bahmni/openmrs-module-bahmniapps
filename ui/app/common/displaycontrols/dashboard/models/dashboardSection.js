@@ -22,7 +22,7 @@
         "conditionsList"
     ];
     var reactDisplayControls = [
-        "Allergies",
+        "ALLERGIES",
         "formsV2React"
     ];
 
