@@ -18,10 +18,7 @@ jobs:
 
       - name: Pull Translations from Transifex
         run: |
-          curl -o transifex.sh https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/transifex.sh
-          chmod +x transifex.sh
-          ./transifex.sh pull
-          rm transifex.sh
+          bash .github/scripts/transifex.sh pull
         env:
           TX_TOKEN: ${{ secrets.TX_TOKEN }}
 
