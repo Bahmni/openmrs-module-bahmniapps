@@ -82,7 +82,9 @@ angular.module('bahmni.registration')
 
                 _.chain(defaultsWithAnswers).filter(isConcept).each(setDefaultConcept).value();
                 _.chain(defaultsWithAnswers).filter(isDateType).each(setDefaultValue).value();
-                $scope.patient[$scope.prePatientAttribute] = false;
+                if ($scope.prePatientAttribute && $scope.prePatientAttribute.name) {
+                    $scope.patient[$scope.prePatientAttribute.name] = false;
+                }
             };
 
             var expandSectionsWithDefaultValue = function () {
