@@ -50,6 +50,14 @@ angular.module('bahmni.common.domain')
             }, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
+            }).then(function (response) {
+                return response;
+            }, function (error) {
+                if (error.status === 413) {
+                    var maxAllowedSize = roundToNearestHalf(error.data.maxDocumentSizeMB * 0.70);
+                    messagingService.showMessage("error", $translate.instant("FILE_SIZE_LIMIT_EXCEEDED_MESSAGE", { maxAllowedSize: maxAllowedSize }));
+                }
+                return $q.reject(error);
             });
         };
 
