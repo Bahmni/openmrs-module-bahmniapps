@@ -18,6 +18,7 @@ angular.module('bahmni.registration')
                 $rootScope.errorMessage = null;
                 sessionService.destroy().then(
                     function () {
+                        localStorage.removeItem("selected_ward");
                         $window.location = "../home/";
                     }
                 );
