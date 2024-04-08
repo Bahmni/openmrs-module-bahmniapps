@@ -769,13 +769,9 @@ a.visit:before {
                 position: relative;
 
                 .ipd-indication {
-                    position: absolute;
-                    right: 0;
-                    top: 0;
                     background: $bahmniPrimaryBtnColorHover;
                     color: white;
                     padding: 4px 11px;
-                    border-radius: 0 2px 0 0;
                     font-size: 20px;
 
                     @media screen and (max-width: 1024px) {
@@ -816,7 +812,7 @@ a.visit:before {
 
             .patient-value {
                 display: inline-block;
-                width: 86%;
+                width: 82%;
 
                 span {
                     font-size: 12px;

@@ -30,16 +30,14 @@ angular.module('bahmni.clinical')
                     $scope.patientContext.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + $scope.patientContext.uuid;
                 }
                 $scope.patientContext.gender = $rootScope.genderMap[$scope.patientContext.gender];
-                const iconAttributeName = appService.getAppDescriptor().getConfigValue('iconAttributeName');
-                const iconAttributeValue = appService.getAppDescriptor().getConfigValue('iconAttributeValueForContext');
-                $scope.icon = appService.getAppDescriptor().getConfigValue('icon');
-                $scope.iconStyle = appService.getAppDescriptor().getConfigValue('iconStyle');
-                $scope.showIcon = iconAttributeName && iconAttributeValue && $scope.patientContext.personAttributes
-                                    && $scope.patientContext.personAttributes[iconAttributeName]
-                                    && $scope.patientContext.personAttributes[iconAttributeName].value === iconAttributeValue;
+                $scope.iconAttributeConfig = appService.getAppDescriptor().getConfigValue('iconAttribute') || {};
+                $scope.showIcon = $scope.iconAttributeConfig && $scope.iconAttributeConfig.attrName
+                                    && $scope.iconAttributeConfig.attrValue && $scope.patientContext.personAttributes
+                                    && $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName]
+                                    && $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName].value === $scope.iconAttributeConfig.attrValueForContext;
 
                 if ($scope.patientContext.personAttributes) {
-                    delete $scope.patientContext.personAttributes[iconAttributeName];
+                    delete $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName];
                 }
             });
 

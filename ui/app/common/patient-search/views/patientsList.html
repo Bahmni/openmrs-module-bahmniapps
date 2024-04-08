@@ -73,7 +73,7 @@
                                 </div>
                                 <span class="icons-container">
                                     <i class="ipd-indication fa fa-bed" ng-if="::(row.hasBeenAdmitted===true||row.hasBeenAdmitted==='true')"></i>
-                                    <i ng-if="::row[iconAttributeName] === iconAttributeValue || (row.customAttribute ? row.customAttribute[iconAttributeName] === iconAttributeValue : false)" class="ipd-indication list-icon-style" ng-class="::icon" ng-style="{{::iconStyle}}"></i>
+                                    <i ng-if="::iconAttributeConfig.attrName && (row[iconAttributeConfig.attrName] === iconAttributeConfig.attrValue || (row.customAttribute ? row.customAttribute[iconAttributeConfig.attrName] === iconAttributeConfig.attrValue : false))" class="ipd-indication list-icon-style" ng-class="::iconAttributeConfig.icon" ng-style="{{::iconAttributeConfig.iconStyle}}"></i>
                                 </span>
                             </div>
                             <span ng-if="::(!isHeadingOfLinkColumn(heading.name) && !isHeadingOfName(heading.name))">

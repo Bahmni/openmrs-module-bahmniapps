@@ -8,17 +8,7 @@ angular.module('bahmni.adt')
                 $.extend(options, {patientUuid: patientUuid, visitUuid: visitUuid || null});
                 $window.location = appService.getAppDescriptor().formatUrl(Bahmni.ADT.Constants.ipdDashboard, options, true);
             };
-            $scope.iconAttributeName = appService.getAppDescriptor().getConfigValue('iconAttributeName');
-            $scope.iconAttributeValue = appService.getAppDescriptor().getConfigValue('iconAttributeValue');
-            $scope.icon = appService.getAppDescriptor().getConfigValue('icon');
-            $scope.iconStyle = appService.getAppDescriptor().getConfigValue('iconStyle');
-            // $scope.showIcon = iconAttributeName && iconAttributeValue && $scope.patientContext.personAttributes
-            //                     && $scope.patientContext.personAttributes[iconAttributeName]
-            //                     && $scope.patientContext.personAttributes[iconAttributeName].value === iconAttributeValue;
-
-            // if ($scope.patientContext.personAttributes) {
-            //     delete $scope.patientContext.personAttributes[iconAttributeName];
-            // }
+            $scope.iconAttributeConfig = appService.getAppDescriptor().getConfigValue('iconAttribute') || {};
 
             var getTableDetails = function () {
                 var params = {
@@ -28,9 +18,9 @@ angular.module('bahmni.adt')
                 };
 
                 return queryService.getResponseFromQuery(params).then(function (response) {
-                    $scope.tableDetails = Bahmni.ADT.WardDetails.create(response.data, $rootScope.diagnosisStatus, $scope.iconAttributeName);
+                    $scope.tableDetails = Bahmni.ADT.WardDetails.create(response.data, $rootScope.diagnosisStatus, $scope.iconAttributeConfig.attrName);
                     $scope.tableHeadings = $scope.tableDetails.length > 0 ?
-                        Object.keys($scope.tableDetails[0]).filter(function (name) { return name !== $scope.iconAttributeName; })
+                        Object.keys($scope.tableDetails[0]).filter(function (name) { return name !== $scope.iconAttributeConfig.attrName; })
                         : [];
                 });
             };
