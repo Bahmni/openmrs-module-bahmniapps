@@ -103,7 +103,11 @@ angular.module('bahmni.ot')
             return $http.post(Bahmni.OT.Constants.notesUrl, payload, headers);
         };
 
-        this.updateNoteForADay = function (noteId, note) {
+        this.updateNoteForADay = function (noteId, note, providerUuid) {
+            const payload = {
+                noteText: note,
+                providerUuid: providerUuid
+            };
             const headers = {"Accept": "application/json", "Content-Type": "application/json"};
             return $http.post(Bahmni.OT.Constants.notesUrl + "/" + noteId, note, headers);
         };
