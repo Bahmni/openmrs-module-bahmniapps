@@ -651,10 +651,10 @@ backo2@1.0.2:
   resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
   integrity sha1-MasayLEpNjRj41s+u2n038+6eUc=
 
-bahmni-form-controls@^0.93.16:
-  version "0.93.16"
-  resolved "https://registry.yarnpkg.com/bahmni-form-controls/-/bahmni-form-controls-0.93.16.tgz#66cf9c5b6955dbfe4a8a19a1ec49065510ec1c9d"
-  integrity sha512-12J8k4msE2ZGUYxWSJwPgWKBddRDVlDjYsjSbP0PeFfeEveEeVgGXNMfTztwgl98RsNIkIGsr64r7cE3unXN8w==
+bahmni-form-controls@^0.93.17:
+  version "0.93.17"
+  resolved "https://registry.yarnpkg.com/bahmni-form-controls/-/bahmni-form-controls-0.93.17.tgz#1d3b14544de75dd28e4196945e29df2e779306c3"
+  integrity sha512-V8HXuPuTdPODw1XIkGmaAWE+DQUOzI9XZap9k51iOUgOqM5QqSWv0fM+IRaP/SK3UXzPKlMT2t+uZr8rUxPX8w==
   dependencies:
     base64-inline-loader "^1.1.0"
     classnames "^2.2.5"
