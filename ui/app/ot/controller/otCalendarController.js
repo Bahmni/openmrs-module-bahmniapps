@@ -194,7 +194,7 @@ angular.module('bahmni.ot')
                     getNotes()]).then(function (response) {
                         $scope.locations = response[0].data.results;
                         $scope.weekDates = $scope.getAllWeekDates();
-                        $scope.surgicalBlocksByLocation = _.map($scope.locations, function (location) {
+                        var surgicalBlocksByLocation = _.map($scope.locations, function (location) {
                             return _.filter(response[1].data.results, function (surgicalBlock) {
                                 return surgicalBlock.location.uuid === location.uuid;
                             });

@@ -7,6 +7,10 @@ describe("otCalendarController", function () {
     spinner = jasmine.createSpyObj('spinner', ['forPromise', 'then', 'catch']);
     var surgicalAppointmentService = jasmine.createSpyObj('surgicalAppointmentService', ['getSurgicalBlocksInDateRange', 'getSurgeons', 'getBulkNotes', 'saveNoteForADay']);
     var ngDialog = jasmine.createSpyObj('ngDialog', ['open']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    appDescriptor.getConfigValue.and.returnValue({primarySurgeonsForOT: ["Doctor Strange", "Doctor Malhotra"]});
+    appService.getAppDescriptor.and.returnValue(appDescriptor);
 
     var surgicalBlocks = [
         {
@@ -178,9 +182,9 @@ describe("otCalendarController", function () {
             scope.weekOrDay = 'day';
             createController();
             expect(surgicalAppointmentService.getSurgicalBlocksInDateRange).toHaveBeenCalledWith(scope.viewDate, moment(scope.viewDate).endOf('day'), false, true);
-            expect(scope.surgicalBlocksByLocation.length).toEqual(2);
-            expect(scope.surgicalBlocksByLocation[0][0]).toEqual(surgicalBlocks[0]);
-            expect(scope.surgicalBlocksByLocation[1][0]).toEqual(surgicalBlocks[1]);
+            expect(scope.surgicalBlocks.length).toEqual(2);
+            expect(scope.surgicalBlocks[0][0]).toEqual(surgicalBlocks[0]);
+            expect(scope.surgicalBlocks[1][0]).toEqual(surgicalBlocks[1]);
         });
 
         it('should set the day view split as integer', function () {
