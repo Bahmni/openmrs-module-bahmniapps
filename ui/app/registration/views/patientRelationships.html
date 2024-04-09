@@ -71,7 +71,7 @@
 
                         <div class="relationship-extension-btn">
                             <button class="add-person-btn" type="button" ng-switch-when="person" ng-disabled="!newRelationship.relationshipType.uuid"
-                                    ng-click="openPopupWindow(newRelationship)">{{ ::'REGISTRATION_LABEL_SELECT_PERSON' | translate }}
+                                    ng-click="openPopupWindow(newRelationship)" ng-hide="newRelationship.personB.display">{{ ::'REGISTRATION_LABEL_SELECT_PERSON' | translate }}
                             </button>
                         </div>
                         <input type="text" ng-switch-default ng-model-options="{updateOn: 'blur'}" ng-model="newRelationship.patientIdentifier"
@@ -80,13 +80,13 @@
 
                         <input type="hidden" ng-model="newRelationship.personB"/>
                     </div>
-                    <span class="asterick showOn-desktop">*</span>
+                    <span class="asterick showOn-desktop" ng-hide="newRelationship.personB.display">*</span>
                     <span class="no-person" ng-show="showPersonNotFound(newRelationship)">{{ ::'REGISTRATION_LABEL_PERSON_NOT_FOUND' | translate}}</span>
                     <span ng-show="!showPersonNotFound(newRelationship)">{{newRelationship.content}}</span>
                     <span class="no-person" ng-show="duplicateRelationship(newRelationship)">{{ ::'REGISTRATION_LABEL_RELATIONSHIP_EXISTS' | translate}}</span>
                     <div class="field-value-patient" ng-show="getChosenRelationshipType(newRelationship) === 'person' && newRelationship.personB.display">
                         <span>
-                            <a ng-click="openPatientDashboardInNewTab(newRelationship)">{{newRelationship.personB.display}}</a>
+                            <a ng-click="openPersonDashboardInNewTab(newRelationship)">{{newRelationship.personB.display}}</a>
                         </span>
                     </div>
                     <span class="no-person" ng-show="duplicateRelationship(newRelationship)">{{ ::'REGISTRATION_LABEL_RELATIONSHIP_EXISTS' | translate}}</span>
