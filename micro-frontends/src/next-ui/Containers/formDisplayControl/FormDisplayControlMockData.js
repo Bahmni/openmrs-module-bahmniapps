@@ -60,3 +60,36 @@ export const mockFormResponseData = [
         ]
     }
 ];
+
+export const mockLatestPublishedForms = [
+    {
+        "name": "Orthopaedic Triage",
+        "uuid": "54ce421b-3b8a-43b4-8af0-681317cf8a0b",
+        "version": "2",
+        "published": true,
+        "id": 35,
+        "resources": null,
+        "privileges": [],
+        "nameTranslation": "[{\"display\":\"Orthopaedic Triage\",\"locale\":\"en\"}]"
+    },
+    {
+        "name": "Pre Anaesthesia Assessment",
+        "uuid": "54ce421b-3b8a-43b4-8af0-681317cf8a01",
+        "version": "1",
+        "published": true,
+        "id": 36,
+        "resources": null,
+        "privileges": [],
+        "nameTranslation": "[{\"display\":\"Pre Anaesthesia Assessment\",\"locale\":\"en\"}]"
+    },
+    {
+        "name": "Patient Progress Notes and Orders",
+        "uuid": "54ce421b-3b8a-43b4-8af0-681317cf8a02",
+        "version": "1",
+        "published": true,
+        "id": 37,
+        "resources": null,
+        "privileges": [],
+        "nameTranslation": "[{\"display\":\"Patient Progress Notes and Orders\",\"locale\":\"en\"}]"
+    }
+]
