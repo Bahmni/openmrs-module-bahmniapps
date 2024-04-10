@@ -4,6 +4,7 @@ import ViewObservationForm from "./ViewObservationForm.jsx";
 
 const initialProps = {
   formName: "Vitals",
+  formNameTranslations: "Vitals",
   isViewFormLoading: false,
   formData: [
     {

@@ -17,22 +17,6 @@ export const getFormDetail = async (formUuid ) => {
     }
 };
 
-export const getLatestPublishedForms = async (encounterUuid) => {
-    const apiURL = LATEST_PUBLISHED_FORMS_URL;
-    const params = {
-        encounterUuid: encounterUuid,
-    };
-    try {
-        const response = await axios.get(apiURL, { params });
-        if (response.status === 200) {
-            return response.data;
-        }
-        return [];
-    } catch (error) {
-        console.error(error);
-    }
-};
-
 export const getFormTranslations = async (url, form) => {
     try {
       if (url && url !== FORM_TRANSLATIONS_URL) {
