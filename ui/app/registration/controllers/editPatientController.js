@@ -30,13 +30,13 @@ angular.module('bahmni.registration')
                 expandDataFilledSections();
                 $scope.patientLoaded = true;
                 $scope.enableWhatsAppButton = (appService.getAppDescriptor().getConfigValue("enableWhatsAppButton") || Bahmni.Registration.Constants.enableWhatsAppButton) && ($scope.patient.phoneNumber != undefined);
-                $scope.prePatientAttribute = appService.getAppDescriptor().getConfigValue('prePatientAttribute');
-                if ($scope.prePatientAttribute && $scope.prePatientAttribute.name) {
-                    const hideOrDisablePrePatientAttr = $scope.prePatientAttribute.hideOrDisable;
-                    const hidePrePatientAttrOnValue = $scope.prePatientAttribute.hideOnValue;
-                    $scope.showPrePatientOption = !(hideOrDisablePrePatientAttr === "hide" && $scope.patient[$scope.prePatientAttribute.name] &&
-                                            $scope.patient[$scope.prePatientAttribute.name].toString() === hidePrePatientAttrOnValue);
-                    $scope.showDisabledPrePatientOption = hideOrDisablePrePatientAttr === "disable" ? true : false;
+                $scope.relatedIdentifierAttribute = appService.getAppDescriptor().getConfigValue('relatedIdentifierAttribute');
+                if ($scope.relatedIdentifierAttribute && $scope.relatedIdentifierAttribute.name) {
+                    const hideOrDisableAttr = $scope.relatedIdentifierAttribute.hideOrDisable;
+                    const hideAttrOnValue = $scope.relatedIdentifierAttribute.hideOnValue;
+                    $scope.showRelatedIdentifierOption = !(hideOrDisableAttr === "hide" && $scope.patient[$scope.relatedIdentifierAttribute.name] &&
+                                            $scope.patient[$scope.relatedIdentifierAttribute.name].toString() === hideAttrOnValue);
+                    $scope.showDisabledAttrOption = hideOrDisableAttr === "disable" ? true : false;
                 }
             };
 
