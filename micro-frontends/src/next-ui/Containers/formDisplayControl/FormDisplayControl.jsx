@@ -6,7 +6,7 @@ import "../../../styles/carbon-theme.scss";
 import "../../../styles/common.scss";
 import "./formDisplayControl.scss";
 import { FormattedMessage } from "react-intl";
-import { fetchFormData } from "../../utils/FormDisplayControl/FormUtils";
+import { fetchFormData, getLatestPublishedForms } from "../../utils/FormDisplayControl/FormUtils";
 import { buildFormMap, findByEncounterUuid } from "../../utils/FormDisplayControl/FormView";
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import ViewObservationForm from "../../Components/ViewObservationForm/ViewObservationForm";
@@ -43,6 +43,7 @@ export function FormDisplayControl(props) {
   const [showViewObservationForm, setViewObservationForm] = useState(false);
   const [showEditObservationForm, setEditObservationForm] = useState(false);
   const [formName, setFormName] = useState("");
+  const [formNameTranslations, setFormNameTranslations] = useState("");
   const [formData, setFormData] = useState([]);
   const [isViewFormLoading, setViewFormLoading] = useState(false);
   const [isEditFormLoading, setEditFormLoading] = useState(false);
@@ -54,9 +55,11 @@ export function FormDisplayControl(props) {
         props?.hostData?.patientUuid,
         props?.hostData?.numberOfVisits
       );
+      const latestForms = await getLatestPublishedForms();
       var grouped = {};
-      if (formResponseData?.length > 0) {
+      if (formResponseData?.length > 0 && latestForms?.length > 0) {
         formResponseData.forEach(function (formEntry) {
+          const latestForm = latestForms.find(latestForm => formEntry.formName == latestForm.name);
           grouped[formEntry.formName] = grouped[formEntry.formName] || [];
           grouped[formEntry.formName].push({
             encounterDate: formEntry.encounterDateTime,
@@ -66,6 +69,7 @@ export function FormDisplayControl(props) {
             providerName: formEntry.providers[0].providerName,
             providerUuid: formEntry.providers[0].uuid,
             formVersion: formEntry.formVersion,
+            formNameTranslations: getFormDisplayName(latestForm)
           });
         });
       }
@@ -82,6 +86,19 @@ export function FormDisplayControl(props) {
     }
   };
 
+  const getFormDisplayName = function (form) {
+      const locale = localStorage.getItem("NG_TRANSLATE_LANG_KEY") || "en";
+      const formNameTranslations = form?.nameTranslation ? JSON.parse(form.nameTranslation) : [];
+      let formDisplayName = form?.name;
+      if (formNameTranslations.length > 0) {
+          const currentLabel = formNameTranslations.find(function (formNameTranslation) {
+                  return formNameTranslation.locale === locale;
+          });
+          formDisplayName = currentLabel ? currentLabel.display : form?.name;
+      }
+      return formDisplayName;
+  }
+
   const showEdit = function (currentEncounterUuid) {
     return props?.hostData?.showEditForActiveEncounter
       ? props?.hostData?.encounterUuid === currentEncounterUuid
@@ -92,13 +109,14 @@ export function FormDisplayControl(props) {
     props?.hostApi?.handleEditSave(encounter);
   };
 
-  const openViewObservationForm = async (formName, encounterUuid) => {
+  const openViewObservationForm = async (formName, encounterUuid, formNameTranslations) => {
     var formMap = {
       formName: formName,
       encounterUuid: encounterUuid,
       hasNoHierarchy: props?.hostData?.hasNoHierarchy,
     };
     setFormName(formName);
+    setFormNameTranslations(formNameTranslations);
     setViewFormLoading(true);
     setViewObservationForm(true);
     const data = await buildFormMap(formMap);
@@ -106,7 +124,7 @@ export function FormDisplayControl(props) {
     setFormData(data[0].value[0].groupMembers);
   };
 
-  const openEditObservationForm = async (formName, encounterUuid) => {
+  const openEditObservationForm = async (formName, encounterUuid, formNameTranslations) => {
     var formMap = {
       formName: formName,
       encounterUuid: encounterUuid,
@@ -116,14 +134,21 @@ export function FormDisplayControl(props) {
     setEditObservationForm(true);
     const data = await findByEncounterUuid(formMap.encounterUuid)
     setFormName(formName);
+    setFormNameTranslations(formNameTranslations);
     setEncounterUuid(encounterUuid);
     setFormData(data.observations);
   };
 
-  const closeViewObservationForm = () => setViewObservationForm(false);
+  const closeViewObservationForm = () => {
+    setFormData([]);
+    setFormName("");
+    setFormNameTranslations("");
+    setViewObservationForm(false);
+  }
   const closeEditObservationForm = () => {
     setFormData([]);
     setFormName("");
+    setFormNameTranslations("");
     setEditObservationForm(false);
   }
 
@@ -148,7 +173,7 @@ export function FormDisplayControl(props) {
                     return moreThanOneEntry ? (
                       <Accordion>
                         <AccordionItem
-                          title={key}
+                          title={value[0].formNameTranslations}
                           className={"form-accordion"}
                           open
                         >
@@ -160,7 +185,8 @@ export function FormDisplayControl(props) {
                                     onClick={() =>
                                       openViewObservationForm(
                                         key,
-                                        entry.encounterUuid
+                                        entry.encounterUuid,
+                                        entry.formNameTranslations
                                       )
                                     }
                                     className="form-link"
@@ -169,7 +195,7 @@ export function FormDisplayControl(props) {
                                   </a>
                                   {showEdit(entry.encounterUuid) && (
                                     <i className="fa fa-pencil" onClick={()=> {
-                                      openEditObservationForm(key, entry.encounterUuid)
+                                      openEditObservationForm(key, entry.encounterUuid, entry.formNameTranslations)
                                     }}></i>
                                   )}
                                 </span>
@@ -188,7 +214,7 @@ export function FormDisplayControl(props) {
                             "form-non-accordion-text form-heading form-name"
                           }
                         >
-                          {key}
+                          {value[0].formNameTranslations}
                         </span>
                         <span
                           className={
@@ -200,7 +226,8 @@ export function FormDisplayControl(props) {
                             onClick={() =>
                               openViewObservationForm(
                                 key,
-                                value[0].encounterUuid
+                                value[0].encounterUuid,
+                                value[0].formNameTranslations
                               )
                             }
                           >
@@ -208,7 +235,7 @@ export function FormDisplayControl(props) {
                           </a>
                           {showEdit(value[0].encounterUuid) && (
                             <i className="fa fa-pencil" onClick={() => {
-                              openEditObservationForm(key, value[0].encounterUuid);
+                              openEditObservationForm(key, value[0].encounterUuid, value[0].formNameTranslations);
                             }}></i>
                           )}
                         </span>
@@ -225,6 +252,7 @@ export function FormDisplayControl(props) {
                 <ViewObservationForm
                   isViewFormLoading={isViewFormLoading}
                   formName={formName}
+                  formNameTranslations={formNameTranslations}
                   closeViewObservationForm={closeViewObservationForm}
                   formData={formData}
                 />
@@ -233,6 +261,7 @@ export function FormDisplayControl(props) {
                 <EditObservationForm
                   isEditFormLoading={isEditFormLoading}
                   formName={formName}
+                  formNameTranslations={formNameTranslations}
                   closeEditObservationForm={closeEditObservationForm}
                   patient={props?.hostData?.patient}
                   formData={formData != [] && formData}

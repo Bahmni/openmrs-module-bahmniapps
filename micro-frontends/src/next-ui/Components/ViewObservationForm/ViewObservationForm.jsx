@@ -12,7 +12,7 @@ import {
 import "./viewObservationForm.scss";
 
 export const ViewObservationForm = (props) => {
-  const { formName, closeViewObservationForm, formData, isViewFormLoading } =
+  const { formName, formNameTranslations, closeViewObservationForm, formData, isViewFormLoading} =
     props;
 
   return (
@@ -24,7 +24,7 @@ export const ViewObservationForm = (props) => {
         onRequestClose={closeViewObservationForm}
       >
         <section className="content-body">
-          <h2 className="section-title">{formName}</h2>
+          <h2 className="section-title">{formNameTranslations}</h2>
           {isViewFormLoading ? (
             <div>
               <Loading />
@@ -93,6 +93,7 @@ export const ViewObservationForm = (props) => {
 
 ViewObservationForm.propTypes = {
   formName: propTypes.string,
+  formNameTranslations: propTypes.string,
   closeViewObservationForm: propTypes.func,
   formData: propTypes.array,
   isViewFormLoading: propTypes.bool,

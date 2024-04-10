@@ -6,6 +6,7 @@ describe('EditObservationForm', () => {
     const mockProps = {
         "isEditFormLoading": false,
         "formName": "Radiology Study Report",
+        "formNameTranslations": "Radiology Study Report",
         "patient": {
             "uuid": "3c05ad1e-573e-43c5-81d2-ac18bfe3efd2",
             "givenName": "new",
