@@ -61,7 +61,9 @@ exports[`ViewObservationForm should match the screenshot 1`] = `
           >
             <h2
               class="section-title"
-            />
+            >
+              Vitals
+            </h2>
             <section
               class="section-body"
             >
