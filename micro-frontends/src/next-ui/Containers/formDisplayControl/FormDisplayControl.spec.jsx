@@ -2,13 +2,15 @@ import React from "react";
 import moment from "moment";
 import { render, screen, waitFor } from "@testing-library/react";
 import { FormDisplayControl } from "./FormDisplayControl";
-import { mockFormResponseData } from "./FormDisplayControlMockData";
+import { mockFormResponseData, mockLatestPublishedForms } from "./FormDisplayControlMockData";
 import { defaultDateTimeFormat } from "../../constants";
 
 const mockFetchFormData = jest.fn();
+const mockGetLatestPublishedForms = jest.fn();
 
 jest.mock("../../utils/FormDisplayControl/FormUtils", () => ({
   fetchFormData: () => mockFetchFormData(),
+  getLatestPublishedForms: () => mockGetLatestPublishedForms(),
 }));
 
 jest.mock("../../Components/i18n/I18nProvider", () => ({
@@ -57,6 +59,7 @@ describe('FormDisplayControl Component with Accordion and Non-Accordion', () => 
 
   beforeEach(() => {
     mockFetchFormData.mockResolvedValue(mockFormResponseData);
+    mockGetLatestPublishedForms.mockResolvedValue(mockLatestPublishedForms);
   });
   // TODO: fix this test
   //  it("should render the component with form data", async() => {
