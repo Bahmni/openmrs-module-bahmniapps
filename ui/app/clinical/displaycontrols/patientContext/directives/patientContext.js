@@ -8,6 +8,15 @@ angular.module('bahmni.clinical')
             $scope.allowNavigation = angular.isDefined($scope.isConsultation);
             $scope.initPromise.then(function (response) {
                 $scope.patientContext = response.data;
+                $scope.iconAttributeConfig = appService.getAppDescriptor().getConfigValue('iconAttribute') || {};
+                $scope.showIcon = $scope.iconAttributeConfig && $scope.iconAttributeConfig.attrName
+                                    && $scope.iconAttributeConfig.attrValue && $scope.patientContext.personAttributes
+                                    && $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName]
+                                    && $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName].value === $scope.iconAttributeConfig.attrValue;
+
+                if ($scope.patientContext.personAttributes && $scope.showIcon) {
+                    delete $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName];
+                }
                 var programAttributes = $scope.patientContext.programAttributes;
                 var personAttributes = $scope.patientContext.personAttributes;
                 convertBooleanValuesToEnglish(personAttributes);
@@ -30,15 +39,6 @@ angular.module('bahmni.clinical')
                     $scope.patientContext.image = Bahmni.Common.Constants.patientImageUrlByPatientUuid + $scope.patientContext.uuid;
                 }
                 $scope.patientContext.gender = $rootScope.genderMap[$scope.patientContext.gender];
-                $scope.iconAttributeConfig = appService.getAppDescriptor().getConfigValue('iconAttribute') || {};
-                $scope.showIcon = $scope.iconAttributeConfig && $scope.iconAttributeConfig.attrName
-                                    && $scope.iconAttributeConfig.attrValue && $scope.patientContext.personAttributes
-                                    && $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName]
-                                    && $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName].value === $scope.iconAttributeConfig.attrValueForContext;
-
-                if ($scope.patientContext.personAttributes) {
-                    delete $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName];
-                }
             });
 
             $scope.navigate = function () {
