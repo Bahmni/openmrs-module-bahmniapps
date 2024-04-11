@@ -3,11 +3,16 @@
 describe('surgicalAppointmentService', function () {
     var surgicalAppointmentService;
     var mockHttp = jasmine.createSpyObj('$http', ['get', 'post']);
+    var appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
+    var appDescriptor = jasmine.createSpyObj('appDescriptor', ['getConfigValue']);
+    appDescriptor.getConfigValue.and.returnValue({additionalCustomParam: ""});
+    appService.getAppDescriptor.and.returnValue(appDescriptor);
 
     beforeEach(function () {
         module('bahmni.ot');
         module(function ($provide) {
             $provide.value('$http', mockHttp);
+            $provide.value('appService', appService);
         });
 
         inject(['surgicalAppointmentService', function (surgicalAppointmentServiceInjected) {
@@ -87,6 +92,7 @@ describe('surgicalAppointmentService', function () {
             startDatetime: toDateString("2039-08-26 12:00:00"), endDatetime: toDateString("2039-08-26 15:00:00"), surgicalAppointments: []}};
         var startDatetime = toDateString("2039-08-26 12:00:00");
         var endDatetime = toDateString("2039-08-26 15:00:00");
+        var additionalCustomParam = appService.getAppDescriptor().getConfigValue("additionalCustomParam");
 
         mockHttp.get.and.returnValue(specUtil.respondWith(data));
 
@@ -100,7 +106,8 @@ describe('surgicalAppointmentService', function () {
         expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({ startDatetime : '2039-08-26T12:00:00.000+0000', endDatetime : '2039-08-26T15:00:00.000+0000',includeVoided: false, activeBlocks: true, v: "custom:(id,uuid," +
         "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
         "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,person:(age))," +
-        "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,bedNumber,bedLocation,surgicalAppointmentAttributes,patientObservations))"});
+        "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,bedNumber,bedLocation,surgicalAppointmentAttributes" +
+        (additionalCustomParam ? "," + additionalCustomParam : "") + "))"});
         expect(mockHttp.get.calls.mostRecent().args[1].withCredentials).toBeTruthy();
     });
 
