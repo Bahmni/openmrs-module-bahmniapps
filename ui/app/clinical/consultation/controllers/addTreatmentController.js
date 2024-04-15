@@ -366,6 +366,9 @@ angular.module('bahmni.clinical')
                 if ($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') && ($scope.obs.length == 0 || (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration))) {
                     return;
                 }
+                if ($scope.addTreatmentWithDiagnosis.hasOwnProperty('duration') && $scope.diagnosis.length == 0) {
+                    return;
+                }
                 if ($scope.treatment.isNewOrderSet) {
                     treatments = $scope.orderSetTreatments;
                 }
@@ -840,16 +843,36 @@ angular.module('bahmni.clinical')
             };
 
             $scope.verifyAdd = function (treatment) {
-                if (!$scope.addTreatmentWithPatientWeight.hasOwnProperty('duration')) {
+                if (!$scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') && !$scope.addTreatmentWithDiagnosis.hasOwnProperty('duration')) {
                     return $scope.addForm.$valid && $scope.calculateDose(treatment);
                 } else {
-                    if ($scope.obs.length > 0 && (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 <= $scope.addTreatmentWithPatientWeight.duration)) {
-                        $scope.addToNewTreatment = true;
-                        return $scope.addForm.$valid && $scope.calculateDose(treatment);
-                    } else {
-                        $scope.addToNewTreatment = false;
+                    var patientWeightError = false;
+                    var diagnosisError = false;
+                    if ($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration')) {
+                        if ($scope.obs.length == 0 || (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration)) {
+                            patientWeightError = true;
+                        }
+                    }
+                    if ($scope.addTreatmentWithDiagnosis.hasOwnProperty('duration')) {
+                        if ($scope.confirmedDiagnoses.length == 0) {
+                            diagnosisError = true;
+                        }
+                    }
+                    if (patientWeightError && diagnosisError) {
+                        messagingService.showMessage("error", $translate.instant("PATIENT_WEIGHT_AND_DIAGNOSIS_ERROR"));
+                        $scope.clearForm();
+                        return false;
+                    } else if (patientWeightError) {
                         messagingService.showMessage("error", $translate.instant("ENTER_PATIENT_WEIGHT_ERROR"));
                         $scope.clearForm();
+                        return false;
+                    } else if (diagnosisError) {
+                        messagingService.showMessage("error", $translate.instant("ENTER_DIAGNOSIS_ERROR"));
+                        $scope.clearForm();
+                        return false;
+                    } else {
+                        $scope.addToNewTreatment = true;
+                        return $scope.addForm.$valid && $scope.calculateDose(treatment);
                     }
                 }
             };

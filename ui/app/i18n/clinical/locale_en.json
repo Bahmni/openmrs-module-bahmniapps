@@ -170,6 +170,8 @@
   "CLEAR_CONFIRMATION_KEY": "Are you sure you want to clear?",
   "REMOVE_DRUG_ORDER_KEY": "Are you sure you want to remove drug : {{ drugName }} ?",
   "ENTER_PATIENT_WEIGHT_ERROR": "Patient weight has not been captured recently. Prescription cannot be created.",
+  "ENTER_DIAGNOSIS_ERROR": "Confirmed diagnosis not captured. Prescription cannot be created",
+  "PATIENT_WEIGHT_AND_DIAGNOSIS_ERROR": "Patient weight has not been captured recently & no confirmed diagnosis found. Prescription cannot be created",
 
   "DRUG_DETAILS_DRUG_NAME": "Drug",
   "DRUG_DETAILS_DOSE_INFO": "Dose",
