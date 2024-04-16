@@ -123,7 +123,7 @@ describe("AddTreatmentController", function () {
 
     var $q, scope, stateParams, rootScope, contextChangeHandler, newTreatment,
         editTreatment, clinicalAppConfigService, ngDialog, drugService, drugs,
-        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService, $state;
+        encounterDateTime, appService, appConfig, defaultDrugsPromise, orderSetService, locationService, $state, diagnosisService;
 
     stateParams = {
         tabConfigName: null
@@ -184,6 +184,7 @@ describe("AddTreatmentController", function () {
             locationService = jasmine.createSpyObj('locationService', ['getLoggedInLocation']);
 
             drugService = jasmine.createSpyObj('drugService', ['getSetMembersOfConcept']);
+            diagnosisService = jasmine.createSpyObj('diagnosisService', ['getPatientDiagnosis']);
             drugs = [
                 { name: "T", dosageForm: { display: "something" }, uuid: "123-12321" },
                 { name: "A", dosageForm: { display: "something" }, uuid: "123-12321" },
@@ -191,6 +192,7 @@ describe("AddTreatmentController", function () {
             ];
             defaultDrugsPromise = specUtil.respondWith(drugs);
             drugService.getSetMembersOfConcept.and.returnValue(defaultDrugsPromise);
+            diagnosisService.getPatientDiagnosis.and.returnValue([]);
 
             appService.getAppDescriptor.and.returnValue(appConfig);
             appService.getAppDescriptor.and.returnValue(appDescriptor);
@@ -253,12 +255,13 @@ describe("AddTreatmentController", function () {
                 treatmentConfig: treatmentConfig,
                 orderSetService: orderSetService,
                 $state: $state,
+                diagnosisService: diagnosisService
             });
             scope.treatments = [];
             scope.orderSetTreatments = [];
             scope.newOrderSet = {};
             scope.getFilteredOrderSets('dumm');
-        })
+        });
     };
     beforeEach(initController);
 
@@ -279,10 +282,64 @@ describe("AddTreatmentController", function () {
         });
     });
 
+    describe("verifyAdd()", function () {
+        it("should continue normal flow when treatments can be added without any restrictions from patient weight and diagnosis", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.calculateDose = jasmine.createSpy('calculateDose');
+            scope.verifyAdd(treatment);
+            expect(scope.calculateDose).toHaveBeenCalledWith(treatment);
+        });
+
+        it("should return false when patient weight is not captured and user is trying to add treatments", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.addTreatmentWithPatientWeight = {
+                "duration": 604800,
+                conceptNames: ["Weight"]
+            };
+            scope.obs = [];
+            const response = scope.verifyAdd(treatment);
+            expect(response).toBeFalsy();
+        });
+
+        it("should return false when patient diagnosis is not captured and user is trying to add treatments", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.addTreatmentWithDiagnosis = {
+                "duration": 604800,
+            };
+            scope.confirmedDiagnoses = [];
+            const response = scope.verifyAdd(treatment);
+            expect(response).toBeFalsy();
+        });
+    });
+
     describe("add()", function () {
         beforeEach(function () {
             scope.treatments = [];
-        })
+        });
+
+        it("should not add treatment object to list of treatments if diagnosis is not captured", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.addTreatmentWithDiagnosis = {
+                "duration": 604800
+            };
+            scope.confirmedDiagnoses = [];
+            scope.add();
+            expect(scope.treatments.length).toBe(0);
+        });
+
+        it("should add treatment object to list of treatments if confirmed diagnosis is captured", function () {
+            var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
+            scope.treatment = treatment;
+            scope.addTreatmentWithDiagnosis = {
+                "duration": 604800
+            };
+            scope.confirmedDiagnoses = [{diagnosisName: "test diagnosis", id: 1, certainty: "CONFIRMED"}];
+            scope.add();
+            expect(scope.treatments.length).toBe(1);
+        });
 
         it("should not add treatment object to list of treatments if no patient weight is captured", function () {
             var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });

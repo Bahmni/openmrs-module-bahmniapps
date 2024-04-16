@@ -365,7 +365,7 @@ angular.module('bahmni.clinical')
                 var treatments = $scope.treatments;
                 if (($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') && ($scope.obs.length == 0 ||
                         (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration))) ||
-                    ($scope.addTreatmentWithDiagnosis.hasOwnProperty('duration') && $scope.diagnosis.length == 0)) {
+                    ($scope.addTreatmentWithDiagnosis.hasOwnProperty('duration') && $scope.confirmedDiagnoses.length == 0)) {
                     return;
                 }
                 if ($scope.treatment.isNewOrderSet) {
