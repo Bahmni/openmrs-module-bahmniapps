@@ -330,13 +330,13 @@ describe("AddTreatmentController", function () {
             expect(scope.treatments.length).toBe(0);
         });
 
-        it("should add treatment object to list of treatments if confirmed diagnosis is captured", function () {
+        it("should add treatment object to list of treatments if primary diagnosis is captured", function () {
             var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
             scope.treatment = treatment;
             scope.addTreatmentWithDiagnosis = {
                 "duration": 604800
             };
-            scope.confirmedDiagnoses = [{diagnosisName: "test diagnosis", id: 1, certainty: "CONFIRMED"}];
+            scope.confirmedDiagnoses = [{diagnosisName: "test diagnosis", id: 1, order: "PRIMARY"}];
             scope.add();
             expect(scope.treatments.length).toBe(1);
         });

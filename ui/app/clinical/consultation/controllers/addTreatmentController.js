@@ -897,7 +897,9 @@ angular.module('bahmni.clinical')
                 if ($scope.addTreatmentWithDiagnosis.hasOwnProperty('duration')) {
                     diagnosisService.getPatientDiagnosis($scope.patient.uuid).then(function (response) {
                         $scope.currentEpoch = Math.floor(new Date().getTime() / 1000) * 1000;
-                        $scope.confirmedDiagnoses = response.data.filter(diagnosis => diagnosis.certainty === 'CONFIRMED');
+                        $scope.confirmedDiagnoses = response.data.filter(function (diagnosis) {
+                            return diagnosis.order === 'PRIMARY';
+                        });
                     });
                 }
                 $scope.addToNewTreatment = true;
