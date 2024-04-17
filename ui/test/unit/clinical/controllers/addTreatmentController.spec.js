@@ -447,7 +447,7 @@ describe("AddTreatmentController", function () {
             var treatment = Bahmni.Tests.drugOrderViewModelMother.buildWith({}, { drug: { name: true } });
             scope.treatment = treatment;
             scope.addTreatmentWithDiagnosis = {
-                "duration": 604800
+                order: "PRIMARY"
             };
             scope.confirmedDiagnoses = [];
             scope.add();
