@@ -11,6 +11,8 @@ angular.module('bahmni.common.patientSearch')
         var patientListSpinner;
         var initialize = function () {
             var searchTypes = appService.getAppDescriptor().getExtensions("org.bahmni.patient.search", "config").map(mapExtensionToSearchType);
+            $scope.tabularViewIgnoreHeadingsListConfig = appService.getAppDescriptor().getConfigValue("tabularViewIgnoreHeadingsList") || [];
+            $scope.identifierHeadingConfig = appService.getAppDescriptor().getConfigValue("identifierHeading") || [];
             $scope.search = new Bahmni.Common.PatientSearch.Search(_.without(searchTypes, undefined));
             $scope.search.markPatientEntry();
             $scope.$watch('search.searchType', function (currentSearchType) {
@@ -91,7 +93,11 @@ angular.module('bahmni.common.patientSearch')
                 var headings = _.chain($scope.search.activePatients[0])
                     .keys()
                     .filter(function (heading) {
-                        return _.indexOf(Bahmni.Common.PatientSearch.Constants.tabularViewIgnoreHeadingsList, heading) === -1;
+                        if ($scope.tabularViewIgnoreHeadingsListConfig.length > 0) {
+                            return _.indexOf($scope.tabularViewIgnoreHeadingsListConfig, heading) === -1;
+                        } else {
+                            return _.indexOf(Bahmni.Common.PatientSearch.Constants.tabularViewIgnoreHeadingsList, heading) === -1;
+                        }
                     })
                     .value();
                 setActiveHeadings(headings);
@@ -140,7 +146,7 @@ angular.module('bahmni.common.patientSearch')
         };
 
         $scope.isHeadingOfLinkColumn = function (heading) {
-            var identifierHeading = _.includes(Bahmni.Common.PatientSearch.Constants.identifierHeading, heading);
+            var identifierHeading = $scope.identifierHeadingConfig.length > 0 ? _.includes($scope.identifierHeadingConfig, heading) : _.includes(Bahmni.Common.PatientSearch.Constants.identifierHeading, heading);
             if (identifierHeading) {
                 return identifierHeading;
             } else if ($scope.search.searchType && $scope.search.searchType.links) {

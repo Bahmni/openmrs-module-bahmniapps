@@ -5,8 +5,8 @@ Bahmni.Common.PatientSearch = Bahmni.Common.PatientSearch || {};
 Bahmni.Common.PatientSearch.Constants = {
     searchExtensionTileViewType: "tile",
     searchExtensionTabularViewType: "tabular",
-    tabularViewIgnoreHeadingsList: ["display", "uuid", "image", "$$hashKey", "activeVisitUuid", "hasBeenAdmitted", "forwardUrl", "programUuid", "enrollment", "extraIdentifier"],
-    identifierHeading: ["ID", "Id", "id", "identifier", "DQ_COLUMN_TITLE_ACTION", "Patient ID"],
+    tabularViewIgnoreHeadingsList: ["display", "uuid", "image", "$$hashKey", "activeVisitUuid", "hasBeenAdmitted", "forwardUrl", "programUuid", "enrollment"],
+    identifierHeading: ["ID", "Id", "id", "identifier", "DQ_COLUMN_TITLE_ACTION"],
     nameHeading: ["NAME", "Name", "name"],
     patientTileHeight: 100,
     patientTileWidth: 100,
