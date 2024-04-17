@@ -18,7 +18,7 @@ Bahmni.ADT.WardDetails.create = function (details, diagnosisStatus) {
     var filterHeadingsFromResponse = function (newObject, oldObject, properties) {
         var keys = Object.keys(oldObject);
         var identicalItems = properties.filter(function (item) {
-            return keys.indexOf(item) !== -1;
+            return keys.includes(item);
         });
         return copyProperties({}, oldObject, identicalItems);
     };
