@@ -84,13 +84,14 @@ div[ng-app="adt"] {
         overflow-x: auto;
 
         input {
-            border-top-width: 3px;
-            border-right-width: 3px;
-            border-left-width: 3px;
-            border-bottom-width: 3px;
-            padding: 2px;
-            float: right;
-            width: 176px;
+            float: left;
+            min-width: 300px;
+            margin: 10px 10px;
+            padding: 2px 10px;
+            &:focus {
+                outline: 2px solid #007fff;
+			}
+            border: 1px solid #DDD;
         }
 
         table {
