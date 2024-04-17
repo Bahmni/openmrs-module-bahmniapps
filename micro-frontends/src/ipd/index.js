@@ -4,11 +4,7 @@
 import { react2angular } from "react2angular";
 import { IpdDashboard } from "./IpdDashboard";
 import { DrugChartModal } from "./DrugChartModal";
-<<<<<<< HEAD
 import "bahmni-carbon-ui/styles.css";
-=======
-import { DrugChartModalNotification } from "./DrugChartModalNotification";
->>>>>>> bb2ca9af8 (BAH-3119 | Add validations and perform save in drug chart modal (#660))
 
 angular.module("bahmni.mfe.ipd", [
   "ui.router",
@@ -77,20 +73,12 @@ function ipdDrugChartModalController($rootScope, $scope) {
   var vm = this;
   $scope.hostData = {
     drugOrder: vm.drugOrder,
-    patientId: vm.patientId,
     scheduleFrequencies: vm.scheduleFrequencies,
     startTimeFrequencies: vm.startTimeFrequencies,
-    enable24HourTimers: vm.enable24HourTimers,
   };
   $scope.hostApi = {
-    onModalClose: function () {
+    onModalClose: function(event) {
       vm.closeDrugChart();
-    },
-    onModalSave: function () {
-      vm.showSuccessNotification();
-    },
-    onModalCancel: function () {
-      vm.showWarningNotification();
     },
   };
 }
@@ -101,48 +89,11 @@ angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModal", {
   controller: ipdDrugChartModalController,
   bindings: {
     drugOrder: "=",
-    patientId: "=",
     scheduleFrequencies: "=",
     startTimeFrequencies: "=",
-    enable24HourTimers: "=",
-    closeDrugChart: "&",
-    showWarningNotification: "&",
-    showSuccessNotification: "&",
+    closeDrugChart: "&"
   },
   template:
     '<mfe-ipd-drug-chart-modal-remote host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-modal-remote>',
 });
 /** ================= End of component 2 ==========================  */
-
-/** MFE component 3: DrugChartModalWarnings
- * ================================================= */
-
-angular
-  .module("bahmni.mfe.ipd")
-  .component("mfeIpdDrugChartModalNotificationRemote", react2angular(DrugChartModalNotification));
-
-function ipdDrugChartModalNotificationController($rootScope, $scope) {
-  var vm = this;
-  $scope.hostData = {
-    notificationKind: vm.notificationKind,
-  };
-  $scope.hostApi = {
-    onClose() {
-      vm.closeWarnings();
-    }
-  }
-}
-
-ipdDrugChartModalNotificationController.$inject = ["$rootScope", "$scope"];
-
-angular.module("bahmni.mfe.ipd").component("mfeIpdDrugChartModalNotification", {
-  controller: ipdDrugChartModalNotificationController,
-  bindings: {
-    notificationKind: "=",
-    closeWarnings: "&",
-  },
-  template:
-    '<mfe-ipd-drug-chart-modal-notification-remote host-data="hostData" host-api="hostApi"></mfe-ipd-drug-chart-modal-notification-remote>',
-});
-
-/** ================= End of component 3 ==========================  */

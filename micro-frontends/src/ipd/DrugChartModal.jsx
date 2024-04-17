@@ -6,7 +6,7 @@ export function DrugChartModal(props) {
 
   return (
     <>
-      <Suspense fallback={<p>Loading...</p>}>
+      <Suspense fallback={""}>
         <LazyApp
           hostData={props.hostData}
           hostApi={props.hostApi}
@@ -20,14 +20,10 @@ export function DrugChartModal(props) {
 DrugChartModal.propTypes = {
   hostData: PropTypes.shape({
     drugOrder: PropTypes.object,
-    patientId: PropTypes.string,
     scheduleFrequencies: PropTypes.array,
     startTimeFrequencies: PropTypes.array,
-    enable24HrTimeFormat: PropTypes.bool,
   }).isRequired,
   hostApi: PropTypes.shape({
-    onModalClose: PropTypes.func,
-    onModalSave: PropTypes.func,
-    onModalCancel: PropTypes.func,
-  }).isRequired,
+    closeDrugChart: PropTypes.func,
+  }),
 };

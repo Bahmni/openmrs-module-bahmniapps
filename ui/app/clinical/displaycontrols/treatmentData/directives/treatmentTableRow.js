@@ -6,7 +6,6 @@ angular.module('bahmni.clinical')
             $scope.selectedDrugOrder = {};
             $scope.openModal = false;
             $scope.enableIPDFeature = appService.getAppDescriptor().getConfigValue("enableIPDFeature");
-            $scope.enable24HourTimers = appService.getAppDescriptor().getConfigValue("enable24HourTimers");
             if ($scope.enableIPDFeature === true) {
                 $scope.drugChartModalScheduleFrequencies = appService.getAppDescriptor().getConfigValue("drugChartScheduleFrequencies");
                 $scope.drugChartModalStartTimeFrequencies = appService.getAppDescriptor().getConfigValue("drugChartStartTimeFrequencies");
@@ -24,22 +23,6 @@ angular.module('bahmni.clinical')
             };
             $scope.closeDrugChartModal = function () {
                 $scope.openModal = false;
-                $scope.$apply();
-            };
-            $scope.showWarningNotification = function () {
-                $scope.showModalWarningMessage = true;
-                $scope.openModal = false;
-                $scope.kind = "warning";
-                $scope.$apply();
-            };
-            $scope.showSuccessNotification = function () {
-                $scope.showModalWarningMessage = true;
-                $scope.openModal = false;
-                $scope.kind = "success";
-                $scope.$apply();
-            };
-            $scope.closeWarnings = function () {
-                $scope.showModalWarningMessage = false;
                 $scope.$apply();
             };
         };
