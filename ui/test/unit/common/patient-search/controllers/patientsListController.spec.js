@@ -79,7 +79,11 @@ describe("PatientsListController", function () {
 
             getAppDescriptor = jasmine.createSpyObj('getAppDescriptor', ['getExtensions', 'getConfigValue', 'formatUrl']);
             getAppDescriptor.getExtensions.and.returnValue(appExtensions);
-            getAppDescriptor.getConfigValue.and.returnValue({"recentPatientsDuration": 14});
+            getAppDescriptor.getConfigValue.and.returnValue({
+                "recentPatientsDuration": 14,
+                "tabularViewIgnoreHeadingsList": ["display", "uuid", "image", "$$hashKey", "activeVisitUuid", "hasBeenAdmitted", "forwardUrl", "programUuid", "enrollment"],
+                "identifierHeading": ["ID", "Id", "id", "identifier", "DQ_COLUMN_TITLE_ACTION"]
+            });
             getAppDescriptor.formatUrl.and.returnValue("formattedUrl");
             _appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
             _appService.getAppDescriptor.and.returnValue(getAppDescriptor);
@@ -172,6 +176,22 @@ describe("PatientsListController", function () {
 
 
         });
+
+    describe("isHeadingOfDateColumn", function () {
+        beforeEach(function () {
+            scope.$apply(setUp);
+        });
+        
+        it("should return true if the heading is a date column", function () {
+            scope.search.searchType = {
+                dateColumns: ["date"]
+            };
+            var heading = "date";
+            var isDateColumn = scope.isHeadingOfDateColumn(heading);
+            expect(isDateColumn).toBeTruthy();
+        });
+
+    });
 
         describe("patientCount",function(){
             beforeEach(function(){
