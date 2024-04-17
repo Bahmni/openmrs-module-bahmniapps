@@ -365,7 +365,7 @@ angular.module('bahmni.clinical')
                 var treatments = $scope.treatments;
                 if (($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') && ($scope.obs.length == 0 ||
                         (($scope.currentEpoch - $scope.obs[0].observationDateTime) / 1000 > $scope.addTreatmentWithPatientWeight.duration))) ||
-                    ($scope.addTreatmentWithDiagnosis.hasOwnProperty('duration') && $scope.confirmedDiagnoses.length == 0)) {
+                    ($scope.addTreatmentWithDiagnosis.hasOwnProperty('order') && $scope.confirmedDiagnoses.length == 0)) {
                     return;
                 }
                 if ($scope.treatment.isNewOrderSet) {
@@ -842,7 +842,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.verifyAdd = function (treatment) {
-                if (!$scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') && !$scope.addTreatmentWithDiagnosis.hasOwnProperty('duration')) {
+                if (!$scope.addTreatmentWithPatientWeight.hasOwnProperty('duration') && !$scope.addTreatmentWithDiagnosis.hasOwnProperty('order')) {
                     return $scope.addForm.$valid && $scope.calculateDose(treatment);
                 } else {
                     var patientWeightError = false;
@@ -852,7 +852,7 @@ angular.module('bahmni.clinical')
                             patientWeightError = true;
                         }
                     }
-                    if ($scope.addTreatmentWithDiagnosis.hasOwnProperty('duration')) {
+                    if ($scope.addTreatmentWithDiagnosis.hasOwnProperty('order')) {
                         if ($scope.confirmedDiagnoses.length == 0) {
                             diagnosisError = true;
                         }
@@ -894,11 +894,11 @@ angular.module('bahmni.clinical')
                         $scope.obs = response.data;
                     });
                 }
-                if ($scope.addTreatmentWithDiagnosis.hasOwnProperty('duration')) {
+                if ($scope.addTreatmentWithDiagnosis.hasOwnProperty('order')) {
                     diagnosisService.getPatientDiagnosis($scope.patient.uuid).then(function (response) {
                         $scope.currentEpoch = Math.floor(new Date().getTime() / 1000) * 1000;
                         $scope.confirmedDiagnoses = response.data.filter(function (diagnosis) {
-                            return diagnosis.order === 'PRIMARY';
+                            return diagnosis.order === $scope.addTreatmentWithDiagnosis.order;
                         });
                     });
                 }
