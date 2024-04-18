@@ -83,9 +83,19 @@ div[ng-app="adt"] {
         max-width: $max-page-width;
         overflow-x: auto;
 
+        input {
+            float: left;
+            min-width: 300px;
+            margin: 10px 10px;
+            padding: 2px 10px;
+            &:focus {
+                outline: 2px solid #007fff;
+			}
+            border: 1px solid #DDD;
+        }
+
         table {
             font-size: 14px;
-
             thead tr th {
                 border: 1px solid #bebebe;
                 color: $black;
