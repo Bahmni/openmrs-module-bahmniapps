@@ -1,15 +1,15 @@
 $total-width: 100%;
 
-p.caution{
-    color: red;
-    padding: 5px;
+p.caution {
+  color: red;
+  padding: 5px;
 }
 
 .clearfix {
   @include clearfix();
 }
 .asterick {
-  color:red;
+  color: red;
   display: inline-block;
   padding-left: 5px;
 }
@@ -19,10 +19,10 @@ p.caution{
 }
 
 input[file-upload] {
-    position:absolute;
-    z-index: -999;
-    min-width: 1px;
-    width: 1px;
+  position: absolute;
+  z-index: -999;
+  min-width: 1px;
+  width: 1px;
 }
 
 .form-horizontal {
@@ -35,7 +35,7 @@ input[file-upload] {
         width: 170px;
       }
       @media screen and (max-width: 850px) {
-        width:156px;
+        width: 156px;
       }
     }
     &.hasLegend {
@@ -43,18 +43,18 @@ input[file-upload] {
         margin-left: 10px;
       }
       .offset-label {
-        padding-left:0px;
+        padding-left: 0px;
       }
     }
   }
 }
 
 .is-abnormal {
-  color: red!important;
+  color: red !important;
 }
-.is-abnormal-bold{
-  font-family:$OpenSansBoldFont !important;
-  color: red!important;
+.is-abnormal-bold {
+  font-family: $OpenSansBoldFont !important;
+  color: red !important;
 }
 
 .visible-print {
@@ -77,7 +77,6 @@ input[file-upload] {
   }
 }
 
-
 .row-remover {
   border: 1px solid $lightGray;
   border-radius: 5px;
@@ -92,7 +91,10 @@ input[file-upload] {
   }
 }
 
-.opd-wrapper .has-toggle {cursor: pointer;margin-bottom:0;}
+.opd-wrapper .has-toggle {
+  cursor: pointer;
+  margin-bottom: 0;
+}
 .section-toggle {
   background: none;
   border: none;
@@ -124,7 +126,7 @@ input[file-upload] {
     margin: 0 5px;
   }
 }
-.quick-links{
+.quick-links {
   float: right;
 }
 button.save-consultation {
@@ -133,11 +135,11 @@ button.save-consultation {
   padding: 10px 15px 9px;
 }
 button.save-consultation {
-  &.hideSaveText{
+  &.hideSaveText {
     .fa-save {
       display: none;
     }
-    .text{
+    .text {
       display: block;
     }
     @media screen and (max-width: 1024px) {
@@ -152,22 +154,21 @@ button.save-consultation {
   }
 }
 
-a.quick-links, a.btn--success {
+a.quick-links,
+a.btn--success {
   @include button($success, darken($success, 8%), white);
   padding: 10px 20px;
   font-size: 16px;
 }
-
 
 td .status {
   color: orange;
   float: right;
 }
 
-
 .abnormal-vitals {
-  width: auto!important;
-  margin: 4px!important;
+  width: auto !important;
+  margin: 4px !important;
 }
 
 pre.chief-notes {
@@ -180,38 +181,39 @@ pre.chief-notes {
   padding-top: 7px;
   span:before {
     font-family: FontAwesome;
-    content: "\f00c";
+    content: '\f00c';
     margin-right: 5px;
   }
 }
 
 .current-visit-icon {
-	color: $clinicalCurrentVist;
+  color: $clinicalCurrentVist;
 }
 
 .has-notes {
-    color: orange;
-    i{
-      color: orange !important;
-    }
+  color: orange;
+  i {
+    color: orange !important;
+  }
 }
 /*home*/
 .bahmni-home {
-    margin-bottom: 5px!important;
-    .fa-home {
-        color: $lightestGray;
-        margin-right: 5px;
-        font-size: 18px;
-    }
+  margin-bottom: 5px !important;
+  .fa-home {
+    color: $lightestGray;
+    margin-right: 5px;
+    font-size: 18px;
+  }
 }
 
 .highlight {
-	border-left: 5px solid orange;
+  border-left: 5px solid orange;
 }
-u, .add-drug-btninput[value]:first-letter {
-    text-decoration: none;
-    border-bottom: 1px solid;
-    font-family: $OpenSansBoldFont;
+u,
+.add-drug-btninput[value]:first-letter {
+  text-decoration: none;
+  border-bottom: 1px solid;
+  font-family: $OpenSansBoldFont;
 }
 
 .drug-dispensed {
@@ -228,46 +230,46 @@ u, .add-drug-btninput[value]:first-letter {
   @include clearfix();
 }
 
-.overflowAuto{
+.overflowAuto {
   overflow: auto;
 }
 .is-abnormal .select2-chosen {
-  color: red!important;
+  color: red !important;
 }
 
-.placeholder-text{
+.placeholder-text {
   background: #fff;
   padding: 5px;
   color: #444 !important;
-  p{
+  p {
     margin-bottom: 0;
     color: #444 !important;
   }
 }
 
-.fa-pencil, .fa-eye{
+.fa-pencil,
+.fa-eye {
   cursor: pointer;
-  &:hover{
-    color: #5C8A93;
+  &:hover {
+    color: #5c8a93;
   }
   @media screen and (max-width: 1024px) {
     font-size: 20px;
   }
 }
 
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
 }
 
-.clear-both{
+.clear-both {
   clear: both;
 }
-.select2-drop{
+.select2-drop {
   z-index: 99999 !important;
 }
-.ng-dialog-all-details-page{
-
-  .select2-container .select2-choice{
+.ng-dialog-all-details-page {
+  .select2-container .select2-choice {
     height: 26px !important;
   }
 }
@@ -275,33 +277,33 @@ u, .add-drug-btninput[value]:first-letter {
 .mylegend {
   background: $lightestGray;
   line-height: 16px;
-  margin-bottom:20px;
+  margin-bottom: 20px;
   padding: 3px 0;
   border-radius: 3px;
-  border:1px solid $lightGray;
-  span{
-    display:inline-block;
-    padding:2px 10px;
-    font-weight:bold;
+  border: 1px solid $lightGray;
+  span {
+    display: inline-block;
+    padding: 2px 10px;
+    font-weight: bold;
   }
 }
 
-.registraion_legend{
+.registraion_legend {
   margin: 15px 0 15px 25px;
-  width:auto;
+  width: auto;
   position: relative;
-  @media (max-width : 768px){
+  @media (max-width: 768px) {
     margin: 20px 0;
     width: 100%;
   }
-  &:before{
-    content: "";
-    border-top:1px $lightGray solid;
+  &:before {
+    content: '';
+    border-top: 1px $lightGray solid;
     position: absolute;
     top: 14px;
     width: 96%;
   }
-  span.mylegend{
+  span.mylegend {
     display: inline-block;
     width: auto;
     margin-bottom: 0;
@@ -309,61 +311,62 @@ u, .add-drug-btninput[value]:first-letter {
     margin-left: 25px;
     position: relative;
   }
-  &.first-registraion_legend{
+  &.first-registraion_legend {
     margin-left: 0;
     margin-right: 0;
-    &:before{
+    &:before {
       width: 100%;
     }
   }
-  &.removeLegend{
-    &:before{
+  &.removeLegend {
+    &:before {
       display: none;
     }
-    span.mylegend{
+    span.mylegend {
       display: none;
     }
   }
 }
 
-.toggle-container{
-  &.active{
-    .fa-caret-right{
+.toggle-container {
+  &.active {
+    .fa-caret-right {
       display: none;
     }
-    .fa-caret-down{
+    .fa-caret-down {
       display: inline;
     }
   }
-  .fa-caret-down{
+  .fa-caret-down {
     display: none;
   }
-
 }
 
-.patient-image{
+.patient-image {
   background-color: #ffffff;
 }
 
-.video, .video-dialog{
-  width:280px;
+.video,
+.video-dialog {
+  width: 280px;
   height: 190px;
   display: table;
-  margin:0 auto;
-  &.disable{
-    opacity: .1;
+  margin: 0 auto;
+  &.disable {
+    opacity: 0.1;
     pointer-events: none;
     border: 3px solid black;
   }
 }
 
-.dashboard-section-loader{
+.dashboard-section-loader {
   position: absolute;
-  bottom:0;
-  width:100%;
+  bottom: 0;
+  width: 100%;
   height: 100%;
-  z-index:10000;
-  background: rgba(223,223,223, 0.4) url('../images/spinner-small.gif') no-repeat center center;
+  z-index: 10000;
+  background: rgba(223, 223, 223, 0.4) url('../images/spinner-small.gif')
+    no-repeat center center;
 }
 
 .print {
@@ -371,10 +374,21 @@ u, .add-drug-btninput[value]:first-letter {
     display: none;
   }
 }
-.spinnable{
+.spinnable {
   position: relative;
   min-height: 2em;
 }
 .ngdialog.ngdialog-theme-default .ngdialog-close {
-      z-index: 999;
-    }
+  z-index: 999;
+}
+
+.cdss-alert-icon {
+  cursor: pointer;
+  width: fit-content;
+  padding: 3px;
+  height: 24px;
+  i {
+    color: #8e8e8e;
+    width: auto !important;
+  }
+}

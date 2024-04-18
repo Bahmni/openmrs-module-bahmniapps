@@ -2,7 +2,7 @@
 
 describe("OrderController", function () {
 
-    var scope, rootScope, ngDialog, appDescriptor;
+    var scope, rootScope, ngDialog, appDescriptor, $state;
 
     beforeEach(module('bahmni.common.conceptSet'));
     beforeEach(module('bahmni.clinical'));
@@ -43,7 +43,8 @@ describe("OrderController", function () {
             ngDialog: ngDialog,
             retrospectiveEntryService: retrospectiveEntryService,
             appService: appServiceMock,
-            $translate: translate
+            $translate: translate,
+            $state: {}
         });
     }));
 

@@ -390,7 +390,7 @@ describe("ManageProgramController", function () {
             scope.updatePatientProgram(patientProgramToBeUpdated);
 
             expect(messageService.showMessage)
-                .toHaveBeenCalledWith("error", "PROGRAM_MANAGEMENT_STATE_CANT_START_BEFORE_KEY (15 Jul 15)");
+                .toHaveBeenCalledWith("error", "PROGRAM_MANAGEMENT_STATE_CANT_START_BEFORE_KEY (15 Jul 2015)");
         });
 
         it("should transit from one state to another successfully only if different state is selected", function () {
@@ -473,7 +473,7 @@ describe("ManageProgramController", function () {
 
             scope.updatePatientProgram(programToBeUpdated);
 
-            expect(messageService.showMessage).toHaveBeenCalledWith("error", "PROGRAM_MANAGEMENT_PROGRAM_CANT_END_BEFORE_KEY (15 Jul 15)");
+            expect(messageService.showMessage).toHaveBeenCalledWith("error", "PROGRAM_MANAGEMENT_PROGRAM_CANT_END_BEFORE_KEY (15 Jul 2015)");
         });
 
         it('should end a program successfully', function () {

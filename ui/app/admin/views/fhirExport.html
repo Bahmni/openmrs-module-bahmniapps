@@ -1,0 +1,65 @@
+<div>
+    <div class="note-warning" ng-show="!hasExportPrivileges">
+        <p style="color: red;">{{ 'INSUFFICIENT_PRIVILEGE_TO_EXPORT'|translate }}</p>
+    </div>
+    <div class="note-warning" ng-show="hasExportPrivileges">
+        {{ 'EXPORT_PATIENT_DATA_WARNING'|translate }}
+    </div>
+    <div class="audit-log-filter">
+        <header>
+            <p>{{ 'PATIENT_DATA_BULK_FHIR_EXPORT_LABEL'|translate }}</p>
+        </header>
+        <article id="startFrom">
+          <form ng-submit="exportFhirData()">
+              <p>
+                  <label for="startFrom">{{ 'FHIR_EXPORT_START_DATE_LABEL'|translate }} </label>
+                  <input id="startDate" type="date" ng-model="startDate" max="{{::maxDate}}">
+              </p>
+              <p>
+                <label for="endDate">{{ 'FHIR_EXPORT_END_DATE_LABEL'|translate }} </label>
+                <input id="endDate" type="date" ng-model="endDate" max="{{::maxDate}}">
+            </p>
+            <P>
+                <div>
+                    <input type="checkbox" id="anonymise" name="anonymise" ng-disabled="isCheckboxDisabled" ng-model="anonymise"/>
+                    <label for="anonymise">Anonymise</label>
+                </div>
+            </P>
+              <button class="button" type="submit" ng-disabled="!hasExportPrivileges"> <aria-hidden="true"></i>
+                  {{ 'FHIR_EXPORT_BUTTON_LABEL'|translate }}
+              </button>
+          </form>
+        </article>
+    </div>
+    <section class="block section-grid orderSet-dashboard-container">
+        <div class="clearfix section-title-wrapper">
+            <h2 class="section-title fl">{{ 'FHIR_EXPORT_TABLE_HEADER_LABEL'|translate }}</h2>
+            <button class="fr small-btn grid-row-element orderSet-Create" ng-disabled="!hasExportPrivileges" ng-click="loadFhirTasksForPrivilegedUsers()"> Refresh</button>
+        </div>
+        <table id="auditLogTable">
+            <thead>
+            <tr>
+                <th>{{ 'EXPORT_USER_NAME'|translate }}</th>
+                <th>{{ 'EXPORT_TRIGGERED_DATE'|translate }}</th>
+                <th>{{ 'EXPORT_START_DATE'|translate }}</th>
+                <th>{{ 'EXPORT_END_DATE'|translate }}</th>
+                <th>{{ 'EXPORT_ANONYMISED'|translate }}</th>
+                <th>{{ 'EXPORT_TASK_STATUS'|translate }}</th>
+                <th>{{ 'EXPORT_DOWNLOAD_LINK'|translate }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="task in tasks">
+                <td style="text-align: center;">{{extractAttribute(task.resource.input,'FHIR Export User Name','valueString')}}</td>
+                <td style="text-align: center;">{{task.resource.authoredOn}}</td>
+                <td style="text-align: center;">{{extractAttribute(task.resource.input,'FHIR Export Start Date','valueString') | bahmniDate}}</td>
+                <td style="text-align: center;">{{extractAttribute(task.resource.input,'FHIR Export End Date','valueString') | bahmniDate}}</td>
+                <td style="text-align: center;"><input type="checkbox" ng-disabled="true" ng-checked="extractBoolean(task.resource.input,'FHIR Export Anonymise Flag','valueString')"/></td>
+                <td style="text-align: center;">{{task.resource.status}}</td>
+                <td style="text-align: center;"><a ng-if="task.resource.status==='completed' && task.resource.output && task.resource.output[0].valueString" href="{{task.resource.output[0].valueString}}">Download</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+</div>

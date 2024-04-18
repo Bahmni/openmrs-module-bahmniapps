@@ -36,6 +36,11 @@
                     <td class="value" ng-if="::!patient[attribute].isDateField">{{::(patient[attribute].value.display || patient[attribute].value) | booleanFilter}}</td>
                     <td class="value" ng-if="::patient[attribute].isDateField">{{::patient[attribute].value | bahmniDate}}</td>
                 </tr>
+                <tr ng-repeat="attribute in config.additionalPatientIdentifiers" ng-if="::patient.additionalIdentifiers[attribute]"
+                    ng-show="::config.additionalPatientIdentifiers.length" ng-class="attribute">
+                    <td class="name">{{patient.additionalIdentifiers[attribute].label}}</td>
+                    <td class="value">{{patient.additionalIdentifiers[attribute].value}}</td>
+                </tr>
                 <tr ng-if="::relationships && relationships.length > 0">
                     <td>{{ 'PATIENT_PROFILE_RELATIONSHIPS_LABEL'|translate }}</td>
                 </tr>

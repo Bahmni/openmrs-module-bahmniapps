@@ -24,7 +24,7 @@ angular.module('bahmni.common.uiHelper')
         var link = function ($scope, element, attrs, ngModel) {
             var maxDate = attrs.maxDate;
             var minDate = attrs.minDate || "-120y";
-            var format = attrs.dateFormat || 'dd-mm-yy';
+            var format = attrs.dateFormat || 'dd-mm-yyyy';
             element.datepicker({
                 changeYear: true,
                 changeMonth: true,

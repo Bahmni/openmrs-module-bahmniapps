@@ -101,18 +101,24 @@ category: Components - Alerts
 	border: 1px solid #b72224;
 	.types-for-errors{
 		display: block;
-		text-align: center;
+		text-align: left !important;
 		> div {
 			margin: 7px 0;
 		}
 	}
 	.button-wrappper{
-	  .copy-btn, .show-btn {
+	  .copy-btn, .show-btn, .review-btn, .discard-btn {
 		padding: 5px;
 		font-family: OpenSansSemiBold;
 		font-size: 12px;
 		width: 74px;
 	  }
+	}
+	.review-btn, .copy-btn {
+		margin-right: 4px;
+	} 
+	.review-btn[ng-focus] {
+		outline: 2px solid $clinicalFormFocus;
 	}
   }
   .success-message-container{

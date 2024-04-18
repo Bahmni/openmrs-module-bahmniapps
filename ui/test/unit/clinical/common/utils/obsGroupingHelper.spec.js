@@ -1,7 +1,7 @@
 'use strict';
 
 describe("ObsGropingHelper", function () {
-    var conceptSetUiConfigService, translate;
+    var conceptSetUiConfigService, conceptGroupFormatService;
 
     var allObservations = [
         {
@@ -315,21 +315,19 @@ describe("ObsGropingHelper", function () {
         conceptSetUiConfigService = jasmine.createSpyObj('conceptSetUiConfigService', ['getConfig']);
         conceptSetUiConfigService.getConfig.and.returnValue({
         });
-    });
-
-    var translatedMessages = {
-        "CHIEF_COMPLAINT_DATA_WITHOUT_OTHER_CONCEPT_TEMPLATE_KEY": "Headache since 30 Days",
-        "CHIEF_COMPLAINT_DATA_CONCEPT_NAME_KEY": "Pulse Data"
-    };
-
-    var translate = jasmine.createSpyObj('$translate', ['instant']);
-    translate.instant.and.callFake(function (key) {
-        return translatedMessages[key];
+        conceptGroupFormatService = jasmine.createSpyObj('conceptGroupFormatService', ['isObsGroupFormatted', 'groupObs']);
+        conceptGroupFormatService.isObsGroupFormatted.and.callFake((arg) => {
+            if (arg === allObservations[2] || arg === allObservations[1]) {
+                return true;
+            } else {
+                return false;
+            }
+        });
     });
 
     it("should not fail for empty set of observations", function () {
         var observations = [];
-        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, translate).groupObservations(observations);
+        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, conceptGroupFormatService).groupObservations(observations);
         expect(groupedObservationsArray.length).toBe(0);
     });
 
@@ -338,7 +336,7 @@ describe("ObsGropingHelper", function () {
             allObservations[0],
             allObservations[1]
         ];
-        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, translate).groupObservations(observations);
+        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, conceptGroupFormatService).groupObservations(observations);
         expect(groupedObservationsArray.length).toBe(1);
         expect(groupedObservationsArray[0].conceptSetName).toBe('Form2');
         expect(groupedObservationsArray[0].groupMembers.length).toBe(2);
@@ -348,7 +346,7 @@ describe("ObsGropingHelper", function () {
         var observations = [
             allObservations[2]
         ];
-        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, translate).groupObservations(observations);
+        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, conceptGroupFormatService).groupObservations(observations);
         expect(groupedObservationsArray.length).toBe(1);
         expect(groupedObservationsArray[0].conceptSetName).toBe('Vitals');
         expect(groupedObservationsArray[0].groupMembers.length).toBe(1);
@@ -360,7 +358,7 @@ describe("ObsGropingHelper", function () {
             allObservations[1],
             allObservations[2]
         ];
-        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, translate).groupObservations(observations);
+        var groupedObservationsArray = new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, conceptGroupFormatService).groupObservations(observations);
         expect(groupedObservationsArray.length).toBe(2);
 
         expect(groupedObservationsArray[0].conceptSetName).toBe('Vitals');

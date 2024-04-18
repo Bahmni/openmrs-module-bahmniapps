@@ -29,8 +29,16 @@
                 <div class="form">
                     <input type="checkbox" ng-show="showBulkChangeToggle" ng-model="newTreatment.durationUpdateFlag"
                            class="treatmentChkBox"/>
-                    <div class="drug-dosage">
-                        <strong class="drug-name">{{newTreatment.getDisplayName()}}</strong>
+                    <div class="drug-dosage" bm-pop-over autoclose="true">
+                        <strong class="drug-name">
+                            <button ng-if="newTreatment.alerts && newTreatment.alerts.length > 0 && !hasActiveAlerts(newTreatment.alerts)" class="cdss-alert-icon" bm-pop-over-trigger>
+                                <i class="fa fa-exclamation-circle cdss-icon-medication"></i>
+                            </button>
+                            {{newTreatment.getDisplayName()}}
+                        </strong>
+                        <div class="tooltip cdss-tooltip" bm-pop-over-target>
+                            <cdss-popover alerts="newTreatment.alerts"></cdss-popover>
+                        </div>
                         <div class="dosage-frequency">
                             <span ng-show="newTreatment.getDoseAndUnits()">{{newTreatment.getDoseAndUnits()}} | </span>
                             <span ng-show="newTreatment.getFrequency() && newTreatment.getFrequency().length">{{newTreatment.getFrequency()}} | </span>
@@ -62,6 +70,7 @@
                 </div>
                 <div>{{newTreatment.getQuantityWithUnit()}}</div>
             </div>
+            <cdss-alert-row alerts="newTreatment.alerts"></cdss-alert-row>
         </li>
     </ul>
 </section>

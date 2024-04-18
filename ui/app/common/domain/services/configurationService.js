@@ -171,18 +171,6 @@ angular.module('bahmni.common.domain')
             });
         };
 
-        configurationFunctions.registrationSMSToggle = function () {
-            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
-                params: {
-                    property: 'sms.enableRegistrationSMSAlert'
-                },
-                withCredentials: true,
-                transformResponse: [function (data) {
-                    return data;
-                }]
-            });
-        };
-
         configurationFunctions.helpDeskNumber = function () {
             return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
                 params: {

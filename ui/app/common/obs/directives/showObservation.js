@@ -31,6 +31,13 @@ angular.module('bahmni.common.obs')
                     }
                 });
             };
+            $scope.displayLabel = function (observation) {
+                if ($scope.displayNameType === 'FSN') {
+                    return observation.concept.name;
+                } else {
+                    return (observation.concept.shortName.charAt(0).toUpperCase() + observation.concept.shortName.slice(1)) || observation.concept.name;
+                }
+            };
         };
         return {
             restrict: 'E',
@@ -40,7 +47,8 @@ angular.module('bahmni.common.obs')
                 showDate: "=?",
                 showTime: "=?",
                 showDetailsButton: "=?",
-                configIsObservationForImages: "=?"
+                configIsObservationForImages: "=?",
+                displayNameType: "=?"
             },
             controller: controller,
             template: '<ng-include src="\'../common/obs/views/showObservation.html\'" />'

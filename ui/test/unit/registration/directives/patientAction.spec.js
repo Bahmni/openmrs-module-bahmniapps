@@ -20,11 +20,11 @@ describe('PatientAction', function () {
                 appDescriptor = jasmine.createSpyObj('appDescriptor', ['getExtensions', 'getConfigValue', 'formatUrl']);
                 appDescriptor.getExtensions.and.returnValue(input.appDescriptor.getExtensions);
                 appDescriptor.getConfigValue.and.callFake(function (value) {
-                    if (value == 'defaultVisitType') {
+                    if (value === 'defaultVisitType') {
                         return input.appDescriptor.getConfigValue.defaultVisitType;
-                    } else if (value == 'showStartVisitButton') {
+                    } else if (value === 'showStartVisitButton') {
                         return input.appDescriptor.getConfigValue.showStartVisitButton;
-                    } else if (value == 'forwardUrlsForVisitTypes') {
+                    } else if (value === 'forwardUrlsForVisitTypes') {
                         return input.appDescriptor.getConfigValue.forwardUrls;
                     }
                 });
@@ -40,10 +40,11 @@ describe('PatientAction', function () {
                     return {uuid: "uuid"};
                 });
                 $location = jasmine.createSpyObj('$location', ['path']);
-                visitService = jasmine.createSpyObj('visitService', ['search', 'createVisit']);
+                visitService = jasmine.createSpyObj('visitService', ['search', 'createVisit', 'checkIfActiveVisitExists']);
                 visitService.search.and.returnValue(specUtil.simplePromise(input.visitSearchResults));
                 var visitResponse = {uuid: "visitUuid", visitType: {display: 'OPD'}};
                 visitService.createVisit.and.returnValue(specUtil.simplePromise({data: visitResponse}));
+                visitService.checkIfActiveVisitExists.and.returnValue(specUtil.simplePromise({ data: { "results": [] } }));
                 encounterService = jasmine.createSpyObj('encounterService', ['']);
                 sessionService = jasmine.createSpyObj('sessionService', ['']);
                 messagingService = jasmine.createSpyObj('messagingService', ['showMessage', 'clearAll']);

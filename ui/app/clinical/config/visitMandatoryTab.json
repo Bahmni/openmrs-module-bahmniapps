@@ -73,7 +73,7 @@
                 "showAccessionNotes": true,
                 "numberOfVisits": 10,
                 "showDetailsButton": false,
-                "hideVisitDate": true
+                "hideResultsColumn": false
             }
         },
         "Treatments": {
@@ -95,7 +95,7 @@
             "type": "radiology",
             "displayOrder": 7,
             "config": {
-                "translationKey": "VISIT_TITLE_RADIOLOGY_KEY"
+                "translationKey": "VISIT_TITLE_RADIOLOGY_DOCUMENTS_KEY"
             }
         },
         "Patient Files": {

@@ -5,11 +5,11 @@
     </div>
 </section>
 
-<section class="sections-group" ng-if="!isBeingPrinted">
+<section ng-if="!isBeingPrinted">
     <ng-include src="'common/views/providerInfo.html'"></ng-include>
 </section>
 
-<div ng-if="::(!clearBoard)" class="sections-group">
+<div ng-if="::(!clearBoard)">
     <div ng-repeat="section in visitTabConfig.currentTab.sections">
         <div ng-switch="section.type">
             <div ng-switch-when="patientInformation" class="section">
@@ -74,6 +74,13 @@
                             params="::section.config"></investigation-results>
                 </div>
             </div>
+            <div data-ng-switch-when="radiology">
+                <div id="Radiology" ng-if="::section.config"
+                         class="dashboard-radiology-section">
+                    <bm-documents patient="::patient" config="::section.config"
+                                  encounter-type="'RADIOLOGY'"></bm-documents>
+                </div>
+            </div>
             <div data-ng-switch-when="patientFiles" class="section">
                 <div id="Patient-Files" ng-if="section.config && !isBeingPrinted" class="dashboard-radiology-section">
                     <bm-documents patient="::patient" config="::section.config"
@@ -119,6 +126,16 @@
                                                 config="::section.config"
                                                 visit-summary="visitSummary"></custom-display-control>
                     </div>
+                </section>
+            </div>
+            <div data-ng-switch-when="pacsOrders">
+                <section ng-if="::section.config" class="block dashboard-section">
+                    <pacs-orders patient="patient"
+                                 order-type="section.config.orderType"
+                                 visit-uuid="::visitUuid"
+                                 section="section"
+                                 config="::section.config">
+                    </pacs-orders>
                 </section>
             </div>
             <div data-ng-switch-when="conditionsList" class="section">

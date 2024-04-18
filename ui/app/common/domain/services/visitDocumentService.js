@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.common.domain')
-    .service('visitDocumentService', ['$http', 'auditLogService', 'configurations', '$q', function ($http, auditLogService, configurations, $q) {
+    .service('visitDocumentService', ['$http', 'auditLogService', 'configurations', '$q', 'messagingService', '$translate', function ($http, auditLogService, configurations, $q, messagingService, $translate) {
         var removeVoidedDocuments = function (documents) {
             documents.forEach(function (document) {
                 if (document.voided && document.image) {
@@ -50,7 +50,27 @@ angular.module('bahmni.common.domain')
             }, {
                 withCredentials: true,
                 headers: {"Accept": "application/json", "Content-Type": "application/json"}
+            }).then(function (response) {
+                return response;
+            }, function (error) {
+                if (error.status === 413) {
+                    if (!isNaN(error.data.maxDocumentSizeMB)) {
+                        var maxAllowedSize = roundToNearestHalf(error.data.maxDocumentSizeMB * 0.70);
+                        messagingService.showMessage("error", $translate.instant("FILE_SIZE_LIMIT_EXCEEDED_MESSAGE", { maxAllowedSize: maxAllowedSize }));
+                    } else {
+                        messagingService.showMessage("error", $translate.instant("SIZE_LIMIT_EXCEEDED_MESSAGE"));
+                    }
+                }
+                return $q.reject(error);
             });
+        };
+
+        var roundToNearestHalf = function (value) {
+            var floorValue = Math.floor(value);
+            if ((value - floorValue) < 0.5) {
+                return floorValue;
+            }
+            return floorValue + 0.5;
         };
 
         this.getFileType = function (fileType) {

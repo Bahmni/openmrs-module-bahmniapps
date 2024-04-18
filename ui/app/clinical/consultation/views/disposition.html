@@ -4,7 +4,7 @@
         <span ng-bind-html="'DISPOSITION_NOT_ALLOWED_IN_RETROSPECTIVE_MESSAGE'|translate"></span>
     </div>
     <div class="box disposition-tab">
-        <form ng-submit="submit()">
+        <form name="dispositionForm" ng-submit="submit()" alert-on-exit>
             <label for="dispositionAction">{{ 'DISPOSITION_TYPE_LABEL'|translate }}: </label>
             <select id="dispositionAction" ng-model="dispositionCode" ng-options="d.code as ::getTranslatedDisposition(d.name) for d in dispositionActions" ng-change="clearDispositionNote();"  ng-disabled="isRetrospectiveMode()">
                 <option value=""></option>

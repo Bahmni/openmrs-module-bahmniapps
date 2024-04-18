@@ -125,7 +125,7 @@ describe('VisitController', function () {
         });
 
         it('should check data format', function () {
-            expect(scope.displayDate(new Date('2014', '7', '15', '12'))).toBe('15-Aug-14');
+            expect(scope.displayDate(new Date('2014', '7', '15', '12'))).toBe('15-Aug-2014');
         });
 
         it('should check test result class for expected style', function () {

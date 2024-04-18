@@ -2,7 +2,7 @@
 
 describe("DispositionController", function () {
 
-    var scope, rootScope ,controller, retrospectiveEntry, retrospectiveEntryService, dispositionService, dispositionActions, appService, translate;
+    var scope, rootScope ,controller, retrospectiveEntry, retrospectiveEntryService, dispositionService, dispositionActions, appService, translate, $state;
 
     beforeEach(module('bahmni.clinical'));
 
@@ -18,6 +18,7 @@ describe("DispositionController", function () {
         $provide.value('dispositionService', dispositionService);
         translate = jasmine.createSpyObj('$translate',['instant']);
         $provide.value('$translate', translate);
+        $provide.value('$state', $state);
     }));
 
     beforeEach(inject(function ($controller, $rootScope) {

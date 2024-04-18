@@ -32,6 +32,7 @@ table.orderSet-table{
    th.drugName ,td.drugName{
       width: 300px;
      text-align: left;
+     overflow: auto !important;
      span{
        display: block;
        width:240px;
@@ -42,8 +43,29 @@ table.orderSet-table{
    }
   td{
     padding: 4px 7px !important;
-    .button-group-wrapper{
-      width:auto;
-    }
+  }
+}
+
+.drug-order-table {
+  .button-group-wrapper{
+    width: 100% !important;
+  }
+}
+
+.header-alerts {
+  left: 0 !important;
+}
+
+.order-alert-row {
+  position: absolute !important;
+  left: 0 !important;
+  padding: 7px !important;
+}
+
+.drugName-alert {
+  left: 2rem !important;
+  width: 208px !important;
+  .medication-name {
+    padding-left: 2px !important;
   }
 }

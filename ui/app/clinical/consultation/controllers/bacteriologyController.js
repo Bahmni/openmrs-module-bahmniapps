@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('BacteriologyController', ['$scope', '$rootScope', 'contextChangeHandler', 'spinner', 'conceptSetService',
+    .controller('BacteriologyController', ['$scope', '$state', '$rootScope', 'contextChangeHandler', 'spinner', 'conceptSetService',
         'messagingService', 'bacteriologyConceptSet', 'appService', 'retrospectiveEntryService',
-        function ($scope, $rootScope, contextChangeHandler, spinner, conceptSetService, messagingService, bacteriologyConceptSet,
+        function ($scope, $state, $rootScope, contextChangeHandler, spinner, conceptSetService, messagingService, bacteriologyConceptSet,
                   appService, retrospectiveEntryService) {
             $scope.consultation.extensions = $scope.consultation.extensions ? $scope.consultation.extensions : {mdrtbSpecimen: []};
             var initializeBacteriologyScope = function () {
@@ -53,6 +53,16 @@ angular.module('bahmni.clinical')
                 var newSpecimen = new Bahmni.Clinical.Specimen(null, $scope.allSamples);
                 $scope.newSpecimens.push(newSpecimen);
             };
+
+            $scope.$on('$stateChangeStart', function () {
+                if ($scope.bacteriologyForm.$dirty) {
+                    $state.dirtyConsultationForm = true;
+                }
+            });
+
+            $scope.$on("event:changes-saved", function () {
+                $scope.bacteriologyForm.$dirty = false;
+            });
 
             var contextChange = function () {
                 $scope.consultation.newlyAddedSpecimens = $scope.newSpecimens;

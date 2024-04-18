@@ -19,10 +19,20 @@
 					<div class="inpage-tab-content">
                         <p ng-if="!drugOrderGroup.drugOrders.length" class="placeholder-text">{{ ::'MEDICATION_NO_RECENT_TREATMENT' | translate }}</p>
                         <ul class="table-mimic">
-							<li id="ordered-drug-orders" ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
+							<li id="ordered-drug-orders" bm-pop-over autoclose="true" ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
-                                    <div class="drug-dosage">
-                                        <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong>
+                                    <div class="drug-dosage relative">
+                                        <strong class="drug-name popover-trigger">
+                                            <button ng-if="drugOrder.alerts && drugOrder.alerts.length > 0 && !hasActiveAlerts(drugOrder.alerts)" class="cdss-alert-icon" bm-pop-over-trigger>
+                                                <i class="fa cdss-icon-medication fa-exclamation-circle">
+                                                </i>
+                                            </button>
+                                            {{drugOrder.getDisplayName()}}
+                                        </strong>
+                                        <div class="tooltip cdss-tooltip" bm-pop-over-target>
+                                            <cdss-popover alerts="drugOrder.alerts"></cdss-popover>
+                                        </div>
+                                
                                         <div class="dosage-frequency">
                                             <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}} | </span>
                                             <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length">{{drugOrder.getFrequency()}} | </span> 
@@ -69,7 +79,7 @@
                                     <div>{{drugOrder.getQuantityWithUnit()}}</div>
                                     <div class="footer-note">
                                         <span class="time-stamp">
-                                            <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
+                                            <span class="time">{{drugOrder.dateActivated | bahmniDateTime}}</span>
                                         </span>
                                         <span class="provider">
                                             <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"></provider-directive>
@@ -99,6 +109,7 @@
                                         </article>
                                     </div>
                                 </div>
+                                <cdss-alert-row alerts="drugOrder.alerts" consultation="consultation"></cdss-alert-row>
 							</li>
 						</ul>
 					</div>

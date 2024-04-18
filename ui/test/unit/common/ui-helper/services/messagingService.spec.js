@@ -31,7 +31,8 @@ describe('MessagingService', function () {
         expect(messagingService.messages['error']).toBeTruthy();
         expect(messagingService.messages).toEqual({
             error: [{value: 'message', isServerError: false}],
-            info: []
+            info: [],
+            alert: []
         });
     });
 
@@ -42,7 +43,8 @@ describe('MessagingService', function () {
         expect(messagingService.messages['error']).toBeTruthy();
         expect(messagingService.messages).toEqual({
             error: [{value: 'message', isServerError: true}],
-            info: []
+            info: [],
+            alert: []
         });
     });
 
@@ -66,7 +68,8 @@ describe('MessagingService', function () {
         expect(args[2]).toBeTruthy();
         expect(messagingService.messages).toEqual({
             error: [],
-            info: [{value: 'message', isServerError: false}]
+            info: [{value: 'message', isServerError: false}],
+            alert: []
         });
         args[0]();
         expect(messagingService.messages['info']).toEqual([]);
@@ -80,7 +83,8 @@ describe('MessagingService', function () {
         expect(messagingService.messages['error']).toBeTruthy();
         expect(messagingService.messages).toEqual({
             info: [],
-            error: [{value: 'message', isServerError: false}]
+            error: [{value: 'message', isServerError: false}],
+            alert: []
         });
         expect(messagingService.messages['error'].length).toEqual(1);
     });
@@ -93,7 +97,8 @@ describe('MessagingService', function () {
         expect(messagingService.messages['error']).toBeTruthy();
         expect(messagingService.messages).toEqual({
             info: [],
-            error: [{value: 'message', isServerError: false}, {value: 'le message', isServerError: false}]
+            error: [{value: 'message', isServerError: false}, {value: 'le message', isServerError: false}],
+            alert: []
         });
         expect(messagingService.messages['error'].length).toEqual(2);
     });

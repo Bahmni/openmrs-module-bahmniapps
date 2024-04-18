@@ -48,7 +48,7 @@ angular.module('httpErrorInterceptor', [])
                 } else if (response.status === 405) {
                     showError(unexpectedError);
                 } else if (response.status === 400) {
-                    var errorMessage = data.error && data.error.message ? data.error.message : (data.localizedMessage || "Could not connect to the server. Please check your connection and try again");
+                    var errorMessage = data.error && data.error.message ? data.error.message : data.error ? data.error : (data.localizedMessage || "Could not connect to the server. Please check your connection and try again");
                     showError(errorMessage);
                 } else if (response.status === 403) {
                     var errorMessage = data.error && data.error.message ? data.error.message : unexpectedError;
@@ -58,8 +58,8 @@ angular.module('httpErrorInterceptor', [])
                         showError(errorMessage);
                     }
                 } else if (response.status === 404) {
-                    if (!_.includes(response.config.url, "implementation_config") && !_.includes(response.config.url, "locale_")
-                        && !_.includes(response.config.url, "offlineMetadata")) {
+                    if (!_.includes(response.config.url, "implementation_config") && !_.includes(response.config.url, "locale_") &&
+                        !_.includes(response.config.url, "offlineMetadata")) {
                         showError("The requested information does not exist");
                     }
                 }

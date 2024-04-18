@@ -6,7 +6,7 @@
     </h2>
     <div class="order-section-container"  ng-show="addTreatment">
         <div class="Order-section-orderDrug clearfix">
-            <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form class="edit-drug-order-container">
+            <form name="addForm" ng-class="{ 'show-invalid': formInvalid}"  ng-submit="add()" bm-form class="edit-drug-order-container" alert-on-exit>
                 <article class="form-field">
                     <div class="field-attribute">
                         <label>{{ ::treatmentConfig.translate('drugName', 'MEDICATION_DRUG_NAME_TITLE') }} </label>
@@ -259,13 +259,14 @@
                     </div>
                 </article>
 
+
                 <div class="operations fr clearfix">
                     <button class="add-drug-btn secondary-button fl" type="submit" accesskey="{{ ::treatmentConfig.translate('addAccessKey', 'MEDICATION_ADD_ACCESS_KEY') }}"
                             ng-disabled="!treatment.drug.uuid && !treatment.concept.uuid && treatment.drugNameDisplay && !treatment.isNonCodedDrug">
                              <span ng-bind-html="::treatmentConfig.translate('add', 'MEDICATION_ADD_BUTTON_LABEL')">
                         </span>
                     </button>
-                    <button type="button" class="icon-button showInfo-btn fr reset-drug-form" tabindex="-1" ng-click="clearForm()" title="Clear">
+                    <button type="button" class="icon-button showInfo-btn fr reset-drug-form" tabindex="-1" ng-click="clearForm(); clearButtonClicked='true'" title="Clear">
                         {{'MEDICATION_CLEAR_BUTTON_LABEL'|translate}}
                     </button>
                 </div>

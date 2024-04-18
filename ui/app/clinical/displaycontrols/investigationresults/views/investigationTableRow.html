@@ -4,7 +4,7 @@
 
 <tr bo-if="!test.isPanel" ng-class="{'test-notes-parent': test.notes, 'notes-open': test.showDetails}">
     <td class="testUnderPanel" bo-class="{'has-uploaded-file': test.uploadedFileName}">
-        <span ng-if="!test.uploadedFileName" bo-text="::getLocaleSpecificNameForTest(test)"></span>
+        <span ng-if="!test.uploadedFileName" bo-text="::getLocaleSpecificNameForTest(test)" ng-style="{'padding-left': test.panelName ? '20px' : ''}"></span>
         <span ng-if="test.labReportUrl">
             <a  href="{{test.labReportUrl}}" stop-event-propagation="click" target="_blank">{{::getLocaleSpecificNameForTest(test)}}
             </a>

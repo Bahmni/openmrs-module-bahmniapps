@@ -69,11 +69,11 @@ describe("PatientFileObservationsMapper", function () {
         var patientFileRecords = new Bahmni.Clinical.PatientFileObservationsMapper().map(encounters);
 
         expect(patientFileRecords.length).toBe(2);
-        expect(patientFileRecords[0].imageObservation.value).toBe("document-3.jpeg");
-        expect(patientFileRecords[1].imageObservation.value).toBe("document-4.jpeg");
+        expect(patientFileRecords[0].imageObservation.value).toBe("document-4.jpeg");
+        expect(patientFileRecords[1].imageObservation.value).toBe("document-3.jpeg");
         expect(patientFileRecords[0].concept.name).toBe(observationConceptName);
         expect(patientFileRecords[1].concept.name).toBe(observationConceptName);
-        expect(patientFileRecords[0].comment).toBe("something went wrong again");
-        expect(patientFileRecords[1].comment).toBe("something went wrong");
+        expect(patientFileRecords[0].comment).toBe("something went wrong");
+        expect(patientFileRecords[1].comment).toBe("something went wrong again");
     })
 });

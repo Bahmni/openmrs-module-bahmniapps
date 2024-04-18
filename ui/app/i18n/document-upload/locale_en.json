@@ -32,5 +32,7 @@
     "VISIT_LABEL": "Visit",
     "VISIT_FROM_LABEL": "From:",
     "VISIT_TO_LABEL": "To:",
-    "FILE_TYPE_NOT_SUPPORTED_MESSAGE": "File type is not supported"
+    "FILE_TYPE_NOT_SUPPORTED_MESSAGE": "File type is not supported",
+    "FILE_SIZE_LIMIT_EXCEEDED_MESSAGE": "File size limit exceeded.  Please upload a file less than {{maxAllowedSize}} MB.",
+    "SIZE_LIMIT_EXCEEDED_MESSAGE": "File size limit exceeded. Please upload a smaller file"
 }

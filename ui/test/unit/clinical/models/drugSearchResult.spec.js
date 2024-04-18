@@ -58,6 +58,20 @@ describe("DrugSchedule", function () {
             expect(allMatchingSynonyms[0].label).toBe("paracetamoluse => Paracetamol 200mg");
         });
 
+        it("should return only the search results of drugs whose name matches with multiple prefix search string",function () {
+            var drug = {name: "Diphenhydramine hydrochloride 25 mg tablet", dosageForm: null, concept:{
+                    names:[
+                        {name:"Diphenhydramine hydrochloride"}
+                    ]
+                }};
+
+            var searchString = "Diph hy";
+            var allMatchingSynonyms = Bahmni.Clinical.DrugSearchResult.getAllMatchingSynonyms(drug, searchString);
+
+            expect(allMatchingSynonyms.length).toBe(1);
+            expect(allMatchingSynonyms[0].label).toBe("Diphenhydramine hydrochloride 25 mg tablet");
+        });
+
         it("should return unique list of search results when more than one name is same",function () {
             var drug = {name: "Paracetamol 200mg", dosageForm: null, concept:{
                 names:[

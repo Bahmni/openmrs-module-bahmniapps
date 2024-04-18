@@ -63,7 +63,7 @@ angular.module('bahmni.clinical')
             };
 
             $scope.displayDate = function (date) {
-                return moment(date).format("DD-MMM-YY");
+                return moment(date).format("DD-MMM-YYYY");
             };
 
             $scope.$on("event:printVisitTab", function () {

@@ -1,6 +1,6 @@
 'use strict';
 
-Bahmni.Clinical.ObsGroupingHelper = function (conceptSetUiConfigService, $translate) {
+Bahmni.Clinical.ObsGroupingHelper = function (conceptSetUiConfigService, conceptGroupFormatService) {
     var conceptSetUiConfigSvc = conceptSetUiConfigService;
 
     this.groupObservations = function (observations) {
@@ -33,7 +33,7 @@ Bahmni.Clinical.ObsGroupingHelper = function (conceptSetUiConfigService, $transl
         var observationsByGroup = {
             "conceptSetName": conceptSetName,
             "groupMembers": new Bahmni.ConceptSet.ObservationMapper()
-                .getObservationsForView(obs, conceptSetUiConfigSvc.getConfig(), $translate)
+                .getObservationsForView(obs, conceptSetUiConfigSvc.getConfig(), conceptGroupFormatService)
         };
         return observationsByGroup;
     };

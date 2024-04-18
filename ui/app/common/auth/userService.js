@@ -40,7 +40,8 @@ angular.module('authentication')
             return $http.get(Bahmni.Common.Constants.providerUrl, {
                 method: "GET",
                 params: {
-                    user: uuid
+                    user: uuid,
+                    v: 'custom:(uuid,display,attributes)'
                 },
                 cache: false
             });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('ConsultationSummaryController', ['$scope', '$translate', 'conceptSetUiConfigService', function ($scope, $translate, conceptSetUiConfigService) {
+    .controller('ConsultationSummaryController', ['$scope', '$state', 'conceptSetUiConfigService', 'conceptGroupFormatService', function ($scope, $state, conceptSetUiConfigService, conceptGroupFormatService) {
         var geEditedDiagnosesFromPastEncounters = function () {
             var editedDiagnosesFromPastEncounters = [];
             $scope.consultation.pastDiagnoses.forEach(function (pastDiagnosis) {
@@ -18,6 +18,16 @@ angular.module('bahmni.clinical')
             $scope.consultation.consultationNote.observationDateTime = null;
         };
 
+        $scope.$on('$stateChangeStart', function () {
+            if ($scope.consultationForm.$dirty) {
+                $state.dirtyConsultationForm = true;
+            }
+        });
+
+        $scope.$on("event:changes-saved", function (event) {
+            $scope.consultationForm.$dirty = false;
+        });
+
         var groupObservations = function () {
             var allObservations = $scope.consultation.observations;
             allObservations = _.filter(allObservations, function (obs) {
@@ -29,7 +39,7 @@ angular.module('bahmni.clinical')
                 }
                 return true;
             });
-            return new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, $translate).groupObservations(allObservations);
+            return new Bahmni.Clinical.ObsGroupingHelper(conceptSetUiConfigService, conceptGroupFormatService).groupObservations(allObservations);
         };
 
         $scope.groupedObservations = groupObservations();

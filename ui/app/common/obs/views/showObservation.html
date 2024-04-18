@@ -9,11 +9,11 @@
             }"/>
             <a href="{{'/document_images/' + observation.value}}" download ng-if="observation.isVideoConcept()" class="button btn fr btn-download"><i class="fa fa-download" aria-hidden="true"></i></a>
         </span>
-        <span ng-if="observation.isConceptNameChiefComplaintData() && observation.groupMembers.length > 1 && observation.formNamespace != null && observation.groupMembers[0].concept.conceptClass != 'Image' && observation.groupMembers[0].concept.conceptClass != 'Video'" class="testUnderPanel left">
+        <span ng-if="observation.groupMembers.length > 0 && observation.groupMembers[0].concept.conceptClass != 'Image' && observation.groupMembers[0].concept.conceptClass != 'Video'" class="testUnderPanel left">
             <label>{{::(observation.getDisplayValue())}}</label>
         </span>
-        <span ng-if="observation.groupMembers.length==0 && !configIsObservationForImages && observation.concept.conceptClass != 'Image'" class="testUnderPanel left">
-            <label>{{::((observation.concept.shortName.charAt(0).toUpperCase() + observation.concept.shortName.slice(1)) || observation.concept.name)}}</label>
+        <span ng-if="observation.groupMembers.length==0 && !configIsObservationForImages && observation.concept.conceptClass != 'Image'" class="testUnderPanel left" ng-class="::{'is-abnormal-bold': (observation.isAbnormal == true && print)}">
+            <label>{{::displayLabel(observation)}}</label>
             <hint concept-details="::{
             lowNormal:observation.lowNormal||observation.concept.lowNormal,
             hiNormal:observation.hiNormal||observation.concept.hiNormal,
@@ -22,7 +22,8 @@
         </span>
         <span class="left" ng-class="::{
                        'text-only': (observation.concept.dataType ==='Text' && print),
-                       'value-text-only': !(observation.concept.dataType ==='Text' && print)
+                       'value-text-only': !(observation.concept.dataType ==='Text' && print),
+                       'is-abnormal-bold': (observation.isAbnormal == true && print)
                        }"
               ng-if="::(observation.isFormElement() && !observation.isImageConcept() && !observation.isVideoConcept())">
             <span class="left obs-label-file" title="{{::observation.getDisplayFileName() | titleTranslate}}"
@@ -68,16 +69,16 @@
         </div>
     </div>
     <div>
-        <ul ng-if="::(!observation.isFormElement() && !print && !observation.isConceptClassConceptDetails())" class="hidden-print">
+        <ul ng-if="::(!observation.isFormElement() && !print && !observation.isObsGroupFormatted())" class="hidden-print">
             <show-observation  show-details-button="::showDetailsButton" ng-if="::!observation.isFormElement()" ng-repeat="member in observation.groupMembers"
                           observation="::member" patient="::patient" show-date="::showDate" show-time="::showTime"
                           config-is-observation-for-images="::configIsObservationForImages"
-                          ng-class="{'video-concept-show': member.isVideoConcept()}"></show-observation>
+                          ng-class="{'video-concept-show': member.isVideoConcept()}" display-name-type="::displayNameType"></show-observation>
         </ul>
     </div>
-    <ul ng-if="::(!observation.isFormElement() && print && !observation.isConceptClassConceptDetails())" class="visible-print">
+    <ul ng-if="::(!observation.isFormElement() && print && !conceptGroupFormatService.isConceptClassConceptDetails() && !observation.isObsGroupFormatted())" class="visible-print">
         <show-observation show-details-button="showDetailsButton" ng-if="::!observation.isFormElement()" ng-repeat="member in observation.groupMembers"
                           observation="::member" patient="::patient" show-date="::showDate" show-time="::showTime"
-                          config-is-observation-for-images="::configIsObservationForImages"></show-observation>
+                          config-is-observation-for-images="::configIsObservationForImages" display-name-type="::displayNameType"></show-observation>
     </ul>
  </li>

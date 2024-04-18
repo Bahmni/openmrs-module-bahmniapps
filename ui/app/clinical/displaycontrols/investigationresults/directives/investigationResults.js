@@ -6,7 +6,8 @@ angular.module('bahmni.clinical')
             var defaultParams = {
                 showTable: true,
                 showChart: true,
-                numberOfVisits: 1
+                numberOfVisits: 1,
+                chartConfig: {}
             };
             $scope.params = angular.extend(defaultParams, $scope.params);
 
@@ -15,7 +16,9 @@ angular.module('bahmni.clinical')
                 numberOfVisits: $scope.params.numberOfVisits,
                 visitUuids: $scope.params.visitUuids,
                 initialAccessionCount: $scope.params.initialAccessionCount,
-                latestAccessionCount: $scope.params.latestAccessionCount
+                latestAccessionCount: $scope.params.latestAccessionCount,
+                sortResultColumnsLatestFirst: $scope.params.chartConfig.sortResultColumnsLatestFirst,
+                groupOrdersByPanel: $scope.params.chartConfig.groupByPanel
             };
             $scope.initialization = labOrderResultService.getAllForPatient(params)
                 .then(function (results) {

@@ -1,0 +1,48 @@
+<div class="clint-logo-wrapper">
+    <img class="implementor-logo" src={{logo}} >
+    <span ng-if="titleText" class="title_text"> {{'LOGIN_LOCATION_PAGE_TITLE_TEXT' | translate }} </span>
+</div>
+
+<div class="login">
+    <header class="reg-header">
+        <div>{{'LOGIN_LOCATION_PAGE_TITLE_TEXT' | translate}}</div>
+    </header>
+    <form ng-submit="updateSessionLocation()" name="loginLocationForm" bm-form autofillable="true">
+        <div class="login-body">
+            <div class="form-field">
+                <div class="field-attribute">
+                    <label for="location">
+                        {{'LOGIN_LABEL_LOCATION_KEY' | translate}} <span class="asterick">*</span>
+                    </label>
+                </div>
+                <div class="field-value">
+                    <select id="location" ng-model="loginInfo.currentLocation"
+                            ng-options="item as (item.display | translate) for item in locations | orderBy:'display'" required>
+                        <option value="">{{'LOGIN_LABEL_SELECT_LOCATION_KEY' | translate}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <button type="submit" class="confirm">{{'LOGIN_LOCATION_SELECTION_LABEL_KEY' | translate}}</button>
+            </div>
+        </div>
+
+    </form>
+
+    <div class="warning-message">
+        <span ng-if="warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{warning}}</span>
+        <p>{{warningMessage | translate :timeZoneObject}} </p>
+    </div>
+
+    <div ng-show="bottomLogos" class="bottom-logos-wrapper">
+        <img ng-repeat="logo in bottomLogos" id="bottom-logos-image" src={{logo}}>
+    </div>
+
+</div>
+
+
+<div class="power-by">
+    <img src="./../images/bahmniLogoFull.png" alt="Bahmni" />
+    <a href={{helpLink}}> Bahmni Help</a>
+</div>

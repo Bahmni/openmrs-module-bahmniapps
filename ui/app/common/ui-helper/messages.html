@@ -26,9 +26,27 @@
                             <div class="msg primary" ng-if="error.isServerError">{{error.value | translate}}</div>
                         </div>
                     </div>
-                    <div class="button-wrappper clearfix">
-                        <button type="button" ng-click="getMessageText('error')" class="copy-btn fl">{{ 'MESSAGE_DIALOG_OPTION_COPY' | translate }}</button>
-                        <button type="button" ng-click="hideMessage('error')" class="show-btn fr">{{ 'MESSAGE_DIALOG_OPTION_OKAY' | translate }}</button>
+                    <div class="button-wrappper fr clearfix">
+                        <button type="button" ng-click="getMessageText('error')" class="copy-btn">{{ 'MESSAGE_DIALOG_OPTION_COPY' | translate }}</button>
+                        <button type="button" ng-click="hideMessage('error')" class="show-btn">{{ 'MESSAGE_DIALOG_OPTION_OKAY' | translate }}</button>
+                    </div>  
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <ul>
+        <li>
+            <div class="message-container error-message-container" ng-if="isAlertMessagePresent()">
+                <div class="message-text">
+                    <div class="types-for-errors error-message">
+                        <div ng-repeat="alert in messages.alert">
+                            <div class="msg">{{ alert.value | translate}}</div>
+                        </div>
+                    </div>
+                    <div class="button-wrapper fr clearfix">
+                        <button type="button" ng-click="hideMessage('alert')" class="review-btn" ng-focus="reviewButtonFocused = true">{{ 'MESSAGE_DIALOG_OPTION_REVIEW' | translate }}</button>
+                        <button type="button" ng-click="discardChanges('alert')" class="discard-btn">{{ 'MESSAGE_DIALOG_OPTION_DISCARD' | translate }}</button>
                     </div>
                 </div>
             </div>

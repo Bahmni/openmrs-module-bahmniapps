@@ -122,7 +122,7 @@ angular.module('bahmni.registration')
                                 if (!identifierMatch) {
                                     extensionParam.addressMap !== null ? updatePatientAddress(patient.address[0], extensionParam.addressMap) : {};
                                     contactAttribute = extensionParam.contact ? extensionParam.contact : "primaryContact";
-                                    changePatientDetails(patient);
+                                    changePatientDetails(patient, extensionParam.isMiddleNameFieldPresent);
                                     identifierMatch = true;
                                 }
                             }
@@ -132,6 +132,7 @@ angular.module('bahmni.registration')
             };
 
             function updatePatientAddress (address, addressMap) {
+                $scope.patient.address = {};
                 for (var key in addressMap) {
                     if (address[key] && address[key] !== null) {
                         if (key === "line") {
@@ -143,24 +144,30 @@ angular.module('bahmni.registration')
                 }
             }
 
-            function updatePatientName (name) {
-                $scope.patient.givenName = name.givenName[0];
-                $scope.patient.middleName = name.givenName.length > 1 ? name.givenName[1] : "";
+            function updatePatientName (name, isMiddleNameFieldPresent) {
+                if (isMiddleNameFieldPresent) {
+                    $scope.patient.givenName = name.givenName[0];
+                    $scope.patient.middleName = name.givenName.length > 1 ? name.givenName[1] : "";
+                }
+                else {
+                    $scope.patient.givenName = name.givenName.join(" ");
+                }
+
                 $scope.patient.familyName = name.familyName;
             }
 
-            function changePatientDetails (changedDetails) {
+            function changePatientDetails (changedDetails, isMiddleNameFieldPresent) {
                 for (var key in changedDetails) {
                     switch (key) {
                     case 'names':
                         if (changedDetails.names != null) {
                             for (var i = 0; i < changedDetails.names.length; i++) {
                                 if (changedDetails.names[i].use === "preferred") {
-                                    updatePatientName(changedDetails.names[i]);
+                                    updatePatientName(changedDetails.names[i], isMiddleNameFieldPresent);
                                     break;
                                 }
                             }
-                            updatePatientName(changedDetails.names[0]);
+                            updatePatientName(changedDetails.names[0], isMiddleNameFieldPresent);
                         }
                         break;
                     case 'gender':

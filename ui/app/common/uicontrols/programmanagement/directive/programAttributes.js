@@ -15,6 +15,8 @@ angular.module('bahmni.common.uicontrols.programmanagment')
                         programAttributesMap[programAttributeType.name] = programAttribute.value && programAttribute.value.uuid;
                     } else if (isDateFormat(programAttributeType.format)) {
                         programAttributesMap[programAttributeType.name] = Bahmni.Common.Util.DateUtil.parseServerDateToDate(programAttributesMap[programAttributeType.name]);
+                    } else if (isOpenmrsConceptFormat(programAttributeType.format)) {
+                        programAttributesMap[programAttributeType.name] = programAttribute.value && programAttribute.value.uuid;
                     }
                 }
             });
@@ -26,7 +28,7 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
             if (isDateFormat(attributeType.format)) {
                 return programAttributesMap[attributeType.name] ? Bahmni.Common.Util.DateUtil.formatDateWithoutTime(programAttributesMap[attributeType.name]) : "";
-            } else if (isCodedConceptFormat(attributeType.format)) {
+            } else if (isCodedConceptFormat(attributeType.format) || isOpenmrsConceptFormat(attributeType.format)) {
                 var mrsAnswer = _.find(attributeType.answers, function (answer) {
                     return answer.conceptId == programAttributesMap[attributeType.name];
                 });
@@ -52,6 +54,10 @@ angular.module('bahmni.common.uicontrols.programmanagment')
 
         var isCodedConceptFormat = function (format) {
             return format == "org.bahmni.module.bahmnicore.customdatatype.datatype.CodedConceptDatatype";
+        };
+
+        var isOpenmrsConceptFormat = function (format) {
+            return format == "org.openmrs.customdatatype.datatype.ConceptDatatype";
         };
 
         $scope.patientProgram.patientProgramAttributes = $scope.getProgramAttributesMap();

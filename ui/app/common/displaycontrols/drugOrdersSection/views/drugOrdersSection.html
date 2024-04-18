@@ -12,6 +12,7 @@
             <table class="drug-order-table treatments-details-table"  ng-class="{'drug-order-table-discontinue' : drugOrder.isMarkedForDiscontinue }">
                 <thead>
                 <tr>
+                    <th class="empty-header header-alerts" ng-if="alertsPresent"></th>
                     <th ng-repeat="columnName in columns" ng-class="{ 'active-drugs' : columns.length ===5 ,
                     '{{::columnName}}':true }"><span>{{columnHeaders[columnName] | translate}}</span></th>
                     <th class="empty-header noOfActions-{{::config.actions.length}}-width">{{ 'MEDICATIONS_ACTIONS_LABEL'|translate }}</th>
@@ -19,31 +20,45 @@
                 </thead>
                 <tbody ng-repeat="drugOrder in drugOrders">
                 <tr ng-class="{'highlight' : drugOrder.isBeingEdited, 'edited' : drugOrder.isMarkedForDiscontinue}">
-                    <td ng-repeat="columnName in columns" class="{{columnName}}" ng-class="{'drugNameStopForm' : drugOrder.isMarkedForDiscontinue && columnName === 'drugName' ,'drugNameAddNote': drugOrder.showAdditionalInstructions  && columnName === 'drugName' ,'drugNameStopFormAddNote':  drugOrder.isMarkedForDiscontinue && drugOrder.showAdditionalInstructions  && columnName === 'drugName'}">
+                    <td class="order-alert-row" ng-if="alertsPresent" bm-pop-over autoclose="true">
+                        <button ng-if="drugOrder.alerts && drugOrder.alerts.length > 0 && !hasActiveAlerts(drugOrder.alerts)" class="cdss-alert-icon fl" bm-pop-over-trigger>
+                            <i class="fa fa-exclamation-circle cdss-icon-medication"></i>
+                        </button>
+                        <div class="tooltip cdss-tooltip" bm-pop-over-target>
+                            <cdss-popover alerts="drugOrder.alerts"></cdss-popover>
+                        </div>
+                    </td>
+                    <td ng-repeat="columnName in columns" class="{{columnName}}" ng-class="{'drugNameStopForm' : drugOrder.isMarkedForDiscontinue && columnName === 'drugName' ,'drugNameAddNote': drugOrder.showAdditionalInstructions  && columnName === 'drugName' ,'drugNameStopFormAddNote':  drugOrder.isMarkedForDiscontinue && drugOrder.showAdditionalInstructions  && columnName === 'drugName', 'drugName-alert': alertsPresent}">
                         <span ng-if="columnName === 'dosage'">{{::drugOrder.getDoseAndUnits()}}</span>
                     <span ng-if="columnName === 'drugName' && !isDrugOrderSet" title="{{::drugOrder.getDrugOrderName(false)}}">
                         {{::drugOrder.getDrugOrderName(false)}}
                     </span>
-                    <span ng-if="columnName === 'drugName' && isDrugOrderSet" title="{{::drugOrder.drugNameDisplay}}">
-                        <input type="checkbox" ng-model="drugOrder.include" ng-click="checkConflictingDrug(drugOrder)" class="fl orderSetStagingAreaCheckbox"/>
-                        {{::drugOrder.drugNameDisplay}}
+                    <span class="order-set-name" ng-if="columnName === 'drugName' && isDrugOrderSet" title="{{::drugOrder.drugNameDisplay}}">
+                        <span class="medication-name">
+                            <!-- <button ng-if="drugOrder.alerts && drugOrder.alerts.length > 0 && !hasActiveAlerts(drugOrder.alerts)" class="cdss-alert-icon fl" bm-pop-over-trigger>
+                                <i class="fa fa-exclamation-circle cdss-icon-medication"></i>
+                            </button> -->
+                            <input type="checkbox" ng-model="drugOrder.include" ng-click="checkConflictingDrug(drugOrder)" class="fl orderSetStagingAreaCheckbox"/>
+                            {{::drugOrder.drugNameDisplay}}
+                        </span>
                     </span>
                         <span ng-if="columnName === 'route'">{{::drugOrder.route}}</span>
                         <span ng-if="columnName === 'duration'">{{::drugOrder.getDurationAndDurationUnits()}}</span>
-                    <span ng-if="columnName === 'frequency'">
-                        {{::drugOrder.getFrequency()}}
-                        <span ng-if="drugOrder.asNeeded">
-                            , {{::'MEDICATION_AS_NEEDED' | translate}}
+                        <span ng-if="columnName === 'frequency'">
+                            {{::drugOrder.getFrequency()}}
+                            <span ng-if="drugOrder.asNeeded">
+                                , {{::'MEDICATION_AS_NEEDED' | translate}}
+                            </span>
                         </span>
-                    </span>
                         <span ng-if="columnName === 'startDate'">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
                         <span ng-if="columnName === 'stopDate' && drugOrder.isDiscontinuedOrStopped()">{{::drugOrder.effectiveStopDate | bahmniDate}}</span>
-                    <span ng-if="columnName === 'stopReason' && drugOrder.orderReasonConcept && drugOrder.isDiscontinuedOrStopped()">
-                        {{::drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}}
-                        <span ng-if="drugOrder.orderReasonText"> - {{::drugOrder.orderReasonText}}</span>
-                    </span>
+                        <span ng-if="columnName === 'stopReason' && drugOrder.orderReasonConcept && drugOrder.isDiscontinuedOrStopped()">
+                            {{::drugOrder.orderReasonConcept.display || drugOrder.orderReasonConcept.name}}
+                            <span ng-if="drugOrder.orderReasonText"> - {{::drugOrder.orderReasonText}}</span>
+                        </span>
                         <span ng-if="columnName === 'instructions'">{{::drugOrder.instructions}}</span>
                         <span ng-if="columnName === 'quantity'">{{::drugOrder.getQuantityWithUnit()}}</span>
+                    
                     </td>
                     <td class="buttonColumn"  ng-class="{'noActionColumn' :!config.actions ,
                             'noActionColumnAddNote' : !config.actions && drugOrder.showAdditionalInstructions ,
@@ -77,6 +92,11 @@
                             </button>
                         </div>
                     </td>
+                </tr>
+                <tr ng-if="drugOrder.alerts && drugOrder.alerts.length > 0" class="medicationDrugNotes order-alerts">
+                    <td colspan="{{columns.length + 1}}" class="form drug-stop-container">
+                    <cdss-alert-row alerts="drugOrder.alerts" drug-order="drugOrder" consultation="consultation"></cdss-alert-row>
+                </td>
                 </tr>
                 <tr ng-if="drugOrder.showAdditionalInstructions" class="medicationDrugNotes">
                     <td colspan="{{columns.length + 1}}" class="form drug-stop-container">

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bahmni.registration')
-    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'smsService', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q', '$translate',
-        function ($scope, $rootScope, $state, patientService, smsService, patient, spinner, appService, messagingService, ngDialog, $q, $translate) {
+    .controller('CreatePatientController', ['$scope', '$rootScope', '$state', 'patientService', 'patient', 'spinner', 'appService', 'messagingService', 'ngDialog', '$q', '$translate',
+        function ($scope, $rootScope, $state, patientService, patient, spinner, appService, messagingService, ngDialog, $q, $translate) {
             var dateUtil = Bahmni.Common.Util.DateUtil;
             $scope.actions = {};
             var errorMessage;
@@ -203,12 +203,6 @@ angular.module('bahmni.registration')
                     if (errorMessage) {
                         messagingService.showMessage("error", errorMessage);
                         errorMessage = undefined;
-                    } else {
-                        if ($rootScope.registrationSMSToggle == "true" && ($scope.patient.phoneNumber != undefined)) {
-                            var name = $scope.patient.givenName + " " + $scope.patient.familyName;
-                            var message = patientService.getRegistrationMessage(patientId, name, $scope.patient.age.years, $scope.patient.gender);
-                            smsService.sendSMS($scope.patient.phoneNumber, message);
-                        }
                     }
                 });
             };

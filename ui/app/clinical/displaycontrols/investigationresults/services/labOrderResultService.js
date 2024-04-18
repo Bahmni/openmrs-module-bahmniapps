@@ -13,11 +13,10 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var groupByPanel = function (accessions) {
-            var grouped = [];
-            accessions.forEach(function (labOrders) {
-                var panels = {};
-                var accessionGroup = [];
+        var groupLabOrdersByPanel = function (labOrders) {
+            var panels = {};
+            var accessionGroup = [];
+            if (labOrders) {
                 labOrders.forEach(function (labOrder) {
                     if (!labOrder.panelName) {
                         labOrder.isPanel = false;
@@ -33,10 +32,17 @@ angular.module('bahmni.clinical')
                         panels[labOrder.panelName].tests.push(labOrder);
                     }
                 });
-                _.values(panels).forEach(function (val) {
-                    accessionGroup.push(val);
-                });
-                grouped.push(accessionGroup);
+            }
+            _.values(panels).forEach(function (value) {
+                accessionGroup.push(value);
+            });
+            return accessionGroup;
+        };
+
+        var groupByPanel = function (accessions) {
+            var grouped = [];
+            accessions.forEach(function (labOrders) {
+                grouped.push(groupLabOrdersByPanel(labOrders));
             });
             return grouped;
         };
@@ -53,7 +59,16 @@ angular.module('bahmni.clinical')
             );
         };
 
-        var transformGroupSort = function (results, initialAccessionCount, latestAccessionCount) {
+        var flattenedTabularData = function (results) {
+            var flattenedResults = _(results).map(
+                function (result) {
+                    return result.isPanel === true ? [result, result.tests] : result;
+                }
+            ).flattenDeep().value();
+            return flattenedResults;
+        };
+
+        var transformGroupSort = function (results, initialAccessionCount, latestAccessionCount, sortResultColumnsLatestFirst, groupOrdersByPanel) {
             var labOrderResults = results.results;
             sanitizeData(labOrderResults);
 
@@ -62,7 +77,10 @@ angular.module('bahmni.clinical')
                 latestAccessionCount: latestAccessionCount
             };
 
-            var tabularResult = new Bahmni.Clinical.TabularLabOrderResults(results.tabularResult, accessionConfig);
+            var tabularResult = new Bahmni.Clinical.TabularLabOrderResults(results.tabularResult, accessionConfig, sortResultColumnsLatestFirst);
+            if (groupOrdersByPanel) {
+                tabularResult.tabularResult.orders = groupLabOrdersByPanel(tabularResult.tabularResult.orders);
+            }
             var accessions = _.groupBy(labOrderResults, function (labOrderResult) {
                 return labOrderResult.accessionUuid;
             });
@@ -102,13 +120,16 @@ angular.module('bahmni.clinical')
                 params: paramsToBeSent,
                 withCredentials: true
             }).then(function (response) {
-                var results = transformGroupSort(response.data, params.initialAccessionCount, params.latestAccessionCount);
+                var results = transformGroupSort(response.data, params.initialAccessionCount, params.latestAccessionCount, params.sortResultColumnsLatestFirst, params.groupOrdersByPanel);
                 var sortedConceptSet = new Bahmni.Clinical.ConceptWeightBasedSorter(allTestsAndPanelsConcept);
+                results.tabularResult.tabularResult.orders = sortedConceptSet.sortTestResults(results.tabularResult.tabularResult.orders);
                 var resultObject = {
                     labAccessions: flattened(results.accessions.map(sortedConceptSet.sortTestResults)),
                     tabular: results.tabularResult
                 };
-                resultObject.tabular.tabularResult.orders = sortedConceptSet.sortTestResults(resultObject.tabular.tabularResult.orders);
+                if (params.groupOrdersByPanel) {
+                    resultObject.tabular.tabularResult.orders = flattenedTabularData(resultObject.tabular.tabularResult.orders);
+                }
                 deferred.resolve(resultObject);
             });
 

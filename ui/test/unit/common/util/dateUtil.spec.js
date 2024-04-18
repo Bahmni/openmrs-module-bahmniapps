@@ -1,6 +1,8 @@
 describe('DateUtil', function () {
     var dateUtil = Bahmni.Common.Util.DateUtil;
     var dateFormat = "YYYY-MM-DDTHH:mm:ss.SSS";
+    const clientTimeDisplayFormat = "h:mm a";
+    const clientDateDisplayFormat = "DD MMM YYYY";
 
     it("should parse datetime string format", function () {
         var parsed = dateUtil.parseDatetime("2015-12-05 16:02:45");
@@ -36,13 +38,12 @@ describe('DateUtil', function () {
 
     describe('diffInYearsMonthsDays', function () {
         it("should calculate difference between dates when month and day are same", function () {
-            var fromDate = new Date();
-            var toDate = new Date();
-            toDate.setFullYear(toDate.getFullYear()+2);
-
+            var fromDate = new Date("2020-01-15");
+            var toDate = new Date("2024-01-15");
+            
             var period = dateUtil.diffInYearsMonthsDays(fromDate, toDate);
 
-            expect(period.years).toBe(2);
+            expect(period.years).toBe(4);
             expect(period.months).toBe(0);
             expect(period.days).toBe(0);
         });
@@ -258,12 +259,12 @@ describe('DateUtil', function () {
     describe("formatDateWithTime", function () {
         it("should take a long representation of date and format", function () {
             var date = new Date(1427803080000);
-            expect(dateUtil.formatDateWithTime("1427803080000")).toEqual(moment(date).format("DD MMM YY h:mm a"));
+            expect(dateUtil.formatDateWithTime("1427803080000")).toEqual(moment(date).format(clientDateDisplayFormat + " " + clientTimeDisplayFormat));
         });
 
         it("should take a string representation of date and format", function () {
             var date = new Date();
-            expect(dateUtil.formatDateWithTime(moment(date).format(dateFormat))).toEqual(moment(date).format("DD MMM YY h:mm a"));
+            expect(dateUtil.formatDateWithTime(moment(date).format(dateFormat))).toEqual(moment(date).format(clientDateDisplayFormat + " " + clientTimeDisplayFormat));
         });
 
         it("should not break for undefined and return null", function () {
@@ -278,12 +279,58 @@ describe('DateUtil', function () {
     describe("formatDateWithoutTime", function () {
         it("should take a long representation of date and format", function () {
             var date = new Date(1427803080000);
-            expect(dateUtil.formatDateWithoutTime("1427803080000")).toEqual(moment(date).format("DD MMM YY"));
+            expect(dateUtil.formatDateWithoutTimeToLocal(1427803080000)).toEqual(moment(date).format(clientDateDisplayFormat));
         });
 
         it("should take a string representation of date and format", function () {
             var date = new Date();
-            expect(dateUtil.formatDateWithoutTime(moment(date).format(dateFormat))).toEqual(moment(date).format("DD MMM YY"));
+            expect(dateUtil.formatDateWithoutTimeToLocal(moment(date).format(dateFormat))).toEqual(moment(date).format(clientDateDisplayFormat));
+        });
+
+        it("should not break for undefined and return null", function () {
+            expect(dateUtil.formatDateWithoutTimeToLocal(undefined)).toBeNull();
+        });
+
+        it("should return the original string if it cannot be formatted", function () {
+            expect(dateUtil.formatDateWithoutTimeToLocal("Recent")).toBe("Recent");
+        });
+
+        it('should return formatted date without time for valid date input', function() {
+            var validDate = "2023-07-13";
+            var expectedOutput = moment(validDate).format(clientDateDisplayFormat);
+            var formattedDate = Bahmni.Common.Util.DateUtil.formatDateWithoutTime(validDate);
+            expect(formattedDate).toBe(expectedOutput);
+        });
+
+        it('should return formatted date without time for array date input', function() {
+            var validDate = [2024,2,25,6,30];
+            var expectedOutput = moment(validDate).format(clientDateDisplayFormat);
+            var formattedDate = Bahmni.Common.Util.DateUtil.formatDateWithoutTime(validDate);
+            expect(formattedDate).toBe(expectedOutput);
+        });
+    
+        it('should return the same input for invalid date input', function() {
+            var invalidDate = "invalid_date";
+            var formattedDate = Bahmni.Common.Util.DateUtil.formatDateWithoutTime(invalidDate);
+            expect(formattedDate).toBe(invalidDate);
+        });
+
+        it('should return null for null input', function() {
+            var nullInput = null;
+            var formattedDate = Bahmni.Common.Util.DateUtil.formatDateWithoutTime(nullInput);
+            expect(formattedDate).toBeNull();
+        });
+    });
+
+    describe('formatDateWithoutTimeToLocal', function() {
+        it("should take a long representation of date and format", function () {
+            var date = new Date(1427803080000);
+            expect(dateUtil.formatDateWithoutTime("1427803080000")).toEqual(moment(date).format(clientDateDisplayFormat));
+        });
+
+        it("should take a string representation of date and format", function () {
+            var date = new Date();
+            expect(dateUtil.formatDateWithoutTime(moment(date).format(dateFormat))).toEqual(moment(date).format(clientDateDisplayFormat));
         });
 
         it("should not break for undefined and return null", function () {
@@ -293,26 +340,125 @@ describe('DateUtil', function () {
         it("should return the original string if it cannot be formatted", function () {
             expect(dateUtil.formatDateWithoutTime("Recent")).toBe("Recent");
         });
+
+        it('should return formatted date without time for valid date input', function() {
+            var validDate = "2023-07-13";
+            var expectedOutput = moment(validDate).format(clientDateDisplayFormat);
+            var formattedDate = Bahmni.Common.Util.DateUtil.formatDateWithoutTimeToLocal(validDate);
+            expect(formattedDate).toBe(expectedOutput);
+        });
+
+        it('should return formatted date without time for array date input', function() {
+            var validDate = [2024,2,25,6,30];
+            var expectedOutput = moment(validDate).format(clientDateDisplayFormat);
+            var formattedDate = Bahmni.Common.Util.DateUtil.formatDateWithoutTimeToLocal(validDate);
+            expect(formattedDate).toBe(expectedOutput);
+        });
+
+        it('should return the same input for invalid date input', function() {
+            var invalidDate = "invalid_date";
+            var formattedDate = Bahmni.Common.Util.DateUtil.formatDateWithoutTimeToLocal(invalidDate);
+            expect(formattedDate).toBe(invalidDate);
+        });
+
+        it('should return null for null input', function() {
+            var nullInput = null;
+            var formattedDate = Bahmni.Common.Util.DateUtil.formatDateWithoutTimeToLocal(nullInput);
+            expect(formattedDate).toBeNull();
+        });
     });
 
     describe("formatTime", function () {
         it("should take a long representation of date and format", function () {
             var date = new Date(1427803080000);
-            expect(dateUtil.formatTime("1427803080000")).toEqual(moment(date).format("h:mm a"));
+            expect(dateUtil.formatTime("1427803080000")).toEqual(moment(date).format(clientTimeDisplayFormat));
         });
 
         it("should take a string representation of date and format", function () {
             var date = new Date();
-            expect(dateUtil.formatTime(moment(date).format(dateFormat))).toEqual(moment(date).format("h:mm a"));
+            expect(dateUtil.formatTime(moment(date).format(dateFormat))).toEqual(moment(date).format(clientTimeDisplayFormat));
         });
 
         it("should not break for undefined and return null", function () {
             expect(dateUtil.formatTime(undefined)).toBeNull();
         });
+
         it("should return the original string if it cannot be formatted", function () {
             expect(dateUtil.formatTime("Recent")).toBe("Recent");
         })
+
+        it('should return formatted time for valid date input', function() {
+            var validDate = "2023-07-13T10:30:00";
+            var expectedOutput = moment(validDate).format(clientTimeDisplayFormat);
+            var formattedTime = Bahmni.Common.Util.DateUtil.formatTime(validDate);
+            expect(formattedTime).toBe(expectedOutput);
+        });
+
+        it('should return formatted time for array date input', function() {
+            var validDate = [2024,2,25,6,30];
+            var expectedOutput = moment(validDate).format(clientDateDisplayFormat);
+            var formattedDate = Bahmni.Common.Util.DateUtil.formatDateWithoutTimeToLocal(validDate);
+            expect(formattedDate).toBe(expectedOutput);
+        });
+
+        it('should return the same input for invalid date input', function() {
+            var invalidDate = "invalid_date";
+            var formattedTime = Bahmni.Common.Util.DateUtil.formatTime(invalidDate);
+            expect(formattedTime).toBe(invalidDate);
+        });
+
+        it('should return null for null input', function() {
+            var nullInput = null;
+            var formattedTime = Bahmni.Common.Util.DateUtil.formatTime(nullInput);
+            expect(formattedTime).toBeNull();
+        });
     });
+
+    describe('formatTimeToLocal', function() {
+        it("should take a long representation of date and format", function () {
+            var date = new Date(1427803080000);
+            expect(dateUtil.formatTime("1427803080000")).toEqual(moment.utc(date).local().format(clientTimeDisplayFormat));
+        });
+
+        it("should take a string representation of date and format", function () {
+            var date = new Date();
+            expect(dateUtil.formatTime(moment(date).format(dateFormat))).toEqual(moment.utc(date).local().format(clientTimeDisplayFormat));
+        });
+
+        it("should not break for undefined and return null", function () {
+            expect(dateUtil.formatTime(undefined)).toBeNull();
+        });
+
+        it("should return the original string if it cannot be formatted", function () {
+            expect(dateUtil.formatTime("Recent")).toBe("Recent");
+        })
+
+        it('should return formatted time in local timezone for valid date input', function() {
+            var validDate = "2023-07-13T10:30:00";
+            var expectedOutput = moment.utc(validDate).local().format(clientTimeDisplayFormat);
+            var formattedTime = Bahmni.Common.Util.DateUtil.formatTimeToLocal(validDate);
+            expect(formattedTime).toBe(expectedOutput);
+        });
+
+        it('should return formatted time for array date input', function() {
+            var validDate = [2024,2,25,6,30];
+            var expectedOutput = moment.utc(validDate).local().format(clientTimeDisplayFormat);
+            var formattedDate = Bahmni.Common.Util.DateUtil.formatTimeToLocal(validDate);
+            expect(formattedDate).toBe(expectedOutput);
+        });
+
+        it('should return the same input for invalid date input', function() {
+            var invalidDate = "invalid_date";
+            var formattedTime = Bahmni.Common.Util.DateUtil.formatTimeToLocal(invalidDate);
+            expect(formattedTime).toBe(invalidDate);
+        });
+
+        it('should return null for null input', function() {
+            var nullInput = null;
+            var formattedTime = Bahmni.Common.Util.DateUtil.formatTimeToLocal(nullInput);
+            expect(formattedTime).toBeNull();
+        });
+    });    
 
     describe("diffInDays", function () {
         it("should return 0 for difference of same date", function () {
@@ -345,17 +491,17 @@ describe('DateUtil', function () {
 
     describe("getDateWithMonthsAndYears", function(){
         it("should return date with months and years", function(){
-           expect(dateUtil.getDateInMonthsAndYears(new Date('2014', '7', '15', '12','30','25'))).toBe('Aug 14');
+           expect(dateUtil.getDateInMonthsAndYears(new Date('2014', '7', '15', '12','30','25'))).toBe('Aug 2014');
         });
     });
 
     describe("formatDateInStrictMode", function(){
-       it("should return date in dd MMM yy format when date with yyyy-MM-dd format is passed", function(){
-          expect(dateUtil.formatDateInStrictMode('2016-02-10')).toBe('10 Feb 16');
+       it("should return date in dd MMM YYYY format when date with yyyy-MM-dd format is passed", function(){
+          expect(dateUtil.formatDateInStrictMode('2016-02-10')).toBe('10 Feb 2016');
        });
 
-       it("should return date in dd MMM yy format when date with yyyy-MM-ddTHH:mm:ss.SSSZ is passed", function(){
-           expect(dateUtil.formatDateInStrictMode('2016-03-01T10:30:00.000+0530')).toBe(moment('2016-03-01T10:30:00.000+0530').format('DD MMM YY'));
+       it("should return date in dd MMM YYYY format when date with yyyy-MM-ddTHH:mm:ss.SSSZ is passed", function(){
+           expect(dateUtil.formatDateInStrictMode('2016-03-01T10:30:00.000+0530')).toBe(moment('2016-03-01T10:30:00.000+0530').format(clientDateDisplayFormat));
        });
 
        it("should return the string if the format does not match yyyy-MM-dd or yyyy-MM-ddTHH:mm:ss.SSSZ", function(){

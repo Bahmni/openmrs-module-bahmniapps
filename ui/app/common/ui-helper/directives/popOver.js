@@ -31,6 +31,7 @@ angular.module('bahmni.common.uiHelper')
                         hideTargetElements(0);
                         $(document).off('click', docClickHandler);
                     } else {
+                        $('.tooltip').hide();
                         $scope.isTargetOpen = true;
                         showTargetElements();
                         $(document).on('click', docClickHandler);

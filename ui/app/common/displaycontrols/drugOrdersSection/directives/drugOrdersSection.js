@@ -164,6 +164,59 @@ angular.module('bahmni.common.displaycontrol.drugOrdersSection')
                 if (promise) {
                     spinner.forPromise(promise);
                 }
+
+                var sortInteractionsByStatus = function (arr) {
+                    var order = { "critical": 0, "warning": 1, "info": 2 };
+                    return arr.sort(function (a, b) {
+                        return order[a.indicator] - order[b.indicator];
+                    });
+                };
+
+                $scope.hasActiveAlerts = function (alerts) {
+                    return alerts.some(function (alert) {
+                        return alert.isActive;
+                    });
+                };
+
+                var alertsPresent = function (orders) {
+                    return orders.some(function (drugOrder) {
+                        return drugOrder.alerts && drugOrder.alerts.length > 0 && !$scope.hasActiveAlerts(drugOrder.alerts);
+                    });
+                };
+
+                var filterDrugAlerts = function () {
+                    var drugOrders = $scope.drugOrders;
+                    if (!drugOrders || (drugOrders && !drugOrders.length > 0)) return;
+
+                    drugOrders.forEach(function (drugOrder) {
+                        var drug = drugOrder.drug;
+                        var cdssAlerts = angular.copy($rootScope.cdssAlerts);
+                        if (cdssAlerts) {
+                            drugOrder.alerts = cdssAlerts.filter(function (cdssAlert) {
+                                return cdssAlert.referenceMedications.some(function (referenceMedication) {
+                                    return referenceMedication.coding.some(function (coding) {
+                                        return (
+                                            drug.uuid === coding.code || drug.name === coding.display
+                                        );
+                                    }
+                                  );
+                                }
+                                );
+                            });
+
+                            drugOrder.alerts = sortInteractionsByStatus(drugOrder.alerts);
+                        }
+                    });
+
+                    $scope.alertsPresent = alertsPresent(drugOrders);
+                };
+
+                var watchAlerts = $rootScope.$watch('cdssAlerts', function () {
+                    if (!$rootScope.cdssAlerts) return;
+                    filterDrugAlerts();
+                }, true);
+
+                $scope.$on('$destroy', function () { watchAlerts(); });
             };
             return {
                 restrict: 'E',
