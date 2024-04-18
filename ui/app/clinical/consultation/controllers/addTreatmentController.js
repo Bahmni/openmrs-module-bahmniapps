@@ -920,7 +920,7 @@ angular.module('bahmni.clinical')
                     diagnosisService.getPatientDiagnosis($scope.patient.uuid).then(function (response) {
                         $scope.currentEpoch = Math.floor(new Date().getTime() / 1000) * 1000;
                         $scope.confirmedDiagnoses = response.data.filter(function (diagnosis) {
-                            return diagnosis.order === $scope.addTreatmentWithDiagnosis.order;
+                            return diagnosis.order === $scope.addTreatmentWithDiagnosis.order && diagnosis.diagnosisStatusConcept === null;
                         });
                     });
                 }
