@@ -911,7 +911,7 @@ angular.module('bahmni.clinical')
                 $scope.addTreatmentWithPatientWeight = appService.getAppDescriptor().getConfigValue('addTreatmentWithPatientWeight') || {};
                 $scope.addTreatmentWithDiagnosis = appService.getAppDescriptor().getConfigValue('addTreatmentWithDiagnosis') || {};
                 if ($scope.addTreatmentWithPatientWeight.hasOwnProperty('duration')) {
-                    observationsService.fetch($scope.patient.uuid, $scope.addTreatmentWithPatientWeight.conceptNames, "latest", 1, null, null, null, null).then(function (response) {
+                    observationsService.fetch($scope.patient.uuid, $scope.addTreatmentWithPatientWeight.conceptNames, null, 10, null, null, null, null).then(function (response) {
                         $scope.currentEpoch = Math.floor(new Date().getTime() / 1000) * 1000;
                         $scope.obs = response.data;
                     });
