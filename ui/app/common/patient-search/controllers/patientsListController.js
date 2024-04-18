@@ -97,11 +97,7 @@ angular.module('bahmni.common.patientSearch')
                 var headings = _.chain($scope.search.activePatients[0])
                     .keys()
                     .filter(function (heading) {
-                        if ($scope.tabularViewIgnoreHeadingsListConfig.length > 0) {
-                            return _.indexOf($scope.tabularViewIgnoreHeadingsListConfig, heading) === -1;
-                        } else {
-                            return _.indexOf(Bahmni.Common.PatientSearch.Constants.tabularViewIgnoreHeadingsList, heading) === -1;
-                        }
+                        return _.indexOf($scope.tabularViewIgnoreHeadingsListConfig, heading) === -1;
                     })
                     .value();
                 if ($scope.search.searchType && $scope.search.searchType.tabularViewHeadingOrder) {
@@ -160,7 +156,7 @@ angular.module('bahmni.common.patientSearch')
         };
 
         $scope.isHeadingOfLinkColumn = function (heading) {
-            var identifierHeading = $scope.identifierHeadingConfig.length > 0 ? _.includes($scope.identifierHeadingConfig, heading) : _.includes(Bahmni.Common.PatientSearch.Constants.identifierHeading, heading);
+            var identifierHeading = _.includes($scope.identifierHeadingConfig, heading);
             if (identifierHeading) {
                 return identifierHeading;
             } else if ($scope.search.searchType && $scope.search.searchType.links) {
