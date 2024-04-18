@@ -27,7 +27,7 @@ jobs:
           wget -q https://raw.githubusercontent.com/Bahmni/bahmni-infra-utils/main/setArtifactVersion.sh && chmod +x setArtifactVersion.sh
           ./setArtifactVersion.sh
           rm setArtifactVersion.sh
-      - name: Use Node.js 10.16.3
+      - name: Use Node.js 14.x
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
