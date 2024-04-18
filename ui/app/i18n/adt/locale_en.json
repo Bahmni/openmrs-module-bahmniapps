@@ -68,6 +68,5 @@
     "BEDMANAGEMENT_DISPOSITION_ADMIT_PATIENT": "Admit Patient",
     "BEDMANAGEMENT_DISPOSITION_DISCHARGE_PATIENT": "Discharge Patient",
     "BEDMANAGEMENT_DISPOSITION_TRANSFER_PATIENT": "Transfer Patient",
-    "Id": "Identifier",
     "IPD_WARD_LIST_SEARCH_KEY": "Search..."
 }
