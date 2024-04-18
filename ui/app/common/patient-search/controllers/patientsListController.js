@@ -90,7 +90,7 @@ angular.module('bahmni.common.patientSearch')
 
         $scope.getHeadings = function () {
             if ($scope.search.activePatients && $scope.search.activePatients.length > 0) {
-                var ingoreHeadingList = Bahmni.Common.PatientSearch.Constants.tabularViewIgnoreHeadingsList;
+                var ingoreHeadingList = $scope.tabularViewIgnoreHeadingsListConfig;
                 if ($scope.search.searchType) {
                     ingoreHeadingList = ingoreHeadingList.concat($scope.search.searchType.tabularViewIgnoreHeadingsList);
                 }
