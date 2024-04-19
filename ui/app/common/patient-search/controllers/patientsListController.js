@@ -120,7 +120,7 @@ angular.module('bahmni.common.patientSearch')
             var sortedNonEmptyObjects = _.sortBy(nonEmptyObjects, function (visiblePatient) {
                 var value = _.get(visiblePatient, sortColumn);
                 if (!isNaN(Date.parse(value))) {
-                    var parsedDate = moment(value, "DD MMMM YYYY HH:mm:ss");
+                    var parsedDate = moment(value, Bahmni.Common.Constants.clientDateDisplayFormat + " " + Bahmni.Common.Constants.timeDisplayFormat);
                     if (parsedDate.isValid()) {
                         return parsedDate.toDate().getTime();
                     }

@@ -497,4 +497,113 @@ describe("PatientsListController", function () {
             expect(_window.open).toHaveBeenCalledWith("formattedUrl", "_blank");
         });
     });
+
+    describe("sortVisiblePatientsBy", function () {
+        beforeEach(function () {
+            scope.$apply(setUp);
+        });
+
+        it('should sort visible patients by string property in ascending order', function () {
+            scope.search = {
+                searchResults: [
+                    { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                    { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                    { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+                ],
+                visiblePatients: [],
+                reverseSort: false
+            };
+            scope.sortVisiblePatientsBy('name');
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' },
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' }
+            ]);
+        });
+
+        it("should sort visible patients by number property in ascending order", function() {
+            scope.search = {
+                searchResults: [
+                    { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                    { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                    { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+                ],
+                visiblePatients: [],
+                reverseSort: false
+            };
+            scope.sortVisiblePatientsBy('id');
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+            ]);
+        });
+    
+        it("should sort visible patients by date property in ascending order", function() {
+            scope.search = {
+                searchResults: [
+                    { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                    { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                    { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+                ],
+                visiblePatients: [],
+                reverseSort: false
+            };
+            scope.sortVisiblePatientsBy('dob');
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' },
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' }
+            ]);
+        });
+    
+        it('should handle reverse sort', function () {
+            scope.search = {
+                searchResults: [
+                    { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                    { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                    { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+                ],
+                visiblePatients: [],
+                reverseSort: false
+            };
+            scope.sortVisiblePatientsBy('name'); 
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' },
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' }
+            ]);
+            scope.sortVisiblePatientsBy('name');
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+            ]);
+        });
+
+        it("should not visible patients if sortColumn is null or undefined", function() {
+            scope.search = {
+                searchResults: [
+                    { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                    { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                    { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+                ],
+                visiblePatients: [],
+                reverseSort: false
+            };
+            scope.sortVisiblePatientsBy(null);
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+            ]);
+            scope.sortVisiblePatientsBy(undefined);
+            expect(scope.search.visiblePatients).toEqual([
+                { id: 2, name: 'Ram', dob: '26 Nov 1986' },
+                { id: 1, name: 'Shyam', dob: '13 Aug 1997' },
+                { id: 3, name: 'Ganesh', dob: '05 Jan 1994' }
+            ]);
+        });
+    });  
+    
 });
