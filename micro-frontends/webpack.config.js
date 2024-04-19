@@ -32,7 +32,7 @@ module.exports = {
       name: "bahmni_mfe_host",
       filename: "remoteEntry.js",
       remotes: {
-        "@openmrs-mf/ipd": dynamicRemote("bahmni_ipd", "ipd"),
+        "@openmrs-mf/ipd": remoteProxiedAtHostDomain({ name: "bahmni_ipd", path: "ipd" }),
       },
       exposes: {},
       shared: {
@@ -107,10 +107,10 @@ module.exports = {
  *
  * @returns {string} A string that can be evaluated to a promise that resolves to the remote
  */
-function dynamicRemote(name, subPath) {
+function remoteProxiedAtHostDomain({name, path}) {
   return `promise new Promise(resolve => {
     const remoteUrl = new URL(window.location.href);
-    remoteUrl.pathname = '/${subPath}/remoteEntry.js';
+    remoteUrl.pathname = '/${path}/remoteEntry.js';
     remoteUrl.search = '';
 
     const script = document.createElement('script')

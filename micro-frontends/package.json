@@ -45,7 +45,11 @@
   "scripts": {
     "build": "webpack --mode production",
     "test": "jest",
-    "test:ci": "yarn test --ci",
+    "test:ci": "yarn test --ci --coverage",
     "lint": "eslint src/**/*.{js,jsx}"
+  },
+  "engines": {
+    "yarn": ">= 1.0.0",
+    "npm": "use yarn instead of npm."
   }
 }
