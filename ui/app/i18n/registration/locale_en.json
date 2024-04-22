@@ -122,5 +122,5 @@
     "PATIENT_ATTRIBUTE_GIVEN_NAME_LOCAL": "First Name in Arabic",
     "PATIENT_ATTRIBUTE_FAMILY_NAME_LOCAL": "Last Name in Arabic",
     "PATIENT_ATTRIBUTE_MIDDLE_NAME_LOCAL": "Middle Name in Arabic",
-    "PRE_PATIENT_LABEL": "Patient"
+    "RELATED_PATIENT_IDENTIFIER_LABEL": "Patient"
 }

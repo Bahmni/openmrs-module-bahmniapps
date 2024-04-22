@@ -23,10 +23,10 @@
                 <div ng-if="showRelatedIdentifierOption" class="field-value field-value-has-identifier">
                     <div class="fl">
                         <div class="field-attribute hasOldIdentifier-field-attribute">
-                            <label for="pre-patient-attribute" class="control-label pre-patient-label">{{::'PRE_PATIENT_LABEL' | translate}}</label>
+                            <label for="related-identifier-attribute" class="control-label related-identifier-label">{{::'RELATED_PATIENT_IDENTIFIER_LABEL' | translate}}</label>
                         </div>
                         <div class="field-value">
-                            <input class="input-label-inline" type="checkbox" id="pre-patient-attribute" ng-model="patient[relatedIdentifierAttribute.name]"
+                            <input class="input-label-inline" type="checkbox" id="related-identifier-attribute" ng-model="patient[relatedIdentifierAttribute.name]"
                                 ng-change="patient[relatedIdentifierAttribute.name].handleUpdate()" ng-disabled="showDisabledAttrOption" ng-style="{'opacity' : showDisabledAttrOption ? '0.4':'unset'}">
                         </div>
                     </div>
