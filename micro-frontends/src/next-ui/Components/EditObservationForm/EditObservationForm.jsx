@@ -47,6 +47,7 @@ const EditObservationForm = (props) => {
             return;
         }
         encounter.observations = editedObservations.observations;
+        encounter.orders = [];
         handleEditSave(encounter);
     };
 
