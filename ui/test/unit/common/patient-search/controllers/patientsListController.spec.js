@@ -268,7 +268,7 @@ describe("PatientsListController", function () {
 
             it('should print headings which are filtered from ignore headings list', function(){
                 scope.search.activePatients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl',programUuid: 'programUuid',enrollment: 'enrollmentUuid', DQ_COLUMN_TITLE_ACTION: 'action url'}];
-                scope.ignoredTabularViewHeadings = ["display", "uuid", "image", "activeVisitUuid", "hasBeenAdmitted", "programUuid", "enrollment"];
+                scope.ignoredTabularViewHeadingsConfig = ["display", "uuid", "image", "activeVisitUuid", "hasBeenAdmitted", "programUuid", "enrollment"];
                 scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
                 scope.getHeadings();
                 expect(scope.activeHeaders).toEqual([ 
@@ -280,7 +280,7 @@ describe("PatientsListController", function () {
 
             it('should print headings which are filtered from ignore headings list and print headings list', function(){
                 scope.search.activePatients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl', DQ_COLUMN_TITLE_ACTION: 'action url'}];
-                scope.ignoredTabularViewHeadings = ["display", "uuid", "image", "activeVisitUuid", "hasBeenAdmitted", "programUuid", "enrollment"];
+                scope.ignoredTabularViewHeadingsConfig = ["display", "uuid", "image", "activeVisitUuid", "hasBeenAdmitted", "programUuid", "enrollment"];
                 scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
                 var headings = scope.getPrintableHeadings();
                 expect(headings).toEqual([ 
