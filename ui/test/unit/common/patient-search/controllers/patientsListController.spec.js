@@ -268,8 +268,8 @@ describe("PatientsListController", function () {
 
             it('should print headings which are filtered from ignore headings list', function(){
                 scope.search.activePatients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl',programUuid: 'programUuid',enrollment: 'enrollmentUuid', DQ_COLUMN_TITLE_ACTION: 'action url'}];
-                scope.tabularViewIgnoreHeadingsListConfig = ["display", "uuid", "image", "$$hashKey", "activeVisitUuid", "hasBeenAdmitted", "forwardUrl", "programUuid", "enrollment"];
-                scope.identifierHeadingConfig = ["ID", "Id", "id", "identifier", "DQ_COLUMN_TITLE_ACTION"];
+                scope.ignoredTabularViewHeadings = ["display", "uuid", "image", "activeVisitUuid", "hasBeenAdmitted", "programUuid", "enrollment"];
+                scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
                 scope.getHeadings();
                 expect(scope.activeHeaders).toEqual([ 
                     { name : 'emr_id', sortInfo : 'emr_id' }, 
@@ -280,8 +280,8 @@ describe("PatientsListController", function () {
 
             it('should print headings which are filtered from ignore headings list and print headings list', function(){
                 scope.search.activePatients = [{emr_id : 'emr_Id123', treatment : 'treatment_id', uuid : '23279927', forwardUrl: 'forwardUrl', DQ_COLUMN_TITLE_ACTION: 'action url'}];
-                scope.tabularViewIgnoreHeadingsListConfig = ["display", "uuid", "image", "$$hashKey", "activeVisitUuid", "hasBeenAdmitted", "forwardUrl", "programUuid", "enrollment"];
-                scope.identifierHeadingConfig = ["ID", "Id", "id", "identifier", "DQ_COLUMN_TITLE_ACTION"];
+                scope.ignoredTabularViewHeadings = ["display", "uuid", "image", "activeVisitUuid", "hasBeenAdmitted", "programUuid", "enrollment"];
+                scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
                 var headings = scope.getPrintableHeadings();
                 expect(headings).toEqual([ 
                     { name : 'emr_id', sortInfo : 'emr_id' }, 
@@ -305,7 +305,7 @@ describe("PatientsListController", function () {
             it("should accept the link column from the config, when respective config present", function () {
                 // var search = {searchType: {linkColumn: "Status"}};
                 scope.search = {searchType: {linkColumn: "Status"}};
-                scope.identifierHeadingConfig = ["ID", "Id", "id", "identifier", "DQ_COLUMN_TITLE_ACTION"];
+                scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
                 var heading = "Status";
                 var headingOfLinkColumn = scope.isHeadingOfLinkColumn(heading);
                 expect(headingOfLinkColumn).toBeTruthy()
@@ -313,7 +313,7 @@ describe("PatientsListController", function () {
 
             it("should accept the default link column, when nothing specified in the config", function () {
                 scope.search = {searchType: {}};
-                scope.identifierHeadingConfig = ["ID", "Id", "id", "identifier", "DQ_COLUMN_TITLE_ACTION"];
+                scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
                 // scope.$apply(setUp);
                 var heading = "identifier";
                 var headingOfLinkColumn = scope.isHeadingOfLinkColumn(heading);
@@ -322,7 +322,7 @@ describe("PatientsListController", function () {
 
             it("should not have a link on the column, when no match for heading found in config and default column list", function () {
                 scope.search = {searchType: {}};
-                scope.identifierHeadingConfig = ["ID", "Id", "id", "identifier", "DQ_COLUMN_TITLE_ACTION"];
+                scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
                 // scope.$apply(setUp);
                 var heading = "RandomColumn";
                 var headingOfLinkColumn = scope.isHeadingOfLinkColumn(heading);
@@ -331,7 +331,7 @@ describe("PatientsListController", function () {
         });
 
         it("should indicate if specified column in a link", function () {
-            scope.identifierHeadingConfig = ["ID", "Id", "id", "identifier", "DQ_COLUMN_TITLE_ACTION"];
+            scope.identifierHeadingsConfig = ["ID", "identifier", "DQ_COLUMN_TITLE_ACTION"];
             scope.search.searchType = {
                 "id": "bahmni.clinical.patients.all",
                 "extensionPointId": "org.bahmni.patient.search",
