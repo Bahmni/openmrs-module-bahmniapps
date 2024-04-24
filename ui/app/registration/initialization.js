@@ -4,7 +4,7 @@ angular.module('bahmni.registration').factory('initialization',
     ['$rootScope', '$q', 'configurations', 'authenticator', 'appService', 'spinner', 'preferences', 'locationService', 'mergeService', '$translate',
         function ($rootScope, $q, configurations, authenticator, appService, spinner, preferences, locationService, mergeService, $translate) {
             var getConfigs = function () {
-                var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierTypesConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig', 'relationshipTypeMap', 'loginLocationToVisitTypeMapping', 'helpDeskNumber'];
+                var configNames = ['encounterConfig', 'patientAttributesConfig', 'identifierTypesConfig', 'addressLevels', 'genderMap', 'relationshipTypeConfig', 'relationshipTypeMap', 'loginLocationToVisitTypeMapping', 'helpDeskNumber', 'quickLogoutComboKey'];
                 return configurations.load(configNames).then(function () {
                     var mandatoryPersonAttributes = appService.getAppDescriptor().getConfigValue("mandatoryPersonAttributes");
                     var patientAttributeTypes = new Bahmni.Common.Domain.AttributeTypeMapper().mapFromOpenmrsAttributeTypes(configurations.patientAttributesConfig(), mandatoryPersonAttributes, {}, $rootScope.currentUser.userProperties.defaultLocale);
@@ -14,14 +14,15 @@ angular.module('bahmni.registration').factory('initialization',
                     configurations.identifierTypesConfig(), appService.getAppDescriptor().getConfigValue("patientInformation"));
                     $rootScope.regEncounterConfiguration.loginLocationToVisitTypeMap = configurations.loginLocationToVisitTypeMapping();
 
-                    $rootScope.addressLevels = configurations.addressLevels();
-                    $rootScope.fieldValidation = appService.getAppDescriptor().getConfigValue("fieldValidation");
-                    $rootScope.genderMap = configurations.genderMap();
-                    $rootScope.helpDeskNumber = configurations.helpDeskNumber();
-                    Bahmni.Common.Util.GenderUtil.translateGender($rootScope.genderMap, $translate);
-                    $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
-                    $rootScope.relationshipTypes = configurations.relationshipTypes();
-                });
+                        $rootScope.addressLevels = configurations.addressLevels();
+                        $rootScope.fieldValidation = appService.getAppDescriptor().getConfigValue("fieldValidation");
+                        $rootScope.genderMap = configurations.genderMap();
+                        $rootScope.helpDeskNumber = configurations.helpDeskNumber();
+                        Bahmni.Common.Util.GenderUtil.translateGender($rootScope.genderMap, $translate);
+                        $rootScope.relationshipTypeMap = configurations.relationshipTypeMap();
+                        $rootScope.relationshipTypes = configurations.relationshipTypes();
+                        $rootScope.quickLogoutComboKey = configurations.quickLogoutComboKey() || 'Escape';
+                    });
             };
 
             var loadValidators = function (baseUrl, contextPath) {
