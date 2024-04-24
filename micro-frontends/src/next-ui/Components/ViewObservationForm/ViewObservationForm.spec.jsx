@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import ViewObservationForm from "./ViewObservationForm.jsx";
-
+import { observationList } from "./FileViewer/FileViewerMockData";
 const initialProps = {
   formName: "Vitals",
   formNameTranslations: "Vitals",
@@ -75,4 +75,13 @@ describe("ViewObservationForm", () => {
     render(<ViewObservationForm {...updatedProps} />);
     expect(screen.queryAllByText("Active loading indicator")).toHaveLength(2);
   });
+
+  // it("should render for complex type like image", () => {
+  //   const updatedProps = { ...initialProps, formData: observationList};
+  //   render(<ViewObservationForm {...updatedProps} />);
+  //   screen.debug();
+  //   screen.logTestingPlaygroundURL();
+
+  //   expect(screen.queryAllByText("Active loading indicator")).toHaveLength(2);
+  // });
 });

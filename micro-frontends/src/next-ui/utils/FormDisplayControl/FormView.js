@@ -83,3 +83,9 @@ export const getValue = (member) => {
   }
   return finalValue;
 };
+
+export const isValidFileFormat = (item) => {
+  if(item?.complexData?.mimeType === "video/mp4" || item?.complexData?.mimeType === "image/png" || item?.complexData?.mimeType === "image/jpeg" || item?.complexData?.mimeType === "application/pdf")
+    return true;
+  return false;
+};

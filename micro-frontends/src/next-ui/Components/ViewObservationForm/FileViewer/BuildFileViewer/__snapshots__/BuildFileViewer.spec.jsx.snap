@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BuildFileViewer should render BuildFileViewer 1`] = `
+<div>
+  <div
+    class="image-viewer img-0"
+  >
+    <div>
+      <img
+        alt="image"
+        class="form-obs-image"
+        src="../../document_images/fileSource"
+      />
+    </div>
+    <span
+      class="file-notes-section"
+    >
+      comment
+      <br />
+      <span
+        class="provider-info"
+      >
+        test provider
+         
+        23 Apr 2024 12:48 pm
+      </span>
+    </span>
+  </div>
+</div>
+`;
