@@ -2,6 +2,8 @@ import React from "react";
 import { render, screen, within } from "@testing-library/react";
 import ViewObservationForm from "./ViewObservationForm.jsx";
 import { observationList, observationListWithGroupMembers } from "./FileViewer/FileViewerMockData";
+import { formatDate } from "../../utils/utils";
+
 const initialProps = {
   formName: "Vitals",
   formNameTranslations: "Vitals",
@@ -89,7 +91,7 @@ describe("ViewObservationForm", () => {
     expect(within(video).getByText(/Sample comments are added one/i)).toBeTruthy();
     expect(within(video).getByText(/Sample comments are added two/i)).toBeTruthy();
     expect(within(video).getAllByText(/test provider one/i)).toHaveLength(2);
-    expect(within(video).getAllByText(/23 Apr 2024 12:48 pm/i)).toHaveLength(2);
+    expect(within(video).getAllByText(new RegExp(formatDate(observationList[0].encounterDateTime)))).toHaveLength(2);
     
     expect(container.querySelectorAll(".file-section .video-viewer")).toHaveLength(2);
     expect(container.querySelectorAll(".file-section .video-viewer.video-0")).toHaveLength(1);
@@ -102,7 +104,7 @@ describe("ViewObservationForm", () => {
     expect(within(image).getByText(/Sample comments are added three/i)).toBeTruthy();
     expect(within(image).getByText(/Sample comments are added four/i)).toBeTruthy();
     expect(within(image).getAllByText(/test provider one/i)).toHaveLength(3);
-    expect(within(image).getAllByText(/23 Apr 2024 12:48 pm/i)).toHaveLength(3);
+    expect(within(image).getAllByText(new RegExp(formatDate(observationList[0].encounterDateTime)))).toHaveLength(3);
     
     expect(container.querySelectorAll(".file-section .image-viewer")).toHaveLength(3);
     expect(container.querySelectorAll(".file-section .image-viewer.img-0")).toHaveLength(1);
@@ -127,12 +129,12 @@ describe("ViewObservationForm", () => {
     expect(imageRowOne).toBeTruthy();
     expect(within(imageRowOne).getByText(/Notes 1/i)).toBeTruthy();
     expect(within(imageRowOne).getByText(/provider one/i)).toBeTruthy();
-    expect(within(imageRowOne).getByText(/24 Apr 2024 03:43 pm/i)).toBeTruthy();
+    expect(within(imageRowOne).getByText(new RegExp(formatDate(observationListWithGroupMembers[0].encounterDateTime)))).toBeTruthy();
 
     const imageRowTwo = container.querySelector(".row-value .image-viewer.img-1");
     expect(imageRowTwo).toBeTruthy();
     expect(within(imageRowTwo).getByText(/Notes 2/i)).toBeTruthy();
     expect(within(imageRowTwo).getByText(/provider one/i)).toBeTruthy();
-    expect(within(imageRowTwo).getByText(/24 Apr 2024 03:43 pm/i)).toBeTruthy();
+    expect(within(imageRowTwo).getByText(new RegExp(formatDate(observationListWithGroupMembers[0].encounterDateTime)))).toBeTruthy();
   });
 });

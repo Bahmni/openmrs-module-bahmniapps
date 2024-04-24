@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen, within } from "@testing-library/react";
 import { BuildFileViewer } from "./BuildFileViewer.jsx";
 import { mockIndex, mockItem, mockPdfItem, mockVideoItem } from "../FileViewerMockData";
+import { formatDate } from "../../../../utils/utils";
 
 describe("BuildFileViewer", function () {
 
@@ -21,7 +22,7 @@ describe("BuildFileViewer", function () {
     expect(screen.getByText(mockItem.comment)).toBeTruthy();
     const provider_info = container.querySelector(".provider-info");
     expect(within(provider_info).getByText(/test provider/i)).toBeTruthy();
-    expect(within(provider_info).getByText(/23 Apr 2024 12:48 pm/i)).toBeTruthy();
+    expect(within(provider_info).getByText(new RegExp(formatDate(mockItem.encounterDateTime)))).toBeTruthy();
   });
 
   it("should render BuildFileViewer with all the data with video and download option", function () {
@@ -35,7 +36,7 @@ describe("BuildFileViewer", function () {
     expect(screen.getByText(mockVideoItem.comment)).toBeTruthy();
     const provider_info = container.querySelector(".provider-info");
     expect(within(provider_info).getByText(/test provider/i)).toBeTruthy();
-    expect(within(provider_info).getByText(/23 Apr 2024 12:48 pm/i)).toBeTruthy();
+    expect(within(provider_info).getByText(new RegExp(formatDate(mockItem.encounterDateTime)))).toBeTruthy();
   });
 
 
@@ -47,6 +48,6 @@ describe("BuildFileViewer", function () {
     expect(screen.getByText(mockPdfItem.comment)).toBeTruthy();
     const provider_info = container.querySelector(".provider-info");
     expect(within(provider_info).getByText(/test provider/i)).toBeTruthy();
-    expect(within(provider_info).getByText(/23 Apr 2024 12:48 pm/i)).toBeTruthy();
+    expect(within(provider_info).getByText(new RegExp(formatDate(mockItem.encounterDateTime)))).toBeTruthy();
   });
 });
