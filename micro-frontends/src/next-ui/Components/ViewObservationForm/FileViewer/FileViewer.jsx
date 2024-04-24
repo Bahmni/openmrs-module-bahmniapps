@@ -17,17 +17,17 @@ export const FileViewer = (props) => {
       {Object.values(groupByConceptUuid).map((elementList, index) => {
         return isHeader ? (
           <Tile key={index}>
-            <div
-              key={index}
-              className="file-section"
-            >
+            <div key={index} className="file-section">
               <span
                 className="section-header row-label"
                 data-testid={`section-label-${index}`}
               >
                 {elementList[0].concept.shortName}
               </span>
-              <span className="row-value viewer-value-block" key={`row-value-${index}`}>
+              <span
+                className="row-value viewer-value-block"
+                key={`row-value-${index}`}
+              >
                 {elementList.map((subItem, index) => (
                   <BuildFileViewer item={subItem} index={index} />
                 ))}
