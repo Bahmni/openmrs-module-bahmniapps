@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import PropTypes, { string } from "prop-types";
 import "../../../styles/carbon-conflict-fixes.scss";
 import "../../../styles/carbon-theme.scss";
 import "../../../styles/common.scss";
@@ -14,6 +14,7 @@ import { ViewAllergiesAndReactions } from "../../Components/ViewAllergiesAndReac
 import { I18nProvider } from "../../Components/i18n/I18nProvider";
 import { NotificationCarbon } from "bahmni-carbon-ui";
 import moment from "moment";
+import { allergyError, getErrorKey } from "../../errorMessages";
 
 /** NOTE: for reasons known only to react2angular,
  * any functions passed in as props will be undefined at the start, even ones inside other objects
@@ -127,6 +128,7 @@ export function PatientAlergiesControl(props) {
   const [allergiesAndReactions, setAllergiesAndReactions] = useState([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [error, setError] = useState('');
 
   const noAllergiesText = (
     <FormattedMessage
@@ -227,19 +229,20 @@ export function PatientAlergiesControl(props) {
               onClose={() => {
                 setShowAddAllergyPanel(false);
               }}
-              onSave={async (isSaveSuccess) => {
+              onSave={async (isSaveSuccess, error) => {
                 if(isSaveSuccess){
                   setShowSuccessPopup(true);
                   setShowAddAllergyPanel(false);
                 }
                 else if(isSaveSuccess === false){
+                  setError(getErrorKey(error));
                   setShowErrorPopup(true);
                 }
               }}
             />
           )}
           <NotificationCarbon messageDuration={3000} onClose={()=>{setShowSuccessPopup(false); window.location.reload()}} showMessage={showSuccessPopup} kind={"success"} title={"Allergy saved successfully"} hideCloseButton={true}/>
-          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={"Error saving allergy"} hideCloseButton={true}/>
+          <NotificationCarbon messageDuration={3000} onClose={()=>{setShowErrorPopup(false);}} showMessage={showErrorPopup} kind={"error"} title={allergyError[error?.trim()] ?? "Error saving allergy"} hideCloseButton={true}/>
         </div>
       )}
       </I18nProvider>
