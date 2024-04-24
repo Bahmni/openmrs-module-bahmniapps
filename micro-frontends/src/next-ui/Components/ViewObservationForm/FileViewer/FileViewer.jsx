@@ -27,7 +27,7 @@ export const FileViewer = (props) => {
               >
                 {elementList[0].concept.shortName}
               </span>
-              <span className="row-value viewer-value-block">
+              <span className="row-value viewer-value-block" key={`row-value-${index}`}>
                 {elementList.map((subItem, index) => (
                   <BuildFileViewer item={subItem} index={index} />
                 ))}
