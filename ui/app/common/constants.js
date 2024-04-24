@@ -228,6 +228,7 @@ Bahmni.Common = Bahmni.Common || {};
         ordersUrl: RESTWS_V1 + "/order",
         formDataUrl: RESTWS_V1 + "/obs",
         providerUrl: RESTWS_V1 + "/provider",
+        providerAttributeUrl: RESTWS_V1 + "/provider/{{providerUuid}}/attribute",
         drugUrl: RESTWS_V1 + "/drug",
         orderTypeUrl: RESTWS_V1 + "/ordertype",
         userUrl: RESTWS_V1 + "/user",
