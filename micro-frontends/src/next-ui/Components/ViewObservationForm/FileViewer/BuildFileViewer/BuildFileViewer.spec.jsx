@@ -6,13 +6,6 @@ import { formatDate } from "../../../../utils/utils";
 
 describe("BuildFileViewer", function () {
 
-  it("should render BuildFileViewer", function () {
-    const { container } = render(
-      <BuildFileViewer item={mockItem} index={mockIndex} />
-    );
-    expect(container).toMatchSnapshot();
-  });
-
   it("should render BuildFileViewer with all the data with image", function () {
     const { container } = render(
       <BuildFileViewer item={mockItem} index={mockIndex} />
