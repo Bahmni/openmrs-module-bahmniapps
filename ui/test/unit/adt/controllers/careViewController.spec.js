@@ -45,19 +45,19 @@ describe("CareViewController", function () {
         expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY');
         expect(sessionService.destroy).toHaveBeenCalled();
     });
-    it('should call handleLogoutShortcut on keydown event', function (){
+    it('should call handleLogoutShortcut on keydown event with meta key', function (){
         createController();
         spyOn(scope.hostApi, 'onLogOut');
         $window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': true, 'ctrlKey': false}));
         expect(scope.hostApi.onLogOut).toHaveBeenCalled();
     });
-    it('should call handleLogoutShortcut on keydown event', function (){
+    it('should call handleLogoutShortcut on keydown event with control key', function (){
         createController();
         spyOn(scope.hostApi, 'onLogOut');
         $window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': false, 'ctrlKey': true}));
         expect(scope.hostApi.onLogOut).toHaveBeenCalled();
     });
-    it('should call handleLogoutShortcut on keydown event', function (){
+    it('should not call logout on wrong keydown event', function (){
         createController();
         spyOn(scope.hostApi, 'onLogOut');
         $window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': false, 'ctrlKey': false}));

@@ -119,6 +119,12 @@ describe('configurationService', function () {
         expect(_$http.get.calls.mostRecent().args[1].params.property).toEqual("mrs.genders");
     });
 
+    it('should fetch quickLogoutComboKey from backend', function () {
+        configurationservice.getConfigurations(['quickLogoutComboKey']);
+        expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.globalPropertyUrl);
+        expect(_$http.get.calls.mostRecent().args[1].params.property).toEqual("bahmni.quickLogoutComboKey");
+    });
+
     it('should fetch loginLocationToVisitTypeMapping from backend', function () {
         configurationservice.getConfigurations(['loginLocationToVisitTypeMapping'])
         expect(_$http.get.calls.mostRecent().args[0]).toEqual(Bahmni.Common.Constants.entityMappingUrl);
