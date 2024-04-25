@@ -2,47 +2,42 @@
     <div ng-if="drugOrderGroupsEmpty()">
         <p class="placeholder-text">{{'MEDICATION_NO_PRESCRIPTION_SAVED_PLACEHOLDER'|translate}}</p>
     </div>
-    <div class="inpage">
-        <div class="tabs">
-            <div class="tab" ng-repeat="drugOrderGroup in consultation.drugOrderGroups" ng-class="{'selected-tab': drugOrderGroup.selected }">
-                <input class="tab-radio" id="{{'drug-orders-tab-' + $index}}" name="tab-group-1" type="radio" ng-checked="drugOrderGroup.selected" ng-class="{}" tabindex="-1">
-                <label class="tab-label" for="{{'drug-orders-tab-' + $index}}">
+	<div class="inpage">
+		<div class="tabs">
+			<div class="tab" ng-repeat="drugOrderGroup in consultation.drugOrderGroups" ng-class="{'selected-tab': drugOrderGroup.selected }">
+				<input class="tab-radio" id="{{'drug-orders-tab-' + $index}}" name="tab-group-1" type="radio" ng-checked="drugOrderGroup.selected" ng-class="{}" tabindex="-1">
+				<label class="tab-label" for="{{'drug-orders-tab-' + $index}}">
                     <span>{{drugOrderGroup.label | bahmniDate}}</span>
                     <i class="fa fa-star current-visit-icon" title="Current visit" ng-if="drugOrderGroup.isCurrentVisit"></i>
                 </label>
-                <button ng-show="enablePrintSelectedDrugs" ng-disabled="!isAnyDrugSelected()" type="submit" class="secondary-button print-drugs-btn fr" form="prescribedDrugs">{{ ::'MEDICATION_PRINT' | translate }}</button>
+                <button ng-show="printPrescriptionFeature" ng-disabled="!isAnyDrugSelected()" type="submit" class="secondary-button print-drugs-btn fr" form="prescribedDrugs">{{ ::'MEDICATION_PRINT' | translate }}</button>
                 <button class="secondary-button refill-drugs-btn fr" ng-click="refillAll(drugOrderGroup.drugOrders)" ng-if="!drugOrderGroupsEmpty()">{{ ::'MEDICATION_REFILL_ALL' | translate }}</button>
                 <button  ng-repeat="orderAttribute in getOrderAttributes()" class="secondary-button dispense-all-btn fr" show-if-privilege="{{dispensePrivilege}}" ng-if="!drugOrderGroupsEmpty()"  ng-click="updateAllOrderAttributesByName(orderAttribute,drugOrderGroup)" ng-disabled="!canUpdateAtLeastOneOrderAttributeOfName(drugOrderGroup,orderAttribute.name)">
                     <i  ng-init="allOrderAttributesOfNameSet(drugOrderGroup,orderAttribute.name)" class="fa fa-check" ng-show="drugOrderGroup[orderAttribute.name].selected" ></i>
                     {{orderAttribute.name}} All
                 </button>
                 <div class="inpage-tab-panel">
-                    <div class="inpage-tab-content">
+					<div class="inpage-tab-content">
                         <p ng-if="!drugOrderGroup.drugOrders.length" class="placeholder-text">{{ ::'MEDICATION_NO_RECENT_TREATMENT' | translate }}</p>
                         <ul class="table-mimic">
                             <form id="prescribedDrugs" name="prescribedDrugs" ng-submit="printSelectedDrugs()">
-                            <li id="ordered-drug-orders" bm-pop-over autoclose="true" ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
+							<li id="ordered-drug-orders" ng-repeat="drugOrder in drugOrderGroup.drugOrders" ng-class="{'active-drug' : drugOrder.isActive(), 'highlight' : drugOrder.isBeingEdited, 'scheduled-drug': drugOrder.isScheduled()}">
                                 <div class="drug-details" ng-class="{'strike-through': drugOrder.isDiscontinuedOrStopped()}">
-                                    <div class="drug-dosage relative">
-                                        <strong class="drug-name popover-trigger">
-                                            <button ng-if="drugOrder.alerts && drugOrder.alerts.length > 0 && !hasActiveAlerts(drugOrder.alerts)" class="cdss-alert-icon" bm-pop-over-trigger>
-                                                <i class="fa cdss-icon-medication fa-exclamation-circle">
-                                                </i>
-                                            </button>
-                                            {{drugOrder.getDisplayName()}}
-                                        </strong>
-                                        <div class="tooltip cdss-tooltip" bm-pop-over-target>
-                                            <cdss-popover alerts="drugOrder.alerts"></cdss-popover>
-                                        </div>
-
+                                    <div class="drug-dosage">
+                                        <strong class="drug-name">{{drugOrder.getDisplayName()}}</strong>
                                         <div class="dosage-frequency">
                                             <span ng-show="drugOrder.getDoseAndUnits()">{{drugOrder.getDoseAndUnits()}} | </span>
                                             <span ng-show="drugOrder.getFrequency() && drugOrder.getFrequency().length">{{drugOrder.getFrequency()}} | </span>
-                                            {{drugOrder.getDurationAndDurationUnits()}}</div>
+                                            {{drugOrder.getDurationAndDurationUnits()}}
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="button-group-wrapper">
+								<div class="button-group-wrapper">
                                     <div class="button-group">
+                                        <button ng-show="enableIPDFeature" class="ipd-btn" ng-click="updateOrderType(drugOrder, drugOrderGroup.drugOrders)" ng-disabled="disableIPDButton(drugOrder)">
+                                            <i class="fa fa-check" ng-show="drugOrder.careSetting === 'INPATIENT'"></i>
+                                            {{ ::'IPD_BUTTON' | translate}}
+                                        </button>
                                         <button ng-repeat="orderAttribute in drugOrder.orderAttributes" show-if-privilege="{{dispensePrivilege}}"
                                                 class="dispense-btn" ng-disabled="shouldBeDisabled(drugOrder,orderAttribute)"
                                                 ng-click="updateOrderAttribute(drugOrder,orderAttribute)">
@@ -61,10 +56,10 @@
                                         <button class="refill-btn" ng-disabled="!drugOrder.effectiveStopDate || drugOrder.isDrugRetired" ng-click="refill(drugOrder)">
                                             {{ ::'MEDICATION_REFILL' | translate }}
                                         </button>
-                                        <input ng-show="enablePrintSelectedDrugs" type="checkbox" id="{{$parent.$index + '/' + drugOrder.uuid}}" name="selectedDrug"
-                                               ng-model="selectedDrugs[$parent.$index + '/' + drugOrder.uuid]"/>
+                                        <input ng-show="printPrescriptionFeature" type="checkbox" id="{{$parent.$index + '/' + drugOrder.uuid}}" name="selectedDrug"
+                                            ng-model="selectedDrugs[$parent.$index + '/' + drugOrder.uuid]"/>
                                     </div>
-                                </div>
+								</div>
                                 <div class="start-date fr">
                                     <span ng-if="showEffectiveFromDate(drugOrderGroup.visitStartDate, drugOrder.effectiveStartDate)"> {{ ::'MEDICATION_STARTED_ON' | translate }} {{drugOrder.effectiveStartDate | bahmniDate}}</span>
                                     <span class="stop-date">
@@ -83,7 +78,7 @@
                                     <div>{{drugOrder.getQuantityWithUnit()}}</div>
                                     <div class="footer-note">
                                         <span class="time-stamp">
-                                            <span class="time">{{drugOrder.dateActivated | bahmniDateTime}}</span>
+                                            <span class="time">{{drugOrder.dateActivated | bahmniDate}}</span>
                                         </span>
                                         <span class="provider">
                                             <provider-directive creator-name="{{drugOrder.creatorName}}" provider-name="{{drugOrder.provider.name}}"></provider-directive>
@@ -113,12 +108,12 @@
                                         </article>
                                     </div>
                                 </div>
-                                <cdss-alert-row alerts="drugOrder.alerts" consultation="consultation"></cdss-alert-row>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+							</li>
+                            </form>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>

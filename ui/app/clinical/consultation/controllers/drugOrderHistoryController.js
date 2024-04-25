@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bahmni.clinical')
-    .controller('DrugOrderHistoryController', ['$scope', '$filter', '$stateParams', 'activeDrugOrders',
-        'treatmentConfig', 'treatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope', 'providerService',
-        function ($scope, $filter, $stateParams, activeDrugOrders, treatmentConfig, treatmentService, spinner,
-                  drugOrderHistoryHelper, visitHistory, $translate, $rootScope, providerService) {
+    .controller('DrugOrderHistoryController', ['$q', '$scope', '$filter', '$stateParams', 'activeDrugOrders',
+        'treatmentConfig', 'treatmentService', 'spinner', 'drugOrderHistoryHelper', 'visitHistory', '$translate', '$rootScope', 'providerService', 'observationsService', 'diagnosisService',
+        function ($q, $scope, $filter, $stateParams, activeDrugOrders, treatmentConfig, treatmentService, spinner,
+                  drugOrderHistoryHelper, visitHistory, $translate, $rootScope, providerService, observationsService, diagnosisService) {
             var DrugOrderViewModel = Bahmni.Clinical.DrugOrderViewModel;
             var DateUtil = Bahmni.Common.Util.DateUtil;
             var currentVisit = visitHistory.activeVisit;
@@ -12,7 +12,7 @@ angular.module('bahmni.clinical')
             var prescribedDrugOrders = [];
             $scope.dispensePrivilege = Bahmni.Clinical.Constants.dispensePrivilege;
             $scope.scheduledDate = DateUtil.getDateWithoutTime(DateUtil.addDays(DateUtil.now(), 1));
-            $scope.enablePrintSelectedDrugs = appService.getAppDescriptor().getConfigValue("enablePrintSelectedDrugs");
+            $scope.printPrescriptionFeature = appService.getAppDescriptor().getConfigValue("printPrescriptionFeature");
             $scope.selectedDrugs = {};
 
             var createPrescriptionGroups = function (activeAndScheduledDrugOrders) {
@@ -67,6 +67,9 @@ angular.module('bahmni.clinical')
             $scope.printSelectedDrugs = function () {
                 var drugOrdersForPrint = [];
                 var promises = [];
+                var diagnosesCodes = "";
+                var dispenserInfo = [];
+                var observationsEntries = [];
 
                 angular.forEach($scope.selectedDrugs, function (selected, drugOrderIndex) {
                     var selectedDrugOrder = drugOrderIndex.split("/");
@@ -75,27 +78,49 @@ angular.module('bahmni.clinical')
                             return drugOrder.uuid == selectedDrugOrder[1];
                         });
                         if (drugOrder) {
-                            drugOrder.provider.attributes = {};
-                            var promise = providerService.getAttributesForProvider(drugOrder.provider.uuid);
-                            promises.push(promise);
+                            if ($scope.printPrescriptionFeature.providerAttributesForPrint !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint.length > 0) {
+                                drugOrder.provider.attributes = {};
+                                var promise = providerService.getAttributesForProvider(drugOrder.provider.uuid);
+                                promises.push(promise);
 
-                            promise.then(function (response) {
-                                drugOrder.provider.attributes = treatmentService.getOrderedProviderAttributesForPrint(response.data.results);
-                            }).catch(function (error) {
-                                console.error("Error fetching provider attributes: ", error);
-                            });
+                                promise.then(function (response) {
+                                    drugOrder.provider.attributes = treatmentService.getOrderedProviderAttributesForPrint(response.data.results, $scope.printPrescriptionFeature.providerAttributesForPrint);
+                                }).catch(function (error) {
+                                    console.error("Error fetching provider attributes: ", error);
+                                });
+                            }
 
                             drugOrdersForPrint.push(drugOrder);
                         }
                     }
                 });
 
+                if ($scope.printPrescriptionFeature.providerAttributesForPrint !== undefined && $scope.printPrescriptionFeature.providerAttributesForPrint.length > 0 && $scope.printPrescriptionFeature.observationsConcepts !== undefined) {
+                    var promise = $q.all([diagnosisService.getPatientDiagnosis($stateParams.patientUuid), providerService.getAttributesForProvider($rootScope.currentProvider.uuid), observationsService.fetch($stateParams.patientUuid, $scope.printPrescriptionFeature.observationsConcepts, "latest", null, null, null, null, null)]).then(function (response) {
+                        const diagnoses = response[0].data;
+                        const dispenserAttributes = response[1].data.results;
+                        observationsEntries = response[2].data;
+                        dispenserInfo = treatmentService.getOrderedProviderAttributesForPrint(dispenserAttributes, $scope.printPrescriptionFeature.providerAttributesForPrint);
+                        angular.forEach(diagnoses, function (diagnosis) {
+                            if (diagnosis.order === $scope.printPrescriptionFeature.printDiagnosis.order &&
+                                diagnosis.certainty === $scope.printPrescriptionFeature.printDiagnosis.certainity &&
+                                diagnosis.codedAnswer !== null) {
+                                if (diagnosesCodes.length > 0) {
+                                    diagnosesCodes += ", ";
+                                }
+                                diagnosesCodes += diagnosis.codedAnswer.mappings[0].code;
+                            }
+                        });
+                    });
+                    promises.push(promise);
+                }
+
                 Promise.all(promises).then(function () {
                     var additionalInfo = {};
                     additionalInfo.visitType = currentVisit ? currentVisit.visitType.display : "";
                     additionalInfo.currentDate = new Date();
                     additionalInfo.facilityLocation = $rootScope.facilityLocation;
-                    treatmentService.printSelectedPrescriptions(drugOrdersForPrint, $scope.patient, additionalInfo);
+                    treatmentService.printSelectedPrescriptions($scope.printPrescriptionFeature, drugOrdersForPrint, $scope.patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries);
                     $scope.selectedDrugs = {};
                 }).catch(function (error) {
                     console.error("Error fetching details for print: ", error);
@@ -132,9 +157,9 @@ angular.module('bahmni.clinical')
                 var numberOfVisits = treatmentConfig.drugOrderHistoryConfig.numberOfVisits ? treatmentConfig.drugOrderHistoryConfig.numberOfVisits : 3;
                 spinner.forPromise(treatmentService.getPrescribedDrugOrders(
                     $stateParams.patientUuid, true, numberOfVisits, $stateParams.dateEnrolled, $stateParams.dateCompleted).then(function (data) {
-                    prescribedDrugOrders = data;
-                    createPrescriptionGroups($scope.consultation.activeAndScheduledDrugOrders);
-                }));
+                        prescribedDrugOrders = data;
+                        createPrescriptionGroups($scope.consultation.activeAndScheduledDrugOrders);
+                    }));
             };
             $scope.getOrderReasonConcept = function (drugOrder) {
                 if (drugOrder.orderReasonConcept) {

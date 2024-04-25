@@ -167,18 +167,18 @@ angular.module('bahmni.clinical')
             });
         };
 
-        var getOrderedProviderAttributesForPrint = function (providerAttributeData) {
-            const providerAttributeTypesToFilter = appService.getAppDescriptor().getConfigValue("providerAttributesForPrint") || [];
-            var filteredProviderAttributes = providerAttributeData.filter(function (attribute) {
-                return providerAttributeTypesToFilter.includes(attribute.attributeType.display);
+        var getOrderedProviderAttributesForPrint = function (attributeData, attributeTypesToFilter) {
+            if (!attributeTypesToFilter) return;
+            var filteredAttributes = attributeData.filter(function (attribute) {
+                return attributeTypesToFilter.includes(attribute.attributeType.display);
             });
-            filteredProviderAttributes.sort(function (a, b) {
-                return providerAttributeTypesToFilter.indexOf(a.attributeType.display) - providerAttributeTypesToFilter.indexOf(b.attributeType.display);
+            filteredAttributes.sort(function (a, b) {
+                return attributeTypesToFilter.indexOf(a.attributeType.display) - attributeTypesToFilter.indexOf(b.attributeType.display);
             });
-            return filteredProviderAttributes;
+            return filteredAttributes;
         };
 
-        var printSelectedPrescriptions = function (drugOrdersForPrint, patient, additionalInfo) {
+        var printSelectedPrescriptions = function (printPrescriptionFeatureConfig, drugOrdersForPrint, patient, additionalInfo, diagnosesCodes, dispenserInfo, observationsEntries) {
             if (drugOrdersForPrint.length > 0) {
                 var encounterDrugOrderMap = Object.values(drugOrdersForPrint.reduce(function (orderMap, item) {
                     const providerUuid = item.provider.uuid;
@@ -192,10 +192,23 @@ angular.module('bahmni.clinical')
                     return orderMap;
                 }, {}));
 
-                var printParams = appService.getAppDescriptor().getConfigValue("prescriptionPrint") || {};
-                var templateUrl = appService.getAppDescriptor().getConfigValue("prescriptionPrintTemplateUrl") || '../common/displaycontrols/prescription/views/prescription.html';
+                var printParams = {
+                    title: printPrescriptionFeatureConfig.title || "",
+                    header: printPrescriptionFeatureConfig.header || "",
+                    logo: printPrescriptionFeatureConfig.logo || ""
+                };
+                var templateUrl = printPrescriptionFeatureConfig.templateUrl || '../common/displaycontrols/prescription/views/prescription.html';
                 var fileName = patient.givenName + patient.familyName + "_" + patient.identifier + "_Prescription";
-                printer.print(templateUrl, {patient: patient, encounterDrugOrderMap: encounterDrugOrderMap, printParams: printParams, additionalInfo: additionalInfo }, fileName);
+                const printData = {
+                    patient: patient,
+                    encounterDrugOrderMap: encounterDrugOrderMap,
+                    printParams: printParams,
+                    additionalInfo: additionalInfo,
+                    diagnosesCodes: diagnosesCodes,
+                    dispenserInfo: dispenserInfo,
+                    observationsEntries: observationsEntries
+                };
+                printer.print(templateUrl, printData, fileName);
             }
         };
 
