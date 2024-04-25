@@ -50,7 +50,7 @@ describe("CareViewController", function () {
         expect(state.go).toHaveBeenCalledWith('home');
     });
 
-    it('should call auditLogService.log and sessionService.destroy on logout', function () {
+    it('should call auditLogService.log and sessionService.destroy on logout', function (){
         createController();
         scope.hostApi.onLogOut();
         expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY');
@@ -61,5 +61,23 @@ describe("CareViewController", function () {
         spyOn(scope.hostApi, 'onLogOut');
         $window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': true, 'ctrlKey': false}));
         expect(scope.hostApi.onLogOut).toHaveBeenCalled();
+    });
+    it('should call handleLogoutShortcut on keydown event', function (){
+        createController();
+        spyOn(scope.hostApi, 'onLogOut');
+        $window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': false, 'ctrlKey': true}));
+        expect(scope.hostApi.onLogOut).toHaveBeenCalled();
+    });
+    it('should call handleLogoutShortcut on keydown event', function (){
+        createController();
+        spyOn(scope.hostApi, 'onLogOut');
+        $window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': false, 'ctrlKey': false}));
+        expect(scope.hostApi.onLogOut).not.toHaveBeenCalled();
+    });
+    it('should remove event listener on scope destroy', function () {
+        spyOn($window, 'removeEventListener');
+        createController();
+        scope.$destroy();
+        expect($window.removeEventListener).toHaveBeenCalledWith('keydown', jasmine.any(Function));
     });
 });
