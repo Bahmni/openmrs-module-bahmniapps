@@ -34,10 +34,15 @@ describe("CareViewController", function () {
         expect(scope.hostData).toEqual({provider: mockProvider});
         expect(scope.hostApi).not.toBeNull();
     });
+    it('should call onHome when hostApi.onHome is called', function () {
+        createController();
+        scope.hostApi.onHome();
+        expect(state.go).toHaveBeenCalledWith('home');
+    });
     it('should call auditLogService.log and sessionService.destroy on logout', function (){
         createController();
         scope.hostApi.onLogOut();
-        expect(auditLogService.log).toHaveBeenCalled();
+        expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY');
         expect(sessionService.destroy).toHaveBeenCalled();
     });
     it('should call handleLogoutShortcut on keydown event', function (){
@@ -45,5 +50,23 @@ describe("CareViewController", function () {
         spyOn(scope.hostApi, 'onLogOut');
         $window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': true, 'ctrlKey': false}));
         expect(scope.hostApi.onLogOut).toHaveBeenCalled();
+    });
+    it('should call handleLogoutShortcut on keydown event', function (){
+        createController();
+        spyOn(scope.hostApi, 'onLogOut');
+        $window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': false, 'ctrlKey': true}));
+        expect(scope.hostApi.onLogOut).toHaveBeenCalled();
+    });
+    it('should call handleLogoutShortcut on keydown event', function (){
+        createController();
+        spyOn(scope.hostApi, 'onLogOut');
+        $window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': false, 'ctrlKey': false}));
+        expect(scope.hostApi.onLogOut).not.toHaveBeenCalled();
+    });
+    it('should remove event listener on scope destroy', function () {
+        spyOn($window, 'removeEventListener');
+        createController();
+        scope.$destroy();
+        expect($window.removeEventListener).toHaveBeenCalledWith('keydown', jasmine.any(Function));
     });
 });
