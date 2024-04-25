@@ -1,0 +1,73 @@
+.form-obs-image {
+   height: 93px;
+   width: 93px;
+   border: 1px solid #ccc;
+
+   &:hover {
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+      border-color: #eee;
+   }
+}
+
+.form-obs-video-image {
+   height: 100%;
+   width: 100%;
+}
+
+.viewer-value-block {
+   display: flex;
+   width: 100%;
+   flex-wrap: wrap;
+}
+
+.image-viewer {
+   display: flex;
+   width: 50%;
+   padding-bottom: 10px;
+}
+
+.video-viewer {
+   display: flex;
+   width: 100%;
+   padding-bottom: 10px;
+}
+
+.file-notes-section {
+   padding: 10px;
+   width: 85%;
+}
+
+.provider-info {
+   font-size: 12px;
+   font-weight: bold;
+}
+
+.file-section {
+   display: flex;
+}
+
+.download-link{
+   display: flex;
+}
+
+.video-play-button {
+   position: relative;
+   height: 93px;
+   width: 93px;
+   display: inline-block;
+
+   &:hover {
+      cursor: pointer;
+      filter: brightness(1.5);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+      border-color: #eee;
+   }
+}
+
+.video-play-button-icon {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}
