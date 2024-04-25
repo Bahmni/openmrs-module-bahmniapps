@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import propTypes from "prop-types";
 import { Link } from "carbon-components-react";
 import { DocumentPdf, Download, PlayFilledAlt } from "@carbon/icons-react/next";
 import { formatDate } from "../../../../utils/utils";
 import { FileViewerModal } from "../FileViewerModal/FileViewerModal";
+import { getThumbnail } from "../../../../utils/FormDisplayControl/FormView";
 import { document_images_path } from "../../../../constants";
 import "../FileViewer.scss";
 
 export const BuildFileViewer = (props) => {
   const { item, index } = props;
 
-  const [isFileViewerModalOpen, setFileViewerModal] = React.useState(false);
+  const [isFileViewerModalOpen, setFileViewerModal] = useState(false);
 
   const itemInfoMap = {
     providerName: item?.providers[0]?.name || "",
@@ -36,7 +37,10 @@ export const BuildFileViewer = (props) => {
           >
             <img
               className="form-obs-video-image"
-              src={document_images_path + getThumbnail(itemInfoMap.fileRelativePath, "jpg")}
+              src={
+                document_images_path +
+                getThumbnail(itemInfoMap.fileRelativePath, "jpg")
+              }
               alt="image"
             />
             <div className="video-play-button-icon">
@@ -82,7 +86,10 @@ export const BuildFileViewer = (props) => {
             <div onClick={() => setFileViewerModal(!isFileViewerModalOpen)}>
               <img
                 className="form-obs-image"
-                src={document_images_path + getThumbnail(itemInfoMap.fileRelativePath)}
+                src={
+                  document_images_path +
+                  getThumbnail(itemInfoMap.fileRelativePath)
+                }
                 alt="image"
               />
             </div>
@@ -105,15 +112,6 @@ export const BuildFileViewer = (props) => {
       </>
     );
   }
-};
-
-const getThumbnail = (src, extension = undefined) => {
-  if (extension) {
-    return (
-      (src && src.replace(/(.*)\.(.*)$/, "$1_thumbnail." + extension)) || null
-    );
-  }
-  return (src && src.replace(/(.*)\.(.*)$/, "$1_thumbnail.$2")) || null;
 };
 
 BuildFileViewer.propTypes = {

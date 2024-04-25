@@ -85,7 +85,23 @@ export const getValue = (member) => {
 };
 
 export const isValidFileFormat = (item) => {
-  if(item?.complexData?.mimeType === "video/mp4" || item?.complexData?.mimeType === "image/png" || item?.complexData?.mimeType === "image/jpeg" || item?.complexData?.mimeType === "application/pdf")
+  const fileFormats = [
+    "video/mp4",
+    "image/png",
+    "image/jpeg",
+    "application/pdf",
+  ];
+  const mimeType = item?.complexData?.mimeType;
+  if(fileFormats.includes(mimeType))
     return true;
   return false;
+};
+
+export const getThumbnail = (src, extension = undefined) => {
+  if (extension) {
+    return (
+      (src && src.replace(/(.*)\.(.*)$/, "$1_thumbnail." + extension)) || null
+    );
+  }
+  return (src && src.replace(/(.*)\.(.*)$/, "$1_thumbnail.$2")) || null;
 };
