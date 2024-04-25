@@ -3,6 +3,16 @@
 angular.module('bahmni.clinical')
     .controller('VisitController', ['$scope', '$state', '$rootScope', '$q', 'encounterService', '$window', 'clinicalAppConfigService', 'configurations', 'visitSummary', '$timeout', 'printer', 'visitConfig', 'visitHistory', '$stateParams', 'locationService', 'visitService', 'appService', 'diagnosisService', 'observationsService', 'allergyService', 'auditLogService', 'sessionService', '$location',
         function ($scope, $state, $rootScope, $q, encounterService, $window, clinicalAppConfigService, configurations, visitSummary, $timeout, printer, visitConfig, visitHistory, $stateParams, locationService, visitService, appService, diagnosisService, observationsService, allergyService, auditLogService, sessionService, $location) {
+            function handleLogoutShortcut (event) {
+                if ((event.metaKey || event.ctrlKey) && event.key === $rootScope.quickLogoutComboKey) {
+                    $scope.ipdDashboard.hostApi.onLogOut();
+                }
+            }
+            function cleanup () {
+                $window.removeEventListener('keydown', handleLogoutShortcut);
+            }
+            $window.addEventListener('keydown', handleLogoutShortcut);
+            $scope.$on('$destroy', cleanup);
             var encounterTypeUuid = configurations.encounterConfig().getPatientDocumentEncounterTypeUuid();
             $scope.documentsPromise = encounterService.getEncountersForEncounterType($scope.patient.uuid, encounterTypeUuid).then(function (response) {
                 return new Bahmni.Clinical.PatientFileObservationsMapper().map(response.data.results);

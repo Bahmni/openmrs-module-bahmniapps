@@ -2,6 +2,16 @@
 
 angular.module('bahmni.adt')
 .controller('CareViewController', ['$rootScope', '$scope', '$state', '$window', 'auditLogService', 'sessionService', function ($rootScope, $scope, $state, $window, auditLogService, sessionService) {
+    function handleLogoutShortcut (event) {
+        if ((event.metaKey || event.ctrlKey) && event.key === $rootScope.quickLogoutComboKey) {
+            $scope.hostApi.onLogOut();
+        }
+    }
+    function cleanup () {
+        $window.removeEventListener('keydown', handleLogoutShortcut);
+    }
+    $window.addEventListener('keydown', handleLogoutShortcut);
+    $scope.$on('$destroy', cleanup);
     $scope.hostData = {
         provider: $rootScope.currentProvider
     };

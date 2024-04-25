@@ -1,7 +1,7 @@
 'use strict';
 
 describe('VisitController', function () {
-    var scope, $controller, success, encounterService, patient, dateUtil, $timeout, getEncounterPromise;
+    var scope, $controller, success, encounterService, patient, dateUtil, $timeout, getEncounterPromise, window;
     var locationService, appService, $location, auditLogService, sessionService;
     var q, state, rootScope, controller, allergyService;
     var configurations = {
@@ -30,7 +30,7 @@ describe('VisitController', function () {
 
     beforeEach(module('bahmni.clinical'));
     beforeEach(module('stateMock'));
-    beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', '$state', function ($injector, timeout, $q, $rootScope, $state) {
+    beforeEach(inject(['$injector', '$timeout', '$q', '$rootScope', '$state', '$window', function ($injector, timeout, $q, $rootScope, $state, $window) {
         q = $q;
         rootScope = $rootScope;
         patient = {
@@ -60,6 +60,7 @@ describe('VisitController', function () {
         allergyService.getAllergyForPatient.and.returnValue(Promise.resolve(allergiesMock));
         encounterService.getEncountersForEncounterType.and.returnValue(getEncounterPromise);
         $location.search.and.returnValue({source: "clinical"});
+        window = $window;
         auditLogService.log.and.returnValue({
             then: function(callback) { return callback(); }
         });
@@ -89,6 +90,7 @@ describe('VisitController', function () {
         scope.currentProvider = {uuid: ''};
         controller =   $controller('VisitController', {
                 $scope: scope,
+                $rootScope: {quickLogoutComboKey: 'Escape'},
                 $state: state,
                 encounterService: encounterService,
                 clinicalAppConfigService: clinicalAppConfigService,
@@ -104,7 +106,8 @@ describe('VisitController', function () {
                 allergyService: allergyService,
                 auditLogService: auditLogService,
                 sessionService: sessionService,
-                $location: $location
+                $location: $location,
+                $window: window
             });
     }]));
 
@@ -165,8 +168,19 @@ describe('VisitController', function () {
 
         it('should call auditLogService.log and sessionService.destroy on logout', function (){
             scope.ipdDashboard.hostApi.onLogOut();
-            expect(auditLogService.log).toHaveBeenCalled();
+            expect(auditLogService.log).toHaveBeenCalledWith(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY');
             expect(sessionService.destroy).toHaveBeenCalled();
+        });
+
+        it('should call handleLogoutShortcut on keydown event', function (){
+            spyOn(scope.ipdDashboard.hostApi, 'onLogOut');
+            window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': true, 'ctrlKey': false}));
+            expect(scope.ipdDashboard.hostApi.onLogOut).toHaveBeenCalled();
+        });
+        it('should remove event listener on scope destroy', function () {
+            spyOn(window, 'removeEventListener');
+            scope.$destroy();
+            expect(window.removeEventListener).toHaveBeenCalledWith('keydown', jasmine.any(Function));
         });
     });
 
