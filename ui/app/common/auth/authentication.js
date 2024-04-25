@@ -218,21 +218,21 @@ angular.module('authentication')
             authenticateUser: authenticateUser
         };
     }]).directive('logOut', ['$rootScope', 'sessionService', '$window', 'configurationService', 'auditLogService', function ($rootScope, sessionService, $window, configurationService, auditLogService) {
-    function logoutUser () {
-        auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
-            sessionService.destroy().then(function () {
-                localStorage.removeItem("selected_ward");
-                $window.location = "../home/index.html#/login";
+        function logoutUser () {
+            auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
+                sessionService.destroy().then(function () {
+                    localStorage.removeItem("selected_ward");
+                    $window.location = "../home/index.html#/login";
+                });
             });
-        });
-    }
-
-    function handleKeyPress (event) {
-        if ((event.metaKey || event.ctrlKey) && event.key === $rootScope.quickLogoutComboKey) {
-            logoutUser();
         }
-    }
-    return {
+
+        function handleKeyPress (event) {
+            if ((event.metaKey || event.ctrlKey) && event.key === $rootScope.quickLogoutComboKey) {
+                logoutUser();
+            }
+        }
+        return {
             link: function (scope, element) {
                 element.bind('click', function () {
                     scope.$apply(function () {
