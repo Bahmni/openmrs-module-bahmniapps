@@ -109,7 +109,7 @@ angular.module('bahmni.ot')
                 providerUuid: providerUuid
             };
             const headers = {"Accept": "application/json", "Content-Type": "application/json"};
-            return $http.post(Bahmni.OT.Constants.notesUrl + "/" + noteId, note, headers);
+            return $http.post(Bahmni.OT.Constants.notesUrl + "/" + noteId, payload, headers);
         };
         this.deleteNoteForADay = function (noteId) {
             const headers = {"Accept": "application/json", "Content-Type": "application/json", withCredentials: true};
