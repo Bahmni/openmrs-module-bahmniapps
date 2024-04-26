@@ -221,7 +221,6 @@ angular.module('authentication')
         function logoutUser () {
             auditLogService.log(undefined, 'USER_LOGOUT_SUCCESS', undefined, 'MODULE_LABEL_LOGOUT_KEY').then(function () {
                 sessionService.destroy().then(function () {
-                    localStorage.removeItem("selected_ward");
                     $window.location = "../home/index.html#/login";
                 });
             });
