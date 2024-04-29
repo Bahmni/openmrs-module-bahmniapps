@@ -75,10 +75,10 @@ angular.module('authentication')
         var self = this;
 
         var destroySessionFromServer = function () {
-            var expirationDate = new Date();
-            expirationDate.setMinutes(expirationDate.getMinutes() + $rootScope.cookieExpiryTime);
+            var currentTime = new Date();
+            var expiryTime = new Date(currentTime.getTime() + $rootScope.cookieExpiryTime * 60000);
             if ($window.location.hash.includes("careViewDashboard") || $window.location.hash.includes("ipd")) {
-                $bahmniCookieStore.put($rootScope.currentProvider.uuid, $window.location.pathname + $window.location.hash, {path: '/', expires: expirationDate});
+                $bahmniCookieStore.put($rootScope.currentProvider.uuid, $window.location.pathname + $window.location.hash, {path: '/', expires: expiryTime});
             }
             return $http.delete(sessionResourcePath);
         };
