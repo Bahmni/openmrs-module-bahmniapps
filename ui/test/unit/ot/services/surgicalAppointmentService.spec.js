@@ -105,7 +105,7 @@ describe('surgicalAppointmentService', function () {
         expect(mockHttp.get.calls.mostRecent().args[0]).toBe("/openmrs/ws/rest/v1/surgicalBlock");
         expect(mockHttp.get.calls.mostRecent().args[1].params).toEqual({ startDatetime : '2039-08-26T12:00:00.000+0000', endDatetime : '2039-08-26T15:00:00.000+0000',includeVoided: false, activeBlocks: true, v: "custom:(id,uuid," +
         "provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided))," +
-        "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,person:(age))," +
+        "location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,person:(age,gender,birthdate))," +
         "actualStartDatetime,actualEndDatetime,status,notes,sortWeight,bedNumber,bedLocation,surgicalAppointmentAttributes" +
         (additionalCustomParam ? "," + additionalCustomParam : "") + "))"});
         expect(mockHttp.get.calls.mostRecent().args[1].withCredentials).toBeTruthy();

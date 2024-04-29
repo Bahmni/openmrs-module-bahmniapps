@@ -60,7 +60,7 @@
                                              aria-hidden="true"></i> {{::'OT_FILTER_KEY' |translate}}
         </button>
     </p>
-    <p class="calendar-day-navigation" ng-if="weekOrDay === 'day'">
+    <p class="calendar-day-navigation" ng-show="weekOrDay === 'day'">
         <button ng-click="goToPreviousDate(viewDate)"><i class="fa fa-angle-left"></i></button>
         <button ng-click="goToCurrentDate()">{{'OT_TODAY_KEY' | translate}}</button>
         <button type="button" ng-click="goToNextDate(viewDate)"><i class="fa fa-angle-right"></i></button>
