@@ -150,11 +150,12 @@ angular.module('bahmni.home')
                                     function (error) { deferrable.reject(error); }
                                 );
                                 logAuditForLoginAttempts("USER_LOGIN_SUCCESS");
-                                if (data && providerUuid !== undefined && $bahmniCookieStore.get(providerUuid) !== null) {
+                                if (data) {
                                     const providerUuid = data.currentProvider.uuid;
-                                    $window.location = $bahmniCookieStore.get(providerUuid);
+                                    if ($bahmniCookieStore.get(providerUuid) !== null) {
+                                        $window.location = $bahmniCookieStore.get(providerUuid);
+                                    }
                                 }
-
                             }, function (error) {
                                 $scope.errorMessageTranslateKey = error;
                                 deferrable.reject(error);

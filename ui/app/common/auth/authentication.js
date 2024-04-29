@@ -76,7 +76,7 @@ angular.module('authentication')
 
         var destroySessionFromServer = function () {
             var expirationDate = new Date();
-            expirationDate.setMinutes(expirationDate.getMinutes() + $rootScope.cookieExpirationTime);
+            expirationDate.setMinutes(expirationDate.getMinutes() + $rootScope.cookieExpiryTime);
             if ($window.location.hash.includes("careViewDashboard") || $window.location.hash.includes("ipd")) {
                 $bahmniCookieStore.put($rootScope.currentProvider.uuid, $window.location.pathname + $window.location.hash, {path: '/', expires: expirationDate});
             }

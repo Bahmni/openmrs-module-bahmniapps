@@ -219,6 +219,18 @@ angular.module('bahmni.common.domain')
             });
         };
 
+        configurationFunctions.contextCookieExpirationTimeInMinutes = function () {
+            return $http.get(Bahmni.Common.Constants.globalPropertyUrl, {
+                params: {
+                    property: 'bahmni.contextCookieExpirationTimeInMinutes'
+                },
+                withCredentials: true,
+                transformResponse: [function (data) {
+                    return data;
+                }]
+            });
+        };
+
         var existingPromises = {};
         var configurations = {};
 

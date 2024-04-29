@@ -94,4 +94,8 @@ angular.module('bahmni.common.config')
         this.quickLogoutComboKey = function () {
             return this.configs.quickLogoutComboKey;
         };
+
+        this.contextCookieExpirationTimeInMinutes = function () {
+            return this.configs.contextCookieExpirationTimeInMinutes;
+        };
     }]);

@@ -90,7 +90,7 @@ describe('VisitController', function () {
         scope.currentProvider = {uuid: ''};
         controller =   $controller('VisitController', {
                 $scope: scope,
-                $rootScope: {quickLogoutComboKey: 'Escape'},
+                $rootScope: {quickLogoutComboKey: 'Escape', cookieExpiryTime: 30},
                 $state: state,
                 encounterService: encounterService,
                 clinicalAppConfigService: clinicalAppConfigService,

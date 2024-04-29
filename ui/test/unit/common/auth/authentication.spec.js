@@ -174,6 +174,33 @@ describe("Authentication", function () {
                 cache: false
             })
         }]));
+        it("should set bahmniCookie on destroySessionFromServer", inject(['sessionService', '$rootScope', '$window','$http', function (sessionService, $rootScope, $window, $http) {
+            var deferrable = jasmine.createSpyObj('deferrable', ['reject', 'resolve']);
+            
+            deferrable.promise = {
+                 function (callback) {
+                    callback({authenticated: true})
+                }
+            };
+            $q.defer.and.returnValue(deferrable);
+
+            var _window = $window
+
+            var fakeHttpPromise = {
+                then: function(success, failure) {
+                    success({"status" : 204});
+                }
+            };
+            _window.location.hash = "#/ipd";
+            $rootScope.cookieExpiryTime = 30;
+            var currentDate = new Date();
+            currentDate.setMinutes(currentDate.getMinutes() + $rootScope.cookieExpiryTime);
+            $rootScope.currentProvider= {uuid:"123"}
+            spyOn($http, 'delete').and.returnValue(fakeHttpPromise);
+            sessionService.destroy();
+            expect($bahmniCookieStore.put).toHaveBeenCalled();
+            expect($bahmniCookieStore.put.calls.count()).toBe(1);
+        }]));
     });
 
 });
