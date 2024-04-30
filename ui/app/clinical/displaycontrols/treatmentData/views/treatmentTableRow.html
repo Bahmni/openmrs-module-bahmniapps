@@ -14,28 +14,6 @@
     <td class="days" ng-if="::(!params.hideVisitDate)">
         <span class="fr">{{::drugOrder.effectiveStartDate | bahmniDate}}</span>
     </td>
-    <td class="add-to-drug-chart">
-        <span class="drug-chart-link" ng-if="enableIPDFeature && drugOrder.careSetting === 'INPATIENT'">
-            <a ng-click="openDrugChartModal(drugOrder)">
-                {{ ::'ADD_TO_DRUG_CHART_KEY'|translate }}
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-            </a>
-        </span>
-        <div>
-            <mfe-ipd-drug-chart-modal 
-                host-data="drugChartModal.hostData"
-                host-api="drugChartModal.hostApi"
-                ng-if="openModal">
-            </mfe-ipd-drug-chart-modal>
-        </div>
-        <mfe-ipd-drug-chart-modal-notification 
-            host-data="drugChartModalNotification.hostData"
-            host-api="drugChartModalNotification.hostApi"
-            class="drug-chart-warnings"
-            ng-if="showModalWarningMessage">
-        </mfe-ipd-drug-chart-modal-notification>
-    </td>
-
     <td class="toggle-btn" toggle="drugOrder.showDetails" ng-if="::((params.showDetailsButton == true) && !drugOrder.additionalInstructions)">
         <button class="toggle fr">
             <i class="fa fa-angle-down"></i>
