@@ -31,6 +31,11 @@
       font-family: OpenSansSemiBold;
     }
   }
+  .provider-location-name{
+    display: grid;
+    grid-auto-flow: column;
+    overflow-x: scroll;
+  }
   .calendar-time-container {
     clear: left;
     position: absolute;
@@ -55,7 +60,8 @@
         position: absolute;
         display: flex;
         left: 80px;
-        overflow: auto;
+        overflow-x: scroll;
+        overflow-y: auto;
         padding-bottom: 5px;
         top: 36px;
         width: calc(100% - 90px);
@@ -242,14 +248,17 @@
     }
     .surgicalblock-patientname {
       font-weight: 600;
-      color: #000;
+      color: #5394fc;;
       font-size: 14px;
       padding: 0 10px 3px 1px;
+      cursor: pointer;
     }
-    p {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .ot-day-text{
+      p {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 2px 0;
+      }
     }
   }
   .surgicalblock-surgeon-name {

@@ -34,7 +34,7 @@
                 <p ng-switch-when="estTimeHours">
                     <!--Since time and hours are displayed as one single attribute in UI, OT_SURGICAL_APPOINTMENT_MINUTES and
                     OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME have to be hard-coded-->
-                    <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_ESTIMATED_TIME' | translate}}</label>
+                    <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_EST_TIME' | translate}}</label>
                     <input type="number" id="estTimeHoursID" required ng-model="attributes.estTimeHours.value" string-to-number min="0" max="23" step="1">
                     {{defaultAttributeTranslations.get(attributeTypeName) | translate}} :
                     <input type="number" id="estTimeMinutesID" required ng-model="attributes.estTimeMinutes.value" string-to-number min="0" max="59">
@@ -54,6 +54,14 @@
                 <p ng-switch-when="notes">
                     <label class="surgeon-block surgeon-text">{{defaultAttributeTranslations.get(attributeTypeName) | translate}}</label>
                     <textarea class="text-section" placeholder="{{'OT_ENTER_YOUR_NOTES' | translate}}" id="notesID" ng-model="attributes.notes.value" msd-elastic></textarea>
+                </p>
+                <p ng-switch-when="patientWeight">
+                    <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_PATIENT_WEIGHT' | translate}}</label>
+                    <input type="text" id="{{attribute.surgicalAppointmentAttributeType.patientWeight}}" ng-model="attribute.value">
+                </p>
+                <p ng-switch-when="anesthesic">
+                    <label class="surgeon-block surgeon-text">{{'OT_SURGICAL_APPOINTMENT_ANAESTHETIST' | translate}}</label>
+                    <input type="text" id="{{attribute.surgicalAppointmentAttributeType.anesthesic}}" ng-model="attribute.value">
                 </p>
                 <p ng-switch-default ng-if="attributeTypeName != 'estTimeMinutes'">
                     <label class="surgeon-block surgeon-text">{{(defaultAttributeTranslations.get(attributeTypeName) | translate) || attribute.surgicalAppointmentAttributeType.name}}</label>

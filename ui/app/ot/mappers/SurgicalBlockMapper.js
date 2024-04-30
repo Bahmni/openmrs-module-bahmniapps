@@ -131,4 +131,6 @@ Bahmni.OT.SurgicalBlockMapper = function () {
         });
         return attributes;
     };
+
+    this.mapPrimaryDiagnoses = mapPrimaryDiagnoses;
 };

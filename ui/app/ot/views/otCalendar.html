@@ -1,6 +1,6 @@
 <div on-Scroll class="calendar">
     <!-- Please dont remove or alter the below class name -->
-    <div class="calendar-location">
+    <div class="provider-location-name" on-horizontal-scroll="ot-block-wrapper">
         <p class="heading-cell" ng-repeat="location in locations">
             {{location.name}}
         </p>
@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="ot-block-container">
-            <div class="ot-block-wrapper">
+            <div class="ot-block-wrapper" on-horizontal-scroll="provider-location-name">
             <div class="ot-block" ng-repeat="(blockIndex, blocks) in surgicalBlocksByLocation">
                 <div ng-repeat="row in ::rows" class="calendar-cell">
                 </div>
