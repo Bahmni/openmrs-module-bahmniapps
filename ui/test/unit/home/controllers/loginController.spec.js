@@ -1,7 +1,7 @@
 'use strict';
 
 describe('loginController', function () {
-    var localeService, $aController, rootScopeMock, window, $q, state, _spinner, initialData, scopeMock, sessionService, $bahmniCookieStore, currentUser, auditLogService;
+    var localeService, $aController, rootScopeMock, $window, $q, state, _spinner, initialData, scopeMock, sessionService, $bahmniCookieStore, currentUser, auditLogService;
 
     beforeEach(module('bahmni.home'));
 
@@ -26,15 +26,16 @@ describe('loginController', function () {
             }));
         $bahmniCookieStore = jasmine.createSpyObj('$bahmniCookieStore', ['get', 'remove', 'put']);
         $bahmniCookieStore.get.and.callFake(function () { return {}; });
+        $window = jasmine.createSpyObj('$window', ['location']);
+        $window.location.and.callFake(function () { return {}; });
         initialData = {location: " "};
         _spinner.forPromise.and.returnValue(specUtil.simplePromise({}));
     });
 
     beforeEach(
-        inject(function ($controller, $rootScope, $window, $state, _$q_) {
+        inject(function ($controller, $rootScope, $state, _$q_) {
             $aController = $controller;
             rootScopeMock = $rootScope;
-            window = $window;
             $q = _$q_;
             state = $state;
             scopeMock = rootScopeMock.$new();
@@ -54,7 +55,8 @@ describe('loginController', function () {
             localeService: localeService,
             sessionService: sessionService,
             auditLogService: auditLogService,
-            $bahmniCookieStore: $bahmniCookieStore
+            $bahmniCookieStore: $bahmniCookieStore,
+            $window : $window
         });
     };
 
@@ -146,4 +148,19 @@ describe('loginController', function () {
         loginController();
         expect(scopeMock.locales).toEqual([{code: 'it', nativeName: 'it'}]);
     });
+
+    it ("should fetch bahmniCore data and assign it to windows object ",function() {
+            loginController();
+            var fakeHttpGetPromise = {
+                then: function (success, failure) {
+                    success({currentProvider : {uuid: "providerUuid"}});
+                }
+            };
+            scopeMock.loginInfo = { username: 'superman' };
+            sessionService.loginUser.and.returnValue(fakeHttpGetPromise);
+            $bahmniCookieStore.get.and.returnValue("/ipd");
+            scopeMock.login();
+            expect($bahmniCookieStore.get).toHaveBeenCalled();
+            expect($bahmniCookieStore.get.calls.count()).toBe(2);
+    }); 
 });

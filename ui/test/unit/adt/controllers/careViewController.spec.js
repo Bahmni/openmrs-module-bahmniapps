@@ -22,7 +22,7 @@ describe("CareViewController", function () {
 
         controller('CareViewController', {
             $scope: scope,
-            $rootScope: {currentProvider: mockProvider, quickLogoutComboKey: 'Escape'},
+            $rootScope: {currentProvider: mockProvider, quickLogoutComboKey: 'Escape', cookieExpiryTime:30},
             $state: state,
             auditLogService: auditLogService,
             sessionService: sessionService,
@@ -57,6 +57,13 @@ describe("CareViewController", function () {
         $window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': false, 'ctrlKey': true}));
         expect(scope.hostApi.onLogOut).toHaveBeenCalled();
     });
+    it('should call handleLogoutShortcut on keydown event', function (){
+        createController();
+        spyOn(scope.hostApi, 'onLogOut');
+        $window.dispatchEvent(new KeyboardEvent('keydown', {'key': 'Escape', 'metaKey': false, 'ctrlKey': false}));
+        expect(scope.hostApi.onLogOut).not.toHaveBeenCalled();
+    });
+
     it('should call handleLogoutShortcut on keydown event', function (){
         createController();
         spyOn(scope.hostApi, 'onLogOut');

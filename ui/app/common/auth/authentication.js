@@ -26,7 +26,7 @@ angular.module('authentication')
                 $window.location = "../home/index.html#/login";
             });
         });
-    }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', function ($rootScope, $http, $q, $bahmniCookieStore, userService) {
+    }]).service('sessionService', ['$rootScope', '$http', '$q', '$bahmniCookieStore', 'userService', '$window', function ($rootScope, $http, $q, $bahmniCookieStore, userService, $window) {
         var sessionResourcePath = Bahmni.Common.Constants.RESTWS_V1 + '/session?v=custom:(uuid)';
 
         var getAuthFromServer = function (username, password, otp) {
@@ -75,6 +75,11 @@ angular.module('authentication')
         var self = this;
 
         var destroySessionFromServer = function () {
+            var currentTime = new Date();
+            var expiryTime = new Date(currentTime.getTime() + $rootScope.cookieExpiryTime * 60000);
+            if ($window.location.hash.includes("careViewDashboard") || $window.location.hash.includes("ipd")) {
+                $bahmniCookieStore.put($rootScope.currentProvider.uuid, $window.location.pathname + $window.location.hash, {path: '/', expires: expiryTime});
+            }
             return $http.delete(sessionResourcePath);
         };
 
