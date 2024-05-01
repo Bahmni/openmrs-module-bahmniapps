@@ -4,7 +4,7 @@ describe("patient dashboard controller", function () {
     beforeEach(module('bahmni.clinical'));
 
     var scope, spinner, _clinicalDashboardConfig, _clinicalAppConfigService, _state, _appService, _diseaseTemplateService,
-        _stateParams, _controller, _appConfig, location, filter, confirmBox;
+        _stateParams, _controller, _appConfig, location, filter;
     var diseaseTemplates;
     location = {
         path: function () {
@@ -13,7 +13,7 @@ describe("patient dashboard controller", function () {
             return url;
         },
         search: function () {
-            return { currentTab: "DASHBOARD_TAB_PATIENT_SUMMARY_KEY", replace: function () {} };
+            return {currentTab: "DASHBOARD_TAB_PATIENT_SUMMARY_KEY", replace: function () {}};
         }
     };
 
@@ -43,7 +43,6 @@ describe("patient dashboard controller", function () {
 
         _appService = jasmine.createSpyObj('appService', ['getAppDescriptor']);
         _appConfig = jasmine.createSpyObj('appConfig', ['getConfigValue']);
-        confirmBox = jasmine.createSpyObj('confirmBox', ['show']);
 
         _appService.getAppDescriptor.and.returnValue(_appConfig);
         _diseaseTemplateService = jasmine.createSpyObj('diseaseTemplateService', ['getLatestDiseaseTemplates']);
@@ -117,8 +116,7 @@ describe("patient dashboard controller", function () {
             $stateParams: _stateParams,
             diseaseTemplateService: _diseaseTemplateService,
             patientContext: {patient: {}},
-            $filter: filter,
-            confirmBox: confirmBox
+            $filter: filter
 
         });
     });
@@ -155,8 +153,7 @@ describe("patient dashboard controller", function () {
             appService: _appService,
             $stateParams: _stateParams,
             diseaseTemplateService: _diseaseTemplateService,
-            patientContext: {patient: {}},
-            confirmBox: confirmBox
+            patientContext: {patient: {}}
 
         });
     });
@@ -200,8 +197,7 @@ describe("patient dashboard controller", function () {
             $stateParams: _stateParams,
             diseaseTemplateService: _diseaseTemplateService,
             patientContext: {patient: {}},
-            $location: location,
-            confirmBox: confirmBox
+            $location: location
 
         });
         expect(_clinicalDashboardConfig.currentTab.translationKey).toBe("DASHBOARD_TAB_PATIENT_SUMMARY_KEY");
