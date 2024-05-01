@@ -9,11 +9,7 @@ angular.module('bahmni.clinical')
             $scope.initPromise.then(function (response) {
                 $scope.patientContext = response.data;
                 $scope.iconAttributeConfig = appService.getAppDescriptor().getConfigValue('iconAttribute') || {};
-                $scope.showIcon = $scope.iconAttributeConfig && $scope.iconAttributeConfig.attrName
-                                    && $scope.iconAttributeConfig.attrValue && $scope.patientContext.personAttributes
-                                    && $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName]
-                                    && $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName].value === $scope.iconAttributeConfig.attrValue;
-
+                $scope.showIcon = $scope.iconAttributeConfig && $scope.iconAttributeConfig.attrName && $scope.iconAttributeConfig.attrValue && $scope.patientContext.personAttributes && $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName] && $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName].value === $scope.iconAttributeConfig.attrValue;
                 if ($scope.patientContext.personAttributes && $scope.showIcon) {
                     delete $scope.patientContext.personAttributes[$scope.iconAttributeConfig.attrName];
                 }
